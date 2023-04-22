@@ -120,6 +120,8 @@ namespace TagTool.Commands.Tags
             var destResourceCaches = new Dictionary<ResourceLocation, ResourceCache>();
             var destCacheContext = new GameCacheHaloOnline(destDirectory);
 
+            SetCacheVersion(destCacheContext, CacheVersion.HaloOnlineED);
+
             foreach (var value in Enum.GetValues(typeof(ResourceLocation)))
             {
                 var location = (ResourceLocation)value;
@@ -2636,6 +2638,17 @@ namespace TagTool.Commands.Tags
             File.Copy($@"{Cache.Directory}\mainmenu.map", $@"{outputDirectoryInfo.FullName}\mainmenu.map");
             Directory.CreateDirectory($@"{outputDirectoryInfo.FullName}\fonts");
             File.Copy($@"{Cache.Directory}\fonts\font_package.bin", $@"{outputDirectoryInfo.FullName}\fonts\font_package.bin");
+        }
+
+        public void SetCacheVersion(GameCacheHaloOnline cache, CacheVersion version)
+        {
+            cache.Version = version;
+            cache.TagCacheGenHO.Version = version;
+            cache.TagCacheGenHO.Header.CreationTime = CacheVersionDetection.GetTimestamp(version);
+            cache.StringTableHaloOnline.Version = version;
+            cache.Serializer = new TagSerializer(version, CachePlatform.Original);
+            cache.Deserializer = new TagDeserializer(version, CachePlatform.Original);
+            cache.ResourceCaches = new ResourceCachesHaloOnline(cache);
         }
     }
 }

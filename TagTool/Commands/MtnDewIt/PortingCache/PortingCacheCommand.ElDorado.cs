@@ -133,19 +133,6 @@ namespace TagTool.Commands.Tags
                     }
                 }
             }
-
-            // Removes the current main menu scenario, as it fails to load anyhow.
-            CommandRunner.Current.RunCommand($@"deletetag levels\ui\mainmenu\mainmenu.scenario");
-
-            // These commands will replace the existing main menu, with any empty one, allowing the cache to load.
-
-            //generatecanvas
-            //levels\ui\mainmenu\mainmenu
-            //mainmenu
-            //mainmenu
-            //nullptr
-            //7001
-            //updatemapfilesalt <InsertMapInfoDirectoryHere>
         }
     }
 }
