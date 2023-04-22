@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 
@@ -203,6 +204,11 @@ namespace TagTool.Commands.Tags
                         bitm.Sequences[7].Sprites[0].Top = 0.275625f;
                         CacheContext.Serialize(stream, tag, bitm);
                     }
+
+                    // Still need to sort out some issues with HUD text size, and 
+
+                    // TODO: Convert to its own method, which loops though every tag, rather than using the command runner, as continually having to use the command runner isn't very efficient
+                    // CommandRunner.Current.RunCommand($@"rescalehudtext 0.50980392156 all"); // 0.50980392156 is the approximate percentage difference in size between the default HUD text font, and the upscaled font
                 }
             }
         }

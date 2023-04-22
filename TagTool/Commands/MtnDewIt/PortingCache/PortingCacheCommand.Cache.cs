@@ -2637,7 +2637,11 @@ namespace TagTool.Commands.Tags
             File.Copy($@"{Cache.Directory}\guardian.map", $@"{outputDirectoryInfo.FullName}\guardian.map");
             File.Copy($@"{Cache.Directory}\mainmenu.map", $@"{outputDirectoryInfo.FullName}\mainmenu.map");
             Directory.CreateDirectory($@"{outputDirectoryInfo.FullName}\fonts");
-            File.Copy($@"{Cache.Directory}\fonts\font_package.bin", $@"{outputDirectoryInfo.FullName}\fonts\font_package.bin");
+
+            // Will add upscaled font packages once HUD and UI issues have been resolved
+
+            //File.Copy($@"{Program.TagToolDirectory}\Tools\PortingCache\Fonts\Upscaled\font_package.bin", $@"{outputDirectoryInfo.FullName}\fonts\font_package.bin");
+            File.Copy($@"{Program.TagToolDirectory}\Tools\PortingCache\Fonts\Default\font_package.bin", $@"{outputDirectoryInfo.FullName}\fonts\font_package.bin");
         }
 
         public void SetCacheVersion(GameCacheHaloOnline cache, CacheVersion version)

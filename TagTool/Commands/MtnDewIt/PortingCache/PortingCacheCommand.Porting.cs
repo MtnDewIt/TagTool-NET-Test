@@ -18,17 +18,17 @@ namespace TagTool.Commands.Tags
             }
 
             // Mainmenu UI tags
-            CommandRunner.Current.RunCommand($@"porttag ui\main_menu.wgtz");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\main_menu.wgtz");
             ContextStack.Pop();
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
 
             // Multiplayer UI tags
-            CommandRunner.Current.RunCommand($@"porttag ui\multiplayer.wgtz");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\multiplayer.wgtz");
             ContextStack.Pop();
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
 
             // Singleplayer UI tags
-            CommandRunner.Current.RunCommand($@"porttag ui\single_player.wgtz");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\single_player.wgtz");
 
             // Fixes crashing issue with certain weapons
             CommandRunner.Current.RunCommand($@"porttag shaders\invalid.shader");
