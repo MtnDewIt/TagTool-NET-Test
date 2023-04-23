@@ -28,7 +28,16 @@ namespace TagTool.Commands.Tags
         // These tag types are not copied over when rebuilding the cache
         public static readonly string[] UncleanSkipGroups = new[]
         {
-            "armr", "forg", "mode", "obje", "pdm!", "scnr", "sus!", "trdf", "vfsl", "cprl"
+            "armr", 
+            "forg", 
+            "mode", 
+            "obje", 
+            "pdm!", 
+            "scnr", 
+            "sus!", 
+            "trdf", 
+            "vfsl", 
+            "cprl"
         };
 
         // Default bitmaps, stored in rasterizer globals
@@ -285,6 +294,10 @@ namespace TagTool.Commands.Tags
 
             // Removes existing UI tags
             if (srcTag.IsInGroup("wgtz"))
+                return null;
+
+            // Removes all HUD tags
+            if (srcTag.IsInGroup("chdt"))
                 return null;
 
             // Removes chud globals definition tag

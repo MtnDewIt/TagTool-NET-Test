@@ -916,6 +916,17 @@ namespace TagTool.Commands.Tags
                         mulg.Runtime[0].Bomb = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\multiplayer\assault_bomb\assault_bomb");
                         mulg.Runtime[0].VipInfluenceArea = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\vip\vip_boundary");
                         mulg.Runtime[0].HaloOnlineRuntimeEffects.ThusIRefuteTheeEffect = CacheContext.TagCache.GetTag<Projectile>($@"objects\weapons\grenade\plasma_grenade\plasma_grenade");
+                        mulg.Runtime[0].GameIntroMessages.Pregame = null;
+                        mulg.Runtime[0].GameIntroMessages.Ctf = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_ctf");
+                        mulg.Runtime[0].GameIntroMessages.Slayer = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_slayer");
+                        mulg.Runtime[0].GameIntroMessages.Oddball = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_oddball");
+                        mulg.Runtime[0].GameIntroMessages.King = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_king");
+                        mulg.Runtime[0].GameIntroMessages.Sandbox = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_editor");
+                        mulg.Runtime[0].GameIntroMessages.Vip = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_vip");
+                        mulg.Runtime[0].GameIntroMessages.Juggernaut = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_juggernaut");
+                        mulg.Runtime[0].GameIntroMessages.Territories = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_territories");
+                        mulg.Runtime[0].GameIntroMessages.Assault = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_assault");
+                        mulg.Runtime[0].GameIntroMessages.Infection = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_infection");
                         CacheContext.Serialize(stream, tag, mulg);
                     }
                 }

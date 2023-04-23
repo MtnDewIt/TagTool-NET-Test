@@ -51,6 +51,7 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag ui\chud\animations\fade_in.chud_animation_definition");
             CommandRunner.Current.RunCommand($@"porttag ui\chud\animations\fade_in_slow.chud_animation_definition");
             CommandRunner.Current.RunCommand($@"porttag ui\chud\animations\flash_test.chud_animation_definition");
+            CommandRunner.Current.RunCommand($@"porttag ui\chud\animations\help_text_hack.chud_animation_definition");
             CommandRunner.Current.RunCommand($@"porttag ui\chud\animations\init_wipe_horizontal.chud_animation_definition");
             CommandRunner.Current.RunCommand($@"porttag ui\chud\animations\init_wipe_vertical.chud_animation_definition");
             CommandRunner.Current.RunCommand($@"porttag ui\chud\animations\laser_charge.chud_animation_definition");
@@ -71,6 +72,16 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag ui\chud\animations\vox2.chud_animation_definition");
             CommandRunner.Current.RunCommand($@"porttag ui\chud\animations\yaw_slide.chud_animation_definition");
             CommandRunner.Current.RunCommand($@"porttag ui\chud\animations\zoom_scope.chud_animation_definition");
+            CommandRunner.Current.RunCommand($@"porttag ui\chud\multiplayer_intro\summary_ctf.chud_definition");
+            CommandRunner.Current.RunCommand($@"porttag ui\chud\multiplayer_intro\summary_slayer.chud_definition");
+            CommandRunner.Current.RunCommand($@"porttag ui\chud\multiplayer_intro\summary_oddball.chud_definition");
+            CommandRunner.Current.RunCommand($@"porttag ui\chud\multiplayer_intro\summary_king.chud_definition");
+            CommandRunner.Current.RunCommand($@"porttag ui\chud\multiplayer_intro\summary_editor.chud_definition");
+            CommandRunner.Current.RunCommand($@"porttag ui\chud\multiplayer_intro\summary_vip.chud_definition");
+            CommandRunner.Current.RunCommand($@"porttag ui\chud\multiplayer_intro\summary_juggernaut.chud_definition");
+            CommandRunner.Current.RunCommand($@"porttag ui\chud\multiplayer_intro\summary_territories.chud_definition");
+            CommandRunner.Current.RunCommand($@"porttag ui\chud\multiplayer_intro\summary_assault.chud_definition");
+            CommandRunner.Current.RunCommand($@"porttag ui\chud\multiplayer_intro\summary_infection.chud_definition");
             CommandRunner.Current.RunCommand($@"porttag ui\chud\assault_rifle.chud_definition");
             CommandRunner.Current.RunCommand($@"porttag ui\chud\battle_rifle.chud_definition");
             CommandRunner.Current.RunCommand($@"porttag ui\chud\beam_rifle.chud_definition");
@@ -169,7 +180,6 @@ namespace TagTool.Commands.Tags
                     break;
             }
 
-            // Don't know if this is 100% ncessary for the ODST main menu
             CommandRunner.Current.RunCommand($@"mergeanimationgraphs");
             ContextStack.Pop();
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
@@ -224,8 +234,6 @@ namespace TagTool.Commands.Tags
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, halo));
             CommandRunner.Current.RunCommand($@"porttag objects\equipment\autoturret_equipment\autoturret_equipment.eqip");
             ContextStack.Pop();
-
-            // Left out until shader and rendering issues are sorted
 
             switch (cacheType)
             {
