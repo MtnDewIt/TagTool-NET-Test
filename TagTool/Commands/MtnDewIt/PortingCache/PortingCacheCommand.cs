@@ -133,12 +133,11 @@ namespace TagTool.Commands.Tags
             rebuildCache(outputDirectoryInfo.FullName);
             retargetCache();
             portTagData();
-            generateMapImages();
             modifyGlobals();
             patchChudGlobals();
-
+            
             // Will add functions for modifying the UI once the UI is functional
-
+            
             applyHUDPatches();
             applyPlayerPatches();
             applyElDoradoPatches();

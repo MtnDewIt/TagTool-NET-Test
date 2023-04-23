@@ -18,7 +18,6 @@ namespace TagTool.Commands.Tags
     {
         private Globals MatgDefinition { get; set; } = null;
         private MultiplayerGlobals MulgDefinition { get; set; } = null;
-        private GfxTexturesList GfxtDefintion { get; set; } = null;
 
         public Dictionary<int, CachedTagHaloOnline> ConvertedTags { get; } = new Dictionary<int, CachedTagHaloOnline>();
         public Dictionary<ResourceLocation, Dictionary<int, PageableResource>> CopiedResources { get; } = new Dictionary<ResourceLocation, Dictionary<int, PageableResource>>();
@@ -37,7 +36,11 @@ namespace TagTool.Commands.Tags
             "sus!", 
             "trdf", 
             "vfsl", 
-            "cprl"
+            "cprl",
+            "gfxt",
+            "wgtz",
+            "chdt",
+            "chgd"
         };
 
         // Default bitmaps, stored in rasterizer globals
@@ -210,8 +213,10 @@ namespace TagTool.Commands.Tags
                 {
                     GlobalTags = new List<TagReferenceBlock>
                     {
-                        new TagReferenceBlock { Instance = destCacheContext.TagCache.GetTag<Globals>(@"globals\globals") },
-                        new TagReferenceBlock { Instance = destCacheContext.TagCache.GetTag<GfxTexturesList>(@"ui\halox\main_menu\gfxt") }
+                        new TagReferenceBlock() 
+                        {
+                             Instance = destCacheContext.TagCache.GetTag<Globals>(@"globals\globals"),
+                        },
                     }
                 });
             }
@@ -292,18 +297,6 @@ namespace TagTool.Commands.Tags
             if (srcTag.Name.StartsWith("ms30") && srcTag.IsInGroup("rmdf"))
                 return null;
 
-            // Removes existing UI tags
-            if (srcTag.IsInGroup("wgtz"))
-                return null;
-
-            // Removes all HUD tags
-            if (srcTag.IsInGroup("chdt"))
-                return null;
-
-            // Removes chud globals definition tag
-            if (srcTag.IsInGroup("chgd"))
-                return null;
-
             if (ConvertedTags.ContainsKey(srcTag.Index))
                 return ConvertedTags[srcTag.Index];
 
@@ -335,9 +328,6 @@ namespace TagTool.Commands.Tags
 
             if (tagData is MultiplayerGlobals mulg)
                 CleanMultiplayerGlobals(mulg);
-
-            if (tagData is GfxTexturesList gfxt)
-                CleanGfxtTexturesList(gfxt);
 
             tagData = CopyData(tagData, srcCacheContext, srcStream, destCacheContext, destStream);
 
@@ -475,14 +465,6 @@ namespace TagTool.Commands.Tags
                 MatgDefinition = matgDefintion;
 
             matgDefintion.InterfaceTags[0].GfxUiStrings = null;
-        }
-
-        private void CleanGfxtTexturesList(GfxTexturesList gfxtDefinition)
-        {
-            if (GfxtDefintion == null)
-                GfxtDefintion = gfxtDefinition;
-
-            gfxtDefinition.Textures = null;
         }
 
         private void CleanMultiplayerGlobals(MultiplayerGlobals mulgDefinition)

@@ -126,9 +126,9 @@ namespace TagTool.Commands.Tags
                     {
                         var cfgt = CacheContext.Deserialize<CacheFileGlobalTags>(stream, tag);
                         cfgt.GlobalTags.Add(new TagReferenceBlock());
-                        cfgt.GlobalTags[2].Instance = CacheContext.TagCache.GetTag<ModGlobalsDefinition>($@"multiplayer\mod_globals");
+                        cfgt.GlobalTags[1].Instance = CacheContext.TagCache.GetTag<ModGlobalsDefinition>($@"multiplayer\mod_globals");
                         cfgt.GlobalTags.Add(new TagReferenceBlock());
-                        cfgt.GlobalTags[3].Instance = CacheContext.TagCache.GetTag<ForgeGlobalsDefinition>($@"multiplayer\forge_globals");
+                        cfgt.GlobalTags[2].Instance = CacheContext.TagCache.GetTag<ForgeGlobalsDefinition>($@"multiplayer\forge_globals");
                         CacheContext.Serialize(stream, tag, cfgt);
                     }
                 }
