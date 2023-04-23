@@ -293,10 +293,6 @@ namespace TagTool.Commands.Tags
             if (srcTag.Name?.StartsWith("hf2p") ?? false)
                 return null; // kill it with fucking fire
 
-            // Removes MS30 shaders
-            if (srcTag.Name.StartsWith("ms30") && srcTag.IsInGroup("rmdf"))
-                return null;
-
             if (ConvertedTags.ContainsKey(srcTag.Index))
                 return ConvertedTags[srcTag.Index];
 
