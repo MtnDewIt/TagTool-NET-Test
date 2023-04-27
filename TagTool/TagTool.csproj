@@ -726,7 +726,6 @@
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.Strings.cs" />
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.UI.cs" />
     <Compile Include="Commands\MtnDewIt\NameUnnamedTagsCommand.cs" />
-    <Compile Include="Commands\MtnDewIt\UpdateMapFilesAltCommand.cs" />
     <Compile Include="Commands\ParticleModels\ParticleModelContextFactory.cs" />
     <Compile Include="Commands\PhysicsModels\GeneratePhysicsModel.cs" />
     <Compile Include="Commands\RenderMethods\ListArgumentsCommand.cs" />

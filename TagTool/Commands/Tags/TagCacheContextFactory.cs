@@ -96,7 +96,6 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new ConvertMapVariantCommand(hoCache));
 
                 context.AddCommand(new UpdateMapFilesCommand(cache));
-                context.AddCommand(new UpdateMapFilesAltCommand(cache));
 
                 context.AddCommand(new RescaleGUICommand(cache));
                 context.AddCommand(new RescaleHudTextCommand(cache));

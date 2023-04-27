@@ -251,10 +251,10 @@ namespace TagTool.Commands.Tags
             switch (cacheType)
             {
                 case "Halo 3":
-                    CommandRunner.Current.RunCommand($@"updatemapfilesalt {halo3DirectoryInfo}\info");
+                    CommandRunner.Current.RunCommand($@"updatemapfiles {halo3DirectoryInfo}\info");
                     break;
                 case "Halo 3 Mythic":
-                    CommandRunner.Current.RunCommand($@"updatemapfilesalt {halo3MythicDirectoryInfo}\info");
+                    CommandRunner.Current.RunCommand($@"updatemapfiles {halo3MythicDirectoryInfo}\info");
                     break;
             }
         }

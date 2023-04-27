@@ -128,7 +128,7 @@ namespace TagTool.Commands.Tags
 
         public void generateCache()
         {
-            moveDependencies();
+            moveFontPackage();
             CommandRunner.Current.RunCommand($@"nameunnamedtags"); //Maybe move into a method, instead of a command?
             rebuildCache(outputDirectoryInfo.FullName);
             retargetCache();

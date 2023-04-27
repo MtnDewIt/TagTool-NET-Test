@@ -2623,10 +2623,8 @@ namespace TagTool.Commands.Tags
         }
 
         // Copies over required files (map files required for updating map files)
-        public void moveDependencies()
+        public void moveFontPackage()
         {
-            File.Copy($@"{Cache.Directory}\guardian.map", $@"{outputDirectoryInfo.FullName}\guardian.map");
-            File.Copy($@"{Cache.Directory}\mainmenu.map", $@"{outputDirectoryInfo.FullName}\mainmenu.map");
             Directory.CreateDirectory($@"{outputDirectoryInfo.FullName}\fonts");
 
             // Will add upscaled font packages once HUD and UI issues have been resolved
