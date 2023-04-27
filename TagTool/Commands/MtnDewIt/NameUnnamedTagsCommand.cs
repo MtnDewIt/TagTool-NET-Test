@@ -412,7 +412,7 @@ namespace TagTool.Commands.Tags
             { 0x01A6, @"ai\normal" },
             { 0x01A7, @"ai\bunkering" },
             { 0x01A8, @"ai\assaulting" },
-            { 0x01A9, @"ai\ai_globals" },
+            { 0x01A9, @"globals\ai_globals" },
             { 0x01AA, @"globals\default_unit_camera_track" },
             { 0x01AB, @"sound\weapons\frag_grenade\frag_throw" },
             { 0x01AC, @"objects\weapons\grenade\frag_grenade\frag_grenade" },
@@ -4855,8 +4855,8 @@ namespace TagTool.Commands.Tags
             { 0x15A5, @"objects\multi\vip\vip_boundary" },
             { 0x15A6, @"multiplayer\in_game_multiplayer_messages" },
             { 0x15A7, @"objects\weapons\grenade\plasma_grenade\plasma_grenade2" },
-            { 0x15A8, @"objects\multi\equipment\fx\detonation" },
-            { 0x15A9, @"objects\multi\equipment\fx\detonation_unknown" },
+            { 0x15A8, @"multiplayer\vehicle_autoflip" }, //unsure about this (tag is halo online specific)
+            { 0x15A9, @"multiplayer\safety_booster" }, //unsure about this (tag is halo online specific)
             { 0x15AA, @"sound\game_sfx\multiplayer\transport" },
             { 0x15AB, @"sound\game_sfx\ui\death_gurgle" },
             { 0x15AC, @"sound\game_sfx\multiplayer\comm_fail" },
