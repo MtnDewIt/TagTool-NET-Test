@@ -718,9 +718,11 @@
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.Bitmaps.cs" />
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.Cache.cs" />
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.cs" />
-    <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.ElDorado.cs" />
+    <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.ForgeGlobals.cs" />
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.Globals.cs" />
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.HUD.cs" />
+    <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.ModGlobals.cs" />
+    <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.MultiplayerGlobals.cs" />
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.Player.cs" />
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.Porting.cs" />
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.Strings.cs" />
