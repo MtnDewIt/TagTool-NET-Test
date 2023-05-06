@@ -17,8 +17,8 @@ namespace TagTool.Commands.Tags
                     if (tag.IsInGroup("hlmt") && tag.Name == $@"objects\characters\masterchief\mp_masterchief\mp_masterchief")
                     {
                         var hlmt = CacheContext.Deserialize<Model>(stream, tag);
-                        hlmt.ShieldImpactThirdPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\spartan_3p");
-                        hlmt.ShieldImpactFirstPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\spartan_1p");
+                        hlmt.ShieldImpactThirdPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"globals\masterchief_3p_shield_impact");
+                        hlmt.ShieldImpactFirstPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"globals\masterchief_fp_shield_impact");
                         hlmt.OvershieldFirstPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\overshield_1p");
                         hlmt.OvershieldThirdPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\overshield_3p");
                         CacheContext.Serialize(stream, tag, hlmt);
@@ -28,8 +28,8 @@ namespace TagTool.Commands.Tags
                     if (tag.IsInGroup("hlmt") && tag.Name == $@"objects\characters\masterchief\masterchief")
                     {
                         var hlmt = CacheContext.Deserialize<Model>(stream, tag);
-                        hlmt.ShieldImpactThirdPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\spartan_3p");
-                        hlmt.ShieldImpactFirstPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\spartan_1p");
+                        hlmt.ShieldImpactThirdPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"globals\masterchief_3p_shield_impact");
+                        hlmt.ShieldImpactFirstPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"globals\masterchief_fp_shield_impact");
                         hlmt.OvershieldFirstPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\overshield_1p");
                         hlmt.OvershieldThirdPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\overshield_3p");
                         CacheContext.Serialize(stream, tag, hlmt);

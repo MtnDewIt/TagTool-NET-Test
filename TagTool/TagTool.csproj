@@ -715,6 +715,7 @@
     <Compile Include="Commands\ModelAnimationGraphs\SortModesCommand.cs" />
     <Compile Include="Commands\Models\ListVariantsCommand.cs" />
     <Compile Include="Commands\Models\ModelContextFactory.cs" />
+    <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.AiGlobals.cs" />
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.Bitmaps.cs" />
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.Cache.cs" />
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.cs" />
@@ -725,7 +726,12 @@
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.MultiplayerGlobals.cs" />
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.Player.cs" />
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.Porting.cs" />
+    <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.RasterizerGlobals.cs" />
+    <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.Shaders.cs" />
+    <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.ShieldImpact.cs" />
+    <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.Sound.cs" />
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.Strings.cs" />
+    <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.SurvivalModeGlobals.cs" />
     <Compile Include="Commands\MtnDewIt\PortingCache\PortingCacheCommand.UI.cs" />
     <Compile Include="Commands\MtnDewIt\NameUnnamedTagsCommand.cs" />
     <Compile Include="Commands\ParticleModels\ParticleModelContextFactory.cs" />

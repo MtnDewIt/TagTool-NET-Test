@@ -214,7 +214,7 @@ namespace TagTool.Commands.Tags
         }
 
         // Patches the chud globals definition after it has been ported
-        public void patchChudGlobals() 
+        public void ChudGlobals() 
         {
             using (var stream = Cache.OpenCacheReadWrite()) 
             {

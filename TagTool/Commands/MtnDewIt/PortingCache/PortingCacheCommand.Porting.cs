@@ -9,7 +9,7 @@ namespace TagTool.Commands.Tags
         public void portTagData() 
         {
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
-            CommandRunner.Current.RunCommand($@"porttag ai\ai_dialogue_globals.ai_dialogue_globals");
+            //CommandRunner.Current.RunCommand($@"porttag ai\ai_dialogue_globals.ai_dialogue_globals");
             CommandRunner.Current.RunCommand($@"porttag ai\assaulting.style");
             CommandRunner.Current.RunCommand($@"porttag ai\bunkering.style");
             CommandRunner.Current.RunCommand($@"porttag ai\normal.style");
@@ -53,12 +53,14 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag fx\water\default_large.render_water_ripple");
             CommandRunner.Current.RunCommand($@"porttag fx\water\default_medium.render_water_ripple");
             CommandRunner.Current.RunCommand($@"porttag fx\water\default_small.render_water_ripple");
+            GenerateShieldImpactTags();
             CommandRunner.Current.RunCommand($@"porttag globals\collision_damage\collision.damage_effect");
             CommandRunner.Current.RunCommand($@"porttag globals\collision_damage\default.collision_damage");
             CommandRunner.Current.RunCommand($@"porttag globals\collision_damage\landing_hard.damage_effect");
             CommandRunner.Current.RunCommand($@"porttag globals\collision_damage\landing_soft.damage_effect");
             CommandRunner.Current.RunCommand($@"porttag globals\damage_responses\default.damage_response_definition");
             CommandRunner.Current.RunCommand($@"porttag globals\default.camera_fx_settings");
+            CommandRunner.Current.RunCommand($@"porttag globals\default.performance_throttles");
             CommandRunner.Current.RunCommand($@"porttag globals\default_unit_camera_track.camera_track");
             CommandRunner.Current.RunCommand($@"porttag globals\default_wind.wind");
             CommandRunner.Current.RunCommand($@"porttag globals\distance.damage_effect");
@@ -67,18 +69,28 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag globals\glass.breakable_surface");
             CommandRunner.Current.RunCommand($@"porttag globals\glass_thick.breakable_surface");
             CommandRunner.Current.RunCommand($@"porttag globals\hs_damage.damage_effect");
+            GenerateRasterizerGlobalsTag();
+            CommandRunner.Current.RunCommand($@"porttag levels\shared\bitmaps\test_maps\cloud_1.bitmap");
+            CommandRunner.Current.RunCommand($@"porttag levels\shared\bitmaps\test_maps\cloud_2.bitmap");
             CommandRunner.Current.RunCommand($@"porttag multiplayer\game_engine_settings.game_engine_settings_definition");
             CommandRunner.Current.RunCommand($@"porttag multiplayer\global_multiplayer_messages.multilingual_unicode_string_list");
             CommandRunner.Current.RunCommand($@"porttag multiplayer\hill\hill.bitmap");
             CommandRunner.Current.RunCommand($@"porttag multiplayer\in_game_multiplayer_messages.multilingual_unicode_string_list");
             CommandRunner.Current.RunCommand($@"porttag multiplayer\random_player_names.multilingual_unicode_string_list");
             CommandRunner.Current.RunCommand($@"porttag multiplayer\sandbox\cursor_impact.effect");
+            GenerateSurvivalGlobalsTag();
             CommandRunner.Current.RunCommand($@"porttag multiplayer\team_names.multilingual_unicode_string_list");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\fx\coop_teleport.effect");
-            //CommandRunner.Current.RunCommand($@"porttag objects\multi\equipment\fx\detonation.effect"); // Halo Online Specific
-            //CommandRunner.Current.RunCommand($@"porttag objects\multi\equipment\fx\detonation_unknown.effect"); // Halo Online Specific
+            //CommandRunner.Current.RunCommand($@"porttag multiplayer\vehicle_autoflip.effect"); // Halo Online Specific
+            //CommandRunner.Current.RunCommand($@"porttag multiplayer\safety_booster.effect"); // Halo Online Specific
             CommandRunner.Current.RunCommand($@"porttag objects\multi\shaders\koth_shield.shader_halogram");
             CommandRunner.Current.RunCommand($@"porttag objects\weapons\multiplayer\assault_bomb\damage_effects\bomb_explosion.damage_effect");
+            CommandRunner.Current.RunCommand($@"porttag rasterizer\active_camouflage_distortion.bitmap");
+            CommandRunner.Current.RunCommand($@"porttag rasterizer\cc0236.bitmap");
+            CommandRunner.Current.RunCommand($@"porttag rasterizer\c78d78.bitmap");
+            CommandRunner.Current.RunCommand($@"porttag rasterizer\dd0236.bitmap");
+            CommandRunner.Current.RunCommand($@"porttag rasterizer\shaders\simple.vertex_shader");
+            CommandRunner.Current.RunCommand($@"porttag rasterizer\shaders\simple.pixel_shader");
             CommandRunner.Current.RunCommand($@"porttag rasterizer\plasma_noise.bitmap");
             CommandRunner.Current.RunCommand($@"porttag sound\combat_dialogue_constants.sound_dialogue_constants");
             CommandRunner.Current.RunCommand($@"porttag sound\default.sound_global_propagation");
@@ -181,6 +193,8 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag sound\game_sfx\ui\binoculars\binocs_out_click.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\game_sfx\ui\death_gurgle.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\game_sfx\ui\flag_fail.sound");
+            GenerateSoundEffectTemplates();
+            CommandRunner.Current.RunCommand($@"porttag sound\global_fx.sound_effect_collection");
             CommandRunner.Current.RunCommand($@"porttag sound\materials\energy\blue_plasma_looping\blue_plasma_looping.sound_looping");
             CommandRunner.Current.RunCommand($@"porttag sound\materials\energy\cortana_melee.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\materials\hard\metal_solid\metal_solid_med.sound");
@@ -252,6 +266,15 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag ui\halox\sandbox_ui\strings.multilingual_unicode_string_list");
             CommandRunner.Current.RunCommand($@"porttag ui\halox\scoreboard\dead_player_ui.bitmap");
             CommandRunner.Current.RunCommand($@"porttag ui\hud.color_table");
+            ContextStack.Pop();
+
+            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h100));
+            GenerateSquadTemplates();
+            CommandRunner.Current.RunCommand($@"porttag globals\ai_globals.ai_globals");
+            CommandRunner.Current.RunCommand($@"porttag globals\default_vision_mode.vision_mode");
+            CommandRunner.Current.RunCommand($@"porttag globals\game_progression.game_progression");
+            CommandRunner.Current.RunCommand($@"porttag globals\global_achievements.achievements");
+            CommandRunner.Current.RunCommand($@"porttag multiplayer\in_game_survival_messages.multilingual_unicode_string_list");
             ContextStack.Pop();
 
             // Uses the Halo 3 UI, as that is the most complete feature wise

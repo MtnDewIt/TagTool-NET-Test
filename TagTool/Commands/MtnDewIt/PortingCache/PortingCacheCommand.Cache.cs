@@ -40,17 +40,14 @@ namespace TagTool.Commands.Tags
             "gfxt",
             "wgtz",
             "chdt",
-            "chgd"
+            "chgd",
+            "inpg",
         };
 
         public static readonly string[] RequiredTags = new[] 
         {
-            @"globals\ai_globals", // Cannot be ported due to dependency count (will cause cache bloating)
-            @"globals\game_progression", // ODST specific (Can recreate)
-            @"globals\global_achievements", // ODST Specific (Can recreate)
-            @"globals\input_globals", // Halo Online Specific (Can recreate)
-            @"globals\rasterizer_globals", // Might be able to port (Explicit Shaders are MS23 specific, and need to be copied over, along with any other shaders and the shield impact globals)
-            @"sound\global_fx" // Cannot be ported due to issues with StringId conversion
+            @"ai\ai_dialogue_globals",
+            @"rasterizer\colorbars",
         };
 
         // Default bitmaps, stored in rasterizer globals
@@ -106,16 +103,116 @@ namespace TagTool.Commands.Tags
             @"rasterizer\shaders\chud_emblem",
             @"rasterizer\shaders\chud_cortana_composite",
             @"rasterizer\shaders\chud_directional_damage_apply",
-            @"rasterizer\shaders\chud_really_simple"
-        };
-
-        // These need to be coped over to the new cache, as TagTool cannot port shield impact tags correctly (Yet)
-        public static readonly string[] ShieldImpactTags = new[]
-        {
-            @"fx\shield_impacts\spartan_3p",
-            @"fx\shield_impacts\spartan_1p",
-            @"fx\shield_impacts\overshield_3p",
-            @"fx\shield_impacts\overshield_1p"
+            @"rasterizer\shaders\chud_really_simple",
+            @"rasterizer\shaders\debug",
+            @"rasterizer\shaders\debug2d",
+            @"rasterizer\shaders\copy_surface",
+            @"rasterizer\shaders\spike_blur_vertical",
+            @"rasterizer\shaders\spike_blur_horizontal",
+            @"rasterizer\shaders\downsize_2x_to_bloom",
+            @"rasterizer\shaders\downsize_2x_target",
+            @"rasterizer\shaders\copy_rgbe_to_rgb",
+            @"rasterizer\shaders\update_persistence",
+            @"rasterizer\shaders\add_downsampled",
+            @"rasterizer\shaders\add",
+            @"rasterizer\shaders\blur_11_horizontal",
+            @"rasterizer\shaders\blur_11_vertical",
+            @"rasterizer\shaders\cubemap_phi_blur",
+            @"rasterizer\shaders\cubemap_theta_blur",
+            @"rasterizer\shaders\cubemap_clamp",
+            @"rasterizer\shaders\cubemap_divide",
+            @"rasterizer\shaders\write_depth",
+            @"rasterizer\shaders\final_composite",
+            @"rasterizer\shaders\sky_dome_simple",
+            @"rasterizer\shaders\transparent",
+            @"rasterizer\shaders\shield_meter",
+            @"rasterizer\shaders\legacy_meter",
+            @"rasterizer\shaders\overhead_map_geometry",
+            @"rasterizer\shaders\legacy_hud_bitmap",
+            @"rasterizer\shaders\blend3",
+            @"rasterizer\shaders\particle_update",
+            @"rasterizer\shaders\particle_spawn",
+            @"rasterizer\shaders\screenshot_combine",
+            @"rasterizer\shaders\downsample_2x2",
+            @"rasterizer\shaders\rotate_2d",
+            @"rasterizer\shaders\bspline_resample",
+            @"rasterizer\shaders\downsample_4x4_bloom_dof",
+            @"rasterizer\shaders\final_composite_dof",
+            @"rasterizer\shaders\kernel_5",
+            @"rasterizer\shaders\exposure_downsample",
+            @"rasterizer\shaders\yuv_to_rgb",
+            @"rasterizer\shaders\displacement",
+            @"rasterizer\shaders\screenshot_display",
+            @"rasterizer\shaders\downsample_4x4_block",
+            @"rasterizer\shaders\crop",
+            @"rasterizer\shaders\screenshot_combine_dof",
+            @"rasterizer\shaders\gamma_correct",
+            @"rasterizer\shaders\contrail_spawn",
+            @"rasterizer\shaders\contrail_update",
+            @"rasterizer\shaders\stencil_stipple",
+            @"rasterizer\shaders\lens_flare",
+            @"rasterizer\shaders\decorator_default",
+            @"rasterizer\shaders\downsample_4x4_block_bloom",
+            @"rasterizer\shaders\downsample_4x4_gaussian",
+            @"rasterizer\shaders\apply_color_matrix",
+            @"rasterizer\shaders\copy",
+            @"rasterizer\shaders\shadow_geometry",
+            @"rasterizer\shaders\shadow_apply",
+            @"rasterizer\shaders\gradient",
+            @"rasterizer\shaders\alpha_test_explicit",
+            @"rasterizer\shaders\patchy_fog",
+            @"rasterizer\shaders\light_volume_update",
+            @"rasterizer\shaders\water_ripple",
+            @"rasterizer\shaders\double_gradient",
+            @"rasterizer\shaders\sniper_scope",
+            @"rasterizer\shaders\shield_impact",
+            @"rasterizer\shaders\player_emblem_world",
+            @"rasterizer\shaders\player_emblem_screen",
+            @"rasterizer\shaders\implicit_hill",
+            @"rasterizer\shaders\chud_overlay_blend",
+            @"rasterizer\shaders\bloom_add_alpha1",
+            @"rasterizer\shaders\downsample_4x4_block_bloom_ldr",
+            @"rasterizer\shaders\restore_ldr_hdr_depth",
+            @"rasterizer\shaders\beam_update",
+            @"rasterizer\shaders\decorator_no_wind",
+            @"rasterizer\shaders\decorator_static",
+            @"rasterizer\shaders\decorator_sun",
+            @"rasterizer\shaders\decorator_wavy",
+            @"rasterizer\shaders\final_composite_zoom",
+            @"rasterizer\shaders\final_composite_debug",
+            @"rasterizer\shaders\shadow_apply_point",
+            @"rasterizer\shaders\shadow_apply_bilinear",
+            @"rasterizer\shaders\shadow_apply_fancy",
+            @"rasterizer\shaders\shadow_apply_faster",
+            @"rasterizer\shaders\displacement_motion_blur",
+            @"rasterizer\shaders\decorator_shaded",
+            @"rasterizer\shaders\screenshot_memexport",
+            @"rasterizer\shaders\downsample_4x4_gaussian_bloom_ldr",
+            @"rasterizer\shaders\downsample_4x4_gaussian_bloom",
+            @"rasterizer\shaders\downsample_4x4_block_bloom_new",
+            @"rasterizer\shaders\bloom_curve",
+            @"rasterizer\shaders\custom_gamma_correct",
+            @"rasterizer\shaders\pixel_copy",
+            @"rasterizer\shaders\unknown_5A",
+            @"rasterizer\shaders\exposure_hdr_retrieve",
+            @"rasterizer\shaders\unknown_debug_5C",
+            @"rasterizer\shaders\fxaa",
+            @"rasterizer\shaders\unknown_5E",
+            @"rasterizer\shaders\unknown_5F",
+            @"rasterizer\shaders\ssao_ldr",
+            @"rasterizer\shaders\ssao_hdr",
+            @"rasterizer\shaders\ssao_apply",
+            @"rasterizer\shaders\lightshafts",
+            @"rasterizer\shaders\lightshafts_blur",
+            @"rasterizer\shaders\screen_space_reflection",
+            @"rasterizer\shaders\unknown_66",
+            @"rasterizer\shaders\halve_depth_color",
+            @"rasterizer\shaders\halve_depth_normal",
+            @"rasterizer\shaders\unknown_69",
+            @"rasterizer\shaders\screen_space_reflection_blur",
+            @"rasterizer\shaders\unknown_6B",
+            @"rasterizer\shaders\hud_camera_nightvision",
+            @"rasterizer\shaders\unknown_6D",
         };
 
         // Rebuilds the target cache, dumping the resulting files in the specified output directory
@@ -161,7 +258,7 @@ namespace TagTool.Commands.Tags
             using (var srcStream = CacheContext.OpenCacheRead())
             using (var destStream = destCacheContext.OpenCacheReadWrite())
             {
-                var cfgtTag = destCacheContext.TagCache.AllocateTag<Scenario>($@"global_tags");
+                var cfgtTag = destCacheContext.TagCache.AllocateTag<CacheFileGlobalTags>($@"global_tags");
                 var cfgt = new CacheFileGlobalTags();
                 destCacheContext.Serialize(destStream, cfgtTag, cfgt);
                 
@@ -172,10 +269,6 @@ namespace TagTool.Commands.Tags
                 var mulgTag = destCacheContext.TagCache.AllocateTag<MultiplayerGlobals>($@"multiplayer\multiplayer_globals");
                 var mulg = new MultiplayerGlobals();
                 destCacheContext.Serialize(destStream, mulgTag, mulg);
-
-                var smdtTag = destCacheContext.TagCache.AllocateTag<SurvivalModeGlobals>($@"multiplayer\survival_mode_globals");
-                var smdt = new SurvivalModeGlobals();
-                destCacheContext.Serialize(destStream, smdtTag, smdt);
 
                 var modgTag = destCacheContext.TagCache.AllocateTag<ModGlobalsDefinition>($@"multiplayer\mod_globals");
                 var modg = new ModGlobalsDefinition();
@@ -253,21 +346,6 @@ namespace TagTool.Commands.Tags
                     foreach (var tag in CacheContext.TagCache.NonNull())
                     {
                         if (tag == null || !tag.Name.Equals(tagName))
-                            continue;
-
-                        if (tagName == tag.Name)
-                        {
-                            CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
-                            break;
-                        }
-                    }
-                }
-
-                foreach (var tagName in ShieldImpactTags)
-                {
-                    foreach (var tag in CacheContext.TagCache.NonNull())
-                    {
-                        if (tag == null || !tag.IsInGroup("shit"))
                             continue;
 
                         if (tagName == tag.Name)

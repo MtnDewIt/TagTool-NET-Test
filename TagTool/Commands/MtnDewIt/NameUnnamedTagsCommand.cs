@@ -4692,7 +4692,7 @@ namespace TagTool.Commands.Tags
             { 0x149E, @"ai\squad_templates\sq_camp_grunt_flak" },
             { 0x149F, @"ai\squad_templates\sq_camp_grunt_flak_3" },
             { 0x14A0, @"ai\squad_templates\sq_camp_grunt_turret" },
-            { 0x14A1, @"ai\squad_templates\sq_camp_grunt_undeployed" },
+            { 0x14A1, @"ai\squad_templates\sq_camp_grunt_turret_undeployed" },
             { 0x14A2, @"ai\squad_templates\blank" },
             { 0x14A3, @"ai\squad_templates\sq_camp_captain_solo" },
             { 0x14A4, @"ai\squad_templates\sq_camp_captain_grunt_2" },

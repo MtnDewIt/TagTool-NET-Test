@@ -89,6 +89,10 @@ namespace TagTool.Commands.Tags
             h3_mythic_mainmenu = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\mainmenu.map");
             sandbox = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\sandbox.map");
 
+            halo3ODSTDirectoryInfo = getDirectoryInfo(halo3ODSTDirectoryInfo, "Halo 3 ODST");
+
+            h100 = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\h100.map");
+
             outputDirectoryInfo = getOutputDirectory(outputDirectoryInfo);
         }
 
@@ -136,8 +140,13 @@ namespace TagTool.Commands.Tags
             Globals();
             MultiplayerGlobals();
             ModGlobals();
-            //ForgeGlobals();
-            patchChudGlobals();
+            ForgeGlobals(); // Unused for the time being
+            ChudGlobals();
+            RasterizerGlobalsSetup();
+            SurvivalGlobalsSetup();
+            ShieldImpactSetup();
+            SoundEffectTemplateSetup();
+            SquadTemplatesSetup();
             
             // Will add functions for modifying the UI once the UI is functional
             
