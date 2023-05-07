@@ -46,7 +46,6 @@ namespace TagTool.Commands.Tags
 
         public static readonly string[] RequiredTags = new[] 
         {
-            @"ai\ai_dialogue_globals",
             @"rasterizer\colorbars",
         };
 

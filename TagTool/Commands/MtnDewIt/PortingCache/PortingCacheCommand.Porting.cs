@@ -9,7 +9,7 @@ namespace TagTool.Commands.Tags
         public void portTagData() 
         {
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
-            //CommandRunner.Current.RunCommand($@"porttag ai\ai_dialogue_globals.ai_dialogue_globals");
+            GenerateDialogueGlobals();
             CommandRunner.Current.RunCommand($@"porttag ai\assaulting.style");
             CommandRunner.Current.RunCommand($@"porttag ai\bunkering.style");
             CommandRunner.Current.RunCommand($@"porttag ai\normal.style");
