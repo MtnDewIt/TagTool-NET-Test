@@ -24,59 +24,8 @@ namespace TagTool.Commands.Tags
         public Dictionary<ResourceLocation, Stream> SourceResourceStreams = new Dictionary<ResourceLocation, Stream>();
         public Dictionary<ResourceLocation, Stream> DestinationResourceStreams = new Dictionary<ResourceLocation, Stream>();
 
-        // These tag types are not copied over when rebuilding the cache
-        public static readonly string[] UncleanSkipGroups = new[]
-        {
-            "armr", 
-            "forg", 
-            "mode", 
-            "obje", 
-            "pdm!", 
-            "scnr", 
-            "sus!", 
-            "trdf", 
-            "vfsl", 
-            "cprl",
-            "gfxt",
-            "wgtz",
-            "chdt",
-            "chgd",
-            "inpg",
-        };
-
-        public static readonly string[] RequiredTags = new[] 
-        {
-            @"rasterizer\colorbars",
-        };
-
-        // Default bitmaps, stored in rasterizer globals
-        public static readonly string[] DefaultBitmapNames = new[]
-        {
-            @"shaders\default_bitmaps\bitmaps\gray_50_percent",
-            @"shaders\default_bitmaps\bitmaps\alpha_grey50",
-            @"shaders\default_bitmaps\bitmaps\color_white",
-            @"shaders\default_bitmaps\bitmaps\default_detail",
-            @"shaders\default_bitmaps\bitmaps\reference_grids",
-            @"shaders\default_bitmaps\bitmaps\default_vector",
-            @"shaders\default_bitmaps\bitmaps\default_alpha_test",
-            @"shaders\default_bitmaps\bitmaps\default_dynamic_cube_map",
-            @"shaders\default_bitmaps\bitmaps\color_red",
-            @"shaders\default_bitmaps\bitmaps\alpha_white",
-            @"shaders\default_bitmaps\bitmaps\monochrome_alpha_grid",
-            @"shaders\default_bitmaps\bitmaps\gray_50_percent_linear",
-            @"shaders\default_bitmaps\bitmaps\color_black_alpha_black",
-            @"shaders\default_bitmaps\bitmaps\dither_pattern",
-            @"shaders\default_bitmaps\bitmaps\bump_detail",
-            @"shaders\default_bitmaps\bitmaps\color_black",
-            @"shaders\default_bitmaps\bitmaps\auto_exposure_weight",
-            @"shaders\default_bitmaps\bitmaps\dither_pattern2",
-            @"shaders\default_bitmaps\bitmaps\random4_warp",
-            @"levels\shared\bitmaps\nature\water\water_ripples",
-            @"shaders\default_bitmaps\bitmaps\vision_mode_mask"
-        };
-
-        // These need to be copied over as the shader generator cannot generate chud shaders
-        public static readonly string[] ChudShaders = new[]
+        // These need to be copied over as the shader generator cannot generate these shaders
+        public static readonly string[] MS23Shaders = new[]
         {
             @"rasterizer\shaders\chud_simple",
             @"rasterizer\shaders\chud_meter",
@@ -264,10 +213,6 @@ namespace TagTool.Commands.Tags
                 var matgTag = destCacheContext.TagCache.AllocateTag<Globals>($@"globals\globals");
                 var matg = new Globals();
                 destCacheContext.Serialize(destStream, matgTag, matg);
-                
-                var mulgTag = destCacheContext.TagCache.AllocateTag<MultiplayerGlobals>($@"multiplayer\multiplayer_globals");
-                var mulg = new MultiplayerGlobals();
-                destCacheContext.Serialize(destStream, mulgTag, mulg);
 
                 var modgTag = destCacheContext.TagCache.AllocateTag<ModGlobalsDefinition>($@"multiplayer\mod_globals");
                 var modg = new ModGlobalsDefinition();
@@ -295,25 +240,7 @@ namespace TagTool.Commands.Tags
                 };
                 destCacheContext.Serialize(destStream, cfgtTag, cfgt);
 
-                foreach (var tagName in DefaultBitmapNames)
-                {
-                    foreach (var tag in CacheContext.TagCache.NonNull())
-                    {
-                        if (tag == null || !tag.IsInGroup("bitm"))
-                            continue;
-
-                        if (tagName == tag.Name && tag.IsInGroup("bitm"))
-                        {
-                            CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
-                            break;
-                        }
-                    }
-                }
-
-                foreach (var tag in CacheContext.TagCache.FindAllInGroup("rmdf"))
-                    CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
-
-                foreach (var tagName in ChudShaders)
+                foreach (var tagName in MS23Shaders)
                 {
                     foreach (var tag in CacheContext.TagCache.NonNull())
                     {
@@ -333,21 +260,6 @@ namespace TagTool.Commands.Tags
                             continue;
 
                         if (tagName == tag.Name && tag.IsInGroup("vtsh"))
-                        {
-                            CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
-                            break;
-                        }
-                    }
-                }
-
-                foreach (var tagName in RequiredTags)
-                {
-                    foreach (var tag in CacheContext.TagCache.NonNull())
-                    {
-                        if (tag == null || !tag.Name.Equals(tagName))
-                            continue;
-
-                        if (tagName == tag.Name)
                         {
                             CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
                             break;
@@ -421,12 +333,6 @@ namespace TagTool.Commands.Tags
         {
             if (srcTag == null)
                 return null;
-
-            if (UncleanSkipGroups.Where(tag => srcTag.IsInGroup(tag)).Count() != 0)
-                return null;
-
-            if (srcTag.Name?.StartsWith("hf2p") ?? false)
-                return null; // kill it with fucking fire
 
             if (ConvertedTags.ContainsKey(srcTag.Index))
                 return ConvertedTags[srcTag.Index];

@@ -40,7 +40,7 @@ namespace TagTool.Commands.Tags
                             },
                             new RasterizerGlobals.DefaultBitmap
                             {
-                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"rasterizer\colorbars"),
+                                //Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"shaders\default_bitmaps\bitmaps\default_environment_map"), // Bitmap is halo online specific, exact usecase is unknown. Will leave out of the cache for the time being
                             },
                             new RasterizerGlobals.DefaultBitmap
                             {

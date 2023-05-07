@@ -8313,7 +8313,7 @@ namespace TagTool.Commands.Tags
             { 0x26C2, @"ui\chud\bitmaps\variant_items\offense" },
             { 0x26C3, @"ui\chud\bitmaps\variant_items\defense" },
             { 0x26C7, @"multiplayer\in_game_survival_messages" },
-            { 0x26C8, @"rasterizer\colorbars" },
+            { 0x26C8, @"shaders\default_bitmaps\bitmaps\default_environment_map" },
             { 0x26C9, @"shaders\default_bitmaps\bitmaps\auto_exposure_weight" },
             { 0x26CA, @"shaders\default_bitmaps\bitmaps\dither_pattern2" },
             { 0x26CB, @"shaders\default_bitmaps\bitmaps\random4_warp" },

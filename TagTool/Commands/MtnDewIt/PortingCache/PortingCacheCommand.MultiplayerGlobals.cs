@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
-using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 
@@ -8,6 +6,16 @@ namespace TagTool.Commands.Tags
 {
     partial class PortingCacheCommand : Command 
     {
+        public void GenerateMultiplayerGlobals() 
+        {
+            using (var stream = Cache.OpenCacheReadWrite()) 
+            {
+                var mulgTag = CacheContext.TagCache.AllocateTag<MultiplayerGlobals>($@"multiplayer\multiplayer_globals");
+                var mulg = new MultiplayerGlobals();
+                CacheContext.Serialize(stream, mulgTag, mulg);
+            }
+        }
+
         public void MultiplayerGlobals()
         {
             using (var stream = Cache.OpenCacheReadWrite())

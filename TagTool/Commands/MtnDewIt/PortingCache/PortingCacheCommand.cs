@@ -22,6 +22,7 @@ namespace TagTool.Commands.Tags
         public static DirectoryInfo outputDirectoryInfo { get; set; }
 
         public GameCache h3_mainmenu { get; set; }
+        public GameCache crows {get; set; }
         public GameCache citadel { get; set; }
         public GameCache halo { get; set; }
         public GameCache h3_mythic_mainmenu { get; set; }
@@ -81,6 +82,7 @@ namespace TagTool.Commands.Tags
             halo3DirectoryInfo = getDirectoryInfo(halo3DirectoryInfo, "Halo 3");
 
             h3_mainmenu = GameCache.Open($@"{halo3DirectoryInfo.FullName}\mainmenu.map");
+            crows = GameCache.Open($@"{halo3DirectoryInfo.FullName}\020_base.map");
             citadel = GameCache.Open($@"{halo3DirectoryInfo.FullName}\100_citadel.map");
             halo = GameCache.Open($@"{halo3DirectoryInfo.FullName}\120_halo.map");
 
@@ -136,6 +138,8 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"nameunnamedtags"); //Maybe move into a method, instead of a command?
             rebuildCache(outputDirectoryInfo.FullName);
             retargetCache();
+            GenerateRenderMethods();
+            OverwriteGlobalVertexShaders();
             portTagData();
             Globals();
             MultiplayerGlobals();
@@ -152,6 +156,7 @@ namespace TagTool.Commands.Tags
             
             applyHUDPatches();
             applyPlayerPatches();
+            ContextStack.Pop();
         }
     }
 }
