@@ -9,34 +9,6 @@ namespace TagTool.Commands.Tags
         public void portTagData() 
         {
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
-            CommandRunner.Current.RunCommand($@"porttag shaders\default_bitmaps\bitmaps\alpha_white.bitmap");
-            CommandRunner.Current.RunCommand($@"porttag shaders\default_bitmaps\bitmaps\auto_exposure_weight.bitmap");
-            CommandRunner.Current.RunCommand($@"porttag shaders\default_bitmaps\bitmaps\color_black.bitmap");
-            CommandRunner.Current.RunCommand($@"porttag shaders\default_bitmaps\bitmaps\color_black_alpha_black.bitmap");
-            CommandRunner.Current.RunCommand($@"porttag shaders\default_bitmaps\bitmaps\color_white.bitmap");
-            CommandRunner.Current.RunCommand($@"porttag shaders\default_bitmaps\bitmaps\default_alpha_test.bitmap");
-            CommandRunner.Current.RunCommand($@"porttag shaders\default_bitmaps\bitmaps\default_detail.bitmap");
-            CommandRunner.Current.RunCommand($@"porttag shaders\default_bitmaps\bitmaps\default_dynamic_cube_map.bitmap");
-            CommandRunner.Current.RunCommand($@"porttag shaders\default_bitmaps\bitmaps\default_vector.bitmap");
-            CommandRunner.Current.RunCommand($@"porttag shaders\default_bitmaps\bitmaps\dither_pattern.bitmap");
-            CommandRunner.Current.RunCommand($@"porttag shaders\default_bitmaps\bitmaps\dither_pattern2.bitmap");
-            CommandRunner.Current.RunCommand($@"porttag shaders\default_bitmaps\bitmaps\gray_50_percent.bitmap");
-            CommandRunner.Current.RunCommand($@"porttag shaders\default_bitmaps\bitmaps\random4_warp.bitmap");
-            ContextStack.Pop();
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h100));
-            CommandRunner.Current.RunCommand($@"porttag shaders\default_bitmaps\bitmaps\color_red.bitmap");
-            CommandRunner.Current.RunCommand($@"porttag shaders\default_bitmaps\bitmaps\gray_50_percent_linear.bitmap");
-            CommandRunner.Current.RunCommand($@"porttag shaders\default_bitmaps\bitmaps\reference_grids.bitmap");
-            ContextStack.Pop();
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, crows));
-            CommandRunner.Current.RunCommand($@"porttag shaders\default_bitmaps\bitmaps\alpha_grey50.bitmap"); // also available in 040_voi and 050_floodvoi
-            ContextStack.Pop();
-
-            // These are the remaining default bitmaps:
-            // shaders\default_bitmaps\bitmaps\monochrome_alpha_grid - Used in illum_meter rmop in both H3 and ODST, is an dependency of one other shader in ODST, but said tag does not make use of it.
-            // shaders\default_bitmaps\bitmaps\bump_detail - Appears to be Halo Online specific (Used in HO assault rifle and associated variants)
-
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
             GenerateDialogueGlobals();
             CommandRunner.Current.RunCommand($@"porttag ai\assaulting.style");
             CommandRunner.Current.RunCommand($@"porttag ai\bunkering.style");
@@ -97,8 +69,8 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag globals\glass.breakable_surface");
             CommandRunner.Current.RunCommand($@"porttag globals\glass_thick.breakable_surface");
             CommandRunner.Current.RunCommand($@"porttag globals\hs_damage.damage_effect");
+            GenerateInputGlobals();
             GenerateRasterizerGlobalsTag();
-            CommandRunner.Current.RunCommand($@"porttag levels\shared\bitmaps\nature\water\water_ripples.bitmap"); // Is used in the default bitmaps blocks in the rasg, but is not directly related the other default bitmaps
             CommandRunner.Current.RunCommand($@"porttag levels\shared\bitmaps\test_maps\cloud_1.bitmap");
             CommandRunner.Current.RunCommand($@"porttag levels\shared\bitmaps\test_maps\cloud_2.bitmap");
             CommandRunner.Current.RunCommand($@"porttag multiplayer\game_engine_settings.game_engine_settings_definition");
