@@ -138,7 +138,8 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"nameunnamedtags"); //Maybe move into a method, instead of a command?
             rebuildCache(outputDirectoryInfo.FullName);
             retargetCache();
-            GenerateRenderMethods(); // Only used to regenerate the shader rmdf atm
+            GenerateRenderMethods();
+            OverwriteGlobalVertexShaders();
             portTagData();
             Globals();
             MultiplayerGlobals();

@@ -27,27 +27,45 @@ namespace TagTool.Commands.Tags
         // Default bitmaps, stored in rasterizer globals
         public static readonly string[] DefaultBitmapNames = new[]
         {
-            @"shaders\default_bitmaps\bitmaps\alpha_grey50",
-            @"shaders\default_bitmaps\bitmaps\alpha_white",
-            @"shaders\default_bitmaps\bitmaps\auto_exposure_weight",
-            @"shaders\default_bitmaps\bitmaps\bump_detail",
-            @"shaders\default_bitmaps\bitmaps\color_black",
-            @"shaders\default_bitmaps\bitmaps\color_black_alpha_black",
-            @"shaders\default_bitmaps\bitmaps\color_red",
-            @"shaders\default_bitmaps\bitmaps\color_white",
-            @"shaders\default_bitmaps\bitmaps\default_alpha_test",
-            @"shaders\default_bitmaps\bitmaps\default_detail",
-            @"shaders\default_bitmaps\bitmaps\default_dynamic_cube_map",
-            @"shaders\default_bitmaps\bitmaps\default_environment_map",
-            @"shaders\default_bitmaps\bitmaps\default_vector",
-            @"shaders\default_bitmaps\bitmaps\dither_pattern",
-            @"shaders\default_bitmaps\bitmaps\dither_pattern2",
-            @"shaders\default_bitmaps\bitmaps\gray_50_percent",
-            @"shaders\default_bitmaps\bitmaps\gray_50_percent_linear",
-            @"shaders\default_bitmaps\bitmaps\monochrome_alpha_grid",
-            @"shaders\default_bitmaps\bitmaps\random4_warp",
-            @"shaders\default_bitmaps\bitmaps\reference_grids",
-            @"levels\shared\bitmaps\nature\water\water_ripples",
+           @"shaders\default_bitmaps\bitmaps\alpha_grey50",
+           @"shaders\default_bitmaps\bitmaps\alpha_white",
+           @"shaders\default_bitmaps\bitmaps\auto_exposure_weight",
+           @"shaders\default_bitmaps\bitmaps\bump_detail",
+           @"shaders\default_bitmaps\bitmaps\color_black",
+           @"shaders\default_bitmaps\bitmaps\color_black_alpha_black",
+           @"shaders\default_bitmaps\bitmaps\color_red",
+           @"shaders\default_bitmaps\bitmaps\color_white",
+           @"shaders\default_bitmaps\bitmaps\default_alpha_test",
+           @"shaders\default_bitmaps\bitmaps\default_detail",
+           @"shaders\default_bitmaps\bitmaps\default_dynamic_cube_map",
+           @"shaders\default_bitmaps\bitmaps\default_environment_map",
+           @"shaders\default_bitmaps\bitmaps\default_vector",
+           @"shaders\default_bitmaps\bitmaps\dither_pattern",
+           @"shaders\default_bitmaps\bitmaps\dither_pattern2",
+           @"shaders\default_bitmaps\bitmaps\gray_50_percent",
+           @"shaders\default_bitmaps\bitmaps\gray_50_percent_linear",
+           @"shaders\default_bitmaps\bitmaps\monochrome_alpha_grid",
+           @"shaders\default_bitmaps\bitmaps\random4_warp",
+           @"shaders\default_bitmaps\bitmaps\reference_grids",
+           @"shaders\default_bitmaps\bitmaps\sparklenoisemap",
+           @"levels\shared\bitmaps\nature\water\water_ripples",
+           @"levels\shared\bitmaps\nature\water\wave_foam",
+           @"ms30\shaders\default_bitmaps\bitmaps\alpha_grey50",
+           @"ms30\shaders\default_bitmaps\bitmaps\alpha_white",
+           @"ms30\shaders\default_bitmaps\bitmaps\color_black_alpha_black",
+           @"ms30\shaders\default_bitmaps\bitmaps\color_red",
+           @"ms30\shaders\default_bitmaps\bitmaps\color_white",
+           @"ms30\shaders\default_bitmaps\bitmaps\default_alpha_test",
+           @"ms30\shaders\default_bitmaps\bitmaps\default_detail",
+           @"ms30\shaders\default_bitmaps\bitmaps\default_dynamic_cube_map",
+           @"ms30\shaders\default_bitmaps\bitmaps\default_vector",
+           @"ms30\shaders\default_bitmaps\bitmaps\dither_pattern",
+           @"ms30\shaders\default_bitmaps\bitmaps\gray_50_percent",
+           @"ms30\shaders\default_bitmaps\bitmaps\gray_50_percent_linear",
+           @"ms30\shaders\default_bitmaps\bitmaps\monochrome_alpha_grid",
+           @"ms30\shaders\default_bitmaps\bitmaps\reference_grids",
+           @"ms30\shaders\default_bitmaps\bitmaps\sparklenoisemap",
+           @"ms30\levels\shared\bitmaps\nature\water\wave_foam",
         };
 
         // These need to be copied over as the shader generator cannot generate these shaders
@@ -266,6 +284,26 @@ namespace TagTool.Commands.Tags
                 };
                 destCacheContext.Serialize(destStream, cfgtTag, cfgt);
 
+                foreach (var tagName in DefaultBitmapNames)
+                {
+                    foreach (var tag in CacheContext.TagCache.NonNull())
+                    {
+                        if (tag == null || !tag.IsInGroup("bitm"))
+                            continue;
+
+                        if (tagName == tag.Name && tag.IsInGroup("bitm"))
+                        {
+                            CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
+                            break;
+                        }
+                    }
+                }
+
+                foreach (var tag in CacheContext.TagCache.FindAllInGroup("rmdf"))
+                {
+                    CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
+                }
+
                 foreach (var tagName in MS23Shaders)
                 {
                     foreach (var tag in CacheContext.TagCache.NonNull())
@@ -291,26 +329,6 @@ namespace TagTool.Commands.Tags
                             break;
                         }
                     }
-                }
-
-                foreach (var tagName in DefaultBitmapNames)
-                {
-                    foreach (var tag in CacheContext.TagCache.NonNull())
-                    {
-                        if (tag == null || !tag.IsInGroup("bitm"))
-                            continue;
-
-                        if (tagName == tag.Name && tag.IsInGroup("bitm"))
-                        {
-                            CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
-                            break;
-                        }
-                    }
-                }
-
-                foreach (var tag in CacheContext.TagCache.FindAllInGroup("rmdf"))
-                {
-                    CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
                 }
             }
 
