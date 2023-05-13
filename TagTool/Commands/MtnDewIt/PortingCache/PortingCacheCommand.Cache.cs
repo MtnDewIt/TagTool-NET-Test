@@ -50,22 +50,6 @@ namespace TagTool.Commands.Tags
            @"shaders\default_bitmaps\bitmaps\sparklenoisemap",
            @"levels\shared\bitmaps\nature\water\water_ripples",
            @"levels\shared\bitmaps\nature\water\wave_foam",
-           @"ms30\shaders\default_bitmaps\bitmaps\alpha_grey50",
-           @"ms30\shaders\default_bitmaps\bitmaps\alpha_white",
-           @"ms30\shaders\default_bitmaps\bitmaps\color_black_alpha_black",
-           @"ms30\shaders\default_bitmaps\bitmaps\color_red",
-           @"ms30\shaders\default_bitmaps\bitmaps\color_white",
-           @"ms30\shaders\default_bitmaps\bitmaps\default_alpha_test",
-           @"ms30\shaders\default_bitmaps\bitmaps\default_detail",
-           @"ms30\shaders\default_bitmaps\bitmaps\default_dynamic_cube_map",
-           @"ms30\shaders\default_bitmaps\bitmaps\default_vector",
-           @"ms30\shaders\default_bitmaps\bitmaps\dither_pattern",
-           @"ms30\shaders\default_bitmaps\bitmaps\gray_50_percent",
-           @"ms30\shaders\default_bitmaps\bitmaps\gray_50_percent_linear",
-           @"ms30\shaders\default_bitmaps\bitmaps\monochrome_alpha_grid",
-           @"ms30\shaders\default_bitmaps\bitmaps\reference_grids",
-           @"ms30\shaders\default_bitmaps\bitmaps\sparklenoisemap",
-           @"ms30\levels\shared\bitmaps\nature\water\wave_foam",
         };
 
         // These need to be copied over as the shader generator cannot generate these shaders
@@ -301,7 +285,10 @@ namespace TagTool.Commands.Tags
 
                 foreach (var tag in CacheContext.TagCache.FindAllInGroup("rmdf"))
                 {
-                    CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
+                    if (!tag.Name.StartsWith("ms30")) 
+                    {
+                        CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
+                    }
                 }
 
                 foreach (var tagName in MS23Shaders)

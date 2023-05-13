@@ -139,7 +139,6 @@ namespace TagTool.Commands.Tags
             rebuildCache(outputDirectoryInfo.FullName);
             retargetCache();
             GenerateRenderMethods();
-            OverwriteGlobalVertexShaders();
             portTagData();
             Globals();
             MultiplayerGlobals();
