@@ -64,6 +64,7 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new DumpDisassembledShadersCommand(cache));
             context.AddCommand(new FindValueCommand(cache, null));
             context.AddCommand(new TagDependencyCommand(cache));
+            context.AddCommand(new GuessTagDefCommand(cache));
 
             // Halo Online Specific Commands
             if (cache is GameCacheHaloOnlineBase)
@@ -83,6 +84,7 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new ExtractAllTagsCommand(hoCache));
                 context.AddCommand(new ExportTagModCommand(hoCache));
                 context.AddCommand(new GenerateShaderCommand(hoCache));
+                context.AddCommand(new RecompileShadersCommand(hoCache));
                 context.AddCommand(new GenerateRenderMethodCommand(hoCache));
                 context.AddCommand(new GenerateRmdfCommand(hoCache));
                 context.AddCommand(new GenerateBitmapCommand(hoCache));
@@ -120,6 +122,7 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new NameUnnamedTagsCommand(hoCache));
                 context.AddCommand(new RebuildCacheFileCommand(hoCache));
                 context.AddCommand(new CreateModPackageCommand(contextStack, hoCache));
+                context.AddCommand(new UpdateModPackageCommand(contextStack, hoCache));
                 context.AddCommand(new AddForgeCategoryCommand(cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new AddForgeItemCommand(cache as GameCacheHaloOnlineBase));
             }
