@@ -1016,7 +1016,7 @@ namespace TagTool.Commands.Tags
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("unarmed"),
-                                        RandomChance = 0,
+                                        RandomChance = 0f,
                                         Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\melee\energy_blade\energy_blade_useless")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
@@ -1034,7 +1034,7 @@ namespace TagTool.Commands.Tags
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("none"),
-                                        RandomChance = 0,
+                                        RandomChance = 0f,
                                         Weapon = null
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
@@ -1052,13 +1052,13 @@ namespace TagTool.Commands.Tags
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("flamethrower"),
-                                        RandomChance = 0,
+                                        RandomChance = 0f,
                                         Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\turret\flamethrower\flamethrower")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("missile_pod"),
-                                        RandomChance = 0.1f,
+                                        RandomChance = 0f,
                                         Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\turret\missile_pod\missile_pod")
                                     }
                                 },
@@ -4990,6 +4990,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"jugg_game_start"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
+                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\juggernaut\juggernaut"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5171,9 +5172,9 @@ namespace TagTool.Commands.Tags
                                         RuntimeEventType = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.TypeValue.Assault,
                                         Event = CacheContext.StringTable.GetStringId($@"assault_event_bomb_returned_by_player"),
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_bomb_returned_cp"),
-                                        MedalAward = CacheContext.StringTable.GetStringId($@"medal_bomb_return
+                                        MedalAward = CacheContext.StringTable.GetStringId($@"medal_bomb_return"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@""sound\dialog\multiplayer_en\assault\bomb_returned"),
+                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_returned"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5711,9 +5712,9 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.VehicleSpawnInfluence
                                             {
-                                                PillRadius = 2f,
+                                                PillRadius = 3f,
                                                 LeadTime = 1.5f,
-                                                MinimumVelocity = 0.5f,
+                                                MinimumVelocity = 0f,
                                                 Weight = -1000f,
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.VehicleSpawnInfluence
@@ -5994,7 +5995,7 @@ namespace TagTool.Commands.Tags
                                         AssaultBombEffects = new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.BombEffectStruct
                                         {
                                             ExplodeEffect = CacheContext.TagCache.GetTag<Effect>($@"fx\scenery_fx\explosions\human_explosion_huge\human_explosion_huge"),
-                                            ExplodeSecondaryEffect = CacheContext.TagCache.GetTag<DamageEffect>($@"objects\weapons\multiplayer\assault_bomb\damage_effects\bomb_explosion"),
+                                            ExplodeDamageEffect = CacheContext.TagCache.GetTag<DamageEffect>($@"objects\weapons\multiplayer\assault_bomb\damage_effects\bomb_explosion"),
                                         },
                                         ForgeCursorImpactEffect = CacheContext.TagCache.GetTag<Effect>($@"multiplayer\sandbox\cursor_impact"),
                                         BombDefusalString = CacheContext.StringTable.GetStringId($@"assault_defusal"),

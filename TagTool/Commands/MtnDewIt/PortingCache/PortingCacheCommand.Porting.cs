@@ -167,6 +167,7 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag sound\dialog\multiplayer_en\infection\last_man_standing.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\dialog\multiplayer_en\infection\new_zombie.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\dialog\multiplayer_en\juggernaut\destination_moved.sound");
+            CommandRunner.Current.RunCommand($@"porttag sound\dialog\multiplayer_en\juggernaut\juggernaut.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\dialog\multiplayer_en\juggernaut\new_juggernaut.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\dialog\multiplayer_en\king_of_the_hill\hill_contested.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\dialog\multiplayer_en\king_of_the_hill\hill_controlled.sound");

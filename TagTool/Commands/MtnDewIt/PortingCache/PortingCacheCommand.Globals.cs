@@ -14654,216 +14654,257 @@ namespace TagTool.Commands.Tags
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1.5f,
+                                        MedalUptime = 2,
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1.5f,
+                                        MedalUptime = 2,
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1.5f,
+                                        MedalUptime = 2,
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1.5f,
+                                        MedalUptime = 2,
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1.5f,
+                                        MedalUptime = 2,
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 3f,
+                                        MedalUptime = 2,
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1.5f,
+                                        MedalUptime = 2,
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1.5f,
+                                        MedalUptime = 2,
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 2f,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_double_kill"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 3f,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_triple_kill"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 4f,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_overkill"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 5f,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_killtacular"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 6f,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_killtrocity"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 7f,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_killamanjaro"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 8f,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_killtastrophe"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 9f,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_killpocalpyse"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 10f,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_killionaire"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 50,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_killing_spree"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 100,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_killing_frenzy"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 250,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_running_riot"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 500,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_rampage"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 750,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_untouchable"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 1000,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_invincible"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 500,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_splatter_spree"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 1000,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_vehicluar_manslaughter"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 500,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_sniper_spree"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 1000,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_sharpshooter"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 500,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_shotgun_spree"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 1000,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_open_season"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 500,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_stick_spree"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 1000,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_corrected"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 500,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_sword_spree"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 1000,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_slice_n_dice"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 500,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_hammer_spree"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
                                         AwardedPoints = 1000,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_ball_peen_buster"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1f,
+                                        MedalUptime = 2,
                                         EventName = CacheContext.StringTable.GetStringId($@"survival_hero"),
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1.5f,
+                                        MedalUptime = 2,
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1.5f,
+                                        MedalUptime = 2,
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1.5f,
+                                        MedalUptime = 2,
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1.5f,
+                                        MedalUptime = 2,
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
                                         Multiplier = 1.5f,
+                                        MedalUptime = 2,
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
-
+                                        MedalUptime = 2,
                                     },
                                     new Globals.CampaignMetagameGlobal.Medal
                                     {
@@ -14874,81 +14915,81 @@ namespace TagTool.Commands.Tags
                                 {
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-                                        
+                                        Multiplier = 0.25f,
                                     },
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-
+                                        Multiplier = 1f,
                                     },
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-
+                                        Multiplier = 2f,
                                     },
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-
+                                        Multiplier = 4f,
                                     },
                                 },
                                 PrimarySkulls = new List<Globals.CampaignMetagameGlobal.MultiplierBlock>()
                                 {
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-
+                                        Multiplier = 3f,
                                     },
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-
+                                        Multiplier = 1.5f,
                                     },
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-
+                                        Multiplier = 1.5f,
                                     },
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-
+                                        Multiplier = 1.5f,
                                     },
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-
+                                        Multiplier = 1.5f,
                                     },
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-
+                                        Multiplier = 2f,
                                     },
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-
+                                        Multiplier = 1.5f,
                                     },
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-
+                                        Multiplier = 2f,
                                     },
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-
+                                        Multiplier = 2f,
                                     },
                                 },
                                 SecondarySkulls = new List<Globals.CampaignMetagameGlobal.MultiplierBlock>()
                                 {
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-
+                                        Multiplier = 0f,
                                     },
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-
+                                        Multiplier = 0f,
                                     },
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-
+                                        Multiplier = 0f,
                                     },
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-
+                                        Multiplier = 0f,
                                     },
                                     new Globals.CampaignMetagameGlobal.MultiplierBlock
                                     {
-
+                                        Multiplier = 0f,
                                     },
                                 },
                             },
