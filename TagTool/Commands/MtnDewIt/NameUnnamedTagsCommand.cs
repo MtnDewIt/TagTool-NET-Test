@@ -6505,7 +6505,7 @@ namespace TagTool.Commands.Tags
             { 0x1F8C, @"sound\weapons\sniper_rifle\sniper_ammo" },
             { 0x1F8D, @"objects\weapons\rifle\sniper_rifle\fp_sniper_rifle\fp_sniper_rifle" },
             { 0x1F8E, @"objects\characters\masterchief\fp\weapons\rifle\fp_sniper_rifle\fp_sniper_rifle" },
-            { 0x1F8F, @"ME" },
+            { 0x1F8F, @"objects\characters\dervish\fp\weapons\rifle\fp_sniper_rifle\fp_sniper_rifle" },
             { 0x1F90, @"ui\chud\sniper_rifle" },
             { 0x1F91, @"objects\powerups\sniper_rifle_ammo\sniper_rifle_ammo" },
             { 0x1F92, @"objects\weapons\rifle\sniper_rifle\projectiles\sniper_bullet" },
