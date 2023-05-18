@@ -12213,7 +12213,7 @@ namespace TagTool.Commands.Tags
             { 0x3909, @"objects\vehicles\brute_chopper\garbage\bit_b\bit_b" },
             { 0x390A, @"objects\vehicles\brute_chopper\garbage\bit_b\bit_b" },
             { 0x390B, @"objects\vehicles\brute_chopper\garbage\bit_b\bit_b" },
-            { 0x390C, @"fx\scenery_fx\destruction\brute_mech_break_medium\brute_mech_break_medium " },
+            { 0x390C, @"fx\scenery_fx\destruction\brute_mech_break_medium\brute_mech_break_medium" },
             { 0x390D, @"objects\vehicles\brute_chopper\garbage\bit_l\bit_l" },
             { 0x390E, @"objects\vehicles\brute_chopper\garbage\bit_l\bit_l" },
             { 0x390F, @"objects\vehicles\brute_chopper\garbage\bit_l\bit_l" },
