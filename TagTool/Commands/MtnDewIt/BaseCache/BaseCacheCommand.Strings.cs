@@ -7,7 +7,7 @@ using TagTool.Common;
 
 namespace TagTool.Commands.Tags
 {
-    partial class PortingCacheCommand : Command
+    partial class BaseCacheCommand : Command
     {
         // Converts a given string into a localized string which can then be input into a string list tag
         LocalizedString ConvertString(string input, MultilingualUnicodeStringList unic)

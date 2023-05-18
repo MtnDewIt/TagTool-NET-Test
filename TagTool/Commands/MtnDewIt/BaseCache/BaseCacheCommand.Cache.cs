@@ -14,7 +14,7 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Tags
 {
-    partial class PortingCacheCommand : Command
+    partial class BaseCacheCommand : Command
     {
         private Globals MatgDefinition { get; set; } = null;
         private MultiplayerGlobals MulgDefinition { get; set; } = null;
@@ -557,8 +557,8 @@ namespace TagTool.Commands.Tags
 
             // Will add upscaled font packages once HUD and UI issues have been resolved
 
-            //File.Copy($@"{Program.TagToolDirectory}\Tools\PortingCache\Fonts\Upscaled\font_package.bin", $@"{outputDirectoryInfo.FullName}\fonts\font_package.bin");
-            File.Copy($@"{Program.TagToolDirectory}\Tools\PortingCache\Fonts\Default\font_package.bin", $@"{outputDirectoryInfo.FullName}\fonts\font_package.bin");
+            //File.Copy($@"{Program.TagToolDirectory}\Tools\BaseCache\Fonts\Upscaled\font_package.bin", $@"{outputDirectoryInfo.FullName}\fonts\font_package.bin");
+            File.Copy($@"{Program.TagToolDirectory}\Tools\BaseCache\Fonts\Default\font_package.bin", $@"{outputDirectoryInfo.FullName}\fonts\font_package.bin");
         }
 
         public void SetCacheVersion(GameCacheHaloOnline cache, CacheVersion version)

@@ -3,7 +3,7 @@ using TagTool.Commands.Porting;
 
 namespace TagTool.Commands.Tags
 {
-    partial class PortingCacheCommand : Command
+    partial class BaseCacheCommand : Command
     {
         // Ports all the required taga data for the porting cache, after rebuilding
         public void portTagData() 
@@ -280,27 +280,14 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag multiplayer\in_game_survival_messages.multilingual_unicode_string_list");
             ContextStack.Pop();
 
-            // Uses the Halo 3 UI, as that is the most complete feature wise
-            switch (cacheType)
-            {
-                case "Halo 3":
-                case "Halo 3 Mythic":
-                    ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mainmenu));
-                    break;
-            }
-
-            // Mainmenu UI tags
-            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\main_menu.wgtz");
+            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mainmenu));
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\main_menu.wgtz"); // Mainmenu UI tags
             ContextStack.Pop();
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
-
-            // Multiplayer UI tags
-            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\multiplayer.wgtz");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\multiplayer.wgtz"); // Multiplayer UI tags
             ContextStack.Pop();
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
-
-            // Singleplayer UI tags
-            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\single_player.wgtz");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\single_player.wgtz"); // Singleplayer UI tags
 
             // Fixes crashing issue with certain weapons
             CommandRunner.Current.RunCommand($@"porttag shaders\invalid.shader");
@@ -442,18 +429,10 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\masterchief.bipd");
             ContextStack.Pop();
 
-            switch (cacheType)
-            {
-                case "Halo 3":
-                    ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mainmenu));
-                    break;
-                case "Halo 3 Mythic":
-                    ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mythic_mainmenu));
-                    break;
-            }
-
+            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mainmenu));
             CommandRunner.Current.RunCommand($@"mergeanimationgraphs");
             ContextStack.Pop();
+
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
             CommandRunner.Current.RunCommand($@"porttag objects\ui\editor_gizmo\editor_gizmo.scen");
             CommandRunner.Current.RunCommand($@"porttag objects\multi\vip\vip_boundary.bloc");
@@ -507,28 +486,10 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag objects\equipment\autoturret_equipment\autoturret_equipment.eqip");
             ContextStack.Pop();
 
-            switch (cacheType)
-            {
-                case "Halo 3":
-                    ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mainmenu));
-                    break;
-                case "Halo 3 Mythic":
-                    ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mythic_mainmenu));
-                    break;
-            }
-            
+            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mainmenu));
             CommandRunner.Current.RunCommand($@"porttag *.scnr");
             ContextStack.Pop();
-            
-            switch (cacheType)
-            {
-                case "Halo 3":
-                    CommandRunner.Current.RunCommand($@"updatemapfiles {halo3DirectoryInfo}\info");
-                    break;
-                case "Halo 3 Mythic":
-                    CommandRunner.Current.RunCommand($@"updatemapfiles {halo3MythicDirectoryInfo}\info");
-                    break;
-            }
+            CommandRunner.Current.RunCommand($@"updatemapfiles {halo3DirectoryInfo}\info");
         }
     }
 }

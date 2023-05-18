@@ -118,7 +118,7 @@ namespace TagTool.Commands.Tags
             if(cache is GameCacheHaloOnline)
             {
                 var hoCache = cache as GameCacheHaloOnline;
-                context.AddCommand(new PortingCacheCommand(cache, hoCache, contextStack));
+                context.AddCommand(new BaseCacheCommand(cache, hoCache, contextStack));
                 context.AddCommand(new NameUnnamedTagsCommand(hoCache));
                 context.AddCommand(new RebuildCacheFileCommand(hoCache));
                 context.AddCommand(new CreateModPackageCommand(contextStack, hoCache));

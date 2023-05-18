@@ -4,7 +4,7 @@ using System;
 
 namespace TagTool.Commands.Tags 
 {
-    partial class PortingCacheCommand : Command 
+    partial class BaseCacheCommand : Command 
     {
         public void GenerateShieldImpactTags() 
         {

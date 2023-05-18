@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace TagTool.Commands.Tags
 {
-    partial class PortingCacheCommand : Command
+    partial class BaseCacheCommand : Command
     {
         // generates a new bitmap tag, with the tag name corresponding to the input string, and bitmap data from the specified DDS file (Code repurposed from the 'importbitmap' command)
         public void CreateBitmap(string bitmapName, string DDS)

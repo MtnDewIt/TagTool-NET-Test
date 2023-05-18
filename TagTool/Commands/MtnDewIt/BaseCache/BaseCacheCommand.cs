@@ -8,13 +8,11 @@ using TagTool.Commands.Common;
 
 namespace TagTool.Commands.Tags 
 {
-    partial class PortingCacheCommand : Command 
+    partial class BaseCacheCommand : Command 
     {
         public GameCache Cache { get; set; }
         public GameCacheHaloOnline CacheContext { get; set; }
         public CommandContextStack ContextStack { get; set; }
-
-        public string cacheType { get; set; }
 
         public static DirectoryInfo halo3DirectoryInfo { get; set; }
         public static DirectoryInfo halo3MythicDirectoryInfo { get; set; }
@@ -30,12 +28,12 @@ namespace TagTool.Commands.Tags
         public GameCache h3_odst_mainmenu { get; set; }
         public GameCache h100 { get; set; }
 
-        public PortingCacheCommand(GameCache cache, GameCacheHaloOnline cacheContext, CommandContextStack contextStack) : base
+        public BaseCacheCommand(GameCache cache, GameCacheHaloOnline cacheContext, CommandContextStack contextStack) : base
         (
             true,
-            "PortingCache",
+            "BaseCache",
             "<Proper Documentation Coming Soon>",
-            "PortingCache",
+            "BaseCache",
             "<Proper Documentation Coming Soon>"
         )
         {
@@ -46,33 +44,29 @@ namespace TagTool.Commands.Tags
 
         public override object Execute(List<string> args) 
         {
-            Console.WriteLine("\nEnter which cache type you would like to generate: ");
-            var portingCacheType = Console.ReadLine().ToLower();
+            getCacheFiles();
+            moveFontPackage();
+            CommandRunner.Current.RunCommand($@"nameunnamedtags"); //Maybe move into a method, instead of a command?
+            rebuildCache(outputDirectoryInfo.FullName);
+            retargetCache();
+            GenerateRenderMethods();
+            portTagData();
+            Globals();
+            MultiplayerGlobals();
+            ModGlobals();
+            ForgeGlobals(); // Unused for the time being
+            ChudGlobals();
+            RasterizerGlobalsSetup();
+            SurvivalGlobalsSetup();
+            ShieldImpactSetup();
+            SoundEffectTemplateSetup();
+            SquadTemplatesSetup();
 
-            switch (portingCacheType)
-            {
-                case "halo3":
-                    cacheType = "Halo 3";
-                    getCacheFiles();
-                    generateCache();
-                    break;
+            // Will add functions for modifying the UI once the UI is functional
 
-                case "halo3mythic":
-                    cacheType = "Halo 3 Mythic";
-                    getCacheFiles();
-                    generateCache();
-                    break;
-
-                case "haloonline":
-                    cacheType = "Halo Online";
-                    //Implement at some point? (0.6 main menu and HO assets (maybe add ms23 main menu as an option at some point?))
-                    break;
-
-                case "mcc":
-                    cacheType = "MCC";
-                    //Test existing code with MCC cache files (Add support for modded MCC main menus?)
-                    break;
-            }
+            applyHUDPatches();
+            applyPlayerPatches();
+            ContextStack.Pop();
 
             return true;
         }
@@ -130,32 +124,6 @@ namespace TagTool.Commands.Tags
             }
 
             return directoryInfo;
-        }
-
-        public void generateCache()
-        {
-            moveFontPackage();
-            CommandRunner.Current.RunCommand($@"nameunnamedtags"); //Maybe move into a method, instead of a command?
-            rebuildCache(outputDirectoryInfo.FullName);
-            retargetCache();
-            GenerateRenderMethods();
-            portTagData();
-            Globals();
-            MultiplayerGlobals();
-            ModGlobals();
-            ForgeGlobals(); // Unused for the time being
-            ChudGlobals();
-            RasterizerGlobalsSetup();
-            SurvivalGlobalsSetup();
-            ShieldImpactSetup();
-            SoundEffectTemplateSetup();
-            SquadTemplatesSetup();
-            
-            // Will add functions for modifying the UI once the UI is functional
-            
-            applyHUDPatches();
-            applyPlayerPatches();
-            ContextStack.Pop();
         }
     }
 }

@@ -5,7 +5,7 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Tags
 {
-    partial class PortingCacheCommand : Command
+    partial class BaseCacheCommand : Command
     {
         // Applies various HUD patches
         public void applyHUDPatches() 

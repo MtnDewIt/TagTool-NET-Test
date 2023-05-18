@@ -5,7 +5,7 @@ using TagTool.Ai;
 
 namespace TagTool.Commands.Tags
 {
-    partial class PortingCacheCommand : Command
+    partial class BaseCacheCommand : Command
     {
         public static readonly string[] Templates = new[]
         {
