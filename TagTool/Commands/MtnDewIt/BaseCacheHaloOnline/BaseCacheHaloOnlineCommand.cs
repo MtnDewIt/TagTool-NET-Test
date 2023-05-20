@@ -48,7 +48,7 @@ namespace TagTool.Commands.Tags
             retargetCache();
             GenerateRenderMethods();
             ScenarioPatches();
-            CommandRunner.Current.RunCommand($@"updatemapfiles {Program.TagToolDirectory}\Tools\BaseCache\MapInfo");
+            CommandRunner.Current.RunCommand($"updatemapfiles \"{Program.TagToolDirectory}\\Tools\\BaseCache\\MapInfo\"");
             portTagData();
             Globals();
             MultiplayerGlobals();
