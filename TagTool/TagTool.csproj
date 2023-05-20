@@ -736,6 +736,17 @@
     <Compile Include="Commands\MtnDewIt\BaseCache\BaseCacheCommand.Strings.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCache\BaseCacheCommand.SurvivalModeGlobals.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCache\BaseCacheCommand.UI.cs" />
+    <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.Cache.cs" />
+    <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.cs" />
+    <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.ForgeGlobals.cs" />
+    <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.Globals.cs" />
+    <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.ModGlobals.cs" />
+    <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.MultiplayerGlobals.cs" />
+    <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.Porting.cs" />
+    <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.Scenario.cs" />
+    <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.Shaders.cs" />
+    <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.ShieldImpact.cs" />
+    <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.UI.cs" />
     <Compile Include="Commands\MtnDewIt\NameUnnamedTagsCommand.cs" />
     <Compile Include="Commands\ParticleModels\ParticleModelContextFactory.cs" />
     <Compile Include="Commands\PhysicsModels\GeneratePhysicsModel.cs" />
