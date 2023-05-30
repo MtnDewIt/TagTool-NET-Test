@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TagTool.Common;
+using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Tags 
@@ -48,7 +49,7 @@ namespace TagTool.Commands.Tags
                                 CharacterDescription = StringId.Invalid,
                                 HudGlobals = CacheContext.TagCache.GetTag<ChudGlobalsDefinition>($@"ui\chud\globals"),
                                 VisionGlobals = CacheContext.TagCache.GetTag<VisionMode>($@"globals\default_vision_mode"),
-                                ActionSet = null,
+                                ActionSet = CacheContext.TagCache.GetTag<PlayerActionSet>($@"objects\characters\masterchief\mp_masterchief\actions"),
                                 CharacterPositionData = new ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo()
                                 {
                                     flags = ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo.FlagsValue.RotateInCustomization,
@@ -83,7 +84,7 @@ namespace TagTool.Commands.Tags
                                 CharacterDescription = StringId.Invalid,
                                 HudGlobals = CacheContext.TagCache.GetTag<ChudGlobalsDefinition>($@"ui\chud\globals"),
                                 VisionGlobals = CacheContext.TagCache.GetTag<VisionMode>($@"globals\default_vision_mode"),
-                                ActionSet = null,
+                                ActionSet = CacheContext.TagCache.GetTag<PlayerActionSet>($@"objects\characters\elite\mp_elite\actions"),
                                 CharacterPositionData = new ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo()
                                 {
                                     flags = ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo.FlagsValue.RotateInCustomization,
