@@ -412,9 +412,11 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp\fp.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp_body\fp_body.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\mp_masterchief.bipd");
+            GenerateSpartanActionTag();
             CommandRunner.Current.RunCommand($@"porttag objects\characters\elite\mp_elite\fp\fp.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\elite\mp_elite\fp_body\fp_body.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\elite\mp_elite\mp_elite.bipd");
+            GenerateEliteActionTag();
             CommandRunner.Current.RunCommand($@"porttag objects\characters\monitor\monitor_editor.bipd");
             ContextStack.Pop();
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
