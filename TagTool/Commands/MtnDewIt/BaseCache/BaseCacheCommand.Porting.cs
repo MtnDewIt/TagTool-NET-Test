@@ -289,6 +289,8 @@ namespace TagTool.Commands.Tags
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
             CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\single_player.wgtz"); // Singleplayer UI tags
 
+            GenerateMapImages();
+
             // Fixes crashing issue with certain weapons
             CommandRunner.Current.RunCommand($@"porttag shaders\invalid.shader");
             ContextStack.Pop();
