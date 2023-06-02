@@ -249,7 +249,11 @@ namespace TagTool.Commands.Tags
                 var forgTag = destCacheContext.TagCache.AllocateTag<ForgeGlobalsDefinition>($@"multiplayer\forge_globals");
                 var forg = new ForgeGlobalsDefinition();
                 destCacheContext.Serialize(destStream, forgTag, forg);
-                
+
+                var mlstTag = destCacheContext.TagCache.AllocateTag<MapList>($@"ui\eldewrito\maps");
+                var mlst = new MapList();
+                destCacheContext.Serialize(destStream, mlstTag, mlst);
+
                 cfgt = destCacheContext.Deserialize<CacheFileGlobalTags>(destStream, cfgtTag);
                 cfgt.GlobalTags = new List<TagReferenceBlock>()
                 {
@@ -264,6 +268,10 @@ namespace TagTool.Commands.Tags
                     new TagReferenceBlock()
                     {
                         Instance = destCacheContext.TagCache.GetTag<ForgeGlobalsDefinition>($@"multiplayer\forge_globals"),
+                    },
+                    new TagReferenceBlock()
+                    {
+                        Instance = destCacheContext.TagCache.GetTag<MapList>($@"ui\eldewrito\maps"),
                     },
                 };
                 destCacheContext.Serialize(destStream, cfgtTag, cfgt);
