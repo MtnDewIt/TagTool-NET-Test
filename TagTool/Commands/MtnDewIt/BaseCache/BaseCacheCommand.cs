@@ -20,12 +20,10 @@ namespace TagTool.Commands.Tags
         public static DirectoryInfo outputDirectoryInfo { get; set; }
 
         public GameCache h3_mainmenu { get; set; }
-        public GameCache crows {get; set; }
         public GameCache citadel { get; set; }
         public GameCache halo { get; set; }
-        public GameCache h3_mythic_mainmenu { get; set; }
         public GameCache sandbox { get; set; }
-        public GameCache h3_odst_mainmenu { get; set; }
+        public GameCache shrine { get; set; }
         public GameCache h100 { get; set; }
 
         public BaseCacheCommand(GameCache cache, GameCacheHaloOnline cacheContext, CommandContextStack contextStack) : base
@@ -76,14 +74,13 @@ namespace TagTool.Commands.Tags
             halo3DirectoryInfo = getDirectoryInfo(halo3DirectoryInfo, "Halo 3");
 
             h3_mainmenu = GameCache.Open($@"{halo3DirectoryInfo.FullName}\mainmenu.map");
-            crows = GameCache.Open($@"{halo3DirectoryInfo.FullName}\020_base.map");
             citadel = GameCache.Open($@"{halo3DirectoryInfo.FullName}\100_citadel.map");
             halo = GameCache.Open($@"{halo3DirectoryInfo.FullName}\120_halo.map");
 
             halo3MythicDirectoryInfo = getDirectoryInfo(halo3MythicDirectoryInfo, "Halo 3 Mythic");
 
-            h3_mythic_mainmenu = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\mainmenu.map");
             sandbox = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\sandbox.map");
+            shrine = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\shrine.map");
 
             halo3ODSTDirectoryInfo = getDirectoryInfo(halo3ODSTDirectoryInfo, "Halo 3 ODST");
 

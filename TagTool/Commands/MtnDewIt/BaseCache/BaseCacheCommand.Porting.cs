@@ -6,7 +6,7 @@ namespace TagTool.Commands.Tags
     partial class BaseCacheCommand : Command
     {
         // Ports all the required taga data for the porting cache, after rebuilding
-        public void portTagData() 
+        public void portTagData()
         {
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
             GenerateDialogueGlobals();
@@ -408,6 +408,10 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag ui\chud\globals.chud_globals_definition");
             ContextStack.Pop();
 
+            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, shrine));
+            CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\masterchief.model_animation_graph");
+            ContextStack.Pop();
+
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp\fp.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp_body\fp_body.mode");
@@ -431,9 +435,8 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\masterchief.bipd");
             ContextStack.Pop();
 
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mainmenu));
-            CommandRunner.Current.RunCommand($@"mergeanimationgraphs");
-            ContextStack.Pop();
+            ImportAnimations();
+            MergeAnimationGraphs();
 
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
             CommandRunner.Current.RunCommand($@"porttag objects\ui\editor_gizmo\editor_gizmo.scen");

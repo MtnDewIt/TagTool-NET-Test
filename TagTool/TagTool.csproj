@@ -719,6 +719,7 @@
     <Compile Include="Commands\Models\ListVariantsCommand.cs" />
     <Compile Include="Commands\Models\ModelContextFactory.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCache\BaseCacheCommand.AiGlobals.cs" />
+    <Compile Include="Commands\MtnDewIt\BaseCache\BaseCacheCommand.Animations.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCache\BaseCacheCommand.Bitmaps.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCache\BaseCacheCommand.Cache.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCache\BaseCacheCommand.cs" />
