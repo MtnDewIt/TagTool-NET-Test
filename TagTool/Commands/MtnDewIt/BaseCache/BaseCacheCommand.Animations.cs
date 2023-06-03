@@ -32,7 +32,7 @@ namespace TagTool.Commands.Tags
                     if (tag.IsInGroup("jmad") && tag.Name == $@"objects\characters\masterchief\masterchief") 
                     {
                         var jmad = CacheContext.Deserialize<ModelAnimationGraph>(stream, tag);
-                        jmad.Animations[1047].AnimationData.FrameEvents = new List<ModelAnimationGraph.Animation.FrameEvent> 
+                        jmad.Animations[1065].AnimationData.FrameEvents = new List<ModelAnimationGraph.Animation.FrameEvent> 
                         {
                             new ModelAnimationGraph.Animation.FrameEvent
                             {
@@ -183,88 +183,55 @@ namespace TagTool.Commands.Tags
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"thunder_clap"),
                                 GraphIndex = -1,
-                                Animation = 1040,
+                                Animation = 1058,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"dance1test"),
                                 GraphIndex = -1,
-                                Animation = 1041,
+                                Animation = 1059,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"dance1"),
                                 GraphIndex = -1,
-                                Animation = 1042,
+                                Animation = 1060,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"mixamo"),
                                 GraphIndex = -1,
-                                Animation = 1043,
+                                Animation = 1061,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"fingerlay"),
                                 GraphIndex = -1,
-                                Animation = 1044,
+                                Animation = 1062,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"fingerstand"),
                                 GraphIndex = -1,
-                                Animation = 1045,
+                                Animation = 1063,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"breakdance"),
                                 GraphIndex = -1,
-                                Animation = 1046,
+                                Animation = 1064,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"twerk"),
                                 GraphIndex = -1,
-                                Animation = 1047,
+                                Animation = 1065,
                             },
                         };
                         CacheContext.Serialize(stream, tag, jmad);
                     }
                 }
             }
-        }
-
-        public void MergeAnimationGraphs() 
-        {
-            var intro = GameCache.Open($@"{halo3DirectoryInfo.FullName}\005_intro.map");
-            var jungle = GameCache.Open($@"{halo3DirectoryInfo.FullName}\010_jungle.map");
-            var crows = GameCache.Open($@"{halo3DirectoryInfo.FullName}\020_base.map");
-            var outskirts = GameCache.Open($@"{halo3DirectoryInfo.FullName}\030_outskirts.map");
-            var floodvoi = GameCache.Open($@"{halo3DirectoryInfo.FullName}\050_floodvoi.map");
-            var mainmenu = GameCache.Open($@"{halo3DirectoryInfo.FullName}\mainmenu.map");
-            var shrine = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\shrine.map");
-
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, intro));
-            CommandRunner.Current.RunCommand($@"mergeanimationgraphs");
-            ContextStack.Pop();
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, jungle));
-            CommandRunner.Current.RunCommand($@"mergeanimationgraphs");
-            ContextStack.Pop();
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, crows));
-            CommandRunner.Current.RunCommand($@"mergeanimationgraphs");
-            ContextStack.Pop();
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, outskirts));
-            CommandRunner.Current.RunCommand($@"mergeanimationgraphs");
-            ContextStack.Pop();
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, floodvoi));
-            CommandRunner.Current.RunCommand($@"mergeanimationgraphs");
-            ContextStack.Pop();
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, mainmenu));
-            CommandRunner.Current.RunCommand($@"mergeanimationgraphs");
-            ContextStack.Pop();
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, shrine));
-            CommandRunner.Current.RunCommand($@"mergeanimationgraphs");
-            ContextStack.Pop();
         }
     }
 }
