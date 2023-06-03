@@ -171,6 +171,8 @@ namespace TagTool.Commands.Tags
                 CacheContext.StringTable.AddString($@"fingerlay");
                 CacheContext.StringTable.AddString($@"fingerstand");
                 CacheContext.StringTable.AddString($@"breakdance");
+                CacheContext.StringTable.AddString($@"hiphop");
+                CacheContext.StringTable.AddString($@"ballskick");
 
                 var pactTag = CacheContext.TagCache.AllocateTag<PlayerActionSet>($@"objects\characters\masterchief\mp_masterchief\actions");
                 var pact = new PlayerActionSet
@@ -332,6 +334,48 @@ namespace TagTool.Commands.Tags
                             Title = "breakdance",
                             IconName = "temp",
                             AnimationEnter = CacheContext.StringTable.GetStringId($@"breakdance"),
+                            Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
+                            OverrideCamera = new List<Unit.UnitCameraBlock>
+                            {
+                                new Unit.UnitCameraBlock
+                                {
+                                    PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
+                                    CameraTracks = new List<Unit.UnitCameraTrack>
+                                    {
+                                        new Unit.UnitCameraTrack
+                                        {
+                                            Track = CacheContext.TagCache.GetTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                        new PlayerActionSet.Action
+                        {
+                            Title = "hiphop",
+                            IconName = "temp",
+                            AnimationEnter = CacheContext.StringTable.GetStringId($@"hiphop"),
+                            Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
+                            OverrideCamera = new List<Unit.UnitCameraBlock>
+                            {
+                                new Unit.UnitCameraBlock
+                                {
+                                    PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
+                                    CameraTracks = new List<Unit.UnitCameraTrack>
+                                    {
+                                        new Unit.UnitCameraTrack
+                                        {
+                                            Track = CacheContext.TagCache.GetTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                        new PlayerActionSet.Action
+                        {
+                            Title = "ballskick",
+                            IconName = "temp",
+                            AnimationEnter = CacheContext.StringTable.GetStringId($@"ballskick"),
                             Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
                             OverrideCamera = new List<Unit.UnitCameraBlock>
                             {

@@ -410,6 +410,10 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag ui\chud\globals.chud_globals_definition");
             ContextStack.Pop();
 
+            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, ho_mainmenu));
+            CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\masterchief.model_animation_graph");
+            ContextStack.Pop();
+
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp\fp.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp_body\fp_body.mode");
@@ -434,10 +438,6 @@ namespace TagTool.Commands.Tags
             ContextStack.Pop();
 
             ImportAnimations();
-
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mainmenu));
-            CommandRunner.Current.RunCommand($@"mergeanimationgraphs");
-            ContextStack.Pop();
 
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
             CommandRunner.Current.RunCommand($@"porttag objects\ui\editor_gizmo\editor_gizmo.scen");
