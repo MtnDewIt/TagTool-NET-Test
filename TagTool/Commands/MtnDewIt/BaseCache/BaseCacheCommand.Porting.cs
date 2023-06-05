@@ -483,6 +483,7 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag objects\weapons\rifle\smg\smg.weap");
             CommandRunner.Current.RunCommand($@"porttag objects\weapons\rifle\sniper_rifle\sniper_rifle.weap");
             CommandRunner.Current.RunCommand($@"porttag objects\weapons\rifle\spike_rifle\spike_rifle.weap");
+            CommandRunner.Current.RunCommand($@"porttag objects\weapons\support_high\flak_cannon\flak_cannon.weap");
             CommandRunner.Current.RunCommand($@"porttag objects\weapons\support_high\rocket_launcher\rocket_launcher.weap");
             CommandRunner.Current.RunCommand($@"porttag objects\weapons\support_high\spartan_laser\spartan_laser.weap");
             CommandRunner.Current.RunCommand($@"porttag objects\weapons\support_low\brute_shot\brute_shot.weap");
@@ -505,6 +506,30 @@ namespace TagTool.Commands.Tags
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, halo));
             CommandRunner.Current.RunCommand($@"porttag objects\equipment\autoturret_equipment\autoturret_equipment.eqip");
             ContextStack.Pop();
+
+            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, ho_mainmenu));
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\melee\fp_energy_blade\fp_energy_blade.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\melee\fp_gravity_hammer\fp_gravity_hammer.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\pistol\fp_excavator\fp_excavator.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\pistol\fp_magnum\fp_magnum.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\pistol\fp_needler\fp_needler.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\pistol\fp_plasma_pistol\fp_plasma_pistol.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\rifle\fp_assault_rifle\fp_assault_rifle.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\rifle\fp_battle_rifle\fp_battle_rifle.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\rifle\fp_beam_rifle\fp_beam_rifle.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\rifle\fp_covenant_carbine\fp_covenant_carbine.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\rifle\fp_plasma_rifle\fp_plasma_rifle.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\rifle\fp_shotgun\fp_shotgun.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\rifle\fp_smg\fp_smg.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\rifle\fp_sniper_rifle\fp_sniper_rifle.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\rifle\fp_spike_rifle\fp_spike_rifle.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\support_high\fp_flak_cannon\fp_flak_cannon.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\support_high\fp_rocket_launcher\fp_rocket_launcher.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\support_high\fp_spartan_laser\fp_spartan_laser.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single objects\characters\masterchief\fp\weapons\support_low\fp_brute_shot\fp_brute_shot.model_animation_graph");
+            ContextStack.Pop();
+            
+            PatchMarkerGroups();
 
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mainmenu));
             CommandRunner.Current.RunCommand($@"porttag *.scnr");
