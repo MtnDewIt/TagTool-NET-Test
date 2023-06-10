@@ -9,16 +9,16 @@ namespace TagTool.Commands.Tags
         public void ImportAnimations() 
         {
             CommandRunner.Current.RunCommand($@"edittag objects\characters\masterchief\masterchief.model_animation_graph");
-            CommandRunner.Current.RunCommand($"addanimation basefix \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\combat thunderclap.JMM\"");
-            CommandRunner.Current.RunCommand($"addanimation basefix \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any dance1test.JMM\"");
-            CommandRunner.Current.RunCommand($"addanimation basefix \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any dance1.JMM\"");
-            CommandRunner.Current.RunCommand($"addanimation basefix \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any mixamo.JMM\"");
-            CommandRunner.Current.RunCommand($"addanimation basefix \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any fingerlay.JMM\"");
-            CommandRunner.Current.RunCommand($"addanimation basefix \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any fingerstand.JMM\"");
-            CommandRunner.Current.RunCommand($"addanimation basefix \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any breakdance.JMM\"");
-            CommandRunner.Current.RunCommand($"addanimation basefix \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any twerk.JMM\"");
-            CommandRunner.Current.RunCommand($"addanimation basefix \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any hiphop.JMM\"");
-            CommandRunner.Current.RunCommand($"addanimation basefix \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any ballskick.JMM\"");
+            CommandRunner.Current.RunCommand($"addanimation \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\combat thunderclap.JMM\"");
+            CommandRunner.Current.RunCommand($"addanimation \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any dance1test.JMM\"");
+            CommandRunner.Current.RunCommand($"addanimation \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any dance1.JMM\"");
+            CommandRunner.Current.RunCommand($"addanimation \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any mixamo.JMM\"");
+            CommandRunner.Current.RunCommand($"addanimation \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any fingerlay.JMM\"");
+            CommandRunner.Current.RunCommand($"addanimation \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any fingerstand.JMM\"");
+            CommandRunner.Current.RunCommand($"addanimation \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any breakdance.JMM\"");
+            CommandRunner.Current.RunCommand($"addanimation \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any twerk.JMM\"");
+            CommandRunner.Current.RunCommand($"addanimation \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any hiphop.JMM\"");
+            CommandRunner.Current.RunCommand($"addanimation \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\any any ballskick.JMM\"");
             ContextStack.Pop();
 
             using (var stream = Cache.OpenCacheReadWrite()) 
@@ -34,103 +34,73 @@ namespace TagTool.Commands.Tags
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"airborne_dead"),
                                 GraphIndex = -1,
-                                Animation = 88,
+                                Animation = 24,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"landing_dead"),
                                 GraphIndex = -1,
-                                Animation = 89,
-                            },
-                            new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                            {
-                                Label = CacheContext.StringTable.GetStringId($@"armor_lock_enter"),
-                                GraphIndex = -1,
-                                Animation = 91,
-                            },
-                            new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                            {
-                                Label = CacheContext.StringTable.GetStringId($@"armor_lock_exit"),
-                                GraphIndex = -1,
-                                Animation = 92,
-                            },
-                            new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                            {
-                                Label = CacheContext.StringTable.GetStringId($@"armor_lock_idle"),
-                                GraphIndex = -1,
-                                Animation = 93,
-                            },
-                            new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                            {
-                                Label = CacheContext.StringTable.GetStringId($@"con_blast_enter"),
-                                GraphIndex = -1,
-                                Animation = 123,
-                            },
-                            new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                            {
-                                Label = CacheContext.StringTable.GetStringId($@"mag_pulse_enter"),
-                                GraphIndex = -1,
-                                Animation = 238,
+                                Animation = 25,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"thunder_clap"),
                                 GraphIndex = -1,
-                                Animation = 1173,
+                                Animation = 1058,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"twerk"),
                                 GraphIndex = -1,
-                                Animation = 1180,
+                                Animation = 1058,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"dance1test"),
                                 GraphIndex = -1,
-                                Animation = 1174,
+                                Animation = 1059,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"dance1"),
                                 GraphIndex = -1,
-                                Animation = 1175,
+                                Animation = 1060,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"mixamo"),
                                 GraphIndex = -1,
-                                Animation = 1176,
+                                Animation = 1061,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"fingerlay"),
                                 GraphIndex = -1,
-                                Animation = 1177,
+                                Animation = 1062,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"fingerstand"),
                                 GraphIndex = -1,
-                                Animation = 1178,
+                                Animation = 1063,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"breakdance"),
                                 GraphIndex = -1,
-                                Animation = 1179,
+                                Animation = 1064,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"hiphop"),
                                 GraphIndex = -1,
-                                Animation = 1181,
+                                Animation = 1065,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"ballskick"),
                                 GraphIndex = -1,
-                                Animation = 1182,
+                                Animation = 1066,
                             },
                         };
                         CacheContext.Serialize(stream, tag, jmad);

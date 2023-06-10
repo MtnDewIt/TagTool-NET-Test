@@ -83,6 +83,9 @@ namespace TagTool.Commands.Tags
             GenerateSurvivalGlobalsTag();
             CommandRunner.Current.RunCommand($@"porttag multiplayer\team_names.multilingual_unicode_string_list");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\fx\coop_teleport.effect");
+            CommandRunner.Current.RunCommand($@"porttag sound\weapons\equipment\tripmine\tripmine_explosion.sound");
+            CommandRunner.Current.RunCommand($@"porttag sound\weapons\equipment\tripmine\tripmine_lod_far.sound");
+            CommandRunner.Current.RunCommand($@"porttag objects\equipment\tripmine\fx\detonation.light");
             //CommandRunner.Current.RunCommand($@"porttag multiplayer\vehicle_autoflip.effect"); // Halo Online Specific
             //CommandRunner.Current.RunCommand($@"porttag multiplayer\safety_booster.effect"); // Halo Online Specific
             CommandRunner.Current.RunCommand($@"porttag objects\multi\shaders\koth_shield.shader_halogram");
@@ -411,12 +414,16 @@ namespace TagTool.Commands.Tags
             ContextStack.Pop();
 
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
+            CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp\fp.mode");
+            CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp_body\fp_body.mode");
+            CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\mp_masterchief.bipd");
+            GenerateSpartanActionTag();
             CommandRunner.Current.RunCommand($@"porttag objects\characters\elite\mp_elite\fp\fp.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\elite\mp_elite\fp_body\fp_body.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\elite\mp_elite\mp_elite.bipd");
             GenerateEliteActionTag();
+            CommandRunner.Current.RunCommand($@"porttag objects\characters\monitor\monitor_editor.bipd");
             ContextStack.Pop();
-
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
             CommandRunner.Current.RunCommand($@"porttag objects\characters\dervish\fp\fp.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\dervish\fp_body\fp_body.mode");
@@ -424,34 +431,16 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag objects\characters\elite\fp_arms\fp_arms.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\elite\fp_body\fp_body.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\elite\elite_sp.bipd");
-            ContextStack.Pop();
-
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mainmenu));
-            CommandRunner.Current.RunCommand($@"mergeanimationgraphs");
-            ContextStack.Pop();
-
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, ho_mainmenu));
-            CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\masterchief.model_animation_graph");
-            ContextStack.Pop();
-
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
-            CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp\fp.mode");
-            CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp_body\fp_body.mode");
-            CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\mp_masterchief.bipd");
-            GenerateSpartanActionTag();
-            ContextStack.Pop();
-
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\fp\fp.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\fp_body\fp_body.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\masterchief.bipd");
             ContextStack.Pop();
 
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
-            CommandRunner.Current.RunCommand($@"porttag objects\characters\monitor\monitor_editor.bipd");
-            ContextStack.Pop();
-
             ImportAnimations();
+
+            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mainmenu));
+            CommandRunner.Current.RunCommand($@"mergeanimationgraphs");
+            ContextStack.Pop();
 
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
             CommandRunner.Current.RunCommand($@"porttag objects\ui\editor_gizmo\editor_gizmo.scen");
