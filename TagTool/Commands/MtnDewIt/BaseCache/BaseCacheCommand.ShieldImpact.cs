@@ -1,6 +1,5 @@
 using TagTool.Tags.Definitions;
 using TagTool.Common;
-using System;
 
 namespace TagTool.Commands.Tags 
 {
@@ -10,7 +9,6 @@ namespace TagTool.Commands.Tags
         {
             using (var stream = Cache.OpenCacheReadWrite()) 
             {
-
                 var overshield3pTag = CacheContext.TagCache.AllocateTag<ShieldImpact>($@"fx\shield_impacts\overshield_3p");
                 var overshield3p = new ShieldImpact();
                 CacheContext.Serialize(stream, overshield3pTag, overshield3p);

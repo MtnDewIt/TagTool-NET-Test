@@ -21,6 +21,7 @@ namespace TagTool.Commands.Tags
 
         public GameCache ho_mainmenu { get; set; }
         public GameCache h3_mainmenu { get; set; }
+        public GameCache voi { get; set; }
         public GameCache citadel { get; set; }
         public GameCache halo { get; set; }
         public GameCache sandbox { get; set; }
@@ -43,13 +44,14 @@ namespace TagTool.Commands.Tags
 
         public override object Execute(List<string> args) 
         {
+            CommandRunner.Current.RunCommand($@"nameunnamedtags"); //Maybe move into a method, instead of a command?
             getCacheFiles();
             moveFontPackage();
-            CommandRunner.Current.RunCommand($@"nameunnamedtags"); //Maybe move into a method, instead of a command?
             rebuildCache(outputDirectoryInfo.FullName);
             retargetCache();
             GenerateRenderMethods();
             portTagData();
+            AddNewStrings();
             Globals();
             MultiplayerGlobals();
             ModGlobals();
@@ -77,6 +79,7 @@ namespace TagTool.Commands.Tags
             halo3DirectoryInfo = getDirectoryInfo(halo3DirectoryInfo, "Halo 3");
 
             h3_mainmenu = GameCache.Open($@"{halo3DirectoryInfo.FullName}\mainmenu.map");
+            voi = GameCache.Open($@"{halo3DirectoryInfo.FullName}\040_voi.map");
             citadel = GameCache.Open($@"{halo3DirectoryInfo.FullName}\100_citadel.map");
             halo = GameCache.Open($@"{halo3DirectoryInfo.FullName}\120_halo.map");
 

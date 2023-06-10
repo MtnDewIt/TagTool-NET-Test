@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using TagTool.Cache;
+using TagTool.Cache.HaloOnline;
 
 namespace TagTool.Commands.Tags
 {
     class NameUnnamedTagsCommand : Command
     {
-        private GameCacheHaloOnlineBase Cache { get; }
+        private GameCacheHaloOnline CacheContext { get; }
 
         public static Dictionary<int, string> tagNameTable { get; } = new Dictionary<int, string>()
         {
@@ -20160,7 +20160,7 @@ namespace TagTool.Commands.Tags
             { 0x5ADE, @"ui\eldewrito\common\common_bitmaps\emblem" },
         };
 
-        public NameUnnamedTagsCommand(GameCacheHaloOnlineBase cache)
+        public NameUnnamedTagsCommand(GameCacheHaloOnline cacheContext)
             : base(false,
                  "NameUnnamedTags",
                  "Will attempt to correctly name all the tags within a 0.6 cache",
@@ -20168,14 +20168,14 @@ namespace TagTool.Commands.Tags
                  "NameUnnamedTags",
                  "Will attempt to correctly name all the tags within a 0.6 cache")
         {
-            Cache = cache;
+            CacheContext = cacheContext;
         }
 
         public override object Execute(List<string> args)
         {
-            using (var stream = Cache.OpenCacheRead())
+            using (var stream = CacheContext.OpenCacheRead())
             {
-                foreach (var tag in Cache.TagCache.NonNull())
+                foreach (var tag in CacheContext.TagCache.NonNull())
                 {
                     if (tagNameTable.TryGetValue(tag.Index, out string name))
                     {
@@ -20184,7 +20184,7 @@ namespace TagTool.Commands.Tags
                 }
             }
 
-            Cache.SaveTagNames();
+            CacheContext.SaveTagNames();
 
             return true;
         }
