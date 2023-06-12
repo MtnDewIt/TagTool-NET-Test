@@ -52,55 +52,55 @@ namespace TagTool.Commands.Tags
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"twerk"),
                                 GraphIndex = -1,
-                                Animation = 1058,
+                                Animation = 1059,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"dance1test"),
                                 GraphIndex = -1,
-                                Animation = 1059,
+                                Animation = 1060,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"dance1"),
                                 GraphIndex = -1,
-                                Animation = 1060,
+                                Animation = 1061,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"mixamo"),
                                 GraphIndex = -1,
-                                Animation = 1061,
+                                Animation = 1062,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"fingerlay"),
                                 GraphIndex = -1,
-                                Animation = 1062,
+                                Animation = 1063,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"fingerstand"),
                                 GraphIndex = -1,
-                                Animation = 1063,
+                                Animation = 1064,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"breakdance"),
                                 GraphIndex = -1,
-                                Animation = 1064,
+                                Animation = 1065,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"hiphop"),
                                 GraphIndex = -1,
-                                Animation = 1065,
+                                Animation = 1066,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
                                 Label = CacheContext.StringTable.GetStringId($@"ballskick"),
                                 GraphIndex = -1,
-                                Animation = 1066,
+                                Animation = 1067,
                             },
                         };
                         CacheContext.Serialize(stream, tag, jmad);
