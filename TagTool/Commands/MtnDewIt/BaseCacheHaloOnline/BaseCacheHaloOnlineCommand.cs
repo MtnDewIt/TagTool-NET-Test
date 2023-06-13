@@ -43,7 +43,7 @@ namespace TagTool.Commands.Tags
         {
             getCacheFiles();
             moveFontPackage();
-            CommandRunner.Current.RunCommand($@"nameunnamedtags"); //Maybe move into a method, instead of a command?
+            CommandRunner.Current.RunCommand($@"nameunnamedeldewritotags"); //Maybe move into a method, instead of a command?
             rebuildCache(outputDirectoryInfo.FullName);
             retargetCache();
             GenerateRenderMethods();

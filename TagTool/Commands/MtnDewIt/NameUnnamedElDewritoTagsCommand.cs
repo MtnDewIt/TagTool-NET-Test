@@ -3,7 +3,7 @@ using TagTool.Cache.HaloOnline;
 
 namespace TagTool.Commands.Tags
 {
-    class NameUnnamedTagsCommand : Command
+    class NameUnnamedElDewritoTagsCommand : Command
     {
         private GameCacheHaloOnline CacheContext { get; }
 
@@ -20160,13 +20160,13 @@ namespace TagTool.Commands.Tags
             { 0x5ADE, @"ui\eldewrito\common\common_bitmaps\emblem" },
         };
 
-        public NameUnnamedTagsCommand(GameCacheHaloOnline cacheContext)
+        public NameUnnamedElDewritoTagsCommand(GameCacheHaloOnline cacheContext)
             : base(false,
-                 "NameUnnamedTags",
-                 "Will attempt to correctly name all the tags within a 0.6 cache",
+                 "NameUnnamedElDewritoTags",
+                 "Will attempt to correctly name all the tags within an ElDewrito 0.6 cache",
 
-                 "NameUnnamedTags",
-                 "Will attempt to correctly name all the tags within a 0.6 cache")
+                 "NameUnnamedElDewritoTags",
+                 "Will attempt to correctly name all the tags within an ElDewrito 0.6 cache")
         {
             CacheContext = cacheContext;
         }

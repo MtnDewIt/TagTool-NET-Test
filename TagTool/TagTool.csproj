@@ -748,7 +748,8 @@
     <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.Shaders.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.ShieldImpact.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.UI.cs" />
-    <Compile Include="Commands\MtnDewIt\NameUnnamedTagsCommand.cs" />
+    <Compile Include="Commands\MtnDewIt\NameUnnamedElDewritoTagsCommand.cs" />
+    <Compile Include="Commands\MtnDewIt\NameUnnamedHaloOnlineTagsCommand.cs" />
     <Compile Include="Commands\ParticleModels\ParticleModelContextFactory.cs" />
     <Compile Include="Commands\PhysicsModels\GeneratePhysicsModel.cs" />
     <Compile Include="Commands\RenderMethods\ListArgumentsCommand.cs" />
