@@ -4051,7 +4051,7 @@ namespace TagTool.Commands.Tags
             { 0x11C7, @"shaders\shader_templates\_0_1_0_0_1_2_0_1_0_0_0" },
             { 0x11C8, @"objects\weapons\pistol\plasma_pistol\bitmaps\plasma_pistol_bump_2" },
             { 0x11C9, @"objects\weapons\pistol\plasma_pistol\bitmaps\plasma_pistol_cube" },
-            { 0x11CA, @"objects\weapons\pistol\plasma_pistol\bitmaps\plasma_pistol_control_2" },
+            { 0x11CA, @"objects\weapons\pistol\plasma_pistol\bitmaps\plasma_pistol_detail_spec" },
             { 0x11CB, @"shaders\shader_templates\_0_1_0_2_1_4_0_1_0_1_0" },
             { 0x11CC, @"shaders\shader_templates\_0_1_0_2_1_4_0_1_0_1_0" },
             { 0x11CD, @"shaders\shader_templates\_0_1_0_2_1_4_0_1_0_1_0" },
