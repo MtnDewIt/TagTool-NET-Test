@@ -3351,12 +3351,12 @@ namespace TagTool.Commands.Tags
             { 0x0E40, @"objects\characters\masterchief\feedback\concussive_blast" }, //unsure about this (tag is halo online specific)
             { 0x0E41, @"objects\props\human\unsc\spartan_knife\spartan_knife" },
             { 0x0E42, @"objects\props\human\unsc\spartan_knife\spartan_knife" },
-            { 0x0E43, @"objects\characters\spartans\shaders\spartan_chest\spartan_chest_knife" }, //reach tag name (might not be entirely accurate)
-            { 0x0E44, @"objects\characters\spartans\bitmaps\spartan_chest\spartan_chest_knife_diffuse" }, //reach tag name (might not be entirely accurate)
-            { 0x0E45, @"objects\characters\spartans\bitmaps\spartan_chest\spartan_chest_knife_normal" }, //reach tag name (might not be entirely accurate)
-            { 0x0E46, @"objects\characters\spartans\bitmaps\spartan_detail_maps\spartan_metal_detail" }, //reach tag name (might not be entirely accurate)
-            { 0x0E47, @"objects\characters\spartans\bitmaps\spartan_chest\spartan_chest_knife_cc" }, //unsure about this (tag is halo online specific)
-            { 0x0E48, @"objects\characters\spartans\bitmaps\spartan_chest\spartan_chest_knife_specular" }, //unsure about this (tag is halo online specific)
+            { 0x0E43, @"objects\characters\masterchief\shaders\mp_chest_knife" }, //reach tag name (might not be entirely accurate)
+            { 0x0E44, @"objects\characters\masterchief\bitmaps\mp_chest_knife" }, //reach tag name (might not be entirely accurate)
+            { 0x0E45, @"objects\characters\masterchief\bitmaps\mp_chest_knife_bump" }, //reach tag name (might not be entirely accurate)
+            { 0x0E46, @"objects\characters\masterchief\bitmaps\mp_metal_detail" }, //reach tag name (might not be entirely accurate)
+            { 0x0E47, @"objects\characters\masterchief\bitmaps\mp_chest_knife_cc" }, //unsure about this (tag is halo online specific)
+            { 0x0E48, @"objects\characters\masterchief\bitmaps\mp_chest_knife_spec" }, //unsure about this (tag is halo online specific)
             { 0x0E49, @"shaders\shader_templates\_0_3_0_0_1_4_0_0_0_0_0" },
             { 0x0E4A, @"shaders\shader_templates\_0_3_0_0_1_4_0_0_0_0_0" },
             { 0x0E4B, @"shaders\shader_templates\_0_3_0_0_1_4_0_0_0_0_0" },
