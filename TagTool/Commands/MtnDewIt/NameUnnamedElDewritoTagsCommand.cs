@@ -3636,24 +3636,24 @@ namespace TagTool.Commands.Tags
             { 0x0FF0, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\bitmaps\battle_rifle_scope" },
             { 0x0FF1, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\bitmaps\battle_rifle_display" },
             { 0x0FF3, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr" },
-            { 0x0FF4, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\shaders\[01]_rmsh" },
-            { 0x0FF5, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr\shaders\[01]_rmsh" },
-            { 0x0FF6, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v2\shaders\[11]_rmsh" },
-            { 0x0FF7, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\shaders\[12]_rmsh" },
-            { 0x0FF8, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\shaders\[11]_rmsh" },
-            { 0x0FF9, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr\shaders\[05]_rmsh" },
-            { 0x0FFA, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr\shaders\[06]_rmsh" },
-            { 0x0FFB, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\shaders\[08]_rmsh" },
-            { 0x0FFC, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\shaders\[07]_rmsh" },
-            { 0x0FFD, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\shaders\[06]_rmsh" },
-            { 0x0FFE, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr\shaders\[10]_rmsh" },
-            { 0x0FFF, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v2\shaders\[12]_rmsh" },
-            { 0x1000, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\bitmaps\[01]_rmsh\base" },
-            { 0x1001, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\bitmaps\[01]_rmsh\material" },
-            { 0x1002, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\bitmaps\[01]_rmsh\bump" },
-            { 0x1003, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\bitmaps\[01]_rmsh\bump_detail" },
-            { 0x1004, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\bitmaps\[01]_rmsh\bump_detail_mask" },
-            { 0x1005, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v2\bitmaps\[01]_rmsh\color_mask" },
+            { 0x0FF4, @"objects\weapons\rifle\dmr\shaders\dmr_composite" },
+            { 0x0FF5, @"objects\weapons\rifle\dmr\shaders\dmr_metal" },
+            { 0x0FF6, @"objects\weapons\rifle\dmr\shaders\dmr_lens" },
+            { 0x0FF7, @"objects\weapons\rifle\dmr\shaders\dmr_scope_glass" },
+            { 0x0FF8, @"objects\weapons\rifle\dmr\shaders\dmr_scope_glass2" },
+            { 0x0FF9, @"objects\weapons\rifle\dmr\shaders\ones" },
+            { 0x0FFA, @"objects\weapons\rifle\dmr\shaders\tens" },
+            { 0x0FFB, @"objects\weapons\rifle\dmr\shaders\dmr_luminous" },
+            { 0x0FFC, @"objects\weapons\rifle\dmr\shaders\dmr_scan_lines" },
+            { 0x0FFD, @"objects\weapons\rifle\dmr\shaders\dmr_default_detail" },
+            { 0x0FFE, @"objects\weapons\rifle\dmr\shaders\dmr_display" },
+            { 0x0FFF, @"objects\weapons\rifle\dmr\shaders\dmr_decals_eagle_crest" },
+            { 0x1000, @"objects\weapons\rifle\dmr\bitmaps\dmr" },
+            { 0x1001, @"objects\weapons\rifle\dmr\bitmaps\dmr_control" },
+            { 0x1002, @"objects\weapons\rifle\dmr\bitmaps\dmr_bump" },
+            { 0x1003, @"objects\weapons\rifle\dmr\bitmaps\gun_microbump" },
+            { 0x1004, @"objects\weapons\rifle\dmr\bitmaps\dmr_mask" },
+            { 0x1005, @"objects\weapons\rifle\dmr\bitmaps\dmr_cc" },
             { 0x1006, @"shaders\shader_templates\_14_3_0_3_1_4_0_0_0_1_0" },
             { 0x1007, @"shaders\shader_templates\_14_3_0_3_1_4_0_0_0_1_0" },
             { 0x1008, @"shaders\shader_templates\_14_3_0_3_1_4_0_0_0_1_0" },
@@ -3671,83 +3671,83 @@ namespace TagTool.Commands.Tags
             { 0x1014, @"shaders\shader_templates\_0_1_0_0_1_0_1_0_1_0_0" },
             { 0x1015, @"shaders\shader_templates\_0_1_0_0_1_0_1_0_1_0_0" },
             { 0x1016, @"shaders\shader_templates\_0_1_0_0_1_0_1_0_1_0_0" },
-            { 0x1017, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr\bitmaps\[05]_rmsh\self_illum_primary_ammunition_ones" },
+            { 0x1017, @"objects\weapons\rifle\dmr\bitmaps\dmr_numbers_plate" },
             { 0x1018, @"shaders\shader_templates\_2_0_0_0_0_0_8_2_0_1_0" },
             { 0x1019, @"shaders\shader_templates\_2_0_0_0_0_0_8_2_0_1_0" },
             { 0x101A, @"shaders\shader_templates\_2_0_0_0_0_0_8_2_0_1_0" },
-            { 0x101B, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr\bitmaps\[10]_rmsh\self_illum" },
+            { 0x101B, @"objects\weapons\rifle\dmr\bitmaps\dmr_display" },
             { 0x101C, @"objects\bitmaps\decals\bitmaps\unsc_decals_crest_eagle_diff" },
             { 0x101E, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1" },
             { 0x101F, @"shaders\invalid" },
-            { 0x1020, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\shaders\[02]_rmsh" },
-            { 0x1021, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\shaders\[03]_rmsh" },
-            { 0x1022, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\shaders\[04]_rmsh" },
-            { 0x1023, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\shaders\[05]_rmsh" },
+            { 0x1020, @"objects\weapons\rifle\dmr\dmr_v1\shaders\dmr_composite" },
+            { 0x1021, @"objects\weapons\rifle\dmr\dmr_v1\shaders\tens" },
+            { 0x1022, @"objects\weapons\rifle\dmr\dmr_v1\shaders\dmr_display" },
+            { 0x1023, @"objects\weapons\rifle\dmr\dmr_v1\shaders\ones" },
             { 0x1024, @"objects\bitmaps\default\grid_256x256" },
             { 0x1025, @"shaders\shader_templates\_0_1_0_0_0_0_0_0_0_1_0" },
             { 0x1026, @"shaders\shader_templates\_0_1_0_0_0_0_0_0_0_1_0" },
             { 0x1027, @"shaders\shader_templates\_0_1_0_0_0_0_0_0_0_1_0" },
-            { 0x1028, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\bitmaps\[02]_rmsh\base" },
-            { 0x1029, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\bitmaps\[02]_rmsh\material" },
-            { 0x102A, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\bitmaps\[02]_rmsh\bump" },
+            { 0x1028, @"objects\weapons\rifle\dmr\dmr_v1\bitmaps\dmr" },
+            { 0x1029, @"objects\weapons\rifle\dmr\dmr_v1\bitmaps\dmr_control" },
+            { 0x102A, @"objects\weapons\rifle\dmr\dmr_v1\bitmaps\dmr_bump" },
             { 0x102B, @"shaders\shader_templates\_0_3_0_3_1_4_0_0_0_1_0" },
             { 0x102C, @"shaders\shader_templates\_0_3_0_3_1_4_0_0_0_1_0" },
             { 0x102D, @"shaders\shader_templates\_0_3_0_3_1_4_0_0_0_1_0" },
-            { 0x102E, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\bitmaps\[03]_rmsh\self_illum_primary_ammunition_tens" },
-            { 0x102F, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v1\bitmaps\[04]_rmsh\self_illum" },
+            { 0x102E, @"objects\weapons\rifle\dmr\dmr_v1\bitmaps\dmr_numbers_plate" },
+            { 0x102F, @"objects\weapons\rifle\dmr\dmr_v1\bitmaps\dmr_display" },
             { 0x1031, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v2" },
-            { 0x1032, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v2\shaders\[01]_rmsh" },
-            { 0x1033, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v2\shaders\[02]_rmsh" },
-            { 0x1034, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v2\shaders\[03]_rmsh" },
-            { 0x1035, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v2\shaders\[04]_rmsh" },
-            { 0x1036, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v2\shaders\[05]_rmsh" },
-            { 0x1037, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v2\shaders\[06]_rmsh" },
-            { 0x1038, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v2\shaders\[07]_rmsh" },
-            { 0x1039, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v2\shaders\[09]_rmsh" },
-            { 0x103A, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v2\shaders\[10]_rmsh" },
-            { 0x103B, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v2\bitmaps\[02]_rmsh\color_mask" },
+            { 0x1032, @"objects\weapons\rifle\dmr\dmr_v2\shaders\dmr_composite" },
+            { 0x1033, @"objects\weapons\rifle\dmr\dmr_v2\shaders\dmr_metal" },
+            { 0x1034, @"objects\weapons\rifle\dmr\dmr_v2\shaders\tens" },
+            { 0x1035, @"objects\weapons\rifle\dmr\dmr_v2\shaders\dmr_display" },
+            { 0x1036, @"objects\weapons\rifle\dmr\dmr_v2\shaders\ones" },
+            { 0x1037, @"objects\weapons\rifle\dmr\dmr_v2\shaders\dmr_default_material" },
+            { 0x1038, @"objects\weapons\rifle\dmr\dmr_v2\shaders\dmr_scan_lines" },
+            { 0x1039, @"objects\weapons\rifle\dmr\dmr_v2\shaders\dmr_scope_glass" },
+            { 0x103A, @"objects\weapons\rifle\dmr\dmr_v2\shaders\dmr_scope_glass2" },
+            { 0x103B, @"objects\weapons\rifle\dmr\dmr_v2\bitmaps\dmr_cc" },
             { 0x103D, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v3" },
-            { 0x103E, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v3\shaders\[01]_rmsh" },
-            { 0x103F, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v3\shaders\[02]_rmsh" },
-            { 0x1040, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v3\shaders\[03]_rmsh" },
-            { 0x1041, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v3\shaders\[04]_rmsh" },
-            { 0x1042, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v3\shaders\[05]_rmsh" },
-            { 0x1043, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v3\shaders\[06]_rmsh" },
-            { 0x1044, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v3\shaders\[07]_rmsh" },
-            { 0x1045, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v3\shaders\[09]_rmsh" },
-            { 0x1046, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v3\shaders\[10]_rmsh" },
+            { 0x103E, @"objects\weapons\rifle\dmr\dmr_v3\shaders\dmr_composite" },
+            { 0x103F, @"objects\weapons\rifle\dmr\dmr_v3\shaders\dmr_metal" },
+            { 0x1040, @"objects\weapons\rifle\dmr\dmr_v3\shaders\tens" },
+            { 0x1041, @"objects\weapons\rifle\dmr\dmr_v3\shaders\dmr_display" },
+            { 0x1042, @"objects\weapons\rifle\dmr\dmr_v3\shaders\ones" },
+            { 0x1043, @"objects\weapons\rifle\dmr\dmr_v3\shaders\dmr_default_detail" },
+            { 0x1044, @"objects\weapons\rifle\dmr\dmr_v3\shaders\dmr_scan_lines" },
+            { 0x1045, @"objects\weapons\rifle\dmr\dmr_v3\shaders\dmr_scope_glass" },
+            { 0x1046, @"objects\weapons\rifle\dmr\dmr_v3\shaders\dmr_scope_glass2" },
             { 0x1048, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v4" },
-            { 0x1049, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v4\shaders\[01]_rmsh" },
-            { 0x104A, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v4\shaders\[02]_rmsh" },
-            { 0x104B, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v4\shaders\[03]_rmsh" },
-            { 0x104C, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v4\shaders\[04]_rmsh" },
-            { 0x104D, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v4\shaders\[05]_rmsh" },
-            { 0x104E, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v4\shaders\[06]_rmsh" },
-            { 0x104F, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v4\shaders\[07]_rmsh" },
-            { 0x1050, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v4\shaders\[08]_rmsh" },
-            { 0x1051, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v4\shaders\[09]_rmsh" },
-            { 0x1052, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v4\bitmaps\[02]_rmsh\base" },
-            { 0x1053, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v4\bitmaps\[02]_rmsh\material" },
-            { 0x1054, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v4\bitmaps\[02]_rmsh\bump" },
-            { 0x1055, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v4\bitmaps\[04]_rmsh\color_mask" },
+            { 0x1049, @"objects\weapons\rifle\dmr\dmr_v4\shaders\dmr_composite" },
+            { 0x104A, @"objects\weapons\rifle\dmr\dmr_v4\shaders\dmr_metal" },
+            { 0x104B, @"objects\weapons\rifle\dmr\dmr_v4\shaders\dmr_metal_shiny" },
+            { 0x104C, @"objects\weapons\rifle\dmr\dmr_v4\shaders\dmr_rubber" },
+            { 0x104D, @"objects\weapons\rifle\dmr\dmr_v4\shaders\tens" },
+            { 0x104E, @"objects\weapons\rifle\dmr\dmr_v4\shaders\dmr_display" },
+            { 0x104F, @"objects\weapons\rifle\dmr\dmr_v4\shaders\ones" },
+            { 0x1050, @"objects\weapons\rifle\dmr\dmr_v4\shaders\dmr_default_detail" },
+            { 0x1051, @"objects\weapons\rifle\dmr\dmr_v4\shaders\dmr_scan_lines" },
+            { 0x1052, @"objects\weapons\rifle\dmr\dmr_v4\bitmaps\dmr" },
+            { 0x1053, @"objects\weapons\rifle\dmr\dmr_v4\bitmaps\dmr_control" },
+            { 0x1054, @"objects\weapons\rifle\dmr\dmr_v4\bitmaps\dmr_bump" },
+            { 0x1055, @"objects\weapons\rifle\dmr\dmr_v4\bitmaps\dmr_cc" },
             { 0x1059, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6" },
-            { 0x105A, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\shaders\[01]_rmsh" },
-            { 0x105B, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\shaders\[03]_rmsh" },
-            { 0x105C, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\shaders\[04]_rmsh" },
-            { 0x105D, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\shaders\[05]_rmsh" },
-            { 0x105E, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\shaders\[06]_rmsh" },
-            { 0x105F, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\shaders\[07]_rmsh" },
-            { 0x1060, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\shaders\[08]_rmsh" },
-            { 0x1061, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\shaders\[09]_rmsh" },
-            { 0x1062, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\bitmaps\[01]_rmsh\material" },
-            { 0x1063, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\bitmaps\[01]_rmsh\specular_mask" },
-            { 0x1064, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\bitmaps\[01]_rmsh\color_mask" },
-            { 0x1065, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\bitmaps\[03]_rmsh\specular_mask" },
-            { 0x1066, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\bitmaps\[03]_rmsh\color_mask" },
-            { 0x1067, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\bitmaps\[03]_rmsh\material" },
-            { 0x1068, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\bitmaps\[04]_rmsh\material" },
-            { 0x1069, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\bitmaps\[04]_rmsh\specular_mask" },
-            { 0x106A, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr_v6\bitmaps\[04]_rmsh\color_mask" },
+            { 0x105A, @"objects\weapons\rifle\dmr\dmr_v6\shaders\dmr_composite" },
+            { 0x105B, @"objects\weapons\rifle\dmr\dmr_v6\shaders\dmr_metal" },
+            { 0x105C, @"objects\weapons\rifle\dmr\dmr_v6\shaders\dmr_rubber" },
+            { 0x105D, @"objects\weapons\rifle\dmr\dmr_v6\shaders\tens" },
+            { 0x105E, @"objects\weapons\rifle\dmr\dmr_v6\shaders\dmr_display" },
+            { 0x105F, @"objects\weapons\rifle\dmr\dmr_v6\shaders\ones" },
+            { 0x1060, @"objects\weapons\rifle\dmr\dmr_v6\shaders\dmr_default_detail" },
+            { 0x1061, @"objects\weapons\rifle\dmr\dmr_v6\shaders\dmr_scan_lines" },
+            { 0x1062, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_composite_control" },
+            { 0x1063, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_composite_spec" },
+            { 0x1064, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_composite_cc" },
+            { 0x1065, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_metal_spec" },
+            { 0x1066, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_metal_cc" },
+            { 0x1067, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_metal_control" },
+            { 0x1068, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_rubber_control" },
+            { 0x1069, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_rubber_spec" },
+            { 0x106A, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_rubber_cc" },
             { 0x106C, @"objects\weapons\rifle\covenant_carbine\fp_covenant_carbine\fp_covenant_carbine" },
             { 0x106D, @"objects\weapons\rifle\covenant_carbine\shaders\carbine" },
             { 0x106E, @"objects\weapons\rifle\covenant_carbine\shaders\carbine_metal" },
@@ -5735,12 +5735,12 @@ namespace TagTool.Commands.Tags
             { 0x1C7D, @"objects\weapons\rifle\assault_rifle\assault_rifle" },
             { 0x1C7E, @"objects\weapons\rifle\assault_rifle\assault_rifle" },
             { 0x1C7F, @"objects\weapons\lod\lod_assault_rifle\lod_assault_rifle" },
-            { 0x1C80, @"objects\weapons\rifle\assault_rifle\assault_rifle\shaders\[04]_rmsh" },
-            { 0x1C81, @"objects\weapons\rifle\assault_rifle\assault_rifle\shaders\[05]_rmsh" },
-            { 0x1C82, @"objects\weapons\rifle\assault_rifle\assault_rifle\shaders\[06]_rmsh" },
-            { 0x1C83, @"objects\weapons\lod\lod_assault_rifle\lod_assault_rifle\shaders\[00]_rmsh" },
-            { 0x1C84, @"objects\weapons\lod\lod_assault_rifle\lod_assault_rifle\shaders\[01]_rmsh" },
-            { 0x1C85, @"objects\weapons\lod\lod_assault_rifle\lod_assault_rifle\shaders\[02]_rmsh" },
+            { 0x1C80, @"objects\weapons\rifle\assault_rifle\shaders\tens_3p" },
+            { 0x1C81, @"objects\weapons\rifle\assault_rifle\shaders\ones_3p" },
+            { 0x1C82, @"objects\weapons\rifle\assault_rifle\shaders\compass_3p" },
+            { 0x1C83, @"objects\weapons\lod\shaders\lod_assault_rifle_metal" },
+            { 0x1C84, @"objects\weapons\lod\shaders\lod_assault_rifle_rubber" },
+            { 0x1C85, @"objects\weapons\lod\shaders\lod_assault_rifle_env" },
             { 0x1C86, @"ui\chud\bitmaps\red_flash" },
             { 0x1C87, @"ui\chud\bitmaps\elite_corner_flash" },
             { 0x1C88, @"ui\chud\animations\backpack_warning_flash" },
@@ -6021,10 +6021,10 @@ namespace TagTool.Commands.Tags
             { 0x1DA2, @"objects\weapons\rifle\battle_rifle\battle_rifle" },
             { 0x1DA3, @"objects\weapons\rifle\battle_rifle\battle_rifle" },
             { 0x1DA4, @"objects\weapons\lod\lod_battle_rifle\lod_battle_rifle" },
-            { 0x1DA5, @"objects\weapons\rifle\battle_rifle\battle_rifle\shaders\[06]_rmsh" },
-            { 0x1DA6, @"objects\weapons\rifle\battle_rifle\battle_rifle\shaders\[07]_rmsh" },
-            { 0x1DA7, @"objects\weapons\lod\lod_battle_rifle\lod_battle_rifle\shaders\[00]_rmsh" },
-            { 0x1DA8, @"objects\weapons\lod\lod_battle_rifle\lod_battle_rifle\shaders\[01]_rmsh" },
+            { 0x1DA5, @"objects\weapons\rifle\battle_rifle\shaders\one_3p" },
+            { 0x1DA6, @"objects\weapons\rifle\battle_rifle\shaders\tens_3p" },
+            { 0x1DA7, @"objects\weapons\lod\shaders\lod_battle_rifle_metal" },
+            { 0x1DA8, @"objects\weapons\lod\shaders\lod_battle_rifle_rubber" },
             { 0x1DA9, @"ui\chud\animations\crosshair_animations\br_reticule" }, //unsure about this (tag is halo online specific)
             { 0x1DAA, @"ui\chud\animations\crosshair_animations\br_c" }, //unsure about this (tag is halo online specific)
             { 0x1DAB, @"ui\chud\animations\crosshair_animations\br_t" }, //unsure about this (tag is halo online specific)
@@ -6105,9 +6105,9 @@ namespace TagTool.Commands.Tags
             { 0x1DF7, @"objects\weapons\rifle\covenant_carbine\covenant_carbine" },
             { 0x1DF8, @"objects\weapons\rifle\covenant_carbine\covenant_carbine" },
             { 0x1DF9, @"objects\weapons\lod\lod_carbine\lod_carbine" },
-            { 0x1DFA, @"objects\weapons\rifle\covenant_carbine\covenant_carbine\shaders\[03]_rmsh" },
-            { 0x1DFB, @"objects\weapons\rifle\covenant_carbine\covenant_carbine\shaders\[04]_rmsh" },
-            { 0x1DFC, @"objects\weapons\rifle\covenant_carbine\covenant_carbine\shaders\[06]_rmsh" },
+            { 0x1DFA, @"objects\weapons\rifle\covenant_carbine\shaders\covglyph_tens_3p" },
+            { 0x1DFB, @"objects\weapons\rifle\covenant_carbine\shaders\covglyph_ones_3p" },
+            { 0x1DFC, @"objects\weapons\rifle\covenant_carbine\shaders\wire_shape_3p" },
             { 0x1DFD, @"objects\weapons\lod\shaders\lod_carbine" },
             { 0x1DFE, @"objects\weapons\lod\bitmaps\carbine" },
             { 0x1DFF, @"ui\chud\animations\crosshair_animations\cb_lr" }, //unsure about this (tag is halo online specific)
@@ -6151,21 +6151,21 @@ namespace TagTool.Commands.Tags
             { 0x1E26, @"objects\weapons\rifle\dmr\dmr" },
             { 0x1E27, @"objects\weapons\rifle\dmr\dmr" },
             { 0x1E28, @"objects\weapons\lod\lod_dmr\lod_dmr" },
-            { 0x1E29, @"objects\weapons\rifle\dmr\dmr\shaders\[01]_rmd" },
-            { 0x1E2A, @"objects\weapons\rifle\dmr\dmr\shaders\[02]_rmsh" },
-            { 0x1E2B, @"objects\weapons\rifle\dmr\dmr\shaders\[03]_rmsh" },
-            { 0x1E2C, @"objects\weapons\rifle\dmr\dmr\shaders\[04]_rmsh" },
+            { 0x1E29, @"objects\weapons\rifle\dmr\shaders\dmr_decals_eagle_crest_3p" },
+            { 0x1E2A, @"objects\weapons\rifle\dmr\shaders\dmr_scope_glass_3p" },
+            { 0x1E2B, @"objects\weapons\rifle\dmr\shaders\dmr_composite_3p" },
+            { 0x1E2C, @"objects\weapons\rifle\dmr\shaders\dmr_scope_glass2_3p" },
             { 0x1E2D, @"objects\weapons\rifle\sniper_rifle\bitmaps\sniper_rifle_lens" },
             { 0x1E2E, @"shaders\shader_templates\_0_0_0_1_1_2_0_0_0_1_0" },
             { 0x1E2F, @"shaders\shader_templates\_0_0_0_1_1_2_0_0_0_1_0" },
             { 0x1E30, @"shaders\shader_templates\_0_0_0_1_1_2_0_0_0_1_0" },
-            { 0x1E31, @"objects\weapons\rifle\dmr\dmr\bitmaps\[03]_rmsh\base" },
-            { 0x1E32, @"objects\weapons\rifle\dmr\dmr\bitmaps\[03]_rmsh\bump" },
-            { 0x1E33, @"objects\weapons\rifle\dmr\dmr\bitmaps\[03]_rmsh\material" },
+            { 0x1E31, @"objects\weapons\rifle\dmr\shaders\dmr_3p" },
+            { 0x1E32, @"objects\weapons\rifle\dmr\shaders\dmr_3p_bump" },
+            { 0x1E33, @"objects\weapons\rifle\dmr\shaders\dmr_3p_control" },
             { 0x1E34, @"shaders\shader_templates\_0_2_0_2_1_2_0_0_0_1_0" },
             { 0x1E35, @"shaders\shader_templates\_0_2_0_2_1_2_0_0_0_1_0" },
             { 0x1E36, @"shaders\shader_templates\_0_2_0_2_1_2_0_0_0_1_0" },
-            { 0x1E37, @"objects\weapons\lod\lod_dmr\lod_dmr\shaders\[00]_rmsh" },
+            { 0x1E37, @"objects\weapons\lod\shaders\lod_dmr" },
             { 0x1E38, @"shaders\shader_templates\_8_3_0_3_1_4_0_0_0_0_0" },
             { 0x1E39, @"shaders\shader_templates\_8_3_0_3_1_4_0_0_0_0_0" },
             { 0x1E3A, @"shaders\shader_templates\_8_3_0_3_1_4_0_0_0_0_0" },
@@ -7412,12 +7412,12 @@ namespace TagTool.Commands.Tags
             { 0x232A, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\assault_rifle_v2" }, //unsure about this (tag is halo online specific)
             { 0x232B, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\assault_rifle_v2" }, //unsure about this (tag is halo online specific)
             { 0x232C, @"objects\weapons\lod\lod_assault_rifle\lod_assault_rifle_v2" }, //unsure about this (tag is halo online specific)
-            { 0x232D, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\assault_rifle_v2" }, //unsure about this (tag is halo online specific)
-            { 0x232E, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\compass" }, //unsure about this (tag is halo online specific)
-            { 0x232F, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\tens" }, //unsure about this (tag is halo online specific)
-            { 0x2330, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\ones" }, //unsure about this (tag is halo online specific)
-            { 0x2331, @"objects\weapons\lod\shaders\lod_assault_rifle_variants_1" }, //unsure about this (tag is halo online specific)
-            { 0x2332, @"objects\weapons\lod\shaders\lod_assault_rifle_variants_2" }, //unsure about this (tag is halo online specific)
+            { 0x232D, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\assault_rifle_metal_3p" }, //unsure about this (tag is halo online specific)
+            { 0x232E, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\compass_3p" }, //unsure about this (tag is halo online specific)
+            { 0x232F, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x2330, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
+            { 0x2331, @"objects\weapons\lod\shaders\lod_assault_rifle_v1" }, //unsure about this (tag is halo online specific)
+            { 0x2332, @"objects\weapons\lod\shaders\lod_assault_rifle_v2" }, //unsure about this (tag is halo online specific)
             { 0x2333, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\assault_rifle_v3" },
             { 0x2334, @"ui\chud\assault_rifle_v3" },
             { 0x2335, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\projectiles\assault_rifle_bullet_v3" },
@@ -7429,9 +7429,9 @@ namespace TagTool.Commands.Tags
             { 0x233B, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\assault_rifle_v3" }, //unsure about this (tag is halo online specific)
             { 0x233C, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\assault_rifle_v3" }, //unsure about this (tag is halo online specific)
             { 0x233D, @"objects\weapons\lod\lod_assault_rifle\lod_assault_rifle_v3" }, //unsure about this (tag is halo online specific)
-            { 0x233E, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\tens" }, //unsure about this (tag is halo online specific)
-            { 0x233F, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\ones" }, //unsure about this (tag is halo online specific)
-            { 0x2340, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\compass" }, //unsure about this (tag is halo online specific)
+            { 0x233E, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x233F, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
+            { 0x2340, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\compass_3p" }, //unsure about this (tag is halo online specific)
             { 0x2341, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\assault_rifle_v5" },
             { 0x2342, @"ui\chud\assault_rifle_v5" },
             { 0x2343, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\projectiles\assault_rifle_bullet_v5" },
@@ -7442,9 +7442,9 @@ namespace TagTool.Commands.Tags
             { 0x2348, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\assault_rifle_v5" }, //unsure about this (tag is halo online specific)
             { 0x2349, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\assault_rifle_v5" }, //unsure about this (tag is halo online specific)
             { 0x234A, @"objects\weapons\lod\lod_assault_rifle\lod_assault_rifle_v5" }, //unsure about this (tag is halo online specific)
-            { 0x234B, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\tens" }, //unsure about this (tag is halo online specific)
-            { 0x234C, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\ones" }, //unsure about this (tag is halo online specific)
-            { 0x234D, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\compass" }, //unsure about this (tag is halo online specific)
+            { 0x234B, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x234C, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
+            { 0x234D, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\compass_3p" }, //unsure about this (tag is halo online specific)
             { 0x234E, @"objects\weapons\lod\shaders\lod_assault_rifle_v5" }, //unsure about this (tag is halo online specific)
             { 0x234F, @"shaders\shader_templates\_0_0_0_0_1_0_0_0_0_0_0" },
             { 0x2350, @"shaders\shader_templates\_0_0_0_0_1_0_0_0_0_0_0" },
@@ -7475,8 +7475,8 @@ namespace TagTool.Commands.Tags
             { 0x2369, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\battle_rifle_v3" }, //unsure about this (tag is halo online specific)
             { 0x236A, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\battle_rifle_v3" }, //unsure about this (tag is halo online specific)
             { 0x236B, @"objects\weapons\lod\lod_battle_rifle\lod_battle_rifle_v3" }, //unsure about this (tag is halo online specific)
-            { 0x236C, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\shaders\tens" }, //unsure about this (tag is halo online specific)
-            { 0x236D, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\shaders\ones" }, //unsure about this (tag is halo online specific)
+            { 0x236C, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\shaders\battle_rifle_tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x236D, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\shaders\battle_rifle_ones_3p" }, //unsure about this (tag is halo online specific)
             { 0x236E, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\battle_rifle_v4" },
             { 0x236F, @"ui\chud\battle_rifle_v4" },
             { 0x2370, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\projectiles\battle_rifle_bullet_v4" },
@@ -7488,10 +7488,10 @@ namespace TagTool.Commands.Tags
             { 0x2376, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\battle_rifle_v4" }, //unsure about this (tag is halo online specific)
             { 0x2377, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\battle_rifle_v4" }, //unsure about this (tag is halo online specific)
             { 0x2378, @"objects\weapons\lod\lod_battle_rifle\lod_battle_rifle_v4" }, //unsure about this (tag is halo online specific)
-            { 0x2379, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\shaders\tens" }, //unsure about this (tag is halo online specific)
-            { 0x237A, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\shaders\ones" }, //unsure about this (tag is halo online specific)
+            { 0x2379, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\shaders\battle_rifle_tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x237A, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\shaders\battle_rifle_ones_3p" }, //unsure about this (tag is halo online specific)
             { 0x237B, @"objects\weapons\lod\shaders\lod_battle_rifle_v4" }, //unsure about this (tag is halo online specific)
-            { 0x237C, @"objects\weapons\lod\shaders\lod_battle_rifle_variants_1" }, //unsure about this (tag is halo online specific)
+            { 0x237C, @"objects\weapons\lod\shaders\lod_battle_rifle_v1" }, //unsure about this (tag is halo online specific)
             { 0x237D, @"shaders\shader_templates\_3_3_0_3_1_2_0_0_0_1_0" },
             { 0x237E, @"shaders\shader_templates\_3_3_0_3_1_2_0_0_0_1_0" },
             { 0x237F, @"shaders\shader_templates\_3_3_0_3_1_2_0_0_0_1_0" },
@@ -7505,9 +7505,9 @@ namespace TagTool.Commands.Tags
             { 0x2387, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\battle_rifle_v6" }, //unsure about this (tag is halo online specific)
             { 0x2388, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\battle_rifle_v6" }, //unsure about this (tag is halo online specific)
             { 0x2389, @"objects\weapons\lod\lod_battle_rifle\lod_battle_rifle_v6" }, //unsure about this (tag is halo online specific)
-            { 0x238A, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\shaders\tens" }, //unsure about this (tag is halo online specific)
-            { 0x238B, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\shaders\ones" }, //unsure about this (tag is halo online specific)
-            { 0x238C, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\shaders\battle_rifle_v6" }, //unsure about this (tag is halo online specific)
+            { 0x238A, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\shaders\battle_rifle_tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x238B, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\shaders\battle_rifle_ones_3p" }, //unsure about this (tag is halo online specific)
+            { 0x238C, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\shaders\battle_rifle_scope_3p" }, //unsure about this (tag is halo online specific)
             { 0x238D, @"shaders\shader_templates\_2_0_0_3_5_2_1_0_0_1_0" },
             { 0x238E, @"shaders\shader_templates\_2_0_0_3_5_2_1_0_0_1_0" },
             { 0x238F, @"shaders\shader_templates\_2_0_0_3_5_2_1_0_0_1_0" },
@@ -7525,9 +7525,9 @@ namespace TagTool.Commands.Tags
             { 0x239B, @"objects\weapons\rifle\dmr\dmr_v2\dmr_v2" }, //unsure about this (tag is halo online specific)
             { 0x239C, @"objects\weapons\rifle\dmr\dmr_v2\dmr_v2" }, //unsure about this (tag is halo online specific)
             { 0x239D, @"objects\weapons\lod\lod_dmr\lod_dmr_v2" }, //unsure about this (tag is halo online specific)
-            { 0x239E, @"objects\weapons\rifle\dmr\dmr_v2\shaders\tens" }, //unsure about this (tag is halo online specific)
-            { 0x239F, @"objects\weapons\rifle\dmr\dmr_v2\shaders\ones" }, //unsure about this (tag is halo online specific)
-            { 0x23A0, @"objects\weapons\lod\shaders\lod_dmr_variants_1" }, //unsure about this (tag is halo online specific)
+            { 0x239E, @"objects\weapons\rifle\dmr\dmr_v2\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x239F, @"objects\weapons\rifle\dmr\dmr_v2\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
+            { 0x23A0, @"objects\weapons\lod\shaders\lod_dmr_v2" }, //unsure about this (tag is halo online specific)
             { 0x23A1, @"shaders\shader_templates\_0_3_0_3_1_4_0_0_0_0_0" },
             { 0x23A2, @"shaders\shader_templates\_0_3_0_3_1_4_0_0_0_0_0" },
             { 0x23A3, @"shaders\shader_templates\_0_3_0_3_1_4_0_0_0_0_0" },
@@ -7541,8 +7541,8 @@ namespace TagTool.Commands.Tags
             { 0x23AB, @"objects\weapons\rifle\dmr\dmr_v3\dmr_v3" }, //unsure about this (tag is halo online specific)
             { 0x23AC, @"objects\weapons\rifle\dmr\dmr_v3\dmr_v3" }, //unsure about this (tag is halo online specific)
             { 0x23AD, @"objects\weapons\lod\lod_dmr\lod_dmr_v3" }, //unsure about this (tag is halo online specific)
-            { 0x23AE, @"objects\weapons\rifle\dmr\dmr_v3\shaders\tens" }, //unsure about this (tag is halo online specific)
-            { 0x23AF, @"objects\weapons\rifle\dmr\dmr_v3\shaders\ones" }, //unsure about this (tag is halo online specific)
+            { 0x23AE, @"objects\weapons\rifle\dmr\dmr_v3\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x23AF, @"objects\weapons\rifle\dmr\dmr_v3\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
             { 0x23B0, @"objects\weapons\rifle\dmr\dmr_v4\dmr_v4" },
             { 0x23B1, @"ui\chud\dmr_v4" },
             { 0x23B2, @"objects\weapons\rifle\dmr\dmr_v4\projectiles\dmr_bullet_v4" },
@@ -7556,8 +7556,8 @@ namespace TagTool.Commands.Tags
             { 0x23BA, @"objects\weapons\rifle\dmr\dmr_v4\dmr_v4" }, //unsure about this (tag is halo online specific)
             { 0x23BB, @"objects\weapons\rifle\dmr\dmr_v4\dmr_v4" }, //unsure about this (tag is halo online specific)
             { 0x23BC, @"objects\weapons\lod\lod_dmr\lod_dmr_v4" }, //unsure about this (tag is halo online specific)
-            { 0x23BD, @"objects\weapons\rifle\dmr\dmr_v4\shaders\tens" }, //unsure about this (tag is halo online specific)
-            { 0x23BE, @"objects\weapons\rifle\dmr\dmr_v4\shaders\ones" }, //unsure about this (tag is halo online specific)
+            { 0x23BD, @"objects\weapons\rifle\dmr\dmr_v4\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x23BE, @"objects\weapons\rifle\dmr\dmr_v4\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
             { 0x23BF, @"objects\weapons\rifle\dmr\dmr_v6\dmr_v6" },
             { 0x23C0, @"ui\chud\dmr_v6" },
             { 0x23C1, @"objects\weapons\rifle\dmr\dmr_v6\projectiles\dmr_bullet_v6" },
@@ -7568,7 +7568,7 @@ namespace TagTool.Commands.Tags
             { 0x23C6, @"objects\weapons\rifle\dmr\dmr_v6\dmr_v6" }, //unsure about this (tag is halo online specific)
             { 0x23C7, @"objects\weapons\rifle\dmr\dmr_v6\dmr_v6" }, //unsure about this (tag is halo online specific)
             { 0x23C8, @"objects\weapons\lod\lod_dmr\lod_dmr_v6" }, //unsure about this (tag is halo online specific)
-            { 0x23C9, @"objects\weapons\rifle\dmr\dmr_v6\shaders\tens" }, //unsure about this (tag is halo online specific)
+            { 0x23C9, @"objects\weapons\rifle\dmr\dmr_v6\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
             { 0x23CA, @"objects\weapons\lod\shaders\lod_dmr_v6" }, //unsure about this (tag is halo online specific)
             { 0x23CB, @"objects\weapons\rifle\smg\smg_v1\smg_v1" },
             { 0x23CC, @"ui\chud\smg_v1" },
