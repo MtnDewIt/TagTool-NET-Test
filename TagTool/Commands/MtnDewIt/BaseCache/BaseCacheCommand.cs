@@ -43,7 +43,7 @@ namespace TagTool.Commands.Tags
 
         public override object Execute(List<string> args) 
         {
-            CommandRunner.Current.RunCommand($@"nameunnamedeldewritotags"); //Maybe move into a method, instead of a command?
+            CommandRunner.Current.RunCommand($@"nameunnamedhaloonlinetags"); //Maybe move into a method, instead of a command?
             getCacheFiles();
             moveFontPackage();
             rebuildCache(outputDirectoryInfo.FullName);
