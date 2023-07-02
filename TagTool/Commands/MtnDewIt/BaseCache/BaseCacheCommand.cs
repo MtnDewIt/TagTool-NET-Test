@@ -19,6 +19,7 @@ namespace TagTool.Commands.Tags
         public static DirectoryInfo halo3ODSTDirectoryInfo { get; set; }
         public static DirectoryInfo outputDirectoryInfo { get; set; }
 
+        public GameCache ho_cache { get; set; }
         public GameCache h3_mainmenu { get; set; }
         public GameCache voi { get; set; }
         public GameCache citadel { get; set; }
@@ -73,6 +74,8 @@ namespace TagTool.Commands.Tags
 
         public void getCacheFiles()
         {
+            ho_cache = GameCache.Open($@"{CacheContext.Directory.FullName}\mainmenu.map");
+
             halo3DirectoryInfo = getDirectoryInfo(halo3DirectoryInfo, "Halo 3");
 
             h3_mainmenu = GameCache.Open($@"{halo3DirectoryInfo.FullName}\mainmenu.map");

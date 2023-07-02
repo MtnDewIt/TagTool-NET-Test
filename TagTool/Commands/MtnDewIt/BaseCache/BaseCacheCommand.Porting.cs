@@ -413,6 +413,14 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag ui\chud\globals.chud_globals_definition");
             ContextStack.Pop();
 
+            // TODO: Add animation dependencies (sounds, effects, etc)
+            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, ho_cache));
+            CommandRunner.Current.RunCommand($@"porttag single objects\characters\masterchief\masterchief.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag single objects\characters\elite\lipsync\lipsync.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag single objects\characters\elite\elite.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag single objects\characters\dervish\dervish.model_animation_graph");
+            ContextStack.Pop();
+
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp\fp.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp_body\fp_body.mode");
@@ -436,11 +444,7 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\masterchief.bipd");
             ContextStack.Pop();
 
-            ImportAnimations();
-
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mainmenu));
-            CommandRunner.Current.RunCommand($@"mergeanimationgraphs");
-            ContextStack.Pop();
+            //ImportAnimations();
 
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
             CommandRunner.Current.RunCommand($@"porttag objects\ui\editor_gizmo\editor_gizmo.scen");
