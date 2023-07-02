@@ -15,7 +15,7 @@ namespace TagTool.Commands.Porting
 {
     partial class PortTagCommand
     {
-        private LensFlare ConvertLensFlare(LensFlare lensFlare)
+        private LensFlare ConvertLensFlare(LensFlare lensFlare, Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams)
         {
             lensFlare.OcclusionReflectionIndex = 0;
 
@@ -23,11 +23,17 @@ namespace TagTool.Commands.Porting
 
             foreach (var reflection in lensFlare.Reflections)
             {
-                // only H3Original and ODST have Rotation and Axis offsets swapped
-                if (BlamCache.Version == CacheVersion.Halo3ODST ||
-                   (BlamCache.Version == CacheVersion.Halo3Retail && BlamCache.Platform == CachePlatform.Original))
+                // only H3Original and ODST have Rotation after Axis Offset
+                // ODST: counterclockwise rotation starting from alt axis
+                if (BlamCache.Version == CacheVersion.Halo3ODST)
+                    reflection.RotationOffset = -(reflection.RotationOffsetH3 - 90);
+                // retail H3: clockwise rotation from alt axis
+                else if (BlamCache.Version == CacheVersion.Halo3Retail)
                 {
-                    reflection.RotationOffset = reflection.RotationOffsetH3;
+                    if (BlamCache.Platform == CachePlatform.Original)
+                        reflection.RotationOffset = reflection.RotationOffsetH3;
+
+                    reflection.RotationOffset += 90;
                 }
 
                 // only H3MCC and HO have tint modulation factor after tint color
@@ -39,6 +45,17 @@ namespace TagTool.Commands.Porting
 
                 reflection.UnknownHO = 0;
                 //reflection.BitmapOverride = null; // only H3MCC and HO have this cachedtag
+
+                // not necessary to convert HO reflection functions
+                if (BlamCache.Version >= CacheVersion.HaloOnlineED && BlamCache.Version < CacheVersion.HaloReach)
+                    continue;
+                // not necessary to convert H3MCC reflection functions
+                if (BlamCache.Platform == CachePlatform.MCC && BlamCache.Version == CacheVersion.Halo3Retail)
+                {
+                    //port bitmap overrides
+                    reflection.BitmapOverride = ConvertTag(cacheStream, blamCacheStream, resourceStreams, reflection.BitmapOverride);
+                    continue;
+                }
 
                 var radius = new byte[52];
                 var scale = new byte[52];
@@ -165,8 +182,9 @@ namespace TagTool.Commands.Porting
                 if (wasReplacing)
                     SetFlags(PortingFlags.Replace);
 
-                Lbsp.Airprobes = new List<Airprobe>();
-                Lbsp.Airprobes.AddRange(scenarioLightmap.Airprobes);
+                Lbsp.Airprobes = new List<Airprobe>(scenarioLightmap.Airprobes);
+                Lbsp.SceneryLightProbes = new List<SceneryLightProbe>(scenarioLightmap.SceneryLightProbes);
+                Lbsp.MachineLightProbes = new List<MachineLightProbes>(scenarioLightmap.MachineLightProbes);
 
                 var groupTag = CacheContext.TagCache.TagDefinitions.GetTagGroupFromTag("Lbsp");
 
@@ -192,6 +210,8 @@ namespace TagTool.Commands.Porting
             }
 
             scenarioLightmap.Airprobes.Clear();
+            scenarioLightmap.SceneryLightProbes.Clear();
+            scenarioLightmap.MachineLightProbes.Clear();
 
             return scenarioLightmap;
         }
