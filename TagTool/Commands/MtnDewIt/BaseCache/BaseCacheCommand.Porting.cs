@@ -444,7 +444,7 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\masterchief.bipd");
             ContextStack.Pop();
 
-            //ImportAnimations();
+            ImportAnimations();
 
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
             CommandRunner.Current.RunCommand($@"porttag objects\ui\editor_gizmo\editor_gizmo.scen");
