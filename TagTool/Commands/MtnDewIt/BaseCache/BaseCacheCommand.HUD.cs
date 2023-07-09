@@ -197,6 +197,24 @@ namespace TagTool.Commands.Tags
                         chdt.HudWidgets[5].BitmapWidgets[8].PlacementData[0].Offset = new RealPoint2d(-221.5f, -3f);
                         CacheContext.Serialize(stream, tag, chdt);
                     }
+                    
+                    // Fixes forge title not appearing in summary widget
+                    if (tag.IsInGroup("chdt") && tag.Name == $@"ui\chud\multiplayer_intro\summary_editor")
+                    {
+                        var chdt = CacheContext.Deserialize<ChudDefinition>(stream, tag);
+                        chdt.HudWidgets[1].TextWidgets[0].StateData[0].GameState = ChudDefinition.HudWidgetBase.StateDatum.ChudGameStateED.None;
+                        chdt.HudWidgets[1].TextWidgets[0].StateData[0].GameTeam = ChudDefinition.HudWidgetBase.StateDatum.ChudGameTeam.Offense | ChudDefinition.HudWidgetBase.StateDatum.ChudGameTeam.Defense | ChudDefinition.HudWidgetBase.StateDatum.ChudGameTeam.NotApplicable;
+                        CacheContext.Serialize(stream, tag, chdt);
+                    }
+                    
+                    // Fixes infection title not appearing summary widget
+                    if (tag.IsInGroup("chdt") && tag.Name == $@"ui\chud\multiplayer_intro\summary_infection")
+                    {
+                        var chdt = CacheContext.Deserialize<ChudDefinition>(stream, tag);
+                        chdt.HudWidgets[1].TextWidgets[0].StateData[0].GameState = ChudDefinition.HudWidgetBase.StateDatum.ChudGameStateED.None;
+                        CacheContext.Serialize(stream, tag, chdt);
+                    }
+
                     // Fixes minor graphical issue with the battle rifle ammo bitmap
                     if (tag.IsInGroup("bitm") && tag.Name == $@"ui\chud\bitmaps\ballistic_meters")
                     {
@@ -204,11 +222,6 @@ namespace TagTool.Commands.Tags
                         bitm.Sequences[7].Sprites[0].Top = 0.275625f;
                         CacheContext.Serialize(stream, tag, bitm);
                     }
-
-                    // Still need to sort out some issues with HUD text size, and 
-
-                    // TODO: Convert to its own method, which loops though every tag, rather than using the command runner, as continually having to use the command runner isn't very efficient
-                    // CommandRunner.Current.RunCommand($@"rescalehudtext 0.50980392156 all"); // 0.50980392156 is the approximate percentage difference in size between the default HUD text font, and the upscaled font
                 }
             }
         }

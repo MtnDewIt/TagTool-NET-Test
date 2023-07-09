@@ -1,11 +1,14 @@
+using System;
 using TagTool.Commands.Common;
 using TagTool.Commands.Porting;
+using TagTool.Tags;
+using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Tags
 {
     partial class BaseCacheCommand : Command
     {
-        // Ports all the required taga data for the porting cache, after rebuilding
+        // Ports all the required tag data for the porting cache, after rebuilding
         public void portTagData()
         {
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
@@ -50,10 +53,11 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag fx\material_effects\objects\weapons\flag.material_effects");
             CommandRunner.Current.RunCommand($@"porttag fx\scenery_fx\explosions\human_explosion_huge\human_explosion_huge.effect");
             CommandRunner.Current.RunCommand($@"porttag fx\scenery_fx\havok\havok_collection.effect");
+            GenerateTag<ShieldImpact>($@"fx\shield_impacts\overshield_3p");
+            GenerateTag<ShieldImpact>($@"fx\shield_impacts\overshield_1p");
             CommandRunner.Current.RunCommand($@"porttag fx\water\default_large.render_water_ripple");
             CommandRunner.Current.RunCommand($@"porttag fx\water\default_medium.render_water_ripple");
             CommandRunner.Current.RunCommand($@"porttag fx\water\default_small.render_water_ripple");
-            GenerateShieldImpactTags();
             CommandRunner.Current.RunCommand($@"porttag globals\collision_damage\collision.damage_effect");
             CommandRunner.Current.RunCommand($@"porttag globals\collision_damage\default.collision_damage");
             CommandRunner.Current.RunCommand($@"porttag globals\collision_damage\landing_hard.damage_effect");
@@ -68,26 +72,30 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag globals\falling.damage_effect");
             CommandRunner.Current.RunCommand($@"porttag globals\glass.breakable_surface");
             CommandRunner.Current.RunCommand($@"porttag globals\glass_thick.breakable_surface");
+            GenerateTag<ShieldImpact>($@"globals\global_shield_impact_settings");
             CommandRunner.Current.RunCommand($@"porttag globals\hs_damage.damage_effect");
             GenerateInputGlobals();
-            GenerateRasterizerGlobalsTag();
+            GenerateTag<ShieldImpact>($@"globals\masterchief_3p_shield_impact");
+            GenerateTag<ShieldImpact>($@"globals\masterchief_fp_shield_impact");
             CommandRunner.Current.RunCommand($@"porttag levels\shared\bitmaps\test_maps\cloud_1.bitmap");
             CommandRunner.Current.RunCommand($@"porttag levels\shared\bitmaps\test_maps\cloud_2.bitmap");
+            GenerateTag<RasterizerGlobals>($@"globals\rasterizer_globals");
             CommandRunner.Current.RunCommand($@"porttag multiplayer\game_engine_settings.game_engine_settings_definition");
             CommandRunner.Current.RunCommand($@"porttag multiplayer\global_multiplayer_messages.multilingual_unicode_string_list");
             CommandRunner.Current.RunCommand($@"porttag multiplayer\hill\hill.bitmap");
             CommandRunner.Current.RunCommand($@"porttag multiplayer\in_game_multiplayer_messages.multilingual_unicode_string_list");
-            GenerateMultiplayerGlobals();
+            GenerateTag<MultiplayerGlobals>($@"multiplayer\multiplayer_globals");
             CommandRunner.Current.RunCommand($@"porttag multiplayer\random_player_names.multilingual_unicode_string_list");
             CommandRunner.Current.RunCommand($@"porttag multiplayer\sandbox\cursor_impact.effect");
-            GenerateSurvivalGlobalsTag();
+            GenerateTag<SurvivalModeGlobals>($@"multiplayer\survival_mode_globals");
             CommandRunner.Current.RunCommand($@"porttag multiplayer\team_names.multilingual_unicode_string_list");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\fx\coop_teleport.effect");
             CommandRunner.Current.RunCommand($@"porttag sound\weapons\equipment\tripmine\tripmine_explosion.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\weapons\equipment\tripmine\tripmine_lod_far.sound");
             CommandRunner.Current.RunCommand($@"porttag objects\equipment\tripmine\fx\detonation.light");
-            //CommandRunner.Current.RunCommand($@"porttag multiplayer\vehicle_autoflip.effect"); // Halo Online Specific
-            //CommandRunner.Current.RunCommand($@"porttag multiplayer\safety_booster.effect"); // Halo Online Specific
+            //CommandRunner.Current.RunCommand($@"porttag multiplayer\vehicle_autoflip.effect");
+            //CommandRunner.Current.RunCommand($@"porttag multiplayer\safety_booster.effect");
+            CommandRunner.Current.RunCommand($@"porttag objects\cinematics\cinematic_anchor\cinematic_anchor.scenery");
             CommandRunner.Current.RunCommand($@"porttag objects\multi\shaders\koth_shield.shader_halogram");
             CommandRunner.Current.RunCommand($@"porttag objects\weapons\multiplayer\assault_bomb\damage_effects\bomb_explosion.damage_effect");
             CommandRunner.Current.RunCommand($@"porttag rasterizer\active_camouflage_distortion.bitmap");
@@ -194,12 +202,17 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag sound\game_sfx\multiplayer\countdown_for_respawn.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\game_sfx\multiplayer\player_respawn.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\game_sfx\multiplayer\teleporter_activate.sound");
-            //CommandRunner.Current.RunCommand($@"porttag sound\game_sfx\multiplayer\transport.sound"); // Halo Online Specific
+            //CommandRunner.Current.RunCommand($@"porttag sound\game_sfx\multiplayer\transport.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\game_sfx\ui\binoculars\binocs_in_click.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\game_sfx\ui\binoculars\binocs_out_click.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\game_sfx\ui\death_gurgle.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\game_sfx\ui\flag_fail.sound");
-            GenerateSoundEffectTemplates();
+            GenerateTag<SoundEffectTemplate>($@"sound\dsp_effects\sound_effect_templates\controller_0_headset");
+            GenerateTag<SoundEffectTemplate>($@"sound\dsp_effects\sound_effect_templates\controller_1_headset");
+            GenerateTag<SoundEffectTemplate>($@"sound\dsp_effects\sound_effect_templates\controller_2_headset");
+            GenerateTag<SoundEffectTemplate>($@"sound\dsp_effects\sound_effect_templates\controller_3_headset");
+            GenerateTag<SoundEffectTemplate>($@"sound\dsp_effects\sound_effect_templates\global_speaker_chorus");
+            GenerateTag<SoundEffectTemplate>($@"sound\dsp_effects\sound_effect_templates\mono_distortion");
             CommandRunner.Current.RunCommand($@"porttag sound\global_fx.sound_effect_collection");
             CommandRunner.Current.RunCommand($@"porttag sound\materials\energy\blue_plasma_looping\blue_plasma_looping.sound_looping");
             CommandRunner.Current.RunCommand($@"porttag sound\materials\energy\cortana_melee.sound");
@@ -413,14 +426,6 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag ui\chud\globals.chud_globals_definition");
             ContextStack.Pop();
 
-            // TODO: Add animation dependencies (sounds, effects, etc)
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, ho_cache));
-            CommandRunner.Current.RunCommand($@"porttag single objects\characters\masterchief\masterchief.model_animation_graph");
-            CommandRunner.Current.RunCommand($@"porttag single objects\characters\elite\lipsync\lipsync.model_animation_graph");
-            CommandRunner.Current.RunCommand($@"porttag single objects\characters\elite\elite.model_animation_graph");
-            CommandRunner.Current.RunCommand($@"porttag single objects\characters\dervish\dervish.model_animation_graph");
-            ContextStack.Pop();
-
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp\fp.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp_body\fp_body.mode");
@@ -432,6 +437,7 @@ namespace TagTool.Commands.Tags
             GenerateEliteActionTag();
             CommandRunner.Current.RunCommand($@"porttag objects\characters\monitor\monitor_editor.bipd");
             ContextStack.Pop();
+
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
             CommandRunner.Current.RunCommand($@"porttag objects\characters\dervish\fp\fp.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\dervish\fp_body\fp_body.mode");
@@ -444,6 +450,26 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\masterchief.bipd");
             ContextStack.Pop();
 
+            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
+            CommandRunner.Current.RunCommand($@"porttag sound\characters\elite\shade_d_enter.sound");
+            CommandRunner.Current.RunCommand($@"porttag sound\characters\elite\shade_d_exit.sound");
+            CommandRunner.Current.RunCommand($@"porttag sound\characters\masterchief\mc_shade_d_enter.sound");
+            CommandRunner.Current.RunCommand($@"porttag sound\characters\masterchief\mc_shade_d_exit.sound");
+            ContextStack.Pop();
+            
+            GenerateTag<Effect>($@"objects\characters\masterchief\damage_effects\assassination_hit_0");
+            GenerateTag<Effect>($@"objects\characters\masterchief\damage_effects\assassination_hit_1");
+            GenerateTag<Effect>($@"objects\characters\masterchief\damage_effects\assassination_hit_2");
+            GenerateTag<Effect>($@"objects\characters\masterchief\damage_effects\assassination_hit_3");
+            GenerateTag<Effect>($@"objects\characters\masterchief\damage_effects\concussive_blast");
+            
+            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, ho_cache));
+            CommandRunner.Current.RunCommand($@"porttag replace single !audio objects\characters\masterchief\masterchief.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single !audio objects\characters\elite\lipsync\lipsync.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single !audio objects\characters\elite\elite.model_animation_graph");
+            CommandRunner.Current.RunCommand($@"porttag replace single !audio objects\characters\dervish\dervish.model_animation_graph");
+            ContextStack.Pop();
+            
             ImportAnimations();
 
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
@@ -551,6 +577,16 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag *.scnr");
             ContextStack.Pop();
             CommandRunner.Current.RunCommand($@"updatemapfiles {halo3DirectoryInfo}\info");
+        }
+
+        public void GenerateTag<T>(String tagName) where T : TagStructure
+        {
+            using (var stream = Cache.OpenCacheReadWrite()) 
+            {
+                var tag = CacheContext.TagCache.AllocateTag<T>(tagName);
+                var definition = Activator.CreateInstance<T>();
+                CacheContext.Serialize(stream, tag, definition);
+            }
         }
     }
 }

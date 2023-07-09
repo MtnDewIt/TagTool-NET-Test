@@ -5,31 +5,6 @@ namespace TagTool.Commands.Tags
 {
     partial class BaseCacheCommand : Command 
     {
-        public void GenerateShieldImpactTags() 
-        {
-            using (var stream = Cache.OpenCacheReadWrite()) 
-            {
-                var overshield3pTag = CacheContext.TagCache.AllocateTag<ShieldImpact>($@"fx\shield_impacts\overshield_3p");
-                var overshield3p = new ShieldImpact();
-                CacheContext.Serialize(stream, overshield3pTag, overshield3p);
-
-                var overshield1pTag = CacheContext.TagCache.AllocateTag<ShieldImpact>($@"fx\shield_impacts\overshield_1p");
-                var overshield1p = new ShieldImpact();
-                CacheContext.Serialize(stream, overshield1pTag, overshield1p);
-
-                var globalImpactTag = CacheContext.TagCache.AllocateTag<ShieldImpact>($@"globals\global_shield_impact_settings");
-                var globalImpact = new ShieldImpact();
-                CacheContext.Serialize(stream, globalImpactTag, globalImpact);
-
-                var spartan3pTag = CacheContext.TagCache.AllocateTag<ShieldImpact>($@"globals\masterchief_3p_shield_impact");
-                var spartan3p = new ShieldImpact();
-                CacheContext.Serialize(stream, spartan3pTag, spartan3p);
-
-                var spartan1pTag = CacheContext.TagCache.AllocateTag<ShieldImpact>($@"globals\masterchief_fp_shield_impact");
-                var spartan1p = new ShieldImpact();
-                CacheContext.Serialize(stream, spartan1pTag, spartan1p);
-            }
-        }
         public void ShieldImpactSetup()
         {
             using (var stream = Cache.OpenCacheReadWrite())

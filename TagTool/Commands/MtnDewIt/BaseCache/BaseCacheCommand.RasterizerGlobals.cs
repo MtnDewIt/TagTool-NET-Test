@@ -5,16 +5,6 @@ namespace TagTool.Commands.Tags
 {
     partial class BaseCacheCommand : Command
     {
-        public void GenerateRasterizerGlobalsTag() 
-        {
-            using (var stream = Cache.OpenCacheReadWrite()) 
-            {
-                var rasgTag = CacheContext.TagCache.AllocateTag<RasterizerGlobals>($@"globals\rasterizer_globals");
-                var rasg = new RasterizerGlobals();
-                CacheContext.Serialize(stream, rasgTag, rasg);
-            }
-        }
-
         public void RasterizerGlobalsSetup() 
         {
             using (var stream = Cache.OpenCacheReadWrite()) 

@@ -415,10 +415,7 @@ namespace TagTool.Commands.Tags
         {
             Directory.CreateDirectory($@"{outputDirectoryInfo.FullName}\fonts");
 
-            // Will add upscaled font packages once HUD and UI issues have been resolved
-
-            //File.Copy($@"{Program.TagToolDirectory}\Tools\BaseCache\Fonts\Upscaled\font_package.bin", $@"{outputDirectoryInfo.FullName}\fonts\font_package.bin");
-            File.Copy($@"{Program.TagToolDirectory}\Tools\BaseCache\Fonts\Default\font_package.bin", $@"{outputDirectoryInfo.FullName}\fonts\font_package.bin");
+            File.Copy($@"{Program.TagToolDirectory}\Tools\BaseCache\Fonts\Upscaled\font_package.bin", $@"{outputDirectoryInfo.FullName}\fonts\font_package.bin");
         }
 
         public void SetCacheVersion(GameCacheHaloOnline cache, CacheVersion version)

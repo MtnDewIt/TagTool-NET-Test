@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using TagTool.Common;
-using TagTool.Audio;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
@@ -79,6 +78,17 @@ namespace TagTool.Commands.Tags
         {
             using (var stream = Cache.OpenCacheReadWrite()) 
             {
+                CacheContext.StringTable.AddString($@"thunder_clap");
+                CacheContext.StringTable.AddString($@"twerk");
+                CacheContext.StringTable.AddString($@"dance1test");
+                CacheContext.StringTable.AddString($@"dance1");
+                CacheContext.StringTable.AddString($@"mixamo");
+                CacheContext.StringTable.AddString($@"fingerlay");
+                CacheContext.StringTable.AddString($@"fingerstand");
+                CacheContext.StringTable.AddString($@"breakdance");
+                CacheContext.StringTable.AddString($@"hiphop");
+                CacheContext.StringTable.AddString($@"ballskick");
+
                 var trakTag = CacheContext.TagCache.AllocateTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera");
                 var trak = new CameraTrack
                 {
@@ -162,17 +172,6 @@ namespace TagTool.Commands.Tags
                     },
                 };
                 CacheContext.Serialize(stream, trakTag, trak);
-
-                CacheContext.StringTable.AddString($@"thunder_clap");
-                CacheContext.StringTable.AddString($@"twerk");
-                CacheContext.StringTable.AddString($@"dance1test");
-                CacheContext.StringTable.AddString($@"dance1");
-                CacheContext.StringTable.AddString($@"mixamo");
-                CacheContext.StringTable.AddString($@"fingerlay");
-                CacheContext.StringTable.AddString($@"fingerstand");
-                CacheContext.StringTable.AddString($@"breakdance");
-                CacheContext.StringTable.AddString($@"hiphop");
-                CacheContext.StringTable.AddString($@"ballskick");
 
                 var pactTag = CacheContext.TagCache.AllocateTag<PlayerActionSet>($@"objects\characters\masterchief\mp_masterchief\actions");
                 var pact = new PlayerActionSet

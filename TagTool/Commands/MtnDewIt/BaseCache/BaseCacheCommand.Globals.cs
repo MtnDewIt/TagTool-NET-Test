@@ -7251,7 +7251,7 @@ namespace TagTool.Commands.Tags
                         {
                             new Globals.PlayerRepresentationBlock()
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"masterchief"),
+                                Name = CacheContext.StringTable.GetStringId($@"spartan"),
                                 FirstPersonHands = CacheContext.TagCache.GetTag<RenderModel>($@"objects\characters\masterchief\fp\fp"),
                                 FirstPersonBody = CacheContext.TagCache.GetTag<RenderModel>($@"objects\characters\masterchief\fp_body\fp_body"),
                                 ThirdPersonUnit = CacheContext.TagCache.GetTag<Biped>($@"objects\characters\masterchief\masterchief"),
@@ -7266,6 +7266,7 @@ namespace TagTool.Commands.Tags
                                 ThirdPersonUnit = CacheContext.TagCache.GetTag<Biped>($@"objects\characters\dervish\dervish"),
                                 BinocularsZoomInSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\binoculars\binocs_in_click"),
                                 BinocularsZoomOutSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\binoculars\binocs_out_click"),
+                                Flags = 1,
                             },
                             new Globals.PlayerRepresentationBlock()
                             {
@@ -7307,17 +7308,39 @@ namespace TagTool.Commands.Tags
                             new Globals.PlayerCharacterType()
                             {
                                 Name = CacheContext.StringTable.GetStringId($@"masterchief"),
+                                Flags = TagTool.Tags.Definitions.Globals.PlayerCharacterType.FlagsValue.None,
+                                PlayerInformation = 0,
+                                PlayerControl = 0,
                                 CampaignRepresentation = 0,
                                 MultiplayerRepresentation = 2,
                                 MultiplayerArmorCustomization = 0,
+                                ChudGlobals = 0,
+                                FirstPersonInterface = 0,
                             },
                             new Globals.PlayerCharacterType()
                             {
                                 Name = CacheContext.StringTable.GetStringId($@"dervish"),
+                                Flags = TagTool.Tags.Definitions.Globals.PlayerCharacterType.FlagsValue.None,
+                                PlayerInformation = 1,
+                                PlayerControl = 1,
                                 CampaignRepresentation = 1,
                                 MultiplayerRepresentation = 3,
                                 MultiplayerArmorCustomization = 1,
+                                ChudGlobals = 0,
+                                FirstPersonInterface = 1,
                             },
+                            new Globals.PlayerCharacterType()
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"monitor"),
+                                Flags = TagTool.Tags.Definitions.Globals.PlayerCharacterType.FlagsValue.None,
+                                PlayerInformation = 0,
+                                PlayerControl = 0,
+                                CampaignRepresentation = 5,
+                                MultiplayerRepresentation = 5,
+                                MultiplayerArmorCustomization = 0,
+                                ChudGlobals = 2,
+                                FirstPersonInterface = 0,
+                            }
                         };
                         matg.FallDamage = new List<Globals.FallingDamageBlock>() 
                         {
@@ -15730,7 +15753,7 @@ namespace TagTool.Commands.Tags
                         0xFF, 0xFF, 0x7F, 0x7F, 0x00, 0x00, 0x80, 0x3F, 0x00, 0x00,
                         0x00, 0x00,
                     },
-                    Unknown4 = new byte[] // Possibly leftover controllable player count? - Twister
+                    Unknown4 = new byte[]
                     {
                         0x08, 0x35, 0x00, 0x00, 0x6F, 0x12, 0x83, 0x3A, 0xA6, 0x9B,
                         0x44, 0x3B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -15750,7 +15773,7 @@ namespace TagTool.Commands.Tags
                         0x9D, 0xBF, 0x04, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x7F, 0x7F,
                         0x29, 0xB4, 0x57, 0x40, 0x29, 0xB4, 0x17, 0xC0,
                     },
-                    Unknown5 = 500, // The engine will only ever reference this value. All other values are unknown.
+                    Unknown5 = 500,
                 };
                 CacheContext.Serialize(stream, inpgTag, inpg);
             }
