@@ -9898,7 +9898,7 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.WeaponSpawnInfluence
                                             {
-                                                //Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_rof"),
+                                                Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle\variants\battle_rifle_v1\battle_rifle_v1"),
                                                 FullWeightRadius = 5f,
                                                 FalloffRadius = 15f,
                                                 FalloffConeRadius = 3f,
@@ -9906,7 +9906,7 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.WeaponSpawnInfluence
                                             {
-                                                //Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy"),
+                                                Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle\variants\battle_rifle_v2\battle_rifle_v2"),
                                                 FullWeightRadius = 5f,
                                                 FalloffRadius = 15f,
                                                 FalloffConeRadius = 3f,
@@ -9914,7 +9914,7 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.WeaponSpawnInfluence
                                             {
-                                                //Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_ammo"),
+                                                Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle\variants\battle_rifle_v3\battle_rifle_v3"),
                                                 FullWeightRadius = 5f,
                                                 FalloffRadius = 15f,
                                                 FalloffConeRadius = 3f,
@@ -9922,7 +9922,7 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.WeaponSpawnInfluence
                                             {
-                                                //Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_damage"),
+                                                Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle\variants\battle_rifle_v4\battle_rifle_v4"),
                                                 FullWeightRadius = 5f,
                                                 FalloffRadius = 15f,
                                                 FalloffConeRadius = 3f,
@@ -9930,7 +9930,7 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.WeaponSpawnInfluence
                                             {
-                                                //Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_range"),
+                                                Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle\variants\battle_rifle_v5\battle_rifle_v5"),
                                                 FullWeightRadius = 5f,
                                                 FalloffRadius = 15f,
                                                 FalloffConeRadius = 3f,
@@ -9938,7 +9938,7 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.WeaponSpawnInfluence
                                             {
-                                                //Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_power"),
+                                                Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle\variants\battle_rifle_v6\battle_rifle_v6"),
                                                 FullWeightRadius = 5f,
                                                 FalloffRadius = 15f,
                                                 FalloffConeRadius = 3f,
@@ -9954,7 +9954,7 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.WeaponSpawnInfluence
                                             {
-                                                //Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\dmr\dmr_ammo"),
+                                                Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\dmr\variants\dmr_v1\dmr_v1"),
                                                 FullWeightRadius = 5f,
                                                 FalloffRadius = 15f,
                                                 FalloffConeRadius = 3f,
@@ -9962,7 +9962,7 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.WeaponSpawnInfluence
                                             {
-                                                //Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\dmr\dmr_accuracy"),
+                                                Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\dmr\variants\dmr_v2\dmr_v2"),
                                                 FullWeightRadius = 5f,
                                                 FalloffRadius = 15f,
                                                 FalloffConeRadius = 3f,
@@ -9970,7 +9970,7 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.WeaponSpawnInfluence
                                             {
-                                                //Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\dmr\dmr_rof"),
+                                                Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\dmr\variants\dmr_v3\dmr_v3"),
                                                 FullWeightRadius = 5f,
                                                 FalloffRadius = 15f,
                                                 FalloffConeRadius = 3f,
@@ -9978,7 +9978,7 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.WeaponSpawnInfluence
                                             {
-                                                //Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\dmr\dmr_damage"),
+                                                Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\dmr\variants\dmr_v4\dmr_v4"),
                                                 FullWeightRadius = 5f,
                                                 FalloffRadius = 15f,
                                                 FalloffConeRadius = 3f,
@@ -9993,7 +9993,7 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.WeaponSpawnInfluence
                                             {
-                                                //Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\dmr\dmr_power"),
+                                                Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\dmr\variants\dmr_v6\dmr_v6"),
                                                 FullWeightRadius = 5f,
                                                 FalloffRadius = 15f,
                                                 FalloffConeRadius = 3f,
@@ -10001,7 +10001,7 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.WeaponSpawnInfluence
                                             {
-                                                //Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof"),
+                                                Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\variants\covenant_carbine_v1\covenant_carbine_v1"),
                                                 FullWeightRadius = 5f,
                                                 FalloffRadius = 15f,
                                                 FalloffConeRadius = 3f,
@@ -10009,7 +10009,7 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.WeaponSpawnInfluence
                                             {
-                                                //Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo"),
+                                                Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\variants\covenant_carbine_v2\covenant_carbine_v2"),
                                                 FullWeightRadius = 5f,
                                                 FalloffRadius = 15f,
                                                 FalloffConeRadius = 3f,
@@ -10017,7 +10017,7 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.WeaponSpawnInfluence
                                             {
-                                                //Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_range"),
+                                                Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\variants\covenant_carbine_v3\covenant_carbine_v3"),
                                                 FullWeightRadius = 5f,
                                                 FalloffRadius = 15f,
                                                 FalloffConeRadius = 3f,
@@ -10025,7 +10025,7 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.WeaponSpawnInfluence
                                             {
-                                                //Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage"),
+                                                Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\variants\covenant_carbine_v4\covenant_carbine_v4"),
                                                 FullWeightRadius = 5f,
                                                 FalloffRadius = 15f,
                                                 FalloffConeRadius = 3f,
@@ -10033,7 +10033,7 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.WeaponSpawnInfluence
                                             {
-                                                //Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_accuracy"),
+                                                Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\variants\covenant_carbine_v5\covenant_carbine_v5"),
                                                 FullWeightRadius = 5f,
                                                 FalloffRadius = 15f,
                                                 FalloffConeRadius = 3f,
@@ -10041,7 +10041,7 @@ namespace TagTool.Commands.Tags
                                             },
                                             new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.WeaponSpawnInfluence
                                             {
-                                                //Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_power"),
+                                                Weapon = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\variants\covenant_carbine_v6\covenant_carbine_v6"),
                                                 FullWeightRadius = 5f,
                                                 FalloffRadius = 15f,
                                                 FalloffConeRadius = 3f,
