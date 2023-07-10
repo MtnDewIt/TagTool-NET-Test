@@ -439,7 +439,7 @@ namespace TagTool.Commands.Tags
             { 0x01AB, @"sound\weapons\frag_grenade\frag_throw" },
             { 0x01AC, @"objects\weapons\grenade\frag_grenade\frag_grenade" },
             { 0x01AD, @"objects\weapons\grenade\frag_grenade\frag_grenade" },
-            { 0x01AE, @"sound\weapons\plasma_grenade\throwgen" },
+            { 0x01AE, @"sound\weapons\plasma_grenade\throwgren" },
             { 0x01AF, @"objects\weapons\grenade\plasma_grenade\plasma_grenade" },
             { 0x01B0, @"objects\weapons\grenade\plasma_grenade\plasma_grenade" },
             { 0x01B1, @"sound\weapons\claymore_grenade\claymore_throw" },
