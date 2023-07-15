@@ -42,6 +42,7 @@ namespace TagTool.Commands.Tags
             ContextStack = contextStack;
         }
 
+        // TODO: Add Function For Parsing Current Cache (Stops Command From Using 0.6 cache, instead of MS23)
         public override object Execute(List<string> args) 
         {
             CommandRunner.Current.RunCommand($@"nameunnamedhaloonlinetags"); //Maybe move into a method, instead of a command?
@@ -51,7 +52,7 @@ namespace TagTool.Commands.Tags
             retargetCache();
             GenerateRenderMethods();
             portTagData();
-            AddNewStrings();
+            modifyStrings();
             Globals();
             MultiplayerGlobals();
             ModGlobals();
@@ -62,9 +63,7 @@ namespace TagTool.Commands.Tags
             ShieldImpactSetup();
             SoundEffectTemplateSetup();
             SquadTemplatesSetup();
-
-            // Will add functions for modifying the UI once the UI is functional
-
+            applyUIPatches();
             applyHUDPatches();
             applyPlayerPatches();
             ContextStack.Pop();

@@ -199,19 +199,14 @@ namespace TagTool.Commands.Tags
 
             var destDirectory = new DirectoryInfo(destCacheDirectory);
 
-            if (!destDirectory.Exists)
-                destDirectory.Create();
+            CreateTagCache(destDirectory);
 
-            var destTagCache = CreateTagCache(destDirectory);
+            // At some point I would like to have it generate its own string_ids.dat, however all current solutions I have tried
+            // cause issues when copying over existing tags from MS23. Need to look into string id functionality, as for some reason when porting
+            // shaders, it complains about missing shader options, when the string ids are in the cache :/
 
-            var destStringIdPath = Path.Combine(destDirectory.FullName, CacheContext.StringIdCacheFile.Name);
+            CacheContext.StringIdCacheFile.CopyTo($@"{destDirectory.FullName}\string_ids.dat");
 
-            if (File.Exists(destStringIdPath))
-                File.Delete(destStringIdPath);
-
-            CacheContext.StringIdCacheFile.CopyTo(destStringIdPath);
-
-            var srcResourceCaches = new Dictionary<ResourceLocation, ResourceCache>();
             var destResourceCaches = new Dictionary<ResourceLocation, ResourceCache>();
             var destCacheContext = new GameCacheHaloOnline(destDirectory);
 
@@ -227,7 +222,7 @@ namespace TagTool.Commands.Tags
                 CopiedResources[location] = new Dictionary<int, PageableResource>();
 
                 destResourceCaches[location] = CreateResourceCache(destDirectory, location);
-                SourceResourceStreams[location] = CacheContext.ResourceCaches.OpenCacheReadWrite(location);
+                SourceResourceStreams[location] = CacheContext.ResourceCaches.OpenCacheRead(location);
                 DestinationResourceStreams[location] = destCacheContext.ResourceCaches.OpenCacheReadWrite(location);
             }
 
@@ -237,7 +232,7 @@ namespace TagTool.Commands.Tags
                 var cfgtTag = destCacheContext.TagCache.AllocateTag<CacheFileGlobalTags>($@"global_tags");
                 var cfgt = new CacheFileGlobalTags();
                 destCacheContext.Serialize(destStream, cfgtTag, cfgt);
-                
+
                 var matgTag = destCacheContext.TagCache.AllocateTag<Globals>($@"globals\globals");
                 var matg = new Globals();
                 destCacheContext.Serialize(destStream, matgTag, matg);
@@ -245,7 +240,7 @@ namespace TagTool.Commands.Tags
                 var modgTag = destCacheContext.TagCache.AllocateTag<ModGlobalsDefinition>($@"multiplayer\mod_globals");
                 var modg = new ModGlobalsDefinition();
                 destCacheContext.Serialize(destStream, modgTag, modg);
-                
+
                 var forgTag = destCacheContext.TagCache.AllocateTag<ForgeGlobalsDefinition>($@"multiplayer\forge_globals");
                 var forg = new ForgeGlobalsDefinition();
                 destCacheContext.Serialize(destStream, forgTag, forg);
@@ -293,10 +288,7 @@ namespace TagTool.Commands.Tags
 
                 foreach (var tag in CacheContext.TagCache.FindAllInGroup("rmdf"))
                 {
-                    if (!tag.Name.StartsWith("ms30")) 
-                    {
-                        CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
-                    }
+                    CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
                 }
 
                 foreach (var tagName in MS23Shaders)
@@ -312,7 +304,7 @@ namespace TagTool.Commands.Tags
                             break;
                         }
                     }
-                
+
                     foreach (var tag in CacheContext.TagCache.NonNull())
                     {
                         if (tag == null || !tag.IsInGroup("vtsh"))
@@ -338,12 +330,9 @@ namespace TagTool.Commands.Tags
             return true;
         }
 
-        // Creates a new tags.dat file (if guid does not equal the hex value specified below, the cache will not load)
+        // Creates a new tags.dat file
         public TagCache CreateTagCache(DirectoryInfo directory)
         {
-            if (!directory.Exists)
-                directory.Create();
-
             var file = new FileInfo(Path.Combine(directory.FullName, "tags.dat"));
 
             TagCache cache = null;
@@ -351,24 +340,21 @@ namespace TagTool.Commands.Tags
             using (var stream = file.Create())
             using (var writer = new BinaryWriter(stream))
             {
-                writer.Write(0);                  // padding
-                writer.Write(32);                 // table offset
-                writer.Write(0);                  // table entry count
-                writer.Write(0);                  // padding
-                writer.Write(0x01D0631BCC791704); // guid
-                writer.Write(0);                  // padding
-                writer.Write(0);                  // padding
+                writer.Write(0);
+                writer.Write(32);
+                writer.Write(0);
+                writer.Write(0);
+                writer.Write(0x01D0631BCC791704);
+                writer.Write(0);
+                writer.Write(0);
             }
 
             return cache;
         }
 
-        // Creates a new resource file (if guid does not equal the hex value specified below, the cache will not load)
+        // Creates a new resource file
         public ResourceCache CreateResourceCache(DirectoryInfo directory, ResourceLocation location)
         {
-            if (!directory.Exists)
-                directory.Create();
-
             var file = new FileInfo(Path.Combine(directory.FullName, ResourceCachesHaloOnline.ResourceCacheNames[location]));
 
             ResourceCache cache = null;
@@ -376,13 +362,13 @@ namespace TagTool.Commands.Tags
             using (var stream = file.Create())
             using (var writer = new BinaryWriter(stream))
             {
-                writer.Write(0);                  // padding
-                writer.Write(32);                 // table offset
-                writer.Write(0);                  // table entry count
-                writer.Write(0);                  // padding
-                writer.Write(0x01D0631BCC92931B); // guid
-                writer.Write(0);                  // padding
-                writer.Write(0);                  // padding
+                writer.Write(0);
+                writer.Write(32);
+                writer.Write(0);
+                writer.Write(0);
+                writer.Write(0x01D0631BCC92931B);
+                writer.Write(0);
+                writer.Write(0);
             }
 
             return cache;
