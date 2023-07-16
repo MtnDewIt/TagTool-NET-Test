@@ -1819,7 +1819,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        //Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\turret\plasma_cannon\plasma_cannon"),
+                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\turret\plasma_cannon\plasma_cannon"),
                                         Probability = 1,
                                     },
                                 },
@@ -3480,7 +3480,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        //Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\turret\plasma_cannon\plasma_cannon"),
+                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\turret\plasma_cannon\plasma_cannon"),
                                         Probability = 1,
                                     },
                                 },
@@ -3661,7 +3661,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        //Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\turret\plasma_cannon\plasma_cannon"),
+                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\turret\plasma_cannon\plasma_cannon"),
                                         Probability = 1,
                                     },
                                 },

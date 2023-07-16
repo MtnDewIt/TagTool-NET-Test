@@ -297,19 +297,120 @@ namespace TagTool.Commands.Tags
             ContextStack.Pop();
 
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mainmenu));
-            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\main_menu.wgtz"); // Mainmenu UI tags
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\ui_shared_globals.user_interface_shared_globals_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui multiplayer\game_variant_settings\multiplayer_editable_settings.multiplayer_variant_settings_interface_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui multiplayer\matchmaking_hopper_descriptions.multilingual_unicode_string_list");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\alert\alert_nonblocking.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\alert\alert_toast.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\alpha_legal\alpha_legal.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\alpha_locked_down\alpha_locked_down.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\alpha_motd\alpha_motd.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\campaign\campaign_loading.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\campaign\campaign_select_difficulty.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\campaign\campaign_select_level.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\campaign\campaign_settings.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\carnage_report\carnage_report.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\common\player_select\carnage_report_player_details.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\common\player_select\player_select.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\dialog\dialog.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\dialog\dialog_four.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\director\observer_camera_list_screen.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\e3\e3_demo.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\game_browser\game_browser.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\game_browser\game_browser_search_criteria.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\game_details\game_details.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\game_options\game_options_screen.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\in_progress\in_progress.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\in_progress\in_progress_mini.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\main_menu\main_menu.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\matchmaking\matchmaking_match_found.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\matchmaking\matchmaking_searching.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\postgame_lobby\postgame_lobby.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\pregame_lobby\advanced_screen\advanced_matchmaking_options.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\pregame_lobby\maximum_party_size\maximum_party_size.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\pregame_lobby\pregame_lobby_campaign.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\pregame_lobby\pregame_lobby_mapeditor.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\pregame_lobby\pregame_lobby_matchmaking.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\pregame_lobby\pregame_lobby_multiplayer.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\pregame_lobby\pregame_lobby_theater.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\pregame_lobby\selection\pregame_selection.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\pregame_lobby\switch_lobby\pregame_switch_lobby.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\spartan_program\spartan_milestone.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\spartan_program\spartan_rank.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\game_campaign\start_menu_game_campaign.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\game_multiplayer\start_menu_game_multiplayer.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\hq\start_menu_headquarters.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\hq_screenshots\start_menu_hq_screenshots.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\hq_screenshots\start_menu_hq_screenshots_option.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\hq_screenshots_viewer\screenshots_file_share_previewer.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\hq_screenshots_viewer\start_menu_hq_screenshots_viewer.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\hq_service_record\start_menu_hq_service_record.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\hq_service_record_file_share\start_menu_hq_service_record_file_share.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\hq_service_record_file_share\start_menu_hq_service_record_file_share_bungie.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\hq_service_record_file_share\start_menu_hq_service_record_file_share_choose_category.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\hq_service_record_file_share\start_menu_hq_service_record_file_share_choose_item.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\hq_service_record_file_share\start_menu_hq_service_record_file_share_item_selected.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\hq_transfers\start_menu_hq_transfers.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\hq_transfers\start_menu_hq_transfers_item_selected.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\settings\start_menu_settings.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\settings_appearance\start_menu_settings_appearance.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\settings_appearance_colors\start_menu_settings_appearance_colors.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\settings_appearance_emblem\start_menu_settings_appearance_emblem.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\settings_appearance_model\start_menu_settings_appearance_model.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\settings_camera\start_menu_settings_camera.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\settings_controls\start_menu_settings_controls.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\settings_controls_button\start_menu_settings_controls_button.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\settings_controls_thumbstick\start_menu_settings_controls_thumbstick.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\settings_display\start_menu_settings_display.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\settings_film_autosave\start_menu_settings_film_autosave.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\settings_voice\start_menu_settings_voice.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\start_menu.gui_screen_widget_definition");
             ContextStack.Pop();
+
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
-            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\multiplayer.wgtz"); // Multiplayer UI tags
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\alert\alert_ingame_full.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\alert\alert_ingame_split.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\boot_betrayer\boot_betrayer.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\boot_betrayer\boot_betrayer_splitscreen.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\common\player_select\scoreboard_player_select.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\common\player_select\splitscreen_player_select.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\director\observer_camera_list_splitscreen.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\director\popup.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\director\saved_film_control_pad.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\director\saved_film_snippet_screen.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\director\saved_film_take_screenshot.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\in_progress\in_progress_mini_me.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\sandbox_ui\forge_legal.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\sandbox_ui\sandbox_budget_screen.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\sandbox_ui\sandbox_budget_screen_splitscreen.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\sandbox_ui\sandbox_object_creation_menu.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\sandbox_ui\sandbox_object_creation_menu_splitscreen.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\sandbox_ui\sandbox_object_properties_menu.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\sandbox_ui\sandbox_object_properties_menu_splitscreen.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\scoreboard\scoreboard.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\scoreboard\scoreboard_half.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\game_editor\change_gametype.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\game_editor\start_menu_game_editor.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\game_multiplayer\change_team.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\game_saved_film\start_menu_game_saved_films.gui_screen_widget_definition");
             ContextStack.Pop();
+
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
-            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\single_player.wgtz"); // Singleplayer UI tags
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\carnage_report\campaign_carnage_report.gui_screen_widget_definition");
+            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\terminals\terminal_screen.gui_screen_widget_definition");
+            ContextStack.Pop();
+
+            GenerateTag<UserInterfaceGlobalsDefinition>($@"ui\main_menu");
+            GenerateTag<UserInterfaceGlobalsDefinition>($@"ui\multiplayer");
+            GenerateTag<UserInterfaceGlobalsDefinition>($@"ui\single_player");
 
             GenerateMapImages();
 
-            // Fixes crashing issue with certain weapons
+            // Fixes crashing issues with certain weapons
+            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
             CommandRunner.Current.RunCommand($@"porttag shaders\invalid.shader");
             ContextStack.Pop();
+
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
             CommandRunner.Current.RunCommand($@"porttag ui\chud\animations\backpack_test.chud_animation_definition");
             CommandRunner.Current.RunCommand($@"porttag ui\chud\animations\backpack_unready.chud_animation_definition");

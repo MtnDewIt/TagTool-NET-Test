@@ -60,6 +60,7 @@ namespace TagTool.Commands.Tags
             ChudGlobals();
             RasterizerGlobalsSetup();
             SurvivalGlobalsSetup();
+            UserInterfaceGlobalsSetup();
             ShieldImpactSetup();
             SoundEffectTemplateSetup();
             SquadTemplatesSetup();
