@@ -77,6 +77,7 @@ namespace TagTool.Commands.Tags
                         var unic = CacheContext.Deserialize<MultilingualUnicodeStringList>(stream, tag);
                         AddString(unic, "customization", "CUSTOMIZATION");
                         AddString(unic, "eldewrito_settings", "SETTINGS");
+                        AddString(unic, "eldewrito_version", "<eldewrito-version/>");
                         AddString(unic, "exit", "EXIT");
                         AddString(unic, "game_browser", "LOCAL GAMES");
                         AddString(unic, "server_browser", "SERVER BROWSER");
