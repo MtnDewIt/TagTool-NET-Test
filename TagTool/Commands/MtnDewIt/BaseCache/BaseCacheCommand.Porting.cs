@@ -309,9 +309,9 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\campaign\campaign_select_difficulty.gui_screen_widget_definition");
             CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\campaign\campaign_select_level.gui_screen_widget_definition");
             CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\campaign\campaign_settings.gui_screen_widget_definition");
-            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\carnage_report\carnage_report.gui_screen_widget_definition");
-            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\common\player_select\carnage_report_player_details.gui_screen_widget_definition");
-            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\common\player_select\player_select.gui_screen_widget_definition");
+            //CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\carnage_report\carnage_report.gui_screen_widget_definition");
+            //CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\common\player_select\carnage_report_player_details.gui_screen_widget_definition");
+            //CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\common\player_select\player_select.gui_screen_widget_definition");
             CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\dialog\dialog.gui_screen_widget_definition");
             CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\dialog\dialog_four.gui_screen_widget_definition");
             CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\director\observer_camera_list_screen.gui_screen_widget_definition");
@@ -396,9 +396,19 @@ namespace TagTool.Commands.Tags
             ContextStack.Pop();
 
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
-            CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\carnage_report\campaign_carnage_report.gui_screen_widget_definition");
+            //CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\carnage_report\campaign_carnage_report.gui_screen_widget_definition");
             CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\terminals\terminal_screen.gui_screen_widget_definition");
             ContextStack.Pop();
+
+            GenerateTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\lobby_list_survival");
+            GenerateTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_survival");
+            GenerateTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\selection\pregame_survival_level_selection");
+            GenerateTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\selection\survival_select_difficulty");
+            GenerateTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\selection\survival_select_skulls");
+
+            GenerateTag<GuiScreenWidgetDefinition>($@"ui\halox\campaign\campaign_select_skulls");
+            GenerateTag<GuiSkinDefinition>($@"ui\halox\campaign\campaign_scoring");
+            GenerateTag<GuiScreenWidgetDefinition>($@"ui\halox\campaign\campaign_select_scoring");
 
             GenerateTag<UserInterfaceGlobalsDefinition>($@"ui\main_menu");
             GenerateTag<UserInterfaceGlobalsDefinition>($@"ui\multiplayer");
@@ -557,20 +567,20 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag sound\characters\masterchief\mc_shade_d_enter.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\characters\masterchief\mc_shade_d_exit.sound");
             ContextStack.Pop();
-            
+
             GenerateTag<Effect>($@"objects\characters\masterchief\damage_effects\assassination_hit_0");
             GenerateTag<Effect>($@"objects\characters\masterchief\damage_effects\assassination_hit_1");
             GenerateTag<Effect>($@"objects\characters\masterchief\damage_effects\assassination_hit_2");
             GenerateTag<Effect>($@"objects\characters\masterchief\damage_effects\assassination_hit_3");
             GenerateTag<Effect>($@"objects\characters\masterchief\damage_effects\concussive_blast");
-            
+
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, ho_cache));
             CommandRunner.Current.RunCommand($@"porttag replace single !audio objects\characters\masterchief\masterchief.model_animation_graph");
             CommandRunner.Current.RunCommand($@"porttag replace single !audio objects\characters\elite\lipsync\lipsync.model_animation_graph");
             CommandRunner.Current.RunCommand($@"porttag replace single !audio objects\characters\elite\elite.model_animation_graph");
             CommandRunner.Current.RunCommand($@"porttag replace single !audio objects\characters\dervish\dervish.model_animation_graph");
             ContextStack.Pop();
-            
+
             ImportAnimations();
 
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
@@ -680,9 +690,9 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"updatemapfiles {halo3DirectoryInfo}\info");
         }
 
-        public void GenerateTag<T>(String tagName) where T : TagStructure
+        public void GenerateTag<T>(string tagName) where T : TagStructure
         {
-            using (var stream = Cache.OpenCacheReadWrite()) 
+            using (var stream = Cache.OpenCacheReadWrite())
             {
                 var tag = CacheContext.TagCache.AllocateTag<T>(tagName);
                 var definition = Activator.CreateInstance<T>();
