@@ -272,6 +272,10 @@ namespace TagTool.Commands.Tags
                         AddString(unic, "time_seconds_9", "9 Seconds");
                         AddString(unic, "traits_appearance_active_camo_bad", "Bad Camo");
                         AddString(unic, "traits_appearance_active_camo_bad_desc", "I can still see you");
+                        AddString(unic, "traits_appearance_player_model", "Player Character");
+                        AddString(unic, "traits_appearance_player_model_desc", "This determines the current player character model");
+                        AddString(unic, "traits_appearance_player_model_set", "Player Character Set");
+                        AddString(unic, "traits_appearance_player_model_set_desc", "This determines the current player character set");
                         AddString(unic, "traits_appearance_player_size", "player size");
                         AddString(unic, "traits_appearance_player_size_desc", "This determines the size of the player");
                         AddString(unic, "traits_appearance_waypoints_nametag_allies", "No Nametag (team only)");
@@ -281,8 +285,12 @@ namespace TagTool.Commands.Tags
                         AddString(unic, "traits_appearance_waypoints_none_nametag", "No Nametag");
                         AddString(unic, "traits_health_damage_resistance_invincible", "Invincible");
                         AddString(unic, "traits_health_damage_resistance_invincible_desc", "The player is invulnerable to most forms of damage including assassinations");
+                        AddString(unic, "traits_movement_sprint", "Sprint");
+                        AddString(unic, "traits_movement_sprint_desc", "This determines the current sprint state");
                         AddString(unic, "traits_weapons_carbine", "Covenant Carbine");
                         AddString(unic, "traits_weapons_excavator", "Mauler");
+                        AddString(unic, "traits_weapons_third_person_camera", "Third Person");
+                        AddString(unic, "traits_weapons_third_person_camera_desc", "This determines the current camera mode");
                         AddString(unic, "unarmed", "None (Melee)");
                         CacheContext.Serialize(stream, tag, unic);
                     }

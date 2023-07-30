@@ -726,6 +726,7 @@
     <Compile Include="Commands\MtnDewIt\BaseCache\BaseCacheCommand.Cache.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCache\BaseCacheCommand.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCache\BaseCacheCommand.ForgeGlobals.cs" />
+    <Compile Include="Commands\MtnDewIt\BaseCache\BaseCacheCommand.GameVariantSettings.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCache\BaseCacheCommand.Globals.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCache\BaseCacheCommand.HUD.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCache\BaseCacheCommand.ModGlobals.cs" />
@@ -750,6 +751,7 @@
     <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.Shaders.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.ShieldImpact.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.UI.cs" />
+    <Compile Include="Commands\MtnDewIt\DebugTestCommand.cs" />
     <Compile Include="Commands\MtnDewIt\NameUnnamedElDewritoTagsCommand.cs" />
     <Compile Include="Commands\MtnDewIt\NameUnnamedHaloOnlineTagsCommand.cs" />
     <Compile Include="Commands\ParticleModels\ParticleModelContextFactory.cs" />

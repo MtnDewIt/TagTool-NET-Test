@@ -29,19 +29,20 @@ namespace TagTool.Commands.Tags
 
             var newCommandContext = new BaseCacheCommand(Cache, CacheContext, ContextStack);
 
-            newCommandContext.modifyStrings();
-            newCommandContext.Globals();
+            //newCommandContext.modifyStrings();
+            //newCommandContext.Globals();
             //newCommandContext.MultiplayerGlobals();
             //newCommandContext.ModGlobals();
             //newCommandContext.ForgeGlobals();
             //newCommandContext.ChudGlobals();
+            //newCommandContext.GameVariantSettingsSetup();
             //newCommandContext.RasterizerGlobalsSetup();
             //newCommandContext.SurvivalGlobalsSetup();
             //newCommandContext.UserInterfaceGlobalsSetup();
             //newCommandContext.ShieldImpactSetup();
             //newCommandContext.SoundEffectTemplateSetup();
             //newCommandContext.SquadTemplatesSetup();
-            newCommandContext.applyUIPatches();
+            //newCommandContext.applyUIPatches();
             //newCommandContext.applyHUDPatches();
             //newCommandContext.applyPlayerPatches();
 

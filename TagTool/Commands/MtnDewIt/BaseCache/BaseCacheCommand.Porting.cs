@@ -298,6 +298,18 @@ namespace TagTool.Commands.Tags
 
             ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mainmenu));
             CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\ui_shared_globals.user_interface_shared_globals_definition");
+            GenerateTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_third_person_camera");
+            GenerateTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_movement_sprint");
+            GenerateTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_appearance_player_size");
+            GenerateTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_appearance_player_model_set");
+            GenerateTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_appearance_player_model");
+            GenerateTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\global_options\rounds_reset");
+            GenerateTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\respawn_options\respawn_spectating");
+            GenerateTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\ctf\ctf_respawn_on_capture");
+            GenerateTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\infection\infection_haven_movement");
+            GenerateTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\infection\infection_haven_movement_time");
+            GenerateTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\infection\infection_respawn_on_haven_move");
+            GenerateTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\infection\infection_scoring_haven_arrival");
             CommandRunner.Current.RunCommand($@"porttag autorescalegui multiplayer\game_variant_settings\multiplayer_editable_settings.multiplayer_variant_settings_interface_definition");
             CommandRunner.Current.RunCommand($@"porttag autorescalegui multiplayer\matchmaking_hopper_descriptions.multilingual_unicode_string_list");
             CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\alert\alert_nonblocking.gui_screen_widget_definition");
