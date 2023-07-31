@@ -56,7 +56,7 @@ namespace TagTool.Commands.Tags
             Globals();
             MultiplayerGlobals();
             ModGlobals();
-            ForgeGlobals(); // Unused for the time being
+            //ForgeGlobals(); // Unused for the time being
             ChudGlobals();
             GameVariantSettingsSetup();
             RasterizerGlobalsSetup();
