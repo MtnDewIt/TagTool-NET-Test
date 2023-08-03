@@ -19,8 +19,8 @@ namespace TagTool.Commands.Tags
                         {
                             new MultiplayerGlobals.MultiplayerUniversalBlock()
                             {
-                                RandomPlayerNameStrings = CacheContext.TagCache.GetTag<MultilingualUnicodeStringList>($@"multiplayer\random_player_names"),
-                                TeamNameStrings = CacheContext.TagCache.GetTag<MultilingualUnicodeStringList>($@"multiplayer\team_names"),
+                                RandomPlayerNameStrings = GetCachedTag<MultilingualUnicodeStringList>($@"multiplayer\random_player_names"),
+                                TeamNameStrings = GetCachedTag<MultilingualUnicodeStringList>($@"multiplayer\team_names"),
                                 TeamColors = new List<MultiplayerGlobals.MultiplayerUniversalBlock.MultiplayerColor>()
                                 {
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.MultiplayerColor()
@@ -816,73 +816,73 @@ namespace TagTool.Commands.Tags
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                                     {
                                         Name = CacheContext.StringTable.GetStringId("jammer"),
-                                        Object = CacheContext.TagCache.GetTag<Equipment>(@"objects\equipment\jammer_equipment\jammer_equipment"),
+                                        Object = GetCachedTag<Equipment>(@"objects\equipment\jammer_equipment\jammer_equipment"),
                                         Type = 8,
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                                     {
                                         Name = CacheContext.StringTable.GetStringId("powerdrain"),
-                                        Object = CacheContext.TagCache.GetTag<Equipment>(@"objects\equipment\powerdrain_equipment\powerdrain_equipment"),
+                                        Object = GetCachedTag<Equipment>(@"objects\equipment\powerdrain_equipment\powerdrain_equipment"),
                                         Type = 1,
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                                     {
                                         Name = CacheContext.StringTable.GetStringId("bubbleshield"),
-                                        Object = CacheContext.TagCache.GetTag<Equipment>(@"objects\equipment\bubbleshield_equipment\bubbleshield_equipment"),
+                                        Object = GetCachedTag<Equipment>(@"objects\equipment\bubbleshield_equipment\bubbleshield_equipment"),
                                         Type = 2,
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                                     {
                                         Name = CacheContext.StringTable.GetStringId("superflare"),
-                                        Object = CacheContext.TagCache.GetTag<Equipment>(@"objects\equipment\superflare_equipment\superflare_equipment"),
+                                        Object = GetCachedTag<Equipment>(@"objects\equipment\superflare_equipment\superflare_equipment"),
                                         Type = 10,
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                                     {
                                         Name = CacheContext.StringTable.GetStringId("regenerator"),
-                                        Object = CacheContext.TagCache.GetTag<Equipment>(@"objects\equipment\regenerator_equipment\regenerator_equipment"),
+                                        Object = GetCachedTag<Equipment>(@"objects\equipment\regenerator_equipment\regenerator_equipment"),
                                         Type = 4,
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                                     {
                                         Name = CacheContext.StringTable.GetStringId("tripmine"),
-                                        Object = CacheContext.TagCache.GetTag<Equipment>(@"objects\equipment\tripmine_equipment\tripmine_equipment"),
+                                        Object = GetCachedTag<Equipment>(@"objects\equipment\tripmine_equipment\tripmine_equipment"),
                                         Type = 0,
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                                     {
                                         Name = CacheContext.StringTable.GetStringId("deployable_cover"),
-                                        Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\instantcover_equipment\instantcover_equipment_mp"),
+                                        Object = GetCachedTag<Equipment>($@"objects\equipment\instantcover_equipment\instantcover_equipment_mp"),
                                         Type = 6,
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                                     {
                                         Name = CacheContext.StringTable.GetStringId("invincibility"),
-                                        Object = CacheContext.TagCache.GetTag<Equipment>(@"objects\equipment\invincibility_equipment\invincibility_equipment"),
+                                        Object = GetCachedTag<Equipment>(@"objects\equipment\invincibility_equipment\invincibility_equipment"),
                                         Type = 7,
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                                     {
                                         Name = CacheContext.StringTable.GetStringId("gravlift"),
-                                        Object = CacheContext.TagCache.GetTag<Equipment>(@"objects\equipment\gravlift_equipment\gravlift_equipment"),
+                                        Object = GetCachedTag<Equipment>(@"objects\equipment\gravlift_equipment\gravlift_equipment"),
                                         Type = 3,
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                                     {
                                         Name = CacheContext.StringTable.GetStringId("auto_turret"),
-                                        Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\autoturret_equipment\autoturret_equipment"),
+                                        Object = GetCachedTag<Equipment>($@"objects\equipment\autoturret_equipment\autoturret_equipment"),
                                         Type = 9,
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                                     {
                                         Name = CacheContext.StringTable.GetStringId("invisibility"),
-                                        Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\invisibility_equipment\invisibility_equipment"),
+                                        Object = GetCachedTag<Equipment>($@"objects\equipment\invisibility_equipment\invisibility_equipment"),
                                         Type = 5,
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                                     {
                                         Name = CacheContext.StringTable.GetStringId("deployable_cover"),
-                                        Object = CacheContext.TagCache.GetTag<Equipment>(@"objects\equipment\instantcover_equipment\instantcover_equipment"),
+                                        Object = GetCachedTag<Equipment>(@"objects\equipment\instantcover_equipment\instantcover_equipment"),
                                         Type = 6,
                                     }
                                 },
@@ -914,112 +914,112 @@ namespace TagTool.Commands.Tags
                                         EnergyLevel = 1,
                                     },
                                 },
-                                MultiplayerStrings = CacheContext.TagCache.GetTag<MultilingualUnicodeStringList>($@"multiplayer\global_multiplayer_messages"),
-                                SandboxUiStrings = CacheContext.TagCache.GetTag<MultilingualUnicodeStringList>($@"ui\halox\sandbox_ui\strings"),
-                                SandboxObjectProperties = CacheContext.TagCache.GetTag<SandboxTextValuePairDefinition>($@"ui\halox\sandbox_ui\object_properties_menu_values"),
+                                MultiplayerStrings = GetCachedTag<MultilingualUnicodeStringList>($@"multiplayer\global_multiplayer_messages"),
+                                SandboxUiStrings = GetCachedTag<MultilingualUnicodeStringList>($@"ui\halox\sandbox_ui\strings"),
+                                SandboxObjectProperties = GetCachedTag<SandboxTextValuePairDefinition>($@"ui\halox\sandbox_ui\object_properties_menu_values"),
                                 GameVariantWeapons = new List<MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon>()
                                 {
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("battle_rifle"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\rifle\battle_rifle\battle_rifle")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\rifle\battle_rifle\battle_rifle")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("assault_rifle"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\rifle\assault_rifle\assault_rifle")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\rifle\assault_rifle\assault_rifle")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("plasma_pistol"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\pistol\plasma_pistol\plasma_pistol")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\pistol\plasma_pistol\plasma_pistol")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("spike_rifle"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\rifle\spike_rifle\spike_rifle")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\rifle\spike_rifle\spike_rifle")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("smg"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\rifle\smg\smg")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\rifle\smg\smg")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("carbine"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\rifle\covenant_carbine\covenant_carbine")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\rifle\covenant_carbine\covenant_carbine")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("energy_sword"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\melee\energy_blade\energy_blade")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\melee\energy_blade\energy_blade")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("magnum"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\pistol\magnum\magnum")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\pistol\magnum\magnum")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("needler"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\pistol\needler\needler")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\pistol\needler\needler")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("plasma_rifle"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\rifle\plasma_rifle\plasma_rifle")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\rifle\plasma_rifle\plasma_rifle")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("rocket_launcher"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\support_high\rocket_launcher\rocket_launcher")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\support_high\rocket_launcher\rocket_launcher")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("shotgun"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\rifle\shotgun\shotgun")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\rifle\shotgun\shotgun")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("sniper_rifle"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\rifle\sniper_rifle\sniper_rifle")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\rifle\sniper_rifle\sniper_rifle")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("brute_shot"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\support_low\brute_shot\brute_shot")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\support_low\brute_shot\brute_shot")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("unarmed"),
                                         RandomChance = 0f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\melee\energy_blade\energy_blade_useless")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\melee\energy_blade\energy_blade_useless")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("beam_rifle"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\rifle\beam_rifle\beam_rifle")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\rifle\beam_rifle\beam_rifle")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("spartan_laser"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\support_high\spartan_laser\spartan_laser")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\support_high\spartan_laser\spartan_laser")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
@@ -1031,25 +1031,25 @@ namespace TagTool.Commands.Tags
                                     {
                                         Name = CacheContext.StringTable.GetStringId("gravity_hammer"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\melee\gravity_hammer\gravity_hammer")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\melee\gravity_hammer\gravity_hammer")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("excavator"),
                                         RandomChance = 0.1f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\pistol\excavator\excavator")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\pistol\excavator\excavator")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("flamethrower"),
                                         RandomChance = 0f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\turret\flamethrower\flamethrower")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\turret\flamethrower\flamethrower")
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                                     {
                                         Name = CacheContext.StringTable.GetStringId("missile_pod"),
                                         RandomChance = 0f,
-                                        Weapon = CacheContext.TagCache.GetTag<Weapon>(@"objects\weapons\turret\missile_pod\missile_pod")
+                                        Weapon = GetCachedTag<Weapon>(@"objects\weapons\turret\missile_pod\missile_pod")
                                     }
                                 },
                                 GameVariantVehicles = new List<MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantVehicle>()
@@ -1096,12 +1096,12 @@ namespace TagTool.Commands.Tags
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantGrenadeBlock
                                     {
                                         Name = CacheContext.StringTable.GetStringId("frag_grenade"),
-                                        Grenade = CacheContext.TagCache.GetTag<Equipment>(@"objects\weapons\grenade\frag_grenade\frag_grenade"),
+                                        Grenade = GetCachedTag<Equipment>(@"objects\weapons\grenade\frag_grenade\frag_grenade"),
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantGrenadeBlock
                                     {
                                         Name = CacheContext.StringTable.GetStringId("plasma_grenade"),
-                                        Grenade = CacheContext.TagCache.GetTag<Equipment>(@"objects\weapons\grenade\plasma_grenade\plasma_grenade"),
+                                        Grenade = GetCachedTag<Equipment>(@"objects\weapons\grenade\plasma_grenade\plasma_grenade"),
                                     },
                                 },
                                 WeaponSets = new List<MultiplayerGlobals.MultiplayerUniversalBlock.WeaponSet>()
@@ -2915,44 +2915,44 @@ namespace TagTool.Commands.Tags
                                         Name = CacheContext.StringTable.GetStringId("all_vehicles"),
                                     }
                                 },
-                                GameEngineSettings = CacheContext.TagCache.GetTag<GameEngineSettingsDefinition>($@"multiplayer\game_engine_settings"),
+                                GameEngineSettings = GetCachedTag<GameEngineSettingsDefinition>($@"multiplayer\game_engine_settings"),
                             },
                         };
                         mulg.Runtime = new List<MultiplayerGlobals.MultiplayerRuntimeBlock>()
                         {
                             new MultiplayerGlobals.MultiplayerRuntimeBlock()
                             {
-                                EditorBiped = CacheContext.TagCache.GetTag<Biped>($@"objects\characters\monitor\monitor_editor"),
-                                EditorHelperObject = CacheContext.TagCache.GetTag<Scenery>($@"objects\ui\editor_gizmo\editor_gizmo"),
-                                Flag = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\multiplayer\flag\flag"),
-                                Ball = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\multiplayer\ball\ball"),
-                                Bomb = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\multiplayer\assault_bomb\assault_bomb"),
-                                VipInfluenceArea = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\vip\vip_boundary"),
-                                InGameStrings = CacheContext.TagCache.GetTag<MultilingualUnicodeStringList>($@"multiplayer\in_game_multiplayer_messages"),
+                                EditorBiped = GetCachedTag<Biped>($@"objects\characters\monitor\monitor_editor"),
+                                EditorHelperObject = GetCachedTag<Scenery>($@"objects\ui\editor_gizmo\editor_gizmo"),
+                                Flag = GetCachedTag<Weapon>($@"objects\weapons\multiplayer\flag\flag"),
+                                Ball = GetCachedTag<Weapon>($@"objects\weapons\multiplayer\ball\ball"),
+                                Bomb = GetCachedTag<Weapon>($@"objects\weapons\multiplayer\assault_bomb\assault_bomb"),
+                                VipInfluenceArea = GetCachedTag<Crate>($@"objects\multi\vip\vip_boundary"),
+                                InGameStrings = GetCachedTag<MultilingualUnicodeStringList>($@"multiplayer\in_game_multiplayer_messages"),
                                 HaloOnlineRuntimeEffects = new MultiplayerGlobals.MultiplayerRuntimeBlock.HORuntimeFxStruct()
                                 {
-                                    ThusIRefuteTheeEffect = CacheContext.TagCache.GetTag<Projectile>($@"objects\weapons\grenade\plasma_grenade\plasma_grenade"),
-                                    //AutoFlipEffect = CacheContext.TagCache.GetTag<Effect>($@"multiplayer\vehicle_autoflip"),
-                                    //SafetyBoosterEffect = CacheContext.TagCache.GetTag<Effect>($@"multiplayer\safety_booster"),
-                                    RespawnBeep = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
-                                    //EarlyRespawnSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\transport"),
+                                    ThusIRefuteTheeEffect = GetCachedTag<Projectile>($@"objects\weapons\grenade\plasma_grenade\plasma_grenade"),
+                                    //AutoFlipEffect = GetCachedTag<Effect>($@"multiplayer\vehicle_autoflip"),
+                                    //SafetyBoosterEffect = GetCachedTag<Effect>($@"multiplayer\safety_booster"),
+                                    RespawnBeep = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
+                                    //EarlyRespawnSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\transport"),
                                 },
                                 Sounds = new List<MultiplayerGlobals.MultiplayerRuntimeBlock.Sound>()
                                 {
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.Sound
                                     {
-                                        Type = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\death_gurgle"),
+                                        Type = GetCachedTag<Sound>($@"sound\game_sfx\ui\death_gurgle"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.Sound
                                     {
-                                        Type = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\comm_fail"),
+                                        Type = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\comm_fail"),
                                     }
                                 },
                                 LoopingSounds = new List<MultiplayerGlobals.MultiplayerRuntimeBlock.LoopingSound>()
                                 {
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.LoopingSound
                                     {
-                                        Type = CacheContext.TagCache.GetTag<SoundLooping>($@"sound\game_sfx\multiplayer\comm_loop_mp\comm_loop_mp"),
+                                        Type = GetCachedTag<SoundLooping>($@"sound\game_sfx\multiplayer\comm_loop_mp\comm_loop_mp"),
                                     }
                                 },
                                 EarnWpEvents = new List<MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock>()
@@ -3219,7 +3219,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"gen_round_over_all"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\round_over"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\round_over"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3244,7 +3244,7 @@ namespace TagTool.Commands.Tags
                                         Event = CacheContext.StringTable.GetStringId($@"general_event_suicide"),
                                         DisplayString = CacheContext.StringTable.GetStringId($@"gen_suicide_cause_player"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\suicide"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\suicide"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3259,14 +3259,14 @@ namespace TagTool.Commands.Tags
                                         Audience = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.AudienceValue.EffectPlayer,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"gen_kill_teammate_effect_player"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\betrayed"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\betrayed"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
                                         Event = CacheContext.StringTable.GetStringId($@"general_event_kill_teammate"),
                                         DisplayString = CacheContext.StringTable.GetStringId($@"gen_kill_teammate_cause_player"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\betrayal"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\betrayal"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3282,7 +3282,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"gen_victory_all"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\game_over"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\game_over"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3291,7 +3291,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"gen_team_victory_all"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\game_over"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\game_over"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3307,7 +3307,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"gen_gained_lead_cause_player"),
                                         SplitscreenSuppression = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventInputEnum.CausePlayer,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\gained_the_lead"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\gained_the_lead"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3324,7 +3324,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"gen_gained_team_lead_cause_team"),
                                         SplitscreenSuppression = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventInputEnum.CausePlayer,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\gained_the_lead"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\gained_the_lead"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3368,7 +3368,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"gen_30_minutes_left_all"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\thirty_mins_remaining"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\thirty_mins_remaining"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3377,7 +3377,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"gen_15_minutes_left_all"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\fifteen_mins_remaining"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\fifteen_mins_remaining"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3386,7 +3386,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"gen_5_minutes_left_all"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\five_mins_remaining"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\five_mins_remaining"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3395,7 +3395,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"gen_1_minute_left_all"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\one_min_remaining"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\one_min_remaining"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3404,7 +3404,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"gen_game_over_all"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\game_over"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\game_over"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3438,38 +3438,38 @@ namespace TagTool.Commands.Tags
                                         Event = CacheContext.StringTable.GetStringId($@"general_event_respawn_tick"),
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
-                                        JapaneseSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
-                                        GermanSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
-                                        FrenchSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
-                                        SpanishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
-                                        LatinAmericanSpanishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
-                                        ItalianSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
-                                        KoreanSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
-                                        ChineseTraditionalSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
-                                        PortugueseSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
+                                        JapaneseSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
+                                        GermanSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
+                                        FrenchSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
+                                        SpanishSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
+                                        LatinAmericanSpanishSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
+                                        ItalianSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
+                                        KoreanSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
+                                        ChineseTraditionalSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
+                                        PortugueseSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
                                         Event = CacheContext.StringTable.GetStringId($@"general_event_respawn_final_tick"),
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
-                                        JapaneseSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
-                                        GermanSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
-                                        FrenchSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
-                                        SpanishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
-                                        LatinAmericanSpanishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
-                                        ItalianSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
-                                        KoreanSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
-                                        ChineseTraditionalSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
-                                        PortugueseSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
+                                        JapaneseSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
+                                        GermanSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
+                                        FrenchSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
+                                        SpanishSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
+                                        LatinAmericanSpanishSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
+                                        ItalianSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
+                                        KoreanSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
+                                        ChineseTraditionalSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
+                                        PortugueseSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
                                         Event = CacheContext.StringTable.GetStringId($@"general_event_teleporter_used"),
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\teleporter_activate"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\teleporter_activate"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3478,7 +3478,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"gen_player_changed_team_effect_team"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\teamate_gained"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\teamate_gained"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3492,7 +3492,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"gen_30_seconds_left_all"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\thirty_secs_remaining"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\thirty_secs_remaining"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3501,7 +3501,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"gen_10_seconds_left_all"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\ten_secs_remaining"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\ten_secs_remaining"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3566,7 +3566,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         PrimaryString = CacheContext.StringTable.GetStringId($@"gen_sudden_death_all"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\sudden_death"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\sudden_death"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3679,7 +3679,7 @@ namespace TagTool.Commands.Tags
                                         Event = CacheContext.StringTable.GetStringId($@"general_event_kill_flag_carrier"),
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_kill_carrier_cp"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_dropped"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_dropped"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3687,7 +3687,7 @@ namespace TagTool.Commands.Tags
                                         Audience = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.AudienceValue.EffectPlayer,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_kill_carrier_ep"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_dropped"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_dropped"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3696,7 +3696,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Friendly,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_kill_carrier_ct"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_dropped"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_dropped"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3705,14 +3705,14 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Enemy,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_kill_carrier_et"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_dropped"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_dropped"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
                                         Event = CacheContext.StringTable.GetStringId($@"general_event_kill_bomb_carrier"),
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_kill_carrier_cp"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_dropped"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_dropped"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3720,7 +3720,7 @@ namespace TagTool.Commands.Tags
                                         Audience = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.AudienceValue.EffectPlayer,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_kill_carrier_ep"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_dropped"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_dropped"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3729,7 +3729,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Friendly,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_kill_carrier_ct"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_dropped"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_dropped"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3738,7 +3738,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Enemy,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_kill_carrier_et"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_dropped"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_dropped"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -3943,7 +3943,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_extermination"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_extermination"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\extermination"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\extermination"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -3952,7 +3952,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_perfection"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_perfection"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\misc\perfection"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\misc\perfection"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -3961,7 +3961,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_multikill_2"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_multikill_2"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\double_kill"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\double_kill"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -3970,7 +3970,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_multikill_3"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_multikill_3"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\triple_kill"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\triple_kill"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -3979,7 +3979,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_multikill_4"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_multikill_4"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\overkill"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\overkill"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -3988,7 +3988,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_multikill_5"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_multikill_5"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killtacular"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killtacular"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -3997,7 +3997,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_multikill_6"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_multikill_6"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killtrocity"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killtrocity"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4006,7 +4006,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_multikill_7"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_multikill_7"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killimanjaro"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killimanjaro"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4015,7 +4015,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_multikill_8"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_multikill_8"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killtastrophe"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killtastrophe"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4024,7 +4024,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_multikill_9"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_multikill_9"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killpocalypse"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killpocalypse"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4033,7 +4033,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_multikill_10"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_multikill_10"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killionaire"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killionaire"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4042,7 +4042,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_kill_spree_5"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_kill_spree_5"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killing_spree"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killing_spree"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4051,7 +4051,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_kill_spree_10"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_kill_spree_10"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killing_frenzy"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killing_frenzy"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4060,7 +4060,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_kill_spree_15"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_kill_spree_15"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\running_riot"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\running_riot"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4069,7 +4069,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_kill_spree_20"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_kill_spree_20"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\rampage"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\rampage"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4078,7 +4078,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_kill_spree_25"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_kill_spree_25"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\untouchable"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\untouchable"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4087,7 +4087,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_kill_spree_30"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_kill_spree_30"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\invincible"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\invincible"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4096,7 +4096,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_sniper_5"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_sniper_5"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\sniper_spree"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\sniper_spree"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4105,7 +4105,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_sniper_10"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_sniper_10"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\sharpshooter"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\sharpshooter"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4114,7 +4114,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_shotgun_5"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_shotgun_5"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\shotgun_spree"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\shotgun_spree"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4123,7 +4123,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_shotgun_10"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_shotgun_10"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\open_season"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\open_season"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4132,7 +4132,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_splatter_5"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_splatter_5"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\splatter_spree"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\splatter_spree"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4141,7 +4141,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_splatter_10"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_splatter_10"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\vehicular_manslaughter"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\vehicular_manslaughter"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4150,7 +4150,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_sword_5"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_sword_5"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\sword_spree"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\sword_spree"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4159,7 +4159,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_sword_10"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_sword_10"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\slice_n_dice"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\slice_n_dice"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4168,7 +4168,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_juggernaut_5"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_juggernaut_5"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\juggernaut_spree"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\juggernaut_spree"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4177,7 +4177,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_juggernaut_10"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_juggernaut_10"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\unstoppable"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\unstoppable"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4186,7 +4186,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_zombie_5"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_zombie_5"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\infection_spree"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\infection_spree"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4195,7 +4195,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_zombie_10"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_zombie_10"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\mmm_brains"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\mmm_brains"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4204,7 +4204,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_survivor_5"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_survivor_5"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\zombie_killing_spree"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\zombie_killing_spree"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4213,7 +4213,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_survivor_10"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_survivor_10"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\hells_janitor"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\hells_janitor"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4227,7 +4227,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_koth_5"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_koth_5"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\hail_to_the_king"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\hail_to_the_king"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4266,7 +4266,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"flavor_broke_killing_spree_cause_player"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_player_kill_spreeplayer"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killjoy"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\flavor\killjoy"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4399,17 +4399,17 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Enemy,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"forge_error_no_room"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        JapaneseSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        GermanSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        FrenchSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        SpanishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        LatinAmericanSpanishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        ItalianSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        KoreanSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        ChineseTraditionalSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        ChineseSimplifiedSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        PortugueseSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        JapaneseSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        GermanSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        FrenchSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        SpanishSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        LatinAmericanSpanishSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        ItalianSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        KoreanSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        ChineseTraditionalSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        ChineseSimplifiedSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        PortugueseSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4418,17 +4418,17 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Enemy,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"forge_error_out_of_objects"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        JapaneseSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        GermanSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        FrenchSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        SpanishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        LatinAmericanSpanishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        ItalianSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        KoreanSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        ChineseTraditionalSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        ChineseSimplifiedSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
-                                        PortugueseSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        JapaneseSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        GermanSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        FrenchSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        SpanishSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        LatinAmericanSpanishSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        ItalianSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        KoreanSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        ChineseTraditionalSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        ChineseSimplifiedSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
+                                        PortugueseSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\flag_fail"),
                                     },
                                 },
                                 SlayerEvents = new List<MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock>()
@@ -4440,7 +4440,7 @@ namespace TagTool.Commands.Tags
                                         Audience = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.AudienceValue.All,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"slayer_game_start"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\slayer\slayer"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\slayer\slayer"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4449,7 +4449,7 @@ namespace TagTool.Commands.Tags
                                         Audience = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.AudienceValue.All,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"slayer_new_target"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\slayer\target_changed"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\slayer\target_changed"),
                                     },
                                 },
                                 CtfEvents = new List<MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock>()
@@ -4462,7 +4462,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_game_start"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\capture_the_flag"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\capture_the_flag"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4472,7 +4472,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_new_defensive_team"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\offense"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\offense"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4482,7 +4482,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_new_defensive_team_ct"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\defense"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\defense"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4492,7 +4492,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Enemy,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_flag_captured"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_captured"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_captured"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4502,7 +4502,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Friendly,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_flag_captured"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_captured"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_captured"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4510,7 +4510,7 @@ namespace TagTool.Commands.Tags
                                         Event = CacheContext.StringTable.GetStringId($@"ctf_event_flag_captured"),
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_flag_captured_cp"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_captured"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_captured"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4520,7 +4520,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Enemy,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_flag_reset"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_reset"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_reset"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4530,7 +4530,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Friendly,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_flag_reset_et"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_reset"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_reset"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4540,7 +4540,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Enemy,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_flag_recovered"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_recovered"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_recovered"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4550,7 +4550,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Friendly,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_flag_recovered_et"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_recovered"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_recovered"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4561,7 +4561,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_flag_grabbed_ct"),
                                         SplitscreenSuppression = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventInputEnum.CauseTeam,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_taken"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_taken"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4570,7 +4570,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_flag_grabbed_cp"),
                                         SplitscreenSuppression = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventInputEnum.CauseTeam,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_taken"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_taken"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4580,7 +4580,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Enemy,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_flag_grabbed_et"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_stolen"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_stolen"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4590,7 +4590,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_flag_dropped"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_dropped"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_dropped"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4600,7 +4600,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_flag_dropped_et"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_dropped"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_dropped"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4618,7 +4618,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_flag_grabbed_ct"),
                                         SplitscreenSuppression = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventInputEnum.CauseTeam,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_taken"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_taken"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4628,7 +4628,7 @@ namespace TagTool.Commands.Tags
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_flag_grab"),
                                         SplitscreenSuppression = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventInputEnum.CauseTeam,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_taken"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_taken"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4638,7 +4638,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Enemy,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"ctf_flag_grabbed_et"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_stolen"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\flag_stolen"),
                                     },
                                 },
                                 OddballEvents = new List<MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock>()
@@ -4651,7 +4651,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"oddball_game_start"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\oddball\oddball"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\oddball\oddball"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4662,7 +4662,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"oddball_picked_up"),
                                         ExcludedAudience = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventInputEnum.CausePlayer,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\oddball\ball_taken"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\oddball\ball_taken"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4673,7 +4673,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"oddball_picked_up"),
                                         ExcludedAudience = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventInputEnum.CausePlayer,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\oddball\ball_taken"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\oddball\ball_taken"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4684,7 +4684,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"oddball_dropped"),
                                         ExcludedAudience = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventInputEnum.CausePlayer,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\oddball\ball_dropped"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\oddball\ball_dropped"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4694,7 +4694,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"oddball_spawned"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\oddball\play_ball"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\oddball\play_ball"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4704,7 +4704,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"oddball_reset"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\oddball\ball_reset"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\oddball\ball_reset"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4713,7 +4713,7 @@ namespace TagTool.Commands.Tags
                                         Audience = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.AudienceValue.All,
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\twenty_five_points_remaining"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\twenty_five_points_remaining"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4722,7 +4722,7 @@ namespace TagTool.Commands.Tags
                                         Audience = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.AudienceValue.CauseTeam,
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Friendly,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\twenty_five_points_to_win"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\twenty_five_points_to_win"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4730,7 +4730,7 @@ namespace TagTool.Commands.Tags
                                         Event = CacheContext.StringTable.GetStringId($@"oddball_event_25_points_remaining"),
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Friendly,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\twenty_five_points_to_win"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\twenty_five_points_to_win"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4739,7 +4739,7 @@ namespace TagTool.Commands.Tags
                                         Audience = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.AudienceValue.All,
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\ten_points_remaining"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\ten_points_remaining"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4748,7 +4748,7 @@ namespace TagTool.Commands.Tags
                                         Audience = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.AudienceValue.CauseTeam,
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Friendly,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\ten_points_to_win"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\ten_points_to_win"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4756,7 +4756,7 @@ namespace TagTool.Commands.Tags
                                         Event = CacheContext.StringTable.GetStringId($@"oddball_event_10_points_remaining"),
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Friendly,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\general\ten_points_to_win"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\general\ten_points_to_win"),
                                     },
                                 },
                                 KingOfTheHillEvents = new List<MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock>()
@@ -4769,7 +4769,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"koth_game_start"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\king_of_the_hill\king_of_the_hill"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\king_of_the_hill\king_of_the_hill"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4778,7 +4778,7 @@ namespace TagTool.Commands.Tags
                                         Audience = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.AudienceValue.All,
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\king_of_the_hill\hill_moved"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\king_of_the_hill\hill_moved"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4794,7 +4794,7 @@ namespace TagTool.Commands.Tags
                                         Event = CacheContext.StringTable.GetStringId($@"king_event_hill_controlled"),
                                         DisplayString = CacheContext.StringTable.GetStringId($@"koth_hill_controlled_cp"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\king_of_the_hill\hill_controlled"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\king_of_the_hill\hill_controlled"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4812,7 +4812,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Friendly,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"koth_hill_controlled_team_ct"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\king_of_the_hill\hill_controlled"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\king_of_the_hill\hill_controlled"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4828,7 +4828,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"koth_hill_contested_cp"),
                                         SplitscreenSuppression = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventInputEnum.CausePlayer,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\king_of_the_hill\hill_contested"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\king_of_the_hill\hill_contested"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4846,7 +4846,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"koth_hill_contested_team_ct"),
                                         SplitscreenSuppression = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventInputEnum.CausePlayer,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\king_of_the_hill\hill_contested"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\king_of_the_hill\hill_contested"),
                                     },
                                 },
                                 VipEvents = new List<MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock>()
@@ -4867,7 +4867,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"vip_new_defensive_team"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\offense"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\offense"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4877,7 +4877,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"vip_new_defensive_game_ct"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\defense"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\defense"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4887,7 +4887,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"vip_new_vip"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\vip\new_vip"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\vip\new_vip"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4896,7 +4896,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"vip_new_vip_cp"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\vip\new_vip"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\vip\new_vip"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4904,7 +4904,7 @@ namespace TagTool.Commands.Tags
                                         Event = CacheContext.StringTable.GetStringId($@"vip_event_vip_killed"),
                                         DisplayString = CacheContext.StringTable.GetStringId($@"vip_killed_cp"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\vip\vip_killed"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\vip\vip_killed"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4914,7 +4914,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Friendly,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"vip_killed_ct"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\vip\vip_killed"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\vip\vip_killed"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4925,7 +4925,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"vip_killed_et"),
                                         ExcludedAudience = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventInputEnum.EffectPlayer,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\vip\vip_killed"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\vip\vip_killed"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4967,7 +4967,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"jugg_destination_moved"),
                                         SplitscreenSuppression = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventInputEnum.EffectPlayer,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\juggernaut\destination_moved"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\juggernaut\destination_moved"),
                                     },
                                 },
                                 JuggernautEvents = new List<MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock>()
@@ -4980,7 +4980,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"jugg_game_start"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\juggernaut\juggernaut"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\juggernaut\juggernaut"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4990,7 +4990,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"jugg_new_juggernaut"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\juggernaut\new_juggernaut"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\juggernaut\new_juggernaut"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -4998,7 +4998,7 @@ namespace TagTool.Commands.Tags
                                         Event = CacheContext.StringTable.GetStringId($@"juggernaut_event_new_juggernaut"),
                                         DisplayString = CacheContext.StringTable.GetStringId($@"jugg_new_juggernaut_cp"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\juggernaut\new_juggernaut"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\juggernaut\new_juggernaut"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5009,7 +5009,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"jugg_destination_moved"),
                                         SplitscreenSuppression = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventInputEnum.EffectPlayer,
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\juggernaut\destination_moved"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\juggernaut\destination_moved"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5039,7 +5039,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"terr_game_start"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\territories\territories"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\territories\territories"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5049,7 +5049,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"terr_new_defensive_team"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\offense"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\offense"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5059,7 +5059,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"terr_new_defensive_team_ct"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\defense"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\capture_the_flag\defense"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5069,7 +5069,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Enemy,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"terr_captured"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\territories\territory_captured"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\territories\territory_captured"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5079,7 +5079,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Friendly,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"terr_captured_ct"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\territories\territory_captured"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\territories\territory_captured"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5089,7 +5089,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Enemy,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"terr_captured_et"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\territories\territory_lost"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\territories\territory_lost"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5098,7 +5098,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Friendly,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"terr_captured_cp"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\territories\territory_captured"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\territories\territory_captured"),
                                     },
                                 },
                                 AssaultEvents = new List<MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock>()
@@ -5111,14 +5111,14 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_game_start"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\assault"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\assault"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
                                         RuntimeEventType = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.TypeValue.Assault,
                                         Event = CacheContext.StringTable.GetStringId($@"assault_event_bomb_taken"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_taken"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_taken"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5128,14 +5128,14 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Friendly,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_bomb_pickup_ct"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_taken"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_taken"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
                                         RuntimeEventType = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.TypeValue.Assault,
                                         Event = CacheContext.StringTable.GetStringId($@"assault_event_bomb_dropped"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_dropped"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_dropped"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5145,7 +5145,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_bomb_dropped_ct"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_dropped"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_dropped"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5155,7 +5155,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_bomb_returned"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_returned"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_returned"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5164,7 +5164,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_bomb_returned_cp"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_bomb_return"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_returned"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_returned"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5174,7 +5174,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_bomb_returned_et"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_returned"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_returned"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5184,7 +5184,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_bomb_reset"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_reset"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_reset"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5194,7 +5194,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_bomb_reset_et"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_reset"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_reset"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5204,7 +5204,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Enemy,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_bomb_armed"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_armed"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_armed"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5214,7 +5214,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Friendly,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_bomb_armed_ct"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_armed"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_armed"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5223,7 +5223,7 @@ namespace TagTool.Commands.Tags
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_bomb_armed_cp"),
                                         MedalAward = CacheContext.StringTable.GetStringId($@"medal_bomb_planted"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_armed"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_armed"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5233,7 +5233,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Enemy,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_bomb_detonated"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_detonated"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_detonated"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5243,7 +5243,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Friendly,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_bomb_detonated_ct"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_detonated"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_detonated"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5253,7 +5253,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_bomb_disarmed"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_disarmed"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_disarmed"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5263,7 +5263,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Enemy,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_bomb_disarmed_et"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_disarmed"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_disarmed"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5271,7 +5271,7 @@ namespace TagTool.Commands.Tags
                                         Event = CacheContext.StringTable.GetStringId($@"assault_event_bomb_disarmed"),
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_bomb_disarmed_cp"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_disarmed"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_disarmed"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5281,7 +5281,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"assault_bomb_neutral_reset"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_reset"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\assault\bomb_reset"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {
@@ -5332,7 +5332,7 @@ namespace TagTool.Commands.Tags
                                         Audience = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.AudienceValue.EffectPlayer,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"inf_new_infection_ep"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\infection\infected"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\infection\infected"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -5342,7 +5342,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"inf_new_zombie"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\infection\new_zombie"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\infection\new_zombie"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -5350,7 +5350,7 @@ namespace TagTool.Commands.Tags
                                         Event = CacheContext.StringTable.GetStringId($@"infection_event_zombie_spawn"),
                                         DisplayString = CacheContext.StringTable.GetStringId($@"inf_new_zombie_cp"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\infection\new_zombie"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\infection\new_zombie"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -5358,7 +5358,7 @@ namespace TagTool.Commands.Tags
                                         Event = CacheContext.StringTable.GetStringId($@"infection_event_survive"),
                                         DisplayString = CacheContext.StringTable.GetStringId($@"inf_last_man_cp"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\infection\last_man_standing"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\infection\last_man_standing"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock()
                                     {
@@ -5374,7 +5374,7 @@ namespace TagTool.Commands.Tags
                                         Event = CacheContext.StringTable.GetStringId($@"infection_event_alpha_zombie_spawn"),
                                         DisplayString = CacheContext.StringTable.GetStringId($@"inf_new_alpha"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        EnglishSound = CacheContext.TagCache.GetTag<Sound>($@"sound\dialog\multiplayer_en\infection\infected"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\infection\infected"),
                                     },
                                 },
                                 MaximumFragCount = 4,
@@ -5974,7 +5974,7 @@ namespace TagTool.Commands.Tags
                                             DangerLeadTime = 0.75f,
                                             NearbyPlayerDistance = 4f,
                                         },
-                                        HillBitmap = CacheContext.TagCache.GetTag<Bitmap>($@"multiplayer\hill\hill"),
+                                        HillBitmap = GetCachedTag<Bitmap>($@"multiplayer\hill\hill"),
                                         FlagConstants = new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.FlagConstantStruct
                                         {
                                             ReturnDistance = 3.5f,
@@ -5984,10 +5984,10 @@ namespace TagTool.Commands.Tags
                                         TerritoriesWaypointVerticalOffset = -0.1f,
                                         AssaultBombEffects = new MultiplayerGlobals.MultiplayerRuntimeBlock.MultiplayerConstant.BombEffectStruct
                                         {
-                                            ExplodeEffect = CacheContext.TagCache.GetTag<Effect>($@"fx\scenery_fx\explosions\human_explosion_huge\human_explosion_huge"),
-                                            ExplodeDamageEffect = CacheContext.TagCache.GetTag<DamageEffect>($@"objects\weapons\multiplayer\assault_bomb\damage_effects\bomb_explosion"),
+                                            ExplodeEffect = GetCachedTag<Effect>($@"fx\scenery_fx\explosions\human_explosion_huge\human_explosion_huge"),
+                                            ExplodeDamageEffect = GetCachedTag<DamageEffect>($@"objects\weapons\multiplayer\assault_bomb\damage_effects\bomb_explosion"),
                                         },
-                                        ForgeCursorImpactEffect = CacheContext.TagCache.GetTag<Effect>($@"multiplayer\sandbox\cursor_impact"),
+                                        ForgeCursorImpactEffect = GetCachedTag<Effect>($@"multiplayer\sandbox\cursor_impact"),
                                         BombDefusalString = CacheContext.StringTable.GetStringId($@"assault_defusal"),
                                         BlockedTeleporterString = CacheContext.StringTable.GetStringId($@"game_engine_blocked_teleporter"),
                                         UnknownHO = 3,
@@ -6154,22 +6154,22 @@ namespace TagTool.Commands.Tags
                                         TeamMessage = CacheContext.StringTable.GetStringId($@"playing_losing_t_unlimited"),
                                     },
                                 },
-                                ScoreboardEmblemBitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\emblems"),
-                                ScoreboardDeadBitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\scoreboard\dead_player_ui"),
-                                HillShader = CacheContext.TagCache.GetTag<ShaderHalogram>($@"objects\multi\shaders\koth_shield"),
+                                ScoreboardEmblemBitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\emblems"),
+                                ScoreboardDeadBitmap = GetCachedTag<Bitmap>($@"ui\halox\scoreboard\dead_player_ui"),
+                                HillShader = GetCachedTag<ShaderHalogram>($@"objects\multi\shaders\koth_shield"),
                                 GameIntroMessages = new MultiplayerGlobals.MultiplayerRuntimeBlock.IntroMessageStruct()
                                 {
                                     Pregame = null,
-                                    Ctf = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_ctf"),
-                                    Slayer = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_slayer"),
-                                    Oddball = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_oddball"),
-                                    King = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_king"),
-                                    Sandbox = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_editor"),
-                                    Vip = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_vip"),
-                                    Juggernaut = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_juggernaut"),
-                                    Territories = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_territories"),
-                                    Assault = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_assault"),
-                                    Infection = CacheContext.TagCache.GetTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_infection"),
+                                    Ctf = GetCachedTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_ctf"),
+                                    Slayer = GetCachedTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_slayer"),
+                                    Oddball = GetCachedTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_oddball"),
+                                    King = GetCachedTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_king"),
+                                    Sandbox = GetCachedTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_editor"),
+                                    Vip = GetCachedTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_vip"),
+                                    Juggernaut = GetCachedTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_juggernaut"),
+                                    Territories = GetCachedTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_territories"),
+                                    Assault = GetCachedTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_assault"),
+                                    Infection = GetCachedTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_infection"),
                                 },
                             }
                         };

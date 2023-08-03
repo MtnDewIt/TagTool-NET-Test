@@ -20,10 +20,10 @@ namespace TagTool.Commands.Tags
                     if (tag.IsInGroup("hlmt") && tag.Name == $@"objects\characters\masterchief\mp_masterchief\mp_masterchief")
                     {
                         var hlmt = CacheContext.Deserialize<Model>(stream, tag);
-                        hlmt.ShieldImpactThirdPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"globals\masterchief_3p_shield_impact");
-                        hlmt.ShieldImpactFirstPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"globals\masterchief_fp_shield_impact");
-                        hlmt.OvershieldFirstPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\overshield_1p");
-                        hlmt.OvershieldThirdPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\overshield_3p");
+                        hlmt.ShieldImpactThirdPerson = GetCachedTag<ShieldImpact>($@"globals\masterchief_3p_shield_impact");
+                        hlmt.ShieldImpactFirstPerson = GetCachedTag<ShieldImpact>($@"globals\masterchief_fp_shield_impact");
+                        hlmt.OvershieldFirstPerson = GetCachedTag<ShieldImpact>($@"fx\shield_impacts\overshield_1p");
+                        hlmt.OvershieldThirdPerson = GetCachedTag<ShieldImpact>($@"fx\shield_impacts\overshield_3p");
                         CacheContext.Serialize(stream, tag, hlmt);
                     }
 
@@ -31,10 +31,10 @@ namespace TagTool.Commands.Tags
                     if (tag.IsInGroup("hlmt") && tag.Name == $@"objects\characters\masterchief\masterchief")
                     {
                         var hlmt = CacheContext.Deserialize<Model>(stream, tag);
-                        hlmt.ShieldImpactThirdPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"globals\masterchief_3p_shield_impact");
-                        hlmt.ShieldImpactFirstPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"globals\masterchief_fp_shield_impact");
-                        hlmt.OvershieldFirstPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\overshield_1p");
-                        hlmt.OvershieldThirdPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\overshield_3p");
+                        hlmt.ShieldImpactThirdPerson = GetCachedTag<ShieldImpact>($@"globals\masterchief_3p_shield_impact");
+                        hlmt.ShieldImpactFirstPerson = GetCachedTag<ShieldImpact>($@"globals\masterchief_fp_shield_impact");
+                        hlmt.OvershieldFirstPerson = GetCachedTag<ShieldImpact>($@"fx\shield_impacts\overshield_1p");
+                        hlmt.OvershieldThirdPerson = GetCachedTag<ShieldImpact>($@"fx\shield_impacts\overshield_3p");
                         CacheContext.Serialize(stream, tag, hlmt);
                     }
 
@@ -42,10 +42,10 @@ namespace TagTool.Commands.Tags
                     if (tag.IsInGroup("hlmt") && tag.Name == $@"objects\characters\elite\mp_elite\mp_elite")
                     {
                         var hlmt = CacheContext.Deserialize<Model>(stream, tag);
-                        hlmt.ShieldImpactThirdPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"globals\elite_3p_shield_impact");
-                        hlmt.ShieldImpactFirstPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"globals\elite_fp_shield_impact");
-                        hlmt.OvershieldFirstPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\overshield_1p");
-                        hlmt.OvershieldThirdPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\overshield_3p");
+                        hlmt.ShieldImpactThirdPerson = GetCachedTag<ShieldImpact>($@"globals\elite_3p_shield_impact");
+                        hlmt.ShieldImpactFirstPerson = GetCachedTag<ShieldImpact>($@"globals\elite_fp_shield_impact");
+                        hlmt.OvershieldFirstPerson = GetCachedTag<ShieldImpact>($@"fx\shield_impacts\overshield_1p");
+                        hlmt.OvershieldThirdPerson = GetCachedTag<ShieldImpact>($@"fx\shield_impacts\overshield_3p");
                         CacheContext.Serialize(stream, tag, hlmt);
                     }
 
@@ -53,10 +53,10 @@ namespace TagTool.Commands.Tags
                     if (tag.IsInGroup("hlmt") && tag.Name == $@"objects\characters\elite\elite_sp")
                     {
                         var hlmt = CacheContext.Deserialize<Model>(stream, tag);
-                        hlmt.ShieldImpactThirdPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"globals\elite_3p_shield_impact");
-                        hlmt.ShieldImpactFirstPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"globals\elite_fp_shield_impact");
-                        hlmt.OvershieldFirstPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\overshield_1p");
-                        hlmt.OvershieldThirdPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\overshield_3p");
+                        hlmt.ShieldImpactThirdPerson = GetCachedTag<ShieldImpact>($@"globals\elite_3p_shield_impact");
+                        hlmt.ShieldImpactFirstPerson = GetCachedTag<ShieldImpact>($@"globals\elite_fp_shield_impact");
+                        hlmt.OvershieldFirstPerson = GetCachedTag<ShieldImpact>($@"fx\shield_impacts\overshield_1p");
+                        hlmt.OvershieldThirdPerson = GetCachedTag<ShieldImpact>($@"fx\shield_impacts\overshield_3p");
                         CacheContext.Serialize(stream, tag, hlmt);
                     }
 
@@ -64,10 +64,10 @@ namespace TagTool.Commands.Tags
                     if (tag.IsInGroup("hlmt") && tag.Name == $@"objects\characters\dervish\dervish")
                     {
                         var hlmt = CacheContext.Deserialize<Model>(stream, tag);
-                        hlmt.ShieldImpactThirdPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"globals\elite_3p_shield_impact");
-                        hlmt.ShieldImpactFirstPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"globals\elite_fp_shield_impact");
-                        hlmt.OvershieldFirstPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\overshield_1p");
-                        hlmt.OvershieldThirdPerson = CacheContext.TagCache.GetTag<ShieldImpact>($@"fx\shield_impacts\overshield_3p");
+                        hlmt.ShieldImpactThirdPerson = GetCachedTag<ShieldImpact>($@"globals\elite_3p_shield_impact");
+                        hlmt.ShieldImpactFirstPerson = GetCachedTag<ShieldImpact>($@"globals\elite_fp_shield_impact");
+                        hlmt.OvershieldFirstPerson = GetCachedTag<ShieldImpact>($@"fx\shield_impacts\overshield_1p");
+                        hlmt.OvershieldThirdPerson = GetCachedTag<ShieldImpact>($@"fx\shield_impacts\overshield_3p");
                         CacheContext.Serialize(stream, tag, hlmt);
                     }
                 }
@@ -196,7 +196,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         new Unit.UnitCameraTrack
                                         {
-                                            Track = CacheContext.TagCache.GetTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
+                                            Track = GetCachedTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
                                         },
                                     },
                                 },
@@ -217,7 +217,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         new Unit.UnitCameraTrack
                                         {
-                                            Track = CacheContext.TagCache.GetTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
+                                            Track = GetCachedTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
                                         },
                                     },
                                 },
@@ -238,7 +238,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         new Unit.UnitCameraTrack
                                         {
-                                            Track = CacheContext.TagCache.GetTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
+                                            Track = GetCachedTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
                                         },
                                     },
                                 },
@@ -259,7 +259,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         new Unit.UnitCameraTrack
                                         {
-                                            Track = CacheContext.TagCache.GetTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
+                                            Track = GetCachedTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
                                         },
                                     },
                                 },
@@ -280,7 +280,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         new Unit.UnitCameraTrack
                                         {
-                                            Track = CacheContext.TagCache.GetTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
+                                            Track = GetCachedTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
                                         },
                                     },
                                 },
@@ -301,7 +301,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         new Unit.UnitCameraTrack
                                         {
-                                            Track = CacheContext.TagCache.GetTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
+                                            Track = GetCachedTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
                                         },
                                     },
                                 },
@@ -322,7 +322,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         new Unit.UnitCameraTrack
                                         {
-                                            Track = CacheContext.TagCache.GetTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
+                                            Track = GetCachedTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
                                         },
                                     },
                                 },
@@ -343,7 +343,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         new Unit.UnitCameraTrack
                                         {
-                                            Track = CacheContext.TagCache.GetTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
+                                            Track = GetCachedTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
                                         },
                                     },
                                 },
@@ -364,7 +364,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         new Unit.UnitCameraTrack
                                         {
-                                            Track = CacheContext.TagCache.GetTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
+                                            Track = GetCachedTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
                                         },
                                     },
                                 },
@@ -385,7 +385,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         new Unit.UnitCameraTrack
                                         {
-                                            Track = CacheContext.TagCache.GetTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
+                                            Track = GetCachedTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
                                         },
                                     },
                                 },

@@ -16,258 +16,258 @@ namespace TagTool.Commands.Tags
                     if (tag.IsInGroup("wgtz") && tag.Name == $@"ui\main_menu")
                     {
                         var wgtz = CacheContext.Deserialize<UserInterfaceGlobalsDefinition>(stream, tag);
-                        wgtz.SharedGlobals = CacheContext.TagCache.GetTag<UserInterfaceSharedGlobalsDefinition>($@"ui\ui_shared_globals");
-                        wgtz.MpVariantSettingsUi = CacheContext.TagCache.GetTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\multiplayer_editable_settings");
-                        wgtz.GameHopperDescriptions = CacheContext.TagCache.GetTag<MultilingualUnicodeStringList>($@"multiplayer\matchmaking_hopper_descriptions");
+                        wgtz.SharedGlobals = GetCachedTag<UserInterfaceSharedGlobalsDefinition>($@"ui\ui_shared_globals");
+                        wgtz.MpVariantSettingsUi = GetCachedTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\multiplayer_editable_settings");
+                        wgtz.GameHopperDescriptions = GetCachedTag<MultilingualUnicodeStringList>($@"multiplayer\matchmaking_hopper_descriptions");
                         wgtz.ScreenWidgets = new List<UserInterfaceGlobalsDefinition.ScreenWidget>
                         {
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\game_browser\game_browser_search_criteria"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\game_browser\game_browser_search_criteria"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\main_menu\main_menu"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\main_menu\main_menu"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\start_menu"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\start_menu"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_campaign\start_menu_game_campaign"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_campaign\start_menu_game_campaign"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_multiplayer\start_menu_game_multiplayer"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_multiplayer\start_menu_game_multiplayer"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings\start_menu_settings"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings\start_menu_settings"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_screenshots\start_menu_hq_screenshots"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_screenshots\start_menu_hq_screenshots"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_screenshots_viewer\start_menu_hq_screenshots_viewer"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_screenshots_viewer\start_menu_hq_screenshots_viewer"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_screenshots\start_menu_hq_screenshots_option"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_screenshots\start_menu_hq_screenshots_option"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq\start_menu_headquarters"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq\start_menu_headquarters"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_transfers\start_menu_hq_transfers"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_transfers\start_menu_hq_transfers"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_transfers\start_menu_hq_transfers_item_selected"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_transfers\start_menu_hq_transfers_item_selected"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_service_record\start_menu_hq_service_record"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_service_record\start_menu_hq_service_record"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_service_record_file_share\start_menu_hq_service_record_file_share"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_service_record_file_share\start_menu_hq_service_record_file_share"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_service_record_file_share\start_menu_hq_service_record_file_share"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_service_record_file_share\start_menu_hq_service_record_file_share"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_service_record_file_share\start_menu_hq_service_record_file_share"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_service_record_file_share\start_menu_hq_service_record_file_share"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_service_record_file_share\start_menu_hq_service_record_file_share"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_service_record_file_share\start_menu_hq_service_record_file_share"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_service_record_file_share\start_menu_hq_service_record_file_share"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_service_record_file_share\start_menu_hq_service_record_file_share"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls\start_menu_settings_controls"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls\start_menu_settings_controls"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls_thumbstick\start_menu_settings_controls_thumbstick"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls_thumbstick\start_menu_settings_controls_thumbstick"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls_button\start_menu_settings_controls_button"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls_button\start_menu_settings_controls_button"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_appearance\start_menu_settings_appearance"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_appearance\start_menu_settings_appearance"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_appearance_colors\start_menu_settings_appearance_colors"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_appearance_colors\start_menu_settings_appearance_colors"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_appearance_emblem\start_menu_settings_appearance_emblem"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_appearance_emblem\start_menu_settings_appearance_emblem"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_appearance_model\start_menu_settings_appearance_model"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_appearance_model\start_menu_settings_appearance_model"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_voice\start_menu_settings_voice"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_voice\start_menu_settings_voice"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_camera\start_menu_settings_camera"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_camera\start_menu_settings_camera"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_display\start_menu_settings_display"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_display\start_menu_settings_display"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_film_autosave\start_menu_settings_film_autosave"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_film_autosave\start_menu_settings_film_autosave"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\e3\e3_demo"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\e3\e3_demo"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_nonblocking"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_nonblocking"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_toast"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_toast"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\dialog\dialog"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\dialog\dialog"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\dialog\dialog_four"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\dialog\dialog_four"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\spartan_program\spartan_milestone"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\spartan_program\spartan_milestone"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\spartan_program\spartan_rank"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\spartan_program\spartan_rank"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\campaign\campaign_select_difficulty"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\campaign\campaign_select_difficulty"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\campaign\campaign_select_level"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\campaign\campaign_select_level"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\campaign\campaign_loading"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\campaign\campaign_loading"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_campaign"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_campaign"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_matchmaking"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_matchmaking"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_multiplayer"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_multiplayer"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_mapeditor"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_mapeditor"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_theater"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_theater"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\selection\pregame_selection"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\selection\pregame_selection"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\maximum_party_size\maximum_party_size"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\maximum_party_size\maximum_party_size"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\switch_lobby\pregame_switch_lobby"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\switch_lobby\pregame_switch_lobby"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                //Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\common\player_select\player_select"),
+                                //Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\common\player_select\player_select"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\game_browser\game_browser"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\game_browser\game_browser"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\postgame_lobby\postgame_lobby"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\postgame_lobby\postgame_lobby"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\in_progress\in_progress"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\in_progress\in_progress"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\in_progress\in_progress_mini"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\in_progress\in_progress_mini"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\game_details\game_details"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\game_details\game_details"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\alpha_legal\alpha_legal"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\alpha_legal\alpha_legal"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\alpha_locked_down\alpha_locked_down"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\alpha_locked_down\alpha_locked_down"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\alpha_motd\alpha_motd"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\alpha_motd\alpha_motd"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\matchmaking\matchmaking_match_found"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\matchmaking\matchmaking_match_found"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\matchmaking\matchmaking_searching"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\matchmaking\matchmaking_searching"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\game_options\game_options_screen"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\game_options\game_options_screen"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                //Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\carnage_report\carnage_report"),
+                                //Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\carnage_report\carnage_report"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                //Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\common\player_select\carnage_report_player_details"),
+                                //Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\common\player_select\carnage_report_player_details"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\advanced_screen\advanced_matchmaking_options"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\advanced_screen\advanced_matchmaking_options"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
@@ -275,42 +275,42 @@ namespace TagTool.Commands.Tags
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\director\observer_camera_list_screen"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\director\observer_camera_list_screen"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\campaign\campaign_settings"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\campaign\campaign_settings"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_screenshots_viewer\screenshots_file_share_previewer"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\hq_screenshots_viewer\screenshots_file_share_previewer"),
                             },
 
 
 
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_survival"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_survival"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\selection\pregame_survival_level_selection"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\selection\pregame_survival_level_selection"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\selection\survival_select_difficulty"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\selection\survival_select_difficulty"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\selection\survival_select_skulls"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\selection\survival_select_skulls"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\campaign\campaign_select_scoring"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\campaign\campaign_select_scoring"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\campaign\campaign_select_skulls"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\campaign\campaign_select_skulls"),
                             },
                         };
                         CacheContext.Serialize(stream, tag, wgtz);
@@ -319,176 +319,176 @@ namespace TagTool.Commands.Tags
                     if (tag.IsInGroup("wgtz") && tag.Name == $@"ui\multiplayer")
                     {
                         var wgtz = CacheContext.Deserialize<UserInterfaceGlobalsDefinition>(stream, tag);
-                        wgtz.SharedGlobals = CacheContext.TagCache.GetTag<UserInterfaceSharedGlobalsDefinition>($@"ui\ui_shared_globals");
+                        wgtz.SharedGlobals = GetCachedTag<UserInterfaceSharedGlobalsDefinition>($@"ui\ui_shared_globals");
                         wgtz.ScreenWidgets = new List<UserInterfaceGlobalsDefinition.ScreenWidget>
                         {
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\start_menu"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\start_menu"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_multiplayer\start_menu_game_multiplayer"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_multiplayer\start_menu_game_multiplayer"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings\start_menu_settings"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings\start_menu_settings"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls\start_menu_settings_controls"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls\start_menu_settings_controls"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls_button\start_menu_settings_controls_button"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls_button\start_menu_settings_controls_button"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls_thumbstick\start_menu_settings_controls_thumbstick"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls_thumbstick\start_menu_settings_controls_thumbstick"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_voice\start_menu_settings_voice"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_voice\start_menu_settings_voice"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_camera\start_menu_settings_camera"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_camera\start_menu_settings_camera"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_display\start_menu_settings_display"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_display\start_menu_settings_display"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_nonblocking"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_nonblocking"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_toast"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_toast"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_ingame_full"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_ingame_full"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_ingame_split"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_ingame_split"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\dialog\dialog"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\dialog\dialog"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\dialog\dialog_four"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\dialog\dialog_four"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\in_progress\in_progress"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\in_progress\in_progress"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\in_progress\in_progress_mini"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\in_progress\in_progress_mini"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\boot_betrayer\boot_betrayer"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\boot_betrayer\boot_betrayer"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\sandbox_ui\sandbox_budget_screen"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\sandbox_ui\sandbox_budget_screen"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_editor\start_menu_game_editor"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_editor\start_menu_game_editor"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\director\observer_camera_list_screen"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\director\observer_camera_list_screen"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\sandbox_ui\sandbox_object_creation_menu"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\sandbox_ui\sandbox_object_creation_menu"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\sandbox_ui\sandbox_object_properties_menu"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\sandbox_ui\sandbox_object_properties_menu"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\scoreboard\scoreboard"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\scoreboard\scoreboard"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\scoreboard\scoreboard_half"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\scoreboard\scoreboard_half"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\common\player_select\scoreboard_player_select"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\common\player_select\scoreboard_player_select"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\director\saved_film_control_pad"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\director\saved_film_control_pad"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\director\saved_film_take_screenshot"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\director\saved_film_take_screenshot"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\director\popup"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\director\popup"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\game_details\game_details"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\game_details\game_details"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_saved_film\start_menu_game_saved_films"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_saved_film\start_menu_game_saved_films"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\director\observer_camera_list_splitscreen"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\director\observer_camera_list_splitscreen"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\common\player_select\splitscreen_player_select"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\common\player_select\splitscreen_player_select"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\director\saved_film_snippet_screen"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\director\saved_film_snippet_screen"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\in_progress\in_progress_mini_me"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\in_progress\in_progress_mini_me"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_editor\change_gametype"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_editor\change_gametype"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_multiplayer\change_team"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_multiplayer\change_team"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\sandbox_ui\sandbox_budget_screen_splitscreen"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\sandbox_ui\sandbox_budget_screen_splitscreen"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\sandbox_ui\sandbox_object_creation_menu_splitscreen"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\sandbox_ui\sandbox_object_creation_menu_splitscreen"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\sandbox_ui\sandbox_object_properties_menu_splitscreen"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\sandbox_ui\sandbox_object_properties_menu_splitscreen"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\sandbox_ui\forge_legal"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\sandbox_ui\forge_legal"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\boot_betrayer\boot_betrayer_splitscreen"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\boot_betrayer\boot_betrayer_splitscreen"),
                             },
                         };
                         CacheContext.Serialize(stream, tag, wgtz);
@@ -497,128 +497,128 @@ namespace TagTool.Commands.Tags
                     if (tag.IsInGroup("wgtz") && tag.Name == $@"ui\single_player")
                     {
                         var wgtz = CacheContext.Deserialize<UserInterfaceGlobalsDefinition>(stream, tag);
-                        wgtz.SharedGlobals = CacheContext.TagCache.GetTag<UserInterfaceSharedGlobalsDefinition>($@"ui\ui_shared_globals");
+                        wgtz.SharedGlobals = GetCachedTag<UserInterfaceSharedGlobalsDefinition>($@"ui\ui_shared_globals");
                         wgtz.ScreenWidgets = new List<UserInterfaceGlobalsDefinition.ScreenWidget>
                         {
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\start_menu"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\start_menu"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_campaign\start_menu_game_campaign"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_campaign\start_menu_game_campaign"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_saved_film\start_menu_game_saved_films"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\game_saved_film\start_menu_game_saved_films"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings\start_menu_settings"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings\start_menu_settings"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls\start_menu_settings_controls"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls\start_menu_settings_controls"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls_button\start_menu_settings_controls_button"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls_button\start_menu_settings_controls_button"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls_thumbstick\start_menu_settings_controls_thumbstick"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_controls_thumbstick\start_menu_settings_controls_thumbstick"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_voice\start_menu_settings_voice"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_voice\start_menu_settings_voice"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_camera\start_menu_settings_camera"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_camera\start_menu_settings_camera"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_display\start_menu_settings_display"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_display\start_menu_settings_display"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_nonblocking"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_nonblocking"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_toast"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_toast"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_ingame_full"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_ingame_full"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_ingame_split"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\alert\alert_ingame_split"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\dialog\dialog"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\dialog\dialog"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\dialog\dialog_four"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\dialog\dialog_four"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\in_progress\in_progress"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\in_progress\in_progress"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\in_progress\in_progress_mini"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\in_progress\in_progress_mini"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\terminals\terminal_screen"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\terminals\terminal_screen"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\scoreboard\scoreboard"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\scoreboard\scoreboard"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\scoreboard\scoreboard_half"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\scoreboard\scoreboard_half"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\common\player_select\scoreboard_player_select"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\common\player_select\scoreboard_player_select"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\director\saved_film_control_pad"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\director\saved_film_control_pad"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\director\saved_film_take_screenshot"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\director\saved_film_take_screenshot"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\game_details\game_details"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\game_details\game_details"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\director\observer_camera_list_splitscreen"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\director\observer_camera_list_splitscreen"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\common\player_select\splitscreen_player_select"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\common\player_select\splitscreen_player_select"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                //Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\carnage_report\campaign_carnage_report"),
+                                //Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\carnage_report\campaign_carnage_report"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\in_progress\in_progress_mini_me"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\in_progress\in_progress_mini_me"),
                             },
                             new UserInterfaceGlobalsDefinition.ScreenWidget
                             {
-                                Widget = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\director\observer_camera_list_screen"),
+                                Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\director\observer_camera_list_screen"),
                             },
                         };
                         CacheContext.Serialize(stream, tag, wgtz);
@@ -741,13 +741,13 @@ namespace TagTool.Commands.Tags
                             Bounds720p = new Rectangle2d(-420, -756, 420, 756),
                             Bounds480i = new Rectangle2d(-315, -420, 315, 420)
                         };
-                        scn3.StringList = CacheContext.TagCache.GetTag<MultilingualUnicodeStringList>($@"ui\halox\main_menu\strings");
+                        scn3.StringList = GetCachedTag<MultilingualUnicodeStringList>($@"ui\halox\main_menu\strings");
                         scn3.InitialButtonKeyName = CacheContext.StringTable.GetStringId($@"main_menu_offline");
                         scn3.DebugDatasources = new List<GuiScreenWidgetDefinition.DataSource>
                         {
                             new GuiScreenWidgetDefinition.DataSource
                             {
-                                DataSourceTag = CacheContext.TagCache.GetTag<GuiDatasourceDefinition>($@"ui\halox\main_menu\main_menu_list"),
+                                DataSourceTag = GetCachedTag<GuiDatasourceDefinition>($@"ui\halox\main_menu\main_menu_list"),
                             },
                         };
                         scn3.GroupWidgets = new List<GuiScreenWidgetDefinition.GroupWidget>
@@ -761,7 +761,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         new ListWidget
                                         {
-                                            TemplateReference = CacheContext.TagCache.GetTag<GuiListWidgetDefinition>($@"ui\halox\main_menu\mainmenu_list"),
+                                            TemplateReference = GetCachedTag<GuiListWidgetDefinition>($@"ui\halox\main_menu\mainmenu_list"),
                                             Definition = new GuiListWidgetDefinition
                                             {
                                                 Flags = GuiListWidgetDefinition.GuiListWidgetFlags.DoNotApplyOldContentUpscaling | GuiListWidgetDefinition.GuiListWidgetFlags.ListWraps,
@@ -839,7 +839,7 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"start_new_campaign"),
                                                     Bounds720p = new Rectangle2d(595, 761, 682, 1359),
                                                     Bounds480i = new Rectangle2d(467, 320, 538, 774),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\500_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\500_fade"),
                                                 },
                                                 ValueOverrideList = CacheContext.StringTable.GetStringId($@"sidebar_items"),
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"dim"),
@@ -857,7 +857,7 @@ namespace TagTool.Commands.Tags
                                                     RenderDepthBias = -11,
                                                     Bounds720p = new Rectangle2d(699, 102, 738, 489),
                                                     Bounds480i = new Rectangle2d(534, 52, 573, 270),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_slide_up"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_slide_up"),
                                                 },
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"eldewrito_version"),
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"dim"),
@@ -878,9 +878,9 @@ namespace TagTool.Commands.Tags
                                                     RenderDepthBias = -10,
                                                     Bounds720p = new Rectangle2d(477, 102, 780, 505),
                                                     Bounds480i = new Rectangle2d(374, 52, 590, 283),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_slide_up"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_slide_up"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\main_menu\mainmenu_bkd"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\main_menu\mainmenu_bkd"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -895,9 +895,9 @@ namespace TagTool.Commands.Tags
                                                     RenderDepthBias = -10,
                                                     Bounds720p = new Rectangle2d(780, 102, 840, 505),
                                                     Bounds480i = new Rectangle2d(590, 52, 630, 283),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_slide_up"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_slide_up"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\main_menu\bottom_gradient_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\main_menu\bottom_gradient_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -912,9 +912,9 @@ namespace TagTool.Commands.Tags
                                                     RenderDepthBias = -12,
                                                     Bounds720p = new Rectangle2d(477, 102, 840, 505),
                                                     Bounds480i = new Rectangle2d(374, 52, 630, 283),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_slide_up"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_slide_up"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -928,9 +928,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"full_black_fade_in"),
                                                     RenderDepthBias = 150,
                                                     Bounds720p = new Rectangle2d(-26, -1, 893, 1526),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\black_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\black_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_fade_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_fade_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -959,9 +959,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"title"),
                                                     Bounds720p = new Rectangle2d(518, 780, 0, 0),
                                                     Bounds480i = new Rectangle2d(408, 337, 0, 0),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\500_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\500_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\main_menu\halo3_logo_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\main_menu\halo3_logo_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                                 InitialSpriteFrame = -1,
                                             },
@@ -976,9 +976,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"bungie"),
                                                     Bounds720p = new Rectangle2d(721, 1269, 0, 0),
                                                     Bounds480i = new Rectangle2d(551, 669, 0, 0),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\500_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\500_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\main_menu\bungielogo"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\main_menu\bungielogo"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -990,11 +990,11 @@ namespace TagTool.Commands.Tags
                         {
                             new GuiScreenWidgetDefinition.ButtonKeyLegend
                             {
-                                Definition = CacheContext.TagCache.GetTag<GuiButtonKeyDefinition>($@"ui\halox\main_menu\main_menu_offline"),
+                                Definition = GetCachedTag<GuiButtonKeyDefinition>($@"ui\halox\main_menu\main_menu_offline"),
                             },
                             new GuiScreenWidgetDefinition.ButtonKeyLegend
                             {
-                                Definition = CacheContext.TagCache.GetTag<GuiButtonKeyDefinition>($@"ui\halox\main_menu\main_menu_online"),
+                                Definition = GetCachedTag<GuiButtonKeyDefinition>($@"ui\halox\main_menu\main_menu_online"),
                             },
                         };
                         scn3.OnLoadScriptName = "mainmenu_cam";
@@ -1207,7 +1207,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         RenderDepthBias = 1,
                                         Bounds720p = new Rectangle2d(2, 5, 45, 599),
-                                        AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                        AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                     },
                                     ValueIdentifier = CacheContext.StringTable.GetStringId($@"name"),
                                     CustomFont = WidgetFontValue.BodyText,
@@ -1224,9 +1224,9 @@ namespace TagTool.Commands.Tags
                                     GuiRenderBlock = new GuiDefinition
                                     {
                                         Bounds720p = new Rectangle2d(0, -9, 32, 598),
-                                        AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\pregame_lobby\switch_lobby\immediate_dismiss_list_bitmaps"),
+                                        AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\pregame_lobby\switch_lobby\immediate_dismiss_list_bitmaps"),
                                     },
-                                    Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\standard_list\black_bar"),
+                                    Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\standard_list\black_bar"),
                                     BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                 },
                             },
@@ -1242,23 +1242,23 @@ namespace TagTool.Commands.Tags
                         {
                             Name = CacheContext.StringTable.GetStringId($@"pregame_lobby_campaign"),
                         };
-                        scn3.ScreenTemplate = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_template");
+                        scn3.ScreenTemplate = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_template");
                         scn3.DebugDatasources = new List<GuiScreenWidgetDefinition.DataSource>
                         {
                             new GuiScreenWidgetDefinition.DataSource
                             {
-                                DataSourceTag = CacheContext.TagCache.GetTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\lobby_list_campaign"),
+                                DataSourceTag = GetCachedTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\lobby_list_campaign"),
                             },
                             new GuiScreenWidgetDefinition.DataSource
                             {
-                                DataSourceTag = CacheContext.TagCache.GetTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_constants"),
+                                DataSourceTag = GetCachedTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_constants"),
                             },
                         };
                         scn3.GroupWidgets = new List<GuiScreenWidgetDefinition.GroupWidget>
                         {
                             new GuiScreenWidgetDefinition.GroupWidget
                             {
-                                TemplateReference = CacheContext.TagCache.GetTag<GuiGroupWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_template"),
+                                TemplateReference = GetCachedTag<GuiGroupWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_template"),
                                 Definition = new GuiGroupWidgetDefinition
                                 {
                                     Flags = GuiGroupWidgetDefinition.GuiGroupWidgetFlags.DoNotApplyOldContentUpscaling,
@@ -1270,7 +1270,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         new ListWidget
                                         {
-                                            TemplateReference = CacheContext.TagCache.GetTag<GuiListWidgetDefinition>($@"ui\halox\pregame_lobby\lobby_ui_list"),
+                                            TemplateReference = GetCachedTag<GuiListWidgetDefinition>($@"ui\halox\pregame_lobby\lobby_ui_list"),
                                             Definition = new GuiListWidgetDefinition
                                             {
                                                 Flags = GuiListWidgetDefinition.GuiListWidgetFlags.DoNotApplyOldContentUpscaling | GuiListWidgetDefinition.GuiListWidgetFlags.ListWraps,
@@ -1278,7 +1278,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"lobby_list"),
                                                     Bounds720p = new Rectangle2d(111, 112, 0, 0),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
                                                 DataSourceName = CacheContext.StringTable.GetStringId($@"lobby_list"),
                                                 Items = new List<GuiListWidgetDefinition.ListWidgetItem>
@@ -1339,7 +1339,7 @@ namespace TagTool.Commands.Tags
                             },
                             new GuiScreenWidgetDefinition.GroupWidget
                             {
-                                TemplateReference = CacheContext.TagCache.GetTag<GuiGroupWidgetDefinition>($@"ui\halox\common\roster\roster"),
+                                TemplateReference = GetCachedTag<GuiGroupWidgetDefinition>($@"ui\halox\common\roster\roster"),
                                 Definition = new GuiGroupWidgetDefinition
                                 {
                                     Flags = GuiGroupWidgetDefinition.GuiGroupWidgetFlags.DoNotApplyOldContentUpscaling,
@@ -1372,7 +1372,7 @@ namespace TagTool.Commands.Tags
                                                {
                                                    Name = CacheContext.StringTable.GetStringId($@"difficulty"),
                                                    Bounds720p = new Rectangle2d(656, 116, 695, 704),
-                                                   AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
+                                                   AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
                                                },
                                                ValueIdentifier = CacheContext.StringTable.GetStringId($@"campaign_difficulty"),
                                                TextColorPreset = CacheContext.StringTable.GetStringId($@"ice"),
@@ -1388,7 +1388,7 @@ namespace TagTool.Commands.Tags
                                                {
                                                    Name = CacheContext.StringTable.GetStringId($@"campaign_insertion_point"),
                                                    Bounds720p = new Rectangle2d(686, 116, 725, 704),
-                                                   AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
+                                                   AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
                                                },
                                                ValueIdentifier = CacheContext.StringTable.GetStringId($@"campaign_insertion_point"),
                                                TextColorPreset = CacheContext.StringTable.GetStringId($@"ice"),
@@ -1404,7 +1404,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"lobby_status"),
                                                     Bounds720p = new Rectangle2d(334, 116, 494, 704),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\lobby_slide_with_alt_flash"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\lobby_slide_with_alt_flash"),
                                                 },
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"ice"),
                                                 CustomFont = WidgetFontValue.BodyText,
@@ -1424,7 +1424,7 @@ namespace TagTool.Commands.Tags
                                                     RenderDepthBias = -30,
                                                     Bounds720p = new Rectangle2d(454, 103, 653, 711),
                                                     Bounds480i = new Rectangle2d(333, 72, 531, 679),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
                                                 },
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
@@ -1438,9 +1438,9 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"difficulty_image"),
                                                     Bounds720p = new Rectangle2d(467, 118, 637, 288),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\pregame_lobby\difficulty_large_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\pregame_lobby\difficulty_large_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                                 InitialSpriteFrame = 2,
                                             },
@@ -1450,7 +1450,7 @@ namespace TagTool.Commands.Tags
                             },
                             new GuiScreenWidgetDefinition.GroupWidget
                             {
-                                TemplateReference = CacheContext.TagCache.GetTag<GuiGroupWidgetDefinition>($@"ui\halox\pregame_lobby\map_load"),
+                                TemplateReference = GetCachedTag<GuiGroupWidgetDefinition>($@"ui\halox\pregame_lobby\map_load"),
                                 Definition = new GuiGroupWidgetDefinition
                                 {
                                     Flags = GuiGroupWidgetDefinition.GuiGroupWidgetFlags.DoNotApplyOldContentUpscaling,
@@ -1475,13 +1475,13 @@ namespace TagTool.Commands.Tags
                             Name = CacheContext.StringTable.GetStringId($@"campaign_select_scoring"),
                             Bounds720p = new Rectangle2d(-307, -756, 307, 756),
                         };
-                        scn3.StringList = CacheContext.TagCache.GetTag<MultilingualUnicodeStringList>($@"ui\halox\campaign\campaign_settings\strings_campaign_settings");
+                        scn3.StringList = GetCachedTag<MultilingualUnicodeStringList>($@"ui\halox\campaign\campaign_settings\strings_campaign_settings");
                         scn3.InitialButtonKeyName = CacheContext.StringTable.GetStringId($@"a_select_b_back");
                         scn3.DebugDatasources = new List<GuiScreenWidgetDefinition.DataSource>
                         {
                             new GuiScreenWidgetDefinition.DataSource
                             {
-                                DataSourceTag = CacheContext.TagCache.GetTag<GuiDatasourceDefinition>($@"ui\halox\campaign\campaign_settings_spinner"),
+                                DataSourceTag = GetCachedTag<GuiDatasourceDefinition>($@"ui\halox\campaign\campaign_settings_spinner"),
                             },
                         };
                         scn3.GroupWidgets = new List<GuiScreenWidgetDefinition.GroupWidget>
@@ -1504,7 +1504,7 @@ namespace TagTool.Commands.Tags
                                                     Bounds720p = new Rectangle2d(128, 252, 196, 656),
                                                 },
                                                 DataSourceName = CacheContext.StringTable.GetStringId($@"spinner"),
-                                                Skin = CacheContext.TagCache.GetTag<GuiSkinDefinition>($@"ui\halox\campaign\campaign_scoring"),
+                                                Skin = GetCachedTag<GuiSkinDefinition>($@"ui\halox\campaign\campaign_scoring"),
                                                 Items = new List<GuiListWidgetDefinition.ListWidgetItem>
                                                 {
                                                     new GuiListWidgetDefinition.ListWidgetItem
@@ -1546,7 +1546,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"title"),
                                                     Bounds720p = new Rectangle2d(1, 242, 53, 1275),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"title"),
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"hilite"),
@@ -1561,7 +1561,7 @@ namespace TagTool.Commands.Tags
                                                 GuiRenderBlock = new GuiDefinition
                                                 {
                                                     Bounds720p = new Rectangle2d(72, 245, 111, 1417),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"metagame_scoring_help"),
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"ice"),
@@ -1581,9 +1581,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"background"),
                                                     RenderDepthBias = -10,
                                                     Bounds720p = new Rectangle2d(0, 0, 614, 1512),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\selection_bkd"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\selection_bkd"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -1597,9 +1597,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"background_blur"),
                                                     RenderDepthBias = -21,
                                                     Bounds720p = new Rectangle2d(-118, 0, 840, 1512),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -1613,9 +1613,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"dark_background"),
                                                     RenderDepthBias = -20,
                                                     Bounds720p = new Rectangle2d(-131, 0, 840, 1512),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -1629,9 +1629,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"skull_overline"),
                                                     RenderDepthBias = 5,
                                                     Bounds720p = new Rectangle2d(118, 242, 120, 1261),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\pregame_lobby\line_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\pregame_lobby\line_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -1645,9 +1645,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"column_gradient"),
                                                     RenderDepthBias = -9,
                                                     Bounds720p = new Rectangle2d(120, 242, 603, 918),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\third_column"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\third_column"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -1661,9 +1661,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"player_black"),
                                                     RenderDepthBias = -8,
                                                     Bounds720p = new Rectangle2d(120, 918, 563, 1261),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_75"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_75"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -1676,9 +1676,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"no_skull"),
                                                     RenderDepthBias = 1,
                                                     Bounds720p = new Rectangle2d(131, 997, 0, 0),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\campaign\skulls_lg_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\campaign\skulls_lg_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                                 InitialSpriteFrame = 10,
                                             },
@@ -1706,7 +1706,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"scoring_description"),
                                                     Bounds720p = new Rectangle2d(426, 929, 577, 1250),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueOverrideList = CacheContext.StringTable.GetStringId($@"scoring_option"),
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"description"),
@@ -1723,7 +1723,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"scoring_name"),
                                                     Bounds720p = new Rectangle2d(393, 929, 433, 1250),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"option_display_campaign_scoring"),
                                                 CustomFont = WidgetFontValue.BodyText,
@@ -1737,7 +1737,7 @@ namespace TagTool.Commands.Tags
                         {
                             new GuiScreenWidgetDefinition.ButtonKeyLegend
                             {
-                                Definition = CacheContext.TagCache.GetTag<GuiButtonKeyDefinition>($@"ui\halox\campaign\button_key_a_select_b_back"),
+                                Definition = GetCachedTag<GuiButtonKeyDefinition>($@"ui\halox\campaign\button_key_a_select_b_back"),
                             },
                         };
                         scn3.ScriptIndex = -1;
@@ -1753,7 +1753,7 @@ namespace TagTool.Commands.Tags
                             Name = CacheContext.StringTable.GetStringId($@"campaign_select_skulls"),
                             Bounds720p = new Rectangle2d(-307, -756, 307, 756),
                         };
-                        scn3.StringList = CacheContext.TagCache.GetTag<MultilingualUnicodeStringList>($@"ui\halox\campaign\campaign_settings\strings_campaign_settings");
+                        scn3.StringList = GetCachedTag<MultilingualUnicodeStringList>($@"ui\halox\campaign\campaign_settings\strings_campaign_settings");
                         scn3.InitialButtonKeyName = CacheContext.StringTable.GetStringId($@"a_select_b_back");
                         scn3.GroupWidgets = new List<GuiScreenWidgetDefinition.GroupWidget>
                         {
@@ -1776,7 +1776,7 @@ namespace TagTool.Commands.Tags
                                                     Bounds720p = new Rectangle2d(136, 262, 399, 1181),
                                                 },
                                                 DataSourceName = CacheContext.StringTable.GetStringId($@"primary_skulls"),
-                                                Skin = CacheContext.TagCache.GetTag<GuiSkinDefinition>($@"ui\halox\campaign\campaign_settings_skulls"),
+                                                Skin = GetCachedTag<GuiSkinDefinition>($@"ui\halox\campaign\campaign_settings_skulls"),
                                                 Rows = 2,
                                                 Items = new List<GuiListWidgetDefinition.ListWidgetItem>
                                                 {
@@ -1875,7 +1875,7 @@ namespace TagTool.Commands.Tags
                                                     Bounds720p = new Rectangle2d(399, 262, 530, 1181),
                                                 },
                                                 DataSourceName = CacheContext.StringTable.GetStringId($@"secondary_skulls"),
-                                                Skin = CacheContext.TagCache.GetTag<GuiSkinDefinition>($@"ui\halox\campaign\campaign_settings_skulls_secondary"),
+                                                Skin = GetCachedTag<GuiSkinDefinition>($@"ui\halox\campaign\campaign_settings_skulls_secondary"),
                                                 //Rows = 2, // Add when I get assassin and third person skulls working
                                                 Items = new List<GuiListWidgetDefinition.ListWidgetItem>
                                                 {
@@ -1945,7 +1945,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"title"),
                                                     Bounds720p = new Rectangle2d(1, 242, 53, 1275),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"title"),
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"hilite"),
@@ -1960,7 +1960,7 @@ namespace TagTool.Commands.Tags
                                                 GuiRenderBlock = new GuiDefinition
                                                 {
                                                     Bounds720p = new Rectangle2d(72, 245, 111, 1417),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"skulls_help"),
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"ice"),
@@ -1980,9 +1980,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"background"),
                                                     RenderDepthBias = -10,
                                                     Bounds720p = new Rectangle2d(0, 0, 614, 1512),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\selection_bkd"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\selection_bkd"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -1996,9 +1996,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"background_blur"),
                                                     RenderDepthBias = -21,
                                                     Bounds720p = new Rectangle2d(-118, 0, 840, 1512),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -2012,9 +2012,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"dark_background"),
                                                     RenderDepthBias = -20,
                                                     Bounds720p = new Rectangle2d(-131, 0, 840, 1512),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -2028,9 +2028,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"skull_overline"),
                                                     RenderDepthBias = 5,
                                                     Bounds720p = new Rectangle2d(118, 242, 120, 1261),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\pregame_lobby\line_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\pregame_lobby\line_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -2044,9 +2044,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"column_gradient"),
                                                     RenderDepthBias = -9,
                                                     Bounds720p = new Rectangle2d(120, 242, 603, 918),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\third_column"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\third_column"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -2060,9 +2060,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"player_black"),
                                                     RenderDepthBias = -8,
                                                     Bounds720p = new Rectangle2d(120, 918, 563, 1261),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_75"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_75"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -2075,9 +2075,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"no_skull"),
                                                     RenderDepthBias = 1,
                                                     Bounds720p = new Rectangle2d(131, 997, 0, 0),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\campaign\skulls_lg_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\campaign\skulls_lg_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                                 InitialSpriteFrame = 10,
                                             },
@@ -2106,7 +2106,7 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"primary_status"),
                                                     RenderDepthBias = 30,
                                                     Bounds720p = new Rectangle2d(525, 929, 564, 1250),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueOverrideList = CacheContext.StringTable.GetStringId($@"primary_skulls"),
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"skull_status"),
@@ -2123,7 +2123,7 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"primary_skull_description"),
                                                     RenderDepthBias = 30,
                                                     Bounds720p = new Rectangle2d(426, 929, 525, 1250),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueOverrideList = CacheContext.StringTable.GetStringId($@"primary_skulls"),
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"skull_description"),
@@ -2141,7 +2141,7 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"primary_skull_name"),
                                                     RenderDepthBias = 30,
                                                     Bounds720p = new Rectangle2d(393, 929, 433, 1250),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueOverrideList = CacheContext.StringTable.GetStringId($@"primary_skulls"),
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"skull_name"),
@@ -2158,7 +2158,7 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"secondary_status"),
                                                     RenderDepthBias = 30,
                                                     Bounds720p = new Rectangle2d(525, 929, 564, 1250),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueOverrideList = CacheContext.StringTable.GetStringId($@"secondary_skulls"),
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"skull_status"),
@@ -2175,7 +2175,7 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"secondary_skull_description"),
                                                     RenderDepthBias = 30,
                                                     Bounds720p = new Rectangle2d(426, 929, 525, 1250),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueOverrideList = CacheContext.StringTable.GetStringId($@"secondary_skulls"),
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"skull_description"),
@@ -2193,7 +2193,7 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"secondary_skull_name"),
                                                     RenderDepthBias = 30,
                                                     Bounds720p = new Rectangle2d(393, 929, 433, 1250),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueOverrideList = CacheContext.StringTable.GetStringId($@"secondary_skulls"),
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"skull_name"),
@@ -2213,9 +2213,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"primary_skulls"),
                                                     RenderDepthBias = 3,
                                                     Bounds720p = new Rectangle2d(131, 997, 0, 0),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\campaign\skulls_lg_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\campaign\skulls_lg_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                                 ValueOverrideList = CacheContext.StringTable.GetStringId($@"primary_skulls"),
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"primary_skull_image"),
@@ -2231,9 +2231,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"secondary_skulls"),
                                                     RenderDepthBias = 3,
                                                     Bounds720p = new Rectangle2d(131, 997, 0, 0),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\campaign\secondary_skulls_lg_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\campaign\secondary_skulls_lg_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                                 ValueOverrideList = CacheContext.StringTable.GetStringId($@"secondary_skulls"),
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"secondary_skull_image"),
@@ -2247,7 +2247,7 @@ namespace TagTool.Commands.Tags
                         {
                             new GuiScreenWidgetDefinition.ButtonKeyLegend
                             {
-                                Definition = CacheContext.TagCache.GetTag<GuiButtonKeyDefinition>($@"ui\halox\campaign\button_key_a_select_b_back"),
+                                Definition = GetCachedTag<GuiButtonKeyDefinition>($@"ui\halox\campaign\button_key_a_select_b_back"),
                             },
                         };
                         scn3.ScriptIndex = -1;
@@ -2366,23 +2366,23 @@ namespace TagTool.Commands.Tags
                         {
                             Name = CacheContext.StringTable.GetStringId($@"pregame_lobby_survival"),
                         };
-                        scn3.ScreenTemplate = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_template");
+                        scn3.ScreenTemplate = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_template");
                         scn3.DebugDatasources = new List<GuiScreenWidgetDefinition.DataSource>
                         {
                             new GuiScreenWidgetDefinition.DataSource
                             {
-                                DataSourceTag = CacheContext.TagCache.GetTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\lobby_list_survival"),
+                                DataSourceTag = GetCachedTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\lobby_list_survival"),
                             },
                             new GuiScreenWidgetDefinition.DataSource
                             {
-                                DataSourceTag = CacheContext.TagCache.GetTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_constants"),
+                                DataSourceTag = GetCachedTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_constants"),
                             },
                         };
                         scn3.GroupWidgets = new List<GuiScreenWidgetDefinition.GroupWidget>
                         {
                             new GuiScreenWidgetDefinition.GroupWidget
                             {
-                                TemplateReference = CacheContext.TagCache.GetTag<GuiGroupWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_template"),
+                                TemplateReference = GetCachedTag<GuiGroupWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_template"),
                                 Definition = new GuiGroupWidgetDefinition
                                 {
                                     Flags = GuiGroupWidgetDefinition.GuiGroupWidgetFlags.DoNotApplyOldContentUpscaling,
@@ -2394,7 +2394,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         new ListWidget
                                         {
-                                            TemplateReference = CacheContext.TagCache.GetTag<GuiListWidgetDefinition>($@"ui\halox\pregame_lobby\lobby_ui_list"),
+                                            TemplateReference = GetCachedTag<GuiListWidgetDefinition>($@"ui\halox\pregame_lobby\lobby_ui_list"),
                                             Definition = new GuiListWidgetDefinition
                                             {
                                                 Flags = GuiListWidgetDefinition.GuiListWidgetFlags.DoNotApplyOldContentUpscaling | GuiListWidgetDefinition.GuiListWidgetFlags.ListWraps,
@@ -2402,7 +2402,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"lobby_list"),
                                                     Bounds720p = new Rectangle2d(111, 112, 0, 0),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
                                                 DataSourceName = CacheContext.StringTable.GetStringId($@"lobby_list"),
                                                 Items = new List<GuiListWidgetDefinition.ListWidgetItem>
@@ -2463,7 +2463,7 @@ namespace TagTool.Commands.Tags
                             },
                             new GuiScreenWidgetDefinition.GroupWidget
                             {
-                                TemplateReference = CacheContext.TagCache.GetTag<GuiGroupWidgetDefinition>($@"ui\halox\common\roster\roster"),
+                                TemplateReference = GetCachedTag<GuiGroupWidgetDefinition>($@"ui\halox\common\roster\roster"),
                                 Definition = new GuiGroupWidgetDefinition
                                 {
                                     Flags = GuiGroupWidgetDefinition.GuiGroupWidgetFlags.DoNotApplyOldContentUpscaling,
@@ -2496,7 +2496,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"difficulty"),
                                                     Bounds720p = new Rectangle2d(656, 116, 695, 704),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
                                                 },
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"survival_difficulty"),
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"ice"),
@@ -2512,7 +2512,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"lobby_status"),
                                                     Bounds720p = new Rectangle2d(334, 116, 494, 704),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\lobby_slide_with_alt_flash"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\lobby_slide_with_alt_flash"),
                                                 },
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"ice"),
                                                 CustomFont = WidgetFontValue.BodyText,
@@ -2532,7 +2532,7 @@ namespace TagTool.Commands.Tags
                                                     RenderDepthBias = -30,
                                                     Bounds720p = new Rectangle2d(454, 103, 653, 711),
                                                     Bounds480i = new Rectangle2d(333, 72, 531, 679),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
                                                 },
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
@@ -2546,9 +2546,9 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"difficulty_image"),
                                                     Bounds720p = new Rectangle2d(467, 118, 637, 288),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\pregame_lobby\difficulty_large_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\pregame_lobby\difficulty_large_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                                 InitialSpriteFrame = 2,
                                             },
@@ -2558,7 +2558,7 @@ namespace TagTool.Commands.Tags
                             },
                             new GuiScreenWidgetDefinition.GroupWidget
                             {
-                                TemplateReference = CacheContext.TagCache.GetTag<GuiGroupWidgetDefinition>($@"ui\halox\pregame_lobby\map_load"),
+                                TemplateReference = GetCachedTag<GuiGroupWidgetDefinition>($@"ui\halox\pregame_lobby\map_load"),
                                 Definition = new GuiGroupWidgetDefinition
                                 {
                                     Flags = GuiGroupWidgetDefinition.GuiGroupWidgetFlags.DoNotApplyOldContentUpscaling,
@@ -2583,7 +2583,7 @@ namespace TagTool.Commands.Tags
                             Name = CacheContext.StringTable.GetStringId($@"survival_select_level"),
                             Bounds720p = new Rectangle2d(-307, -756, 307, 756),
                         };
-                        scn3.StringList = CacheContext.TagCache.GetTag<MultilingualUnicodeStringList>($@"ui\halox\campaign\strings_level");
+                        scn3.StringList = GetCachedTag<MultilingualUnicodeStringList>($@"ui\halox\campaign\strings_level");
                         scn3.InitialButtonKeyName = CacheContext.StringTable.GetStringId($@"a_select_b_back");
                         scn3.GroupWidgets = new List<GuiScreenWidgetDefinition.GroupWidget>
                         {
@@ -2606,7 +2606,7 @@ namespace TagTool.Commands.Tags
                                                     Bounds720p = new Rectangle2d(70, 245, 0, 0),
                                                 },
                                                 DataSourceName = CacheContext.StringTable.GetStringId($@"level"),
-                                                Skin = CacheContext.TagCache.GetTag<GuiSkinDefinition>($@"ui\halox\campaign\campaign_select_level"),
+                                                Skin = GetCachedTag<GuiSkinDefinition>($@"ui\halox\campaign\campaign_select_level"),
                                                 Items = new List<GuiListWidgetDefinition.ListWidgetItem>
                                                 {
                                                     new GuiListWidgetDefinition.ListWidgetItem
@@ -2745,7 +2745,7 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"title"),
                                                     RenderDepthBias = 15,
                                                     Bounds720p = new Rectangle2d(1, 242, 53, 1417),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"title"),
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"hilite"),
@@ -2762,7 +2762,7 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"description"),
                                                     RenderDepthBias = 15,
                                                     Bounds720p = new Rectangle2d(225, 883, 525, 1266),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"description"),
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"ice"),
@@ -2782,9 +2782,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"background"),
                                                     RenderDepthBias = -19,
                                                     Bounds720p = new Rectangle2d(0, 0, 614, 1512),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\selection_bkd"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\selection_bkd"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -2799,7 +2799,7 @@ namespace TagTool.Commands.Tags
                                                     RenderDepthBias = 5,
                                                     Bounds720p = new Rectangle2d(86, 883, 225, 1256),
                                                     Bounds480i = new Rectangle2d(57, 620, 175, 988),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
@@ -2814,9 +2814,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"level_locked"),
                                                     RenderDepthBias = 5,
                                                     Bounds720p = new Rectangle2d(86, 883, 0, 0),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\campaign\locked_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\campaign\locked_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -2830,9 +2830,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"background_blur"),
                                                     RenderDepthBias = -21,
                                                     Bounds720p = new Rectangle2d(-157, 0, 840, 1512),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_50"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_50"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -2846,9 +2846,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"background_darkening"),
                                                     RenderDepthBias = -20,
                                                     Bounds720p = new Rectangle2d(-157, 0, 840, 1512),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -2862,9 +2862,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"level_image_background"),
                                                     RenderDepthBias = -15,
                                                     Bounds720p = new Rectangle2d(70, 872, 603, 1266),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\third_column"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\third_column"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -2876,7 +2876,7 @@ namespace TagTool.Commands.Tags
                         {
                             new GuiScreenWidgetDefinition.ButtonKeyLegend
                             {
-                                Definition = CacheContext.TagCache.GetTag<GuiButtonKeyDefinition>($@"ui\halox\campaign\button_key_a_select_b_back"),
+                                Definition = GetCachedTag<GuiButtonKeyDefinition>($@"ui\halox\campaign\button_key_a_select_b_back"),
                             },
                         };
                         scn3.ScriptIndex = -1;
@@ -2892,7 +2892,7 @@ namespace TagTool.Commands.Tags
                             Name = CacheContext.StringTable.GetStringId($@"survival_select_difficulty"),
                             Bounds720p = new Rectangle2d(-307, -756, 307, 756),
                         };
-                        scn3.StringList = CacheContext.TagCache.GetTag<MultilingualUnicodeStringList>($@"ui\halox\campaign\strings_difficulty");
+                        scn3.StringList = GetCachedTag<MultilingualUnicodeStringList>($@"ui\halox\campaign\strings_difficulty");
                         scn3.InitialButtonKeyName = CacheContext.StringTable.GetStringId($@"a_select_b_back");
                         scn3.GroupWidgets = new List<GuiScreenWidgetDefinition.GroupWidget>
                         {
@@ -2914,7 +2914,7 @@ namespace TagTool.Commands.Tags
                                                     Bounds720p = new Rectangle2d(70, 245, 0, 0),
                                                 },
                                                 DataSourceName = CacheContext.StringTable.GetStringId($@"difficulty"),
-                                                Skin = CacheContext.TagCache.GetTag<GuiSkinDefinition>($@"ui\halox\campaign\campaign_select_difficulty"),
+                                                Skin = GetCachedTag<GuiSkinDefinition>($@"ui\halox\campaign\campaign_select_difficulty"),
                                                 Items = new List<GuiListWidgetDefinition.ListWidgetItem>
                                                 {
                                                     new GuiListWidgetDefinition.ListWidgetItem
@@ -2964,7 +2964,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"title"),
                                                     Bounds720p = new Rectangle2d(1, 242, 53, 1275),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"title"),
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"hilite"),
@@ -2980,7 +2980,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"description"),
                                                     Bounds720p = new Rectangle2d(343, 652, 561, 1266),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"description"),
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"ice"),
@@ -3000,9 +3000,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"background"),
                                                     RenderDepthBias = -9,
                                                     Bounds720p = new Rectangle2d(0, 0, 614, 1512),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\selection_bkd"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\selection_bkd"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -3016,9 +3016,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"difficulty_image"),
                                                     RenderDepthBias = 5,
                                                     Bounds720p = new Rectangle2d(70, 652, 0, 0),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\campaign\difficulty_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\campaign\difficulty_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -3032,9 +3032,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"background_blur"),
                                                     RenderDepthBias = -11,
                                                     Bounds720p = new Rectangle2d(-157, 0, 840, 1512),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -3048,9 +3048,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"background_darkening"),
                                                     RenderDepthBias = -10,
                                                     Bounds720p = new Rectangle2d(-157, 0, 840, 1512),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -3062,7 +3062,7 @@ namespace TagTool.Commands.Tags
                         {
                             new GuiScreenWidgetDefinition.ButtonKeyLegend
                             {
-                                Definition = CacheContext.TagCache.GetTag<GuiButtonKeyDefinition>($@"ui\halox\campaign\button_key_a_select_b_back"),
+                                Definition = GetCachedTag<GuiButtonKeyDefinition>($@"ui\halox\campaign\button_key_a_select_b_back"),
                             },
                         };
                         scn3.ScriptIndex = -1;
@@ -3078,7 +3078,7 @@ namespace TagTool.Commands.Tags
                             Name = CacheContext.StringTable.GetStringId($@"survival_select_skulls"),
                             Bounds720p = new Rectangle2d(-307, -756, 307, 756),
                         };
-                        scn3.StringList = CacheContext.TagCache.GetTag<MultilingualUnicodeStringList>($@"ui\halox\campaign\campaign_settings\strings_campaign_settings");
+                        scn3.StringList = GetCachedTag<MultilingualUnicodeStringList>($@"ui\halox\campaign\campaign_settings\strings_campaign_settings");
                         scn3.InitialButtonKeyName = CacheContext.StringTable.GetStringId($@"a_select_b_back");
                         scn3.GroupWidgets = new List<GuiScreenWidgetDefinition.GroupWidget>
                         {
@@ -3100,7 +3100,7 @@ namespace TagTool.Commands.Tags
                                                     Bounds720p = new Rectangle2d(136, 262, 399, 1181),
                                                 },
                                                 DataSourceName = CacheContext.StringTable.GetStringId($@"secondary_skulls"),
-                                                Skin = CacheContext.TagCache.GetTag<GuiSkinDefinition>($@"ui\halox\campaign\campaign_settings_skulls_secondary"),
+                                                Skin = GetCachedTag<GuiSkinDefinition>($@"ui\halox\campaign\campaign_settings_skulls_secondary"),
                                                 //Rows = 2, // Add when I get assassin and third person skulls working
                                                 Items = new List<GuiListWidgetDefinition.ListWidgetItem>
                                                 {
@@ -3170,7 +3170,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"title"),
                                                     Bounds720p = new Rectangle2d(1, 242, 53, 1275),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"title"),
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"hilite"),
@@ -3185,7 +3185,7 @@ namespace TagTool.Commands.Tags
                                                 GuiRenderBlock = new GuiDefinition
                                                 {
                                                     Bounds720p = new Rectangle2d(72, 245, 111, 1417),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"skulls_help"),
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"ice"),
@@ -3205,9 +3205,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"background"),
                                                     RenderDepthBias = -10,
                                                     Bounds720p = new Rectangle2d(0, 0, 614, 1512),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\selection_bkd"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\selection_bkd"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -3221,9 +3221,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"background_blur"),
                                                     RenderDepthBias = -21,
                                                     Bounds720p = new Rectangle2d(-118, 0, 840, 1512),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -3237,9 +3237,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"dark_background"),
                                                     RenderDepthBias = -20,
                                                     Bounds720p = new Rectangle2d(-131, 0, 840, 1512),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_25"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -3253,9 +3253,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"skull_overline"),
                                                     RenderDepthBias = 5,
                                                     Bounds720p = new Rectangle2d(118, 242, 120, 1261),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\pregame_lobby\line_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\pregame_lobby\line_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -3269,9 +3269,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"column_gradient"),
                                                     RenderDepthBias = -9,
                                                     Bounds720p = new Rectangle2d(120, 242, 603, 918),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\third_column"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\third_column"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -3285,9 +3285,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"player_black"),
                                                     RenderDepthBias = -8,
                                                     Bounds720p = new Rectangle2d(120, 918, 563, 1261),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_75"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\black_75"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
                                         },
@@ -3300,9 +3300,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"no_skull"),
                                                     RenderDepthBias = 1,
                                                     Bounds720p = new Rectangle2d(131, 997, 0, 0),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\campaign\skulls_lg_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\campaign\skulls_lg_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                                 InitialSpriteFrame = 10,
                                             },
@@ -3331,7 +3331,7 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"secondary_status"),
                                                     RenderDepthBias = 30,
                                                     Bounds720p = new Rectangle2d(525, 929, 564, 1250),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueOverrideList = CacheContext.StringTable.GetStringId($@"secondary_skulls"),
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"skull_status"),
@@ -3348,7 +3348,7 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"secondary_skull_description"),
                                                     RenderDepthBias = 30,
                                                     Bounds720p = new Rectangle2d(426, 929, 525, 1250),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueOverrideList = CacheContext.StringTable.GetStringId($@"secondary_skulls"),
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"skull_description"),
@@ -3366,7 +3366,7 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"secondary_skull_name"),
                                                     RenderDepthBias = 30,
                                                     Bounds720p = new Rectangle2d(393, 929, 433, 1250),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                                                 },
                                                 ValueOverrideList = CacheContext.StringTable.GetStringId($@"secondary_skulls"),
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"skull_name"),
@@ -3386,9 +3386,9 @@ namespace TagTool.Commands.Tags
                                                     Name = CacheContext.StringTable.GetStringId($@"secondary_skulls"),
                                                     RenderDepthBias = 3,
                                                     Bounds720p = new Rectangle2d(131, 997, 0, 0),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\campaign\secondary_skulls_lg_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\campaign\secondary_skulls_lg_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                                 ValueOverrideList = CacheContext.StringTable.GetStringId($@"secondary_skulls"),
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"secondary_skull_image"),
@@ -3402,7 +3402,7 @@ namespace TagTool.Commands.Tags
                         {
                             new GuiScreenWidgetDefinition.ButtonKeyLegend
                             {
-                                Definition = CacheContext.TagCache.GetTag<GuiButtonKeyDefinition>($@"ui\halox\campaign\button_key_a_select_b_back"),
+                                Definition = GetCachedTag<GuiButtonKeyDefinition>($@"ui\halox\campaign\button_key_a_select_b_back"),
                             },
                         };
                         scn3.ScriptIndex = -1;
@@ -3521,23 +3521,23 @@ namespace TagTool.Commands.Tags
                         {
                             Name = CacheContext.StringTable.GetStringId($@"pregame_lobby_multiplayer"),
                         };
-                        scn3.ScreenTemplate = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_template");
+                        scn3.ScreenTemplate = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_template");
                         scn3.DebugDatasources = new List<GuiScreenWidgetDefinition.DataSource>
                         {
                             new GuiScreenWidgetDefinition.DataSource
                             {
-                                DataSourceTag = CacheContext.TagCache.GetTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\lobby_list_multiplayer"),
+                                DataSourceTag = GetCachedTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\lobby_list_multiplayer"),
                             },
                             new GuiScreenWidgetDefinition.DataSource
                             {
-                                DataSourceTag = CacheContext.TagCache.GetTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_constants"),
+                                DataSourceTag = GetCachedTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_constants"),
                             },
                         };
                         scn3.GroupWidgets = new List<GuiScreenWidgetDefinition.GroupWidget>
                         {
                             new GuiScreenWidgetDefinition.GroupWidget
                             {
-                                TemplateReference = CacheContext.TagCache.GetTag<GuiGroupWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_template"),
+                                TemplateReference = GetCachedTag<GuiGroupWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_template"),
                                 Definition = new GuiGroupWidgetDefinition
                                 {
                                     Flags = GuiGroupWidgetDefinition.GuiGroupWidgetFlags.DoNotApplyOldContentUpscaling,
@@ -3549,7 +3549,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         new ListWidget
                                         {
-                                            TemplateReference = CacheContext.TagCache.GetTag<GuiListWidgetDefinition>($@"ui\halox\pregame_lobby\lobby_ui_list"),
+                                            TemplateReference = GetCachedTag<GuiListWidgetDefinition>($@"ui\halox\pregame_lobby\lobby_ui_list"),
                                             Definition = new GuiListWidgetDefinition
                                             {
                                                 Flags = GuiListWidgetDefinition.GuiListWidgetFlags.DoNotApplyOldContentUpscaling | GuiListWidgetDefinition.GuiListWidgetFlags.ListWraps,
@@ -3557,7 +3557,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"lobby_list"),
                                                     Bounds720p = new Rectangle2d(111, 112, 0, 0),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
                                                 },
                                                 DataSourceName = CacheContext.StringTable.GetStringId($@"lobby_list"),
                                                 Items = new List<GuiListWidgetDefinition.ListWidgetItem>
@@ -3618,7 +3618,7 @@ namespace TagTool.Commands.Tags
                             },
                             new GuiScreenWidgetDefinition.GroupWidget
                             {
-                                TemplateReference = CacheContext.TagCache.GetTag<GuiGroupWidgetDefinition>($@"ui\halox\common\roster\roster"),
+                                TemplateReference = GetCachedTag<GuiGroupWidgetDefinition>($@"ui\halox\common\roster\roster"),
                                 Definition = new GuiGroupWidgetDefinition
                                 {
                                     Flags = GuiGroupWidgetDefinition.GuiGroupWidgetFlags.DoNotApplyOldContentUpscaling,
@@ -3647,7 +3647,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"multiplayer_game_name"),
                                                     Bounds720p = new Rectangle2d(656, 116, 715, 704),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
                                                 },
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"multiplayer_game_name"),
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"ice"),
@@ -3663,7 +3663,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"lobby_status"),
                                                     Bounds720p = new Rectangle2d(334, 116, 494, 704),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\lobby_slide_with_alt_flash"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\lobby_slide_with_alt_flash"),
                                                 },
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"ice"),
                                                 CustomFont = WidgetFontValue.BodyText,
@@ -3683,7 +3683,7 @@ namespace TagTool.Commands.Tags
                                                     RenderDepthBias = -30,
                                                     Bounds720p = new Rectangle2d(454, 103, 653, 711),
                                                     Bounds480i = new Rectangle2d(333, 72, 531, 679),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
                                                 },
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
@@ -3697,9 +3697,9 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"gametype_image"),
                                                     Bounds720p = new Rectangle2d(467, 118, 637, 288),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\pregame_lobby\gametypes_large_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\pregame_lobby\gametypes_large_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                                 InitialSpriteFrame = 1,
                                             },
@@ -3709,7 +3709,7 @@ namespace TagTool.Commands.Tags
                             },
                             new GuiScreenWidgetDefinition.GroupWidget
                             {
-                                TemplateReference = CacheContext.TagCache.GetTag<GuiGroupWidgetDefinition>($@"ui\halox\pregame_lobby\map_load"),
+                                TemplateReference = GetCachedTag<GuiGroupWidgetDefinition>($@"ui\halox\pregame_lobby\map_load"),
                                 Definition = new GuiGroupWidgetDefinition
                                 {
                                     Flags = GuiGroupWidgetDefinition.GuiGroupWidgetFlags.DoNotApplyOldContentUpscaling,
@@ -3821,23 +3821,23 @@ namespace TagTool.Commands.Tags
                         {
                             Name = CacheContext.StringTable.GetStringId($@"pregame_lobby_mapeditor"),
                         };
-                        scn3.ScreenTemplate = CacheContext.TagCache.GetTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_template");
+                        scn3.ScreenTemplate = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_template");
                         scn3.DebugDatasources = new List<GuiScreenWidgetDefinition.DataSource>
                         {
                             new GuiScreenWidgetDefinition.DataSource
                             {
-                                DataSourceTag = CacheContext.TagCache.GetTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\lobby_list_mapeditor"),
+                                DataSourceTag = GetCachedTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\lobby_list_mapeditor"),
                             },
                             new GuiScreenWidgetDefinition.DataSource
                             {
-                                DataSourceTag = CacheContext.TagCache.GetTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_constants"),
+                                DataSourceTag = GetCachedTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_constants"),
                             },
                         };
                         scn3.GroupWidgets = new List<GuiScreenWidgetDefinition.GroupWidget>
                         {
                             new GuiScreenWidgetDefinition.GroupWidget
                             {
-                                TemplateReference = CacheContext.TagCache.GetTag<GuiGroupWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_template"),
+                                TemplateReference = GetCachedTag<GuiGroupWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_template"),
                                 Definition = new GuiGroupWidgetDefinition
                                 {
                                     Flags = GuiGroupWidgetDefinition.GuiGroupWidgetFlags.DoNotApplyOldContentUpscaling,
@@ -3849,7 +3849,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         new ListWidget
                                         {
-                                            TemplateReference = CacheContext.TagCache.GetTag<GuiListWidgetDefinition>($@"ui\halox\pregame_lobby\lobby_ui_list"),
+                                            TemplateReference = GetCachedTag<GuiListWidgetDefinition>($@"ui\halox\pregame_lobby\lobby_ui_list"),
                                             Definition = new GuiListWidgetDefinition
                                             {
                                                 Flags = GuiListWidgetDefinition.GuiListWidgetFlags.DoNotApplyOldContentUpscaling | GuiListWidgetDefinition.GuiListWidgetFlags.ListWraps,
@@ -3857,7 +3857,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"lobby_list"),
                                                     Bounds720p = new Rectangle2d(111, 112, 0, 0),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                                 },
                                                 DataSourceName = CacheContext.StringTable.GetStringId($@"lobby_list"),
                                                 Items = new List<GuiListWidgetDefinition.ListWidgetItem>
@@ -3918,7 +3918,7 @@ namespace TagTool.Commands.Tags
                             },
                             new GuiScreenWidgetDefinition.GroupWidget
                             {
-                                TemplateReference = CacheContext.TagCache.GetTag<GuiGroupWidgetDefinition>($@"ui\halox\common\roster\roster"),
+                                TemplateReference = GetCachedTag<GuiGroupWidgetDefinition>($@"ui\halox\common\roster\roster"),
                                 Definition = new GuiGroupWidgetDefinition
                                 {
                                     Flags = GuiGroupWidgetDefinition.GuiGroupWidgetFlags.DoNotApplyOldContentUpscaling,
@@ -3947,7 +3947,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"mapeditor_map_name"),
                                                     Bounds720p = new Rectangle2d(656, 116, 715, 704),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
                                                 },
                                                 ValueIdentifier = CacheContext.StringTable.GetStringId($@"mapeditor_map_name"),
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"ice"),
@@ -3963,7 +3963,7 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"lobby_status"),
                                                     Bounds720p = new Rectangle2d(334, 116, 494, 704),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\lobby_slide_with_alt_flash"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\lobby_slide_with_alt_flash"),
                                                 },
                                                 TextColorPreset = CacheContext.StringTable.GetStringId($@"ice"),
                                                 CustomFont = WidgetFontValue.BodyText,
@@ -3983,7 +3983,7 @@ namespace TagTool.Commands.Tags
                                                     RenderDepthBias = -30,
                                                     Bounds720p = new Rectangle2d(454, 103, 653, 711),
                                                     Bounds480i = new Rectangle2d(333, 72, 531, 679),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
                                                 },
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                             },
@@ -3997,9 +3997,9 @@ namespace TagTool.Commands.Tags
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"gametype_image"),
                                                     Bounds720p = new Rectangle2d(467, 118, 637, 288),
-                                                    AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
+                                                    AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
                                                 },
-                                                Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\pregame_lobby\gametypes_large_ui"),
+                                                Bitmap = GetCachedTag<Bitmap>($@"ui\halox\pregame_lobby\gametypes_large_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                                 InitialSpriteFrame = 1,
                                             },
@@ -4009,7 +4009,7 @@ namespace TagTool.Commands.Tags
                             },
                             new GuiScreenWidgetDefinition.GroupWidget
                             {
-                                TemplateReference = CacheContext.TagCache.GetTag<GuiGroupWidgetDefinition>($@"ui\halox\pregame_lobby\map_load"),
+                                TemplateReference = GetCachedTag<GuiGroupWidgetDefinition>($@"ui\halox\pregame_lobby\map_load"),
                                 Definition = new GuiGroupWidgetDefinition
                                 {
                                     Flags = GuiGroupWidgetDefinition.GuiGroupWidgetFlags.DoNotApplyOldContentUpscaling,
@@ -4042,7 +4042,7 @@ namespace TagTool.Commands.Tags
                                         Name = CacheContext.StringTable.GetStringId("name"),
                                         RenderDepthBias = 89,
                                         Bounds720p = new Rectangle2d(5, 0, 43, 265),
-                                        AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_list_name"),
+                                        AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_list_name"),
                                     },
                                     CustomFont = WidgetFontValue.BodyText,
                                 }
@@ -4057,7 +4057,7 @@ namespace TagTool.Commands.Tags
                                         Name = CacheContext.StringTable.GetStringId("name_hilite"),
                                         RenderDepthBias = 100,
                                         Bounds720p = new Rectangle2d(-9, 9, 32, 274),
-                                        AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_name_hilite"),
+                                        AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_name_hilite"),
                                     },
                                     ValueOverrideList = CacheContext.StringTable.GetStringId("player_name"),
                                     ValueIdentifier = CacheContext.StringTable.GetStringId("player_name"),
@@ -4084,7 +4084,7 @@ namespace TagTool.Commands.Tags
                                         Name = CacheContext.StringTable.GetStringId("service_tag"),
                                         RenderDepthBias = 100,
                                         Bounds720p = new Rectangle2d(19, 9, 60, 274),
-                                        AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\rank_hilite"),
+                                        AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\rank_hilite"),
                                     },
                                     ValueIdentifier = CacheContext.StringTable.GetStringId("service_tag"),
                                     CustomFont = WidgetFontValue.BodyText,
@@ -4103,9 +4103,9 @@ namespace TagTool.Commands.Tags
                                         Name = CacheContext.StringTable.GetStringId("base_color"),
                                         RenderDepthBias = 83,
                                         Bounds720p = new Rectangle2d(0, -47, 0, 0),
-                                        AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_list_bitmap"),
+                                        AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_list_bitmap"),
                                     },
-                                    Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\roster\roster_unfocused_ui"),
+                                    Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\roster\roster_unfocused_ui"),
                                     BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                 }
                             },
@@ -4119,9 +4119,9 @@ namespace TagTool.Commands.Tags
                                         Name = CacheContext.StringTable.GetStringId("base_color_hilite"),
                                         RenderDepthBias = 93,
                                         Bounds720p = new Rectangle2d(-15, -47, 0, 0),
-                                        AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_hilite"),
+                                        AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_hilite"),
                                     },
-                                    Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\roster\roster_focused_ui"),
+                                    Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\roster\roster_focused_ui"),
                                     BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                 }
                             },
@@ -4135,9 +4135,9 @@ namespace TagTool.Commands.Tags
                                         Name = CacheContext.StringTable.GetStringId("player_emblem"),
                                         RenderDepthBias = 87,
                                         Bounds720p = new Rectangle2d(2, -42, 36, -7),
-                                        AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_list_emblem"),
+                                        AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_list_emblem"),
                                     },
-                                    Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\emblems"),
+                                    Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\emblems"),
                                     BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                 }
                             },
@@ -4151,9 +4151,9 @@ namespace TagTool.Commands.Tags
                                         Name = CacheContext.StringTable.GetStringId("player_emblem_hilite"),
                                         RenderDepthBias = 97,
                                         Bounds720p = new Rectangle2d(-5, -43, 43, 5),
-                                        AnimationCollection = CacheContext.TagCache.GetTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\emblem_hilite"),
+                                        AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\emblem_hilite"),
                                     },
-                                    Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\halox\common\common_bitmaps\emblems"),
+                                    Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\emblems"),
                                     BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
                                 }
                             },

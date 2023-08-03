@@ -10,6 +10,7 @@ using TagTool.Cache.Gen3;
 using TagTool.Serialization;
 using TagTool.Scripting;
 using TagTool.Tags;
+using TagTool.Commands.Common;
 
 namespace TagTool.Commands.Tags 
 {
@@ -427,6 +428,22 @@ namespace TagTool.Commands.Tags
             cache.Serializer = new TagSerializer(version, CachePlatform.Original);
             cache.Deserializer = new TagDeserializer(version, CachePlatform.Original);
             cache.ResourceCaches = new ResourceCachesHaloOnline(cache);
+        }
+
+        public CachedTag GetCachedTag<T>(string tagName) where T : TagStructure
+        {
+            var tagAttribute = TagStructure.GetTagStructureAttribute(typeof(T), CacheContext.Version, CacheContext.Platform);
+            var typeName = tagAttribute.Tag;
+
+            if (CacheContext.TagCache.TryGetTag<T>(tagName, out var result))
+            {
+                return result;
+            }
+            else
+            {
+                new TagToolWarning($@"Could not find tag: '{tagName}.{typeName}'. Assinging null tag instead");
+                return null;
+            }
         }
     }
 }

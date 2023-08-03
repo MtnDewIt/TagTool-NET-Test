@@ -46,8 +46,8 @@ namespace TagTool.Commands.Tags
                                 GlobalPlayerCharacterTypeIndex = 0,
                                 CharacterName = CacheContext.StringTable.GetStringId($@"masterchief"),
                                 CharacterDescription = StringId.Invalid,
-                                HudGlobals = CacheContext.TagCache.GetTag<ChudGlobalsDefinition>($@"ui\chud\globals"),
-                                VisionGlobals = CacheContext.TagCache.GetTag<VisionMode>($@"globals\default_vision_mode"),
+                                HudGlobals = GetCachedTag<ChudGlobalsDefinition>($@"ui\chud\globals"),
+                                VisionGlobals = GetCachedTag<VisionMode>($@"globals\default_vision_mode"),
                                 ActionSet = null,
                                 CharacterPositionData = new ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo()
                                 {
@@ -81,8 +81,8 @@ namespace TagTool.Commands.Tags
                                 GlobalPlayerCharacterTypeIndex = 1,
                                 CharacterName = CacheContext.StringTable.GetStringId($@"dervish"),
                                 CharacterDescription = StringId.Invalid,
-                                HudGlobals = CacheContext.TagCache.GetTag<ChudGlobalsDefinition>($@"ui\chud\globals"),
-                                VisionGlobals = CacheContext.TagCache.GetTag<VisionMode>($@"globals\default_vision_mode"),
+                                HudGlobals = GetCachedTag<ChudGlobalsDefinition>($@"ui\chud\globals"),
+                                VisionGlobals = GetCachedTag<VisionMode>($@"globals\default_vision_mode"),
                                 ActionSet = null,
                                 CharacterPositionData = new ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo()
                                 {

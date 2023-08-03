@@ -50,7 +50,7 @@ namespace TagTool.Commands.Tags
                                     SortLayer = ChudDefinition.WidgetLayerEnum.Foreground,
                                     RuntimeWidgetIndex = 90,
                                     Flags = ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.SpriteFromConsumable,
-                                    Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\chud\bitmaps\equipment_scematics"),
+                                    Bitmap = GetCachedTag<Bitmap>($@"ui\chud\bitmaps\equipment_scematics"),
                                     StateData = new List<ChudDefinition.HudWidgetBase.StateDatum>()
                                     {
                                         new ChudDefinition.HudWidgetBase.StateDatum()
@@ -73,7 +73,7 @@ namespace TagTool.Commands.Tags
                                         {
                                             Active = new ChudDefinition.HudWidgetBase.AnimationDatum.ChudWidgetAnimationStruct()
                                             {
-                                                Animation = CacheContext.TagCache.GetTag<ChudAnimationDefinition>($@"ui\chud\animations\equipment_kablam"),
+                                                Animation = GetCachedTag<ChudAnimationDefinition>($@"ui\chud\animations\equipment_kablam"),
                                             },
                                         },
                                     },
@@ -136,7 +136,7 @@ namespace TagTool.Commands.Tags
                                     SortLayer = ChudDefinition.WidgetLayerEnum.Foreground,
                                     RuntimeWidgetIndex = 90,
                                     Flags = ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.SpriteFromConsumable,
-                                    Bitmap = CacheContext.TagCache.GetTag<Bitmap>($@"ui\chud\bitmaps\equipment_scematics"),
+                                    Bitmap = GetCachedTag<Bitmap>($@"ui\chud\bitmaps\equipment_scematics"),
                                     StateData = new List<ChudDefinition.HudWidgetBase.StateDatum>()
                                     {
                                         new ChudDefinition.HudWidgetBase.StateDatum()
@@ -159,7 +159,7 @@ namespace TagTool.Commands.Tags
                                         {
                                             Active = new ChudDefinition.HudWidgetBase.AnimationDatum.ChudWidgetAnimationStruct()
                                             {
-                                                Animation = CacheContext.TagCache.GetTag<ChudAnimationDefinition>($@"ui\chud\animations\equipment_kablam"),
+                                                Animation = GetCachedTag<ChudAnimationDefinition>($@"ui\chud\animations\equipment_kablam"),
                                             },
                                         },
                                     },

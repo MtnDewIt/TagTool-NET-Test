@@ -115,701 +115,701 @@ namespace TagTool.Commands.Tags
                         {
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x2x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x2x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x2x01"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x2x01"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_1x2x01"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_1x2x01"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_1x2x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_1x2x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_1x2x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_1x2x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x5x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x5x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x5x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x5x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x5x025"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x5x025"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x5x025"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x5x025"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x5x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x5x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x5x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x5x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x10x5"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x10x5"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x10x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x10x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x10x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x10x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x10x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x10x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x10x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x10x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x10x5"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x10x5"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_20x20x10"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_20x20x10"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_20x20x5"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_20x20x5"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_20x20x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_20x20x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x20x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x20x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x20x5"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x20x5"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x20x10"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x20x10"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x2x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x2x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\glass_01x1x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\glass_01x1x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\glass_01x10x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\glass_01x10x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\glass_01x10x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\glass_01x10x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\glass_01x2x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\glass_01x2x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\glass_01x10x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\glass_01x10x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x01"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x01"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x01"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x01"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x01"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x01"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x01"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x01"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x4"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x4"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x4"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x4"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x4"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x4"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x4"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x4"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x01"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x01"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x4"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x4"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x01x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x01x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x01x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x01x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x01x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x01x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x10x066"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x10x066"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x4x046"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x4x046"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x3x06"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x3x06"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x2x073"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x2x073"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x1x087"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x1x087"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x5x033"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x5x033"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x05x043"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x05x043"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\glass_01x05x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\glass_01x05x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x3x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x3x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x4x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x4x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x10x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x10x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x10x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x10x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x10x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x10x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x1x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x1x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x3x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x3x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x4x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x4x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x1x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x1x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x3x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x3x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x4x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x4x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x1x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x1x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_1x05x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x05x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_1x2x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x2x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_1x3x3"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x3x3"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_1x4x4"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x4x4"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_1x5x5"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x5x5"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_1x1x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x1x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_05x1x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x1x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_05x5x5"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x5x5"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_05x4x4"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x4x4"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_05x3x3"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x3x3"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_05x2x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x2x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_05x10x10"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x10x10"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_1x10x10"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x10x10"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_05x05x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x05x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x3x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x3x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x3x3"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x3x3"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x4x3"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x4x3"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x4x4"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x4x4"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x5x5"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x5x5"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x5x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x5x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x5x3"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x5x3"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x5x4"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x5x4"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x2x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x2x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x5x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x5x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x3x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x3x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x4x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x4x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x1x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x1x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x10x10"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x10"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x10x5"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x5"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x10x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x10x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x10x3"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x3"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x10x4"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x4"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x4x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x4x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x20x20"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x20x20"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x20x20"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x20x20"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x4x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x4x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x05x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x05x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x1x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x1x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x10x4"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x4"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x10x3"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x3"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x10x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x10x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x10x5"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x5"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x10x10"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x10"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x1x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x1x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x4x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x4x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x3x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x3x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x5x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x5x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x2x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x2x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x5x4"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x5x4"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x5x3"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x5x3"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x5x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x5x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x5x5"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x5x5"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x4x4"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x4x4"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x4x3"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x4x3"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x3x3"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x3x3"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x3x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x3x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x2x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x2x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x2x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x2x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x4x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x4x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x10x4"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x4"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x10x3"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x3"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x10x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x10x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x10x5"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x5"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x10x10"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x10"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x1x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x1x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x4x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x4x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x3x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x3x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x5x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x2x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x2x1"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x5x4"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x4"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x5x3"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x3"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x5x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x5x5"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x5"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x4x4"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x4x4"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x4x3"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x4x3"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x3x3"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x3x3"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x3x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x3x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x2x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x2x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x2x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x2x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x10x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x1x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x1x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x4x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x4x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x3x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x3x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x5x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x05x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x05x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x20x20"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x20x20"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_01x10x10"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x10x10"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_01x5x5"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x5x5"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_01x4x4"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x4x4"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_01x3x3"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x3x3"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_01x2x2"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x2x2"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_01x05x05"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x05x05"),
                             },
                             new TagReferenceBlock
                             {
-                                Instance = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_01x1x1"),
+                                Instance = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x1x1"),
                             },
                         };
-                        forg.PrematchCameraObject = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\generic\mp_cinematic_camera");
-                        forg.ModifierObject = CacheContext.TagCache.GetTag<Scenery>($@"objects\eldewrito\forge\map_modifier");
-                        forg.KillVolumeObject = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\boundaries\kill_volume");
-                        forg.GarbageVolumeObject = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\boundaries\garbage_collection_volume");
+                        forg.PrematchCameraObject = GetCachedTag<Scenery>($@"objects\multi\generic\mp_cinematic_camera");
+                        forg.ModifierObject = GetCachedTag<Scenery>($@"objects\eldewrito\forge\map_modifier");
+                        forg.KillVolumeObject = GetCachedTag<Crate>($@"objects\multi\boundaries\kill_volume");
+                        forg.GarbageVolumeObject = GetCachedTag<Crate>($@"objects\multi\boundaries\garbage_collection_volume");
                         forg.Descriptions = new List<ForgeGlobalsDefinition.Description> 
                         {
                             new ForgeGlobalsDefinition.Description
@@ -1335,7 +1335,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 1,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\h_barrel_rusty\h_barrel_rusty"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\h_barrel_rusty\h_barrel_rusty"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1344,7 +1344,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 1,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\h_barrel_rusty_small\h_barrel_rusty_small"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\h_barrel_rusty_small\h_barrel_rusty_small"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1353,7 +1353,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 1,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\drum_12gal\drum_12gal"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\drum_12gal\drum_12gal"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1362,7 +1362,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 1,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\dlc\bunkerworld\drum_55gal_bunker\drum_55gal_bunker"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\dlc\bunkerworld\drum_55gal_bunker\drum_55gal_bunker"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1371,7 +1371,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 2,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\solo\030_outskirts\foliage\bushlow\bushlow"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\solo\030_outskirts\foliage\bushlow\bushlow"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1380,7 +1380,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 2,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\solo\030_outskirts\foliage\bushc\bushc"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\solo\030_outskirts\foliage\bushc\bushc"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1389,7 +1389,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 2,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\solo\030_outskirts\foliage\small_bush\small_bush"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\solo\030_outskirts\foliage\small_bush\small_bush"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1398,7 +1398,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 2,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\levels\multi\snowbound\icicle_10_inch\icicle_10_inch"),
+                                Object = GetCachedTag<Scenery>($@"objects\levels\multi\snowbound\icicle_10_inch\icicle_10_inch"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -1418,7 +1418,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 2,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\levels\multi\snowbound\icicle_18_inch\icicle_18_inch"),
+                                Object = GetCachedTag<Scenery>($@"objects\levels\multi\snowbound\icicle_18_inch\icicle_18_inch"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -1438,7 +1438,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 2,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\levels\multi\snowbound\icicle_24_inch\icicle_24_inch"),
+                                Object = GetCachedTag<Scenery>($@"objects\levels\multi\snowbound\icicle_24_inch\icicle_24_inch"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -1458,7 +1458,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 2,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\levels\multi\snowbound\icicle_06_inch\icicle_06_inch"),
+                                Object = GetCachedTag<Scenery>($@"objects\levels\multi\snowbound\icicle_06_inch\icicle_06_inch"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -1478,7 +1478,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 2,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\zanzibar\foliage\plant_bush_large_palm\plant_bush_large_palm"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\multi\zanzibar\foliage\plant_bush_large_palm\plant_bush_large_palm"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1487,7 +1487,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 2,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\solo\010_jungle\foliage\plant_bush_med_palm\plant_bush_med_palm"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\solo\010_jungle\foliage\plant_bush_med_palm\plant_bush_med_palm"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1496,7 +1496,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 2,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\solo\010_jungle\foliage\plant_tree_palm\plant_tree_palm"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\solo\010_jungle\foliage\plant_tree_palm\plant_tree_palm"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -1516,7 +1516,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 2,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\solo\100_citadel\foliage\plant_tree_pine\plant_tree_pine"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\solo\100_citadel\foliage\plant_tree_pine\plant_tree_pine"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -1536,7 +1536,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 2,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\solo\100_citadel\foliage\plant_pine_tree_large\plant_pine_tree_large"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\solo\100_citadel\foliage\plant_pine_tree_large\plant_pine_tree_large"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -1556,7 +1556,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 3,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\zanzibar\awning_def\awning_def"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\multi\zanzibar\awning_def\awning_def"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1565,7 +1565,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 3,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\barricade_large\barricade_large"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\barricade_large\barricade_large"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1574,7 +1574,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 3,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\barricade_small\barricade_small"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\barricade_small\barricade_small"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1583,7 +1583,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 3,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\jersey_barrier\jersey_barrier"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\jersey_barrier\jersey_barrier"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1592,7 +1592,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 3,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\jersey_barrier_short\jersey_barrier_short"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\jersey_barrier_short\jersey_barrier_short"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1601,7 +1601,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 3,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\zanzibar\battle_shield\battle_shield"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\multi\zanzibar\battle_shield\battle_shield"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -1621,7 +1621,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 3,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\turf_dumpster\turf_dumpster"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\multi\s3d_turf\turf_dumpster\turf_dumpster"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1630,7 +1630,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 3,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\sawhorse\sawhorse"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\sawhorse\sawhorse"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1639,7 +1639,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 3,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\sawhorse\sawhorse_light"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\sawhorse\sawhorse_light"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1648,7 +1648,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 3,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\gear\human\military\sandbag_wall\sandbag_wall"),
+                                Object = GetCachedTag<Scenery>($@"objects\gear\human\military\sandbag_wall\sandbag_wall"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -1668,7 +1668,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 3,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\levels\dlc\bunkerworld\sandbag_wall_45corner_bunker\sandbag_wall_45corner_bunker"),
+                                Object = GetCachedTag<Scenery>($@"objects\levels\dlc\bunkerworld\sandbag_wall_45corner_bunker\sandbag_wall_45corner_bunker"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -1688,7 +1688,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 3,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\gear\human\military\sandbag_wall_90corner\sandbag_wall_90corner"),
+                                Object = GetCachedTag<Scenery>($@"objects\gear\human\military\sandbag_wall_90corner\sandbag_wall_90corner"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -1708,7 +1708,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 3,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\gear\human\military\sandbag_wall_endcap\sandbag_wall_endcap"),
+                                Object = GetCachedTag<Scenery>($@"objects\gear\human\military\sandbag_wall_endcap\sandbag_wall_endcap"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -1728,7 +1728,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 3,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\gear\human\military\sandbag_wall_turret\sandbag_wall_turret"),
+                                Object = GetCachedTag<Scenery>($@"objects\gear\human\military\sandbag_wall_turret\sandbag_wall_turret"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -1748,7 +1748,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 3,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\gear\human\military\sandbag_detail2\sandbag_detail2"),
+                                Object = GetCachedTag<Scenery>($@"objects\gear\human\military\sandbag_detail2\sandbag_detail2"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1757,7 +1757,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 3,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\gear\human\military\sandbag_detail1\sandbag_detail1"),
+                                Object = GetCachedTag<Scenery>($@"objects\gear\human\military\sandbag_detail1\sandbag_detail1"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1766,7 +1766,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\box_metal_small\box_metal_small"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\box_metal_small\box_metal_small"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1775,7 +1775,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\h_ammo_crate_lg\h_ammo_crate_lg"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\h_ammo_crate_lg\h_ammo_crate_lg"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1784,7 +1784,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\h_ammo_crate_sm\h_ammo_crate_sm"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\h_ammo_crate_sm\h_ammo_crate_sm"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1793,7 +1793,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\turf_cabinet\turf_cabinet"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\multi\s3d_turf\turf_cabinet\turf_cabinet"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1802,7 +1802,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\crate_tech_semi_short_closed\crate_tech_semi_short_closed"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\crate_tech_semi_short_closed\crate_tech_semi_short_closed"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1811,7 +1811,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\dlc\shared\crate_tech_semi_short\crate_tech_semi_short"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\dlc\shared\crate_tech_semi_short\crate_tech_semi_short"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1820,7 +1820,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\crate_tech_giant\crate_tech_giant"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\crate_tech_giant\crate_tech_giant"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1829,7 +1829,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\crate_multi_single\crate_multi_single"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\crate_multi_single\crate_multi_single"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1838,7 +1838,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\crate_multi\crate_multi"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\crate_multi\crate_multi"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1847,7 +1847,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\crate_packing\crate_packing"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\crate_packing\crate_packing"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1856,7 +1856,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\crate_packing_giant\crate_packing_giant_mp"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\crate_packing_giant\crate_packing_giant_mp"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1865,7 +1865,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\dlc\warehouse\dlc_wh_crate_large_open\dlc_wh_crate_large_open"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\dlc\warehouse\dlc_wh_crate_large_open\dlc_wh_crate_large_open"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1874,7 +1874,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\case_ap_turret\case_ap_turret"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\case_ap_turret\case_ap_turret"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1883,7 +1883,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\case_ap_turret_lid\case_ap_turret_lid"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\case_ap_turret_lid\case_ap_turret_lid"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1892,7 +1892,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\case_ap_turret_open\case_ap_turret_open"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\case_ap_turret_open\case_ap_turret_open"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1901,7 +1901,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\case\case"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\case\case"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1910,7 +1910,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\dlc\warehouse\fencebox\fencebox"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\dlc\warehouse\fencebox\fencebox"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1919,7 +1919,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\medical\medical_crate\medical_crate"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\medical\medical_crate\medical_crate"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1928,7 +1928,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\turf_crate_large\turf_crate_large"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\multi\s3d_turf\turf_crate_large\turf_crate_large"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1937,7 +1937,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\crate_heavy_tech\crate_heavy_tech"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\multi\s3d_turf\crate_heavy_tech\crate_heavy_tech"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1946,7 +1946,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\covenant\military\crate_space\crate_space"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\covenant\military\crate_space\crate_space"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1955,7 +1955,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 5,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\tripmine\tripmine_forge"),
+                                Object = GetCachedTag<Equipment>($@"objects\equipment\tripmine\tripmine_forge"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1964,7 +1964,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 5,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\covenant\military\battery\battery"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\covenant\military\battery\battery"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1973,7 +1973,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 5,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\fusion_coil\fusion_coil"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\fusion_coil\fusion_coil"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1982,7 +1982,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 5,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\forerunner\power_core_for\power_core_for"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\forerunner\power_core_for\power_core_for"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1991,7 +1991,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 5,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\propane_burner\propane_burner"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\propane_burner\propane_burner"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -2000,7 +2000,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 5,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\propane_tank\propane_tank"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\propane_tank\propane_tank"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -2009,7 +2009,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 6,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\forge\fx_object"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\forge\fx_object"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -2109,7 +2109,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 6,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\forge\fx_object"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\forge\fx_object"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -2209,7 +2209,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 6,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\forge\fx_object"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\forge\fx_object"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -2309,7 +2309,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 6,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\forge\fx_object"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\forge\fx_object"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -2409,7 +2409,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 6,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\forge\fx_object"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\forge\fx_object"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -2509,7 +2509,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 7,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\forge\light_object"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\forge\light_object"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -2569,7 +2569,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 7,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\forge\light_object"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\forge\light_object"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -2629,7 +2629,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 7,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\forge\light_object"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\forge\light_object"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -2689,7 +2689,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 7,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\forge\light_object"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\forge\light_object"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -2749,7 +2749,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 7,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\forge\light_object"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\forge\light_object"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -2809,7 +2809,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 7,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\forge\light_object"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\forge\light_object"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -2869,7 +2869,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 7,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\forge\light_object"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\forge\light_object"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -2929,7 +2929,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 8,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\solo\020_base\computer_briefcase\computer_briefcase"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\solo\020_base\computer_briefcase\computer_briefcase"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -2938,7 +2938,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 8,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\solo\020_base\computer_briefcase_small\computer_briefcase_small"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\solo\020_base\computer_briefcase_small\computer_briefcase_small"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -2947,7 +2947,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 8,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\generator_light\generator_flood_no_lights"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\generator_light\generator_flood_no_lights"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -2956,7 +2956,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 8,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\vehicles\civilian\forklift\forklift"),
+                                Object = GetCachedTag<Crate>($@"objects\vehicles\civilian\forklift\forklift"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -2965,7 +2965,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 8,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\generator_heavy_grill\generator_heavy_grill"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\generator_heavy_grill\generator_heavy_grill"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -2974,7 +2974,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 8,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\generator_heavy_kettle\generator_heavy_kettle"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\generator_heavy_kettle\generator_heavy_kettle"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -2983,7 +2983,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 8,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\generator\generator"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\generator\generator"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -2992,7 +2992,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 8,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\solo\040_voi\cart_electric\cart_electric"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\solo\040_voi\cart_electric\cart_electric"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3001,7 +3001,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 8,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\levels\multi\cyberdyne\cyber_monitor_med\cyber_monitor"),
+                                Object = GetCachedTag<Scenery>($@"objects\levels\multi\cyberdyne\cyber_monitor_med\cyber_monitor"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -3021,7 +3021,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 8,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\levels\solo\020_base\monitor_sm\monitor_sm"),
+                                Object = GetCachedTag<Scenery>($@"objects\levels\solo\020_base\monitor_sm\monitor_sm"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -3041,7 +3041,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 8,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\hu_mil_radio_big\hu_mil_radio_big"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\hu_mil_radio_big\hu_mil_radio_big"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3050,7 +3050,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 8,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\hu_mil_radio_small\hu_mil_radio_small"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\hu_mil_radio_small\hu_mil_radio_small"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3059,7 +3059,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 9,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\levels\dlc\shared\soccer_ball\soccer_ball"),
+                                Object = GetCachedTag<Vehicle>($@"objects\levels\dlc\shared\soccer_ball\soccer_ball"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3068,7 +3068,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 9,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\covenant\military\cov_sword_holder\cov_sword_holder"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\covenant\military\cov_sword_holder\cov_sword_holder"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -3088,7 +3088,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 9,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\gravlift_permanent\gravlift_permanent"),
+                                Object = GetCachedTag<Equipment>($@"objects\equipment\gravlift_permanent\gravlift_permanent"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -3108,7 +3108,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 9,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\guardian\holy_light_guardian\holy_light_guardian_forge"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\multi\guardian\holy_light_guardian\holy_light_guardian_forge"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3117,7 +3117,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 9,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\dlc\shared\man_cannon_forge\man_cannon_forge"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\dlc\shared\man_cannon_forge\man_cannon_forge"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -3137,7 +3137,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 9,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\dlc\shared\small_shield_door\small_shield_door"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\dlc\shared\small_shield_door\small_shield_door"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -3157,7 +3157,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 9,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\snowbound\airlock_field\airlock_field"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\multi\snowbound\airlock_field\airlock_field"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3166,7 +3166,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 9,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\dlc\shared\large_shield_door\large_shield_door"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\dlc\shared\large_shield_door\large_shield_door"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -3186,7 +3186,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 9,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\salvation\large_field\large_field"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\multi\salvation\large_field\large_field"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3195,7 +3195,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 10,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\residential\office_chair\office_chair"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\residential\office_chair\office_chair"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3204,7 +3204,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 10,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\residential\office_monitor\office_monitor"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\residential\office_monitor\office_monitor"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3213,7 +3213,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 10,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\residential\office_file_tall\office_file_tall"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\residential\office_file_tall\office_file_tall"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3222,7 +3222,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 10,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\residential\office_file_short\office_file_short"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\residential\office_file_short\office_file_short"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3231,7 +3231,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 10,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\residential\office_keyboard\office_keyboard"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\residential\office_keyboard\office_keyboard"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3240,7 +3240,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 10,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\levels\solo\020_base\sink\sink"),
+                                Object = GetCachedTag<Scenery>($@"objects\levels\solo\020_base\sink\sink"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -3260,7 +3260,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 10,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\residential\office_stand\office_stand"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\residential\office_stand\office_stand"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3269,7 +3269,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 10,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\gear\human\residential\office_table\office_table"),
+                                Object = GetCachedTag<Scenery>($@"objects\gear\human\residential\office_table\office_table"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3278,7 +3278,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 10,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\comm_phonebox\comm_phonebox"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\comm_phonebox\comm_phonebox"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3287,7 +3287,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 10,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\residential\telephone_wall_box\telephone_wall_box"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\residential\telephone_wall_box\telephone_wall_box"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -3307,7 +3307,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\hu_mil_rucksack\rucksack"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\hu_mil_rucksack\rucksack"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3316,7 +3316,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\levels\multi\shrine\marinebeacon\marinebeacon"),
+                                Object = GetCachedTag<Scenery>($@"objects\levels\multi\shrine\marinebeacon\marinebeacon"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -3336,7 +3336,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\blitzcan\blitzcan"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\blitzcan\blitzcan"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3345,7 +3345,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\dlc\warehouse\bridge\bridge"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\dlc\warehouse\bridge\bridge"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -3365,7 +3365,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\camping_stool_mp\camping_stool_mp"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\camping_stool_mp\camping_stool_mp"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3374,7 +3374,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\deadlock\deadlock_chainlinkgate\deadlock_chainlinkgate"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\multi\deadlock\deadlock_chainlinkgate\deadlock_chainlinkgate"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3383,7 +3383,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\crowbar\crowbar"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\crowbar\crowbar"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3392,7 +3392,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\zanzibar\main_crane\main_crane"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\multi\zanzibar\main_crane\main_crane"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -3412,7 +3412,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\resupply_capsule_unfired\resupply_capsule_unfired"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\resupply_capsule_unfired\resupply_capsule_unfired"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3421,7 +3421,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\gear\human\military\resupply_capsule_fired\resupply_capsule_fired"),
+                                Object = GetCachedTag<Scenery>($@"objects\gear\human\military\resupply_capsule_fired\resupply_capsule_fired"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -3441,7 +3441,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\resupply_capsule_panel\resupply_capsule_panel"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\resupply_capsule_panel\resupply_capsule_panel"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3450,7 +3450,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\deadlock\wall_hatch\wall_hatch"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\multi\deadlock\wall_hatch\wall_hatch"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3459,7 +3459,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\garbage_can\garbage_can"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\garbage_can\garbage_can"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3468,7 +3468,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\residential\h_locker_closed_mp\h_locker_closed_mp"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\residential\h_locker_closed_mp\h_locker_closed_mp"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3477,7 +3477,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\levels\multi\cyberdyne\cyber_speaker\cyber_speaker"),
+                                Object = GetCachedTag<Scenery>($@"objects\levels\multi\cyberdyne\cyber_speaker\cyber_speaker"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3486,7 +3486,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\medical\cabinet\cabinet"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\medical\cabinet\cabinet"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3495,7 +3495,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\medical\crashcart\crashcart"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\medical\crashcart\crashcart"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3504,7 +3504,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\medical\medical_tray\medical_tray"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\medical\medical_tray\medical_tray"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3513,7 +3513,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\missle_body\missle_body"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\missle_body\missle_body"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3522,7 +3522,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\gear\human\military\missle_stand\missle_stand"),
+                                Object = GetCachedTag<Scenery>($@"objects\gear\human\military\missle_stand\missle_stand"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3531,7 +3531,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\missle_cap\missle_cap"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\missle_cap\missle_cap"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3540,7 +3540,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\scenery\human\military\mongoose_drop_palette\mongoose_drop_palette"),
+                                Object = GetCachedTag<Scenery>($@"objects\scenery\human\military\mongoose_drop_palette\mongoose_drop_palette"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3549,7 +3549,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\pallet\pallet"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\pallet\pallet"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3558,7 +3558,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\pallet_large\pallet_large"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\pallet_large\pallet_large"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3567,7 +3567,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\vehicles\phantom\phantom_damaged\garbage\phd_backpiece_lg_top\phd_backpiece_lg_top"),
+                                Object = GetCachedTag<Scenery>($@"objects\vehicles\phantom\phantom_damaged\garbage\phd_backpiece_lg_top\phd_backpiece_lg_top"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3576,7 +3576,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\vehicles\phantom\phantom_damaged\garbage\phd_backpiece_md\phd_backpiece_md"),
+                                Object = GetCachedTag<Scenery>($@"objects\vehicles\phantom\phantom_damaged\garbage\phd_backpiece_md\phd_backpiece_md"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3585,7 +3585,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\vehicles\phantom\phantom_damaged\garbage\phd_backpiece_sm\phd_backpiece_sm"),
+                                Object = GetCachedTag<Scenery>($@"objects\vehicles\phantom\phantom_damaged\garbage\phd_backpiece_sm\phd_backpiece_sm"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3594,7 +3594,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\vehicles\phantom\phantom_damaged\garbage\phd_bottompiece\phd_bottompiece"),
+                                Object = GetCachedTag<Scenery>($@"objects\vehicles\phantom\phantom_damaged\garbage\phd_bottompiece\phd_bottompiece"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3603,7 +3603,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\vehicles\phantom\phantom_damaged\garbage\phd_flatpiece_r\phd_flatpiece_r"),
+                                Object = GetCachedTag<Scenery>($@"objects\vehicles\phantom\phantom_damaged\garbage\phd_flatpiece_r\phd_flatpiece_r"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3612,7 +3612,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\vehicles\phantom\phantom_damaged\garbage\phd_sidepiece_l\phd_sidepiece_l"),
+                                Object = GetCachedTag<Scenery>($@"objects\vehicles\phantom\phantom_damaged\garbage\phd_sidepiece_l\phd_sidepiece_l"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3621,7 +3621,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\vehicles\phantom\phantom_damaged\garbage\phd_sidepiece_r\phd_sidepiece_r"),
+                                Object = GetCachedTag<Scenery>($@"objects\vehicles\phantom\phantom_damaged\garbage\phd_sidepiece_r\phd_sidepiece_r"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3630,7 +3630,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\military\antennae_mast\antennae_mast"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\military\antennae_mast\antennae_mast"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3639,7 +3639,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\street_cone\street_cone"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\street_cone\street_cone"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3648,7 +3648,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\turf_swinging_door\turf_swinging_door"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\multi\s3d_turf\turf_swinging_door\turf_swinging_door"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3657,7 +3657,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\zanzibar\hinge_light\hinge_light"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\multi\zanzibar\hinge_light\hinge_light"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3666,7 +3666,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\toolbox_large\toolbox_large"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\toolbox_large\toolbox_large"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3675,7 +3675,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\toolbox_small\toolbox_small"),
+                                Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\toolbox_small\toolbox_small"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3684,7 +3684,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\turf_trash_can\turf_trash_can"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\multi\s3d_turf\turf_trash_can\turf_trash_can"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3693,7 +3693,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\scenery\human\military\warthog_drop_palette\warthog_drop_palette"),
+                                Object = GetCachedTag<Scenery>($@"objects\scenery\human\military\warthog_drop_palette\warthog_drop_palette"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3702,7 +3702,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\vehicles\warthog\garbage\tire\tire"),
+                                Object = GetCachedTag<Crate>($@"objects\vehicles\warthog\garbage\tire\tire"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3711,7 +3711,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\levels\solo\020_base\armory_shelf\armory_shelf"),
+                                Object = GetCachedTag<Scenery>($@"objects\levels\solo\020_base\armory_shelf\armory_shelf"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3720,7 +3720,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\dlc\warehouse\dlc_wh_wire_spool_large\dlc_wh_wire_spool_large"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\dlc\warehouse\dlc_wh_wire_spool_large\dlc_wh_wire_spool_large"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -3729,7 +3729,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 15,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x05x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x05x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3738,7 +3738,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 16,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x1x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x1x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3747,7 +3747,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 16,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x1x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x1x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3756,7 +3756,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 17,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x2x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x2x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3765,7 +3765,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 17,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x2x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x2x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3774,7 +3774,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 17,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x2x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x2x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3783,7 +3783,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 18,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x3x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x3x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3792,7 +3792,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 18,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x3x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x3x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3801,7 +3801,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 18,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x3x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x3x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3810,7 +3810,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 18,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x3x3"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x3x3"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3819,7 +3819,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 19,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x4x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x4x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3828,7 +3828,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 19,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x4x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x4x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3837,7 +3837,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 19,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x4x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x4x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3846,7 +3846,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 19,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x4x3"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x4x3"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3855,7 +3855,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 19,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x4x4"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x4x4"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3864,7 +3864,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 20,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x5x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3873,7 +3873,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 20,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x5x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3882,7 +3882,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 20,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x5x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3891,7 +3891,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 20,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x5x3"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x3"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3900,7 +3900,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 20,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x5x4"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x4"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3909,7 +3909,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 20,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x5x5"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x5"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3918,7 +3918,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 21,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x10x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3927,7 +3927,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 21,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x10x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3936,7 +3936,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 21,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x10x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3945,7 +3945,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 21,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x10x3"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x3"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3954,7 +3954,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 21,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x10x4"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x4"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3963,7 +3963,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 21,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x10x5"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x5"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3972,7 +3972,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 21,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x10x10"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x10"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3981,7 +3981,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 22,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_01x20x20"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x20x20"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3990,7 +3990,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 24,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x05x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x05x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -3999,7 +3999,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 25,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x1x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x1x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4008,7 +4008,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 25,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x1x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x1x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4017,7 +4017,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 26,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x2x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x2x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4026,7 +4026,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 26,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x2x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x2x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4035,7 +4035,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 27,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x3x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x3x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4044,7 +4044,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 27,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x3x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x3x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4053,7 +4053,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 27,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x3x3"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x3x3"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4062,7 +4062,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 28,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x4x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x4x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4071,7 +4071,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 28,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x4x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x4x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4080,7 +4080,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 28,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x4x3"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x4x3"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4089,7 +4089,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 28,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x4x4"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x4x4"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4098,7 +4098,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 29,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x5x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x5x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4107,7 +4107,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 29,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x5x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x5x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4116,7 +4116,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 29,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x5x3"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x5x3"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4125,7 +4125,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 29,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x5x4"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x5x4"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4134,7 +4134,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 29,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x5x5"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x5x5"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4143,7 +4143,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 30,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x10x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4152,7 +4152,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 30,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x10x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4161,7 +4161,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 30,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x10x3"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x3"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4170,7 +4170,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 30,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x10x4"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x4"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4179,7 +4179,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 30,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x10x5"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x5"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4188,7 +4188,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 30,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x10x10"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x10"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4197,7 +4197,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 31,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_05x20x20"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x20x20"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4206,7 +4206,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 33,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x1x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x1x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4215,7 +4215,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 34,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x2x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x2x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4224,7 +4224,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 34,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x2x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x2x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4233,7 +4233,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 35,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x3x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x3x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4242,7 +4242,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 35,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x3x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x3x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4251,7 +4251,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 35,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x3x3"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x3x3"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4260,7 +4260,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 36,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x4x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x4x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4269,7 +4269,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 36,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x4x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x4x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4278,7 +4278,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 36,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x4x3"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x4x3"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4287,7 +4287,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 36,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x4x4"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x4x4"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4296,7 +4296,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 37,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x5x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x5x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4305,7 +4305,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 37,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x5x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x5x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4314,7 +4314,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 37,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x5x3"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x5x3"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4323,7 +4323,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 37,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x5x4"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x5x4"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4332,7 +4332,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 37,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x5x5"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x5x5"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4341,7 +4341,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 38,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x10x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4350,7 +4350,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 38,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x10x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4359,7 +4359,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 38,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x10x3"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x3"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4368,7 +4368,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 38,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x10x4"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x4"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4377,7 +4377,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 38,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x10x5"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x5"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4386,7 +4386,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 38,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x10x10"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x10"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4395,7 +4395,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 39,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\block_1x20x20"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x20x20"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4404,7 +4404,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 42,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_01x05x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x05x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4413,7 +4413,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 42,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_01x1x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x1x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4422,7 +4422,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 42,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_01x2x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x2x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4431,7 +4431,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 42,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_01x3x3"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x3x3"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4440,7 +4440,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 42,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_01x4x4"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x4x4"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4449,7 +4449,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 42,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_01x5x5"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x5x5"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4458,7 +4458,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 42,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_01x10x10"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x10x10"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4467,7 +4467,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 43,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_05x05x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x05x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4476,7 +4476,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 43,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_05x1x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x1x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4485,7 +4485,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 43,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_05x2x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x2x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4494,7 +4494,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 43,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_05x3x3"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x3x3"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4503,7 +4503,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 43,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_05x4x4"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x4x4"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4512,7 +4512,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 43,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_05x5x5"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x5x5"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4521,7 +4521,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 43,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_05x10x10"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x10x10"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4530,7 +4530,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 44,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_1x05x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x05x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4539,7 +4539,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 44,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_1x1x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x1x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4548,7 +4548,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 44,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_1x2x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x2x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4557,7 +4557,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 44,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_1x3x3"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x3x3"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4566,7 +4566,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 44,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_1x4x4"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x4x4"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4575,7 +4575,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 44,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_1x5x5"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x5x5"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4584,7 +4584,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 44,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\triangle_1x10x10"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x10x10"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4593,7 +4593,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 45,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x05x043"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x05x043"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4602,7 +4602,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 45,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x1x087"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x1x087"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4611,7 +4611,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 45,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x2x073"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x2x073"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4620,7 +4620,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 45,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x3x06"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x3x06"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4629,7 +4629,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 45,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x4x046"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x4x046"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4638,7 +4638,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 45,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x5x033"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x5x033"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4647,7 +4647,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x01"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x01"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4656,7 +4656,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4665,7 +4665,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4674,7 +4674,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4683,7 +4683,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x4"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x4"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4692,7 +4692,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x01"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x01"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4701,7 +4701,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4710,7 +4710,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4719,7 +4719,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4728,7 +4728,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x4"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x4"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4737,7 +4737,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x01"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x01"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4746,7 +4746,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4755,7 +4755,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4764,7 +4764,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4773,7 +4773,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x4"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x4"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4782,7 +4782,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x01"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x01"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4791,7 +4791,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4800,7 +4800,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4809,7 +4809,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4818,7 +4818,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x4"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x4"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4827,7 +4827,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x01"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x01"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4836,7 +4836,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4845,7 +4845,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4854,7 +4854,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4863,7 +4863,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 47,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x4"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x4"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4872,7 +4872,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 48,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x01x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x01x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4881,7 +4881,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 48,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x01x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x01x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4890,7 +4890,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 48,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x01x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x01x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4899,7 +4899,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 48,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x1x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x1x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4908,7 +4908,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 48,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x1x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x1x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4917,7 +4917,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 48,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x1x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x1x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4926,7 +4926,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 48,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x3x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x3x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4935,7 +4935,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 48,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x3x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x3x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4944,7 +4944,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 48,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x3x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x3x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4953,7 +4953,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 48,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x4x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x4x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4962,7 +4962,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 48,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x4x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x4x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4971,7 +4971,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 48,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x4x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x4x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4980,7 +4980,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 48,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x10x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x10x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4989,7 +4989,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 48,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x10x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x10x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -4998,7 +4998,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 48,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x10x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x10x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5007,7 +5007,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 50,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x2x01"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x2x01"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5016,7 +5016,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 50,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x2x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x2x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5025,7 +5025,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 50,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x2x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x2x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5034,7 +5034,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 50,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x5x025"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x5x025"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5043,7 +5043,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 50,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x5x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x5x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5052,7 +5052,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 50,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x5x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x5x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5061,7 +5061,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 50,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x10x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x10x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5070,7 +5070,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 50,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x10x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x10x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5079,7 +5079,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 50,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x10x5"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x10x5"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5088,7 +5088,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 50,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_20x20x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_20x20x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5097,7 +5097,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 50,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_20x20x5"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_20x20x5"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5106,7 +5106,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 50,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_20x20x10"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_20x20x10"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5115,7 +5115,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 51,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_1x2x01"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_1x2x01"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5124,7 +5124,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 51,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_1x2x05"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_1x2x05"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5133,7 +5133,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 51,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_1x2x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_1x2x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5142,7 +5142,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 51,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x5x025"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x5x025"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5151,7 +5151,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 51,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x5x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x5x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5160,7 +5160,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 51,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x5x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x5x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5169,7 +5169,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 51,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x10x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x10x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5178,7 +5178,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 51,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x10x2"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x10x2"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5187,7 +5187,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 51,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x10x5"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x10x5"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5196,7 +5196,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 51,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x20x1"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x20x1"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5205,7 +5205,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 51,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x20x5"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x20x5"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5214,7 +5214,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 51,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x20x10"),
+                                Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x20x10"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5223,7 +5223,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 54,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\spawning\respawn_point"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\spawning\respawn_point"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5232,7 +5232,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 55,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\assault\assault_bomb_goal_area"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\assault\assault_bomb_goal_area"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5241,7 +5241,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 55,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\assault\assault_bomb_spawn_point"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\assault\assault_bomb_spawn_point"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5250,7 +5250,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 55,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\assault\assault_initial_spawn_point"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\assault\assault_initial_spawn_point"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5259,7 +5259,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 55,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\assault\assault_respawn_zone"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\assault\assault_respawn_zone"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5268,7 +5268,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 56,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\ctf\ctf_flag_at_home_respawn_zone"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\ctf\ctf_flag_at_home_respawn_zone"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5277,7 +5277,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 56,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\ctf\ctf_flag_away_respawn_zone"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\ctf\ctf_flag_away_respawn_zone"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5286,7 +5286,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 56,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\ctf\ctf_flag_return_area"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\ctf\ctf_flag_return_area"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5295,7 +5295,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 56,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\ctf\ctf_flag_spawn_point"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\ctf\ctf_flag_spawn_point"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5304,7 +5304,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 56,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\ctf\ctf_initial_spawn_point"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\ctf\ctf_initial_spawn_point"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5313,7 +5313,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 56,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\ctf\ctf_respawn_zone"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\ctf\ctf_respawn_zone"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5322,7 +5322,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 57,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\infection\infection_initial_spawn_point"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\infection\infection_initial_spawn_point"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5331,7 +5331,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 57,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\infection\infection_respawn_zone"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\infection\infection_respawn_zone"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5340,7 +5340,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 57,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\infection\infection_haven_static"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\infection\infection_haven_static"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5349,7 +5349,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 58,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\juggernaut\juggernaut_destination_static"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\juggernaut\juggernaut_destination_static"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5358,7 +5358,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 59,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\koth\koth_hill_static"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\koth\koth_hill_static"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5367,7 +5367,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 59,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\koth\koth_initial_spawn_point"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\koth\koth_initial_spawn_point"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5376,7 +5376,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 59,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\koth\koth_respawn_zone"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\koth\koth_respawn_zone"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5385,7 +5385,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 60,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\oddball\oddball_ball_spawn_point"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\oddball\oddball_ball_spawn_point"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5394,7 +5394,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 60,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\oddball\oddball_initial_spawn_point"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\oddball\oddball_initial_spawn_point"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5403,7 +5403,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 60,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\oddball\oddball_respawn_zone"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\oddball\oddball_respawn_zone"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5412,7 +5412,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 61,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\territories\territories_initial_spawn_point"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\territories\territories_initial_spawn_point"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5421,7 +5421,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 61,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\territories\territories_respawn_zone"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\territories\territories_respawn_zone"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5430,7 +5430,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 61,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\territories\territory_static"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\territories\territory_static"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5439,7 +5439,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 62,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\slayer\slayer_initial_spawn_point"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\slayer\slayer_initial_spawn_point"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5448,7 +5448,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 62,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\slayer\slayer_respawn_zone"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\slayer\slayer_respawn_zone"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5457,7 +5457,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 63,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\vip\vip_destination_static"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\vip\vip_destination_static"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5466,7 +5466,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 63,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\vip\vip_initial_spawn_point"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\vip\vip_initial_spawn_point"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5475,7 +5475,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 63,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\vip\vip_respawn_zone"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\vip\vip_respawn_zone"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -5484,7 +5484,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 64,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 1,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\eldewrito\forge\map_modifier"),
+                                Object = GetCachedTag<Scenery>($@"objects\eldewrito\forge\map_modifier"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -5504,7 +5504,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 64,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 1,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\generic\mp_cinematic_camera"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\generic\mp_cinematic_camera"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -5524,7 +5524,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 64,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\boundaries\kill_volume"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\boundaries\kill_volume"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5533,7 +5533,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 64,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\boundaries\garbage_collection_volume"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\boundaries\garbage_collection_volume"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -5542,7 +5542,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\deadlock\deadlock_chainlinkgate_ii\deadlock_chainlinkgate_ii"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\multi\deadlock\deadlock_chainlinkgate_ii\deadlock_chainlinkgate_ii"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5551,7 +5551,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 66,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\bubbleshield_equipment\bubbleshield_equipment"),
+                                Object = GetCachedTag<Equipment>($@"objects\equipment\bubbleshield_equipment\bubbleshield_equipment"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5560,7 +5560,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 66,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\instantcover_equipment\instantcover_equipment_mp"),
+                                Object = GetCachedTag<Equipment>($@"objects\equipment\instantcover_equipment\instantcover_equipment_mp"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5569,7 +5569,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 66,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\superflare_equipment\superflare_equipment"),
+                                Object = GetCachedTag<Equipment>($@"objects\equipment\superflare_equipment\superflare_equipment"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5578,7 +5578,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 66,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\gravlift_equipment\gravlift_equipment"),
+                                Object = GetCachedTag<Equipment>($@"objects\equipment\gravlift_equipment\gravlift_equipment"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5587,7 +5587,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 66,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\invincibility_equipment\invincibility_equipment"),
+                                Object = GetCachedTag<Equipment>($@"objects\equipment\invincibility_equipment\invincibility_equipment"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5596,7 +5596,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 66,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\powerdrain_equipment\powerdrain_equipment"),
+                                Object = GetCachedTag<Equipment>($@"objects\equipment\powerdrain_equipment\powerdrain_equipment"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5605,7 +5605,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 66,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\jammer_equipment\jammer_equipment"),
+                                Object = GetCachedTag<Equipment>($@"objects\equipment\jammer_equipment\jammer_equipment"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5614,7 +5614,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 66,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\regenerator_equipment\regenerator_equipment"),
+                                Object = GetCachedTag<Equipment>($@"objects\equipment\regenerator_equipment\regenerator_equipment"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5623,7 +5623,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 66,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\tripmine_equipment\tripmine_equipment"),
+                                Object = GetCachedTag<Equipment>($@"objects\equipment\tripmine_equipment\tripmine_equipment"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5632,7 +5632,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 68,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\weapons\grenade\frag_grenade\frag_grenade"),
+                                Object = GetCachedTag<Equipment>($@"objects\weapons\grenade\frag_grenade\frag_grenade"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5641,7 +5641,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 68,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\weapons\grenade\plasma_grenade\plasma_grenade"),
+                                Object = GetCachedTag<Equipment>($@"objects\weapons\grenade\plasma_grenade\plasma_grenade"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5650,7 +5650,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 68,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\weapons\grenade\firebomb_grenade\firebomb_grenade"),
+                                Object = GetCachedTag<Equipment>($@"objects\weapons\grenade\firebomb_grenade\firebomb_grenade"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5659,7 +5659,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 68,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\weapons\grenade\claymore_grenade\claymore_grenade"),
+                                Object = GetCachedTag<Equipment>($@"objects\weapons\grenade\claymore_grenade\claymore_grenade"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -5668,7 +5668,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 69,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\multi\powerups\powerup_blue\powerup_blue"),
+                                Object = GetCachedTag<Equipment>($@"objects\multi\powerups\powerup_blue\powerup_blue"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -5688,7 +5688,7 @@ namespace TagTool.Commands.Tags
                             	CategoryIndex = 69,
                             	DescriptionIndex = -1,
                             	MaxAllowed = 0,
-                            	Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\multi\powerups\powerup_red\powerup_red"),
+                            	Object = GetCachedTag<Equipment>($@"objects\multi\powerups\powerup_red\powerup_red"),
                             	Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -5708,7 +5708,7 @@ namespace TagTool.Commands.Tags
                             	CategoryIndex = 69,
                             	DescriptionIndex = -1,
                             	MaxAllowed = 0,
-                            	Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\multi\powerups\powerup_yellow\powerup_yellow"),
+                            	Object = GetCachedTag<Equipment>($@"objects\multi\powerups\powerup_yellow\powerup_yellow"),
                             	Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -5728,7 +5728,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 69,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\powerups\ammo_packs\ammo_large\ammo_large"),
+                                Object = GetCachedTag<Equipment>($@"objects\powerups\ammo_packs\ammo_large\ammo_large"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5737,7 +5737,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 69,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\powerups\ammo_packs\ammo_small\ammo_small"),
+                                Object = GetCachedTag<Equipment>($@"objects\powerups\ammo_packs\ammo_small\ammo_small"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5746,7 +5746,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 71,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5755,7 +5755,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 72,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle"),
                             },    
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5764,7 +5764,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 73,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\smg\smg"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\smg\smg"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -5773,7 +5773,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 73,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\smg_silenced\smg_silenced"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\smg_silenced\smg_silenced"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5782,7 +5782,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 75,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5791,7 +5791,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 76,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
                             },   
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5800,7 +5800,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 76,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
                             },    
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5809,7 +5809,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 76,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -5818,7 +5818,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 76,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\automag\automag"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\automag\automag"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -5827,7 +5827,7 @@ namespace TagTool.Commands.Tags
                             	CategoryIndex = 77,
                             	DescriptionIndex = -1,
                             	MaxAllowed = 0,
-                            	Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\weapons\turret\machinegun_turret\machinegun_turret"),
+                            	Object = GetCachedTag<Vehicle>($@"objects\weapons\turret\machinegun_turret\machinegun_turret"),
                             	Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -5847,7 +5847,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 77,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\turret\machinegun_turret\machinegun_turret"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\turret\machinegun_turret\machinegun_turret"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -5856,7 +5856,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 77,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\weapons\turret\plasma_cannon\plasma_cannon"),
+                                Object = GetCachedTag<Vehicle>($@"objects\weapons\turret\plasma_cannon\plasma_cannon"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -5876,7 +5876,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 77,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\turret\plasma_cannon\plasma_cannon"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\turret\plasma_cannon\plasma_cannon"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -5885,7 +5885,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 77,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\weapons\turret\missile_pod\missile_pod"),
+                                Object = GetCachedTag<Vehicle>($@"objects\weapons\turret\missile_pod\missile_pod"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -5905,7 +5905,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 77,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\turret\missile_pod\missile_pod"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\turret\missile_pod\missile_pod"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5914,7 +5914,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 78,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\beam_rifle\beam_rifle"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\beam_rifle\beam_rifle"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5923,7 +5923,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 78,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5932,7 +5932,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 78,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\melee\energy_blade\energy_blade"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\melee\energy_blade\energy_blade"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5941,7 +5941,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 78,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\turret\flamethrower\flamethrower"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\turret\flamethrower\flamethrower"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5950,7 +5950,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 78,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5959,7 +5959,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 78,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\melee\gravity_hammer\gravity_hammer"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\melee\gravity_hammer\gravity_hammer"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5968,7 +5968,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 78,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5977,7 +5977,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 78,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -5986,7 +5986,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 78,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\plasma_rifle_red\plasma_rifle_red"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle_red\plasma_rifle_red"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5995,7 +5995,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 78,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_high\rocket_launcher\rocket_launcher"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\support_high\rocket_launcher\rocket_launcher"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6004,7 +6004,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 78,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\sentinel_gun\sentinel_gun"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\sentinel_gun\sentinel_gun"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6013,7 +6013,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 78,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\shotgun\shotgun"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\shotgun\shotgun"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6022,7 +6022,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 78,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\sniper_rifle\sniper_rifle"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\sniper_rifle\sniper_rifle"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6031,7 +6031,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 78,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_high\spartan_laser\spartan_laser"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\support_high\spartan_laser\spartan_laser"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6040,7 +6040,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 78,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6049,7 +6049,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\banshee\banshee"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\banshee\banshee"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6058,7 +6058,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\brute_chopper\brute_chopper"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\brute_chopper\brute_chopper"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6067,7 +6067,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\levels\multi\shrine\behemoth\behemoth_forge"),
+                                Object = GetCachedTag<Vehicle>($@"objects\levels\multi\shrine\behemoth\behemoth_forge"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6076,7 +6076,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\ghost\ghost"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\ghost\ghost"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6085,7 +6085,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\hornet\hornet"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\hornet\hornet"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6094,7 +6094,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\levels\dlc\sidewinder\hornet_lite\hornet_lite"),
+                                Object = GetCachedTag<Vehicle>($@"objects\levels\dlc\sidewinder\hornet_lite\hornet_lite"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6103,7 +6103,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\mongoose\mongoose"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\mongoose\mongoose"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6112,7 +6112,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\mauler\mauler"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\mauler\mauler"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6121,7 +6121,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\scorpion\scorpion"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\scorpion\scorpion"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6130,7 +6130,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\shade\shade"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\shade\shade"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6139,7 +6139,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\warthog\warthog"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\warthog\warthog"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6148,7 +6148,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\warthog\warthog_gauss"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\warthog\warthog_gauss"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6157,7 +6157,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\warthog\warthog_troop"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\warthog\warthog_troop"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6166,7 +6166,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\warthog\warthog_no_turret"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\warthog\warthog_no_turret"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6175,7 +6175,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\warthog\warthog_wrecked"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\warthog\warthog_wrecked"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6184,7 +6184,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6193,7 +6193,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow_gauss"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow_gauss"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6202,7 +6202,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow_troop"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow_troop"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6211,7 +6211,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow_no_turret"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow_no_turret"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6220,7 +6220,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow_wrecked"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow_wrecked"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6229,7 +6229,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\wraith\wraith"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\wraith\wraith"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6238,7 +6238,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 79,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\wraith\wraith_anti_air"),
+                                Object = GetCachedTag<Vehicle>($@"objects\vehicles\wraith\wraith_anti_air"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6247,7 +6247,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 80,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\teleporter_2way\teleporter_2way"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\teleporter_2way\teleporter_2way"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6256,7 +6256,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 80,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\teleporter_reciever\teleporter_reciever"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\teleporter_reciever\teleporter_reciever"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6265,7 +6265,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 80,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\teleporter_sender\teleporter_sender"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\teleporter_sender\teleporter_sender"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6274,7 +6274,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 80,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\teleporter_sender\teleporter_sender_vehicle_only"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\teleporter_sender\teleporter_sender_vehicle_only"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6283,7 +6283,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 80,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\teleporter_receiver\teleporter_receiver_vehicle_only"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\teleporter_receiver\teleporter_receiver_vehicle_only"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6292,7 +6292,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 80,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\teleporter_2way\teleporter_2way_vehicle_only"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\teleporter_2way\teleporter_2way_vehicle_only"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6301,7 +6301,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 80,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\teleporter_sender\teleporter_sender_vehicle"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\teleporter_sender\teleporter_sender_vehicle"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6310,7 +6310,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 80,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\teleporter_receiver\teleporter_receiver_vehicle"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\teleporter_receiver\teleporter_receiver_vehicle"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6319,7 +6319,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 80,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\teleporter_2way\teleporter_2way_vehicle"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\teleporter_2way\teleporter_2way_vehicle"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6328,7 +6328,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = -1,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\levels\multi\shrine\behemoth\behemoth"),
+                                Object = GetCachedTag<Vehicle>($@"objects\levels\multi\shrine\behemoth\behemoth"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6337,7 +6337,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = -1,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Vehicle>($@"objects\levels\multi\shrine\shrine_defender\shrine_defender"),
+                                Object = GetCachedTag<Vehicle>($@"objects\levels\multi\shrine\shrine_defender\shrine_defender"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6346,7 +6346,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = -1,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\box_l\box_l"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\box_l\box_l"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6355,7 +6355,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = -1,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\box_m\box_m"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\box_m\box_m"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6364,7 +6364,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = -1,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\box_xl\box_xl"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\box_xl\box_xl"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6373,7 +6373,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = -1,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\box_xxl\box_xxl"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\box_xxl\box_xxl"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6382,7 +6382,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = -1,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\box_xxxl\box_xxxl"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\box_xxxl\box_xxxl"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6391,7 +6391,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = -1,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\wall_l\wall_l"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\wall_l\wall_l"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6400,7 +6400,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = -1,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\wall_m\wall_m"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\wall_m\wall_m"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6409,7 +6409,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = -1,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\wall_xl\wall_xl"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\wall_xl\wall_xl"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6418,7 +6418,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = -1,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\wall_xxl\wall_xxl"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\wall_xxl\wall_xxl"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6427,7 +6427,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = -1,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\wall_xxxl\wall_xxxl"),
+                                Object = GetCachedTag<Crate>($@"objects\multi\wall_xxxl\wall_xxxl"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -6436,7 +6436,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 9,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\dlc\shared\damage_sphere\damage_sphere"),
+                                Object = GetCachedTag<Crate>($@"objects\levels\dlc\shared\damage_sphere\damage_sphere"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -6445,7 +6445,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 67,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\invisibility_equipment\invisibility_equipment"),
+                                Object = GetCachedTag<Equipment>($@"objects\equipment\invisibility_equipment\invisibility_equipment"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -6454,7 +6454,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 54,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\spawning\initial_spawn_point"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\spawning\initial_spawn_point"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -6463,7 +6463,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 54,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\spawning\respawn_zone"),
+                                Object = GetCachedTag<Scenery>($@"objects\multi\spawning\respawn_zone"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -6472,7 +6472,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 67,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\autoturret_equipment\autoturret_equipment"),
+                                Object = GetCachedTag<Equipment>($@"objects\equipment\autoturret_equipment\autoturret_equipment"),
                             },
                         };
                         forg.WeatherEffects = new List<ForgeGlobalsDefinition.WeatherEffect>
@@ -6485,46 +6485,46 @@ namespace TagTool.Commands.Tags
                             new ForgeGlobalsDefinition.WeatherEffect
                             {
                                 Name = "Snow, Heavy",
-                                Effect = CacheContext.TagCache.GetTag<Effect>($@"fx\scenery_fx\weather\snow\snow_turf\snow_turf"),
+                                Effect = GetCachedTag<Effect>($@"fx\scenery_fx\weather\snow\snow_turf\snow_turf"),
                             },
                             new ForgeGlobalsDefinition.WeatherEffect
                             {
                                 Name = "Snow, Light",
-                                Effect = CacheContext.TagCache.GetTag<Effect>($@"fx\scenery_fx\weather\snow\snow_heavy\snow_heavy"),
+                                Effect = GetCachedTag<Effect>($@"fx\scenery_fx\weather\snow\snow_heavy\snow_heavy"),
                             },
                             new ForgeGlobalsDefinition.WeatherEffect
                             {
                                 Name = "Rain",
-                                Effect = CacheContext.TagCache.GetTag<Effect>($@"fx\scenery_fx\weather\rain\rain_angle\rain_angle"),
+                                Effect = GetCachedTag<Effect>($@"fx\scenery_fx\weather\rain\rain_angle\rain_angle"),
                             },
                             new ForgeGlobalsDefinition.WeatherEffect
                             {
                                 Name = "Flood Pollen, Light",
-                                Effect = CacheContext.TagCache.GetTag<Effect>($@"fx\scenery_fx\weather\flood_pollen\flood_pollen_light\flood_pollen_light"),
+                                Effect = GetCachedTag<Effect>($@"fx\scenery_fx\weather\flood_pollen\flood_pollen_light\flood_pollen_light"),
                             },
                             new ForgeGlobalsDefinition.WeatherEffect
                             {
                                 Name = "Flood Pollen, Heavy",
-                                Effect = CacheContext.TagCache.GetTag<Effect>($@"fx\scenery_fx\weather\flood_pollen\flood_pollen_heavy\flood_pollen_heavy"),
+                                Effect = GetCachedTag<Effect>($@"fx\scenery_fx\weather\flood_pollen\flood_pollen_heavy\flood_pollen_heavy"),
                             },
                             new ForgeGlobalsDefinition.WeatherEffect
                             {
                                 Name = "Falling Ash",
-                                Effect = CacheContext.TagCache.GetTag<Effect>($@"fx\scenery_fx\weather\falling_ash\falling_ash"),
+                                Effect = GetCachedTag<Effect>($@"fx\scenery_fx\weather\falling_ash\falling_ash"),
                             },
                             new ForgeGlobalsDefinition.WeatherEffect
                             {
                                 Name = "Slipspace Fallout",
-                                Effect = CacheContext.TagCache.GetTag<Effect>($@"fx\scenery_fx\weather\slipspace_fallout\slipspace_fallout"),
+                                Effect = GetCachedTag<Effect>($@"fx\scenery_fx\weather\slipspace_fallout\slipspace_fallout"),
                             },
                             new ForgeGlobalsDefinition.WeatherEffect
                             {
                                 Name = "Slipspace Fallout, Strong",
-                                Effect = CacheContext.TagCache.GetTag<Effect>($@"fx\scenery_fx\weather\slipspace_fallout\slipspace_fallout_strong"),
+                                Effect = GetCachedTag<Effect>($@"fx\scenery_fx\weather\slipspace_fallout\slipspace_fallout_strong"),
                             },
                         };
-                        forg.FxObject = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\forge\fx_object");
-                        forg.FxLight = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\forge\light_object");
+                        forg.FxObject = GetCachedTag<Crate>($@"objects\eldewrito\forge\fx_object");
+                        forg.FxLight = GetCachedTag<Crate>($@"objects\eldewrito\forge\light_object");
                         CacheContext.Serialize(stream, tag, forg);
                     }
                 }

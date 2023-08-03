@@ -164,7 +164,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object =  CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object =  GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 1,
                                     },
                                 },
@@ -194,7 +194,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object =  CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object =  GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 1,
                                     },
                                 },
@@ -224,7 +224,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object =  CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object =  GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 1,
                                     },
                                 },
@@ -261,13 +261,13 @@ namespace TagTool.Commands.Tags
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Easy | SquadTemplate.CellTemplate.DifficultyFlagsValue.Normal,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 1,
                                     },
                                 },
@@ -342,12 +342,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -377,7 +377,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 1,
                                     },
                                 },
@@ -407,7 +407,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
                                         Probability = 3,
                                     },
                                 },
@@ -444,19 +444,19 @@ namespace TagTool.Commands.Tags
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Easy | SquadTemplate.CellTemplate.DifficultyFlagsValue.Normal,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Easy | SquadTemplate.CellTemplate.DifficultyFlagsValue.Normal,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -491,12 +491,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -526,7 +526,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 10,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -535,12 +535,12 @@ namespace TagTool.Commands.Tags
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
                                         Probability = 1,
                                     },
                                 },
@@ -570,7 +570,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -580,13 +580,13 @@ namespace TagTool.Commands.Tags
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 1,
                                     },
                                 },
@@ -613,19 +613,19 @@ namespace TagTool.Commands.Tags
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Easy | SquadTemplate.CellTemplate.DifficultyFlagsValue.Normal,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Easy | SquadTemplate.CellTemplate.DifficultyFlagsValue.Normal,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -660,12 +660,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -695,7 +695,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 10,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -704,12 +704,12 @@ namespace TagTool.Commands.Tags
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
                                         Probability = 1,
                                     },
                                 },
@@ -739,7 +739,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 10,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -748,12 +748,12 @@ namespace TagTool.Commands.Tags
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
                                         Probability = 1,
                                     },
                                 },
@@ -787,12 +787,12 @@ namespace TagTool.Commands.Tags
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 10,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
                                         Probability = 2,
                                     },
                                 },
@@ -838,12 +838,12 @@ namespace TagTool.Commands.Tags
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 10,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
                                         Probability = 2,
                                     },
                                 },
@@ -877,7 +877,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 10,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -886,7 +886,7 @@ namespace TagTool.Commands.Tags
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
                                         Probability = 2,
                                     },
                                 },
@@ -922,7 +922,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 1,
                                     },
                                 },
@@ -942,7 +942,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 1,
                                     },
                                 },
@@ -972,7 +972,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -1017,12 +1017,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -1063,12 +1063,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 7,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -1098,12 +1098,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 7,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -1133,12 +1133,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 7,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -1168,7 +1168,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -1178,13 +1178,13 @@ namespace TagTool.Commands.Tags
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 1,
                                     },
                                 },
@@ -1204,12 +1204,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -1251,7 +1251,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -1261,13 +1261,13 @@ namespace TagTool.Commands.Tags
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 1,
                                     },
                                 },
@@ -1287,12 +1287,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -1322,13 +1322,13 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 1,
                                     },
                                 },
@@ -1348,7 +1348,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 10,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -1357,12 +1357,12 @@ namespace TagTool.Commands.Tags
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
                                         Probability = 1,
                                     },
                                 },
@@ -1392,13 +1392,13 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 1,
                                     },
                                 },
@@ -1418,7 +1418,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 10,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -1427,12 +1427,12 @@ namespace TagTool.Commands.Tags
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
                                         Probability = 1,
                                     },
                                 },
@@ -1462,13 +1462,13 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 1,
                                     },
                                 },
@@ -1510,7 +1510,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -1520,13 +1520,13 @@ namespace TagTool.Commands.Tags
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 1,
                                     },
                                 },
@@ -1546,12 +1546,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -1581,7 +1581,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -1591,13 +1591,13 @@ namespace TagTool.Commands.Tags
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 1,
                                     },
                                 },
@@ -1617,12 +1617,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -1652,7 +1652,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -1662,13 +1662,13 @@ namespace TagTool.Commands.Tags
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 1,
                                     },
                                 },
@@ -1688,12 +1688,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -1723,13 +1723,13 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 1,
                                     },
                                 },
@@ -1759,7 +1759,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
                                         Probability = 1,
                                     },
                                 },
@@ -1789,7 +1789,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\melee\gravity_hammer\gravity_hammer"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\melee\gravity_hammer\gravity_hammer"),
                                         Probability = 1,
                                     },
                                 },
@@ -1819,7 +1819,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\turret\plasma_cannon\plasma_cannon"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\turret\plasma_cannon\plasma_cannon"),
                                         Probability = 1,
                                     },
                                 },
@@ -1937,12 +1937,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -1972,12 +1972,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -2007,7 +2007,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
                                         Probability = 1,
                                     },
                                 },
@@ -2037,7 +2037,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
                                         Probability = 1,
                                     },
                                 },
@@ -2067,12 +2067,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -2102,12 +2102,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -2144,7 +2144,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 1,
                                     },
                                 },
@@ -2208,12 +2208,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -2243,12 +2243,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -2278,7 +2278,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 3,
                                     },
                                 },
@@ -2308,7 +2308,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 3,
                                     },
                                 },
@@ -2338,7 +2338,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 3,
                                     },
                                 },
@@ -2368,7 +2368,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 3,
                                     },
                                 },
@@ -2398,7 +2398,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\beam_rifle\beam_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\beam_rifle\beam_rifle"),
                                         Probability = 1,
                                     },
                                 },
@@ -2428,7 +2428,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\beam_rifle\beam_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\beam_rifle\beam_rifle"),
                                         Probability = 1,
                                     },
                                 },
@@ -2458,7 +2458,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\beam_rifle\beam_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\beam_rifle\beam_rifle"),
                                         Probability = 1,
                                     },
                                 },
@@ -2488,7 +2488,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\beam_rifle\beam_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\beam_rifle\beam_rifle"),
                                         Probability = 1,
                                     },
                                 },
@@ -2518,12 +2518,12 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 1,
                                     },
                                 },
@@ -2554,7 +2554,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 5,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -2564,13 +2564,13 @@ namespace TagTool.Commands.Tags
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 3,
                                     },
                                 },
@@ -2601,7 +2601,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 5,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -2611,13 +2611,13 @@ namespace TagTool.Commands.Tags
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 3,
                                     },
                                 },
@@ -2648,7 +2648,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 5,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -2658,13 +2658,13 @@ namespace TagTool.Commands.Tags
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 3,
                                     },
                                 },
@@ -2695,7 +2695,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 5,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -2705,13 +2705,13 @@ namespace TagTool.Commands.Tags
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         DifficultyFlags = SquadTemplate.CellTemplate.DifficultyFlagsValue.Heroic | SquadTemplate.CellTemplate.DifficultyFlagsValue.Legendary,
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 3,
                                     },
                                 },
@@ -2741,7 +2741,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                 },
@@ -2793,7 +2793,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 3,
                                     },
                                 },
@@ -2824,7 +2824,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
                                         Probability = 1,
                                     },
                                 },
@@ -2854,7 +2854,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
                                         Probability = 1,
                                     },
                                 },
@@ -2884,7 +2884,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
                                         Probability = 1,
                                     },
                                 },
@@ -2914,7 +2914,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 1,
                                     },
                                 },
@@ -2944,7 +2944,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 1,
                                     },
                                 },
@@ -3005,17 +3005,17 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 10,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 10,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
                                         Probability = 1,
                                     },
                                 },
@@ -3056,30 +3056,30 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 5,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
                                         Probability = 5,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(2, 3),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(2, 3),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(3, 3),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
                                         Probability = 1,
                                     },
                                 },
@@ -3120,30 +3120,30 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 5,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
                                         Probability = 5,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(3, 3),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(2, 3),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(2, 3),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 3,
                                     },
                                 },
@@ -3174,7 +3174,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 10,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
@@ -3209,7 +3209,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
                                         Probability = 1,
                                     },
                                 },
@@ -3247,7 +3247,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
                                         Probability = 1,
                                     },
                                 },
@@ -3278,13 +3278,13 @@ namespace TagTool.Commands.Tags
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(0, 5),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 5,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(0, 5),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 3,
                                     },
                                 },
@@ -3315,13 +3315,13 @@ namespace TagTool.Commands.Tags
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(0, 5),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 5,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(0, 5),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 3,
                                     },
                                 },
@@ -3359,7 +3359,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
                                         Probability = 1,
                                     },
                                 },
@@ -3386,13 +3386,13 @@ namespace TagTool.Commands.Tags
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(0, 5),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 5,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(0, 5),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 3,
                                     },
                                 },
@@ -3423,13 +3423,13 @@ namespace TagTool.Commands.Tags
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(0, 5),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 5,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(0, 5),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 3,
                                     },
                                 },
@@ -3459,7 +3459,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\melee\gravity_hammer\gravity_hammer"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\melee\gravity_hammer\gravity_hammer"),
                                         Probability = 1,
                                     },
                                 },
@@ -3480,7 +3480,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\turret\plasma_cannon\plasma_cannon"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\turret\plasma_cannon\plasma_cannon"),
                                         Probability = 1,
                                     },
                                 },
@@ -3501,7 +3501,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
                                         Probability = 1,
                                     },
                                 },
@@ -3531,7 +3531,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\melee\gravity_hammer\gravity_hammer"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\melee\gravity_hammer\gravity_hammer"),
                                         Probability = 1,
                                     },
                                 },
@@ -3561,7 +3561,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
                                         Probability = 1,
                                     },
                                 },
@@ -3581,7 +3581,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
                                         Probability = 1,
                                     },
                                 },
@@ -3611,7 +3611,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\melee\gravity_hammer\gravity_hammer"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\melee\gravity_hammer\gravity_hammer"),
                                         Probability = 1,
                                     },
                                 },
@@ -3631,7 +3631,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
                                         Probability = 1,
                                     },
                                 },
@@ -3661,7 +3661,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\turret\plasma_cannon\plasma_cannon"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\turret\plasma_cannon\plasma_cannon"),
                                         Probability = 1,
                                     },
                                 },
@@ -3681,7 +3681,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
                                         Probability = 1,
                                     },
                                 },
@@ -3722,30 +3722,30 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\spike_rifle\spike_rifle"),
                                         Probability = 5,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
                                         Probability = 5,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(3, 3),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
                                         Probability = 1,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(2, 3),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(2, 3),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot"),
                                         Probability = 3,
                                     },
                                 },
@@ -3774,18 +3774,18 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 5,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(2, 3),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
                                         Probability = 1,
                                     },
                                 },
@@ -3824,18 +3824,18 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 5,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\needler\needler"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(2, 3),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\support_high\flak_cannon\flak_cannon"),
                                         Probability = 1,
                                     },
                                 },
@@ -3866,13 +3866,13 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine"),
                                         Probability = 3,
                                     },
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
                                         RoundRange = new Bounds<short>(3,3),
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\beam_rifle\beam_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\beam_rifle\beam_rifle"),
                                         Probability = 1,
                                     },
                                 },
@@ -3897,7 +3897,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                         Probability = 1,
                                     },
                                 },
@@ -3928,7 +3928,7 @@ namespace TagTool.Commands.Tags
                                 {
                                     new SquadTemplate.CellTemplate.ObjectBlock
                                     {
-                                        Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\beam_rifle\beam_rifle"),
+                                        Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\beam_rifle\beam_rifle"),
                                         Probability = 1,
                                     },
                                 },

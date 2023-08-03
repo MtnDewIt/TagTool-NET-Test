@@ -62,8 +62,8 @@ namespace TagTool.Commands.Tags
                         shit.Plasma = new ShieldImpact.PlasmaBlock
                         {
                             PlasmaDepthFadeRange = 0.05f,
-                            PlasmaNoiseBitmap1 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
-                            PlasmaNoiseBitmap2 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
+                            PlasmaNoiseBitmap1 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
+                            PlasmaNoiseBitmap2 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
                             TilingScale = 3f,
                             ScrollSpeed = 1f,
                             EdgeSharpness = 4f,
@@ -141,8 +141,8 @@ namespace TagTool.Commands.Tags
                         };
                         shit.ExtrusionOscillation = new ShieldImpact.ExtrusionOscillationBlock
                         {
-                            OscillationBitmap1 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
-                            OscillationBitmap2 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
+                            OscillationBitmap1 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
+                            OscillationBitmap2 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
                             OscillationTilingScale = 2f,
                             OscillationScrollSpeed = 0.08f,
                             ExtrusionAmount = new ShieldImpactFunction
@@ -276,8 +276,8 @@ namespace TagTool.Commands.Tags
                         shit.Plasma = new ShieldImpact.PlasmaBlock
                         {
                             PlasmaDepthFadeRange = 0.15f,
-                            PlasmaNoiseBitmap1 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
-                            PlasmaNoiseBitmap2 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
+                            PlasmaNoiseBitmap1 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
+                            PlasmaNoiseBitmap2 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
                             TilingScale = 3f,
                             ScrollSpeed = 2f,
                             EdgeSharpness = 20f,
@@ -354,8 +354,8 @@ namespace TagTool.Commands.Tags
                         };
                         shit.ExtrusionOscillation = new ShieldImpact.ExtrusionOscillationBlock
                         {
-                            OscillationBitmap1 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
-                            OscillationBitmap2 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
+                            OscillationBitmap1 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
+                            OscillationBitmap2 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
                             OscillationTilingScale = 2f,
                             OscillationScrollSpeed = 0.15f,
                             ExtrusionAmount = new ShieldImpactFunction
@@ -487,8 +487,8 @@ namespace TagTool.Commands.Tags
                         shit.Plasma = new ShieldImpact.PlasmaBlock
                         {
                             PlasmaDepthFadeRange = 0.05f,
-                            PlasmaNoiseBitmap1 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
-                            PlasmaNoiseBitmap2 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
+                            PlasmaNoiseBitmap1 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
+                            PlasmaNoiseBitmap2 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
                             TilingScale = 3f,
                             ScrollSpeed = 2f,
                             EdgeSharpness = 20f,
@@ -566,8 +566,8 @@ namespace TagTool.Commands.Tags
                         };
                         shit.ExtrusionOscillation = new ShieldImpact.ExtrusionOscillationBlock
                         {
-                            OscillationBitmap1 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
-                            OscillationBitmap2 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
+                            OscillationBitmap1 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
+                            OscillationBitmap2 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
                             OscillationTilingScale = 2f,
                             OscillationScrollSpeed = 44f,
                             ExtrusionAmount = new ShieldImpactFunction
@@ -700,8 +700,8 @@ namespace TagTool.Commands.Tags
                         shit.Plasma = new ShieldImpact.PlasmaBlock
                         {
                             PlasmaDepthFadeRange = 0.05f,
-                            PlasmaNoiseBitmap1 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
-                            PlasmaNoiseBitmap2 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
+                            PlasmaNoiseBitmap1 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
+                            PlasmaNoiseBitmap2 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
                             TilingScale = 3f,
                             ScrollSpeed = 1f,
                             EdgeSharpness = 20f,
@@ -778,8 +778,8 @@ namespace TagTool.Commands.Tags
                         };
                         shit.ExtrusionOscillation = new ShieldImpact.ExtrusionOscillationBlock
                         {
-                            OscillationBitmap1 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
-                            OscillationBitmap2 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
+                            OscillationBitmap1 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
+                            OscillationBitmap2 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
                             OscillationTilingScale = 2f,
                             OscillationScrollSpeed = 44f,
                             ExtrusionAmount = new ShieldImpactFunction
@@ -912,8 +912,8 @@ namespace TagTool.Commands.Tags
                         shit.Plasma = new ShieldImpact.PlasmaBlock
                         {
                             PlasmaDepthFadeRange = 0.05f,
-                            PlasmaNoiseBitmap1 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
-                            PlasmaNoiseBitmap2 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
+                            PlasmaNoiseBitmap1 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
+                            PlasmaNoiseBitmap2 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
                             TilingScale = 3f,
                             ScrollSpeed = 1f,
                             EdgeSharpness = 20f,
@@ -990,8 +990,8 @@ namespace TagTool.Commands.Tags
                         };
                         shit.ExtrusionOscillation = new ShieldImpact.ExtrusionOscillationBlock
                         {
-                            OscillationBitmap1 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
-                            OscillationBitmap2 = CacheContext.TagCache.GetTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
+                            OscillationBitmap1 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_1"),
+                            OscillationBitmap2 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\cloud_2"),
                             OscillationTilingScale = 2f,
                             OscillationScrollSpeed = 44f,
                             ExtrusionAmount = new ShieldImpactFunction

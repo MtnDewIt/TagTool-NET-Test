@@ -2593,27 +2593,27 @@ namespace TagTool.Commands.Tags
                                 {
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_appearance_active_camo"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_appearance_active_camo"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_appearance_waypoints"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_appearance_waypoints"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_appearance_forced_change_colors"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_appearance_forced_change_colors"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_appearance_player_size"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_appearance_player_size"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_appearance_player_model_set"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_appearance_player_model_set"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_appearance_player_model"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_appearance_player_model"),
                                     },
                                 },
                             },
@@ -2633,44 +2633,44 @@ namespace TagTool.Commands.Tags
                                 {
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\global_options\round_limit"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\global_options\round_limit"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\global_options\round_time_limit"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\global_options\round_time_limit"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\global_options\rounds_reset"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\global_options\rounds_reset"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        TemplateBasedSubmenu = CacheContext.TagCache.GetTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\player_traits_template\player_traits_template"),
+                                        TemplateBasedSubmenu = GetCachedTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\player_traits_template\player_traits_template"),
                                         SubmenuSettingCategory = MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.SettingCategoryValue.GlobalBaseTraitsMain,
                                         SubmenuName = CacheContext.StringTable.GetStringId($@"map_overrides_base_traits"),
                                         SubmenuDescription = CacheContext.StringTable.GetStringId($@"map_overrides_base_traits_desc"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ExplicitSubmenu = CacheContext.TagCache.GetTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\global_options\respawn_options"),
+                                        ExplicitSubmenu = GetCachedTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\global_options\respawn_options"),
                                         SubmenuName = CacheContext.StringTable.GetStringId($@"respawn_options"),
                                         SubmenuDescription = CacheContext.StringTable.GetStringId($@"respawn_options_desc"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\social_options\team_changing"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\social_options\team_changing"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\social_options\friendly_fire"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\social_options\friendly_fire"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\social_options\betrayal_booting"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\social_options\betrayal_booting"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\respawn_options\respawn_spectating"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\respawn_options\respawn_spectating"),
                                     },
                                 },
                             },
@@ -2691,27 +2691,27 @@ namespace TagTool.Commands.Tags
                                 {
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\ctf\ctf_sudden_death"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\ctf\ctf_sudden_death"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\ctf\ctf_flag_at_home"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\ctf\ctf_flag_at_home"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\ctf\ctf_touch_return"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\ctf\ctf_touch_return"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\ctf\ctf_idle_return"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\ctf\ctf_idle_return"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\ctf\ctf_respawn_on_capture"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\ctf\ctf_respawn_on_capture"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        TemplateBasedSubmenu = CacheContext.TagCache.GetTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\player_traits_template\player_traits_dynamic_template"),
+                                        TemplateBasedSubmenu = GetCachedTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\player_traits_template\player_traits_dynamic_template"),
                                         SubmenuSettingCategory = MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.SettingCategoryValue.CtfCarrierTraitsMain,
                                         SubmenuName = CacheContext.StringTable.GetStringId($@"ctf_flag_carrier_traits"),
                                         SubmenuDescription = CacheContext.StringTable.GetStringId($@"ctf_flag_carrier_traits_desc"),
@@ -2735,54 +2735,54 @@ namespace TagTool.Commands.Tags
                                 {
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ExplicitSubmenu = CacheContext.TagCache.GetTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\infection\infection_scoring"),
+                                        ExplicitSubmenu = GetCachedTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\infection\infection_scoring"),
                                         SubmenuName = CacheContext.StringTable.GetStringId($@"infection_scoring"),
                                         SubmenuDescription = CacheContext.StringTable.GetStringId($@"infection_scoring_desc"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        TemplateBasedSubmenu = CacheContext.TagCache.GetTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\player_traits_template\player_traits_template"),
+                                        TemplateBasedSubmenu = GetCachedTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\player_traits_template\player_traits_template"),
                                         SubmenuSettingCategory = MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.SettingCategoryValue.InfectionZombieTraitsMain,
                                         SubmenuName = CacheContext.StringTable.GetStringId($@"infection_traits_zombie"),
                                         SubmenuDescription = CacheContext.StringTable.GetStringId($@"infection_traits_zombie_desc"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        TemplateBasedSubmenu = CacheContext.TagCache.GetTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\player_traits_template\player_traits_template"),
+                                        TemplateBasedSubmenu = GetCachedTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\player_traits_template\player_traits_template"),
                                         SubmenuSettingCategory = MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.SettingCategoryValue.InfectionAlphaZombieTraitsMain,
                                         SubmenuName = CacheContext.StringTable.GetStringId($@"infection_traits_alpha"),
                                         SubmenuDescription = CacheContext.StringTable.GetStringId($@"infection_traits_alpha_desc"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        TemplateBasedSubmenu = CacheContext.TagCache.GetTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\player_traits_template\player_traits_dynamic_template"),
+                                        TemplateBasedSubmenu = GetCachedTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\player_traits_template\player_traits_dynamic_template"),
                                         SubmenuSettingCategory = MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.SettingCategoryValue.InfectionLastManTraitsMain,
                                         SubmenuName = CacheContext.StringTable.GetStringId($@"infection_traits_last_man"),
                                         SubmenuDescription = CacheContext.StringTable.GetStringId($@"infection_traits_last_man_desc"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\infection\infection_next_zombie"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\infection\infection_next_zombie"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\infection\infection_haven_movement"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\infection\infection_haven_movement"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\infection\infection_haven_movement_time"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\infection\infection_haven_movement_time"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\infection\infection_respawn_on_haven_move"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\infection\infection_respawn_on_haven_move"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\infection\infection_scoring_haven_arrival"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\infection\infection_scoring_haven_arrival"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        TemplateBasedSubmenu = CacheContext.TagCache.GetTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\player_traits_template\player_traits_dynamic_template"),
+                                        TemplateBasedSubmenu = GetCachedTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\player_traits_template\player_traits_dynamic_template"),
                                         SubmenuSettingCategory = MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.SettingCategoryValue.InfectionSafeHavenTraitsMain,
                                         SubmenuName = CacheContext.StringTable.GetStringId($@"infection_traits_safe_haven"),
                                         SubmenuDescription = CacheContext.StringTable.GetStringId($@"infection_traits_safe_haven_desc"),
@@ -2806,35 +2806,35 @@ namespace TagTool.Commands.Tags
                                 {
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_damage_modifier"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_damage_modifier"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_initial_primary"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_initial_primary"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_initial_secondary"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_initial_secondary"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_initial_grenade_count"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_initial_grenade_count"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_recharging_grenades"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_recharging_grenades"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_infinite_ammo"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_infinite_ammo"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_pickup"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_pickup"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_third_person_camera"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_third_person_camera"),
                                     },
                                 },
                             },
@@ -2855,19 +2855,19 @@ namespace TagTool.Commands.Tags
                                 {
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_movement_walking_speed"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_movement_walking_speed"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_movement_personal_gravity"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_movement_personal_gravity"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_movement_vehicle_useage"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_movement_vehicle_useage"),
                                     },
                                     new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                                     {
-                                        ValuePairs = CacheContext.TagCache.GetTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_movement_sprint"),
+                                        ValuePairs = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_movement_sprint"),
                                     },
                                 },
                             },

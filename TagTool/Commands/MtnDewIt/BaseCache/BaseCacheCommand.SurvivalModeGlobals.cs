@@ -23,9 +23,9 @@ namespace TagTool.Commands.Tags
                     {
                         var smdt = CacheContext.Deserialize<SurvivalModeGlobals>(stream, tag);
                         smdt.Unknown = 1088421888;
-                        smdt.SurvivalModeStrings = CacheContext.TagCache.GetTag<MultilingualUnicodeStringList>($@"multiplayer\in_game_survival_messages");
-                        smdt.CountdownSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn");
-                        smdt.RespawnSound = CacheContext.TagCache.GetTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn");
+                        smdt.SurvivalModeStrings = GetCachedTag<MultilingualUnicodeStringList>($@"multiplayer\in_game_survival_messages");
+                        smdt.CountdownSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn");
+                        smdt.RespawnSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn");
                         smdt.SurvivalEvents = new System.Collections.Generic.List<SurvivalModeGlobals.SurvivalEvent>() 
                         {
                             new SurvivalModeGlobals.SurvivalEvent
