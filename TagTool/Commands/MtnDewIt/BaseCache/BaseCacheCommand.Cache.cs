@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using TagTool.Cache;
 using TagTool.Cache.Gen3;
 using TagTool.Cache.HaloOnline;
 using TagTool.Cache.Resources;
-using TagTool.Commands.Files;
 using TagTool.Common;
 using TagTool.Serialization;
 using TagTool.Tags;
@@ -16,9 +14,6 @@ namespace TagTool.Commands.Tags
 {
     partial class BaseCacheCommand : Command
     {
-        private Globals MatgDefinition { get; set; } = null;
-        private MultiplayerGlobals MulgDefinition { get; set; } = null;
-
         public Dictionary<int, CachedTagHaloOnline> ConvertedTags { get; } = new Dictionary<int, CachedTagHaloOnline>();
         public Dictionary<ResourceLocation, Dictionary<int, PageableResource>> CopiedResources { get; } = new Dictionary<ResourceLocation, Dictionary<int, PageableResource>>();
         public Dictionary<ResourceLocation, Stream> SourceResourceStreams = new Dictionary<ResourceLocation, Stream>();
@@ -536,20 +531,20 @@ namespace TagTool.Commands.Tags
         }
 
         // Retargets the cache (Its bascially the equivalent of the restart command)
-        public void retargetCache()
+        public void retargetCache(string cache)
         {
-            var newFileInfo = new FileInfo(outputDirectoryInfo.FullName + "\\tags.dat");
+            var newFileInfo = new FileInfo(cache + "\\tags.dat");
             Cache = GameCache.Open(newFileInfo);
             CacheContext = Cache as GameCacheHaloOnline;
             ContextStack.Push(TagCacheContextFactory.Create(ContextStack, Cache));
         }
 
         // Copies over required files (map files required for updating map files)
-        public void moveFontPackage()
+        public void moveFontPackage(string path)
         {
-            Directory.CreateDirectory($@"{outputDirectoryInfo.FullName}\fonts");
+            Directory.CreateDirectory($@"{path}\fonts");
 
-            File.Copy($@"{Program.TagToolDirectory}\Tools\BaseCache\Fonts\Upscaled\font_package.bin", $@"{outputDirectoryInfo.FullName}\fonts\font_package.bin");
+            File.Copy($@"{Program.TagToolDirectory}\Tools\BaseCache\Fonts\Upscaled\font_package.bin", $@"{path}\fonts\font_package.bin");
         }
 
         public void SetCacheVersion(GameCacheHaloOnline cache, CacheVersion version)

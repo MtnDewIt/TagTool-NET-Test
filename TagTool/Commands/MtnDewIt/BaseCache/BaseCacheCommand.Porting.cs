@@ -1,4 +1,5 @@
 using System;
+using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Commands.Porting;
 using TagTool.Tags;
@@ -11,7 +12,7 @@ namespace TagTool.Commands.Tags
         // Ports all the required tag data for the porting cache, after rebuilding
         public void portTagData()
         {
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
+            NewPortingContext(sandbox, Audio.Compression.OGG, true);
             GenerateDialogueGlobals();
             CommandRunner.Current.RunCommand($@"porttag ai\assaulting.style");
             CommandRunner.Current.RunCommand($@"porttag ai\bunkering.style");
@@ -287,7 +288,7 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag ui\hud.color_table");
             ContextStack.Pop();
 
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h100));
+            NewPortingContext(h100, Audio.Compression.OGG, true);
             GenerateSquadTemplates();
             CommandRunner.Current.RunCommand($@"porttag globals\ai_globals.ai_globals");
             CommandRunner.Current.RunCommand($@"porttag globals\default_vision_mode.vision_mode");
@@ -296,7 +297,7 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag multiplayer\in_game_survival_messages.multilingual_unicode_string_list");
             ContextStack.Pop();
 
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mainmenu));
+            NewPortingContext(h3_mainmenu, Audio.Compression.MP3, true);
             CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\ui_shared_globals.user_interface_shared_globals_definition");
             GenerateTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_third_person_camera");
             GenerateTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_movement_sprint");
@@ -379,7 +380,7 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\start_menu.gui_screen_widget_definition");
             ContextStack.Pop();
 
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
+            NewPortingContext(sandbox, Audio.Compression.MP3, true);
             CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\alert\alert_ingame_full.gui_screen_widget_definition");
             CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\alert\alert_ingame_split.gui_screen_widget_definition");
             CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\boot_betrayer\boot_betrayer.gui_screen_widget_definition");
@@ -407,7 +408,7 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\start_menu\panes\game_saved_film\start_menu_game_saved_films.gui_screen_widget_definition");
             ContextStack.Pop();
 
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
+            NewPortingContext(citadel, Audio.Compression.MP3, true);
             //CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\carnage_report\campaign_carnage_report.gui_screen_widget_definition");
             CommandRunner.Current.RunCommand($@"porttag autorescalegui ui\halox\terminals\terminal_screen.gui_screen_widget_definition");
             ContextStack.Pop();
@@ -429,11 +430,11 @@ namespace TagTool.Commands.Tags
             GenerateMapImages();
 
             // Fixes crashing issues with certain weapons
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
+            NewPortingContext(citadel, Audio.Compression.MP3, true);
             CommandRunner.Current.RunCommand($@"porttag shaders\invalid.shader");
             ContextStack.Pop();
 
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
+            NewPortingContext(sandbox, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag ui\chud\animations\backpack_test.chud_animation_definition");
             CommandRunner.Current.RunCommand($@"porttag ui\chud\animations\backpack_unready.chud_animation_definition");
             CommandRunner.Current.RunCommand($@"porttag ui\chud\animations\backpack_warning_flash.chud_animation_definition");
@@ -538,18 +539,22 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag ui\chud\v_wraith_anti_air.chud_definition");
             CommandRunner.Current.RunCommand($@"porttag ui\chud\v_wraithturret.chud_definition");
             ContextStack.Pop();
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
+            NewPortingContext(citadel, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag ui\chud\e_autoturret.chud_definition");
             CommandRunner.Current.RunCommand($@"porttag ui\chud\e_invincibility.chud_definition");
             CommandRunner.Current.RunCommand($@"porttag ui\chud\e_invisibility.chud_definition");
             ContextStack.Pop();
+            NewPortingContext(h100, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag ui\chud\automag.chud_definition");
+            CommandRunner.Current.RunCommand($@"porttag ui\chud\smg_silenced.chud_definition");
+            ContextStack.Pop();
 
             // Chud Globals Definition
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
+            NewPortingContext(sandbox, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag ui\chud\globals.chud_globals_definition");
             ContextStack.Pop();
 
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
+            NewPortingContext(sandbox, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp\fp.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp_body\fp_body.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\mp_masterchief.bipd");
@@ -561,7 +566,7 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag objects\characters\monitor\monitor_editor.bipd");
             ContextStack.Pop();
 
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
+            NewPortingContext(citadel, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag objects\characters\dervish\fp\fp.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\dervish\fp_body\fp_body.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\dervish\dervish.bipd");
@@ -573,7 +578,7 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\masterchief.bipd");
             ContextStack.Pop();
 
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
+            NewPortingContext(citadel, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag sound\characters\elite\shade_d_enter.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\characters\elite\shade_d_exit.sound");
             CommandRunner.Current.RunCommand($@"porttag sound\characters\masterchief\mc_shade_d_enter.sound");
@@ -586,7 +591,7 @@ namespace TagTool.Commands.Tags
             GenerateTag<Effect>($@"objects\characters\masterchief\damage_effects\assassination_hit_3");
             GenerateTag<Effect>($@"objects\characters\masterchief\damage_effects\concussive_blast");
 
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, ho_cache));
+            NewPortingContext(ho_cache, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag replace single !audio objects\characters\masterchief\masterchief.model_animation_graph");
             CommandRunner.Current.RunCommand($@"porttag replace single !audio objects\characters\elite\lipsync\lipsync.model_animation_graph");
             CommandRunner.Current.RunCommand($@"porttag replace single !audio objects\characters\elite\elite.model_animation_graph");
@@ -595,7 +600,7 @@ namespace TagTool.Commands.Tags
 
             ImportAnimations();
 
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
+            NewPortingContext(sandbox, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag objects\ui\editor_gizmo\editor_gizmo.scen");
             CommandRunner.Current.RunCommand($@"porttag objects\multi\vip\vip_boundary.bloc");
             CommandRunner.Current.RunCommand($@"porttag objects\weapons\grenade\claymore_grenade\claymore_grenade.proj");
@@ -636,8 +641,13 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag objects\weapons\turret\missile_pod\missile_pod.weap");
             CommandRunner.Current.RunCommand($@"porttag objects\levels\dlc\shared\forge_ball\forge_ball.weap");
             ContextStack.Pop();
+            NewPortingContext(h100, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\weapons\pistol\automag\automag.weap");
+            CommandRunner.Current.RunCommand($@"porttag objects\weapons\rifle\plasma_rifle_red\plasma_rifle_red.weap");
+            CommandRunner.Current.RunCommand($@"porttag objects\weapons\rifle\smg_silenced\smg_silenced.weap");
+            ContextStack.Pop();
 
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
+            NewPortingContext(sandbox, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag objects\vehicles\banshee\banshee.vehicle");
             CommandRunner.Current.RunCommand($@"porttag objects\vehicles\brute_chopper\brute_chopper.vehicle");
             CommandRunner.Current.RunCommand($@"porttag objects\vehicles\ghost\ghost.vehicle");
@@ -648,58 +658,617 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag objects\vehicles\mauler\mauler.vehicle");
             CommandRunner.Current.RunCommand($@"porttag objects\vehicles\scorpion\scorpion.vehicle");
             ContextStack.Pop();
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
+            NewPortingContext(citadel, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag objects\vehicles\shade\shade.vehicle");
             ContextStack.Pop();
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
+            NewPortingContext(sandbox, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag objects\vehicles\warthog\turrets\chaingun\chaingun.vehicle");
             CommandRunner.Current.RunCommand($@"porttag objects\vehicles\warthog\turrets\gauss\gauss.vehicle");
             CommandRunner.Current.RunCommand($@"porttag objects\vehicles\warthog\turrets\troop\troop.vehicle");
             CommandRunner.Current.RunCommand($@"porttag objects\vehicles\warthog\warthog.vehicle");
             CommandRunner.Current.RunCommand($@"porttag objects\vehicles\warthog\warthog_gauss.vehicle");
+            DuplicateTag(CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\warthog\warthog"), $@"objects\vehicles\warthog\warthog_troop");
+            DuplicateTag(CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\warthog\warthog"), $@"objects\vehicles\warthog\warthog_no_turret");
+            DuplicateTag(CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\warthog\warthog"), $@"objects\vehicles\warthog\warthog_wrecked");
+            ContextStack.Pop();
+            NewPortingContext(sidewinder, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\vehicles\warthog\turrets\chaingun\chaingun_snow.vehicle");
+            CommandRunner.Current.RunCommand($@"porttag objects\vehicles\warthog\turrets\gauss\gauss_snow.vehicle");
+            CommandRunner.Current.RunCommand($@"porttag objects\vehicles\warthog\warthog_snow.vehicle");
+            DuplicateTag(CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow"), $@"objects\vehicles\warthog\warthog_snow_gauss");
+            DuplicateTag(CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow"), $@"objects\vehicles\warthog\warthog_snow_troop");
+            DuplicateTag(CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow"), $@"objects\vehicles\warthog\warthog_snow_no_turret");
+            DuplicateTag(CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow"), $@"objects\vehicles\warthog\warthog_snow_wrecked");
+            ContextStack.Pop();
+            NewPortingContext(sandbox, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag objects\vehicles\wraith\turrets\anti_air\anti_air.vehicle");
             CommandRunner.Current.RunCommand($@"porttag objects\vehicles\wraith\turrets\anti_infantry\anti_infantry.vehicle");
             CommandRunner.Current.RunCommand($@"porttag objects\vehicles\wraith\turrets\anti_infantry\anti_infantry_anti_air_wraith.vehicle");
             CommandRunner.Current.RunCommand($@"porttag objects\vehicles\wraith\turrets\mortar\mortar.vehicle");
             CommandRunner.Current.RunCommand($@"porttag objects\vehicles\wraith\wraith.vehicle");
+            DuplicateTag(CacheContext.TagCache.GetTag<Vehicle>($@"objects\vehicles\wraith\wraith"), $@"objects\vehicles\wraith\wraith_anti_air");
             CommandRunner.Current.RunCommand($@"porttag objects\weapons\turret\machinegun_turret\machinegun_turret.vehicle");
             CommandRunner.Current.RunCommand($@"porttag objects\weapons\turret\plasma_cannon\plasma_cannon.vehicle");
             ContextStack.Pop();
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, voi));
+            NewPortingContext(voi, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag objects\weapons\turret\missile_pod\missile_pod.vehicle");
             ContextStack.Pop();
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, shrine));
+            NewPortingContext(shrine, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\shrine\behemoth\behemoth.vehicle");
+            DuplicateTag(CacheContext.TagCache.GetTag<Vehicle>($@"objects\levels\multi\shrine\behemoth\behemoth"), $@"objects\levels\multi\shrine\behemoth\behemoth_forge");
             ContextStack.Pop();
 
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
+            NewPortingContext(sandbox, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag objects\equipment\bubbleshield_equipment\bubbleshield_equipment.eqip");
             CommandRunner.Current.RunCommand($@"porttag objects\equipment\gravlift_equipment\gravlift_equipment.eqip");
+            CommandRunner.Current.RunCommand($@"porttag objects\equipment\gravlift_permanent\gravlift_permanent.eqip");
             CommandRunner.Current.RunCommand($@"porttag objects\equipment\instantcover_equipment\instantcover_equipment_mp.eqip");
             CommandRunner.Current.RunCommand($@"porttag objects\equipment\jammer_equipment\jammer_equipment.eqip");
             CommandRunner.Current.RunCommand($@"porttag objects\equipment\powerdrain_equipment\powerdrain_equipment.eqip");
             CommandRunner.Current.RunCommand($@"porttag objects\equipment\regenerator_equipment\regenerator_equipment.eqip");
             CommandRunner.Current.RunCommand($@"porttag objects\equipment\superflare_equipment\superflare_equipment.eqip");
             CommandRunner.Current.RunCommand($@"porttag objects\equipment\tripmine_equipment\tripmine_equipment.eqip");
+            DuplicateTag(CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\tripmine\tripmine"), $@"objects\equipment\tripmine\tripmine_forge");
             ContextStack.Pop();
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, citadel));
+            NewPortingContext(citadel, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag objects\equipment\instantcover_equipment\instantcover_equipment.eqip");
             CommandRunner.Current.RunCommand($@"porttag objects\equipment\invincibility_equipment\invincibility_equipment.eqip");
             CommandRunner.Current.RunCommand($@"porttag objects\equipment\invisibility_equipment\invisibility_equipment.eqip");
             ContextStack.Pop();
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, halo));
+            NewPortingContext(halo, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag objects\equipment\autoturret_equipment\autoturret_equipment.eqip");
             ContextStack.Pop();
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, sandbox));
+            NewPortingContext(sandbox, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag objects\multi\powerups\powerup_blue\powerup_blue.eqip");
             CommandRunner.Current.RunCommand($@"porttag objects\multi\powerups\powerup_red\powerup_red.eqip");
             CommandRunner.Current.RunCommand($@"porttag objects\multi\powerups\powerup_yellow\powerup_yellow.eqip");
             ContextStack.Pop();
 
-            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, h3_mainmenu));
+            NewPortingContext(h3_mainmenu, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag *.scnr");
             ContextStack.Pop();
             CommandRunner.Current.RunCommand($@"updatemapfiles {halo3DirectoryInfo}\info");
+
+            // TODO: Streamline the porting of ElDewrito Assets (Its a little jank atm)
+            NewPortingContext(ed_cache, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\forge\fx_object.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\forge\light_object.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\forge\map_modifier.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x05x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x10x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x10x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x10x10.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x10x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x10x3.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x10x4.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x10x5.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x1x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x1x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x20x20.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x2x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x2x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x2x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x3x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x3x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x3x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x3x3.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x4x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x4x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x4x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x4x3.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x4x4.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x5x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x5x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x5x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x5x3.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x5x4.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_01x5x5.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x05x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x10x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x10x10.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x10x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x10x3.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x10x4.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x10x5.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x1x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x1x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x20x20.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x2x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x2x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x3x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x3x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x3x3.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x4x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x4x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x4x3.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x4x4.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x5x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x5x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x5x3.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x5x4.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_05x5x5.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x10x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x10x10.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x10x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x10x3.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x10x4.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x10x5.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x1x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x20x20.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x2x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x2x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x3x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x3x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x3x3.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x4x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x4x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x4x3.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x4x4.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x5x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x5x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x5x3.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x5x4.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\block_1x5x5.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_05x05x01.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_05x05x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_05x05x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_05x05x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_05x05x4.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_10x10x01.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_10x10x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_10x10x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_10x10x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_10x10x4.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_1x1x01.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_1x1x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_1x1x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_1x1x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_1x1x4.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_2x2x01.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_2x2x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_2x2x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_2x2x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_2x2x4.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_5x5x01.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_5x5x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_5x5x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_5x5x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\cylinder_5x5x4.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\glass_01x05x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\glass_01x10x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\glass_01x10x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\glass_01x10x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\glass_01x1x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\glass_01x2x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\halfcylinder_1x01x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\halfcylinder_1x10x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\halfcylinder_1x1x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\halfcylinder_1x3x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\halfcylinder_1x4x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\halfcylinder_2x01x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\halfcylinder_2x10x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\halfcylinder_2x1x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\halfcylinder_2x3x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\halfcylinder_2x4x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\halfcylinder_3x01x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\halfcylinder_3x10x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\halfcylinder_3x1x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\halfcylinder_3x3x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\halfcylinder_3x4x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_10x10x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_10x10x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_10x10x5.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_10x20x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_10x20x10.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_10x20x5.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_1x2x01.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_1x2x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_1x2x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_20x20x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_20x20x10.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_20x20x5.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_2x2x01.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_2x2x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_2x2x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_2x5x025.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_2x5x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_2x5x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_5x10x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_5x10x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_5x10x5.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_5x5x025.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_5x5x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\hemisphere_5x5x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_01x05x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_01x10x10.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_01x1x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_01x2x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_01x3x3.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_01x4x4.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_01x5x5.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_05x05x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_05x10x10.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_05x1x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_05x2x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_05x3x3.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_05x4x4.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_05x5x5.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_1x05x05.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_1x10x10.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_1x1x1.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_1x2x2.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_1x3x3.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_1x4x4.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\triangle_1x5x5.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\trianglee_01x05x043.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\trianglee_01x10x066.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\trianglee_01x1x087.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\trianglee_01x2x073.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\trianglee_01x3x06.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\trianglee_01x4x046.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\eldewrito\reforge\trianglee_01x5x033.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\boundaries\garbage_collection_volume.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\boundaries\kill_volume.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\generic\mp_cinematic_camera.scenery");
+            ContextStack.Pop();
+
+            NewPortingContext(midship, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\covenant\military\battery\battery.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\covenant\military\cov_sword_holder\cov_sword_holder.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\covenant\military\crate_space\crate_space.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(construct, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\forerunner\power_core_for\power_core_for.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(cyberdyne, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\box_metal_small\box_metal_small.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(voi, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\crate_multi_single\crate_multi_single.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\crate_multi\crate_multi.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(armory, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\crate_tech_semi_short_closed\crate_tech_semi_short_closed.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\garbage_can\garbage_can.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(shrine, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\crowbar\crowbar.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(cyberdyne, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\generator_heavy_grill\generator_heavy_grill.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\generator_heavy_kettle\generator_heavy_kettle.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(outskirts, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\h_barrel_rusty\h_barrel_rusty.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\h_barrel_rusty_small\h_barrel_rusty_small.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\jersey_barrier\jersey_barrier.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\jersey_barrier_short\jersey_barrier_short.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\pallet_large\pallet_large.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\pallet\pallet.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(cyberdyne, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\propane_tank\propane_tank.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\sawhorse\sawhorse.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(crows, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\sawhorse\sawhorse_light.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(cyberdyne, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\street_cone\street_cone.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\toolbox_large\toolbox_large.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\toolbox_small\toolbox_small.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(deadlock, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\medical\cabinet\cabinet.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\medical\crashcart\crashcart.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\medical\medical_crate\medical_crate.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\medical\medical_tray\medical_tray.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(shrine, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\antennae_mast\antennae_mast.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\barricade_large\barricade_large.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\barricade_small\barricade_small.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\blitzcan\blitzcan.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\camping_stool_mp\camping_stool_mp.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\case\case.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\case_ap_turret\case_ap_turret.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(crows, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\case_ap_turret_lid\case_ap_turret_lid.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\case_ap_turret_open\case_ap_turret_open.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(shrine, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\crate_packing\crate_packing.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\crate_packing_giant\crate_packing_giant_mp.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(bunkerworld, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\drum_12gal\drum_12gal.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(shrine, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\fusion_coil\fusion_coil.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\generator\generator.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\resupply_capsule_panel\resupply_capsule_panel.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\resupply_capsule_unfired\resupply_capsule_unfired.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(deadlock, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\comm_phonebox\comm_phonebox.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(voi, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\generator_light\generator_flood_no_lights.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\hu_mil_radio_big\hu_mil_radio_big.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\h_ammo_crate_lg\h_ammo_crate_lg.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\h_ammo_crate_sm\h_ammo_crate_sm.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\sandbag_detail1\sandbag_detail1.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\sandbag_detail2\sandbag_detail2.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\sandbag_wall\sandbag_wall.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\sandbag_wall_90corner\sandbag_wall_90corner.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\sandbag_wall_endcap\sandbag_wall_endcap.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\sandbag_wall_turret\sandbag_wall_turret.scenery");
+            ContextStack.Pop();
+
+            NewPortingContext(outskirts, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\hu_mil_radio_small\hu_mil_radio_small.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\hu_mil_rucksack\rucksack.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(waste, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\resupply_capsule_fired\resupply_capsule_fired.scenery");
+            ContextStack.Pop();
+
+            NewPortingContext(cyberdyne, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\missle_body\missle_body.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\missle_cap\missle_cap.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\missle_stand\missle_stand.scenery");
+            ContextStack.Pop();
+
+            NewPortingContext(chill, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\military\propane_burner\propane_burner.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(cyberdyne, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\residential\h_locker_closed_mp\h_locker_closed_mp.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\residential\office_chair\office_chair.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\residential\office_file_short\office_file_short.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\residential\office_file_tall\office_file_tall.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\residential\office_keyboard\office_keyboard.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\residential\office_monitor\office_monitor.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(deadlock, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\residential\office_stand\office_stand.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(cyberdyne, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\residential\office_table\office_table.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\residential\telephone_wall_box\telephone_wall_box.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(bunkerworld, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\dlc\bunkerworld\drum_55gal_bunker\drum_55gal_bunker.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\dlc\bunkerworld\sandbag_wall_45corner_bunker\sandbag_wall_45corner_bunker.scenery");
+            ContextStack.Pop();
+
+            NewPortingContext(lockout, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\dlc\shared\crate_tech_semi_short\crate_tech_semi_short.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\dlc\shared\small_shield_door\small_shield_door.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\dlc\shared\soccer_ball\soccer_ball.vehicle");
+            ContextStack.Pop();
+
+            NewPortingContext(sandbox, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\dlc\shared\damage_sphere\damage_sphere.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\dlc\shared\large_shield_door\large_shield_door.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\dlc\shared\man_cannon_forge\man_cannon_forge.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(warehouse, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\dlc\warehouse\bridge\bridge.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\dlc\warehouse\dlc_wh_crate_large_open\dlc_wh_crate_large_open.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\dlc\warehouse\dlc_wh_wire_spool_large\dlc_wh_wire_spool_large.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\dlc\warehouse\fencebox\fencebox.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(cyberdyne, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\cyberdyne\cyber_monitor_med\cyber_monitor.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\cyberdyne\cyber_speaker\cyber_speaker.scenery");
+            ContextStack.Pop();
+
+            NewPortingContext(deadlock, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\deadlock\deadlock_chainlinkgate\deadlock_chainlinkgate.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\deadlock\deadlock_chainlinkgate_ii\deadlock_chainlinkgate_ii.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\deadlock\wall_hatch\wall_hatch.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(guardian, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\guardian\holy_light_guardian\holy_light_guardian.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(ho_cache, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\s3d_turf\turf_cabinet\turf_cabinet.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\s3d_turf\crate_heavy_tech\crate_heavy_tech.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\gear\human\industrial\crate_tech_giant\crate_tech_giant.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\s3d_turf\turf_dumpster\turf_dumpster.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\s3d_turf\turf_trash_can\turf_trash_can.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\s3d_turf\turf_crate_large\turf_crate_large.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\s3d_turf\turf_swinging_door\turf_swinging_door.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(voi, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\solo\040_voi\cart_electric\cart_electric.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(salvation, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\salvation\large_field\large_field.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(shrine, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\shrine\marinebeacon\marinebeacon.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\shrine\shrine_defender\shrine_defender.vehicle");
+            ContextStack.Pop();
+
+            NewPortingContext(snowbound, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\snowbound\airlock_field\airlock_field.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\snowbound\icicle_06_inch\icicle_06_inch.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\snowbound\icicle_10_inch\icicle_10_inch.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\snowbound\icicle_18_inch\icicle_18_inch.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\snowbound\icicle_24_inch\icicle_24_inch.scenery");
+            ContextStack.Pop();
+
+            NewPortingContext(zanzibar, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\zanzibar\awning_def\awning_def.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\zanzibar\battle_shield\battle_shield.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\zanzibar\foliage\plant_bush_large_palm\plant_bush_large_palm.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\zanzibar\hinge_light\hinge_light.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\multi\zanzibar\main_crane\main_crane.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(jungle, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\solo\010_jungle\foliage\plant_bush_med_palm\plant_bush_med_palm.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\solo\010_jungle\foliage\plant_tree_palm\plant_tree_palm.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(deadlock, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\solo\020_base\computer_briefcase\computer_briefcase.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\solo\020_base\computer_briefcase_small\computer_briefcase_small.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(crows, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\solo\020_base\armory_shelf\armory_shelf.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\solo\020_base\monitor_sm\monitor_sm.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\solo\020_base\sink\sink.scenery");
+            ContextStack.Pop();
+
+            NewPortingContext(outskirts, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\solo\030_outskirts\foliage\bushc\bushc.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\solo\030_outskirts\foliage\bushlow\bushlow.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(bunkerworld, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\solo\030_outskirts\foliage\small_bush\small_bush.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(citadel, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\solo\100_citadel\foliage\plant_pine_tree_large\plant_pine_tree_large.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\levels\solo\100_citadel\foliage\plant_tree_pine\plant_tree_pine.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(sandbox, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\assault\assault_bomb_goal_area.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\assault\assault_bomb_spawn_point.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\assault\assault_initial_spawn_point.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\assault\assault_respawn_zone.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\box_l\box_l.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\box_m\box_m.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\box_xl\box_xl.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\box_xxl\box_xxl.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\box_xxxl\box_xxxl.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\ctf\ctf_flag_at_home_respawn_zone.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\ctf\ctf_flag_away_respawn_zone.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\ctf\ctf_flag_return_area.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\ctf\ctf_flag_spawn_point.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\ctf\ctf_initial_spawn_point.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\ctf\ctf_respawn_zone.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\infection\infection_haven_static.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\infection\infection_initial_spawn_point.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\infection\infection_respawn_zone.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\juggernaut\juggernaut_destination_static.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\koth\koth_hill_static.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\koth\koth_initial_spawn_point.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\koth\koth_respawn_zone.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\oddball\oddball_ball_spawn_point.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\oddball\oddball_initial_spawn_point.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\oddball\oddball_respawn_zone.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\slayer\slayer_initial_spawn_point.scenery");
+            DuplicateTag(CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\slayer\slayer_initial_spawn_point"), $@"objects\multi\spawning\initial_spawn_point");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\slayer\slayer_respawn_zone.scenery");
+            DuplicateTag(CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\slayer\slayer_respawn_zone"), $@"objects\multi\spawning\respawn_zone");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\spawning\respawn_point.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\teleporter_2way\teleporter_2way.crate");
+            DuplicateTag(CacheContext.TagCache.GetTag<Crate>($@"objects\multi\teleporter_2way\teleporter_2way"), $@"objects\multi\teleporter_2way\teleporter_2way_vehicle");
+            DuplicateTag(CacheContext.TagCache.GetTag<Crate>($@"objects\multi\teleporter_2way\teleporter_2way"), $@"objects\multi\teleporter_2way\teleporter_2way_vehicle_only");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\teleporter_reciever\teleporter_reciever.crate");
+            DuplicateTag(CacheContext.TagCache.GetTag<Crate>($@"objects\multi\teleporter_reciever\teleporter_reciever"), $@"objects\multi\teleporter_receiver\teleporter_receiver_vehicle");
+            DuplicateTag(CacheContext.TagCache.GetTag<Crate>($@"objects\multi\teleporter_reciever\teleporter_reciever"), $@"objects\multi\teleporter_receiver\teleporter_receiver_vehicle_only");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\teleporter_sender\teleporter_sender.crate");
+            DuplicateTag(CacheContext.TagCache.GetTag<Crate>($@"objects\multi\teleporter_sender\teleporter_sender"), $@"objects\multi\teleporter_sender\teleporter_sender_vehicle");
+            DuplicateTag(CacheContext.TagCache.GetTag<Crate>($@"objects\multi\teleporter_sender\teleporter_sender"), $@"objects\multi\teleporter_sender\teleporter_sender_vehicle_only");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\territories\territories_initial_spawn_point.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\territories\territories_respawn_zone.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\territories\territory_static.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\vip\vip_destination_static.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\vip\vip_initial_spawn_point.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\vip\vip_respawn_zone.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\wall_l\wall_l.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\wall_m\wall_m.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\wall_xl\wall_xl.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\wall_xxl\wall_xxl.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\multi\wall_xxxl\wall_xxxl.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(ho_cache, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\powerups\ammo_packs\ammo_large\ammo_large.equipment");
+            CommandRunner.Current.RunCommand($@"porttag objects\powerups\ammo_packs\ammo_small\ammo_small.equipment");
+            ContextStack.Pop();
+
+            NewPortingContext(zanzibar, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\scenery\human\military\mongoose_drop_palette\mongoose_drop_palette.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\scenery\human\military\warthog_drop_palette\warthog_drop_palette.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\vehicles\civilian\forklift\forklift.crate");
+            CommandRunner.Current.RunCommand($@"porttag objects\vehicles\warthog\garbage\tire\tire.crate");
+            ContextStack.Pop();
+
+            NewPortingContext(shrine, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag objects\vehicles\phantom\phantom_damaged\garbage\phd_backpiece_lg_top\phd_backpiece_lg_top.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\vehicles\phantom\phantom_damaged\garbage\phd_backpiece_md\phd_backpiece_md.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\vehicles\phantom\phantom_damaged\garbage\phd_backpiece_sm\phd_backpiece_sm.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\vehicles\phantom\phantom_damaged\garbage\phd_bottompiece\phd_bottompiece.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\vehicles\phantom\phantom_damaged\garbage\phd_flatpiece_r\phd_flatpiece_r.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\vehicles\phantom\phantom_damaged\garbage\phd_sidepiece_l\phd_sidepiece_l.scenery");
+            CommandRunner.Current.RunCommand($@"porttag objects\vehicles\phantom\phantom_damaged\garbage\phd_sidepiece_r\phd_sidepiece_r.scenery");
+            ContextStack.Pop();
+
+            NewPortingContext(ho_cache, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag fx\scenery_fx\weather\snow\snow_turf\snow_turf.effect");
+            ContextStack.Pop();
+
+            NewPortingContext(halo, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag fx\scenery_fx\weather\snow\snow_heavy\snow_heavy.effect");
+            ContextStack.Pop();
+
+            NewPortingContext(voi, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag fx\scenery_fx\weather\rain\rain_angle\rain_angle.effect");
+            ContextStack.Pop();
+
+            NewPortingContext(highCharity, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag fx\scenery_fx\weather\flood_pollen\flood_pollen_light\flood_pollen_light.effect");
+            CommandRunner.Current.RunCommand($@"porttag fx\scenery_fx\weather\flood_pollen\flood_pollen_heavy\flood_pollen_heavy.effect");
+            ContextStack.Pop();
+
+            NewPortingContext(floodvoi, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag fx\scenery_fx\weather\falling_ash\falling_ash.effect");
+            ContextStack.Pop();
+
+            NewPortingContext(sc100, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag fx\scenery_fx\weather\slipspace_fallout\slipspace_fallout.effect");
+            CommandRunner.Current.RunCommand($@"porttag fx\scenery_fx\weather\slipspace_fallout\slipspace_fallout_strong.effect");
+            ContextStack.Pop();
         }
 
         public void GenerateTag<T>(string tagName) where T : TagStructure
@@ -710,6 +1279,27 @@ namespace TagTool.Commands.Tags
                 var definition = Activator.CreateInstance<T>();
                 CacheContext.Serialize(stream, tag, definition);
             }
+        }
+
+        public void DuplicateTag(CachedTag tag, string newName) 
+        {
+            using (var stream = Cache.OpenCacheReadWrite()) 
+            {
+                var newTag = CacheContext.TagCache.AllocateTag(tag.Group, newName);
+                var defintion = CacheContext.Deserialize(stream, tag);
+                CacheContext.Serialize(stream, newTag, defintion);
+                CacheContext.SaveTagNames();
+            }
+        }
+
+        public void NewPortingContext(GameCache newCache, Audio.Compression codec, bool NormalConversion) 
+        {
+            ContextStack.Push(PortingContextFactory.Create(ContextStack, Cache, newCache));
+
+            PortingOptions.Current = new PortingOptions();
+
+            PortingOptions.Current.AudioCodec = codec;
+            PortingOptions.Current.HqNormalMapConversion = NormalConversion;
         }
     }
 }

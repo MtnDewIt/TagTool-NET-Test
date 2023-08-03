@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
+using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.Commands.Tags 
 {
@@ -8,6 +9,8 @@ namespace TagTool.Commands.Tags
     {
         public void ForgeGlobals()
         {
+            UpdateObjectVariants();
+
             using (var stream = Cache.OpenCacheReadWrite())
             {
                 foreach (var tag in CacheContext.TagCache.NonNull())
@@ -821,6 +824,18 @@ namespace TagTool.Commands.Tags
                             {
                                 Text = "Depth",
                             },
+                            new ForgeGlobalsDefinition.Description
+                            {
+                                Text = "Depth",
+                            },
+                            new ForgeGlobalsDefinition.Description
+                            {
+                                Text = "Depth",
+                            },
+                            new ForgeGlobalsDefinition.Description
+                            {
+                                Text = "Depth",
+                            },
                         };
                         forg.PaletteCategories = new List<ForgeGlobalsDefinition.PaletteCategory>
                         {
@@ -1593,7 +1608,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -1606,7 +1621,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 3,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\s3d_turf_dumpster\s3d_turf_dumpster"),
+                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\turf_dumpster\turf_dumpster"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1640,7 +1655,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -1660,7 +1675,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -1680,7 +1695,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -1700,7 +1715,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -1720,7 +1735,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -1778,7 +1793,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\s3d_turf_cabinet\s3d_turf_cabinet"),
+                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\turf_cabinet\turf_cabinet"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1805,7 +1820,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\s3d_turf_crate_tech_giant\s3d_turf_crate_tech_giant"),
+                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\crate_tech_giant\crate_tech_giant"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1814,7 +1829,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\crate_multi\crate_multi"),
+                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\crate_multi_single\crate_multi_single"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1823,7 +1838,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\crate_multi\crate_multi_destructible"),
+                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\gear\human\industrial\crate_multi\crate_multi"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1913,7 +1928,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\s3d_turf_turf_crate_large\s3d_turf_turf_crate_large"),
+                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\turf_crate_large\turf_crate_large"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -1922,7 +1937,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 4,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\s3d_turf_crate_heavy_tech\s3d_turf_crate_heavy_tech"),
+                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\crate_heavy_tech\crate_heavy_tech"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -2977,7 +2992,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 8,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\s3d_turf_cart_electric\s3d_turf_cart_electric"),
+                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\solo\040_voi\cart_electric\cart_electric"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -2993,7 +3008,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -3013,7 +3028,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -3060,7 +3075,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -3080,7 +3095,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -3109,7 +3124,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -3129,7 +3144,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -3158,7 +3173,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -3225,14 +3240,14 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 10,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\solo\020_base\sink\sink"),
+                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\levels\solo\020_base\sink\sink"),
                                 Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                                 {
                                     new ForgeGlobalsDefinition.PaletteItem.Setter
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -3279,7 +3294,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -3308,7 +3323,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -3337,7 +3352,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -3354,7 +3369,7 @@ namespace TagTool.Commands.Tags
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
-                                Name = "CHAIN LINK GATE",
+                                Name = "CHAIN LINK GATE, LEFT",
                                 Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
@@ -3385,7 +3400,7 @@ namespace TagTool.Commands.Tags
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
                                         Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
-                                        IntegerValue = 1,
+                                        IntegerValue = 0,
                                         RealValue = 0,
                                     },
                                 },
@@ -3413,7 +3428,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                                         Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                                        Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                                         IntegerValue = 1,
                                         RealValue = 0,
                                     },
@@ -3669,7 +3684,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 11,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\s3d_turf_trash_can\s3d_turf_trash_can"),
+                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\s3d_turf\turf_trash_can\turf_trash_can"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -5519,7 +5534,16 @@ namespace TagTool.Commands.Tags
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
                                 Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\boundaries\garbage_collection_volume"),
-                            },  
+                            },
+                            new ForgeGlobalsDefinition.PaletteItem
+                            {
+                                Name = "CHAIN LINK GATE, RIGHT",
+                                Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                                CategoryIndex = 11,
+                                DescriptionIndex = -1,
+                                MaxAllowed = 0,
+                                Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\multi\deadlock\deadlock_chainlinkgate_ii\deadlock_chainlinkgate_ii"),
+                            },
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
                                 Name = "BUBBLE SHIELD",
@@ -5536,7 +5560,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 66,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\instantcover_equipment\instantcover_equipment"),
+                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\instantcover_equipment\instantcover_equipment_mp"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5564,15 +5588,6 @@ namespace TagTool.Commands.Tags
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
                                 Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\invincibility_equipment\invincibility_equipment"),
-                            },
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "INVISIBILITY",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
-                                CategoryIndex = 67,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\invisibility_equipment\invisibility_equipment"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5609,60 +5624,6 @@ namespace TagTool.Commands.Tags
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
                                 Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\tripmine_equipment\tripmine_equipment"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "CONCUSSIVE BLAST",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
-                                CategoryIndex = 67,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\concussiveblast_equipment\concussiveblast_equipment"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "HOLOGRAM",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
-                                CategoryIndex = 67,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\hologram_equipment\hologram_equipment"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "LIGHTNING STRIKE",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
-                                CategoryIndex = 67,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\lightningstrike_equipment\lightningstrike_equipment"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "REFLECTIVE SHIELD",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
-                                CategoryIndex = 67,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\reactive_armor_equipment\reactive_armor_equipment"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "VEHICLE CAMO",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
-                                CategoryIndex = 67,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\invisibility_equipment\invisibility_vehicle_equipment"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "VISION",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
-                                CategoryIndex = 67,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\vision_equipment\vision_equipment"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5767,7 +5728,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 69,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\powerups\unsc_ammo_large\unsc_ammo_large"),
+                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\powerups\ammo_packs\ammo_large\ammo_large"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5776,7 +5737,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 69,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\powerups\unsc_ammo_small\unsc_ammo_small"),
+                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\powerups\ammo_packs\ammo_small\ammo_small"),
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
@@ -5789,103 +5750,13 @@ namespace TagTool.Commands.Tags
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
-                                Name = "ASSAULT RIFLE, ACCURACY",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 71,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\assault_rifle_accuracy\assault_rifle_accuracy"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "ASSAULT RIFLE, DAMAGE",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 71,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\assault_rifle_damage\assault_rifle_damage"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "ASSAULT RIFLE, POWER",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 71,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\assault_rifle_power\assault_rifle_power"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "ASSAULT RIFLE, RATE OF FIRE",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 71,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\assault_rifle_rof\assault_rifle_rof"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
                                 Name = "BATTLE RIFLE",
                                 Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
                                 CategoryIndex = 72,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
                                 Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "BATTLE RIFLE, ACCURACY",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 72,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle_accuracy\battle_rifle_accuracy"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "BATTLE RIFLE, AMMO",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 72,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle_ammo\battle_rifle_ammo"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "BATTLE RIFLE, DAMAGE",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 72,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle_damage\battle_rifle_damage"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "BATTLE RIFLE, POWER",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 72,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle_power\battle_rifle_power"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "BATTLE RIFLE, RANGE",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 72,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle_range\battle_rifle_range"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "BATTLE RIFLE, RATE OF FIRE",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 72,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\battle_rifle_rof\battle_rifle_rof"),
-                            },  
+                            },    
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
                                 Name = "SMG",
@@ -5894,97 +5765,16 @@ namespace TagTool.Commands.Tags
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
                                 Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\smg\smg"),
-                            },  
+                            },
                             new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "SMG, ACCURACY",
+                            {
+                                Name = "SMG, SILENCED",
                                 Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
                                 CategoryIndex = 73,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\smg\smg_accuracy"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "SMG, DAMAGE",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 73,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\smg\smg_damage"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "SMG, POWER",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 73,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\smg\smg_power"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "SMG, RATE OF FIRE",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 73,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\smg\smg_rof"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "DMR",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 74,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\dmr\dmr"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "DMR, ACCURACY",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 74,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\dmr_accuracy\dmr_accuracy"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "DMR, AMMO",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 74,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\dmr_ammo\dmr_ammo"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "DMR, DAMAGE",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 74,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\dmr_damage\dmr_damage"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "DMR, POWER",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 74,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\dmr_power\dmr_power"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "DMR, RATE OF FIRE",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 74,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\dmr_rof\dmr_rof"),
-                            },  
+                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\smg_silenced\smg_silenced"),
+                            },
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
                                 Name = "COVENANT CARBINE",
@@ -5996,76 +5786,13 @@ namespace TagTool.Commands.Tags
                             },  
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
-                                Name = "COVENANT CARBINE, ACCURACY",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 75,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine_accuracy\covenant_carbine_accuracy"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "COVENANT CARBINE, AMMO",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 75,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine_ammo\covenant_carbine_ammo"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "COVENANT CARBINE, DAMAGE",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 75,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine_damage\covenant_carbine_damage"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "COVENANT CARBINE, POWER",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 75,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine_power\covenant_carbine_power"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "COVENANT CARBINE, RANGE",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 75,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine_range\covenant_carbine_range"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "COVENANT CARBINE, RATE OF FIRE",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 75,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\covenant_carbine_rof\covenant_carbine_rof"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
                                 Name = "MAULER",
                                 Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
                                 CategoryIndex = 76,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
                                 Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\excavator\excavator"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "MAULER, POWER",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 76,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\excavator_power\excavator_power"),
-                            },  
+                            },   
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
                                 Name = "MAGNUM",
@@ -6074,25 +5801,7 @@ namespace TagTool.Commands.Tags
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
                                 Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "MAGNUM, DAMAGE",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 76,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\magnum\magnum_damage"),
-                            },  
-                            new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "MAGNUM, POWER",
-                                Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                                CategoryIndex = 76,
-                                DescriptionIndex = -1,
-                                MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\magnum\magnum_power"),
-                            },  
+                            },    
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
                                 Name = "PLASMA PISTOL",
@@ -6101,15 +5810,15 @@ namespace TagTool.Commands.Tags
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
                                 Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
-                            },  
+                            },
                             new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "PLASMA PISTOL, POWER",
+                            {
+                                Name = "AUTOMAG",
                                 Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
                                 CategoryIndex = 76,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol_power"),
+                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\pistol\automag\automag"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -6269,16 +5978,16 @@ namespace TagTool.Commands.Tags
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
                                 Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
-                            },  
+                            },
                             new ForgeGlobalsDefinition.PaletteItem
-                            {   
-                                Name = "PLASMA RIFLE, POWER",
+                            {
+                                Name = "PLASMA RIFLE, RED",
                                 Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
                                 CategoryIndex = 78,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle_power"),
-                            },  
+                                Object = CacheContext.TagCache.GetTag<Weapon>($@"objects\weapons\rifle\plasma_rifle_red\plasma_rifle_red"),
+                            },
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
                                 Name = "ROCKET LAUNCHER",
@@ -6719,7 +6428,7 @@ namespace TagTool.Commands.Tags
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
                                 Object = CacheContext.TagCache.GetTag<Crate>($@"objects\multi\wall_xxxl\wall_xxxl"),
-                            },  
+                            },
                             new ForgeGlobalsDefinition.PaletteItem
                             {   
                                 Name = "KILL BALL",
@@ -6728,7 +6437,43 @@ namespace TagTool.Commands.Tags
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
                                 Object = CacheContext.TagCache.GetTag<Crate>($@"objects\levels\dlc\shared\damage_sphere\damage_sphere"),
-                            },  
+                            },
+                            new ForgeGlobalsDefinition.PaletteItem
+                            {
+                                Name = "INVISIBILITY",
+                                Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
+                                CategoryIndex = 67,
+                                DescriptionIndex = -1,
+                                MaxAllowed = 0,
+                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\invisibility_equipment\invisibility_equipment"),
+                            },
+                            new ForgeGlobalsDefinition.PaletteItem
+                            {
+                                Name = "STARTING POINT",
+                                Type = ForgeGlobalsDefinition.PaletteItemType.None,
+                                CategoryIndex = 54,
+                                DescriptionIndex = -1,
+                                MaxAllowed = 0,
+                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\spawning\initial_spawn_point"),
+                            },
+                            new ForgeGlobalsDefinition.PaletteItem
+                            {
+                                Name = "RESPAWN ZONE",
+                                Type = ForgeGlobalsDefinition.PaletteItemType.None,
+                                CategoryIndex = 54,
+                                DescriptionIndex = -1,
+                                MaxAllowed = 0,
+                                Object = CacheContext.TagCache.GetTag<Scenery>($@"objects\multi\spawning\respawn_zone"),
+                            },
+                            new ForgeGlobalsDefinition.PaletteItem
+                            {
+                                Name = "AUTOTURRET",
+                                Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
+                                CategoryIndex = 67,
+                                DescriptionIndex = -1,
+                                MaxAllowed = 0,
+                                Object = CacheContext.TagCache.GetTag<Equipment>($@"objects\equipment\autoturret_equipment\autoturret_equipment"),
+                            },
                         };
                         forg.WeatherEffects = new List<ForgeGlobalsDefinition.WeatherEffect>
                         {
@@ -6740,7 +6485,7 @@ namespace TagTool.Commands.Tags
                             new ForgeGlobalsDefinition.WeatherEffect
                             {
                                 Name = "Snow, Heavy",
-                                Effect = CacheContext.TagCache.GetTag<Effect>($@"fx\scenery_fx\weather\snow\snow_turf\snow_turf_outdoor"),
+                                Effect = CacheContext.TagCache.GetTag<Effect>($@"fx\scenery_fx\weather\snow\snow_turf\snow_turf"),
                             },
                             new ForgeGlobalsDefinition.WeatherEffect
                             {
@@ -6777,184 +6522,161 @@ namespace TagTool.Commands.Tags
                                 Name = "Slipspace Fallout, Strong",
                                 Effect = CacheContext.TagCache.GetTag<Effect>($@"fx\scenery_fx\weather\slipspace_fallout\slipspace_fallout_strong"),
                             },
-                            new ForgeGlobalsDefinition.WeatherEffect
-                            {
-                                Name = "Rain_Test",
-                                Effect = CacheContext.TagCache.GetTag<Effect>($@"fx\scenery_fx\weather\eldewrito\rain_new"),
-                            },
                         };
-                        forg.Skies = new List<ForgeGlobalsDefinition.Sky>
-                        {
-                            new ForgeGlobalsDefinition.Sky()
-                            {
-                                Name = "Guardian",
-                                Flags = ForgeGlobalsDefinition.SkyFlags.None,
-                                Translation = new RealPoint3d(0f, 0f, 0f),
-                                Orientation = new RealEulerAngles3d(Angle.FromDegrees(0f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"levels\multi\guardian\sky\sky"),
-                                Parameters  = CacheContext.TagCache.GetTag<SkyAtmParameters>($@"levels\multi\guardian\sky\guardian"),
-                                Wind = CacheContext.TagCache.GetTag<Wind>($@"levels\multi\guardian\wind_guardian"),
-                                CameraFX = CacheContext.TagCache.GetTag<CameraFxSettings>($@"levels\multi\guardian\guardian"),
-                                ScreenFX = null,
-                                GlobalLighting = CacheContext.TagCache.GetTag<ChocolateMountainNew>($@"levels\multi\guardian\guardian"),
-                                BackgroundSound = CacheContext.TagCache.GetTag<SoundLooping>($@"sound\levels\gaurdian\gaurdian\gaurdian"),
-                            },
-                            new ForgeGlobalsDefinition.Sky()
-                            {
-                                Name = "Valhalla",
-                                Flags = ForgeGlobalsDefinition.SkyFlags.None,
-                                Translation = new RealPoint3d(0f, 0f, 0f),
-                                Orientation = new RealEulerAngles3d(Angle.FromDegrees(0f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"levels\ui\mainmenu\sky\menu_sky"),
-                                Parameters  = CacheContext.TagCache.GetTag<SkyAtmParameters>($@"levels\ui\mainmenu\sky\menu"),
-                                Wind = CacheContext.TagCache.GetTag<Wind>($@"levels\multi\riverworld\wind_riverworld"),
-                                CameraFX = CacheContext.TagCache.GetTag<CameraFxSettings>($@"levels\ui\mainmenu\sky\menu"),
-                                ScreenFX = null,
-                                GlobalLighting = CacheContext.TagCache.GetTag<ChocolateMountainNew>($@"levels\multi\riverworld\riverworld"),
-                                BackgroundSound = CacheContext.TagCache.GetTag<SoundLooping>($@"sound\levels\riverworld\halo_ext\halo_ext"),
-                            },
-                            new ForgeGlobalsDefinition.Sky()
-                            {
-                                Name = "Diamondback",
-                                Flags = ForgeGlobalsDefinition.SkyFlags.None,
-                                Translation = new RealPoint3d(0f, 0f, 0f),
-                                Orientation = new RealEulerAngles3d(Angle.FromDegrees(0f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"levels\multi\s3d_avalanche\sky\sky"),
-                                Parameters  = CacheContext.TagCache.GetTag<SkyAtmParameters>($@"levels\multi\s3d_avalanche\sky\s3d_avalanche"),
-                                Wind = CacheContext.TagCache.GetTag<Wind>($@"levels\multi\s3d_avalanche\wind_s3d_avalanche"),
-                                CameraFX = CacheContext.TagCache.GetTag<CameraFxSettings>($@"levels\multi\s3d_avalanche\s3d_avalanche"),
-                                ScreenFX = null,
-                                GlobalLighting = CacheContext.TagCache.GetTag<ChocolateMountainNew>($@"levels\multi\s3d_avalanche\s3d_avalanche"),
-                                BackgroundSound = CacheContext.TagCache.GetTag<SoundLooping>($@"levels\multi\s3d_avalanche\s3d_avalanche_main\s3d_avalanche_main"),
-                            },
-                            new ForgeGlobalsDefinition.Sky()
-                            {
-                                Name = "Edge",
-                                Flags = ForgeGlobalsDefinition.SkyFlags.None,
-                                Translation = new RealPoint3d(0f, 0f, 0f),
-                                Orientation = new RealEulerAngles3d(Angle.FromDegrees(0f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"levels\multi\s3d_edge\sky\sky"),
-                                Parameters  = CacheContext.TagCache.GetTag<SkyAtmParameters>($@"levels\multi\s3d_edge\sky\s3d_edge"),
-                                Wind = null,
-                                CameraFX = CacheContext.TagCache.GetTag<CameraFxSettings>($@"levels\multi\s3d_edge\s3d_edge"),
-                                ScreenFX = null,
-                                GlobalLighting = CacheContext.TagCache.GetTag<ChocolateMountainNew>($@"levels\multi\s3d_edge\s3d_edge"),
-                                BackgroundSound = CacheContext.TagCache.GetTag<SoundLooping>($@"sound\levels\s3d_edge\s3d_edge_main\s3d_edge_main"),
-                            },
-                            new ForgeGlobalsDefinition.Sky()
-                            {
-                                Name = "Reactor",
-                                Flags = ForgeGlobalsDefinition.SkyFlags.None,
-                                Translation = new RealPoint3d(0f, 0f, 0f),
-                                Orientation = new RealEulerAngles3d(Angle.FromDegrees(0f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"levels\multi\s3d_reactor\sky\sky"),
-                                Parameters  = CacheContext.TagCache.GetTag<SkyAtmParameters>($@"levels\multi\s3d_reactor\sky\s3d_reactor"),
-                                Wind = CacheContext.TagCache.GetTag<Wind>($@"levels\multi\s3d_reactor\wind_s3d_reactor"),
-                                CameraFX = CacheContext.TagCache.GetTag<CameraFxSettings>($@"levels\multi\s3d_reactor\s3d_reactor_indoor"),
-                                ScreenFX = null,
-                                GlobalLighting = CacheContext.TagCache.GetTag<ChocolateMountainNew>($@"levels\multi\s3d_reactor\s3d_reactor"),
-                                BackgroundSound = CacheContext.TagCache.GetTag<SoundLooping>($@"sound\levels\s3d_reactor\s3d_reactor_background_sound_0"),
-                            },
-                            new ForgeGlobalsDefinition.Sky()
-                            {
-                                Name = "Icebox",
-                                Flags = ForgeGlobalsDefinition.SkyFlags.None,
-                                Translation = new RealPoint3d(0f, 0f, 0f),
-                                Orientation = new RealEulerAngles3d(Angle.FromDegrees(0f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"levels\multi\s3d_turf\sky\sky"),
-                                Parameters  = CacheContext.TagCache.GetTag<SkyAtmParameters>($@"levels\multi\s3d_turf\sky\s3d_turf"),
-                                Wind = null,
-                                CameraFX = CacheContext.TagCache.GetTag<CameraFxSettings>($@"levels\multi\s3d_turf\s3d_turf"),
-                                ScreenFX = null,
-                                GlobalLighting = CacheContext.TagCache.GetTag<ChocolateMountainNew>($@"levels\multi\s3d_turf\s3d_turf"),
-                                BackgroundSound = CacheContext.TagCache.GetTag<SoundLooping>($@"sound\levels\s3d_turf\s3d_turf_background_sound_0"),
-                            },
-                            new ForgeGlobalsDefinition.Sky()
-                            {
-                                Name = "The Pit",
-                                Flags = ForgeGlobalsDefinition.SkyFlags.None,
-                                Translation = new RealPoint3d(0f, 0f, 0f),
-                                Orientation = new RealEulerAngles3d(Angle.FromDegrees(0f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"levels\multi\cyberdyne\sky\sky"),
-                                Parameters  = CacheContext.TagCache.GetTag<SkyAtmParameters>($@"levels\multi\cyberdyne\sky\cyberdyne"),
-                                Wind = null,
-                                CameraFX = CacheContext.TagCache.GetTag<CameraFxSettings>($@"levels\multi\cyberdyne\cyberdyne"),
-                                ScreenFX = null,
-                                GlobalLighting = CacheContext.TagCache.GetTag<ChocolateMountainNew>($@"levels\multi\cyberdyne\cyberdyne"),
-                                BackgroundSound = CacheContext.TagCache.GetTag<SoundLooping>($@"sound\levels\cyberdyne\cyberdyne_main_hallway\cyberdyne_main_hallway"),
-                            },
-                            new ForgeGlobalsDefinition.Sky()
-                            {
-                                Name = "Narrows",
-                                Flags = ForgeGlobalsDefinition.SkyFlags.None,
-                                Translation = new RealPoint3d(0f, 0f, 0f),
-                                Orientation = new RealEulerAngles3d(Angle.FromDegrees(0f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"levels\multi\chill\sky\sky"),
-                                Parameters  = CacheContext.TagCache.GetTag<SkyAtmParameters>($@"levels\multi\chill\sky\chill"),
-                                Wind = null,
-                                CameraFX = CacheContext.TagCache.GetTag<CameraFxSettings>($@"levels\multi\chill\chill"),
-                                ScreenFX = null,
-                                GlobalLighting = CacheContext.TagCache.GetTag<ChocolateMountainNew>($@"levels\multi\chill\chill"),
-                                BackgroundSound = CacheContext.TagCache.GetTag<SoundLooping>($@"sound\levels\chill\chill\chill"),
-                            },
-                            new ForgeGlobalsDefinition.Sky()
-                            {
-                                Name = "Standoff",
-                                Flags = ForgeGlobalsDefinition.SkyFlags.None,
-                                Translation = new RealPoint3d(0f, 0f, 0f),
-                                Orientation = new RealEulerAngles3d(Angle.FromDegrees(0f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"levels\dlc\bunkerworld\sky\bunkerworld"),
-                                Parameters  = CacheContext.TagCache.GetTag<SkyAtmParameters>($@"levels\dlc\bunkerworld\sky\bunkerworld"),
-                                Wind = CacheContext.TagCache.GetTag<Wind>($@"levels\dlc\bunkerworld\wind_bunkerworld"),
-                                CameraFX = CacheContext.TagCache.GetTag<CameraFxSettings>($@"levels\dlc\bunkerworld\bunkerworld"),
-                                ScreenFX = null,
-                                GlobalLighting = null,
-                                BackgroundSound = CacheContext.TagCache.GetTag<SoundLooping>($@"sound\levels\dlc\bunkerworld\bunkerworld_ext\bunkerworld_ext"),
-                            },
-                            new ForgeGlobalsDefinition.Sky()
-                            {
-                                Name = "Last Resort",
-                                Flags = ForgeGlobalsDefinition.SkyFlags.None,
-                                Translation = new RealPoint3d(0f, 0f, 0f),
-                                Orientation = new RealEulerAngles3d(Angle.FromDegrees(0f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"levels\multi\zanzibar\sky\sky"),
-                                Parameters  = CacheContext.TagCache.GetTag<SkyAtmParameters>($@"levels\multi\zanzibar\sky\zanzibar"),
-                                Wind = CacheContext.TagCache.GetTag<Wind>($@"levels\multi\zanzibar\wind_zanzibar"),
-                                CameraFX = CacheContext.TagCache.GetTag<CameraFxSettings>($@"levels\multi\zanzibar\sky\zanzibar"),
-                                ScreenFX = null,
-                                GlobalLighting = CacheContext.TagCache.GetTag<ChocolateMountainNew>($@"levels\multi\zanzibar\zanzibar"),
-                                BackgroundSound = CacheContext.TagCache.GetTag<SoundLooping>($@"sound\levels\zanzibar\zanzibar_courtyard\zanzibar_courtyard"),
-                            },
-                            new ForgeGlobalsDefinition.Sky()
-                            {
-                                Name = "High Ground",
-                                Flags = ForgeGlobalsDefinition.SkyFlags.None,
-                                Translation = new RealPoint3d(0f, 0f, 0f),
-                                Orientation = new RealEulerAngles3d(Angle.FromDegrees(0f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"levels\multi\deadlock\sky\deadlock"),
-                                Parameters  = CacheContext.TagCache.GetTag<SkyAtmParameters>($@"levels\multi\deadlock\sky\deadlock"),
-                                Wind = CacheContext.TagCache.GetTag<Wind>($@"levels\multi\deadlock\wind_deadlock"),
-                                CameraFX = CacheContext.TagCache.GetTag<CameraFxSettings>($@"levels\multi\deadlock\deadlock"),
-                                ScreenFX = null,
-                                GlobalLighting = CacheContext.TagCache.GetTag<ChocolateMountainNew>($@"levels\multi\deadlock\deadlock"),
-                                BackgroundSound = CacheContext.TagCache.GetTag<SoundLooping>($@"sound\levels\deadlock\deadlock_air\deadlock_air"),
-                            },
-                            new ForgeGlobalsDefinition.Sky()
-                            {
-                                Name = "Sandtrap",
-                                Flags = ForgeGlobalsDefinition.SkyFlags.None,
-                                Translation = new RealPoint3d(0f, 0f, 0f),
-                                Orientation = new RealEulerAngles3d(Angle.FromDegrees(0f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
-                                Object = CacheContext.TagCache.GetTag<Scenery>($@"levels\multi\shrine\sky\sky"),
-                                Parameters  = CacheContext.TagCache.GetTag<SkyAtmParameters>($@"levels\multi\shrine\sky\shrine"),
-                                Wind = null,
-                                CameraFX = CacheContext.TagCache.GetTag<CameraFxSettings>($@"levels\multi\shrine\shrine"),
-                                ScreenFX = null,
-                                GlobalLighting = CacheContext.TagCache.GetTag<ChocolateMountainNew>($@"levels\multi\shrine\shrine"),
-                                BackgroundSound = CacheContext.TagCache.GetTag<SoundLooping>($@"sound\levels\shrine\desert_wind2\desert_wind2"),
-                            },
-                        };
+                        forg.FxObject = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\forge\fx_object");
+                        forg.FxLight = CacheContext.TagCache.GetTag<Crate>($@"objects\eldewrito\forge\light_object");
                         CacheContext.Serialize(stream, tag, forg);
+                    }
+                }
+            }
+        }
+
+        public void UpdateObjectVariants() 
+        {
+            using (var stream = Cache.OpenCacheReadWrite()) 
+            {
+                foreach (var tag in CacheContext.TagCache.NonNull()) 
+                {
+                    if (tag.IsInGroup("vehi") && tag.Name == $@"objects\vehicles\warthog\warthog_troop") 
+                    {
+                        var vehi = CacheContext.Deserialize<Vehicle>(stream, tag);
+                        vehi.DefaultModelVariant = CacheContext.StringTable.GetStringId($@"troop");
+                        CacheContext.Serialize(stream, tag, vehi);
+                    }
+
+                    if (tag.IsInGroup("vehi") && tag.Name == $@"objects\vehicles\warthog\warthog_no_turret")
+                    {
+                        var vehi = CacheContext.Deserialize<Vehicle>(stream, tag);
+                        vehi.DefaultModelVariant = CacheContext.StringTable.GetStringId($@"no_turret");
+                        CacheContext.Serialize(stream, tag, vehi);
+                    }
+
+                    if (tag.IsInGroup("vehi") && tag.Name == $@"objects\vehicles\warthog\warthog_wrecked")
+                    {
+                        var vehi = CacheContext.Deserialize<Vehicle>(stream, tag);
+                        vehi.DefaultModelVariant = CacheContext.StringTable.GetStringId($@"wrecked_turret");
+                        CacheContext.Serialize(stream, tag, vehi);
+                    }
+
+                    if (tag.IsInGroup("vehi") && tag.Name == $@"objects\vehicles\warthog\warthog_snow_gauss")
+                    {
+                        var vehi = CacheContext.Deserialize<Vehicle>(stream, tag);
+                        vehi.DefaultModelVariant = CacheContext.StringTable.GetStringId($@"gauss");
+                        CacheContext.Serialize(stream, tag, vehi);
+                    }
+
+                    if (tag.IsInGroup("vehi") && tag.Name == $@"objects\vehicles\warthog\warthog_snow_troop")
+                    {
+                        var vehi = CacheContext.Deserialize<Vehicle>(stream, tag);
+                        vehi.DefaultModelVariant = CacheContext.StringTable.GetStringId($@"troop");
+                        CacheContext.Serialize(stream, tag, vehi);
+                    }
+
+                    if (tag.IsInGroup("vehi") && tag.Name == $@"objects\vehicles\warthog\warthog_snow_no_turret")
+                    {
+                        var vehi = CacheContext.Deserialize<Vehicle>(stream, tag);
+                        vehi.DefaultModelVariant = CacheContext.StringTable.GetStringId($@"no_turret");
+                        CacheContext.Serialize(stream, tag, vehi);
+                    }
+
+                    if (tag.IsInGroup("vehi") && tag.Name == $@"objects\vehicles\warthog\warthog_snow_wrecked")
+                    {
+                        var vehi = CacheContext.Deserialize<Vehicle>(stream, tag);
+                        vehi.DefaultModelVariant = CacheContext.StringTable.GetStringId($@"wrecked_turret");
+                        CacheContext.Serialize(stream, tag, vehi);
+                    }
+
+                    if (tag.IsInGroup("vehi") && tag.Name == $@"objects\vehicles\wraith\wraith_anti_air")
+                    {
+                        var vehi = CacheContext.Deserialize<Vehicle>(stream, tag);
+                        vehi.DefaultModelVariant = CacheContext.StringTable.GetStringId($@"anti_air");
+                        CacheContext.Serialize(stream, tag, vehi);
+                    }
+
+                    if (tag.IsInGroup("vehi") && tag.Name == $@"objects\levels\multi\shrine\behemoth\behemoth_forge")
+                    {
+                        var vehi = CacheContext.Deserialize<Vehicle>(stream, tag);
+                        vehi.ObjectFlags = ObjectDefinitionFlags.None;
+                        vehi.VehicleFlags = Vehicle.VehicleFlagBits.NoFrictionWithDriver | Vehicle.VehicleFlagBits.CanTriggerAutomaticOpeningDoors | Vehicle.VehicleFlagBits.AiDriverEnable;
+                        CacheContext.Serialize(stream, tag, vehi);
+                    }
+
+                    if (tag.IsInGroup("bloc") && tag.Name == $@"objects\multi\teleporter_2way\teleporter_2way_vehicle") 
+                    {
+                        var bloc = CacheContext.Deserialize<Crate>(stream, tag);
+                        bloc.MultiplayerObject[0].TeleporterPassability = TeleporterPassabilityFlags.AllowLightLandVehicles | TeleporterPassabilityFlags.AllowHeavyLandVehicles | TeleporterPassabilityFlags.AllowFlyingVehicles;
+                        CacheContext.Serialize(stream, tag, bloc);
+                    }
+
+                    if (tag.IsInGroup("bloc") && tag.Name == $@"objects\multi\teleporter_2way\teleporter_2way_vehicle_only")
+                    {
+                        var bloc = CacheContext.Deserialize<Crate>(stream, tag);
+                        bloc.MultiplayerObject[0].TeleporterPassability = TeleporterPassabilityFlags.DisallowPlayers | TeleporterPassabilityFlags.AllowLightLandVehicles | TeleporterPassabilityFlags.AllowHeavyLandVehicles | TeleporterPassabilityFlags.AllowFlyingVehicles;
+                        CacheContext.Serialize(stream, tag, bloc);
+                    }
+
+                    if (tag.IsInGroup("bloc") && tag.Name == $@"objects\multi\teleporter_receiver\teleporter_receiver_vehicle")
+                    {
+                        var bloc = CacheContext.Deserialize<Crate>(stream, tag);
+                        bloc.MultiplayerObject[0].TeleporterPassability = TeleporterPassabilityFlags.AllowLightLandVehicles | TeleporterPassabilityFlags.AllowHeavyLandVehicles | TeleporterPassabilityFlags.AllowFlyingVehicles;
+                        CacheContext.Serialize(stream, tag, bloc);
+                    }
+
+                    if (tag.IsInGroup("bloc") && tag.Name == $@"objects\multi\teleporter_receiver\teleporter_receiver_vehicle_only")
+                    {
+                        var bloc = CacheContext.Deserialize<Crate>(stream, tag);
+                        bloc.MultiplayerObject[0].TeleporterPassability = TeleporterPassabilityFlags.DisallowPlayers | TeleporterPassabilityFlags.AllowLightLandVehicles | TeleporterPassabilityFlags.AllowHeavyLandVehicles | TeleporterPassabilityFlags.AllowFlyingVehicles;
+                        CacheContext.Serialize(stream, tag, bloc);
+                    }
+
+                    if (tag.IsInGroup("bloc") && tag.Name == $@"objects\multi\teleporter_sender\teleporter_sender_vehicle")
+                    {
+                        var bloc = CacheContext.Deserialize<Crate>(stream, tag);
+                        bloc.MultiplayerObject[0].TeleporterPassability = TeleporterPassabilityFlags.AllowLightLandVehicles | TeleporterPassabilityFlags.AllowHeavyLandVehicles | TeleporterPassabilityFlags.AllowFlyingVehicles;
+                        CacheContext.Serialize(stream, tag, bloc);
+                    }
+
+                    if (tag.IsInGroup("bloc") && tag.Name == $@"objects\multi\teleporter_sender\teleporter_sender_vehicle_only")
+                    {
+                        var bloc = CacheContext.Deserialize<Crate>(stream, tag);
+                        bloc.MultiplayerObject[0].TeleporterPassability = TeleporterPassabilityFlags.DisallowPlayers | TeleporterPassabilityFlags.AllowLightLandVehicles | TeleporterPassabilityFlags.AllowHeavyLandVehicles | TeleporterPassabilityFlags.AllowFlyingVehicles;
+                        CacheContext.Serialize(stream, tag, bloc);
+                    }
+
+                    if (tag.IsInGroup("bloc") && tag.Name == $@"objects\levels\multi\guardian\holy_light_guardian\holy_light_guardian") 
+                    {
+                        tag.Name = $@"objects\levels\multi\guardian\holy_light_guardian\holy_light_guardian_forge";
+                        CacheContext.SaveTagNames();
+
+                        var bloc = CacheContext.Deserialize<Crate>(stream, tag);
+                        bloc.MultiplayerObject = new List<GameObject.MultiplayerObjectBlock> 
+                        {
+                            new GameObject.MultiplayerObjectBlock(),
+                        };
+                        CacheContext.Serialize(stream, tag, bloc);
+                    }
+
+                    if (tag.IsInGroup("eqip") && tag.Name == $@"objects\equipment\tripmine\tripmine_forge") 
+                    {
+                        var eqip = CacheContext.Deserialize<Equipment>(stream, tag);
+                        eqip.MultiplayerObject[0].DefaultSpawnTime = 30;
+                        eqip.UseDuration = 1E+07f;
+                        eqip.ProximityMine[0].SelfDestructTime = 1E+07f;
+                        CacheContext.Serialize(stream, tag, eqip);
+                    }
+
+                    if (tag.IsInGroup("scen") && tag.Name == $@"objects\multi\spawning\initial_spawn_point") 
+                    {
+                        var scen = CacheContext.Deserialize<Scenery>(stream, tag);
+                        scen.MultiplayerObject[0].EngineFlags = GameEngineSubTypeFlags.All;
+                        CacheContext.Serialize(stream, tag, scen);
+                    }
+
+                    if (tag.IsInGroup("scen") && tag.Name == $@"objects\multi\spawning\respawn_zone")
+                    {
+                        var scen = CacheContext.Deserialize<Scenery>(stream, tag);
+                        scen.MultiplayerObject[0].EngineFlags = GameEngineSubTypeFlags.All;
+                        CacheContext.Serialize(stream, tag, scen);
                     }
                 }
             }
