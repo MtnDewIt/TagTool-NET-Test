@@ -1076,7 +1076,7 @@ namespace TagTool.Commands.Files
             //Do stuff.
 
 #if DEBUG
-            Console.WriteLine("Converting tag definition {0} for {1} to an assembly plugin at {3}\\{1}\\{2}.xml", tagGroup.ToString(), gameName, tagGroup.ToString().Replace('<', '_').Replace('>', '_'), pluginsDirectory);
+            Console.WriteLine("Converting tag definition {0} for {1} to an assembly plugin at {3}\\{1}\\{2}.xml", tagGroup.ToString(), gameName, tagGroup.ToString().Replace('<', '_').Replace('>', '_').Replace('*', '_'), pluginsDirectory);
 #endif
 
             AssemblyPluginField.ConvertTagStructure(tagType, cacheVersion, cachePlatform, out List <AssemblyPluginField> pluginFields, out int size);
@@ -1101,7 +1101,7 @@ namespace TagTool.Commands.Files
             if (!Directory.Exists(pluginsDirectory + "\\" + gameName))
                 Directory.CreateDirectory(pluginsDirectory + "\\" + gameName);
 
-            File.WriteAllLines(String.Format("{0}\\{1}\\{2}.xml", pluginsDirectory, gameName, tagGroup.ToString().Replace('<', '_').Replace('>', '_')), xmlNodesText.ToArray());
+            File.WriteAllLines(String.Format("{0}\\{1}\\{2}.xml", pluginsDirectory, gameName, tagGroup.ToString().Replace('<', '_').Replace('>', '_').Replace('*','_')), xmlNodesText.ToArray());
         }
     }
 }

@@ -182,7 +182,7 @@ namespace TagTool.Shaders.ShaderMatching
                 // match the options from the rmt2 tag names
                 int commonOptions = 0;
                 int score = 0;
-                for (int i = 0; i < sourceRmt2Desc.Options.Length; i++)
+                for (int i = 0; i < sourceRmt2Desc.Options.Length && i < destRmt2Desc.Options.Length; i++)
                 {
                     if (sourceRmt2Desc.Options[i] == destRmt2Desc.Options[i])
                     {

@@ -27,7 +27,7 @@ namespace TagTool.Commands.Tags
         public override object Execute(List<string> args)
         {
 
-            var newCommandContext = new BaseCacheCommand(Cache, CacheContext, ContextStack);
+            var newCommandContext = new BaseCacheHaloOnlineCommand(Cache, CacheContext, ContextStack);
 
             //newCommandContext.modifyStrings();
             //newCommandContext.Globals();
@@ -42,9 +42,10 @@ namespace TagTool.Commands.Tags
             //newCommandContext.ShieldImpactSetup();
             //newCommandContext.SoundEffectTemplateSetup();
             //newCommandContext.SquadTemplatesSetup();
-            //newCommandContext.applyUIPatches();
-            //newCommandContext.applyHUDPatches();
+            //newCommandContext.ApplyUIPatches();
+            //newCommandContext.ApplyHUDPatches();
             //newCommandContext.applyPlayerPatches();
+            //newCommandContext.MainMenuDependencies();
 
             return true;            
         }

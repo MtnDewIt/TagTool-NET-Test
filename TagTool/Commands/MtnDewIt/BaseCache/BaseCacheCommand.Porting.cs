@@ -76,6 +76,8 @@ namespace TagTool.Commands.Tags
             GenerateTag<ShieldImpact>($@"globals\global_shield_impact_settings");
             CommandRunner.Current.RunCommand($@"porttag globals\hs_damage.damage_effect");
             GenerateInputGlobals();
+            GenerateTag<ShieldImpact>($@"globals\elite_3p_shield_impact");
+            GenerateTag<ShieldImpact>($@"globals\elite_fp_shield_impact");
             GenerateTag<ShieldImpact>($@"globals\masterchief_3p_shield_impact");
             GenerateTag<ShieldImpact>($@"globals\masterchief_fp_shield_impact");
             CommandRunner.Current.RunCommand($@"porttag levels\shared\bitmaps\test_maps\cloud_1.bitmap");

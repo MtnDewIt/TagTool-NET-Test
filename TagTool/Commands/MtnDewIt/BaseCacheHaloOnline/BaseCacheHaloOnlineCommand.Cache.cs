@@ -16,13 +16,27 @@ namespace TagTool.Commands.Tags
 {
     partial class BaseCacheHaloOnlineCommand : Command 
     {
-        private Globals MatgDefinition { get; set; } = null;
-        private MultiplayerGlobals MulgDefinition { get; set; } = null;
-
         public Dictionary<int, CachedTagHaloOnline> ConvertedTags { get; } = new Dictionary<int, CachedTagHaloOnline>();
         public Dictionary<ResourceLocation, Dictionary<int, PageableResource>> CopiedResources { get; } = new Dictionary<ResourceLocation, Dictionary<int, PageableResource>>();
         public Dictionary<ResourceLocation, Stream> SourceResourceStreams = new Dictionary<ResourceLocation, Stream>();
         public Dictionary<ResourceLocation, Stream> DestinationResourceStreams = new Dictionary<ResourceLocation, Stream>();
+
+        public static readonly string[] ArmorTags = new[]
+        {
+            @"objects\characters\masterchief\mp_masterchief\armor\base",
+            @"objects\characters\masterchief\mp_masterchief\armor\mp_cobra",
+            @"objects\characters\masterchief\mp_masterchief\armor\mp_intruder",
+            @"objects\characters\masterchief\mp_masterchief\armor\mp_ninja",
+            @"objects\characters\masterchief\mp_masterchief\armor\mp_regulator",
+            @"objects\characters\masterchief\mp_masterchief\armor\mp_ryu",
+            @"objects\characters\masterchief\mp_masterchief\armor\mp_marathon",
+            @"objects\characters\masterchief\mp_masterchief\armor\mp_scout",
+            @"objects\characters\masterchief\mp_masterchief\armor\mp_odst",
+            @"objects\characters\masterchief\mp_masterchief\armor\mp_markv",
+            @"objects\characters\masterchief\mp_masterchief\armor\mp_rogue",
+            @"objects\characters\masterchief\mp_masterchief\armor\mp_bungie",
+            @"objects\characters\masterchief\mp_masterchief\armor\mp_katana",
+        };
         public object rebuildCache(string destCacheDirectory)
         {
             ConvertedTags.Clear();
@@ -30,19 +44,10 @@ namespace TagTool.Commands.Tags
 
             var destDirectory = new DirectoryInfo(destCacheDirectory);
 
-            if (!destDirectory.Exists)
-                destDirectory.Create();
+            CreateTagCache(destDirectory);
 
-            var destTagCache = CreateTagCache(destDirectory);
+            CacheContext.StringIdCacheFile.CopyTo($@"{destDirectory.FullName}\string_ids.dat");
 
-            var destStringIdPath = Path.Combine(destDirectory.FullName, CacheContext.StringIdCacheFile.Name);
-
-            if (File.Exists(destStringIdPath))
-                File.Delete(destStringIdPath);
-
-            CacheContext.StringIdCacheFile.CopyTo(destStringIdPath);
-
-            var srcResourceCaches = new Dictionary<ResourceLocation, ResourceCache>();
             var destResourceCaches = new Dictionary<ResourceLocation, ResourceCache>();
             var destCacheContext = new GameCacheHaloOnline(destDirectory);
 
@@ -58,7 +63,7 @@ namespace TagTool.Commands.Tags
                 CopiedResources[location] = new Dictionary<int, PageableResource>();
 
                 destResourceCaches[location] = CreateResourceCache(destDirectory, location);
-                SourceResourceStreams[location] = CacheContext.ResourceCaches.OpenCacheReadWrite(location);
+                SourceResourceStreams[location] = CacheContext.ResourceCaches.OpenCacheRead(location);
                 DestinationResourceStreams[location] = destCacheContext.ResourceCaches.OpenCacheReadWrite(location);
             }
 
@@ -75,6 +80,10 @@ namespace TagTool.Commands.Tags
                 var forg = new ForgeGlobalsDefinition();
                 destCacheContext.Serialize(destStream, forgTag, forg);
 
+                var mlstTag = destCacheContext.TagCache.AllocateTag<MapList>($@"ui\eldewrito\maps");
+                var mlst = new MapList();
+                destCacheContext.Serialize(destStream, mlstTag, mlst);
+
                 var cfgt = destCacheContext.Deserialize<CacheFileGlobalTags>(destStream, cfgtTag);
                 cfgt.GlobalTags = new List<TagReferenceBlock>()
                 {
@@ -90,6 +99,10 @@ namespace TagTool.Commands.Tags
                     {
                         Instance = destCacheContext.TagCache.GetTag<ForgeGlobalsDefinition>($@"multiplayer\forge_globals"),
                     },
+                    new TagReferenceBlock()
+                    {
+                        Instance = destCacheContext.TagCache.GetTag<MapList>($@"ui\eldewrito\maps"),
+                    },
                 };
                 destCacheContext.Serialize(destStream, cfgtTag, cfgt);
 
@@ -99,6 +112,19 @@ namespace TagTool.Commands.Tags
                         continue;
 
                     CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
+                }
+
+                foreach (var tag in CacheContext.TagCache.NonNull()) 
+                {
+                    if (tag.IsInGroup("chdt") && tag.Name == $@"ui\chud\spartan") 
+                    {
+                        CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
+                    }
+
+                    if (tag.IsInGroup("bitm") && tag.Name == $@"ui\halox\main_menu\halo3_logo_ui")
+                    {
+                        CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
+                    }
                 }
             }
 
@@ -113,12 +139,9 @@ namespace TagTool.Commands.Tags
             return true;
         }
 
-        // Creates a new tags.dat file (if guid does not equal the hex value specified below, the cache will not load)
+        // Creates a new tags.dat file
         public TagCache CreateTagCache(DirectoryInfo directory)
         {
-            if (!directory.Exists)
-                directory.Create();
-
             var file = new FileInfo(Path.Combine(directory.FullName, "tags.dat"));
 
             TagCache cache = null;
@@ -126,24 +149,21 @@ namespace TagTool.Commands.Tags
             using (var stream = file.Create())
             using (var writer = new BinaryWriter(stream))
             {
-                writer.Write(0);                  // padding
-                writer.Write(32);                 // table offset
-                writer.Write(0);                  // table entry count
-                writer.Write(0);                  // padding
-                writer.Write(0x01D0631BCC791704); // guid
-                writer.Write(0);                  // padding
-                writer.Write(0);                  // padding
+                writer.Write(0);
+                writer.Write(32);
+                writer.Write(0);
+                writer.Write(0);
+                writer.Write(0x01D0631BCC791704);
+                writer.Write(0);
+                writer.Write(0);
             }
 
             return cache;
         }
 
-        // Creates a new resource file (if guid does not equal the hex value specified below, the cache will not load)
+        // Creates a new resource file
         public ResourceCache CreateResourceCache(DirectoryInfo directory, ResourceLocation location)
         {
-            if (!directory.Exists)
-                directory.Create();
-
             var file = new FileInfo(Path.Combine(directory.FullName, ResourceCachesHaloOnline.ResourceCacheNames[location]));
 
             ResourceCache cache = null;
@@ -151,13 +171,13 @@ namespace TagTool.Commands.Tags
             using (var stream = file.Create())
             using (var writer = new BinaryWriter(stream))
             {
-                writer.Write(0);                  // padding
-                writer.Write(32);                 // table offset
-                writer.Write(0);                  // table entry count
-                writer.Write(0);                  // padding
-                writer.Write(0x01D0631BCC92931B); // guid
-                writer.Write(0);                  // padding
-                writer.Write(0);                  // padding
+                writer.Write(0);
+                writer.Write(32);
+                writer.Write(0);
+                writer.Write(0);
+                writer.Write(0x01D0631BCC92931B);
+                writer.Write(0);
+                writer.Write(0);
             }
 
             return cache;
@@ -168,7 +188,7 @@ namespace TagTool.Commands.Tags
             if (srcTag == null)
                 return null;
 
-            if (srcTag.IsInGroup("forg")) // Tag defintion does not support 0.6
+            if (srcTag.IsInGroup("forg"))
                 return null;
 
             if (srcTag.IsInGroup("wgtz"))
@@ -176,6 +196,17 @@ namespace TagTool.Commands.Tags
 
             if (srcTag.IsInGroup("gfxt"))
                 return null;
+
+            if (srcTag.IsInGroup("bipd"))
+                return null;
+
+            foreach (var tagName in ArmorTags) 
+            {
+                if (srcTag.IsInGroup("scen") && srcTag.Name == tagName) 
+                {
+                    return null;
+                }
+            }
 
             if (ConvertedTags.ContainsKey(srcTag.Index))
                 return ConvertedTags[srcTag.Index];
@@ -210,6 +241,8 @@ namespace TagTool.Commands.Tags
 
             var destContext = new HaloOnlineSerializationContext(destStream, destCacheContext, destTag);
             destCacheContext.Serializer.Serialize(destContext, tagData);
+
+            Console.WriteLine($@"{srcTag.Name}.{srcTag.Group.ToString()}");
 
             return destTag;
         }
@@ -362,7 +395,15 @@ namespace TagTool.Commands.Tags
         private void CopyScriptTagReferenceExpressionData(HsSyntaxNode expr)
         {
             var srcTagIndex = BitConverter.ToInt32(expr.Data, 0);
-            var destTagIndex = srcTagIndex == -1 ? -1 : ConvertedTags[srcTagIndex].Index;
+            int destTagIndex;
+            if (ConvertedTags.TryGetValue(srcTagIndex, out CachedTagHaloOnline tag))
+            {
+                destTagIndex = tag.Index;
+            }
+            else
+            {
+                destTagIndex = -1;
+            }
             var newData = BitConverter.GetBytes(destTagIndex);
             expr.Data = newData;
         }
@@ -403,20 +444,20 @@ namespace TagTool.Commands.Tags
         }
 
         // Retargets the cache (Its bascially the equivalent of the restart command)
-        public void retargetCache()
+        public void retargetCache(string cache)
         {
-            var newFileInfo = new FileInfo(outputDirectoryInfo.FullName + "\\tags.dat");
+            var newFileInfo = new FileInfo(cache + "\\tags.dat");
             Cache = GameCache.Open(newFileInfo);
             CacheContext = Cache as GameCacheHaloOnline;
             ContextStack.Push(TagCacheContextFactory.Create(ContextStack, Cache));
         }
 
         // Copies over required files (map files required for updating map files)
-        public void moveFontPackage()
+        public void moveFontPackage(string path)
         {
-            Directory.CreateDirectory($@"{outputDirectoryInfo.FullName}\fonts");
+            Directory.CreateDirectory($@"{path}\fonts");
 
-            File.Copy($@"{Program.TagToolDirectory}\Tools\BaseCache\Fonts\Upscaled\font_package.bin", $@"{outputDirectoryInfo.FullName}\fonts\font_package.bin");
+            File.Copy($@"{Program.TagToolDirectory}\Tools\BaseCache\Fonts\Upscaled_HO\font_package.bin", $@"{path}\fonts\font_package.bin");
         }
 
         public void SetCacheVersion(GameCacheHaloOnline cache, CacheVersion version)
@@ -441,7 +482,7 @@ namespace TagTool.Commands.Tags
             }
             else
             {
-                new TagToolWarning($@"Could not find tag: '{tagName}.{typeName}'. Assinging null tag instead");
+                new TagToolWarning($@"Could not find tag: '{tagName}.{typeName}'. Assigning null tag instead");
                 return null;
             }
         }

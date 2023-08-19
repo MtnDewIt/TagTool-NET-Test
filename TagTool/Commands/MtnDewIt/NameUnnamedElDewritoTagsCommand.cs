@@ -2950,7 +2950,7 @@ namespace TagTool.Commands.Tags
             { 0x0C4D, @"ui\chud\bitmaps\init_lines_vert_grid" }, //unsure about this (tag isn't in used in halo 3 or reach afaik)
             { 0x0C4E, @"ui\chud\animations\boot_sequence\wipe_boot_down" },
             { 0x0C4F, @"ui\chud\animations\boot_sequence\line_boot" },
-            { 0x0C50, @"ui\chud\bitmaps\init_lines" },
+            { 0x0C50, @"ui\chud\bitmaps\init_burst" },
             { 0x0C51, @"ui\chud\parallax_data\angle_large" }, //chud parallax data (name unknown, tag type is halo online specific)
             { 0x0C52, @"ui\chud\animations\vip_notify" },
             { 0x0C53, @"ui\chud\bitmaps\variant_items\vip_icon" },
@@ -3836,10 +3836,10 @@ namespace TagTool.Commands.Tags
             { 0x10C8, @"objects\weapons\rifle\smg\fp_smg\fp_smg" },
             { 0x10C9, @"objects\weapons\rifle\smg\shaders\smg_metal" },
             { 0x10CA, @"objects\weapons\rifle\smg\shaders\smg_rubber" },
-            { 0x10CB, @"objects\weapons\rifle\smg\bitmaps\smg" },
-            { 0x10CC, @"objects\weapons\rifle\smg\bitmaps\smg_bump" },
+            { 0x10CB, @"objects\weapons\rifle\smg\bitmaps\smg_new" }, // new added so silenced smg textures aren't broken (ED specific)
+            { 0x10CC, @"objects\weapons\rifle\smg\bitmaps\smg_new_bump" }, // new added so silenced smg textures aren't broken (ED specific)
             { 0x10CD, @"objects\weapons\rifle\smg\bitmaps\smg_control" },
-            { 0x10CE, @"objects\weapons\rifle\smg\bitmaps\smg_illum" },
+            { 0x10CE, @"objects\weapons\rifle\smg\bitmaps\smg_new_illum" }, // new added so silenced smg textures aren't broken (ED specific)
             { 0x10CF, @"shaders\shader_templates\_8_2_0_0_1_2_1_0_0_1_0" },
             { 0x10D0, @"shaders\shader_templates\_8_2_0_0_1_2_1_0_0_1_0" },
             { 0x10D1, @"shaders\shader_templates\_8_2_0_0_1_2_1_0_0_1_0" },
@@ -11108,7 +11108,7 @@ namespace TagTool.Commands.Tags
             { 0x34B7, @"levels\shared\decals\nature\algae\algae" },
             { 0x34B8, @"levels\shared\decals\human\military\datedecal" },
             { 0x34B9, @"sound\dsp_effects\reverbs\templates\mountains" },
-            { 0x34BA, @"sound\levels\riverworld\halo_ext\halo_ext_main_menu" },
+            { 0x34BA, @"sound\levels\riverworld\halo_ext\halo_ext" },
             { 0x34BB, @"sound\dsp_effects\reverbs\templates\stone_room" },
             { 0x34BC, @"sound\levels\riverworld\riverworld_interior\riverworld_interior" },
             { 0x34BD, @"sound\dsp_effects\reverbs\halo_3_presets\jay_stone_room" },
@@ -20117,7 +20117,7 @@ namespace TagTool.Commands.Tags
             { 0x5A80, @"objects\equipment\reactive_armor_equipment\fx\equipment_icon" },
             { 0x5A81, @"objects\equipment\vision_equipment\bitmaps\equipment_icon" },
             { 0x5A82, @"objects\equipment\vision_equipment\fx\equipment_icon" },
-            { 0x5A83, @"ms30\objects\gear\human\industrial\sawhorse\sawhorse" },
+            { 0x5A83, @"objects\gear\human\industrial\sawhorse\sawhorse_light" },
             { 0x5A84, @"multiplayer\game_variant_settings\respawn_options\respawn_spectating" },
             { 0x5A85, @"objects\multi\models\ff_inital_camera\ff_inital_camera" },
             { 0x5A86, @"objects\multi\generic\mp_cinematic_camera" },

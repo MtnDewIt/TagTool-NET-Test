@@ -896,7 +896,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Name = CacheContext.StringTable.GetStringId("hologram"),
                                         Object = GetCachedTag<Equipment>(@"objects\equipment\hologram_equipment\hologram_equipment"),
-                                        Type = 12,
+                                        Type = 14,
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                                     {
@@ -9326,7 +9326,7 @@ namespace TagTool.Commands.Tags
                                         DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
                                         DisplayString = CacheContext.StringTable.GetStringId($@"jugg_game_start"),
                                         SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
-                                        //EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\juggernaut\juggernaut"),
+                                        EnglishSound = GetCachedTag<Sound>($@"sound\dialog\multiplayer_en\juggernaut\juggernaut"),
                                     },
                                     new MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock
                                     {

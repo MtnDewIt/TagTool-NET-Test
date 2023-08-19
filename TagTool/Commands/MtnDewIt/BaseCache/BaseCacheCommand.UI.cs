@@ -4001,7 +4001,7 @@ namespace TagTool.Commands.Tags
                                                 },
                                                 Bitmap = GetCachedTag<Bitmap>($@"ui\halox\pregame_lobby\gametypes_large_ui"),
                                                 BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
-                                                InitialSpriteFrame = 1,
+                                                InitialSpriteFrame = 5,
                                             },
                                         },
                                     },

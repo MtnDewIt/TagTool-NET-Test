@@ -7384,24 +7384,22 @@ namespace TagTool.Commands.Tags
                         {
                             new Globals.PlayerRepresentationBlock()
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"masterchief"),
-                                FirstPersonHands = GetCachedTag<RenderModel>($@"objects\characters\masterchief\mp_masterchief\fp\fp"),
-                                FirstPersonBody = GetCachedTag<RenderModel>($@"objects\characters\masterchief\mp_masterchief\fp_body\fp_body"),
-                                ThirdPersonUnit = GetCachedTag<Biped>($@"objects\characters\masterchief\mp_masterchief\mp_masterchief"),
-                                //FirstPersonHands = GetCachedTag<RenderModel>($@"objects\characters\masterchief\fp\fp"),
-                                //FirstPersonBody = GetCachedTag<RenderModel>($@"objects\characters\masterchief\fp_body\fp_body"),
-                                //ThirdPersonUnit = GetCachedTag<Biped>($@"objects\characters\masterchief\masterchief"),
-                                //BinocularsZoomInSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\binoculars\binocs_in_click"),
+                                Name = CacheContext.StringTable.GetStringId($@"spartan"),
+                                FirstPersonHands = GetCachedTag<RenderModel>($@"objects\characters\masterchief\fp\fp"),
+                                FirstPersonBody = GetCachedTag<RenderModel>($@"objects\characters\masterchief\fp_body\fp_body"),
+                                ThirdPersonUnit = GetCachedTag<Biped>($@"objects\characters\masterchief\masterchief"),
+                                BinocularsZoomInSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\binoculars\binocs_in_click"),
                                 BinocularsZoomOutSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\binoculars\binocs_out_click"),
                             },
                             new Globals.PlayerRepresentationBlock()
                             {
                                 Name = CacheContext.StringTable.GetStringId($@"dervish"),
-                                //FirstPersonHands = GetCachedTag<RenderModel>($@"objects\characters\dervish\fp\fp"),
-                                //FirstPersonBody = GetCachedTag<RenderModel>($@"objects\characters\dervish\fp_body\fp_body"),
-                                //ThirdPersonUnit = GetCachedTag<Biped>($@"objects\characters\dervish\dervish"),
-                                //BinocularsZoomInSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\binoculars\binocs_in_click"),
+                                FirstPersonHands = GetCachedTag<RenderModel>($@"objects\characters\dervish\fp\fp"),
+                                FirstPersonBody = GetCachedTag<RenderModel>($@"objects\characters\dervish\fp_body\fp_body"),
+                                ThirdPersonUnit = GetCachedTag<Biped>($@"objects\characters\dervish\dervish"),
+                                BinocularsZoomInSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\binoculars\binocs_in_click"),
                                 BinocularsZoomOutSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\binoculars\binocs_out_click"),
+                                Flags = 1,
                             },
                             new Globals.PlayerRepresentationBlock()
                             {
@@ -7415,9 +7413,9 @@ namespace TagTool.Commands.Tags
                             new Globals.PlayerRepresentationBlock()
                             {
                                 Name = CacheContext.StringTable.GetStringId($@"mp_elite"),
-                                //FirstPersonHands = GetCachedTag<RenderModel>($@"objects\characters\elite\mp_elite\fp\fp"),
-                                //FirstPersonBody = GetCachedTag<RenderModel>($@"objects\characters\elite\mp_elite\fp_body\fp_body"),
-                                //ThirdPersonUnit = GetCachedTag<Biped>($@"objects\characters\elite\mp_elite\mp_elite"),
+                                FirstPersonHands = GetCachedTag<RenderModel>($@"objects\characters\elite\mp_elite\fp\fp"),
+                                FirstPersonBody = GetCachedTag<RenderModel>($@"objects\characters\elite\mp_elite\fp_body\fp_body"),
+                                ThirdPersonUnit = GetCachedTag<Biped>($@"objects\characters\elite\mp_elite\mp_elite"),
                                 BinocularsZoomInSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\binoculars\binocs_in_click"),
                                 BinocularsZoomOutSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\binoculars\binocs_out_click"),
                                 Flags = 1,
@@ -7425,9 +7423,9 @@ namespace TagTool.Commands.Tags
                             new Globals.PlayerRepresentationBlock()
                             {
                                 Name = CacheContext.StringTable.GetStringId($@"sp_elite"),
-                                //FirstPersonHands = GetCachedTag<RenderModel>($@"objects\characters\elite\fp_arms\fp_arms"),
-                                //FirstPersonBody = GetCachedTag<RenderModel>($@"objects\characters\elite\fp_body\fp_body"),
-                                //ThirdPersonUnit = GetCachedTag<Biped>($@"objects\characters\elite\elite_sp"),
+                                FirstPersonHands = GetCachedTag<RenderModel>($@"objects\characters\elite\fp_arms\fp_arms"),
+                                FirstPersonBody = GetCachedTag<RenderModel>($@"objects\characters\elite\fp_body\fp_body"),
+                                ThirdPersonUnit = GetCachedTag<Biped>($@"objects\characters\elite\elite_sp"),
                                 BinocularsZoomInSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\binoculars\binocs_in_click"),
                                 BinocularsZoomOutSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\binoculars\binocs_out_click"),
                                 Flags = 1,
@@ -7443,17 +7441,39 @@ namespace TagTool.Commands.Tags
                             new Globals.PlayerCharacterType()
                             {
                                 Name = CacheContext.StringTable.GetStringId($@"masterchief"),
+                                Flags = TagTool.Tags.Definitions.Globals.PlayerCharacterType.FlagsValue.None,
+                                PlayerInformation = 0,
+                                PlayerControl = 0,
                                 CampaignRepresentation = 0,
                                 MultiplayerRepresentation = 2,
                                 MultiplayerArmorCustomization = 0,
+                                ChudGlobals = 0,
+                                FirstPersonInterface = 0,
                             },
                             new Globals.PlayerCharacterType()
                             {
                                 Name = CacheContext.StringTable.GetStringId($@"dervish"),
+                                Flags = TagTool.Tags.Definitions.Globals.PlayerCharacterType.FlagsValue.None,
+                                PlayerInformation = 1,
+                                PlayerControl = 1,
                                 CampaignRepresentation = 1,
                                 MultiplayerRepresentation = 3,
                                 MultiplayerArmorCustomization = 1,
+                                ChudGlobals = 1,
+                                FirstPersonInterface = 1,
                             },
+                            new Globals.PlayerCharacterType()
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"monitor"),
+                                Flags = TagTool.Tags.Definitions.Globals.PlayerCharacterType.FlagsValue.None,
+                                PlayerInformation = 0,
+                                PlayerControl = 0,
+                                CampaignRepresentation = 5,
+                                MultiplayerRepresentation = 5,
+                                MultiplayerArmorCustomization = 0,
+                                ChudGlobals = 2,
+                                FirstPersonInterface = 0,
+                            }
                         };
                         matg.FallDamage = new List<Globals.FallingDamageBlock>()
                         {

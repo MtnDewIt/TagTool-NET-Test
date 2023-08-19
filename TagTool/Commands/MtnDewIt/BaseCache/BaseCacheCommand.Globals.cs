@@ -7326,7 +7326,7 @@ namespace TagTool.Commands.Tags
                                 CampaignRepresentation = 1,
                                 MultiplayerRepresentation = 3,
                                 MultiplayerArmorCustomization = 1,
-                                ChudGlobals = 0,
+                                ChudGlobals = 1,
                                 FirstPersonInterface = 1,
                             },
                             new Globals.PlayerCharacterType()

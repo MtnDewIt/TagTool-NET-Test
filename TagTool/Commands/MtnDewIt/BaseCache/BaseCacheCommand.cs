@@ -133,9 +133,8 @@ namespace TagTool.Commands.Tags
         {
             ho_cache = GameCache.Open($@"{CacheContext.Directory.FullName}\mainmenu.map");
 
+            // TODO: Have it name ED tags automatically (Shit breaks if tag lists aren't up to date)
             eldewritoDirectoryInfo = getDirectoryInfo(eldewritoDirectoryInfo, "ElDewrito 0.6.1");
-
-            updateElDewritoTagNames();
 
             ed_cache = GameCache.Open($@"{eldewritoDirectoryInfo.FullName}\mainmenu.map");
 
@@ -232,13 +231,6 @@ namespace TagTool.Commands.Tags
             }
 
             return directoryInfo;
-        }
-
-        public void updateElDewritoTagNames() 
-        {
-            retargetCache(eldewritoDirectoryInfo.FullName);
-            CommandRunner.Current.RunCommand($@"nameunnamedeldewritotags");
-            ContextStack.Pop();
         }
     }
 }
