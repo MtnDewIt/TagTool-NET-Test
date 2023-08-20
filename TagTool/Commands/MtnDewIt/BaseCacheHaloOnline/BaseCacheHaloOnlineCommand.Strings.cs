@@ -82,6 +82,7 @@ namespace TagTool.Commands.Tags
                         var unic = CacheContext.Deserialize<MultilingualUnicodeStringList>(stream, tag);
                         AddString(unic, "controls_description", "Customize your settings to your personal preferences.");
                         AddString(unic, "controls_settings", "ED SETTINGS");
+                        AddString(unic, "display_description", "Customize your screen settings to decide how you want subtitles to be displayed.");
                         CacheContext.Serialize(stream, tag, unic);
                     }
 

@@ -1078,6 +1078,159 @@ namespace TagTool.Commands.Tags
                         CacheContext.Serialize(stream, tag, dsrc);
                     }
 
+                    if (tag.IsInGroup("dsrc") && tag.Name == $@"ui\halox\start_menu\panes\settings\sidebar_items") 
+                    {
+                        var dsrc = CacheContext.Deserialize<GuiDatasourceDefinition>(stream, tag);
+                        dsrc.Name = CacheContext.StringTable.GetStringId($@"sidebar_items");
+                        dsrc.Elements = new List<GuiDatasourceDefinition.DatasourceElementBlock>
+                        {
+                            new GuiDatasourceDefinition.DatasourceElementBlock
+                            {
+                                StringidValues = new List<GuiDatasourceDefinition.DatasourceElementBlock.StringidValue>
+                                {
+                                    new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
+                                    {
+                                        Name = CacheContext.StringTable.GetStringId($@"name"),
+                                        Value = CacheContext.StringTable.GetStringId($@"controls_settings"),
+                                    },
+                                    new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
+                                    {
+                                        Name = CacheContext.StringTable.GetStringId($@"display_group"),
+                                        Value = CacheContext.StringTable.GetStringId($@"controls_settings"),
+                                    },
+                                    new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
+                                    {
+                                        Name = CacheContext.StringTable.GetStringId($@"target"),
+                                        Value = CacheContext.StringTable.GetStringId($@"start_menu_settings_controls"),
+                                    },
+                                },
+                            },
+                            new GuiDatasourceDefinition.DatasourceElementBlock
+                            {
+                                StringidValues = new List<GuiDatasourceDefinition.DatasourceElementBlock.StringidValue>
+                                {
+                                    new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
+                                    {
+                                        Name = CacheContext.StringTable.GetStringId($@"name"),
+                                        Value = CacheContext.StringTable.GetStringId($@"display_settings"),
+                                    },
+                                    new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
+                                    {
+                                        Name = CacheContext.StringTable.GetStringId($@"display_group"),
+                                        Value = CacheContext.StringTable.GetStringId($@"display_settings"),
+                                    },
+                                    new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
+                                    {
+                                        Name = CacheContext.StringTable.GetStringId($@"target"),
+                                        Value = CacheContext.StringTable.GetStringId($@"start_menu_settings_display"),
+                                    },
+                                },
+                            },
+                        };
+                        CacheContext.Serialize(stream, tag, dsrc);
+                    }
+
+                    if (tag.IsInGroup("dsrc") && tag.Name == $@"ui\halox\start_menu\panes\settings_display\sidebar_items")
+                    {
+                        var dsrc = CacheContext.Deserialize<GuiDatasourceDefinition>(stream, tag);
+                        dsrc.Name = CacheContext.StringTable.GetStringId($@"sidebar_items");
+                        dsrc.Elements = new List<GuiDatasourceDefinition.DatasourceElementBlock>
+                        {
+                            new GuiDatasourceDefinition.DatasourceElementBlock
+                            {
+                                StringidValues = new List<GuiDatasourceDefinition.DatasourceElementBlock.StringidValue>
+                                {
+                                    new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
+                                    {
+                                        Name = CacheContext.StringTable.GetStringId($@"name"),
+                                        Value = CacheContext.StringTable.GetStringId($@"display_subtitles"),
+                                    },
+                                    new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
+                                    {
+                                        Name = CacheContext.StringTable.GetStringId($@"display_group"),
+                                        Value = CacheContext.StringTable.GetStringId($@"display_subtitles"),
+                                    },
+                                    new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
+                                    {
+                                        Name = CacheContext.StringTable.GetStringId($@"spinner"),
+                                        Value = CacheContext.StringTable.GetStringId($@"display_subtitles"),
+                                    },
+                                    new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
+                                    {
+                                        Name = CacheContext.StringTable.GetStringId($@"description"),
+                                        Value = CacheContext.StringTable.GetStringId($@"display_setting_description"),
+                                    },
+                                },
+                            },
+                        };
+                        CacheContext.Serialize(stream, tag, dsrc);
+                    }
+
+                    if (tag.IsInGroup("dsrc") && tag.Name == $@"ui\halox\start_menu\panes\settings_display\spinner_display_subtitles") 
+                    {
+                        var dsrc = CacheContext.Deserialize<GuiDatasourceDefinition>(stream, tag);
+                        dsrc.Name = CacheContext.StringTable.GetStringId($@"display_subtitles");
+                        dsrc.Elements = new List<GuiDatasourceDefinition.DatasourceElementBlock>
+                        {
+                            new GuiDatasourceDefinition.DatasourceElementBlock
+                            {
+                                IntegerValues = new List<GuiDatasourceDefinition.DatasourceElementBlock.IntegerValue>
+                                {
+                                    new GuiDatasourceDefinition.DatasourceElementBlock.IntegerValue
+                                    {
+                                        Name = CacheContext.StringTable.GetStringId($@"value"),
+                                        Value = 0,
+                                    },
+                                },
+                                StringidValues = new List<GuiDatasourceDefinition.DatasourceElementBlock.StringidValue>
+                                {
+                                    new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
+                                    {
+                                        Name = CacheContext.StringTable.GetStringId($@"name"),
+                                        Value = CacheContext.StringTable.GetStringId($@"display_subtitles_on"),
+                                    },
+                                    new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
+                                    {
+                                        Name = CacheContext.StringTable.GetStringId($@"description"),
+                                        Value = CacheContext.StringTable.GetStringId($@"display_subtitles_on_help"),
+                                    },
+                                },
+                            },
+                            new GuiDatasourceDefinition.DatasourceElementBlock
+                            {
+                                IntegerValues = new List<GuiDatasourceDefinition.DatasourceElementBlock.IntegerValue>
+                                {
+                                    new GuiDatasourceDefinition.DatasourceElementBlock.IntegerValue
+                                    {
+                                        Name = CacheContext.StringTable.GetStringId($@"value"),
+                                        Value = 1,
+                                    },
+                                },
+                                StringidValues = new List<GuiDatasourceDefinition.DatasourceElementBlock.StringidValue>
+                                {
+                                    new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
+                                    {
+                                        Name = CacheContext.StringTable.GetStringId($@"name"),
+                                        Value = CacheContext.StringTable.GetStringId($@"display_subtitles_off"),
+                                    },
+                                    new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
+                                    {
+                                        Name = CacheContext.StringTable.GetStringId($@"description"),
+                                        Value = CacheContext.StringTable.GetStringId($@"display_subtitles_off_help"),
+                                    },
+                                },
+                            },
+                        };
+                        CacheContext.Serialize(stream, tag, dsrc);
+                    }
+
+                    if (tag.IsInGroup("scn3") && tag.Name == $@"ui\halox\start_menu\panes\settings_display\start_menu_settings_display") 
+                    {
+                        var scn3 = CacheContext.Deserialize<GuiScreenWidgetDefinition>(stream, tag);
+                        scn3.GroupWidgets[1].Definition.TextWidgets[0].Definition.GuiRenderBlock.Bounds720p = new Rectangle2d(147, 65, 422, 603);
+                        CacheContext.Serialize(stream, tag, scn3);
+                    }
+
 
 
                     if (tag.IsInGroup("dsrc") && tag.Name == $@"ui\halox\pregame_lobby\lobby_list_campaign")
@@ -4045,7 +4198,7 @@ namespace TagTool.Commands.Tags
                                         AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_list_name"),
                                     },
                                     CustomFont = WidgetFontValue.BodyText,
-                                }
+                                },
                             },
                             new TextWidget()
                             {
@@ -4062,7 +4215,7 @@ namespace TagTool.Commands.Tags
                                     ValueOverrideList = CacheContext.StringTable.GetStringId("player_name"),
                                     ValueIdentifier = CacheContext.StringTable.GetStringId("player_name"),
                                     CustomFont = WidgetFontValue.BodyText,
-                                }
+                                },
                             },
                             new TextWidget()
                             {
@@ -4072,7 +4225,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Name = CacheContext.StringTable.GetStringId("player_found"),
                                     },
-                                }
+                                },
                             },
                             new TextWidget()
                             {
@@ -4088,7 +4241,7 @@ namespace TagTool.Commands.Tags
                                     },
                                     ValueIdentifier = CacheContext.StringTable.GetStringId("service_tag"),
                                     CustomFont = WidgetFontValue.BodyText,
-                                }
+                                },
                             },
                         };
                         skn3.BitmapWidgets = new List<BitmapWidget>()
@@ -4107,7 +4260,7 @@ namespace TagTool.Commands.Tags
                                     },
                                     Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\roster\roster_unfocused_ui"),
                                     BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
-                                }
+                                },
                             },
                             new BitmapWidget()
                             {
@@ -4123,7 +4276,7 @@ namespace TagTool.Commands.Tags
                                     },
                                     Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\roster\roster_focused_ui"),
                                     BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
-                                }
+                                },
                             },
                             new BitmapWidget()
                             {
@@ -4139,7 +4292,7 @@ namespace TagTool.Commands.Tags
                                     },
                                     Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\emblems"),
                                     BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
-                                }
+                                },
                             },
                             new BitmapWidget()
                             {
@@ -4155,7 +4308,7 @@ namespace TagTool.Commands.Tags
                                     },
                                     Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\emblems"),
                                     BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
-                                }
+                                },
                             },
                             new BitmapWidget()
                             {
@@ -4165,7 +4318,7 @@ namespace TagTool.Commands.Tags
                                     {
                                         Name = CacheContext.StringTable.GetStringId("skill_level"),
                                     },
-                                }
+                                },
                             },
                             new BitmapWidget()
                             {
@@ -4175,37 +4328,55 @@ namespace TagTool.Commands.Tags
                                     {
                                         Name = CacheContext.StringTable.GetStringId("skill_level_hilite"),
                                     },
-                                }
+                                },
                             },
                             new BitmapWidget()
                             {
                                 Definition = new GuiBitmapWidgetDefinition()
                                 {
+                                    Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling | GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.ScaleToFitBounds,
                                     GuiRenderBlock = new GuiDefinition()
                                     {
                                         Name = CacheContext.StringTable.GetStringId("experience"),
+                                        RenderDepthBias = 88,
+                                        Bounds720p = new Rectangle2d(3, 296, 35, 318),
+                                        AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\rating_list_bitmap"),
                                     },
-                                }
+                                    Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\roster\exp_med_ui"),
+                                    BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
+                                },
                             },
                             new BitmapWidget()
                             {
                                 Definition = new GuiBitmapWidgetDefinition()
                                 {
+                                    Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling | GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.ScaleToFitBounds,
                                     GuiRenderBlock = new GuiDefinition()
                                     {
                                         Name = CacheContext.StringTable.GetStringId("experience_hilite"),
+                                        RenderDepthBias = 98,
+                                        Bounds720p = new Rectangle2d(0, 295, 39, 322),
+                                        AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\rating_hilite"),
                                     },
-                                }
+                                    Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\roster\exp_med_ui"),
+                                    BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
+                                },
                             },
                             new BitmapWidget()
                             {
                                 Definition = new GuiBitmapWidgetDefinition()
                                 {
+                                    Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling,
                                     GuiRenderBlock = new GuiDefinition()
                                     {
                                         Name = CacheContext.StringTable.GetStringId("ring_of_light"),
+                                        RenderDepthBias = 85,
+                                        Bounds720p = new Rectangle2d(3, -82, 0, 0),
+                                        AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\roster_fade"),
                                     },
-                                }
+                                    Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\roster\ringspeak_ui"),
+                                    BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
+                                },
                             },
                             new BitmapWidget()
                             {
@@ -4215,17 +4386,23 @@ namespace TagTool.Commands.Tags
                                     {
                                         Name = CacheContext.StringTable.GetStringId("player_found"),
                                     },
-                                }
+                                },
                             },
                             new BitmapWidget()
                             {
                                 Definition = new GuiBitmapWidgetDefinition()
                                 {
+                                    Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling,
                                     GuiRenderBlock = new GuiDefinition()
                                     {
                                         Name = CacheContext.StringTable.GetStringId("rank_tray"),
+                                        RenderDepthBias = 85,
+                                        Bounds720p = new Rectangle2d(0, 253, 0, 0),
+                                        AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_list_bitmap"),
                                     },
-                                }
+                                    Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\roster\rank_tray_ui"),
+                                    BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
+                                },
                             },
                             new BitmapWidget()
                             {
@@ -4234,8 +4411,14 @@ namespace TagTool.Commands.Tags
                                     GuiRenderBlock = new GuiDefinition()
                                     {
                                         Name = CacheContext.StringTable.GetStringId("rank_tray_hilite"),
+                                        RenderDepthBias = 95,
+                                        Bounds720p = new Rectangle2d(-10, 253, 0, 0),
+                                        AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_hilite"),
                                     },
-                                }
+                                    Bitmap = GetCachedTag<Bitmap>($@"ui\halox\common\roster\rank_tray_ui"),
+                                    BlendMethod = GuiBitmapWidgetDefinition.BlendMethodValue.AlphaBlend,
+                                    InitialSpriteFrame = 1,
+                                },
                             },
                         };
                         CacheContext.Serialize(stream, tag, skn3);
