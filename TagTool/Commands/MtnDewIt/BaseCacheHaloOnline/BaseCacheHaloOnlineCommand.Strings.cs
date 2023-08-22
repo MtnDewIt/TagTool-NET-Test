@@ -126,15 +126,15 @@ namespace TagTool.Commands.Tags
                     {
                         var unic = CacheContext.Deserialize<MultilingualUnicodeStringList>(stream, tag);
                         AddString(unic, "advanced_options", @"\UE102 Edit Game Options");
-                        AddString(unic, "campaign_difficulty", "<lobby-campaign-level/> |non <lobby-campaign-difficulty/>");
+                        AddString(unic, "campaign_difficulty", "<lobby-campaign-level/> on <lobby-campaign-difficulty/>");
                         AddString(unic, "game_setup", "GAME SETUP");
                         AddString(unic, "header_survival", "FIREFIGHT LOBBY");
-                        AddString(unic, "mapeditor_map_name", "Edit Objects |non <lobby-mapeditor-map/>");
+                        AddString(unic, "mapeditor_map_name", "Edit Objects on <lobby-mapeditor-map/>");
                         AddString(unic, "metagame_off_description", "Scoring Off");
                         AddString(unic, "metagame_on_description", "Free for All Scoring");
                         AddString(unic, "metagame_on_group_description", "Team Scoring");
                         AddString(unic, "metagame_scoring", "SCORING: <metagame-scoring/>");
-                        AddString(unic, "multiplayer_game_name", "<lobby-multiplayer-game/> |non <lobby-multiplayer-map/>");
+                        AddString(unic, "multiplayer_game_name", "<lobby-multiplayer-game/> on <lobby-multiplayer-map/>");
                         AddString(unic, "privacy_offline", "\r\nThis party is local to your PC. To play with others, select HOST SETTINGS and then choose Online.");
                         AddString(unic, "privacy_system_link", "\r\nThis party is open for others to join.");
                         AddString(unic, "scoring_title", "SCORING:");
@@ -146,7 +146,7 @@ namespace TagTool.Commands.Tags
                         AddString(unic, "start_survival_coop", "START FIREFIGHT");
                         AddString(unic, "start_survival_solo", "START FIREFIGHT");
                         AddString(unic, "status_ready_leader", "Ready |n<lobby-privacy/>");
-                        AddString(unic, "survival_difficulty", "<lobby-campaign-level/> |non <lobby-campaign-difficulty/>");
+                        AddString(unic, "survival_difficulty", "<lobby-campaign-level/> on <lobby-campaign-difficulty/>");
                         AddString(unic, "switch_selected_mod", "MOD: <eldewrito-mod/>");
                         CacheContext.Serialize(stream, tag, unic);
                     }
