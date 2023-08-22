@@ -6890,7 +6890,7 @@ namespace TagTool.Commands.Tags
                                 CameraFX = GetCachedTag<CameraFxSettings>($@"levels\multi\s3d_avalanche\s3d_avalanche"),
                                 ScreenFX = null,
                                 GlobalLighting = GetCachedTag<ChocolateMountainNew>($@"levels\multi\s3d_avalanche\s3d_avalanche"),
-                                BackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_avalanche\desert_wind\desert_wind"),
+                                BackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_diamondback\amb_desert_wind\amb_desert_wind"),
                             },
                             new ForgeGlobalsDefinition.Sky()
                             {
