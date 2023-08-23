@@ -1295,6 +1295,758 @@ namespace TagTool.Commands.Tags
 
                         CacheContext.Serialize(stream, tag, scnr);
                     }
+
+                    if (tag.IsInGroup("scnr") && tag.Name == $@"levels\multi\guardian\guardian")
+                    {
+                        var scnr = CacheContext.Deserialize<Scenario>(stream, tag);
+                        scnr.SandboxVehicles = null;
+                        scnr.SandboxWeapons = null;
+                        scnr.SandboxEquipment = null;
+                        scnr.SandboxScenery = null;
+                        scnr.SandboxTeleporters = null;
+                        scnr.SandboxGoalObjects = null;
+                        scnr.SandboxSpawning = null;
+                        scnr.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>
+                        {
+                            new Scenario.PlayerStartingProfileBlock
+                            {
+                                Name = "start_assault",
+                                PrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                                PrimaryRoundsLoaded = 32,
+                                PrimaryRoundsTotal = 96,
+                                SecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
+                                SecondaryRoundsLoaded = 8,
+                                SecondaryRoundsTotal = 24,
+                                StartingFragGrenadeCount = 2,
+                                EditorFolder = -1,
+                            },
+                        };
+                        scnr.AcousticsPalette = new List<ScenarioStructureBsp.AcousticsPaletteBlock>
+                        {
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"gaurdian"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\cpaul_jungle4"),
+                                ReverbCutoffDistance = 1,
+                                ReverbInterpolationSpeed = 0.2f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\gaurdian\gaurdian\gaurdian"),
+                                AmbienceCutoffDistance = 3,
+                                AmbienceInterpolationSpeed = 0.5f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"gaurdian_inside"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\jay_hallway"),
+                                ReverbCutoffDistance = 1,
+                                ReverbInterpolationSpeed = 0.2f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\gaurdian\gaurdian_half_inside\gaurdian_half_inside"),
+                                AmbienceCutoffDistance = 3,
+                                AmbienceInterpolationSpeed = 0.5f,
+                            },
+                        };
+                        CacheContext.Serialize(stream, tag, scnr);
+                    }
+
+                    if (tag.IsInGroup("scnr") && tag.Name == $@"levels\multi\riverworld\riverworld")
+                    {
+                        var scnr = CacheContext.Deserialize<Scenario>(stream, tag);
+                        scnr.SandboxVehicles = null;
+                        scnr.SandboxWeapons = null;
+                        scnr.SandboxEquipment = null;
+                        scnr.SandboxScenery = null;
+                        scnr.SandboxTeleporters = null;
+                        scnr.SandboxGoalObjects = null;
+                        scnr.SandboxSpawning = null;
+                        scnr.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>
+                        {
+                            new Scenario.PlayerStartingProfileBlock
+                            {
+                                Name = "start_assault",
+                                PrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                                PrimaryRoundsLoaded = 32,
+                                PrimaryRoundsTotal = 96,
+                                SecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
+                                SecondaryRoundsLoaded = 8,
+                                SecondaryRoundsTotal = 24,
+                                StartingFragGrenadeCount = 2,
+                                EditorFolder = -1,
+                            },
+                        };
+                        scnr.AcousticsPalette = new List<ScenarioStructureBsp.AcousticsPaletteBlock>
+                        {
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"halo_exterior"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
+                                ReverbCutoffDistance = 1,
+                                ReverbInterpolationSpeed = 0.25f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\riverworld\halo_ext\halo_ext"),
+                                AmbienceCutoffDistance = 1,
+                                AmbienceInterpolationSpeed = 0.5f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"interior"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\stone_room"),
+                                ReverbCutoffDistance = 1,
+                                ReverbInterpolationSpeed = 0.25f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\riverworld\riverworld_interior\riverworld_interior"),
+                                AmbienceCutoffDistance = 1,
+                                AmbienceInterpolationSpeed = 0.5f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"interior_tunnel"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\jay_stone_room"),
+                                ReverbCutoffDistance = 1,
+                                ReverbInterpolationSpeed = 0.25f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\riverworld\riverworld_interior\riverworld_interior"),
+                                AmbienceCutoffDistance = 1,
+                                AmbienceInterpolationSpeed = 0.5f,
+                            },
+                        };
+                        CacheContext.Serialize(stream, tag, scnr);
+                    }
+
+                    if (tag.IsInGroup("scnr") && tag.Name == $@"levels\multi\s3d_avalanche\s3d_avalanche")
+                    {
+                        var scnr = CacheContext.Deserialize<Scenario>(stream, tag);
+                        scnr.SandboxVehicles = null;
+                        scnr.SandboxWeapons = null;
+                        scnr.SandboxEquipment = null;
+                        scnr.SandboxScenery = null;
+                        scnr.SandboxTeleporters = null;
+                        scnr.SandboxGoalObjects = null;
+                        scnr.SandboxSpawning = null;
+                        scnr.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>
+                        {
+                            new Scenario.PlayerStartingProfileBlock
+                            {
+                                Name = "start_assault",
+                                PrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                                PrimaryRoundsLoaded = 32,
+                                PrimaryRoundsTotal = 96,
+                                SecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
+                                SecondaryRoundsLoaded = 8,
+                                SecondaryRoundsTotal = 24,
+                                StartingFragGrenadeCount = 2,
+                                EditorFolder = -1,
+                            },
+                        };
+                        scnr.AcousticsPalette = new List<ScenarioStructureBsp.AcousticsPaletteBlock>
+                        {
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"desert_wind"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
+                                ReverbInterpolationSpeed = 1f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_diamondback\amb_desert_wind\amb_desert_wind"),
+                                AmbienceInterpolationSpeed = 1f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"general_roomtone"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\hallway"),
+                                ReverbInterpolationSpeed = 1f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_diamondback\amb_gen_roomtone\amb_gen_roomtone"),
+                                AmbienceInterpolationSpeed = 1f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"cave_wind"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\cave"),
+                                ReverbInterpolationSpeed = 1f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_diamondback\amb_cave_wind\amb_cave_wind"),
+                                AmbienceInterpolationSpeed = 1f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"cave_wind_and_drips"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\cave"),
+                                ReverbInterpolationSpeed = 1f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_diamondback\amb_cave_wind_and_drips\amb_cave_wind_and_drips"),
+                                AmbienceInterpolationSpeed = 1f,
+                            },
+                        };
+                        CacheContext.Serialize(stream, tag, scnr);
+                    }
+
+                    if (tag.IsInGroup("scnr") && tag.Name == $@"levels\multi\s3d_edge\s3d_edge")
+                    {
+                        var scnr = CacheContext.Deserialize<Scenario>(stream, tag);
+                        scnr.SandboxVehicles = null;
+                        scnr.SandboxWeapons = null;
+                        scnr.SandboxEquipment = null;
+                        scnr.SandboxScenery = null;
+                        scnr.SandboxTeleporters = null;
+                        scnr.SandboxGoalObjects = null;
+                        scnr.SandboxSpawning = null;
+                        scnr.EnemyBiasInfluence = new List<Scenario.PlayerSpawnInfluencerBlock>
+                        {
+                            new Scenario.PlayerSpawnInfluencerBlock
+                            {
+                                OverrideFullWeightRadius = 10f,
+                                OverrideFalloffRadius = 17f,
+                                OverrideUpperHeight = 4f,
+                                OverrideLowerHeight = -5f,
+                                OverrideWeight = -250f,
+                            },
+                        };
+                        scnr.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>
+                        {
+                            new Scenario.PlayerStartingProfileBlock
+                            {
+                                Name = "start_assault",
+                                PrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                                PrimaryRoundsLoaded = 32,
+                                PrimaryRoundsTotal = 96,
+                                SecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
+                                SecondaryRoundsLoaded = 8,
+                                SecondaryRoundsTotal = 24,
+                                StartingFragGrenadeCount = 2,
+                                EditorFolder = -1,
+                            },
+                        };
+                        scnr.AcousticsPalette = new List<ScenarioStructureBsp.AcousticsPaletteBlock>
+                        {
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"amb_cave_dry"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\cave"),
+                                Type = ScenarioStructureBsp.SoundEnvironmentType.InteriorNarrow,
+                                ReverbInterpolationSpeed = 2f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_edge\amb_cave_dry\amb_cave_dry"),
+                                AmbienceInterpolationSpeed = 2f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"amb_edge_open_air"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
+                                ReverbInterpolationSpeed = 2f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_edge\amb_edge_open_air\amb_edge_open_air"),
+                                AmbienceInterpolationSpeed = 2f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"amb_sentinel_room"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\auditorium"),
+                                Type = ScenarioStructureBsp.SoundEnvironmentType.InteriorNarrow,
+                                ReverbInterpolationSpeed = 2f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_edge\amb_sentinel_room\amb_sentinel_room"),
+                                AmbienceInterpolationSpeed = 2f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"amb_tech_room"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\hallway"),
+                                Type = ScenarioStructureBsp.SoundEnvironmentType.InteriorNarrow,
+                                ReverbInterpolationSpeed = 2f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_edge\amb_tech_room\amb_tech_room"),
+                                AmbienceInterpolationSpeed = 2f,
+                            },
+                        };
+                        CacheContext.Serialize(stream, tag, scnr);
+                    }
+
+                    if (tag.IsInGroup("scnr") && tag.Name == $@"levels\multi\s3d_reactor\s3d_reactor")
+                    {
+                        var scnr = CacheContext.Deserialize<Scenario>(stream, tag);
+                        scnr.SandboxVehicles = null;
+                        scnr.SandboxWeapons = null;
+                        scnr.SandboxEquipment = null;
+                        scnr.SandboxScenery = null;
+                        scnr.SandboxTeleporters = null;
+                        scnr.SandboxGoalObjects = null;
+                        scnr.SandboxSpawning = null;
+                        scnr.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>
+                        {
+                            new Scenario.PlayerStartingProfileBlock
+                            {
+                                Name = "start_assault",
+                                PrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                                PrimaryRoundsLoaded = 32,
+                                PrimaryRoundsTotal = 96,
+                                SecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
+                                SecondaryRoundsLoaded = 8,
+                                SecondaryRoundsTotal = 24,
+                                StartingFragGrenadeCount = 2,
+                                EditorFolder = -1,
+                            },
+                        };
+                        scnr.AcousticsPalette = new List<ScenarioStructureBsp.AcousticsPaletteBlock>
+                        {
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"amb_wind_mountains"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
+                                ReverbInterpolationSpeed = 2f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_reactor\amb_wind_mountains\amb_wind_mountains"),
+                                AmbienceInterpolationSpeed = 2f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"amb_interior_room_small"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\room"),
+                                Type = ScenarioStructureBsp.SoundEnvironmentType.InteriorNarrow,
+                                ReverbInterpolationSpeed = 2f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_reactor\amb_interior_room_small\amb_interior_room_small"),
+                                AmbienceInterpolationSpeed = 2f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"amb_interior_reactor"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\hallway"),
+                                Type = ScenarioStructureBsp.SoundEnvironmentType.InteriorNarrow,
+                                ReverbInterpolationSpeed = 2f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_reactor\amb_interior_reactor\amb_interior_reactor"),
+                                AmbienceInterpolationSpeed = 2f,
+                            },
+                        };
+                        CacheContext.Serialize(stream, tag, scnr);
+                    }
+
+                    if (tag.IsInGroup("scnr") && tag.Name == $@"levels\multi\s3d_turf\s3d_turf")
+                    {
+                        var scnr = CacheContext.Deserialize<Scenario>(stream, tag);
+                        scnr.SandboxVehicles = null;
+                        scnr.SandboxWeapons = null;
+                        scnr.SandboxEquipment = null;
+                        scnr.SandboxScenery = null;
+                        scnr.SandboxTeleporters = null;
+                        scnr.SandboxGoalObjects = null;
+                        scnr.SandboxSpawning = null;
+                        scnr.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>
+                        {
+                            new Scenario.PlayerStartingProfileBlock
+                            {
+                                Name = "start_assault",
+                                PrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                                PrimaryRoundsLoaded = 32,
+                                PrimaryRoundsTotal = 96,
+                                SecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
+                                SecondaryRoundsLoaded = 8,
+                                SecondaryRoundsTotal = 24,
+                                StartingFragGrenadeCount = 2,
+                                EditorFolder = -1,
+                            },
+                        };
+                        scnr.EnemyBiasInfluence = new List<Scenario.PlayerSpawnInfluencerBlock>
+                        {
+                            new Scenario.PlayerSpawnInfluencerBlock
+                            {
+                                OverrideFullWeightRadius = 15f,
+                                OverrideFalloffRadius = 20f,
+                                OverrideUpperHeight = 7f,
+                                OverrideLowerHeight = -5f,
+                                OverrideWeight = -270f,
+                            },
+                        };
+                        scnr.AcousticsPalette = new List<ScenarioStructureBsp.AcousticsPaletteBlock>
+                        {
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"amb_heavy_snow"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\city"),
+                                ReverbInterpolationSpeed = 0.5f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_turf\amb_heavy_snow\amb_heavy_snow"),
+                                AmbienceCutoffDistance = 1,
+                                AmbienceInterpolationSpeed = 0.5f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"amb_light_snow"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\hallway"),
+                                ReverbInterpolationSpeed = 2f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_turf\amb_light_snow\amb_light_snow"),
+                                AmbienceCutoffDistance = 1,
+                                AmbienceInterpolationSpeed = 2f,
+                            },
+                        };
+                        CacheContext.Serialize(stream, tag, scnr);
+                    }
+
+                    if (tag.IsInGroup("scnr") && tag.Name == $@"levels\multi\cyberdyne\cyberdyne")
+                    {
+                        var scnr = CacheContext.Deserialize<Scenario>(stream, tag);
+                        scnr.SandboxVehicles = null;
+                        scnr.SandboxWeapons = null;
+                        scnr.SandboxEquipment = null;
+                        scnr.SandboxScenery = null;
+                        scnr.SandboxTeleporters = null;
+                        scnr.SandboxGoalObjects = null;
+                        scnr.SandboxSpawning = null;
+                        scnr.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>
+                        {
+                            new Scenario.PlayerStartingProfileBlock
+                            {
+                                Name = "start_assault",
+                                PrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                                PrimaryRoundsLoaded = 32,
+                                PrimaryRoundsTotal = 96,
+                                SecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
+                                SecondaryRoundsLoaded = 8,
+                                SecondaryRoundsTotal = 24,
+                                StartingFragGrenadeCount = 2,
+                                EditorFolder = -1,
+                            },
+                        };
+                        scnr.AcousticsPalette = new List<ScenarioStructureBsp.AcousticsPaletteBlock>
+                        {
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"main_hallway"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"ms30\sound\dsp_effects\reverbs\halo_3_presets\jay_stone_room"),
+                                ReverbCutoffDistance = 1f,
+                                ReverbInterpolationSpeed = 0.1f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\cyberdyne\cyberdyne_main_hallway\cyberdyne_main_hallway"),
+                                AmbienceCutoffDistance = 2f,
+                                AmbienceInterpolationSpeed = 0.1f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"cyberdyne_main"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\cave_salvation_cpaul"),
+                                ReverbCutoffDistance = 1f,
+                                ReverbInterpolationSpeed = 0.1f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\cyberdyne\cyberdyne_main\cyberdyne_main"),
+                                AmbienceCutoffDistance = 2f,
+                                AmbienceInterpolationSpeed = 0.1f,
+                            },
+                        };
+                        CacheContext.Serialize(stream, tag, scnr);
+                    }
+
+                    if (tag.IsInGroup("scnr") && tag.Name == $@"levels\multi\chill\chill")
+                    {
+                        var scnr = CacheContext.Deserialize<Scenario>(stream, tag);
+                        scnr.SandboxVehicles = null;
+                        scnr.SandboxWeapons = null;
+                        scnr.SandboxEquipment = null;
+                        scnr.SandboxScenery = null;
+                        scnr.SandboxTeleporters = null;
+                        scnr.SandboxGoalObjects = null;
+                        scnr.SandboxSpawning = null;
+                        scnr.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>
+                        {
+                            new Scenario.PlayerStartingProfileBlock
+                            {
+                                Name = "start_assault",
+                                PrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                                PrimaryRoundsLoaded = 32,
+                                PrimaryRoundsTotal = 96,
+                                SecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
+                                SecondaryRoundsLoaded = 8,
+                                SecondaryRoundsTotal = 24,
+                                StartingFragGrenadeCount = 2,
+                                EditorFolder = -1,
+                            },
+                        };
+                        scnr.AcousticsPalette = new List<ScenarioStructureBsp.AcousticsPaletteBlock>
+                        {
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"chill"),
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\chill\chill\chill"),
+                                AmbienceCutoffDistance = 2f,
+                                AmbienceInterpolationSpeed = 1f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"chill_verb"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_2_presets\cpaul_little_something_slightly_bigger_new"),
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\chill\chill\chill"),
+                                AmbienceCutoffDistance = 2f,
+                                AmbienceInterpolationSpeed = 1f,
+                            },
+                        };
+                        CacheContext.Serialize(stream, tag, scnr);
+                    }
+
+                    if (tag.IsInGroup("scnr") && tag.Name == $@"levels\dlc\bunkerworld\bunkerworld")
+                    {
+                        var scnr = CacheContext.Deserialize<Scenario>(stream, tag);
+                        scnr.SandboxVehicles = null;
+                        scnr.SandboxWeapons = null;
+                        scnr.SandboxEquipment = null;
+                        scnr.SandboxScenery = null;
+                        scnr.SandboxTeleporters = null;
+                        scnr.SandboxGoalObjects = null;
+                        scnr.SandboxSpawning = null;
+                        scnr.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>
+                        {
+                            new Scenario.PlayerStartingProfileBlock
+                            {
+                                Name = "start_assault",
+                                PrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                                PrimaryRoundsLoaded = 32,
+                                PrimaryRoundsTotal = 96,
+                                SecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
+                                SecondaryRoundsLoaded = 8,
+                                SecondaryRoundsTotal = 24,
+                                StartingFragGrenadeCount = 2,
+                                EditorFolder = -1,
+                            },
+                        };
+                        scnr.AcousticsPalette = new List<ScenarioStructureBsp.AcousticsPaletteBlock>
+                        {
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"bunkerworld_ext"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
+                                ReverbCutoffDistance = 2f,
+                                ReverbInterpolationSpeed = 1f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\dlc\bunkerworld\bunkerworld_ext\bunkerworld_ext"),
+                                AmbienceCutoffDistance = 4f,
+                                AmbienceInterpolationSpeed = 1.5f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"hallway"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\cpaul_stone_room"),
+                                ReverbCutoffDistance = 2f,
+                                ReverbInterpolationSpeed = 1f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\dlc\bunkerworld\hallway\hallway"),
+                                AmbienceCutoffDistance = 3f,
+                                AmbienceInterpolationSpeed = 1.5f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"controlroom"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\cpaul_stone_room"),
+                                ReverbCutoffDistance = 2f,
+                                ReverbInterpolationSpeed = 1f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\dlc\bunkerworld\controlroom\controlroom"),
+                                AmbienceCutoffDistance = 2f,
+                                AmbienceInterpolationSpeed = 1.5f,
+                            },
+                        };
+                        CacheContext.Serialize(stream, tag, scnr);
+                    }
+
+                    if (tag.IsInGroup("scnr") && tag.Name == $@"levels\multi\zanzibar\zanzibar")
+                    {
+                        var scnr = CacheContext.Deserialize<Scenario>(stream, tag);
+                        scnr.SandboxVehicles = null;
+                        scnr.SandboxWeapons = null;
+                        scnr.SandboxEquipment = null;
+                        scnr.SandboxScenery = null;
+                        scnr.SandboxTeleporters = null;
+                        scnr.SandboxGoalObjects = null;
+                        scnr.SandboxSpawning = null;
+                        scnr.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>
+                        {
+                            new Scenario.PlayerStartingProfileBlock
+                            {
+                                Name = "start_assault",
+                                PrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                                PrimaryRoundsLoaded = 32,
+                                PrimaryRoundsTotal = 96,
+                                SecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
+                                SecondaryRoundsLoaded = 8,
+                                SecondaryRoundsTotal = 24,
+                                StartingFragGrenadeCount = 2,
+                                EditorFolder = -1,
+                            },
+                        };
+                        scnr.AcousticsPalette = new List<ScenarioStructureBsp.AcousticsPaletteBlock>
+                        {
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"zanzibar_courtyard"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
+                                ReverbCutoffDistance = 2f,
+                                ReverbInterpolationSpeed = 1f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\zanzibar\zanzibar_courtyard\zanzibar_courtyard"),
+                                AmbienceCutoffDistance = 3f,
+                                AmbienceInterpolationSpeed = 2f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"zanzibar_ocean_waves"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
+                                ReverbCutoffDistance = 2f,
+                                ReverbInterpolationSpeed = 1f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\zanzibar\zanzibar_ocean_loop\zanzibar_ocean_loop"),
+                                AmbienceCutoffDistance = 2f,
+                                AmbienceInterpolationSpeed = 2f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"ocean_waves_inside"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_2_presets\cpaul_little_somethin_slightly_smaller_new"),
+                                ReverbCutoffDistance = 1f,
+                                ReverbInterpolationSpeed = 1f,
+                                AmbienceCutoffDistance = 2f,
+                                AmbienceScaleFlags = ScenarioStructureBsp.BackgroundSoundScaleFlags.OverrideDefaultScale | ScenarioStructureBsp.BackgroundSoundScaleFlags.UseAdjacentClusterAsPortalScale,
+                                AmbienceInteriorScale = 0.8f,
+                                AmbienceInterpolationSpeed = 2f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"zanzibar_base_roomtone"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\cpaul_stone_room_zanzibar_base"),
+                                Type = ScenarioStructureBsp.SoundEnvironmentType.InteriorNarrow,
+                                ReverbCutoffDistance = 2f,
+                                ReverbInterpolationSpeed = 1f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\zanzibar\zanzibar_base_roomtone\zanzibar_base_roomtone"),
+                                AmbienceCutoffDistance = 2f,
+                                AmbienceInterpolationSpeed = 2f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"zanzaibar_froman_roomtone"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\cpaul_stone_room_new_zanzibar"),
+                                Type = ScenarioStructureBsp.SoundEnvironmentType.InteriorNarrow,
+                                ReverbCutoffDistance = 2f,
+                                ReverbInterpolationSpeed = 1f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\zanzibar\zanzibar_froman_roomtone\zanzibar_froman_roomtone"),
+                                AmbienceCutoffDistance = 2f,
+                                AmbienceInterpolationSpeed = 2f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"cave"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\cpaul_stone_room_new_zanzibar"),
+                                ReverbCutoffDistance = 1f,
+                                ReverbInterpolationSpeed = 1f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\zanzibar\zanzibar_cave\zanzibar_cave"),
+                            },
+                        };
+                        scnr.LightmapAirprobes = new List<Scenario.LightmapAirprobe>
+                        {
+                            new Scenario.LightmapAirprobe
+                            {
+                                Position = new RealPoint3d(0.0744535f, 3.68988f, 8.19632f),
+                                Name = CacheContext.StringTable.GetStringId($@"big_wheel_probe"),
+                            },
+                        };
+                        CacheContext.Serialize(stream, tag, scnr);
+                    }
+
+                    if (tag.IsInGroup("scnr") && tag.Name == $@"levels\multi\deadlock\deadlock")
+                    {
+                        var scnr = CacheContext.Deserialize<Scenario>(stream, tag);
+                        scnr.SandboxVehicles = null;
+                        scnr.SandboxWeapons = null;
+                        scnr.SandboxEquipment = null;
+                        scnr.SandboxScenery = null;
+                        scnr.SandboxTeleporters = null;
+                        scnr.SandboxGoalObjects = null;
+                        scnr.SandboxSpawning = null;
+                        scnr.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>
+                        {
+                            new Scenario.PlayerStartingProfileBlock
+                            {
+                                Name = "start_assault",
+                                PrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                                PrimaryRoundsLoaded = 32,
+                                PrimaryRoundsTotal = 96,
+                                SecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
+                                SecondaryRoundsLoaded = 8,
+                                SecondaryRoundsTotal = 24,
+                                StartingFragGrenadeCount = 2,
+                                EditorFolder = -1,
+                            },
+                        };
+                        scnr.AcousticsPalette = new List<ScenarioStructureBsp.AcousticsPaletteBlock>
+                        {
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"deadlock_air"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
+                                ReverbCutoffDistance = 1.5f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\deadlock\deadlock_air\deadlock_air"),
+                                AmbienceCutoffDistance = 3f,
+                                AmbienceInterpolationSpeed = 0.5f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"deadlock_cave"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\jay_cave"),
+                                ReverbCutoffDistance = 2f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\deadlock\deadlock_cave\deadlock_cave"),
+                                AmbienceCutoffDistance = 2f,
+                                AmbienceInterpolationSpeed = 0.5f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"deadlock_inside"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"ms30\sound\dsp_effects\reverbs\templates\stone_room"),
+                                ReverbCutoffDistance = 2f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\deadlock\deadlock_inside\deadlock_inside"),
+                                AmbienceCutoffDistance = 1f,
+                                AmbienceInterpolationSpeed = 0.5f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"deadlock_tube"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\cpaul_sewer_pipe"),
+                                ReverbCutoffDistance = 2f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\deadlock\deadlock_tube\deadlock_tube"),
+                                AmbienceCutoffDistance = 1f,
+                                AmbienceInterpolationSpeed = 0.5f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"deadlock_air_light"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
+                                ReverbCutoffDistance = 2f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\deadlock\deadlock_air_light\deadlock_air_light"),
+                                AmbienceCutoffDistance = 3f,
+                                AmbienceInterpolationSpeed = 0.5f,
+                            },
+                        };
+                        CacheContext.Serialize(stream, tag, scnr);
+                    }
+
+                    if (tag.IsInGroup("scnr") && tag.Name == $@"levels\multi\shrine\shrine")
+                    {
+                        var scnr = CacheContext.Deserialize<Scenario>(stream, tag);
+                        scnr.SandboxVehicles = null;
+                        scnr.SandboxWeapons = null;
+                        scnr.SandboxEquipment = null;
+                        scnr.SandboxScenery = null;
+                        scnr.SandboxTeleporters = null;
+                        scnr.SandboxGoalObjects = null;
+                        scnr.SandboxSpawning = null;
+                        scnr.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>
+                        {
+                            new Scenario.PlayerStartingProfileBlock
+                            {
+                                Name = "start_assault",
+                                PrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                                PrimaryRoundsLoaded = 32,
+                                PrimaryRoundsTotal = 96,
+                                SecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
+                                SecondaryRoundsLoaded = 8,
+                                SecondaryRoundsTotal = 24,
+                                StartingFragGrenadeCount = 2,
+                                EditorFolder = -1,
+                            },
+                        };
+                        scnr.AcousticsPalette = new List<ScenarioStructureBsp.AcousticsPaletteBlock>
+                        {
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"shrine_exterior"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
+                                ReverbCutoffDistance = 1f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\shrine\desert_wind2\desert_wind2"),
+                                AmbienceCutoffDistance = 3f,
+                                AmbienceInterpolationSpeed = 0.5f,
+                            },
+                            new ScenarioStructureBsp.AcousticsPaletteBlock
+                            {
+                                Name = CacheContext.StringTable.GetStringId($@"interior"),
+                                SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\jay_cave"),
+                                ReverbCutoffDistance = 1f,
+                                AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\shrine\desert_wind_inside\desert_wind_inside"),
+                                AmbienceCutoffDistance = 3f,
+                                AmbienceInterpolationSpeed = 0.5f,
+                            },
+                        };
+                        CacheContext.Serialize(stream, tag, scnr);
+                    }
                 }
             }
         }

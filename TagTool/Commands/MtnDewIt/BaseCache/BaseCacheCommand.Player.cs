@@ -488,7 +488,306 @@ namespace TagTool.Commands.Tags
                 var pactTag = CacheContext.TagCache.AllocateTag<PlayerActionSet>($@"objects\characters\elite\mp_elite\actions");
                 var pact = new PlayerActionSet
                 {
-                    // Will Populate if we ever find tag data for it :/
+                    Widget = new PlayerActionSet.WidgetData
+                    {
+                        Title = "Elite Actions",
+                    },
+                    Actions = new List<PlayerActionSet.Action>
+                    {
+                        //new PlayerActionSet.Action
+                        //{
+                        //    Title = "Dance",
+                        //    AnimationEnter = CacheContext.StringTable.GetStringId($@"thunder_clap"),
+                        //    Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
+                        //    OverrideCamera = new List<Unit.UnitCameraBlock>
+                        //    {
+                        //        new Unit.UnitCameraBlock
+                        //        {
+                        //            PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
+                        //            CameraTracks = new List<Unit.UnitCameraTrack>
+                        //            {
+                        //                new Unit.UnitCameraTrack
+                        //                {
+                        //                    Track = GetCachedTag<CameraTrack>($@"objects\characters\elite\mp_elite\action_camera"),
+                        //                },
+                        //            },
+                        //        },
+                        //    },
+                        //},
+                        //new PlayerActionSet.Action
+                        //{
+                        //    Title = "twerk",
+                        //    IconName = "temp",
+                        //    AnimationEnter = CacheContext.StringTable.GetStringId($@"twerk"),
+                        //    Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
+                        //    OverrideCamera = new List<Unit.UnitCameraBlock>
+                        //    {
+                        //        new Unit.UnitCameraBlock
+                        //        {
+                        //            PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
+                        //            CameraTracks = new List<Unit.UnitCameraTrack>
+                        //            {
+                        //                new Unit.UnitCameraTrack
+                        //                {
+                        //                    Track = GetCachedTag<CameraTrack>($@"objects\characters\elite\mp_elite\action_camera"),
+                        //                },
+                        //            },
+                        //        },
+                        //    },
+                        //},
+                        //new PlayerActionSet.Action
+                        //{
+                        //    Title = "dance1test",
+                        //    IconName = "temp",
+                        //    AnimationEnter = CacheContext.StringTable.GetStringId($@"dance1test"),
+                        //    Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
+                        //    OverrideCamera = new List<Unit.UnitCameraBlock>
+                        //    {
+                        //        new Unit.UnitCameraBlock
+                        //        {
+                        //            PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
+                        //            CameraTracks = new List<Unit.UnitCameraTrack>
+                        //            {
+                        //                new Unit.UnitCameraTrack
+                        //                {
+                        //                    Track = GetCachedTag<CameraTrack>($@"objects\characters\elite\mp_elite\action_camera"),
+                        //                },
+                        //            },
+                        //        },
+                        //    },
+                        //},
+                        //new PlayerActionSet.Action
+                        //{
+                        //    Title = "dance1",
+                        //    IconName = "temp",
+                        //    AnimationEnter = CacheContext.StringTable.GetStringId($@"dance1"),
+                        //    Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
+                        //    OverrideCamera = new List<Unit.UnitCameraBlock>
+                        //    {
+                        //        new Unit.UnitCameraBlock
+                        //        {
+                        //            PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
+                        //            CameraTracks = new List<Unit.UnitCameraTrack>
+                        //            {
+                        //                new Unit.UnitCameraTrack
+                        //                {
+                        //                    Track = GetCachedTag<CameraTrack>($@"objects\characters\elite\mp_elite\action_camera"),
+                        //                },
+                        //            },
+                        //        },
+                        //    },
+                        //},
+                        //new PlayerActionSet.Action
+                        //{
+                        //    Title = "mixamo",
+                        //    IconName = "temp",
+                        //    AnimationEnter = CacheContext.StringTable.GetStringId($@"mixamo"),
+                        //    Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
+                        //    OverrideCamera = new List<Unit.UnitCameraBlock>
+                        //    {
+                        //        new Unit.UnitCameraBlock
+                        //        {
+                        //            PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
+                        //            CameraTracks = new List<Unit.UnitCameraTrack>
+                        //            {
+                        //                new Unit.UnitCameraTrack
+                        //                {
+                        //                    Track = GetCachedTag<CameraTrack>($@"objects\characters\elite\mp_elite\action_camera"),
+                        //                },
+                        //            },
+                        //        },
+                        //    },
+                        //},
+                        //new PlayerActionSet.Action
+                        //{
+                        //    Title = "fingerlay",
+                        //    IconName = "temp",
+                        //    AnimationEnter = CacheContext.StringTable.GetStringId($@"fingerlay"),
+                        //    Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
+                        //    OverrideCamera = new List<Unit.UnitCameraBlock>
+                        //    {
+                        //        new Unit.UnitCameraBlock
+                        //        {
+                        //            PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
+                        //            CameraTracks = new List<Unit.UnitCameraTrack>
+                        //            {
+                        //                new Unit.UnitCameraTrack
+                        //                {
+                        //                    Track = GetCachedTag<CameraTrack>($@"objects\characters\elite\mp_elite\action_camera"),
+                        //                },
+                        //            },
+                        //        },
+                        //    },
+                        //},
+                        //new PlayerActionSet.Action
+                        //{
+                        //    Title = "fingerstand",
+                        //    IconName = "temp",
+                        //    AnimationEnter = CacheContext.StringTable.GetStringId($@"fingerstand"),
+                        //    Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
+                        //    OverrideCamera = new List<Unit.UnitCameraBlock>
+                        //    {
+                        //        new Unit.UnitCameraBlock
+                        //        {
+                        //            PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
+                        //            CameraTracks = new List<Unit.UnitCameraTrack>
+                        //            {
+                        //                new Unit.UnitCameraTrack
+                        //                {
+                        //                    Track = GetCachedTag<CameraTrack>($@"objects\characters\elite\mp_elite\action_camera"),
+                        //                },
+                        //            },
+                        //        },
+                        //    },
+                        //},
+                        //new PlayerActionSet.Action
+                        //{
+                        //    Title = "breakdance",
+                        //    IconName = "temp",
+                        //    AnimationEnter = CacheContext.StringTable.GetStringId($@"breakdance"),
+                        //    Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
+                        //    OverrideCamera = new List<Unit.UnitCameraBlock>
+                        //    {
+                        //        new Unit.UnitCameraBlock
+                        //        {
+                        //            PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
+                        //            CameraTracks = new List<Unit.UnitCameraTrack>
+                        //            {
+                        //                new Unit.UnitCameraTrack
+                        //                {
+                        //                    Track = GetCachedTag<CameraTrack>($@"objects\characters\elite\mp_elite\action_camera"),
+                        //                },
+                        //            },
+                        //        },
+                        //    },
+                        //},
+                        //new PlayerActionSet.Action
+                        //{
+                        //    Title = "hiphop",
+                        //    IconName = "temp",
+                        //    AnimationEnter = CacheContext.StringTable.GetStringId($@"hiphop"),
+                        //    Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
+                        //    OverrideCamera = new List<Unit.UnitCameraBlock>
+                        //    {
+                        //        new Unit.UnitCameraBlock
+                        //        {
+                        //            PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
+                        //            CameraTracks = new List<Unit.UnitCameraTrack>
+                        //            {
+                        //                new Unit.UnitCameraTrack
+                        //                {
+                        //                    Track = GetCachedTag<CameraTrack>($@"objects\characters\elite\mp_elite\action_camera"),
+                        //                },
+                        //            },
+                        //        },
+                        //    },
+                        //},
+                        //new PlayerActionSet.Action
+                        //{
+                        //    Title = "ballskick",
+                        //    IconName = "temp",
+                        //    AnimationEnter = CacheContext.StringTable.GetStringId($@"ballskick"),
+                        //    Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
+                        //    OverrideCamera = new List<Unit.UnitCameraBlock>
+                        //    {
+                        //        new Unit.UnitCameraBlock
+                        //        {
+                        //            PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
+                        //            CameraTracks = new List<Unit.UnitCameraTrack>
+                        //            {
+                        //                new Unit.UnitCameraTrack
+                        //                {
+                        //                    Track = GetCachedTag<CameraTrack>($@"objects\characters\elite\mp_elite\action_camera"),
+                        //                },
+                        //            },
+                        //        },
+                        //    },
+                        //},
+                        new PlayerActionSet.Action
+                        {
+                            Title = "Berserk",
+                            IconName = "temp",
+                            AnimationEnter = CacheContext.StringTable.GetStringId($@"berserk"),
+                            Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
+                            OverrideCamera = new List<Unit.UnitCameraBlock>
+                            {
+                                new Unit.UnitCameraBlock
+                                {
+                                    PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
+                                    CameraTracks = new List<Unit.UnitCameraTrack>
+                                    {
+                                        new Unit.UnitCameraTrack
+                                        {
+                                            Track = GetCachedTag<CameraTrack>($@"objects\characters\elite\mp_elite\action_camera"),
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                        new PlayerActionSet.Action
+                        {
+                            Title = "Cheer",
+                            IconName = "temp",
+                            AnimationEnter = CacheContext.StringTable.GetStringId($@"cheer"),
+                            Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
+                            OverrideCamera = new List<Unit.UnitCameraBlock>
+                            {
+                                new Unit.UnitCameraBlock
+                                {
+                                    PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
+                                    CameraTracks = new List<Unit.UnitCameraTrack>
+                                    {
+                                        new Unit.UnitCameraTrack
+                                        {
+                                            Track = GetCachedTag<CameraTrack>($@"objects\characters\elite\mp_elite\action_camera"),
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                        new PlayerActionSet.Action
+                        {
+                            Title = "Warn",
+                            IconName = "temp",
+                            AnimationEnter = CacheContext.StringTable.GetStringId($@"warn"),
+                            Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
+                            OverrideCamera = new List<Unit.UnitCameraBlock>
+                            {
+                                new Unit.UnitCameraBlock
+                                {
+                                    PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
+                                    CameraTracks = new List<Unit.UnitCameraTrack>
+                                    {
+                                        new Unit.UnitCameraTrack
+                                        {
+                                            Track = GetCachedTag<CameraTrack>($@"objects\characters\elite\mp_elite\action_camera"),
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                        new PlayerActionSet.Action
+                        {
+                            Title = "Taunt",
+                            IconName = "temp",
+                            AnimationEnter = CacheContext.StringTable.GetStringId($@"taunt"),
+                            Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
+                            OverrideCamera = new List<Unit.UnitCameraBlock>
+                            {
+                                new Unit.UnitCameraBlock
+                                {
+                                    PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
+                                    CameraTracks = new List<Unit.UnitCameraTrack>
+                                    {
+                                        new Unit.UnitCameraTrack
+                                        {
+                                            Track = GetCachedTag<CameraTrack>($@"objects\characters\elite\mp_elite\action_camera"),
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
                 };
                 CacheContext.Serialize(stream, pactTag, pact);
             }
