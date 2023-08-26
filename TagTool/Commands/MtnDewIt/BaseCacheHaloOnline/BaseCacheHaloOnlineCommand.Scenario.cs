@@ -1156,7 +1156,7 @@ namespace TagTool.Commands.Tags
                             new Scenario.CutsceneCameraPoint
                             {
                                 Name = "spartan_helmet_wide",
-                                Position = new RealPoint3d(80.87f, -146.281f, 1.472f),
+                                Position = new RealPoint3d(80.8f, -146.266f, 1.472f),
                                 Orientation = new RealEulerAngles3d(Angle.FromDegrees(-135.571f), Angle.FromDegrees(0.284f), Angle.FromDegrees(0.279f)),
                             },
                             new Scenario.CutsceneCameraPoint
@@ -1168,7 +1168,7 @@ namespace TagTool.Commands.Tags
                             new Scenario.CutsceneCameraPoint
                             {
                                 Name = "spartan_leftshoulder_wide",
-                                Position = new RealPoint3d(81f, -146.19f, 1.372f),
+                                Position = new RealPoint3d(80.9f, -146.19f, 1.372f),
                                 Orientation = new RealEulerAngles3d(Angle.FromDegrees(-135.571f), Angle.FromDegrees(0.284f), Angle.FromDegrees(0.279f)),
                             },
                             new Scenario.CutsceneCameraPoint
@@ -1180,67 +1180,67 @@ namespace TagTool.Commands.Tags
                             new Scenario.CutsceneCameraPoint
                             {
                                 Name = "elite_helmet_wide",
-                                Position = new RealPoint3d(81f, -146.336f, 1.402f),
+                                Position = new RealPoint3d(80.9f, -146.236f, 1.402f),
                                 Orientation = new RealEulerAngles3d(Angle.FromDegrees(-135.571f), Angle.FromDegrees(0.284f), Angle.FromDegrees(0.279f)),
                             },
                             new Scenario.CutsceneCameraPoint
                             {
                                 Name = "elite_body_wide",
-                                Position = new RealPoint3d(80.8f, -146.316f, 1.322f),
+                                Position = new RealPoint3d(80.8f, -146.266f, 1.322f),
                                 Orientation = new RealEulerAngles3d(Angle.FromDegrees(-135.571f), Angle.FromDegrees(0.284f), Angle.FromDegrees(0.279f)),
                             },
                             new Scenario.CutsceneCameraPoint
                             {
                                 Name = "elite_leftshoulder_wide",
-                                Position = new RealPoint3d(80.9f, -146.35f, 1.372f),
+                                Position = new RealPoint3d(80.9f, -146.25f, 1.372f),
                                 Orientation = new RealEulerAngles3d(Angle.FromDegrees(-135.571f), Angle.FromDegrees(0.284f), Angle.FromDegrees(0.279f)),
                             },
                             new Scenario.CutsceneCameraPoint
                             {
                                 Name = "elite_rightshoulder_wide",
-                                Position = new RealPoint3d(80.9f, -146.35f, 1.372f),
+                                Position = new RealPoint3d(80.95f, -146.35f, 1.372f),
                                 Orientation = new RealEulerAngles3d(Angle.FromDegrees(-135.571f), Angle.FromDegrees(0.284f), Angle.FromDegrees(0.279f)),
                             },
                             new Scenario.CutsceneCameraPoint
                             {
                                 Name = "spartan_helmet_standard",
-                                Position = new RealPoint3d(80.85f, -146.35f, 1.472f),
+                                Position = new RealPoint3d(80.8f, -146.35f, 1.472f),
                                 Orientation = new RealEulerAngles3d(Angle.FromDegrees(-135.571f), Angle.FromDegrees(0.284f), Angle.FromDegrees(0.279f)),
                             },
                             new Scenario.CutsceneCameraPoint
                             {
                                 Name = "spartan_body_standard",
-                                Position = new RealPoint3d(80.78f, -146.375f, 1.372f),
+                                Position = new RealPoint3d(80.9f, -146.315f, 1.372f),
                                 Orientation = new RealEulerAngles3d(Angle.FromDegrees(-135.571f), Angle.FromDegrees(0.284f), Angle.FromDegrees(0.279f)),
                             },
                             new Scenario.CutsceneCameraPoint
                             {
                                 Name = "spartan_leftshoulder_standard",
-                                Position = new RealPoint3d(80.95f, -146.275f, 1.372f),
+                                Position = new RealPoint3d(80.9f, -146.25f, 1.372f),
                                 Orientation = new RealEulerAngles3d(Angle.FromDegrees(-135.571f), Angle.FromDegrees(0.284f), Angle.FromDegrees(0.279f)),
                             },
                             new Scenario.CutsceneCameraPoint
                             {
                                 Name = "spartan_rightshoulder_standard",
-                                Position = new RealPoint3d(80.95f, -146.34f, 1.372f),
+                                Position = new RealPoint3d(81f, -146.34f, 1.372f),
                                 Orientation = new RealEulerAngles3d(Angle.FromDegrees(-135.571f), Angle.FromDegrees(0.284f), Angle.FromDegrees(0.279f)),
                             },
                             new Scenario.CutsceneCameraPoint
                             {
                                 Name = "elite_helmet_standard",
-                                Position = new RealPoint3d(80.95f, -146.39f, 1.402f),
+                                Position = new RealPoint3d(80.9f, -146.29f, 1.402f),
                                 Orientation = new RealEulerAngles3d(Angle.FromDegrees(-135.571f), Angle.FromDegrees(0.284f), Angle.FromDegrees(0.279f)),
                             },
                             new Scenario.CutsceneCameraPoint
                             {
                                 Name = "elite_body_standard",
-                                Position = new RealPoint3d(80.75f, -146.42f, 1.322f),
+                                Position = new RealPoint3d(80.75f, -146.37f, 1.322f),
                                 Orientation = new RealEulerAngles3d(Angle.FromDegrees(-135.571f), Angle.FromDegrees(0.284f), Angle.FromDegrees(0.279f)),
                             },
                             new Scenario.CutsceneCameraPoint
                             {
                                 Name = "elite_leftshoulder_standard",
-                                Position = new RealPoint3d(81f, -146.34f, 1.372f),
+                                Position = new RealPoint3d(80.9f, -146.34f, 1.372f),
                                 Orientation = new RealEulerAngles3d(Angle.FromDegrees(-135.571f), Angle.FromDegrees(0.284f), Angle.FromDegrees(0.279f)),
                             },
                             new Scenario.CutsceneCameraPoint
