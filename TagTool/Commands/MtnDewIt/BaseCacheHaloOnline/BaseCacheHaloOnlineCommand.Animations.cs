@@ -165,6 +165,54 @@ namespace TagTool.Commands.Tags
                     if (tag.IsInGroup("jmad") && tag.Name == $@"objects\characters\elite\elite")
                     {
                         var jmad = CacheContext.Deserialize<ModelAnimationGraph>(stream, tag);
+                        jmad.EffectReferences = new List<ModelAnimationGraph.AnimationTagReference> 
+                        {
+                            new ModelAnimationGraph.AnimationTagReference
+                            {
+                                Reference = GetCachedTag<Effect>($@"objects\weapons\melee\gravity_hammer\fx\gravity_hammer_impact"),
+                            },
+                            new ModelAnimationGraph.AnimationTagReference
+                            {
+                                Reference = GetCachedTag<Effect>($@"fx\scenery_fx\morph\morph_medium\morph_to_medium_elite"),
+                            },
+                            new ModelAnimationGraph.AnimationTagReference
+                            {
+                                Reference = GetCachedTag<Effect>($@"objects\characters\masterchief\damage_effects\wraith_board_melee"),
+                            },
+                            new ModelAnimationGraph.AnimationTagReference
+                            {
+                                Reference = GetCachedTag<Effect>($@"objects\characters\masterchief\damage_effects\scorpion_board_melee"),
+                            },
+                            new ModelAnimationGraph.AnimationTagReference
+                            {
+                                Reference = GetCachedTag<Effect>($@"objects\characters\masterchief\damage_effects\assassination_hit_0"),
+                            },
+                            new ModelAnimationGraph.AnimationTagReference
+                            {
+                                Reference = GetCachedTag<Effect>($@"objects\characters\masterchief\damage_effects\assassination_hit_1"),
+                            },
+                            new ModelAnimationGraph.AnimationTagReference
+                            {
+                                Reference = GetCachedTag<Effect>($@"objects\characters\masterchief\damage_effects\assassination_hit_2"),
+                            },
+                            new ModelAnimationGraph.AnimationTagReference
+                            {
+                                Reference = GetCachedTag<Effect>($@"objects\characters\masterchief\damage_effects\assassination_hit_3"),
+                            },
+                            new ModelAnimationGraph.AnimationTagReference
+                            {
+                                Reference = GetCachedTag<Effect>($@"objects\characters\masterchief\damage_effects\concussive_blast"),
+                            },
+                        };
+                        jmad.Animations[1610].AnimationData.EffectEvents = new List<ModelAnimationGraph.Animation.EffectEvent> 
+                        {
+                            new ModelAnimationGraph.Animation.EffectEvent
+                            {
+                                Effect = 8,
+                                Frame = 16,
+                                MarkerName = CacheContext.StringTable.GetStringId($@"shield_recharge"),
+                            },
+                        };
                         jmad.Modes[3].WeaponClass[1].WeaponType[0].Set.Actions = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry>
                         {
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry

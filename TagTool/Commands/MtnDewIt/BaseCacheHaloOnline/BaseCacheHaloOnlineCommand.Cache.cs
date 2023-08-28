@@ -14,14 +14,14 @@ using TagTool.Commands.Common;
 
 namespace TagTool.Commands.Tags 
 {
-    partial class BaseCacheHaloOnlineCommand : Command 
+    partial class BaseCacheHaloOnlineCommand : Command
     {
         public Dictionary<int, CachedTagHaloOnline> ConvertedTags { get; } = new Dictionary<int, CachedTagHaloOnline>();
         public Dictionary<ResourceLocation, Dictionary<int, PageableResource>> CopiedResources { get; } = new Dictionary<ResourceLocation, Dictionary<int, PageableResource>>();
         public Dictionary<ResourceLocation, Stream> SourceResourceStreams = new Dictionary<ResourceLocation, Stream>();
         public Dictionary<ResourceLocation, Stream> DestinationResourceStreams = new Dictionary<ResourceLocation, Stream>();
 
-        public static readonly string[] ArmorTags = new[]
+        public static readonly string[] armorTags = new[]
         {
             @"objects\characters\masterchief\mp_masterchief\armor\base",
             @"objects\characters\masterchief\mp_masterchief\armor\mp_cobra",
@@ -37,6 +37,14 @@ namespace TagTool.Commands.Tags
             @"objects\characters\masterchief\mp_masterchief\armor\mp_bungie",
             @"objects\characters\masterchief\mp_masterchief\armor\mp_katana",
         };
+
+        public static Dictionary<string, string> requiredTags { get; } = new Dictionary<string, string>()
+        {
+            { "effe", $@"objects\characters\masterchief\damage_effects\concussive_blast" },
+            { "chdt", $@"ui\chud\spartan" },
+            { "bitm", $@"ui\halox\main_menu\halo3_logo_ui" }
+        };
+
         public object rebuildCache(string destCacheDirectory)
         {
             ConvertedTags.Clear();
@@ -116,14 +124,12 @@ namespace TagTool.Commands.Tags
 
                 foreach (var tag in CacheContext.TagCache.NonNull()) 
                 {
-                    if (tag.IsInGroup("chdt") && tag.Name == $@"ui\chud\spartan") 
+                    foreach (var requiredTag in requiredTags) 
                     {
-                        CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
-                    }
-
-                    if (tag.IsInGroup("bitm") && tag.Name == $@"ui\halox\main_menu\halo3_logo_ui")
-                    {
-                        CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
+                        if (tag.IsInGroup(requiredTag.Key) && tag.Name == requiredTag.Value) 
+                        {
+                            CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
+                        }
                     }
                 }
             }
@@ -200,7 +206,7 @@ namespace TagTool.Commands.Tags
             if (srcTag.IsInGroup("bipd"))
                 return null;
 
-            foreach (var tagName in ArmorTags) 
+            foreach (var tagName in armorTags) 
             {
                 if (srcTag.IsInGroup("scen") && srcTag.Name == tagName) 
                 {

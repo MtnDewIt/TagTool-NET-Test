@@ -75,6 +75,43 @@ namespace TagTool.Commands.Tags
                     if (tag.IsInGroup("bipd") && tag.Name == $@"objects\characters\masterchief\mp_masterchief\mp_masterchief") 
                     {
                         var bipd = CacheContext.Deserialize<Biped>(stream, tag);
+                        bipd.Attachments = new List<GameObject.Attachment> 
+                        {
+                            new GameObject.Attachment
+                            {
+                                Type = GetCachedTag<Effect>($@"objects\characters\masterchief\fx\shield\shield_down"),
+                                PrimaryScale = CacheContext.StringTable.GetStringId($@"shield_down"),
+                            },
+                            new GameObject.Attachment
+                            {
+                                Type = GetCachedTag<Light>($@"objects\characters\masterchief\flashlight_1p"),
+                                Marker = CacheContext.StringTable.GetStringId($@"flashlight"),
+                                PrimaryScale = CacheContext.StringTable.GetStringId($@"integrated_light_power"),
+                            },
+                            new GameObject.Attachment
+                            {
+                                Type = GetCachedTag<Light>($@"objects\characters\masterchief\flashlight_3p"),
+                                Marker = CacheContext.StringTable.GetStringId($@"flashlight"),
+                                PrimaryScale = CacheContext.StringTable.GetStringId($@"integrated_light_power"),
+                            },
+                            new GameObject.Attachment
+                            {
+                                Type = GetCachedTag<Effect>($@"objects\characters\masterchief\fx\flaming_ninja"),
+                                Marker = CacheContext.StringTable.GetStringId($@"flaming_ninja"),
+                                PrimaryScale = CacheContext.StringTable.GetStringId($@"alive"),
+                            },
+                            new GameObject.Attachment
+                            {
+                                Type = GetCachedTag<Light>($@"objects\characters\masterchief\fx\shield\shield_down"),
+                                Marker = CacheContext.StringTable.GetStringId($@"body"),
+                                PrimaryScale = CacheContext.StringTable.GetStringId($@"shield_down"),
+                            },
+                            new GameObject.Attachment
+                            {
+                                Type = GetCachedTag<Effect>($@"objects\characters\masterchief\fx\flashlight"),
+                                PrimaryScale = CacheContext.StringTable.GetStringId($@"integrated_light_power"),
+                            },
+                        };
                         bipd.HologramUnit = GetCachedTag<Biped>($@"objects\equipment\hologram\bipeds\masterchief_hologram");
                         bipd.DefaultTeam = Unit.DefaultTeamValue.Human;
                         bipd.SyncActionCamera.PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85), Angle.FromDegrees(10));
