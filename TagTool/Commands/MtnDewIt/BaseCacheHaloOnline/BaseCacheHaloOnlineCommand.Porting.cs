@@ -342,6 +342,7 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag replace single levels\multi\zanzibar\zanzibar.scenario_structure_bsp");
             CommandRunner.Current.RunCommand($@"porttag replace single levels\multi\deadlock\deadlock.scenario_structure_bsp");
             CommandRunner.Current.RunCommand($@"porttag replace single levels\multi\shrine\shrine.scenario_structure_bsp");
+            ContextStack.Pop();
         }
 
         public void GenerateTag<T>(string tagName) where T : TagStructure
