@@ -15,12 +15,15 @@ namespace TagTool.Commands.Tags
         public CommandContextStack ContextStack { get; set; }
 
         public static DirectoryInfo haloOnlineDirectoryInfo { get; set; }
+        public static DirectoryInfo eldewritoDirectoryInfo { get; set; }
         public static DirectoryInfo halo3DirectoryInfo { get; set; }
         public static DirectoryInfo halo3MythicDirectoryInfo { get; set; }
         public static DirectoryInfo halo3ODSTDirectoryInfo { get; set; }
         public static DirectoryInfo outputDirectoryInfo { get; set; }
         
         public GameCache ho_cache { get; set; }
+
+        public GameCache dew_cache { get; set; }
 
         public GameCache h3_mainmenu { get; set; }
         public GameCache intro { get; set; }
@@ -132,8 +135,12 @@ namespace TagTool.Commands.Tags
         {
             haloOnlineDirectoryInfo = getDirectoryInfo(haloOnlineDirectoryInfo, "Halo Online MS23");
 
+            eldewritoDirectoryInfo = getDirectoryInfo(eldewritoDirectoryInfo, "ElDewrito 0.6");
+
             // TODO: Have it name MS23 tags automatically (Shit breaks if tag lists aren't up to date)
             ho_cache = GameCache.Open($@"{haloOnlineDirectoryInfo.FullName}\mainmenu.map");
+
+            dew_cache = GameCache.Open($@"{eldewritoDirectoryInfo.FullName}\mainmenu.map");
 
             halo3DirectoryInfo = getDirectoryInfo(halo3DirectoryInfo, "Halo 3");
 

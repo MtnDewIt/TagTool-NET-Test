@@ -328,6 +328,20 @@ namespace TagTool.Commands.Tags
             NewPortingContext(riverworld, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag levels\multi\riverworld\riverworld.performance_throttles");
             ContextStack.Pop();
+
+            NewPortingContext(dew_cache, Audio.Compression.OGG, true);
+            CommandRunner.Current.RunCommand($@"porttag replace single levels\multi\riverworld\riverworld.scenario_structure_bsp");
+            CommandRunner.Current.RunCommand($@"porttag replace single levels\multi\guardian\guardian.scenario_structure_bsp");
+            CommandRunner.Current.RunCommand($@"porttag replace single levels\multi\s3d_avalanche\s3d_avalanche.scenario_structure_bsp");
+            CommandRunner.Current.RunCommand($@"porttag replace single levels\multi\s3d_edge\s3d_edge.scenario_structure_bsp");
+            CommandRunner.Current.RunCommand($@"porttag replace single levels\multi\s3d_reactor\s3d_reactor.scenario_structure_bsp");
+            CommandRunner.Current.RunCommand($@"porttag replace single levels\multi\s3d_turf\s3d_turf.scenario_structure_bsp");
+            CommandRunner.Current.RunCommand($@"porttag replace single levels\multi\cyberdyne\cyberdyne.scenario_structure_bsp");
+            CommandRunner.Current.RunCommand($@"porttag replace single levels\multi\chill\chill.scenario_structure_bsp");
+            CommandRunner.Current.RunCommand($@"porttag replace single levels\dlc\bunkerworld\bunkerworld.scenario_structure_bsp");
+            CommandRunner.Current.RunCommand($@"porttag replace single levels\multi\zanzibar\zanzibar.scenario_structure_bsp");
+            CommandRunner.Current.RunCommand($@"porttag replace single levels\multi\deadlock\deadlock.scenario_structure_bsp");
+            CommandRunner.Current.RunCommand($@"porttag replace single levels\multi\shrine\shrine.scenario_structure_bsp");
         }
 
         public void GenerateTag<T>(string tagName) where T : TagStructure
