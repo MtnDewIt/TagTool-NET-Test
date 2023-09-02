@@ -1,7 +1,6 @@
 using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
 using System.Collections.Generic;
-using TagTool.Commands.Editing;
 
 namespace TagTool.Commands.Tags
 {
@@ -37,6 +36,7 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($"addanimation \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\combat armor_lock_exit.JMM\"");
             CommandRunner.Current.RunCommand($"addanimation \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\combat armor_lock_idle.JMM\"");
             CommandRunner.Current.RunCommand($"addanimation \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\combat con_blast_enter.JMM\"");
+            CommandRunner.Current.RunCommand($"addanimation \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\combat con_blast_exit.JMM\"");
             CommandRunner.Current.RunCommand($"addanimation \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\combat mag_pulse_enter.JMM\"");
             //CommandRunner.Current.RunCommand($"addanimation \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\sprint ball any move_front.JMA\"");
             //CommandRunner.Current.RunCommand($"addanimation \"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\sprint hammer any move_front.JMA\"");
@@ -49,6 +49,9 @@ namespace TagTool.Commands.Tags
 
             using (var stream = Cache.OpenCacheReadWrite()) 
             {
+                Cache.StringTable.Add($@"con_blast_exit");
+                Cache.SaveStrings();
+
                 foreach (var tag in CacheContext.TagCache.NonNull()) 
                 {
                     if (tag.IsInGroup("jmad") && tag.Name == $@"objects\characters\masterchief\masterchief") 
@@ -204,6 +207,7 @@ namespace TagTool.Commands.Tags
                                 Reference = GetCachedTag<Effect>($@"objects\characters\masterchief\damage_effects\concussive_blast"),
                             },
                         };
+                        jmad.Animations[1610].PlaybackFlags = ModelAnimationGraph.Animation.PlaybackFlagsValue.DisableWeaponIk;
                         jmad.Animations[1610].AnimationData.EffectEvents = new List<ModelAnimationGraph.Animation.EffectEvent> 
                         {
                             new ModelAnimationGraph.Animation.EffectEvent
@@ -211,6 +215,10 @@ namespace TagTool.Commands.Tags
                                 Effect = 8,
                                 Frame = 16,
                                 MarkerName = CacheContext.StringTable.GetStringId($@"shield_recharge"),
+                                DamageEffectReportingType = new Damage.DamageReportingType
+                                {
+                                    HaloOnline = Damage.DamageReportingType.HaloOnlineValue.Guardians,
+                                },
                             },
                         };
                         jmad.Modes[3].WeaponClass[1].WeaponType[0].Set.Actions = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry>
@@ -253,9 +261,15 @@ namespace TagTool.Commands.Tags
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
-                                Label = CacheContext.StringTable.GetStringId($@"mag_pulse_enter"),
+                                Label = CacheContext.StringTable.GetStringId($@"con_blast_exit"),
                                 GraphIndex = -1,
                                 Animation = 1611,
+                            },
+                            new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
+                            {
+                                Label = CacheContext.StringTable.GetStringId($@"mag_pulse_enter"),
+                                GraphIndex = -1,
+                                Animation = 1612,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
@@ -364,9 +378,15 @@ namespace TagTool.Commands.Tags
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {
-                                Label = CacheContext.StringTable.GetStringId($@"mag_pulse_enter"),
+                                Label = CacheContext.StringTable.GetStringId($@"con_blast_exit"),
                                 GraphIndex = 0,
                                 Animation = 1611,
+                            },
+                            new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
+                            {
+                                Label = CacheContext.StringTable.GetStringId($@"mag_pulse_enter"),
+                                GraphIndex = 0,
+                                Animation = 1612,
                             },
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                             {

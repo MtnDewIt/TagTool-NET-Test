@@ -11,6 +11,7 @@ using TagTool.Serialization;
 using TagTool.Scripting;
 using TagTool.Tags;
 using TagTool.Commands.Common;
+using TagTool.Tags.Resources;
 
 namespace TagTool.Commands.Tags 
 {
@@ -122,14 +123,25 @@ namespace TagTool.Commands.Tags
                     CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
                 }
 
-                foreach (var tag in CacheContext.TagCache.NonNull()) 
+                foreach (var tag in CacheContext.TagCache.NonNull())
                 {
-                    foreach (var requiredTag in requiredTags) 
+                    foreach (var requiredTag in requiredTags)
                     {
-                        if (tag.IsInGroup(requiredTag.Key) && tag.Name == requiredTag.Value) 
+                        if (tag.IsInGroup(requiredTag.Key) && tag.Name == requiredTag.Value)
                         {
                             CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
                         }
+                    }
+                }
+
+                foreach (var tag in destCacheContext.TagCache.NonNull())
+                {
+                    if (tag.IsInGroup("sbsp"))
+                    {
+                        var sbsp = destCacheContext.Deserialize<ScenarioStructureBsp>(destStream, tag);
+                        destCacheContext.ResourceCaches.ReplaceResource(sbsp.CollisionBspResource.HaloOnlinePageableResource, GetSbspCollisionData(tag.Name));
+                        destCacheContext.ResourceCaches.ReplaceResource(sbsp.PathfindingResource.HaloOnlinePageableResource, GetSbspPathfindingData(tag.Name));
+                        destCacheContext.Serialize(destStream, tag, sbsp);
                     }
                 }
             }
@@ -206,9 +218,9 @@ namespace TagTool.Commands.Tags
             if (srcTag.IsInGroup("bipd"))
                 return null;
 
-            foreach (var tagName in armorTags) 
+            foreach (var tagName in armorTags)
             {
-                if (srcTag.IsInGroup("scen") && srcTag.Name == tagName) 
+                if (srcTag.IsInGroup("scen") && srcTag.Name == tagName)
                 {
                     return null;
                 }
@@ -447,6 +459,44 @@ namespace TagTool.Commands.Tags
                         break;
                 }
             }
+        }
+
+        private StructureBspTagResources GetSbspCollisionData(string sbspTag)
+        {
+            StructureBspTagResources collisionData = null;
+
+            using (var srcStream = CacheContext.OpenCacheRead())
+            {
+                foreach (var tag in CacheContext.TagCache.NonNull())
+                {
+                    if (tag.IsInGroup("sbsp") && tag.Name == sbspTag)
+                    {
+                        var sbsp = CacheContext.Deserialize<ScenarioStructureBsp>(srcStream, tag);
+                        collisionData = CacheContext.ResourceCache.GetStructureBspTagResources(sbsp.CollisionBspResource);
+                    }
+                }
+            }
+
+            return collisionData;
+        }
+
+        private StructureBspCacheFileTagResources GetSbspPathfindingData(string sbspTag)
+        {
+            StructureBspCacheFileTagResources pathfindingData = null;
+
+            using (var srcStream = CacheContext.OpenCacheRead())
+            {
+                foreach (var tag in CacheContext.TagCache.NonNull())
+                {
+                    if (tag.IsInGroup("sbsp") && tag.Name == sbspTag)
+                    {
+                        var sbsp = CacheContext.Deserialize<ScenarioStructureBsp>(srcStream, tag);
+                        pathfindingData = CacheContext.ResourceCache.GetStructureBspCacheFileTagResources(sbsp.PathfindingResource);
+                    }
+                }
+            }
+
+            return pathfindingData;
         }
 
         // Retargets the cache (Its bascially the equivalent of the restart command)

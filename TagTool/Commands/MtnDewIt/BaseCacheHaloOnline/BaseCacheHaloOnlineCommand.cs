@@ -112,6 +112,7 @@ namespace TagTool.Commands.Tags
             ApplyHUDPatches();
             ApplyPlayerPatches();
             UpdateWeaponAnimations();
+            PatchEquipment();
             ScenarioPatches();
             MainMenuDependencies();
             CommandRunner.Current.RunCommand($"updatemapfiles \"{Program.TagToolDirectory}\\Tools\\BaseCache\\MapInfo\"");

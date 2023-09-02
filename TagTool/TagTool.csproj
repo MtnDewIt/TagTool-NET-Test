@@ -744,6 +744,7 @@
     <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.Bitmaps.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.Cache.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.cs" />
+    <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.Equipment.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.ForgeGlobals.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.GameVariantSettings.cs" />
     <Compile Include="Commands\MtnDewIt\BaseCacheHaloOnline\BaseCacheHaloOnlineCommand.Globals.cs" />
