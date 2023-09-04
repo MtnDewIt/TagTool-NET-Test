@@ -12,6 +12,7 @@ using TagTool.Scripting;
 using TagTool.Tags;
 using TagTool.Commands.Common;
 using TagTool.Tags.Resources;
+using System.Linq;
 
 namespace TagTool.Commands.Tags 
 {
@@ -52,6 +53,8 @@ namespace TagTool.Commands.Tags
             CopiedResources.Clear();
 
             var destDirectory = new DirectoryInfo(destCacheDirectory);
+
+            EmptyDirectory(destDirectory);
 
             CreateTagCache(destDirectory);
 
@@ -513,7 +516,35 @@ namespace TagTool.Commands.Tags
         {
             Directory.CreateDirectory($@"{path}\fonts");
 
-            File.Copy($@"{Program.TagToolDirectory}\Tools\BaseCache\Fonts\Upscaled_HO\font_package.bin", $@"{path}\fonts\font_package.bin");
+            if (!File.Exists($@"{path}\fonts\font_package.bin"))
+            {
+                File.Copy($@"{Program.TagToolDirectory}\Tools\BaseCache\Fonts\Upscaled_HO\font_package.bin", $@"{path}\fonts\font_package.bin");
+            }
+            else 
+            {
+                new TagToolWarning($@"Font Package Detected in Specified Directory! Replacing Anyway.");
+                File.Copy($@"{Program.TagToolDirectory}\Tools\BaseCache\Fonts\Upscaled_HO\font_package.bin", $@"{path}\fonts\font_package.bin", true);
+            }
+        }
+
+        public void EmptyDirectory(DirectoryInfo directoryInfo) 
+        {
+            string[] remove = { "map", "dat", "csv" };
+
+            if (directoryInfo.GetFiles().Any(x => x.FullName.EndsWith(".map") || x.FullName.EndsWith(".dat") || x.FullName.EndsWith(".csv"))) 
+            {
+                new TagToolWarning($@"Cache Detected in Specified Directory! Replacing Anyway.");
+
+                foreach (string fileType in remove)
+                {
+                    FileInfo[] files = directoryInfo.GetFiles("*." + fileType);
+
+                    foreach (FileInfo file in files)
+                    {
+                        file.Delete();
+                    }
+                }
+            }
         }
 
         public void SetCacheVersion(GameCacheHaloOnline cache, CacheVersion version)

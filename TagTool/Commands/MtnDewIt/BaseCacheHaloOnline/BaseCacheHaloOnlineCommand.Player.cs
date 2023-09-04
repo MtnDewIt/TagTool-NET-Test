@@ -391,6 +391,13 @@ namespace TagTool.Commands.Tags
                         CacheContext.Serialize(stream, tag, bipd);
                     }
 
+                    if (tag.IsInGroup("effe") && tag.Name == $@"objects\characters\masterchief\fx\flaming_ninja") 
+                    {
+                        var effe = CacheContext.Deserialize<Effect>(stream, tag);
+                        effe.Events[0].ParticleSystems[0].NearCutoff = 0.34f;
+                        CacheContext.Serialize(stream, tag, effe);
+                    }
+
                     if (tag.IsInGroup("ligh") && tag.Name == $@"objects\characters\masterchief\fx\shield\shield_down") 
                     {
                         var ligh = CacheContext.Deserialize<Light>(stream, tag);
@@ -3173,7 +3180,7 @@ namespace TagTool.Commands.Tags
             }
         }
 
-        public void GenerateSpartanActionTag() 
+        public void GenerateSpartanActionTag()
         {
             using (var stream = Cache.OpenCacheReadWrite()) 
             {

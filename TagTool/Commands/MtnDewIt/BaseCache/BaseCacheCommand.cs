@@ -20,8 +20,8 @@ namespace TagTool.Commands.Tags
         public static DirectoryInfo halo3ODSTDirectoryInfo { get; set; }
         public static DirectoryInfo outputDirectoryInfo { get; set; }
 
-        public GameCache ho_cache { get; set; }
         public GameCache ed_cache { get; set; }
+        public static GameCache ho_cache { get; set; }
 
         public GameCache h3_mainmenu { get; set; }
         public GameCache intro { get; set; }
@@ -93,7 +93,6 @@ namespace TagTool.Commands.Tags
         {
             Program._stopWatch.Start();
 
-            CommandRunner.Current.RunCommand($@"nameunnamedhaloonlinetags"); //Maybe move into a method, instead of a command?
             getCacheFiles();
             moveFontPackage(outputDirectoryInfo.FullName);
             rebuildCache(outputDirectoryInfo.FullName);
@@ -132,11 +131,12 @@ namespace TagTool.Commands.Tags
         public void getCacheFiles()
         {
             ho_cache = GameCache.Open($@"{CacheContext.Directory.FullName}\mainmenu.map");
+            UpdateTagNames(ho_cache, ho_cache, NameUnnamedHaloOnlineTagsCommand.tagNameTable);
 
-            // TODO: Have it name ED tags automatically (Shit breaks if tag lists aren't up to date)
             eldewritoDirectoryInfo = getDirectoryInfo(eldewritoDirectoryInfo, "ElDewrito 0.6.1");
 
             ed_cache = GameCache.Open($@"{eldewritoDirectoryInfo.FullName}\mainmenu.map");
+            UpdateTagNames(ho_cache, ed_cache, NameUnnamedElDewritoTagsCommand.tagNameTable);
 
             halo3DirectoryInfo = getDirectoryInfo(halo3DirectoryInfo, "Halo 3");
 
@@ -230,7 +230,32 @@ namespace TagTool.Commands.Tags
                 directoryInfo.Create();
             }
 
+            if (directoryInfo == eldewritoDirectoryInfo || directoryInfo == halo3DirectoryInfo || directoryInfo == halo3MythicDirectoryInfo || directoryInfo == halo3ODSTDirectoryInfo || directoryInfo == CacheContext.Directory)
+            {
+                new TagToolError(CommandError.CustomMessage, "Output directory cannot be the same as an input directory");
+            }
+
             return directoryInfo;
+        }
+
+        public void UpdateTagNames(GameCache initialCache, GameCache targetCache, Dictionary<int, string> tagTable)
+        {
+            CacheContext = targetCache as GameCacheHaloOnline;
+
+            using (var stream = CacheContext.OpenCacheRead())
+            {
+                foreach (var tag in CacheContext.TagCache.NonNull())
+                {
+                    if (tagTable.TryGetValue(tag.Index, out string name))
+                    {
+                        tag.Name = name;
+                    }
+                }
+            }
+
+            CacheContext.SaveTagNames();
+
+            CacheContext = initialCache as GameCacheHaloOnline;
         }
     }
 }
