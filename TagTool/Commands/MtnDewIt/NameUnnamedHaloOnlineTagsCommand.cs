@@ -1440,7 +1440,7 @@ namespace TagTool.Commands.Tags
             { 0x0594, @"objects\weapons\grenade\claymore_grenade\fx\fragment\projectile" },
             { 0x0595, @"shaders\light_volume" },
             { 0x0596, @"shaders\light_volume_templates\_0_8_0" },
-            { 0x0597, @"fx\lense_fkares\_bitmaps\light_volume_glow" },
+            { 0x0597, @"fx\lens_flares\_bitmaps\light_volume_glow" },
             { 0x0598, @"shaders\light_volume_templates\_0_8_0" },
             { 0x0599, @"shaders\light_volume_templates\_0_8_0" },
             { 0x059A, @"shaders\light_volume_options\global_light_volume" },
