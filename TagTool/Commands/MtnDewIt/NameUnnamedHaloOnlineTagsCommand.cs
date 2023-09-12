@@ -14880,7 +14880,7 @@ namespace TagTool.Commands.Tags
             { 0x3A14, @"objects\levels\multi\snowbound\icicle_10_inch\icicle_10_inch" },
             { 0x3A15, @"objects\levels\multi\snowbound\icicle_18_inch\icicle_18_inch" },
             { 0x3A16, @"objects\levels\multi\snowbound\icicle_24_inch\icicle_24_inch" },
-            { 0x3A17, @"objects\levels\multi\s3d_avalanche\terrain_crack_01\terrain_crack_01" },
+            { 0x3A17, @"objects\levels\multi\s3d_avalanche\crack_01\crack_01" },
             { 0x3A18, @"objects\weapons\turret\missile_pod\missile_pod" },
             { 0x3A19, @"objects\levels\multi\s3d_avalanche\avalanche_man_cannon_01\avalanche_man_cannon_01" },
             { 0x3A1A, @"objects\levels\multi\s3d_avalanche\avalanche_man_cannon_02\avalanche_man_cannon_02" },
@@ -14899,9 +14899,9 @@ namespace TagTool.Commands.Tags
             { 0x3A27, @"levels\multi\s3d_avalanche\fx\av_steam_large\av_steam_flat_02" }, //unsure about this (tag is halo online specific)
             { 0x3A28, @"levels\multi\s3d_turf\fx\sparks_medium\sparks_medium" },
             { 0x3A29, @"fx\scenery_fx\nature\bugs_lightbulb\bug_lightbulb" },
-            { 0x3A2A, @"levels\multi\s3d_turf\fx\dripping_waterpipe\dripping_waterpipe_point_bright_02" }, //unsure about this (tag is halo online specific)
+            { 0x3A2A, @"levels\multi\s3d_avalanche\fx\dripping_waterpipe\dripping_waterpipe_point_bright" },
             { 0x3A2B, @"levels\multi\s3d_avalanche\fx\mancannon\av_mancannon" },
-            { 0x3A2C, @"levels\multi\s3d_avalanche\fx\waterfall_end_small\waterfall_end_small" }, //unsure about this (tag is halo online specific)
+            { 0x3A2C, @"levels\multi\s3d_avalanche\fx\dripping_waterpipe\waterfall_end_small" },
             { 0x3A2D, @"levels\multi\s3d_avalanche\decals\stone_edge_01" }, //unsure about this (tag is halo online specific)
             { 0x3A2E, @"levels\multi\s3d_avalanche\decals\stone_edge_02" }, //unsure about this (tag is halo online specific)
             { 0x3A2F, @"levels\multi\s3d_avalanche\decals\stone_edge_small_01" }, //unsure about this (tag is halo online specific)
@@ -14994,10 +14994,10 @@ namespace TagTool.Commands.Tags
             { 0x3A86, @"levels\shared\decals\human\industrial\decal_station_blue_02" }, //unsure about this (tag is halo online specific)
             { 0x3A87, @"levels\shared\decals\human\industrial\decal_station_red_02" }, //unsure about this (tag is halo online specific)
             { 0x3A88, @"levels\shared\decals\human\industrial\lethbridge_big" },
-            { 0x3A89, @"levels\shared\decals\human\industrial\lethbridge_small" },
-            { 0x3A8A, @"levels\shared\decals\human\industrial\lethbridge_big_2" },
+            { 0x3A89, @"levels\shared\decals\human\industrial\lethbridge_big_2" },
+            { 0x3A8A, @"levels\shared\decals\human\industrial\lethbridge_small" },
             { 0x3A8B, @"levels\shared\decals\human\industrial\lethbridge_small_2" },
-            { 0x3A8C, @"levels\shared\decals\human\industrial\lethbridge" }, //unsure about this (tag is halo online specific)
+            { 0x3A8C, @"levels\shared\decals\human\industrial\lethbridge_big_3" },
             { 0x3A8D, @"sound\levels\multi\s3d_diamondback\amb_desert_wind\amb_desert_wind" },
             { 0x3A8E, @"sound\dsp_effects\reverbs\templates\hallway" },
             { 0x3A8F, @"sound\levels\multi\s3d_diamondback\amb_gen_roomtone\amb_gen_roomtone" },
@@ -15022,10 +15022,10 @@ namespace TagTool.Commands.Tags
             { 0x3AA2, @"objects\levels\multi\s3d_avalanche\man_cannon_sidewinder_05\man_cannon_sidewinder_05" },
             { 0x3AA3, @"objects\levels\multi\s3d_avalanche\man_cannon_sidewinder_07\man_cannon_sidewinder_07" },
             { 0x3AA4, @"objects\levels\multi\s3d_avalanche\man_cannon_sidewinder_08\man_cannon_sidewinder_08" },
-            { 0x3AA5, @"objects\characters\ambient_life\bird_flock_avalanche" }, //unsure about this (tag is halo online specific)
-            { 0x3AA6, @"objects\characters\ambient_life\bird_flock_avalanche_narrow" }, //unsure about this (tag is halo online specific)
-            { 0x3AA7, @"objects\characters\ambient_life\bird_quadwing2\bird_quadwing2" },
-            { 0x3AA8, @"objects\characters\ambient_life\seagull\seagull" },
+            { 0x3AA5, @"objects\characters\ambient_life\avalanche_flock" },
+            { 0x3AA6, @"objects\characters\ambient_life\avalanche_flock_migrating" },
+            { 0x3AA7, @"objects\characters\ambient_life\bird_quadwing\bird_quadwing_avalanche" },
+            { 0x3AA8, @"objects\characters\ambient_life\seagull\seagull_ava" },
             { 0x3AA9, @"levels\multi\s3d_avalanche\s3d_avalanche" },
             { 0x3AAA, @"levels\multi\s3d_avalanche\sky\s3d_avalanche" },
             { 0x3AAB, @"levels\multi\s3d_avalanche\s3d_avalanche" },
@@ -15508,9 +15508,9 @@ namespace TagTool.Commands.Tags
             { 0x3C88, @"objects\levels\multi\snowbound\icicle_24_inch\garbage\icicle_24_inch_fallen\icicle_24_inch_fallen" },
             { 0x3C89, @"objects\levels\multi\snowbound\icicle_24_inch\garbage\icicle_24_inch_fallen\icicle_24_inch_fallen" },
             { 0x3C8A, @"objects\levels\multi\snowbound\icicle_24_inch\garbage\icicle_24_inch_fallen\icicle_24_inch_fallen" },
-            { 0x3C8B, @"objects\levels\multi\s3d_avalanche\terrain_crack_01\terrain_crack_01" },
-            { 0x3C8C, @"objects\levels\multi\s3d_avalanche\terrain_crack_01\terrain_crack_01" },
-            { 0x3C8D, @"objects\levels\multi\s3d_avalanche\terrain_crack_01\terrain_crack_01" },
+            { 0x3C8B, @"objects\levels\multi\s3d_avalanche\crack_01\crack_01" },
+            { 0x3C8C, @"objects\levels\multi\s3d_avalanche\crack_01\crack_01" },
+            { 0x3C8D, @"objects\levels\multi\s3d_avalanche\crack_01\crack_01" },
             { 0x3C8E, @"levels\multi\s3d_avalanche\shaders\terrain_crack_01" },
             { 0x3C8F, @"levels\multi\s3d_avalanche\bitmaps\terrain_crack_01" },
             { 0x3C90, @"shaders\shader_templates\_0_1_1_2_1_1_0_0_0_0_0" },
@@ -15664,7 +15664,7 @@ namespace TagTool.Commands.Tags
             { 0x3D24, @"levels\multi\s3d_avalanche\fx\mancannon\av_mancannon" },
             { 0x3D25, @"levels\multi\s3d_sky_bridgenew\fx\mancannon\av_mancannon" },
             { 0x3D26, @"fx\particles\energy\antigrav_light_tall" }, //unsure about this (tag is halo online specific)
-            { 0x3D27, @"levels\multi\s3d_avalanche\fx\waterfall_end_small\waterfall_end_small" }, //unsure about this (tag is halo online specific)
+            { 0x3D27, @"levels\multi\s3d_avalanche\fx\dripping_waterpipe\waterfall_end_small" },
             { 0x3D28, @"fx\particles\material\water\water_spray" },
             { 0x3D29, @"shaders\particle_templates\_3_10_0_0_0_0_1_0_0_0" },
             { 0x3D2A, @"shaders\particle_templates\_3_10_0_0_0_0_1_0_0_0" },
@@ -16272,7 +16272,7 @@ namespace TagTool.Commands.Tags
             { 0x3F84, @"levels\multi\s3d_reactor\s3d_reactor" },
             { 0x3F85, @"levels\multi\s3d_reactor\s3d_reactor_design" },
             { 0x3F86, @"levels\multi\s3d_reactor\s3d_reactor_s3d_reactor_cubemaps" },
-            { 0x3F87, @"levels\multi\s3d_reactor\wind_s3d_reactor" },
+            { 0x3F87, @"levels\multi\s3d_reactor\wind_reactor" },
             { 0x3F88, @"levels\multi\s3d_reactor\sky\sky" },
             { 0x3F89, @"objects\cinematics\human\frigate\frigate\frigate_shrine" },
             { 0x3F8A, @"objects\levels\multi\s3d_reactor\reactor_flare\reactor_flare" },
@@ -16352,11 +16352,11 @@ namespace TagTool.Commands.Tags
             { 0x3FD4, @"objects\gear\human\military\barricade_small\barricade_small" },
             { 0x3FD5, @"objects\gear\human\military\h_ammo_crate_sm\h_ammo_crate_sm" },
             { 0x3FD6, @"objects\gear\human\military\h_ammo_crate_lg\h_ammo_crate_lg" },
-            { 0x3FD7, @"objects\characters\ambient_life\lod_pelican" },
-            { 0x3FD8, @"objects\characters\ambient_life\lod_hornet" },
+            { 0x3FD7, @"objects\characters\ambient_life\pelican_flock" },
+            { 0x3FD8, @"objects\characters\ambient_life\hornet_flock" },
             { 0x3FD9, @"objects\characters\ambient_life\lod_pelican\lod_pelican" },
             { 0x3FDA, @"objects\characters\ambient_life\lod_hornet\lod_hornet" },
-            { 0x3FDB, @"levels\multi\s3d_reactor\sky\s3d_reactor" },
+            { 0x3FDB, @"levels\multi\s3d_reactor\sky\reactor" },
             { 0x3FDC, @"levels\multi\s3d_reactor\s3d_reactor" },
             { 0x3FDD, @"levels\multi\s3d_reactor\s3d_reactor_faux_lightmap" },
             { 0x3FDE, @"levels\multi\s3d_reactor\shaders\material_4" }, //unsure about this (tag is halo online specific)
