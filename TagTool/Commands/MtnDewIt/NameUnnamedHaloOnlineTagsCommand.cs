@@ -15888,7 +15888,7 @@ namespace TagTool.Commands.Tags
             { 0x3E04, @"sound\dsp_effects\reverbs\templates\auditorium" },
             { 0x3E05, @"sound\levels\multi\s3d_edge\amb_sentinel_room\amb_sentinel_room" },
             { 0x3E06, @"sound\levels\multi\s3d_edge\amb_tech_room\amb_tech_room" },
-            { 0x3E07, @"objects\levels\multi\guardian\holy_light_guardian\holy_light_guardian" }, //unsure about this (tag is halo online specific, duplicate)
+            { 0x3E07, @"objects\levels\multi\s3d_lockout\s3d_lockout_lift\s3d_lockout_lift" },
             { 0x3E08, @"objects\levels\multi\s3d_edge\holy_light_edge\holy_light_edge" },
             { 0x3E09, @"objects\characters\ambient_life\sentinel_flock_edge" },
             { 0x3E0A, @"objects\characters\ambient_life\sentinel_flock_edge_narrow" },
@@ -16216,9 +16216,9 @@ namespace TagTool.Commands.Tags
             { 0x3F4C, @"levels\multi\s3d_edge\decals\nature\algae\moss_patch_wide" }, //unsure about this (tag is halo online specific)
             { 0x3F4D, @"levels\multi\s3d_edge\decals\nature\algae\moss_rock_patch" }, //unsure about this (tag is halo online specific)
             { 0x3F4E, @"levels\multi\s3d_edge\decals\nature\algae\moss_rock_patch_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3F4F, @"objects\levels\multi\guardian\holy_light_guardian\holy_light_guardian" }, //unsure about this (tag is halo online specific, duplicates)
-            { 0x3F50, @"objects\levels\multi\guardian\holy_light_guardian\holy_light_guardian" }, //unsure about this (tag is halo online specific, duplicates)
-            { 0x3F51, @"objects\levels\multi\guardian\holy_light_guardian\holy_light_guardian" }, //unsure about this (tag is halo online specific, duplicates)
+            { 0x3F4F, @"objects\levels\multi\s3d_lockout\s3d_lockout_lift\s3d_lockout_lift" },
+            { 0x3F50, @"objects\levels\multi\s3d_lockout\s3d_lockout_lift\s3d_lockout_lift" },
+            { 0x3F51, @"objects\levels\multi\s3d_lockout\s3d_lockout_lift\s3d_lockout_lift" },
             { 0x3F52, @"objects\levels\multi\s3d_edge\holy_light_edge\holy_light_edge" },
             { 0x3F53, @"objects\levels\multi\s3d_edge\holy_light_edge\holy_light_edge" },
             { 0x3F54, @"objects\levels\multi\s3d_edge\holy_light_edge\holy_light_edge" },
