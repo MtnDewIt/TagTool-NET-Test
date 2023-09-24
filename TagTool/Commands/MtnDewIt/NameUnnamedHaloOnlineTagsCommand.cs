@@ -10256,7 +10256,7 @@ namespace TagTool.Commands.Tags
             { 0x2804, @"levels\ui\mainmenu\shaders\lights_glow" },
             { 0x2805, @"levels\ui\mainmenu\shaders\unsc_panel_02" },
             { 0x2806, @"levels\ui\mainmenu\shaders\z_only" }, //unsure about this (tag is halo online specific)
-            { 0x2807, @"levels\multi\s3d_avalanche\shaders\f_field_04_holo" },
+            { 0x2807, @"levels\multi\s3d_turf\shaders\f_field_04" },
             { 0x2808, @"levels\ui\mainmenu\bitmaps\lig_ray_cone1" },
             { 0x2809, @"shaders\halogram_templates\_0_1_1_0_0_0_0" },
             { 0x280A, @"shaders\halogram_templates\_0_1_1_0_0_0_0" },
@@ -14982,7 +14982,7 @@ namespace TagTool.Commands.Tags
             { 0x3A7A, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_1_blue" },
             { 0x3A7B, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_1_red" },
             { 0x3A7C, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_2_blue" },
-            { 0x3A7D, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_2_red" }, 
+            { 0x3A7D, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_2_red" },
             { 0x3A7E, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_3_blue" },
             { 0x3A7F, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_3_red" },
             { 0x3A80, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_4_blue" },
@@ -15030,9 +15030,9 @@ namespace TagTool.Commands.Tags
             { 0x3AAA, @"levels\multi\s3d_avalanche\sky\s3d_avalanche" },
             { 0x3AAB, @"levels\multi\s3d_avalanche\s3d_avalanche" },
             { 0x3AAC, @"levels\multi\s3d_avalanche\s3d_avalanche_faux_lightmap" },
-            { 0x3AAD, @"levels\multi\s3d_avalanche\shaders\material_130" }, //unsure about this (tag is halo online specific)
-            { 0x3AAE, @"levels\multi\s3d_avalanche\shaders\material_1" }, //unsure about this (tag is halo online specific)
-            { 0x3AAF, @"levels\multi\s3d_avalanche\shaders\material_0" }, //unsure about this (tag is halo online specific)
+            { 0x3AAD, @"levels\multi\s3d_avalanche\shaders\av_cliff_blend_01" },
+            { 0x3AAE, @"levels\multi\s3d_avalanche\shaders\av_cliff_blend_04" },
+            { 0x3AAF, @"levels\multi\s3d_avalanche\shaders\av_cliff_blend_02" },
             { 0x3AB0, @"levels\multi\s3d_turf\shaders\checker" },
             { 0x3AB1, @"levels\multi\s3d_turf\shaders\turf_metal_01" },
             { 0x3AB2, @"levels\multi\s3d_turf\shaders\unsc_ship_02" },
@@ -15052,8 +15052,8 @@ namespace TagTool.Commands.Tags
             { 0x3AC0, @"levels\multi\s3d_turf\shaders\unsc_panel_indus_06" },
             { 0x3AC1, @"levels\multi\s3d_turf\shaders\turf_building_block_13" },
             { 0x3AC2, @"levels\multi\s3d_turf\shaders\turf_building_block_03" },
-            { 0x3AC3, @"levels\multi\s3d_avalanche\shaders\collision_material_23" }, //unsure about this (tag is halo online specific)
-            { 0x3AC4, @"levels\multi\s3d_avalanche\shaders\material_60" }, //unsure about this (tag is halo online specific)
+            { 0x3AC3, @"levels\multi\deadlock\shaders\deadlock_metal_railing" },
+            { 0x3AC4, @"levels\multi\s3d_avalanche\shaders\av_stones_01" },
             { 0x3AC5, @"levels\multi\s3d_avalanche\shaders\avalache_rock_01" },
             { 0x3AC6, @"levels\multi\s3d_turf\shaders\turf_metal_06" },
             { 0x3AC7, @"levels\multi\s3d_turf\shaders\turf_metal_01_a" },
@@ -15062,45 +15062,45 @@ namespace TagTool.Commands.Tags
             { 0x3ACA, @"levels\multi\s3d_turf\shaders\turf_metal_02" },
             { 0x3ACB, @"levels\multi\s3d_turf\shaders\unsc_ship_05" },
             { 0x3ACC, @"levels\multi\s3d_avalanche\shaders\material_74" }, //unsure about this (tag is halo online specific)
-            { 0x3ACD, @"levels\multi\s3d_avalanche\shaders\material_72" }, //unsure about this (tag is halo online specific)
+            { 0x3ACD, @"levels\multi\s3d_avalanche\shaders\av_building_block_11" },
             { 0x3ACE, @"levels\multi\s3d_turf\shaders\turf_tank_01" },
             { 0x3ACF, @"levels\multi\s3d_turf\shaders\unsc_outpost_02" },
             { 0x3AD0, @"levels\multi\s3d_turf\shaders\turf_gates_01" },
             { 0x3AD1, @"levels\multi\s3d_turf\shaders\turf_building_block_07" },
-            { 0x3AD2, @"levels\multi\s3d_avalanche\shaders\material_97" }, //unsure about this (tag is halo online specific)
+            { 0x3AD2, @"levels\multi\s3d_avalanche\shaders\av_building_block_08" },
             { 0x3AD3, @"levels\multi\s3d_turf\shaders\unsc_metal_trim_01" },
             { 0x3AD4, @"levels\multi\s3d_turf\shaders\unsc_metal_diam_01" },
-            { 0x3AD5, @"levels\multi\s3d_avalanche\shaders\material_106" }, //unsure about this (tag is halo online specific)
-            { 0x3AD6, @"levels\multi\s3d_avalanche\shaders\material_73" }, //unsure about this (tag is halo online specific)
-            { 0x3AD7, @"levels\multi\s3d_avalanche\shaders\material_51" }, //unsure about this (tag is halo online specific)
-            { 0x3AD8, @"levels\multi\s3d_avalanche\shaders\material_111" }, //unsure about this (tag is halo online specific)
-            { 0x3AD9, @"levels\multi\s3d_avalanche\shaders\material_50" }, //unsure about this (tag is halo online specific)
-            { 0x3ADA, @"levels\multi\s3d_avalanche\shaders\material_108" }, //unsure about this (tag is halo online specific)
-            { 0x3ADB, @"levels\multi\s3d_avalanche\shaders\material_107" }, //unsure about this (tag is halo online specific)
+            { 0x3AD5, @"levels\multi\s3d_avalanche\shaders\av_building_block_05" },
+            { 0x3AD6, @"levels\multi\s3d_avalanche\shaders\av_building_block_07" },
+            { 0x3AD7, @"levels\multi\s3d_avalanche\shaders\av_building_block_02" },
+            { 0x3AD8, @"levels\multi\s3d_avalanche\shaders\av_window_01" },
+            { 0x3AD9, @"levels\multi\s3d_avalanche\shaders\av_building_block_06" },
+            { 0x3ADA, @"levels\multi\s3d_avalanche\shaders\av_building_block_04" },
+            { 0x3ADB, @"levels\multi\s3d_avalanche\shaders\av_building_block_03" },
             { 0x3ADC, @"levels\multi\s3d_turf\shaders\turf_window_01" },
             { 0x3ADD, @"levels\multi\s3d_turf\shaders\turf_building_block_01" },
-            { 0x3ADE, @"levels\multi\s3d_avalanche\shaders\material_96" }, //unsure about this (tag is halo online specific)
-            { 0x3ADF, @"levels\multi\s3d_avalanche\shaders\material_109" }, //unsure about this (tag is halo online specific)
+            { 0x3ADE, @"levels\multi\s3d_avalanche\shaders\av_building_block_09" },
+            { 0x3ADF, @"levels\multi\s3d_avalanche\shaders\av_building_block_10" },
             { 0x3AE0, @"levels\multi\s3d_turf\shaders\turf_building_block_11" },
-            { 0x3AE1, @"levels\multi\s3d_avalanche\shaders\material_52" }, //unsure about this (tag is halo online specific)
-            { 0x3AE2, @"levels\multi\s3d_avalanche\shaders\collision_material_55" }, //unsure about this (tag is named "levels\multi\s3d_avalanche\materials\s3d_avalanche_collision_material_55" in tagtool, used for reach porting)
-            { 0x3AE3, @"levels\multi\s3d_avalanche\shaders\material_124" }, //unsure about this (tag is halo online specific)
-            { 0x3AE4, @"levels\multi\s3d_avalanche\shaders\material_125" }, //unsure about this (tag is halo online specific)
-            { 0x3AE5, @"levels\multi\s3d_avalanche\shaders\material_95" }, //unsure about this (tag is halo online specific)
-            { 0x3AE6, @"levels\multi\s3d_avalanche\shaders\material_127" }, //unsure about this (tag is halo online specific)
-            { 0x3AE7, @"levels\multi\s3d_avalanche\shaders\material_128" }, //unsure about this (tag is halo online specific)
+            { 0x3AE1, @"levels\multi\s3d_avalanche\shaders\av_building_block_02" },
+            { 0x3AE2, @"levels\multi\s3d_avalanche\shaders\cyber_glass_front" },
+            { 0x3AE3, @"levels\multi\s3d_avalanche\shaders\avalache_rock_05_objects" },
+            { 0x3AE4, @"levels\multi\s3d_avalanche\shaders\avalache_cliff02_blend" },
+            { 0x3AE5, @"levels\multi\s3d_avalanche\shaders\av_cliff_blend_03" },
+            { 0x3AE6, @"levels\multi\s3d_avalanche\shaders\avalache_rock_09" },
+            { 0x3AE7, @"levels\multi\s3d_avalanche\shaders\av_ground" },
             { 0x3AE8, @"levels\multi\s3d_turf\shaders\unsc_ship_23" },
             { 0x3AE9, @"levels\multi\s3d_turf\shaders\s3d_turf_gray" },
             { 0x3AEA, @"levels\multi\s3d_turf\shaders\under_metal_wall_08" },
             { 0x3AEB, @"levels\multi\s3d_turf\shaders\turf_door_01" },
             { 0x3AEC, @"levels\multi\s3d_turf\shaders\unsc_metal_panel_01" },
-            { 0x3AED, @"levels\multi\s3d_avalanche\shaders\material_114" }, //unsure about this (tag is halo online specific)
+            { 0x3AED, @"levels\multi\s3d_turf\shaders\unsc_stripes_02" },
             { 0x3AEE, @"levels\multi\s3d_turf\shaders\turf_metal_11" },
             { 0x3AEF, @"levels\multi\s3d_turf\shaders\unsc_panel_indus_02" },
             { 0x3AF0, @"levels\multi\s3d_turf\shaders\unsc_floor_panels_01" },
             { 0x3AF1, @"levels\multi\s3d_turf\shaders\turf_swinging_door_01" },
-            { 0x3AF2, @"levels\multi\s3d_avalanche\shaders\material_151" }, //unsure about this (tag is halo online specific)
-            { 0x3AF3, @"levels\multi\s3d_avalanche\shaders\material_3" }, //unsure about this (tag is halo online specific)
+            { 0x3AF2, @"levels\multi\s3d_avalanche\shaders\av_cliff_blend_05" },
+            { 0x3AF3, @"levels\multi\s3d_turf\shaders\hb_door_road_blast" },
             { 0x3AF4, @"levels\multi\s3d_turf\shaders\turf_tent_01" },
             { 0x3AF5, @"levels\multi\s3d_turf\shaders\turf_metal_08" },
             { 0x3AF6, @"levels\multi\s3d_turf\shaders\turf_metal_09" },
@@ -15108,8 +15108,8 @@ namespace TagTool.Commands.Tags
             { 0x3AF8, @"levels\multi\s3d_turf\shaders\unsc_ship_01" },
             { 0x3AF9, @"levels\multi\s3d_turf\shaders\unsc_panel_indus_05" },
             { 0x3AFA, @"levels\multi\s3d_turf\shaders\unsc_metal_02" },
-            { 0x3AFB, @"levels\multi\s3d_avalanche\shaders\material_24" }, //unsure about this (tag is halo online specific)
-            { 0x3AFC, @"levels\multi\s3d_avalanche\shaders\material_25" }, //unsure about this (tag is halo online specific)
+            { 0x3AFB, @"levels\multi\s3d_avalanche\shaders\water" },
+            { 0x3AFC, @"levels\multi\s3d_avalanche\shaders\av_far_blend_01" },
             { 0x3AFD, @"levels\multi\s3d_turf\shaders\unsc_ship_11" },
             { 0x3AFE, @"levels\multi\s3d_turf\shaders\unsc_metal_ramp_01" },
             { 0x3AFF, @"levels\multi\s3d_turf\shaders\lights\lamp_03_wide" },
@@ -15121,54 +15121,54 @@ namespace TagTool.Commands.Tags
             { 0x3B05, @"levels\multi\deadlock\shaders\deadlock_switch" },
             { 0x3B06, @"levels\multi\s3d_turf\shaders\unsc_ship_16" },
             { 0x3B07, @"levels\multi\s3d_turf\shaders\unsc_ship_20" },
-            { 0x3B08, @"levels\multi\s3d_turf\shaders\turf_banners_03" }, //unsure about this (tag is halo online specific, duplicate of turf banner tag)
+            { 0x3B08, @"levels\multi\s3d_avalanche\shaders\av_banners_02" },
             { 0x3B09, @"levels\multi\s3d_turf\shaders\unsc_stripes_01" },
             { 0x3B0A, @"levels\multi\s3d_turf\shaders\d40_reactor_07" },
             { 0x3B0B, @"levels\multi\s3d_turf\shaders\turf_metal_01_c" },
-            { 0x3B0C, @"levels\multi\s3d_avalanche\shaders\material_79" }, //unsure about this (tag is halo online specific)
-            { 0x3B0D, @"levels\multi\s3d_avalanche\shaders\material_80" }, //unsure about this (tag is halo online specific)
-            { 0x3B0E, @"levels\multi\s3d_avalanche\shaders\material_83" }, //unsure about this (tag is halo online specific)
+            { 0x3B0C, @"levels\multi\s3d_turf\shaders\unsc_road_01" },
+            { 0x3B0D, @"levels\multi\s3d_turf\shaders\d40_reactor_05" },
+            { 0x3B0E, @"levels\multi\s3d_avalanche\shaders\glass_floor_01" },
             { 0x3B0F, @"levels\multi\s3d_turf\shaders\unsc_panel_07" },
             { 0x3B10, @"levels\multi\s3d_turf\shaders\unsc_metal_floor_06" },
             { 0x3B11, @"levels\multi\s3d_turf\shaders\unsc_metal_floor_07" },
             { 0x3B12, @"levels\multi\s3d_turf\shaders\unsc_panel_single_02" },
             { 0x3B13, @"levels\multi\s3d_turf\shaders\turf_building_block_09" },
             { 0x3B14, @"levels\multi\s3d_turf\shaders\unsc_garage_01" },
-            { 0x3B15, @"levels\multi\s3d_avalanche\shaders\material_104" }, //unsure about this (tag is halo online specific)
+            { 0x3B15, @"levels\multi\s3d_avalanche\shaders\wispy_snow2_sh" },
             { 0x3B16, @"levels\multi\cyberdyne\shaders\cyberdyne_wall_metal_b" },
-            { 0x3B17, @"levels\multi\s3d_avalanche\shaders\material_110" }, //unsure about this (tag is halo online specific)
+            { 0x3B17, @"levels\multi\s3d_avalanche\shaders\av_building_block_12" },
             { 0x3B18, @"levels\multi\s3d_turf\shaders\turf_rooms_01" },
             { 0x3B19, @"levels\multi\s3d_turf\shaders\turf_farplane_04" },
             { 0x3B1A, @"levels\multi\s3d_turf\shaders\turf_column_01" },
             { 0x3B1B, @"levels\multi\s3d_turf\shaders\turf_building_block_02" },
             { 0x3B1C, @"levels\multi\s3d_avalanche\shaders\material_117" }, //unsure about this (tag is halo online specific)
-            { 0x3B1D, @"levels\multi\s3d_avalanche\shaders\material_119" }, //unsure about this (tag is halo online specific)
-            { 0x3B1E, @"levels\multi\s3d_avalanche\shaders\material_123" }, //unsure about this (tag is halo online specific)
-            { 0x3B1F, @"levels\multi\s3d_avalanche\shaders\material_152" }, //unsure about this (tag is halo online specific)
-            { 0x3B20, @"levels\multi\s3d_avalanche\decorators\outskirts_thick_grass_02\outskirts_thick_grass_02" },
-            { 0x3B21, @"levels\multi\s3d_avalanche\decorators\wildgrass\wildgrass" },
-            { 0x3B22, @"levels\multi\s3d_avalanche\decorators\flower_yellow\flower_yellow" },
+            { 0x3B1D, @"levels\multi\deadlock\shaders\deadlock_concrete_new_a" },
+            { 0x3B1E, @"levels\multi\s3d_avalanche\shaders\base_marks_01" },
+            { 0x3B1F, @"levels\multi\s3d_avalanche\shaders\ray_long_holo" },
+            { 0x3B20, @"levels\multi\s3d_avalanche\decorators\outskirts_thick_grass\outskirts_thick_grass_cheap" },
+            { 0x3B21, @"levels\multi\s3d_avalanche\decorators\burntgrass\burntgrass_short" },
+            { 0x3B22, @"levels\multi\s3d_avalanche\decorators\av_flower_red\av_flower_red" },
             { 0x3B23, @"levels\multi\s3d_avalanche\decorators\grass_clumps\grass_clumps" },
             { 0x3B24, @"levels\multi\s3d_avalanche\decorators\halo_rocks\halo_rocks" },
-            { 0x3B25, @"levels\multi\s3d_avalanche\decorators\rocks_dark\rocks_dark" },
-            { 0x3B26, @"levels\multi\s3d_avalanche\decorators\rocks\rocks" },
+            { 0x3B25, @"levels\multi\s3d_avalanche\decorators\rocks\rocks_long_fade" },
+            { 0x3B26, @"levels\multi\s3d_avalanche\decorators\rocks\rocks_out" },
             { 0x3B27, @"levels\multi\s3d_avalanche\decorators\tree_boundary\tree_boundary" },
-            { 0x3B28, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_1" }, //unsure about this (tag is halo online specific)
+            { 0x3B28, @"levels\multi\s3d_avalanche\bitmaps\zan_cliffs_a_dif" },
             { 0x3B29, @"levels\multi\zanzibar\bitmaps\zan_cliffs_detail_dif" },
-            { 0x3B2A, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_zbump_1" }, //unsure about this (tag is halo online specific, (0x3B2A & 0x3B2F) appear to be duplicates of one another)
+            { 0x3B2A, @"levels\multi\s3d_avalanche\bitmaps\zan_cliffs_a_zbump" },
             { 0x3B2B, @"levels\multi\zanzibar\bitmaps\zan_cliffs_detail_bump" },
-            { 0x3B2C, @"levels\multi\s3d_avalanche\bitmaps\terrian_invis_1" }, //unsure about this (tag is halo online specific)
+            { 0x3B2C, @"levels\multi\s3d_avalanche\bitmaps\av_cliff_blend_01" },
             { 0x3B2D, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_16" },
             { 0x3B2E, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_16_zbump" },
-            { 0x3B2F, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_zbump_2" }, //unsure about this (tag is halo online specific, (0x3B2A & 0x3B2F) appear to be duplicates of one another)
+            { 0x3B2F, @"levels\multi\zanzibar\bitmaps\zan_cliffs_a_bump" },
             { 0x3B30, @"shaders\terrain_templates\_0_0_1_1_1_0" },
             { 0x3B31, @"shaders\terrain_templates\_0_0_1_1_1_0" },
             { 0x3B32, @"shaders\terrain_templates\_0_0_1_1_1_0" },
-            { 0x3B33, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_2" }, //unsure about this (tag is halo online specific)
-            { 0x3B34, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_2_a" }, //unsure about this (tag is halo online specific)
-            { 0x3B35, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_3" }, //unsure about this (tag is halo online specific)
-            { 0x3B36, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_3_a" }, //unsure about this (tag is halo online specific)
-            { 0x3B37, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_4" }, //unsure about this (tag is halo online specific)
+            { 0x3B33, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_04_far" },
+            { 0x3B34, @"levels\multi\s3d_avalanche\bitmaps\av_cliff_blend_04" },
+            { 0x3B35, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_04" },
+            { 0x3B36, @"levels\multi\s3d_avalanche\bitmaps\av_cliff_blend_02" },
+            { 0x3B37, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_07" },
             { 0x3B38, @"levels\multi\s3d_turf\bitmaps\turf_metal_01" },
             { 0x3B39, @"levels\multi\s3d_turf\bitmaps\turf_metal_01_zbump" },
             { 0x3B3A, @"levels\multi\s3d_turf\bitmaps\unsc_ship_02" },
@@ -15211,8 +15211,8 @@ namespace TagTool.Commands.Tags
             { 0x3B5F, @"levels\multi\s3d_turf\bitmaps\turf_building_block_13_zbump" },
             { 0x3B60, @"levels\multi\s3d_turf\bitmaps\turf_building_block_03" },
             { 0x3B61, @"levels\multi\s3d_turf\bitmaps\turf_building_block_03_zbump" },
-            { 0x3B62, @"levels\multi\s3d_avalanche\bitmaps\collision_material_23" }, //unsure about this (tag is halo online specific)
-            { 0x3B63, @"levels\multi\s3d_avalanche\bitmaps\material_60" }, //unsure about this (tag is halo online specific)
+            { 0x3B62, @"levels\multi\deadlock\bitmaps\deadlock_metal_dif" },
+            { 0x3B63, @"levels\multi\s3d_avalanche\bitmaps\av_stones_01_sp" },
             { 0x3B64, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_05_parallax" },
             { 0x3B65, @"shaders\shader_templates\_0_2_0_2_1_0_0_0_1_0_0" },
             { 0x3B66, @"shaders\shader_templates\_0_2_0_2_1_0_0_0_1_0_0" },
@@ -15231,12 +15231,12 @@ namespace TagTool.Commands.Tags
             { 0x3B73, @"levels\multi\s3d_turf\bitmaps\turf_metal_02_zbump" },
             { 0x3B74, @"levels\multi\s3d_turf\bitmaps\unsc_ship_05" },
             { 0x3B75, @"levels\multi\s3d_turf\bitmaps\unsc_ship_05_zbump" },
-            { 0x3B76, @"levels\multi\s3d_avalanche\bitmaps\material_74" }, //unsure about this (tag is halo online specific)
+            { 0x3B76, @"levels\multi\s3d_avalanche\bitmaps\cyber_glass" },
             { 0x3B77, @"shaders\shader_templates\_0_1_0_0_1_2_0_3_0_0_0" },
             { 0x3B78, @"shaders\shader_templates\_0_1_0_0_1_2_0_3_0_0_0" },
             { 0x3B79, @"shaders\shader_templates\_0_1_0_0_1_2_0_3_0_0_0" },
-            { 0x3B7A, @"levels\multi\s3d_avalanche\bitmaps\material_72" }, //unsure about this (tag is halo online specific)
-            { 0x3B7B, @"levels\multi\s3d_avalanche\bitmaps\material_72_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3B7A, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_11" },
+            { 0x3B7B, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_11_zbump" },
             { 0x3B7C, @"levels\multi\s3d_turf\bitmaps\turf_tank_01" },
             { 0x3B7D, @"levels\multi\s3d_turf\bitmaps\turf_tank_01_zbump" },
             { 0x3B7E, @"levels\multi\s3d_turf\bitmaps\unsc_outpost_02" },
@@ -15246,64 +15246,64 @@ namespace TagTool.Commands.Tags
             { 0x3B82, @"levels\multi\s3d_turf\bitmaps\turf_gates_01_sf" },
             { 0x3B83, @"levels\multi\s3d_turf\bitmaps\turf_building_block_07" },
             { 0x3B84, @"levels\multi\s3d_turf\bitmaps\turf_building_block_07_zbump" },
-            { 0x3B85, @"levels\multi\s3d_avalanche\bitmaps\material_97" }, //unsure about this (tag is halo online specific)
-            { 0x3B86, @"levels\multi\s3d_avalanche\bitmaps\material_97_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3B85, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_08" },
+            { 0x3B86, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_08_zbump" },
             { 0x3B87, @"levels\multi\s3d_turf\bitmaps\unsc_metal_trim_01" },
             { 0x3B88, @"levels\multi\s3d_turf\bitmaps\unsc_metal_trim_01_zbump" },
             { 0x3B89, @"levels\multi\s3d_turf\bitmaps\unsc_metal_diam_01" },
             { 0x3B8A, @"levels\multi\s3d_turf\bitmaps\unsc_metal_diam_01_zbump" },
-            { 0x3B8B, @"levels\multi\s3d_avalanche\bitmaps\material_106" }, //unsure about this (tag is halo online specific)
-            { 0x3B8C, @"levels\multi\s3d_avalanche\bitmaps\material_106_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3B8D, @"levels\multi\s3d_avalanche\bitmaps\material_73" }, //unsure about this (tag is halo online specific)
-            { 0x3B8E, @"levels\multi\s3d_avalanche\bitmaps\material_73_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3B8F, @"levels\multi\s3d_avalanche\bitmaps\material_51" }, //unsure about this (tag is halo online specific)
-            { 0x3B90, @"levels\multi\s3d_avalanche\bitmaps\material_51_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3B8B, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_05" },
+            { 0x3B8C, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_05_zbump" },
+            { 0x3B8D, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_07" },
+            { 0x3B8E, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_07_zbump" },
+            { 0x3B8F, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_01" },
+            { 0x3B90, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_01_zbump" },
             { 0x3B91, @"levels\multi\s3d_turf\bitmaps\turf_window_01" },
             { 0x3B92, @"levels\multi\s3d_turf\bitmaps\turf_farplane_04_zbump" },
             { 0x3B93, @"levels\multi\s3d_turf\bitmaps\turf_farplane_04_dif" },
-            { 0x3B94, @"levels\multi\s3d_avalanche\bitmaps\material_50" }, //unsure about this (tag is halo online specific)
-            { 0x3B95, @"levels\multi\s3d_avalanche\bitmaps\material_50_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3B96, @"levels\multi\s3d_avalanche\bitmaps\material_108" }, //unsure about this (tag is halo online specific)
-            { 0x3B97, @"levels\multi\s3d_avalanche\bitmaps\material_108_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3B98, @"levels\multi\s3d_avalanche\bitmaps\material_107" }, //unsure about this (tag is halo online specific)
-            { 0x3B99, @"levels\multi\s3d_avalanche\bitmaps\material_107_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3B94, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_06" },
+            { 0x3B95, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_06_zbump" },
+            { 0x3B96, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_04" },
+            { 0x3B97, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_04_zbump" },
+            { 0x3B98, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_03" },
+            { 0x3B99, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_03_zbump" },
             { 0x3B9A, @"levels\multi\s3d_turf\bitmaps\turf_building_block_01" },
             { 0x3B9B, @"levels\multi\s3d_turf\bitmaps\turf_building_block_01_zbump" },
             { 0x3B9C, @"levels\multi\s3d_turf\bitmaps\turf_building_block_01_sf" },
-            { 0x3B9D, @"levels\multi\s3d_avalanche\bitmaps\material_96" }, //unsure about this (tag is halo online specific)
-            { 0x3B9E, @"levels\multi\s3d_avalanche\bitmaps\material_96_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3B9F, @"levels\multi\s3d_avalanche\bitmaps\material_109" }, //unsure about this (tag is halo online specific)
-            { 0x3BA0, @"levels\multi\s3d_avalanche\bitmaps\material_109_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3B9D, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_09" },
+            { 0x3B9E, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_09_zbump" },
+            { 0x3B9F, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_10" },
+            { 0x3BA0, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_10_zbump" },
             { 0x3BA1, @"levels\multi\s3d_turf\bitmaps\turf_building_block_11" },
             { 0x3BA2, @"levels\multi\s3d_turf\bitmaps\turf_building_block_11_zbump" },
-            { 0x3BA3, @"levels\multi\s3d_avalanche\bitmaps\material_52" }, //unsure about this (tag is halo online specific)
-            { 0x3BA4, @"levels\multi\s3d_avalanche\bitmaps\material_52_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3BA5, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_5" }, //unsure about this (tag is halo online specific)
-            { 0x3BA6, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_5_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3BA7, @"levels\multi\s3d_avalanche\bitmaps\material_124_a" }, //unsure about this (tag is halo online specific)
-            { 0x3BA8, @"levels\multi\s3d_avalanche\bitmaps\material_124_b" }, //unsure about this (tag is halo online specific)
-            { 0x3BA9, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_6" }, //unsure about this (tag is halo online specific)
-            { 0x3BAA, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_6_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3BAB, @"levels\multi\s3d_avalanche\bitmaps\material_125_black" }, //unsure about this (tag is halo online specific)
-            { 0x3BAC, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_7" }, //unsure about this (tag is halo online specific)
-            { 0x3BAD, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_7_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3BAE, @"levels\multi\s3d_avalanche\bitmaps\terrain_soil_1" }, //unsure about this (tag is halo online specific)
-            { 0x3BAF, @"levels\multi\s3d_avalanche\bitmaps\terrain_soil_1_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3BA3, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_02" },
+            { 0x3BA4, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_02_zbump" },
+            { 0x3BA5, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_05" },
+            { 0x3BA6, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_05_bump" },
+            { 0x3BA7, @"levels\multi\deadlock\bitmaps\deadlock_cliff_rock_detail" },
+            { 0x3BA8, @"levels\multi\deadlock\bitmaps\deadlock_cliff_rock_bump_detail" },
+            { 0x3BA9, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_20" },
+            { 0x3BAA, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_20_bump" },
+            { 0x3BAB, @"levels\multi\s3d_avalanche\bitmaps\avalance_rock2_blend" },
+            { 0x3BAC, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_21" },
+            { 0x3BAD, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_21_bump" },
+            { 0x3BAE, @"levels\multi\s3d_avalanche\bitmaps\ter_sand_01" },
+            { 0x3BAF, @"levels\multi\s3d_avalanche\bitmaps\ter_sand_01_bump" },
             { 0x3BB0, @"shaders\terrain_templates\_0_0_1_1_1_2" },
             { 0x3BB1, @"shaders\terrain_templates\_0_0_1_1_1_2" },
             { 0x3BB2, @"shaders\terrain_templates\_0_0_1_1_1_2" },
-            { 0x3BB3, @"levels\multi\s3d_avalanche\bitmaps\terrain_soil_2_a" }, //unsure about this (tag is halo online specific)
-            { 0x3BB4, @"levels\multi\s3d_avalanche\bitmaps\terrain_soil_2_b" }, //unsure about this (tag is halo online specific)
-            { 0x3BB5, @"levels\multi\s3d_avalanche\bitmaps\terrain_soil_2_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3BB6, @"levels\multi\s3d_avalanche\bitmaps\terrain_height" }, //unsure about this (tag is halo online specific)
-            { 0x3BB7, @"levels\multi\s3d_avalanche\bitmaps\terrain_blend_mask" }, //unsure about this (tag is halo online specific)
-            { 0x3BB8, @"levels\multi\s3d_avalanche\bitmaps\soil_3" }, //unsure about this (tag is halo online specific)
+            { 0x3BB3, @"levels\multi\s3d_avalanche\bitmaps\av_cliff_blend_03" },
+            { 0x3BB4, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_03" },
+            { 0x3BB5, @"levels\multi\zanzibar\bitmaps\zan_cliffs_b_bump" },
+            { 0x3BB6, @"levels\multi\s3d_avalanche\bitmaps\av_ground_blend_overlay" },
+            { 0x3BB7, @"levels\multi\s3d_avalanche\bitmaps\avalance_ground_blend" },
+            { 0x3BB8, @"levels\multi\s3d_avalanche\bitmaps\t_ground_01" },
             { 0x3BB9, @"levels\multi\s3d_avalanche\bitmaps\sand_01" },
-            { 0x3BBA, @"levels\multi\s3d_avalanche\bitmaps\soil_3_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3BBA, @"levels\multi\s3d_avalanche\bitmaps\t_ground_01_zbump" },
             { 0x3BBB, @"levels\multi\s3d_avalanche\bitmaps\sand_01_zbump" },
-            { 0x3BBC, @"levels\multi\s3d_avalanche\bitmaps\soil_4" }, //unsure about this (tag is halo online specific)
-            { 0x3BBD, @"levels\multi\s3d_avalanche\bitmaps\soil_4_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3BBE, @"levels\multi\s3d_avalanche\bitmaps\soil_4_height" }, //unsure about this (tag is halo online specific)
+            { 0x3BBC, @"levels\multi\s3d_avalanche\bitmaps\t_ground_08" },
+            { 0x3BBD, @"levels\multi\s3d_avalanche\bitmaps\t_ground_08_zbump" },
+            { 0x3BBE, @"levels\multi\s3d_avalanche\bitmaps\t_gravel_02" },
             { 0x3BBF, @"levels\multi\s3d_avalanche\bitmaps\t_gravel_02_zbump" },
             { 0x3BC0, @"shaders\terrain_templates\_0_0_0_0_0_1" },
             { 0x3BC1, @"shaders\terrain_templates\_0_0_0_0_0_1" },
@@ -15317,8 +15317,8 @@ namespace TagTool.Commands.Tags
             { 0x3BC9, @"levels\multi\s3d_turf\bitmaps\turf_door_01_zbump" },
             { 0x3BCA, @"levels\multi\s3d_turf\bitmaps\unsc_metal_panel_01" },
             { 0x3BCB, @"levels\multi\s3d_turf\bitmaps\unsc_metal_panel_01_zbump" },
-            { 0x3BCC, @"levels\multi\s3d_avalanche\bitmaps\material_114" }, //unsure about this (tag is halo online specific)
-            { 0x3BCD, @"levels\multi\s3d_avalanche\bitmaps\material_114_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3BCC, @"levels\multi\s3d_turf\bitmaps\unsc_stripes_02" },
+            { 0x3BCD, @"levels\multi\s3d_turf\bitmaps\unsc_stripes_02_zbump" },
             { 0x3BCE, @"levels\multi\s3d_turf\bitmaps\turf_metal_11" },
             { 0x3BCF, @"levels\multi\s3d_turf\bitmaps\turf_metal_11_zbump" },
             { 0x3BD0, @"levels\multi\s3d_turf\bitmaps\unsc_panel_indus_02" },
@@ -15327,9 +15327,9 @@ namespace TagTool.Commands.Tags
             { 0x3BD3, @"levels\multi\s3d_turf\bitmaps\unsc_floor_panels_01_zbump" },
             { 0x3BD4, @"levels\multi\s3d_turf\bitmaps\turf_swinging_door_01" },
             { 0x3BD5, @"levels\multi\s3d_turf\bitmaps\turf_swinging_door_01_zbump" },
-            { 0x3BD6, @"levels\multi\s3d_avalanche\bitmaps\material_3" }, //unsure about this (tag is halo online specific)
-            { 0x3BD7, @"levels\multi\s3d_avalanche\bitmaps\material_3_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3BD8, @"levels\multi\s3d_avalanche\bitmaps\material_3_spec" }, //unsure about this (tag is halo online specific)
+            { 0x3BD6, @"levels\multi\s3d_turf\bitmaps\hb_door_road_blast" },
+            { 0x3BD7, @"levels\multi\s3d_turf\bitmaps\hb_door_road_blast_zbump" },
+            { 0x3BD8, @"levels\solo\020_base\bitmaps\hb_door_road_blast_parallax" },
             { 0x3BD9, @"shaders\shader_templates\_0_1_0_1_1_2_0_0_2_0_0" },
             { 0x3BDA, @"shaders\shader_templates\_0_1_0_1_1_2_0_0_2_0_0" },
             { 0x3BDB, @"shaders\shader_templates\_0_1_0_1_1_2_0_0_2_0_0" },
@@ -15349,16 +15349,16 @@ namespace TagTool.Commands.Tags
             { 0x3BE9, @"levels\multi\s3d_turf\bitmaps\unsc_panel_indus_05_zbump" },
             { 0x3BEA, @"levels\multi\s3d_turf\bitmaps\unsc_metal_02" },
             { 0x3BEB, @"levels\multi\s3d_turf\bitmaps\unsc_metal_02_zbump" },
-            { 0x3BEC, @"levels\multi\s3d_avalanche\bitmaps\water_table" }, //unsure about this (tag is halo online specific)
+            { 0x3BEC, @"levels\multi\s3d_avalanche\bitmaps\av_water" },
             { 0x3BED, @"levels\multi\zanzibar\sky\bitmaps\water_bump_large" },
             { 0x3BEE, @"shaders\shader_templates\_0_2_0_1_1_2_0_3_0_0_0" },
             { 0x3BEF, @"shaders\shader_templates\_0_2_0_1_1_2_0_3_0_0_0" },
             { 0x3BF0, @"shaders\shader_templates\_0_2_0_1_1_2_0_3_0_0_0" },
-            { 0x3BF1, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_8" }, //unsure about this (tag is halo online specific)
-            { 0x3BF2, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_8_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3BF3, @"levels\multi\s3d_avalanche\bitmaps\terrain_invis_2" }, //unsure about this (tag is halo online specific)
-            { 0x3BF4, @"levels\multi\s3d_avalanche\bitmaps\soil_5" }, //unsure about this (tag is halo online specific)
-            { 0x3BF5, @"levels\multi\s3d_avalanche\bitmaps\terrain_soil_4" }, //unsure about this (tag is halo online specific)
+            { 0x3BF1, @"levels\multi\s3d_avalanche\bitmaps\av_farlpane_01" },
+            { 0x3BF2, @"levels\multi\s3d_avalanche\bitmaps\av_farlpane_01_zbump" },
+            { 0x3BF3, @"levels\multi\s3d_avalanche\bitmaps\av_far_island_blend_01" },
+            { 0x3BF4, @"levels\multi\riverworld\bitmaps\riverworld_ground_pebble" },
+            { 0x3BF5, @"levels\multi\s3d_avalanche\bitmaps\avalanche_grass" },
             { 0x3BF6, @"levels\multi\s3d_avalanche\decals\avalanche_grass_decal_zbump" },
             { 0x3BF7, @"levels\multi\s3d_turf\bitmaps\unsc_ship_11" },
             { 0x3BF8, @"levels\multi\s3d_turf\bitmaps\unsc_ship_11_zbump" },
@@ -15378,17 +15378,17 @@ namespace TagTool.Commands.Tags
             { 0x3C06, @"levels\multi\s3d_turf\bitmaps\unsc_ship_20" },
             { 0x3C07, @"levels\multi\s3d_turf\bitmaps\unsc_ship_20_zbump" },
             { 0x3C08, @"levels\multi\s3d_turf\bitmaps\unsc_ship_20_sf" },
-            { 0x3C09, @"levels\multi\s3d_turf\bitmaps\turf_banners_03" },
+            { 0x3C09, @"levels\multi\s3d_avalanche\bitmaps\av_banners_02" },
             { 0x3C0A, @"levels\multi\s3d_turf\bitmaps\unsc_stripes_01" },
             { 0x3C0B, @"shaders\shader_templates\_0_0_0_1_1_2_0_0_0_0_0" },
             { 0x3C0C, @"shaders\shader_templates\_0_0_0_1_1_2_0_0_0_0_0" },
             { 0x3C0D, @"shaders\shader_templates\_0_0_0_1_1_2_0_0_0_0_0" },
             { 0x3C0E, @"levels\multi\s3d_turf\bitmaps\d40_reactor_07" },
             { 0x3C0F, @"levels\multi\s3d_turf\bitmaps\d40_reactor_07_zbump" },
-            { 0x3C10, @"levels\multi\s3d_avalanche\bitmaps\material_79" }, //unsure about this (tag is halo online specific)
-            { 0x3C11, @"levels\multi\s3d_avalanche\bitmaps\material_79_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3C12, @"levels\multi\s3d_avalanche\bitmaps\material_80" }, //unsure about this (tag is halo online specific)
-            { 0x3C13, @"levels\multi\s3d_avalanche\bitmaps\material_80_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3C10, @"levels\multi\s3d_turf\bitmaps\unsc_road_01" },
+            { 0x3C11, @"levels\multi\s3d_turf\bitmaps\unsc_road_01_zbump" },
+            { 0x3C12, @"levels\multi\s3d_turf\bitmaps\d40_reactor_05" },
+            { 0x3C13, @"levels\multi\s3d_turf\bitmaps\d40_reactor_05_zbump" },
             { 0x3C14, @"levels\multi\s3d_turf\bitmaps\unsc_panel_07" },
             { 0x3C15, @"levels\multi\s3d_turf\bitmaps\unsc_panel_07_zbump" },
             { 0x3C16, @"levels\multi\s3d_turf\bitmaps\unsc_metal_floor_06" },
@@ -15401,14 +15401,14 @@ namespace TagTool.Commands.Tags
             { 0x3C1D, @"levels\multi\s3d_turf\bitmaps\turf_building_block_09_zbump" },
             { 0x3C1E, @"levels\multi\s3d_turf\bitmaps\unsc_garage_01" },
             { 0x3C1F, @"levels\multi\s3d_turf\bitmaps\unsc_garage_01_zbump" },
-            { 0x3C20, @"levels\multi\s3d_avalanche\bitmaps\material_104" }, //unsure about this (tag is halo online specific)
+            { 0x3C20, @"levels\solo\100_citadel\bitmaps\nature\wispy_snow_area" },
             { 0x3C21, @"shaders\halogram_templates\_6_1_3_0_0_0_1" },
             { 0x3C22, @"shaders\halogram_templates\_6_1_3_0_0_0_1" },
             { 0x3C23, @"shaders\halogram_templates\_6_1_3_0_0_0_1" },
             { 0x3C24, @"levels\multi\deadlock\bitmaps\deadlock_metal_rivets_dif" },
             { 0x3C25, @"levels\multi\deadlock\bitmaps\deadlock_metal_rivets_bump" },
-            { 0x3C26, @"levels\multi\s3d_avalanche\bitmaps\material_110" }, //unsure about this (tag is halo online specific)
-            { 0x3C27, @"levels\multi\s3d_avalanche\bitmaps\material_110_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3C26, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_12" },
+            { 0x3C27, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_12_zbump" },
             { 0x3C28, @"levels\multi\s3d_turf\bitmaps\turf_rooms_01_sf" },
             { 0x3C29, @"levels\multi\s3d_turf\bitmaps\turf_rooms_01" },
             { 0x3C2A, @"levels\multi\s3d_turf\bitmaps\turf_farplane_04_sf" },
@@ -15426,27 +15426,27 @@ namespace TagTool.Commands.Tags
             { 0x3C36, @"levels\multi\deadlock\bitmaps\deadlock_concrete_wall_a_dif" },
             { 0x3C37, @"levels\solo\020_base\bitmaps\concrete2_detail_bump" },
             { 0x3C38, @"levels\solo\020_base\bitmaps\hb_concrete_wall_03_diffuse" },
-            { 0x3C39, @"levels\multi\s3d_avalanche\bitmaps\base_markers" }, //unsure about this (tag is halo online specific)
-            { 0x3C3A, @"levels\multi\s3d_avalanche\bitmaps\material_152" }, //unsure about this (tag is halo online specific)
+            { 0x3C39, @"levels\multi\s3d_avalanche\bitmaps\base_marks_02" },
+            { 0x3C3A, @"levels\ui\mainmenu\bitmaps\lig_rays_down_long" },
             { 0x3C3B, @"sound\levels\multi\s3d_diamondback\amb_desert_wind\amb_desert_wind\loop" },
             { 0x3C3C, @"sound\levels\multi\s3d_diamondback\amb_desert_wind\details\amb_wind_desert_sand" },
             { 0x3C3D, @"sound\levels\multi\s3d_diamondback\amb_gen_roomtone\amb_gen_roomtone\loop" },
             { 0x3C3E, @"sound\levels\multi\s3d_diamondback\amb_cave_wind\amb_cave_wind\loop" },
             { 0x3C3F, @"sound\levels\multi\s3d_diamondback\amb_cave_wind_and_drips\amb_cave_wind_and_drips\loop" },
             { 0x3C40, @"sound\levels\multi\s3d_diamondback\amb_cave_wind_and_drips\details\amb_cave_water_drips" },
-            { 0x3C41, @"levels\shared\decorators\outskirts_thick_grass_02\outskirts_thick_grass_02" }, //unsure about this (tag is halo online specific)
-            { 0x3C42, @"levels\multi\s3d_avalanche\decorators\bitmaps\decorator_wildgrass_dry" },
-            { 0x3C43, @"levels\shared\decorators\bitmaps\decorator_wildgrass_dark" },
-            { 0x3C44, @"levels\multi\s3d_avalanche\decorators\flower_yellow\flower_yellow" },
-            { 0x3C45, @"levels\multi\s3d_avalanche\decorators\bitmaps\flower_yellow" },
-            { 0x3C46, @"levels\multi\s3d_avalanche\decorators\grass_clumps\grass_clumps" },
-            { 0x3C47, @"levels\multi\s3d_avalanche\decorators\bitmaps\grass_clumps" },
+            { 0x3C41, @"levels\shared\decorators\outskirts_thick_grass\outskirts_thick_grass" },
+            { 0x3C42, @"levels\multi\s3d_avalanche\decorators\bitmaps\decorator_burntgrass" },
+            { 0x3C43, @"levels\shared\decorators\bitmaps\decorator_burntgrass" },
+            { 0x3C44, @"levels\shared\decorators\foliage\flower_yellow\flower_yellow" },
+            { 0x3C45, @"levels\multi\s3d_avalanche\decorators\av_flower_red\bitmaps\av_flower_red" },
+            { 0x3C46, @"levels\shared\decorators\grass_clumps\grass_clumps" },
+            { 0x3C47, @"levels\shared\decorators\bitmaps\grass_bunch" },
             { 0x3C48, @"levels\shared\decorators\halo_rocks\halo_rocks" },
-            { 0x3C49, @"levels\multi\s3d_avalanche\decorators\bitmaps\halo_rocks" },
-            { 0x3C4A, @"levels\multi\s3d_avalanche\decorators\bitmaps\decorator_rocks_dark" },
-            { 0x3C4B, @"levels\shared\decorators\bitmaps\decorator_rocks_dark" },
-            { 0x3C4C, @"levels\shared\decorators\tree_boundary\tree_boundary" },
-            { 0x3C4D, @"levels\shared\decorators\bitmaps\tree_boundary" },
+            { 0x3C49, @"levels\shared\decorators\bitmaps\decorator_halo_rock" },
+            { 0x3C4A, @"levels\shared\decorators\bitmaps\decorator_rocks_brown" },
+            { 0x3C4B, @"levels\shared\decorators\bitmaps\decorator_rocks_out" },
+            { 0x3C4C, @"levels\shared\decorators\foliage\tree_boundary\tree_boundary" },
+            { 0x3C4D, @"levels\multi\s3d_avalanche\decorators\bitmaps\tree_boundary" },
             { 0x3C4E, @"levels\multi\s3d_avalanche\sky\sky" },
             { 0x3C4F, @"levels\multi\s3d_avalanche\sky\sky" },
             { 0x3C50, @"levels\multi\s3d_avalanche\shaders\ava_sky_01_holo" },
