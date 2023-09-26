@@ -15061,7 +15061,7 @@ namespace TagTool.Commands.Tags
             { 0x3AC9, @"levels\multi\s3d_turf\shaders\turf_metal_01_b" },
             { 0x3ACA, @"levels\multi\s3d_turf\shaders\turf_metal_02" },
             { 0x3ACB, @"levels\multi\s3d_turf\shaders\unsc_ship_05" },
-            { 0x3ACC, @"levels\multi\s3d_avalanche\shaders\material_74" }, //unsure about this (tag is halo online specific)
+            { 0x3ACC, @"levels\multi\s3d_avalanche\shaders\cyber_glass" },
             { 0x3ACD, @"levels\multi\s3d_avalanche\shaders\av_building_block_11" },
             { 0x3ACE, @"levels\multi\s3d_turf\shaders\turf_tank_01" },
             { 0x3ACF, @"levels\multi\s3d_turf\shaders\unsc_outpost_02" },
