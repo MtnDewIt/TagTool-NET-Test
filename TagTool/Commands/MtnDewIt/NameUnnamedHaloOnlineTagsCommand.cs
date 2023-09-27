@@ -6895,14 +6895,14 @@ namespace TagTool.Commands.Tags
             { 0x1AE3, @"shaders\particle_templates\_0_3_0_2_0_0_0_1_0_0" },
             { 0x1AE4, @"shaders\particle_templates\_0_3_0_2_0_0_0_1_0_0" },
             { 0x1AE5, @"shaders\particle_templates\_0_3_0_2_0_0_0_1_0_0" },
-            { 0x1AE6, @"objects\equipment\shaders\autoturret_covenant" },
+            { 0x1AE6, @"levels\shared\shaders\covenant\shadow_table_base" },
             { 0x1AE7, @"levels\shared\shaders\multi\checker" },
             { 0x1AE8, @"objects\equipment\shaders\autoturret_eye" },
-            { 0x1AE9, @"objects\equipment\bitmaps\autoturret_covenant" },
+            { 0x1AE9, @"levels\shared\bitmaps\covenant\bridge_table" },
             { 0x1AEA, @"levels\solo\110_hc\bitmaps\metals\fs_cov_detail_b" },
-            { 0x1AEB, @"objects\equipment\bitmaps\autoturret_covenant_zbump" },
-            { 0x1AEC, @"objects\equipment\bitmaps\autoturret_covenant_cube" },
-            { 0x1AED, @"objects\equipment\bitmaps\autoturret_covenant_illum" },
+            { 0x1AEB, @"levels\shared\bitmaps\covenant\bridge_table_bump" },
+            { 0x1AEC, @"objects\bitmaps\reflection_maps\carapace_shell_purplemix" },
+            { 0x1AED, @"levels\shared\bitmaps\covenant\bridge_table_illum" },
             { 0x1AEE, @"levels\solo\110_hc\bitmaps\metals\covenant_metal_bump" },
             { 0x1AEF, @"shaders\shader_templates\_0_2_0_1_2_1_1_0_0_0_0" },
             { 0x1AF0, @"shaders\shader_templates\_0_2_0_1_2_1_1_0_0_0_0" },
@@ -15141,7 +15141,7 @@ namespace TagTool.Commands.Tags
             { 0x3B19, @"levels\multi\s3d_turf\shaders\turf_farplane_04" },
             { 0x3B1A, @"levels\multi\s3d_turf\shaders\turf_column_01" },
             { 0x3B1B, @"levels\multi\s3d_turf\shaders\turf_building_block_02" },
-            { 0x3B1C, @"levels\multi\s3d_avalanche\shaders\material_117" }, //unsure about this (tag is halo online specific)
+            { 0x3B1C, @"levels\multi\s3d_avalanche\shaders\av_building_block_13" }, //unsure about this (tag is halo online specific, removed in MCC)
             { 0x3B1D, @"levels\multi\deadlock\shaders\deadlock_concrete_new_a" },
             { 0x3B1E, @"levels\multi\s3d_avalanche\shaders\base_marks_01" },
             { 0x3B1F, @"levels\multi\s3d_avalanche\shaders\ray_long_holo" },
@@ -15416,10 +15416,10 @@ namespace TagTool.Commands.Tags
             { 0x3C2C, @"levels\multi\s3d_turf\bitmaps\turf_column_01_zbump" },
             { 0x3C2D, @"levels\multi\s3d_turf\bitmaps\turf_building_block_02" },
             { 0x3C2E, @"levels\multi\s3d_turf\bitmaps\turf_building_block_02_zbump" },
-            { 0x3C2F, @"levels\multi\s3d_avalanche\bitmaps\material_117" }, //unsure about this (tag is halo online specific)
-            { 0x3C30, @"levels\multi\s3d_avalanche\bitmaps\material_117_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3C31, @"levels\multi\s3d_avalanche\bitmaps\material_117_sf" }, //unsure about this (tag is halo online specific)
-            { 0x3C32, @"levels\multi\s3d_avalanche\bitmaps\material_117_a" }, //unsure about this (tag is halo online specific)
+            { 0x3C2F, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_13" }, //unsure about this (tag is halo online specific, removed in MCC)
+            { 0x3C30, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_13_zbump" }, //unsure about this (tag is halo online specific, removed in MCC)
+            { 0x3C31, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_13_sf" }, //unsure about this (tag is halo online specific, removed in MCC)
+            { 0x3C32, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_13_spec" }, //unsure about this (tag is halo online specific, removed in MCC)
             { 0x3C33, @"shaders\shader_templates\_0_1_1_2_1_2_1_0_0_0_0" },
             { 0x3C34, @"shaders\shader_templates\_0_1_1_2_1_2_1_0_0_0_0" },
             { 0x3C35, @"shaders\shader_templates\_0_1_1_2_1_2_1_0_0_0_0" },
@@ -15663,7 +15663,7 @@ namespace TagTool.Commands.Tags
             { 0x3D23, @"sound\levels\multi\s3d_turf\water_flow\water_flow\loop" },
             { 0x3D24, @"levels\multi\s3d_avalanche\fx\mancannon\av_mancannon" },
             { 0x3D25, @"levels\multi\s3d_sky_bridgenew\fx\mancannon\av_mancannon" },
-            { 0x3D26, @"fx\particles\energy\antigrav_light_tall" }, //unsure about this (tag is halo online specific)
+            { 0x3D26, @"fx\particles\flare\light_beam_flat" },
             { 0x3D27, @"levels\multi\s3d_avalanche\fx\dripping_waterpipe\waterfall_end_small" },
             { 0x3D28, @"fx\particles\material\water\water_spray" },
             { 0x3D29, @"shaders\particle_templates\_3_10_0_0_0_0_1_0_0_0" },
@@ -15951,7 +15951,7 @@ namespace TagTool.Commands.Tags
             { 0x3E43, @"levels\multi\s3d_edge\shaders\fr_metal_trim_01" },
             { 0x3E44, @"levels\multi\s3d_edge\shaders\fr_panel_02" },
             { 0x3E45, @"levels\multi\s3d_edge\shaders\fr_holo_banners_02" },
-            { 0x3E46, @"levels\multi\s3d_edge\shaders\fr_panel_unknown" }, //unsure about this (tag is halo online specific, unable to find any equivalent in H3EK)
+            { 0x3E46, @"levels\multi\s3d_edge\shaders\fr_panel_04" }, //unsure about this (tag is halo online specific, removed in MCC)
             { 0x3E47, @"levels\multi\s3d_edge\shaders\fr_arch_04" },
             { 0x3E48, @"levels\multi\s3d_edge\shaders\fr_floortile_02d" },
             { 0x3E49, @"levels\multi\s3d_edge\shaders\edge_serv_glow_vert" },
@@ -16089,9 +16089,9 @@ namespace TagTool.Commands.Tags
             { 0x3ECD, @"levels\multi\s3d_edge\bitmaps\fr_panel_02" },
             { 0x3ECE, @"levels\multi\s3d_edge\bitmaps\fr_panel_02_zbump" },
             { 0x3ECF, @"levels\multi\s3d_edge\bitmaps\fr_holo_banners_02" },
-            { 0x3ED0, @"levels\multi\s3d_edge\bitmaps\fr_panel_unknown" }, //unsure about this (tag is halo online specific, unable to find any equivalent in H3EK)
-            { 0x3ED1, @"levels\multi\s3d_edge\bitmaps\fr_panel_unknown_zbump" }, //unsure about this (tag is halo online specific, unable to find any equivalent in H3EK)
-            { 0x3ED2, @"levels\multi\s3d_edge\bitmaps\fr_panel_unknown_sf" }, //unsure about this (tag is halo online specific, unable to find any equivalent in H3EK)
+            { 0x3ED0, @"levels\multi\s3d_edge\bitmaps\fr_panel_04" }, //unsure about this (tag is halo online specific, removed in MCC)
+            { 0x3ED1, @"levels\multi\s3d_edge\bitmaps\fr_panel_04_zbump" }, //unsure about this (tag is halo online specific, removed in MCC)
+            { 0x3ED2, @"levels\multi\s3d_edge\bitmaps\fr_panel_04_sf" }, //unsure about this (tag is halo online specific, removed in MCC)
             { 0x3ED3, @"levels\multi\s3d_edge\bitmaps\fr_arch_04" },
             { 0x3ED4, @"levels\multi\s3d_edge\bitmaps\fr_arch_04_zbump" },
             { 0x3ED5, @"levels\multi\s3d_edge\bitmaps\fr_floortile_02d" },
