@@ -15849,16 +15849,16 @@ namespace TagTool.Commands.Tags
             { 0x3DDD, @"levels\multi\s3d_edge\s3d_edge_s3d_edge_cubemaps" },
             { 0x3DDE, @"levels\multi\s3d_edge\sky\sky" },
             { 0x3DDF, @"sound\levels\multi\s3d_edge\amb_edge_waterfall\amb_edge_waterfall" },
-            { 0x3DE0, @"levels\multi\s3d_edge\fx\waterfall_stream_base_dam_1\waterfall_stream_base_dam_1" }, //unsure about this (tag is halo online specific)
+            { 0x3DE0, @"levels\solo\010_jungle\fx\waterfall_stream\waterfall_stream_top_wide\waterfall_stream_top_wide" },
             { 0x3DE1, @"levels\multi\s3d_edge\fx\waterfall_stream_base_dam_2\waterfall_stream_base_dam_2" },
-            { 0x3DE2, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_small\waterfall_stream_top_wide_small" }, //unsure about this (tag is halo online specific)
-            { 0x3DE3, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_small\waterfall_stream_top_wide_small_tr" }, //unsure about this (tag is halo online specific)
+            { 0x3DE2, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_large" },
+            { 0x3DE3, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_small" },
             { 0x3DE4, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide\waterfall_stream_top_wide" },
             { 0x3DE5, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_big\waterfall_stream_top_wide_big" },
             { 0x3DE6, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_big\waterfall_stream_top_wide_big_tr" },
-            { 0x3DE7, @"levels\multi\s3d_edge\lights\blue_light_rear" },
-            { 0x3DE8, @"levels\multi\s3d_edge\lights\indoor_blue_01" },
-            { 0x3DE9, @"levels\multi\s3d_edge\lights\red_light_rear" },
+            { 0x3DE7, @"levels\multi\s3d_edge\lights\indoor_blue_01" },
+            { 0x3DE8, @"levels\multi\s3d_edge\lights\red_light_rear" },
+            { 0x3DE9, @"levels\multi\s3d_edge\lights\blue_light_rear" },
             { 0x3DEA, @"levels\multi\s3d_edge\lights\white_light" },
             { 0x3DEB, @"levels\multi\s3d_edge\lights\yellow" },
             { 0x3DEC, @"levels\multi\s3d_edge\lights\yellow_rear" },
@@ -16178,7 +16178,7 @@ namespace TagTool.Commands.Tags
             { 0x3F26, @"levels\multi\s3d_edge\sky\bitmaps\forest_clouds_detail" },
             { 0x3F27, @"sound\levels\multi\s3d_edge\amb_edge_waterfall\amb_edge_waterfall" },
             { 0x3F28, @"sound\levels\multi\s3d_edge\amb_edge_waterfall\amb_edge_waterfall\loop" },
-            { 0x3F29, @"levels\multi\s3d_edge\fx\waterfall_stream_base_dam_1\waterfall_stream_base_dam_1" }, //unsure about this (tag is halo online specific)
+            { 0x3F29, @"levels\solo\010_jungle\fx\waterfall_stream\waterfall_stream_top_wide\waterfall_stream_top_wide" },
             { 0x3F2A, @"levels\solo\010_jungle\fx\waterfall_stream\particles\rolling_mist_depth_fade" },
             { 0x3F2B, @"shaders\particle_templates\_1_3_0_0_1_1_1_1_1_0" },
             { 0x3F2C, @"shaders\particle_templates\_1_3_0_0_1_1_1_1_1_0" },
@@ -16188,12 +16188,12 @@ namespace TagTool.Commands.Tags
             { 0x3F30, @"shaders\particle_templates\_1_10_0_0_1_1_1_1_1_0" },
             { 0x3F31, @"shaders\particle_templates\_1_10_0_0_1_1_1_1_1_0" },
             { 0x3F32, @"shaders\particle_templates\_1_10_0_0_1_1_1_1_1_0" },
-            { 0x3F33, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_small\waterfall_stream_top_wide_small" }, //unsure about this (tag is halo online specific)
-            { 0x3F34, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_small\particles\waterfall_stream_top_small_mist" }, //unsure about this (tag is halo online specific)
+            { 0x3F33, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_large" },
+            { 0x3F34, @"levels\multi\s3d_edge\fx\edge_volcano\soft_steam_fast_edge" },
             { 0x3F35, @"shaders\particle_templates\_4_3_0_0_1_1_1_1_0_0" },
             { 0x3F36, @"shaders\particle_templates\_4_3_0_0_1_1_1_1_0_0" },
             { 0x3F37, @"shaders\particle_templates\_4_3_0_0_1_1_1_1_0_0" },
-            { 0x3F38, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_small\waterfall_stream_top_wide_small_tr" }, //unsure about this (tag is halo online specific)
+            { 0x3F38, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_small" },
             { 0x3F39, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide\waterfall_stream_top_wide" },
             { 0x3F3A, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_big\waterfall_stream_top_wide_big" },
             { 0x3F3B, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_big\waterfall_stream_top_wide_big_tr" },
