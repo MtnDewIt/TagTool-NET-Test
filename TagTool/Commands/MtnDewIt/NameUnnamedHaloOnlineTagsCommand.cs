@@ -15866,23 +15866,23 @@ namespace TagTool.Commands.Tags
             { 0x3DEE, @"levels\multi\s3d_reactor\decals\reactor_sand" },
             { 0x3DEF, @"levels\multi\s3d_reactor\decals\snow_hugest_patch" },
             { 0x3DF0, @"levels\shared\decals\nature\algae\algae_wrap" },
-            { 0x3DF1, @"levels\multi\s3d_edge\decals\nature\rock\rock_01" }, //unsure about this (tag is halo online specific)
-            { 0x3DF2, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_large_01" }, //unsure about this (tag is halo online specific)
-            { 0x3DF3, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_large_02" }, //unsure about this (tag is halo online specific)
-            { 0x3DF4, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_small_01" }, //unsure about this (tag is halo online specific)
-            { 0x3DF5, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_medium_01" }, //unsure about this (tag is halo online specific)
-            { 0x3DF6, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_small_02" }, //unsure about this (tag is halo online specific)
-            { 0x3DF7, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_small_03" }, //unsure about this (tag is halo online specific)
+            { 0x3DF1, @"levels\shared\decals\stains\bleed" },
+            { 0x3DF2, @"levels\shared\decals\stains\forerunner_stains\drip_02" },
+            { 0x3DF3, @"levels\shared\decals\stains\forerunner_stains\drip_02x2" },
+            { 0x3DF4, @"levels\shared\decals\stains\forerunner_stains\drip_04" },
+            { 0x3DF5, @"levels\shared\decals\stains\forerunner_stains\drip_03" },
+            { 0x3DF6, @"levels\shared\decals\stains\forerunner_stains\drip_04_big" },
+            { 0x3DF7, @"levels\shared\decals\stains\forerunner_stains\drip_04_huge" },
             { 0x3DF8, @"levels\shared\decals\stains\forerunner_stains\streak_01x2" },
-            { 0x3DF9, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_wide_01" }, //unsure about this (tag is halo online specific)
-            { 0x3DFA, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_wide_02" }, //unsure about this (tag is halo online specific)
-            { 0x3DFB, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_wide_03" }, //unsure about this (tag is halo online specific)
-            { 0x3DFC, @"levels\multi\s3d_edge\decals\nature\algae\moss_patch_01" }, //unsure about this (tag is halo online specific)
-            { 0x3DFD, @"levels\multi\s3d_edge\decals\nature\algae\moss_patch_wide_01" }, //unsure about this (tag is halo online specific)
-            { 0x3DFE, @"levels\multi\s3d_edge\decals\nature\algae\moss_patch_wide_02" }, //unsure about this (tag is halo online specific)
-            { 0x3DFF, @"levels\multi\s3d_edge\decals\nature\algae\moss_patch_wide_03" }, //unsure about this (tag is halo online specific)
-            { 0x3E00, @"levels\multi\s3d_edge\decals\nature\algae\moss_patch_wide_05" }, //unsure about this (tag is halo online specific)
-            { 0x3E01, @"levels\multi\s3d_edge\decals\nature\algae\moss_rock_patch_01" }, //unsure about this (tag is halo online specific)
+            { 0x3DF9, @"levels\shared\decals\stains\forerunner_stains\streak_02" },
+            { 0x3DFA, @"levels\shared\decals\stains\forerunner_stains\streak_02x2" },
+            { 0x3DFB, @"levels\shared\decals\stains\forerunner_stains\streak_02x3" },
+            { 0x3DFC, @"levels\shared\decals\stains\forerunner_stains\water_02" },
+            { 0x3DFD, @"levels\shared\decals\stains\forerunner_stains\water_03" },
+            { 0x3DFE, @"levels\shared\decals\stains\forerunner_stains\water_03_big" },
+            { 0x3DFF, @"levels\shared\decals\stains\forerunner_stains\water_03_huge" },
+            { 0x3E00, @"levels\shared\decals\stains\forerunner_stains\water_03_huge2" },
+            { 0x3E01, @"levels\multi\s3d_reactor\decals\reactor_moss_sm" }, //unsure about this (tag is halo online specific)
             { 0x3E02, @"sound\levels\multi\s3d_edge\amb_cave_dry\amb_cave_dry" },
             { 0x3E03, @"sound\levels\multi\s3d_edge\amb_edge_open_air\amb_edge_open_air" },
             { 0x3E04, @"sound\dsp_effects\reverbs\templates\auditorium" },
@@ -16165,7 +16165,7 @@ namespace TagTool.Commands.Tags
             { 0x3F19, @"shaders\shader_templates\_0_0_0_0_0_0_5_3_0_0_0" },
             { 0x3F1A, @"shaders\shader_templates\_0_0_0_0_0_0_5_3_0_0_0" },
             { 0x3F1B, @"levels\multi\riverworld\sky\bitmaps\clouds_ark" },
-            { 0x3F1C, @"levels\multi\riverworld\sky\bitmaps\clouds_ark_illum" }, //unsure about this (tag is halo online specific)
+            { 0x3F1C, @"levels\multi\riverworld\sky\bitmaps\clouds_ark_spec" }, //unsure about this (tag is halo online specific, removed in MCC)
             { 0x3F1D, @"shaders\shader_templates\_0_0_0_0_0_0_4_3_2_0_0" },
             { 0x3F1E, @"shaders\shader_templates\_0_0_0_0_0_0_4_3_2_0_0" },
             { 0x3F1F, @"shaders\shader_templates\_0_0_0_0_0_0_4_3_2_0_0" },
@@ -16207,13 +16207,13 @@ namespace TagTool.Commands.Tags
             { 0x3F43, @"levels\shared\decals\nature\snow\snow_ice_crust1_bump" },
             { 0x3F44, @"shaders\decal_templates\_0_3_0_1_1_2" },
             { 0x3F45, @"shaders\decal_templates\_0_3_0_1_1_2" },
-            { 0x3F46, @"levels\multi\s3d_edge\decals\nature\rock\rock_01" }, //unsure about this (tag is halo online specific)
-            { 0x3F47, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_large" }, //unsure about this (tag is halo online specific)
-            { 0x3F48, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_small" }, //unsure about this (tag is halo online specific)
-            { 0x3F49, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_medium" }, //unsure about this (tag is halo online specific)
-            { 0x3F4A, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_wide" }, //unsure about this (tag is halo online specific)
-            { 0x3F4B, @"levels\multi\s3d_edge\decals\nature\algae\moss_patch" }, //unsure about this (tag is halo online specific)
-            { 0x3F4C, @"levels\multi\s3d_edge\decals\nature\algae\moss_patch_wide" }, //unsure about this (tag is halo online specific)
+            { 0x3F46, @"levels\shared\decals\stains\bitmaps\ustdamage_bleed" },
+            { 0x3F47, @"levels\shared\decals\stains\forerunner_stains\bitmaps\drip_02" },
+            { 0x3F48, @"levels\shared\decals\stains\forerunner_stains\bitmaps\drip_04" },
+            { 0x3F49, @"levels\shared\decals\stains\forerunner_stains\bitmaps\drip_03" },
+            { 0x3F4A, @"levels\shared\decals\stains\forerunner_stains\bitmaps\streak_02" },
+            { 0x3F4B, @"levels\shared\decals\stains\forerunner_stains\bitmaps\water_02" },
+            { 0x3F4C, @"levels\shared\decals\stains\forerunner_stains\bitmaps\water_03" },
             { 0x3F4D, @"levels\multi\s3d_reactor\decals\reactor_moss_decal" },
             { 0x3F4E, @"levels\multi\s3d_reactor\decals\reactor_moss_decal_zbump" },
             { 0x3F4F, @"objects\levels\multi\s3d_lockout\s3d_lockout_lift\s3d_lockout_lift" },
