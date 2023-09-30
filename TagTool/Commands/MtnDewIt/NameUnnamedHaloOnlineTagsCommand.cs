@@ -10221,16 +10221,16 @@ namespace TagTool.Commands.Tags
             { 0x27E1, @"levels\ui\mainmenu\objects\menu_elevator\menu_elevator_03\menu_elevator_03" },
             { 0x27E2, @"levels\ui\mainmenu\fx\column_warning_lights\column_warning_lights" },
             { 0x27E3, @"levels\ui\mainmenu\fx\runway_lights\runway_lights" },
-            { 0x27E4, @"levels\ui\mainmenu\lights\menu_light_01" }, //unsure about this (tag is halo online specific) 
-            { 0x27E5, @"levels\ui\mainmenu\lights\menu_light_02" }, //unsure about this (tag is halo online specific)
-            { 0x27E6, @"levels\ui\mainmenu\lights\menu_light_03" }, //unsure about this (tag is halo online specific)
-            { 0x27E7, @"levels\ui\mainmenu\lights\menu_light_04" }, //unsure about this (tag is halo online specific)
-            { 0x27E8, @"levels\ui\mainmenu\lights\menu_light_05" }, //unsure about this (tag is halo online specific)
-            { 0x27E9, @"levels\ui\mainmenu\lights\menu_light_06" }, //unsure about this (tag is halo online specific)
-            { 0x27EA, @"levels\ui\mainmenu\lights\menu_light_07" }, //unsure about this (tag is halo online specific)
-            { 0x27EB, @"levels\ui\mainmenu\lights\menu_light_08" }, //unsure about this (tag is halo online specific)
-            { 0x27EC, @"levels\ui\mainmenu\lights\menu_light_09" }, //unsure about this (tag is halo online specific)
-            { 0x27ED, @"levels\ui\mainmenu\lights\menu_light_10" }, //unsure about this (tag is halo online specific)
+            { 0x27E4, @"levels\ui\mainmenu\lights\unsc_base_primary" }, //unsure about this (tag is halo online specific) 
+            { 0x27E5, @"levels\ui\mainmenu\lights\unsc_hangar_top" }, //unsure about this (tag is halo online specific)
+            { 0x27E6, @"levels\ui\mainmenu\lights\unsc_base_right" }, //unsure about this (tag is halo online specific)
+            { 0x27E7, @"levels\ui\mainmenu\lights\unsc_hangar_rear" }, //unsure about this (tag is halo online specific)
+            { 0x27E8, @"levels\ui\mainmenu\lights\unsc_base_left" }, //unsure about this (tag is halo online specific)
+            { 0x27E9, @"levels\ui\mainmenu\lights\unsc_hangar_elevator" }, //unsure about this (tag is halo online specific)
+            { 0x27EA, @"levels\ui\mainmenu\lights\covenant_base_left" }, //unsure about this (tag is halo online specific)
+            { 0x27EB, @"levels\ui\mainmenu\lights\covenant_base_right" }, //unsure about this (tag is halo online specific)
+            { 0x27EC, @"levels\ui\mainmenu\lights\covenant_hangar_02" }, //unsure about this (tag is halo online specific)
+            { 0x27ED, @"levels\ui\mainmenu\lights\covenant_hangar_01" }, //unsure about this (tag is halo online specific)
             { 0x27EE, @"objects\vehicles\civilian\forklift\forklift" },
             { 0x27EF, @"objects\gear\human\industrial\crate_tech_giant\crate_tech_giant" },
             { 0x27F0, @"objects\characters\ambient_life\rats" },
