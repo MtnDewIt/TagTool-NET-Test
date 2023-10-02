@@ -678,10 +678,10 @@ namespace TagTool.Commands.Tags
             { 0x029A, @"globals\input_globals" },
             { 0x029B, @"fx\scenery_fx\havok\havok_collection" },
             { 0x029C, @"fx\screen_fx\small_explosion" },
-            { 0x029D, @"fx\particles\flare\explosive_flash" },
+            { 0x029D, @"fx\particles\flare\explosive_flash_n1" }, //unsure about this (tag is halo online specific)
             { 0x029E, @"fx\particles\atmospheric\fiery_smoke\smoke_fiery_small" },
             { 0x029F, @"fx\physics_templates\_default" },
-            { 0x02A0, @"fx\particles\energy\spark_long" },
+            { 0x02A0, @"fx\particles\energy\spark_long_n1" }, //unsure about this (tag is halo online specific)
             { 0x02A1, @"fx\physics_templates\sparks" },
             { 0x02A2, @"fx\particles\atmospheric\soft_smoke\soft_smoke_large" },
             { 0x02A3, @"fx\physics_templates\explosion_fireball" },
@@ -998,7 +998,7 @@ namespace TagTool.Commands.Tags
             { 0x03DA, @"fx\particles\energy\sparks\impact_spark_orange" },
             { 0x03DB, @"fx\physics_templates\impact_sparks" },
             { 0x03DC, @"fx\particles\energy\electric_arcs" },
-            { 0x03DD, @"fx\particles\energy\plasma_noise" },
+            { 0x03DD, @"fx\particles\energy\plasma_noise_n2" }, //unsure about this (tag is halo online specific)
             { 0x03DE, @"fx\particles\flare\flash_soft_zfade" },
             { 0x03DF, @"shaders\particle_templates\_5_8_0_0_0_0_1_0_0_0" },
             { 0x03E0, @"shaders\particle_templates\_5_8_0_0_0_0_1_0_0_0" },
@@ -1223,7 +1223,7 @@ namespace TagTool.Commands.Tags
             { 0x04BB, @"globals\damage_responses\explosion_small" },
             { 0x04BC, @"fx\screen_fx\medium_explosion" },
             { 0x04BD, @"sound\weapons\frag_grenade\frag_expl_lod_far" },
-            { 0x04BE, @"fx\particles\energy\spark_ember" },
+            { 0x04BE, @"fx\particles\energy\spark_ember_n2" }, //unsure about this (tag is halo online specific)
             { 0x04BF, @"objects\weapons\grenade\frag_grenade\fx\detonation" },
             { 0x04C0, @"objects\weapons\grenade\frag_grenade\fx\detonation" },
             { 0x04C1, @"fx\particles\atmospheric\rolling_smoke\fireball_human_medium" },
@@ -1264,12 +1264,12 @@ namespace TagTool.Commands.Tags
             { 0x04E4, @"sound\weapons\frag_grenade\frag_lod_far" },
             { 0x04E5, @"sound\weapons\surround_tails\indoor\expl_tail_indoor" },
             { 0x04E6, @"sound\weapons\surround_tails\outdoor\expl_tail_outdoor" },
-            { 0x04E7, @"fx\particles\flare\explosive_flash_secondary" },
-            { 0x04E8, @"fx\particles\atmospheric\fiery_smoke\smoke_fiery_small_secondary" },
-            { 0x04E9, @"fx\particles\energy\spark_ember_secondary" },
-            { 0x04EA, @"fx\particles\energy\spark_long_secondary" },
-            { 0x04EB, @"fx\particles\atmospheric\rolling_smoke\fireball_human_medium_secondary" },
-            { 0x04EC, @"fx\particles\atmospheric\rolling_smoke\rolling_smoke_medium_secondary" },
+            { 0x04E7, @"fx\particles\flare\explosive_flash_n2" }, //unsure about this (tag is halo online specific)
+            { 0x04E8, @"fx\particles\atmospheric\fiery_smoke\smoke_fiery_small_n1" }, //unsure about this (tag is halo online specific)
+            { 0x04E9, @"fx\particles\energy\spark_ember_n3" }, //unsure about this (tag is halo online specific)
+            { 0x04EA, @"fx\particles\energy\spark_long_n2" }, //unsure about this (tag is halo online specific)
+            { 0x04EB, @"fx\particles\atmospheric\rolling_smoke\fireball_human_medium_n1" }, //unsure about this (tag is halo online specific)
+            { 0x04EC, @"fx\particles\atmospheric\rolling_smoke\rolling_smoke_medium_n1" }, //unsure about this (tag is halo online specific)
             { 0x04ED, @"sound\weapons\plasma_grenade\throwgren" },
             { 0x04EE, @"objects\weapons\grenade\plasma_grenade\plasma_grenade_equipment" },
             { 0x04EF, @"fx\material_effects\objects\weapons\plasma_grenade" },
@@ -1308,8 +1308,8 @@ namespace TagTool.Commands.Tags
             { 0x0510, @"sound\weapons\plasma_grenade\plasma_grenade_tails_int" },
             { 0x0511, @"fx\particles\flare\light_spike" },
             { 0x0512, @"objects\weapons\grenade\plasma_grenade\fx\detonation" },
-            { 0x0513, @"fx\particles\energy\plasma_burst" },
-            { 0x0514, @"fx\particles\energy\electric_loops_large" },
+            { 0x0513, @"fx\particles\energy\plasma_burst_n1" }, //unsure about this (tag is halo online specific)
+            { 0x0514, @"fx\particles\energy\electric_loops_large_n1" }, //unsure about this (tag is halo online specific)
             { 0x0515, @"fx\particles\flare\_bitmaps\light_spike" },
             { 0x0516, @"shaders\particle_templates\_0_8_0_0_0_0_0_0_1_0" },
             { 0x0517, @"shaders\particle_templates\_0_8_0_0_0_0_0_0_1_0" },
@@ -1351,13 +1351,13 @@ namespace TagTool.Commands.Tags
             { 0x053B, @"sound\weapons\plasma_grenade\plasma_detonation_start" },
             { 0x053C, @"sound\weapons\plasma_grenade\plasma_grenade_armed_no_beeps" },
             { 0x053D, @"objects\weapons\grenade\plasma_grenade\fx\detonation" },
-            { 0x053E, @"fx\particles\energy\spark_long_tertiary" },
-            { 0x053F, @"fx\particles\flare\light_spike_secondary" },
-            { 0x0540, @"fx\particles\energy\spark_ember_tertiary" },
-            { 0x0541, @"fx\particles\energy\plasma_burst_secondary" },
-            { 0x0542, @"fx\particles\energy\plasma_noise_secondary" },
-            { 0x0543, @"fx\particles\energy\electric_arcs_secondary" },
-            { 0x0544, @"fx\particles\energy\electric_loops_large_secondary" },
+            { 0x053E, @"fx\particles\energy\spark_long_n3" }, //unsure about this (tag is halo online specific)
+            { 0x053F, @"fx\particles\flare\light_spike_n1" }, //unsure about this (tag is halo online specific)
+            { 0x0540, @"fx\particles\energy\spark_ember_n4" }, //unsure about this (tag is halo online specific)
+            { 0x0541, @"fx\particles\energy\plasma_burst_n2" }, //unsure about this (tag is halo online specific)
+            { 0x0542, @"fx\particles\energy\plasma_noise_n1" }, //unsure about this (tag is halo online specific)
+            { 0x0543, @"fx\particles\energy\electric_arcs_n1" }, //unsure about this (tag is halo online specific)
+            { 0x0544, @"fx\particles\energy\electric_loops_large_n2" }, //unsure about this (tag is halo online specific)
             { 0x0545, @"fx\particles\atmospheric\wispy_smoke\wispy_smoke_large_zfade" },
             { 0x0546, @"shaders\decal_templates\_0_8_1_0_0_2" },
             { 0x0547, @"fx\decals\_bitmaps\plasma_impact_medium" },
@@ -1716,12 +1716,12 @@ namespace TagTool.Commands.Tags
             { 0x06A8, @"sound\weapons\claymore_grenade\claymore_proj\track1\loop" },
             { 0x06A9, @"sound\weapons\claymore_grenade\brute_shot_projectile\brute_shot_proj\loop" },
             { 0x06AA, @"sound\weapons\claymore_grenade\claymore_grenade_tails_ext" },
-            { 0x06AB, @"fx\particles\flare\explosive_flash_tertiary" },
+            { 0x06AB, @"fx\particles\flare\explosive_flash_n3" }, //unsure about this (tag is halo online specific)
             { 0x06AC, @"sound\weapons\claymore_grenade\claymore_expl_metal" }, //unsure about this (tag is halo online specific)
-            { 0x06AD, @"fx\particles\atmospheric\fiery_smoke\smoke_fiery_small_tertiary" },
-            { 0x06AE, @"fx\particles\fire\fire_large_vertical_secondary" },
-            { 0x06AF, @"fx\particles\atmospheric\rolling_smoke\fireball_brute_medium_secondary" },
-            { 0x06B0, @"fx\particles\atmospheric\rolling_smoke\rolling_smoke_medium_tertiary" },
+            { 0x06AD, @"fx\particles\atmospheric\fiery_smoke\smoke_fiery_small_n2" }, //unsure about this (tag is halo online specific)
+            { 0x06AE, @"fx\particles\fire\fire_large_vertical_n1" }, //unsure about this (tag is halo online specific)
+            { 0x06AF, @"fx\particles\atmospheric\rolling_smoke\fireball_brute_medium_n1" }, //unsure about this (tag is halo online specific)
+            { 0x06B0, @"fx\particles\atmospheric\rolling_smoke\rolling_smoke_medium_n2" }, //unsure about this (tag is halo online specific)
             { 0x06B1, @"sound\weapons\firebomb\firebomb_throw" },
             { 0x06B2, @"objects\weapons\grenade\firebomb_grenade\firebomb_grenade_equipment" },
             { 0x06B3, @"objects\weapons\grenade\firebomb_grenade\damage_effects\firebomb_grenade_equipment_explosion" },
@@ -3114,18 +3114,18 @@ namespace TagTool.Commands.Tags
             { 0x0C1E, @"ui\chud\spartan" },
             { 0x0C1F, @"fx\material_effects\objects\characters\contact\collision\blood_aoe_human_masterchief" },
             { 0x0C20, @"fx\shield_impacts\spartan_3p_down" }, //unsure about this (tag is halo online specific)
-            { 0x0C21, @"fx\particles\energy\spark_burst_small" },
+            { 0x0C21, @"fx\particles\energy\electric_arcs_gold_n1" }, //unsure about this (tag is halo online specific)
             { 0x0C22, @"levels\shared\bitmaps\test_maps\plasma_noise_1" },
             { 0x0C23, @"levels\shared\bitmaps\test_maps\plasma_noise_2" },
             { 0x0C24, @"test\chris\noise\blur_noise256_a" },
             { 0x0C25, @"test\chris\noise\blur_noise256_b" },
-            { 0x0C26, @"fx\particles\energy\_bitmaps\spark_burst_small" },
+            { 0x0C26, @"fx\particles\energy\_bitmaps\electric_arcs_03" }, //unsure about this (tag is halo online specific)
             { 0x0C27, @"fx\particles\_gradients\electric_arcs_gold" },
             { 0x0C28, @"shaders\particle_templates\_5_8_0_0_0_0_0_0_0_0" },
             { 0x0C29, @"shaders\particle_templates\_5_8_0_0_0_0_0_0_0_0" },
             { 0x0C2A, @"shaders\particle_templates\_5_8_0_0_0_0_0_0_0_0" },
             { 0x0C2B, @"objects\characters\masterchief\bitmaps\flashlight_gel" },
-            { 0x0C2C, @"fx\particles\fire\fire_small_secondary" },
+            { 0x0C2C, @"fx\particles\fire\fire_small_n1" }, //unsure about this (tag is halo online specific)
             { 0x0C2D, @"fx\particles\atmospheric\soft_smoke\soft_smoke_fire_lit" },
             { 0x0C2E, @"shaders\particle_templates\_3_8_0_0_1_1_1_0_0_0" },
             { 0x0C2F, @"shaders\particle_templates\_3_8_0_0_1_1_1_0_0_0" },
@@ -3690,9 +3690,9 @@ namespace TagTool.Commands.Tags
             { 0x0E5E, @"objects\characters\dervish\damage_effects\dervish_melee" },
             { 0x0E5F, @"ui\chud\elite" },
             { 0x0E60, @"fx\material_effects\objects\characters\contact\collision\blood_aoe_elite" },
-            { 0x0E61, @"fx\particles\energy\spark_burst_small_secondary" },
+            { 0x0E61, @"fx\particles\energy\spark_burst_small" },
             { 0x0E62, @"fx\particles\energy\electric_arcs_blue" },
-            { 0x0E63, @"fx\particles\energy\_bitmaps\spark_burst_small_secondary" },
+            { 0x0E63, @"fx\particles\energy\_bitmaps\spark_burst_small" },
             { 0x0E64, @"ui\chud\bitmaps\elite_corner" },
             { 0x0E65, @"ui\chud\bitmaps\elite_middle" },
             { 0x0E66, @"ui\chud\bitmaps\elite_left_480_corner" },
@@ -4959,7 +4959,7 @@ namespace TagTool.Commands.Tags
             { 0x1353, @"fx\shield_impacts\overshield_3p" },
             { 0x1354, @"fx\shield_impacts\overshield_1p" },
             { 0x1355, @"objects\weapons\grenade\firebomb_grenade\fx\detonation" },
-            { 0x1356, @"fx\particles\fire\fire_large_secondary" },
+            { 0x1356, @"fx\particles\fire\fire_large_n1" }, //unsure about this (tag is halo online specific)
             { 0x1357, @"objects\characters\masterchief\fx\shield\particles\shield_headshot_spark_01" },
             { 0x1358, @"objects\characters\masterchief\fx\shield\particles\shield_headshot_burst" },
             { 0x1359, @"objects\characters\masterchief\fx\shield\particles\shield_headshot_spark_02" },
@@ -6374,21 +6374,21 @@ namespace TagTool.Commands.Tags
             { 0x18DA, @"objects\equipment\jammer\jammer" },
             { 0x18DB, @"objects\equipment\jammer\jammer" },
             { 0x18DC, @"objects\equipment\jammer\jammer" },
-            { 0x18DD, @"fx\scenery_fx\explosions\covenant_explosion_medium\covenant_explosion_medium" },
+            { 0x18DD, @"objects\equipment\jammer\fx\destruct" }, //unsure about this (tag is halo online specific)
             { 0x18DE, @"objects\equipment\powerdrain\fx\transition" },
-            { 0x18DF, @"sound\vehicles\damage_effects\cov_damage_large" },
+            { 0x18DF, @"sound\weapons\equipment\jammer\jammer_destruct" }, //unsure about this (tag is halo online specific)
             { 0x18E0, @"fx\scenery_fx\explosions\covenant_explosion_medium\covenant_explosion_medium" },
             { 0x18E1, @"fx\scenery_fx\explosions\covenant_explosion_medium\covenant_explosion_medium" },
             { 0x18E2, @"fx\scenery_fx\explosions\covenant_explosion_medium\covenant_explosion_medium" },
-            { 0x18E3, @"fx\particles\flare\explosive_flash_quaternary" },
-            { 0x18E4, @"fx\particles\energy\spark_ember_quinary" },
-            { 0x18E5, @"fx\particles\energy\spark_long_quaternary" },
-            { 0x18E6, @"fx\particles\energy\plasma_burst_tertiary" },
-            { 0x18E7, @"fx\particles\energy\plasma_noise_tertiary" },
+            { 0x18E3, @"fx\particles\flare\explosive_flash" },
+            { 0x18E4, @"fx\particles\energy\spark_ember" },
+            { 0x18E5, @"fx\particles\energy\spark_long" },
+            { 0x18E6, @"fx\particles\energy\plasma_burst" },
+            { 0x18E7, @"fx\particles\energy\plasma_noise" },
             { 0x18E8, @"fx\scenery_fx\explosions\covenant_explosion_medium\ejecta" },
             { 0x18E9, @"fx\particles\atmospheric\rolling_smoke\fireball_plasma_medium" },
             { 0x18EA, @"fx\particles\atmospheric\rolling_smoke\covenant_explosion_rolling_smoke_medium" },
-            { 0x18EB, @"fx\particles\energy\electric_loops_large_tertiary" },
+            { 0x18EB, @"fx\particles\energy\electric_loops_large" },
             { 0x18EC, @"fx\decals\_bitmaps\blast_scorch_large" },
             { 0x18ED, @"fx\scenery_fx\explosions\covenant_explosion_medium\ejecta" },
             { 0x18EE, @"fx\scenery_fx\explosions\covenant_explosion_medium\ejecta" },
@@ -6405,7 +6405,7 @@ namespace TagTool.Commands.Tags
             { 0x18F9, @"shaders\particle_templates\_0_8_0_0_0_1_1_0_0_0" },
             { 0x18FA, @"sound\weapons\equipment\power_drain\power_drain_loop\track1\in" },
             { 0x18FB, @"sound\weapons\equipment\power_drain\power_drain_loop\track1\loop" },
-            { 0x18FC, @"sound\vehicles\damage_effects\cov_damage_large_2" },
+            { 0x18FC, @"sound\weapons\equipment\power_drain\power_drain_destruct" }, //unsure about this (tag is halo online specific)
             { 0x18FD, @"objects\equipment\shaders\jammer_metal" },
             { 0x18FE, @"objects\equipment\bitmaps\jammer" },
             { 0x18FF, @"objects\equipment\bitmaps\jammer_cc" },
@@ -6481,7 +6481,7 @@ namespace TagTool.Commands.Tags
             { 0x1945, @"objects\equipment\powerdrain\powerdrain" },
             { 0x1946, @"objects\equipment\powerdrain\powerdrain" },
             { 0x1947, @"objects\equipment\powerdrain\powerdrain" },
-            { 0x1948, @"fx\scenery_fx\explosions\covenant_explosion_medium\covenant_explosion_medium_secondary" },
+            { 0x1948, @"objects\equipment\powerdrain\fx\destruct" }, //unsure about this (tag is halo online specific)
             { 0x1949, @"objects\equipment\shaders\powerdrain_metal" },
             { 0x194A, @"objects\equipment\shaders\powerdrain_active" },
             { 0x194B, @"objects\equipment\bitmaps\bubble_shield" },
@@ -6790,12 +6790,12 @@ namespace TagTool.Commands.Tags
             { 0x1A7A, @"objects\equipment\instantcover\instantcover" },
             { 0x1A7B, @"objects\equipment\instantcover\fx\shield_collapse" },
             { 0x1A7C, @"objects\equipment\instantcover\fx\shield_recharge" },
-            { 0x1A7D, @"fx\scenery_fx\destruction\covenant_mech_break_small\covenant_mech_break_small" },
+            { 0x1A7D, @"objects\equipment\instantcover\fx\destruction\instant_cover_destruct" }, //unsure about this (tag is halo online specific)
             { 0x1A7E, @"objects\equipment\instantcover\fx\destruction\garbage_spawn" },
-            { 0x1A7F, @"fx\scenery_fx\destruction\covenant_mech_break_small\covenant_mech_break_small_secondary" },
+            { 0x1A7F, @"fx\scenery_fx\destruction\covenant_mech_break_small\covenant_mech_break_small" },
             { 0x1A80, @"objects\equipment\instantcover\fx\delay_effect_for_sound" },
             { 0x1A81, @"fx\scenery_fx\destruction\covenant_mech_break_small\covenant_mech_break_small" },
-            { 0x1A82, @"sound\vehicles\damage_effects\cov_damage_small_2" },
+            { 0x1A82, @"sound\weapons\equipment\instantcover\instant_cover_destruct" }, //unsure about this (tag is halo online specific)
             { 0x1A83, @"fx\physics_templates\smoke_slow" },
             { 0x1A84, @"fx\particles\models\debris\covenant_debris\covenant_debris" },
             { 0x1A85, @"fx\particles\models\debris\covenant_debris\_bitmaps\covenant_debris" },
@@ -6954,14 +6954,14 @@ namespace TagTool.Commands.Tags
             { 0x1B1E, @"objects\equipment\magpulse_equipment\fx\activation" },
             { 0x1B1F, @"objects\equipment\magpulse_equipment\fx\activate" },
             { 0x1B20, @"objects\equipment\magpulse_equipment\fx\deactivation" },
-            { 0x1B21, @"fx\particles\energy\plasma_noise_long_secondary" },
+            { 0x1B21, @"fx\particles\energy\plasma_noise_long_n1" }, //unsure about this (tag is halo online specific)
             { 0x1B22, @"objects\equipment\magpulse_equipment\fx\particles\activation_ring" },
             { 0x1B23, @"objects\equipment\magpulse_equipment\fx\particles\activation_ring_plasma" },
             { 0x1B24, @"objects\equipment\magpulse_equipment\fx\activation" },
             { 0x1B25, @"objects\equipment\magpulse_equipment\fx\activation" },
             { 0x1B26, @"sound\weapons\brute_shot\brute_round_lod_far" },
             { 0x1B27, @"objects\weapons\support_low\brute_shot\fx\detonation" },
-            { 0x1B28, @"fx\particles\energy\electric_arcs_blue_secondary" },
+            { 0x1B28, @"fx\particles\energy\electric_arcs_blue_n1" }, //unsure about this (tag is halo online specific)
             { 0x1B29, @"objects\equipment\hologram_equipment\fx\hologram_spawn" },
             { 0x1B2A, @"ui\chud\e_hologram" },
             { 0x1B2B, @"sound\weapons\equipment\hologram_equipment\hologram_activate" }, //unsure about this (tag is halo online specific)
@@ -7028,8 +7028,8 @@ namespace TagTool.Commands.Tags
             { 0x1B68, @"objects\equipment\scrambler\scrambler" },
             { 0x1B69, @"objects\equipment\scrambler\scrambler" },
             { 0x1B6A, @"objects\equipment\scrambler\scrambler" },
-            { 0x1B6B, @"fx\scenery_fx\explosions\covenant_explosion_medium\covenant_explosion_medium_tertiary" },
-            { 0x1B6C, @"sound\vehicles\damage_effects\cov_damage_large_3" },
+            { 0x1B6B, @"fx\scenery_fx\explosions\covenant_explosion_medium\covenant_explosion_medium" },
+            { 0x1B6C, @"sound\vehicles\damage_effects\cov_damage_large" },
             { 0x1B6D, @"objects\equipment\scrambler_equipment\scrambler_equipment" },
             { 0x1B6E, @"objects\equipment\scrambler_equipment\scrambler_equipment" },
             { 0x1B6F, @"objects\equipment\scrambler_equipment\scrambler_equipment" },
@@ -7548,9 +7548,9 @@ namespace TagTool.Commands.Tags
             { 0x1D70, @"fx\decals\impact_explosion\explosion_small\explosion_small_tough_terrain_sand" },
             { 0x1D71, @"sound\weapons\brute_shot\expl_tail_outdoor" }, //unsure about this (tag is halo online specific)
             { 0x1D72, @"sound\weapons\brute_shot\expl_tail_indoor" }, //unsure about this (tag is halo online specific)
-            { 0x1D73, @"fx\particles\atmospheric\rolling_smoke\fireball_brute_small_secondary" },
+            { 0x1D73, @"fx\particles\atmospheric\rolling_smoke\fireball_brute_small_n1" }, //unsure about this (tag is halo online specific)
             { 0x1D74, @"fx\particles\atmospheric\rolling_smoke\rolling_smoke_small" },
-            { 0x1D75, @"fx\particles\energy\electric_loops_large_quaternary" },
+            { 0x1D75, @"fx\particles\energy\electric_loops_large_n3" }, //unsure about this (tag is halo online specific)
             { 0x1D76, @"shaders\particle_templates\_1_3_0_1_0_1_1_1_1_0" },
             { 0x1D77, @"shaders\particle_templates\_1_3_0_1_0_1_1_1_1_0" },
             { 0x1D78, @"shaders\particle_templates\_1_3_0_1_0_1_1_1_1_0" },
@@ -8347,7 +8347,7 @@ namespace TagTool.Commands.Tags
             { 0x208F, @"objects\weapons\pistol\excavator\projectiles\excavator_shard" },
             { 0x2090, @"objects\weapons\pistol\excavator\fx\firing" },
             { 0x2091, @"sound\weapons\magnum\magnum_dryfire" },
-            { 0x2092, @"globals\damage_responses\trigger_semiauto_secondary" },
+            { 0x2092, @"globals\damage_responses\trigger_semiauto_n2" }, //unsure about this (tag is halo online specific)
             { 0x2093, @"sound\weapons\excavator\excavator_fp\excavator_dual_reload_left" },
             { 0x2094, @"sound\weapons\excavator\excavator_fp\excavator_dual_reload_right" },
             { 0x2095, @"sound\weapons\excavator\excavator_fp\excavator_reload" },
@@ -8392,7 +8392,7 @@ namespace TagTool.Commands.Tags
             { 0x20BC, @"ui\chud\magnum" },
             { 0x20BD, @"objects\weapons\pistol\magnum\projectiles\magnum_bullet" },
             { 0x20BE, @"objects\weapons\pistol\magnum\fx\firing" },
-            { 0x20BF, @"globals\damage_responses\trigger_semiauto_tertiary" },
+            { 0x20BF, @"globals\damage_responses\trigger_semiauto_n3" }, //unsure about this (tag is halo online specific)
             { 0x20C0, @"sound\weapons\magnum\magnum_fp\magnum_dual_pose_left" },
             { 0x20C1, @"sound\weapons\magnum\magnum_fp\magnum_dual_ready" },
             { 0x20C2, @"sound\weapons\magnum\magnum_fp\magnum_dual_reload_left" },
@@ -8530,10 +8530,10 @@ namespace TagTool.Commands.Tags
             { 0x2146, @"sound\weapons\needler\needler_super_expl" },
             { 0x2147, @"sound\weapons\needler\needler_super_expl_lod_far" },
             { 0x2148, @"objects\weapons\pistol\needler\fx\super_detonation" },
-            { 0x2149, @"fx\particles\models\weapons\needler_shards\needler_shards_secondary" },
+            { 0x2149, @"fx\particles\models\weapons\needler_shards\needler_shards_n1" }, //unsure about this (tag is halo online specific)
             { 0x214A, @"fx\particles\energy\explosions\spark_ember" },
-            { 0x214B, @"fx\particles\atmospheric\rolling_smoke\fireball_plasma_small_secondary" },
-            { 0x214C, @"fx\particles\flare\light_spike_tertiary" },
+            { 0x214B, @"fx\particles\atmospheric\rolling_smoke\fireball_plasma_small_n1" }, //unsure about this (tag is halo online specific)
+            { 0x214C, @"fx\particles\flare\light_spike_n2" }, //unsure about this (tag is halo online specific)
             { 0x214D, @"globals\damage_responses\impact_needle" },
             { 0x214E, @"objects\weapons\pistol\needler\needler" },
             { 0x214F, @"objects\weapons\pistol\needler\needler" },
@@ -8648,8 +8648,8 @@ namespace TagTool.Commands.Tags
             { 0x21BC, @"objects\vehicles\warthog\fx\weapon\chaingun\impact_liquid" },
             { 0x21BD, @"fx\material_effects\objects\weapons\impact\impact_bullet_large\tough_terrain_mud" },
             { 0x21BE, @"fx\material_effects\objects\weapons\impact\impact_bullet_large\tough_terrain_sand" },
-            { 0x21BF, @"fx\particles\flare\flash_small_long_secondary" },
-            { 0x21C0, @"fx\particles\energy\spark_burst_large_impact_secondary" },
+            { 0x21BF, @"fx\particles\flare\flash_small_long_n1" }, //unsure about this (tag is halo online specific)
+            { 0x21C0, @"fx\particles\energy\spark_burst_large_impact_n1" }, //unsure about this (tag is halo online specific)
             { 0x21C1, @"objects\weapons\turret\machinegun_turret\machinegun_turret_weapon\machinegun_turret_weapon" },
             { 0x21C2, @"objects\weapons\turret\machinegun_turret\machinegun_turret_weapon\machinegun_turret_weapon" },
             { 0x21C3, @"objects\weapons\turret\machinegun_turret\machinegun_turret_weapon\machinegun_turret_weapon" },
@@ -8754,10 +8754,10 @@ namespace TagTool.Commands.Tags
             { 0x2226, @"objects\weapons\support_high\flak_cannon\fx\detonation" },
             { 0x2227, @"objects\weapons\support_high\flak_cannon\fx\detonation" },
             { 0x2228, @"sound\weapons\flak_cannon\flak_proj_tails_ext" },
-            { 0x2229, @"fx\particles\flare\explosive_flash_quinary" },
+            { 0x2229, @"fx\particles\flare\explosive_flash_n4" }, //unsure about this (tag is halo online specific)
             { 0x222A, @"fx\particles\energy\plasma_burst_green" },
-            { 0x222B, @"fx\particles\atmospheric\fiery_smoke\smoke_fiery_small_quaternary" },
-            { 0x222C, @"fx\particles\energy\plasma_noise_green_secondary" },
+            { 0x222B, @"fx\particles\atmospheric\fiery_smoke\smoke_fiery_small_n3" }, //unsure about this (tag is halo online specific)
+            { 0x222C, @"fx\particles\energy\plasma_noise_green_n1" }, //unsure about this (tag is halo online specific)
             { 0x222D, @"fx\particles\atmospheric\rolling_smoke\fireball_fuel_rod_large" },
             { 0x222E, @"objects\weapons\support_high\flak_cannon\fx\detonation" },
             { 0x222F, @"fx\decals\_bitmaps\plasma_impact_large" },
@@ -9003,7 +9003,7 @@ namespace TagTool.Commands.Tags
             { 0x231F, @"ui\chud\assault_rifle_v2" },
             { 0x2320, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\projectiles\assault_rifle_v2_bullet" },
             { 0x2321, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\fx\assault_rifle_v2_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2322, @"globals\damage_responses\trigger_fullauto_secondary" }, //unsure about this (tag is halo online specific)
+            { 0x2322, @"globals\damage_responses\trigger_fullauto_n2" }, //unsure about this (tag is halo online specific)
             { 0x2323, @"sound\weapons\assault_rifle_v2\assault_rifle_v2_fire" }, //unsure about this (tag is halo online specific)
             { 0x2324, @"sound\weapons\assault_rifle_v2\assault_rifle_v2_lod_near" }, //unsure about this (tag is halo online specific)
             { 0x2325, @"sound\weapons\assault_rifle_v2\assault_rifle_v2_tails_int" }, //unsure about this (tag is halo online specific)
@@ -9024,7 +9024,7 @@ namespace TagTool.Commands.Tags
             { 0x2334, @"ui\chud\assault_rifle_v3" },
             { 0x2335, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\projectiles\assault_rifle_v3_bullet" },
             { 0x2336, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\fx\assault_rifle_v3_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2337, @"globals\damage_responses\trigger_fullauto_tertiary" }, //unsure about this (tag is halo online specific)
+            { 0x2337, @"globals\damage_responses\trigger_fullauto_n3" }, //unsure about this (tag is halo online specific)
             { 0x2338, @"sound\weapons\assault_rifle_v3\assault_rifle_v3_fire" }, //unsure about this (tag is halo online specific)
             { 0x2339, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\damage_effects\assault_rifle_v3_bullet" }, //unsure about this (tag is halo online specific)
             { 0x233A, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\assault_rifle_v3" }, //unsure about this (tag is halo online specific)
@@ -9083,7 +9083,7 @@ namespace TagTool.Commands.Tags
             { 0x236F, @"ui\chud\battle_rifle_v4" },
             { 0x2370, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\projectiles\battle_rifle_v4_bullet" },
             { 0x2371, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\fx\battle_rifle_v4_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2372, @"globals\damage_responses\trigger_fullauto_quaternary" }, //unsure about this (tag is halo online specific)
+            { 0x2372, @"globals\damage_responses\trigger_fullauto_n4" }, //unsure about this (tag is halo online specific)
             { 0x2373, @"sound\weapons\battle_rifle_v4\battle_rifle_v4_fire" }, //unsure about this (tag is halo online specific)
             { 0x2374, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\damage_effects\battle_rifle_v4_bullet" }, //unsure about this (tag is halo online specific)
             { 0x2375, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\battle_rifle_v4" }, //unsure about this (tag is halo online specific)
@@ -9187,7 +9187,7 @@ namespace TagTool.Commands.Tags
             { 0x23D7, @"ui\chud\smg_v2" },
             { 0x23D8, @"objects\weapons\rifle\smg\smg_v2\projectiles\smg_v2_bullet" },
             { 0x23D9, @"objects\weapons\rifle\smg\smg_v2\fx\smg_v2_firing" }, //unsure about this (tag is halo online specific)
-            { 0x23DA, @"globals\damage_responses\trigger_fullauto_quinary" }, //unsure about this (tag is halo online specific)
+            { 0x23DA, @"globals\damage_responses\trigger_fullauto_n5" }, //unsure about this (tag is halo online specific)
             { 0x23DB, @"sound\weapons\smg_v2\smg_v2_fire" }, //unsure about this (tag is halo online specific)
             { 0x23DC, @"objects\weapons\rifle\smg\smg_v2\damage_effects\smg_v2_bullet" }, //unsure about this (tag is halo online specific)
             { 0x23DD, @"objects\weapons\rifle\smg\smg_v2\smg_v2" }, //unsure about this (tag is halo online specific)
@@ -9613,7 +9613,7 @@ namespace TagTool.Commands.Tags
             { 0x2581, @"ui\chud\battle_rifle_v1" },
             { 0x2582, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\projectiles\battle_rifle_v1_bullet" },
             { 0x2583, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\fx\battle_rifle_v1_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2584, @"globals\damage_responses\trigger_fullauto_senary" }, //unsure about this (tag is halo online specific)
+            { 0x2584, @"globals\damage_responses\trigger_fullauto_n6" }, //unsure about this (tag is halo online specific)
             { 0x2585, @"sound\weapons\battle_rifle_v1\battle_rifle_v1_fire" }, //unsure about this (tag is halo online specific)
             { 0x2586, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\damage_effects\battle_rifle_v1_bullet" }, //unsure about this (tag is halo online specific)
             { 0x2587, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\battle_rifle_v1" }, //unsure about this (tag is halo online specific)
@@ -9623,7 +9623,7 @@ namespace TagTool.Commands.Tags
             { 0x258B, @"ui\chud\battle_rifle_v2" },
             { 0x258C, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\projectiles\battle_rifle_v2_bullet" },
             { 0x258D, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\fx\battle_rifle_v2_firing" }, //unsure about this (tag is halo online specific)
-            { 0x258E, @"globals\damage_responses\trigger_fullauto_septenary" }, //unsure about this (tag is halo online specific)
+            { 0x258E, @"globals\damage_responses\trigger_fullauto_n7" }, //unsure about this (tag is halo online specific)
             { 0x258F, @"sound\weapons\battle_rifle_v2\battle_rifle_v2_fire" }, //unsure about this (tag is halo online specific)
             { 0x2590, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\damage_effects\battle_rifle_v2_bullet" }, //unsure about this (tag is halo online specific)
             { 0x2591, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\battle_rifle_v2" }, //unsure about this (tag is halo online specific)
@@ -9651,7 +9651,7 @@ namespace TagTool.Commands.Tags
             { 0x25A7, @"ui\chud\dmr_v5" },
             { 0x25A8, @"objects\weapons\rifle\dmr\projectiles\dmr_v5_bullet" },
             { 0x25A9, @"objects\weapons\rifle\dmr\dmr_v5\fx\dmr_v5_firing" },
-            { 0x25AA, @"globals\damage_responses\trigger_semiauto_quaternary" }, //unsure about this (tag is halo online specific)
+            { 0x25AA, @"globals\damage_responses\trigger_semiauto_n4" }, //unsure about this (tag is halo online specific)
             { 0x25AB, @"sound\weapons\dmr_v5\dmr_v5_fire" }, //unsure about this (tag is halo online specific)
             { 0x25AC, @"objects\weapons\rifle\dmr\dmr_v5\damage_effects\dmr_v5_bullet" }, //unsure about this (tag is halo online specific)
             { 0x25AD, @"objects\weapons\rifle\dmr\dmr_v5\dmr_v5" }, //unsure about this (tag is halo online specific)
@@ -9709,9 +9709,9 @@ namespace TagTool.Commands.Tags
             { 0x25E1, @"fx\particles\flare\light_beam" },
             { 0x25E2, @"fx\particles\energy\explosions\spark_long" },
             { 0x25E3, @"fx\scenery_fx\explosions\human_explosion_huge\ejecta" },
-            { 0x25E4, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_secondary" },
+            { 0x25E4, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_n1" }, //unsure about this (tag is halo online specific)
             { 0x25E5, @"fx\particles\atmospheric\rolling_smoke\fireball_dark_large" },
-            { 0x25E6, @"fx\particles\atmospheric\soft_smoke\human_explosion_soft_smoke_large_secondary" },
+            { 0x25E6, @"fx\particles\atmospheric\soft_smoke\human_explosion_soft_smoke_large_n1" }, //unsure about this (tag is halo online specific)
             { 0x25E7, @"fx\particles\atmospheric\rolling_smoke\human_explosion_rolling_smoke_large" },
             { 0x25E8, @"fx\particles\flare\_bitmaps\light_beam" },
             { 0x25E9, @"fx\scenery_fx\explosions\human_explosion_huge\ejecta" },
@@ -10463,7 +10463,7 @@ namespace TagTool.Commands.Tags
             { 0x28D3, @"objects\vehicles\scorpion\fx\destruction\trans_rf_tread_major" },
             { 0x28D4, @"objects\vehicles\scorpion\fx\destruction\trans_lb_tread_major" },
             { 0x28D5, @"objects\vehicles\scorpion\fx\destruction\trans_rb_tread_major" },
-            { 0x28D6, @"fx\particles\fire\fire_large_tertiary" },
+            { 0x28D6, @"fx\particles\fire\fire_large_n2" }, //unsure about this (tag is halo online specific)
             { 0x28D7, @"objects\vehicles\scorpion\turrets\cannon\cannon" },
             { 0x28D8, @"sound\weapons\chain_gun\traverse\wart_traverse\wart_traverse" },
             { 0x28D9, @"objects\vehicles\scorpion\attachments\scorpion_antenna_short" },
@@ -10497,13 +10497,13 @@ namespace TagTool.Commands.Tags
             { 0x28F5, @"shaders\contrail_templates\_0_3_1_0" },
             { 0x28F6, @"shaders\contrail_templates\_0_3_1_0" },
             { 0x28F7, @"sound\vehicles\scorpion\scorpion_explosion" },
-            { 0x28F8, @"fx\particles\models\mesh_fx\blast_radius\blast_radius_secondary" },
-            { 0x28F9, @"fx\particles\material\burst_spray_additive_secondary" },
+            { 0x28F8, @"fx\particles\models\mesh_fx\blast_radius\blast_radius_n1" }, //unsure about this (tag is halo online specific)
+            { 0x28F9, @"fx\particles\material\burst_spray_additive_n1" }, //unsure about this (tag is halo online specific)
             { 0x28FA, @"objects\vehicles\scorpion\fx\weapon\cannon\ejecta" },
             { 0x28FB, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_directional" },
-            { 0x28FC, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_tertiary" },
-            { 0x28FD, @"fx\particles\atmospheric\rolling_smoke\rolling_smoke_large_secondary" },
-            { 0x28FE, @"fx\particles\atmospheric\soft_smoke\soft_smoke_large_dark_secondary" },
+            { 0x28FC, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_n2" }, //unsure about this (tag is halo online specific)
+            { 0x28FD, @"fx\particles\atmospheric\rolling_smoke\rolling_smoke_large_n1" }, //unsure about this (tag is halo online specific)
+            { 0x28FE, @"fx\particles\atmospheric\soft_smoke\soft_smoke_large_dark_n1" }, //unsure about this (tag is halo online specific)
             { 0x28FF, @"objects\vehicles\scorpion\fx\weapon\cannon\ejecta" },
             { 0x2900, @"objects\vehicles\scorpion\fx\weapon\cannon\ejecta" },
             { 0x2901, @"shaders\particle_templates\_3_8_0_0_0_0_0_0_1_0" },
@@ -10586,16 +10586,16 @@ namespace TagTool.Commands.Tags
             { 0x294E, @"shaders\shader_templates\_2_0_0_0_0_0_1_1_0_0_0" },
             { 0x294F, @"fx\scenery_fx\explosions\human_explosion_medium\human_explosion_medium" },
             { 0x2950, @"fx\scenery_fx\explosions\human_explosion_medium\human_explosion_medium" },
-            { 0x2951, @"fx\particles\energy\spark_ember_senary" },
-            { 0x2952, @"fx\particles\energy\spark_long_quinary" },
+            { 0x2951, @"fx\particles\energy\spark_ember_n5" }, //unsure about this (tag is halo online specific)
+            { 0x2952, @"fx\particles\energy\spark_long_n4" }, //unsure about this (tag is halo online specific)
             { 0x2953, @"fx\scenery_fx\explosions\human_explosion_medium\ejecta" },
-            { 0x2954, @"fx\particles\atmospheric\rolling_smoke\fireball_human_medium_tertiary" },
+            { 0x2954, @"fx\particles\atmospheric\rolling_smoke\fireball_human_medium_n2" }, //unsure about this (tag is halo online specific)
             { 0x2955, @"fx\particles\atmospheric\rolling_smoke\human_explosion_rolling_smoke_medium" },
             { 0x2956, @"fx\scenery_fx\explosions\human_explosion_medium\ejecta" },
             { 0x2957, @"fx\scenery_fx\explosions\human_explosion_medium\ejecta" },
             { 0x2958, @"objects\vehicles\scorpion\turrets\cannon\garbage\turret\turret" },
             { 0x2959, @"objects\vehicles\scorpion\fx\destruction\trans_hull_destroyed" },
-            { 0x295A, @"fx\particles\fire\fire_large_vertical_tertiary" },
+            { 0x295A, @"fx\particles\fire\fire_large_vertical_n2" }, //unsure about this (tag is halo online specific)
             { 0x295B, @"fx\particles\atmospheric\soft_smoke\vehicle_smoke_human" },
             { 0x295C, @"objects\vehicles\scorpion\turrets\cannon\garbage\turret\turret" },
             { 0x295D, @"fx\material_effects\objects\vehicles\scorpion_turret" },
@@ -10870,13 +10870,13 @@ namespace TagTool.Commands.Tags
             { 0x2A6A, @"objects\vehicles\warthog\turrets\troop\shaders\troop_glass" },
             { 0x2A6B, @"fx\scenery_fx\explosions\human_explosion_large\human_explosion_large" },
             { 0x2A6C, @"fx\scenery_fx\explosions\human_explosion_large\human_explosion_large" },
-            { 0x2A6D, @"fx\particles\energy\spark_ember_septenary" },
+            { 0x2A6D, @"fx\particles\energy\spark_ember_n6" }, //unsure about this (tag is halo online specific)
             { 0x2A6E, @"fx\scenery_fx\explosions\human_explosion_large\ejecta" },
-            { 0x2A6F, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_quaternary" },
+            { 0x2A6F, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_n3" }, //unsure about this (tag is halo online specific)
             { 0x2A70, @"fx\scenery_fx\explosions\human_explosion_large\ejecta" },
             { 0x2A71, @"fx\scenery_fx\explosions\human_explosion_large\ejecta" },
             { 0x2A72, @"objects\vehicles\warthog\fx\destruction\trans_hull_destroyed" },
-            { 0x2A73, @"fx\particles\fire\fire_large_quaternary" },
+            { 0x2A73, @"fx\particles\fire\fire_large_n3" }, //unsure about this (tag is halo online specific)
             { 0x2A74, @"sound\visual_fx\gasoline_fire\gasoline_fire" },
             { 0x2A75, @"sound\visual_fx\gasoline_fire\gas_fire\loop" },
             { 0x2A76, @"objects\vehicles\warthog\garbage\tire\tire" },
@@ -11499,7 +11499,7 @@ namespace TagTool.Commands.Tags
             { 0x2CDF, @"sound\materials\tough\tough_organic_wood_vehicle_hits\organic_wood_tree_dyn_looping\organic_wood_tree_dyn_looping\alt_loop" },
             { 0x2CE0, @"objects\vehicles\hornet\garbage\landing_gear\landing_gear" },
             { 0x2CE1, @"objects\vehicles\hornet\fx\destruction\trans_hull_destroyed" },
-            { 0x2CE2, @"fx\particles\atmospheric\soft_smoke\vehicle_smoke_human_secondary" },
+            { 0x2CE2, @"fx\particles\atmospheric\soft_smoke\vehicle_smoke_human_n1" }, //unsure about this (tag is halo online specific)
             { 0x2CE3, @"objects\vehicles\hornet\garbage\landing_gear\landing_gear" },
             { 0x2CE4, @"objects\vehicles\hornet\garbage\landing_gear\landing_gear" },
             { 0x2CE5, @"objects\vehicles\hornet\garbage\landing_gear\landing_gear" },
@@ -12600,7 +12600,7 @@ namespace TagTool.Commands.Tags
             { 0x312C, @"objects\vehicles\mongoose\bitmaps\mongoose_cc" },
             { 0x312D, @"objects\vehicles\mongoose\garbage\ramp\ramp" },
             { 0x312E, @"objects\vehicles\mongoose\fx\destruction\trans_hull_destroyed" },
-            { 0x312F, @"fx\particles\fire\fire_small_vertical_secondary" },
+            { 0x312F, @"fx\particles\fire\fire_small_vertical_n1" }, //unsure about this (tag is halo online specific)
             { 0x3130, @"objects\vehicles\mongoose\garbage\ramp\ramp" },
             { 0x3131, @"objects\vehicles\mongoose\garbage\ramp\ramp" },
             { 0x3132, @"objects\vehicles\mongoose\garbage\ramp\ramp" },
@@ -14004,7 +14004,7 @@ namespace TagTool.Commands.Tags
             { 0x36A8, @"objects\vehicles\banshee\fx\destruction\trans_r_pod_major" },
             { 0x36A9, @"sound\vehicles\damage_effects\covy_damloops_sm\covy_damloops_sm" },
             { 0x36AA, @"sound\vehicles\damage_effects\covy_damloops_sm\c_damage_sm\loop" },
-            { 0x36AB, @"fx\particles\energy\electric_arcs_blue_tertiary" },
+            { 0x36AB, @"fx\particles\energy\electric_arcs_blue_n2" }, //unsure about this (tag is halo online specific)
             { 0x36AC, @"objects\vehicles\banshee\garbage\cab_garbage\cab_garbage" },
             { 0x36AD, @"objects\vehicles\banshee\garbage\cab_garbage\cab_garbage" },
             { 0x36AE, @"objects\vehicles\banshee\garbage\cab_garbage\cab_garbage" },
@@ -14047,8 +14047,8 @@ namespace TagTool.Commands.Tags
             { 0x36D3, @"fx\scenery_fx\explosions\covenant_explosion_large\covenant_explosion_large" },
             { 0x36D4, @"fx\scenery_fx\explosions\covenant_explosion_large\covenant_explosion_large" },
             { 0x36D5, @"fx\scenery_fx\explosions\covenant_explosion_large\ejecta" },
-            { 0x36D6, @"fx\particles\atmospheric\soft_smoke\covenant_explosion_soft_smoke_large_secondary" },
-            { 0x36D7, @"fx\particles\atmospheric\rolling_smoke\covenant_explosion_rolling_smoke_medium_secondary" },
+            { 0x36D6, @"fx\particles\atmospheric\soft_smoke\covenant_explosion_soft_smoke_large_n1" }, //unsure about this (tag is halo online specific)
+            { 0x36D7, @"fx\particles\atmospheric\rolling_smoke\covenant_explosion_rolling_smoke_medium_n1" }, //unsure about this (tag is halo online specific)
             { 0x36D8, @"fx\scenery_fx\explosions\covenant_explosion_large\ejecta" },
             { 0x36D9, @"fx\scenery_fx\explosions\covenant_explosion_large\ejecta" },
             { 0x36DA, @"objects\vehicles\banshee\fx\destruction\trans_hull_destroyed" },
@@ -14175,7 +14175,7 @@ namespace TagTool.Commands.Tags
             { 0x3753, @"objects\vehicles\wraith\fx\destruction\trans_backhatch_major" },
             { 0x3754, @"objects\vehicles\wraith\fx\destruction\trans_backhatch_destroyed" },
             { 0x3755, @"objects\vehicles\wraith\turrets\mortar\mortar" },
-            { 0x3756, @"fx\particles\fire\plasma_fire_large_secondary" },
+            { 0x3756, @"fx\particles\fire\plasma_fire_large_n1" }, //unsure about this (tag is halo online specific)
             { 0x3757, @"objects\vehicles\wraith\turrets\mortar\mortar" },
             { 0x3758, @"fx\material_effects\objects\weapons\wraith_mortar" },
             { 0x3759, @"ui\chud\v_wraith" },
@@ -14186,7 +14186,7 @@ namespace TagTool.Commands.Tags
             { 0x375E, @"objects\vehicles\ghost\fx\weapon\particles\muzzle_flash_long_soft" },
             { 0x375F, @"objects\vehicles\wraith\fx\weapon\mortar\particles\smoke_fiery_large" },
             { 0x3760, @"objects\vehicles\wraith\fx\weapon\mortar\particles\muzzle_flash_long_fiery" },
-            { 0x3761, @"fx\particles\atmospheric\rolling_smoke\fireball_plasma_medium_secondary" },
+            { 0x3761, @"fx\particles\atmospheric\rolling_smoke\fireball_plasma_medium_n1" }, //unsure about this (tag is halo online specific)
             { 0x3762, @"fx\particles\_gradients\wraith_mortar" },
             { 0x3763, @"fx\particles\_gradients\wraith_flare" },
             { 0x3764, @"objects\vehicles\wraith\fx\weapon\mortar\projectile" },
@@ -14196,7 +14196,7 @@ namespace TagTool.Commands.Tags
             { 0x3768, @"objects\vehicles\wraith\damage_effects\wraith_mortar" },
             { 0x3769, @"objects\vehicles\wraith\fx\weapon\mortar\projectile" },
             { 0x376A, @"objects\vehicles\wraith\fx\weapon\mortar\projectile" },
-            { 0x376B, @"objects\vehicles\wraith\fx\weapon\mortar\particles\smoke_fiery_large_secondary" },
+            { 0x376B, @"objects\vehicles\wraith\fx\weapon\mortar\particles\smoke_fiery_large_n1" }, //unsure about this (tag is halo online specific)
             { 0x376C, @"fx\contrails\_gradients\wraith_mortar_contrail" },
             { 0x376D, @"sound\vehicles\wraith\wraith_projectile\track1\loop" },
             { 0x376E, @"fx\material_effects\objects\weapons\impact\impact_explosion_large\bounce_water_wide" },
@@ -14280,8 +14280,8 @@ namespace TagTool.Commands.Tags
             { 0x37BC, @"sound\weapons\flak_cannon\flak_projectlie_loop2\flak_loop2\loop" },
             { 0x37BD, @"objects\vehicles\wraith\fx\weapon\anti_air\projectile" },
             { 0x37BE, @"objects\vehicles\wraith\fx\weapon\anti_air\projectile" },
-            { 0x37BF, @"fx\particles\energy\plasma_burst_green_secondary" },
-            { 0x37C0, @"fx\particles\atmospheric\rolling_smoke\fireball_fuel_rod_large_secondary" },
+            { 0x37BF, @"fx\particles\energy\plasma_burst_green_n1" }, //unsure about this (tag is halo online specific)
+            { 0x37C0, @"fx\particles\atmospheric\rolling_smoke\fireball_fuel_rod_large_n1" }, //unsure about this (tag is halo online specific)
             { 0x37C1, @"objects\vehicles\wraith\turrets\anti_air\anti_air" },
             { 0x37C2, @"objects\vehicles\wraith\turrets\anti_air\anti_air" },
             { 0x37C3, @"objects\vehicles\wraith\turrets\anti_air\anti_air" },
@@ -14477,7 +14477,7 @@ namespace TagTool.Commands.Tags
             { 0x3881, @"objects\vehicles\ghost\garbage\anti_grav\anti_grav" },
             { 0x3882, @"objects\vehicles\ghost\garbage\anti_grav\anti_grav" },
             { 0x3883, @"objects\vehicles\ghost\garbage\seat\seat" },
-            { 0x3884, @"fx\particles\atmospheric\soft_smoke\vehicle_smoke_covenant_secondary" },
+            { 0x3884, @"fx\particles\atmospheric\soft_smoke\vehicle_smoke_covenant_n1" }, //unsure about this (tag is halo online specific)
             { 0x3885, @"objects\vehicles\ghost\garbage\seat\seat" },
             { 0x3886, @"objects\vehicles\ghost\garbage\seat\seat" },
             { 0x3887, @"objects\vehicles\ghost\garbage\seat\seat" },
@@ -14572,12 +14572,12 @@ namespace TagTool.Commands.Tags
             { 0x38E0, @"objects\vehicles\brute_chopper\fx\destruction\trans_r_engine_medium" },
             { 0x38E1, @"fx\scenery_fx\explosions\brute_explosion_large\brute_explosion_large" },
             { 0x38E2, @"fx\scenery_fx\explosions\brute_explosion_large\brute_explosion_large" },
-            { 0x38E3, @"fx\particles\energy\plasma_burst_quaternary" },
-            { 0x38E4, @"fx\particles\energy\plasma_noise_quaternary" },
+            { 0x38E3, @"fx\particles\energy\plasma_burst_n3" }, //unsure about this (tag is halo online specific)
+            { 0x38E4, @"fx\particles\energy\plasma_noise_n3" }, //unsure about this (tag is halo online specific)
             { 0x38E5, @"fx\particles\atmospheric\rolling_smoke\fireball_brute_large" },
-            { 0x38E6, @"fx\particles\atmospheric\soft_smoke\covenant_explosion_soft_smoke_large_tertiary" },
-            { 0x38E7, @"fx\particles\atmospheric\rolling_smoke\covenant_explosion_rolling_smoke_medium_tertiary" },
-            { 0x38E8, @"fx\particles\energy\electric_loops_large_quinary" },
+            { 0x38E6, @"fx\particles\atmospheric\soft_smoke\covenant_explosion_soft_smoke_large_n2" }, //unsure about this (tag is halo online specific)
+            { 0x38E7, @"fx\particles\atmospheric\rolling_smoke\covenant_explosion_rolling_smoke_medium_n2" }, //unsure about this (tag is halo online specific)
+            { 0x38E8, @"fx\particles\energy\electric_loops_large_n4" }, //unsure about this (tag is halo online specific)
             { 0x38E9, @"objects\vehicles\brute_chopper\garbage\seat\seat" },
             { 0x38EA, @"objects\vehicles\brute_chopper\garbage\seat\seat" },
             { 0x38EB, @"objects\vehicles\brute_chopper\garbage\seat\seat" },
@@ -14601,7 +14601,7 @@ namespace TagTool.Commands.Tags
             { 0x38FD, @"objects\vehicles\brute_chopper\garbage\rotor_r\rotor_r" },
             { 0x38FE, @"objects\vehicles\brute_chopper\garbage\rotor_r\rotor_r" },
             { 0x38FF, @"objects\vehicles\brute_chopper\fx\destruction\trans_hull_destroyed" },
-            { 0x3900, @"fx\particles\fire\plasma_fire_large_tertiary" },
+            { 0x3900, @"fx\particles\fire\plasma_fire_large_n2" }, //unsure about this (tag is halo online specific)
             { 0x3901, @"objects\vehicles\brute_chopper\garbage\rotor_l\rotor_l" },
             { 0x3902, @"objects\vehicles\brute_chopper\garbage\rotor_l\rotor_l" },
             { 0x3903, @"objects\vehicles\brute_chopper\garbage\rotor_l\rotor_l" },
@@ -16847,7 +16847,7 @@ namespace TagTool.Commands.Tags
             { 0x41C3, @"fx\particles\models\debris\concrete_chunks_small\concrete_chunks_large" },
             { 0x41C4, @"objects\characters\ambient_life\lod_pelican\fx\ejecta" },
             { 0x41C5, @"sound\visual_fx\ambient_vehicle_destroyed_large" },
-            { 0x41C6, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_directional_secondary" },
+            { 0x41C6, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_directional_n1" }, //unsure about this (tag is halo online specific)
             { 0x41C7, @"objects\characters\ambient_life\lod_pelican\fx\lod_pelican_destruction" },
             { 0x41C8, @"objects\characters\ambient_life\lod_pelican\fx\smoke_trailers_large" },
             { 0x41C9, @"objects\vehicles\lod\bitmaps\lod_pelican" },
