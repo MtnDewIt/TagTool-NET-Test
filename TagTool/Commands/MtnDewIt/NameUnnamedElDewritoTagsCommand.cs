@@ -434,31 +434,31 @@ namespace TagTool.Commands.Tags
             { 0x01BC, @"ui\multiplayer" },
             { 0x01BD, @"ui\chud\globals" },
             { 0x01BE, @"ui\global_strings\damage_strings" },
-            { 0x01BF, @"hf2p\main_strings" },
-            { 0x01C0, @"hf2p\settings_strings" },
-            { 0x01C1, @"hf2p\lobby_strings" },
-            { 0x01C2, @"hf2p\emblem_editor_strings" },
-            { 0x01C3, @"hf2p\carousel_strings" },
-            { 0x01C4, @"hf2p\consumable_strings" },
-            { 0x01C5, @"hf2p\weapon_strings" },
-            { 0x01C6, @"hf2p\ingame_strings" },
-            { 0x01C7, @"hf2p\armor_strings" },
-            { 0x01C8, @"hf2p\message_strings" },
-            { 0x01C9, @"hf2p\buy_strings" },
-            { 0x01CA, @"hf2p\game_mode_strings" },
-            { 0x01CB, @"hf2p\map_strings" },
-            { 0x01CC, @"hf2p\loading_strings" },
-            { 0x01CD, @"hf2p\tip_strings" },
-            { 0x01CE, @"hf2p\level_strings" },
-            { 0x01CF, @"hf2p\profile_strings" },
-            { 0x01D0, @"hf2p\class_strings" },
-            { 0x01D1, @"hf2p\manufacturer_strings" },
-            { 0x01D2, @"hf2p\medal_strings" },
-            { 0x01D3, @"hf2p\playlist_strings" },
-            { 0x01D4, @"hf2p\damage_reporting_type_strings" },
-            { 0x01D5, @"hf2p\challenge_strings" },
-            { 0x01D6, @"hf2p\career_strings" },
-            { 0x01D7, @"hf2p\mod_strings" },
+            { 0x01BF, @"hf2p\strings\main_strings" },
+            { 0x01C0, @"hf2p\strings\settings_strings" },
+            { 0x01C1, @"hf2p\strings\lobby_strings" },
+            { 0x01C2, @"hf2p\strings\emblem_editor_strings" },
+            { 0x01C3, @"hf2p\strings\carousel_strings" },
+            { 0x01C4, @"hf2p\strings\consumable_strings" },
+            { 0x01C5, @"hf2p\strings\weapon_strings" },
+            { 0x01C6, @"hf2p\strings\ingame_strings" },
+            { 0x01C7, @"hf2p\strings\armor_strings" },
+            { 0x01C8, @"hf2p\strings\message_strings" },
+            { 0x01C9, @"hf2p\strings\buy_strings" },
+            { 0x01CA, @"hf2p\strings\game_mode_strings" },
+            { 0x01CB, @"hf2p\strings\map_strings" },
+            { 0x01CC, @"hf2p\strings\loading_strings" },
+            { 0x01CD, @"hf2p\strings\tip_strings" },
+            { 0x01CE, @"hf2p\strings\level_strings" },
+            { 0x01CF, @"hf2p\strings\profile_strings" },
+            { 0x01D0, @"hf2p\strings\class_strings" },
+            { 0x01D1, @"hf2p\strings\manufacturer_strings" },
+            { 0x01D2, @"hf2p\strings\medal_strings" },
+            { 0x01D3, @"hf2p\strings\playlist_strings" },
+            { 0x01D4, @"hf2p\strings\damage_reporting_type_strings" },
+            { 0x01D5, @"hf2p\strings\challenge_strings" },
+            { 0x01D6, @"hf2p\strings\career_strings" },
+            { 0x01D7, @"hf2p\strings\mod_strings" },
             { 0x01D8, @"objects\characters\masterchief\fx\coop_teleport" },
             { 0x01D9, @"sound\weapons\battle_rifle\flashlight" },
             { 0x01DA, @"globals\damage_responses\default" },
@@ -644,10 +644,10 @@ namespace TagTool.Commands.Tags
             { 0x029A, @"globals\input_globals" },
             { 0x029B, @"fx\scenery_fx\havok\havok_collection" },
             { 0x029C, @"fx\screen_fx\small_explosion" },
-            { 0x029D, @"fx\particles\flare\explosive_flash" },
+            { 0x029D, @"fx\particles\flare\explosive_flash_n1" }, //unsure about this (tag is halo online specific)
             { 0x029E, @"fx\particles\atmospheric\fiery_smoke\smoke_fiery_small" },
             { 0x029F, @"fx\physics_templates\_default" },
-            { 0x02A0, @"fx\particles\energy\spark_long" },
+            { 0x02A0, @"fx\particles\energy\spark_long_n1" }, //unsure about this (tag is halo online specific)
             { 0x02A1, @"fx\physics_templates\sparks" },
             { 0x02A2, @"fx\particles\atmospheric\soft_smoke\soft_smoke_large" },
             { 0x02A3, @"fx\physics_templates\explosion_fireball" },
@@ -881,7 +881,7 @@ namespace TagTool.Commands.Tags
             { 0x03DA, @"fx\particles\energy\sparks\impact_spark_orange" },
             { 0x03DB, @"fx\physics_templates\impact_sparks" },
             { 0x03DC, @"fx\particles\energy\electric_arcs" },
-            { 0x03DD, @"fx\particles\energy\plasma_noise" },
+            { 0x03DD, @"fx\particles\energy\plasma_noise_n2" }, //unsure about this (tag is halo online specific)
             { 0x03DE, @"fx\particles\flare\flash_soft_zfade" },
             { 0x03DF, @"shaders\particle_templates\_5_8_0_0_0_0_1_0_0_0" },
             { 0x03E0, @"shaders\particle_templates\_5_8_0_0_0_0_1_0_0_0" },
@@ -1106,7 +1106,7 @@ namespace TagTool.Commands.Tags
             { 0x04BB, @"globals\damage_responses\explosion_small" },
             { 0x04BC, @"fx\screen_fx\medium_explosion" },
             { 0x04BD, @"sound\weapons\frag_grenade\frag_expl_lod_far" },
-            { 0x04BE, @"fx\particles\energy\spark_ember" },
+            { 0x04BE, @"fx\particles\energy\spark_ember_n2" }, //unsure about this (tag is halo online specific)
             { 0x04BF, @"objects\weapons\grenade\frag_grenade\fx\detonation" },
             { 0x04C0, @"objects\weapons\grenade\frag_grenade\fx\detonation" },
             { 0x04C1, @"fx\particles\atmospheric\rolling_smoke\fireball_human_medium" },
@@ -1147,12 +1147,12 @@ namespace TagTool.Commands.Tags
             { 0x04E4, @"sound\weapons\frag_grenade\frag_lod_far" },
             { 0x04E5, @"sound\weapons\surround_tails\indoor\expl_tail_indoor" },
             { 0x04E6, @"sound\weapons\surround_tails\outdoor\expl_tail_outdoor" },
-            { 0x04E7, @"fx\particles\flare\explosive_flash_secondary" },
-            { 0x04E8, @"fx\particles\atmospheric\fiery_smoke\smoke_fiery_small_secondary" },
-            { 0x04E9, @"fx\particles\energy\spark_ember_secondary" },
-            { 0x04EA, @"fx\particles\energy\spark_long_secondary" },
-            { 0x04EB, @"fx\particles\atmospheric\rolling_smoke\fireball_human_medium_secondary" },
-            { 0x04EC, @"fx\particles\atmospheric\rolling_smoke\rolling_smoke_medium_secondary" },
+            { 0x04E7, @"fx\particles\flare\explosive_flash_n2" }, //unsure about this (tag is halo online specific)
+            { 0x04E8, @"fx\particles\atmospheric\fiery_smoke\smoke_fiery_small_n1" }, //unsure about this (tag is halo online specific)
+            { 0x04E9, @"fx\particles\energy\spark_ember_n3" }, //unsure about this (tag is halo online specific)
+            { 0x04EA, @"fx\particles\energy\spark_long_n2" }, //unsure about this (tag is halo online specific)
+            { 0x04EB, @"fx\particles\atmospheric\rolling_smoke\fireball_human_medium_n1" }, //unsure about this (tag is halo online specific)
+            { 0x04EC, @"fx\particles\atmospheric\rolling_smoke\rolling_smoke_medium_n1" }, //unsure about this (tag is halo online specific)
             { 0x04ED, @"sound\weapons\plasma_grenade\throwgren" },
             { 0x04EE, @"objects\weapons\grenade\plasma_grenade\plasma_grenade_equipment" },
             { 0x04EF, @"fx\material_effects\objects\weapons\plasma_grenade" },
@@ -1191,8 +1191,8 @@ namespace TagTool.Commands.Tags
             { 0x0510, @"sound\weapons\plasma_grenade\plasma_grenade_tails_int" },
             { 0x0511, @"fx\particles\flare\light_spike" },
             { 0x0512, @"objects\weapons\grenade\plasma_grenade\fx\detonation" },
-            { 0x0513, @"fx\particles\energy\plasma_burst" },
-            { 0x0514, @"fx\particles\energy\electric_loops_large" },
+            { 0x0513, @"fx\particles\energy\plasma_burst_n1" }, //unsure about this (tag is halo online specific)
+            { 0x0514, @"fx\particles\energy\electric_loops_large_n1" }, //unsure about this (tag is halo online specific)
             { 0x0515, @"fx\particles\flare\_bitmaps\light_spike" },
             { 0x0516, @"shaders\particle_templates\_0_8_0_0_0_0_0_0_1_0" },
             { 0x0517, @"shaders\particle_templates\_0_8_0_0_0_0_0_0_1_0" },
@@ -1234,13 +1234,13 @@ namespace TagTool.Commands.Tags
             { 0x053B, @"sound\weapons\plasma_grenade\plasma_detonation_start" },
             { 0x053C, @"sound\weapons\plasma_grenade\plasma_grenade_armed_no_beeps" },
             { 0x053D, @"objects\weapons\grenade\plasma_grenade\fx\detonation" },
-            { 0x053E, @"fx\particles\energy\spark_long_tertiary" },
-            { 0x053F, @"fx\particles\flare\light_spike_secondary" },
-            { 0x0540, @"fx\particles\energy\spark_ember_tertiary" },
-            { 0x0541, @"fx\particles\energy\plasma_burst_secondary" },
-            { 0x0542, @"fx\particles\energy\plasma_noise_secondary" },
-            { 0x0543, @"fx\particles\energy\electric_arcs_secondary" },
-            { 0x0544, @"fx\particles\energy\electric_loops_large_secondary" },
+            { 0x053E, @"fx\particles\energy\spark_long_n3" }, //unsure about this (tag is halo online specific)
+            { 0x053F, @"fx\particles\flare\light_spike_n1" }, //unsure about this (tag is halo online specific)
+            { 0x0540, @"fx\particles\energy\spark_ember_n4" }, //unsure about this (tag is halo online specific)
+            { 0x0541, @"fx\particles\energy\plasma_burst_n2" }, //unsure about this (tag is halo online specific)
+            { 0x0542, @"fx\particles\energy\plasma_noise_n1" }, //unsure about this (tag is halo online specific)
+            { 0x0543, @"fx\particles\energy\electric_arcs_n1" }, //unsure about this (tag is halo online specific)
+            { 0x0544, @"fx\particles\energy\electric_loops_large_n2" }, //unsure about this (tag is halo online specific)
             { 0x0545, @"fx\particles\atmospheric\wispy_smoke\wispy_smoke_large_zfade" },
             { 0x0546, @"shaders\decal_templates\_0_8_1_0_0_2" },
             { 0x0547, @"fx\decals\_bitmaps\plasma_impact_medium" },
@@ -1599,12 +1599,12 @@ namespace TagTool.Commands.Tags
             { 0x06A8, @"sound\weapons\claymore_grenade\claymore_proj\track1\loop" },
             { 0x06A9, @"sound\weapons\claymore_grenade\brute_shot_projectile\brute_shot_proj\loop" },
             { 0x06AA, @"sound\weapons\claymore_grenade\claymore_grenade_tails_ext" },
-            { 0x06AB, @"fx\particles\flare\explosive_flash_tertiary" },
+            { 0x06AB, @"fx\particles\flare\explosive_flash_n3" }, //unsure about this (tag is halo online specific)
             { 0x06AC, @"sound\weapons\claymore_grenade\claymore_expl_metal" }, //unsure about this (tag is halo online specific)
-            { 0x06AD, @"fx\particles\atmospheric\fiery_smoke\smoke_fiery_small_tertiary" },
-            { 0x06AE, @"fx\particles\fire\fire_large_vertical_secondary" },
-            { 0x06AF, @"fx\particles\atmospheric\rolling_smoke\fireball_brute_medium_secondary" },
-            { 0x06B0, @"fx\particles\atmospheric\rolling_smoke\rolling_smoke_medium_tertiary" },
+            { 0x06AD, @"fx\particles\atmospheric\fiery_smoke\smoke_fiery_small_n2" }, //unsure about this (tag is halo online specific)
+            { 0x06AE, @"fx\particles\fire\fire_large_vertical_n1" }, //unsure about this (tag is halo online specific)
+            { 0x06AF, @"fx\particles\atmospheric\rolling_smoke\fireball_brute_medium_n1" }, //unsure about this (tag is halo online specific)
+            { 0x06B0, @"fx\particles\atmospheric\rolling_smoke\rolling_smoke_medium_n2" }, //unsure about this (tag is halo online specific)
             { 0x06B1, @"sound\weapons\firebomb\firebomb_throw" },
             { 0x06B2, @"objects\weapons\grenade\firebomb_grenade\firebomb_grenade_equipment" },
             { 0x06B3, @"objects\weapons\grenade\firebomb_grenade\damage_effects\firebomb_grenade_equipment_explosion" },
@@ -2688,7 +2688,7 @@ namespace TagTool.Commands.Tags
             { 0x0AF6, @"ui\halox\start_menu\panes\hq_screenshots_viewer\strings_preview" },
             { 0x0AF7, @"ui\halox\start_menu\panes\hq_screenshots_viewer\b_back" },
             { 0x0AF8, @"ui\global_strings\global_strings" },
-            { 0x0AF9, @"hf2p\ui_strings" },
+            { 0x0AF9, @"ui\global_strings\halo_online" },
             { 0x0AFA, @"ui\default_sounds" },
             { 0x0AFB, @"ui\global_datasources\game_variant" },
             { 0x0AFC, @"ui\global_datasources\player_rank" },
@@ -2903,18 +2903,18 @@ namespace TagTool.Commands.Tags
             { 0x0C1E, @"ui\chud\spartan" },
             { 0x0C1F, @"fx\material_effects\objects\characters\contact\collision\blood_aoe_human_masterchief" },
             { 0x0C20, @"fx\shield_impacts\spartan_3p_down" }, //unsure about this (tag is halo online specific)
-            { 0x0C21, @"fx\particles\energy\spark_burst_small" },
+            { 0x0C21, @"fx\particles\energy\electric_arcs_gold_n1" }, //unsure about this (tag is halo online specific)
             { 0x0C22, @"levels\shared\bitmaps\test_maps\plasma_noise_1" },
             { 0x0C23, @"levels\shared\bitmaps\test_maps\plasma_noise_2" },
             { 0x0C24, @"test\chris\noise\blur_noise256_a" },
             { 0x0C25, @"test\chris\noise\blur_noise256_b" },
-            { 0x0C26, @"fx\particles\energy\_bitmaps\spark_burst_small" },
+            { 0x0C26, @"fx\particles\energy\_bitmaps\electric_arcs_03" }, //unsure about this (tag is halo online specific)
             { 0x0C27, @"fx\particles\_gradients\electric_arcs_gold" },
             { 0x0C28, @"shaders\particle_templates\_5_8_0_0_0_0_0_0_0_0" },
             { 0x0C29, @"shaders\particle_templates\_5_8_0_0_0_0_0_0_0_0" },
             { 0x0C2A, @"shaders\particle_templates\_5_8_0_0_0_0_0_0_0_0" },
             { 0x0C2B, @"objects\characters\masterchief\bitmaps\flashlight_gel" },
-            { 0x0C2C, @"fx\particles\fire\fire_small_secondary" },
+            { 0x0C2C, @"fx\particles\fire\fire_small_n1" }, //unsure about this (tag is halo online specific)
             { 0x0C2D, @"fx\particles\atmospheric\soft_smoke\soft_smoke_fire_lit" },
             { 0x0C2E, @"shaders\particle_templates\_3_8_0_0_1_1_1_0_0_0" },
             { 0x0C2F, @"shaders\particle_templates\_3_8_0_0_1_1_1_0_0_0" },
@@ -3321,7 +3321,7 @@ namespace TagTool.Commands.Tags
             { 0x0E22, @"globals\damage_responses\assassination" }, //unsure about this (tag is halo online specific)
             { 0x0E23, @"sound\weapons\equipment\tripmine\tripmine_explosion" },
             { 0x0E24, @"objects\characters\masterchief\fx\concussive_blast\particles\blast_spark" }, //unsure about this (tag is halo online specific)
-            { 0x0E25, @"fx\particles\energy\spark_ember_quaternary" },
+            { 0x0E25, @"fx\particles\energy\spark_ember_n1" },
             { 0x0E26, @"objects\characters\masterchief\fx\concussive_blast\particles\blast_plasma_ring" }, //unsure about this (tag is halo online specific)
             { 0x0E27, @"objects\characters\masterchief\fx\concussive_blast\particles\blast_radius" }, //unsure about this (tag is halo online specific)
             { 0x0E28, @"fx\particles\energy\plasma_ring" },
@@ -3375,9 +3375,9 @@ namespace TagTool.Commands.Tags
             { 0x0E58, @"sound\materials\particles\blood_splats" },
             { 0x0E59, @"shaders\particle_templates\_3_10_0_0_0_0_1_1_0_0" },
             { 0x0E5A, @"shaders\particle_templates\_3_10_0_0_0_0_1_1_0_0" },
-            { 0x0E61, @"fx\particles\energy\spark_burst_small_secondary" },
+            { 0x0E61, @"fx\particles\energy\spark_burst_small" },
             { 0x0E62, @"fx\particles\energy\electric_arcs_blue" },
-            { 0x0E63, @"fx\particles\energy\_bitmaps\spark_burst_small_secondary" },
+            { 0x0E63, @"fx\particles\energy\_bitmaps\spark_burst_small" },
             { 0x0E6C, @"ui\chud\bitmaps\motion_tracker_h3" },
             { 0x0E6D, @"ui\chud\bitmaps\motion_tracker_meters" },
             { 0x0E71, @"ui\chud\animations\clockwise" },
@@ -3444,14 +3444,14 @@ namespace TagTool.Commands.Tags
             { 0x0F08, @"shaders\shader_templates\_2_0_0_0_0_0_8_1_0_1_0" },
             { 0x0F09, @"objects\weapons\rifle\assault_rifle\bitmaps\assault_rifle_number" },
             { 0x0F0D, @"objects\weapons\rifle\assault_rifle\assault_rifle_v1\shaders\assault_rifle" },
-            { 0x0F18, @"objects\weapons\rifle\assault_rifle\assault_rifle_v1\bitmaps\assault_rifle_decals_cc" },
+            { 0x0F18, @"objects\weapons\rifle\assault_rifle\assault_rifle_v1\bitmaps\assault_rifle_spec" },
             { 0x0F19, @"shaders\shader_templates\_8_2_0_0_1_4_0_0_0_1_0" },
             { 0x0F1A, @"shaders\shader_templates\_8_2_0_0_1_4_0_0_0_1_0" },
             { 0x0F1B, @"shaders\shader_templates\_8_2_0_0_1_4_0_0_0_1_0" },
-            { 0x0F1C, @"objects\weapons\rifle\assault_rifle\assault_rifle_v1\bitmaps\assault_rifle" },
+            { 0x0F1C, @"objects\weapons\rifle\assault_rifle\assault_rifle_v1\bitmaps\assault_rifle_rubber" },
             { 0x0F1D, @"objects\weapons\rifle\assault_rifle\assault_rifle_v1\bitmaps\assault_rifle_bump" },
             { 0x0F1E, @"objects\weapons\rifle\assault_rifle\assault_rifle_v1\bitmaps\assault_rifle_control" },
-            { 0x0F1F, @"objects\weapons\rifle\assault_rifle\assault_rifle_v1\bitmaps\assault_rifle_decals" },
+            { 0x0F1F, @"objects\weapons\rifle\assault_rifle\assault_rifle_v1\bitmaps\assault_rifle" },
             { 0x0F22, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\fp_assault_rifle\fp_assault_rifle_v2" },
             { 0x0F23, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\assault_rifle" },
             { 0x0F24, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\assault_rifle_rubber" },
@@ -3834,11 +3834,11 @@ namespace TagTool.Commands.Tags
             { 0x10C5, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\bitmaps\carbine_organic_control" },
             { 0x10C6, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\bitmaps\carbine_organic_spec" },
             { 0x10C8, @"objects\weapons\rifle\smg\fp_smg\fp_smg" },
-            { 0x10C9, @"objects\weapons\rifle\smg\shaders\smg_metal" },
-            { 0x10CA, @"objects\weapons\rifle\smg\shaders\smg_rubber" },
+            { 0x10C9, @"objects\weapons\rifle\smg\shaders\smg_new_metal" },  // new added so silenced smg textures aren't broken (ED specific)
+            { 0x10CA, @"objects\weapons\rifle\smg\shaders\smg_new_rubber" },  // new added so silenced smg textures aren't broken (ED specific)
             { 0x10CB, @"objects\weapons\rifle\smg\bitmaps\smg_new" }, // new added so silenced smg textures aren't broken (ED specific)
             { 0x10CC, @"objects\weapons\rifle\smg\bitmaps\smg_new_bump" }, // new added so silenced smg textures aren't broken (ED specific)
-            { 0x10CD, @"objects\weapons\rifle\smg\bitmaps\smg_control" },
+            { 0x10CD, @"objects\weapons\rifle\smg\bitmaps\smg_new_control" },
             { 0x10CE, @"objects\weapons\rifle\smg\bitmaps\smg_new_illum" }, // new added so silenced smg textures aren't broken (ED specific)
             { 0x10CF, @"shaders\shader_templates\_8_2_0_0_1_2_1_0_0_1_0" },
             { 0x10D0, @"shaders\shader_templates\_8_2_0_0_1_2_1_0_0_1_0" },
@@ -3944,9 +3944,9 @@ namespace TagTool.Commands.Tags
             { 0x114B, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v5\bitmaps\plasma_rifle_bump" },
             { 0x114C, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v5\bitmaps\plasma_rifle_illum" },
             { 0x114E, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v6\fp_plasma_rifle\fp_plasma_rifle_v6" },
-            { 0x114F, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v2\shaders\plasma_rifle_metal" },
-            { 0x1150, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v5\shaders\plasma_rifle_metal" },
-            { 0x1151, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v1\shaders\plasma_rifle_metal" },
+            { 0x114F, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v2\shaders\plasma_rifle_shiny" },
+            { 0x1150, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v5\shaders\plasma_rifle_metal_tint_map" },
+            { 0x1151, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v1\shaders\plasma_rifle_metal_tint_map" },
             { 0x1152, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v6\shaders\plasma_rifle" },
             { 0x1153, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v2\bitmaps\plasma_rifle_control" },
             { 0x1154, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v2\bitmaps\plasma_rifle_spec" },
@@ -4410,13 +4410,13 @@ namespace TagTool.Commands.Tags
             { 0x1353, @"fx\shield_impacts\overshield_3p" },
             { 0x1354, @"fx\shield_impacts\overshield_1p" },
             { 0x1355, @"objects\weapons\grenade\firebomb_grenade\fx\detonation" },
-            { 0x1356, @"fx\particles\fire\fire_large_secondary" },
+            { 0x1356, @"fx\particles\fire\fire_large_n1" }, //unsure about this (tag is halo online specific)
             { 0x135C, @"objects\characters\masterchief\fx\shield\particles\shield_collapse" },
             { 0x135F, @"fx\particles\material\glass\glass_chips" },
             { 0x1360, @"fx\physics_templates\small_rocks" },
             { 0x1361, @"fx\particles\material\metal\metal_chips_hot" },
             { 0x1363, @"fx\contrails\_bitmaps\plasma" },
-            { 0x1364, @"fx\particles\models\mesh_fx\ring\ring" },
+            { 0x1364, @"fx\particles\models\mesh_fx\shield_sphere\shield_sphere_glow" },
             { 0x1366, @"fx\particles\energy\_bitmaps\spark_fiery" },
             { 0x1367, @"sound\materials\particles\shrapnel" },
             { 0x1368, @"fx\particles\material\_bitmaps\glass_chips" },
@@ -4692,7 +4692,7 @@ namespace TagTool.Commands.Tags
             { 0x149E, @"ai\squad_templates\sq_camp_grunt_flak" },
             { 0x149F, @"ai\squad_templates\sq_camp_grunt_flak_3" },
             { 0x14A0, @"ai\squad_templates\sq_camp_grunt_turret" },
-            { 0x14A1, @"ai\squad_templates\sq_camp_grunt_turret_undeployed" },
+            { 0x14A1, @"ai\squad_templates\sq_camp_grunt_undeployed" },
             { 0x14A2, @"ai\squad_templates\blank" },
             { 0x14A3, @"ai\squad_templates\sq_camp_captain_solo" },
             { 0x14A4, @"ai\squad_templates\sq_camp_captain_grunt_2" },
@@ -4909,10 +4909,10 @@ namespace TagTool.Commands.Tags
             { 0x15F2, @"shaders\shader_templates\_4_1_0_1_1_2_0_0_0_1_0" },
             { 0x15F3, @"shaders\shader_templates\_4_1_0_1_1_2_0_0_0_1_0" },
             { 0x160D, @"objects\vehicles\warthog\turrets\gauss\bitmaps\gauss_screen_scan_lines" },
-            { 0x169C, @"objects\characters\masterchief\bitmaps\mp_juggernaut" },
-            { 0x169D, @"objects\characters\masterchief\bitmaps\mp_juggernaut_bump" },
-            { 0x169E, @"objects\characters\masterchief\bitmaps\mp_juggernaut_cc" },
-            { 0x169F, @"objects\characters\masterchief\bitmaps\mp_juggernaut_illum" },
+            { 0x169C, @"objects\characters\masterchief\bitmaps\mp_juggernaut_helmet_diff" },
+            { 0x169D, @"objects\characters\masterchief\bitmaps\mp_juggernaut_helmet_zbump" },
+            { 0x169E, @"objects\characters\masterchief\bitmaps\mp_juggernaut_helmet_cc" },
+            { 0x169F, @"objects\characters\masterchief\bitmaps\mp_juggernaut_helmet_illum" },
             { 0x16A0, @"shaders\shader_templates\_10_3_0_1_1_2_9_0_0_1_0" },
             { 0x16A1, @"shaders\shader_templates\_10_3_0_1_1_2_9_0_0_1_0" },
             { 0x16A2, @"shaders\shader_templates\_10_3_0_1_1_2_9_0_0_1_0" },
@@ -4972,21 +4972,21 @@ namespace TagTool.Commands.Tags
             { 0x18DA, @"objects\equipment\jammer\jammer" },
             { 0x18DB, @"objects\equipment\jammer\jammer" },
             { 0x18DC, @"objects\equipment\jammer\jammer" },
-            { 0x18DD, @"fx\scenery_fx\explosions\covenant_explosion_medium\covenant_explosion_medium" },
+            { 0x18DD, @"objects\equipment\jammer\fx\destruct" }, //unsure about this (tag is halo online specific)
             { 0x18DE, @"objects\equipment\powerdrain\fx\transition" },
-            { 0x18DF, @"sound\vehicles\damage_effects\cov_damage_large" },
+            { 0x18DF, @"sound\weapons\equipment\jammer\jammer_destruct" }, //unsure about this (tag is halo online specific)
             { 0x18E0, @"fx\scenery_fx\explosions\covenant_explosion_medium\covenant_explosion_medium" },
             { 0x18E1, @"fx\scenery_fx\explosions\covenant_explosion_medium\covenant_explosion_medium" },
             { 0x18E2, @"fx\scenery_fx\explosions\covenant_explosion_medium\covenant_explosion_medium" },
-            { 0x18E3, @"fx\particles\flare\explosive_flash_quaternary" },
-            { 0x18E4, @"fx\particles\energy\spark_ember_quinary" },
-            { 0x18E5, @"fx\particles\energy\spark_long_quaternary" },
-            { 0x18E6, @"fx\particles\energy\plasma_burst_tertiary" },
-            { 0x18E7, @"fx\particles\energy\plasma_noise_tertiary" },
+            { 0x18E3, @"fx\particles\flare\explosive_flash" },
+            { 0x18E4, @"fx\particles\energy\spark_ember" },
+            { 0x18E5, @"fx\particles\energy\spark_long" },
+            { 0x18E6, @"fx\particles\energy\plasma_burst" },
+            { 0x18E7, @"fx\particles\energy\plasma_noise" },
             { 0x18E8, @"fx\scenery_fx\explosions\covenant_explosion_medium\ejecta" },
             { 0x18E9, @"fx\particles\atmospheric\rolling_smoke\fireball_plasma_medium" },
             { 0x18EA, @"fx\particles\atmospheric\rolling_smoke\covenant_explosion_rolling_smoke_medium" },
-            { 0x18EB, @"fx\particles\energy\electric_loops_large_tertiary" },
+            { 0x18EB, @"fx\particles\energy\electric_loops_large" },
             { 0x18EC, @"fx\decals\_bitmaps\blast_scorch_large" },
             { 0x18ED, @"fx\scenery_fx\explosions\covenant_explosion_medium\ejecta" },
             { 0x18EE, @"fx\scenery_fx\explosions\covenant_explosion_medium\ejecta" },
@@ -5003,7 +5003,7 @@ namespace TagTool.Commands.Tags
             { 0x18F9, @"shaders\particle_templates\_0_8_0_0_0_1_1_0_0_0" },
             { 0x18FA, @"sound\weapons\equipment\power_drain\power_drain_loop\track1\in" },
             { 0x18FB, @"sound\weapons\equipment\power_drain\power_drain_loop\track1\loop" },
-            { 0x18FC, @"sound\vehicles\damage_effects\cov_damage_large_2" },
+            { 0x18FC, @"sound\weapons\equipment\power_drain\power_drain_destruct" }, //unsure about this (tag is halo online specific)
             { 0x18FD, @"objects\equipment\shaders\jammer_metal" },
             { 0x18FE, @"objects\equipment\bitmaps\jammer" },
             { 0x18FF, @"objects\equipment\bitmaps\jammer_cc" },
@@ -5079,7 +5079,7 @@ namespace TagTool.Commands.Tags
             { 0x1945, @"objects\equipment\powerdrain\powerdrain" },
             { 0x1946, @"objects\equipment\powerdrain\powerdrain" },
             { 0x1947, @"objects\equipment\powerdrain\powerdrain" },
-            { 0x1948, @"fx\scenery_fx\explosions\covenant_explosion_medium\covenant_explosion_medium_secondary" },
+            { 0x1948, @"objects\equipment\powerdrain\fx\destruct" }, //unsure about this (tag is halo online specific)
             { 0x1949, @"objects\equipment\shaders\powerdrain_metal" },
             { 0x194A, @"objects\equipment\shaders\powerdrain_active" },
             { 0x194B, @"objects\equipment\bitmaps\bubble_shield" },
@@ -5277,7 +5277,7 @@ namespace TagTool.Commands.Tags
             { 0x1A16, @"objects\equipment\tripmine_equipment\tripmine_equipment" },
             { 0x1A1A, @"camera\shade_d_camera" },
             { 0x1A20, @"globals\damage_responses\trigger_fullauto" },
-            { 0x1A27, @"fx\particles\atmospheric\soft_smoke\soft_steam_fast" },
+            { 0x1A27, @"fx\particles\distortion\distortion_exhaust" },
             { 0x1A29, @"fx\particles\flare\_bitmaps\glow_soft" },
             { 0x1A2B, @"shaders\particle_templates\_0_8_3_0_0_1_0_0_0_0" },
             { 0x1A2C, @"shaders\particle_templates\_0_8_3_0_0_1_0_0_0_0" },
@@ -5319,12 +5319,12 @@ namespace TagTool.Commands.Tags
             { 0x1A7A, @"objects\equipment\instantcover\instantcover" },
             { 0x1A7B, @"objects\equipment\instantcover\fx\shield_collapse" },
             { 0x1A7C, @"objects\equipment\instantcover\fx\shield_recharge" },
-            { 0x1A7D, @"fx\scenery_fx\destruction\covenant_mech_break_small\covenant_mech_break_small" },
+            { 0x1A7D, @"objects\equipment\instantcover\fx\destruction\instant_cover_destruct" }, //unsure about this (tag is halo online specific)
             { 0x1A7E, @"objects\equipment\instantcover\fx\destruction\garbage_spawn" },
-            { 0x1A7F, @"fx\scenery_fx\destruction\covenant_mech_break_small\covenant_mech_break_small_secondary" },
+            { 0x1A7F, @"fx\scenery_fx\destruction\covenant_mech_break_small\covenant_mech_break_small" },
             { 0x1A80, @"objects\equipment\instantcover\fx\delay_effect_for_sound" },
             { 0x1A81, @"fx\scenery_fx\destruction\covenant_mech_break_small\covenant_mech_break_small" },
-            { 0x1A82, @"sound\vehicles\damage_effects\cov_damage_small_2" },
+            { 0x1A82, @"sound\weapons\equipment\instantcover\instant_cover_destruct" }, //unsure about this (tag is halo online specific)
             { 0x1A83, @"fx\physics_templates\smoke_slow" },
             { 0x1A84, @"fx\particles\models\debris\covenant_debris\covenant_debris" },
             { 0x1A85, @"fx\particles\models\debris\covenant_debris\_bitmaps\covenant_debris" },
@@ -5430,16 +5430,16 @@ namespace TagTool.Commands.Tags
             { 0x1B00, @"objects\characters\monitor\bitmaps\monitor_detailbump" },
             { 0x1B04, @"objects\equipment\instantcover\instantcover_mp" },
             { 0x1B06, @"fx\shield_impacts\hologram_spawn_3p" },
-            { 0x1B07, @"camera\biped_armor_lock_camera" },
-            { 0x1B08, @"sound\weapons\equipment\concussiveblast_equipment\concussionblast_activate" }, //unsure about this (tag is halo online specific)
+            { 0x1B07, @"camera\biped_concussive_blast_camera" },
+            { 0x1B08, @"sound\weapons\equipment\concussiveblast_equipment\concussiveblast_activate" }, //unsure about this (tag is halo online specific)
             { 0x1B09, @"objects\equipment\concussiveblast_equipment\fx\activate" },
             { 0x1B0A, @"objects\equipment\concussiveblast_equipment\fx\particles\blast_spark" }, //unsure about this (tag is halo online specific)
             { 0x1B0B, @"objects\equipment\concussiveblast_equipment\fx\particles\blast_glow" }, //unsure about this (tag is halo online specific)
             { 0x1B1B, @"objects\equipment\reactive_armor_equipment\fx\particles\shield_glow" }, //unsure about this (tag is halo online specific)
-            { 0x1B21, @"fx\particles\energy\plasma_noise_long_secondary" },
+            { 0x1B21, @"fx\particles\energy\plasma_noise_long_n1" }, //unsure about this (tag is halo online specific)
             { 0x1B26, @"sound\weapons\brute_shot\brute_round_lod_far" },
             { 0x1B27, @"objects\weapons\support_low\brute_shot\fx\detonation" },
-            { 0x1B28, @"fx\particles\energy\electric_arcs_blue_secondary" },
+            { 0x1B28, @"fx\particles\energy\electric_arcs_blue_n1" }, //unsure about this (tag is halo online specific)
             { 0x1B29, @"objects\equipment\hologram_equipment\fx\hologram_spawn" },
             { 0x1B2A, @"ui\chud\e_hologram" },
             { 0x1B2B, @"sound\weapons\equipment\hologram_equipment\hologram_activate" }, //unsure about this (tag is halo online specific)
@@ -5447,8 +5447,8 @@ namespace TagTool.Commands.Tags
             { 0x1B2D, @"objects\equipment\hologram_equipment\fx\hologram_spawn" },
             { 0x1B2F, @"sound\weapons\equipment\reactive_armor_equipment\reactive_shield_start" }, //unsure about this (tag is halo online specific)
             { 0x1B30, @"objects\equipment\reactive_armor_equipment\fx\activate" },
-            { 0x1B34, @"fx\shield_impacts\reactive_armor_active_1p" },
-            { 0x1B35, @"fx\shield_impacts\reactive_armor_active_3p" },
+            { 0x1B34, @"fx\shield_impacts\reactive_armor_1p" },
+            { 0x1B35, @"fx\shield_impacts\reactive_armor_3p" },
             { 0x1B36, @"objects\equipment\reactive_armor_equipment\fx\activate" },
             { 0x1B37, @"objects\equipment\reactive_armor_equipment\fx\activate" },
             { 0x1B38, @"sound\weapons\equipment\bombrun_equipment\bombrun_throw" }, //unsure about this (tag is halo online specific)
@@ -5469,8 +5469,8 @@ namespace TagTool.Commands.Tags
             { 0x1B47, @"objects\equipment\bombrun_equipment\projectiles\bombrun_grenade" }, //unsure about this (tag is halo online specific)
             { 0x1B48, @"objects\equipment\bombrun_equipment\projectiles\bombrun_grenade\fx\detonation" }, //unsure about this (tag is halo online specific)
             { 0x1B49, @"objects\equipment\bombrun_equipment\projectiles\bombrun_grenade\fx\detonation" }, //unsure about this (tag is halo online specific)
-            { 0x1B4F, @"fx\shield_impacts\lightningstrike_active_3p" },
-            { 0x1B50, @"fx\shield_impacts\lightningstrike_active_1p" },
+            { 0x1B4F, @"fx\shield_impacts\lightningstrike_3p" },
+            { 0x1B50, @"fx\shield_impacts\lightningstrike_1p" },
             { 0x1B51, @"sound\weapons\equipment\invincibility\invincibility_loop\invincibility_loop" },
             { 0x1B52, @"sound\weapons\equipment\invincibility\invincibility_loop\invincibility\in" },
             { 0x1B53, @"sound\weapons\equipment\invincibility\invincibility_loop\invincibility_unused" },
@@ -5478,8 +5478,8 @@ namespace TagTool.Commands.Tags
             { 0x1B5E, @"objects\equipment\lightningstrike_equipment\fx\active" },
             { 0x1B5F, @"objects\equipment\lightningstrike_equipment\fx\active" },
             { 0x1B60, @"objects\equipment\lightningstrike_equipment\fx\active" },
-            { 0x1B6B, @"fx\scenery_fx\explosions\covenant_explosion_medium\covenant_explosion_medium_tertiary" },
-            { 0x1B6C, @"sound\vehicles\damage_effects\cov_damage_large_3" },
+            { 0x1B6B, @"fx\scenery_fx\explosions\covenant_explosion_medium\covenant_explosion_medium" },
+            { 0x1B6C, @"sound\vehicles\damage_effects\cov_damage_large" },
             { 0x1B80, @"objects\weapons\rifle\assault_rifle\assault_rifle" },
             { 0x1B81, @"fx\material_effects\objects\weapons\battle_rifle" },
             { 0x1B82, @"objects\weapons\rifle\assault_rifle\fx\firing" },
@@ -5972,9 +5972,9 @@ namespace TagTool.Commands.Tags
             { 0x1D70, @"fx\decals\impact_explosion\explosion_small\explosion_small_tough_terrain_sand" },
             { 0x1D71, @"sound\weapons\brute_shot\expl_tail_outdoor" }, //unsure about this (tag is halo online specific)
             { 0x1D72, @"sound\weapons\brute_shot\expl_tail_indoor" }, //unsure about this (tag is halo online specific)
-            { 0x1D73, @"fx\particles\atmospheric\rolling_smoke\fireball_brute_small_secondary" },
+            { 0x1D73, @"fx\particles\atmospheric\rolling_smoke\fireball_brute_small_n1" }, //unsure about this (tag is halo online specific)
             { 0x1D74, @"fx\particles\atmospheric\rolling_smoke\rolling_smoke_small" },
-            { 0x1D75, @"fx\particles\energy\electric_loops_large_quaternary" },
+            { 0x1D75, @"fx\particles\energy\electric_loops_large_n3" }, //unsure about this (tag is halo online specific)
             { 0x1D76, @"shaders\particle_templates\_1_3_0_1_0_1_1_1_1_0" },
             { 0x1D77, @"shaders\particle_templates\_1_3_0_1_0_1_1_1_1_0" },
             { 0x1D78, @"shaders\particle_templates\_1_3_0_1_0_1_1_1_1_0" },
@@ -6692,7 +6692,7 @@ namespace TagTool.Commands.Tags
             { 0x2047, @"shaders\shader_templates\_2_0_0_0_0_2_1_5_0_1_0" },
             { 0x2048, @"objects\weapons\lod\shaders\lod_sniper_rifle" },
             { 0x2049, @"objects\weapons\lod\bitmaps\sniper_rifle" },
-            { 0x204A, @"ui\chud\animations\crosshair_animations\sniper_crosshair" }, //unsure about this (tag is halo online specific)
+            { 0x204A, @"ui\chud\animations\crosshair_animations\sniper_recticule" },
             { 0x204C, @"ui\chud\bitmaps\scopes\sniper_rifle_scope" },
             { 0x204D, @"ui\chud\bitmaps\scopes\sniper_rifle_scope_elements" },
             { 0x204E, @"ui\chud\animations\sniper_slide" },
@@ -6760,7 +6760,7 @@ namespace TagTool.Commands.Tags
             { 0x208F, @"objects\weapons\pistol\excavator\projectiles\excavator_shard" },
             { 0x2090, @"objects\weapons\pistol\excavator\fx\firing" },
             { 0x2091, @"sound\weapons\magnum\magnum_dryfire" },
-            { 0x2092, @"globals\damage_responses\trigger_semiauto_secondary" },
+            { 0x2092, @"globals\damage_responses\trigger_semiauto_n2" }, //unsure about this (tag is halo online specific)
             { 0x2093, @"sound\weapons\excavator\excavator_fp\excavator_dual_reload_left" },
             { 0x2094, @"sound\weapons\excavator\excavator_fp\excavator_dual_reload_right" },
             { 0x2095, @"sound\weapons\excavator\excavator_fp\excavator_reload" },
@@ -6804,7 +6804,7 @@ namespace TagTool.Commands.Tags
             { 0x20BC, @"ui\chud\magnum" },
             { 0x20BD, @"objects\weapons\pistol\magnum\projectiles\magnum_bullet" },
             { 0x20BE, @"objects\weapons\pistol\magnum\fx\firing" },
-            { 0x20BF, @"globals\damage_responses\trigger_semiauto_tertiary" },
+            { 0x20BF, @"globals\damage_responses\trigger_semiauto_n3" }, //unsure about this (tag is halo online specific)
             { 0x20C0, @"sound\weapons\magnum\magnum_fp\magnum_dual_pose_left" },
             { 0x20C1, @"sound\weapons\magnum\magnum_fp\magnum_dual_ready" },
             { 0x20C2, @"sound\weapons\magnum\magnum_fp\magnum_dual_reload_left" },
@@ -6941,10 +6941,10 @@ namespace TagTool.Commands.Tags
             { 0x2146, @"sound\weapons\needler\needler_super_expl" },
             { 0x2147, @"sound\weapons\needler\needler_super_expl_lod_far" },
             { 0x2148, @"objects\weapons\pistol\needler\fx\super_detonation" },
-            { 0x2149, @"fx\particles\models\weapons\needler_shards\needler_shards_secondary" },
+            { 0x2149, @"fx\particles\models\weapons\needler_shards\needler_shards_n1" }, //unsure about this (tag is halo online specific)
             { 0x214A, @"fx\particles\energy\explosions\spark_ember" },
-            { 0x214B, @"fx\particles\atmospheric\rolling_smoke\fireball_plasma_small_secondary" },
-            { 0x214C, @"fx\particles\flare\light_spike_tertiary" },
+            { 0x214B, @"fx\particles\atmospheric\rolling_smoke\fireball_plasma_small_n1" }, //unsure about this (tag is halo online specific)
+            { 0x214C, @"fx\particles\flare\light_spike_n2" }, //unsure about this (tag is halo online specific)
             { 0x214D, @"globals\damage_responses\impact_needle" },
             { 0x214E, @"objects\weapons\pistol\needler\needler" },
             { 0x214F, @"objects\weapons\pistol\needler\needler" },
@@ -7057,8 +7057,8 @@ namespace TagTool.Commands.Tags
             { 0x21BC, @"objects\vehicles\warthog\fx\weapon\chaingun\impact_liquid" },
             { 0x21BD, @"fx\material_effects\objects\weapons\impact\impact_bullet_large\tough_terrain_mud" },
             { 0x21BE, @"fx\material_effects\objects\weapons\impact\impact_bullet_large\tough_terrain_sand" },
-            { 0x21BF, @"fx\particles\flare\flash_small_long_secondary" },
-            { 0x21C0, @"fx\particles\energy\spark_burst_large_impact_secondary" },
+            { 0x21BF, @"fx\particles\flare\flash_small_long_n1" }, //unsure about this (tag is halo online specific)
+            { 0x21C0, @"fx\particles\energy\spark_burst_large_impact_n1" }, //unsure about this (tag is halo online specific)
             { 0x21C1, @"objects\weapons\turret\machinegun_turret\machinegun_turret_weapon\machinegun_turret_weapon" },
             { 0x21C2, @"objects\weapons\turret\machinegun_turret\machinegun_turret_weapon\machinegun_turret_weapon" },
             { 0x21C3, @"objects\weapons\turret\machinegun_turret\machinegun_turret_weapon\machinegun_turret_weapon" },
@@ -7162,10 +7162,10 @@ namespace TagTool.Commands.Tags
             { 0x2226, @"objects\weapons\support_high\flak_cannon\fx\detonation" },
             { 0x2227, @"objects\weapons\support_high\flak_cannon\fx\detonation" },
             { 0x2228, @"sound\weapons\flak_cannon\flak_proj_tails_ext" },
-            { 0x2229, @"fx\particles\flare\explosive_flash_quinary" },
+            { 0x2229, @"fx\particles\flare\explosive_flash_n4" }, //unsure about this (tag is halo online specific)
             { 0x222A, @"fx\particles\energy\plasma_burst_green" },
-            { 0x222B, @"fx\particles\atmospheric\fiery_smoke\smoke_fiery_small_quaternary" },
-            { 0x222C, @"fx\particles\energy\plasma_noise_green_secondary" },
+            { 0x222B, @"fx\particles\atmospheric\fiery_smoke\smoke_fiery_small_n3" }, //unsure about this (tag is halo online specific)
+            { 0x222C, @"fx\particles\energy\plasma_noise_green_n1" }, //unsure about this (tag is halo online specific)
             { 0x222D, @"fx\particles\atmospheric\rolling_smoke\fireball_fuel_rod_large" },
             { 0x222E, @"objects\weapons\support_high\flak_cannon\fx\detonation" },
             { 0x222F, @"fx\decals\_bitmaps\plasma_impact_large" },
@@ -7401,7 +7401,7 @@ namespace TagTool.Commands.Tags
             { 0x231F, @"ui\chud\assault_rifle_v2" },
             { 0x2320, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\projectiles\assault_rifle_v2_bullet" },
             { 0x2321, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\fx\assault_rifle_v2_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2322, @"globals\damage_responses\trigger_fullauto_secondary" }, //unsure about this (tag is halo online specific)
+            { 0x2322, @"globals\damage_responses\trigger_fullauto_n2" }, //unsure about this (tag is halo online specific)
             { 0x2323, @"sound\weapons\assault_rifle_v2\assault_rifle_v2_fire" }, //unsure about this (tag is halo online specific)
             { 0x2324, @"sound\weapons\assault_rifle_v2\assault_rifle_v2_lod_near" }, //unsure about this (tag is halo online specific)
             { 0x2325, @"sound\weapons\assault_rifle_v2\assault_rifle_v2_tails_int" }, //unsure about this (tag is halo online specific)
@@ -7422,7 +7422,7 @@ namespace TagTool.Commands.Tags
             { 0x2334, @"ui\chud\assault_rifle_v3" },
             { 0x2335, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\projectiles\assault_rifle_v3_bullet" },
             { 0x2336, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\fx\assault_rifle_v3_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2337, @"globals\damage_responses\trigger_fullauto_tertiary" }, //unsure about this (tag is halo online specific)
+            { 0x2337, @"globals\damage_responses\trigger_fullauto_n3" }, //unsure about this (tag is halo online specific)
             { 0x2338, @"sound\weapons\assault_rifle_v3\assault_rifle_v3_fire" }, //unsure about this (tag is halo online specific)
             { 0x2339, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\damage_effects\assault_rifle_v3_bullet" }, //unsure about this (tag is halo online specific)
             { 0x233A, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\assault_rifle_v3" }, //unsure about this (tag is halo online specific)
@@ -7481,7 +7481,7 @@ namespace TagTool.Commands.Tags
             { 0x236F, @"ui\chud\battle_rifle_v4" },
             { 0x2370, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\projectiles\battle_rifle_v4_bullet" },
             { 0x2371, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\fx\battle_rifle_v4_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2372, @"globals\damage_responses\trigger_fullauto_quaternary" }, //unsure about this (tag is halo online specific)
+            { 0x2372, @"globals\damage_responses\trigger_fullauto_n4" }, //unsure about this (tag is halo online specific)
             { 0x2373, @"sound\weapons\battle_rifle_v4\battle_rifle_v4_fire" }, //unsure about this (tag is halo online specific)
             { 0x2374, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\damage_effects\battle_rifle_v4_bullet" }, //unsure about this (tag is halo online specific)
             { 0x2375, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\battle_rifle_v4" }, //unsure about this (tag is halo online specific)
@@ -7585,7 +7585,7 @@ namespace TagTool.Commands.Tags
             { 0x23D7, @"ui\chud\smg_v2" },
             { 0x23D8, @"objects\weapons\rifle\smg\smg_v2\projectiles\smg_v2_bullet" },
             { 0x23D9, @"objects\weapons\rifle\smg\smg_v2\fx\smg_v2_firing" }, //unsure about this (tag is halo online specific)
-            { 0x23DA, @"globals\damage_responses\trigger_fullauto_quinary" }, //unsure about this (tag is halo online specific)
+            { 0x23DA, @"globals\damage_responses\trigger_fullauto_n5" }, //unsure about this (tag is halo online specific)
             { 0x23DB, @"sound\weapons\smg_v2\smg_v2_fire" }, //unsure about this (tag is halo online specific)
             { 0x23DC, @"objects\weapons\rifle\smg\smg_v2\damage_effects\smg_v2_bullet" }, //unsure about this (tag is halo online specific)
             { 0x23DD, @"objects\weapons\rifle\smg\smg_v2\smg_v2" }, //unsure about this (tag is halo online specific)
@@ -8006,7 +8006,7 @@ namespace TagTool.Commands.Tags
             { 0x2581, @"ui\chud\battle_rifle_v1" },
             { 0x2582, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\projectiles\battle_rifle_v1_bullet" },
             { 0x2583, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\fx\battle_rifle_v1_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2584, @"globals\damage_responses\trigger_fullauto_senary" }, //unsure about this (tag is halo online specific)
+            { 0x2584, @"globals\damage_responses\trigger_fullauto_n6" }, //unsure about this (tag is halo online specific)
             { 0x2585, @"sound\weapons\battle_rifle_v1\battle_rifle_v1_fire" }, //unsure about this (tag is halo online specific)
             { 0x2586, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\damage_effects\battle_rifle_v1_bullet" }, //unsure about this (tag is halo online specific)
             { 0x2587, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\battle_rifle_v1" }, //unsure about this (tag is halo online specific)
@@ -8016,7 +8016,7 @@ namespace TagTool.Commands.Tags
             { 0x258B, @"ui\chud\battle_rifle_v2" },
             { 0x258C, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\projectiles\battle_rifle_v2_bullet" },
             { 0x258D, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\fx\battle_rifle_v2_firing" }, //unsure about this (tag is halo online specific)
-            { 0x258E, @"globals\damage_responses\trigger_fullauto_septenary" }, //unsure about this (tag is halo online specific)
+            { 0x258E, @"globals\damage_responses\trigger_fullauto_n7" }, //unsure about this (tag is halo online specific)
             { 0x258F, @"sound\weapons\battle_rifle_v2\battle_rifle_v2_fire" }, //unsure about this (tag is halo online specific)
             { 0x2590, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\damage_effects\battle_rifle_v2_bullet" }, //unsure about this (tag is halo online specific)
             { 0x2591, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\battle_rifle_v2" }, //unsure about this (tag is halo online specific)
@@ -8033,14 +8033,14 @@ namespace TagTool.Commands.Tags
             { 0x259C, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\battle_rifle_v5" }, //unsure about this (tag is halo online specific)
             { 0x259D, @"objects\weapons\rifle\dmr\dmr_v1\dmr_v1" },
             { 0x259E, @"ui\chud\dmr_v1" },
-            { 0x259F, @"objects\weapons\rifle\dmr\dmr_v1\projectiles\dmr_bullet_v1" },
+            { 0x259F, @"objects\weapons\rifle\dmr\dmr_v1\projectiles\dmr_v1_bullet" },
             { 0x25A0, @"objects\weapons\rifle\dmr\dmr_v1\fx\dmr_v1_firing" }, //unsure about this (tag is halo online specific)
             { 0x25A1, @"sound\weapons\dmr_v1\dmr_v1_fire" },
-            { 0x25A2, @"objects\weapons\rifle\dmr\dmr_v1\damage_effects\dmr_bullet_v1" }, //unsure about this (tag is halo online specific)
+            { 0x25A2, @"objects\weapons\rifle\dmr\dmr_v1\damage_effects\dmr_v1_bullet" }, //unsure about this (tag is halo online specific)
             { 0x25A3, @"objects\weapons\rifle\dmr\dmr_v1\dmr_v1" }, //unsure about this (tag is halo online specific)
             { 0x25A4, @"objects\weapons\rifle\dmr\dmr_v1\dmr_v1" }, //unsure about this (tag is halo online specific)
             { 0x25A5, @"objects\weapons\rifle\dmr\dmr_v1\dmr_v1" }, //unsure about this (tag is halo online specific)
-            { 0x25AA, @"globals\damage_responses\trigger_semiauto_quaternary" }, //unsure about this (tag is halo online specific)
+            { 0x25AA, @"globals\damage_responses\trigger_semiauto_n4" }, //unsure about this (tag is halo online specific)
             { 0x25B0, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\covenant_carbine_v1" },
             { 0x25B1, @"ui\chud\carbine_v1" },
             { 0x25B2, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\projectiles\carbine_slug\carbine_v1_slug" },
@@ -8093,9 +8093,9 @@ namespace TagTool.Commands.Tags
             { 0x25E1, @"fx\particles\flare\light_beam" },
             { 0x25E2, @"fx\particles\energy\explosions\spark_long" },
             { 0x25E3, @"fx\scenery_fx\explosions\human_explosion_huge\ejecta" },
-            { 0x25E4, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_secondary" },
+            { 0x25E4, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_n1" }, //unsure about this (tag is halo online specific)
             { 0x25E5, @"fx\particles\atmospheric\rolling_smoke\fireball_dark_large" },
-            { 0x25E6, @"fx\particles\atmospheric\soft_smoke\human_explosion_soft_smoke_large_secondary" },
+            { 0x25E6, @"fx\particles\atmospheric\soft_smoke\human_explosion_soft_smoke_large_n1" }, //unsure about this (tag is halo online specific)
             { 0x25E7, @"fx\particles\atmospheric\rolling_smoke\human_explosion_rolling_smoke_large" },
             { 0x25E8, @"fx\particles\flare\_bitmaps\light_beam" },
             { 0x25E9, @"fx\scenery_fx\explosions\human_explosion_huge\ejecta" },
@@ -8548,21 +8548,21 @@ namespace TagTool.Commands.Tags
             { 0x27B0, @"shaders\default_bitmaps\bitmaps\vision_mode_mask" },
             { 0x27B7, @"globals\damage_responses\collision" },
             { 0x27C3, @"levels\ui\mainmenu\mainmenu" },
-            { 0x27C7, @"levels\ui\mainmenu\objects\menu_pelican\menu_pelican" },
-            { 0x27D1, @"levels\ui\mainmenu\objects\menu_platform" },
+            { 0x27C7, @"objects\vehicles\pelican\pelican" },
+            { 0x27D1, @"levels\ui\mainmenu\objects\menu_platform\menu_platform" },
             { 0x27EF, @"objects\gear\human\industrial\crate_tech_giant\crate_tech_giant" },
             { 0x27F0, @"objects\characters\ambient_life\rats" },
             { 0x27F4, @"objects\characters\ambient_life\rat\rat" },
             { 0x27FE, @"levels\ui\mainmenu\shaders\base_01" },
             { 0x2803, @"levels\ui\mainmenu\shaders\base_02" },
-            { 0x2807, @"levels\multi\s3d_avalanche\shaders\f_field_04_holo" },
+            { 0x2807, @"levels\multi\s3d_turf\shaders\f_field_04" },
             { 0x2808, @"levels\ui\mainmenu\bitmaps\lig_ray_cone1" },
             { 0x2809, @"shaders\halogram_templates\_0_1_1_0_0_0_0" },
             { 0x280A, @"shaders\halogram_templates\_0_1_1_0_0_0_0" },
             { 0x280B, @"shaders\halogram_templates\_0_1_1_0_0_0_0" },
             { 0x2814, @"levels\ui\mainmenu\bitmaps\base_01_dif" },
             { 0x2815, @"levels\ui\mainmenu\bitmaps\base_01_zbump" },
-            { 0x2816, @"levels\ui\mainmenu\bitmaps\detail_zbump" },
+            { 0x2816, @"levels\ui\mainmenu\bitmaps\ditail_maps\metal_ditail_map_02_zbump" },
             { 0x2817, @"shaders\shader_templates\_0_2_0_1_1_2_0_0_0_0_0" },
             { 0x2818, @"shaders\shader_templates\_0_2_0_1_1_2_0_0_0_0_0" },
             { 0x2819, @"shaders\shader_templates\_0_2_0_1_1_2_0_0_0_0_0" },
@@ -8738,7 +8738,7 @@ namespace TagTool.Commands.Tags
             { 0x28D3, @"objects\vehicles\scorpion\fx\destruction\trans_rf_tread_major" },
             { 0x28D4, @"objects\vehicles\scorpion\fx\destruction\trans_lb_tread_major" },
             { 0x28D5, @"objects\vehicles\scorpion\fx\destruction\trans_rb_tread_major" },
-            { 0x28D6, @"fx\particles\fire\fire_large_tertiary" },
+            { 0x28D6, @"fx\particles\fire\fire_large_n2" }, //unsure about this (tag is halo online specific)
             { 0x28D7, @"objects\vehicles\scorpion\turrets\cannon\cannon" },
             { 0x28D8, @"sound\weapons\chain_gun\traverse\wart_traverse\wart_traverse" },
             { 0x28D9, @"objects\vehicles\scorpion\attachments\scorpion_antenna_short" },
@@ -8772,13 +8772,13 @@ namespace TagTool.Commands.Tags
             { 0x28F5, @"shaders\contrail_templates\_0_3_1_0" },
             { 0x28F6, @"shaders\contrail_templates\_0_3_1_0" },
             { 0x28F7, @"sound\vehicles\scorpion\scorpion_explosion" },
-            { 0x28F8, @"fx\particles\models\mesh_fx\blast_radius\blast_radius_secondary" },
-            { 0x28F9, @"fx\particles\material\burst_spray_additive_secondary" },
+            { 0x28F8, @"fx\particles\models\mesh_fx\blast_radius\blast_radius_n1" }, //unsure about this (tag is halo online specific)
+            { 0x28F9, @"fx\particles\material\burst_spray_additive_n1" }, //unsure about this (tag is halo online specific)
             { 0x28FA, @"objects\vehicles\scorpion\fx\weapon\cannon\ejecta" },
             { 0x28FB, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_directional" },
-            { 0x28FC, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_tertiary" },
-            { 0x28FD, @"fx\particles\atmospheric\rolling_smoke\rolling_smoke_large_secondary" },
-            { 0x28FE, @"fx\particles\atmospheric\soft_smoke\soft_smoke_large_dark_secondary" },
+            { 0x28FC, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_n2" }, //unsure about this (tag is halo online specific)
+            { 0x28FD, @"fx\particles\atmospheric\rolling_smoke\rolling_smoke_large_n1" }, //unsure about this (tag is halo online specific)
+            { 0x28FE, @"fx\particles\atmospheric\soft_smoke\soft_smoke_large_dark_n1" }, //unsure about this (tag is halo online specific)
             { 0x28FF, @"objects\vehicles\scorpion\fx\weapon\cannon\ejecta" },
             { 0x2900, @"objects\vehicles\scorpion\fx\weapon\cannon\ejecta" },
             { 0x2901, @"shaders\particle_templates\_3_8_0_0_0_0_0_0_1_0" },
@@ -8861,16 +8861,16 @@ namespace TagTool.Commands.Tags
             { 0x294E, @"shaders\shader_templates\_2_0_0_0_0_0_1_1_0_0_0" },
             { 0x294F, @"fx\scenery_fx\explosions\human_explosion_medium\human_explosion_medium" },
             { 0x2950, @"fx\scenery_fx\explosions\human_explosion_medium\human_explosion_medium" },
-            { 0x2951, @"fx\particles\energy\spark_ember_senary" },
-            { 0x2952, @"fx\particles\energy\spark_long_quinary" },
+            { 0x2951, @"fx\particles\energy\spark_ember_n5" }, //unsure about this (tag is halo online specific)
+            { 0x2952, @"fx\particles\energy\spark_long_n4" }, //unsure about this (tag is halo online specific)
             { 0x2953, @"fx\scenery_fx\explosions\human_explosion_medium\ejecta" },
-            { 0x2954, @"fx\particles\atmospheric\rolling_smoke\fireball_human_medium_tertiary" },
+            { 0x2954, @"fx\particles\atmospheric\rolling_smoke\fireball_human_medium_n2" }, //unsure about this (tag is halo online specific)
             { 0x2955, @"fx\particles\atmospheric\rolling_smoke\human_explosion_rolling_smoke_medium" },
             { 0x2956, @"fx\scenery_fx\explosions\human_explosion_medium\ejecta" },
             { 0x2957, @"fx\scenery_fx\explosions\human_explosion_medium\ejecta" },
             { 0x2958, @"objects\vehicles\scorpion\turrets\cannon\garbage\turret\turret" },
             { 0x2959, @"objects\vehicles\scorpion\fx\destruction\trans_hull_destroyed" },
-            { 0x295A, @"fx\particles\fire\fire_large_vertical_tertiary" },
+            { 0x295A, @"fx\particles\fire\fire_large_vertical_n2" }, //unsure about this (tag is halo online specific)
             { 0x295B, @"fx\particles\atmospheric\soft_smoke\vehicle_smoke_human" },
             { 0x295C, @"objects\vehicles\scorpion\turrets\cannon\garbage\turret\turret" },
             { 0x295D, @"fx\material_effects\objects\vehicles\scorpion_turret" },
@@ -9145,13 +9145,13 @@ namespace TagTool.Commands.Tags
             { 0x2A6A, @"objects\vehicles\warthog\turrets\troop\shaders\troop_glass" },
             { 0x2A6B, @"fx\scenery_fx\explosions\human_explosion_large\human_explosion_large" },
             { 0x2A6C, @"fx\scenery_fx\explosions\human_explosion_large\human_explosion_large" },
-            { 0x2A6D, @"fx\particles\energy\spark_ember_septenary" },
+            { 0x2A6D, @"fx\particles\energy\spark_ember_n6" }, //unsure about this (tag is halo online specific)
             { 0x2A6E, @"fx\scenery_fx\explosions\human_explosion_large\ejecta" },
-            { 0x2A6F, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_quaternary" },
+            { 0x2A6F, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_n3" }, //unsure about this (tag is halo online specific)
             { 0x2A70, @"fx\scenery_fx\explosions\human_explosion_large\ejecta" },
             { 0x2A71, @"fx\scenery_fx\explosions\human_explosion_large\ejecta" },
             { 0x2A72, @"objects\vehicles\warthog\fx\destruction\trans_hull_destroyed" },
-            { 0x2A73, @"fx\particles\fire\fire_large_quaternary" },
+            { 0x2A73, @"fx\particles\fire\fire_large_n3" }, //unsure about this (tag is halo online specific)
             { 0x2A74, @"sound\visual_fx\gasoline_fire\gasoline_fire" },
             { 0x2A75, @"sound\visual_fx\gasoline_fire\gas_fire\loop" },
             { 0x2A76, @"objects\vehicles\warthog\garbage\tire\tire" },
@@ -9314,28 +9314,28 @@ namespace TagTool.Commands.Tags
             { 0x2B4A, @"objects\levels\multi\s3d_reactor\rod\rod" },
             { 0x2B4B, @"objects\levels\multi\s3d_reactor\rod\rod" },
             { 0x2B4C, @"objects\levels\multi\s3d_reactor\rod\rod" },
-            { 0x2B4D, @"levels\multi\s3d_reactor\shaders\rod_lightnings_01" },
-            { 0x2B4E, @"levels\multi\s3d_reactor\shaders\rod_lightnings_02" },
-            { 0x2B4F, @"levels\multi\s3d_reactor\shaders\rod_lightnings_03" },
-            { 0x2B50, @"levels\multi\s3d_reactor\shaders\rod_material_01" },
-            { 0x2B51, @"levels\multi\s3d_reactor\shaders\material_112" },
-            { 0x2B52, @"levels\multi\s3d_reactor\shaders\material_111" },
-            { 0x2B53, @"levels\multi\s3d_reactor\bitmaps\rod_lightnings_01" },
+            { 0x2B4D, @"levels\multi\s3d_reactor\shaders\reactor_lightning_01" },
+            { 0x2B4E, @"levels\multi\s3d_reactor\shaders\reactor_lightning_05" },
+            { 0x2B4F, @"levels\multi\s3d_reactor\shaders\reactor_lightning_04" },
+            { 0x2B50, @"levels\multi\s3d_reactor\shaders\reactor_tubes_01" },
+            { 0x2B51, @"levels\multi\s3d_reactor\shaders\reactor_tvel_01" },
+            { 0x2B52, @"levels\multi\s3d_reactor\shaders\reactor_tvel_02" },
+            { 0x2B53, @"levels\multi\s3d_reactor\bitmaps\reactor_lightning" },
             { 0x2B54, @"shaders\halogram_templates\_0_7_1_0_0_0_0" },
             { 0x2B55, @"shaders\halogram_templates\_0_7_1_0_0_0_0" },
             { 0x2B56, @"shaders\halogram_templates\_0_7_1_0_0_0_0" },
-            { 0x2B57, @"levels\multi\s3d_reactor\bitmaps\rod_lightnings_02" },
-            { 0x2B58, @"levels\multi\s3d_reactor\bitmaps\rod_lightnings_03" },
-            { 0x2B59, @"levels\multi\s3d_reactor\bitmaps\rod_material_01" },
-            { 0x2B5A, @"levels\multi\s3d_reactor\bitmaps\rod_material_01_zbump" },
-            { 0x2B5B, @"levels\multi\s3d_reactor\bitmaps\material_112" },
-            { 0x2B5C, @"levels\multi\s3d_reactor\bitmaps\material_112_zbump" },
-            { 0x2B5D, @"levels\multi\s3d_reactor\bitmaps\material_112_sf" },
-            { 0x2B5E, @"levels\multi\s3d_reactor\bitmaps\material_111" },
-            { 0x2B5F, @"levels\multi\s3d_reactor\bitmaps\material_111_zbump" },
-            { 0x2B60, @"levels\multi\s3d_reactor\bitmaps\material_111_sf" },
-            { 0x2B61, @"levels\ui\mainmenu\objects\menu_platform" },
-            { 0x2B62, @"levels\ui\mainmenu\objects\menu_platform" },
+            { 0x2B57, @"levels\multi\s3d_reactor\bitmaps\reactor_lightning_05" },
+            { 0x2B58, @"levels\multi\s3d_reactor\bitmaps\reactor_lightning_04" },
+            { 0x2B59, @"levels\multi\s3d_reactor\bitmaps\reactor_tubes_01" },
+            { 0x2B5A, @"levels\multi\s3d_reactor\bitmaps\reactor_tubes_01_zbump" },
+            { 0x2B5B, @"levels\multi\s3d_reactor\bitmaps\reactor_tvel_01" },
+            { 0x2B5C, @"levels\multi\s3d_reactor\bitmaps\reactor_tvel_01_zbump" },
+            { 0x2B5D, @"levels\multi\s3d_reactor\bitmaps\reactor_tvel_01_sf" },
+            { 0x2B5E, @"levels\multi\s3d_reactor\bitmaps\reactor_tvel_02" },
+            { 0x2B5F, @"levels\multi\s3d_reactor\bitmaps\reactor_tvel_02_zbump" },
+            { 0x2B60, @"levels\multi\s3d_reactor\bitmaps\reactor_tvel_02_sf" },
+            { 0x2B61, @"levels\ui\mainmenu\objects\menu_platform\menu_platform" },
+            { 0x2B62, @"levels\ui\mainmenu\objects\menu_platform\menu_platform" },
             { 0x2B66, @"fx\particles\flare\light_beam_wide" },
             { 0x2B6E, @"shaders\halogram_templates\_2_3_1_1_0_0_1" },
             { 0x2B6F, @"shaders\halogram_templates\_2_3_1_1_0_0_1" },
@@ -9455,7 +9455,7 @@ namespace TagTool.Commands.Tags
             { 0x2CDF, @"sound\materials\tough\tough_organic_wood_vehicle_hits\organic_wood_tree_dyn_looping\organic_wood_tree_dyn_looping\alt_loop" },
             { 0x2CE0, @"objects\vehicles\hornet\garbage\landing_gear\landing_gear" },
             { 0x2CE1, @"objects\vehicles\hornet\fx\destruction\trans_hull_destroyed" },
-            { 0x2CE2, @"fx\particles\atmospheric\soft_smoke\vehicle_smoke_human_secondary" },
+            { 0x2CE2, @"fx\particles\atmospheric\soft_smoke\vehicle_smoke_human_n1" }, //unsure about this (tag is halo online specific)
             { 0x2CE3, @"objects\vehicles\hornet\garbage\landing_gear\landing_gear" },
             { 0x2CE4, @"objects\vehicles\hornet\garbage\landing_gear\landing_gear" },
             { 0x2CE5, @"objects\vehicles\hornet\garbage\landing_gear\landing_gear" },
@@ -9550,11 +9550,11 @@ namespace TagTool.Commands.Tags
             { 0x2D52, @"shaders\shader_templates\_0_1_0_2_1_2_0_3_0_0_0" },
             { 0x2D53, @"shaders\shader_templates\_0_1_0_2_1_2_0_3_0_0_0" },
             { 0x2D71, @"levels\ui\mainmenu\shaders\unsc_stipes_03" },
-            { 0x2D72, @"levels\ui\mainmenu\shaders\unsc_panel_generic_01" }, //unsure about this (tag is halo online specific)
+            { 0x2D72, @"levels\ui\mainmenu\shaders\unsc_panel_04" },
             { 0x2D75, @"levels\ui\mainmenu\bitmaps\unsc_stripes_03_dif" },
-            { 0x2D76, @"levels\ui\mainmenu\bitmaps\unsc_panel_generic_01" }, //unsure about this (tag is halo online specific)
-            { 0x2D77, @"levels\ui\mainmenu\bitmaps\unsc_panel_generic_01_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x2D78, @"levels\ui\mainmenu\bitmaps\unsc_panel_generic_01_spec" }, //unsure about this (tag is halo online specific)
+            { 0x2D76, @"levels\ui\mainmenu\bitmaps\unsc_panel_04_diff" },
+            { 0x2D77, @"levels\ui\mainmenu\bitmaps\unsc_panel_04_zbump" },
+            { 0x2D78, @"levels\ui\mainmenu\bitmaps\unsc_panel_04_spec" },
             { 0x2D7C, @"shaders\shader_templates\_0_1_0_2_1_2_0_0_0_0_0" },
             { 0x2D7D, @"shaders\shader_templates\_0_1_0_2_1_2_0_0_0_0_0" },
             { 0x2D7E, @"shaders\shader_templates\_0_1_0_2_1_2_0_0_0_0_0" },
@@ -10022,7 +10022,7 @@ namespace TagTool.Commands.Tags
             { 0x302F, @"objects\multi\models\mp_spawn_point\mp_spawn_point" },
             { 0x3030, @"objects\multi\models\mp_spawn_point\mp_spawn_point" },
             { 0x3031, @"objects\multi\models\mp_spawn_point\mp_spawn_point" },
-            { 0x3033, @"objects\multi\shaders\spawn_point_disc_pointer" },
+            { 0x3033, @"objects\multi\shaders\spawn_point_disc" },
             { 0x3034, @"objects\multi\shaders\spawn_point_plasma2" },
             { 0x3035, @"objects\multi\bitmaps\spawn_point_disc" },
             { 0x3036, @"objects\levels\multi\salvation\bitmaps\plasma_noise_horiz" },
@@ -10213,7 +10213,7 @@ namespace TagTool.Commands.Tags
             { 0x312C, @"objects\vehicles\mongoose\bitmaps\mongoose_cc" },
             { 0x312D, @"objects\vehicles\mongoose\garbage\ramp\ramp" },
             { 0x312E, @"objects\vehicles\mongoose\fx\destruction\trans_hull_destroyed" },
-            { 0x312F, @"fx\particles\fire\fire_small_vertical_secondary" },
+            { 0x312F, @"fx\particles\fire\fire_small_vertical_n1" }, //unsure about this (tag is halo online specific)
             { 0x3130, @"objects\vehicles\mongoose\garbage\ramp\ramp" },
             { 0x3131, @"objects\vehicles\mongoose\garbage\ramp\ramp" },
             { 0x3132, @"objects\vehicles\mongoose\garbage\ramp\ramp" },
@@ -10578,10 +10578,10 @@ namespace TagTool.Commands.Tags
             { 0x329B, @"objects\gear\human\military\crate_packing_lid\crate_packing_lid" },
             { 0x329C, @"objects\gear\human\military\crate_packing_lid\crate_packing_lid" },
             { 0x329D, @"objects\gear\human\military\crate_packing_lid\crate_packing_lid" },
-            { 0x329E, @"objects\gear\human\military\shaders\military_equipment_3" },
-            { 0x329F, @"objects\gear\human\military\bitmaps\human_military_equipment_3" },
-            { 0x32A0, @"objects\gear\human\military\bitmaps\human_military_equipment_3_bump" },
-            { 0x32A1, @"objects\gear\human\military\bitmaps\human_military_equipment_3_spec" },
+            { 0x329E, @"objects\gear\human\military\shaders\unsc_crate_packing" },
+            { 0x329F, @"objects\gear\human\military\bitmaps\unsc_packing_crate_lid_diff" },
+            { 0x32A0, @"objects\gear\human\military\bitmaps\unsc_packing_crate_lid_zbump" },
+            { 0x32A1, @"objects\gear\human\military\bitmaps\unsc_packing_crate_lid_spec" },
             { 0x32A2, @"shaders\shader_templates\_0_2_1_2_2_0_0_0_0_0_0" },
             { 0x32A3, @"shaders\shader_templates\_0_2_1_2_2_0_0_0_0_0_0" },
             { 0x32A4, @"shaders\shader_templates\_0_2_1_2_2_0_0_0_0_0_0" },
@@ -11130,7 +11130,7 @@ namespace TagTool.Commands.Tags
             { 0x34CE, @"levels\multi\riverworld\sky\riverworld" },
             { 0x34CF, @"levels\multi\riverworld\riverworld" },
             { 0x34D0, @"levels\multi\riverworld\riverworld_faux_lightmap" },
-            { 0x34D1, @"levels\ui\mainmenu\mainmenu" },
+            { 0x34D1, @"levels\multi\riverworld\riverworld" },
             { 0x34D2, @"levels\multi\riverworld\shaders\forerunner\panel_generic_simple" },
             { 0x34D3, @"levels\multi\riverworld\shaders\forerunner\waste_panel_wall_diagonal" },
             { 0x34D4, @"levels\multi\riverworld\shaders\forerunner\cust_base_floor" },
@@ -11604,7 +11604,7 @@ namespace TagTool.Commands.Tags
             { 0x36A8, @"objects\vehicles\banshee\fx\destruction\trans_r_pod_major" },
             { 0x36A9, @"sound\vehicles\damage_effects\covy_damloops_sm\covy_damloops_sm" },
             { 0x36AA, @"sound\vehicles\damage_effects\covy_damloops_sm\c_damage_sm\loop" },
-            { 0x36AB, @"fx\particles\energy\electric_arcs_blue_tertiary" },
+            { 0x36AB, @"fx\particles\energy\electric_arcs_blue_n2" }, //unsure about this (tag is halo online specific)
             { 0x36AC, @"objects\vehicles\banshee\garbage\cab_garbage\cab_garbage" },
             { 0x36AD, @"objects\vehicles\banshee\garbage\cab_garbage\cab_garbage" },
             { 0x36AE, @"objects\vehicles\banshee\garbage\cab_garbage\cab_garbage" },
@@ -11647,8 +11647,8 @@ namespace TagTool.Commands.Tags
             { 0x36D3, @"fx\scenery_fx\explosions\covenant_explosion_large\covenant_explosion_large" },
             { 0x36D4, @"fx\scenery_fx\explosions\covenant_explosion_large\covenant_explosion_large" },
             { 0x36D5, @"fx\scenery_fx\explosions\covenant_explosion_large\ejecta" },
-            { 0x36D6, @"fx\particles\atmospheric\soft_smoke\covenant_explosion_soft_smoke_large_secondary" },
-            { 0x36D7, @"fx\particles\atmospheric\rolling_smoke\covenant_explosion_rolling_smoke_medium_secondary" },
+            { 0x36D6, @"fx\particles\atmospheric\soft_smoke\covenant_explosion_soft_smoke_large_n1" }, //unsure about this (tag is halo online specific)
+            { 0x36D7, @"fx\particles\atmospheric\rolling_smoke\covenant_explosion_rolling_smoke_medium_n1" }, //unsure about this (tag is halo online specific)
             { 0x36D8, @"fx\scenery_fx\explosions\covenant_explosion_large\ejecta" },
             { 0x36D9, @"fx\scenery_fx\explosions\covenant_explosion_large\ejecta" },
             { 0x36DA, @"objects\vehicles\banshee\fx\destruction\trans_hull_destroyed" },
@@ -11775,7 +11775,7 @@ namespace TagTool.Commands.Tags
             { 0x3753, @"objects\vehicles\wraith\fx\destruction\trans_backhatch_major" },
             { 0x3754, @"objects\vehicles\wraith\fx\destruction\trans_backhatch_destroyed" },
             { 0x3755, @"objects\vehicles\wraith\turrets\mortar\mortar" },
-            { 0x3756, @"fx\particles\fire\plasma_fire_large_secondary" },
+            { 0x3756, @"fx\particles\fire\plasma_fire_large_n1" }, //unsure about this (tag is halo online specific)
             { 0x3757, @"objects\vehicles\wraith\turrets\mortar\mortar" },
             { 0x3758, @"fx\material_effects\objects\weapons\wraith_mortar" },
             { 0x3759, @"ui\chud\v_wraith" },
@@ -11786,7 +11786,7 @@ namespace TagTool.Commands.Tags
             { 0x375E, @"objects\vehicles\ghost\fx\weapon\particles\muzzle_flash_long_soft" },
             { 0x375F, @"objects\vehicles\wraith\fx\weapon\mortar\particles\smoke_fiery_large" },
             { 0x3760, @"objects\vehicles\wraith\fx\weapon\mortar\particles\muzzle_flash_long_fiery" },
-            { 0x3761, @"fx\particles\atmospheric\rolling_smoke\fireball_plasma_medium_secondary" },
+            { 0x3761, @"fx\particles\atmospheric\rolling_smoke\fireball_plasma_medium_n1" }, //unsure about this (tag is halo online specific)
             { 0x3762, @"fx\particles\_gradients\wraith_mortar" },
             { 0x3763, @"fx\particles\_gradients\wraith_flare" },
             { 0x3764, @"objects\vehicles\wraith\fx\weapon\mortar\projectile" },
@@ -11796,7 +11796,7 @@ namespace TagTool.Commands.Tags
             { 0x3768, @"objects\vehicles\wraith\damage_effects\wraith_mortar" },
             { 0x3769, @"objects\vehicles\wraith\fx\weapon\mortar\projectile" },
             { 0x376A, @"objects\vehicles\wraith\fx\weapon\mortar\projectile" },
-            { 0x376B, @"objects\vehicles\wraith\fx\weapon\mortar\particles\smoke_fiery_large_secondary" },
+            { 0x376B, @"objects\vehicles\wraith\fx\weapon\mortar\particles\smoke_fiery_large_n1" }, //unsure about this (tag is halo online specific)
             { 0x376C, @"fx\contrails\_gradients\wraith_mortar_contrail" },
             { 0x376D, @"sound\vehicles\wraith\wraith_projectile\track1\loop" },
             { 0x376E, @"fx\material_effects\objects\weapons\impact\impact_explosion_large\bounce_water_wide" },
@@ -11880,8 +11880,8 @@ namespace TagTool.Commands.Tags
             { 0x37BC, @"sound\weapons\flak_cannon\flak_projectlie_loop2\flak_loop2\loop" },
             { 0x37BD, @"objects\vehicles\wraith\fx\weapon\anti_air\projectile" },
             { 0x37BE, @"objects\vehicles\wraith\fx\weapon\anti_air\projectile" },
-            { 0x37BF, @"fx\particles\energy\plasma_burst_green_secondary" },
-            { 0x37C0, @"fx\particles\atmospheric\rolling_smoke\fireball_fuel_rod_large_secondary" },
+            { 0x37BF, @"fx\particles\energy\plasma_burst_green_n1" }, //unsure about this (tag is halo online specific)
+            { 0x37C0, @"fx\particles\atmospheric\rolling_smoke\fireball_fuel_rod_large_n1" }, //unsure about this (tag is halo online specific)
             { 0x37C1, @"objects\vehicles\wraith\turrets\anti_air\anti_air" },
             { 0x37C2, @"objects\vehicles\wraith\turrets\anti_air\anti_air" },
             { 0x37C3, @"objects\vehicles\wraith\turrets\anti_air\anti_air" },
@@ -12077,7 +12077,7 @@ namespace TagTool.Commands.Tags
             { 0x3881, @"objects\vehicles\ghost\garbage\anti_grav\anti_grav" },
             { 0x3882, @"objects\vehicles\ghost\garbage\anti_grav\anti_grav" },
             { 0x3883, @"objects\vehicles\ghost\garbage\seat\seat" },
-            { 0x3884, @"fx\particles\atmospheric\soft_smoke\vehicle_smoke_covenant_secondary" },
+            { 0x3884, @"fx\particles\atmospheric\soft_smoke\vehicle_smoke_covenant_n1" }, //unsure about this (tag is halo online specific)
             { 0x3885, @"objects\vehicles\ghost\garbage\seat\seat" },
             { 0x3886, @"objects\vehicles\ghost\garbage\seat\seat" },
             { 0x3887, @"objects\vehicles\ghost\garbage\seat\seat" },
@@ -12172,12 +12172,12 @@ namespace TagTool.Commands.Tags
             { 0x38E0, @"objects\vehicles\brute_chopper\fx\destruction\trans_r_engine_medium" },
             { 0x38E1, @"fx\scenery_fx\explosions\brute_explosion_large\brute_explosion_large" },
             { 0x38E2, @"fx\scenery_fx\explosions\brute_explosion_large\brute_explosion_large" },
-            { 0x38E3, @"fx\particles\energy\plasma_burst_quaternary" },
-            { 0x38E4, @"fx\particles\energy\plasma_noise_quaternary" },
+            { 0x38E3, @"fx\particles\energy\plasma_burst_n3" }, //unsure about this (tag is halo online specific)
+            { 0x38E4, @"fx\particles\energy\plasma_noise_n3" }, //unsure about this (tag is halo online specific)
             { 0x38E5, @"fx\particles\atmospheric\rolling_smoke\fireball_brute_large" },
-            { 0x38E6, @"fx\particles\atmospheric\soft_smoke\covenant_explosion_soft_smoke_large_tertiary" },
-            { 0x38E7, @"fx\particles\atmospheric\rolling_smoke\covenant_explosion_rolling_smoke_medium_tertiary" },
-            { 0x38E8, @"fx\particles\energy\electric_loops_large_quinary" },
+            { 0x38E6, @"fx\particles\atmospheric\soft_smoke\covenant_explosion_soft_smoke_large_n2" }, //unsure about this (tag is halo online specific)
+            { 0x38E7, @"fx\particles\atmospheric\rolling_smoke\covenant_explosion_rolling_smoke_medium_n2" }, //unsure about this (tag is halo online specific)
+            { 0x38E8, @"fx\particles\energy\electric_loops_large_n4" }, //unsure about this (tag is halo online specific)
             { 0x38E9, @"objects\vehicles\brute_chopper\garbage\seat\seat" },
             { 0x38EA, @"objects\vehicles\brute_chopper\garbage\seat\seat" },
             { 0x38EB, @"objects\vehicles\brute_chopper\garbage\seat\seat" },
@@ -12201,7 +12201,7 @@ namespace TagTool.Commands.Tags
             { 0x38FD, @"objects\vehicles\brute_chopper\garbage\rotor_r\rotor_r" },
             { 0x38FE, @"objects\vehicles\brute_chopper\garbage\rotor_r\rotor_r" },
             { 0x38FF, @"objects\vehicles\brute_chopper\fx\destruction\trans_hull_destroyed" },
-            { 0x3900, @"fx\particles\fire\plasma_fire_large_tertiary" },
+            { 0x3900, @"fx\particles\fire\plasma_fire_large_n2" }, //unsure about this (tag is halo online specific)
             { 0x3901, @"objects\vehicles\brute_chopper\garbage\rotor_l\rotor_l" },
             { 0x3902, @"objects\vehicles\brute_chopper\garbage\rotor_l\rotor_l" },
             { 0x3903, @"objects\vehicles\brute_chopper\garbage\rotor_l\rotor_l" },
@@ -12422,10 +12422,10 @@ namespace TagTool.Commands.Tags
             { 0x39DA, @"levels\solo\100_citadel\shaders\cit_tree_leafb" },
             { 0x39DB, @"levels\solo\100_citadel\shaders\cit_tree_leafc" },
             { 0x39DC, @"levels\solo\100_citadel\shaders\cit_tree_leafa" },
-            { 0x39E1, @"objects\levels\solo\100_citadel\foliage\plant_tree_pine_twist\plant_tree_pine_twist" },
-            { 0x39E2, @"objects\levels\solo\100_citadel\foliage\plant_tree_pine_twist\plant_tree_pine_twist" },
-            { 0x39E3, @"objects\levels\solo\100_citadel\foliage\plant_tree_pine_twist\plant_tree_pine_twist" },
-            { 0x39E4, @"objects\levels\solo\100_citadel\foliage\plant_tree_pine_twist\plant_tree_pine_twist" },
+            { 0x39E1, @"objects\levels\solo\100_citadel\foliage\plant_pine_tree_large\plant_pine_tree_large" },
+            { 0x39E2, @"objects\levels\solo\100_citadel\foliage\plant_pine_tree_large\plant_pine_tree_large" },
+            { 0x39E3, @"objects\levels\solo\100_citadel\foliage\plant_pine_tree_large\plant_pine_tree_large" },
+            { 0x39E4, @"objects\levels\solo\100_citadel\foliage\plant_pine_tree_large\plant_pine_tree_large" },
             { 0x39E5, @"objects\physics\nutblocker_1x1x2\nutblocker_1x1x2" },
             { 0x39E6, @"objects\physics\nutblocker_1x1x2\nutblocker_1x1x2" },
             { 0x39E7, @"objects\physics\nutblocker_1x1x2\nutblocker_1x1x2" },
@@ -12471,11 +12471,11 @@ namespace TagTool.Commands.Tags
             { 0x3A0F, @"levels\multi\s3d_avalanche\s3d_avalanche" },
             { 0x3A10, @"levels\multi\s3d_avalanche\s3d_avalanche_design" },
             { 0x3A11, @"levels\multi\s3d_avalanche\s3d_avalanche_s3d_avalanche_cubemaps" },
-            { 0x3A12, @"levels\multi\s3d_avalanche\wind_s3d_avalanche" },
+            { 0x3A12, @"levels\multi\s3d_avalanche\wind_avalanche" },
             { 0x3A13, @"levels\multi\s3d_avalanche\sky\sky" },
             { 0x3A14, @"objects\levels\multi\snowbound\icicle_10_inch\icicle_10_inch" },
             { 0x3A15, @"objects\levels\multi\snowbound\icicle_18_inch\icicle_18_inch" },
-            { 0x3A17, @"objects\levels\multi\s3d_avalanche\terrain_crack_01\terrain_crack_01" },
+            { 0x3A17, @"objects\levels\multi\s3d_avalanche\crack_01\crack_01" },
             { 0x3A18, @"objects\weapons\turret\missile_pod\missile_pod" },
             { 0x3A19, @"objects\levels\multi\s3d_avalanche\avalanche_man_cannon_01\avalanche_man_cannon_01" },
             { 0x3A1A, @"objects\levels\multi\s3d_avalanche\avalanche_man_cannon_02\avalanche_man_cannon_02" },
@@ -12486,49 +12486,49 @@ namespace TagTool.Commands.Tags
             { 0x3A1F, @"fx\scenery_fx\flares\light_steady\light_steady_blue_sm" },
             { 0x3A20, @"fx\scenery_fx\nature\bug_swarm\bug_swarm" },
             { 0x3A21, @"fx\scenery_fx\sand\sand_cresting\sand_cresting" },
-            { 0x3A22, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_small" },
-            { 0x3A23, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_small_03" }, //unsure about this (tag is halo online specific)
-            { 0x3A24, @"levels\multi\s3d_avalanche\fx\av_steam_large\av_steam_flat_01" },
-            { 0x3A25, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_large" },
-            { 0x3A26, @"fx\scenery_fx\steam\steam_fast_medium\steam_fast_medium" },
-            { 0x3A27, @"levels\multi\s3d_avalanche\fx\av_steam_large\av_steam_flat_02" }, //unsure about this (tag is halo online specific)
+            { 0x3A22, @"levels\multi\s3d_avalanche\fx\av_steam_large\av_steam_large" },
+            { 0x3A23, @"levels\multi\s3d_avalanche\fx\av_steam_large\av_steam_small" },
+            { 0x3A24, @"levels\multi\s3d_avalanche\fx\av_steam_large\av_haze_small" },
+            { 0x3A25, @"levels\multi\s3d_avalanche\fx\av_steam_large\av_steam_flat_01" },
+            { 0x3A26, @"levels\multi\s3d_avalanche\fx\av_steam_large\av_steam_tube" },
+            { 0x3A27, @"levels\multi\s3d_avalanche\fx\av_steam_large\av_steam_slow_light_large" },
             { 0x3A28, @"levels\multi\s3d_turf\fx\sparks_medium\sparks_medium" },
             { 0x3A29, @"fx\scenery_fx\nature\bugs_lightbulb\bug_lightbulb" },
-            { 0x3A2A, @"levels\multi\s3d_turf\fx\dripping_waterpipe\dripping_waterpipe_point_bright_02" }, //unsure about this (tag is halo online specific)
+            { 0x3A2A, @"levels\multi\s3d_avalanche\fx\dripping_waterpipe\dripping_waterpipe_point_bright" },
             { 0x3A2B, @"levels\multi\s3d_avalanche\fx\mancannon\av_mancannon" },
-            { 0x3A2C, @"levels\multi\s3d_avalanche\fx\waterfall_end_small\waterfall_end_small" }, //unsure about this (tag is halo online specific)
-            { 0x3A2D, @"levels\multi\s3d_avalanche\decals\stone_edge_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A2E, @"levels\multi\s3d_avalanche\decals\stone_edge_02" }, //unsure about this (tag is halo online specific)
-            { 0x3A2F, @"levels\multi\s3d_avalanche\decals\stone_edge_small_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A30, @"levels\multi\s3d_avalanche\decals\terrain_streak_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A31, @"levels\multi\s3d_avalanche\decals\terrain_streak_02" }, //unsure about this (tag is halo online specific)
-            { 0x3A32, @"levels\multi\s3d_avalanche\decals\terrain_streak_03" }, //unsure about this (tag is halo online specific)
-            { 0x3A33, @"levels\multi\s3d_avalanche\decals\terrain_streak_04" }, //unsure about this (tag is halo online specific)
-            { 0x3A34, @"levels\shared\decals\stains\forerunner_stains\water_07_large" }, //unsure about this (tag is halo online specific)
-            { 0x3A35, @"levels\multi\s3d_avalanche\decals\terrain_crystal_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A36, @"levels\multi\s3d_avalanche\decals\terrain_streak_05" }, //unsure about this (tag is halo online specific)
-            { 0x3A37, @"levels\multi\s3d_avalanche\decals\terrain_soil_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A38, @"levels\multi\s3d_avalanche\decals\avalanche_granite_decal" }, //unsure about this (tag is halo online specific)
-            { 0x3A39, @"levels\multi\s3d_avalanche\decals\avalanche_granite_crack_decal" }, //unsure about this (tag is halo online specific)
-            { 0x3A3A, @"levels\multi\s3d_avalanche\decals\avalanche_granite_big_decal" },
-            { 0x3A3B, @"levels\shared\decals\nature\rock\decal_terrain_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A3C, @"levels\multi\s3d_avalanche\decals\terrain_soil_02" }, //unsure about this (tag is halo online specific)
-            { 0x3A3D, @"levels\multi\s3d_avalanche\decals\terrain_soil_03" }, //unsure about this (tag is halo online specific)
-            { 0x3A3E, @"levels\multi\s3d_avalanche\decals\fire_hazard_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A3F, @"levels\multi\s3d_avalanche\decals\ramp_hazard_strip_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A40, @"levels\multi\s3d_avalanche\decals\danger_01" }, //unsure about this (tag is halo online specific)
+            { 0x3A2C, @"levels\multi\s3d_avalanche\fx\dripping_waterpipe\waterfall_end_small" },
+            { 0x3A2D, @"levels\shared\decals\multi\shrine\sand_decal1" },
+            { 0x3A2E, @"levels\shared\decals\multi\shrine\sand_decal1_1collision" },
+            { 0x3A2F, @"levels\shared\decals\multi\shrine\sand_decal2" },
+            { 0x3A30, @"levels\shared\decals\multi\shrine\sand_mound" },
+            { 0x3A31, @"levels\shared\decals\stains\water_line_diffused" },
+            { 0x3A32, @"levels\shared\decals\stains\waterleak" },
+            { 0x3A33, @"levels\shared\decals\stains\waterstain" },
+            { 0x3A34, @"levels\shared\decals\stains\waterstain_dam" },
+            { 0x3A35, @"levels\shared\decals\stains\water_spot_diffused_huge" },
+            { 0x3A36, @"levels\shared\decals\stains\old_oil" },
+            { 0x3A37, @"levels\shared\decals\nature\mud\decal_sand_patchx2" },
+            { 0x3A38, @"levels\multi\s3d_avalanche\decals\avalanche_granite_big_decal" },
+            { 0x3A39, @"levels\multi\s3d_avalanche\decals\avalanche_granite_crack_decal" },
+            { 0x3A3A, @"levels\multi\s3d_avalanche\decals\avalanche_granite_decal" },
+            { 0x3A3B, @"levels\multi\s3d_avalanche\decals\avalanche_grass_decal" },
+            { 0x3A3C, @"levels\multi\s3d_avalanche\decals\avalanche_ground_decal" },
+            { 0x3A3D, @"levels\multi\s3d_avalanche\decals\avalanche_rockblend_decal" },
+            { 0x3A3E, @"levels\shared\decals\human\industrial\decal_burn_1" },
+            { 0x3A3F, @"levels\shared\decals\human\industrial\decal_caution_ramp" },
+            { 0x3A40, @"levels\shared\decals\human\industrial\decal_danger_1" },
             { 0x3A41, @"levels\shared\decals\human\industrial\decal_fire_exit_arrow_1" },
             { 0x3A42, @"levels\shared\decals\human\industrial\decal_hazard_strip_1" },
-            { 0x3A43, @"levels\multi\s3d_avalanche\decals\decal_hazmat_indicator" }, //unsure about this (tag is halo online specific)
+            { 0x3A43, @"levels\shared\decals\human\industrial\decal_hazmat_indicator_big" },
             { 0x3A44, @"levels\shared\decals\human\industrial\decal_high_pressure" },
-            { 0x3A45, @"levels\multi\s3d_avalanche\decals\decal_danger_construction" }, //unsure about this (tag is halo online specific)
+            { 0x3A45, @"levels\shared\decals\human\industrial\decal_hut_fueder" },
             { 0x3A46, @"levels\shared\decals\human\industrial\decal_industry_random" },
-            { 0x3A47, @"levels\multi\s3d_avalanche\decals\decal_danger_magnetic" }, //unsure about this (tag is halo online specific)
-            { 0x3A48, @"levels\multi\s3d_avalanche\decals\danger_02" }, //unsure about this (tag is halo online specific)
+            { 0x3A47, @"levels\shared\decals\human\industrial\decal_magnetic_hazard" },
+            { 0x3A48, @"levels\shared\decals\human\industrial\decal_nohand_1" },
             { 0x3A49, @"levels\shared\decals\human\industrial\decal_paper_sheet_c" },
             { 0x3A4A, @"levels\multi\s3d_turf\decals\decal_painted_exit" },
             { 0x3A4B, @"levels\multi\s3d_turf\decals\decal_painted_exit_small" },
-            { 0x3A4C, @"levels\shared\decals\human\industrial\decal_painted_variety_0_small" },
+            { 0x3A4C, @"levels\multi\s3d_turf\decals\decal_painted_variety_0_small" },
             { 0x3A4D, @"levels\multi\s3d_turf\decals\decal_painted_variety_1_small" },
             { 0x3A4E, @"levels\multi\s3d_turf\decals\decal_painted_variety_2_small" },
             { 0x3A4F, @"levels\multi\s3d_turf\decals\decal_painted_variety_3_small" },
@@ -12537,62 +12537,62 @@ namespace TagTool.Commands.Tags
             { 0x3A52, @"levels\multi\s3d_turf\decals\decal_painted_variety_6_small" },
             { 0x3A53, @"levels\multi\s3d_turf\decals\decal_painted_variety_7_small" },
             { 0x3A54, @"levels\multi\s3d_turf\decals\decal_painted_variety_8_small" },
-            { 0x3A55, @"levels\shared\decals\human\industrial\decal_painted_variety_9_small" },
-            { 0x3A56, @"levels\shared\decals\human\industrial\decal_painted_variety_0" },
-            { 0x3A57, @"levels\shared\decals\human\industrial\decal_painted_variety_1" },
-            { 0x3A58, @"levels\shared\decals\human\industrial\decal_painted_variety_2" },
-            { 0x3A59, @"levels\shared\decals\human\industrial\decal_painted_variety_3" },
-            { 0x3A5A, @"levels\shared\decals\human\industrial\decal_painted_variety_4" },
-            { 0x3A5B, @"levels\shared\decals\human\industrial\decal_painted_variety_5" },
-            { 0x3A5C, @"levels\shared\decals\human\industrial\decal_painted_variety_6" },
-            { 0x3A5D, @"levels\shared\decals\human\industrial\decal_painted_variety_7" },
-            { 0x3A5E, @"levels\shared\decals\human\industrial\decal_painted_variety_8" },
-            { 0x3A5F, @"levels\shared\decals\human\industrial\decal_painted_variety_9" },
-            { 0x3A60, @"levels\multi\s3d_avalanche\decals\avalanche_granite_big_decal_02" }, //unsure about this (tag is halo online specific)
-            { 0x3A61, @"levels\shared\decals\human\industrial\decal_road_stripe_red" }, //unsure about this (tag is halo online specific)
-            { 0x3A62, @"levels\shared\decals\human\industrial\decal_road_stripe_blue" }, //unsure about this (tag is halo online specific)
-            { 0x3A63, @"levels\shared\decals\human\industrial\decal_road_stripe_split_blue" }, //unsure about this (tag is halo online specific)
-            { 0x3A64, @"levels\shared\decals\human\industrial\decal_road_stripe_split_red" }, //unsure about this (tag is halo online specific)
-            { 0x3A65, @"levels\shared\decals\human\industrial\decal_road_stripe_orange" }, //unsure about this (tag is halo online specific)
-            { 0x3A66, @"levels\shared\decals\human\industrial\decal_road_stripe_split_orange" }, //unsure about this (tag is halo online specific)
-            { 0x3A67, @"levels\multi\s3d_avalanche\decals\heavy_corrosion_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A68, @"levels\multi\s3d_avalanche\decals\heavy_corrosion_02" }, //unsure about this (tag is halo online specific)
-            { 0x3A69, @"levels\multi\s3d_avalanche\decals\heavy_corrosion_03" }, //unsure about this (tag is halo online specific)
-            { 0x3A6A, @"levels\multi\s3d_avalanche\decals\terrain_streak_06" }, //unsure about this (tag is halo online specific)
-            { 0x3A6B, @"levels\multi\s3d_avalanche\decals\terrain_soil_04" }, //unsure about this (tag is halo online specific)
-            { 0x3A6C, @"levels\multi\s3d_avalanche\decals\terrain_soil_04_a" }, //unsure about this (tag is halo online specific)
-            { 0x3A6D, @"levels\multi\s3d_avalanche\decals\terrain_soil_04_b" }, //unsure about this (tag is halo online specific)
-            { 0x3A6E, @"levels\multi\s3d_avalanche\decals\terrain_streak_07" }, //unsure about this (tag is halo online specific)
-            { 0x3A6F, @"levels\multi\s3d_avalanche\decals\terrain_streak_07_a" }, //unsure about this (tag is halo online specific)
-            { 0x3A70, @"levels\multi\s3d_avalanche\decals\terrain_crack_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A71, @"levels\shared\decals\human\industrial\decal_road_stripe_split_edge_blue_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A72, @"levels\shared\decals\human\industrial\decal_road_stripe_split_edge_blue_02" }, //unsure about this (tag is halo online specific)
-            { 0x3A73, @"levels\shared\decals\human\industrial\decal_road_stripe_split_edge_orange" }, //unsure about this (tag is halo online specific)
-            { 0x3A74, @"levels\shared\decals\human\industrial\decal_road_stripe_split_edge_red_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A75, @"levels\shared\decals\human\industrial\decal_road_stripe_split_edge_red_02" }, //unsure about this (tag is halo online specific)
-            { 0x3A76, @"levels\shared\decals\human\industrial\decal_station_blue_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A77, @"levels\shared\decals\human\industrial\decal_station_red_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A78, @"levels\shared\decals\human\industrial\decal_arrow_blue" }, //unsure about this (tag is halo online specific)
-            { 0x3A79, @"levels\shared\decals\human\industrial\decal_arrow_red" }, //unsure about this (tag is halo online specific)
-            { 0x3A7A, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_1_blue_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A7B, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_1_red_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A7C, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_2_blue_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A7D, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_2_red_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A7E, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_3_blue_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A7F, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_3_red_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A80, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_4_blue_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A81, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_4_red_01" }, //unsure about this (tag is halo online specific)
-            { 0x3A82, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_1_blue_02" }, //unsure about this (tag is halo online specific)
-            { 0x3A83, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_1_red_02" }, //unsure about this (tag is halo online specific)
-            { 0x3A84, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_2_blue_02" }, //unsure about this (tag is halo online specific)
-            { 0x3A85, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_4_blue_02" }, //unsure about this (tag is halo online specific)
-            { 0x3A86, @"levels\shared\decals\human\industrial\decal_station_blue_02" }, //unsure about this (tag is halo online specific)
-            { 0x3A87, @"levels\shared\decals\human\industrial\decal_station_red_02" }, //unsure about this (tag is halo online specific)
+            { 0x3A55, @"levels\multi\s3d_turf\decals\decal_painted_variety_9_small" },
+            { 0x3A56, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_0" },
+            { 0x3A57, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_1" },
+            { 0x3A58, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_2" },
+            { 0x3A59, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_3" },
+            { 0x3A5A, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_4" },
+            { 0x3A5B, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_5" },
+            { 0x3A5C, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_6" },
+            { 0x3A5D, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_7" },
+            { 0x3A5E, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_8" },
+            { 0x3A5F, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_9" },
+            { 0x3A60, @"levels\multi\s3d_avalanche\decals\avalanche_granite_large_decal" },
+            { 0x3A61, @"levels\multi\s3d_avalanche\decals\decal_line_red_1" },
+            { 0x3A62, @"levels\multi\s3d_avalanche\decals\decal_line_blue_1" },
+            { 0x3A63, @"levels\multi\s3d_avalanche\decals\decal_line_blue_big" },
+            { 0x3A64, @"levels\multi\s3d_avalanche\decals\decal_line_red_big" },
+            { 0x3A65, @"levels\multi\s3d_avalanche\decals\decal_line_orange_1" },
+            { 0x3A66, @"levels\multi\s3d_avalanche\decals\decal_line_orange_big" },
+            { 0x3A67, @"levels\dlc\shared\decals\heavycorrosion_big_nofade" },
+            { 0x3A68, @"levels\shared\decals\stains\heavycorrosion" },
+            { 0x3A69, @"levels\shared\decals\stains\heavycorrosion_big" },
+            { 0x3A6A, @"levels\shared\decals\stains\mold" },
+            { 0x3A6B, @"levels\multi\s3d_avalanche\decals\avalanche_edgegranite_large_decal" },
+            { 0x3A6C, @"levels\multi\s3d_avalanche\decals\avalanche_graniteedge_decal" },
+            { 0x3A6D, @"levels\multi\s3d_avalanche\decals\avalanche_smalledge_decal" },
+            { 0x3A6E, @"levels\shared\decals\human\damage\rust_streak_long" },
+            { 0x3A6F, @"levels\shared\decals\human\damage\rust_streak_long_small" },
+            { 0x3A70, @"levels\multi\s3d_avalanche\decals\avalanche_crack_decal" },
+            { 0x3A71, @"levels\multi\s3d_avalanche\decals\decal_line_blue_end_01" },
+            { 0x3A72, @"levels\multi\s3d_avalanche\decals\decal_line_blue_end_sm" },
+            { 0x3A73, @"levels\multi\s3d_avalanche\decals\decal_line_orange_end_01" },
+            { 0x3A74, @"levels\multi\s3d_avalanche\decals\decal_line_red_end_01" },
+            { 0x3A75, @"levels\multi\s3d_avalanche\decals\decal_line_red_end_sm" },
+            { 0x3A76, @"levels\multi\s3d_reactor\decals\decal_painted_station_blue" },
+            { 0x3A77, @"levels\multi\s3d_reactor\decals\decal_painted_station_red" },
+            { 0x3A78, @"levels\multi\s3d_reactor\decals\decal_painted_arrow_blue" },
+            { 0x3A79, @"levels\multi\s3d_reactor\decals\decal_painted_arrow_red" },
+            { 0x3A7A, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_1_blue" },
+            { 0x3A7B, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_1_red" },
+            { 0x3A7C, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_2_blue" },
+            { 0x3A7D, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_2_red" },
+            { 0x3A7E, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_3_blue" },
+            { 0x3A7F, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_3_red" },
+            { 0x3A80, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_4_blue" },
+            { 0x3A81, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_4_red" },
+            { 0x3A82, @"levels\multi\s3d_reactor\decals\decal_painted_variety_1_blue" },
+            { 0x3A83, @"levels\multi\s3d_reactor\decals\decal_painted_variety_1_red" },
+            { 0x3A84, @"levels\multi\s3d_reactor\decals\decal_painted_variety_2_blue" },
+            { 0x3A85, @"levels\multi\s3d_reactor\decals\decal_painted_variety_4_red" },
+            { 0x3A86, @"levels\multi\s3d_avalanche\decals\decal_painted_station_blue" },
+            { 0x3A87, @"levels\multi\s3d_avalanche\decals\decal_painted_station_red" },
             { 0x3A88, @"levels\shared\decals\human\industrial\lethbridge_big" },
-            { 0x3A89, @"levels\shared\decals\human\industrial\lethbridge_small" },
-            { 0x3A8A, @"levels\shared\decals\human\industrial\lethbridge_big_2" },
+            { 0x3A89, @"levels\shared\decals\human\industrial\lethbridge_big_2" },
+            { 0x3A8A, @"levels\shared\decals\human\industrial\lethbridge_small" },
             { 0x3A8B, @"levels\shared\decals\human\industrial\lethbridge_small_2" },
-            { 0x3A8C, @"levels\shared\decals\human\industrial\lethbridge" }, //unsure about this (tag is halo online specific)
+            { 0x3A8C, @"levels\shared\decals\human\industrial\lethbridge_big_3" },
             { 0x3A8D, @"sound\levels\multi\s3d_diamondback\amb_desert_wind\amb_desert_wind" },
             { 0x3A8E, @"sound\dsp_effects\reverbs\templates\hallway" },
             { 0x3A8F, @"sound\levels\multi\s3d_diamondback\amb_gen_roomtone\amb_gen_roomtone" },
@@ -12606,17 +12606,17 @@ namespace TagTool.Commands.Tags
             { 0x3AA2, @"objects\levels\multi\s3d_avalanche\man_cannon_sidewinder_05\man_cannon_sidewinder_05" },
             { 0x3AA3, @"objects\levels\multi\s3d_avalanche\man_cannon_sidewinder_07\man_cannon_sidewinder_07" },
             { 0x3AA4, @"objects\levels\multi\s3d_avalanche\man_cannon_sidewinder_08\man_cannon_sidewinder_08" },
-            { 0x3AA5, @"objects\characters\ambient_life\bird_flock_avalanche" }, //unsure about this (tag is halo online specific)
-            { 0x3AA6, @"objects\characters\ambient_life\bird_flock_avalanche_narrow" }, //unsure about this (tag is halo online specific)
-            { 0x3AA7, @"objects\characters\ambient_life\bird_quadwing2\bird_quadwing2" },
-            { 0x3AA8, @"objects\characters\ambient_life\seagull\seagull" },
+            { 0x3AA5, @"objects\characters\ambient_life\avalanche_flock" },
+            { 0x3AA6, @"objects\characters\ambient_life\avalanche_flock_migrating" },
+            { 0x3AA7, @"objects\characters\ambient_life\bird_quadwing\bird_quadwing_avalanche" },
+            { 0x3AA8, @"objects\characters\ambient_life\seagull\seagull_ava" },
             { 0x3AA9, @"levels\multi\s3d_avalanche\s3d_avalanche" },
             { 0x3AAA, @"levels\multi\s3d_avalanche\sky\s3d_avalanche" },
             { 0x3AAB, @"levels\multi\s3d_avalanche\s3d_avalanche" },
             { 0x3AAC, @"levels\multi\s3d_avalanche\s3d_avalanche_faux_lightmap" },
-            { 0x3AAD, @"levels\multi\s3d_avalanche\shaders\material_130" }, //unsure about this (tag is halo online specific)
-            { 0x3AAE, @"levels\multi\s3d_avalanche\shaders\material_1" }, //unsure about this (tag is halo online specific)
-            { 0x3AAF, @"levels\multi\s3d_avalanche\shaders\material_0" }, //unsure about this (tag is halo online specific)
+            { 0x3AAD, @"levels\multi\s3d_avalanche\shaders\av_cliff_blend_01" },
+            { 0x3AAE, @"levels\multi\s3d_avalanche\shaders\av_cliff_blend_04" },
+            { 0x3AAF, @"levels\multi\s3d_avalanche\shaders\av_cliff_blend_02" },
             { 0x3AB0, @"levels\multi\s3d_turf\shaders\checker" },
             { 0x3AB1, @"levels\multi\s3d_turf\shaders\turf_metal_01" },
             { 0x3AB2, @"levels\multi\s3d_turf\shaders\unsc_ship_02" },
@@ -12636,8 +12636,8 @@ namespace TagTool.Commands.Tags
             { 0x3AC0, @"levels\multi\s3d_turf\shaders\unsc_panel_indus_06" },
             { 0x3AC1, @"levels\multi\s3d_turf\shaders\turf_building_block_13" },
             { 0x3AC2, @"levels\multi\s3d_turf\shaders\turf_building_block_03" },
-            { 0x3AC3, @"levels\multi\s3d_avalanche\shaders\collision_material_23" }, //unsure about this (tag is halo online specific)
-            { 0x3AC4, @"levels\multi\s3d_avalanche\shaders\material_60" }, //unsure about this (tag is halo online specific)
+            { 0x3AC3, @"levels\multi\deadlock\shaders\deadlock_metal_railing" },
+            { 0x3AC4, @"levels\multi\s3d_avalanche\shaders\av_stones_01" },
             { 0x3AC5, @"levels\multi\s3d_avalanche\shaders\avalache_rock_01" },
             { 0x3AC6, @"levels\multi\s3d_turf\shaders\turf_metal_06" },
             { 0x3AC7, @"levels\multi\s3d_turf\shaders\turf_metal_01_a" },
@@ -12645,46 +12645,46 @@ namespace TagTool.Commands.Tags
             { 0x3AC9, @"levels\multi\s3d_turf\shaders\turf_metal_01_b" },
             { 0x3ACA, @"levels\multi\s3d_turf\shaders\turf_metal_02" },
             { 0x3ACB, @"levels\multi\s3d_turf\shaders\unsc_ship_05" },
-            { 0x3ACC, @"levels\multi\s3d_avalanche\shaders\material_74" }, //unsure about this (tag is halo online specific)
-            { 0x3ACD, @"levels\multi\s3d_avalanche\shaders\material_72" }, //unsure about this (tag is halo online specific)
+            { 0x3ACC, @"levels\multi\s3d_avalanche\shaders\cyber_glass" },
+            { 0x3ACD, @"levels\multi\s3d_avalanche\shaders\av_building_block_11" },
             { 0x3ACE, @"levels\multi\s3d_turf\shaders\turf_tank_01" },
             { 0x3ACF, @"levels\multi\s3d_turf\shaders\unsc_outpost_02" },
             { 0x3AD0, @"levels\multi\s3d_turf\shaders\turf_gates_01" },
             { 0x3AD1, @"levels\multi\s3d_turf\shaders\turf_building_block_07" },
-            { 0x3AD2, @"levels\multi\s3d_avalanche\shaders\material_97" }, //unsure about this (tag is halo online specific)
+            { 0x3AD2, @"levels\multi\s3d_avalanche\shaders\av_building_block_08" },
             { 0x3AD3, @"levels\multi\s3d_turf\shaders\unsc_metal_trim_01" },
             { 0x3AD4, @"levels\multi\s3d_turf\shaders\unsc_metal_diam_01" },
-            { 0x3AD5, @"levels\multi\s3d_avalanche\shaders\material_106" }, //unsure about this (tag is halo online specific)
-            { 0x3AD6, @"levels\multi\s3d_avalanche\shaders\material_73" }, //unsure about this (tag is halo online specific)
-            { 0x3AD7, @"levels\multi\s3d_avalanche\shaders\material_51" }, //unsure about this (tag is halo online specific)
-            { 0x3AD8, @"levels\multi\s3d_avalanche\shaders\material_111" }, //unsure about this (tag is halo online specific)
-            { 0x3AD9, @"levels\multi\s3d_avalanche\shaders\material_50" }, //unsure about this (tag is halo online specific)
-            { 0x3ADA, @"levels\multi\s3d_avalanche\shaders\material_108" }, //unsure about this (tag is halo online specific)
-            { 0x3ADB, @"levels\multi\s3d_avalanche\shaders\material_107" }, //unsure about this (tag is halo online specific)
+            { 0x3AD5, @"levels\multi\s3d_avalanche\shaders\av_building_block_05" },
+            { 0x3AD6, @"levels\multi\s3d_avalanche\shaders\av_building_block_07" },
+            { 0x3AD7, @"levels\multi\s3d_avalanche\shaders\av_building_block_01" },
+            { 0x3AD8, @"levels\multi\s3d_avalanche\shaders\av_window_01" },
+            { 0x3AD9, @"levels\multi\s3d_avalanche\shaders\av_building_block_06" },
+            { 0x3ADA, @"levels\multi\s3d_avalanche\shaders\av_building_block_04" },
+            { 0x3ADB, @"levels\multi\s3d_avalanche\shaders\av_building_block_03" },
             { 0x3ADC, @"levels\multi\s3d_turf\shaders\turf_window_01" },
             { 0x3ADD, @"levels\multi\s3d_turf\shaders\turf_building_block_01" },
-            { 0x3ADE, @"levels\multi\s3d_avalanche\shaders\material_96" }, //unsure about this (tag is halo online specific)
-            { 0x3ADF, @"levels\multi\s3d_avalanche\shaders\material_109" }, //unsure about this (tag is halo online specific)
+            { 0x3ADE, @"levels\multi\s3d_avalanche\shaders\av_building_block_09" },
+            { 0x3ADF, @"levels\multi\s3d_avalanche\shaders\av_building_block_10" },
             { 0x3AE0, @"levels\multi\s3d_turf\shaders\turf_building_block_11" },
-            { 0x3AE1, @"levels\multi\s3d_avalanche\shaders\material_52" }, //unsure about this (tag is halo online specific)
-            { 0x3AE2, @"levels\multi\s3d_avalanche\shaders\collision_material_55" }, //unsure about this (tag is named " },levels\multi\s3d_avalanche\materials\s3d_avalanche_collision_material_55" }, in tagtool, used for reach porting)
-            { 0x3AE3, @"levels\multi\s3d_avalanche\shaders\material_124" }, //unsure about this (tag is halo online specific)
-            { 0x3AE4, @"levels\multi\s3d_avalanche\shaders\material_125" }, //unsure about this (tag is halo online specific)
-            { 0x3AE5, @"levels\multi\s3d_avalanche\shaders\material_95" }, //unsure about this (tag is halo online specific)
-            { 0x3AE6, @"levels\multi\s3d_avalanche\shaders\material_127" }, //unsure about this (tag is halo online specific)
-            { 0x3AE7, @"levels\multi\s3d_avalanche\shaders\material_128" }, //unsure about this (tag is halo online specific)
+            { 0x3AE1, @"levels\multi\s3d_avalanche\shaders\av_building_block_02" },
+            { 0x3AE2, @"levels\multi\s3d_avalanche\shaders\cyber_glass_front" },
+            { 0x3AE3, @"levels\multi\s3d_avalanche\shaders\avalache_rock_05_objects" },
+            { 0x3AE4, @"levels\multi\s3d_avalanche\shaders\avalache_cliff02_blend" },
+            { 0x3AE5, @"levels\multi\s3d_avalanche\shaders\av_cliff_blend_03" },
+            { 0x3AE6, @"levels\multi\s3d_avalanche\shaders\avalache_rock_09" },
+            { 0x3AE7, @"levels\multi\s3d_avalanche\shaders\av_ground" },
             { 0x3AE8, @"levels\multi\s3d_turf\shaders\unsc_ship_23" },
             { 0x3AE9, @"levels\multi\s3d_turf\shaders\s3d_turf_gray" },
             { 0x3AEA, @"levels\multi\s3d_turf\shaders\under_metal_wall_08" },
             { 0x3AEB, @"levels\multi\s3d_turf\shaders\turf_door_01" },
             { 0x3AEC, @"levels\multi\s3d_turf\shaders\unsc_metal_panel_01" },
-            { 0x3AED, @"levels\multi\s3d_avalanche\shaders\material_114" }, //unsure about this (tag is halo online specific)
+            { 0x3AED, @"levels\multi\s3d_turf\shaders\unsc_stripes_02" },
             { 0x3AEE, @"levels\multi\s3d_turf\shaders\turf_metal_11" },
             { 0x3AEF, @"levels\multi\s3d_turf\shaders\unsc_panel_indus_02" },
             { 0x3AF0, @"levels\multi\s3d_turf\shaders\unsc_floor_panels_01" },
             { 0x3AF1, @"levels\multi\s3d_turf\shaders\turf_swinging_door_01" },
-            { 0x3AF2, @"levels\multi\s3d_avalanche\shaders\material_151" }, //unsure about this (tag is halo online specific)
-            { 0x3AF3, @"levels\multi\s3d_avalanche\shaders\material_3" }, //unsure about this (tag is halo online specific)
+            { 0x3AF2, @"levels\multi\s3d_avalanche\shaders\av_cliff_blend_05" },
+            { 0x3AF3, @"levels\multi\s3d_turf\shaders\hb_door_road_blast" },
             { 0x3AF4, @"levels\multi\s3d_turf\shaders\turf_tent_01" },
             { 0x3AF5, @"levels\multi\s3d_turf\shaders\turf_metal_08" },
             { 0x3AF6, @"levels\multi\s3d_turf\shaders\turf_metal_09" },
@@ -12692,8 +12692,8 @@ namespace TagTool.Commands.Tags
             { 0x3AF8, @"levels\multi\s3d_turf\shaders\unsc_ship_01" },
             { 0x3AF9, @"levels\multi\s3d_turf\shaders\unsc_panel_indus_05" },
             { 0x3AFA, @"levels\multi\s3d_turf\shaders\unsc_metal_02" },
-            { 0x3AFB, @"levels\multi\s3d_avalanche\shaders\material_24" }, //unsure about this (tag is halo online specific)
-            { 0x3AFC, @"levels\multi\s3d_avalanche\shaders\material_25" }, //unsure about this (tag is halo online specific)
+            { 0x3AFB, @"levels\multi\s3d_avalanche\shaders\water" },
+            { 0x3AFC, @"levels\multi\s3d_avalanche\shaders\av_far_blend_01" },
             { 0x3AFD, @"levels\multi\s3d_turf\shaders\unsc_ship_11" },
             { 0x3AFE, @"levels\multi\s3d_turf\shaders\unsc_metal_ramp_01" },
             { 0x3AFF, @"levels\multi\s3d_turf\shaders\lights\lamp_03_wide" },
@@ -12705,54 +12705,54 @@ namespace TagTool.Commands.Tags
             { 0x3B05, @"levels\multi\deadlock\shaders\deadlock_switch" },
             { 0x3B06, @"levels\multi\s3d_turf\shaders\unsc_ship_16" },
             { 0x3B07, @"levels\multi\s3d_turf\shaders\unsc_ship_20" },
-            { 0x3B08, @"levels\multi\s3d_turf\shaders\turf_banners_03" }, //unsure about this (tag is halo online specific, duplicate of turf banner tag)
+            { 0x3B08, @"levels\multi\s3d_avalanche\shaders\av_banners_02" },
             { 0x3B09, @"levels\multi\s3d_turf\shaders\unsc_stripes_01" },
             { 0x3B0A, @"levels\multi\s3d_turf\shaders\d40_reactor_07" },
             { 0x3B0B, @"levels\multi\s3d_turf\shaders\turf_metal_01_c" },
-            { 0x3B0C, @"levels\multi\s3d_avalanche\shaders\material_79" }, //unsure about this (tag is halo online specific)
-            { 0x3B0D, @"levels\multi\s3d_avalanche\shaders\material_80" }, //unsure about this (tag is halo online specific)
-            { 0x3B0E, @"levels\multi\s3d_avalanche\shaders\material_83" }, //unsure about this (tag is halo online specific)
+            { 0x3B0C, @"levels\multi\s3d_turf\shaders\unsc_road_01" },
+            { 0x3B0D, @"levels\multi\s3d_turf\shaders\d40_reactor_05" },
+            { 0x3B0E, @"levels\multi\s3d_avalanche\shaders\glass_floor_01" },
             { 0x3B0F, @"levels\multi\s3d_turf\shaders\unsc_panel_07" },
             { 0x3B10, @"levels\multi\s3d_turf\shaders\unsc_metal_floor_06" },
             { 0x3B11, @"levels\multi\s3d_turf\shaders\unsc_metal_floor_07" },
             { 0x3B12, @"levels\multi\s3d_turf\shaders\unsc_panel_single_02" },
             { 0x3B13, @"levels\multi\s3d_turf\shaders\turf_building_block_09" },
             { 0x3B14, @"levels\multi\s3d_turf\shaders\unsc_garage_01" },
-            { 0x3B15, @"levels\multi\s3d_avalanche\shaders\material_104" }, //unsure about this (tag is halo online specific)
+            { 0x3B15, @"levels\multi\s3d_avalanche\shaders\wispy_snow2_sh" },
             { 0x3B16, @"levels\multi\cyberdyne\shaders\cyberdyne_wall_metal_b" },
-            { 0x3B17, @"levels\multi\s3d_avalanche\shaders\material_110" }, //unsure about this (tag is halo online specific)
+            { 0x3B17, @"levels\multi\s3d_avalanche\shaders\av_building_block_12" },
             { 0x3B18, @"levels\multi\s3d_turf\shaders\turf_rooms_01" },
             { 0x3B19, @"levels\multi\s3d_turf\shaders\turf_farplane_04" },
             { 0x3B1A, @"levels\multi\s3d_turf\shaders\turf_column_01" },
             { 0x3B1B, @"levels\multi\s3d_turf\shaders\turf_building_block_02" },
-            { 0x3B1C, @"levels\multi\s3d_avalanche\shaders\material_117" }, //unsure about this (tag is halo online specific)
-            { 0x3B1D, @"levels\multi\s3d_avalanche\shaders\material_119" }, //unsure about this (tag is halo online specific)
-            { 0x3B1E, @"levels\multi\s3d_avalanche\shaders\material_123" }, //unsure about this (tag is halo online specific)
-            { 0x3B1F, @"levels\multi\s3d_avalanche\shaders\material_152" }, //unsure about this (tag is halo online specific)
-            { 0x3B20, @"levels\multi\s3d_avalanche\decorators\outskirts_thick_grass_02\outskirts_thick_grass_02" },
-            { 0x3B21, @"levels\multi\s3d_avalanche\decorators\wildgrass\wildgrass" },
-            { 0x3B22, @"levels\multi\s3d_avalanche\decorators\flower_yellow\flower_yellow" },
+            { 0x3B1C, @"levels\multi\s3d_avalanche\shaders\av_building_block_13" }, //unsure about this (tag is halo online specific, removed in MCC)
+            { 0x3B1D, @"levels\multi\deadlock\shaders\deadlock_concrete_new_a" },
+            { 0x3B1E, @"levels\multi\s3d_avalanche\shaders\base_marks_01" },
+            { 0x3B1F, @"levels\multi\s3d_avalanche\shaders\ray_long_holo" },
+            { 0x3B20, @"levels\multi\s3d_avalanche\decorators\outskirts_thick_grass\outskirts_thick_grass_cheap" },
+            { 0x3B21, @"levels\multi\s3d_avalanche\decorators\burntgrass\burntgrass_short" },
+            { 0x3B22, @"levels\multi\s3d_avalanche\decorators\av_flower_red\av_flower_red" },
             { 0x3B23, @"levels\multi\s3d_avalanche\decorators\grass_clumps\grass_clumps" },
             { 0x3B24, @"levels\multi\s3d_avalanche\decorators\halo_rocks\halo_rocks" },
-            { 0x3B25, @"levels\multi\s3d_avalanche\decorators\rocks_dark\rocks_dark" },
-            { 0x3B26, @"levels\multi\s3d_avalanche\decorators\rocks\rocks" },
+            { 0x3B25, @"levels\multi\s3d_avalanche\decorators\rocks\rocks_long_fade" },
+            { 0x3B26, @"levels\multi\s3d_avalanche\decorators\rocks\rocks_out" },
             { 0x3B27, @"levels\multi\s3d_avalanche\decorators\tree_boundary\tree_boundary" },
-            { 0x3B28, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_1" }, //unsure about this (tag is halo online specific)
+            { 0x3B28, @"levels\multi\s3d_avalanche\bitmaps\zan_cliffs_a_dif" },
             { 0x3B29, @"levels\multi\zanzibar\bitmaps\zan_cliffs_detail_dif" },
-            { 0x3B2A, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_zbump_1" }, //unsure about this (tag is halo online specific, (0x3B2A & 0x3B2F) appear to be duplicates of one another)
+            { 0x3B2A, @"levels\multi\s3d_avalanche\bitmaps\zan_cliffs_a_zbump" },
             { 0x3B2B, @"levels\multi\zanzibar\bitmaps\zan_cliffs_detail_bump" },
-            { 0x3B2C, @"levels\multi\s3d_avalanche\bitmaps\terrian_invis_1" }, //unsure about this (tag is halo online specific)
+            { 0x3B2C, @"levels\multi\s3d_avalanche\bitmaps\av_cliff_blend_01" },
             { 0x3B2D, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_16" },
             { 0x3B2E, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_16_zbump" },
-            { 0x3B2F, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_zbump_2" }, //unsure about this (tag is halo online specific, (0x3B2A & 0x3B2F) appear to be duplicates of one another)
+            { 0x3B2F, @"levels\multi\zanzibar\bitmaps\zan_cliffs_a_bump" },
             { 0x3B30, @"shaders\terrain_templates\_0_0_1_1_1_0" },
             { 0x3B31, @"shaders\terrain_templates\_0_0_1_1_1_0" },
             { 0x3B32, @"shaders\terrain_templates\_0_0_1_1_1_0" },
-            { 0x3B33, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_2" }, //unsure about this (tag is halo online specific)
-            { 0x3B34, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_2_a" }, //unsure about this (tag is halo online specific)
-            { 0x3B35, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_3" }, //unsure about this (tag is halo online specific)
-            { 0x3B36, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_3_a" }, //unsure about this (tag is halo online specific)
-            { 0x3B37, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_4" }, //unsure about this (tag is halo online specific)
+            { 0x3B33, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_04_far" },
+            { 0x3B34, @"levels\multi\s3d_avalanche\bitmaps\av_cliff_blend_04" },
+            { 0x3B35, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_04" },
+            { 0x3B36, @"levels\multi\s3d_avalanche\bitmaps\av_cliff_blend_02" },
+            { 0x3B37, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_07" },
             { 0x3B38, @"levels\multi\s3d_turf\bitmaps\turf_metal_01" },
             { 0x3B39, @"levels\multi\s3d_turf\bitmaps\turf_metal_01_zbump" },
             { 0x3B3A, @"levels\multi\s3d_turf\bitmaps\unsc_ship_02" },
@@ -12795,8 +12795,8 @@ namespace TagTool.Commands.Tags
             { 0x3B5F, @"levels\multi\s3d_turf\bitmaps\turf_building_block_13_zbump" },
             { 0x3B60, @"levels\multi\s3d_turf\bitmaps\turf_building_block_03" },
             { 0x3B61, @"levels\multi\s3d_turf\bitmaps\turf_building_block_03_zbump" },
-            { 0x3B62, @"levels\multi\s3d_avalanche\bitmaps\collision_material_23" }, //unsure about this (tag is halo online specific)
-            { 0x3B63, @"levels\multi\s3d_avalanche\bitmaps\material_60" }, //unsure about this (tag is halo online specific)
+            { 0x3B62, @"levels\multi\deadlock\bitmaps\deadlock_metal_dif" },
+            { 0x3B63, @"levels\multi\s3d_avalanche\bitmaps\av_stones_01_sp" },
             { 0x3B64, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_05_parallax" },
             { 0x3B65, @"shaders\shader_templates\_0_2_0_2_1_0_0_0_1_0_0" },
             { 0x3B66, @"shaders\shader_templates\_0_2_0_2_1_0_0_0_1_0_0" },
@@ -12815,12 +12815,12 @@ namespace TagTool.Commands.Tags
             { 0x3B73, @"levels\multi\s3d_turf\bitmaps\turf_metal_02_zbump" },
             { 0x3B74, @"levels\multi\s3d_turf\bitmaps\unsc_ship_05" },
             { 0x3B75, @"levels\multi\s3d_turf\bitmaps\unsc_ship_05_zbump" },
-            { 0x3B76, @"levels\multi\s3d_avalanche\bitmaps\material_74" }, //unsure about this (tag is halo online specific)
+            { 0x3B76, @"levels\multi\s3d_avalanche\bitmaps\cyber_glass" },
             { 0x3B77, @"shaders\shader_templates\_0_1_0_0_1_2_0_3_0_0_0" },
             { 0x3B78, @"shaders\shader_templates\_0_1_0_0_1_2_0_3_0_0_0" },
             { 0x3B79, @"shaders\shader_templates\_0_1_0_0_1_2_0_3_0_0_0" },
-            { 0x3B7A, @"levels\multi\s3d_avalanche\bitmaps\material_72" }, //unsure about this (tag is halo online specific)
-            { 0x3B7B, @"levels\multi\s3d_avalanche\bitmaps\material_72_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3B7A, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_11" },
+            { 0x3B7B, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_11_zbump" },
             { 0x3B7C, @"levels\multi\s3d_turf\bitmaps\turf_tank_01" },
             { 0x3B7D, @"levels\multi\s3d_turf\bitmaps\turf_tank_01_zbump" },
             { 0x3B7E, @"levels\multi\s3d_turf\bitmaps\unsc_outpost_02" },
@@ -12830,64 +12830,64 @@ namespace TagTool.Commands.Tags
             { 0x3B82, @"levels\multi\s3d_turf\bitmaps\turf_gates_01_sf" },
             { 0x3B83, @"levels\multi\s3d_turf\bitmaps\turf_building_block_07" },
             { 0x3B84, @"levels\multi\s3d_turf\bitmaps\turf_building_block_07_zbump" },
-            { 0x3B85, @"levels\multi\s3d_avalanche\bitmaps\material_97" }, //unsure about this (tag is halo online specific)
-            { 0x3B86, @"levels\multi\s3d_avalanche\bitmaps\material_97_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3B85, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_08" },
+            { 0x3B86, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_08_zbump" },
             { 0x3B87, @"levels\multi\s3d_turf\bitmaps\unsc_metal_trim_01" },
             { 0x3B88, @"levels\multi\s3d_turf\bitmaps\unsc_metal_trim_01_zbump" },
             { 0x3B89, @"levels\multi\s3d_turf\bitmaps\unsc_metal_diam_01" },
             { 0x3B8A, @"levels\multi\s3d_turf\bitmaps\unsc_metal_diam_01_zbump" },
-            { 0x3B8B, @"levels\multi\s3d_avalanche\bitmaps\material_106" }, //unsure about this (tag is halo online specific)
-            { 0x3B8C, @"levels\multi\s3d_avalanche\bitmaps\material_106_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3B8D, @"levels\multi\s3d_avalanche\bitmaps\material_73" }, //unsure about this (tag is halo online specific)
-            { 0x3B8E, @"levels\multi\s3d_avalanche\bitmaps\material_73_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3B8F, @"levels\multi\s3d_avalanche\bitmaps\material_51" }, //unsure about this (tag is halo online specific)
-            { 0x3B90, @"levels\multi\s3d_avalanche\bitmaps\material_51_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3B8B, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_05" },
+            { 0x3B8C, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_05_zbump" },
+            { 0x3B8D, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_07" },
+            { 0x3B8E, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_07_zbump" },
+            { 0x3B8F, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_01" },
+            { 0x3B90, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_01_zbump" },
             { 0x3B91, @"levels\multi\s3d_turf\bitmaps\turf_window_01" },
             { 0x3B92, @"levels\multi\s3d_turf\bitmaps\turf_farplane_04_zbump" },
             { 0x3B93, @"levels\multi\s3d_turf\bitmaps\turf_farplane_04_dif" },
-            { 0x3B94, @"levels\multi\s3d_avalanche\bitmaps\material_50" }, //unsure about this (tag is halo online specific)
-            { 0x3B95, @"levels\multi\s3d_avalanche\bitmaps\material_50_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3B96, @"levels\multi\s3d_avalanche\bitmaps\material_108" }, //unsure about this (tag is halo online specific)
-            { 0x3B97, @"levels\multi\s3d_avalanche\bitmaps\material_108_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3B98, @"levels\multi\s3d_avalanche\bitmaps\material_107" }, //unsure about this (tag is halo online specific)
-            { 0x3B99, @"levels\multi\s3d_avalanche\bitmaps\material_107_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3B94, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_06" },
+            { 0x3B95, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_06_zbump" },
+            { 0x3B96, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_04" },
+            { 0x3B97, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_04_zbump" },
+            { 0x3B98, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_03" },
+            { 0x3B99, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_03_zbump" },
             { 0x3B9A, @"levels\multi\s3d_turf\bitmaps\turf_building_block_01" },
             { 0x3B9B, @"levels\multi\s3d_turf\bitmaps\turf_building_block_01_zbump" },
             { 0x3B9C, @"levels\multi\s3d_turf\bitmaps\turf_building_block_01_sf" },
-            { 0x3B9D, @"levels\multi\s3d_avalanche\bitmaps\material_96" }, //unsure about this (tag is halo online specific)
-            { 0x3B9E, @"levels\multi\s3d_avalanche\bitmaps\material_96_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3B9F, @"levels\multi\s3d_avalanche\bitmaps\material_109" }, //unsure about this (tag is halo online specific)
-            { 0x3BA0, @"levels\multi\s3d_avalanche\bitmaps\material_109_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3B9D, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_09" },
+            { 0x3B9E, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_09_zbump" },
+            { 0x3B9F, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_10" },
+            { 0x3BA0, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_10_zbump" },
             { 0x3BA1, @"levels\multi\s3d_turf\bitmaps\turf_building_block_11" },
             { 0x3BA2, @"levels\multi\s3d_turf\bitmaps\turf_building_block_11_zbump" },
-            { 0x3BA3, @"levels\multi\s3d_avalanche\bitmaps\material_52" }, //unsure about this (tag is halo online specific)
-            { 0x3BA4, @"levels\multi\s3d_avalanche\bitmaps\material_52_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3BA5, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_5" }, //unsure about this (tag is halo online specific)
-            { 0x3BA6, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_5_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3BA7, @"levels\multi\s3d_avalanche\bitmaps\material_124_a" }, //unsure about this (tag is halo online specific)
-            { 0x3BA8, @"levels\multi\s3d_avalanche\bitmaps\material_124_b" }, //unsure about this (tag is halo online specific)
-            { 0x3BA9, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_6" }, //unsure about this (tag is halo online specific)
-            { 0x3BAA, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_6_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3BAB, @"levels\multi\s3d_avalanche\bitmaps\material_125_black" }, //unsure about this (tag is halo online specific)
-            { 0x3BAC, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_7" }, //unsure about this (tag is halo online specific)
-            { 0x3BAD, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_7_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3BAE, @"levels\multi\s3d_avalanche\bitmaps\terrain_soil_1" }, //unsure about this (tag is halo online specific)
-            { 0x3BAF, @"levels\multi\s3d_avalanche\bitmaps\terrain_soil_1_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3BA3, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_02" },
+            { 0x3BA4, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_02_zbump" },
+            { 0x3BA5, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_05" },
+            { 0x3BA6, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_05_bump" },
+            { 0x3BA7, @"levels\multi\deadlock\bitmaps\deadlock_cliff_rock_detail" },
+            { 0x3BA8, @"levels\multi\deadlock\bitmaps\deadlock_cliff_rock_bump_detail" },
+            { 0x3BA9, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_20" },
+            { 0x3BAA, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_20_bump" },
+            { 0x3BAB, @"levels\multi\s3d_avalanche\bitmaps\avalance_rock2_blend" },
+            { 0x3BAC, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_21" },
+            { 0x3BAD, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_21_bump" },
+            { 0x3BAE, @"levels\multi\s3d_avalanche\bitmaps\ter_sand_01" },
+            { 0x3BAF, @"levels\multi\s3d_avalanche\bitmaps\ter_sand_01_bump" },
             { 0x3BB0, @"shaders\terrain_templates\_0_0_1_1_1_2" },
             { 0x3BB1, @"shaders\terrain_templates\_0_0_1_1_1_2" },
             { 0x3BB2, @"shaders\terrain_templates\_0_0_1_1_1_2" },
-            { 0x3BB3, @"levels\multi\s3d_avalanche\bitmaps\terrain_soil_2_a" }, //unsure about this (tag is halo online specific)
-            { 0x3BB4, @"levels\multi\s3d_avalanche\bitmaps\terrain_soil_2_b" }, //unsure about this (tag is halo online specific)
-            { 0x3BB5, @"levels\multi\s3d_avalanche\bitmaps\terrain_soil_2_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3BB6, @"levels\multi\s3d_avalanche\bitmaps\terrain_height" }, //unsure about this (tag is halo online specific)
-            { 0x3BB7, @"levels\multi\s3d_avalanche\bitmaps\terrain_blend_mask" }, //unsure about this (tag is halo online specific)
-            { 0x3BB8, @"levels\multi\s3d_avalanche\bitmaps\soil_3" }, //unsure about this (tag is halo online specific)
+            { 0x3BB3, @"levels\multi\s3d_avalanche\bitmaps\av_cliff_blend_03" },
+            { 0x3BB4, @"levels\multi\s3d_avalanche\bitmaps\t_cliff_03" },
+            { 0x3BB5, @"levels\multi\zanzibar\bitmaps\zan_cliffs_b_bump" },
+            { 0x3BB6, @"levels\multi\s3d_avalanche\bitmaps\av_ground_blend_overlay" },
+            { 0x3BB7, @"levels\multi\s3d_avalanche\bitmaps\avalance_ground_blend" },
+            { 0x3BB8, @"levels\multi\s3d_avalanche\bitmaps\t_ground_01" },
             { 0x3BB9, @"levels\multi\s3d_avalanche\bitmaps\sand_01" },
-            { 0x3BBA, @"levels\multi\s3d_avalanche\bitmaps\soil_3_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3BBA, @"levels\multi\s3d_avalanche\bitmaps\t_ground_01_zbump" },
             { 0x3BBB, @"levels\multi\s3d_avalanche\bitmaps\sand_01_zbump" },
-            { 0x3BBC, @"levels\multi\s3d_avalanche\bitmaps\soil_4" }, //unsure about this (tag is halo online specific)
-            { 0x3BBD, @"levels\multi\s3d_avalanche\bitmaps\soil_4_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3BBE, @"levels\multi\s3d_avalanche\bitmaps\soil_4_height" }, //unsure about this (tag is halo online specific)
+            { 0x3BBC, @"levels\multi\s3d_avalanche\bitmaps\t_ground_08" },
+            { 0x3BBD, @"levels\multi\s3d_avalanche\bitmaps\t_ground_08_zbump" },
+            { 0x3BBE, @"levels\multi\s3d_avalanche\bitmaps\t_gravel_02" },
             { 0x3BBF, @"levels\multi\s3d_avalanche\bitmaps\t_gravel_02_zbump" },
             { 0x3BC0, @"shaders\terrain_templates\_0_0_0_0_0_1" },
             { 0x3BC1, @"shaders\terrain_templates\_0_0_0_0_0_1" },
@@ -12901,8 +12901,8 @@ namespace TagTool.Commands.Tags
             { 0x3BC9, @"levels\multi\s3d_turf\bitmaps\turf_door_01_zbump" },
             { 0x3BCA, @"levels\multi\s3d_turf\bitmaps\unsc_metal_panel_01" },
             { 0x3BCB, @"levels\multi\s3d_turf\bitmaps\unsc_metal_panel_01_zbump" },
-            { 0x3BCC, @"levels\multi\s3d_avalanche\bitmaps\material_114" }, //unsure about this (tag is halo online specific)
-            { 0x3BCD, @"levels\multi\s3d_avalanche\bitmaps\material_114_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3BCC, @"levels\multi\s3d_turf\bitmaps\unsc_stripes_02" },
+            { 0x3BCD, @"levels\multi\s3d_turf\bitmaps\unsc_stripes_02_zbump" },
             { 0x3BCE, @"levels\multi\s3d_turf\bitmaps\turf_metal_11" },
             { 0x3BCF, @"levels\multi\s3d_turf\bitmaps\turf_metal_11_zbump" },
             { 0x3BD0, @"levels\multi\s3d_turf\bitmaps\unsc_panel_indus_02" },
@@ -12911,9 +12911,9 @@ namespace TagTool.Commands.Tags
             { 0x3BD3, @"levels\multi\s3d_turf\bitmaps\unsc_floor_panels_01_zbump" },
             { 0x3BD4, @"levels\multi\s3d_turf\bitmaps\turf_swinging_door_01" },
             { 0x3BD5, @"levels\multi\s3d_turf\bitmaps\turf_swinging_door_01_zbump" },
-            { 0x3BD6, @"levels\multi\s3d_avalanche\bitmaps\material_3" }, //unsure about this (tag is halo online specific)
-            { 0x3BD7, @"levels\multi\s3d_avalanche\bitmaps\material_3_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3BD8, @"levels\multi\s3d_avalanche\bitmaps\material_3_spec" }, //unsure about this (tag is halo online specific)
+            { 0x3BD6, @"levels\multi\s3d_turf\bitmaps\hb_door_road_blast" },
+            { 0x3BD7, @"levels\multi\s3d_turf\bitmaps\hb_door_road_blast_zbump" },
+            { 0x3BD8, @"levels\solo\020_base\bitmaps\hb_door_road_blast_parallax" },
             { 0x3BD9, @"shaders\shader_templates\_0_1_0_1_1_2_0_0_2_0_0" },
             { 0x3BDA, @"shaders\shader_templates\_0_1_0_1_1_2_0_0_2_0_0" },
             { 0x3BDB, @"shaders\shader_templates\_0_1_0_1_1_2_0_0_2_0_0" },
@@ -12933,17 +12933,17 @@ namespace TagTool.Commands.Tags
             { 0x3BE9, @"levels\multi\s3d_turf\bitmaps\unsc_panel_indus_05_zbump" },
             { 0x3BEA, @"levels\multi\s3d_turf\bitmaps\unsc_metal_02" },
             { 0x3BEB, @"levels\multi\s3d_turf\bitmaps\unsc_metal_02_zbump" },
-            { 0x3BEC, @"levels\multi\s3d_avalanche\bitmaps\water_table" }, //unsure about this (tag is halo online specific)
+            { 0x3BEC, @"levels\multi\s3d_avalanche\bitmaps\av_water" },
             { 0x3BED, @"levels\multi\zanzibar\sky\bitmaps\water_bump_large" },
             { 0x3BEE, @"shaders\shader_templates\_0_2_0_1_1_2_0_3_0_0_0" },
             { 0x3BEF, @"shaders\shader_templates\_0_2_0_1_1_2_0_3_0_0_0" },
             { 0x3BF0, @"shaders\shader_templates\_0_2_0_1_1_2_0_3_0_0_0" },
-            { 0x3BF1, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_8" }, //unsure about this (tag is halo online specific)
-            { 0x3BF2, @"levels\multi\s3d_avalanche\bitmaps\terrain_rock_8_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3BF3, @"levels\multi\s3d_avalanche\bitmaps\terrain_invis_2" }, //unsure about this (tag is halo online specific)
-            { 0x3BF4, @"levels\multi\s3d_avalanche\bitmaps\soil_5" }, //unsure about this (tag is halo online specific)
-            { 0x3BF5, @"levels\multi\s3d_avalanche\bitmaps\terrain_soil_4" }, //unsure about this (tag is halo online specific)
-            { 0x3BF6, @"levels\multi\s3d_avalanche\bitmaps\terrain_soil_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3BF1, @"levels\multi\s3d_avalanche\bitmaps\av_farlpane_01" },
+            { 0x3BF2, @"levels\multi\s3d_avalanche\bitmaps\av_farlpane_01_zbump" },
+            { 0x3BF3, @"levels\multi\s3d_avalanche\bitmaps\av_far_island_blend_01" },
+            { 0x3BF4, @"levels\multi\riverworld\bitmaps\riverworld_ground_pebble" },
+            { 0x3BF5, @"levels\multi\s3d_avalanche\bitmaps\avalanche_grass" },
+            { 0x3BF6, @"levels\multi\s3d_avalanche\decals\avalanche_grass_decal_zbump" },
             { 0x3BF7, @"levels\multi\s3d_turf\bitmaps\unsc_ship_11" },
             { 0x3BF8, @"levels\multi\s3d_turf\bitmaps\unsc_ship_11_zbump" },
             { 0x3BF9, @"levels\multi\s3d_turf\bitmaps\unsc_metal_ramp_01" },
@@ -12962,17 +12962,17 @@ namespace TagTool.Commands.Tags
             { 0x3C06, @"levels\multi\s3d_turf\bitmaps\unsc_ship_20" },
             { 0x3C07, @"levels\multi\s3d_turf\bitmaps\unsc_ship_20_zbump" },
             { 0x3C08, @"levels\multi\s3d_turf\bitmaps\unsc_ship_20_sf" },
-            { 0x3C09, @"levels\multi\s3d_turf\bitmaps\turf_banners_03" },
+            { 0x3C09, @"levels\multi\s3d_avalanche\bitmaps\av_banners_02" },
             { 0x3C0A, @"levels\multi\s3d_turf\bitmaps\unsc_stripes_01" },
             { 0x3C0B, @"shaders\shader_templates\_0_0_0_1_1_2_0_0_0_0_0" },
             { 0x3C0C, @"shaders\shader_templates\_0_0_0_1_1_2_0_0_0_0_0" },
             { 0x3C0D, @"shaders\shader_templates\_0_0_0_1_1_2_0_0_0_0_0" },
             { 0x3C0E, @"levels\multi\s3d_turf\bitmaps\d40_reactor_07" },
             { 0x3C0F, @"levels\multi\s3d_turf\bitmaps\d40_reactor_07_zbump" },
-            { 0x3C10, @"levels\multi\s3d_avalanche\bitmaps\material_79" }, //unsure about this (tag is halo online specific)
-            { 0x3C11, @"levels\multi\s3d_avalanche\bitmaps\material_79_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3C12, @"levels\multi\s3d_avalanche\bitmaps\material_80" }, //unsure about this (tag is halo online specific)
-            { 0x3C13, @"levels\multi\s3d_avalanche\bitmaps\material_80_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3C10, @"levels\multi\s3d_turf\bitmaps\unsc_road_01" },
+            { 0x3C11, @"levels\multi\s3d_turf\bitmaps\unsc_road_01_zbump" },
+            { 0x3C12, @"levels\multi\s3d_turf\bitmaps\d40_reactor_05" },
+            { 0x3C13, @"levels\multi\s3d_turf\bitmaps\d40_reactor_05_zbump" },
             { 0x3C14, @"levels\multi\s3d_turf\bitmaps\unsc_panel_07" },
             { 0x3C15, @"levels\multi\s3d_turf\bitmaps\unsc_panel_07_zbump" },
             { 0x3C16, @"levels\multi\s3d_turf\bitmaps\unsc_metal_floor_06" },
@@ -12985,14 +12985,14 @@ namespace TagTool.Commands.Tags
             { 0x3C1D, @"levels\multi\s3d_turf\bitmaps\turf_building_block_09_zbump" },
             { 0x3C1E, @"levels\multi\s3d_turf\bitmaps\unsc_garage_01" },
             { 0x3C1F, @"levels\multi\s3d_turf\bitmaps\unsc_garage_01_zbump" },
-            { 0x3C20, @"levels\multi\s3d_avalanche\bitmaps\material_104" }, //unsure about this (tag is halo online specific)
+            { 0x3C20, @"levels\solo\100_citadel\bitmaps\nature\wispy_snow_area" },
             { 0x3C21, @"shaders\halogram_templates\_6_1_3_0_0_0_1" },
             { 0x3C22, @"shaders\halogram_templates\_6_1_3_0_0_0_1" },
             { 0x3C23, @"shaders\halogram_templates\_6_1_3_0_0_0_1" },
             { 0x3C24, @"levels\multi\deadlock\bitmaps\deadlock_metal_rivets_dif" },
             { 0x3C25, @"levels\multi\deadlock\bitmaps\deadlock_metal_rivets_bump" },
-            { 0x3C26, @"levels\multi\s3d_avalanche\bitmaps\material_110" }, //unsure about this (tag is halo online specific)
-            { 0x3C27, @"levels\multi\s3d_avalanche\bitmaps\material_110_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3C26, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_12" },
+            { 0x3C27, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_12_zbump" },
             { 0x3C28, @"levels\multi\s3d_turf\bitmaps\turf_rooms_01_sf" },
             { 0x3C29, @"levels\multi\s3d_turf\bitmaps\turf_rooms_01" },
             { 0x3C2A, @"levels\multi\s3d_turf\bitmaps\turf_farplane_04_sf" },
@@ -13000,53 +13000,53 @@ namespace TagTool.Commands.Tags
             { 0x3C2C, @"levels\multi\s3d_turf\bitmaps\turf_column_01_zbump" },
             { 0x3C2D, @"levels\multi\s3d_turf\bitmaps\turf_building_block_02" },
             { 0x3C2E, @"levels\multi\s3d_turf\bitmaps\turf_building_block_02_zbump" },
-            { 0x3C2F, @"levels\multi\s3d_avalanche\bitmaps\material_117" }, //unsure about this (tag is halo online specific)
-            { 0x3C30, @"levels\multi\s3d_avalanche\bitmaps\material_117_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3C31, @"levels\multi\s3d_avalanche\bitmaps\material_117_sf" }, //unsure about this (tag is halo online specific)
-            { 0x3C32, @"levels\multi\s3d_avalanche\bitmaps\material_117_a" }, //unsure about this (tag is halo online specific)
+            { 0x3C2F, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_13" }, //unsure about this (tag is halo online specific, removed in MCC)
+            { 0x3C30, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_13_zbump" }, //unsure about this (tag is halo online specific, removed in MCC)
+            { 0x3C31, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_13_sf" }, //unsure about this (tag is halo online specific, removed in MCC)
+            { 0x3C32, @"levels\multi\s3d_avalanche\bitmaps\av_building_block_13_spec" }, //unsure about this (tag is halo online specific, removed in MCC)
             { 0x3C33, @"shaders\shader_templates\_0_1_1_2_1_2_1_0_0_0_0" },
             { 0x3C34, @"shaders\shader_templates\_0_1_1_2_1_2_1_0_0_0_0" },
             { 0x3C35, @"shaders\shader_templates\_0_1_1_2_1_2_1_0_0_0_0" },
             { 0x3C36, @"levels\multi\deadlock\bitmaps\deadlock_concrete_wall_a_dif" },
             { 0x3C37, @"levels\solo\020_base\bitmaps\concrete2_detail_bump" },
             { 0x3C38, @"levels\solo\020_base\bitmaps\hb_concrete_wall_03_diffuse" },
-            { 0x3C39, @"levels\multi\s3d_avalanche\bitmaps\base_markers" }, //unsure about this (tag is halo online specific)
-            { 0x3C3A, @"levels\multi\s3d_avalanche\bitmaps\material_152" }, //unsure about this (tag is halo online specific)
+            { 0x3C39, @"levels\multi\s3d_avalanche\bitmaps\base_marks_02" },
+            { 0x3C3A, @"levels\ui\mainmenu\bitmaps\lig_rays_down_long" },
             { 0x3C3B, @"sound\levels\multi\s3d_diamondback\amb_desert_wind\amb_desert_wind\loop" },
             { 0x3C3C, @"sound\levels\multi\s3d_diamondback\amb_desert_wind\details\amb_wind_desert_sand" },
             { 0x3C3D, @"sound\levels\multi\s3d_diamondback\amb_gen_roomtone\amb_gen_roomtone\loop" },
             { 0x3C3E, @"sound\levels\multi\s3d_diamondback\amb_cave_wind\amb_cave_wind\loop" },
             { 0x3C3F, @"sound\levels\multi\s3d_diamondback\amb_cave_wind_and_drips\amb_cave_wind_and_drips\loop" },
             { 0x3C40, @"sound\levels\multi\s3d_diamondback\amb_cave_wind_and_drips\details\amb_cave_water_drips" },
-            { 0x3C41, @"levels\shared\decorators\outskirts_thick_grass_02\outskirts_thick_grass_02" }, //unsure about this (tag is halo online specific)
-            { 0x3C42, @"levels\multi\s3d_avalanche\decorators\bitmaps\decorator_wildgrass_dry" },
-            { 0x3C43, @"levels\shared\decorators\bitmaps\decorator_wildgrass_dark" },
-            { 0x3C44, @"levels\multi\s3d_avalanche\decorators\flower_yellow\flower_yellow" },
-            { 0x3C45, @"levels\multi\s3d_avalanche\decorators\bitmaps\flower_yellow" },
-            { 0x3C46, @"levels\multi\s3d_avalanche\decorators\grass_clumps\grass_clumps" },
-            { 0x3C47, @"levels\multi\s3d_avalanche\decorators\bitmaps\grass_clumps" },
+            { 0x3C41, @"levels\shared\decorators\outskirts_thick_grass\outskirts_thick_grass" },
+            { 0x3C42, @"levels\multi\s3d_avalanche\decorators\bitmaps\decorator_burntgrass" },
+            { 0x3C43, @"levels\shared\decorators\bitmaps\decorator_burntgrass" },
+            { 0x3C44, @"levels\shared\decorators\foliage\flower_yellow\flower_yellow" },
+            { 0x3C45, @"levels\multi\s3d_avalanche\decorators\av_flower_red\bitmaps\av_flower_red" },
+            { 0x3C46, @"levels\shared\decorators\grass_clumps\grass_clumps" },
+            { 0x3C47, @"levels\shared\decorators\bitmaps\grass_bunch" },
             { 0x3C48, @"levels\shared\decorators\halo_rocks\halo_rocks" },
-            { 0x3C49, @"levels\multi\s3d_avalanche\decorators\bitmaps\halo_rocks" },
-            { 0x3C4A, @"levels\multi\s3d_avalanche\decorators\bitmaps\decorator_rocks_dark" },
-            { 0x3C4B, @"levels\shared\decorators\bitmaps\decorator_rocks_dark" },
-            { 0x3C4C, @"levels\shared\decorators\tree_boundary\tree_boundary" },
-            { 0x3C4D, @"levels\shared\decorators\bitmaps\tree_boundary" },
+            { 0x3C49, @"levels\shared\decorators\bitmaps\decorator_halo_rock" },
+            { 0x3C4A, @"levels\shared\decorators\bitmaps\decorator_rocks_brown" },
+            { 0x3C4B, @"levels\shared\decorators\bitmaps\decorator_rocks_out" },
+            { 0x3C4C, @"levels\shared\decorators\foliage\tree_boundary\tree_boundary" },
+            { 0x3C4D, @"levels\multi\s3d_avalanche\decorators\bitmaps\tree_boundary" },
             { 0x3C4E, @"levels\multi\s3d_avalanche\sky\sky" },
             { 0x3C4F, @"levels\multi\s3d_avalanche\sky\sky" },
-            { 0x3C50, @"levels\multi\s3d_avalanche\sky\shaders\h_skydome_avalanche" },
-            { 0x3C51, @"levels\multi\s3d_avalanche\sky\shaders\h_clouds_top" },
-            { 0x3C52, @"levels\multi\s3d_avalanche\sky\shaders\h_clouds_thin" },
-            { 0x3C53, @"levels\multi\s3d_avalanche\sky\shaders\h_clouds_wide" },
-            { 0x3C54, @"levels\multi\s3d_avalanche\sky\shaders\h_planet" },
-            { 0x3C55, @"levels\multi\s3d_avalanche\sky\bitmaps\sky_avalanche" },
-            { 0x3C56, @"levels\multi\s3d_avalanche\sky\bitmaps\clouds_top" },
-            { 0x3C57, @"levels\multi\s3d_avalanche\sky\bitmaps\clouds_holo" },
-            { 0x3C58, @"levels\multi\s3d_avalanche\sky\bitmaps\clouds_thin" },
+            { 0x3C50, @"levels\multi\s3d_avalanche\shaders\ava_sky_01_holo" },
+            { 0x3C51, @"levels\multi\s3d_avalanche\shaders\sky_element_01" },
+            { 0x3C52, @"levels\multi\s3d_avalanche\shaders\sky_element_2" },
+            { 0x3C53, @"levels\multi\s3d_avalanche\shaders\sky_element_03_holo" },
+            { 0x3C54, @"levels\multi\s3d_avalanche\shaders\planet_01" },
+            { 0x3C55, @"levels\multi\s3d_avalanche\bitmaps\ava_sky_03" },
+            { 0x3C56, @"levels\multi\s3d_avalanche\bitmaps\sky_base_mask_01" },
+            { 0x3C57, @"levels\multi\s3d_avalanche\bitmaps\sky_illum_mask_01" },
+            { 0x3C58, @"levels\multi\s3d_avalanche\bitmaps\sky_element_02" },
             { 0x3C59, @"shaders\shader_templates\_0_0_0_0_0_0_7_1_0_0_0" },
             { 0x3C5A, @"shaders\shader_templates\_0_0_0_0_0_0_7_1_0_0_0" },
             { 0x3C5B, @"shaders\shader_templates\_0_0_0_0_0_0_7_1_0_0_0" },
-            { 0x3C5C, @"levels\multi\s3d_avalanche\sky\bitmaps\clouds_wide" },
-            { 0x3C5D, @"levels\multi\s3d_avalanche\sky\bitmaps\planet" },
+            { 0x3C5C, @"levels\multi\s3d_avalanche\bitmaps\sky_element_hotizont_tile" },
+            { 0x3C5D, @"levels\multi\s3d_avalanche\bitmaps\planet_01" },
             { 0x3C5E, @"objects\levels\multi\snowbound\icicle_10_inch\icicle_10_inch" },
             { 0x3C5F, @"objects\levels\multi\snowbound\icicle_10_inch\icicle_10_inch" },
             { 0x3C60, @"objects\levels\multi\snowbound\icicle_10_inch\icicle_10_inch" },
@@ -13082,9 +13082,9 @@ namespace TagTool.Commands.Tags
             { 0x3C7E, @"sound\materials\havok\crystal_nodes\crystal_nodes_looping\crystal_nodes_looping" },
             { 0x3C7F, @"sound\materials\havok\crystal_nodes\crystal_nodes_looping\crystal_nodes_roll\loop" },
             { 0x3C80, @"sound\materials\havok\crystal_nodes\crystal_nodes_looping\crystal_nodes_roll\alt_loop" },
-            { 0x3C8B, @"objects\levels\multi\s3d_avalanche\terrain_crack_01\terrain_crack_01" },
-            { 0x3C8C, @"objects\levels\multi\s3d_avalanche\terrain_crack_01\terrain_crack_01" },
-            { 0x3C8D, @"objects\levels\multi\s3d_avalanche\terrain_crack_01\terrain_crack_01" },
+            { 0x3C8B, @"objects\levels\multi\s3d_avalanche\crack_01\crack_01" },
+            { 0x3C8C, @"objects\levels\multi\s3d_avalanche\crack_01\crack_01" },
+            { 0x3C8D, @"objects\levels\multi\s3d_avalanche\crack_01\crack_01" },
             { 0x3C8E, @"levels\multi\s3d_avalanche\shaders\terrain_crack_01" },
             { 0x3C8F, @"levels\multi\s3d_avalanche\bitmaps\terrain_crack_01" },
             { 0x3C90, @"shaders\shader_templates\_0_1_1_2_1_1_0_0_0_0_0" },
@@ -13164,11 +13164,11 @@ namespace TagTool.Commands.Tags
             { 0x3CDA, @"objects\levels\multi\s3d_avalanche\avalanche_man_cannon_01\avalanche_man_cannon_01" },
             { 0x3CDB, @"objects\levels\multi\s3d_avalanche\avalanche_man_cannon_01\avalanche_man_cannon_01" },
             { 0x3CDC, @"levels\multi\s3d_turf\shaders\turf_building_block_12" },
-            { 0x3CDD, @"levels\multi\s3d_reactor\shaders\material_88" },
+            { 0x3CDD, @"levels\multi\s3d_turf\shaders\unsc_metal_trim_02" },
             { 0x3CDE, @"levels\multi\s3d_turf\bitmaps\turf_building_block_12" },
             { 0x3CDF, @"levels\multi\s3d_turf\bitmaps\turf_building_block_12_zbump" },
-            { 0x3CE0, @"levels\multi\s3d_reactor\bitmaps\material_88" },
-            { 0x3CE1, @"levels\multi\s3d_reactor\bitmaps\material_88_zbump" },
+            { 0x3CE0, @"levels\multi\s3d_turf\bitmaps\unsc_metal_trim_02" },
+            { 0x3CE1, @"levels\multi\s3d_turf\bitmaps\unsc_metal_trim_02_zbump" },
             { 0x3CE2, @"objects\levels\multi\s3d_avalanche\avalanche_man_cannon_02\avalanche_man_cannon_02" },
             { 0x3CE3, @"objects\levels\multi\s3d_avalanche\avalanche_man_cannon_02\avalanche_man_cannon_02" },
             { 0x3CE4, @"objects\levels\multi\s3d_avalanche\avalanche_man_cannon_02\avalanche_man_cannon_02" },
@@ -13201,19 +13201,19 @@ namespace TagTool.Commands.Tags
             { 0x3CFF, @"shaders\particle_templates\_4_3_0_2_0_1_1_1_0_0" },
             { 0x3D00, @"shaders\particle_templates\_4_3_0_2_0_1_1_1_0_0" },
             { 0x3D01, @"shaders\particle_templates\_4_3_0_2_0_1_1_1_0_0" },
-            { 0x3D02, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_small" },
-            { 0x3D03, @"levels\multi\s3d_edge\fx\edge_volcano\soft_steam_fast_edge" },
+            { 0x3D02, @"levels\multi\s3d_avalanche\fx\av_steam_large\av_steam_large" },
+            { 0x3D03, @"fx\particles\atmospheric\soft_smoke\soft_steam_fast_01" },
             { 0x3D04, @"shaders\particle_templates\_4_3_0_0_1_1_1_0_0_0" },
             { 0x3D05, @"shaders\particle_templates\_4_3_0_0_1_1_1_0_0_0" },
             { 0x3D06, @"shaders\particle_templates\_4_3_0_0_1_1_1_0_0_0" },
-            { 0x3D07, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_small_03" }, //unsure about this (tag is halo online specific)
-            { 0x3D08, @"levels\multi\s3d_avalanche\fx\av_steam_large\av_steam_flat_01" },
-            { 0x3D09, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_large" },
-            { 0x3D0A, @"fx\scenery_fx\steam\steam_fast_medium\steam_fast_medium" },
-            { 0x3D0B, @"fx\particles\atmospheric\soft_smoke\soft_steam_fast_01" },
+            { 0x3D07, @"levels\multi\s3d_avalanche\fx\av_steam_large\av_steam_small" },
+            { 0x3D08, @"levels\multi\s3d_avalanche\fx\av_steam_large\av_haze_small" },
+            { 0x3D09, @"levels\multi\s3d_avalanche\fx\av_steam_large\av_steam_flat_01" },
+            { 0x3D0A, @"levels\multi\s3d_avalanche\fx\av_steam_large\av_steam_tube" },
+            { 0x3D0B, @"fx\particles\atmospheric\soft_smoke\soft_steam_fast" },
             { 0x3D0C, @"sound\visual_fx\steam_med\steam_med" },
             { 0x3D0D, @"sound\visual_fx\steam_med\track1\loop" },
-            { 0x3D0E, @"levels\multi\s3d_avalanche\fx\av_steam_large\av_steam_flat_02" }, //unsure about this (tag is halo online specific)
+            { 0x3D0E, @"levels\multi\s3d_avalanche\fx\av_steam_large\av_steam_slow_light_large" },
             { 0x3D0F, @"fx\particles\atmospheric\soft_smoke\soft_steam_large" },
             { 0x3D10, @"shaders\particle_templates\_4_3_0_2_1_1_1_1_0_0" },
             { 0x3D11, @"shaders\particle_templates\_4_3_0_2_1_1_1_1_0_0" },
@@ -13237,45 +13237,45 @@ namespace TagTool.Commands.Tags
             { 0x3D23, @"sound\levels\multi\s3d_turf\water_flow\water_flow\loop" },
             { 0x3D24, @"levels\multi\s3d_avalanche\fx\mancannon\av_mancannon" },
             { 0x3D25, @"levels\multi\s3d_sky_bridgenew\fx\mancannon\av_mancannon" },
-            { 0x3D26, @"fx\particles\energy\antigrav_light_tall" }, //unsure about this (tag is halo online specific)
-            { 0x3D27, @"levels\multi\s3d_avalanche\fx\waterfall_end_small\waterfall_end_small" }, //unsure about this (tag is halo online specific)
+            { 0x3D26, @"fx\particles\flare\light_beam_flat" },
+            { 0x3D27, @"levels\multi\s3d_avalanche\fx\dripping_waterpipe\waterfall_end_small" },
             { 0x3D28, @"fx\particles\material\water\water_spray" },
             { 0x3D29, @"shaders\particle_templates\_3_10_0_0_0_0_1_0_0_0" },
             { 0x3D2A, @"shaders\particle_templates\_3_10_0_0_0_0_1_0_0_0" },
             { 0x3D2B, @"shaders\particle_templates\_3_10_0_0_0_0_1_0_0_0" },
-            { 0x3D2C, @"levels\multi\s3d_avalanche\decals\stone_edge_diff" }, //unsure about this (tag is halo online specific)
-            { 0x3D2D, @"levels\multi\s3d_avalanche\decals\stone_edge_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3D2E, @"levels\multi\s3d_avalanche\decals\stone_edge_small_diff" }, //unsure about this (tag is halo online specific)
-            { 0x3D2F, @"levels\multi\s3d_avalanche\decals\terrain_streak_01_diff" }, //unsure about this (tag is halo online specific)
-            { 0x3D30, @"levels\multi\s3d_avalanche\decals\terrain_streak_01_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3D31, @"levels\multi\s3d_avalanche\decals\terrain_streak_02_diff" }, //unsure about this (tag is halo online specific)
-            { 0x3D32, @"levels\multi\s3d_avalanche\decals\terrain_streak_03_diff" }, //unsure about this (tag is halo online specific)
-            { 0x3D33, @"levels\multi\s3d_avalanche\decals\terrain_streak_04_diff" }, //unsure about this (tag is halo online specific)
+            { 0x3D2C, @"levels\multi\shrine\bitmaps\sand_decal1_dif" },
+            { 0x3D2D, @"levels\multi\shrine\bitmaps\sand_footsteps_bump" },
+            { 0x3D2E, @"levels\multi\shrine\bitmaps\sand_decal2_dif" },
+            { 0x3D2F, @"levels\multi\shrine\bitmaps\sand_mound_decal_dif" },
+            { 0x3D30, @"levels\multi\shrine\bitmaps\sand_mound_decal_bump" },
+            { 0x3D31, @"levels\shared\decals\stains\bitmaps\water_line_diffused" },
+            { 0x3D32, @"levels\shared\decals\stains\bitmaps\ustdamage_waerleak" },
+            { 0x3D33, @"levels\shared\decals\stains\bitmaps\ustdamage_waterstain" },
             { 0x3D34, @"shaders\decal_templates\_0_2_0_0_0_3" },
             { 0x3D35, @"shaders\decal_templates\_0_2_0_0_0_3" },
             { 0x3D36, @"shaders\decal_templates\_0_2_0_0_0_3" },
-            { 0x3D37, @"levels\multi\s3d_avalanche\decals\terrain_crystal_01_diff" }, //unsure about this (tag is halo online specific) 
-            { 0x3D38, @"levels\multi\s3d_avalanche\decals\terrain_streak_05_diff" }, //unsure about this (tag is halo online specific)
-            { 0x3D39, @"levels\multi\s3d_avalanche\decals\terrain_soil_01_diff" }, //unsure about this (tag is halo online specific)
-            { 0x3D3A, @"levels\multi\s3d_avalanche\decals\terrain_soil_01_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3D37, @"levels\shared\decals\stains\bitmaps\water_spot_diffused" },
+            { 0x3D38, @"levels\shared\decals\stains\bitmaps\ustdamage_old_oil" },
+            { 0x3D39, @"levels\multi\zanzibar\bitmaps\zan_ground_dirt_decal_dif" },
+            { 0x3D3A, @"levels\multi\zanzibar\bitmaps\zan_ground_dirt_decal_bump" },
             { 0x3D3B, @"levels\multi\s3d_avalanche\decals\avalanche_granite_decal" },
             { 0x3D3C, @"levels\multi\s3d_avalanche\decals\avalanche_granite_decal_zbump" },
-            { 0x3D3D, @"levels\shared\decals\nature\rock\decal_terrain_01" }, //unsure about this (tag is halo online specific)
-            { 0x3D3E, @"levels\multi\s3d_avalanche\decals\terrain_soil_02_diff" }, //unsure about this (tag is halo online specific)
-            { 0x3D3F, @"levels\multi\s3d_avalanche\decals\terrain_soil_02_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3D40, @"levels\multi\s3d_avalanche\decals\terrain_soil_03_diff" }, //unsure about this (tag is halo online specific)
-            { 0x3D41, @"levels\multi\s3d_avalanche\decals\terrain_soil_03_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3D42, @"levels\multi\s3d_avalanche\decals\fire_hazard_01_diff" }, //unsure about this (tag is halo online specific)
-            { 0x3D43, @"levels\multi\s3d_avalanche\decals\ramp_hazard_strip_01_diff" }, //unsure about this (tag is halo online specific)
-            { 0x3D44, @"levels\multi\s3d_avalanche\decals\danger_01_diff" }, //unsure about this (tag is halo online specific)
+            { 0x3D3D, @"levels\multi\s3d_avalanche\decals\avalanche_grass_decal" },
+            { 0x3D3E, @"levels\multi\s3d_avalanche\decals\avalanche_ground_decal" },
+            { 0x3D3F, @"levels\multi\s3d_avalanche\decals\avalanche_ground_decal_zbump" },
+            { 0x3D40, @"levels\multi\s3d_avalanche\decals\avalanche_gravel_decal" },
+            { 0x3D41, @"levels\multi\s3d_avalanche\decals\avalanche_gravel_decal_zbump" },
+            { 0x3D42, @"levels\shared\decals\human\industrial\decal_burn_1" },
+            { 0x3D43, @"levels\shared\decals\human\industrial\decal_caution_ramp" },
+            { 0x3D44, @"levels\shared\decals\human\industrial\decal_danger_1" },
             { 0x3D45, @"levels\shared\decals\human\industrial\decal_fire_exit_arrow_1" },
             { 0x3D46, @"levels\shared\decals\human\industrial\decal_hazard_strip_1" },
-            { 0x3D47, @"levels\multi\s3d_avalanche\decals\decal_hazmat_indicator_diff" }, //unsure about this (tag is halo online specific)
+            { 0x3D47, @"levels\shared\decals\human\industrial\decal_hazmat_indicator" },
             { 0x3D48, @"levels\shared\decals\human\industrial\decal_high_pressure" },
-            { 0x3D49, @"levels\multi\s3d_avalanche\decals\decal_danger_construction_diff" }, //unsure about this (tag is halo online specific)
+            { 0x3D49, @"levels\shared\decals\human\industrial\decal_hut_fueder" },
             { 0x3D4A, @"levels\shared\decals\human\industrial\decal_industry_random" },
-            { 0x3D4B, @"levels\multi\s3d_avalanche\decals\decal_danger_magnetic_diff" }, //unsure about this (tag is halo online specific)
-            { 0x3D4C, @"levels\multi\s3d_avalanche\decals\danger_02_diff" }, //unsure about this (tag is halo online specific)
+            { 0x3D4B, @"levels\shared\decals\human\industrial\decal_magnetic_hazard" },
+            { 0x3D4C, @"levels\shared\decals\human\industrial\decal_nohand_1" },
             { 0x3D4D, @"levels\shared\decals\human\industrial\decal_paper_sheet_c" },
             { 0x3D4E, @"levels\multi\s3d_turf\decals\decal_painted_exit_diffuse" },
             { 0x3D4F, @"levels\multi\s3d_turf\decals\decal_painted_variety_0_diffuse" },
@@ -13288,38 +13288,38 @@ namespace TagTool.Commands.Tags
             { 0x3D56, @"levels\multi\s3d_turf\decals\decal_painted_variety_7_diffuse" },
             { 0x3D57, @"levels\multi\s3d_turf\decals\decal_painted_variety_8_diffuse" },
             { 0x3D58, @"levels\multi\s3d_turf\decals\decal_painted_variety_9_diffuse" },
-            { 0x3D59, @"levels\shared\decals\human\industrial\decal_road_stripe_red" }, //unsure about this (tag is halo online specific)
-            { 0x3D5A, @"levels\shared\decals\human\industrial\decal_road_stripe_blue" }, //unsure about this (tag is halo online specific)
-            { 0x3D5B, @"levels\shared\decals\human\industrial\decal_road_stripe_split_blue" }, //unsure about this (tag is halo online specific)
-            { 0x3D5C, @"levels\shared\decals\human\industrial\decal_road_stripe_split_red" }, //unsure about this (tag is halo online specific)
-            { 0x3D5D, @"levels\shared\decals\human\industrial\decal_road_stripe_orange" }, //unsure about this (tag is halo online specific)
-            { 0x3D5E, @"levels\shared\decals\human\industrial\decal_road_stripe_split_orange" }, //unsure about this (tag is halo online specific)
+            { 0x3D59, @"levels\multi\s3d_avalanche\decals\decal_line_red_1" },
+            { 0x3D5A, @"levels\multi\s3d_avalanche\decals\decal_line_blue_1" },
+            { 0x3D5B, @"levels\multi\s3d_avalanche\decals\decal_line_blue_big_01" },
+            { 0x3D5C, @"levels\multi\s3d_avalanche\decals\decal_line_red_big_01" },
+            { 0x3D5D, @"levels\multi\s3d_avalanche\decals\decal_line_orange_1" },
+            { 0x3D5E, @"levels\multi\s3d_avalanche\decals\decal_line_orange_big_01" },
             { 0x3D5F, @"shaders\decal_templates\_0_2_0_1_1_0" },
             { 0x3D60, @"levels\shared\decals\stains\bitmaps\ustdamage_heavycorosion" },
             { 0x3D61, @"levels\shared\decals\stains\bitmaps\ustdamage_heavycorosion_bump" },
             { 0x3D62, @"shaders\decal_templates\_0_2_0_1_1_0" },
             { 0x3D63, @"shaders\decal_templates\_0_2_0_1_1_0" },
-            { 0x3D64, @"levels\multi\s3d_avalanche\decals\terrain_streak_06_diff" }, //unsure about this (tag is halo online specific)
-            { 0x3D65, @"levels\multi\s3d_avalanche\decals\terrain_soil_04_diff" }, //unsure about this (tag is halo online specific)
-            { 0x3D66, @"levels\multi\s3d_avalanche\decals\terrain_soil_04_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3D67, @"levels\multi\s3d_avalanche\decals\terrain_streak_07_diff" }, //unsure about this (tag is halo online specific)
-            { 0x3D68, @"levels\multi\s3d_avalanche\decals\terrain_crack_01_diff" }, //unsure about this (tag is halo online specific)
-            { 0x3D69, @"levels\multi\s3d_avalanche\decals\terrain_crack_01_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3D6A, @"levels\shared\decals\human\industrial\decal_road_stripe_split_edge_blue" }, //unsure about this (tag is halo online specific)
-            { 0x3D6B, @"levels\shared\decals\human\industrial\decal_road_stripe_split_edge_orange" }, //unsure about this (tag is halo online specific)
-            { 0x3D6C, @"levels\shared\decals\human\industrial\decal_road_stripe_split_edge_red" }, //unsure about this (tag is halo online specific)
-            { 0x3D6D, @"levels\shared\decals\human\industrial\decal_station_blue" }, //unsure about this (tag is halo online specific)
-            { 0x3D6E, @"levels\shared\decals\human\industrial\decal_station_red" }, //unsure about this (tag is halo online specific)
-            { 0x3D6F, @"levels\shared\decals\human\industrial\decal_arrow_blue" }, //unsure about this (tag is halo online specific)
-            { 0x3D70, @"levels\shared\decals\human\industrial\decal_arrow_red" }, //unsure about this (tag is halo online specific)
-            { 0x3D71, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_1_blue_diffuse" }, //unsure about this (tag is halo online specific)
-            { 0x3D72, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_1_red_diffuse" }, //unsure about this (tag is halo online specific)
-            { 0x3D73, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_2_blue_diffuse" }, //unsure about this (tag is halo online specific)
-            { 0x3D74, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_2_red_diffuse" }, //unsure about this (tag is halo online specific)
-            { 0x3D75, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_3_blue_diffuse" }, //unsure about this (tag is halo online specific)
-            { 0x3D76, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_3_red_diffuse" }, //unsure about this (tag is halo online specific)
-            { 0x3D77, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_4_blue_diffuse" }, //unsure about this (tag is halo online specific)
-            { 0x3D78, @"levels\multi\s3d_avalanche\decals\decal_painted_variety_4_red_diffuse" }, //unsure about this (tag is halo online specific)
+            { 0x3D64, @"levels\shared\decals\stains\bitmaps\ustdamage_mold" },
+            { 0x3D65, @"levels\multi\s3d_avalanche\decals\avalanche_granitedge_decal" },
+            { 0x3D66, @"levels\multi\s3d_avalanche\decals\avalanche_granitedge_decal_zbump" },
+            { 0x3D67, @"levels\shared\decals\human\damage\rust_streak_long" },
+            { 0x3D68, @"levels\multi\s3d_avalanche\decals\cracked_ground_01" },
+            { 0x3D69, @"levels\multi\s3d_avalanche\decals\cracked_ground_01_zbump" },
+            { 0x3D6A, @"levels\multi\s3d_avalanche\decals\decal_line_blue_end_01" },
+            { 0x3D6B, @"levels\multi\s3d_avalanche\decals\decal_line_orange_end_01" },
+            { 0x3D6C, @"levels\multi\s3d_avalanche\decals\decal_line_red_end_01" },
+            { 0x3D6D, @"levels\multi\s3d_reactor\decals\decal_painted_station_blue" },
+            { 0x3D6E, @"levels\multi\s3d_reactor\decals\decal_painted_station_red" },
+            { 0x3D6F, @"levels\multi\s3d_reactor\decals\decal_painted_arrow_blue" },
+            { 0x3D70, @"levels\multi\s3d_reactor\decals\decal_painted_arrow_red" },
+            { 0x3D71, @"levels\multi\s3d_reactor\decals\decal_painted_variety_1_blue" },
+            { 0x3D72, @"levels\multi\s3d_reactor\decals\decal_painted_variety_1_red" },
+            { 0x3D73, @"levels\multi\s3d_reactor\decals\decal_painted_variety_2_blue" },
+            { 0x3D74, @"levels\multi\s3d_reactor\decals\decal_painted_variety_2_red" },
+            { 0x3D75, @"levels\multi\s3d_reactor\decals\decal_painted_variety_3_blue" },
+            { 0x3D76, @"levels\multi\s3d_reactor\decals\decal_painted_variety_3_red" },
+            { 0x3D77, @"levels\multi\s3d_reactor\decals\decal_painted_variety_4_blue" },
+            { 0x3D78, @"levels\multi\s3d_reactor\decals\decal_painted_variety_4_red" },
             { 0x3D79, @"levels\shared\decals\human\industrial\lethbridge" },
             { 0x3D81, @"objects\levels\multi\snowbound\airlock_field\airlock_field" },
             { 0x3D82, @"objects\levels\multi\snowbound\airlock_field\airlock_field" },
@@ -13371,40 +13371,40 @@ namespace TagTool.Commands.Tags
             { 0x3DDD, @"levels\multi\s3d_edge\s3d_edge_s3d_edge_cubemaps" },
             { 0x3DDE, @"levels\multi\s3d_edge\sky\sky" },
             { 0x3DDF, @"sound\levels\multi\s3d_edge\amb_edge_waterfall\amb_edge_waterfall" },
-            { 0x3DE0, @"levels\multi\s3d_edge\fx\waterfall_stream_base_dam_1\waterfall_stream_base_dam_1" }, //unsure about this (tag is halo online specific)
+            { 0x3DE0, @"levels\solo\010_jungle\fx\waterfall_stream\waterfall_stream_top_wide\waterfall_stream_top_wide" },
             { 0x3DE1, @"levels\multi\s3d_edge\fx\waterfall_stream_base_dam_2\waterfall_stream_base_dam_2" },
-            { 0x3DE2, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_small\waterfall_stream_top_wide_small" }, //unsure about this (tag is halo online specific)
-            { 0x3DE3, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_small\waterfall_stream_top_wide_small_tr" }, //unsure about this (tag is halo online specific)
+            { 0x3DE2, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_large" },
+            { 0x3DE3, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_small" },
             { 0x3DE4, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide\waterfall_stream_top_wide" },
             { 0x3DE5, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_big\waterfall_stream_top_wide_big" },
             { 0x3DE6, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_big\waterfall_stream_top_wide_big_tr" },
-            { 0x3DE7, @"levels\multi\s3d_edge\lights\blue_light_rear" },
-            { 0x3DE8, @"levels\multi\s3d_edge\lights\indoor_blue_01" },
-            { 0x3DE9, @"levels\multi\s3d_edge\lights\red_light_rear" },
+            { 0x3DE7, @"levels\multi\s3d_edge\lights\indoor_blue_01" },
+            { 0x3DE8, @"levels\multi\s3d_edge\lights\red_light_rear" },
+            { 0x3DE9, @"levels\multi\s3d_edge\lights\blue_light_rear" },
             { 0x3DEA, @"levels\multi\s3d_edge\lights\white_light" },
             { 0x3DEB, @"levels\multi\s3d_edge\lights\yellow" },
             { 0x3DEC, @"levels\multi\s3d_edge\lights\yellow_rear" },
-            { 0x3DED, @"levels\shared\decals\nature\rock\decal_terrain_02" }, //unsure about this (tag is halo online specific)
-            { 0x3DEE, @"levels\shared\decals\nature\rock\decal_terrain_03" }, //unsure about this (tag is halo online specific)
-            { 0x3DEF, @"levels\shared\decals\nature\snow\snow_ice_crust_03" }, //unsure about this (tag is halo online specific)
+            { 0x3DED, @"levels\multi\s3d_reactor\decals\reactor_ground_decal" },
+            { 0x3DEE, @"levels\multi\s3d_reactor\decals\reactor_sand" },
+            { 0x3DEF, @"levels\multi\s3d_reactor\decals\snow_hugest_patch" },
             { 0x3DF0, @"levels\shared\decals\nature\algae\algae_wrap" },
-            { 0x3DF1, @"levels\multi\s3d_edge\decals\nature\rock\rock_01" }, //unsure about this (tag is halo online specific)
-            { 0x3DF2, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_large_01" }, //unsure about this (tag is halo online specific)
-            { 0x3DF3, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_large_02" }, //unsure about this (tag is halo online specific)
-            { 0x3DF4, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_small_01" }, //unsure about this (tag is halo online specific)
-            { 0x3DF5, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_medium_01" }, //unsure about this (tag is halo online specific)
-            { 0x3DF6, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_small_02" }, //unsure about this (tag is halo online specific)
-            { 0x3DF7, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_small_03" }, //unsure about this (tag is halo online specific)
+            { 0x3DF1, @"levels\shared\decals\stains\bleed" },
+            { 0x3DF2, @"levels\shared\decals\stains\forerunner_stains\drip_02" },
+            { 0x3DF3, @"levels\shared\decals\stains\forerunner_stains\drip_02x2" },
+            { 0x3DF4, @"levels\shared\decals\stains\forerunner_stains\drip_04" },
+            { 0x3DF5, @"levels\shared\decals\stains\forerunner_stains\drip_03" },
+            { 0x3DF6, @"levels\shared\decals\stains\forerunner_stains\drip_04_big" },
+            { 0x3DF7, @"levels\shared\decals\stains\forerunner_stains\drip_04_huge" },
             { 0x3DF8, @"levels\shared\decals\stains\forerunner_stains\streak_01x2" },
-            { 0x3DF9, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_wide_01" }, //unsure about this (tag is halo online specific)
-            { 0x3DFA, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_wide_02" }, //unsure about this (tag is halo online specific)
-            { 0x3DFB, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_wide_03" }, //unsure about this (tag is halo online specific)
-            { 0x3DFC, @"levels\multi\s3d_edge\decals\nature\algae\moss_patch_01" }, //unsure about this (tag is halo online specific)
-            { 0x3DFD, @"levels\multi\s3d_edge\decals\nature\algae\moss_patch_wide_01" }, //unsure about this (tag is halo online specific)
-            { 0x3DFE, @"levels\multi\s3d_edge\decals\nature\algae\moss_patch_wide_02" }, //unsure about this (tag is halo online specific)
-            { 0x3DFF, @"levels\multi\s3d_edge\decals\nature\algae\moss_patch_wide_03" }, //unsure about this (tag is halo online specific)
-            { 0x3E00, @"levels\multi\s3d_edge\decals\nature\algae\moss_patch_wide_05" }, //unsure about this (tag is halo online specific)
-            { 0x3E01, @"levels\multi\s3d_edge\decals\nature\algae\moss_rock_patch_01" }, //unsure about this (tag is halo online specific)
+            { 0x3DF9, @"levels\shared\decals\stains\forerunner_stains\streak_02" },
+            { 0x3DFA, @"levels\shared\decals\stains\forerunner_stains\streak_02x2" },
+            { 0x3DFB, @"levels\shared\decals\stains\forerunner_stains\streak_02x3" },
+            { 0x3DFC, @"levels\shared\decals\stains\forerunner_stains\water_02" },
+            { 0x3DFD, @"levels\shared\decals\stains\forerunner_stains\water_03" },
+            { 0x3DFE, @"levels\shared\decals\stains\forerunner_stains\water_03_big" },
+            { 0x3DFF, @"levels\shared\decals\stains\forerunner_stains\water_03_huge" },
+            { 0x3E00, @"levels\shared\decals\stains\forerunner_stains\water_03_huge2" },
+            { 0x3E01, @"levels\multi\s3d_reactor\decals\reactor_moss_sm" }, //unsure about this (tag is halo online specific)
             { 0x3E02, @"sound\levels\multi\s3d_edge\amb_cave_dry\amb_cave_dry" },
             { 0x3E03, @"sound\levels\multi\s3d_edge\amb_edge_open_air\amb_edge_open_air" },
             { 0x3E04, @"sound\dsp_effects\reverbs\templates\auditorium" },
@@ -13472,7 +13472,7 @@ namespace TagTool.Commands.Tags
             { 0x3E43, @"levels\multi\s3d_edge\shaders\fr_metal_trim_01" },
             { 0x3E44, @"levels\multi\s3d_edge\shaders\fr_panel_02" },
             { 0x3E45, @"levels\multi\s3d_edge\shaders\fr_holo_banners_02" },
-            { 0x3E46, @"levels\multi\s3d_edge\shaders\fr_panel_unknown" }, //unsure about this (tag is halo online specific, unable to find any equivalent in H3EK)
+            { 0x3E46, @"levels\multi\s3d_edge\shaders\fr_panel_04" }, //unsure about this (tag is halo online specific, removed in MCC)
             { 0x3E47, @"levels\multi\s3d_edge\shaders\fr_arch_04" },
             { 0x3E48, @"levels\multi\s3d_edge\shaders\fr_floortile_02d" },
             { 0x3E49, @"levels\multi\s3d_edge\shaders\edge_serv_glow_vert" },
@@ -13610,9 +13610,9 @@ namespace TagTool.Commands.Tags
             { 0x3ECD, @"levels\multi\s3d_edge\bitmaps\fr_panel_02" },
             { 0x3ECE, @"levels\multi\s3d_edge\bitmaps\fr_panel_02_zbump" },
             { 0x3ECF, @"levels\multi\s3d_edge\bitmaps\fr_holo_banners_02" },
-            { 0x3ED0, @"levels\multi\s3d_edge\bitmaps\fr_panel_unknown" }, //unsure about this (tag is halo online specific, unable to find any equivalent in H3EK)
-            { 0x3ED1, @"levels\multi\s3d_edge\bitmaps\fr_panel_unknown_zbump" }, //unsure about this (tag is halo online specific, unable to find any equivalent in H3EK)
-            { 0x3ED2, @"levels\multi\s3d_edge\bitmaps\fr_panel_unknown_sf" }, //unsure about this (tag is halo online specific, unable to find any equivalent in H3EK)
+            { 0x3ED0, @"levels\multi\s3d_edge\bitmaps\fr_panel_04" }, //unsure about this (tag is halo online specific, removed in MCC)
+            { 0x3ED1, @"levels\multi\s3d_edge\bitmaps\fr_panel_04_zbump" }, //unsure about this (tag is halo online specific, removed in MCC)
+            { 0x3ED2, @"levels\multi\s3d_edge\bitmaps\fr_panel_04_sf" }, //unsure about this (tag is halo online specific, removed in MCC)
             { 0x3ED3, @"levels\multi\s3d_edge\bitmaps\fr_arch_04" },
             { 0x3ED4, @"levels\multi\s3d_edge\bitmaps\fr_arch_04_zbump" },
             { 0x3ED5, @"levels\multi\s3d_edge\bitmaps\fr_floortile_02d" },
@@ -13686,7 +13686,7 @@ namespace TagTool.Commands.Tags
             { 0x3F19, @"shaders\shader_templates\_0_0_0_0_0_0_5_3_0_0_0" },
             { 0x3F1A, @"shaders\shader_templates\_0_0_0_0_0_0_5_3_0_0_0" },
             { 0x3F1B, @"levels\multi\riverworld\sky\bitmaps\clouds_ark" },
-            { 0x3F1C, @"levels\multi\riverworld\sky\bitmaps\clouds_ark_illum" }, //unsure about this (tag is halo online specific)
+            { 0x3F1C, @"levels\multi\riverworld\sky\bitmaps\clouds_ark_spec" }, //unsure about this (tag is halo online specific, removed in MCC)
             { 0x3F1D, @"shaders\shader_templates\_0_0_0_0_0_0_4_3_2_0_0" },
             { 0x3F1E, @"shaders\shader_templates\_0_0_0_0_0_0_4_3_2_0_0" },
             { 0x3F1F, @"shaders\shader_templates\_0_0_0_0_0_0_4_3_2_0_0" },
@@ -13699,7 +13699,7 @@ namespace TagTool.Commands.Tags
             { 0x3F26, @"levels\multi\s3d_edge\sky\bitmaps\forest_clouds_detail" },
             { 0x3F27, @"sound\levels\multi\s3d_edge\amb_edge_waterfall\amb_edge_waterfall" },
             { 0x3F28, @"sound\levels\multi\s3d_edge\amb_edge_waterfall\amb_edge_waterfall\loop" },
-            { 0x3F29, @"levels\multi\s3d_edge\fx\waterfall_stream_base_dam_1\waterfall_stream_base_dam_1" }, //unsure about this (tag is halo online specific)
+            { 0x3F29, @"levels\solo\010_jungle\fx\waterfall_stream\waterfall_stream_top_wide\waterfall_stream_top_wide" },
             { 0x3F2A, @"levels\solo\010_jungle\fx\waterfall_stream\particles\rolling_mist_depth_fade" },
             { 0x3F2B, @"shaders\particle_templates\_1_3_0_0_1_1_1_1_1_0" },
             { 0x3F2C, @"shaders\particle_templates\_1_3_0_0_1_1_1_1_1_0" },
@@ -13709,34 +13709,34 @@ namespace TagTool.Commands.Tags
             { 0x3F30, @"shaders\particle_templates\_1_10_0_0_1_1_1_1_1_0" },
             { 0x3F31, @"shaders\particle_templates\_1_10_0_0_1_1_1_1_1_0" },
             { 0x3F32, @"shaders\particle_templates\_1_10_0_0_1_1_1_1_1_0" },
-            { 0x3F33, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_small\waterfall_stream_top_wide_small" }, //unsure about this (tag is halo online specific)
-            { 0x3F34, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_small\particles\waterfall_stream_top_small_mist" }, //unsure about this (tag is halo online specific)
+            { 0x3F33, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_large" },
+            { 0x3F34, @"levels\multi\s3d_edge\fx\edge_volcano\soft_steam_fast_edge" },
             { 0x3F35, @"shaders\particle_templates\_4_3_0_0_1_1_1_1_0_0" },
             { 0x3F36, @"shaders\particle_templates\_4_3_0_0_1_1_1_1_0_0" },
             { 0x3F37, @"shaders\particle_templates\_4_3_0_0_1_1_1_1_0_0" },
-            { 0x3F38, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_small\waterfall_stream_top_wide_small_tr" }, //unsure about this (tag is halo online specific)
+            { 0x3F38, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_small" },
             { 0x3F39, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide\waterfall_stream_top_wide" },
             { 0x3F3A, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_big\waterfall_stream_top_wide_big" },
             { 0x3F3B, @"levels\multi\s3d_edge\fx\waterfall_stream_top_wide_big\waterfall_stream_top_wide_big_tr" },
             { 0x3F3C, @"levels\solo\010_jungle\fx\waterfall_stream\particles\rolling_mist_depth_fade_sort" },
-            { 0x3F3D, @"levels\shared\decals\nature\rock\decal_terrain_02" }, //unsure about this (tag is halo online specific)
-            { 0x3F3E, @"levels\shared\decals\nature\rock\decal_terrain_02_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x3F3F, @"levels\shared\decals\nature\rock\decal_terrain_03" }, //unsure about this (tag is halo online specific)
-            { 0x3F40, @"levels\shared\decals\nature\rock\decal_terrain_03_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3F3D, @"levels\multi\s3d_reactor\decals\reactor_ground_wet_decal" },
+            { 0x3F3E, @"levels\multi\s3d_reactor\decals\reactor_ground_wet_decal_zbump" },
+            { 0x3F3F, @"levels\multi\s3d_reactor\decals\reactor_sand" },
+            { 0x3F40, @"levels\multi\s3d_reactor\decals\reactor_sand_zbump" },
             { 0x3F41, @"shaders\decal_templates\_0_3_0_1_1_2" },
-            { 0x3F42, @"levels\shared\decals\nature\snow\snow_ice_crust1_02" }, //unsure about this (tag is halo online specific)
+            { 0x3F42, @"levels\multi\s3d_reactor\decals\reactor_snow_01" },
             { 0x3F43, @"levels\shared\decals\nature\snow\snow_ice_crust1_bump" },
             { 0x3F44, @"shaders\decal_templates\_0_3_0_1_1_2" },
             { 0x3F45, @"shaders\decal_templates\_0_3_0_1_1_2" },
-            { 0x3F46, @"levels\multi\s3d_edge\decals\nature\rock\rock_01" }, //unsure about this (tag is halo online specific)
-            { 0x3F47, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_large" }, //unsure about this (tag is halo online specific)
-            { 0x3F48, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_small" }, //unsure about this (tag is halo online specific)
-            { 0x3F49, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_medium" }, //unsure about this (tag is halo online specific)
-            { 0x3F4A, @"levels\multi\s3d_edge\decals\nature\algae\moss_hanging_wide" }, //unsure about this (tag is halo online specific)
-            { 0x3F4B, @"levels\multi\s3d_edge\decals\nature\algae\moss_patch" }, //unsure about this (tag is halo online specific)
-            { 0x3F4C, @"levels\multi\s3d_edge\decals\nature\algae\moss_patch_wide" }, //unsure about this (tag is halo online specific)
-            { 0x3F4D, @"levels\multi\s3d_edge\decals\nature\algae\moss_rock_patch" }, //unsure about this (tag is halo online specific)
-            { 0x3F4E, @"levels\multi\s3d_edge\decals\nature\algae\moss_rock_patch_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x3F46, @"levels\shared\decals\stains\bitmaps\ustdamage_bleed" },
+            { 0x3F47, @"levels\shared\decals\stains\forerunner_stains\bitmaps\drip_02" },
+            { 0x3F48, @"levels\shared\decals\stains\forerunner_stains\bitmaps\drip_04" },
+            { 0x3F49, @"levels\shared\decals\stains\forerunner_stains\bitmaps\drip_03" },
+            { 0x3F4A, @"levels\shared\decals\stains\forerunner_stains\bitmaps\streak_02" },
+            { 0x3F4B, @"levels\shared\decals\stains\forerunner_stains\bitmaps\water_02" },
+            { 0x3F4C, @"levels\shared\decals\stains\forerunner_stains\bitmaps\water_03" },
+            { 0x3F4D, @"levels\multi\s3d_reactor\decals\reactor_moss_decal" },
+            { 0x3F4E, @"levels\multi\s3d_reactor\decals\reactor_moss_decal_zbump" },
             { 0x3F52, @"objects\levels\multi\s3d_edge\holy_light_edge\holy_light_edge" },
             { 0x3F53, @"objects\levels\multi\s3d_edge\holy_light_edge\holy_light_edge" },
             { 0x3F54, @"objects\levels\multi\s3d_edge\holy_light_edge\holy_light_edge" },
@@ -13785,12 +13785,12 @@ namespace TagTool.Commands.Tags
             { 0x3F7F, @"levels\multi\s3d_edge\s3d_edge" },
             { 0x3F80, @"levels\multi\s3d_edge\s3d_edge_lightmap_s3d_edge_16f_lp_array_dxt5" },
             { 0x3F81, @"levels\multi\s3d_edge\s3d_edge_lightmap_s3d_edge_16f_lp_array_intensity_dxt5" },
-            { 0x3F82, @"objects\levels\multi\s3d_reactor\reactor_pelican\reactor_pelican" },
+            { 0x3F82, @"objects\vehicles\pelican\s3d_reactor\s3d_reactor" },
             { 0x3F83, @"levels\multi\s3d_reactor\s3d_reactor" },
             { 0x3F84, @"levels\multi\s3d_reactor\s3d_reactor" },
             { 0x3F85, @"levels\multi\s3d_reactor\s3d_reactor_design" },
             { 0x3F86, @"levels\multi\s3d_reactor\s3d_reactor_s3d_reactor_cubemaps" },
-            { 0x3F87, @"levels\multi\s3d_reactor\wind_s3d_reactor" },
+            { 0x3F87, @"levels\multi\s3d_reactor\wind_reactor" },
             { 0x3F88, @"levels\multi\s3d_reactor\sky\sky" },
             { 0x3F89, @"objects\cinematics\human\frigate\frigate\frigate_shrine" },
             { 0x3F8A, @"objects\levels\multi\s3d_reactor\reactor_flare\reactor_flare" },
@@ -13801,12 +13801,12 @@ namespace TagTool.Commands.Tags
             { 0x3F97, @"sound\levels\multi\s3d_reactor\amb_wind_reactor_hole\amb_wind_reactor_hole" },
             { 0x3F98, @"sound\levels\multi\s3d_reactor\water_splash\water_splash" },
             { 0x3F99, @"sound\levels\multi\s3d_reactor\amb_wind_trees\amb_wind_trees" },
-            { 0x3F9A, @"levels\multi\s3d_reactor\fx\mancannon\av_mancannon" },
-            { 0x3F9B, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_large_02" }, //unsure about this (tag is halo online specific)
-            { 0x3F9C, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_small_02" }, //unsure about this (tag is halo online specific)
+            { 0x3F9A, @"levels\multi\s3d_reactor\fx\mancannon\mancannon" },
+            { 0x3F9B, @"levels\multi\s3d_reactor\fx\reactor_steam\re_steam_flat_01" },
+            { 0x3F9C, @"levels\multi\s3d_reactor\fx\reactor_steam\re_steam_flat_02" },
             { 0x3F9D, @"levels\multi\s3d_turf\fx\sparks_large\sparks_large" },
             { 0x3F9E, @"fx\scenery_fx\smoke\smoke_light_large\smoke_light_large" },
-            { 0x3F9F, @"fx\scenery_fx\flares\light_flashing\light_flashing_voibuilding" },
+            { 0x3F9F, @"fx\scenery_fx\flares\light_steady\light_steady_voibuilding" },
             { 0x3FA0, @"fx\scenery_fx\flares\light_steady\light_steady_yellow" },
             { 0x3FA1, @"fx\scenery_fx\dust\dust_lights_large\dust_lights_large" },
             { 0x3FA2, @"fx\scenery_fx\dust\dust_lights_medium\dust_lights_medium" },
@@ -13814,12 +13814,12 @@ namespace TagTool.Commands.Tags
             { 0x3FA4, @"fx\scenery_fx\steam\steam_slow_light_large\steam_slow_light_large" },
             { 0x3FA5, @"fx\scenery_fx\flares\light_flashing\light_flashing_red" },
             { 0x3FA6, @"levels\multi\s3d_turf\fx\waterfall_end_small\waterfall_end_small" },
-            { 0x3FA7, @"fx\scenery_fx\flares\light_flashing\light_flashing_yellow" },
-            { 0x3FA8, @"levels\multi\s3d_reactor\fx\light_steady\light_steady_blue" }, //unsure about this (tag is halo online specific)
-            { 0x3FA9, @"fx\scenery_fx\flares\light_steady\light_steady_voibuilding" },
+            { 0x3FA7, @"levels\multi\s3d_reactor\fx\light_flashing\light_flashing_red" },
+            { 0x3FA8, @"levels\multi\s3d_reactor\fx\light_flashing\light_flashing_voibuilding" },
+            { 0x3FA9, @"levels\multi\s3d_reactor\fx\light_flashing\light_flashing_yellow" },
             { 0x3FAA, @"levels\solo\020_base\fx\shaft_explosion\door_flames" },
-            { 0x3FAB, @"fx\scenery_fx\smoke\smoke_thick_large\smoke_thick_large" },
-            { 0x3FAC, @"levels\multi\s3d_reactor\lights\reactor_light" },
+            { 0x3FAB, @"levels\solo\070_waste\fx\smoke_thick_large_windy\smoke_thick_large_windy" },
+            { 0x3FAC, @"levels\multi\s3d_reactor\lights\reactor_core" },
             { 0x3FAD, @"levels\multi\s3d_turf\decals\decal_painted_variety_0" },
             { 0x3FAE, @"levels\multi\s3d_turf\decals\decal_painted_variety_1" },
             { 0x3FAF, @"levels\multi\s3d_turf\decals\decal_painted_variety_2" },
@@ -13830,28 +13830,28 @@ namespace TagTool.Commands.Tags
             { 0x3FB4, @"levels\multi\s3d_turf\decals\decal_painted_variety_7" },
             { 0x3FB5, @"levels\multi\s3d_turf\decals\decal_painted_variety_8" },
             { 0x3FB6, @"levels\multi\s3d_turf\decals\decal_painted_variety_9" },
-            { 0x3FB7, @"levels\shared\decals\human\industrial\decal_road_loading_2" },
+            { 0x3FB7, @"levels\shared\decals\human\industrial\decal_road_loading_sm" },
             { 0x3FB8, @"levels\shared\decals\human\damage\crack_long_a" },
             { 0x3FB9, @"levels\shared\decals\human\damage\crack_long_a_big" },
-            { 0x3FBA, @"levels\shared\decals\human\damage\decal_damage_crack" },
-            { 0x3FBB, @"levels\multi\s3d_reactor\decals\terrain_streak_01" }, //unsure about this (tag is halo online specific)
-            { 0x3FBC, @"levels\multi\s3d_reactor\decals\moss_rock_patch" }, //unsure about this (tag is halo online specific)
-            { 0x3FBD, @"levels\multi\s3d_reactor\decals\decal_terrain_02" }, //unsure about this (tag is halo online specific)
-            { 0x3FBE, @"levels\multi\s3d_reactor\decals\decal_hazard_strip_1" }, //unsure about this (tag is halo online specific)
-            { 0x3FBF, @"levels\multi\s3d_reactor\decals\decal_danger_radioactive_1" }, //unsure about this (tag is halo online specific)
-            { 0x3FC0, @"levels\multi\s3d_reactor\decals\decal_gravel_1" }, //unsure about this (tag is halo online specific)
-            { 0x3FC1, @"levels\multi\s3d_reactor\decals\decal_reactor_arrow_left" }, //unsure about this (tag is halo online specific)
-            { 0x3FC2, @"levels\multi\s3d_reactor\decals\decal_painted_variety_2_red" }, //unsure about this (tag is halo online specific)
-            { 0x3FC3, @"levels\multi\s3d_reactor\decals\decal_painted_variety_3_blue" }, //unsure about this (tag is halo online specific)
-            { 0x3FC4, @"levels\multi\s3d_reactor\decals\decal_painted_variety_3_red" }, //unsure about this (tag is halo online specific)
-            { 0x3FC5, @"levels\multi\s3d_reactor\decals\decal_painted_variety_4_blue" }, //unsure about this (tag is halo online specific)
-            { 0x3FC6, @"levels\multi\s3d_reactor\decals\decal_reactor_arrow_right" }, //unsure about this (tag is halo online specific)
-            { 0x3FC7, @"levels\multi\s3d_reactor\decals\decal_arrow_yellow" }, //unsure about this (tag is halo online specific)
-            { 0x3FC8, @"levels\shared\decals\human\industrial\cascade_small" },
-            { 0x3FC9, @"levels\shared\decals\human\industrial\cascade_big" },
+            { 0x3FBA, @"levels\shared\decals\human\damage\decal_damage_crack_dark_big" },
+            { 0x3FBB, @"levels\shared\decals\stains\old_oil_huge" },
+            { 0x3FBC, @"levels\multi\s3d_reactor\decals\reactor_moss" },
+            { 0x3FBD, @"levels\multi\s3d_reactor\decals\reactor_ground_big_decal" },
+            { 0x3FBE, @"levels\multi\s3d_reactor\decals\decal_hazard_strip_1" },
+            { 0x3FBF, @"levels\multi\s3d_reactor\decals\decal_radiation_hazard" },
+            { 0x3FC0, @"levels\multi\s3d_reactor\decals\reactor_road_decal" },
+            { 0x3FC1, @"levels\multi\s3d_reactor\decals\decal_painted_reactor_core" },
+            { 0x3FC2, @"levels\multi\s3d_reactor\decals\decal_painted_variety_2_red" },
+            { 0x3FC3, @"levels\multi\s3d_reactor\decals\decal_painted_variety_3_blue" },
+            { 0x3FC4, @"levels\multi\s3d_reactor\decals\decal_painted_variety_3_red" },
+            { 0x3FC5, @"levels\multi\s3d_reactor\decals\decal_painted_variety_4_blue" },
+            { 0x3FC6, @"levels\multi\s3d_reactor\decals\decal_painted_reactor_core_02" },
+            { 0x3FC7, @"levels\multi\s3d_reactor\decals\decal_painted_arrow_orange" },
+            { 0x3FC8, @"levels\shared\decals\human\industrial\cascade_big" },
+            { 0x3FC9, @"levels\shared\decals\human\industrial\cascade_small" },
             { 0x3FCA, @"levels\shared\decals\human\industrial\ncc_big" },
             { 0x3FCB, @"levels\shared\decals\human\industrial\ncc_small" },
-            { 0x3FCC, @"levels\multi\s3d_reactor\decals\decal_terrain_03" }, //unsure about this (tag is halo online specific)
+            { 0x3FCC, @"levels\multi\s3d_reactor\decals\reactor_sand_02" },
             { 0x3FCD, @"sound\levels\multi\s3d_reactor\amb_wind_mountains\amb_wind_mountains" },
             { 0x3FCE, @"sound\dsp_effects\reverbs\templates\room" },
             { 0x3FCF, @"sound\levels\multi\s3d_reactor\amb_interior_room_small\amb_interior_room_small" },
@@ -13862,83 +13862,83 @@ namespace TagTool.Commands.Tags
             { 0x3FD4, @"objects\gear\human\military\barricade_small\barricade_small" },
             { 0x3FD5, @"objects\gear\human\military\h_ammo_crate_sm\h_ammo_crate_sm" },
             { 0x3FD6, @"objects\gear\human\military\h_ammo_crate_lg\h_ammo_crate_lg" },
-            { 0x3FD7, @"objects\characters\ambient_life\lod_pelican" },
-            { 0x3FD8, @"objects\characters\ambient_life\lod_hornet" },
+            { 0x3FD7, @"objects\characters\ambient_life\pelican_flock" },
+            { 0x3FD8, @"objects\characters\ambient_life\hornet_flock" },
             { 0x3FD9, @"objects\characters\ambient_life\lod_pelican\lod_pelican" },
             { 0x3FDA, @"objects\characters\ambient_life\lod_hornet\lod_hornet" },
-            { 0x3FDB, @"levels\multi\s3d_reactor\sky\s3d_reactor" },
+            { 0x3FDB, @"levels\multi\s3d_reactor\sky\reactor" },
             { 0x3FDC, @"levels\multi\s3d_reactor\s3d_reactor" },
             { 0x3FDD, @"levels\multi\s3d_reactor\s3d_reactor_faux_lightmap" },
-            { 0x3FDE, @"levels\multi\s3d_reactor\shaders\material_4" }, //unsure about this (tag is halo online specific)
+            { 0x3FDE, @"levels\multi\s3d_reactor\shaders\reactor_building_block_01" },
             { 0x3FDF, @"levels\dlc\docks\shaders\concrete\broken_concrete" },
             { 0x3FE0, @"levels\solo\020_base\shaders\hb_concrete_wall_grey" },
-            { 0x3FE1, @"levels\multi\s3d_reactor\shaders\material_55" }, //unsure about this (tag is halo online specific)
+            { 0x3FE1, @"levels\solo\020_base\shaders\hb_metal_painted_red_rail" },
             { 0x3FE2, @"levels\solo\020_base\shaders\hb_concrete_wall_03" },
-            { 0x3FE3, @"levels\multi\s3d_reactor\shaders\material_76" }, //unsure about this (tag is halo online specific)
-            { 0x3FE4, @"levels\multi\s3d_reactor\shaders\material_107" }, //unsure about this (tag is halo online specific)
-            { 0x3FE5, @"levels\multi\s3d_reactor\shaders\material_113" }, //unsure about this (tag is halo online specific)
-            { 0x3FE6, @"levels\multi\s3d_reactor\shaders\material_86" }, //unsure about this (tag is halo online specific)
-            { 0x3FE7, @"levels\multi\s3d_reactor\shaders\material_159" }, //unsure about this (tag is halo online specific)
-            { 0x3FE8, @"levels\multi\s3d_reactor\shaders\material_114" }, //unsure about this (tag is halo online specific)
-            { 0x3FE9, @"levels\multi\s3d_reactor\shaders\material_7" }, //unsure about this (tag is halo online specific)
-            { 0x3FEA, @"levels\multi\s3d_reactor\shaders\material_104" }, //unsure about this (tag is halo online specific)
-            { 0x3FEB, @"levels\multi\s3d_reactor\shaders\material_174" }, //unsure about this (tag is halo online specific)
-            { 0x3FEC, @"levels\multi\s3d_reactor\shaders\material_175" }, //unsure about this (tag is halo online specific)
-            { 0x3FED, @"levels\multi\s3d_reactor\shaders\material_176" }, //unsure about this (tag is halo online specific)
+            { 0x3FE3, @"levels\multi\s3d_reactor\shaders\reactor_building_block_02" },
+            { 0x3FE4, @"levels\multi\s3d_turf\shaders\turf_box_05" },
+            { 0x3FE5, @"levels\dlc\bunkerworld\shaders\bunker_tech_bank" },
+            { 0x3FE6, @"levels\multi\s3d_reactor\shaders\re_glass_floor_01" },
+            { 0x3FE7, @"levels\multi\s3d_reactor\shaders\reactor_building_block_06_02" },
+            { 0x3FE8, @"levels\multi\s3d_reactor\shaders\reactor_building_block_07" },
+            { 0x3FE9, @"levels\multi\s3d_reactor\shaders\reactor_building_block_03" },
+            { 0x3FEA, @"levels\multi\s3d_reactor\shaders\reactor_building_block_05" },
+            { 0x3FEB, @"levels\multi\s3d_reactor\shaders\reactor_ground_far_blend" },
+            { 0x3FEC, @"levels\multi\s3d_reactor\shaders\reactor_ground_blend" },
+            { 0x3FED, @"levels\multi\s3d_reactor\shaders\re_road_01" },
             { 0x3FEE, @"levels\multi\s3d_turf\shaders\unsc_ship_14" },
-            { 0x3FEF, @"levels\multi\s3d_reactor\shaders\material_22" }, //unsure about this (tag is halo online specific)
-            { 0x3FF0, @"levels\multi\s3d_reactor\shaders\material_24" }, //unsure about this (tag is halo online specific)
-            { 0x3FF1, @"levels\multi\s3d_reactor\shaders\material_25" }, //unsure about this (tag is halo online specific)
-            { 0x3FF2, @"levels\multi\s3d_reactor\shaders\material_46" }, //unsure about this (tag is halo online specific)
-            { 0x3FF3, @"levels\multi\s3d_reactor\shaders\material_47" }, //unsure about this (tag is halo online specific)
+            { 0x3FEF, @"levels\multi\s3d_turf\shaders\unsc_trim_01" },
+            { 0x3FF0, @"levels\multi\s3d_reactor\shaders\reactor_ceiling_01" },
+            { 0x3FF1, @"levels\multi\s3d_reactor\shaders\reactor_ceiling_02" },
+            { 0x3FF2, @"levels\multi\s3d_reactor\sky\shaders\lig_ray_cone3_holo" },
+            { 0x3FF3, @"levels\multi\s3d_reactor\sky\shaders\box_glow_green" },
             { 0x3FF4, @"levels\multi\s3d_turf\shaders\turf_fabric_02" },
             { 0x3FF5, @"levels\multi\s3d_turf\shaders\turf_box_03" },
             { 0x3FF6, @"levels\multi\s3d_turf\shaders\turf_building_block_14" },
-            { 0x3FF7, @"levels\multi\s3d_reactor\shaders\material_70" }, //unsure about this (tag is halo online specific)
+            { 0x3FF7, @"levels\multi\s3d_reactor\sky\shaders\box_glow" },
             { 0x3FF8, @"levels\multi\s3d_turf\shaders\unsc_panel_indus_03" },
-            { 0x3FF9, @"levels\multi\s3d_reactor\shaders\material_91" }, //unsure about this (tag is halo online specific)
-            { 0x3FFA, @"levels\multi\s3d_reactor\shaders\material_103" }, //unsure about this (tag is halo online specific)
+            { 0x3FF9, @"levels\multi\s3d_turf\shaders\unsc_metal_frigate_01" },
+            { 0x3FFA, @"levels\multi\s3d_reactor\shaders\reactor_building_block_04" },
             { 0x3FFB, @"levels\multi\s3d_turf\shaders\turf_metal_05" },
-            { 0x3FFC, @"levels\multi\s3d_reactor\shaders\material_109" }, //unsure about this (tag is halo online specific)
-            { 0x3FFD, @"levels\multi\s3d_reactor\shaders\material_110" }, //unsure about this (tag is halo online specific)
-            { 0x3FFE, @"levels\multi\s3d_reactor\shaders\material_115" }, //unsure about this (tag is halo online specific)
+            { 0x3FFC, @"levels\ui\mainmenu\shaders\unsc_panel_21" },
+            { 0x3FFD, @"levels\ui\mainmenu\shaders\d40_hangar_12" },
+            { 0x3FFE, @"levels\multi\s3d_reactor\shaders\reactor_holo_01" },
             { 0x3FFF, @"levels\multi\s3d_turf\shaders\turf_air_ducts_01" },
             { 0x4000, @"levels\solo\040_voi\shaders\metals\metal_l_generic_boltedge" },
             { 0x4001, @"levels\solo\040_voi\shaders\metals\out_big_pipe_dirty" },
             { 0x4002, @"levels\solo\040_voi\shaders\metals\metal_workertown_building_bits_a" },
             { 0x4003, @"levels\solo\040_voi\shaders\metals\metal_rustbucket_b" },
-            { 0x4004, @"levels\multi\s3d_reactor\shaders\material_138" }, //unsure about this (tag is halo online specific)
-            { 0x4005, @"levels\multi\s3d_reactor\shaders\material_139" }, //unsure about this (tag is halo online specific)
-            { 0x4006, @"levels\multi\s3d_reactor\shaders\material_140" }, //unsure about this (tag is halo online specific)
-            { 0x4007, @"levels\multi\s3d_reactor\shaders\material_141" }, //unsure about this (tag is halo online specific)
-            { 0x4008, @"levels\multi\s3d_reactor\shaders\material_142" }, //unsure about this (tag is halo online specific)
+            { 0x4004, @"levels\multi\s3d_reactor\shaders\reactor_water_01" },
+            { 0x4005, @"levels\multi\s3d_reactor\shaders\reactor_far_blend_02" },
+            { 0x4006, @"levels\multi\s3d_reactor\shaders\s3d_reactor_gray" },
+            { 0x4007, @"levels\multi\s3d_reactor\shaders\reactor_far_blend_01" },
+            { 0x4008, @"levels\multi\s3d_reactor\shaders\reactor_middle_blend_01" },
             { 0x4009, @"levels\multi\s3d_turf\shaders\turf_farplane_01" },
-            { 0x400A, @"levels\multi\s3d_reactor\shaders\material_152" }, //unsure about this (tag is halo online specific)
-            { 0x400B, @"levels\multi\s3d_reactor\shaders\material_157" }, //unsure about this (tag is halo online specific)
-            { 0x400C, @"levels\multi\s3d_reactor\shaders\material_163" }, //unsure about this (tag is halo online specific)
-            { 0x400D, @"levels\multi\s3d_reactor\shaders\material_166" }, //unsure about this (tag is halo online specific)
-            { 0x400E, @"levels\multi\s3d_reactor\shaders\material_169" }, //unsure about this (tag is halo online specific)
-            { 0x400F, @"levels\multi\s3d_reactor\shaders\material_177" }, //unsure about this (tag is halo online specific)
-            { 0x4010, @"levels\multi\s3d_reactor\shaders\material_180" }, //unsure about this (tag is halo online specific)
-            { 0x4011, @"levels\multi\s3d_reactor\shaders\material_181" }, //unsure about this (tag is halo online specific)
-            { 0x4012, @"levels\multi\s3d_reactor\shaders\material_182" }, //unsure about this (tag is halo online specific)
-            { 0x4013, @"levels\multi\s3d_reactor\shaders\material_183" }, //unsure about this (tag is halo online specific)
-            { 0x4014, @"levels\multi\s3d_reactor\shaders\material_184" }, //unsure about this (tag is halo online specific)
-            { 0x4015, @"levels\multi\s3d_reactor\shaders\material_185" }, //unsure about this (tag is halo online specific)
-            { 0x4016, @"levels\multi\s3d_reactor\shaders\material_186" }, //unsure about this (tag is halo online specific)
+            { 0x400A, @"levels\multi\s3d_reactor\shaders\unsc_metal_floor_06_y" },
+            { 0x400B, @"levels\multi\s3d_reactor\shaders\red" },
+            { 0x400C, @"levels\multi\s3d_reactor\shaders\reactor_building_block_06_01" },
+            { 0x400D, @"levels\multi\s3d_reactor\shaders\reactor_building_block_09" },
+            { 0x400E, @"levels\multi\zanzibar\shaders\zan_fence_chainlink" },
+            { 0x400F, @"levels\multi\s3d_reactor\shaders\re_water_pool" },
+            { 0x4010, @"levels\multi\s3d_reactor\sky\shaders\box_glow_greeny" },
+            { 0x4011, @"levels\multi\s3d_reactor\sky\shaders\box_glow_yellow" },
+            { 0x4012, @"levels\multi\s3d_reactor\sky\shaders\box_glow_red" },
+            { 0x4013, @"levels\multi\s3d_reactor\sky\shaders\box_glow_blue" },
+            { 0x4014, @"levels\multi\s3d_reactor\sky\shaders\box_glow_bright" },
+            { 0x4015, @"levels\multi\s3d_reactor\sky\shaders\box_glow_beige" },
+            { 0x4016, @"levels\multi\s3d_reactor\shaders\water_pool_glow_01" },
             { 0x4017, @"levels\multi\s3d_reactor\decorators\halo_rocks\halo_rocks" },
-            { 0x4018, @"levels\multi\s3d_reactor\decorators\outskirts_thick_grass_1\outskirts_thick_grass_1" },
+            { 0x4018, @"levels\multi\s3d_reactor\decorators\outskirts_thick_grass\outskirts_thick_grass_cheap" },
             { 0x4019, @"levels\multi\s3d_reactor\decorators\tree_boundary\tree_boundary" },
-            { 0x401A, @"levels\multi\s3d_reactor\decorators\pine_tree_dead\pine_tree_dead" },
-            { 0x401B, @"levels\multi\s3d_reactor\decorators\pine_tree\pine_tree" },
-            { 0x401C, @"levels\multi\s3d_reactor\decorators\pine_tree_dry\pine_tree_dry" },
-            { 0x401D, @"levels\multi\s3d_reactor\decorators\outskirts_thick_grass_2\outskirts_thick_grass_2" },
+            { 0x401A, @"levels\multi\s3d_reactor\decorators\pine_tree_died\pine_tree_died" },
+            { 0x401B, @"levels\multi\s3d_reactor\decorators\pine_tree_green\pine_tree_green" },
+            { 0x401C, @"levels\multi\s3d_reactor\decorators\pine_tree_yellow\pine_tree_yellow" },
+            { 0x401D, @"levels\multi\s3d_reactor\decorators\outskirts_thick_grass\grass_small" },
             { 0x401E, @"levels\shared\decorators\debris_metal_nondescript\debris_metal_nondescript" },
-            { 0x401F, @"levels\shared\decorators\cement\cement_base" },
+            { 0x401F, @"levels\multi\s3d_reactor\decorators\cement\base_cement" },
             { 0x4020, @"levels\shared\decorators\cinderblocks\cinderblocks" },
-            { 0x4021, @"levels\multi\s3d_reactor\decorators\unsc_panel" },
-            { 0x4022, @"levels\multi\s3d_reactor\bitmaps\material_4" }, //unsure about this (tag is halo online specific)
-            { 0x4023, @"levels\multi\s3d_reactor\bitmaps\material_4_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x4021, @"levels\multi\s3d_reactor\decorators\bulletin_board\bulletin_board" },
+            { 0x4022, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_01" },
+            { 0x4023, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_01_zbump" },
             { 0x4024, @"levels\dlc\ghosttown\bitmaps\broken_concrete" },
             { 0x4025, @"levels\multi\shrine\bitmaps\stone_edge2_bump" },
             { 0x4026, @"levels\solo\030_outskirts\bitmaps\concrete_pipes\out_pipe_detailbump" },
@@ -13959,51 +13959,51 @@ namespace TagTool.Commands.Tags
             { 0x4035, @"shaders\shader_templates\_0_1_0_1_7_0_0_0_0_0_0" },
             { 0x4036, @"shaders\shader_templates\_0_1_0_1_7_0_0_0_0_0_0" },
             { 0x4037, @"shaders\shader_templates\_0_1_0_1_7_0_0_0_0_0_0" },
-            { 0x4038, @"levels\multi\s3d_reactor\bitmaps\material_76" }, //unsure about this (tag is halo online specific)
-            { 0x4039, @"levels\multi\s3d_reactor\bitmaps\material_76_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x403A, @"levels\multi\s3d_reactor\bitmaps\material_107" }, //unsure about this (tag is halo online specific)
-            { 0x403B, @"levels\multi\s3d_reactor\bitmaps\material_107_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x403C, @"levels\multi\s3d_reactor\bitmaps\material_113" }, //unsure about this (tag is halo online specific)
-            { 0x403D, @"levels\multi\s3d_reactor\bitmaps\material_113_detail" }, //unsure about this (tag is halo online specific)
-            { 0x403E, @"levels\multi\s3d_reactor\bitmaps\material_113_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x403F, @"levels\multi\s3d_reactor\bitmaps\material_113_sf" }, //unsure about this (tag is halo online specific)
+            { 0x4038, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_02" },
+            { 0x4039, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_02_zbump" },
+            { 0x403A, @"levels\multi\s3d_turf\bitmaps\turf_box_05" },
+            { 0x403B, @"levels\multi\s3d_turf\bitmaps\turf_box_05_zbump" },
+            { 0x403C, @"levels\dlc\bunkerworld\bitmaps\bunker_tech_bank_diffuse" },
+            { 0x403D, @"levels\dlc\bunkerworld\bitmaps\z_metal_detail" },
+            { 0x403E, @"levels\dlc\bunkerworld\bitmaps\bunker_tech_bank_bump" },
+            { 0x403F, @"levels\dlc\bunkerworld\bitmaps\bunker_tech_bank_illum" },
             { 0x4040, @"shaders\shader_templates\_0_1_0_1_2_2_2_0_0_0_0" },
             { 0x4041, @"shaders\shader_templates\_0_1_0_1_2_2_2_0_0_0_0" },
             { 0x4042, @"shaders\shader_templates\_0_1_0_1_2_2_2_0_0_0_0" },
-            { 0x4043, @"levels\multi\s3d_reactor\bitmaps\material_159" }, //unsure about this (tag is halo online specific)
-            { 0x4044, @"levels\multi\s3d_reactor\bitmaps\material_159_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x4045, @"levels\multi\s3d_reactor\bitmaps\material_114" }, //unsure about this (tag is halo online specific)
-            { 0x4046, @"levels\multi\s3d_reactor\bitmaps\material_114_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x4047, @"levels\multi\s3d_reactor\bitmaps\material_7" }, //unsure about this (tag is halo online specific)
-            { 0x4048, @"levels\multi\s3d_reactor\bitmaps\material_7_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x4049, @"levels\multi\s3d_reactor\bitmaps\material_104" }, //unsure about this (tag is halo online specific)
-            { 0x404A, @"levels\multi\s3d_reactor\bitmaps\material_104_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x404B, @"levels\multi\s3d_reactor\bitmaps\terrain_detail_1" }, //unsure about this (tag is halo online specific)
-            { 0x404C, @"levels\multi\s3d_reactor\bitmaps\terrain_blend_mask" }, //unsure about this (tag is halo online specific)
-            { 0x404D, @"levels\multi\s3d_reactor\bitmaps\terrain_height" }, //unsure about this (tag is halo online specific)
-            { 0x404E, @"levels\multi\s3d_reactor\bitmaps\terrain_detail_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x404F, @"levels\multi\s3d_reactor\bitmaps\terrain_snow" }, //unsure about this (tag is halo online specific)
-            { 0x4050, @"levels\multi\s3d_reactor\bitmaps\terrain_snow_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x4051, @"levels\multi\s3d_reactor\bitmaps\terrain_soil_1" }, //unsure about this (tag is halo online specific)
-            { 0x4052, @"levels\multi\s3d_reactor\bitmaps\terrain_soil_1_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x4053, @"levels\multi\s3d_reactor\bitmaps\terrain_detail_2" }, //unsure about this (tag is halo online specific)
-            { 0x4054, @"levels\multi\s3d_reactor\bitmaps\terrain_rock_1" }, //unsure about this (tag is halo online specific)
-            { 0x4055, @"levels\multi\s3d_reactor\bitmaps\terrain_rock_1_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x4056, @"levels\multi\s3d_reactor\bitmaps\material_176" }, //unsure about this (tag is halo online specific)
-            { 0x4057, @"levels\multi\s3d_reactor\bitmaps\material_176_zbump" }, //unsure about this (tag is halo online specific)
+            { 0x4043, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_06_02" },
+            { 0x4044, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_06_02_zbump" },
+            { 0x4045, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_07" },
+            { 0x4046, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_07_zbump" },
+            { 0x4047, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_03" },
+            { 0x4048, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_03_zbump" },
+            { 0x4049, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_05" },
+            { 0x404A, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_05_zbump" },
+            { 0x404B, @"levels\multi\s3d_reactor\bitmaps\reactor_ground_01" },
+            { 0x404C, @"levels\multi\s3d_reactor\bitmaps\reactor_ground_blend" },
+            { 0x404D, @"levels\multi\s3d_reactor\bitmaps\reactor_ground_blend_overlay" },
+            { 0x404E, @"levels\multi\s3d_reactor\bitmaps\reactor_ground_01_zbump" },
+            { 0x404F, @"levels\multi\s3d_reactor\bitmaps\reactor_snow_01" },
+            { 0x4050, @"levels\multi\s3d_reactor\bitmaps\reactor_snow_01_zbump" },
+            { 0x4051, @"levels\multi\s3d_reactor\bitmaps\reactor_ground_01_wet" },
+            { 0x4052, @"levels\multi\s3d_reactor\bitmaps\reactor_ground_01_wet_zbump" },
+            { 0x4053, @"levels\multi\s3d_reactor\bitmaps\reactor_ground_03" },
+            { 0x4054, @"levels\multi\s3d_reactor\bitmaps\reactor_asphalt_02" },
+            { 0x4055, @"levels\multi\s3d_reactor\bitmaps\reactor_asphalt_02_zbump" },
+            { 0x4056, @"levels\multi\s3d_reactor\bitmaps\re_road_01" },
+            { 0x4057, @"levels\multi\s3d_reactor\bitmaps\re_road_01_zbump" },
             { 0x4058, @"levels\multi\s3d_turf\bitmaps\unsc_ship_14" },
             { 0x4059, @"levels\multi\s3d_turf\bitmaps\unsc_ship_14_zbump" },
-            { 0x405A, @"levels\multi\s3d_reactor\bitmaps\material_22" }, //unsure about this (tag is halo online specific)
+            { 0x405A, @"levels\multi\s3d_turf\bitmaps\unsc_trim_01" },
             { 0x405B, @"levels\multi\s3d_turf\bitmaps\unsc_trim_01_zbump" },
-            { 0x405C, @"levels\multi\s3d_reactor\bitmaps\material_24" }, //unsure about this (tag is halo online specific)
-            { 0x405D, @"levels\multi\s3d_reactor\bitmaps\material_24_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x405E, @"levels\multi\s3d_reactor\bitmaps\material_25" }, //unsure about this (tag is halo online specific)
-            { 0x405F, @"levels\multi\s3d_reactor\bitmaps\material_25_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x4060, @"levels\multi\s3d_reactor\bitmaps\lights\light_beam_1" }, //unsure about this (tag is halo online specific)
+            { 0x405C, @"levels\multi\s3d_reactor\bitmaps\reactor_ceiling_01" },
+            { 0x405D, @"levels\multi\s3d_reactor\bitmaps\reactor_ceiling_01_zbump" },
+            { 0x405E, @"levels\multi\s3d_reactor\bitmaps\reactor_ceiling_02" },
+            { 0x405F, @"levels\multi\s3d_reactor\bitmaps\reactor_ceiling_02_zbump" },
+            { 0x4060, @"levels\multi\s3d_reactor\sky\bitmaps\lig_ray_cone3" },
             { 0x4061, @"shaders\halogram_templates\_2_1_1_0_0_0_0" },
             { 0x4062, @"shaders\halogram_templates\_2_1_1_0_0_0_0" },
             { 0x4063, @"shaders\halogram_templates\_2_1_1_0_0_0_0" },
-            { 0x4064, @"levels\multi\s3d_reactor\bitmaps\lights\light_big" }, //unsure about this (tag is halo online specific)
+            { 0x4064, @"levels\multi\s3d_reactor\sky\bitmaps\box_glow_01_dif" },
             { 0x4065, @"shaders\shader_templates\_0_0_0_0_0_0_4_3_0_0_0" },
             { 0x4066, @"shaders\shader_templates\_0_0_0_0_0_0_4_3_0_0_0" },
             { 0x4067, @"shaders\shader_templates\_0_0_0_0_0_0_4_3_0_0_0" },
@@ -14015,30 +14015,30 @@ namespace TagTool.Commands.Tags
             { 0x406D, @"levels\multi\s3d_turf\bitmaps\turf_box_03_zbump" },
             { 0x406E, @"levels\multi\s3d_turf\bitmaps\turf_building_block_14" },
             { 0x406F, @"levels\multi\s3d_turf\bitmaps\turf_building_block_14_zbump" },
-            { 0x4070, @"levels\multi\s3d_reactor\bitmaps\lights\light_small" }, //unsure about this (tag is halo online specific)
+            { 0x4070, @"levels\multi\s3d_reactor\sky\bitmaps\box_glow_01_selfilum" },
             { 0x4071, @"levels\multi\s3d_turf\bitmaps\unsc_panel_indus_03" },
             { 0x4072, @"levels\multi\s3d_turf\bitmaps\unsc_panel_indus_03_zbump" },
-            { 0x4073, @"levels\multi\s3d_reactor\bitmaps\material_91" }, //unsure about this (tag is halo online specific)
-            { 0x4074, @"levels\multi\s3d_reactor\bitmaps\material_91_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x4075, @"levels\multi\s3d_reactor\bitmaps\material_103" }, //unsure about this (tag is halo online specific)
-            { 0x4076, @"levels\multi\s3d_reactor\bitmaps\material_103_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x4077, @"levels\multi\s3d_reactor\bitmaps\material_103_sf" }, //unsure about this (tag is halo online specific)
+            { 0x4073, @"levels\multi\s3d_turf\bitmaps\unsc_metal_frigate_01" },
+            { 0x4074, @"levels\multi\s3d_turf\bitmaps\unsc_metal_frigate_01_zbump" },
+            { 0x4075, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_04" },
+            { 0x4076, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_04_zbump" },
+            { 0x4077, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_04_sf" },
             { 0x4078, @"levels\multi\s3d_turf\bitmaps\turf_metal_05" },
             { 0x4079, @"levels\multi\s3d_turf\bitmaps\turf_metal_05_zbump" },
             { 0x407A, @"levels\multi\s3d_turf\bitmaps\turf_metal_05_sf" },
-            { 0x407B, @"levels\multi\s3d_reactor\bitmaps\material_109" }, //unsure about this (tag is halo online specific)
-            { 0x407C, @"levels\multi\s3d_reactor\bitmaps\material_109_diff" }, //unsure about this (tag is halo online specific)
-            { 0x407D, @"levels\multi\s3d_reactor\bitmaps\material_109_sf" }, //unsure about this (tag is halo online specific)
+            { 0x407B, @"levels\ui\mainmenu\bitmaps\unsc_panel_21_dif" },
+            { 0x407C, @"levels\ui\mainmenu\bitmaps\unsc_panel_21_spec" },
+            { 0x407D, @"levels\ui\mainmenu\bitmaps\unsc_panel_21_sf" },
             { 0x407E, @"shaders\shader_templates\_0_2_1_2_1_2_1_0_0_0_0" },
             { 0x407F, @"shaders\shader_templates\_0_2_1_2_1_2_1_0_0_0_0" },
             { 0x4080, @"shaders\shader_templates\_0_2_1_2_1_2_1_0_0_0_0" },
-            { 0x4081, @"levels\multi\s3d_reactor\bitmaps\material_110_diff" }, //unsure about this (tag is halo online specific)
-            { 0x4082, @"levels\multi\s3d_reactor\bitmaps\material_110" }, //unsure about this (tag is halo online specific)
-            { 0x4083, @"levels\multi\s3d_reactor\bitmaps\material_110_sf" }, //unsure about this (tag is halo online specific)
+            { 0x4081, @"levels\ui\mainmenu\bitmaps\d40_hangar_12_dif" },
+            { 0x4082, @"levels\ui\mainmenu\bitmaps\d40_hangar_12_spec" },
+            { 0x4083, @"levels\ui\mainmenu\bitmaps\d40_hangar_12_zbump" },
             { 0x4084, @"shaders\shader_templates\_0_2_1_2_1_2_0_0_0_0_0" },
             { 0x4085, @"shaders\shader_templates\_0_2_1_2_1_2_0_0_0_0_0" },
             { 0x4086, @"shaders\shader_templates\_0_2_1_2_1_2_0_0_0_0_0" },
-            { 0x4087, @"levels\multi\s3d_reactor\bitmaps\reactor_console_1" }, //unsure about this (tag is halo online specific)
+            { 0x4087, @"levels\multi\s3d_reactor\bitmaps\reactor_holo_01" },
             { 0x4088, @"shaders\halogram_templates\_0_7_1_0_0_1_0" },
             { 0x4089, @"shaders\halogram_templates\_0_7_1_0_0_1_0" },
             { 0x408A, @"shaders\halogram_templates\_0_7_1_0_0_1_0" },
@@ -14064,27 +14064,27 @@ namespace TagTool.Commands.Tags
             { 0x409E, @"shaders\shader_templates\_7_2_0_1_7_2_0_0_0_0_0" },
             { 0x409F, @"shaders\shader_templates\_7_2_0_1_7_2_0_0_0_0_0" },
             { 0x40A0, @"shaders\shader_templates\_7_2_0_1_7_2_0_0_0_0_0" },
-            { 0x40A1, @"levels\multi\s3d_reactor\bitmaps\material_138" }, //unsure about this (tag is halo online specific)
-            { 0x40A2, @"levels\multi\s3d_reactor\bitmaps\terrain_rock_2" }, //unsure about this (tag is halo online specific)
-            { 0x40A3, @"levels\multi\s3d_reactor\bitmaps\terrain_rock_2_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x40A4, @"levels\multi\s3d_reactor\bitmaps\terrain_detail_3" }, //unsure about this (tag is halo online specific)
-            { 0x40A5, @"levels\multi\s3d_reactor\bitmaps\material_139" }, //unsure about this (tag is halo online specific)
-            { 0x40A6, @"levels\multi\s3d_reactor\bitmaps\material_141" }, //unsure about this (tag is halo online specific)
-            { 0x40A7, @"levels\multi\s3d_reactor\bitmaps\material_141_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x40A8, @"levels\multi\s3d_reactor\bitmaps\material_142_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x40A9, @"levels\multi\s3d_reactor\bitmaps\material_142" }, //unsure about this (tag is halo online specific)
+            { 0x40A1, @"levels\multi\s3d_reactor\bitmaps\reactor_water_01" },
+            { 0x40A2, @"levels\multi\s3d_reactor\bitmaps\reactor_far_01" },
+            { 0x40A3, @"levels\multi\s3d_reactor\bitmaps\reactor_far_01_zbump" },
+            { 0x40A4, @"levels\multi\s3d_reactor\bitmaps\reactor_far_blend_01" },
+            { 0x40A5, @"levels\multi\snowbound\bitmaps\snow_blue_icewall" },
+            { 0x40A6, @"levels\multi\s3d_reactor\bitmaps\reactor_rock_03" },
+            { 0x40A7, @"levels\multi\s3d_reactor\bitmaps\reactor_rock_03_zbump" },
+            { 0x40A8, @"levels\multi\s3d_reactor\bitmaps\reactor_middle_01_zbump" },
+            { 0x40A9, @"levels\multi\s3d_reactor\bitmaps\reactor_middle_blend_01" },
             { 0x40AA, @"levels\multi\s3d_turf\bitmaps\turf_farplane_01_dif" },
             { 0x40AB, @"levels\multi\s3d_turf\bitmaps\turf_farplane_01_zbump" },
             { 0x40AC, @"levels\multi\s3d_turf\bitmaps\turf_farplane_01_sf" },
-            { 0x40AD, @"levels\multi\s3d_reactor\bitmaps\material_157" }, //unsure about this (tag is halo online specific)
-            { 0x40AE, @"levels\multi\s3d_reactor\bitmaps\material_163" }, //unsure about this (tag is halo online specific)
-            { 0x40AF, @"levels\multi\s3d_reactor\bitmaps\material_163_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x40B0, @"levels\multi\s3d_reactor\bitmaps\material_166" }, //unsure about this (tag is halo online specific)
-            { 0x40B1, @"levels\multi\s3d_reactor\bitmaps\material_166_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x40B2, @"levels\multi\s3d_reactor\bitmaps\material_169" }, //unsure about this (tag is halo online specific)
-            { 0x40B3, @"levels\multi\s3d_reactor\bitmaps\material_169_zbump" }, //unsure about this (tag is halo online specific)
-            { 0x40B4, @"levels\multi\s3d_reactor\bitmaps\material_169_detail" }, //unsure about this (tag is halo online specific)
-            { 0x40B5, @"levels\multi\s3d_reactor\bitmaps\reactor_reflection_map" }, //unsure about this (tag is halo online specific)
+            { 0x40AD, @"levels\multi\s3d_reactor\bitmaps\base_marks_01" },
+            { 0x40AE, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_06_01" },
+            { 0x40AF, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_06_01_zbump" },
+            { 0x40B0, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_09" },
+            { 0x40B1, @"levels\multi\s3d_reactor\bitmaps\reactor_building_block_09_zbump" },
+            { 0x40B2, @"levels\solo\030_outskirts\bitmaps\fence_dif" },
+            { 0x40B3, @"levels\solo\030_outskirts\bitmaps\fence_bump" },
+            { 0x40B4, @"levels\solo\030_outskirts\bitmaps\out_rust" },
+            { 0x40B5, @"levels\multi\s3d_reactor\bitmaps\reactor_pool_cubemap" },
             { 0x40B6, @"shaders\water_templates\_0_0_1_1_1_0_0_0" },
             { 0x40B7, @"shaders\water_templates\_0_0_1_1_1_0_0_0" },
             { 0x40B8, @"shaders\water_templates\_0_0_1_1_1_0_0_0" },
@@ -14093,59 +14093,59 @@ namespace TagTool.Commands.Tags
             { 0x40BB, @"sound\levels\multi\s3d_reactor\amb_interior_room_small\amb_interior_room_small\loop" },
             { 0x40BC, @"sound\levels\multi\s3d_reactor\amb_interior_reactor\amb_interior_reactor\loop" },
             { 0x40BD, @"sound\levels\multi\s3d_reactor\amb_interior_reactor\details\amb_interior_reactor_groans" },
-            { 0x40BE, @"levels\multi\s3d_reactor\decorators\bitmaps\halo_rocks" },
+            { 0x40BE, @"levels\multi\s3d_reactor\bitmaps\reactor_rock_02_na" },
             { 0x40BF, @"levels\multi\s3d_reactor\decorators\outskirts_thick_grass\outskirts_thick_grass" },
-            { 0x40C0, @"levels\multi\s3d_reactor\decorators\bitmaps\outskirts_thick_grass" },
+            { 0x40C0, @"levels\multi\s3d_reactor\decorators\bitmaps\decorator_deadgrass" },
             { 0x40C1, @"levels\multi\s3d_reactor\decorators\tree_boundary\tree_boundary" },
-            { 0x40C2, @"levels\solo\100_citadel\decorators\pine_tree_snow\pine_tree_snow" },
-            { 0x40C3, @"levels\multi\s3d_reactor\decorators\bitmaps\pine_tree_dead" },
-            { 0x40C4, @"levels\multi\s3d_reactor\decorators\bitmaps\pine_tree" },
-            { 0x40C5, @"levels\multi\s3d_reactor\decorators\bitmaps\pine_tree_dry" },
+            { 0x40C2, @"levels\multi\s3d_reactor\decorators\pine_tree_snow\pine_tree_snow" },
+            { 0x40C3, @"levels\multi\s3d_reactor\bitmaps\deco_pine_tree_died_01" },
+            { 0x40C4, @"levels\multi\s3d_reactor\bitmaps\deco_pine_tree_green_01" },
+            { 0x40C5, @"levels\multi\s3d_reactor\bitmaps\deco_pine_tree_yellow_01" },
             { 0x40C6, @"levels\shared\decorators\debris_metal_nondescript\debris_metal_nondescript" },
             { 0x40C7, @"levels\shared\decorators\bitmaps\debris_metal_nondescript" },
             { 0x40C8, @"levels\shared\decorators\cement\cement" },
             { 0x40C9, @"levels\shared\decorators\bitmaps\broken_concrete" },
             { 0x40CA, @"levels\shared\decorators\cinderblocks\cinderblock" },
             { 0x40CB, @"levels\shared\decorators\bitmaps\mud_temp" },
-            { 0x40CC, @"levels\shared\decorators\bulletin_board\bulletin_board" },
-            { 0x40CD, @"levels\multi\s3d_reactor\decorators\bitmaps\unsc_panel" },
+            { 0x40CC, @"levels\multi\s3d_reactor\decorators\bulletin_board\bulletin_board" },
+            { 0x40CD, @"levels\multi\s3d_reactor\decorators\bitmaps\building_block" },
             { 0x40CE, @"levels\multi\s3d_reactor\sky\sky" },
             { 0x40CF, @"levels\multi\s3d_reactor\sky\sky" },
-            { 0x40D0, @"levels\multi\s3d_reactor\sky\shaders\h_skydome_reactor" },
-            { 0x40D1, @"levels\multi\s3d_reactor\sky\shaders\h_sun" },
-            { 0x40D2, @"levels\multi\s3d_reactor\sky\shaders\h_clouds_01" },
-            { 0x40D3, @"levels\multi\s3d_reactor\sky\shaders\h_clouds_02" },
-            { 0x40D4, @"levels\multi\s3d_reactor\sky\shaders\h_clouds_03" },
-            { 0x40D5, @"levels\multi\s3d_reactor\sky\shaders\h_clouds_04" },
-            { 0x40D6, @"levels\multi\s3d_reactor\sky\shaders\h_clouds_05" },
-            { 0x40D7, @"levels\multi\s3d_reactor\sky\shaders\h_clouds_06" },
-            { 0x40D8, @"levels\multi\s3d_reactor\sky\shaders\h_clouds_07" },
-            { 0x40D9, @"levels\multi\s3d_reactor\sky\shaders\h_clouds_08" },
-            { 0x40DA, @"levels\multi\s3d_reactor\sky\shaders\h_clouds_09" },
-            { 0x40DB, @"levels\multi\s3d_reactor\sky\shaders\h_clouds_10" },
-            { 0x40DC, @"levels\multi\s3d_reactor\sky\shaders\h_clouds_11" },
-            { 0x40DD, @"levels\multi\s3d_reactor\sky\shaders\h_clouds_wisps_01" },
-            { 0x40DE, @"levels\multi\s3d_reactor\sky\shaders\h_clouds_wisps_02" },
-            { 0x40DF, @"levels\multi\s3d_reactor\sky\shaders\h_clouds_wisps_03" },
-            { 0x40E0, @"levels\multi\s3d_reactor\sky\shaders\h_clouds_wide" },
-            { 0x40E1, @"levels\multi\s3d_reactor\sky\shaders\h_clouds_dark" },
-            { 0x40E2, @"levels\multi\s3d_reactor\sky\bitmaps\sky_reactor" },
-            { 0x40E3, @"levels\multi\s3d_reactor\sky\bitmaps\sun" },
+            { 0x40D0, @"levels\multi\s3d_reactor\sky\shaders\reactor_skydome_h" },
+            { 0x40D1, @"levels\multi\s3d_reactor\sky\shaders\sundisk_h" },
+            { 0x40D2, @"levels\multi\s3d_reactor\sky\shaders\clouds_puffy_mid_left_h" },
+            { 0x40D3, @"levels\multi\s3d_reactor\sky\shaders\clouds_puffy_near_left_h" },
+            { 0x40D4, @"levels\multi\s3d_reactor\sky\shaders\clouds_puffy_mid_h" },
+            { 0x40D5, @"levels\multi\s3d_reactor\sky\shaders\clouds_puffy_near_h" },
+            { 0x40D6, @"levels\multi\s3d_reactor\sky\shaders\clouds_puffy_mid_transp_h" },
+            { 0x40D7, @"levels\multi\s3d_reactor\sky\shaders\clouds_puffy_far_h" },
+            { 0x40D8, @"levels\multi\s3d_reactor\sky\shaders\clouds_puffy_far_left_h" },
+            { 0x40D9, @"levels\multi\s3d_reactor\sky\shaders\clouds_puffy_top_h" },
+            { 0x40DA, @"levels\multi\s3d_reactor\sky\shaders\clouds_puffy_far_transp_h" },
+            { 0x40DB, @"levels\multi\s3d_reactor\sky\shaders\clouds_puffy_bright_h" },
+            { 0x40DC, @"levels\multi\s3d_reactor\sky\shaders\clouds_puffy_far_top_h" },
+            { 0x40DD, @"levels\multi\s3d_reactor\sky\shaders\clouds_wispy_add_h" },
+            { 0x40DE, @"levels\multi\s3d_reactor\sky\shaders\clouds_wispy_add_left_h" },
+            { 0x40DF, @"levels\multi\s3d_reactor\sky\shaders\clouds_wispy_h" },
+            { 0x40E0, @"levels\multi\s3d_reactor\sky\shaders\clouds_ark_h" },
+            { 0x40E1, @"levels\multi\s3d_reactor\sky\shaders\clouds_puffy_soft_top_h" },
+            { 0x40E2, @"levels\multi\s3d_reactor\sky\bitmaps\reactor_skydome" },
+            { 0x40E3, @"levels\multi\s3d_reactor\sky\bitmaps\sundisk" },
             { 0x40E4, @"shaders\shader_templates\_0_0_0_0_4_0_1_1_0_0_0" },
             { 0x40E5, @"shaders\shader_templates\_0_0_0_0_4_0_1_1_0_0_0" },
             { 0x40E6, @"shaders\shader_templates\_0_0_0_0_4_0_1_1_0_0_0" },
-            { 0x40E7, @"levels\multi\s3d_reactor\sky\bitmaps\clouds" },
-            { 0x40E8, @"levels\multi\s3d_reactor\sky\bitmaps\clouds_001_holo" },
-            { 0x40E9, @"levels\multi\s3d_reactor\sky\bitmaps\clouds_wisps" },
+            { 0x40E7, @"levels\multi\s3d_reactor\sky\bitmaps\clouds_puffy" },
+            { 0x40E8, @"levels\multi\s3d_reactor\sky\bitmaps\smoke_billow" },
+            { 0x40E9, @"levels\multi\s3d_reactor\sky\bitmaps\clouds_wispy" },
             { 0x40EA, @"shaders\shader_templates\_0_0_0_0_0_0_0_5_0_0_0" },
             { 0x40EB, @"shaders\shader_templates\_0_0_0_0_0_0_0_5_0_0_0" },
             { 0x40EC, @"shaders\shader_templates\_0_0_0_0_0_0_0_5_0_0_0" },
-            { 0x40ED, @"levels\multi\s3d_reactor\sky\bitmaps\clouds_wide" },
-            { 0x40EE, @"levels\multi\s3d_reactor\sky\bitmaps\clouds_002_holo" },
+            { 0x40ED, @"levels\multi\s3d_reactor\sky\bitmaps\clouds_ark" },
+            { 0x40EE, @"levels\multi\s3d_reactor\sky\bitmaps\clouds_altocumulus" },
             { 0x40EF, @"shaders\shader_templates\_7_0_0_0_0_0_1_3_0_0_0" },
             { 0x40F0, @"shaders\shader_templates\_7_0_0_0_0_0_1_3_0_0_0" },
             { 0x40F1, @"shaders\shader_templates\_7_0_0_0_0_0_1_3_0_0_0" },
-            { 0x40F2, @"levels\multi\s3d_reactor\sky\bitmaps\clouds_dark" },
+            { 0x40F2, @"levels\multi\s3d_reactor\sky\bitmaps\clouds_puffy_soft" },
             { 0x40F3, @"objects\cinematics\human\frigate\frigate\frigate_shrine" },
             { 0x40F4, @"objects\cinematics\human\frigate\frigate\frigate" },
             { 0x40F5, @"objects\cinematics\human\frigate\frigate\frigate" },
@@ -14184,53 +14184,53 @@ namespace TagTool.Commands.Tags
             { 0x4116, @"objects\cinematics\human\frigate\bitmaps\frigate_wall_hangar_bump" },
             { 0x4117, @"objects\levels\multi\s3d_reactor\reactor_flare\reactor_flare" },
             { 0x4118, @"objects\levels\multi\s3d_reactor\reactor_flare\reactor_flare" },
-            { 0x4119, @"objects\levels\multi\s3d_reactor\reactor_flare\shaders\reactor_flare_01" },
+            { 0x4119, @"levels\multi\s3d_reactor\shaders\reactor_flashing_light_red" },
             { 0x411A, @"objects\levels\multi\s3d_reactor\reactor_flare_blue\reactor_flare_blue" },
             { 0x411B, @"objects\levels\multi\s3d_reactor\reactor_flare_blue\reactor_flare_blue" },
-            { 0x411C, @"objects\levels\multi\s3d_reactor\reactor_flare_blue\shaders\flare_blue_01" },
+            { 0x411C, @"levels\multi\s3d_reactor\shaders\reactor_flashing_light_blue" },
             { 0x411D, @"objects\levels\multi\s3d_reactor\reactor_flare_yellow\reactor_flare_yellow" },
             { 0x411E, @"objects\levels\multi\s3d_reactor\reactor_flare_yellow\reactor_flare_yellow" },
-            { 0x411F, @"objects\levels\multi\s3d_reactor\reactor_flare_yellow\shaders\flare_yellow_01" },
-            { 0x4149, @"levels\multi\s3d_reactor\fx\sparks_medium\sparks_medium" },
-            { 0x414A, @"levels\multi\s3d_reactor\fx\sparks_small\sparks_small" },
-            { 0x414B, @"levels\multi\s3d_reactor\fx\rod\rod_lights\rod_lights" },
-            { 0x414C, @"sound\levels\multi\s3d_reactor\rod\rod_moving" },
-            { 0x414D, @"levels\multi\s3d_reactor\fx\rod\rod_moving\rod_moving" },
-            { 0x414E, @"sound\levels\multi\s3d_reactor\rod\rod_moving" },
-            { 0x414F, @"sound\levels\multi\s3d_reactor\spark_medium\spark_medium" },
-            { 0x4150, @"levels\multi\s3d_reactor\fx\rod\rod_lights\rod_lights" },
-            { 0x4151, @"sound\levels\s3d_reactor\rod\rod_moving\loop" },
-            { 0x4152, @"sound\levels\multi\s3d_reactor\rod\rod_moving_start" },
-            { 0x4153, @"levels\multi\s3d_reactor\fx\rod\rod_moving" },
-            { 0x4154, @"levels\multi\s3d_reactor\bitmaps\rod_ripple_zbump" },
+            { 0x411F, @"levels\multi\s3d_reactor\shaders\reactor_flashing_light_yellow" },
+            { 0x4149, @"objects\levels\multi\s3d_reactor\rod\fx\sparks_medium" },
+            { 0x414A, @"objects\levels\multi\s3d_reactor\rod\fx\sparks_small" },
+            { 0x414B, @"objects\levels\multi\s3d_reactor\rod\fx\rod" },
+            { 0x414C, @"sound\levels\multi\s3d_reactor\obj_core_move_loop\obj_core_move_loop" },
+            { 0x414D, @"objects\levels\multi\s3d_reactor\rod\fx\rod_ripples" },
+            { 0x414E, @"sound\levels\multi\s3d_reactor\obj_core_move_stop\obj_core_move_stop" },
+            { 0x414F, @"sound\visual_fx\sparks_medium" },
+            { 0x4150, @"objects\levels\multi\s3d_reactor\rod\fx\rod" },
+            { 0x4151, @"sound\levels\multi\s3d_reactor\obj_core_move_loop\obj_core_move_loop\loop" },
+            { 0x4152, @"sound\levels\multi\s3d_reactor\obj_core_move_start\obj_core_move_start" },
+            { 0x4153, @"fx\particles\distortion\distortion_ripple_reactor" },
+            { 0x4154, @"fx\particles\distortion\_bitmaps\distortion_ripple" },
             { 0x4155, @"objects\levels\multi\s3d_reactor\reactor_lightnings\reactor_lightnings" },
-            { 0x4156, @"levels\multi\s3d_reactor\fx\reactor_lightnings\reactor_lightnings_light" },
-            { 0x4157, @"sound\levels\multi\s3d_reactor\reactor_lightnings\reactor_lightnings" },
-            { 0x4158, @"sound\levels\multi\s3d_reactor\reactor_lightnings\reactor_lightnings\loop" },
-            { 0x4159, @"sound\levels\multi\s3d_reactor\reactor_lightnings\details\reactor_lightnings_pop" },
+            { 0x4156, @"objects\levels\multi\s3d_reactor\reactor_lightnings\fx\reactor_lightnings" },
+            { 0x4157, @"sound\levels\multi\s3d_reactor\obj_core_electricity_loop\obj_core_electricity_loop" },
+            { 0x4158, @"sound\levels\multi\s3d_reactor\obj_core_electricity_loop\obj_core_electricity_loop\loop" },
+            { 0x4159, @"sound\levels\multi\s3d_reactor\obj_core_electricity_loop\details\obj_core_lightning_pop" },
             { 0x415A, @"objects\levels\multi\s3d_reactor\reactor_lightnings\reactor_lightnings" },
             { 0x415B, @"objects\levels\multi\s3d_reactor\reactor_lightnings\reactor_lightnings" },
-            { 0x415C, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_01" },
-            { 0x415D, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_02" },
-            { 0x415E, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_03" },
-            { 0x415F, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_04" },
-            { 0x4160, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_05" },
-            { 0x4161, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_06" },
-            { 0x4162, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_07" },
-            { 0x4163, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_08" },
-            { 0x4164, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_09" },
-            { 0x4165, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_10" },
-            { 0x4166, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_11" },
-            { 0x4167, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_12" },
-            { 0x4168, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_13" },
-            { 0x4169, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_14" },
-            { 0x416A, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_15" },
-            { 0x416B, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_16" },
-            { 0x416C, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_17" },
-            { 0x416D, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_18" },
-            { 0x416E, @"levels\multi\s3d_reactor\shaders\reactor_lightnings_19" },
-            { 0x416F, @"levels\multi\s3d_reactor\bitmaps\reactor_lightnings" },
-            { 0x4170, @"levels\multi\s3d_reactor\bitmaps\reactor_lightnings_spec" },
+            { 0x415C, @"levels\multi\s3d_reactor\shaders\reactor_lightning_x_05" },
+            { 0x415D, @"levels\multi\s3d_reactor\shaders\reactor_lightning_y_05" },
+            { 0x415E, @"levels\multi\s3d_reactor\shaders\reactor_lightning_x_03" },
+            { 0x415F, @"levels\multi\s3d_reactor\shaders\reactor_lightning_y_03" },
+            { 0x4160, @"levels\multi\s3d_reactor\shaders\reactor_lightning_x_01" },
+            { 0x4161, @"levels\multi\s3d_reactor\shaders\reactor_lightning_y_01" },
+            { 0x4162, @"levels\multi\s3d_reactor\shaders\reactor_lightning_x_02" },
+            { 0x4163, @"levels\multi\s3d_reactor\shaders\reactor_lightning_y_02" },
+            { 0x4164, @"levels\multi\s3d_reactor\shaders\reactor_lightning_x_04" },
+            { 0x4165, @"levels\multi\s3d_reactor\shaders\reactor_lightning_y_04" },
+            { 0x4166, @"levels\multi\s3d_reactor\shaders\reactor_lightning_x_06" },
+            { 0x4167, @"levels\multi\s3d_reactor\shaders\reactor_lightning_y_06" },
+            { 0x4168, @"levels\multi\s3d_reactor\shaders\reactor_lightning_x_07" },
+            { 0x4169, @"levels\multi\s3d_reactor\shaders\reactor_lightning_y_07" },
+            { 0x416A, @"levels\multi\s3d_reactor\shaders\reactor_lightning_x_08" },
+            { 0x416B, @"levels\multi\s3d_reactor\shaders\reactor_lightning_y_08" },
+            { 0x416C, @"levels\multi\s3d_reactor\shaders\reactor_lightning_y_09" },
+            { 0x416D, @"levels\multi\s3d_reactor\shaders\reactor_lightning_x_10" },
+            { 0x416E, @"levels\multi\s3d_reactor\shaders\reactor_lightning_y_10" },
+            { 0x416F, @"levels\multi\s3d_reactor\bitmaps\reactor_lightning_06" },
+            { 0x4170, @"levels\multi\s3d_reactor\bitmaps\reactor_lightning_07" },
             { 0x4171, @"sound\levels\multi\s3d_reactor\amb_wind_reactor_hole\amb_wind_reactor_hole" },
             { 0x4172, @"sound\levels\multi\s3d_reactor\amb_wind_reactor_hole\amb_wind_reactor_hole\loop" },
             { 0x4173, @"sound\levels\multi\s3d_reactor\water_splash\water_splash" },
@@ -14239,15 +14239,15 @@ namespace TagTool.Commands.Tags
             { 0x4176, @"sound\levels\multi\s3d_reactor\amb_wind_trees\amb_wind_trees\loop" },
             { 0x4177, @"sound\levels\multi\s3d_reactor\amb_wind_trees\details\amb_rock_crumble" },
             { 0x4178, @"sound\levels\multi\s3d_reactor\amb_wind_trees\details\amb_tree_creaks" },
-            { 0x4179, @"levels\multi\s3d_reactor\fx\mancannon\av_mancannon" },
-            { 0x417A, @"levels\multi\s3d_reactor\fx\mancannon\av_mancannon" },
-            { 0x417B, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_large_02" }, //unsure about this (tag is halo online specific)
-            { 0x417C, @"levels\multi\s3d_edge\fx\edge_volcano\edge_volcano_small_02" }, //unsure about this (tag is halo online specific)
+            { 0x4179, @"levels\multi\s3d_reactor\fx\mancannon\mancannon" },
+            { 0x417A, @"levels\multi\s3d_reactor\fx\mancannon\mancannon" },
+            { 0x417B, @"levels\multi\s3d_reactor\fx\reactor_steam\re_steam_flat_01" },
+            { 0x417C, @"levels\multi\s3d_reactor\fx\reactor_steam\re_steam_flat_02" },
             { 0x417D, @"levels\multi\s3d_turf\fx\sparks_large\sparks_large" },
             { 0x417E, @"levels\multi\s3d_turf\lights\hangar_light" },
             { 0x417F, @"sound\levels\multi\s3d_turf\sparks_large\sparks_large" },
             { 0x4180, @"fx\scenery_fx\smoke\smoke_light_large\smoke_light_large" },
-            { 0x4181, @"fx\scenery_fx\flares\light_flashing\light_flashing_voibuilding" },
+            { 0x4181, @"fx\scenery_fx\flares\light_steady\light_steady_voibuilding" },
             { 0x4182, @"fx\scenery_fx\flares\light_steady\light_steady_yellow" },
             { 0x4183, @"fx\scenery_fx\dust\dust_lights_large\dust_lights_large" },
             { 0x4184, @"fx\scenery_fx\dust\dust_lights_medium\dust_lights_medium" },
@@ -14259,9 +14259,9 @@ namespace TagTool.Commands.Tags
             { 0x418A, @"shaders\particle_templates\_1_10_0_0_0_1_1_1_0_0" },
             { 0x418B, @"shaders\particle_templates\_1_10_0_0_0_1_1_1_0_0" },
             { 0x418C, @"shaders\particle_templates\_1_10_0_0_0_1_1_1_0_0" },
-            { 0x418D, @"fx\scenery_fx\flares\light_flashing\light_flashing_yellow" },
-            { 0x418E, @"levels\multi\s3d_reactor\fx\light_steady\light_steady_blue" }, //unsure about this (tag is halo online specific)
-            { 0x418F, @"fx\scenery_fx\flares\light_steady\light_steady_voibuilding" },
+            { 0x418D, @"levels\multi\s3d_reactor\fx\light_flashing\light_flashing_red" },
+            { 0x418E, @"levels\multi\s3d_reactor\fx\light_flashing\light_flashing_voibuilding" },
+            { 0x418F, @"levels\multi\s3d_reactor\fx\light_flashing\light_flashing_yellow" },
             { 0x4190, @"levels\solo\020_base\fx\shaft_explosion\door_flames" },
             { 0x4191, @"levels\solo\020_base\fx\shaft_explosion\door_flames" },
             { 0x4192, @"sound\levels\020_base\sound_scenery\door_flames" },
@@ -14270,17 +14270,17 @@ namespace TagTool.Commands.Tags
             { 0x4195, @"shaders\particle_templates\_3_8_0_0_0_1_0_0_1_0" },
             { 0x4196, @"shaders\particle_templates\_3_8_0_0_0_1_0_0_1_0" },
             { 0x4197, @"shaders\particle_templates\_3_8_0_0_0_1_0_0_1_0" },
-            { 0x4198, @"fx\scenery_fx\smoke\smoke_thick_large\smoke_thick_large" },
+            { 0x4198, @"levels\solo\070_waste\fx\smoke_thick_large_windy\smoke_thick_large_windy" },
             { 0x4199, @"levels\shared\decals\human\industrial\decal_road_loading" },
             { 0x419A, @"levels\shared\decals\human\damage\crack_long_a" },
             { 0x419B, @"levels\shared\decals\human\damage\crack_long_a_bump" },
-            { 0x419C, @"levels\shared\decals\human\damage\decal_damage_cracka" },
+            { 0x419C, @"levels\shared\decals\human\damage\decal_damage_cracka_dark" },
             { 0x419D, @"levels\shared\decals\human\damage\decal_damage_cracka_bump" },
-            { 0x419E, @"levels\multi\s3d_reactor\decals\decal_danger_radioactive_1" }, //unsure about this (tag is halo online specific)
-            { 0x419F, @"levels\multi\s3d_reactor\decals\decal_gravel_1" }, //unsure about this (tag is halo online specific)
-            { 0x41A0, @"levels\multi\s3d_reactor\decals\decal_reactor_arrow_left" }, //unsure about this (tag is halo online specific)
-            { 0x41A1, @"levels\multi\s3d_reactor\decals\decal_reactor_arrow_right" }, //unsure about this (tag is halo online specific)
-            { 0x41A2, @"levels\multi\s3d_reactor\decals\decal_arrow_yellow" }, //unsure about this (tag is halo online specific)
+            { 0x419E, @"levels\multi\s3d_reactor\decals\decal_radiation_hazard" },
+            { 0x419F, @"levels\multi\s3d_reactor\decals\reactor_road_01_decal" },
+            { 0x41A0, @"levels\multi\s3d_reactor\decals\decal_painted_reactor_core" },
+            { 0x41A1, @"levels\multi\s3d_reactor\decals\decal_painted_reactor_core_02" },
+            { 0x41A2, @"levels\multi\s3d_reactor\decals\decal_painted_arrow_orange" },
             { 0x41A3, @"levels\shared\decals\human\industrial\cascade" },
             { 0x41A4, @"levels\shared\decals\human\industrial\ncc" },
             { 0x41A5, @"objects\levels\multi\s3d_turf\turf_crate_large\turf_crate_large" },
@@ -14316,7 +14316,7 @@ namespace TagTool.Commands.Tags
             { 0x41C3, @"fx\particles\models\debris\concrete_chunks_small\concrete_chunks_large" },
             { 0x41C4, @"objects\characters\ambient_life\lod_pelican\fx\ejecta" },
             { 0x41C5, @"sound\visual_fx\ambient_vehicle_destroyed_large" },
-            { 0x41C6, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_directional_secondary" },
+            { 0x41C6, @"fx\particles\atmospheric\rolling_smoke\fireball_human_large_directional_n1" }, //unsure about this (tag is halo online specific)
             { 0x41C7, @"objects\characters\ambient_life\lod_pelican\fx\lod_pelican_destruction" },
             { 0x41C8, @"objects\characters\ambient_life\lod_pelican\fx\smoke_trailers_large" },
             { 0x41C9, @"objects\vehicles\lod\bitmaps\lod_pelican" },
@@ -14344,7 +14344,7 @@ namespace TagTool.Commands.Tags
             { 0x41DF, @"levels\multi\s3d_reactor\s3d_reactor" },
             { 0x41E0, @"levels\multi\s3d_reactor\s3d_reactor_lightmap_s3d_reactor_16f_lp_array_dxt5" },
             { 0x41E1, @"levels\multi\s3d_reactor\s3d_reactor_lightmap_s3d_reactor_16f_lp_array_intensity_dxt5" },
-            { 0x41E2, @"objects\levels\multi\s3d_turf\turf_train\s3d_turf\s3d_turf" },
+            { 0x41E2, @"\objects\levels\multi\s3d_turf\turf_train\turf_train" },
             { 0x41E3, @"objects\levels\multi\s3d_turf\turf_hornet\s3d_turf\s3d_turf" },
             { 0x41E4, @"levels\multi\s3d_turf\s3d_turf" },
             { 0x41E5, @"levels\multi\s3d_turf\s3d_turf" },
@@ -14368,19 +14368,19 @@ namespace TagTool.Commands.Tags
             { 0x41FB, @"levels\multi\s3d_turf\fx\steam_slow_heavy_large\steam_slow_heavy_large" },
             { 0x41FC, @"levels\solo\010_jungle\fx\dripping_waterpipe\dripping_waterpipe_point\dripping_waterpipe_point" },
             { 0x41FD, @"levels\multi\s3d_turf\fx\dripping_waterpipe\dripping_waterpipe_point_bright" },
-            { 0x41FE, @"levels\shared\decals\nature\snow\snow_ice_crust" },
-            { 0x41FF, @"levels\dlc\sidewinder\decals\drip_icy_side1" },
-            { 0x4200, @"levels\dlc\sidewinder\decals\drip_icy_side1_big" },
+            { 0x41FE, @"levels\shared\decals\nature\snow\snow_ice_crust2" },
+            { 0x41FF, @"levels\dlc\sidewinder\decals\drip_icy_side1_big" },
+            { 0x4200, @"levels\dlc\sidewinder\decals\drip_icy_side1" },
             { 0x4201, @"levels\dlc\bunkerworld\decals\decal_hazard_strip" },
             { 0x4202, @"levels\dlc\bunkerworld\decals\decal_heatvent" },
             { 0x4203, @"levels\shared\decals\human\industrial\decal_forklift_1" },
-            { 0x4204, @"levels\shared\decals\human\industrial\decal_road_stripe_short_bleedoff_1" },
+            { 0x4204, @"levels\shared\decals\human\industrial\decal_road_stripe_short_bleedoff_1.bitmap" },
             { 0x4205, @"levels\shared\decals\human\damage\decal_rust_a" },
             { 0x4206, @"levels\solo\100_citadel\decals\snow_basic" },
             { 0x4207, @"levels\dlc\descent\decals\decal_diffused_line" },
-            { 0x4208, @"levels\shared\decals\nature\snow\snow_ice_crust2" },
+            { 0x4208, @"levels\shared\decals\nature\snow\snow_ice_crust" },
             { 0x4209, @"levels\shared\decals\human\industrial\decal_road_loading" },
-            { 0x420A, @"levels\multi\s3d_turf\decals\turf_line_road_arrow_smaller" },
+            { 0x420A, @"levels\dlc\shared\decals\docks_line_road_arrow_small_white" },
             { 0x420B, @"levels\shared\decals\human\industrial\decal_paper_sheet_b" },
             { 0x420C, @"levels\shared\decals\human\industrial\decal_smart_shopper_1" },
             { 0x420D, @"levels\shared\decals\human\industrial\decal_steps_1" },
@@ -14390,10 +14390,10 @@ namespace TagTool.Commands.Tags
             { 0x4211, @"levels\solo\010_jungle\decals\pump_station" },
             { 0x4212, @"levels\solo\010_jungle\decals\water_control" },
             { 0x4213, @"levels\multi\deadlock\decals\decal_numbers" },
-            { 0x4214, @"levels\dlc\shared\decals\docks_line_road_arrow_small_white" },
+            { 0x4214, @"levels\multi\s3d_turf\decals\turf_line_road_arrow_smaller" },
             { 0x4215, @"levels\multi\s3d_turf\decals\decal_painted_section_small" },
-            { 0x4216, @"levels\multi\s3d_turf\decals\snow_edge_patc_small" },
-            { 0x4217, @"levels\multi\s3d_turf\decals\snow_edge_patch" },
+            { 0x4216, @"levels\multi\s3d_turf\decals\snow_edge_patch" },
+            { 0x4217, @"levels\multi\s3d_turf\decals\snow_edge_patc_small" },
             { 0x4218, @"levels\multi\s3d_turf\decals\snow_big_patch" },
             { 0x4219, @"levels\multi\s3d_turf\decals\snow_huge_patch" },
             { 0x421A, @"levels\multi\s3d_turf\decals\decal_painted_training_center" },
@@ -15043,7 +15043,7 @@ namespace TagTool.Commands.Tags
             { 0x44BA, @"levels\multi\cyberdyne\bitmaps\cyberdyne_roof_bump" },
             { 0x44BB, @"levels\multi\cyberdyne\shaders\metal_out_fence" },
             { 0x44BC, @"levels\multi\cyberdyne\bitmaps\fence_dif" },
-            { 0x44BD, @"levels\solo\030_outskirts\bitmaps\fence_bump" },
+            { 0x44BD, @"ms30\levels\solo\030_outskirts\bitmaps\fence_bump" },
             { 0x44BE, @"levels\solo\040_voi\bitmaps\metals\metal_pitted_a" },
             { 0x44BF, @"levels\solo\040_voi\bitmaps\metals\metal_pitted_a_spec" },
             { 0x44C0, @"shaders\shader_templates\_0_1_0_2_2_0_0_3_0_0_0_0" },
@@ -15129,7 +15129,7 @@ namespace TagTool.Commands.Tags
             { 0x4510, @"ms30\levels\solo\030_outskirts\bitmaps\out_big_pipe_detail_4" },
             { 0x4511, @"ms30\levels\solo\030_outskirts\bitmaps\out_big_pipe_detail_bump" },
             { 0x4512, @"levels\solo\040_voi\shaders\metals\metal_out_fence" },
-            { 0x4513, @"levels\solo\030_outskirts\bitmaps\fence_dif" },
+            { 0x4513, @"ms30\levels\solo\030_outskirts\bitmaps\fence_dif" },
             { 0x4514, @"levels\multi\cyberdyne\shaders\cyberdyne_modular_piece_trim" },
             { 0x4515, @"levels\multi\cyberdyne\bitmaps\cyberdyne_modular_piece_trim_dif" },
             { 0x4516, @"levels\multi\cyberdyne\bitmaps\cyberdyne_modular_piece_trim_bump" },
@@ -15927,8 +15927,8 @@ namespace TagTool.Commands.Tags
             { 0x48C8, @"levels\shared\decals\human\industrial\decal_phone" },
             { 0x48C9, @"levels\shared\decals\human\industrial\decal_surveillance" },
             { 0x48CA, @"levels\shared\decals\human\industrial\decal_surveillance" },
-            { 0x48CB, @"levels\shared\decals\human\industrial\decal_danger_1" },
-            { 0x48CC, @"levels\shared\decals\human\industrial\decal_danger_1" },
+            { 0x48CB, @"ms30\levels\shared\decals\human\industrial\decal_danger_1" },
+            { 0x48CC, @"ms30\levels\shared\decals\human\industrial\decal_danger_1" },
             { 0x48CD, @"ms30\levels\shared\decals\human\industrial\decal_industry_random" },
             { 0x48CE, @"ms30\levels\shared\decals\human\industrial\decal_industry_random" },
             { 0x48CF, @"ms30\levels\shared\decals\human\industrial\decal_hazard_strip_1" },
@@ -15937,32 +15937,32 @@ namespace TagTool.Commands.Tags
             { 0x48D2, @"levels\shared\decals\human\industrial\decal_road_stripe_long_1" },
             { 0x48D3, @"levels\shared\decals\human\industrial\decal_road_stripe_short_1" },
             { 0x48D4, @"levels\shared\decals\human\industrial\decal_road_stripe_short_1" },
-            { 0x48D5, @"levels\shared\decals\stains\old_oil" },
-            { 0x48D6, @"levels\shared\decals\stains\bitmaps\ustdamage_old_oil" },
+            { 0x48D5, @"ms30\levels\shared\decals\stains\old_oil" },
+            { 0x48D6, @"ms30\levels\shared\decals\stains\bitmaps\ustdamage_old_oil" },
             { 0x48D7, @"levels\shared\decals\stains\water_spot_diffused" },
-            { 0x48D8, @"levels\shared\decals\stains\bitmaps\water_spot_diffused" },
+            { 0x48D8, @"ms30\levels\shared\decals\stains\bitmaps\water_spot_diffused" },
             { 0x48D9, @"levels\shared\decals\stains\stain" },
             { 0x48DA, @"levels\shared\decals\stains\bitmaps\ustdamage_stain" },
             { 0x48DB, @"levels\shared\decals\stains\paint_stain" },
             { 0x48DC, @"levels\shared\decals\stains\bitmaps\ustdamage_paint_stain" },
-            { 0x48DD, @"levels\shared\decals\stains\waterleak" },
-            { 0x48DE, @"levels\shared\decals\stains\bitmaps\ustdamage_waerleak" },
-            { 0x48DF, @"levels\shared\decals\stains\waterstain" },
-            { 0x48E0, @"levels\shared\decals\stains\bitmaps\ustdamage_waterstain" },
+            { 0x48DD, @"ms30\levels\shared\decals\stains\waterleak" },
+            { 0x48DE, @"ms30\levels\shared\decals\stains\bitmaps\ustdamage_waerleak" },
+            { 0x48DF, @"ms30\levels\shared\decals\stains\waterstain" },
+            { 0x48E0, @"ms30\levels\shared\decals\stains\bitmaps\ustdamage_waterstain" },
             { 0x48E1, @"levels\multi\cyberdyne\decals\gateclosed" },
             { 0x48E2, @"levels\multi\cyberdyne\decals\bitmaps\gateclosed" },
-            { 0x48E3, @"levels\shared\decals\human\damage\decal_damage_crack_dark_big" },
-            { 0x48E4, @"levels\shared\decals\human\damage\decal_damage_cracka_dark" },
+            { 0x48E3, @"ms30\levels\shared\decals\human\damage\decal_damage_crack_dark_big" },
+            { 0x48E4, @"ms30\levels\shared\decals\human\damage\decal_damage_cracka_dark" },
             { 0x48E5, @"ms30\levels\shared\decals\human\damage\decal_damage_cracka_bump" },
             { 0x48E6, @"levels\shared\decals\human\damage\decal_damage_crack_dark" },
             { 0x48E7, @"ms30\levels\shared\decals\stains\forerunner_stains\streak_01x2" },
             { 0x48E8, @"ms30\levels\shared\decals\stains\forerunner_stains\bitmaps\streak_01" },
-            { 0x48E9, @"levels\shared\decals\stains\forerunner_stains\streak_02x2" },
-            { 0x48EA, @"levels\shared\decals\stains\forerunner_stains\bitmaps\streak_02" },
-            { 0x48EB, @"levels\shared\decals\stains\forerunner_stains\drip_02x2" },
-            { 0x48EC, @"levels\shared\decals\stains\forerunner_stains\bitmaps\drip_02" },
-            { 0x48ED, @"levels\shared\decals\stains\forerunner_stains\drip_04_big" },
-            { 0x48EE, @"levels\shared\decals\stains\forerunner_stains\bitmaps\drip_04" },
+            { 0x48E9, @"ms30\levels\shared\decals\stains\forerunner_stains\streak_02x2" },
+            { 0x48EA, @"ms30\levels\shared\decals\stains\forerunner_stains\bitmaps\streak_02" },
+            { 0x48EB, @"ms30\levels\shared\decals\stains\forerunner_stains\drip_02x2" },
+            { 0x48EC, @"ms30\levels\shared\decals\stains\forerunner_stains\bitmaps\drip_02" },
+            { 0x48ED, @"ms30\levels\shared\decals\stains\forerunner_stains\drip_04_big" },
+            { 0x48EE, @"ms30\levels\shared\decals\stains\forerunner_stains\bitmaps\drip_04" },
             { 0x48EF, @"objects\gear\human\residential\telephone_wall_box\telephone_wall_box" },
             { 0x48F0, @"objects\gear\human\residential\telephone_wall_box\telephone_wall_box" },
             { 0x48F1, @"objects\gear\human\residential\telephone_wall_box\telephone_wall_box" },
@@ -16693,7 +16693,7 @@ namespace TagTool.Commands.Tags
             { 0x4BDD, @"levels\dlc\bunkerworld\bitmaps\concrete_detail_bump" },
             { 0x4BDE, @"levels\dlc\bunkerworld\shaders\bunker_concrete_ext" },
             { 0x4BDF, @"levels\dlc\bunkerworld\shaders\bunker_tech_radarside" },
-            { 0x4BE0, @"levels\dlc\bunkerworld\bitmaps\z_metal_detail" },
+            { 0x4BE0, @"ms30\levels\dlc\bunkerworld\bitmaps\z_metal_detail" },
             { 0x4BE1, @"levels\dlc\bunkerworld\bitmaps\bunker_tech_radarside_bump" },
             { 0x4BE2, @"levels\dlc\bunkerworld\bitmaps\bunker_tech_radarside_dif" },
             { 0x4BE3, @"shaders\shader_templates\_7_1_0_1_2_2_0_0_0_0_0_0" },
@@ -16824,10 +16824,10 @@ namespace TagTool.Commands.Tags
             { 0x4C60, @"shaders\shader_templates\_0_1_0_1_2_0_2_0_0_0_0_0" },
             { 0x4C61, @"shaders\shader_templates\_0_1_0_1_2_0_2_0_0_0_0_0" },
             { 0x4C62, @"shaders\shader_templates\_0_1_0_1_2_0_2_0_0_0_0_0" },
-            { 0x4C63, @"levels\dlc\bunkerworld\shaders\bunker_tech_bank" },
-            { 0x4C64, @"levels\dlc\bunkerworld\bitmaps\bunker_tech_bank_diffuse" },
-            { 0x4C65, @"levels\dlc\bunkerworld\bitmaps\bunker_tech_bank_bump" },
-            { 0x4C66, @"levels\dlc\bunkerworld\bitmaps\bunker_tech_bank_illum" },
+            { 0x4C63, @"ms30\levels\dlc\bunkerworld\shaders\bunker_tech_bank" },
+            { 0x4C64, @"ms30\levels\dlc\bunkerworld\bitmaps\bunker_tech_bank_diffuse" },
+            { 0x4C65, @"ms30\levels\dlc\bunkerworld\bitmaps\bunker_tech_bank_bump" },
+            { 0x4C66, @"ms30\levels\dlc\bunkerworld\bitmaps\bunker_tech_bank_illum" },
             { 0x4C67, @"levels\dlc\bunkerworld\shaders\bunker_tech_bank_unlit" },
             { 0x4C68, @"levels\dlc\bunkerworld\shaders\bunker_tech_wirewrapped" },
             { 0x4C69, @"levels\dlc\bunkerworld\bitmaps\bunker_tech_wirewrapped_dif" },
@@ -16919,10 +16919,10 @@ namespace TagTool.Commands.Tags
             { 0x4CBF, @"sound\levels\dlc\bunkerworld\controlroom\controlroom" },
             { 0x4CC0, @"sound\levels\dlc\bunkerworld\controlroom\controlroom\loop" },
             { 0x4CC1, @"levels\shared\decorators\burntgrass\burntgrass" },
-            { 0x4CC2, @"levels\shared\decorators\bitmaps\decorator_burntgrass" },
+            { 0x4CC2, @"ms30\levels\shared\decorators\bitmaps\decorator_burntgrass" },
             { 0x4CC3, @"levels\shared\decorators\burntgrass\burntgrass_short" },
             { 0x4CC4, @"levels\dlc\bunkerworld\decorators\grass_thick" },
-            { 0x4CC5, @"levels\shared\decorators\outskirts_thick_grass\outskirts_thick_grass" },
+            { 0x4CC5, @"ms30\levels\shared\decorators\outskirts_thick_grass\outskirts_thick_grass" },
             { 0x4CC6, @"levels\dlc\bunkerworld\decorators\bitmaps\grass_thick" },
             { 0x4CC7, @"levels\dlc\bunkerworld\decorators\deadweed" },
             { 0x4CC8, @"levels\dlc\bunkerworld\decorators\bitmaps\deadweed" },
@@ -16931,7 +16931,7 @@ namespace TagTool.Commands.Tags
             { 0x4CCB, @"levels\dlc\bunkerworld\decorators\bitmaps\crapweed" },
             { 0x4CCC, @"levels\shared\decorators\rocks\rocks_bunker" },
             { 0x4CCD, @"levels\shared\decorators\rocks\rocks_bunker\rocks_bunker" },
-            { 0x4CCE, @"levels\shared\decorators\bitmaps\decorator_rocks_out" },
+            { 0x4CCE, @"ms30\levels\shared\decorators\bitmaps\decorator_rocks_out" },
             { 0x4CCF, @"levels\shared\decorators\large_bushes\scrub_bushes" },
             { 0x4CD0, @"levels\shared\decorators\large_bushes\large_bushes" },
             { 0x4CD1, @"levels\shared\decorators\bitmaps\out_bush_new" },
@@ -17335,12 +17335,12 @@ namespace TagTool.Commands.Tags
             { 0x4E96, @"levels\shared\decals\human\military\unscdf_flag_blue_worn" },
             { 0x4E97, @"levels\shared\decals\human\industrial\decal_painted_variety_f_small" },
             { 0x4E98, @"levels\shared\decals\human\industrial\decal_painted_variety_f_diffuse" },
-            { 0x4E99, @"levels\shared\decals\stains\forerunner_stains\drip_02" },
-            { 0x4E9A, @"levels\shared\decals\stains\forerunner_stains\drip_03" },
-            { 0x4E9B, @"levels\shared\decals\stains\forerunner_stains\bitmaps\drip_03" },
-            { 0x4E9C, @"levels\shared\decals\stains\forerunner_stains\drip_04" },
-            { 0x4E9D, @"levels\shared\decals\stains\forerunner_stains\water_02" },
-            { 0x4E9E, @"levels\shared\decals\stains\forerunner_stains\bitmaps\water_02" },
+            { 0x4E99, @"ms30\levels\shared\decals\stains\forerunner_stains\drip_02" },
+            { 0x4E9A, @"ms30\levels\shared\decals\stains\forerunner_stains\drip_03" },
+            { 0x4E9B, @"ms30\levels\shared\decals\stains\forerunner_stains\bitmaps\drip_03" },
+            { 0x4E9C, @"ms30\levels\shared\decals\stains\forerunner_stains\drip_04" },
+            { 0x4E9D, @"ms30\levels\shared\decals\stains\forerunner_stains\water_02" },
+            { 0x4E9E, @"ms30\levels\shared\decals\stains\forerunner_stains\bitmaps\water_02" },
             { 0x4E9F, @"levels\shared\decals\stains\forerunner_stains\water_07" },
             { 0x4EA0, @"ms30\levels\shared\decals\stains\forerunner_stains\bitmaps\water_07" },
             { 0x4EA1, @"levels\shared\decals\stains\forerunner_stains\water_07_huge2" },
@@ -17553,11 +17553,11 @@ namespace TagTool.Commands.Tags
             { 0x4F77, @"levels\multi\zanzibar\shaders\zan_cliff_blend" },
             { 0x4F78, @"levels\multi\zanzibar\bitmaps\zan_cliffs_a_dif" },
             { 0x4F79, @"ms30\levels\multi\zanzibar\bitmaps\zan_cliffs_detail_dif" },
-            { 0x4F7A, @"levels\multi\zanzibar\bitmaps\zan_cliffs_a_bump" },
+            { 0x4F7A, @"ms30\levels\multi\zanzibar\bitmaps\zan_cliffs_a_bump" },
             { 0x4F7B, @"ms30\levels\multi\zanzibar\bitmaps\zan_cliffs_detail_bump" },
             { 0x4F7C, @"levels\multi\zanzibar\bitmaps\zan_cliff_blend" },
             { 0x4F7D, @"levels\multi\zanzibar\bitmaps\zan_cliffs_b_dif" },
-            { 0x4F7E, @"levels\multi\zanzibar\bitmaps\zan_cliffs_b_bump" },
+            { 0x4F7E, @"ms30\levels\multi\zanzibar\bitmaps\zan_cliffs_b_bump" },
             { 0x4F7F, @"levels\multi\zanzibar\bitmaps\zan_cliffs_c_dif" },
             { 0x4F80, @"levels\multi\zanzibar\bitmaps\zan_cliffs_c_bump" },
             { 0x4F81, @"ms30\shaders\terrain_templates\_0_0_1_1_1_0" },
@@ -18082,8 +18082,8 @@ namespace TagTool.Commands.Tags
             { 0x519C, @"levels\shared\decals\human\industrial\decal_shock_1" },
             { 0x519D, @"levels\shared\decals\human\industrial\decal_fire_1" },
             { 0x519E, @"levels\shared\decals\human\industrial\decal_fire_1" },
-            { 0x519F, @"levels\shared\decals\human\industrial\decal_caution_ramp" },
-            { 0x51A0, @"levels\shared\decals\human\industrial\decal_caution_ramp" },
+            { 0x519F, @"ms30\levels\shared\decals\human\industrial\decal_caution_ramp" },
+            { 0x51A0, @"ms30\levels\shared\decals\human\industrial\decal_caution_ramp" },
             { 0x51A1, @"levels\shared\decals\human\industrial\decal_norunning_1" },
             { 0x51A2, @"levels\shared\decals\human\industrial\decal_norunning_1" },
             { 0x51A3, @"ms30\levels\shared\decals\human\industrial\decal_forklift_1" },
@@ -18092,8 +18092,8 @@ namespace TagTool.Commands.Tags
             { 0x51A6, @"levels\shared\decals\human\industrial\decal_danger_loading_1" },
             { 0x51A7, @"levels\shared\decals\human\industrial\decal_fire_exit_1" },
             { 0x51A8, @"levels\shared\decals\human\industrial\decal_fire_exit_1" },
-            { 0x51A9, @"levels\shared\decals\human\industrial\decal_nohand_1" },
-            { 0x51AA, @"levels\shared\decals\human\industrial\decal_nohand_1" },
+            { 0x51A9, @"ms30\levels\shared\decals\human\industrial\decal_nohand_1" },
+            { 0x51AA, @"ms30\levels\shared\decals\human\industrial\decal_nohand_1" },
             { 0x51AB, @"levels\shared\decals\human\industrial\decal_danger_flammable_1" },
             { 0x51AC, @"levels\shared\decals\human\industrial\decal_danger_flammable_1" },
             { 0x51AD, @"levels\multi\zanzibar\decals\decal_zanzibar" },
@@ -18104,21 +18104,21 @@ namespace TagTool.Commands.Tags
             { 0x51B2, @"levels\shared\decals\human\damage\decal_damage_cracker_2" },
             { 0x51B3, @"levels\shared\decals\human\damage\decal_damage_cracker_2" },
             { 0x51B4, @"levels\shared\decals\human\damage\decal_damage_cracker_2_bump" },
-            { 0x51B5, @"levels\shared\decals\stains\forerunner_stains\streak_02" },
+            { 0x51B5, @"ms30\levels\shared\decals\stains\forerunner_stains\streak_02" },
             { 0x51B6, @"levels\shared\decals\stains\forerunner_stains\water_06x2" },
             { 0x51B7, @"ms30\levels\shared\decals\stains\forerunner_stains\bitmaps\water_06" },
-            { 0x51B8, @"levels\shared\decals\stains\forerunner_stains\water_03_big" },
-            { 0x51B9, @"levels\shared\decals\stains\forerunner_stains\bitmaps\water_03" },
+            { 0x51B8, @"ms30\levels\shared\decals\stains\forerunner_stains\water_03_big" },
+            { 0x51B9, @"ms30\levels\shared\decals\stains\forerunner_stains\bitmaps\water_03" },
             { 0x51BA, @"levels\shared\decals\stains\forerunner_stains\water_09_big" },
             { 0x51BB, @"levels\shared\decals\stains\forerunner_stains\bitmaps\water_09" },
-            { 0x51BC, @"levels\shared\decals\stains\forerunner_stains\streak_02x3" },
-            { 0x51BD, @"levels\shared\decals\nature\mud\decal_sand_patchx2" },
-            { 0x51BE, @"levels\multi\zanzibar\bitmaps\zan_ground_dirt_decal_dif" },
-            { 0x51BF, @"levels\multi\zanzibar\bitmaps\zan_ground_dirt_decal_bump" },
+            { 0x51BC, @"ms30\levels\shared\decals\stains\forerunner_stains\streak_02x3" },
+            { 0x51BD, @"ms30\levels\shared\decals\nature\mud\decal_sand_patchx2" },
+            { 0x51BE, @"ms30\levels\multi\zanzibar\bitmaps\zan_ground_dirt_decal_dif" },
+            { 0x51BF, @"ms30\levels\multi\zanzibar\bitmaps\zan_ground_dirt_decal_bump" },
             { 0x51C0, @"levels\solo\070_waste\decals\decal_sand_patch" },
             { 0x51C1, @"levels\solo\070_waste\bitmaps\waste_grain" },
             { 0x51C2, @"levels\solo\070_waste\decals\decal_sand_patch" },
-            { 0x51C3, @"levels\multi\shrine\bitmaps\sand_footsteps_bump" },
+            { 0x51C3, @"ms30\levels\multi\shrine\bitmaps\sand_footsteps_bump" },
             { 0x51C4, @"levels\shared\decals\human\damage\decal_damage_crack_dark_big_1024" },
             { 0x51C5, @"levels\shared\decals\human\damage\decal_damage_cracka_dark_1024" },
             { 0x51C6, @"levels\shared\decals\human\damage\decal_damage_cracka_1024_bump" },
@@ -18254,7 +18254,7 @@ namespace TagTool.Commands.Tags
             { 0x5248, @"levels\multi\deadlock\deadlock" },
             { 0x5249, @"levels\multi\deadlock\shaders\deadlock_tree_bark" },
             { 0x524A, @"levels\multi\deadlock\shaders\deadlock_metal" },
-            { 0x524B, @"levels\multi\deadlock\bitmaps\deadlock_metal_dif" },
+            { 0x524B, @"ms30\levels\multi\deadlock\bitmaps\deadlock_metal_dif" },
             { 0x524C, @"levels\multi\deadlock\shaders\deadlock_concrete_wall_b" },
             { 0x524D, @"levels\multi\deadlock\bitmaps\deadlock_concrete_drips_dark" },
             { 0x524E, @"levels\multi\deadlock\shaders\deadlock_concrete_floor_metal_a" },
@@ -18286,7 +18286,7 @@ namespace TagTool.Commands.Tags
             { 0x5268, @"shaders\shader_templates\_0_1_0_2_2_2_0_3_0_0_0_0" },
             { 0x5269, @"shaders\shader_templates\_0_1_0_2_2_2_0_3_0_0_0_0" },
             { 0x526A, @"ms30\levels\multi\deadlock\shaders\deadlock_switch" },
-            { 0x526B, @"levels\multi\deadlock\shaders\deadlock_metal_railing" },
+            { 0x526B, @"ms30\levels\multi\deadlock\shaders\deadlock_metal_railing" },
             { 0x526C, @"levels\multi\deadlock\shaders\deadlock_grate_a" },
             { 0x526D, @"levels\multi\deadlock\shaders\deadlock_metal_rivets" },
             { 0x526E, @"ms30\levels\multi\deadlock\bitmaps\deadlock_metal_rivets_dif" },
@@ -19282,16 +19282,16 @@ namespace TagTool.Commands.Tags
             { 0x56DF, @"levels\multi\shrine\bitmaps\stone_edge2_dif" },
             { 0x56E0, @"ms30\levels\multi\shrine\bitmaps\stone_edge2_bump" },
             { 0x56E1, @"levels\shared\decals\human\damage\scorch" },
-            { 0x56E2, @"levels\shared\decals\multi\shrine\sand_decal1" },
-            { 0x56E3, @"levels\multi\shrine\bitmaps\sand_decal1_dif" },
+            { 0x56E2, @"ms30\levels\shared\decals\multi\shrine\sand_decal1" },
+            { 0x56E3, @"ms30\levels\multi\shrine\bitmaps\sand_decal1_dif" },
             { 0x56E4, @"levels\shared\decals\multi\shrine\stone_edge_sm" },
-            { 0x56E5, @"levels\shared\decals\multi\shrine\sand_decal2" },
-            { 0x56E6, @"levels\multi\shrine\bitmaps\sand_decal2_dif" },
+            { 0x56E5, @"ms30\levels\shared\decals\multi\shrine\sand_decal2" },
+            { 0x56E6, @"ms30\levels\multi\shrine\bitmaps\sand_decal2_dif" },
             { 0x56E7, @"levels\shared\decals\multi\shrine\stone_edge2_sm" },
-            { 0x56E8, @"levels\shared\decals\multi\shrine\sand_decal1_1collision" },
-            { 0x56E9, @"levels\shared\decals\multi\shrine\sand_mound" },
-            { 0x56EA, @"levels\multi\shrine\bitmaps\sand_mound_decal_dif" },
-            { 0x56EB, @"levels\multi\shrine\bitmaps\sand_mound_decal_bump" },
+            { 0x56E8, @"ms30\levels\shared\decals\multi\shrine\sand_decal1_1collision" },
+            { 0x56E9, @"ms30\levels\shared\decals\multi\shrine\sand_mound" },
+            { 0x56EA, @"ms30\levels\multi\shrine\bitmaps\sand_mound_decal_dif" },
+            { 0x56EB, @"ms30\levels\multi\shrine\bitmaps\sand_mound_decal_bump" },
             { 0x56F5, @"objects\levels\multi\shrine\sand_jump_pad\sand_jump_pad" },
             { 0x56F6, @"objects\levels\multi\shrine\sand_jump_pad\sand_jump_pad" },
             { 0x56F7, @"objects\levels\multi\shrine\sand_jump_pad\sand_jump_pad" },
