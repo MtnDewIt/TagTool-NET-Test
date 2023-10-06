@@ -5669,7 +5669,7 @@ namespace TagTool.Commands.Tags
                                 CategoryIndex = 67,
                                 DescriptionIndex = -1,
                                 MaxAllowed = 0,
-                                Object = GetCachedTag<Equipment>($@"objects\equipment\invisibility_equipment\invisibility_vehicle_equipment"),
+                                Object = GetCachedTag<Equipment>($@"objects\equipment\invisibility_vehicle_equipment\invisibility_vehicle_equipment"),
                             },
                             new ForgeGlobalsDefinition.PaletteItem
                             {
@@ -6886,7 +6886,7 @@ namespace TagTool.Commands.Tags
                                 Orientation = new RealEulerAngles3d(Angle.FromDegrees(0f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
                                 Object = GetCachedTag<Scenery>($@"levels\multi\s3d_avalanche\sky\sky"),
                                 Parameters  = GetCachedTag<SkyAtmParameters>($@"levels\multi\s3d_avalanche\sky\s3d_avalanche"),
-                                Wind = GetCachedTag<Wind>($@"levels\multi\s3d_avalanche\wind_s3d_avalanche"),
+                                Wind = GetCachedTag<Wind>($@"levels\multi\s3d_avalanche\wind_avalanche"),
                                 CameraFX = GetCachedTag<CameraFxSettings>($@"levels\multi\s3d_avalanche\s3d_avalanche"),
                                 ScreenFX = null,
                                 GlobalLighting = GetCachedTag<ChocolateMountainNew>($@"levels\multi\s3d_avalanche\s3d_avalanche"),
@@ -6913,8 +6913,8 @@ namespace TagTool.Commands.Tags
                                 Translation = new RealPoint3d(0f, 0f, 0f),
                                 Orientation = new RealEulerAngles3d(Angle.FromDegrees(0f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
                                 Object = GetCachedTag<Scenery>($@"levels\multi\s3d_reactor\sky\sky"),
-                                Parameters  = GetCachedTag<SkyAtmParameters>($@"levels\multi\s3d_reactor\sky\s3d_reactor"),
-                                Wind = GetCachedTag<Wind>($@"levels\multi\s3d_reactor\wind_s3d_reactor"),
+                                Parameters  = GetCachedTag<SkyAtmParameters>($@"levels\multi\s3d_reactor\sky\reactor"),
+                                Wind = GetCachedTag<Wind>($@"levels\multi\s3d_reactor\wind_reactor"),
                                 CameraFX = GetCachedTag<CameraFxSettings>($@"levels\multi\s3d_reactor\s3d_reactor_indoor"),
                                 ScreenFX = null,
                                 GlobalLighting = GetCachedTag<ChocolateMountainNew>($@"levels\multi\s3d_reactor\s3d_reactor"),

@@ -20092,7 +20092,7 @@ namespace TagTool.Commands.Tags
             { 0x5A67, @"objects\eldewrito\reforge\triangle_01x1x1" },
             { 0x5A68, @"objects\equipment\tripmine\tripmine_forge" },
             { 0x5A69, @"objects\levels\multi\shrine\behemoth\behemoth_forge" },
-            { 0x5A6A, @"shaders\default_bitmaps\bitmaps\alpha_black_256" }, //unsure about this (tag is halo online specific, only used for armor variant visor shaders)
+            { 0x5A6A, @"objects\characters\masterchief\bitmaps\mp_visor_cc" },
             { 0x5A6B, @"objects\equipment\equipment_pack\bitmaps\unsc_equipment_diffuse" },
             { 0x5A6C, @"objects\equipment\equipment_pack\bitmaps\unsc_equipment_drop_holo_pixels" },
             { 0x5A6D, @"ms30\objects\bitmaps\decals\bitmaps\unsc_decals_diffuse" },

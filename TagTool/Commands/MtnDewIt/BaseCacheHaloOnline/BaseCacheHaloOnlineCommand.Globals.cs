@@ -7196,127 +7196,127 @@ namespace TagTool.Commands.Tags
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "main",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\main_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\main_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "settings",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\settings_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\settings_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "lobby",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\lobby_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\lobby_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "eeditor",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\emblem_editor_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\emblem_editor_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "carousel",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\carousel_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\carousel_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "cons",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\consumable_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\consumable_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "wpn",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\weapon_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\weapon_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "ingame",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\ingame_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\ingame_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "armor",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\armor_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\armor_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "msg",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\message_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\message_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "bn",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\buy_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\buy_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "gm",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\game_mode_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\game_mode_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "map",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\map_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\map_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "load",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\loading_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\loading_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "tip",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\tip_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\tip_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "lvl",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\level_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\level_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "profile",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\profile_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\profile_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "aclass",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\class_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\class_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "man",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\manufacturer_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\manufacturer_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "medal",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\medal_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\medal_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "ps",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\playlist_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\playlist_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "drt",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\damage_reporting_type_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\damage_reporting_type_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "challenge",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\challenge_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\challenge_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "career",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\career_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\career_strings"),
                                     },
                                     new Globals.InterfaceTagsBlock.GfxUiString
                                     {
                                         Name = "mod",
-                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\mod_strings"),
+                                        Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\mod_strings"),
                                     },
                                 },
                             },

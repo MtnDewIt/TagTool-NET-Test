@@ -167,6 +167,10 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp\fp.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp_body\fp_body.mode");
             GenerateTag<Light>($@"objects\characters\masterchief\fx\shield\shield_down");
+            GenerateShaderTemplate($@"shader", GenerateShaderOptions($@"4 1 0 1 1 2 0 0 0 1 0 0"));
+            CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\shaders\visor.rmsh");
+            RenameTag(GetCachedTag<Shader>($@"objects\characters\masterchief\shaders\visor"), $@"objects\characters\masterchief\shaders\mp_visor");
+            CreateBitmap($@"objects\characters\masterchief\bitmaps\mp_visor_cc", $@"{Program.TagToolDirectory}\Tools\BaseCache\Images\Assets\mp_visor_cc.dds");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\mp_masterchief.bipd");
             GenerateSpartanActionTag();
             CommandRunner.Current.RunCommand($@"porttag objects\characters\elite\mp_elite\fp\fp.mode");
@@ -292,7 +296,6 @@ namespace TagTool.Commands.Tags
             CommandRunner.Current.RunCommand($@"porttag levels\ui\mainmenu\lights\editor.light");
             CommandRunner.Current.RunCommand($@"porttag levels\ui\mainmenu\objects\spartan_cheap\spartan_cheap.biped");
             CommandRunner.Current.RunCommand($@"porttag sound\levels\main_menu\the_world\the_world.sound_looping");
-
             ContextStack.Pop();
 
             NewPortingContext(h100, Audio.Compression.OGG, true);

@@ -834,7 +834,7 @@ namespace TagTool.Commands.Tags
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                                     {
                                         Name = CacheContext.StringTable.GetStringId("invisibility_vehicle"),
-                                        Object = GetCachedTag<Equipment>(@"objects\equipment\invisibility_equipment\invisibility_vehicle_equipment"),
+                                        Object = GetCachedTag<Equipment>(@"objects\equipment\invisibility_vehicle_equipment\invisibility_vehicle_equipment"),
                                         Type = 19,
                                     },
                                     new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable

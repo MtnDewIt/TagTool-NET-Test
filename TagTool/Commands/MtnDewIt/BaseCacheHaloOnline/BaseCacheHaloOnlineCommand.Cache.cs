@@ -40,11 +40,12 @@ namespace TagTool.Commands.Tags
             @"objects\characters\masterchief\mp_masterchief\armor\mp_katana",
         };
 
-        public static Dictionary<string, string> requiredTags { get; } = new Dictionary<string, string>()
+        // TODO: Format this at some point :/
+        public static Dictionary<string, List<string>> requiredTags { get; } = new Dictionary<string, List<string>>()
         {
-            { "effe", $@"objects\characters\masterchief\damage_effects\concussive_blast" },
-            { "chdt", $@"ui\chud\spartan" },
-            { "bitm", $@"ui\halox\main_menu\halo3_logo_ui" }
+            { "effe", new List<string> { $@"objects\characters\masterchief\damage_effects\concussive_blast" } },
+            { "chdt", new List<string> { $@"ui\chud\spartan" } },
+            { "bitm", new List<string> { $@"ui\halox\main_menu\halo3_logo_ui" } },
         };
 
         public object rebuildCache(string destCacheDirectory)
@@ -130,9 +131,15 @@ namespace TagTool.Commands.Tags
                 {
                     foreach (var requiredTag in requiredTags)
                     {
-                        if (tag.IsInGroup(requiredTag.Key) && tag.Name == requiredTag.Value)
+                        var requiredTagType = requiredTag.Key;
+                        var requiredTagNames = requiredTag.Value;
+
+                        foreach (var requiredTagName in requiredTagNames) 
                         {
-                            CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
+                            if (tag.IsInGroup(requiredTagType) && tag.Name == requiredTagName)
+                            {
+                                CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
+                            }
                         }
                     }
                 }
