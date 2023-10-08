@@ -14,9 +14,9 @@ namespace TagTool.Commands.Tags
         (
             true,
             "DebugTest",
-            "What Do You Think It Does?",
+            "Calls on specific functions from within the specified class",
             "DebugTest",
-            "What Do You Think It Does?"
+            "Calls on specific functions from within the specified class"
         )
         {
             Cache = cache;
@@ -27,7 +27,7 @@ namespace TagTool.Commands.Tags
         public override object Execute(List<string> args)
         {
 
-            var newCommandContext = new BaseCacheHaloOnlineCommand(Cache, CacheContext, ContextStack);
+            var newCommandContext = new ConvertCacheCommand(Cache, CacheContext, ContextStack);
 
             //newCommandContext.modifyStrings();
             //newCommandContext.Globals();

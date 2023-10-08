@@ -118,11 +118,11 @@ namespace TagTool.Commands.Tags
             if(cache is GameCacheHaloOnline)
             {
                 var hoCache = cache as GameCacheHaloOnline;
-                context.AddCommand(new BaseCacheCommand(cache, hoCache, contextStack));
-                context.AddCommand(new BaseCacheHaloOnlineCommand(cache, hoCache, contextStack));
+                context.AddCommand(new GenerateCacheCommand(cache, hoCache, contextStack));
+                context.AddCommand(new ConvertCacheCommand(cache, hoCache, contextStack));
                 context.AddCommand(new DebugTestCommand(cache, hoCache, contextStack));
-                context.AddCommand(new NameUnnamedElDewritoTagsCommand(hoCache));
-                context.AddCommand(new NameUnnamedHaloOnlineTagsCommand(hoCache));
+                context.AddCommand(new UpdateEDTagsCommand(hoCache));
+                context.AddCommand(new UpdateHOTagsCommand(hoCache));
                 context.AddCommand(new RebuildCacheFileCommand(hoCache));
                 context.AddCommand(new CreateModPackageCommand(contextStack, hoCache));
                 context.AddCommand(new UpdateModPackageCommand(contextStack, hoCache));
