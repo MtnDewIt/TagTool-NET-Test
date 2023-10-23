@@ -3,7 +3,7 @@ using TagTool.Tags.Definitions;
 using TagTool.Common;
 using TagTool.Ai;
 
-namespace TagTool.Commands.Tags
+namespace TagTool.Commands.MtnDewIt
 {
     partial class GenerateCacheCommand : Command
     {

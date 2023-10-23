@@ -5,7 +5,7 @@ using System.Linq;
 using System.Globalization;
 using TagTool.Common;
 
-namespace TagTool.Commands.Tags
+namespace TagTool.Commands.MtnDewIt
 {
     partial class GenerateCacheCommand : Command
     {

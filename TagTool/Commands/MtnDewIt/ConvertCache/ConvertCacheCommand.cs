@@ -6,8 +6,9 @@ using System.Text;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
+using TagTool.Commands.Tags;
 
-namespace TagTool.Commands.Tags
+namespace TagTool.Commands.MtnDewIt
 {
     partial class ConvertCacheCommand : Command
     {

@@ -3,7 +3,7 @@ using TagTool.Common;
 using TagTool.Tags.Definitions;
 using static TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation;
 
-namespace TagTool.Commands.Tags
+namespace TagTool.Commands.MtnDewIt
 {
     partial class ConvertCacheCommand : Command
     {

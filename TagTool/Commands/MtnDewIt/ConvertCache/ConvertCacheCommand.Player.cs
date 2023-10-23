@@ -4,7 +4,7 @@ using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using static TagTool.Tags.Definitions.Model.GlobalDamageInfoBlock.DamageSection;
 
-namespace TagTool.Commands.Tags
+namespace TagTool.Commands.MtnDewIt
 {
     partial class ConvertCacheCommand : Command
     {

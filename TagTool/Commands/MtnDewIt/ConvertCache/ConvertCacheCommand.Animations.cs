@@ -5,7 +5,7 @@ using System.Linq;
 using TagTool.Cache;
 using System.IO;
 
-namespace TagTool.Commands.Tags
+namespace TagTool.Commands.MtnDewIt
 {
     partial class ConvertCacheCommand : Command
     {

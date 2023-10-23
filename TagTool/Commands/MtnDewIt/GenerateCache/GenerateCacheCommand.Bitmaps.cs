@@ -9,7 +9,7 @@ using TagTool.Tags.Definitions;
 using System.IO;
 using System.Collections.Generic;
 
-namespace TagTool.Commands.Tags
+namespace TagTool.Commands.MtnDewIt
 {
     partial class GenerateCacheCommand : Command
     {

@@ -11,10 +11,11 @@ using TagTool.Serialization;
 using TagTool.Scripting;
 using TagTool.Tags;
 using TagTool.Commands.Common;
+using TagTool.Commands.Tags;
 using TagTool.Tags.Resources;
 using System.Linq;
 
-namespace TagTool.Commands.Tags 
+namespace TagTool.Commands.MtnDewIt
 {
     partial class ConvertCacheCommand : Command
     {

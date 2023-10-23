@@ -8,11 +8,12 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Cache.Resources;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Commands.Tags;
 using TagTool.Serialization;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
-namespace TagTool.Commands.Tags
+namespace TagTool.Commands.MtnDewIt
 {
     partial class GenerateCacheCommand : Command
     {
