@@ -1242,6 +1242,7 @@
     <Compile Include="Commands\MtnDewIt\GenerateCache\Tags\ui\multiplayer.user_interface_globals_definition.cs" />
     <Compile Include="Commands\MtnDewIt\GenerateCache\Tags\ui\single_player.user_interface_globals_definition.cs" />
     <Compile Include="Commands\MtnDewIt\DebugTestCommand.cs" />
+    <Compile Include="Commands\MtnDewIt\TagFile.cs" />
     <Compile Include="Commands\MtnDewIt\UpdateEDTagsCommand.cs" />
     <Compile Include="Commands\MtnDewIt\UpdateHOTagsCommand.cs" />
     <Compile Include="Commands\ParticleModels\ParticleModelContextFactory.cs" />
