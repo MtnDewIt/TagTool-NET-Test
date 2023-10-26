@@ -23,7 +23,11 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<MultilingualUnicodeStringList>($@"ui/halox/pregame_lobby/switch_lobby/strings");
+            var tag = GetCachedTag<MultilingualUnicodeStringList>($@"ui\halox\pregame_lobby\switch_lobby\strings");
+            var unic = CacheContext.Deserialize<MultilingualUnicodeStringList>(Stream, tag);
+            AddString(unic, "survival", "FIREFIGHT");
+            AddString(unic, "survival_help", "Take your party to Firefight missions that gradually increase in difficulty as you rack up the points.");
+            CacheContext.Serialize(Stream, tag, unic);
         }
     }
 }

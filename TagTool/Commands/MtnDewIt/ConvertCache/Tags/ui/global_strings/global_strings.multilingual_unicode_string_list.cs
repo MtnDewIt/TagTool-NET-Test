@@ -23,7 +23,14 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<MultilingualUnicodeStringList>($@"ui/global_strings/global_strings");
+            var tag = GetCachedTag<MultilingualUnicodeStringList>($@"ui\global_strings\global_strings");
+            var unic = CacheContext.Deserialize<MultilingualUnicodeStringList>(Stream, tag);
+            AddString(unic, "network_mode_offline", "Offline");
+            AddString(unic, "network_mode_system_link_advertise", "Online");
+            AddString(unic, "metagame_off", "Off");
+            AddString(unic, "metagame_on", "Free for All");
+            AddString(unic, "metagame_on_group", "Team");
+            CacheContext.Serialize(Stream, tag, unic);
         }
     }
 }

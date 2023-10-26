@@ -23,7 +23,10 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<MultilingualUnicodeStringList>($@"ui/halox/boot_betrayer/strings");
+            var tag = GetCachedTag<MultilingualUnicodeStringList>($@"ui\halox\boot_betrayer\strings");
+            var unic = CacheContext.Deserialize<MultilingualUnicodeStringList>(Stream, tag);
+            AddString(unic, "help", @"You were betrayed again by <betrayer-name\>. Press \UE102 if you want to boot this player from the game.");
+            CacheContext.Serialize(Stream, tag, unic);
         }
     }
 }

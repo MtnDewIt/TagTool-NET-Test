@@ -23,7 +23,11 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<Equipment>($@"objects/equipment/concussiveblast_equipment/concussiveblast_equipment");
+            var tag = GetCachedTag<Equipment>($@"objects\equipment\concussiveblast_equipment\concussiveblast_equipment");
+            var eqip = CacheContext.Deserialize<Equipment>(Stream, tag);
+            eqip.EnterAnimation = CacheContext.StringTable.GetStringId($@"con_blast_enter");
+            eqip.ExitAnimation = CacheContext.StringTable.GetStringId($@"con_blast_exit");
+            CacheContext.Serialize(Stream, tag, eqip);
         }
     }
 }

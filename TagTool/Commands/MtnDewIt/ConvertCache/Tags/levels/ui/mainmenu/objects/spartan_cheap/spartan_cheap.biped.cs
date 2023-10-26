@@ -23,7 +23,10 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<Biped>($@"levels/ui/mainmenu/objects/spartan_cheap/spartan_cheap");
+            var tag = GetCachedTag<Biped>($@"levels\ui\mainmenu\objects\spartan_cheap\spartan_cheap");
+            var bipd = CacheContext.Deserialize<Biped>(Stream, tag);
+            bipd.PathfindingSpheres = null;
+            CacheContext.Serialize(Stream, tag, bipd);
         }
     }
 }

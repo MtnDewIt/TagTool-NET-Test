@@ -3,6 +3,7 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 using System.IO;
+using System.Collections.Generic;
 
 namespace TagTool.Commands.MtnDewIt.ConvertCache 
 {
@@ -23,7 +24,22 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<Weapon>($@"objects/weapons/multiplayer/flag/flag");
+            var tag = GetCachedTag<Weapon>($@"objects\weapons\multiplayer\flag\flag");
+            var weap = CacheContext.Deserialize<Weapon>(Stream, tag);
+            weap.FirstPerson = new List<Weapon.FirstPersonBlock> 
+            {
+                new Weapon.FirstPersonBlock() 
+                {
+                    FirstPersonModel = GetCachedTag<RenderModel>($@"objects\weapons\multiplayer\flag\fp_flag\fp_flag"),
+                    FirstPersonAnimations = GetCachedTag<ModelAnimationGraph>($@"objects\characters\masterchief\fp\weapons\multiplayer\fp_flag\fp_flag"),
+                },
+                new Weapon.FirstPersonBlock()
+                {
+                    FirstPersonModel = GetCachedTag<RenderModel>($@"objects\weapons\multiplayer\flag\fp_flag\fp_flag"),
+                    FirstPersonAnimations = GetCachedTag<ModelAnimationGraph>($@"objects\characters\dervish\fp\weapons\multiplayer\fp_flag\fp_flag"),
+                },
+            };
+            CacheContext.Serialize(Stream, tag, weap);
         }
     }
 }

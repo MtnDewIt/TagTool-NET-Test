@@ -3,6 +3,7 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 using System.IO;
+using System.Collections.Generic;
 
 namespace TagTool.Commands.MtnDewIt.ConvertCache 
 {
@@ -23,7 +24,22 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<Weapon>($@"objects/weapons/rifle/beam_rifle/beam_rifle");
+            var tag = GetCachedTag<Weapon>($@"objects\weapons\rifle\beam_rifle\beam_rifle");
+            var weap = CacheContext.Deserialize<Weapon>(Stream, tag);
+            weap.FirstPerson = new List<Weapon.FirstPersonBlock> 
+            {
+                new Weapon.FirstPersonBlock() 
+                {
+                    FirstPersonModel = GetCachedTag<RenderModel>($@"objects\weapons\rifle\beam_rifle\fp_beam_rifle\fp_beam_rifle"),
+                    FirstPersonAnimations = GetCachedTag<ModelAnimationGraph>($@"objects\characters\masterchief\fp\weapons\rifle\fp_beam_rifle\fp_beam_rifle"),
+                },
+                new Weapon.FirstPersonBlock()
+                {
+                    FirstPersonModel = GetCachedTag<RenderModel>($@"objects\weapons\rifle\beam_rifle\fp_beam_rifle\fp_beam_rifle"),
+                    FirstPersonAnimations = GetCachedTag<ModelAnimationGraph>($@"objects\characters\dervish\fp\weapons\rifle\fp_beam_rifle\fp_beam_rifle"),
+                },
+            };
+            CacheContext.Serialize(Stream, tag, weap);
         }
     }
 }

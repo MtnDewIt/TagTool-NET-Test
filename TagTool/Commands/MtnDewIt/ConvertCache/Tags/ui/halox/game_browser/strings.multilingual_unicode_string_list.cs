@@ -23,7 +23,11 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<MultilingualUnicodeStringList>($@"ui/halox/game_browser/strings");
+            var tag = GetCachedTag<MultilingualUnicodeStringList>($@"ui\halox\game_browser\strings");
+            var unic = CacheContext.Deserialize<MultilingualUnicodeStringList>(Stream, tag);
+            AddString(unic, "browser_title", "AVAILABLE GAMES");
+            AddString(unic, "system_link_games", "Local Games");
+            CacheContext.Serialize(Stream, tag, unic);
         }
     }
 }

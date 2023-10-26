@@ -23,7 +23,10 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<Biped>($@"objects/characters/masterchief/masterchief");
+            var tag = GetCachedTag<Biped>($@"objects\characters\masterchief\masterchief");
+            var bipd = CacheContext.Deserialize<Biped>(Stream, tag);
+            bipd.PathfindingSpheres = null;
+            CacheContext.Serialize(Stream, tag, bipd);
         }
     }
 }

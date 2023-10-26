@@ -3,6 +3,7 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 using System.IO;
+using System.Collections.Generic;
 
 namespace TagTool.Commands.MtnDewIt.ConvertCache 
 {
@@ -23,7 +24,22 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<Weapon>($@"objects/weapons/rifle/dmr/dmr_v1/dmr_v1");
+            var tag = GetCachedTag<Weapon>($@"objects\weapons\rifle\dmr\dmr_v1\dmr_v1");
+            var weap = CacheContext.Deserialize<Weapon>(Stream, tag);
+            weap.FirstPerson = new List<Weapon.FirstPersonBlock> 
+            {
+                new Weapon.FirstPersonBlock() 
+                {
+                    FirstPersonModel = GetCachedTag<RenderModel>($@"objects\weapons\rifle\dmr\dmr_v1\fp_dmr\fp_dmr_v1"),
+                    FirstPersonAnimations = GetCachedTag<ModelAnimationGraph>($@"objects\characters\masterchief\fp\weapons\rifle\fp_dmr\fp_dmr"),
+                },
+                new Weapon.FirstPersonBlock()
+                {
+                    FirstPersonModel = GetCachedTag<RenderModel>($@"objects\weapons\rifle\dmr\dmr_v1\fp_dmr\fp_dmr_v1"),
+                    FirstPersonAnimations = GetCachedTag<ModelAnimationGraph>($@"objects\characters\dervish\fp\weapons\rifle\fp_dmr\fp_dmr"),
+                },
+            };
+            CacheContext.Serialize(Stream, tag, weap);
         }
     }
 }

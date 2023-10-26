@@ -23,7 +23,10 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<GuiScreenWidgetDefinition>($@"ui/halox/start_menu/panes/settings_display/start_menu_settings_display");
+            var tag = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\start_menu\panes\settings_display\start_menu_settings_display");
+            var scn3 = CacheContext.Deserialize<GuiScreenWidgetDefinition>(Stream, tag);
+            scn3.GroupWidgets[1].Definition.TextWidgets[0].Definition.GuiRenderBlock.Bounds720p = new Rectangle2d(147, 65, 422, 603);
+            CacheContext.Serialize(Stream, tag, scn3);
         }
     }
 }

@@ -3,6 +3,7 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 using System.IO;
+using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.Commands.MtnDewIt.ConvertCache 
 {
@@ -23,7 +24,10 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<Scenery>($@"objects/multi/spawning/initial_spawn_point");
+            var tag = GetCachedTag<Scenery>($@"objects\multi\spawning\initial_spawn_point");
+            var scen = CacheContext.Deserialize<Scenery>(Stream, tag);
+            scen.MultiplayerObject[0].EngineFlags = GameEngineSubTypeFlags.All;
+            CacheContext.Serialize(Stream, tag, scen);
         }
     }
 }

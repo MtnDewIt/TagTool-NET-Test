@@ -23,7 +23,13 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<MultilingualUnicodeStringList>($@"ui/halox/campaign/campaign_settings/strings_campaign_settings");
+            var tag = GetCachedTag<MultilingualUnicodeStringList>($@"ui\halox\campaign\campaign_settings\strings_campaign_settings");
+            var unic = CacheContext.Deserialize<MultilingualUnicodeStringList>(Stream, tag);
+            AddString(unic, "skulls_help", "This setting allows you to turn skulls on or off.");
+            //AddString(unic, "skull_15_title", "Third Person");
+            //AddString(unic, "skull_15_hint", "Interred somewhere, anywhere, nowhere?);
+            //AddString(unic, "skull_15", "Got a good view of my ass from here");
+            CacheContext.Serialize(Stream, tag, unic);
         }
     }
 }

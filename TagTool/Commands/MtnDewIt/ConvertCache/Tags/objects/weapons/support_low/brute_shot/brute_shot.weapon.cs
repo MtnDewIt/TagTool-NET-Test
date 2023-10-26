@@ -3,6 +3,7 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 using System.IO;
+using System.Collections.Generic;
 
 namespace TagTool.Commands.MtnDewIt.ConvertCache 
 {
@@ -23,7 +24,22 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<Weapon>($@"objects/weapons/support_low/brute_shot/brute_shot");
+            var tag = GetCachedTag<Weapon>($@"objects\weapons\support_low\brute_shot\brute_shot");
+            var weap = CacheContext.Deserialize<Weapon>(Stream, tag);
+            weap.FirstPerson = new List<Weapon.FirstPersonBlock> 
+            {
+                new Weapon.FirstPersonBlock() 
+                {
+                    FirstPersonModel = GetCachedTag<RenderModel>($@"objects\weapons\support_low\brute_shot\fp_brute_shot\fp_brute_shot"),
+                    FirstPersonAnimations = GetCachedTag<ModelAnimationGraph>($@"objects\characters\masterchief\fp\weapons\support_low\fp_brute_shot\fp_brute_shot"),
+                },
+                new Weapon.FirstPersonBlock()
+                {
+                    FirstPersonModel = GetCachedTag<RenderModel>($@"objects\weapons\support_low\brute_shot\fp_brute_shot\fp_brute_shot"),
+                    FirstPersonAnimations = GetCachedTag<ModelAnimationGraph>($@"objects\characters\dervish\fp\weapons\support_low\fp_brute_shot\fp_brute_shot"),
+                },
+            };
+            CacheContext.Serialize(Stream, tag, weap);
         }
     }
 }

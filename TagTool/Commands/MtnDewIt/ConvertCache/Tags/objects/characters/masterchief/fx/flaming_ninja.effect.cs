@@ -23,7 +23,10 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<Effect>($@"objects/characters/masterchief/fx/flaming_ninja");
+            var tag = GetCachedTag<Effect>($@"objects\characters\masterchief\fx\flaming_ninja");
+            var effe = CacheContext.Deserialize<Effect>(Stream, tag);
+            effe.Events[0].ParticleSystems[0].NearCutoff = 0.34f;
+            CacheContext.Serialize(Stream, tag, effe);
         }
     }
 }

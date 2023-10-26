@@ -23,7 +23,10 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<Model>($@"objects/eldewrito/reforge/block_01x20x20_black_mainmenu");
+            var tag = GetCachedTag<Model>($@"objects\eldewrito\reforge\block_01x20x20_black_mainmenu");
+            var hlmt = CacheContext.Deserialize<Model>(Stream, tag);
+            hlmt.RenderModel = GetCachedTag<RenderModel>($@"objects\eldewrito\reforge\block_01x20x20_black_mainmenu");
+            CacheContext.Serialize(Stream, tag, hlmt);
         }
     }
 }

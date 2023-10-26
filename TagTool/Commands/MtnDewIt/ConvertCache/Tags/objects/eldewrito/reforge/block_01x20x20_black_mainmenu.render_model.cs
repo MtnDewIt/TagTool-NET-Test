@@ -3,6 +3,8 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 using System.IO;
+using TagTool.Geometry;
+using System.Collections.Generic;
 
 namespace TagTool.Commands.MtnDewIt.ConvertCache 
 {
@@ -23,7 +25,16 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<RenderModel>($@"objects/eldewrito/reforge/block_01x20x20_black_mainmenu");
+            var tag = GetCachedTag<RenderModel>($@"objects\eldewrito\reforge\block_01x20x20_black_mainmenu");
+            var mode = CacheContext.Deserialize<RenderModel>(Stream, tag);
+            mode.Materials = new List<RenderMaterial>
+            {
+                new RenderMaterial
+                {
+                    RenderMethod = GetCachedTag<Shader>($@"levels\shared\shaders\simple\black"),
+                },
+            };
+            CacheContext.Serialize(Stream, tag, mode);
         }
     }
 }

@@ -23,7 +23,15 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<MultilingualUnicodeStringList>($@"ui/halox/pregame_lobby/selection/strings");
+            var tag = GetCachedTag<MultilingualUnicodeStringList>($@"ui\halox\pregame_lobby\selection\strings");
+            var unic = CacheContext.Deserialize<MultilingualUnicodeStringList>(Stream, tag);
+            AddString(unic, "network_mode_offline", "Offline");
+            AddString(unic, "network_mode_offline_description", "Play only on this PC.");
+            AddString(unic, "network_mode_system_link", "Online");
+            AddString(unic, "network_mode_system_link_advertise_description", "Host a INTERNET/LAN game. This can be joined from the Server Browser or the Local Games menu.");
+            AddString(unic, "network_mode_system_link_browse_description", "Find games that are being hosted on your local area network or VPN.");
+            AddString(unic, "network_mode_system_link_description", "Play with others over your local area network or VPN.");
+            CacheContext.Serialize(Stream, tag, unic);
         }
     }
 }

@@ -23,7 +23,13 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
 
         public override void TagData()
         {
-            var tag = GetCachedTag<Model>($@"levels/ui/mainmenu/objects/odst_recon_cheap/odst_recon_cheap");
+            var tag = GetCachedTag<Model>($@"levels\ui\mainmenu\objects\odst_recon_cheap\odst_recon_cheap");
+            var hlmt = CacheContext.Deserialize<Model>(Stream, tag);
+            hlmt.RenderModel = GetCachedTag<RenderModel>($@"levels\ui\mainmenu\objects\odst_recon_cheap\odst_recon_cheap");
+            hlmt.CollisionModel = GetCachedTag<CollisionModel>($@"objects\characters\odst\odst");
+            hlmt.Animation = GetCachedTag<ModelAnimationGraph>($@"objects\characters\marine\marine");
+            hlmt.PhysicsModel = GetCachedTag<PhysicsModel>($@"objects\characters\marine\marine");
+            CacheContext.Serialize(Stream, tag, hlmt);
         }
     }
 }
