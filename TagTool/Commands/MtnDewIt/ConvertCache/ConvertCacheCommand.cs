@@ -171,24 +171,9 @@ namespace TagTool.Commands.MtnDewIt
             rebuildCache(outputDirectoryInfo.FullName);
             retargetCache(outputDirectoryInfo.FullName);
             GenerateRenderMethods();
-            RecompileShaders();
+            //RecompileShaders();
             PortTagData();
-            modifyStrings();
-            Globals();
-            MultiplayerGlobals();
-            ModGlobals();
-            ForgeGlobals();
-            ChudGlobals();
-            GameVariantSettingsSetup();
-            UserInterfaceGlobalsSetup();
-            ShieldImpactSetup();
-            ApplyUIPatches();
-            ApplyHUDPatches();
-            ApplyPlayerPatches();
-            UpdateWeaponAnimations();
-            PatchEquipment();
-            ScenarioPatches();
-            MainMenuDependencies();
+            UpdateTagData();
             CommandRunner.Current.RunCommand($"updatemapfiles \"{Program.TagToolDirectory}\\Tools\\BaseCache\\MapInfo\"");
             ContextStack.Pop();
 
@@ -317,14 +302,11 @@ namespace TagTool.Commands.MtnDewIt
         {
             CacheContext = targetCache as GameCacheHaloOnline;
 
-            using (var stream = CacheContext.OpenCacheRead())
+            foreach (var tag in CacheContext.TagCache.NonNull())
             {
-                foreach (var tag in CacheContext.TagCache.NonNull())
+                if (tagTable.TryGetValue(tag.Index, out string name))
                 {
-                    if (tagTable.TryGetValue(tag.Index, out string name))
-                    {
-                        tag.Name = name;
-                    }
+                    tag.Name = name;
                 }
             }
 

@@ -271,8 +271,6 @@ namespace TagTool.Commands.MtnDewIt
             var destContext = new HaloOnlineSerializationContext(destStream, destCacheContext, destTag);
             destCacheContext.Serializer.Serialize(destContext, tagData);
 
-            Console.WriteLine($@"{srcTag.Name}.{srcTag.Group.ToString()}");
-
             return destTag;
         }
 

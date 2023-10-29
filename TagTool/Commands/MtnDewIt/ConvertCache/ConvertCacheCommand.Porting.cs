@@ -172,12 +172,14 @@ namespace TagTool.Commands.MtnDewIt
             RenameTag(GetCachedTag<Shader>($@"objects\characters\masterchief\shaders\visor"), $@"objects\characters\masterchief\shaders\mp_visor");
             CreateBitmap($@"objects\characters\masterchief\bitmaps\mp_visor_cc", $@"{Program.TagToolDirectory}\Tools\BaseCache\Images\Assets\mp_visor_cc.dds");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\mp_masterchief.bipd");
-            GenerateSpartanActionTag();
+            GenerateTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera");
+            GenerateTag<PlayerActionSet>($@"objects\characters\masterchief\mp_masterchief\actions");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\elite\mp_elite\fp\fp.mode");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\elite\mp_elite\fp_body\fp_body.mode");
             GenerateTag<Light>($@"objects\characters\dervish\fx\shield\shield_down");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\elite\mp_elite\mp_elite.bipd");
-            GenerateEliteActionTag();
+            GenerateTag<CameraTrack>($@"objects\characters\elite\mp_elite\action_camera");
+            GenerateTag<PlayerActionSet>($@"objects\characters\elite\mp_elite\actions");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\monitor\monitor_editor.bipd");
             ContextStack.Pop();
 
@@ -240,8 +242,6 @@ namespace TagTool.Commands.MtnDewIt
             CommandRunner.Current.RunCommand($@"porttag objects\characters\dervish\fp\weapons\support_low\fp_brute_shot\fp_brute_shot.model_animation_graph");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\dervish\fp\weapons\support_low\fp_sentinel_beam\fp_sentinel_beam.model_animation_graph");
             ContextStack.Pop();
-
-            ImportAnimations();
 
             NewPortingContext(sandbox, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag objects\equipment\instantcover_equipment\instantcover_equipment_mp.eqip");
@@ -368,19 +368,8 @@ namespace TagTool.Commands.MtnDewIt
 
         public void RenameTag(CachedTag currentTag, string newName) 
         {
-            using (var stream = Cache.OpenCacheReadWrite()) 
-            {
-                foreach (var tag in CacheContext.TagCache.NonNull()) 
-                {
-                    if (tag == currentTag) 
-                    {
-                        tag.Name = newName;
-                        break;
-                    }
-                }
-                
-                CacheContext.SaveTagNames();
-            }
+            currentTag.Name = newName;
+            CacheContext.SaveTagNames();
         }
     }
 }
