@@ -25,6 +25,18 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
         public override void TagData()
         {
             var tag = GetCachedTag<ModelAnimationGraph>($@"objects\characters\masterchief\masterchief");
+
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\combat thunderclap.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any dance1test.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any dance1.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any mixamo.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any fingerlay.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any fingerstand.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any breakdance.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any twerk.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any hiphop.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any ballskick.JMM");
+
             var jmad = CacheContext.Deserialize<ModelAnimationGraph>(Stream, tag);
             jmad.Modes[0].WeaponClass[1].WeaponType[0].Set.Actions = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry> 
             {

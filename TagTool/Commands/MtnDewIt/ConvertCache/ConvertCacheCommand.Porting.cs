@@ -12,7 +12,7 @@ namespace TagTool.Commands.MtnDewIt
         public void PortTagData() 
         {
             NewPortingContext(sandbox, Audio.Compression.OGG, true);
-            CreateBitmap($@"ui\chud\bitmaps\stamina_icon_elite", $@"{Program.TagToolDirectory}\Tools\BaseCache\Images\Assets\stamina_icon_elite.dds");
+            GenerateTag<Bitmap>($@"ui\chud\bitmaps\stamina_icon_elite");
             CommandRunner.Current.RunCommand($@"porttag ui\chud\elite.chud_definition");
             DuplicateTag(GetCachedTag<ChudDefinition>($@"ui\chud\scoreboard"), $@"ui\chud\scoreboard_elite");
             CommandRunner.Current.RunCommand($@"porttag sound\dialog\multiplayer_en\juggernaut\juggernaut.sound");
@@ -148,7 +148,58 @@ namespace TagTool.Commands.MtnDewIt
             GenerateTag<UserInterfaceGlobalsDefinition>($@"ui\multiplayer");
             GenerateTag<UserInterfaceGlobalsDefinition>($@"ui\single_player");
 
-            GenerateMapImages();
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\placeholder");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\armory");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\bunkerworld");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\chillout");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\descent");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\docks");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\fortress");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\ghosttown");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\lockout");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\midship");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\sandbox");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\sidewinder");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\spacecamp");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\warehouse");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\chill");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\construct");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\cyberdyne");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\deadlock");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\guardian");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\isolation");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\riverworld");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\s3d_avalanche");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\s3d_edge");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\s3d_reactor");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\s3d_turf");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\s3d_waterfall");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\salvation");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\shrine");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\snowbound");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\zanzibar");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\005_intro");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\010_jungle");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\020_base");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\030_outskirts");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\040_voi");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\050_floodvoi");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\070_waste");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\100_citadel");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\110_hc");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\120_halo");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\130_epilogue");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\c100");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\c200");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\h100");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\l200");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\l300");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\sc100");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\sc110");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\sc120");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\sc130");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\sc140");
+            GenerateTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\sc150");
 
             NewPortingContext(sandbox, Audio.Compression.OGG, true);
             CommandRunner.Current.RunCommand($@"porttag sound\game_sfx\ui\shield_charge_dervish\shield_charge_dervish.sound_looping");
@@ -170,7 +221,7 @@ namespace TagTool.Commands.MtnDewIt
             GenerateShaderTemplate($@"shader", GenerateShaderOptions($@"4 1 0 1 1 2 0 0 0 1 0 0"));
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\shaders\visor.rmsh");
             RenameTag(GetCachedTag<Shader>($@"objects\characters\masterchief\shaders\visor"), $@"objects\characters\masterchief\shaders\mp_visor");
-            CreateBitmap($@"objects\characters\masterchief\bitmaps\mp_visor_cc", $@"{Program.TagToolDirectory}\Tools\BaseCache\Images\Assets\mp_visor_cc.dds");
+            GenerateTag<Bitmap>($@"objects\characters\masterchief\bitmaps\mp_visor_cc");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\mp_masterchief.bipd");
             GenerateTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera");
             GenerateTag<PlayerActionSet>($@"objects\characters\masterchief\mp_masterchief\actions");
@@ -334,6 +385,8 @@ namespace TagTool.Commands.MtnDewIt
             CommandRunner.Current.RunCommand($@"porttag levels\multi\riverworld\riverworld.performance_throttles");
             ContextStack.Pop();
         }
+
+        //TODO: Figure out how to make all these functions use the same stream, and have it play nicely with the porting context
 
         public void GenerateTag<T>(string tagName) where T : TagStructure
         {

@@ -25,6 +25,30 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
         public override void TagData()
         {
             var tag = GetCachedTag<ModelAnimationGraph>($@"objects\characters\elite\elite");
+
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\combat thunderclap.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\any any dance1test.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\any any dance1.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\any any mixamo.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\any any fingerlay.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\any any fingerstand.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\any any breakdance.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\any any twerk.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\any any hiphop.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\any any ballskick.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\combat armor_lock_enter.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\combat armor_lock_exit.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\combat armor_lock_idle.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\combat con_blast_enter.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\combat con_blast_exit.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\combat mag_pulse_enter.JMM");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\sprint ball any move_front.JMA");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\sprint hammer any move_front.JMA");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\sprint missile any move_front.JMA");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\sprint pistol any move_front.JMA");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\sprint rifle any move_front.JMA");
+            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Elite\\sprint sword any move_front.JMA");
+
             var jmad = CacheContext.Deserialize<ModelAnimationGraph>(Stream, tag);
             jmad.EffectReferences = new List<ModelAnimationGraph.AnimationTagReference> 
             {
@@ -335,8 +359,9 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
                     },
                 },
             });
-            
             CacheContext.Serialize(Stream, tag, jmad);
+
+            SortModes(tag);
         }
     }
 }

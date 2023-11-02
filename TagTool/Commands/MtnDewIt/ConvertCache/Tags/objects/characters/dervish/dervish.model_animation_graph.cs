@@ -283,6 +283,8 @@ namespace TagTool.Commands.MtnDewIt.ConvertCache
                 },
             });
             CacheContext.Serialize(Stream, tag, jmad);
+
+            SortModes(tag);
         }
     }
 }

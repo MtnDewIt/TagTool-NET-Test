@@ -23,30 +23,37 @@ namespace TagTool.Commands.MtnDewIt
         public Dictionary<ResourceLocation, Dictionary<int, PageableResource>> CopiedResources { get; } = new Dictionary<ResourceLocation, Dictionary<int, PageableResource>>();
         public Dictionary<ResourceLocation, Stream> SourceResourceStreams = new Dictionary<ResourceLocation, Stream>();
         public Dictionary<ResourceLocation, Stream> DestinationResourceStreams = new Dictionary<ResourceLocation, Stream>();
-
-        public static readonly string[] armorTags = new[]
+        public static readonly string[] skipGroups = new[]
         {
-            @"objects\characters\masterchief\mp_masterchief\armor\base",
-            @"objects\characters\masterchief\mp_masterchief\armor\mp_cobra",
-            @"objects\characters\masterchief\mp_masterchief\armor\mp_intruder",
-            @"objects\characters\masterchief\mp_masterchief\armor\mp_ninja",
-            @"objects\characters\masterchief\mp_masterchief\armor\mp_regulator",
-            @"objects\characters\masterchief\mp_masterchief\armor\mp_ryu",
-            @"objects\characters\masterchief\mp_masterchief\armor\mp_marathon",
-            @"objects\characters\masterchief\mp_masterchief\armor\mp_scout",
-            @"objects\characters\masterchief\mp_masterchief\armor\mp_odst",
-            @"objects\characters\masterchief\mp_masterchief\armor\mp_markv",
-            @"objects\characters\masterchief\mp_masterchief\armor\mp_rogue",
-            @"objects\characters\masterchief\mp_masterchief\armor\mp_bungie",
-            @"objects\characters\masterchief\mp_masterchief\armor\mp_katana",
+            $@"bipd",
+            $@"forg",
+            $@"gfxt",
+            $@"wgtz",
         };
 
-        // TODO: Format this at some point :/
         public static Dictionary<string, List<string>> requiredTags { get; } = new Dictionary<string, List<string>>()
         {
-            { "effe", new List<string> { $@"objects\characters\masterchief\damage_effects\concussive_blast" } },
-            { "chdt", new List<string> { $@"ui\chud\spartan" } },
-            { "bitm", new List<string> { $@"ui\halox\main_menu\halo3_logo_ui" } },
+            { 
+                "effe", 
+                new List<string> 
+                { 
+                    $@"objects\characters\masterchief\damage_effects\concussive_blast",
+                } 
+            },
+            { 
+                "chdt", 
+                new List<string> 
+                { 
+                    $@"ui\chud\spartan", 
+                } 
+            },
+            { 
+                "bitm", 
+                new List<string> 
+                { 
+                    $@"ui\halox\main_menu\halo3_logo_ui", 
+                } 
+            },
         };
 
         public object rebuildCache(string destCacheDirectory)
@@ -150,8 +157,8 @@ namespace TagTool.Commands.MtnDewIt
                     if (tag.IsInGroup("sbsp"))
                     {
                         var sbsp = destCacheContext.Deserialize<ScenarioStructureBsp>(destStream, tag);
-                        destCacheContext.ResourceCaches.ReplaceResource(sbsp.CollisionBspResource.HaloOnlinePageableResource, GetSbspCollisionData(tag.Name));
-                        destCacheContext.ResourceCaches.ReplaceResource(sbsp.PathfindingResource.HaloOnlinePageableResource, GetSbspPathfindingData(tag.Name));
+                        destCacheContext.ResourceCaches.ReplaceResource(sbsp.CollisionBspResource.HaloOnlinePageableResource, GetSbspCollisionData(tag.Name, srcStream));
+                        destCacheContext.ResourceCaches.ReplaceResource(sbsp.PathfindingResource.HaloOnlinePageableResource, GetSbspPathfindingData(tag.Name, srcStream));
                         destCacheContext.Serialize(destStream, tag, sbsp);
                     }
                 }
@@ -214,28 +221,11 @@ namespace TagTool.Commands.MtnDewIt
 
         private CachedTagHaloOnline CopyTag(CachedTagHaloOnline srcTag, GameCacheHaloOnline srcCacheContext, Stream srcStream, GameCacheHaloOnline destCacheContext, Stream destStream)
         {
-            if (srcTag == null)
+            if (skipGroups.Any(tag => srcTag.IsInGroup(tag)))
                 return null;
 
-            if (srcTag.IsInGroup("forg"))
+            if (srcTag.Name.Contains($@"objects\characters\masterchief\mp_masterchief\armor\"))
                 return null;
-
-            if (srcTag.IsInGroup("wgtz"))
-                return null;
-
-            if (srcTag.IsInGroup("gfxt"))
-                return null;
-
-            if (srcTag.IsInGroup("bipd"))
-                return null;
-
-            foreach (var tagName in armorTags)
-            {
-                if (srcTag.IsInGroup("scen") && srcTag.Name == tagName)
-                {
-                    return null;
-                }
-            }
 
             if (ConvertedTags.ContainsKey(srcTag.Index))
                 return ConvertedTags[srcTag.Index];
@@ -470,40 +460,24 @@ namespace TagTool.Commands.MtnDewIt
             }
         }
 
-        private StructureBspTagResources GetSbspCollisionData(string sbspTag)
+        private StructureBspTagResources GetSbspCollisionData(string sbspTag, Stream srcStream)
         {
             StructureBspTagResources collisionData = null;
 
-            using (var srcStream = CacheContext.OpenCacheRead())
-            {
-                foreach (var tag in CacheContext.TagCache.NonNull())
-                {
-                    if (tag.IsInGroup("sbsp") && tag.Name == sbspTag)
-                    {
-                        var sbsp = CacheContext.Deserialize<ScenarioStructureBsp>(srcStream, tag);
-                        collisionData = CacheContext.ResourceCache.GetStructureBspTagResources(sbsp.CollisionBspResource);
-                    }
-                }
-            }
+            var tag = CacheContext.TagCache.GetTag<ScenarioStructureBsp>(sbspTag);
+            var sbsp = CacheContext.Deserialize<ScenarioStructureBsp>(srcStream, tag);
+            collisionData = CacheContext.ResourceCache.GetStructureBspTagResources(sbsp.CollisionBspResource);
 
             return collisionData;
         }
 
-        private StructureBspCacheFileTagResources GetSbspPathfindingData(string sbspTag)
+        private StructureBspCacheFileTagResources GetSbspPathfindingData(string sbspTag, Stream srcStream)
         {
             StructureBspCacheFileTagResources pathfindingData = null;
 
-            using (var srcStream = CacheContext.OpenCacheRead())
-            {
-                foreach (var tag in CacheContext.TagCache.NonNull())
-                {
-                    if (tag.IsInGroup("sbsp") && tag.Name == sbspTag)
-                    {
-                        var sbsp = CacheContext.Deserialize<ScenarioStructureBsp>(srcStream, tag);
-                        pathfindingData = CacheContext.ResourceCache.GetStructureBspCacheFileTagResources(sbsp.PathfindingResource);
-                    }
-                }
-            }
+            var tag = CacheContext.TagCache.GetTag<ScenarioStructureBsp>(sbspTag);
+            var sbsp = CacheContext.Deserialize<ScenarioStructureBsp>(srcStream, tag);
+            pathfindingData = CacheContext.ResourceCache.GetStructureBspCacheFileTagResources(sbsp.PathfindingResource);
 
             return pathfindingData;
         }
