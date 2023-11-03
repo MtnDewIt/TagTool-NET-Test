@@ -171,9 +171,7 @@ namespace TagTool.Commands.MtnDewIt
             rebuildCache(outputDirectoryInfo.FullName);
             retargetCache(outputDirectoryInfo.FullName);
             GenerateRenderMethods();
-            // Currently this adds around 15 minutes to the build time
-            // I will re-enable this when I have written my own function which is properly multithreaded (or something more efficient)
-            //RecompileShaders();
+            RecompileShaders();
             PortTagData();
             UpdateTagData();
             CommandRunner.Current.RunCommand($"updatemapfiles \"{Program.TagToolDirectory}\\Tools\\BaseCache\\MapInfo\"");
