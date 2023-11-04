@@ -13,110 +13,15 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
     <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>CS1591</NoWarn>
+    <LangVersion>7.3</LangVersion>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>TagTool.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <NoWarn>CS1591</NoWarn>
-    <LangVersion>7.3</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <Optimize>true</Optimize>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>7.3</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;_x64</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <NoWarn>CS1591</NoWarn>
-    <PlatformTarget>x64</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-    <DocumentationFile>bin\x64\Debug\Documentation.xml</DocumentationFile>
-    <LangVersion>7.3</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <PlatformTarget>x64</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-    <DocumentationFile>bin\x64\Release\Documentation.xml</DocumentationFile>
-    <NoWarn>CS1591</NoWarn>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
-    <LangVersion>7.3</LangVersion>
-    <DefineConstants>_x64</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'test|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\test\</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <NoWarn>CS1591</NoWarn>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'test|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\test\</OutputPath>
-    <DefineConstants>DEBUG;_x64</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\x64\Debug\Documentation.xml</DocumentationFile>
-    <NoWarn>CS1591</NoWarn>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\x64\Debug\Documentation.xml</DocumentationFile>
-    <NoWarn>CS1591</NoWarn>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\x64\Release\Documentation.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <NoWarn>CS1591</NoWarn>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'test|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\test\</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\x64\Debug\Documentation.xml</DocumentationFile>
-    <NoWarn>CS1591</NoWarn>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
@@ -155,26 +60,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ShaderGenerator\HaloShaderGenerator\HaloShaderGenerator.csproj">
-      <Project>{17bfeffb-1619-4647-ba40-3cd1d87fd774}</Project>
-      <Name>HaloShaderGenerator</Name>
-      <Private>False</Private>
-    </ProjectReference>
+    <ProjectReference Include="..\ShaderGenerator\HaloShaderGenerator\HaloShaderGenerator.csproj" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <PackageReference Include="AssimpNet">
-      <Version>4.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="lz4net">
-      <Version>1.0.15.93</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting">
-      <Version>4.6.0</Version>
-    </PackageReference>
-    <PackageReference Include="Poly2Tri.NetStandard">
-      <Version>1.0.2</Version>
-    </PackageReference>
+    <PackageReference Include="AssimpNet" Version="4.1.0" />
+    <PackageReference Include="lz4net" Version="1.0.15.93" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.6.0" />
+    <PackageReference Include="Poly2Tri.NetStandard" Version="1.0.2" />
   </ItemGroup>
   <ItemDefinitionGroup>
     <ReferenceCopyLocalPaths>
@@ -208,10 +101,6 @@ if ERRORLEVEL == 0 (
     SET ERRORLEVEL=0
 )
 EXIT %25ERRORLEVEL%25</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
