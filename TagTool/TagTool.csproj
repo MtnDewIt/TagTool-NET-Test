@@ -21,16 +21,27 @@
   <ItemGroup>
     <Content Include="TagTool.ico" />
     <Compile Remove="Audio\PlatformCustomPlayback.cs" />
+    <None Include="Audio\PlatformCustomPlayback.cs" />
     <Compile Remove="Audio\PlaybackParameterStruct.cs" />
+    <None Include="Audio\PlaybackParameterStruct.cs" />
     <Compile Remove="Audio\SoundImportType.cs" />
+    <None Include="Audio\SoundImportType.cs" />
     <Compile Remove="Audio\SoundPermutationLanguagesBlock.cs" />
+    <None Include="Audio\SoundPermutationLanguagesBlock.cs" />
     <Compile Remove="Audio\SoundPromotionStruct.cs" />
+    <None Include="Audio\SoundPromotionStruct.cs" />
     <Compile Remove="Audio\SoundSampleRate.cs" />
+    <None Include="Audio\SoundSampleRate.cs" />
     <Compile Remove="Audio\SoundScaleModifier.cs" />
+    <None Include="Audio\SoundScaleModifier.cs" />
     <Compile Remove="Commands\Porting\PortArmorVariantCommand.cs" />
+    <None Include="Commands\Porting\PortArmorVariantCommand.cs" />
     <Compile Remove="Commands\Tags\ConvertTagCommand.cs" />
+    <None Include="Commands\Tags\ConvertTagCommand.cs" />
     <Compile Remove="Common\RealMatrix3x3.cs" />
+    <None Include="Common\RealMatrix3x3.cs" />
     <Compile Remove="VideoUtils.cs" />
+    <None Include="VideoUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="..\Tools\JsonMoppNet.dll" />
