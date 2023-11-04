@@ -11,6 +11,7 @@ using System.Linq;
 using TagTool.Commands.Common;
 using TagTool.Serialization;
 using TagTool.Havok;
+using TagTool.Extensions;
 
 namespace TagTool.Geometry
 {
@@ -110,7 +111,7 @@ namespace TagTool.Geometry
                         default:
                             // Just copy the raw buffer over and pray that it works...
                             var bufferData = new byte[buffer.Definition.Data.Data.Length];
-                            inStream.Read(bufferData, 0, bufferData.Length);
+                            inStream.ReadAll(bufferData, 0, bufferData.Length);
                             outStream.Write(bufferData, 0, bufferData.Length);
                             break;
                     }

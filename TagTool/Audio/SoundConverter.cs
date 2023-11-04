@@ -7,6 +7,7 @@ using TagTool.Audio.Converter;
 using TagTool.Cache;
 using TagTool.Commands;
 using TagTool.Common;
+using TagTool.Extensions;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
 using Gen2Sound = TagTool.Tags.Definitions.Gen2.Sound;
@@ -424,7 +425,7 @@ namespace TagTool.Audio
 
             do
             {
-                if (stream.Read(header, 0, header.Length) != header.Length)
+                if (stream.ReadAll(header, 0, header.Length) != header.Length)
                     break;
 
                 string currentChunkId = System.Text.Encoding.ASCII.GetString(header, 0, 4);
@@ -450,7 +451,7 @@ namespace TagTool.Audio
                 long dataOffset = FindRiffChunk(stream, "data", out long dataSize);
                 byte[] result = new byte[dataSize + 0x20];
                 stream.Position = dataOffset;
-                stream.Read(result, 0x10, (int)dataSize);
+                stream.ReadAll(result, 0x10, (int)dataSize);
                 return result;
             }
         }

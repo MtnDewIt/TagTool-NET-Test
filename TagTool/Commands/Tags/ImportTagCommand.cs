@@ -4,6 +4,7 @@ using System.IO;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Cache.HaloOnline;
+using TagTool.Extensions;
 
 namespace TagTool.Commands.Tags
 {
@@ -40,7 +41,7 @@ namespace TagTool.Commands.Tags
             using (var inStream = File.OpenRead(path))
             {
                 data = new byte[inStream.Length];
-                inStream.Read(data, 0, data.Length);
+                inStream.ReadAll(data, 0, data.Length);
             }
 
             using (var stream = Cache.OpenCacheReadWrite())

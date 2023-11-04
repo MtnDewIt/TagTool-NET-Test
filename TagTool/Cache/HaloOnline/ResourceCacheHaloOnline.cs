@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TagTool.Extensions;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
@@ -163,7 +164,7 @@ namespace TagTool.Cache.HaloOnline
             var resource = Resources[resourceIndex];
             resourceCacheStream.Position = resource.Offset;
             var result = new byte[compressedSize];
-            resourceCacheStream.Read(result, 0, result.Length);
+            resourceCacheStream.ReadAll(result, 0, result.Length);
             return result;
         }
 

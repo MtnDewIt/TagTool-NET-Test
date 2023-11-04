@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using TagTool.Extensions;
 
 namespace TagTool.IO
 {
@@ -353,7 +354,7 @@ namespace TagTool.IO
 
         public int ReadBlock(byte[] buffer, int offset, int size)
         {
-            return BaseStream.Read(buffer, offset, size);
+            return BaseStream.ReadAll(buffer, offset, size);
         }
 
         public void SeekTo(long offset)

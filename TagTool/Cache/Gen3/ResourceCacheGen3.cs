@@ -8,6 +8,7 @@ using TagTool.Tags;
 using TagTool.Tags.Resources;
 using TagTool.BlamFile;
 using TagTool.Cache.Resources;
+using TagTool.Extensions;
 
 namespace TagTool.Cache.Gen3
 {
@@ -450,7 +451,7 @@ namespace TagTool.Cache.Gen3
                     return compressed;
                 else
                     using (var readerDeflate = new DeflateStream(new MemoryStream(compressed), CompressionMode.Decompress))
-                        readerDeflate.Read(decompressed, 0, BitConverter.ToInt32(BitConverter.GetBytes(page.UncompressedBlockSize), 0));
+                        readerDeflate.ReadAll(decompressed, 0, BitConverter.ToInt32(BitConverter.GetBytes(page.UncompressedBlockSize), 0));
             }
 
             return decompressed;
