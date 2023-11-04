@@ -9,9 +9,8 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <NoWarn>CS1591</NoWarn>
+    <NoWarn>$(NoWarn),CS0414,CS0649,CS0169,CS1573,CS1591</NoWarn>
     <LangVersion>7.3</LangVersion>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <PropertyGroup>

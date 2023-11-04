@@ -71,7 +71,7 @@ namespace TagTool.Commands.Common
             {
                 bufferWidth = Console.BufferWidth;
             }
-            catch (Exception ex) { }
+            catch { }
 
             Console.WriteLine("Available commands for {0}:", context.Name);
             Console.WriteLine();

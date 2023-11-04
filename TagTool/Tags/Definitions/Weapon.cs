@@ -72,7 +72,7 @@ namespace TagTool.Tags.Definitions
         [TagField(ValidTags = new[] { "snd!", "effe" })]
         public CachedTag Detonation;
         [TagField(ValidTags = new[] { "jpt!", "drdf" })]
-        public CachedTag DetonationDamageEffect;
+        public new CachedTag DetonationDamageEffect;
 
         [TagField(ValidTags = new[] { "jpt!" }, MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag PlayerMeleeDamage;

@@ -268,7 +268,7 @@ namespace TagTool.Common
     }
     
     /// <summary>
-    /// Resource location constants used by <see cref="PageableResource.GetLocation"/>.
+    /// Resource location constants used by <see cref="PageableResource.GetLocation(out ResourceLocation)"/>.
     /// </summary>
     public enum ResourceLocation
     {
