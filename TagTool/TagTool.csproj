@@ -1,34 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{42814DEE-5A94-4901-BDA9-28AFD2D4F5AC}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TagTool</RootNamespace>
     <AssemblyName>TagTool</AssemblyName>
     <TargetFramework>net48</TargetFramework>
-    <FileAlignment>512</FileAlignment>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
-    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>CS1591</NoWarn>
     <LangVersion>7.3</LangVersion>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Deterministic>false</Deterministic>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>TagTool.ico</ApplicationIcon>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Content Include="TagTool.ico" />
     <Compile Remove="Audio\PlatformCustomPlayback.cs" />
     <Compile Remove="Audio\PlaybackParameterStruct.cs" />
@@ -41,20 +32,16 @@
     <Compile Remove="Commands\Tags\ConvertTagCommand.cs" />
     <Compile Remove="Common\RealMatrix3x3.cs" />
     <Compile Remove="VideoUtils.cs" />
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="JsonMoppNet">
-      <HintPath>..\Tools\JsonMoppNet.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="..\Tools\JsonMoppNet.dll" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
@@ -62,7 +49,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ShaderGenerator\HaloShaderGenerator\HaloShaderGenerator.csproj" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <PackageReference Include="AssimpNet" Version="4.1.0" />
     <PackageReference Include="lz4net" Version="1.0.15.93" />
@@ -105,13 +91,6 @@ EXIT %25ERRORLEVEL%25</PostBuildEvent>
   <PropertyGroup>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
   <Target Name="RemoveSatelliteAssemblies" AfterTargets="ResolveAssemblyReferences">
     <ItemGroup>
       <ReferenceCopyLocalPaths Remove="@(ReferenceSatellitePaths)" />
