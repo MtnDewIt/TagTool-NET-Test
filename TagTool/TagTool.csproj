@@ -69,7 +69,6 @@
     </ItemGroup>
   </Target>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <!--Edit this in the VS properties menu-->
     <Exec Command="call postbuild.bat" />
   </Target>
 </Project>
