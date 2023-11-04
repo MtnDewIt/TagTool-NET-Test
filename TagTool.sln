@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagTool", "TagTool\TagTool.csproj", "{42814DEE-5A94-4901-BDA9-28AFD2D4F5AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TagTool", "TagTool\TagTool.csproj", "{42814DEE-5A94-4901-BDA9-28AFD2D4F5AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HaloShaderGenerator", "ShaderGenerator\HaloShaderGenerator\HaloShaderGenerator.csproj", "{17BFEFFB-1619-4647-BA40-3CD1D87FD774}"
 EndProject

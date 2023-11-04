@@ -12,10 +12,12 @@
     <NoWarn>$(NoWarn),CS0414,CS0649,CS0169,CS1573,CS1591</NoWarn>
     <LangVersion>7.3</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Platforms>x64;x86</Platforms>
+    <Configuration>Release</Configuration> <!--Default value-->
+    <Platform>x64</Platform> <!--Default value-->
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>TagTool.ico</ApplicationIcon>
-    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="TagTool.ico" />
@@ -41,6 +43,18 @@
     <None Include="Common\RealMatrix3x3.cs" />
     <Compile Remove="VideoUtils.cs" />
     <None Include="VideoUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Physics\**\*" Link="Physics\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\Tools\**\*" Link="Tools\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Remove="..\Tools\meshoptimizer32.dll" />
+    <None Remove="..\Tools\meshoptimizer64.dll" />
+    <None Remove="..\Tools\fmod.dll" />
+    <None Remove="..\Tools\fmod64.dll" />
+    <None Include="..\Tools\meshoptimizer32.dll" Condition=" '$(Platform)' != 'x64' " Link="Tools\meshoptimizer.dll" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\Tools\meshoptimizer64.dll" Condition=" '$(Platform)' == 'x64' " Link="Tools\meshoptimizer.dll" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\Tools\fmod.dll" Condition=" '$(Platform)' != 'x64' " Link="Tools\fmod.dll" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\Tools\fmod64.dll" Condition=" '$(Platform)' == 'x64' " Link="Tools\fmod.dll" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="..\Tools\JsonMoppNet.dll" />
@@ -76,8 +90,5 @@
     <ItemGroup>
       <ReferenceCopyLocalPaths Remove="@(ReferenceSatellitePaths)" />
     </ItemGroup>
-  </Target>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call postbuild.bat &quot;$(ProjectDir)&quot; &quot;$(OutDir)&quot; &quot;$(PlatformName)&quot; &quot;$(ConfigurationName)&quot;" />
   </Target>
 </Project>
