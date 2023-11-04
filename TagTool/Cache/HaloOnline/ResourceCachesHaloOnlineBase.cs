@@ -2,6 +2,7 @@
 using System.IO;
 using TagTool.Cache.Resources;
 using TagTool.Common;
+using TagTool.Extensions;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
@@ -54,7 +55,7 @@ namespace TagTool.Cache.HaloOnline
             {
                 var dataSize = (int)(dataStream.Length - dataStream.Position);
                 var data = new byte[dataSize];
-                dataStream.Read(data, 0, dataSize);
+                dataStream.ReadAll(data, 0, dataSize);
                 resource.Page.Index = cache.Add(stream, data, out uint compressedSize);
                 resource.Page.CompressedBlockSize = compressedSize;
                 resource.Page.UncompressedBlockSize = (uint)dataSize;
@@ -150,7 +151,7 @@ namespace TagTool.Cache.HaloOnline
             {
                 var dataSize = (int)(dataStream.Length - dataStream.Position);
                 var data = new byte[dataSize];
-                dataStream.Read(data, 0, dataSize);
+                dataStream.ReadAll(data, 0, dataSize);
 
                 uint compressedSize;
                 if (resource.Page.Index != -1)

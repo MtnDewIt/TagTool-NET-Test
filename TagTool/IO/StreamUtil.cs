@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using TagTool.Extensions;
 
 namespace TagTool.IO
 {
@@ -21,7 +22,7 @@ namespace TagTool.IO
                 if (size < chunkSize)
                     chunkSize = size;
 
-                var read = input.Read(buffer, 0, (int)chunkSize);
+                var read = input.ReadAll(buffer, 0, (int)chunkSize);
                 if (read != chunkSize)
                     throw new EndOfStreamException("Failed to copy stream");
                 output.Write(buffer, 0, read);
@@ -56,7 +57,7 @@ namespace TagTool.IO
                 else
                     stream.Position = originalPos + size - remaining; // Seek forward
 
-                stream.Read(buffer, 0, read);
+                stream.ReadAll(buffer, 0, read);
 
                 if (targetPos > originalPos)
                     stream.Position = targetPos + remaining - read; // Seek backward

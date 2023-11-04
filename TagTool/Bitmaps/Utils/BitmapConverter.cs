@@ -6,6 +6,7 @@ using System.IO;
 using TagTool.Bitmaps.DDS;
 using TagTool.Cache;
 using TagTool.Commands;
+using TagTool.Extensions;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Resources;
@@ -470,7 +471,7 @@ namespace TagTool.Bitmaps.Utils
                 bitmap.Height = header.Height;
                 bitmap.Data = new byte[dataSize];
                 bitmap.MipMapCount = Math.Max(1, header.MipMapCount - 1);
-                ddsStream.Read(bitmap.Data, 0, dataSize);
+                ddsStream.ReadAll(bitmap.Data, 0, dataSize);
 
                 // Remove lowest DXN mipmaps to prevent issues with D3D memory allocation.
                 if (bitmap.Format == BitmapFormat.Dxn)
