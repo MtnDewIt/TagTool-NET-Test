@@ -10,7 +10,7 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <NoWarn>$(NoWarn),CS0414,CS0649,CS0169,CS1591</NoWarn>
+    <NoWarn>$(NoWarn),CS0169,CS0414,CS0649,CS1591</NoWarn>
     <LangVersion>7.3</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Platforms>x64;x86</Platforms>
