@@ -5,6 +5,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TagTool</RootNamespace>
     <AssemblyName>TagTool</AssemblyName>
+    <ApplicationIcon>TagTool.ico</ApplicationIcon>
     <TargetFramework>net48</TargetFramework>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -15,9 +16,6 @@
     <Platforms>x64;x86</Platforms>
     <Configuration>Release</Configuration> <!--Default value-->
     <Platform>x64</Platform> <!--Default value-->
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>TagTool.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="TagTool.ico" />
