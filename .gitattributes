@@ -1,0 +1,6 @@
+* text=auto
+*.sln text eol=crlf
+
+#mark these folders as all binary
+Tools/** binary
+Physics/** binary
