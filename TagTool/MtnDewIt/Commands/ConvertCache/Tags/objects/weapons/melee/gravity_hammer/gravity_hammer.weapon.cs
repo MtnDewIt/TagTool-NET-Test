@@ -5,7 +5,7 @@ using TagTool.Tags.Definitions;
 using System.IO;
 using System.Collections.Generic;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class objects_weapons_melee_gravity_hammer_gravity_hammer_weapon : TagFile
     {

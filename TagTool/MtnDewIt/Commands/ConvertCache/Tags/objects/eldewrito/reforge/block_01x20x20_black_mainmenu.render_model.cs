@@ -6,7 +6,7 @@ using System.IO;
 using TagTool.Geometry;
 using System.Collections.Generic;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class objects_eldewrito_reforge_block_01x20x20_black_mainmenu_render_model : TagFile
     {

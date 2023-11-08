@@ -5,7 +5,7 @@ using TagTool.Tags.Definitions;
 using System.IO;
 using System.Collections.Generic;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class multiplayer_forge_globals_forge_globals_definition : TagFile
     {

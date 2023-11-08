@@ -5,7 +5,7 @@ using TagTool.Tags.Definitions;
 using System.IO;
 using System.Collections.Generic;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class objects_weapons_pistol_magnum_magnum_v3_magnum_v3_weapon : TagFile
     {

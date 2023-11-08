@@ -6,7 +6,7 @@ using System.IO;
 using System.Collections.Generic;
 using TagTool.Tags;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_biped : TagFile
     {

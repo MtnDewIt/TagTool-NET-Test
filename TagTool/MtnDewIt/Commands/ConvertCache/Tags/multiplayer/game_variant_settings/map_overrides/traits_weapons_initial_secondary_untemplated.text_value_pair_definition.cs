@@ -5,7 +5,7 @@ using TagTool.Tags.Definitions;
 using System.IO;
 using System.Collections.Generic;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class multiplayer_game_variant_settings_map_overrides_traits_weapons_initial_secondary_untemplated_text_value_pair_definition : TagFile
     {

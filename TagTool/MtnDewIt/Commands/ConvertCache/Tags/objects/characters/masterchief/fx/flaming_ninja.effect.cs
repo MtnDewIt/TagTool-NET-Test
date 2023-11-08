@@ -4,7 +4,7 @@ using TagTool.Common;
 using TagTool.Tags.Definitions;
 using System.IO;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class objects_characters_masterchief_fx_flaming_ninja_effect : TagFile
     {

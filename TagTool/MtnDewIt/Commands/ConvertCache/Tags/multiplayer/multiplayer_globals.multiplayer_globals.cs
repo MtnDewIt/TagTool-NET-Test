@@ -6,7 +6,7 @@ using System.IO;
 using System.Collections.Generic;
 using static TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class multiplayer_multiplayer_globals_multiplayer_globals : TagFile
     {

@@ -5,7 +5,7 @@ using TagTool.Tags.Definitions;
 using System.IO;
 using System.Collections.Generic;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class multiplayer_game_variant_settings_global_options_global_options_multiplayer_variant_settings_interface_definition : TagFile
     {

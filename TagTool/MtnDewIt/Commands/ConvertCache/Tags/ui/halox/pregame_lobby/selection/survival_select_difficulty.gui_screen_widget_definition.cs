@@ -6,7 +6,7 @@ using System.IO;
 using System.Collections.Generic;
 using TagTool.Tags.Definitions.Common;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class ui_halox_pregame_lobby_selection_survival_select_difficulty_gui_screen_widget_definition : TagFile
     {

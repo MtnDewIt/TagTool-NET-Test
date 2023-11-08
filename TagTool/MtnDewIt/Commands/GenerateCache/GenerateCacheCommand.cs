@@ -6,9 +6,9 @@ using System.Text;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
-using TagTool.Commands.Tags;
+using TagTool.Commands;
 
-namespace TagTool.Commands.MtnDewIt
+namespace TagTool.MtnDewIt.Commands.GenerateCache
 {
     partial class GenerateCacheCommand : Command 
     {

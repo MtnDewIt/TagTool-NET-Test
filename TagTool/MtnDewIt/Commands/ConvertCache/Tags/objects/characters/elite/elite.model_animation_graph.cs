@@ -4,8 +4,9 @@ using TagTool.Common;
 using TagTool.Tags.Definitions;
 using System.IO;
 using System.Collections.Generic;
+using TagTool.Commands;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class objects_characters_elite_elite_model_animation_graph : TagFile
     {

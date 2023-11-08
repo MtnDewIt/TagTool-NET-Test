@@ -7,7 +7,6 @@ using TagTool.Commands.Strings;
 using TagTool.Commands.Sounds;
 using TagTool.Commands.Porting;
 using TagTool.Commands.Modding;
-using TagTool.Commands.MtnDewIt;
 using TagTool.Commands.Bitmaps;
 using TagTool.Commands.PhysicsModels;
 using TagTool.Commands.CollisionModels;
@@ -19,6 +18,9 @@ using TagTool.Commands.Forge;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Scenarios;
 using TagTool.Cache.Monolithic;
+using TagTool.MtnDewIt.Commands;
+using TagTool.MtnDewIt.Commands.ConvertCache;
+using TagTool.MtnDewIt.Commands.GenerateCache;
 
 namespace TagTool.Commands.Tags
 {

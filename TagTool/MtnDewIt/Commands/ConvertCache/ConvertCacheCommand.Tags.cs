@@ -1,9 +1,10 @@
 using TagTool.Commands.Common;
 using TagTool.Commands.Editing;
-using TagTool.Commands.MtnDewIt.ConvertCache;
+using TagTool.MtnDewIt.Commands.ConvertCache.Tags;
 using TagTool.Tags.Definitions;
+using TagTool.Commands;
 
-namespace TagTool.Commands.MtnDewIt 
+namespace TagTool.MtnDewIt.Commands.ConvertCache 
 {
     partial class ConvertCacheCommand : Command 
     {

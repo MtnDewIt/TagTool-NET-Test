@@ -4,7 +4,7 @@ using TagTool.Common;
 using TagTool.Tags.Definitions;
 using System.IO;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class ui_halox_start_menu_panes_settings_display_start_menu_settings_display_gui_screen_widget_definition : TagFile
     {

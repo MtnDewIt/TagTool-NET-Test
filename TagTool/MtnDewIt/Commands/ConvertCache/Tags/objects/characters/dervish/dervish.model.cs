@@ -4,7 +4,7 @@ using TagTool.Common;
 using TagTool.Tags.Definitions;
 using System.IO;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class objects_characters_dervish_dervish_model : TagFile
     {

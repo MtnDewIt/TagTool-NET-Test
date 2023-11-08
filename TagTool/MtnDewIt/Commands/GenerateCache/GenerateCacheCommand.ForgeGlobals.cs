@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Definitions.Common;
+using TagTool.Commands;
 
-namespace TagTool.Commands.MtnDewIt
+namespace TagTool.MtnDewIt.Commands.GenerateCache
 {
     partial class GenerateCacheCommand : Command 
     {

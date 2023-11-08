@@ -6,7 +6,7 @@ using System.IO;
 using System.Collections.Generic;
 using TagTool.Tags.Definitions.Common;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class ui_halox_campaign_campaign_scoring_gui_skin_definition : TagFile
     {

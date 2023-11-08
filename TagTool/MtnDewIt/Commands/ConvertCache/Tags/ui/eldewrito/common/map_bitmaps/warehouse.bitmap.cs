@@ -3,8 +3,9 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 using System.IO;
+using TagTool.Commands;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class ui_eldewrito_common_map_bitmaps_warehouse_bitmap : TagFile
     {

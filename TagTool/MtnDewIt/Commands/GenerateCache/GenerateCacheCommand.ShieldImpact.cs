@@ -1,7 +1,8 @@
 using TagTool.Tags.Definitions;
 using TagTool.Common;
+using TagTool.Commands;
 
-namespace TagTool.Commands.MtnDewIt
+namespace TagTool.MtnDewIt.Commands.GenerateCache
 {
     partial class GenerateCacheCommand : Command 
     {

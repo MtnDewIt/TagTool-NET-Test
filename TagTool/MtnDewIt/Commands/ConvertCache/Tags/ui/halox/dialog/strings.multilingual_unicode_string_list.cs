@@ -4,7 +4,7 @@ using TagTool.Common;
 using TagTool.Tags.Definitions;
 using System.IO;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class ui_halox_dialog_strings_multilingual_unicode_string_list : TagFile
     {

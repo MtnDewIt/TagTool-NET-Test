@@ -5,7 +5,7 @@ using TagTool.Tags.Definitions;
 using System.IO;
 using TagTool.Tags.Definitions.Common;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class objects_multi_spawning_initial_spawn_point_scenery : TagFile
     {

@@ -4,7 +4,7 @@ using TagTool.Common;
 using TagTool.Tags.Definitions;
 using System.IO;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_model : TagFile
     {

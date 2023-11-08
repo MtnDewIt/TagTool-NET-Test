@@ -5,7 +5,7 @@ using TagTool.Tags.Definitions;
 using System.IO;
 using TagTool.Tags.Definitions.Common;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class ui_chud_sniper_rifle_chud_definition : TagFile
     {

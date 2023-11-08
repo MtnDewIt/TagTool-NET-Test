@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
-using TagTool.Commands.MtnDewIt;
+using TagTool.Commands;
+using TagTool.MtnDewIt.Commands.ConvertCache;
 
-namespace TagTool.Commands.Tags
+namespace TagTool.MtnDewIt.Commands
 {
     class DebugTestCommand : Command
     {

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using TagTool.Cache.HaloOnline;
+using TagTool.Commands;
 
-namespace TagTool.Commands.Tags
+namespace TagTool.MtnDewIt.Commands
 {
     class UpdateEDTagsCommand : Command
     {

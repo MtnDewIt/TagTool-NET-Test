@@ -6,7 +6,7 @@ using System.IO;
 using TagTool.Tags;
 using System.Collections.Generic;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class objects_characters_elite_mp_elite_actions_player_action_set : TagFile
     {

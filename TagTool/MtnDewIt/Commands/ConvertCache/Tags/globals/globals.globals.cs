@@ -6,7 +6,7 @@ using TagTool.Common;
 using TagTool.Ai;
 using System.IO;
 
-namespace TagTool.Commands.MtnDewIt.ConvertCache 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
     public class globals_globals_globals : TagFile
     {

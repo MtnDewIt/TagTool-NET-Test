@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using TagTool.Animations;
 using TagTool.Tags.Resources;
 
-namespace TagTool.Commands.MtnDewIt 
+namespace TagTool.MtnDewIt.Commands 
 {
     public abstract class TagFile 
     {
