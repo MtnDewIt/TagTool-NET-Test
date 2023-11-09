@@ -171,8 +171,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             moveFontPackage(outputDirectoryInfo.FullName);
             rebuildCache(outputDirectoryInfo.FullName);
             retargetCache(outputDirectoryInfo.FullName);
-            GenerateRenderMethods();
-            RecompileShaders();
+            UpdateShaderData();
             PortTagData();
             UpdateTagData();
             CommandRunner.Current.RunCommand($"updatemapfiles \"{Program.TagToolDirectory}\\Tools\\BaseCache\\MapInfo\"");
