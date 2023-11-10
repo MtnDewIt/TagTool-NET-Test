@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
 using TagTool.Cache.Gen3;
+using TagTool.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions.Gen4;
 
 namespace TagTool.Cache.Gen4
 {
     public class TagDefinitionsGen4 : TagDefinitions
-    {
-        public Dictionary<TagGroup, Type> Gen4Types = new Dictionary<TagGroup, Type>()
+	{
+		public Dictionary<TagGroup, Type> Gen4Types => Gen4Definitions.TagGroupToTypeLookup;
+		private static readonly CachedDefinitions Gen4Definitions = GetCachedDefinitions(new Dictionary<TagGroup, Type>()
         {
             { new TagGroupGen4("hlmt", "model"), typeof(Model) },
             { new TagGroupGen4("mode", "render_model"), typeof(RenderModel) },
@@ -272,8 +274,23 @@ namespace TagTool.Cache.Gen4
             { new TagGroupGen4("forg", "forge_globals"), typeof(ForgeGlobals) },
             { new TagGroupGen4("sigd", "SuppressedIncident"), typeof(SuppressedIncident) },
             { new TagGroupGen4("narg", "NarrativeGlobals"), typeof(NarrativeGlobals) }
-        };
+        });
+		public TagDefinitionsGen4() : base(Gen4Definitions) { }
 
-        public override Dictionary<TagGroup, Type> Types { get => Gen4Types; }
-    }
+		private static readonly Dictionary<string, Tag> NameToTagLookup = NameToTagLookupValue();
+		private static Dictionary<string, Tag> NameToTagLookupValue()
+		{
+			Dictionary<string, Tag> result = new();
+			foreach (var (key, _) in Gen4Definitions.TagGroupToTypeLookup)
+			{
+				result.Add(((TagGroupGen4)key).Name, key.Tag);
+			}
+			return result;
+		}
+
+		public bool TryGetTagFromName(string name, out Tag tag)
+		{
+			return NameToTagLookup.TryGetValue(name, out tag);
+		}
+	}
 }

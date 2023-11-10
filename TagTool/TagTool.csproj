@@ -6,14 +6,15 @@
     <RootNamespace>TagTool</RootNamespace>
     <AssemblyName>TagTool</AssemblyName>
     <ApplicationIcon>TagTool.ico</ApplicationIcon>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>$(NoWarn),CS0169,CS0414,CS0649,CS1591</NoWarn>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>11</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Platforms>x64;x86</Platforms>
+    <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
+    <Platforms>x86;x64</Platforms>
     <Configuration>Release</Configuration> <!--Default value-->
     <Platform>x64</Platform> <!--Default value-->
   </PropertyGroup>
@@ -56,10 +57,6 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="..\Tools\JsonMoppNet.dll" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
-    <Reference Include="System.Data.Entity.Design" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
@@ -74,6 +71,7 @@
     <PackageReference Include="AssimpNet" Version="4.1.0" />
     <PackageReference Include="lz4net" Version="1.0.15.93" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.6.0" />
+    <PackageReference Include="PluralizeService.Core" Version="1.2.21147.2" />
     <PackageReference Include="Poly2Tri.NetStandard" Version="1.0.2" />
   </ItemGroup>
   <ItemDefinitionGroup>

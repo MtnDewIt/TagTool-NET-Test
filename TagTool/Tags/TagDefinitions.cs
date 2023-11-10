@@ -6,51 +6,74 @@ namespace TagTool.Tags
 {
     public abstract class TagDefinitions
     {
-        abstract public Dictionary<TagGroup, Type> Types { get;}
+        protected static CachedDefinitions GetCachedDefinitions(Dictionary<TagGroup, Type> dict)
+		{
+			Dictionary<TagGroup, Type> TagGroupToTypeLookup = dict;
+			Dictionary<Tag, Type> TagToTypeLookup = new();
+			Dictionary<Type, TagGroup> TypeToTagGroupLookup = new();
+			Dictionary<Tag, TagGroup> TagToTagGroupLookup = new();
 
-        public bool TagDefinitionExists(TagGroup group)
+			foreach (var (key, value) in dict)
+			{
+				TagToTypeLookup.Add(key.Tag, value);
+				TypeToTagGroupLookup.Add(value, key);
+				TagToTagGroupLookup.Add(key.Tag, key);
+			}
+
+			CachedDefinitions definitions;
+			definitions.TagGroupToTypeLookup = TagGroupToTypeLookup;
+			definitions.TagToTypeLookup = TagToTypeLookup;
+			definitions.TypeToTagGroupLookup = TypeToTagGroupLookup;
+			definitions.TagToTagGroupLookup = TagToTagGroupLookup;
+			return definitions;
+		}
+
+		protected TagDefinitions(CachedDefinitions definitions)
+		{
+			this.definitions = definitions;
+		}
+
+		CachedDefinitions definitions;
+
+		protected struct CachedDefinitions
+		{
+			public bool IsNull => TagGroupToTypeLookup == null;
+			public Dictionary<TagGroup, Type> TagGroupToTypeLookup;
+			public Dictionary<Tag, Type> TagToTypeLookup;
+			public Dictionary<Type, TagGroup> TypeToTagGroupLookup;
+			public Dictionary<Tag, TagGroup> TagToTagGroupLookup;
+		}
+
+		public Dictionary<TagGroup, Type> Types => definitions.TagGroupToTypeLookup;
+
+		public bool TagDefinitionExists(TagGroup group)
         {
-            return Types.ContainsKey(group);
+            return definitions.TagGroupToTypeLookup.ContainsKey(group);
         }
 
         public bool TagDefinitionExists(Tag tag)
         {
-            foreach (var group in Types.Keys)
-                if (group.Tag == tag)
-                    return true;
-            return false;
+			return definitions.TagToTypeLookup.ContainsKey(tag);
         }
 
         public Type GetTagDefinitionType(TagGroup group)
         {
-            if (Types.ContainsKey(group))
-                return Types[group];
-            else
-                return null;
+			return definitions.TagGroupToTypeLookup.TryGetValue(group, out var val) ? val : null;
         }
 
         public Type GetTagDefinitionType(Tag tag)
         {
-            foreach(var group in Types.Keys)
-                if (group.Tag == tag)
-                    return Types[group];
-            return null;
+			return definitions.TagToTypeLookup.TryGetValue(tag, out var val) ? val : null;
         }
 
         public TagGroup GetTagDefinitionGroupTag(Type type)
         {
-            foreach(var key in Types.Keys)
-                if (Types[key] == type)
-                    return key;
-            return null;
+			return definitions.TypeToTagGroupLookup.TryGetValue(type, out var val) ? val : null;
         }
 
         public TagGroup GetTagGroupFromTag(Tag tag)
-        {
-            foreach (var group in Types.Keys)
-                if (group.Tag == tag)
-                    return group;
-            return null;
-        }
+		{
+			return definitions.TagToTagGroupLookup.TryGetValue(tag, out var val) ? val : null;
+		}
     }
 }

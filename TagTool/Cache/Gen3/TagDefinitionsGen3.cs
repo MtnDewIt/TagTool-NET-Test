@@ -8,8 +8,9 @@ using TagTool.Tags.Definitions;
 namespace TagTool.Cache.Gen3
 {
     public class TagDefinitionsGen3 : TagDefinitions
-    {
-        public Dictionary<TagGroup, Type> Gen3Types = new Dictionary<TagGroup, Type>
+	{
+		public Dictionary<TagGroup, Type> Gen3Types => Gen3Definitions.TagGroupToTypeLookup;
+		private static readonly CachedDefinitions Gen3Definitions = GetCachedDefinitions(new Dictionary<TagGroup, Type>
         {
             { new TagGroupGen3("<fx>", "sound_effect_template"), typeof(SoundEffectTemplate) },
             { new TagGroupGen3("achi", "achievements"), typeof(Achievements) },
@@ -183,9 +184,23 @@ namespace TagTool.Cache.Gen3
             { new TagGroupGen3("wspr", "gui_widget_sprite_animation_definition"), typeof(GuiWidgetSpriteAnimationDefinition) },
             { new TagGroupGen3("wtuv", "gui_widget_texture_coordinate_animation_definition"), typeof(GuiWidgetTextureCoordinateAnimationDefinition) },
             { new TagGroupGen3("zone", "cache_file_resource_gestalt"), typeof(ResourceGestalt) }
-        };
+        });
+		public TagDefinitionsGen3() : base(Gen3Definitions) { }
 
-        public override Dictionary<TagGroup, Type> Types { get => Gen3Types; }
-    }
+		private static readonly Dictionary<string, Tag> NameToTagLookup = NameToTagLookupValue();
+		private static Dictionary<string, Tag> NameToTagLookupValue()
+		{
+			Dictionary<string, Tag> result = new();
+			foreach (var (key, _) in Gen3Definitions.TagGroupToTypeLookup)
+			{
+				result.Add(((TagGroupGen3)key).Name, key.Tag);
+			}
+			return result;
+		}
 
+		public bool TryGetTagFromName(string name, out Tag tag)
+		{
+			return NameToTagLookup.TryGetValue(name, out tag);
+		}
+	}
 }

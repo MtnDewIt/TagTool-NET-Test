@@ -35,11 +35,22 @@ namespace TagTool.Cache
                 return false;
         }
 
-        public IEnumerable<CachedTag> FindAllInGroup(Tag groupTag) =>
-            NonNull().Where(t => t.IsInGroup(groupTag));
+        public IEnumerable<CachedTag> FindAllInGroup(Tag groupTag)
+        {
+			foreach (var t in TagTable)
+			{
+				if (t != null && t.DefinitionOffset >= 0 && t.IsInGroup(groupTag)) yield return t;
+			}
+        }
 
-        public CachedTag FindFirstInGroup(Tag groupTag) =>
-            NonNull().FirstOrDefault(t => t.IsInGroup(groupTag));
+        public CachedTag FindFirstInGroup(Tag groupTag)
+		{
+			foreach (var t in TagTable)
+			{
+				if (t != null && t.DefinitionOffset >= 0 && t.IsInGroup(groupTag)) return t;
+			}
+			return null;
+		}
 
         public IEnumerable<CachedTag> FindAllInGroup<T>() where T : TagStructure
         {
@@ -209,30 +220,14 @@ namespace TagTool.Cache
         /// <returns>True if group was found or (input name is "none" or "null" and tag is null) else false.</returns>
         public bool TryParseGroupTag(string name, out Tag result)
         {
-            if(TagDefinitions.GetType() == typeof(TagDefinitionsGen3))
+            if(TagDefinitions is TagDefinitionsGen3 td3)
             {
-                foreach(var pair in TagDefinitions.Types)
-                {
-                    TagGroupGen3 group = (TagGroupGen3)pair.Key;
-                    if(group.Name == name)
-                    {
-                        result = group.Tag;
-                        return true;
-                    }
-                }
+				if (td3.TryGetTagFromName(name, out result)) return true;
             }
-            else if (TagDefinitions.GetType() == typeof(Gen4.TagDefinitionsGen4))
-            {
-                foreach (var pair in TagDefinitions.Types)
-                {
-                    Gen4.TagGroupGen4 group = (Gen4.TagGroupGen4)pair.Key;
-                    if (group.Name == name)
-                    {
-                        result = group.Tag;
-                        return true;
-                    }
-                }
-            }
+            else if (TagDefinitions is Gen4.TagDefinitionsGen4 td4)
+			{
+				if (td4.TryGetTagFromName(name, out result)) return true;
+			}
 
             name = name.PadRight(4); // rmw, rmd, rm
 

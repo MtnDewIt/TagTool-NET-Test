@@ -48,7 +48,12 @@ namespace TagTool.Cache
         public bool IsInGroup(params Tag[] groupTags)
         {
             return Group.BelongsTo(groupTags);
-        }
-    }
+		}
+
+		public bool IsInGroup(Tag groupTag)
+		{
+			return Group.BelongsTo(groupTag);
+		}
+	}
 
 }

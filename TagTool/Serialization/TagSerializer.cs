@@ -101,7 +101,7 @@ namespace TagTool.Serialization
         /// <exception cref="System.InvalidOperationException">Offset for property \ + property.Name + \ is outside of its structure</exception>
         private void SerializeProperty(ISerializationContext context, MemoryStream tagStream, IDataBlock block, object instance, TagFieldInfo tagFieldInfo, long baseOffset)
         {
-            if (tagFieldInfo.Attribute.Flags.HasFlag(Runtime))
+            if ((tagFieldInfo.Attribute.Flags & Runtime) != 0)
                 return;
 
             uint align = TagFieldInfo.GetFieldAlignment(tagFieldInfo.FieldType, tagFieldInfo.Attribute, Version, CachePlatform);
@@ -217,7 +217,7 @@ namespace TagTool.Serialization
         /// <param name="valueType">Type of the value.</param>
         private void SerializeComplexValue(ISerializationContext context, MemoryStream tagStream, IDataBlock block, object value, TagFieldAttribute valueInfo, Type valueType)
         {
-            if (valueInfo != null && valueInfo.Flags.HasFlag(Pointer))
+            if (valueInfo != null && (valueInfo.Flags & Pointer) != 0)
                 SerializeIndirectValue(context, tagStream, block, value, valueType);
             else if (valueType.IsEnum)
                 SerializeEnum(block.Writer, value, valueInfo, valueType);
@@ -231,7 +231,7 @@ namespace TagTool.Serialization
                 block.Writer.Write(((CacheAddress)value).Value);
             else if (valueType == typeof(byte[]))
             {
-                if (valueInfo.Flags.HasFlag(Padding) || (value == null && valueInfo.Length > 0))
+                if ((valueInfo.Flags & Padding) != 0 || (value == null && valueInfo.Length > 0))
                     block.Writer.Write(new byte[valueInfo.Length]);
                 else if (valueInfo.Length > 0)
                     block.Writer.Write((byte[])value);
@@ -435,9 +435,9 @@ namespace TagTool.Serialization
                 }
             }
 
-            block.AddTagReference(referencedTag, valueInfo == null ? false : valueInfo.Flags.HasFlag(Short));
+            block.AddTagReference(referencedTag, valueInfo == null ? false : (valueInfo.Flags & Short) != 0);
 
-            if (valueInfo == null || !valueInfo.Flags.HasFlag(Short))
+            if (valueInfo == null || (valueInfo.Flags & Short) == 0)
             {
                 block.Writer.Write((referencedTag != null) ? referencedTag.Group.Tag.Value : -1);
                 block.Writer.Write(0);

@@ -16,7 +16,6 @@ using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using TagTool.Bitmaps.DDS;
 using TagTool.IO;
-using System.Runtime.Remoting.Messaging;
 
 namespace TagTool.Commands.Bitmaps
 {

@@ -30,8 +30,13 @@
    -------------------------------------------------------------------------- */
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -116,7 +121,7 @@ namespace TagTool.Bitmaps.Utils
                 return (r << 11) | (g << 5) | b;
             }
 
-            public static void WriteColourBlock(int a, int b, byte[] indices, byte[] block)
+            public static void WriteColourBlock(int a, int b, ReadOnlySpan<byte> indices, Span<byte> block)
             {
                 // write the endpoints
                 block[0] = (byte)(a & 0xff);
@@ -135,14 +140,14 @@ namespace TagTool.Bitmaps.Utils
                 }
             }
 
-            public static void WriteColourBlock3(RealVector3d start, RealVector3d end, byte[] indices, byte[] block)
+            public static void WriteColourBlock3(RealVector3d start, RealVector3d end, ReadOnlySpan<byte> indices, Span<byte> block)
             {
                 // get the packed values
                 int a = FloatTo565(start);
                 int b = FloatTo565(end);
 
                 // remap the indices
-                byte[] remapped = new byte[16];
+                Span<byte> remapped = stackalloc byte[16];
                 if (a <= b)
                 {
                     // use the indices directly
@@ -171,14 +176,14 @@ namespace TagTool.Bitmaps.Utils
                 WriteColourBlock(a, b, remapped, block);
             }
 
-            public static void WriteColourBlock4(RealVector3d start, RealVector3d end, byte[] indices, byte[] block)
+            public static void WriteColourBlock4(RealVector3d start, RealVector3d end, ReadOnlySpan<byte> indices, Span<byte> block)
             {
                 // get the packed values
                 int a = FloatTo565(start);
                 int b = FloatTo565(end);
 
                 // remap the indices
-                byte[] remapped = new byte[16];
+                Span<byte> remapped = stackalloc byte[16];
                 if (a < b)
                 {
                     // swap a and b
@@ -333,7 +338,7 @@ namespace TagTool.Bitmaps.Utils
                 m_flags = flags;
             }
 
-            public void Compress(byte[] block)
+            public void Compress(Span<byte> block)
             {
                 bool isDxt1 = ((m_flags & (uint)SquishFlags.kDxt1) != 0);
                 if (isDxt1)
@@ -346,8 +351,8 @@ namespace TagTool.Bitmaps.Utils
                     Compress4(block);
             }
 
-            protected abstract void Compress3(byte[] block);
-            protected abstract void Compress4(byte[] block);
+            protected abstract void Compress3(Span<byte> block);
+            protected abstract void Compress4(Span<byte> block);
 
             protected ColourSet m_colours;
             protected uint m_flags;
@@ -372,18 +377,22 @@ namespace TagTool.Bitmaps.Utils
             public byte[] CompressTexture()
 			{
 				int size = GetStorageRequirements();
-				List<byte> dxtImage = new List<byte>();
+				byte[] pooledDxtImage = ArrayPool<byte>.Shared.Rent(size);
+				int dxtImageLen = 0;
 
-                // initialise the block output
-                int bytesPerBlock = ((Flags & SquishFlags.kDxt1) != 0) ? 8 : 16;
+				// initialise the block output
+				int bytesPerBlock = ((Flags & SquishFlags.kDxt1) != 0) ? 8 : 16;
+				Span<byte> tempBlock = (stackalloc byte[16])[..bytesPerBlock];
 
-                // loop over blocks
-                for (int y = 0; y < Height; y += 4)
+				Span<byte> sourceRgba = stackalloc byte[16 * 4];
+
+				// loop over blocks
+				for (int y = 0; y < Height; y += 4)
                 {
                     for (int x = 0; x < Width; x += 4)
                     {
-                        // build the 4x4 block of pixels
-                        byte[] sourceRgba = new byte[16 * 4];
+						// build the 4x4 block of pixels
+						sourceRgba.Clear();
 						int rgbaOffset = 0;
 
                         int mask = 0;
@@ -425,18 +434,27 @@ namespace TagTool.Bitmaps.Utils
                         }
 
 						// compress it into the output
-						byte[] tempBlock = new byte[bytesPerBlock];
                         CompressMasked(sourceRgba, (uint)mask, tempBlock, (uint)Flags);
 
                         // advance
-                        dxtImage.AddRange(tempBlock);
-                    }
+						if ((uint)dxtImageLen + (uint)tempBlock.Length >= (uint)pooledDxtImage.Length)
+						{
+							//move to a new pool if required
+							var newPooled = ArrayPool<byte>.Shared.Rent(Math.Max(pooledDxtImage.Length * 2, pooledDxtImage.Length + tempBlock.Length));
+							pooledDxtImage.AsSpan()[..dxtImageLen].CopyTo(newPooled.AsSpan()[..dxtImageLen]);
+							ArrayPool<byte>.Shared.Return(pooledDxtImage);
+							pooledDxtImage = newPooled;
+						}
+						tempBlock.CopyTo(pooledDxtImage.AsSpan()[dxtImageLen..(dxtImageLen + tempBlock.Length)]);
+						dxtImageLen += tempBlock.Length;
+					}
                 }
 
-				if (size != dxtImage.Count)
-					Console.WriteLine($"##DXT COMPRESSOR: Expected size \"{size}\" bytes did not match actual size of \"{dxtImage.Count}\" bytes.");
+				if (size != dxtImageLen)
+					Console.WriteLine($"##DXT COMPRESSOR: Expected size \"{size}\" bytes did not match actual size of \"{dxtImageLen}\" bytes.");
 
-				CompressedData = dxtImage.ToArray();
+				CompressedData = pooledDxtImage.AsSpan()[..dxtImageLen].ToArray();
+				ArrayPool<byte>.Shared.Return(pooledDxtImage);
                 return CompressedData;
 			}
 
@@ -449,16 +467,16 @@ namespace TagTool.Bitmaps.Utils
                 int bytesPerBlock = ((Flags & SquishFlags.kDxt1) != 0) ? 8 : 16;
 				int blockOffset = 0;
 
-				byte[] tempBlock = new byte[bytesPerBlock];
+				Span<byte> targetRgba = stackalloc byte[64];
 
-                // loop over blocks
-                for (int y = 0; y < Height; y += 4)
+				// loop over blocks
+				for (int y = 0; y < Height; y += 4)
                 {
                     for (int x = 0; x < Width; x += 4)
                     {
 						// decompress the block
-						Buffer.BlockCopy(sourceBlocks, blockOffset, tempBlock, 0, bytesPerBlock);
-                        byte[] targetRgba = Decompress(tempBlock, Flags);
+						targetRgba.Clear();
+						Decompress(sourceBlocks.AsSpan()[blockOffset..(blockOffset + bytesPerBlock)], Flags, targetRgba);
 
                         // write the decompressed pixels to the correct image locations
                         int rgbaOffset = 0;
@@ -525,24 +543,34 @@ namespace TagTool.Bitmaps.Utils
 			private readonly int Height;
         }
 
-        public class Sym3x3
+        public struct Sym3x3
         {
 			public Sym3x3()
 			{
-				m_x = new float[6];
-            }
-            public Sym3x3(float s)
-            {
-                m_x = Enumerable.Repeat(s, 6).ToArray();
-            }
-
-			public float this[int index]
-			{
-				get { return m_x[index]; }
-				set { m_x[index] = value; }
+				this = default;
 			}
+            public unsafe Sym3x3(float s)
+            {
+				MemoryMarshal.CreateSpan(ref m_x[0], 6).Fill(s);
+            }
 
-			float[] m_x; //[6]
+            public unsafe ref float this[int index]
+            {
+                get
+                {
+					if ((uint)index > 6)
+					{
+						static void ThrowHelper()
+						{
+							throw new ArgumentOutOfRangeException("i", "Index is out of range, must be 0, 1, or 2");
+						}
+						ThrowHelper();
+					}
+					return ref m_x[index];
+                }
+            }
+
+            unsafe fixed float m_x[6];
 
 			public RealVector3d ComputePrincipleComponent()
             {
@@ -615,7 +643,7 @@ namespace TagTool.Bitmaps.Utils
                 }
             }
 
-            public static Sym3x3 ComputeWeightedCovariance(int n, RealVector3d[] points, float[] weights)
+            public static Sym3x3 ComputeWeightedCovariance(int n, ReadOnlySpan<RealVector3d> points, ReadOnlySpan<float> weights)
 			{
 				// compute the centroid
 				float total = 0.0f;
@@ -647,32 +675,37 @@ namespace TagTool.Bitmaps.Utils
 			}
         }
 
-        public class SingleColourLookup
+		[StructLayout(LayoutKind.Sequential)]
+        public struct SingleColourLookup
 		{
 			public SingleColourLookup()
 			{
-				sources = new SourceBlock[] { new SourceBlock(), new SourceBlock() };
+				sb0 = default;
+				sb1 = default;
 			}
 
             public SingleColourLookup(byte s1, byte end1, byte error1, byte s2, byte end2, byte err2)
             {
-                sources = new SourceBlock[] { new SourceBlock(s1, end1, error1), new SourceBlock(s2, end2, err2) };
+				sb0 = new SourceBlock(s1, end1, error1);
+				sb1 = new SourceBlock(s2, end2, err2);
             }
 
-            public SourceBlock[] sources; //[2]
+			private SourceBlock sb0, sb1;
+			[UnscopedRef] public readonly ReadOnlySpan<SourceBlock> sources => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in sb0), 2);
 		}
 
-		public class ColourSet
+		public struct ColourSet
 		{
-			public ColourSet(byte[] rgba, uint mask, uint flags)
+			public unsafe ColourSet(ReadOnlySpan<byte> rgba, uint mask, uint flags)
 			{
 				Count = 0;
 				Transparent = false;
 
 				// init arrays
-				Points = new RealVector3d[16];
-				Weights = new float[16];
-				Remap = new int[16];
+				Debug.Assert(sizeof(RealVector3d) == sizeof(float) * 3);
+				Points.Clear();
+				Weights.Clear();
+				Remap.Clear();
 
 				// check the compression mode for dxt1
 				bool isDxt1 = ((flags & (uint)SquishFlags.kDxt1) != 0);
@@ -749,7 +782,7 @@ namespace TagTool.Bitmaps.Utils
 					Weights[i] = (float)Math.Sqrt(Weights[i]);
 			}
 
-			public void RemapIndices(byte[] source, byte[] target)
+			public void RemapIndices(ReadOnlySpan<byte> source, Span<byte> target)
 			{
 				for (int i = 0; i < 16; ++i)
 				{
@@ -762,14 +795,17 @@ namespace TagTool.Bitmaps.Utils
 			}
 
 			public int GetCount() => Count;
-			public RealVector3d[] GetPoints() => Points;
-			public float[] GetWeights() => Weights;
+			[UnscopedRef] public Span<RealVector3d> GetPoints() => Points;
+			[UnscopedRef] public Span<float> GetWeights() => Weights;
 			public bool IsTransparent() => Transparent;
 
 			private int Count;
-			private RealVector3d[] Points; // [16]
-			private float[] Weights; // [16]
-			private int[] Remap; // [16]
+			private unsafe fixed float _Points[16 * 3]; //RealVector3d = 3 floats
+			[UnscopedRef] public unsafe Span<RealVector3d> Points => MemoryMarshal.CreateSpan(ref Unsafe.As<float, RealVector3d>(ref _Points[0]), 16);
+			private unsafe fixed float _Weights[16];
+			[UnscopedRef] public unsafe Span<float> Weights => MemoryMarshal.CreateSpan(ref _Weights[0], 16);
+			private unsafe fixed int _Remap[16];
+			[UnscopedRef] public unsafe Span<int> Remap => MemoryMarshal.CreateSpan(ref _Remap[0], 16);
 			private bool Transparent;
 		}
 
@@ -793,38 +829,36 @@ namespace TagTool.Bitmaps.Utils
 			public SingleColourFit(ColourSet colours, uint flags) : base(colours, flags)
 			{
 				// grab the single colour
-				RealVector3d[] values = m_colours.GetPoints();
-				List<byte> colour_list = new List<byte>
+				var values = m_colours.GetPoints();
+				ReadOnlySpan<byte> colour_list = stackalloc byte[]
 				{
 					(byte)FloatToInt(255.0f * values[0].I, 255),
 					(byte)FloatToInt(255.0f * values[0].J, 255),
 					(byte)FloatToInt(255.0f * values[0].K, 255)
 				};
-				m_colour = colour_list.ToArray();
+				colour_list.CopyTo(m_colour);
 
 				// initialise the best error
 				m_besterror = int.MaxValue;
 			}
 
-			protected override void Compress3(byte[] block)
+			protected override void Compress3(Span<byte> block)
 			{
 				// build the table of lookups
-				SingleColourLookup[][] lookups = new SingleColourLookup[][]
-                {
-					lookup_5_3,
-					lookup_6_3,
-					lookup_5_3
-				};
+				ReadOnlySpanSingleColourLookup3 lookups = default;
+				lookups[0] = lookup_5_3;
+				lookups[1] = lookup_6_3;
+				lookups[2] = lookup_5_3;
 
-				// find the best end-points and index
-				ComputeEndPoints(lookups);
+                // find the best end-points and index
+                ComputeEndPoints(lookups);
 
-				// build the block if we win
-				if (m_error < m_besterror)
+                // build the block if we win
+                if (m_error < m_besterror)
 				{
 					// remap the indices
-					byte[] indices = new byte[16];
-                    m_colours.RemapIndices(new byte[] { m_index }, indices);
+					Span<byte> indices = stackalloc byte[16];
+                    m_colours.RemapIndices(stackalloc byte[] { m_index }, indices);
 
                     // save the block
                     ColourBlock.WriteColourBlock3(m_start, m_end, indices, block);
@@ -834,25 +868,23 @@ namespace TagTool.Bitmaps.Utils
 				}
 			}
 
-            protected override void Compress4(byte[] block)
+            protected override void Compress4(Span<byte> block)
 			{
-                // build the table of lookups
-                SingleColourLookup[][] lookups = new SingleColourLookup[][]
-				{
-					lookup_5_4, 
-					lookup_6_4, 
-					lookup_5_4
-				};
-				
-				// find the best end-points and index
-				ComputeEndPoints( lookups );
-				
-				// build the block if we win
-				if( m_error < m_besterror )
+				// build the table of lookups
+				ReadOnlySpanSingleColourLookup3 lookups = default;
+				lookups[0] = lookup_5_4;
+				lookups[1] = lookup_6_4;
+				lookups[2] = lookup_5_4;
+
+                // find the best end-points and index
+                ComputeEndPoints(lookups);
+
+                // build the block if we win
+                if ( m_error < m_besterror )
 				{
                     // remap the indices
-                    byte[] indices = new byte[16];
-                    m_colours.RemapIndices(new byte[] { m_index }, indices);
+                    Span<byte> indices = stackalloc byte[16];
+                    m_colours.RemapIndices(stackalloc byte[] { m_index }, indices);
 
                     // save the block
                     ColourBlock.WriteColourBlock4( m_start, m_end, indices, block );
@@ -862,19 +894,47 @@ namespace TagTool.Bitmaps.Utils
 				}
 			}
 
-            public void ComputeEndPoints(SingleColourLookup[][] lookups)
+			//todo: use InlineArray
+			[StructLayout(LayoutKind.Sequential)]
+			public ref struct ReadOnlySpanSingleColourLookup3
 			{
+				private ReadOnlySpan<SingleColourLookup> span0;
+				private ReadOnlySpan<SingleColourLookup> span1;
+				private ReadOnlySpan<SingleColourLookup> span2;
+
+				[UnscopedRef]
+				public ref ReadOnlySpan<SingleColourLookup> this[int i]
+				{
+					get
+					{
+						if ((uint)i > 3)
+						{
+							static void ThrowHelper()
+							{
+								throw new ArgumentOutOfRangeException("i", "Index is out of range, must be 0, 1, or 2");
+							}
+							ThrowHelper();
+						}
+						if (i == 0) return ref span0;
+						else if (i == 1) return ref span1;
+						else return ref span2;
+					}
+				}
+			}
+
+            public void ComputeEndPoints(ReadOnlySpanSingleColourLookup3 lookups /*3 lookups passed here*/)
+            {
 				// check each index combination (endpoint or intermediate)
 				m_error = int.MaxValue;
+				Span<SourceBlock> sources = stackalloc SourceBlock[3];
 				for (int index = 0; index < 2; ++index)
 				{
 					// check the error for this codebook index
-					SourceBlock[] sources = new SourceBlock[] { new SourceBlock(), new SourceBlock(), new SourceBlock() };
 					int error = 0;
 					for (int channel = 0; channel < 3; ++channel)
 					{
 						// grab the lookup table and index for this channel
-						SingleColourLookup[] lookup = lookups[channel];
+						ReadOnlySpan<SingleColourLookup> lookup = lookups[channel];
 						int target = m_colour[channel];
 
 						// store a pointer to the source for this channel
@@ -904,7 +964,8 @@ namespace TagTool.Bitmaps.Utils
 				}
 			}
 
-			private byte[] m_colour; // [3]
+			private uint _m_colour;
+			private Span<byte> m_colour => MemoryMarshal.CreateSpan(ref Unsafe.As<uint, byte>(ref _m_colour), 3);
 			private RealVector3d m_start;
 			private RealVector3d m_end;
 			private byte m_index;
@@ -928,8 +989,8 @@ namespace TagTool.Bitmaps.Utils
 
                 // cache some values
                 int count = m_colours.GetCount();
-                RealVector3d[] values = m_colours.GetPoints();
-                float[] weights = m_colours.GetWeights();
+                var values = m_colours.GetPoints();
+                var weights = m_colours.GetWeights();
 
                 // get the covariance matrix
                 Sym3x3 covariance = Sym3x3.ComputeWeightedCovariance(count, values, weights);
@@ -977,14 +1038,14 @@ namespace TagTool.Bitmaps.Utils
                 m_end = SquishMath.Truncate(grid * end + half) * gridrcp;
             }
 
-            protected override void Compress3(byte[] block)
+            protected override void Compress3(Span<byte> block)
 			{
                 // cache some values
                 int count = m_colours.GetCount();
-                RealVector3d[] values = m_colours.GetPoints();
+                var values = m_colours.GetPoints();
 
                 // create a codebook
-                RealVector3d[] codes = new RealVector3d[]
+                ReadOnlySpan<RealVector3d> codes = stackalloc RealVector3d[]
 				{
                     m_start,
 					m_end,
@@ -1020,7 +1081,7 @@ namespace TagTool.Bitmaps.Utils
                 if (error < m_besterror)
                 {
                     // remap the indices
-                    byte[] indices = new byte[16];
+                    Span<byte> indices = stackalloc byte[16];
                     m_colours.RemapIndices(closest, indices);
 
                     // save the block
@@ -1031,14 +1092,14 @@ namespace TagTool.Bitmaps.Utils
                 }
             }
 
-			protected override void Compress4(byte[] block)
+			protected override void Compress4(Span<byte> block)
 			{
 				// cache some values
 				int count = m_colours.GetCount();
-				RealVector3d[] values = m_colours.GetPoints();
+				var values = m_colours.GetPoints();
 
 				// create a codebook
-				RealVector3d[] codes = new RealVector3d[] {
+				ReadOnlySpan<RealVector3d> codes = stackalloc RealVector3d[] {
 					m_start,
 					m_end,
 					(2.0f / 3.0f) * m_start + (1.0f / 3.0f) * m_end,
@@ -1046,7 +1107,7 @@ namespace TagTool.Bitmaps.Utils
 				};
 
                 // match each point to the closest code
-                byte[] closest = new byte[16];
+                Span<byte> closest = stackalloc byte[16];
                 float error = 0.0f;
                 for (int i = 0; i < count; ++i)
                 {
@@ -1074,7 +1135,7 @@ namespace TagTool.Bitmaps.Utils
                 if (error < m_besterror)
                 {
                     // remap the indices
-                    byte[] indices = new byte[16];
+                    Span<byte> indices = stackalloc byte[16];
                     m_colours.RemapIndices(closest, indices);
 
                     // save the block
@@ -1121,7 +1182,7 @@ namespace TagTool.Bitmaps.Utils
 
                 // cache some values
                 int count = m_colours.GetCount();
-                RealVector3d[] values = m_colours.GetPoints();
+                var values = m_colours.GetPoints();
 
                 // get the covariance matrix
                 Sym3x3 covariance = Sym3x3.ComputeWeightedCovariance(count, values, m_colours.GetWeights());
@@ -1134,10 +1195,10 @@ namespace TagTool.Bitmaps.Utils
 			{
 				// cache some values
 				int count = m_colours.GetCount();
-                RealVector3d[] values = m_colours.GetPoints();
+                var values = m_colours.GetPoints();
 
 				// build the list of dot products
-				float[] dps = new float[16];
+				Span<float> dps = stackalloc float[16];
 				byte[] order = m_order[iteration];
 				for( int i = 0; i < count; ++i )
 				{
@@ -1178,8 +1239,8 @@ namespace TagTool.Bitmaps.Utils
 				}
 				
 				// copy the ordering and weight all the points
-				RealVector3d[] unweighted = m_colours.GetPoints();
-				float[] weights = m_colours.GetWeights();
+				var unweighted = m_colours.GetPoints();
+				var weights = m_colours.GetWeights();
 				m_xsum_wsum = new RealVector4d(0.0f, 0.0f, 0.0f, 0.0f);
 				for( int i = 0; i < count; ++i )
 				{
@@ -1193,7 +1254,7 @@ namespace TagTool.Bitmaps.Utils
 				return true;
 			}
 
-            protected override void Compress3(byte[] block)
+            protected override void Compress3(Span<byte> block)
 			{
                 // declare variables
                 int count = m_colours.GetCount();
@@ -1212,7 +1273,7 @@ namespace TagTool.Bitmaps.Utils
                 RealVector4d beststart = new RealVector4d(0.0f, 0.0f, 0.0f, 0.0f);
                 RealVector4d bestend = new RealVector4d(0.0f, 0.0f, 0.0f, 0.0f);
                 RealVector4d besterror = m_besterror;
-                byte[] bestindices = new byte[16];
+                Span<byte> bestindices = stackalloc byte[16];
                 int bestiteration = 0;
                 int besti = 0, bestj = 0;
 
@@ -1304,7 +1365,7 @@ namespace TagTool.Bitmaps.Utils
                     // remap the indices
                     byte[] order = m_order[bestiteration];
 
-                    byte[] unordered = new byte[16];
+                    Span<byte> unordered = stackalloc byte[16];
                     for (int m = 0; m < besti; ++m)
                         unordered[order[m]] = 0;
                     for (int m = besti; m < bestj; ++m)
@@ -1322,7 +1383,7 @@ namespace TagTool.Bitmaps.Utils
                 }
             }
 
-            protected override void Compress4(byte[] block)
+            protected override void Compress4(Span<byte> block)
 			{
                 // declare variables
                 int count = m_colours.GetCount();
@@ -1343,7 +1404,7 @@ namespace TagTool.Bitmaps.Utils
                 RealVector4d beststart = new RealVector4d(0.0f, 0.0f, 0.0f, 0.0f);
                 RealVector4d bestend = new RealVector4d(0.0f, 0.0f, 0.0f, 0.0f);
                 RealVector4d besterror = m_besterror;
-                byte[] bestindices = new byte[16];
+                Span<byte> bestindices = stackalloc byte[16];
                 int bestiteration = 0;
                 int besti = 0, bestj = 0, bestk = 0;
 
@@ -1447,7 +1508,7 @@ namespace TagTool.Bitmaps.Utils
                     // remap the indices
                     byte[] order = m_order[bestiteration];
 
-                    byte[] unordered = new byte[16];
+                    Span<byte> unordered = stackalloc byte[16];
                     for (int m = 0; m < besti; ++m)
                         unordered[order[m]] = 0;
                     for (int m = besti; m < bestj; ++m)
@@ -1479,15 +1540,19 @@ namespace TagTool.Bitmaps.Utils
         }
 
 		// NOTE that the return value is RGBA not BGRA
-		private static byte[] Decompress(byte[] block, SquishFlags flags)
+		private static void Decompress(ReadOnlySpan<byte> block, SquishFlags flags, Span<byte> rgba)
 		{
-			byte[] rgba = new byte[64];
+			if (rgba.Length < 64)
+			{
+				static void Throw() => throw new ArgumentOutOfRangeException("rgba", "Length must be at least 64.");
+				Throw();
+			}
 
             // get the block locations
-            var colourBlock = block;
+            ReadOnlySpan<byte> colourBlock = block;
             var alphaBock = block;
             if ((flags & SquishFlags.kDxt3) != 0 || (flags & SquishFlags.kDxt5) != 0)
-                colourBlock = block.Skip(8).Take(block.Length - 8).ToArray(); // skip 8 bytes in array
+                colourBlock = block[8..]; // skip 8 bytes in array
 
             // decompress colour
             DecompressColour(rgba, colourBlock, (flags & SquishFlags.kDxt1) != 0);
@@ -1497,16 +1562,14 @@ namespace TagTool.Bitmaps.Utils
                 DecompressAlphaDxt3(rgba, alphaBock);
             else if ((flags & SquishFlags.kDxt5) != 0)
                 DecompressAlphaDxt5(rgba, alphaBock);
-
-			return rgba;
         }
 
-		private static void DecompressColour(byte[] rgba, byte[] block, bool isDxt1)
+		private static void DecompressColour(Span<byte> rgba, ReadOnlySpan<byte> block, bool isDxt1)
 		{
 			const bool d3d9 = true;
 
             // unpack the endpoints
-            byte[] codes = new byte[16];
+            Span<byte> codes = stackalloc byte[16];
             int a = Unpack565((ushort)((int)block[0] | ((int)block[1] << 8)), codes, 0);
             int b = Unpack565((ushort)((int)block[2] | ((int)block[3] << 8)), codes, 4);
 
@@ -1533,7 +1596,7 @@ namespace TagTool.Bitmaps.Utils
             codes[12 + 3] = (isDxt1 && a <= b) ? (byte)0 : (byte)255;
 
             // unpack the indices
-            byte[] indices = new byte[16];
+            Span<byte> indices = stackalloc byte[16];
             for (int i = 0; i < 4; ++i)
             {
                 byte packed = block[4 + i];
@@ -1553,7 +1616,7 @@ namespace TagTool.Bitmaps.Utils
             }
         }
 
-		private static int Unpack565(ushort packedValue, byte[] colours, int colourOffset)
+		private static int Unpack565(ushort packedValue, Span<byte> colours, int colourOffset)
 		{
             // get the components in the stored range
             byte red = (byte)((packedValue >> 11) & 0x1f);
@@ -1569,7 +1632,7 @@ namespace TagTool.Bitmaps.Utils
             return (int)packedValue;
 		}
 
-		private static void DecompressAlphaDxt3(byte[] rgba, byte[] block)
+		private static void DecompressAlphaDxt3(Span<byte> rgba, ReadOnlySpan<byte> block)
 		{
             // unpack the alpha values pairwise
             for (int i = 0; i < 8; ++i)
@@ -1587,13 +1650,13 @@ namespace TagTool.Bitmaps.Utils
             }
         }
 
-		private static void DecompressAlphaDxt5(byte[] rgba, byte[] block)
+		private static void DecompressAlphaDxt5(Span<byte> rgba, ReadOnlySpan<byte> block)
 		{
             int alpha0 = block[0];
             int alpha1 = block[1];
 
             // compare the values to build the codebook
-            byte[] codes = new byte[8];
+            Span<byte> codes = stackalloc byte[8];
             codes[0] = (byte)alpha0;
             codes[1] = (byte)alpha1;
             if (alpha0 <= alpha1)
@@ -1612,7 +1675,7 @@ namespace TagTool.Bitmaps.Utils
             }
 
             // decode the indices
-            byte[] indices = new byte[16];
+            Span<byte> indices = stackalloc byte[16];
 			int blockOffset = 2;
 			int destIndex = 0;
             for (int i = 0; i < 2; ++i)
@@ -1640,13 +1703,13 @@ namespace TagTool.Bitmaps.Utils
                 rgba[4 * i + 3] = codes[indices[i]];
         }
 
-        public static void Compress(byte[] rgba, byte[] block, uint flags)
+        public static void Compress(ReadOnlySpan<byte> rgba, Span<byte> block, uint flags)
 		{
 			// compress with full mask
 			CompressMasked(rgba, 0xffff, block, flags);
 		}
 
-		public static void CompressMasked(byte[] rgba, uint mask, byte[] block, uint flags)
+		public static void CompressMasked(ReadOnlySpan<byte> rgba, uint mask, Span<byte> block, uint flags)
 		{
 			// fix any bad flags
 			flags = FixFlags(flags);
@@ -1660,15 +1723,15 @@ namespace TagTool.Bitmaps.Utils
 
             // get the block locations
             var colourBlock = block;
-			byte[] alphaChannel = null;
+			byte[] alphaChannelBuf = null;
+			Span<byte> alphaChannel = default;
 			if (hasAlpha)
 			{
-				colourBlock = block.Skip(8).Take(block.Length - 8).ToArray(); // skip 8 bytes in array
+				colourBlock = block[8..]; // skip 8 bytes in array
 
-				List<byte> alphaList = new List<byte>();
-				for (int i = 0; i < rgba.Length; i += 4)
-					alphaList.Add(rgba[i + 3]);
-				alphaChannel = alphaList.ToArray();
+				alphaChannelBuf = ArrayPool<byte>.Shared.Rent(rgba.Length / 4);
+				alphaChannel = alphaChannelBuf[..(rgba.Length / 4)];
+				for (int i = 0; i < rgba.Length; i += 4) alphaChannel[i >>> 2] = rgba[i + 3];
             }
 
 			// create the minimal point set
@@ -1706,9 +1769,11 @@ namespace TagTool.Bitmaps.Utils
                 CompressAlphaDxt3(alphaChannel, mask, block);
             else if ((flags & (uint)SquishFlags.kDxt5) != 0)
                 CompressAlphaDxt5(alphaChannel, mask, block);
+
+			if (alphaChannelBuf != null) ArrayPool<byte>.Shared.Return(alphaChannelBuf);
         }
 
-		private static void CompressAlphaDxt3( byte[] singleChannelData, uint mask, byte[] block )
+		private static void CompressAlphaDxt3(ReadOnlySpan<byte> singleChannelData, uint mask, Span<byte> block)
 		{			
 			// quantise and pack the alpha values pairwise
 			for( int i = 0; i < 8; ++i )
@@ -1732,7 +1797,7 @@ namespace TagTool.Bitmaps.Utils
 			}
 		}
 
-		private static void CompressAlphaDxt5(byte[] singleChannelData, uint mask, byte[] block)
+		private static void CompressAlphaDxt5(ReadOnlySpan<byte> singleChannelData, uint mask, Span<byte> block)
 		{
             // get the range for 5-alpha and 7-alpha interpolation
             int min5 = 255;
@@ -1797,40 +1862,43 @@ namespace TagTool.Bitmaps.Utils
                 WriteAlphaBlock7(min7, max7, indices7, block);
         }
 
-		private static void CompressDxnBlock(byte[] rgba, uint mask, byte[] block)
+		private static void CompressDxnBlock(ReadOnlySpan<byte> rgba, uint mask, Span<byte> block)
         {
-            // compress RG channels as 2 dxt5 alpha
+			// compress RG channels as 2 dxt5 alpha
 
-            List<byte> redList = new List<byte>();
+			byte[] redChannelPooled = null;
+			Span<byte> redChannel = (rgba.Length <= 128 ? stackalloc byte[32] : (redChannelPooled ??= ArrayPool<byte>.Shared.Rent(rgba.Length / 4)))[..(int)((uint)rgba.Length / 4)];
             for (int i = 0; i < rgba.Length; i += 4)
-                redList.Add(rgba[i + 0]);
-            byte[] redChannel = redList.ToArray();
+				redChannel[i >>> 2] = rgba[i + 0];
 
-            List<byte> greenList = new List<byte>();
+			byte[] greenChannelPooled = null;
+			Span<byte> greenChannel = (rgba.Length <= 128 ? stackalloc byte[32] : (greenChannelPooled ??= ArrayPool<byte>.Shared.Rent(rgba.Length / 4)))[..(int)((uint)rgba.Length / 4)];
             for (int i = 0; i < rgba.Length; i += 4)
-                greenList.Add(rgba[i + 1]);
-            byte[] greenChannel = greenList.ToArray();
+				redChannel[i >>> 2] = rgba[i + 1];
 
-            byte[] redBlock = new byte[8];
-            byte[] greenBlock = new byte[8];
+            Span<byte> redBlock = stackalloc byte[8];
+            Span<byte> greenBlock = stackalloc byte[8];
 
             CompressAlphaDxt5(redChannel, mask, redBlock);
             CompressAlphaDxt5(greenChannel, mask, greenBlock);
 
-            // XY -> YX
-            for (int i = 0; i < 8; i++)
+			if (redChannelPooled != null) ArrayPool<byte>.Shared.Return(redChannelPooled);
+			if (greenChannelPooled != null) ArrayPool<byte>.Shared.Return(greenChannelPooled);
+
+			// XY -> YX
+			for (int i = 0; i < 8; i++)
                 block[i] = greenBlock[i];
             for (int i = 0; i < 8; i++)
                 block[i + 8] = redBlock[i];
         }
 
-		private static void WriteAlphaBlock5(int alpha0, int alpha1, byte[] indices, byte[] block)
+		private static void WriteAlphaBlock5(int alpha0, int alpha1, ReadOnlySpan<byte> indices, Span<byte> block)
 		{
             // check the relative values of the endpoints
             if (alpha0 > alpha1)
             {
                 // swap the indices
-                byte[] swapped = new byte[16];
+                Span<byte> swapped = stackalloc byte[16];
                 for (int i = 0; i < 16; ++i)
                 {
                     byte index = indices[i];
@@ -1854,13 +1922,13 @@ namespace TagTool.Bitmaps.Utils
             }
         }
 
-        private static void WriteAlphaBlock7(int alpha0, int alpha1, byte[] indices, byte[] block)
+        private static void WriteAlphaBlock7(int alpha0, int alpha1, ReadOnlySpan<byte> indices, Span<byte> block)
         {
             // check the relative values of the endpoints
             if (alpha0 < alpha1)
             {
                 // swap the indices
-                byte[] swapped = Enumerable.Repeat((byte)0, 16).ToArray();
+                Span<byte> swapped = stackalloc byte[16];
                 for (int i = 0; i < 16; ++i)
                 {
                     byte index = indices[i];
@@ -1882,7 +1950,7 @@ namespace TagTool.Bitmaps.Utils
             }
         }
 
-        private static void WriteAlphaBlock(int alpha0, int alpha1, byte[] indices, byte[] block)
+        private static void WriteAlphaBlock(int alpha0, int alpha1, ReadOnlySpan<byte> indices, Span<byte> block)
 		{
             // write the first two bytes
             block[0] = (byte)alpha0;
@@ -1912,7 +1980,7 @@ namespace TagTool.Bitmaps.Utils
             }
         }
 
-		private static int FitCodes(byte[] singleChannelData, uint mask, byte[] codes, byte[] indices)
+		private static int FitCodes(ReadOnlySpan<byte> singleChannelData, uint mask, ReadOnlySpan<byte> codes, Span<byte> indices)
 		{
             // fit each alpha value to the codebook
             int err = 0;
@@ -1982,1044 +2050,1052 @@ namespace TagTool.Bitmaps.Utils
             return method | fit | metric | extra;
         }
 
-        static readonly SingleColourLookup[] lookup_5_3 = new SingleColourLookup[]
+		//ROS<byte> => new byte[] { ... } is an RVA static readonly
+		static ReadOnlySpan<SingleColourLookup> lookup_5_3 => MemoryMarshal.Cast<byte, SingleColourLookup>(_lookup_5_3);
+		private static ReadOnlySpan<byte> _lookup_5_3 => new byte[]
 		{
-			new SingleColourLookup(0, 0, 0, 0, 0, 0),
-			new SingleColourLookup(0, 0, 1, 0, 0, 1),
-			new SingleColourLookup(0, 0, 2, 0, 0, 2),
-			new SingleColourLookup(0, 0, 3, 0, 1, 1),
-			new SingleColourLookup(0, 0, 4, 0, 1, 0),
-			new SingleColourLookup(1, 0, 3, 0, 1, 1),
-			new SingleColourLookup(1, 0, 2, 0, 1, 2),
-			new SingleColourLookup(1, 0, 1, 0, 2, 1),
-			new SingleColourLookup(1, 0, 0, 0, 2, 0),
-			new SingleColourLookup(1, 0, 1, 0, 2, 1),
-			new SingleColourLookup(1, 0, 2, 0, 2, 2),
-			new SingleColourLookup(1, 0, 3, 0, 3, 1),
-			new SingleColourLookup(1, 0, 4, 0, 3, 0),
-			new SingleColourLookup(2, 0, 3, 0, 3, 1),
-			new SingleColourLookup(2, 0, 2, 0, 3, 2),
-			new SingleColourLookup(2, 0, 1, 0, 4, 1),
-			new SingleColourLookup(2, 0, 0, 0, 4, 0),
-			new SingleColourLookup(2, 0, 1, 0, 4, 1),
-			new SingleColourLookup(2, 0, 2, 0, 4, 2),
-			new SingleColourLookup(2, 0, 3, 0, 5, 1),
-			new SingleColourLookup(2, 0, 4, 0, 5, 0),
-			new SingleColourLookup(3, 0, 3, 0, 5, 1),
-			new SingleColourLookup(3, 0, 2, 0, 5, 2),
-			new SingleColourLookup(3, 0, 1, 0, 6, 1),
-			new SingleColourLookup(3, 0, 0, 0, 6, 0),
-			new SingleColourLookup(3, 0, 1, 0, 6, 1),
-			new SingleColourLookup(3, 0, 2, 0, 6, 2),
-			new SingleColourLookup(3, 0, 3, 0, 7, 1),
-			new SingleColourLookup(3, 0, 4, 0, 7, 0),
-			new SingleColourLookup(4, 0, 4, 0, 7, 1),
-			new SingleColourLookup(4, 0, 3, 0, 7, 2),
-			new SingleColourLookup(4, 0, 2, 1, 7, 1),
-			new SingleColourLookup(4, 0, 1, 1, 7, 0),
-			new SingleColourLookup(4, 0, 0, 0, 8, 0),
-			new SingleColourLookup(4, 0, 1, 0, 8, 1),
-			new SingleColourLookup(4, 0, 2, 2, 7, 1),
-			new SingleColourLookup(4, 0, 3, 2, 7, 0),
-			new SingleColourLookup(4, 0, 4, 0, 9, 0),
-			new SingleColourLookup(5, 0, 3, 0, 9, 1),
-			new SingleColourLookup(5, 0, 2, 3, 7, 1),
-			new SingleColourLookup(5, 0, 1, 3, 7, 0),
-			new SingleColourLookup(5, 0, 0, 0, 10, 0),
-			new SingleColourLookup(5, 0, 1, 0, 10, 1),
-			new SingleColourLookup(5, 0, 2, 0, 10, 2),
-			new SingleColourLookup(5, 0, 3, 0, 11, 1),
-			new SingleColourLookup(5, 0, 4, 0, 11, 0),
-			new SingleColourLookup(6, 0, 3, 0, 11, 1),
-			new SingleColourLookup(6, 0, 2, 0, 11, 2),
-			new SingleColourLookup(6, 0, 1, 0, 12, 1),
-			new SingleColourLookup(6, 0, 0, 0, 12, 0),
-			new SingleColourLookup(6, 0, 1, 0, 12, 1),
-			new SingleColourLookup(6, 0, 2, 0, 12, 2),
-			new SingleColourLookup(6, 0, 3, 0, 13, 1),
-			new SingleColourLookup(6, 0, 4, 0, 13, 0),
-			new SingleColourLookup(7, 0, 3, 0, 13, 1),
-			new SingleColourLookup(7, 0, 2, 0, 13, 2),
-			new SingleColourLookup(7, 0, 1, 0, 14, 1),
-			new SingleColourLookup(7, 0, 0, 0, 14, 0),
-			new SingleColourLookup(7, 0, 1, 0, 14, 1),
-			new SingleColourLookup(7, 0, 2, 0, 14, 2),
-			new SingleColourLookup(7, 0, 3, 0, 15, 1),
-			new SingleColourLookup(7, 0, 4, 0, 15, 0),
-			new SingleColourLookup(8, 0, 4, 0, 15, 1),
-			new SingleColourLookup(8, 0, 3, 0, 15, 2),
-			new SingleColourLookup(8, 0, 2, 1, 15, 1),
-			new SingleColourLookup(8, 0, 1, 1, 15, 0),
-			new SingleColourLookup(8, 0, 0, 0, 16, 0),
-			new SingleColourLookup(8, 0, 1, 0, 16, 1),
-			new SingleColourLookup(8, 0, 2, 2, 15, 1),
-			new SingleColourLookup(8, 0, 3, 2, 15, 0),
-			new SingleColourLookup(8, 0, 4, 0, 17, 0),
-			new SingleColourLookup(9, 0, 3, 0, 17, 1),
-			new SingleColourLookup(9, 0, 2, 3, 15, 1),
-			new SingleColourLookup(9, 0, 1, 3, 15, 0),
-			new SingleColourLookup(9, 0, 0, 0, 18, 0),
-			new SingleColourLookup(9, 0, 1, 0, 18, 1),
-			new SingleColourLookup(9, 0, 2, 0, 18, 2),
-			new SingleColourLookup(9, 0, 3, 0, 19, 1),
-			new SingleColourLookup(9, 0, 4, 0, 19, 0),
-			new SingleColourLookup(10, 0, 3, 0, 19, 1),
-			new SingleColourLookup(10, 0, 2, 0, 19, 2),
-			new SingleColourLookup(10, 0, 1, 0, 20, 1),
-			new SingleColourLookup(10, 0, 0, 0, 20, 0),
-			new SingleColourLookup(10, 0, 1, 0, 20, 1),
-			new SingleColourLookup(10, 0, 2, 0, 20, 2),
-			new SingleColourLookup(10, 0, 3, 0, 21, 1),
-			new SingleColourLookup(10, 0, 4, 0, 21, 0),
-			new SingleColourLookup(11, 0, 3, 0, 21, 1),
-			new SingleColourLookup(11, 0, 2, 0, 21, 2),
-			new SingleColourLookup(11, 0, 1, 0, 22, 1),
-			new SingleColourLookup(11, 0, 0, 0, 22, 0),
-			new SingleColourLookup(11, 0, 1, 0, 22, 1),
-			new SingleColourLookup(11, 0, 2, 0, 22, 2),
-			new SingleColourLookup(11, 0, 3, 0, 23, 1),
-			new SingleColourLookup(11, 0, 4, 0, 23, 0),
-			new SingleColourLookup(12, 0, 4, 0, 23, 1),
-			new SingleColourLookup(12, 0, 3, 0, 23, 2),
-			new SingleColourLookup(12, 0, 2, 1, 23, 1),
-			new SingleColourLookup(12, 0, 1, 1, 23, 0),
-			new SingleColourLookup(12, 0, 0, 0, 24, 0),
-			new SingleColourLookup(12, 0, 1, 0, 24, 1),
-			new SingleColourLookup(12, 0, 2, 2, 23, 1),
-			new SingleColourLookup(12, 0, 3, 2, 23, 0),
-			new SingleColourLookup(12, 0, 4, 0, 25, 0),
-			new SingleColourLookup(13, 0, 3, 0, 25, 1),
-			new SingleColourLookup(13, 0, 2, 3, 23, 1),
-			new SingleColourLookup(13, 0, 1, 3, 23, 0),
-			new SingleColourLookup(13, 0, 0, 0, 26, 0),
-			new SingleColourLookup(13, 0, 1, 0, 26, 1),
-			new SingleColourLookup(13, 0, 2, 0, 26, 2),
-			new SingleColourLookup(13, 0, 3, 0, 27, 1),
-			new SingleColourLookup(13, 0, 4, 0, 27, 0),
-			new SingleColourLookup(14, 0, 3, 0, 27, 1),
-			new SingleColourLookup(14, 0, 2, 0, 27, 2),
-			new SingleColourLookup(14, 0, 1, 0, 28, 1),
-			new SingleColourLookup(14, 0, 0, 0, 28, 0),
-			new SingleColourLookup(14, 0, 1, 0, 28, 1),
-			new SingleColourLookup(14, 0, 2, 0, 28, 2),
-			new SingleColourLookup(14, 0, 3, 0, 29, 1),
-			new SingleColourLookup(14, 0, 4, 0, 29, 0),
-			new SingleColourLookup(15, 0, 3, 0, 29, 1),
-			new SingleColourLookup(15, 0, 2, 0, 29, 2),
-			new SingleColourLookup(15, 0, 1, 0, 30, 1),
-			new SingleColourLookup(15, 0, 0, 0, 30, 0),
-			new SingleColourLookup(15, 0, 1, 0, 30, 1),
-			new SingleColourLookup(15, 0, 2, 0, 30, 2),
-			new SingleColourLookup(15, 0, 3, 0, 31, 1),
-			new SingleColourLookup(15, 0, 4, 0, 31, 0),
-			new SingleColourLookup(16, 0, 4, 0, 31, 1),
-			new SingleColourLookup(16, 0, 3, 0, 31, 2),
-			new SingleColourLookup(16, 0, 2, 1, 31, 1),
-			new SingleColourLookup(16, 0, 1, 1, 31, 0),
-			new SingleColourLookup(16, 0, 0, 4, 28, 0),
-			new SingleColourLookup(16, 0, 1, 4, 28, 1),
-			new SingleColourLookup(16, 0, 2, 2, 31, 1),
-			new SingleColourLookup(16, 0, 3, 2, 31, 0),
-			new SingleColourLookup(16, 0, 4, 4, 29, 0),
-			new SingleColourLookup(17, 0, 3, 4, 29, 1),
-			new SingleColourLookup(17, 0, 2, 3, 31, 1),
-			new SingleColourLookup(17, 0, 1, 3, 31, 0),
-			new SingleColourLookup(17, 0, 0, 4, 30, 0),
-			new SingleColourLookup(17, 0, 1, 4, 30, 1),
-			new SingleColourLookup(17, 0, 2, 4, 30, 2),
-			new SingleColourLookup(17, 0, 3, 4, 31, 1),
-			new SingleColourLookup(17, 0, 4, 4, 31, 0),
-			new SingleColourLookup(18, 0, 3, 4, 31, 1),
-			new SingleColourLookup(18, 0, 2, 4, 31, 2),
-			new SingleColourLookup(18, 0, 1, 5, 31, 1),
-			new SingleColourLookup(18, 0, 0, 5, 31, 0),
-			new SingleColourLookup(18, 0, 1, 5, 31, 1),
-			new SingleColourLookup(18, 0, 2, 5, 31, 2),
-			new SingleColourLookup(18, 0, 3, 6, 31, 1),
-			new SingleColourLookup(18, 0, 4, 6, 31, 0),
-			new SingleColourLookup(19, 0, 3, 6, 31, 1),
-			new SingleColourLookup(19, 0, 2, 6, 31, 2),
-			new SingleColourLookup(19, 0, 1, 7, 31, 1),
-			new SingleColourLookup(19, 0, 0, 7, 31, 0),
-			new SingleColourLookup(19, 0, 1, 7, 31, 1),
-			new SingleColourLookup(19, 0, 2, 7, 31, 2),
-			new SingleColourLookup(19, 0, 3, 8, 31, 1),
-			new SingleColourLookup(19, 0, 4, 8, 31, 0),
-			new SingleColourLookup(20, 0, 4, 8, 31, 1),
-			new SingleColourLookup(20, 0, 3, 8, 31, 2),
-			new SingleColourLookup(20, 0, 2, 9, 31, 1),
-			new SingleColourLookup(20, 0, 1, 9, 31, 0),
-			new SingleColourLookup(20, 0, 0, 12, 28, 0),
-			new SingleColourLookup(20, 0, 1, 12, 28, 1),
-			new SingleColourLookup(20, 0, 2, 10, 31, 1),
-			new SingleColourLookup(20, 0, 3, 10, 31, 0),
-			new SingleColourLookup(20, 0, 4, 12, 29, 0),
-			new SingleColourLookup(21, 0, 3, 12, 29, 1),
-			new SingleColourLookup(21, 0, 2, 11, 31, 1),
-			new SingleColourLookup(21, 0, 1, 11, 31, 0),
-			new SingleColourLookup(21, 0, 0, 12, 30, 0),
-			new SingleColourLookup(21, 0, 1, 12, 30, 1),
-			new SingleColourLookup(21, 0, 2, 12, 30, 2),
-			new SingleColourLookup(21, 0, 3, 12, 31, 1),
-			new SingleColourLookup(21, 0, 4, 12, 31, 0),
-			new SingleColourLookup(22, 0, 3, 12, 31, 1),
-			new SingleColourLookup(22, 0, 2, 12, 31, 2),
-			new SingleColourLookup(22, 0, 1, 13, 31, 1),
-			new SingleColourLookup(22, 0, 0, 13, 31, 0),
-			new SingleColourLookup(22, 0, 1, 13, 31, 1),
-			new SingleColourLookup(22, 0, 2, 13, 31, 2),
-			new SingleColourLookup(22, 0, 3, 14, 31, 1),
-			new SingleColourLookup(22, 0, 4, 14, 31, 0),
-			new SingleColourLookup(23, 0, 3, 14, 31, 1),
-			new SingleColourLookup(23, 0, 2, 14, 31, 2),
-			new SingleColourLookup(23, 0, 1, 15, 31, 1),
-			new SingleColourLookup(23, 0, 0, 15, 31, 0),
-			new SingleColourLookup(23, 0, 1, 15, 31, 1),
-			new SingleColourLookup(23, 0, 2, 15, 31, 2),
-			new SingleColourLookup(23, 0, 3, 16, 31, 1),
-			new SingleColourLookup(23, 0, 4, 16, 31, 0),
-			new SingleColourLookup(24, 0, 4, 16, 31, 1),
-			new SingleColourLookup(24, 0, 3, 16, 31, 2),
-			new SingleColourLookup(24, 0, 2, 17, 31, 1),
-			new SingleColourLookup(24, 0, 1, 17, 31, 0),
-			new SingleColourLookup(24, 0, 0, 20, 28, 0),
-			new SingleColourLookup(24, 0, 1, 20, 28, 1),
-			new SingleColourLookup(24, 0, 2, 18, 31, 1),
-			new SingleColourLookup(24, 0, 3, 18, 31, 0),
-			new SingleColourLookup(24, 0, 4, 20, 29, 0),
-			new SingleColourLookup(25, 0, 3, 20, 29, 1),
-			new SingleColourLookup(25, 0, 2, 19, 31, 1),
-			new SingleColourLookup(25, 0, 1, 19, 31, 0),
-			new SingleColourLookup(25, 0, 0, 20, 30, 0),
-			new SingleColourLookup(25, 0, 1, 20, 30, 1),
-			new SingleColourLookup(25, 0, 2, 20, 30, 2),
-			new SingleColourLookup(25, 0, 3, 20, 31, 1),
-			new SingleColourLookup(25, 0, 4, 20, 31, 0),
-			new SingleColourLookup(26, 0, 3, 20, 31, 1),
-			new SingleColourLookup(26, 0, 2, 20, 31, 2),
-			new SingleColourLookup(26, 0, 1, 21, 31, 1),
-			new SingleColourLookup(26, 0, 0, 21, 31, 0),
-			new SingleColourLookup(26, 0, 1, 21, 31, 1),
-			new SingleColourLookup(26, 0, 2, 21, 31, 2),
-			new SingleColourLookup(26, 0, 3, 22, 31, 1),
-			new SingleColourLookup(26, 0, 4, 22, 31, 0),
-			new SingleColourLookup(27, 0, 3, 22, 31, 1),
-			new SingleColourLookup(27, 0, 2, 22, 31, 2),
-			new SingleColourLookup(27, 0, 1, 23, 31, 1),
-			new SingleColourLookup(27, 0, 0, 23, 31, 0),
-			new SingleColourLookup(27, 0, 1, 23, 31, 1),
-			new SingleColourLookup(27, 0, 2, 23, 31, 2),
-			new SingleColourLookup(27, 0, 3, 24, 31, 1),
-			new SingleColourLookup(27, 0, 4, 24, 31, 0),
-			new SingleColourLookup(28, 0, 4, 24, 31, 1),
-			new SingleColourLookup(28, 0, 3, 24, 31, 2),
-			new SingleColourLookup(28, 0, 2, 25, 31, 1),
-			new SingleColourLookup(28, 0, 1, 25, 31, 0),
-			new SingleColourLookup(28, 0, 0, 28, 28, 0),
-			new SingleColourLookup(28, 0, 1, 28, 28, 1),
-			new SingleColourLookup(28, 0, 2, 26, 31, 1),
-			new SingleColourLookup(28, 0, 3, 26, 31, 0),
-			new SingleColourLookup(28, 0, 4, 28, 29, 0),
-			new SingleColourLookup(29, 0, 3, 28, 29, 1),
-			new SingleColourLookup(29, 0, 2, 27, 31, 1),
-			new SingleColourLookup(29, 0, 1, 27, 31, 0),
-			new SingleColourLookup(29, 0, 0, 28, 30, 0),
-			new SingleColourLookup(29, 0, 1, 28, 30, 1),
-			new SingleColourLookup(29, 0, 2, 28, 30, 2),
-			new SingleColourLookup(29, 0, 3, 28, 31, 1),
-			new SingleColourLookup(29, 0, 4, 28, 31, 0),
-			new SingleColourLookup(30, 0, 3, 28, 31, 1),
-			new SingleColourLookup(30, 0, 2, 28, 31, 2),
-			new SingleColourLookup(30, 0, 1, 29, 31, 1),
-			new SingleColourLookup(30, 0, 0, 29, 31, 0),
-			new SingleColourLookup(30, 0, 1, 29, 31, 1),
-			new SingleColourLookup(30, 0, 2, 29, 31, 2),
-			new SingleColourLookup(30, 0, 3, 30, 31, 1),
-			new SingleColourLookup(30, 0, 4, 30, 31, 0),
-			new SingleColourLookup(31, 0, 3, 30, 31, 1),
-			new SingleColourLookup(31, 0, 2, 30, 31, 2),
-			new SingleColourLookup(31, 0, 1, 31, 31, 1),
-			new SingleColourLookup(31, 0, 0, 31, 31, 0)
+			0, 0, 0, 0, 0, 0,
+			0, 0, 1, 0, 0, 1,
+			0, 0, 2, 0, 0, 2,
+			0, 0, 3, 0, 1, 1,
+			0, 0, 4, 0, 1, 0,
+			1, 0, 3, 0, 1, 1,
+			1, 0, 2, 0, 1, 2,
+			1, 0, 1, 0, 2, 1,
+			1, 0, 0, 0, 2, 0,
+			1, 0, 1, 0, 2, 1,
+			1, 0, 2, 0, 2, 2,
+			1, 0, 3, 0, 3, 1,
+			1, 0, 4, 0, 3, 0,
+			2, 0, 3, 0, 3, 1,
+			2, 0, 2, 0, 3, 2,
+			2, 0, 1, 0, 4, 1,
+			2, 0, 0, 0, 4, 0,
+			2, 0, 1, 0, 4, 1,
+			2, 0, 2, 0, 4, 2,
+			2, 0, 3, 0, 5, 1,
+			2, 0, 4, 0, 5, 0,
+			3, 0, 3, 0, 5, 1,
+			3, 0, 2, 0, 5, 2,
+			3, 0, 1, 0, 6, 1,
+			3, 0, 0, 0, 6, 0,
+			3, 0, 1, 0, 6, 1,
+			3, 0, 2, 0, 6, 2,
+			3, 0, 3, 0, 7, 1,
+			3, 0, 4, 0, 7, 0,
+			4, 0, 4, 0, 7, 1,
+			4, 0, 3, 0, 7, 2,
+			4, 0, 2, 1, 7, 1,
+			4, 0, 1, 1, 7, 0,
+			4, 0, 0, 0, 8, 0,
+			4, 0, 1, 0, 8, 1,
+			4, 0, 2, 2, 7, 1,
+			4, 0, 3, 2, 7, 0,
+			4, 0, 4, 0, 9, 0,
+			5, 0, 3, 0, 9, 1,
+			5, 0, 2, 3, 7, 1,
+			5, 0, 1, 3, 7, 0,
+			5, 0, 0, 0, 10, 0,
+			5, 0, 1, 0, 10, 1,
+			5, 0, 2, 0, 10, 2,
+			5, 0, 3, 0, 11, 1,
+			5, 0, 4, 0, 11, 0,
+			6, 0, 3, 0, 11, 1,
+			6, 0, 2, 0, 11, 2,
+			6, 0, 1, 0, 12, 1,
+			6, 0, 0, 0, 12, 0,
+			6, 0, 1, 0, 12, 1,
+			6, 0, 2, 0, 12, 2,
+			6, 0, 3, 0, 13, 1,
+			6, 0, 4, 0, 13, 0,
+			7, 0, 3, 0, 13, 1,
+			7, 0, 2, 0, 13, 2,
+			7, 0, 1, 0, 14, 1,
+			7, 0, 0, 0, 14, 0,
+			7, 0, 1, 0, 14, 1,
+			7, 0, 2, 0, 14, 2,
+			7, 0, 3, 0, 15, 1,
+			7, 0, 4, 0, 15, 0,
+			8, 0, 4, 0, 15, 1,
+			8, 0, 3, 0, 15, 2,
+			8, 0, 2, 1, 15, 1,
+			8, 0, 1, 1, 15, 0,
+			8, 0, 0, 0, 16, 0,
+			8, 0, 1, 0, 16, 1,
+			8, 0, 2, 2, 15, 1,
+			8, 0, 3, 2, 15, 0,
+			8, 0, 4, 0, 17, 0,
+			9, 0, 3, 0, 17, 1,
+			9, 0, 2, 3, 15, 1,
+			9, 0, 1, 3, 15, 0,
+			9, 0, 0, 0, 18, 0,
+			9, 0, 1, 0, 18, 1,
+			9, 0, 2, 0, 18, 2,
+			9, 0, 3, 0, 19, 1,
+			9, 0, 4, 0, 19, 0,
+			10, 0, 3, 0, 19, 1,
+			10, 0, 2, 0, 19, 2,
+			10, 0, 1, 0, 20, 1,
+			10, 0, 0, 0, 20, 0,
+			10, 0, 1, 0, 20, 1,
+			10, 0, 2, 0, 20, 2,
+			10, 0, 3, 0, 21, 1,
+			10, 0, 4, 0, 21, 0,
+			11, 0, 3, 0, 21, 1,
+			11, 0, 2, 0, 21, 2,
+			11, 0, 1, 0, 22, 1,
+			11, 0, 0, 0, 22, 0,
+			11, 0, 1, 0, 22, 1,
+			11, 0, 2, 0, 22, 2,
+			11, 0, 3, 0, 23, 1,
+			11, 0, 4, 0, 23, 0,
+			12, 0, 4, 0, 23, 1,
+			12, 0, 3, 0, 23, 2,
+			12, 0, 2, 1, 23, 1,
+			12, 0, 1, 1, 23, 0,
+			12, 0, 0, 0, 24, 0,
+			12, 0, 1, 0, 24, 1,
+			12, 0, 2, 2, 23, 1,
+			12, 0, 3, 2, 23, 0,
+			12, 0, 4, 0, 25, 0,
+			13, 0, 3, 0, 25, 1,
+			13, 0, 2, 3, 23, 1,
+			13, 0, 1, 3, 23, 0,
+			13, 0, 0, 0, 26, 0,
+			13, 0, 1, 0, 26, 1,
+			13, 0, 2, 0, 26, 2,
+			13, 0, 3, 0, 27, 1,
+			13, 0, 4, 0, 27, 0,
+			14, 0, 3, 0, 27, 1,
+			14, 0, 2, 0, 27, 2,
+			14, 0, 1, 0, 28, 1,
+			14, 0, 0, 0, 28, 0,
+			14, 0, 1, 0, 28, 1,
+			14, 0, 2, 0, 28, 2,
+			14, 0, 3, 0, 29, 1,
+			14, 0, 4, 0, 29, 0,
+			15, 0, 3, 0, 29, 1,
+			15, 0, 2, 0, 29, 2,
+			15, 0, 1, 0, 30, 1,
+			15, 0, 0, 0, 30, 0,
+			15, 0, 1, 0, 30, 1,
+			15, 0, 2, 0, 30, 2,
+			15, 0, 3, 0, 31, 1,
+			15, 0, 4, 0, 31, 0,
+			16, 0, 4, 0, 31, 1,
+			16, 0, 3, 0, 31, 2,
+			16, 0, 2, 1, 31, 1,
+			16, 0, 1, 1, 31, 0,
+			16, 0, 0, 4, 28, 0,
+			16, 0, 1, 4, 28, 1,
+			16, 0, 2, 2, 31, 1,
+			16, 0, 3, 2, 31, 0,
+			16, 0, 4, 4, 29, 0,
+			17, 0, 3, 4, 29, 1,
+			17, 0, 2, 3, 31, 1,
+			17, 0, 1, 3, 31, 0,
+			17, 0, 0, 4, 30, 0,
+			17, 0, 1, 4, 30, 1,
+			17, 0, 2, 4, 30, 2,
+			17, 0, 3, 4, 31, 1,
+			17, 0, 4, 4, 31, 0,
+			18, 0, 3, 4, 31, 1,
+			18, 0, 2, 4, 31, 2,
+			18, 0, 1, 5, 31, 1,
+			18, 0, 0, 5, 31, 0,
+			18, 0, 1, 5, 31, 1,
+			18, 0, 2, 5, 31, 2,
+			18, 0, 3, 6, 31, 1,
+			18, 0, 4, 6, 31, 0,
+			19, 0, 3, 6, 31, 1,
+			19, 0, 2, 6, 31, 2,
+			19, 0, 1, 7, 31, 1,
+			19, 0, 0, 7, 31, 0,
+			19, 0, 1, 7, 31, 1,
+			19, 0, 2, 7, 31, 2,
+			19, 0, 3, 8, 31, 1,
+			19, 0, 4, 8, 31, 0,
+			20, 0, 4, 8, 31, 1,
+			20, 0, 3, 8, 31, 2,
+			20, 0, 2, 9, 31, 1,
+			20, 0, 1, 9, 31, 0,
+			20, 0, 0, 12, 28, 0,
+			20, 0, 1, 12, 28, 1,
+			20, 0, 2, 10, 31, 1,
+			20, 0, 3, 10, 31, 0,
+			20, 0, 4, 12, 29, 0,
+			21, 0, 3, 12, 29, 1,
+			21, 0, 2, 11, 31, 1,
+			21, 0, 1, 11, 31, 0,
+			21, 0, 0, 12, 30, 0,
+			21, 0, 1, 12, 30, 1,
+			21, 0, 2, 12, 30, 2,
+			21, 0, 3, 12, 31, 1,
+			21, 0, 4, 12, 31, 0,
+			22, 0, 3, 12, 31, 1,
+			22, 0, 2, 12, 31, 2,
+			22, 0, 1, 13, 31, 1,
+			22, 0, 0, 13, 31, 0,
+			22, 0, 1, 13, 31, 1,
+			22, 0, 2, 13, 31, 2,
+			22, 0, 3, 14, 31, 1,
+			22, 0, 4, 14, 31, 0,
+			23, 0, 3, 14, 31, 1,
+			23, 0, 2, 14, 31, 2,
+			23, 0, 1, 15, 31, 1,
+			23, 0, 0, 15, 31, 0,
+			23, 0, 1, 15, 31, 1,
+			23, 0, 2, 15, 31, 2,
+			23, 0, 3, 16, 31, 1,
+			23, 0, 4, 16, 31, 0,
+			24, 0, 4, 16, 31, 1,
+			24, 0, 3, 16, 31, 2,
+			24, 0, 2, 17, 31, 1,
+			24, 0, 1, 17, 31, 0,
+			24, 0, 0, 20, 28, 0,
+			24, 0, 1, 20, 28, 1,
+			24, 0, 2, 18, 31, 1,
+			24, 0, 3, 18, 31, 0,
+			24, 0, 4, 20, 29, 0,
+			25, 0, 3, 20, 29, 1,
+			25, 0, 2, 19, 31, 1,
+			25, 0, 1, 19, 31, 0,
+			25, 0, 0, 20, 30, 0,
+			25, 0, 1, 20, 30, 1,
+			25, 0, 2, 20, 30, 2,
+			25, 0, 3, 20, 31, 1,
+			25, 0, 4, 20, 31, 0,
+			26, 0, 3, 20, 31, 1,
+			26, 0, 2, 20, 31, 2,
+			26, 0, 1, 21, 31, 1,
+			26, 0, 0, 21, 31, 0,
+			26, 0, 1, 21, 31, 1,
+			26, 0, 2, 21, 31, 2,
+			26, 0, 3, 22, 31, 1,
+			26, 0, 4, 22, 31, 0,
+			27, 0, 3, 22, 31, 1,
+			27, 0, 2, 22, 31, 2,
+			27, 0, 1, 23, 31, 1,
+			27, 0, 0, 23, 31, 0,
+			27, 0, 1, 23, 31, 1,
+			27, 0, 2, 23, 31, 2,
+			27, 0, 3, 24, 31, 1,
+			27, 0, 4, 24, 31, 0,
+			28, 0, 4, 24, 31, 1,
+			28, 0, 3, 24, 31, 2,
+			28, 0, 2, 25, 31, 1,
+			28, 0, 1, 25, 31, 0,
+			28, 0, 0, 28, 28, 0,
+			28, 0, 1, 28, 28, 1,
+			28, 0, 2, 26, 31, 1,
+			28, 0, 3, 26, 31, 0,
+			28, 0, 4, 28, 29, 0,
+			29, 0, 3, 28, 29, 1,
+			29, 0, 2, 27, 31, 1,
+			29, 0, 1, 27, 31, 0,
+			29, 0, 0, 28, 30, 0,
+			29, 0, 1, 28, 30, 1,
+			29, 0, 2, 28, 30, 2,
+			29, 0, 3, 28, 31, 1,
+			29, 0, 4, 28, 31, 0,
+			30, 0, 3, 28, 31, 1,
+			30, 0, 2, 28, 31, 2,
+			30, 0, 1, 29, 31, 1,
+			30, 0, 0, 29, 31, 0,
+			30, 0, 1, 29, 31, 1,
+			30, 0, 2, 29, 31, 2,
+			30, 0, 3, 30, 31, 1,
+			30, 0, 4, 30, 31, 0,
+			31, 0, 3, 30, 31, 1,
+			31, 0, 2, 30, 31, 2,
+			31, 0, 1, 31, 31, 1,
+			31, 0, 0, 31, 31, 0,
 		};
 
-		static readonly SingleColourLookup[] lookup_6_3 = new SingleColourLookup[]
+		//ROS<byte> => new byte[] { ... } is an RVA static readonly
+		static ReadOnlySpan<SingleColourLookup> lookup_6_3 => MemoryMarshal.Cast<byte, SingleColourLookup>(_lookup_6_3);
+		private static ReadOnlySpan<byte> _lookup_6_3 => new byte[]
 		{
-			new SingleColourLookup(0, 0, 0, 0, 0, 0),
-			new SingleColourLookup(0, 0, 1, 0, 1, 1),
-			new SingleColourLookup(0, 0, 2, 0, 1, 0),
-			new SingleColourLookup(1, 0, 1, 0, 2, 1),
-			new SingleColourLookup(1, 0, 0, 0, 2, 0),
-			new SingleColourLookup(1, 0, 1, 0, 3, 1),
-			new SingleColourLookup(1, 0, 2, 0, 3, 0),
-			new SingleColourLookup(2, 0, 1, 0, 4, 1),
-			new SingleColourLookup(2, 0, 0, 0, 4, 0),
-			new SingleColourLookup(2, 0, 1, 0, 5, 1),
-			new SingleColourLookup(2, 0, 2, 0, 5, 0),
-			new SingleColourLookup(3, 0, 1, 0, 6, 1),
-			new SingleColourLookup(3, 0, 0, 0, 6, 0),
-			new SingleColourLookup(3, 0, 1, 0, 7, 1),
-			new SingleColourLookup(3, 0, 2, 0, 7, 0),
-			new SingleColourLookup(4, 0, 1, 0, 8, 1),
-			new SingleColourLookup(4, 0, 0, 0, 8, 0),
-			new SingleColourLookup(4, 0, 1, 0, 9, 1),
-			new SingleColourLookup(4, 0, 2, 0, 9, 0),
-			new SingleColourLookup(5, 0, 1, 0, 10, 1),
-			new SingleColourLookup(5, 0, 0, 0, 10, 0),
-			new SingleColourLookup(5, 0, 1, 0, 11, 1),
-			new SingleColourLookup(5, 0, 2, 0, 11, 0),
-			new SingleColourLookup(6, 0, 1, 0, 12, 1),
-			new SingleColourLookup(6, 0, 0, 0, 12, 0),
-			new SingleColourLookup(6, 0, 1, 0, 13, 1),
-			new SingleColourLookup(6, 0, 2, 0, 13, 0),
-			new SingleColourLookup(7, 0, 1, 0, 14, 1),
-			new SingleColourLookup(7, 0, 0, 0, 14, 0),
-			new SingleColourLookup(7, 0, 1, 0, 15, 1),
-			new SingleColourLookup(7, 0, 2, 0, 15, 0),
-			new SingleColourLookup(8, 0, 1, 0, 16, 1),
-			new SingleColourLookup(8, 0, 0, 0, 16, 0),
-			new SingleColourLookup(8, 0, 1, 0, 17, 1),
-			new SingleColourLookup(8, 0, 2, 0, 17, 0),
-			new SingleColourLookup(9, 0, 1, 0, 18, 1),
-			new SingleColourLookup(9, 0, 0, 0, 18, 0),
-			new SingleColourLookup(9, 0, 1, 0, 19, 1),
-			new SingleColourLookup(9, 0, 2, 0, 19, 0),
-			new SingleColourLookup(10, 0, 1, 0, 20, 1),
-			new SingleColourLookup(10, 0, 0, 0, 20, 0),
-			new SingleColourLookup(10, 0, 1, 0, 21, 1),
-			new SingleColourLookup(10, 0, 2, 0, 21, 0),
-			new SingleColourLookup(11, 0, 1, 0, 22, 1),
-			new SingleColourLookup(11, 0, 0, 0, 22, 0),
-			new SingleColourLookup(11, 0, 1, 0, 23, 1),
-			new SingleColourLookup(11, 0, 2, 0, 23, 0),
-			new SingleColourLookup(12, 0, 1, 0, 24, 1),
-			new SingleColourLookup(12, 0, 0, 0, 24, 0),
-			new SingleColourLookup(12, 0, 1, 0, 25, 1),
-			new SingleColourLookup(12, 0, 2, 0, 25, 0),
-			new SingleColourLookup(13, 0, 1, 0, 26, 1),
-			new SingleColourLookup(13, 0, 0, 0, 26, 0),
-			new SingleColourLookup(13, 0, 1, 0, 27, 1),
-			new SingleColourLookup(13, 0, 2, 0, 27, 0),
-			new SingleColourLookup(14, 0, 1, 0, 28, 1),
-			new SingleColourLookup(14, 0, 0, 0, 28, 0),
-			new SingleColourLookup(14, 0, 1, 0, 29, 1),
-			new SingleColourLookup(14, 0, 2, 0, 29, 0),
-			new SingleColourLookup(15, 0, 1, 0, 30, 1),
-			new SingleColourLookup(15, 0, 0, 0, 30, 0),
-			new SingleColourLookup(15, 0, 1, 0, 31, 1),
-			new SingleColourLookup(15, 0, 2, 0, 31, 0),
-			new SingleColourLookup(16, 0, 2, 1, 31, 1),
-			new SingleColourLookup(16, 0, 1, 1, 31, 0),
-			new SingleColourLookup(16, 0, 0, 0, 32, 0),
-			new SingleColourLookup(16, 0, 1, 2, 31, 0),
-			new SingleColourLookup(16, 0, 2, 0, 33, 0),
-			new SingleColourLookup(17, 0, 1, 3, 31, 0),
-			new SingleColourLookup(17, 0, 0, 0, 34, 0),
-			new SingleColourLookup(17, 0, 1, 4, 31, 0),
-			new SingleColourLookup(17, 0, 2, 0, 35, 0),
-			new SingleColourLookup(18, 0, 1, 5, 31, 0),
-			new SingleColourLookup(18, 0, 0, 0, 36, 0),
-			new SingleColourLookup(18, 0, 1, 6, 31, 0),
-			new SingleColourLookup(18, 0, 2, 0, 37, 0),
-			new SingleColourLookup(19, 0, 1, 7, 31, 0),
-			new SingleColourLookup(19, 0, 0, 0, 38, 0),
-			new SingleColourLookup(19, 0, 1, 8, 31, 0),
-			new SingleColourLookup(19, 0, 2, 0, 39, 0),
-			new SingleColourLookup(20, 0, 1, 9, 31, 0),
-			new SingleColourLookup(20, 0, 0, 0, 40, 0),
-			new SingleColourLookup(20, 0, 1, 10, 31, 0),
-			new SingleColourLookup(20, 0, 2, 0, 41, 0),
-			new SingleColourLookup(21, 0, 1, 11, 31, 0),
-			new SingleColourLookup(21, 0, 0, 0, 42, 0),
-			new SingleColourLookup(21, 0, 1, 12, 31, 0),
-			new SingleColourLookup(21, 0, 2, 0, 43, 0),
-			new SingleColourLookup(22, 0, 1, 13, 31, 0),
-			new SingleColourLookup(22, 0, 0, 0, 44, 0),
-			new SingleColourLookup(22, 0, 1, 14, 31, 0),
-			new SingleColourLookup(22, 0, 2, 0, 45, 0),
-			new SingleColourLookup(23, 0, 1, 15, 31, 0),
-			new SingleColourLookup(23, 0, 0, 0, 46, 0),
-			new SingleColourLookup(23, 0, 1, 0, 47, 1),
-			new SingleColourLookup(23, 0, 2, 0, 47, 0),
-			new SingleColourLookup(24, 0, 1, 0, 48, 1),
-			new SingleColourLookup(24, 0, 0, 0, 48, 0),
-			new SingleColourLookup(24, 0, 1, 0, 49, 1),
-			new SingleColourLookup(24, 0, 2, 0, 49, 0),
-			new SingleColourLookup(25, 0, 1, 0, 50, 1),
-			new SingleColourLookup(25, 0, 0, 0, 50, 0),
-			new SingleColourLookup(25, 0, 1, 0, 51, 1),
-			new SingleColourLookup(25, 0, 2, 0, 51, 0),
-			new SingleColourLookup(26, 0, 1, 0, 52, 1),
-			new SingleColourLookup(26, 0, 0, 0, 52, 0),
-			new SingleColourLookup(26, 0, 1, 0, 53, 1),
-			new SingleColourLookup(26, 0, 2, 0, 53, 0),
-			new SingleColourLookup(27, 0, 1, 0, 54, 1),
-			new SingleColourLookup(27, 0, 0, 0, 54, 0),
-			new SingleColourLookup(27, 0, 1, 0, 55, 1),
-			new SingleColourLookup(27, 0, 2, 0, 55, 0),
-			new SingleColourLookup(28, 0, 1, 0, 56, 1),
-			new SingleColourLookup(28, 0, 0, 0, 56, 0),
-			new SingleColourLookup(28, 0, 1, 0, 57, 1),
-			new SingleColourLookup(28, 0, 2, 0, 57, 0),
-			new SingleColourLookup(29, 0, 1, 0, 58, 1),
-			new SingleColourLookup(29, 0, 0, 0, 58, 0),
-			new SingleColourLookup(29, 0, 1, 0, 59, 1),
-			new SingleColourLookup(29, 0, 2, 0, 59, 0),
-			new SingleColourLookup(30, 0, 1, 0, 60, 1),
-			new SingleColourLookup(30, 0, 0, 0, 60, 0),
-			new SingleColourLookup(30, 0, 1, 0, 61, 1),
-			new SingleColourLookup(30, 0, 2, 0, 61, 0),
-			new SingleColourLookup(31, 0, 1, 0, 62, 1),
-			new SingleColourLookup(31, 0, 0, 0, 62, 0),
-			new SingleColourLookup(31, 0, 1, 0, 63, 1),
-			new SingleColourLookup(31, 0, 2, 0, 63, 0),
-			new SingleColourLookup(32, 0, 2, 1, 63, 1),
-			new SingleColourLookup(32, 0, 1, 1, 63, 0),
-			new SingleColourLookup(32, 0, 0, 16, 48, 0),
-			new SingleColourLookup(32, 0, 1, 2, 63, 0),
-			new SingleColourLookup(32, 0, 2, 16, 49, 0),
-			new SingleColourLookup(33, 0, 1, 3, 63, 0),
-			new SingleColourLookup(33, 0, 0, 16, 50, 0),
-			new SingleColourLookup(33, 0, 1, 4, 63, 0),
-			new SingleColourLookup(33, 0, 2, 16, 51, 0),
-			new SingleColourLookup(34, 0, 1, 5, 63, 0),
-			new SingleColourLookup(34, 0, 0, 16, 52, 0),
-			new SingleColourLookup(34, 0, 1, 6, 63, 0),
-			new SingleColourLookup(34, 0, 2, 16, 53, 0),
-			new SingleColourLookup(35, 0, 1, 7, 63, 0),
-			new SingleColourLookup(35, 0, 0, 16, 54, 0),
-			new SingleColourLookup(35, 0, 1, 8, 63, 0),
-			new SingleColourLookup(35, 0, 2, 16, 55, 0),
-			new SingleColourLookup(36, 0, 1, 9, 63, 0),
-			new SingleColourLookup(36, 0, 0, 16, 56, 0),
-			new SingleColourLookup(36, 0, 1, 10, 63, 0),
-			new SingleColourLookup(36, 0, 2, 16, 57, 0),
-			new SingleColourLookup(37, 0, 1, 11, 63, 0),
-			new SingleColourLookup(37, 0, 0, 16, 58, 0),
-			new SingleColourLookup(37, 0, 1, 12, 63, 0),
-			new SingleColourLookup(37, 0, 2, 16, 59, 0),
-			new SingleColourLookup(38, 0, 1, 13, 63, 0),
-			new SingleColourLookup(38, 0, 0, 16, 60, 0),
-			new SingleColourLookup(38, 0, 1, 14, 63, 0),
-			new SingleColourLookup(38, 0, 2, 16, 61, 0),
-			new SingleColourLookup(39, 0, 1, 15, 63, 0),
-			new SingleColourLookup(39, 0, 0, 16, 62, 0),
-			new SingleColourLookup(39, 0, 1, 16, 63, 1),
-			new SingleColourLookup(39, 0, 2, 16, 63, 0),
-			new SingleColourLookup(40, 0, 1, 17, 63, 1),
-			new SingleColourLookup(40, 0, 0, 17, 63, 0),
-			new SingleColourLookup(40, 0, 1, 18, 63, 1),
-			new SingleColourLookup(40, 0, 2, 18, 63, 0),
-			new SingleColourLookup(41, 0, 1, 19, 63, 1),
-			new SingleColourLookup(41, 0, 0, 19, 63, 0),
-			new SingleColourLookup(41, 0, 1, 20, 63, 1),
-			new SingleColourLookup(41, 0, 2, 20, 63, 0),
-			new SingleColourLookup(42, 0, 1, 21, 63, 1),
-			new SingleColourLookup(42, 0, 0, 21, 63, 0),
-			new SingleColourLookup(42, 0, 1, 22, 63, 1),
-			new SingleColourLookup(42, 0, 2, 22, 63, 0),
-			new SingleColourLookup(43, 0, 1, 23, 63, 1),
-			new SingleColourLookup(43, 0, 0, 23, 63, 0),
-			new SingleColourLookup(43, 0, 1, 24, 63, 1),
-			new SingleColourLookup(43, 0, 2, 24, 63, 0),
-			new SingleColourLookup(44, 0, 1, 25, 63, 1),
-			new SingleColourLookup(44, 0, 0, 25, 63, 0),
-			new SingleColourLookup(44, 0, 1, 26, 63, 1),
-			new SingleColourLookup(44, 0, 2, 26, 63, 0),
-			new SingleColourLookup(45, 0, 1, 27, 63, 1),
-			new SingleColourLookup(45, 0, 0, 27, 63, 0),
-			new SingleColourLookup(45, 0, 1, 28, 63, 1),
-			new SingleColourLookup(45, 0, 2, 28, 63, 0),
-			new SingleColourLookup(46, 0, 1, 29, 63, 1),
-			new SingleColourLookup(46, 0, 0, 29, 63, 0),
-			new SingleColourLookup(46, 0, 1, 30, 63, 1),
-			new SingleColourLookup(46, 0, 2, 30, 63, 0),
-			new SingleColourLookup(47, 0, 1, 31, 63, 1),
-			new SingleColourLookup(47, 0, 0, 31, 63, 0),
-			new SingleColourLookup(47, 0, 1, 32, 63, 1),
-			new SingleColourLookup(47, 0, 2, 32, 63, 0),
-			new SingleColourLookup(48, 0, 2, 33, 63, 1),
-			new SingleColourLookup(48, 0, 1, 33, 63, 0),
-			new SingleColourLookup(48, 0, 0, 48, 48, 0),
-			new SingleColourLookup(48, 0, 1, 34, 63, 0),
-			new SingleColourLookup(48, 0, 2, 48, 49, 0),
-			new SingleColourLookup(49, 0, 1, 35, 63, 0),
-			new SingleColourLookup(49, 0, 0, 48, 50, 0),
-			new SingleColourLookup(49, 0, 1, 36, 63, 0),
-			new SingleColourLookup(49, 0, 2, 48, 51, 0),
-			new SingleColourLookup(50, 0, 1, 37, 63, 0),
-			new SingleColourLookup(50, 0, 0, 48, 52, 0),
-			new SingleColourLookup(50, 0, 1, 38, 63, 0),
-			new SingleColourLookup(50, 0, 2, 48, 53, 0),
-			new SingleColourLookup(51, 0, 1, 39, 63, 0),
-			new SingleColourLookup(51, 0, 0, 48, 54, 0),
-			new SingleColourLookup(51, 0, 1, 40, 63, 0),
-			new SingleColourLookup(51, 0, 2, 48, 55, 0),
-			new SingleColourLookup(52, 0, 1, 41, 63, 0),
-			new SingleColourLookup(52, 0, 0, 48, 56, 0),
-			new SingleColourLookup(52, 0, 1, 42, 63, 0),
-			new SingleColourLookup(52, 0, 2, 48, 57, 0),
-			new SingleColourLookup(53, 0, 1, 43, 63, 0),
-			new SingleColourLookup(53, 0, 0, 48, 58, 0),
-			new SingleColourLookup(53, 0, 1, 44, 63, 0),
-			new SingleColourLookup(53, 0, 2, 48, 59, 0),
-			new SingleColourLookup(54, 0, 1, 45, 63, 0),
-			new SingleColourLookup(54, 0, 0, 48, 60, 0),
-			new SingleColourLookup(54, 0, 1, 46, 63, 0),
-			new SingleColourLookup(54, 0, 2, 48, 61, 0),
-			new SingleColourLookup(55, 0, 1, 47, 63, 0),
-			new SingleColourLookup(55, 0, 0, 48, 62, 0),
-			new SingleColourLookup(55, 0, 1, 48, 63, 1),
-			new SingleColourLookup(55, 0, 2, 48, 63, 0),
-			new SingleColourLookup(56, 0, 1, 49, 63, 1),
-			new SingleColourLookup(56, 0, 0, 49, 63, 0),
-			new SingleColourLookup(56, 0, 1, 50, 63, 1),
-			new SingleColourLookup(56, 0, 2, 50, 63, 0),
-			new SingleColourLookup(57, 0, 1, 51, 63, 1),
-			new SingleColourLookup(57, 0, 0, 51, 63, 0),
-			new SingleColourLookup(57, 0, 1, 52, 63, 1),
-			new SingleColourLookup(57, 0, 2, 52, 63, 0),
-			new SingleColourLookup(58, 0, 1, 53, 63, 1),
-			new SingleColourLookup(58, 0, 0, 53, 63, 0),
-			new SingleColourLookup(58, 0, 1, 54, 63, 1),
-			new SingleColourLookup(58, 0, 2, 54, 63, 0),
-			new SingleColourLookup(59, 0, 1, 55, 63, 1),
-			new SingleColourLookup(59, 0, 0, 55, 63, 0),
-			new SingleColourLookup(59, 0, 1, 56, 63, 1),
-			new SingleColourLookup(59, 0, 2, 56, 63, 0),
-			new SingleColourLookup(60, 0, 1, 57, 63, 1),
-			new SingleColourLookup(60, 0, 0, 57, 63, 0),
-			new SingleColourLookup(60, 0, 1, 58, 63, 1),
-			new SingleColourLookup(60, 0, 2, 58, 63, 0),
-			new SingleColourLookup(61, 0, 1, 59, 63, 1),
-			new SingleColourLookup(61, 0, 0, 59, 63, 0),
-			new SingleColourLookup(61, 0, 1, 60, 63, 1),
-			new SingleColourLookup(61, 0, 2, 60, 63, 0),
-			new SingleColourLookup(62, 0, 1, 61, 63, 1),
-			new SingleColourLookup(62, 0, 0, 61, 63, 0),
-			new SingleColourLookup(62, 0, 1, 62, 63, 1),
-			new SingleColourLookup(62, 0, 2, 62, 63, 0),
-			new SingleColourLookup(63, 0, 1, 63, 63, 1),
-			new SingleColourLookup(63, 0, 0, 63, 63, 0)
+			0, 0, 0, 0, 0, 0,
+			0, 0, 1, 0, 1, 1,
+			0, 0, 2, 0, 1, 0,
+			1, 0, 1, 0, 2, 1,
+			1, 0, 0, 0, 2, 0,
+			1, 0, 1, 0, 3, 1,
+			1, 0, 2, 0, 3, 0,
+			2, 0, 1, 0, 4, 1,
+			2, 0, 0, 0, 4, 0,
+			2, 0, 1, 0, 5, 1,
+			2, 0, 2, 0, 5, 0,
+			3, 0, 1, 0, 6, 1,
+			3, 0, 0, 0, 6, 0,
+			3, 0, 1, 0, 7, 1,
+			3, 0, 2, 0, 7, 0,
+			4, 0, 1, 0, 8, 1,
+			4, 0, 0, 0, 8, 0,
+			4, 0, 1, 0, 9, 1,
+			4, 0, 2, 0, 9, 0,
+			5, 0, 1, 0, 10, 1,
+			5, 0, 0, 0, 10, 0,
+			5, 0, 1, 0, 11, 1,
+			5, 0, 2, 0, 11, 0,
+			6, 0, 1, 0, 12, 1,
+			6, 0, 0, 0, 12, 0,
+			6, 0, 1, 0, 13, 1,
+			6, 0, 2, 0, 13, 0,
+			7, 0, 1, 0, 14, 1,
+			7, 0, 0, 0, 14, 0,
+			7, 0, 1, 0, 15, 1,
+			7, 0, 2, 0, 15, 0,
+			8, 0, 1, 0, 16, 1,
+			8, 0, 0, 0, 16, 0,
+			8, 0, 1, 0, 17, 1,
+			8, 0, 2, 0, 17, 0,
+			9, 0, 1, 0, 18, 1,
+			9, 0, 0, 0, 18, 0,
+			9, 0, 1, 0, 19, 1,
+			9, 0, 2, 0, 19, 0,
+			10, 0, 1, 0, 20, 1,
+			10, 0, 0, 0, 20, 0,
+			10, 0, 1, 0, 21, 1,
+			10, 0, 2, 0, 21, 0,
+			11, 0, 1, 0, 22, 1,
+			11, 0, 0, 0, 22, 0,
+			11, 0, 1, 0, 23, 1,
+			11, 0, 2, 0, 23, 0,
+			12, 0, 1, 0, 24, 1,
+			12, 0, 0, 0, 24, 0,
+			12, 0, 1, 0, 25, 1,
+			12, 0, 2, 0, 25, 0,
+			13, 0, 1, 0, 26, 1,
+			13, 0, 0, 0, 26, 0,
+			13, 0, 1, 0, 27, 1,
+			13, 0, 2, 0, 27, 0,
+			14, 0, 1, 0, 28, 1,
+			14, 0, 0, 0, 28, 0,
+			14, 0, 1, 0, 29, 1,
+			14, 0, 2, 0, 29, 0,
+			15, 0, 1, 0, 30, 1,
+			15, 0, 0, 0, 30, 0,
+			15, 0, 1, 0, 31, 1,
+			15, 0, 2, 0, 31, 0,
+			16, 0, 2, 1, 31, 1,
+			16, 0, 1, 1, 31, 0,
+			16, 0, 0, 0, 32, 0,
+			16, 0, 1, 2, 31, 0,
+			16, 0, 2, 0, 33, 0,
+			17, 0, 1, 3, 31, 0,
+			17, 0, 0, 0, 34, 0,
+			17, 0, 1, 4, 31, 0,
+			17, 0, 2, 0, 35, 0,
+			18, 0, 1, 5, 31, 0,
+			18, 0, 0, 0, 36, 0,
+			18, 0, 1, 6, 31, 0,
+			18, 0, 2, 0, 37, 0,
+			19, 0, 1, 7, 31, 0,
+			19, 0, 0, 0, 38, 0,
+			19, 0, 1, 8, 31, 0,
+			19, 0, 2, 0, 39, 0,
+			20, 0, 1, 9, 31, 0,
+			20, 0, 0, 0, 40, 0,
+			20, 0, 1, 10, 31, 0,
+			20, 0, 2, 0, 41, 0,
+			21, 0, 1, 11, 31, 0,
+			21, 0, 0, 0, 42, 0,
+			21, 0, 1, 12, 31, 0,
+			21, 0, 2, 0, 43, 0,
+			22, 0, 1, 13, 31, 0,
+			22, 0, 0, 0, 44, 0,
+			22, 0, 1, 14, 31, 0,
+			22, 0, 2, 0, 45, 0,
+			23, 0, 1, 15, 31, 0,
+			23, 0, 0, 0, 46, 0,
+			23, 0, 1, 0, 47, 1,
+			23, 0, 2, 0, 47, 0,
+			24, 0, 1, 0, 48, 1,
+			24, 0, 0, 0, 48, 0,
+			24, 0, 1, 0, 49, 1,
+			24, 0, 2, 0, 49, 0,
+			25, 0, 1, 0, 50, 1,
+			25, 0, 0, 0, 50, 0,
+			25, 0, 1, 0, 51, 1,
+			25, 0, 2, 0, 51, 0,
+			26, 0, 1, 0, 52, 1,
+			26, 0, 0, 0, 52, 0,
+			26, 0, 1, 0, 53, 1,
+			26, 0, 2, 0, 53, 0,
+			27, 0, 1, 0, 54, 1,
+			27, 0, 0, 0, 54, 0,
+			27, 0, 1, 0, 55, 1,
+			27, 0, 2, 0, 55, 0,
+			28, 0, 1, 0, 56, 1,
+			28, 0, 0, 0, 56, 0,
+			28, 0, 1, 0, 57, 1,
+			28, 0, 2, 0, 57, 0,
+			29, 0, 1, 0, 58, 1,
+			29, 0, 0, 0, 58, 0,
+			29, 0, 1, 0, 59, 1,
+			29, 0, 2, 0, 59, 0,
+			30, 0, 1, 0, 60, 1,
+			30, 0, 0, 0, 60, 0,
+			30, 0, 1, 0, 61, 1,
+			30, 0, 2, 0, 61, 0,
+			31, 0, 1, 0, 62, 1,
+			31, 0, 0, 0, 62, 0,
+			31, 0, 1, 0, 63, 1,
+			31, 0, 2, 0, 63, 0,
+			32, 0, 2, 1, 63, 1,
+			32, 0, 1, 1, 63, 0,
+			32, 0, 0, 16, 48, 0,
+			32, 0, 1, 2, 63, 0,
+			32, 0, 2, 16, 49, 0,
+			33, 0, 1, 3, 63, 0,
+			33, 0, 0, 16, 50, 0,
+			33, 0, 1, 4, 63, 0,
+			33, 0, 2, 16, 51, 0,
+			34, 0, 1, 5, 63, 0,
+			34, 0, 0, 16, 52, 0,
+			34, 0, 1, 6, 63, 0,
+			34, 0, 2, 16, 53, 0,
+			35, 0, 1, 7, 63, 0,
+			35, 0, 0, 16, 54, 0,
+			35, 0, 1, 8, 63, 0,
+			35, 0, 2, 16, 55, 0,
+			36, 0, 1, 9, 63, 0,
+			36, 0, 0, 16, 56, 0,
+			36, 0, 1, 10, 63, 0,
+			36, 0, 2, 16, 57, 0,
+			37, 0, 1, 11, 63, 0,
+			37, 0, 0, 16, 58, 0,
+			37, 0, 1, 12, 63, 0,
+			37, 0, 2, 16, 59, 0,
+			38, 0, 1, 13, 63, 0,
+			38, 0, 0, 16, 60, 0,
+			38, 0, 1, 14, 63, 0,
+			38, 0, 2, 16, 61, 0,
+			39, 0, 1, 15, 63, 0,
+			39, 0, 0, 16, 62, 0,
+			39, 0, 1, 16, 63, 1,
+			39, 0, 2, 16, 63, 0,
+			40, 0, 1, 17, 63, 1,
+			40, 0, 0, 17, 63, 0,
+			40, 0, 1, 18, 63, 1,
+			40, 0, 2, 18, 63, 0,
+			41, 0, 1, 19, 63, 1,
+			41, 0, 0, 19, 63, 0,
+			41, 0, 1, 20, 63, 1,
+			41, 0, 2, 20, 63, 0,
+			42, 0, 1, 21, 63, 1,
+			42, 0, 0, 21, 63, 0,
+			42, 0, 1, 22, 63, 1,
+			42, 0, 2, 22, 63, 0,
+			43, 0, 1, 23, 63, 1,
+			43, 0, 0, 23, 63, 0,
+			43, 0, 1, 24, 63, 1,
+			43, 0, 2, 24, 63, 0,
+			44, 0, 1, 25, 63, 1,
+			44, 0, 0, 25, 63, 0,
+			44, 0, 1, 26, 63, 1,
+			44, 0, 2, 26, 63, 0,
+			45, 0, 1, 27, 63, 1,
+			45, 0, 0, 27, 63, 0,
+			45, 0, 1, 28, 63, 1,
+			45, 0, 2, 28, 63, 0,
+			46, 0, 1, 29, 63, 1,
+			46, 0, 0, 29, 63, 0,
+			46, 0, 1, 30, 63, 1,
+			46, 0, 2, 30, 63, 0,
+			47, 0, 1, 31, 63, 1,
+			47, 0, 0, 31, 63, 0,
+			47, 0, 1, 32, 63, 1,
+			47, 0, 2, 32, 63, 0,
+			48, 0, 2, 33, 63, 1,
+			48, 0, 1, 33, 63, 0,
+			48, 0, 0, 48, 48, 0,
+			48, 0, 1, 34, 63, 0,
+			48, 0, 2, 48, 49, 0,
+			49, 0, 1, 35, 63, 0,
+			49, 0, 0, 48, 50, 0,
+			49, 0, 1, 36, 63, 0,
+			49, 0, 2, 48, 51, 0,
+			50, 0, 1, 37, 63, 0,
+			50, 0, 0, 48, 52, 0,
+			50, 0, 1, 38, 63, 0,
+			50, 0, 2, 48, 53, 0,
+			51, 0, 1, 39, 63, 0,
+			51, 0, 0, 48, 54, 0,
+			51, 0, 1, 40, 63, 0,
+			51, 0, 2, 48, 55, 0,
+			52, 0, 1, 41, 63, 0,
+			52, 0, 0, 48, 56, 0,
+			52, 0, 1, 42, 63, 0,
+			52, 0, 2, 48, 57, 0,
+			53, 0, 1, 43, 63, 0,
+			53, 0, 0, 48, 58, 0,
+			53, 0, 1, 44, 63, 0,
+			53, 0, 2, 48, 59, 0,
+			54, 0, 1, 45, 63, 0,
+			54, 0, 0, 48, 60, 0,
+			54, 0, 1, 46, 63, 0,
+			54, 0, 2, 48, 61, 0,
+			55, 0, 1, 47, 63, 0,
+			55, 0, 0, 48, 62, 0,
+			55, 0, 1, 48, 63, 1,
+			55, 0, 2, 48, 63, 0,
+			56, 0, 1, 49, 63, 1,
+			56, 0, 0, 49, 63, 0,
+			56, 0, 1, 50, 63, 1,
+			56, 0, 2, 50, 63, 0,
+			57, 0, 1, 51, 63, 1,
+			57, 0, 0, 51, 63, 0,
+			57, 0, 1, 52, 63, 1,
+			57, 0, 2, 52, 63, 0,
+			58, 0, 1, 53, 63, 1,
+			58, 0, 0, 53, 63, 0,
+			58, 0, 1, 54, 63, 1,
+			58, 0, 2, 54, 63, 0,
+			59, 0, 1, 55, 63, 1,
+			59, 0, 0, 55, 63, 0,
+			59, 0, 1, 56, 63, 1,
+			59, 0, 2, 56, 63, 0,
+			60, 0, 1, 57, 63, 1,
+			60, 0, 0, 57, 63, 0,
+			60, 0, 1, 58, 63, 1,
+			60, 0, 2, 58, 63, 0,
+			61, 0, 1, 59, 63, 1,
+			61, 0, 0, 59, 63, 0,
+			61, 0, 1, 60, 63, 1,
+			61, 0, 2, 60, 63, 0,
+			62, 0, 1, 61, 63, 1,
+			62, 0, 0, 61, 63, 0,
+			62, 0, 1, 62, 63, 1,
+			62, 0, 2, 62, 63, 0,
+			63, 0, 1, 63, 63, 1,
+			63, 0, 0, 63, 63, 0,
 		};
 
-		static readonly SingleColourLookup[] lookup_5_4 = new SingleColourLookup[]
+		//ROS<byte> => new byte[] { ... } is an RVA static readonly
+		static ReadOnlySpan<SingleColourLookup> lookup_5_4 => MemoryMarshal.Cast<byte, SingleColourLookup>(_lookup_5_4);
+		private static ReadOnlySpan<byte> _lookup_5_4 => new byte[]
 		{
-			new SingleColourLookup(0, 0, 0, 0, 0, 0),
-			new SingleColourLookup(0, 0, 1, 0, 1, 1),
-			new SingleColourLookup(0, 0, 2, 0, 1, 0),
-			new SingleColourLookup(0, 0, 3, 0, 1, 1),
-			new SingleColourLookup(0, 0, 4, 0, 2, 1),
-			new SingleColourLookup(1, 0, 3, 0, 2, 0),
-			new SingleColourLookup(1, 0, 2, 0, 2, 1),
-			new SingleColourLookup(1, 0, 1, 0, 3, 1),
-			new SingleColourLookup(1, 0, 0, 0, 3, 0),
-			new SingleColourLookup(1, 0, 1, 1, 2, 1),
-			new SingleColourLookup(1, 0, 2, 1, 2, 0),
-			new SingleColourLookup(1, 0, 3, 0, 4, 0),
-			new SingleColourLookup(1, 0, 4, 0, 5, 1),
-			new SingleColourLookup(2, 0, 3, 0, 5, 0),
-			new SingleColourLookup(2, 0, 2, 0, 5, 1),
-			new SingleColourLookup(2, 0, 1, 0, 6, 1),
-			new SingleColourLookup(2, 0, 0, 0, 6, 0),
-			new SingleColourLookup(2, 0, 1, 2, 3, 1),
-			new SingleColourLookup(2, 0, 2, 2, 3, 0),
-			new SingleColourLookup(2, 0, 3, 0, 7, 0),
-			new SingleColourLookup(2, 0, 4, 1, 6, 1),
-			new SingleColourLookup(3, 0, 3, 1, 6, 0),
-			new SingleColourLookup(3, 0, 2, 0, 8, 0),
-			new SingleColourLookup(3, 0, 1, 0, 9, 1),
-			new SingleColourLookup(3, 0, 0, 0, 9, 0),
-			new SingleColourLookup(3, 0, 1, 0, 9, 1),
-			new SingleColourLookup(3, 0, 2, 0, 10, 1),
-			new SingleColourLookup(3, 0, 3, 0, 10, 0),
-			new SingleColourLookup(3, 0, 4, 2, 7, 1),
-			new SingleColourLookup(4, 0, 4, 2, 7, 0),
-			new SingleColourLookup(4, 0, 3, 0, 11, 0),
-			new SingleColourLookup(4, 0, 2, 1, 10, 1),
-			new SingleColourLookup(4, 0, 1, 1, 10, 0),
-			new SingleColourLookup(4, 0, 0, 0, 12, 0),
-			new SingleColourLookup(4, 0, 1, 0, 13, 1),
-			new SingleColourLookup(4, 0, 2, 0, 13, 0),
-			new SingleColourLookup(4, 0, 3, 0, 13, 1),
-			new SingleColourLookup(4, 0, 4, 0, 14, 1),
-			new SingleColourLookup(5, 0, 3, 0, 14, 0),
-			new SingleColourLookup(5, 0, 2, 2, 11, 1),
-			new SingleColourLookup(5, 0, 1, 2, 11, 0),
-			new SingleColourLookup(5, 0, 0, 0, 15, 0),
-			new SingleColourLookup(5, 0, 1, 1, 14, 1),
-			new SingleColourLookup(5, 0, 2, 1, 14, 0),
-			new SingleColourLookup(5, 0, 3, 0, 16, 0),
-			new SingleColourLookup(5, 0, 4, 0, 17, 1),
-			new SingleColourLookup(6, 0, 3, 0, 17, 0),
-			new SingleColourLookup(6, 0, 2, 0, 17, 1),
-			new SingleColourLookup(6, 0, 1, 0, 18, 1),
-			new SingleColourLookup(6, 0, 0, 0, 18, 0),
-			new SingleColourLookup(6, 0, 1, 2, 15, 1),
-			new SingleColourLookup(6, 0, 2, 2, 15, 0),
-			new SingleColourLookup(6, 0, 3, 0, 19, 0),
-			new SingleColourLookup(6, 0, 4, 1, 18, 1),
-			new SingleColourLookup(7, 0, 3, 1, 18, 0),
-			new SingleColourLookup(7, 0, 2, 0, 20, 0),
-			new SingleColourLookup(7, 0, 1, 0, 21, 1),
-			new SingleColourLookup(7, 0, 0, 0, 21, 0),
-			new SingleColourLookup(7, 0, 1, 0, 21, 1),
-			new SingleColourLookup(7, 0, 2, 0, 22, 1),
-			new SingleColourLookup(7, 0, 3, 0, 22, 0),
-			new SingleColourLookup(7, 0, 4, 2, 19, 1),
-			new SingleColourLookup(8, 0, 4, 2, 19, 0),
-			new SingleColourLookup(8, 0, 3, 0, 23, 0),
-			new SingleColourLookup(8, 0, 2, 1, 22, 1),
-			new SingleColourLookup(8, 0, 1, 1, 22, 0),
-			new SingleColourLookup(8, 0, 0, 0, 24, 0),
-			new SingleColourLookup(8, 0, 1, 0, 25, 1),
-			new SingleColourLookup(8, 0, 2, 0, 25, 0),
-			new SingleColourLookup(8, 0, 3, 0, 25, 1),
-			new SingleColourLookup(8, 0, 4, 0, 26, 1),
-			new SingleColourLookup(9, 0, 3, 0, 26, 0),
-			new SingleColourLookup(9, 0, 2, 2, 23, 1),
-			new SingleColourLookup(9, 0, 1, 2, 23, 0),
-			new SingleColourLookup(9, 0, 0, 0, 27, 0),
-			new SingleColourLookup(9, 0, 1, 1, 26, 1),
-			new SingleColourLookup(9, 0, 2, 1, 26, 0),
-			new SingleColourLookup(9, 0, 3, 0, 28, 0),
-			new SingleColourLookup(9, 0, 4, 0, 29, 1),
-			new SingleColourLookup(10, 0, 3, 0, 29, 0),
-			new SingleColourLookup(10, 0, 2, 0, 29, 1),
-			new SingleColourLookup(10, 0, 1, 0, 30, 1),
-			new SingleColourLookup(10, 0, 0, 0, 30, 0),
-			new SingleColourLookup(10, 0, 1, 2, 27, 1),
-			new SingleColourLookup(10, 0, 2, 2, 27, 0),
-			new SingleColourLookup(10, 0, 3, 0, 31, 0),
-			new SingleColourLookup(10, 0, 4, 1, 30, 1),
-			new SingleColourLookup(11, 0, 3, 1, 30, 0),
-			new SingleColourLookup(11, 0, 2, 4, 24, 0),
-			new SingleColourLookup(11, 0, 1, 1, 31, 1),
-			new SingleColourLookup(11, 0, 0, 1, 31, 0),
-			new SingleColourLookup(11, 0, 1, 1, 31, 1),
-			new SingleColourLookup(11, 0, 2, 2, 30, 1),
-			new SingleColourLookup(11, 0, 3, 2, 30, 0),
-			new SingleColourLookup(11, 0, 4, 2, 31, 1),
-			new SingleColourLookup(12, 0, 4, 2, 31, 0),
-			new SingleColourLookup(12, 0, 3, 4, 27, 0),
-			new SingleColourLookup(12, 0, 2, 3, 30, 1),
-			new SingleColourLookup(12, 0, 1, 3, 30, 0),
-			new SingleColourLookup(12, 0, 0, 4, 28, 0),
-			new SingleColourLookup(12, 0, 1, 3, 31, 1),
-			new SingleColourLookup(12, 0, 2, 3, 31, 0),
-			new SingleColourLookup(12, 0, 3, 3, 31, 1),
-			new SingleColourLookup(12, 0, 4, 4, 30, 1),
-			new SingleColourLookup(13, 0, 3, 4, 30, 0),
-			new SingleColourLookup(13, 0, 2, 6, 27, 1),
-			new SingleColourLookup(13, 0, 1, 6, 27, 0),
-			new SingleColourLookup(13, 0, 0, 4, 31, 0),
-			new SingleColourLookup(13, 0, 1, 5, 30, 1),
-			new SingleColourLookup(13, 0, 2, 5, 30, 0),
-			new SingleColourLookup(13, 0, 3, 8, 24, 0),
-			new SingleColourLookup(13, 0, 4, 5, 31, 1),
-			new SingleColourLookup(14, 0, 3, 5, 31, 0),
-			new SingleColourLookup(14, 0, 2, 5, 31, 1),
-			new SingleColourLookup(14, 0, 1, 6, 30, 1),
-			new SingleColourLookup(14, 0, 0, 6, 30, 0),
-			new SingleColourLookup(14, 0, 1, 6, 31, 1),
-			new SingleColourLookup(14, 0, 2, 6, 31, 0),
-			new SingleColourLookup(14, 0, 3, 8, 27, 0),
-			new SingleColourLookup(14, 0, 4, 7, 30, 1),
-			new SingleColourLookup(15, 0, 3, 7, 30, 0),
-			new SingleColourLookup(15, 0, 2, 8, 28, 0),
-			new SingleColourLookup(15, 0, 1, 7, 31, 1),
-			new SingleColourLookup(15, 0, 0, 7, 31, 0),
-			new SingleColourLookup(15, 0, 1, 7, 31, 1),
-			new SingleColourLookup(15, 0, 2, 8, 30, 1),
-			new SingleColourLookup(15, 0, 3, 8, 30, 0),
-			new SingleColourLookup(15, 0, 4, 10, 27, 1),
-			new SingleColourLookup(16, 0, 4, 10, 27, 0),
-			new SingleColourLookup(16, 0, 3, 8, 31, 0),
-			new SingleColourLookup(16, 0, 2, 9, 30, 1),
-			new SingleColourLookup(16, 0, 1, 9, 30, 0),
-			new SingleColourLookup(16, 0, 0, 12, 24, 0),
-			new SingleColourLookup(16, 0, 1, 9, 31, 1),
-			new SingleColourLookup(16, 0, 2, 9, 31, 0),
-			new SingleColourLookup(16, 0, 3, 9, 31, 1),
-			new SingleColourLookup(16, 0, 4, 10, 30, 1),
-			new SingleColourLookup(17, 0, 3, 10, 30, 0),
-			new SingleColourLookup(17, 0, 2, 10, 31, 1),
-			new SingleColourLookup(17, 0, 1, 10, 31, 0),
-			new SingleColourLookup(17, 0, 0, 12, 27, 0),
-			new SingleColourLookup(17, 0, 1, 11, 30, 1),
-			new SingleColourLookup(17, 0, 2, 11, 30, 0),
-			new SingleColourLookup(17, 0, 3, 12, 28, 0),
-			new SingleColourLookup(17, 0, 4, 11, 31, 1),
-			new SingleColourLookup(18, 0, 3, 11, 31, 0),
-			new SingleColourLookup(18, 0, 2, 11, 31, 1),
-			new SingleColourLookup(18, 0, 1, 12, 30, 1),
-			new SingleColourLookup(18, 0, 0, 12, 30, 0),
-			new SingleColourLookup(18, 0, 1, 14, 27, 1),
-			new SingleColourLookup(18, 0, 2, 14, 27, 0),
-			new SingleColourLookup(18, 0, 3, 12, 31, 0),
-			new SingleColourLookup(18, 0, 4, 13, 30, 1),
-			new SingleColourLookup(19, 0, 3, 13, 30, 0),
-			new SingleColourLookup(19, 0, 2, 16, 24, 0),
-			new SingleColourLookup(19, 0, 1, 13, 31, 1),
-			new SingleColourLookup(19, 0, 0, 13, 31, 0),
-			new SingleColourLookup(19, 0, 1, 13, 31, 1),
-			new SingleColourLookup(19, 0, 2, 14, 30, 1),
-			new SingleColourLookup(19, 0, 3, 14, 30, 0),
-			new SingleColourLookup(19, 0, 4, 14, 31, 1),
-			new SingleColourLookup(20, 0, 4, 14, 31, 0),
-			new SingleColourLookup(20, 0, 3, 16, 27, 0),
-			new SingleColourLookup(20, 0, 2, 15, 30, 1),
-			new SingleColourLookup(20, 0, 1, 15, 30, 0),
-			new SingleColourLookup(20, 0, 0, 16, 28, 0),
-			new SingleColourLookup(20, 0, 1, 15, 31, 1),
-			new SingleColourLookup(20, 0, 2, 15, 31, 0),
-			new SingleColourLookup(20, 0, 3, 15, 31, 1),
-			new SingleColourLookup(20, 0, 4, 16, 30, 1),
-			new SingleColourLookup(21, 0, 3, 16, 30, 0),
-			new SingleColourLookup(21, 0, 2, 18, 27, 1),
-			new SingleColourLookup(21, 0, 1, 18, 27, 0),
-			new SingleColourLookup(21, 0, 0, 16, 31, 0),
-			new SingleColourLookup(21, 0, 1, 17, 30, 1),
-			new SingleColourLookup(21, 0, 2, 17, 30, 0),
-			new SingleColourLookup(21, 0, 3, 20, 24, 0),
-			new SingleColourLookup(21, 0, 4, 17, 31, 1),
-			new SingleColourLookup(22, 0, 3, 17, 31, 0),
-			new SingleColourLookup(22, 0, 2, 17, 31, 1),
-			new SingleColourLookup(22, 0, 1, 18, 30, 1),
-			new SingleColourLookup(22, 0, 0, 18, 30, 0),
-			new SingleColourLookup(22, 0, 1, 18, 31, 1),
-			new SingleColourLookup(22, 0, 2, 18, 31, 0),
-			new SingleColourLookup(22, 0, 3, 20, 27, 0),
-			new SingleColourLookup(22, 0, 4, 19, 30, 1),
-			new SingleColourLookup(23, 0, 3, 19, 30, 0),
-			new SingleColourLookup(23, 0, 2, 20, 28, 0),
-			new SingleColourLookup(23, 0, 1, 19, 31, 1),
-			new SingleColourLookup(23, 0, 0, 19, 31, 0),
-			new SingleColourLookup(23, 0, 1, 19, 31, 1),
-			new SingleColourLookup(23, 0, 2, 20, 30, 1),
-			new SingleColourLookup(23, 0, 3, 20, 30, 0),
-			new SingleColourLookup(23, 0, 4, 22, 27, 1),
-			new SingleColourLookup(24, 0, 4, 22, 27, 0),
-			new SingleColourLookup(24, 0, 3, 20, 31, 0),
-			new SingleColourLookup(24, 0, 2, 21, 30, 1),
-			new SingleColourLookup(24, 0, 1, 21, 30, 0),
-			new SingleColourLookup(24, 0, 0, 24, 24, 0),
-			new SingleColourLookup(24, 0, 1, 21, 31, 1),
-			new SingleColourLookup(24, 0, 2, 21, 31, 0),
-			new SingleColourLookup(24, 0, 3, 21, 31, 1),
-			new SingleColourLookup(24, 0, 4, 22, 30, 1),
-			new SingleColourLookup(25, 0, 3, 22, 30, 0),
-			new SingleColourLookup(25, 0, 2, 22, 31, 1),
-			new SingleColourLookup(25, 0, 1, 22, 31, 0),
-			new SingleColourLookup(25, 0, 0, 24, 27, 0),
-			new SingleColourLookup(25, 0, 1, 23, 30, 1),
-			new SingleColourLookup(25, 0, 2, 23, 30, 0),
-			new SingleColourLookup(25, 0, 3, 24, 28, 0),
-			new SingleColourLookup(25, 0, 4, 23, 31, 1),
-			new SingleColourLookup(26, 0, 3, 23, 31, 0),
-			new SingleColourLookup(26, 0, 2, 23, 31, 1),
-			new SingleColourLookup(26, 0, 1, 24, 30, 1),
-			new SingleColourLookup(26, 0, 0, 24, 30, 0),
-			new SingleColourLookup(26, 0, 1, 26, 27, 1),
-			new SingleColourLookup(26, 0, 2, 26, 27, 0),
-			new SingleColourLookup(26, 0, 3, 24, 31, 0),
-			new SingleColourLookup(26, 0, 4, 25, 30, 1),
-			new SingleColourLookup(27, 0, 3, 25, 30, 0),
-			new SingleColourLookup(27, 0, 2, 28, 24, 0),
-			new SingleColourLookup(27, 0, 1, 25, 31, 1),
-			new SingleColourLookup(27, 0, 0, 25, 31, 0),
-			new SingleColourLookup(27, 0, 1, 25, 31, 1),
-			new SingleColourLookup(27, 0, 2, 26, 30, 1),
-			new SingleColourLookup(27, 0, 3, 26, 30, 0),
-			new SingleColourLookup(27, 0, 4, 26, 31, 1),
-			new SingleColourLookup(28, 0, 4, 26, 31, 0),
-			new SingleColourLookup(28, 0, 3, 28, 27, 0),
-			new SingleColourLookup(28, 0, 2, 27, 30, 1),
-			new SingleColourLookup(28, 0, 1, 27, 30, 0),
-			new SingleColourLookup(28, 0, 0, 28, 28, 0),
-			new SingleColourLookup(28, 0, 1, 27, 31, 1),
-			new SingleColourLookup(28, 0, 2, 27, 31, 0),
-			new SingleColourLookup(28, 0, 3, 27, 31, 1),
-			new SingleColourLookup(28, 0, 4, 28, 30, 1),
-			new SingleColourLookup(29, 0, 3, 28, 30, 0),
-			new SingleColourLookup(29, 0, 2, 30, 27, 1),
-			new SingleColourLookup(29, 0, 1, 30, 27, 0),
-			new SingleColourLookup(29, 0, 0, 28, 31, 0),
-			new SingleColourLookup(29, 0, 1, 29, 30, 1),
-			new SingleColourLookup(29, 0, 2, 29, 30, 0),
-			new SingleColourLookup(29, 0, 3, 29, 30, 1),
-			new SingleColourLookup(29, 0, 4, 29, 31, 1),
-			new SingleColourLookup(30, 0, 3, 29, 31, 0),
-			new SingleColourLookup(30, 0, 2, 29, 31, 1),
-			new SingleColourLookup(30, 0, 1, 30, 30, 1),
-			new SingleColourLookup(30, 0, 0, 30, 30, 0),
-			new SingleColourLookup(30, 0, 1, 30, 31, 1),
-			new SingleColourLookup(30, 0, 2, 30, 31, 0),
-			new SingleColourLookup(30, 0, 3, 30, 31, 1),
-			new SingleColourLookup(30, 0, 4, 31, 30, 1),
-			new SingleColourLookup(31, 0, 3, 31, 30, 0),
-			new SingleColourLookup(31, 0, 2, 31, 30, 1),
-			new SingleColourLookup(31, 0, 1, 31, 31, 1),
-			new SingleColourLookup(31, 0, 0, 31, 31, 0)
+			0, 0, 0, 0, 0, 0,
+			0, 0, 1, 0, 1, 1,
+			0, 0, 2, 0, 1, 0,
+			0, 0, 3, 0, 1, 1,
+			0, 0, 4, 0, 2, 1,
+			1, 0, 3, 0, 2, 0,
+			1, 0, 2, 0, 2, 1,
+			1, 0, 1, 0, 3, 1,
+			1, 0, 0, 0, 3, 0,
+			1, 0, 1, 1, 2, 1,
+			1, 0, 2, 1, 2, 0,
+			1, 0, 3, 0, 4, 0,
+			1, 0, 4, 0, 5, 1,
+			2, 0, 3, 0, 5, 0,
+			2, 0, 2, 0, 5, 1,
+			2, 0, 1, 0, 6, 1,
+			2, 0, 0, 0, 6, 0,
+			2, 0, 1, 2, 3, 1,
+			2, 0, 2, 2, 3, 0,
+			2, 0, 3, 0, 7, 0,
+			2, 0, 4, 1, 6, 1,
+			3, 0, 3, 1, 6, 0,
+			3, 0, 2, 0, 8, 0,
+			3, 0, 1, 0, 9, 1,
+			3, 0, 0, 0, 9, 0,
+			3, 0, 1, 0, 9, 1,
+			3, 0, 2, 0, 10, 1,
+			3, 0, 3, 0, 10, 0,
+			3, 0, 4, 2, 7, 1,
+			4, 0, 4, 2, 7, 0,
+			4, 0, 3, 0, 11, 0,
+			4, 0, 2, 1, 10, 1,
+			4, 0, 1, 1, 10, 0,
+			4, 0, 0, 0, 12, 0,
+			4, 0, 1, 0, 13, 1,
+			4, 0, 2, 0, 13, 0,
+			4, 0, 3, 0, 13, 1,
+			4, 0, 4, 0, 14, 1,
+			5, 0, 3, 0, 14, 0,
+			5, 0, 2, 2, 11, 1,
+			5, 0, 1, 2, 11, 0,
+			5, 0, 0, 0, 15, 0,
+			5, 0, 1, 1, 14, 1,
+			5, 0, 2, 1, 14, 0,
+			5, 0, 3, 0, 16, 0,
+			5, 0, 4, 0, 17, 1,
+			6, 0, 3, 0, 17, 0,
+			6, 0, 2, 0, 17, 1,
+			6, 0, 1, 0, 18, 1,
+			6, 0, 0, 0, 18, 0,
+			6, 0, 1, 2, 15, 1,
+			6, 0, 2, 2, 15, 0,
+			6, 0, 3, 0, 19, 0,
+			6, 0, 4, 1, 18, 1,
+			7, 0, 3, 1, 18, 0,
+			7, 0, 2, 0, 20, 0,
+			7, 0, 1, 0, 21, 1,
+			7, 0, 0, 0, 21, 0,
+			7, 0, 1, 0, 21, 1,
+			7, 0, 2, 0, 22, 1,
+			7, 0, 3, 0, 22, 0,
+			7, 0, 4, 2, 19, 1,
+			8, 0, 4, 2, 19, 0,
+			8, 0, 3, 0, 23, 0,
+			8, 0, 2, 1, 22, 1,
+			8, 0, 1, 1, 22, 0,
+			8, 0, 0, 0, 24, 0,
+			8, 0, 1, 0, 25, 1,
+			8, 0, 2, 0, 25, 0,
+			8, 0, 3, 0, 25, 1,
+			8, 0, 4, 0, 26, 1,
+			9, 0, 3, 0, 26, 0,
+			9, 0, 2, 2, 23, 1,
+			9, 0, 1, 2, 23, 0,
+			9, 0, 0, 0, 27, 0,
+			9, 0, 1, 1, 26, 1,
+			9, 0, 2, 1, 26, 0,
+			9, 0, 3, 0, 28, 0,
+			9, 0, 4, 0, 29, 1,
+			10, 0, 3, 0, 29, 0,
+			10, 0, 2, 0, 29, 1,
+			10, 0, 1, 0, 30, 1,
+			10, 0, 0, 0, 30, 0,
+			10, 0, 1, 2, 27, 1,
+			10, 0, 2, 2, 27, 0,
+			10, 0, 3, 0, 31, 0,
+			10, 0, 4, 1, 30, 1,
+			11, 0, 3, 1, 30, 0,
+			11, 0, 2, 4, 24, 0,
+			11, 0, 1, 1, 31, 1,
+			11, 0, 0, 1, 31, 0,
+			11, 0, 1, 1, 31, 1,
+			11, 0, 2, 2, 30, 1,
+			11, 0, 3, 2, 30, 0,
+			11, 0, 4, 2, 31, 1,
+			12, 0, 4, 2, 31, 0,
+			12, 0, 3, 4, 27, 0,
+			12, 0, 2, 3, 30, 1,
+			12, 0, 1, 3, 30, 0,
+			12, 0, 0, 4, 28, 0,
+			12, 0, 1, 3, 31, 1,
+			12, 0, 2, 3, 31, 0,
+			12, 0, 3, 3, 31, 1,
+			12, 0, 4, 4, 30, 1,
+			13, 0, 3, 4, 30, 0,
+			13, 0, 2, 6, 27, 1,
+			13, 0, 1, 6, 27, 0,
+			13, 0, 0, 4, 31, 0,
+			13, 0, 1, 5, 30, 1,
+			13, 0, 2, 5, 30, 0,
+			13, 0, 3, 8, 24, 0,
+			13, 0, 4, 5, 31, 1,
+			14, 0, 3, 5, 31, 0,
+			14, 0, 2, 5, 31, 1,
+			14, 0, 1, 6, 30, 1,
+			14, 0, 0, 6, 30, 0,
+			14, 0, 1, 6, 31, 1,
+			14, 0, 2, 6, 31, 0,
+			14, 0, 3, 8, 27, 0,
+			14, 0, 4, 7, 30, 1,
+			15, 0, 3, 7, 30, 0,
+			15, 0, 2, 8, 28, 0,
+			15, 0, 1, 7, 31, 1,
+			15, 0, 0, 7, 31, 0,
+			15, 0, 1, 7, 31, 1,
+			15, 0, 2, 8, 30, 1,
+			15, 0, 3, 8, 30, 0,
+			15, 0, 4, 10, 27, 1,
+			16, 0, 4, 10, 27, 0,
+			16, 0, 3, 8, 31, 0,
+			16, 0, 2, 9, 30, 1,
+			16, 0, 1, 9, 30, 0,
+			16, 0, 0, 12, 24, 0,
+			16, 0, 1, 9, 31, 1,
+			16, 0, 2, 9, 31, 0,
+			16, 0, 3, 9, 31, 1,
+			16, 0, 4, 10, 30, 1,
+			17, 0, 3, 10, 30, 0,
+			17, 0, 2, 10, 31, 1,
+			17, 0, 1, 10, 31, 0,
+			17, 0, 0, 12, 27, 0,
+			17, 0, 1, 11, 30, 1,
+			17, 0, 2, 11, 30, 0,
+			17, 0, 3, 12, 28, 0,
+			17, 0, 4, 11, 31, 1,
+			18, 0, 3, 11, 31, 0,
+			18, 0, 2, 11, 31, 1,
+			18, 0, 1, 12, 30, 1,
+			18, 0, 0, 12, 30, 0,
+			18, 0, 1, 14, 27, 1,
+			18, 0, 2, 14, 27, 0,
+			18, 0, 3, 12, 31, 0,
+			18, 0, 4, 13, 30, 1,
+			19, 0, 3, 13, 30, 0,
+			19, 0, 2, 16, 24, 0,
+			19, 0, 1, 13, 31, 1,
+			19, 0, 0, 13, 31, 0,
+			19, 0, 1, 13, 31, 1,
+			19, 0, 2, 14, 30, 1,
+			19, 0, 3, 14, 30, 0,
+			19, 0, 4, 14, 31, 1,
+			20, 0, 4, 14, 31, 0,
+			20, 0, 3, 16, 27, 0,
+			20, 0, 2, 15, 30, 1,
+			20, 0, 1, 15, 30, 0,
+			20, 0, 0, 16, 28, 0,
+			20, 0, 1, 15, 31, 1,
+			20, 0, 2, 15, 31, 0,
+			20, 0, 3, 15, 31, 1,
+			20, 0, 4, 16, 30, 1,
+			21, 0, 3, 16, 30, 0,
+			21, 0, 2, 18, 27, 1,
+			21, 0, 1, 18, 27, 0,
+			21, 0, 0, 16, 31, 0,
+			21, 0, 1, 17, 30, 1,
+			21, 0, 2, 17, 30, 0,
+			21, 0, 3, 20, 24, 0,
+			21, 0, 4, 17, 31, 1,
+			22, 0, 3, 17, 31, 0,
+			22, 0, 2, 17, 31, 1,
+			22, 0, 1, 18, 30, 1,
+			22, 0, 0, 18, 30, 0,
+			22, 0, 1, 18, 31, 1,
+			22, 0, 2, 18, 31, 0,
+			22, 0, 3, 20, 27, 0,
+			22, 0, 4, 19, 30, 1,
+			23, 0, 3, 19, 30, 0,
+			23, 0, 2, 20, 28, 0,
+			23, 0, 1, 19, 31, 1,
+			23, 0, 0, 19, 31, 0,
+			23, 0, 1, 19, 31, 1,
+			23, 0, 2, 20, 30, 1,
+			23, 0, 3, 20, 30, 0,
+			23, 0, 4, 22, 27, 1,
+			24, 0, 4, 22, 27, 0,
+			24, 0, 3, 20, 31, 0,
+			24, 0, 2, 21, 30, 1,
+			24, 0, 1, 21, 30, 0,
+			24, 0, 0, 24, 24, 0,
+			24, 0, 1, 21, 31, 1,
+			24, 0, 2, 21, 31, 0,
+			24, 0, 3, 21, 31, 1,
+			24, 0, 4, 22, 30, 1,
+			25, 0, 3, 22, 30, 0,
+			25, 0, 2, 22, 31, 1,
+			25, 0, 1, 22, 31, 0,
+			25, 0, 0, 24, 27, 0,
+			25, 0, 1, 23, 30, 1,
+			25, 0, 2, 23, 30, 0,
+			25, 0, 3, 24, 28, 0,
+			25, 0, 4, 23, 31, 1,
+			26, 0, 3, 23, 31, 0,
+			26, 0, 2, 23, 31, 1,
+			26, 0, 1, 24, 30, 1,
+			26, 0, 0, 24, 30, 0,
+			26, 0, 1, 26, 27, 1,
+			26, 0, 2, 26, 27, 0,
+			26, 0, 3, 24, 31, 0,
+			26, 0, 4, 25, 30, 1,
+			27, 0, 3, 25, 30, 0,
+			27, 0, 2, 28, 24, 0,
+			27, 0, 1, 25, 31, 1,
+			27, 0, 0, 25, 31, 0,
+			27, 0, 1, 25, 31, 1,
+			27, 0, 2, 26, 30, 1,
+			27, 0, 3, 26, 30, 0,
+			27, 0, 4, 26, 31, 1,
+			28, 0, 4, 26, 31, 0,
+			28, 0, 3, 28, 27, 0,
+			28, 0, 2, 27, 30, 1,
+			28, 0, 1, 27, 30, 0,
+			28, 0, 0, 28, 28, 0,
+			28, 0, 1, 27, 31, 1,
+			28, 0, 2, 27, 31, 0,
+			28, 0, 3, 27, 31, 1,
+			28, 0, 4, 28, 30, 1,
+			29, 0, 3, 28, 30, 0,
+			29, 0, 2, 30, 27, 1,
+			29, 0, 1, 30, 27, 0,
+			29, 0, 0, 28, 31, 0,
+			29, 0, 1, 29, 30, 1,
+			29, 0, 2, 29, 30, 0,
+			29, 0, 3, 29, 30, 1,
+			29, 0, 4, 29, 31, 1,
+			30, 0, 3, 29, 31, 0,
+			30, 0, 2, 29, 31, 1,
+			30, 0, 1, 30, 30, 1,
+			30, 0, 0, 30, 30, 0,
+			30, 0, 1, 30, 31, 1,
+			30, 0, 2, 30, 31, 0,
+			30, 0, 3, 30, 31, 1,
+			30, 0, 4, 31, 30, 1,
+			31, 0, 3, 31, 30, 0,
+			31, 0, 2, 31, 30, 1,
+			31, 0, 1, 31, 31, 1,
+			31, 0, 0, 31, 31, 0,
 		};
 
-		static readonly SingleColourLookup[] lookup_6_4 = new SingleColourLookup[]
+		//ROS<byte> => new byte[] { ... } is an RVA static readonly
+		static ReadOnlySpan<SingleColourLookup> lookup_6_4 => MemoryMarshal.Cast<byte, SingleColourLookup>(_lookup_6_4);
+		private static ReadOnlySpan<byte> _lookup_6_4 => new byte[]
 		{
-			new SingleColourLookup(0, 0, 0, 0, 0, 0),
-			new SingleColourLookup(0, 0, 1, 0, 1, 0),
-			new SingleColourLookup(0, 0, 2, 0, 2, 0),
-			new SingleColourLookup(1, 0, 1, 0, 3, 1),
-			new SingleColourLookup(1, 0, 0, 0, 3, 0),
-			new SingleColourLookup(1, 0, 1, 0, 4, 0),
-			new SingleColourLookup(1, 0, 2, 0, 5, 0),
-			new SingleColourLookup(2, 0, 1, 0, 6, 1),
-			new SingleColourLookup(2, 0, 0, 0, 6, 0),
-			new SingleColourLookup(2, 0, 1, 0, 7, 0),
-			new SingleColourLookup(2, 0, 2, 0, 8, 0),
-			new SingleColourLookup(3, 0, 1, 0, 9, 1),
-			new SingleColourLookup(3, 0, 0, 0, 9, 0),
-			new SingleColourLookup(3, 0, 1, 0, 10, 0),
-			new SingleColourLookup(3, 0, 2, 0, 11, 0),
-			new SingleColourLookup(4, 0, 1, 0, 12, 1),
-			new SingleColourLookup(4, 0, 0, 0, 12, 0),
-			new SingleColourLookup(4, 0, 1, 0, 13, 0),
-			new SingleColourLookup(4, 0, 2, 0, 14, 0),
-			new SingleColourLookup(5, 0, 1, 0, 15, 1),
-			new SingleColourLookup(5, 0, 0, 0, 15, 0),
-			new SingleColourLookup(5, 0, 1, 0, 16, 0),
-			new SingleColourLookup(5, 0, 2, 1, 15, 0),
-			new SingleColourLookup(6, 0, 1, 0, 17, 0),
-			new SingleColourLookup(6, 0, 0, 0, 18, 0),
-			new SingleColourLookup(6, 0, 1, 0, 19, 0),
-			new SingleColourLookup(6, 0, 2, 3, 14, 0),
-			new SingleColourLookup(7, 0, 1, 0, 20, 0),
-			new SingleColourLookup(7, 0, 0, 0, 21, 0),
-			new SingleColourLookup(7, 0, 1, 0, 22, 0),
-			new SingleColourLookup(7, 0, 2, 4, 15, 0),
-			new SingleColourLookup(8, 0, 1, 0, 23, 0),
-			new SingleColourLookup(8, 0, 0, 0, 24, 0),
-			new SingleColourLookup(8, 0, 1, 0, 25, 0),
-			new SingleColourLookup(8, 0, 2, 6, 14, 0),
-			new SingleColourLookup(9, 0, 1, 0, 26, 0),
-			new SingleColourLookup(9, 0, 0, 0, 27, 0),
-			new SingleColourLookup(9, 0, 1, 0, 28, 0),
-			new SingleColourLookup(9, 0, 2, 7, 15, 0),
-			new SingleColourLookup(10, 0, 1, 0, 29, 0),
-			new SingleColourLookup(10, 0, 0, 0, 30, 0),
-			new SingleColourLookup(10, 0, 1, 0, 31, 0),
-			new SingleColourLookup(10, 0, 2, 9, 14, 0),
-			new SingleColourLookup(11, 0, 1, 0, 32, 0),
-			new SingleColourLookup(11, 0, 0, 0, 33, 0),
-			new SingleColourLookup(11, 0, 1, 2, 30, 0),
-			new SingleColourLookup(11, 0, 2, 0, 34, 0),
-			new SingleColourLookup(12, 0, 1, 0, 35, 0),
-			new SingleColourLookup(12, 0, 0, 0, 36, 0),
-			new SingleColourLookup(12, 0, 1, 3, 31, 0),
-			new SingleColourLookup(12, 0, 2, 0, 37, 0),
-			new SingleColourLookup(13, 0, 1, 0, 38, 0),
-			new SingleColourLookup(13, 0, 0, 0, 39, 0),
-			new SingleColourLookup(13, 0, 1, 5, 30, 0),
-			new SingleColourLookup(13, 0, 2, 0, 40, 0),
-			new SingleColourLookup(14, 0, 1, 0, 41, 0),
-			new SingleColourLookup(14, 0, 0, 0, 42, 0),
-			new SingleColourLookup(14, 0, 1, 6, 31, 0),
-			new SingleColourLookup(14, 0, 2, 0, 43, 0),
-			new SingleColourLookup(15, 0, 1, 0, 44, 0),
-			new SingleColourLookup(15, 0, 0, 0, 45, 0),
-			new SingleColourLookup(15, 0, 1, 8, 30, 0),
-			new SingleColourLookup(15, 0, 2, 0, 46, 0),
-			new SingleColourLookup(16, 0, 2, 0, 47, 0),
-			new SingleColourLookup(16, 0, 1, 1, 46, 0),
-			new SingleColourLookup(16, 0, 0, 0, 48, 0),
-			new SingleColourLookup(16, 0, 1, 0, 49, 0),
-			new SingleColourLookup(16, 0, 2, 0, 50, 0),
-			new SingleColourLookup(17, 0, 1, 2, 47, 0),
-			new SingleColourLookup(17, 0, 0, 0, 51, 0),
-			new SingleColourLookup(17, 0, 1, 0, 52, 0),
-			new SingleColourLookup(17, 0, 2, 0, 53, 0),
-			new SingleColourLookup(18, 0, 1, 4, 46, 0),
-			new SingleColourLookup(18, 0, 0, 0, 54, 0),
-			new SingleColourLookup(18, 0, 1, 0, 55, 0),
-			new SingleColourLookup(18, 0, 2, 0, 56, 0),
-			new SingleColourLookup(19, 0, 1, 5, 47, 0),
-			new SingleColourLookup(19, 0, 0, 0, 57, 0),
-			new SingleColourLookup(19, 0, 1, 0, 58, 0),
-			new SingleColourLookup(19, 0, 2, 0, 59, 0),
-			new SingleColourLookup(20, 0, 1, 7, 46, 0),
-			new SingleColourLookup(20, 0, 0, 0, 60, 0),
-			new SingleColourLookup(20, 0, 1, 0, 61, 0),
-			new SingleColourLookup(20, 0, 2, 0, 62, 0),
-			new SingleColourLookup(21, 0, 1, 8, 47, 0),
-			new SingleColourLookup(21, 0, 0, 0, 63, 0),
-			new SingleColourLookup(21, 0, 1, 1, 62, 0),
-			new SingleColourLookup(21, 0, 2, 1, 63, 0),
-			new SingleColourLookup(22, 0, 1, 10, 46, 0),
-			new SingleColourLookup(22, 0, 0, 2, 62, 0),
-			new SingleColourLookup(22, 0, 1, 2, 63, 0),
-			new SingleColourLookup(22, 0, 2, 3, 62, 0),
-			new SingleColourLookup(23, 0, 1, 11, 47, 0),
-			new SingleColourLookup(23, 0, 0, 3, 63, 0),
-			new SingleColourLookup(23, 0, 1, 4, 62, 0),
-			new SingleColourLookup(23, 0, 2, 4, 63, 0),
-			new SingleColourLookup(24, 0, 1, 13, 46, 0),
-			new SingleColourLookup(24, 0, 0, 5, 62, 0),
-			new SingleColourLookup(24, 0, 1, 5, 63, 0),
-			new SingleColourLookup(24, 0, 2, 6, 62, 0),
-			new SingleColourLookup(25, 0, 1, 14, 47, 0),
-			new SingleColourLookup(25, 0, 0, 6, 63, 0),
-			new SingleColourLookup(25, 0, 1, 7, 62, 0),
-			new SingleColourLookup(25, 0, 2, 7, 63, 0),
-			new SingleColourLookup(26, 0, 1, 16, 45, 0),
-			new SingleColourLookup(26, 0, 0, 8, 62, 0),
-			new SingleColourLookup(26, 0, 1, 8, 63, 0),
-			new SingleColourLookup(26, 0, 2, 9, 62, 0),
-			new SingleColourLookup(27, 0, 1, 16, 48, 0),
-			new SingleColourLookup(27, 0, 0, 9, 63, 0),
-			new SingleColourLookup(27, 0, 1, 10, 62, 0),
-			new SingleColourLookup(27, 0, 2, 10, 63, 0),
-			new SingleColourLookup(28, 0, 1, 16, 51, 0),
-			new SingleColourLookup(28, 0, 0, 11, 62, 0),
-			new SingleColourLookup(28, 0, 1, 11, 63, 0),
-			new SingleColourLookup(28, 0, 2, 12, 62, 0),
-			new SingleColourLookup(29, 0, 1, 16, 54, 0),
-			new SingleColourLookup(29, 0, 0, 12, 63, 0),
-			new SingleColourLookup(29, 0, 1, 13, 62, 0),
-			new SingleColourLookup(29, 0, 2, 13, 63, 0),
-			new SingleColourLookup(30, 0, 1, 16, 57, 0),
-			new SingleColourLookup(30, 0, 0, 14, 62, 0),
-			new SingleColourLookup(30, 0, 1, 14, 63, 0),
-			new SingleColourLookup(30, 0, 2, 15, 62, 0),
-			new SingleColourLookup(31, 0, 1, 16, 60, 0),
-			new SingleColourLookup(31, 0, 0, 15, 63, 0),
-			new SingleColourLookup(31, 0, 1, 24, 46, 0),
-			new SingleColourLookup(31, 0, 2, 16, 62, 0),
-			new SingleColourLookup(32, 0, 2, 16, 63, 0),
-			new SingleColourLookup(32, 0, 1, 17, 62, 0),
-			new SingleColourLookup(32, 0, 0, 25, 47, 0),
-			new SingleColourLookup(32, 0, 1, 17, 63, 0),
-			new SingleColourLookup(32, 0, 2, 18, 62, 0),
-			new SingleColourLookup(33, 0, 1, 18, 63, 0),
-			new SingleColourLookup(33, 0, 0, 27, 46, 0),
-			new SingleColourLookup(33, 0, 1, 19, 62, 0),
-			new SingleColourLookup(33, 0, 2, 19, 63, 0),
-			new SingleColourLookup(34, 0, 1, 20, 62, 0),
-			new SingleColourLookup(34, 0, 0, 28, 47, 0),
-			new SingleColourLookup(34, 0, 1, 20, 63, 0),
-			new SingleColourLookup(34, 0, 2, 21, 62, 0),
-			new SingleColourLookup(35, 0, 1, 21, 63, 0),
-			new SingleColourLookup(35, 0, 0, 30, 46, 0),
-			new SingleColourLookup(35, 0, 1, 22, 62, 0),
-			new SingleColourLookup(35, 0, 2, 22, 63, 0),
-			new SingleColourLookup(36, 0, 1, 23, 62, 0),
-			new SingleColourLookup(36, 0, 0, 31, 47, 0),
-			new SingleColourLookup(36, 0, 1, 23, 63, 0),
-			new SingleColourLookup(36, 0, 2, 24, 62, 0),
-			new SingleColourLookup(37, 0, 1, 24, 63, 0),
-			new SingleColourLookup(37, 0, 0, 32, 47, 0),
-			new SingleColourLookup(37, 0, 1, 25, 62, 0),
-			new SingleColourLookup(37, 0, 2, 25, 63, 0),
-			new SingleColourLookup(38, 0, 1, 26, 62, 0),
-			new SingleColourLookup(38, 0, 0, 32, 50, 0),
-			new SingleColourLookup(38, 0, 1, 26, 63, 0),
-			new SingleColourLookup(38, 0, 2, 27, 62, 0),
-			new SingleColourLookup(39, 0, 1, 27, 63, 0),
-			new SingleColourLookup(39, 0, 0, 32, 53, 0),
-			new SingleColourLookup(39, 0, 1, 28, 62, 0),
-			new SingleColourLookup(39, 0, 2, 28, 63, 0),
-			new SingleColourLookup(40, 0, 1, 29, 62, 0),
-			new SingleColourLookup(40, 0, 0, 32, 56, 0),
-			new SingleColourLookup(40, 0, 1, 29, 63, 0),
-			new SingleColourLookup(40, 0, 2, 30, 62, 0),
-			new SingleColourLookup(41, 0, 1, 30, 63, 0),
-			new SingleColourLookup(41, 0, 0, 32, 59, 0),
-			new SingleColourLookup(41, 0, 1, 31, 62, 0),
-			new SingleColourLookup(41, 0, 2, 31, 63, 0),
-			new SingleColourLookup(42, 0, 1, 32, 61, 0),
-			new SingleColourLookup(42, 0, 0, 32, 62, 0),
-			new SingleColourLookup(42, 0, 1, 32, 63, 0),
-			new SingleColourLookup(42, 0, 2, 41, 46, 0),
-			new SingleColourLookup(43, 0, 1, 33, 62, 0),
-			new SingleColourLookup(43, 0, 0, 33, 63, 0),
-			new SingleColourLookup(43, 0, 1, 34, 62, 0),
-			new SingleColourLookup(43, 0, 2, 42, 47, 0),
-			new SingleColourLookup(44, 0, 1, 34, 63, 0),
-			new SingleColourLookup(44, 0, 0, 35, 62, 0),
-			new SingleColourLookup(44, 0, 1, 35, 63, 0),
-			new SingleColourLookup(44, 0, 2, 44, 46, 0),
-			new SingleColourLookup(45, 0, 1, 36, 62, 0),
-			new SingleColourLookup(45, 0, 0, 36, 63, 0),
-			new SingleColourLookup(45, 0, 1, 37, 62, 0),
-			new SingleColourLookup(45, 0, 2, 45, 47, 0),
-			new SingleColourLookup(46, 0, 1, 37, 63, 0),
-			new SingleColourLookup(46, 0, 0, 38, 62, 0),
-			new SingleColourLookup(46, 0, 1, 38, 63, 0),
-			new SingleColourLookup(46, 0, 2, 47, 46, 0),
-			new SingleColourLookup(47, 0, 1, 39, 62, 0),
-			new SingleColourLookup(47, 0, 0, 39, 63, 0),
-			new SingleColourLookup(47, 0, 1, 40, 62, 0),
-			new SingleColourLookup(47, 0, 2, 48, 46, 0),
-			new SingleColourLookup(48, 0, 2, 40, 63, 0),
-			new SingleColourLookup(48, 0, 1, 41, 62, 0),
-			new SingleColourLookup(48, 0, 0, 41, 63, 0),
-			new SingleColourLookup(48, 0, 1, 48, 49, 0),
-			new SingleColourLookup(48, 0, 2, 42, 62, 0),
-			new SingleColourLookup(49, 0, 1, 42, 63, 0),
-			new SingleColourLookup(49, 0, 0, 43, 62, 0),
-			new SingleColourLookup(49, 0, 1, 48, 52, 0),
-			new SingleColourLookup(49, 0, 2, 43, 63, 0),
-			new SingleColourLookup(50, 0, 1, 44, 62, 0),
-			new SingleColourLookup(50, 0, 0, 44, 63, 0),
-			new SingleColourLookup(50, 0, 1, 48, 55, 0),
-			new SingleColourLookup(50, 0, 2, 45, 62, 0),
-			new SingleColourLookup(51, 0, 1, 45, 63, 0),
-			new SingleColourLookup(51, 0, 0, 46, 62, 0),
-			new SingleColourLookup(51, 0, 1, 48, 58, 0),
-			new SingleColourLookup(51, 0, 2, 46, 63, 0),
-			new SingleColourLookup(52, 0, 1, 47, 62, 0),
-			new SingleColourLookup(52, 0, 0, 47, 63, 0),
-			new SingleColourLookup(52, 0, 1, 48, 61, 0),
-			new SingleColourLookup(52, 0, 2, 48, 62, 0),
-			new SingleColourLookup(53, 0, 1, 56, 47, 0),
-			new SingleColourLookup(53, 0, 0, 48, 63, 0),
-			new SingleColourLookup(53, 0, 1, 49, 62, 0),
-			new SingleColourLookup(53, 0, 2, 49, 63, 0),
-			new SingleColourLookup(54, 0, 1, 58, 46, 0),
-			new SingleColourLookup(54, 0, 0, 50, 62, 0),
-			new SingleColourLookup(54, 0, 1, 50, 63, 0),
-			new SingleColourLookup(54, 0, 2, 51, 62, 0),
-			new SingleColourLookup(55, 0, 1, 59, 47, 0),
-			new SingleColourLookup(55, 0, 0, 51, 63, 0),
-			new SingleColourLookup(55, 0, 1, 52, 62, 0),
-			new SingleColourLookup(55, 0, 2, 52, 63, 0),
-			new SingleColourLookup(56, 0, 1, 61, 46, 0),
-			new SingleColourLookup(56, 0, 0, 53, 62, 0),
-			new SingleColourLookup(56, 0, 1, 53, 63, 0),
-			new SingleColourLookup(56, 0, 2, 54, 62, 0),
-			new SingleColourLookup(57, 0, 1, 62, 47, 0),
-			new SingleColourLookup(57, 0, 0, 54, 63, 0),
-			new SingleColourLookup(57, 0, 1, 55, 62, 0),
-			new SingleColourLookup(57, 0, 2, 55, 63, 0),
-			new SingleColourLookup(58, 0, 1, 56, 62, 1),
-			new SingleColourLookup(58, 0, 0, 56, 62, 0),
-			new SingleColourLookup(58, 0, 1, 56, 63, 0),
-			new SingleColourLookup(58, 0, 2, 57, 62, 0),
-			new SingleColourLookup(59, 0, 1, 57, 63, 1),
-			new SingleColourLookup(59, 0, 0, 57, 63, 0),
-			new SingleColourLookup(59, 0, 1, 58, 62, 0),
-			new SingleColourLookup(59, 0, 2, 58, 63, 0),
-			new SingleColourLookup(60, 0, 1, 59, 62, 1),
-			new SingleColourLookup(60, 0, 0, 59, 62, 0),
-			new SingleColourLookup(60, 0, 1, 59, 63, 0),
-			new SingleColourLookup(60, 0, 2, 60, 62, 0),
-			new SingleColourLookup(61, 0, 1, 60, 63, 1),
-			new SingleColourLookup(61, 0, 0, 60, 63, 0),
-			new SingleColourLookup(61, 0, 1, 61, 62, 0),
-			new SingleColourLookup(61, 0, 2, 61, 63, 0),
-			new SingleColourLookup(62, 0, 1, 62, 62, 1),
-			new SingleColourLookup(62, 0, 0, 62, 62, 0),
-			new SingleColourLookup(62, 0, 1, 62, 63, 0),
-			new SingleColourLookup(62, 0, 2, 63, 62, 0),
-			new SingleColourLookup(63, 0, 1, 63, 63, 1),
-			new SingleColourLookup(63, 0, 0, 63, 63, 0)
+			0, 0, 0, 0, 0, 0,
+			0, 0, 1, 0, 1, 0,
+			0, 0, 2, 0, 2, 0,
+			1, 0, 1, 0, 3, 1,
+			1, 0, 0, 0, 3, 0,
+			1, 0, 1, 0, 4, 0,
+			1, 0, 2, 0, 5, 0,
+			2, 0, 1, 0, 6, 1,
+			2, 0, 0, 0, 6, 0,
+			2, 0, 1, 0, 7, 0,
+			2, 0, 2, 0, 8, 0,
+			3, 0, 1, 0, 9, 1,
+			3, 0, 0, 0, 9, 0,
+			3, 0, 1, 0, 10, 0,
+			3, 0, 2, 0, 11, 0,
+			4, 0, 1, 0, 12, 1,
+			4, 0, 0, 0, 12, 0,
+			4, 0, 1, 0, 13, 0,
+			4, 0, 2, 0, 14, 0,
+			5, 0, 1, 0, 15, 1,
+			5, 0, 0, 0, 15, 0,
+			5, 0, 1, 0, 16, 0,
+			5, 0, 2, 1, 15, 0,
+			6, 0, 1, 0, 17, 0,
+			6, 0, 0, 0, 18, 0,
+			6, 0, 1, 0, 19, 0,
+			6, 0, 2, 3, 14, 0,
+			7, 0, 1, 0, 20, 0,
+			7, 0, 0, 0, 21, 0,
+			7, 0, 1, 0, 22, 0,
+			7, 0, 2, 4, 15, 0,
+			8, 0, 1, 0, 23, 0,
+			8, 0, 0, 0, 24, 0,
+			8, 0, 1, 0, 25, 0,
+			8, 0, 2, 6, 14, 0,
+			9, 0, 1, 0, 26, 0,
+			9, 0, 0, 0, 27, 0,
+			9, 0, 1, 0, 28, 0,
+			9, 0, 2, 7, 15, 0,
+			10, 0, 1, 0, 29, 0,
+			10, 0, 0, 0, 30, 0,
+			10, 0, 1, 0, 31, 0,
+			10, 0, 2, 9, 14, 0,
+			11, 0, 1, 0, 32, 0,
+			11, 0, 0, 0, 33, 0,
+			11, 0, 1, 2, 30, 0,
+			11, 0, 2, 0, 34, 0,
+			12, 0, 1, 0, 35, 0,
+			12, 0, 0, 0, 36, 0,
+			12, 0, 1, 3, 31, 0,
+			12, 0, 2, 0, 37, 0,
+			13, 0, 1, 0, 38, 0,
+			13, 0, 0, 0, 39, 0,
+			13, 0, 1, 5, 30, 0,
+			13, 0, 2, 0, 40, 0,
+			14, 0, 1, 0, 41, 0,
+			14, 0, 0, 0, 42, 0,
+			14, 0, 1, 6, 31, 0,
+			14, 0, 2, 0, 43, 0,
+			15, 0, 1, 0, 44, 0,
+			15, 0, 0, 0, 45, 0,
+			15, 0, 1, 8, 30, 0,
+			15, 0, 2, 0, 46, 0,
+			16, 0, 2, 0, 47, 0,
+			16, 0, 1, 1, 46, 0,
+			16, 0, 0, 0, 48, 0,
+			16, 0, 1, 0, 49, 0,
+			16, 0, 2, 0, 50, 0,
+			17, 0, 1, 2, 47, 0,
+			17, 0, 0, 0, 51, 0,
+			17, 0, 1, 0, 52, 0,
+			17, 0, 2, 0, 53, 0,
+			18, 0, 1, 4, 46, 0,
+			18, 0, 0, 0, 54, 0,
+			18, 0, 1, 0, 55, 0,
+			18, 0, 2, 0, 56, 0,
+			19, 0, 1, 5, 47, 0,
+			19, 0, 0, 0, 57, 0,
+			19, 0, 1, 0, 58, 0,
+			19, 0, 2, 0, 59, 0,
+			20, 0, 1, 7, 46, 0,
+			20, 0, 0, 0, 60, 0,
+			20, 0, 1, 0, 61, 0,
+			20, 0, 2, 0, 62, 0,
+			21, 0, 1, 8, 47, 0,
+			21, 0, 0, 0, 63, 0,
+			21, 0, 1, 1, 62, 0,
+			21, 0, 2, 1, 63, 0,
+			22, 0, 1, 10, 46, 0,
+			22, 0, 0, 2, 62, 0,
+			22, 0, 1, 2, 63, 0,
+			22, 0, 2, 3, 62, 0,
+			23, 0, 1, 11, 47, 0,
+			23, 0, 0, 3, 63, 0,
+			23, 0, 1, 4, 62, 0,
+			23, 0, 2, 4, 63, 0,
+			24, 0, 1, 13, 46, 0,
+			24, 0, 0, 5, 62, 0,
+			24, 0, 1, 5, 63, 0,
+			24, 0, 2, 6, 62, 0,
+			25, 0, 1, 14, 47, 0,
+			25, 0, 0, 6, 63, 0,
+			25, 0, 1, 7, 62, 0,
+			25, 0, 2, 7, 63, 0,
+			26, 0, 1, 16, 45, 0,
+			26, 0, 0, 8, 62, 0,
+			26, 0, 1, 8, 63, 0,
+			26, 0, 2, 9, 62, 0,
+			27, 0, 1, 16, 48, 0,
+			27, 0, 0, 9, 63, 0,
+			27, 0, 1, 10, 62, 0,
+			27, 0, 2, 10, 63, 0,
+			28, 0, 1, 16, 51, 0,
+			28, 0, 0, 11, 62, 0,
+			28, 0, 1, 11, 63, 0,
+			28, 0, 2, 12, 62, 0,
+			29, 0, 1, 16, 54, 0,
+			29, 0, 0, 12, 63, 0,
+			29, 0, 1, 13, 62, 0,
+			29, 0, 2, 13, 63, 0,
+			30, 0, 1, 16, 57, 0,
+			30, 0, 0, 14, 62, 0,
+			30, 0, 1, 14, 63, 0,
+			30, 0, 2, 15, 62, 0,
+			31, 0, 1, 16, 60, 0,
+			31, 0, 0, 15, 63, 0,
+			31, 0, 1, 24, 46, 0,
+			31, 0, 2, 16, 62, 0,
+			32, 0, 2, 16, 63, 0,
+			32, 0, 1, 17, 62, 0,
+			32, 0, 0, 25, 47, 0,
+			32, 0, 1, 17, 63, 0,
+			32, 0, 2, 18, 62, 0,
+			33, 0, 1, 18, 63, 0,
+			33, 0, 0, 27, 46, 0,
+			33, 0, 1, 19, 62, 0,
+			33, 0, 2, 19, 63, 0,
+			34, 0, 1, 20, 62, 0,
+			34, 0, 0, 28, 47, 0,
+			34, 0, 1, 20, 63, 0,
+			34, 0, 2, 21, 62, 0,
+			35, 0, 1, 21, 63, 0,
+			35, 0, 0, 30, 46, 0,
+			35, 0, 1, 22, 62, 0,
+			35, 0, 2, 22, 63, 0,
+			36, 0, 1, 23, 62, 0,
+			36, 0, 0, 31, 47, 0,
+			36, 0, 1, 23, 63, 0,
+			36, 0, 2, 24, 62, 0,
+			37, 0, 1, 24, 63, 0,
+			37, 0, 0, 32, 47, 0,
+			37, 0, 1, 25, 62, 0,
+			37, 0, 2, 25, 63, 0,
+			38, 0, 1, 26, 62, 0,
+			38, 0, 0, 32, 50, 0,
+			38, 0, 1, 26, 63, 0,
+			38, 0, 2, 27, 62, 0,
+			39, 0, 1, 27, 63, 0,
+			39, 0, 0, 32, 53, 0,
+			39, 0, 1, 28, 62, 0,
+			39, 0, 2, 28, 63, 0,
+			40, 0, 1, 29, 62, 0,
+			40, 0, 0, 32, 56, 0,
+			40, 0, 1, 29, 63, 0,
+			40, 0, 2, 30, 62, 0,
+			41, 0, 1, 30, 63, 0,
+			41, 0, 0, 32, 59, 0,
+			41, 0, 1, 31, 62, 0,
+			41, 0, 2, 31, 63, 0,
+			42, 0, 1, 32, 61, 0,
+			42, 0, 0, 32, 62, 0,
+			42, 0, 1, 32, 63, 0,
+			42, 0, 2, 41, 46, 0,
+			43, 0, 1, 33, 62, 0,
+			43, 0, 0, 33, 63, 0,
+			43, 0, 1, 34, 62, 0,
+			43, 0, 2, 42, 47, 0,
+			44, 0, 1, 34, 63, 0,
+			44, 0, 0, 35, 62, 0,
+			44, 0, 1, 35, 63, 0,
+			44, 0, 2, 44, 46, 0,
+			45, 0, 1, 36, 62, 0,
+			45, 0, 0, 36, 63, 0,
+			45, 0, 1, 37, 62, 0,
+			45, 0, 2, 45, 47, 0,
+			46, 0, 1, 37, 63, 0,
+			46, 0, 0, 38, 62, 0,
+			46, 0, 1, 38, 63, 0,
+			46, 0, 2, 47, 46, 0,
+			47, 0, 1, 39, 62, 0,
+			47, 0, 0, 39, 63, 0,
+			47, 0, 1, 40, 62, 0,
+			47, 0, 2, 48, 46, 0,
+			48, 0, 2, 40, 63, 0,
+			48, 0, 1, 41, 62, 0,
+			48, 0, 0, 41, 63, 0,
+			48, 0, 1, 48, 49, 0,
+			48, 0, 2, 42, 62, 0,
+			49, 0, 1, 42, 63, 0,
+			49, 0, 0, 43, 62, 0,
+			49, 0, 1, 48, 52, 0,
+			49, 0, 2, 43, 63, 0,
+			50, 0, 1, 44, 62, 0,
+			50, 0, 0, 44, 63, 0,
+			50, 0, 1, 48, 55, 0,
+			50, 0, 2, 45, 62, 0,
+			51, 0, 1, 45, 63, 0,
+			51, 0, 0, 46, 62, 0,
+			51, 0, 1, 48, 58, 0,
+			51, 0, 2, 46, 63, 0,
+			52, 0, 1, 47, 62, 0,
+			52, 0, 0, 47, 63, 0,
+			52, 0, 1, 48, 61, 0,
+			52, 0, 2, 48, 62, 0,
+			53, 0, 1, 56, 47, 0,
+			53, 0, 0, 48, 63, 0,
+			53, 0, 1, 49, 62, 0,
+			53, 0, 2, 49, 63, 0,
+			54, 0, 1, 58, 46, 0,
+			54, 0, 0, 50, 62, 0,
+			54, 0, 1, 50, 63, 0,
+			54, 0, 2, 51, 62, 0,
+			55, 0, 1, 59, 47, 0,
+			55, 0, 0, 51, 63, 0,
+			55, 0, 1, 52, 62, 0,
+			55, 0, 2, 52, 63, 0,
+			56, 0, 1, 61, 46, 0,
+			56, 0, 0, 53, 62, 0,
+			56, 0, 1, 53, 63, 0,
+			56, 0, 2, 54, 62, 0,
+			57, 0, 1, 62, 47, 0,
+			57, 0, 0, 54, 63, 0,
+			57, 0, 1, 55, 62, 0,
+			57, 0, 2, 55, 63, 0,
+			58, 0, 1, 56, 62, 1,
+			58, 0, 0, 56, 62, 0,
+			58, 0, 1, 56, 63, 0,
+			58, 0, 2, 57, 62, 0,
+			59, 0, 1, 57, 63, 1,
+			59, 0, 0, 57, 63, 0,
+			59, 0, 1, 58, 62, 0,
+			59, 0, 2, 58, 63, 0,
+			60, 0, 1, 59, 62, 1,
+			60, 0, 0, 59, 62, 0,
+			60, 0, 1, 59, 63, 0,
+			60, 0, 2, 60, 62, 0,
+			61, 0, 1, 60, 63, 1,
+			61, 0, 0, 60, 63, 0,
+			61, 0, 1, 61, 62, 0,
+			61, 0, 2, 61, 63, 0,
+			62, 0, 1, 62, 62, 1,
+			62, 0, 0, 62, 62, 0,
+			62, 0, 1, 62, 63, 0,
+			62, 0, 2, 63, 62, 0,
+			63, 0, 1, 63, 63, 1,
+			63, 0, 0, 63, 63, 0
 		};
 
     }

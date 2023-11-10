@@ -306,7 +306,7 @@ namespace TagTool.Commands.Porting
                 Console.WriteLine();
                 Console.WriteLine($"{e.GetType().Name} while porting '{blamTag.Name}.{blamTag.Group.Tag.ToString()}':");
                 Console.WriteLine();
-                throw e;
+                throw;
             }
 #endif
             PortedTags[blamTag.Index] = result;
@@ -587,7 +587,7 @@ namespace TagTool.Commands.Porting
             if (blamTag == null)
 				return null;
 
-			var groupTag = blamTag.Group.Tag;
+			var groupTag = blamTag.Group.Tag; 
 
 			// Handle tags that are undesired or not ready to be ported
 			switch (groupTag.ToString())
@@ -661,7 +661,7 @@ namespace TagTool.Commands.Porting
                     continue;
                 }
 
-                if (ReplacedTags.ContainsKey(groupTag) && ReplacedTags[groupTag].Contains(blamTag.Name))
+                if (ReplacedTags.TryGetValue(groupTag, out var li) && li.Contains(blamTag.Name))
                 {
                     if (instance.Group.Tag == groupTag)
                         return instance;
@@ -697,7 +697,7 @@ namespace TagTool.Commands.Porting
                             }
                         }
 
-                        if (!ReplacedTags.ContainsKey(groupTag))
+						if (!ReplacedTags.ContainsKey(groupTag))
                             ReplacedTags[groupTag] = new List<string>();
 
                         ReplacedTags[groupTag].Add(blamTag.Name);

@@ -9,7 +9,6 @@ using TagTool.Commands.Common;
 using System.IO;
 using TagTool.IO;
 using Assimp;
-using System.Runtime.Remoting.Contexts;
 using TagTool.Layouts;
 using static TagTool.IO.ConsoleHistory;
 using TagTool.Tags;
