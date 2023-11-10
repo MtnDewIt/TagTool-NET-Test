@@ -10,7 +10,7 @@ using TagTool.Shaders;
 using TagTool.Tags.Definitions;
 using static TagTool.Tags.Definitions.RenderMethodDefinition;
 
-namespace TagTool.MtnDewIt.Shaders.ShaderGenerator 
+namespace TagTool.MtnDewIt.Shaders.LegacyShaderGenerator 
 {
     public class LegacyRenderMethodDefinitionGenerator 
     {

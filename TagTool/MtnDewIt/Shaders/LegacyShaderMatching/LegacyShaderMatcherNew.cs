@@ -1,4 +1,4 @@
-namespace TagTool.MtnDewIt.Shaders.ShaderMatching 
+namespace TagTool.MtnDewIt.Shaders.LegacyShaderMatching 
 {
     public class LegacyShaderMatcherNew 
     {
