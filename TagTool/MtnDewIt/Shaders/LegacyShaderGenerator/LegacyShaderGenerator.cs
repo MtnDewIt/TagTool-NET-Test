@@ -211,7 +211,7 @@ namespace TagTool.MtnDewIt.Shaders.ShaderGenerator
         {
             var pixl = new PixelShader { EntryPointShaders = new List<ShortOffsetCountBlock>(), Shaders = new List<PixelShaderBlock>() };
 
-			List<(Thread Thread, StrongBox<ShaderGeneratorResult> Result, int EntryPoint)> tasks = new();
+			List<(Task<object> Task, int EntryPoint)> tasks = new();
 
             foreach (ShaderStage entryPoint in Enum.GetValues(typeof(ShaderStage)))
             {
@@ -220,26 +220,24 @@ namespace TagTool.MtnDewIt.Shaders.ShaderGenerator
 
                 if (generator.IsEntryPointSupported(entryPoint) && !generator.IsPixelShaderShared(entryPoint))
                 {
-					StrongBox<ShaderGeneratorResult> result = new();
-					Thread t = new(() =>
-					{
-						result.Value = generator.GeneratePixelShader(entryPoint);
-					});
-					t.Priority = ThreadPriority.AboveNormal;
-					tasks.Add((t, result, (int)entryPoint));
+					tasks.Add((CustomThreadPool.Schedule((generator, entryPoint), static (values) =>
+                    {
+						var (generator, entryPoint) = ((IShaderGenerator, ShaderStage))values;
+                        return generator.GeneratePixelShader(entryPoint);
+                    }), (int)entryPoint));
                 }
             }
 
-			foreach (var (thread, _, _) in tasks)
+			foreach (var (task, _) in tasks)
 			{
-				thread.Join();
+				task.Wait();
 			}
 
-            foreach (var (_, result, entryPoint) in tasks)
+            foreach (var (task, entryPoint) in tasks)
             {
                 pixl.EntryPointShaders[entryPoint].Count = 1;
                 pixl.EntryPointShaders[entryPoint].Offset = (byte)pixl.Shaders.Count;
-                pixl.Shaders.Add(GeneratePixelShaderBlock(cache, result.Value));
+                pixl.Shaders.Add(GeneratePixelShaderBlock(cache, (ShaderGeneratorResult)task.Result));
             }
             return pixl;
         }
