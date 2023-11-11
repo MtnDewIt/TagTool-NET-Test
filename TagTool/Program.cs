@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Commands.Tags;
@@ -22,7 +23,18 @@ namespace TagTool.Commands
 
         static void Main(string[] args)
         {
-            SetDirectories();
+			//allow dll resolution from Tools directory
+			AssemblyLoadContext.Default.Resolving += static (AssemblyLoadContext ctx, AssemblyName name) =>
+			{
+				foreach (var file in Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Tools")))
+				{
+					var an = AssemblyName.GetAssemblyName(file);
+					if (AssemblyName.ReferenceMatchesDefinition(name, an)) return Assembly.Load(file);
+				}
+				return null;
+			};
+
+			SetDirectories();
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo("en-US");
             ConsoleHistory.Initialize();
 
