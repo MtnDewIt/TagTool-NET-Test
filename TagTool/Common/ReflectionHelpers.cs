@@ -31,7 +31,7 @@ namespace TagTool.Common
 				ilGen.Emit(OpCodes.Castclass, t);
 #endif
 				ilGen.Emit(OpCodes.Ldarg_1);
-				ilGen.EmitCall(OpCodes.Callvirt, t.GetMethod("AddRangeBoxedDelegate"), null);
+				ilGen.EmitCall(OpCodes.Callvirt, t.GetMethod("AddRangeBoxed"), null);
 				ilGen.Emit(OpCodes.Ret);
 				var result = m.CreateDelegate<AddRangeBoxedDelegate>();
 				addRangeBoxedDelegatedLookup.AddOrUpdate(t, result);
