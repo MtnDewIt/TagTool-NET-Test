@@ -79,6 +79,7 @@ namespace TagTool.Bitmaps.Utils
             kSourceBgra = (1 << 11)
         };
 
+		[StructLayout(LayoutKind.Sequential)]
         public struct SourceBlock
         {
             public SourceBlock(byte start, byte end, byte error)
@@ -382,7 +383,6 @@ namespace TagTool.Bitmaps.Utils
 
 				// initialise the block output
 				int bytesPerBlock = ((Flags & SquishFlags.kDxt1) != 0) ? 8 : 16;
-				Span<byte> tempBlock = (stackalloc byte[16])[..bytesPerBlock];
 
 				Span<byte> sourceRgba = stackalloc byte[16 * 4];
 
@@ -433,28 +433,34 @@ namespace TagTool.Bitmaps.Utils
                             }
                         }
 
-						// compress it into the output
-                        CompressMasked(sourceRgba, (uint)mask, tempBlock, (uint)Flags);
-
-                        // advance
-						if ((uint)dxtImageLen + (uint)tempBlock.Length >= (uint)pooledDxtImage.Length)
+						//ensure buffer is big enough
+						if ((uint)dxtImageLen + (uint)bytesPerBlock > (uint)pooledDxtImage.Length)
 						{
-							//move to a new pool if required
-							var newPooled = ArrayPool<byte>.Shared.Rent(Math.Max(pooledDxtImage.Length * 2, pooledDxtImage.Length + tempBlock.Length));
+							var newPooled = ArrayPool<byte>.Shared.Rent(Math.Max(pooledDxtImage.Length * 2, pooledDxtImage.Length + bytesPerBlock));
 							pooledDxtImage.AsSpan()[..dxtImageLen].CopyTo(newPooled.AsSpan()[..dxtImageLen]);
 							ArrayPool<byte>.Shared.Return(pooledDxtImage);
 							pooledDxtImage = newPooled;
 						}
-						tempBlock.CopyTo(pooledDxtImage.AsSpan()[dxtImageLen..(dxtImageLen + tempBlock.Length)]);
-						dxtImageLen += tempBlock.Length;
+
+						// compress it into the output
+                        CompressMasked(sourceRgba, (uint)mask, pooledDxtImage.AsSpan()[dxtImageLen..(dxtImageLen + bytesPerBlock)], (uint)Flags);
+						dxtImageLen += bytesPerBlock;
 					}
                 }
 
 				if (size != dxtImageLen)
 					Console.WriteLine($"##DXT COMPRESSOR: Expected size \"{size}\" bytes did not match actual size of \"{dxtImageLen}\" bytes.");
 
-				CompressedData = pooledDxtImage.AsSpan()[..dxtImageLen].ToArray();
-				ArrayPool<byte>.Shared.Return(pooledDxtImage);
+				if (dxtImageLen == pooledDxtImage.Length)
+				{
+					//don't return in this case: copying + allocating new + returning is more expensive than just not returning it
+					CompressedData = pooledDxtImage;
+				}
+				else
+				{
+					CompressedData = pooledDxtImage.AsSpan()[..dxtImageLen].ToArray();
+					ArrayPool<byte>.Shared.Return(pooledDxtImage);
+				}
                 return CompressedData;
 			}
 
@@ -675,6 +681,7 @@ namespace TagTool.Bitmaps.Utils
 			}
         }
 
+		//todo: use InlineArray
 		[StructLayout(LayoutKind.Sequential)]
         public struct SingleColourLookup
 		{
@@ -691,21 +698,19 @@ namespace TagTool.Bitmaps.Utils
             }
 
 			private SourceBlock sb0, sb1;
-			[UnscopedRef] public readonly ReadOnlySpan<SourceBlock> sources => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in sb0), 2);
+			[UnscopedRef] public readonly ReadOnlySpan<SourceBlock> sources => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.As<SingleColourLookup, SourceBlock>(ref Unsafe.AsRef(in this)), 2);
 		}
 
 		public struct ColourSet
 		{
 			public unsafe ColourSet(ReadOnlySpan<byte> rgba, uint mask, uint flags)
 			{
-				Count = 0;
-				Transparent = false;
-
 				// init arrays
 				Debug.Assert(sizeof(RealVector3d) == sizeof(float) * 3);
-				Points.Clear();
-				Weights.Clear();
-				Remap.Clear();
+				this = default;
+
+				Count = 0;
+				Transparent = false;
 
 				// check the compression mode for dxt1
 				bool isDxt1 = ((flags & (uint)SquishFlags.kDxt1) != 0);
@@ -718,14 +723,14 @@ namespace TagTool.Bitmaps.Utils
 					int bit = 1 << i;
 					if ((mask & bit) == 0)
 					{
-						Remap[i] = -1;
+						_Remap[i] = -1;
 						continue;
 					}
 
 					// check for transparent pixels when using dxt1
 					if (isDxt1 && rgba[4 * i + 3] < 128)
 					{
-						Remap[i] = -1;
+						_Remap[i] = -1;
 						Transparent = true;
 						continue;
 					}
@@ -745,9 +750,9 @@ namespace TagTool.Bitmaps.Utils
 							float w = (float)(rgba[4 * i + 3] + 1) / 256.0f;
 
 							// add the point
-							Points[Count] = new RealVector3d(x, y, z);
-							Weights[Count] = (weightByAlpha ? w : 1.0f);
-							Remap[i] = Count;
+							Unsafe.Add(ref Unsafe.As<float, RealVector3d>(ref _Points[0]), Count) = new RealVector3d(x, y, z);
+							_Weights[Count] = (weightByAlpha ? w : 1.0f);
+							_Remap[i] = Count;
 
 							// advance
 							++Count;
@@ -770,8 +775,8 @@ namespace TagTool.Bitmaps.Utils
 							float w = (float)(rgba[4 * i + 3] + 1) / 256.0f;
 
 							// map to this point and increase the weight
-							Weights[index] += (weightByAlpha ? w : 1.0f);
-							Remap[i] = index;
+							_Weights[index] += (weightByAlpha ? w : 1.0f);
+							_Remap[i] = index;
 							break;
 						}
 					}
@@ -779,10 +784,10 @@ namespace TagTool.Bitmaps.Utils
 
 				// square root the weights
 				for (int i = 0; i < Count; ++i)
-					Weights[i] = (float)Math.Sqrt(Weights[i]);
+					_Weights[i] = (float)Math.Sqrt(Weights[i]);
 			}
 
-			public void RemapIndices(ReadOnlySpan<byte> source, Span<byte> target)
+			public readonly void RemapIndices(ReadOnlySpan<byte> source, Span<byte> target)
 			{
 				for (int i = 0; i < 16; ++i)
 				{
@@ -794,18 +799,18 @@ namespace TagTool.Bitmaps.Utils
 				}
 			}
 
-			public int GetCount() => Count;
-			[UnscopedRef] public Span<RealVector3d> GetPoints() => Points;
-			[UnscopedRef] public Span<float> GetWeights() => Weights;
-			public bool IsTransparent() => Transparent;
+			public readonly int GetCount() => Count;
+			[UnscopedRef] public readonly ReadOnlySpan<RealVector3d> GetPoints() => Points;
+			[UnscopedRef] public readonly ReadOnlySpan<float> GetWeights() => Weights;
+			public readonly bool IsTransparent() => Transparent;
 
 			private int Count;
 			private unsafe fixed float _Points[16 * 3]; //RealVector3d = 3 floats
-			[UnscopedRef] public unsafe Span<RealVector3d> Points => MemoryMarshal.CreateSpan(ref Unsafe.As<float, RealVector3d>(ref _Points[0]), 16);
+			[UnscopedRef] public unsafe readonly ReadOnlySpan<RealVector3d> Points => MemoryMarshal.CreateSpan(ref Unsafe.As<float, RealVector3d>(ref Unsafe.AsRef(in _Points[0])), 16);
 			private unsafe fixed float _Weights[16];
-			[UnscopedRef] public unsafe Span<float> Weights => MemoryMarshal.CreateSpan(ref _Weights[0], 16);
+			[UnscopedRef] public unsafe readonly ReadOnlySpan<float> Weights => MemoryMarshal.CreateSpan(ref Unsafe.AsRef(in _Weights[0]), 16);
 			private unsafe fixed int _Remap[16];
-			[UnscopedRef] public unsafe Span<int> Remap => MemoryMarshal.CreateSpan(ref _Remap[0], 16);
+			[UnscopedRef] public unsafe readonly ReadOnlySpan<int> Remap => MemoryMarshal.CreateSpan(ref Unsafe.AsRef(in _Remap[0]), 16);
 			private bool Transparent;
 		}
 
@@ -1874,7 +1879,7 @@ namespace TagTool.Bitmaps.Utils
 			byte[] greenChannelPooled = null;
 			Span<byte> greenChannel = (rgba.Length <= 128 ? stackalloc byte[32] : (greenChannelPooled ??= ArrayPool<byte>.Shared.Rent(rgba.Length / 4)))[..(int)((uint)rgba.Length / 4)];
             for (int i = 0; i < rgba.Length; i += 4)
-				redChannel[i >>> 2] = rgba[i + 1];
+				greenChannel[i >>> 2] = rgba[i + 1];
 
             Span<byte> redBlock = stackalloc byte[8];
             Span<byte> greenBlock = stackalloc byte[8];
