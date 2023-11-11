@@ -220,7 +220,7 @@ namespace TagTool.Cache
         /// <returns>True if group was found or (input name is "none" or "null" and tag is null) else false.</returns>
         public bool TryParseGroupTag(string name, out Tag result)
         {
-            if(TagDefinitions is TagDefinitionsGen3 td3)
+            if (TagDefinitions is TagDefinitionsGen3 td3)
             {
 				if (td3.TryGetTagFromName(name, out result)) return true;
             }

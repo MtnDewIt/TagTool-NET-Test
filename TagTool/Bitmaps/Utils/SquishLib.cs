@@ -34,6 +34,7 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -1873,13 +1874,13 @@ namespace TagTool.Bitmaps.Utils
 
 			byte[] redChannelPooled = null;
 			Span<byte> redChannel = (rgba.Length <= 128 ? stackalloc byte[32] : (redChannelPooled ??= ArrayPool<byte>.Shared.Rent(rgba.Length / 4)))[..(int)((uint)rgba.Length / 4)];
-            for (int i = 0; i < rgba.Length; i += 4)
-				redChannel[i >>> 2] = rgba[i + 0];
-
 			byte[] greenChannelPooled = null;
 			Span<byte> greenChannel = (rgba.Length <= 128 ? stackalloc byte[32] : (greenChannelPooled ??= ArrayPool<byte>.Shared.Rent(rgba.Length / 4)))[..(int)((uint)rgba.Length / 4)];
-            for (int i = 0; i < rgba.Length; i += 4)
+			for (int i = 0; i < rgba.Length; i += 4)
+			{
+				redChannel[i >>> 2] = rgba[i + 0];
 				greenChannel[i >>> 2] = rgba[i + 1];
+			}
 
             Span<byte> redBlock = stackalloc byte[8];
             Span<byte> greenBlock = stackalloc byte[8];

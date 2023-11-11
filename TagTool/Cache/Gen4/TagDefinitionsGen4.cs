@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using TagTool.Cache.Gen3;
 using TagTool.Common;
 using TagTool.Tags;
@@ -9,7 +10,7 @@ namespace TagTool.Cache.Gen4
 {
     public class TagDefinitionsGen4 : TagDefinitions
 	{
-		public Dictionary<TagGroup, Type> Gen4Types => Gen4Definitions.TagGroupToTypeLookup;
+		public ImmutableDictionary<TagGroup, Type> Gen4Types => Gen4Definitions.TagGroupToTypeLookup;
 		private static readonly CachedDefinitions Gen4Definitions = GetCachedDefinitions(new Dictionary<TagGroup, Type>()
         {
             { new TagGroupGen4("hlmt", "model"), typeof(Model) },
@@ -277,15 +278,15 @@ namespace TagTool.Cache.Gen4
         });
 		public TagDefinitionsGen4() : base(Gen4Definitions) { }
 
-		private static readonly Dictionary<string, Tag> NameToTagLookup = NameToTagLookupValue();
-		private static Dictionary<string, Tag> NameToTagLookupValue()
+		private static readonly ImmutableDictionary<string, Tag> NameToTagLookup = NameToTagLookupValue();
+		private static ImmutableDictionary<string, Tag> NameToTagLookupValue()
 		{
-			Dictionary<string, Tag> result = new();
+			var result = ImmutableDictionary.CreateBuilder<string, Tag>();
 			foreach (var (key, _) in Gen4Definitions.TagGroupToTypeLookup)
 			{
 				result.Add(((TagGroupGen4)key).Name, key.Tag);
 			}
-			return result;
+			return result.ToImmutable();
 		}
 
 		public bool TryGetTagFromName(string name, out Tag tag)

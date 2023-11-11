@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using TagTool.Cache.Resources;
 using TagTool.Common;
 using TagTool.Tags;
@@ -9,7 +10,7 @@ namespace TagTool.Cache.Gen3
 {
     public class TagDefinitionsGen3 : TagDefinitions
 	{
-		public Dictionary<TagGroup, Type> Gen3Types => Gen3Definitions.TagGroupToTypeLookup;
+		public ImmutableDictionary<TagGroup, Type> Gen3Types => Gen3Definitions.TagGroupToTypeLookup;
 		private static readonly CachedDefinitions Gen3Definitions = GetCachedDefinitions(new Dictionary<TagGroup, Type>
         {
             { new TagGroupGen3("<fx>", "sound_effect_template"), typeof(SoundEffectTemplate) },
@@ -187,15 +188,15 @@ namespace TagTool.Cache.Gen3
         });
 		public TagDefinitionsGen3() : base(Gen3Definitions) { }
 
-		private static readonly Dictionary<string, Tag> NameToTagLookup = NameToTagLookupValue();
-		private static Dictionary<string, Tag> NameToTagLookupValue()
+		private static readonly ImmutableDictionary<string, Tag> NameToTagLookup = NameToTagLookupValue();
+		private static ImmutableDictionary<string, Tag> NameToTagLookupValue()
 		{
-			Dictionary<string, Tag> result = new();
+			var result = ImmutableDictionary.CreateBuilder<string, Tag>();
 			foreach (var (key, _) in Gen3Definitions.TagGroupToTypeLookup)
 			{
 				result.Add(((TagGroupGen3)key).Name, key.Tag);
 			}
-			return result;
+			return result.ToImmutable();
 		}
 
 		public bool TryGetTagFromName(string name, out Tag tag)

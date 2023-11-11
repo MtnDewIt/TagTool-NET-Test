@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using TagTool.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions.Gen1;
@@ -8,7 +9,7 @@ namespace TagTool.Cache.Gen1
 {
     public class TagDefinitionsGen1 : TagDefinitions
     {
-		public Dictionary<TagGroup, Type> Gen1Types => Gen1Definitions.TagGroupToTypeLookup;
+		public ImmutableDictionary<TagGroup, Type> Gen1Types => Gen1Definitions.TagGroupToTypeLookup;
 		private static readonly CachedDefinitions Gen1Definitions = GetCachedDefinitions(new Dictionary<TagGroup, Type>
         {
             { new TagGroupGen1("mode"), typeof(Model) },

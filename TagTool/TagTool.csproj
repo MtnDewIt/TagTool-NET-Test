@@ -73,6 +73,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.6.0" />
     <PackageReference Include="PluralizeService.Core" Version="1.2.21147.2" />
     <PackageReference Include="Poly2Tri.NetStandard" Version="1.0.2" />
+    <PackageReference Include="System.Collections.Immutable" Version="8.0.0-rc.2.23479.6" /> <!--Todo: move to release version-->
   </ItemGroup>
   <ItemDefinitionGroup>
     <ReferenceCopyLocalPaths>

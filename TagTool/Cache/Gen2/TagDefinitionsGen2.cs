@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace TagTool.Cache.Gen2
 {
     public class TagDefinitionsGen2 : TagDefinitions
 	{
-		public Dictionary<TagGroup, Type> Gen2Types => Gen2Definitions.TagGroupToTypeLookup;
+		public ImmutableDictionary<TagGroup, Type> Gen2Types => Gen2Definitions.TagGroupToTypeLookup;
 		private static readonly CachedDefinitions Gen2Definitions = GetCachedDefinitions(new Dictionary<TagGroup, Type>
         {
             { new TagGroupGen2("mode"), typeof(RenderModel) },
