@@ -64,10 +64,13 @@ namespace TagTool.Cache
             return group == null ? null : FindFirstInGroup(group.Tag);
         }
 
-        public IEnumerable<CachedTag> NonNull() =>
-            TagTable.Where(t =>
-                (t != null) &&
-                (t.DefinitionOffset >= 0));
+		public IEnumerable<CachedTag> NonNull()
+		{
+			foreach (var t in TagTable)
+			{
+				if (t != null && t.DefinitionOffset >= 0) yield return t;
+			}
+		}
 
         public bool TryAllocateTag(out CachedTag result, Type type, string name = null)
         {

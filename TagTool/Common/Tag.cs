@@ -39,14 +39,6 @@ namespace TagTool.Common
 		{
         }
 
-        /// <summary>
-        /// Constructs a magic number from a character array.
-        /// </summary>
-        /// <param name="input">The character array.</param>
-        public Tag(char[] input) : this(input.AsSpan())
-        {
-		}
-
 		/// <summary>
 		/// Constructs a magic number from a span of chars.
 		/// </summary>
@@ -54,7 +46,7 @@ namespace TagTool.Common
 		public Tag(ReadOnlySpan<char> text)
 		{
 			//read the last 4 unicode chars, which should give us at least 4 ascii chars (if at least 4 available)
-			Span<byte> sp = stackalloc byte[13];
+			Span<byte> sp = stackalloc byte[9];
 			int read = text.Length >= 4 ? Encoding.ASCII.GetBytes(text[^4..], sp[4..]) : Encoding.ASCII.GetBytes(text, sp[4..]);
 			Debug.Assert(read > 0);
 
@@ -87,7 +79,7 @@ namespace TagTool.Common
 		public unsafe string ToStringUncached()
 		{
 			var i = 4;
-			char* chars = stackalloc char[4];
+			Span<char> chars = stackalloc char[4];
 			var val = Value;
 			while (val > 0)
 			{
@@ -95,11 +87,7 @@ namespace TagTool.Common
 				chars[i] = (char)(val & 0xFF);
 				val >>= 8;
 			}
-			return i == 4 ? "" : string.Create(4 - i, (nint)chars, (sp, state) =>
-			{
-				char* chars = (char*)state;
-				new Span<char>(chars + i, 4 - i).CopyTo(sp);
-			});
+			return i == 4 ? "" : chars[i..].ToString();
 		}
 
         public static Tag Parse(GameCache cache, string name)
