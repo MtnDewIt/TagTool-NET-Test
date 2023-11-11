@@ -14,7 +14,7 @@ namespace TagTool.Common
     {
 		//cache for delegate for AddRangeBoxed on TagBlock<T>
 		public delegate void AddRangeBoxedDelegate(object instance, ReadOnlySpan<object> boxedValues);
-		private static readonly ConditionalWeakTable<Type, AddRangeBoxedDelegate> addRangeBoxedDelegatedLookup = new();
+		private static readonly Dictionary<Type, AddRangeBoxedDelegate> addRangeBoxedDelegatedLookup = new();
 		private static readonly Type[] Types_Object_ROSObject = new Type[] { typeof(object), typeof(ReadOnlySpan<object>) };
 		public static AddRangeBoxedDelegate GetAddRangeBoxedDelegate(Type t)
 		{
@@ -34,7 +34,7 @@ namespace TagTool.Common
 				ilGen.EmitCall(OpCodes.Callvirt, t.GetMethod("AddRangeBoxed"), null);
 				ilGen.Emit(OpCodes.Ret);
 				var result = m.CreateDelegate<AddRangeBoxedDelegate>();
-				addRangeBoxedDelegatedLookup.AddOrUpdate(t, result);
+				addRangeBoxedDelegatedLookup[t] = result;
 				return result;
 			}
 		}
