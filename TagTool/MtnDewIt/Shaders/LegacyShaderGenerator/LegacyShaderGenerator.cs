@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using HaloShaderGenerator;
 using HaloShaderGenerator.Generator;
@@ -209,8 +211,7 @@ namespace TagTool.MtnDewIt.Shaders.ShaderGenerator
         {
             var pixl = new PixelShader { EntryPointShaders = new List<ShortOffsetCountBlock>(), Shaders = new List<PixelShaderBlock>() };
 
-            Dictionary<Task<ShaderGeneratorResult>, int> tasks = new Dictionary<Task<ShaderGeneratorResult>, int>(); // <task, entry point>
-
+			List<(Thread Thread, StrongBox<ShaderGeneratorResult> Result, int EntryPoint)> tasks = new();
 
             foreach (ShaderStage entryPoint in Enum.GetValues(typeof(ShaderStage)))
             {
@@ -219,18 +220,26 @@ namespace TagTool.MtnDewIt.Shaders.ShaderGenerator
 
                 if (generator.IsEntryPointSupported(entryPoint) && !generator.IsPixelShaderShared(entryPoint))
                 {
-                    Task<ShaderGeneratorResult> generatorTask = Task.Run(() => { return generator.GeneratePixelShader(entryPoint); });
-                    tasks.Add(generatorTask, (int)entryPoint);
+					StrongBox<ShaderGeneratorResult> result = new();
+					Thread t = new(() =>
+					{
+						result.Value = generator.GeneratePixelShader(entryPoint);
+					});
+					t.Priority = ThreadPriority.AboveNormal;
+					tasks.Add((t, result, (int)entryPoint));
                 }
             }
 
-            Task.WaitAll(tasks.Keys.ToArray());
+			foreach (var (thread, _, _) in tasks)
+			{
+				thread.Join();
+			}
 
-            foreach (var task in tasks)
+            foreach (var (_, result, entryPoint) in tasks)
             {
-                pixl.EntryPointShaders[task.Value].Count = 1;
-                pixl.EntryPointShaders[task.Value].Offset = (byte)pixl.Shaders.Count;
-                pixl.Shaders.Add(GeneratePixelShaderBlock(cache, task.Key.Result));
+                pixl.EntryPointShaders[entryPoint].Count = 1;
+                pixl.EntryPointShaders[entryPoint].Offset = (byte)pixl.Shaders.Count;
+                pixl.Shaders.Add(GeneratePixelShaderBlock(cache, result.Value));
             }
             return pixl;
         }
