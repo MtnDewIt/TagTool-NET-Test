@@ -8,6 +8,7 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
 using TagTool.Commands.Tags;
 using TagTool.Commands;
+using TagTool.Common;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache
 {
@@ -172,7 +173,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             rebuildCache(outputDirectoryInfo.FullName);
             retargetCache(outputDirectoryInfo.FullName);
             UpdateShaderData();
-            PortTagData();
+			CustomThreadPool.FreeAllThreads(); //release the custom thread pool
+			PortTagData();
             UpdateTagData();
             CommandRunner.Current.RunCommand($"updatemapfiles \"{Program.TagToolDirectory}\\Tools\\BaseCache\\MapInfo\"");
             ContextStack.Pop();

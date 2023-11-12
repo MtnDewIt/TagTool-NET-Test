@@ -211,7 +211,7 @@ namespace TagTool.MtnDewIt.Shaders.ShaderGenerator
         {
             var pixl = new PixelShader { EntryPointShaders = new List<ShortOffsetCountBlock>(), Shaders = new List<PixelShaderBlock>() };
 
-			List<(Task<object> Task, int EntryPoint)> tasks = new();
+			List<(CustomThreadPool.IScheduledTask Task, int EntryPoint)> tasks = new();
 
             foreach (ShaderStage entryPoint in Enum.GetValues(typeof(ShaderStage)))
             {

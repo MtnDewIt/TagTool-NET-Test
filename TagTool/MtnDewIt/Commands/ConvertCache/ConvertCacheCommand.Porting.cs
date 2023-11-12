@@ -5,6 +5,7 @@ using TagTool.Commands.Porting;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Commands;
+using TagTool.Common;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache
 {
@@ -220,7 +221,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\fp_body\fp_body.mode");
             GenerateTag<Light>($@"objects\characters\masterchief\fx\shield\shield_down");
             GenerateRenderMethodTemplateTag($@"shader", $@"4 1 0 1 1 2 0 0 0 1 0 0");
-            CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\shaders\visor.rmsh");
+			CustomThreadPool.FreeAllThreads(); //release the custom thread pool
+			CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\shaders\visor.rmsh");
             RenameTag(GetCachedTag<Shader>($@"objects\characters\masterchief\shaders\visor"), $@"objects\characters\masterchief\shaders\mp_visor");
             GenerateTag<Bitmap>($@"objects\characters\masterchief\bitmaps\mp_visor_cc");
             CommandRunner.Current.RunCommand($@"porttag objects\characters\masterchief\mp_masterchief\mp_masterchief.bipd");
