@@ -15,20 +15,21 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
         {
             using (var stream = Cache.OpenCacheReadWrite()) 
             {
-                GenerateRenderMethod(stream, $@"shader", false);
                 GenerateRenderMethod(stream, $@"halogram", false);
+                GenerateRenderMethod(stream, $@"shader", false);
+                GenerateRenderMethod(stream, $@"terrain", false);
 
-                RecompileShaderType(stream, $@"shader");
                 RecompileShaderType(stream, $@"beam");
                 RecompileShaderType(stream, $@"contrail");
                 RecompileShaderType(stream, $@"decal");
+                RecompileShaderType(stream, $@"foliage");
                 RecompileShaderType(stream, $@"halogram");
                 RecompileShaderType(stream, $@"light_volume");
                 RecompileShaderType(stream, $@"particle");
+                RecompileShaderType(stream, $@"screen");
+                RecompileShaderType(stream, $@"shader");
                 RecompileShaderType(stream, $@"terrain");
                 RecompileShaderType(stream, $@"water");
-                RecompileShaderType(stream, $@"foliage");
-                RecompileShaderType(stream, $@"screen");
             }
         }
 
