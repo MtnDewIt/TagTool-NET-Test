@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
@@ -42,7 +41,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             else 
             {
-                var generator = TagTool.Shaders.ShaderGenerator.ShaderGenerator.GetGlobalShaderGenerator(shaderType, true);
+                var generator = LegacyShaderGenerator.GetLegacyGlobalShaderGenerator(shaderType, true);
 
                 if (!CacheContext.TagCache.TryGetTag<RenderMethodDefinition>($@"shaders\{shaderType}", out CachedTag rmdfTag))
                 {

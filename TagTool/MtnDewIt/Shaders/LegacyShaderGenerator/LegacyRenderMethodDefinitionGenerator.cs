@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using HaloShaderGenerator.Generator;
+using HaloShaderGenerator.LegacyGenerator.Generator;
 using HaloShaderGenerator.Globals;
 using TagTool.Cache;
 using TagTool.Common;

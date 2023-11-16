@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using HaloShaderGenerator;
-using HaloShaderGenerator.Generator;
+using HaloShaderGenerator.LegacyGenerator;
+using HaloShaderGenerator.LegacyGenerator.Generator;
 using HaloShaderGenerator.Globals;
 using TagTool.Cache;
 using TagTool.Common;
@@ -71,7 +71,7 @@ namespace TagTool.MtnDewIt.Shaders.LegacyShaderGenerator
             return stringId;
         }
 
-        private static List<TagTool.Shaders.ShaderParameter> GenerateShaderParametersFromGenerator(GameCache cache, ShaderGeneratorResult result)
+        private static List<TagTool.Shaders.ShaderParameter> GenerateShaderParametersFromGenerator(GameCache cache, LegacyShaderGeneratorResult result)
         {
             var parameters = new List<TagTool.Shaders.ShaderParameter>();
             foreach (var register in result.Registers)
@@ -84,16 +84,16 @@ namespace TagTool.MtnDewIt.Shaders.LegacyShaderGenerator
 
                 switch (register.registerType)
                 {
-                    case ShaderGeneratorResult.ShaderRegister.RegisterType.Boolean:
+                    case LegacyShaderGeneratorResult.ShaderRegister.RegisterType.Boolean:
                         shaderParameter.RegisterType = TagTool.Shaders.ShaderParameter.RType.Boolean;
                         break;
-                    case ShaderGeneratorResult.ShaderRegister.RegisterType.Integer:
+                    case LegacyShaderGeneratorResult.ShaderRegister.RegisterType.Integer:
                         shaderParameter.RegisterType = TagTool.Shaders.ShaderParameter.RType.Integer;
                         break;
-                    case ShaderGeneratorResult.ShaderRegister.RegisterType.Sampler:
+                    case LegacyShaderGeneratorResult.ShaderRegister.RegisterType.Sampler:
                         shaderParameter.RegisterType = TagTool.Shaders.ShaderParameter.RType.Sampler;
                         break;
-                    case ShaderGeneratorResult.ShaderRegister.RegisterType.Vector:
+                    case LegacyShaderGeneratorResult.ShaderRegister.RegisterType.Vector:
                         shaderParameter.RegisterType = TagTool.Shaders.ShaderParameter.RType.Vector;
                         break;
                     default:
@@ -107,7 +107,7 @@ namespace TagTool.MtnDewIt.Shaders.LegacyShaderGenerator
             return parameters;
         }
 
-        public static PixelShaderBlock GeneratePixelShaderBlock(GameCache cache, ShaderGeneratorResult result)
+        public static PixelShaderBlock GeneratePixelShaderBlock(GameCache cache, LegacyShaderGeneratorResult result)
         {
             if (result == null)
                 return null;
@@ -124,7 +124,7 @@ namespace TagTool.MtnDewIt.Shaders.LegacyShaderGenerator
             return pixelShaderBlock;
         }
 
-        public static VertexShaderBlock GenerateVertexShaderBlock(GameCache cache, ShaderGeneratorResult result)
+        public static VertexShaderBlock GenerateVertexShaderBlock(GameCache cache, LegacyShaderGeneratorResult result)
         {
             if (result == null)
                 return null;
@@ -252,7 +252,7 @@ namespace TagTool.MtnDewIt.Shaders.LegacyShaderGenerator
         {
             var pixl = new PixelShader { EntryPointShaders = new List<ShortOffsetCountBlock>(), Shaders = new List<PixelShaderBlock>() };
 
-            Dictionary<Task<ShaderGeneratorResult>, int> tasks = new Dictionary<Task<ShaderGeneratorResult>, int>(); // <task, entry point>
+            Dictionary<Task<LegacyShaderGeneratorResult>, int> tasks = new Dictionary<Task<LegacyShaderGeneratorResult>, int>(); // <task, entry point>
 
 
             foreach (ShaderStage entryPoint in Enum.GetValues(typeof(ShaderStage)))
@@ -262,7 +262,7 @@ namespace TagTool.MtnDewIt.Shaders.LegacyShaderGenerator
 
                 if (generator.IsEntryPointSupported(entryPoint) && !generator.IsPixelShaderShared(entryPoint))
                 {
-                    Task<ShaderGeneratorResult> generatorTask = Task.Run(() => { return generator.GeneratePixelShader(entryPoint); });
+                    Task<LegacyShaderGeneratorResult> generatorTask = Task.Run(() => { return generator.GeneratePixelShader(entryPoint); });
                     tasks.Add(generatorTask, (int)entryPoint);
                 }
             }
@@ -951,22 +951,22 @@ namespace TagTool.MtnDewIt.Shaders.LegacyShaderGenerator
         {
             switch (shaderType)
             {
-                case "beam": return new HaloShaderGenerator.Beam.BeamGenerator(applyFixes);
-                case "black": return new HaloShaderGenerator.Black.ShaderBlackGenerator();
-                case "contrail": return new HaloShaderGenerator.Contrail.ContrailGenerator(applyFixes);
-                case "cortana": return new HaloShaderGenerator.Cortana.CortanaGenerator(applyFixes);
-                case "custom": return new HaloShaderGenerator.Custom.CustomGenerator(applyFixes);
-                case "decal": return new HaloShaderGenerator.Decal.DecalGenerator(applyFixes);
-                case "foliage": return new HaloShaderGenerator.Foliage.FoliageGenerator(applyFixes);
-                //case "glass": return new HaloShaderGenerator.Glass.GlassGenerator(applyFixes);
-                case "halogram": return new HaloShaderGenerator.Halogram.HalogramGenerator(applyFixes);
-                case "light_volume": return new HaloShaderGenerator.LightVolume.LightVolumeGenerator(applyFixes);
-                case "particle": return new HaloShaderGenerator.Particle.ParticleGenerator(applyFixes);
-                case "screen": return new HaloShaderGenerator.Screen.ScreenGenerator(applyFixes);
-                case "shader": return new HaloShaderGenerator.Shader.ShaderGenerator(applyFixes);
-                case "terrain": return new HaloShaderGenerator.Terrain.TerrainGenerator(applyFixes);
-                case "water": return new HaloShaderGenerator.Water.WaterGenerator(applyFixes);
-                case "zonly": return new HaloShaderGenerator.ZOnly.ZOnlyGenerator(applyFixes);
+                case "beam": return new HaloShaderGenerator.LegacyGenerator.Beam.LegacyBeamGenerator(applyFixes);
+                case "black": return new HaloShaderGenerator.LegacyGenerator.Black.LegacyShaderBlackGenerator();
+                case "contrail": return new HaloShaderGenerator.LegacyGenerator.Contrail.LegacyContrailGenerator(applyFixes);
+                case "cortana": return new HaloShaderGenerator.LegacyGenerator.Cortana.LegacyCortanaGenerator(applyFixes);
+                case "custom": return new HaloShaderGenerator.LegacyGenerator.Custom.LegacyCustomGenerator(applyFixes);
+                case "decal": return new HaloShaderGenerator.LegacyGenerator.Decal.LegacyDecalGenerator(applyFixes);
+                case "foliage": return new HaloShaderGenerator.LegacyGenerator.Foliage.LegacyFoliageGenerator(applyFixes);
+                //case "glass": return new HaloShaderGenerator.LegacyGenerator.Glass.LegacyGlassGenerator(applyFixes); // No realistic way to add this without hlsl data
+                case "halogram": return new HaloShaderGenerator.LegacyGenerator.Halogram.LegacyHalogramGenerator(applyFixes);
+                case "light_volume": return new HaloShaderGenerator.LegacyGenerator.LightVolume.LegacyLightVolumeGenerator(applyFixes);
+                case "particle": return new HaloShaderGenerator.LegacyGenerator.Particle.LegacyParticleGenerator(applyFixes);
+                case "screen": return new HaloShaderGenerator.LegacyGenerator.Screen.LegacyScreenGenerator(applyFixes);
+                case "shader": return new HaloShaderGenerator.LegacyGenerator.Shader.LegacyShaderGenerator(applyFixes);
+                case "terrain": return new HaloShaderGenerator.LegacyGenerator.Terrain.LegacyTerrainGenerator(applyFixes);
+                case "water": return new HaloShaderGenerator.LegacyGenerator.Water.LegacyWaterGenerator(applyFixes);
+                case "zonly": return new HaloShaderGenerator.LegacyGenerator.ZOnly.LegacyZOnlyGenerator(applyFixes);
             }
 
             return null;
@@ -976,23 +976,24 @@ namespace TagTool.MtnDewIt.Shaders.LegacyShaderGenerator
         {
             switch (shaderType)
             {
-                case "beam": return new HaloShaderGenerator.Beam.BeamGenerator(options, applyFixes);
-                case "black": return new HaloShaderGenerator.Black.ShaderBlackGenerator();
-                case "contrail": return new HaloShaderGenerator.Contrail.ContrailGenerator(options, applyFixes);
-                case "cortana": return new HaloShaderGenerator.Cortana.CortanaGenerator(options, applyFixes);
-                case "custom": return new HaloShaderGenerator.Custom.CustomGenerator(options, applyFixes);
-                case "decal": return new HaloShaderGenerator.Decal.DecalGenerator(options, applyFixes);
-                case "foliage": return new HaloShaderGenerator.Foliage.FoliageGenerator(options, applyFixes);
-                //case "glass": return new HaloShaderGenerator.Glass.GlassGenerator(options, applyFixes);
-                case "halogram": return new HaloShaderGenerator.Halogram.HalogramGenerator(options, applyFixes);
-                case "light_volume": return new HaloShaderGenerator.LightVolume.LightVolumeGenerator(options, applyFixes);
-                case "particle": return new HaloShaderGenerator.Particle.ParticleGenerator(options, applyFixes);
-                case "screen": return new HaloShaderGenerator.Screen.ScreenGenerator(options, applyFixes);
-                case "shader": return new HaloShaderGenerator.Shader.ShaderGenerator(options, applyFixes);
-                case "terrain": return new HaloShaderGenerator.Terrain.TerrainGenerator(options, applyFixes);
-                case "water": return new HaloShaderGenerator.Water.WaterGenerator(options, applyFixes);
-                case "zonly": return new HaloShaderGenerator.ZOnly.ZOnlyGenerator(options, applyFixes);
+                case "beam": return new HaloShaderGenerator.LegacyGenerator.Beam.LegacyBeamGenerator(options, applyFixes);
+                case "black": return new HaloShaderGenerator.LegacyGenerator.Black.LegacyShaderBlackGenerator();
+                case "contrail": return new HaloShaderGenerator.LegacyGenerator.Contrail.LegacyContrailGenerator(options, applyFixes);
+                case "cortana": return new HaloShaderGenerator.LegacyGenerator.Cortana.LegacyCortanaGenerator(options, applyFixes);
+                case "custom": return new HaloShaderGenerator.LegacyGenerator.Custom.LegacyCustomGenerator(options, applyFixes);
+                case "decal": return new HaloShaderGenerator.LegacyGenerator.Decal.LegacyDecalGenerator(options, applyFixes);
+                case "foliage": return new HaloShaderGenerator.LegacyGenerator.Foliage.LegacyFoliageGenerator(options, applyFixes);
+                //case "glass": return new HaloShaderGenerator.LegacyGenerator.Glass.LegacyGlassGenerator(options, applyFixes); // No realistic way to add this without hlsl data
+                case "halogram": return new HaloShaderGenerator.LegacyGenerator.Halogram.LegacyHalogramGenerator(options, applyFixes);
+                case "light_volume": return new HaloShaderGenerator.LegacyGenerator.LightVolume.LegacyLightVolumeGenerator(options, applyFixes);
+                case "particle": return new HaloShaderGenerator.LegacyGenerator.Particle.LegacyParticleGenerator(options, applyFixes);
+                case "screen": return new HaloShaderGenerator.LegacyGenerator.Screen.LegacyScreenGenerator(options, applyFixes);
+                case "shader": return new HaloShaderGenerator.LegacyGenerator.Shader.LegacyShaderGenerator(options, applyFixes);
+                case "terrain": return new HaloShaderGenerator.LegacyGenerator.Terrain.LegacyTerrainGenerator(options, applyFixes);
+                case "water": return new HaloShaderGenerator.LegacyGenerator.Water.LegacyWaterGenerator(options, applyFixes);
+                case "zonly": return new HaloShaderGenerator.LegacyGenerator.ZOnly.LegacyZOnlyGenerator(options, applyFixes);
             }
+
             return null;
         }
     }
