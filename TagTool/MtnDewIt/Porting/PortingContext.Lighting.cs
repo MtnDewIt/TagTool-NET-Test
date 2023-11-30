@@ -296,8 +296,8 @@ namespace TagTool.MtnDewIt.Porting
             CachedLightmap convertedLightmap = null;
             if (Lbsp.LightmapSHCoefficientsBitmap != null)
             {
-                var lightmapCachePath = !string.IsNullOrEmpty(PortingProperties.Current.ReachLightmapCache)
-                   ? Path.Combine(PortingProperties.Current.ReachLightmapCache, LbspTag.Name)
+                var lightmapCachePath = !string.IsNullOrEmpty(PortingProperties.ReachLightmapCache)
+                   ? Path.Combine(PortingProperties.ReachLightmapCache, LbspTag.Name)
                    : null;
 
                 convertedLightmap = new CachedLightmap();

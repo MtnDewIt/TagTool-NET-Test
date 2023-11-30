@@ -31,7 +31,7 @@ namespace TagTool.MtnDewIt.Porting
 
         public void InitializeSoundConverter()
         {
-            ConcurrencyLimiter = new SemaphoreSlim(PortingProperties.Current.MaxThreads);
+            ConcurrencyLimiter = new SemaphoreSlim(PortingProperties.MaxThreads);
         }
 
         private void WaitForPendingSoundConversion()
@@ -122,7 +122,7 @@ namespace TagTool.MtnDewIt.Porting
                     return null;
             }
 
-            var targetFormat = PortingProperties.Current.AudioCodec;
+            var targetFormat = PortingProperties.AudioCodec;
 
 
             for (int pitchRangeIndex = 0; pitchRangeIndex < sound.PitchRanges.Count; pitchRangeIndex++)
@@ -249,7 +249,7 @@ namespace TagTool.MtnDewIt.Porting
                 // Set compression format
                 //
 
-                var targetFormat = PortingProperties.Current.AudioCodec;
+                var targetFormat = PortingProperties.AudioCodec;
                 sound.PlatformCodec.Compression = targetFormat;
 
                 //

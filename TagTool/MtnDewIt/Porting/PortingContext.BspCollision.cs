@@ -115,7 +115,7 @@ namespace TagTool.MtnDewIt.Porting
                 // var largebuilder = new LargeCollisionBSPBuilder();
                 // var gen3builder = new CollisionBSPGen3Builder();
 
-                //if (PortingProperties.Current.Gen1Collision)
+                //if (PortingProperties.Gen1Collision)
                 //{
                 //    if (!largebuilder.generate_bsp(ref largebsp, false) || !resizer.collision_bsp_check_counts(largebsp))
                 //        new TagToolError(CommandError.CustomError, "Failed to generate collision bsp!");
@@ -151,7 +151,7 @@ namespace TagTool.MtnDewIt.Porting
                 //var largebuilder = new LargeCollisionBSPBuilder();
                 //var gen3builder = new CollisionBSPGen3Builder();
 
-                //if (PortingProperties.Current.Gen1Collision)
+                //if (PortingProperties.Gen1Collision)
                 //{
                 //    if (!largebuilder.generate_bsp(ref largebsp, false))
                 //        new TagToolError(CommandError.CustomError, "Failed to generate collision bsp!");

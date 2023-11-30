@@ -57,7 +57,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             },
         };
 
-        public object rebuildCache(string destCacheDirectory)
+        public object RebuildCache(string destCacheDirectory)
         {
             ConvertedTags.Clear();
             CopiedResources.Clear();
@@ -484,7 +484,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
         }
 
         // Retargets the cache (Its bascially the equivalent of the restart command)
-        public void retargetCache(string cache)
+        public void RetargetCache(string cache)
         {
             var newFileInfo = new FileInfo(cache + "\\tags.dat");
             Cache = GameCache.Open(newFileInfo);
@@ -493,7 +493,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
         }
 
         // Copies over required files (map files required for updating map files)
-        public void moveFontPackage(string path)
+        public void MoveFontPackage(string path)
         {
             Directory.CreateDirectory($@"{path}\fonts");
 

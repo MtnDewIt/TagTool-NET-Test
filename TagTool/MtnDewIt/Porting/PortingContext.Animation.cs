@@ -39,6 +39,7 @@ namespace TagTool.MtnDewIt.Porting
                     int CompressedDataSize = 0;
                     int StaticDataSize = 0;
                     int ExtraData = 0;
+
                     if(BlamCache.Version >= CacheVersion.HaloReach)
                     {
                         MovementDataSize = member.PackedDataSizesReach.MovementData;

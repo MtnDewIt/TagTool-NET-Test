@@ -89,7 +89,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             }
         }
 
-        public void GenerateRenderMethodTemplateTag(string shaderType, string shaderOptions)
+        public void GenerateRenderMethodTemplate(string shaderType, string shaderOptions)
         {
             List<byte> rawShaderOptions = new List<byte>();
 

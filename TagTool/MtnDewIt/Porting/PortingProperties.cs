@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using TagTool.Audio;
 
 namespace TagTool.MtnDewIt.Porting
@@ -23,7 +22,5 @@ namespace TagTool.MtnDewIt.Porting
         
         // Convert CTX1 bitmaps to DXN (default is DXT1)
         public bool HqNormalMapConversion = true;
-        
-        public static PortingProperties Current = new PortingProperties();
     }
 }

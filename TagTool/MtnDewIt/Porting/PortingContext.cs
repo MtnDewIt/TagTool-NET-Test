@@ -31,8 +31,9 @@ namespace TagTool.MtnDewIt.Porting
 		private GameCacheHaloOnline CacheContext { get; }
 		private GameCache BlamCache;
 		private RenderGeometryConverter GeometryConverter { get; }
+        private PortingProperties PortingProperties { get; set; }
 
-		private Dictionary<Tag, List<string>> ReplacedTags = new Dictionary<Tag, List<string>>();
+        private Dictionary<Tag, List<string>> ReplacedTags = new Dictionary<Tag, List<string>>();
         private Dictionary<CachedTag, object> CachedTagData = new Dictionary<CachedTag, object>();
 
         private Dictionary<int, CachedTag> PortedTags = new Dictionary<int, CachedTag>();
@@ -41,8 +42,6 @@ namespace TagTool.MtnDewIt.Porting
         private DirectoryInfo TempDirectory { get; } = new DirectoryInfo(Path.GetTempPath());
         private BlockingCollection<Action> _deferredActions = new BlockingCollection<Action>();
 
-        string[] argParameters = new string[0];
-
 		private readonly Dictionary<Tag, CachedTag> DefaultTags = new Dictionary<Tag, CachedTag> { };
 
         public PortingContext(GameCacheHaloOnline cacheContext, GameCache blamCache)
@@ -50,6 +49,7 @@ namespace TagTool.MtnDewIt.Porting
             CacheContext = cacheContext;
             BlamCache = blamCache;
             GeometryConverter = new RenderGeometryConverter(cacheContext, blamCache);
+            PortingProperties = new PortingProperties();
 
             foreach (var tagType in CacheContext.TagCache.TagDefinitions.Types.Keys)
                 DefaultTags[tagType.Tag] = CacheContext.TagCache.FindFirstInGroup(tagType.Tag);
@@ -57,19 +57,7 @@ namespace TagTool.MtnDewIt.Porting
 
         public void PortTag(string portingOptions, string tag)
         {
-            List<string> optionsList;
-
-            if (portingOptions == $@"")
-            {
-                optionsList = new List<string>();
-            }
-            else 
-            {
-                var options = portingOptions.Split(' ');
-                optionsList = new List<string>(options);
-            }
-
-            argParameters = ParsePortingOptions(optionsList);
+            ParsePortingOptions(portingOptions);
 
             var initialStringIdCount = CacheContext.StringTableHaloOnline.Count;
 
@@ -80,8 +68,8 @@ namespace TagTool.MtnDewIt.Porting
             if(CacheContext is GameCacheModPackage)
             {
                 SetFlags(PortingFlags.Memory);
-            }*/
-
+            }
+            */
 
             //
             // Convert Blam data to ElDorado data
@@ -114,7 +102,8 @@ namespace TagTool.MtnDewIt.Porting
                     if (BlamCache is GameCacheGen3 gen3Cache)
                         gen3Cache.ResourceCacheGen3.ResourcePageCache.Clear();
 
-                    if (FlagIsSet(PortingFlags.Memory))
+                    if (FlagIsSet(PortingFlags.Memory)) 
+                    {
                         using (var cacheFileStream = CacheContext.OpenCacheReadWrite())
                         {
                             cacheFileStream.Seek(0, SeekOrigin.Begin);
@@ -123,6 +112,7 @@ namespace TagTool.MtnDewIt.Porting
                             cacheStream.Seek(0, SeekOrigin.Begin);
                             cacheStream.CopyTo(cacheFileStream);
                         }
+                    }
                 }
             }
             finally
@@ -134,7 +124,8 @@ namespace TagTool.MtnDewIt.Porting
 
                 foreach (var entry in resourceStreams)
                 {
-                    if (FlagIsSet(PortingFlags.Memory))
+                    if (FlagIsSet(PortingFlags.Memory)) 
+                    {
                         using (var resourceFileStream = CacheContext.ResourceCaches.OpenCacheReadWrite(entry.Key))
                         {
                             resourceFileStream.Seek(0, SeekOrigin.Begin);
@@ -143,6 +134,7 @@ namespace TagTool.MtnDewIt.Porting
                             entry.Value.Seek(0, SeekOrigin.Begin);
                             entry.Value.CopyTo(resourceFileStream);
                         }
+                    }
 
                     entry.Value.Close();
                 }
@@ -151,6 +143,29 @@ namespace TagTool.MtnDewIt.Porting
             }
 
             ProcessDeferredActions();
+        }
+
+        public void SetPortingProperties
+        (
+            int maxThreads = 0,
+            Compression audioCodec = Compression.MP3,
+            string lightmapCache = null,
+            bool reachDecorators = true,
+            bool legacyCollision = false,
+            bool normalMapConversion = true
+        )
+        {
+            if (maxThreads == 0)
+            {
+                maxThreads = Environment.ProcessorCount * 2;
+            }
+
+            PortingProperties.MaxThreads = maxThreads;
+            PortingProperties.AudioCodec = audioCodec;
+            PortingProperties.ReachLightmapCache = lightmapCache;
+            PortingProperties.ReachDecorators = reachDecorators;
+            PortingProperties.Gen1Collision = legacyCollision;
+            PortingProperties.HqNormalMapConversion = normalMapConversion;
         }
 
         private bool TagIsValid(CachedTag blamTag, Stream blamCacheStream, out CachedTag resultTag)
@@ -225,6 +240,7 @@ namespace TagTool.MtnDewIt.Porting
                         return false;
                 }
             }
+
             else if (TagConstants.RenderMethodGroups.Contains(blamTag.Group.Tag))
             {
                 RenderMethod renderMethod = BlamCache.Deserialize<RenderMethod>(blamCacheStream, blamTag);
@@ -232,7 +248,8 @@ namespace TagTool.MtnDewIt.Porting
                 string templateName = renderMethod.ShaderProperties[0].Template.Name;
                 if(LegacyShaderMatcherNew.Rmt2Descriptor.TryParse(templateName, out var rmt2Descriptor))
                 {
-                    foreach (var tag in CacheContext.TagCacheGenHO.TagTable)
+                    foreach (var tag in CacheContext.TagCacheGenHO.TagTable) 
+                    {
                         if (tag != null && tag.Group.Tag == "rmt2" && (tag.Name.Contains(rmt2Descriptor.Type) || FlagIsSet(PortingFlags.GenerateShaders)))
                         {
                             if ((FlagIsSet(PortingFlags.Ms30) && tag.Name.StartsWith("ms30\\")) || (!FlagIsSet(PortingFlags.Ms30) && !tag.Name.StartsWith("ms30\\")))
@@ -241,6 +258,7 @@ namespace TagTool.MtnDewIt.Porting
                             else if (tag.Name.StartsWith("ms30\\"))
                                 continue;
                         }
+                    }
                 };
                 // TODO: add code for "!MatchShaders" -- if a perfect match isnt found a null tag will be left in the cache
 
@@ -281,8 +299,8 @@ namespace TagTool.MtnDewIt.Porting
 
                     Flags = oldFlags;
                 }
-                else
-                if (blamTag.Name != null && blamTag.IsInGroup("bitm"))
+
+                else if (blamTag.Name != null && blamTag.IsInGroup("bitm"))
                 {
                     if(CacheContext.TagCache.TryGetTag($"{blamTag.Name}.{blamTag.Group}", out result))
                         new TagToolWarning($"using bitm tag reference \"{blamTag.Name}.{blamTag.Group}\" from source cache");
@@ -313,7 +331,7 @@ namespace TagTool.MtnDewIt.Porting
         {
             if(definition is ScenarioStructureBsp sbsp)
             {
-                if (!PortingProperties.Current.ReachDecorators)
+                if (!PortingProperties.ReachDecorators)
                 {
                     sbsp.Decorators.Clear();
                     foreach (var cluster in sbsp.Clusters)
@@ -397,8 +415,10 @@ namespace TagTool.MtnDewIt.Porting
                 //scenario.ScenarioKillTriggers.Clear();
                 scenario.ScenarioSafeTriggers.Clear();
 
-                scenario.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>() {
-                    new Scenario.PlayerStartingProfileBlock() {
+                scenario.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>() 
+                {
+                    new Scenario.PlayerStartingProfileBlock() 
+                    {
                         Name = "start_assault",
                         PrimaryWeapon = CacheContext.TagCache.GetTag(@"objects\weapons\rifle\assault_rifle\assault_rifle", "weap"),
                         PrimaryRoundsLoaded = 32,
@@ -1055,25 +1075,27 @@ namespace TagTool.MtnDewIt.Porting
                         default:
                             break;
                     };
-                    if (FlagIsSet(PortingFlags.MPobject) && blamDefinition is GameObject obj)
+                    if ((FlagIsSet(PortingFlags.MPobject) || IsForgeItem) && blamDefinition is GameObject obj)
                     {
                         if (obj.MultiplayerObject.Count == 0)
                         {
                             obj.MultiplayerObject.Add(new GameObject.MultiplayerObjectBlock() { DefaultSpawnTime = 30, DefaultAbandonTime = 30 });
                         }
 
-                        if (argParameters.Count() > 0)
+                        if (IsForgeItem)
                         {
-                            int.TryParse(argParameters[0], out int paletteIndex);
                             var objTagName = $"{edTag.Name}.{(edTag.Group as TagGroupGen3).Name}";
 
-                            var paletteItemName = edTag.Name.Split('.').First().Split('\\').Last();
-                            if (argParameters.Count() > 1)
-                                paletteItemName = argParameters[1].Replace('-', ' ');
+                            var itemName = PaletteItemName;
+
+                            if (itemName == $@"") 
+                            {
+                                itemName = edTag.Name.Split('.').First().Split('\\').Last();
+                            }
 
                             _deferredActions.Add(() =>
                             {
-                                AddForgePaletteItem(cacheStream, objTagName, paletteIndex, paletteItemName);
+                                AddForgePaletteItem(cacheStream, objTagName, PaletteCategory, itemName);
                             });
                         }
                     }

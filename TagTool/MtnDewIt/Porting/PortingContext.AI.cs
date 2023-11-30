@@ -20,9 +20,13 @@ namespace TagTool.MtnDewIt.Porting
 
                 var behaviors = new Dictionary<string, bool>();
 
-                for (var i = 0; i < style.Behaviors.Length; i++)
-                    for (var j = 0; j < 32 && ((i * 32) + j) < style.BehaviorList.Count; j++)
+                for (var i = 0; i < style.Behaviors.Length; i++) 
+                {
+                    for (var j = 0; j < 32 && ((i * 32) + j) < style.BehaviorList.Count; j++) 
+                    {
                         behaviors[style.BehaviorList[(i * 32) + j].BehaviorName] = ((style.Behaviors[i] & (1 << j)) != 0);
+                    }
+                }
 
                 //
                 // Clear halo 3 behaviors

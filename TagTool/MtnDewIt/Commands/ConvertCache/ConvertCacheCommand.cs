@@ -217,11 +217,11 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
         public override object Execute(List<string> args)
         {
-            getCacheFiles();
+            GetCacheFiles();
             Program._stopWatch.Start();
-            moveFontPackage(outputDirectoryInfo.FullName);
-            rebuildCache(outputDirectoryInfo.FullName);
-            retargetCache(outputDirectoryInfo.FullName);
+            MoveFontPackage(outputDirectoryInfo.FullName);
+            RebuildCache(outputDirectoryInfo.FullName);
+            RetargetCache(outputDirectoryInfo.FullName);
             UpdateShaderData();
             PortTagData();
             UpdateTagData();
@@ -239,17 +239,17 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             return true;
         }
 
-        public void getCacheFiles()
+        public void GetCacheFiles()
         {
             targetCache = GameCache.Open($@"{CacheContext.Directory.FullName}\mainmenu.map");
             UpdateTagNames(targetCache, targetCache, UpdateEDTagsCommand.tagNameTable);
 
-            haloOnlineDirectoryInfo = getDirectoryInfo(haloOnlineDirectoryInfo, "Halo Online MS23");
+            haloOnlineDirectoryInfo = GetDirectoryInfo(haloOnlineDirectoryInfo, "Halo Online MS23");
 
             haloOnlineCache = GameCache.Open($@"{haloOnlineDirectoryInfo.FullName}\mainmenu.map");
             UpdateTagNames(targetCache, haloOnlineCache, UpdateHOTagsCommand.tagNameTable);
 
-            halo3DirectoryInfo = getDirectoryInfo(halo3DirectoryInfo, "Halo 3");
+            halo3DirectoryInfo = GetDirectoryInfo(halo3DirectoryInfo, "Halo 3");
 
             h3MainMenuCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\mainmenu.map");
             introCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\005_intro.map");
@@ -264,7 +264,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             haloCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\120_halo.map");
             epilogueCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\130_epilogue.map");
 
-            halo3MythicDirectoryInfo = getDirectoryInfo(halo3MythicDirectoryInfo, "Halo 3 Mythic");
+            halo3MythicDirectoryInfo = GetDirectoryInfo(halo3MythicDirectoryInfo, "Halo 3 Mythic");
 
             mythicMainMenuCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\mainmenu.map");
             armoryCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\armory.map");
@@ -292,7 +292,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             warehouseCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\warehouse.map");
             zanzibarCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\zanzibar.map");
 
-            halo3ODSTDirectoryInfo = getDirectoryInfo(halo3ODSTDirectoryInfo, "Halo 3 ODST");
+            halo3ODSTDirectoryInfo = GetDirectoryInfo(halo3ODSTDirectoryInfo, "Halo 3 ODST");
 
             odstMainMenuCache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\mainmenu.map");
             h100Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\h100.map");
@@ -307,10 +307,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             sc140Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc140.map");
             sc150Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc150.map");
 
-            outputDirectoryInfo = getOutputDirectory(outputDirectoryInfo);
+            outputDirectoryInfo = GetOutputDirectory(outputDirectoryInfo);
         }
 
-        public DirectoryInfo getDirectoryInfo(DirectoryInfo directoryInfo, String build)
+        public DirectoryInfo GetDirectoryInfo(DirectoryInfo directoryInfo, String build)
         {
             Console.WriteLine("\nEnter the directory for your " + build + " cache files: ");
             var inputDirectory = Console.ReadLine();
@@ -329,7 +329,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             return directoryInfo;
         }
 
-        public DirectoryInfo getOutputDirectory(DirectoryInfo directoryInfo)
+        public DirectoryInfo GetOutputDirectory(DirectoryInfo directoryInfo)
         {
             Console.WriteLine("\nEnter the ouput directory for the generated cache: ");
             var inputDirectory = Console.ReadLine();
