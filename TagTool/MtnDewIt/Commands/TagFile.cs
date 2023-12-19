@@ -15,6 +15,7 @@ using TagTool.IO;
 using System.Collections.Generic;
 using TagTool.Animations;
 using TagTool.Tags.Resources;
+using TagTool.Scripting.Compiler;
 
 namespace TagTool.MtnDewIt.Commands 
 {
@@ -63,7 +64,7 @@ namespace TagTool.MtnDewIt.Commands
             unic.SetString(localizedStr, GameLanguage.English, parsedContent);
         }
 
-        public void AddBitmap(Bitmap bitmap, int bitmapIndex, Stream stream, string DDS)
+        public void AddBitmap(Bitmap bitmap, int bitmapIndex, string DDS)
         {
             bitmap.Flags = BitmapRuntimeFlags.UsingTagInteropAndTagResource;
             bitmap.Images.Add(new Bitmap.Image { Signature = new Tag("bitm") });
@@ -177,7 +178,7 @@ namespace TagTool.MtnDewIt.Commands
 
             ModelAnimationTagResource newResource = new ModelAnimationTagResource
             {
-                GroupMembers = new TagTool.Tags.TagBlock<ModelAnimationTagResource.GroupMember>()
+                GroupMembers = new TagBlock<ModelAnimationTagResource.GroupMember>()
             };
             newResource.GroupMembers.Add(importer.SerializeAnimationData(CacheContext));
             newResource.GroupMembers.AddressType = CacheAddressType.Definition;
@@ -220,6 +221,19 @@ namespace TagTool.MtnDewIt.Commands
 
             CacheContext.SaveStrings();
             CacheContext.Serialize(Stream, tag, jmad);
+        }
+
+        public void CompileScript(CachedTag tag, string scriptFile)
+        {
+            var scriptData = new FileInfo(scriptFile);
+
+            var scnr = CacheContext.Deserialize<Scenario>(Stream, tag);
+
+            ScriptCompiler scriptCompiler = new ScriptCompiler(Cache, scnr);
+
+            scriptCompiler.CompileFile(scriptData);
+
+            CacheContext.Serialize(Stream, tag, scnr);
         }
 
         public void SortModes(CachedTag tag)

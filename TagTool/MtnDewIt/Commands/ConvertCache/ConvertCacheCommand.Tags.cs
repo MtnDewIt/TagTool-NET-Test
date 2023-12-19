@@ -1,7 +1,4 @@
-using TagTool.Commands.Common;
-using TagTool.Commands.Editing;
 using TagTool.MtnDewIt.Commands.ConvertCache.Tags;
-using TagTool.Tags.Definitions;
 using TagTool.Commands;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache 
@@ -628,22 +625,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
                 new objects_equipment_concussiveblast_equipment_concussiveblast_equipment_equipment(Cache, CacheContext, stream);
 
                 new levels_ui_mainmenu_mainmenu_scenario(Cache, CacheContext, stream);
-
-                foreach (var tag in CacheContext.TagCache.NonNull())
-                {
-                    if (tag.IsInGroup("scnr") && tag.Name == $@"levels\ui\mainmenu\mainmenu")
-                    {
-                        var scnr = CacheContext.Deserialize<Scenario>(stream, tag);
-
-                        // TODO: Make my own script compiler function which doesn't need the current command context stack
-                        // TODO: Store the actual script data within the scenario file, instead of externally
-                        ContextStack.Push(EditTagContextFactory.Create(ContextStack, Cache, tag, scnr));
-                        CommandRunner.Current.RunCommand($@"compilescripts ""{Program.TagToolDirectory}\Tools\BaseCache\Scripts\mainmenu.hsc""");
-                        ContextStack.Pop();
-
-                        CacheContext.Serialize(stream, tag, scnr);
-                    }
-                }
 
                 new levels_multi_guardian_guardian_scenario(Cache, CacheContext, stream);
 

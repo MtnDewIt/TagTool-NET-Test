@@ -26,7 +26,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
         {
             var tag = GetCachedTag<Bitmap>($@"objects\characters\masterchief\bitmaps\mp_visor_cc");
             var bitm = CacheContext.Deserialize<Bitmap>(Stream, tag);
-            AddBitmap(bitm, 0, Stream, $@"{Program.TagToolDirectory}\Tools\BaseCache\Images\Assets\mp_visor_cc.dds");
+            AddBitmap(bitm, 0, $@"{Program.TagToolDirectory}\Tools\BaseCache\Images\Assets\mp_visor_cc.dds");
             CacheContext.Serialize(Stream, tag, bitm);
         }
     }

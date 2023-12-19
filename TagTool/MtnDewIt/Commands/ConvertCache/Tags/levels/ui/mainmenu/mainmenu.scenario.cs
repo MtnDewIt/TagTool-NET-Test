@@ -4,6 +4,7 @@ using TagTool.Common;
 using TagTool.Tags.Definitions;
 using System.IO;
 using System.Collections.Generic;
+using TagTool.Commands;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
@@ -1292,6 +1293,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             scnr.EditorFolders = null;
             scnr.PerformanceThrottles = GetCachedTag<PerformanceThrottles>($@"levels\multi\riverworld\riverworld");
             CacheContext.Serialize(Stream, tag, scnr);
+
+            CompileScript(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Scripts\mainmenu.hsc");
         }
     }
 }

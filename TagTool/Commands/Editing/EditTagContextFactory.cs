@@ -29,6 +29,7 @@ using DefinitionsGen4 = TagTool.Tags.Definitions.Gen4;
 using CommandsGen4 = TagTool.Commands.Gen4;
 using TagTool.Commands.Common;
 using TagTool.Commands.Tags;
+using TagTool.MtnDewIt.Commands;
 
 namespace TagTool.Commands.Editing
 {
@@ -189,6 +190,7 @@ namespace TagTool.Commands.Editing
 
             var structure = TagStructure.GetTagStructureInfo(cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group), cache.Version, cache.Platform);
 
+            commandContext.AddCommand(new GenerateTagObjectCommand(cache, structure, definition));
             commandContext.AddCommand(new ListFieldsCommand(cache, structure, definition));
             commandContext.AddCommand(new SetFieldCommand(contextStack, cache, tag, structure, definition));
             commandContext.AddCommand(new EditBlockCommand(contextStack, cache, tag, definition));

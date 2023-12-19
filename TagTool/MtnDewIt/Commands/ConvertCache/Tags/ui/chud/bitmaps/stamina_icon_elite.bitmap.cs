@@ -26,7 +26,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
         {
             var tag = GetCachedTag<Bitmap>($@"ui\chud\bitmaps\stamina_icon_elite");
             var bitm = CacheContext.Deserialize<Bitmap>(Stream, tag);
-            AddBitmap(bitm, 0, Stream, $@"{Program.TagToolDirectory}\Tools\BaseCache\Images\Assets\stamina_icon_elite.dds");
+            AddBitmap(bitm, 0, $@"{Program.TagToolDirectory}\Tools\BaseCache\Images\Assets\stamina_icon_elite.dds");
             CacheContext.Serialize(Stream, tag, bitm);
         }
     }
