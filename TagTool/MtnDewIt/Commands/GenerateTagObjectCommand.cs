@@ -246,7 +246,7 @@ namespace TagTool.MtnDewIt.Commands
                 case DatumHandle datumHandle:
                     return $"new DatumHandle({datumHandle.Salt}, {datumHandle.Index})";
                 case StringId stringId:
-                    return $"CacheContext.StringTable.GetStringId(\"{Cache.StringTable.GetString(stringId)}\")";
+                    return $"CacheContext.StringTable.GetStringId($@\"{Cache.StringTable.GetString(stringId)}\")";
                 case CachedTag tag:
                     return $"GetCachedTag<{Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group).Name}>($@\"{tag.Name}\")";
                 case PlatformUnsignedValue unsignedValue:

@@ -300,11 +300,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             halo.SetPortingProperties(audioCodec: Compression.OGG);
             halo.PortTag($@"", $@"objects\equipment\autoturret_equipment\autoturret_equipment.eqip");
 
-            h100.SetPortingProperties(audioCodec: Compression.OGG);
-            h100.PortTag($@"", $@"objects\weapons\pistol\automag\automag.weap");
-            h100.PortTag($@"", $@"objects\weapons\rifle\plasma_rifle_red\plasma_rifle_red.weap");
-            h100.PortTag($@"", $@"objects\weapons\rifle\smg_silenced\smg_silenced.weap");
-
             halo.SetPortingProperties(audioCodec: Compression.OGG);
             halo.PortTag($@"", $@"fx\scenery_fx\weather\snow\snow_heavy\snow_heavy.effect");
 
