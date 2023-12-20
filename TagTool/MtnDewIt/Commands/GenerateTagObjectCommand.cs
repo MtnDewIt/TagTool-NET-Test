@@ -8,19 +8,19 @@ using TagTool.Commands;
 using TagTool.Common;
 using TagTool.Tags;
 
-
 namespace TagTool.MtnDewIt.Commands 
 {
     public class GenerateTagObjectCommand : Command
     {
         private GameCache Cache;
+        private CachedTag Tag;
         private TagStructureInfo Structure;
         private object Value;
 
         private string Layout;
         private bool IgnoreDefaultValues;
 
-        public GenerateTagObjectCommand(GameCache cache, TagStructureInfo structure, object value) : base
+        public GenerateTagObjectCommand(GameCache cache, CachedTag tag, TagStructureInfo structure, object value) : base
         (
             false,
             "GenerateTagObject",
@@ -31,6 +31,7 @@ namespace TagTool.MtnDewIt.Commands
         )
         {
             Cache = cache;
+            Tag = tag;
             Structure = structure;
             Value = value;
         }
@@ -71,15 +72,14 @@ namespace TagTool.MtnDewIt.Commands
                 shortFormName = tagStructureInfo.GroupTag.ToString();
             }
 
-            layout = $"{tagTypeName} {shortFormName} = new {tagTypeName}()";
-            layout += "\n{";
-            layout += FormatTagStructure(Structure, Value, "    ", ",");
-            layout += "\n};";
+            layout = $"var tag = GetCachedTag<{tagTypeName}>($\"{Tag.Name}\");";
+            layout += $"\nvar {shortFormName} = CacheContext.Deserialize<{tagTypeName}>(Stream, tag);";
+            layout += FormatTagStructure(Structure, Value, $"{shortFormName}.", "", ";");
 
             return layout;
         }
 
-        public string FormatTagStructure(TagStructureInfo structure, object value, string indent, string terminator) 
+        public string FormatTagStructure(TagStructureInfo structure, object value, string objectName, string indent, string terminator) 
         {
             var output = "";
 
@@ -103,43 +103,43 @@ namespace TagTool.MtnDewIt.Commands
                 // Checks if the field is a type of TagFunction, which in this case is just an object which contains a byte array
                 if (fieldType == typeof(TagFunction))
                 {
-                    output += FormatTagFunction((TagFunction)fieldValue, nameString, indent, terminator);
+                    output += FormatTagFunction((TagFunction)fieldValue, nameString, objectName, indent, terminator);
                 }
 
                 // Checks if the field is a type of array which uses a primitive type, rather than objects or generics
                 else if (ParseArray(fieldType))
                 {
-                    output += FormatPrimitiveArray(tagFieldInfo, (Array)fieldValue, nameString, indent, terminator);
+                    output += FormatPrimitiveArray(tagFieldInfo, (Array)fieldValue, nameString, objectName, indent, terminator);
                 }
 
                 // Checks if the field is a type of array which uses objects or generics
                 else if (fieldType.IsArray)
                 {
-                    output += FormatGenericArray(tagFieldInfo, (Array)fieldValue, fieldValue, nameString, indent, terminator);
+                    output += FormatGenericArray(tagFieldInfo, (Array)fieldValue, fieldValue, nameString, objectName, indent, terminator);
                 }
 
                 // Checks if the field is a type of list
                 else if (fieldType.GetInterface(typeof(IList).Name) != null)
                 {
-                    output += FormatGenericList(fieldValue, fieldType, nameString, indent, terminator);
+                    output += FormatGenericList(fieldValue, fieldType, nameString, objectName, indent, terminator);
                 }
 
                 // Checks if the field is a type of Enumerator
                 else if (fieldType.IsEnum)
                 {
-                    output += FormatEnumerator(fieldValue, fieldType, nameString, indent, terminator);
+                    output += FormatEnumerator(fieldValue, fieldType, nameString, objectName, indent, terminator);
                 }
 
                 // Checks if the field is a type of object, and is not a generic, value or array type (basically anything that can't be parsed by the serializer). Also checks if it isn't a string or some other TagTool specific types
                 else if (!fieldType.IsPrimitive && !fieldType.IsGenericType && !fieldType.IsValueType && !fieldType.IsArray && !(fieldType == typeof(PlatformUnsignedValue)) && !(fieldType == typeof(CachedTag)) && !(fieldType == typeof(string)) && fieldValue != null)
                 {
-                    output += FormatReferenceObject(fieldValue, nameString, indent, terminator);
+                    output += FormatReferenceObject(fieldValue, nameString, objectName, indent, terminator);
                 }
 
                 // Parses the specified value if all other checks return false
                 else
                 {
-                    output += $"\n{indent}{nameString} = {FormatValue(fieldValue)}{terminator}";
+                    output += $"\n{indent}{objectName}{nameString} = {FormatValue(fieldValue)}{terminator}";
                 }
             }
 
@@ -277,12 +277,12 @@ namespace TagTool.MtnDewIt.Commands
             return output;
         }
 
-        private string FormatTagFunction(TagFunction function, string nameString, string inputIndent, string terminator) 
+        private string FormatTagFunction(TagFunction function, string nameString, string objectName, string inputIndent, string terminator) 
         {
             string output;
             string internalIndent = "    ";
 
-            output = $"\n{inputIndent}{nameString} = new TagFunction";
+            output = $"\n{inputIndent}{objectName}{nameString} = new TagFunction";
             output += $"\n{inputIndent}{{";
             output += $"\n{inputIndent}{internalIndent}Data = new byte[]";
             output += $"\n{inputIndent}{internalIndent}{{";
@@ -333,12 +333,12 @@ namespace TagTool.MtnDewIt.Commands
             return output;
         }
 
-        private string FormatPrimitiveList(IList list, Type type, string valueName, string inputIndent, string terminator) 
+        private string FormatPrimitiveList(IList list, Type type, string valueName, string objectName, string inputIndent, string terminator) 
         {
             string output;
             string internalIndent = "    ";
 
-            output = $"\n{inputIndent}{valueName} = new {FormatListName(type.Name)}<{FormatTypeName(list[0].GetType().Name)}>";
+            output = $"\n{inputIndent}{objectName}{valueName} = new {FormatListName(type.Name)}<{FormatTypeName(list[0].GetType().Name)}>";
             output += $"\n{inputIndent}{{";
 
             for (int i = 0; i < list.Count; i++) 
@@ -385,7 +385,7 @@ namespace TagTool.MtnDewIt.Commands
             return output;
         }
 
-        private string FormatPrimitiveArray(TagFieldInfo tagFieldInfo, Array valueArray, string valueName, string inputIndent, string terminator) 
+        private string FormatPrimitiveArray(TagFieldInfo tagFieldInfo, Array valueArray, string valueName, string objectName, string inputIndent, string terminator) 
         {
             string output = "";
             string internalIndent = "    ";
@@ -398,20 +398,20 @@ namespace TagTool.MtnDewIt.Commands
 
             if (valueArray.Length == 0)
             {
-                output += $"\n{inputIndent}{valueName} = null{terminator}";
+                output += $"\n{inputIndent}{objectName}{valueName} = null{terminator}";
             }
             else
             {
                 var valueType = valueArray.GetValue(0).GetType();
 
-                output = $"\n{inputIndent}{valueName} = new {FormatPrimitiveType(valueType.Name)}[{arraySize}]";
+                output = $"\n{inputIndent}{objectName}{valueName} = new {FormatPrimitiveType(valueType.Name)}[{arraySize}]";
                 output += $"\n{inputIndent}{{";
 
                 if (IgnoreDefaultValues)
                 {
                     if (ParsePrimitiveArray(valueArray))
                     {
-                        return $"\n{inputIndent}{valueName} = new {FormatPrimitiveType(valueType.Name)}[{arraySize}]{terminator}";
+                        return $"\n{inputIndent}{objectName}{valueName} = new {FormatPrimitiveType(valueType.Name)}[{arraySize}]{terminator}";
                     }
                 }
 
@@ -460,7 +460,7 @@ namespace TagTool.MtnDewIt.Commands
             return output;
         }
 
-        private string FormatGenericList(object fieldValue, Type fieldType, string nameString, string inputIndent, string terminator) 
+        private string FormatGenericList(object fieldValue, Type fieldType, string nameString, string objectName, string inputIndent, string terminator) 
         {
             string output = "";
             string internalIndent = "    ";
@@ -473,7 +473,7 @@ namespace TagTool.MtnDewIt.Commands
 
                     if (!valueType[0].GetType().IsPrimitive)
                     {
-                        output += $"\n{inputIndent}{nameString} = new {FormatListName(fieldType.Name)}<{FormatTypeName($"{fieldType.GenericTypeArguments[0]}")}>";
+                        output += $"\n{inputIndent}{objectName}{nameString} = new {FormatListName(fieldType.Name)}<{FormatTypeName($"{fieldType.GenericTypeArguments[0]}")}>";
                         output += $"\n{inputIndent}{{";
 
                         for (int i = 0; i < ((IList)fieldValue).Count; i++)
@@ -482,32 +482,32 @@ namespace TagTool.MtnDewIt.Commands
                             output += $"\n{inputIndent}{internalIndent}{{";
 
                             var valueStructure = TagStructure.GetTagStructureInfo(valueType[i].GetType(), Cache.Version, Cache.Platform);
-                            output += FormatTagStructure(valueStructure, valueType[i], $"{inputIndent}{internalIndent}" + "    ", ",");
+                            output += FormatTagStructure(valueStructure, valueType[i], "", $"{inputIndent}{internalIndent}" + "    ", ",");
 
-                            output += $"\n{inputIndent}{internalIndent}}}{terminator}";
+                            output += $"\n{inputIndent}{internalIndent}}},";
                         }
 
                         output += $"\n{inputIndent}}}{terminator}";
                     }
                     else
                     {
-                        output += FormatPrimitiveList((IList)fieldValue, fieldType, nameString, inputIndent, terminator);
+                        output += FormatPrimitiveList((IList)fieldValue, fieldType, nameString, objectName, inputIndent, terminator);
                     }
                 }
                 else
                 {
-                    output += $"\n{inputIndent}{nameString} = null{terminator}";
+                    output += $"\n{inputIndent}{objectName}{nameString} = null{terminator}";
                 }
             }
             else
             {
-                output += $"\n{inputIndent}{nameString} = null{terminator}";
+                output += $"\n{inputIndent}{objectName}{nameString} = null{terminator}";
             }
 
             return output;
         }
         
-        private string FormatGenericArray(TagFieldInfo tagFieldInfo, Array valueArray, object fieldValue, string nameString, string inputIndent, string terminator) 
+        private string FormatGenericArray(TagFieldInfo tagFieldInfo, Array valueArray, object fieldValue, string nameString, string objectName, string inputIndent, string terminator) 
         {
             string output = "";
             string internalIndent = "    ";
@@ -520,13 +520,13 @@ namespace TagTool.MtnDewIt.Commands
 
             if (valueArray == null || valueArray.Length == 0)
             {
-                output += $"\n{inputIndent}{nameString} = null";
+                output += $"\n{inputIndent}{objectName}{nameString} = null{terminator}";
             }
             else
             {
                 if (valueArray.Length != 0)
                 {
-                    output += $"\n{inputIndent}{nameString} = new {FormatTypeName(fieldValue.ToString().Replace("[]", ""))}[{arraySize}]";
+                    output += $"\n{inputIndent}{objectName}{nameString} = new {FormatTypeName(fieldValue.ToString().Replace("[]", ""))}[{arraySize}]";
                     output += $"\n{inputIndent}{{";
 
                     for (var i = 0; i < valueArray.Length; i++)
@@ -535,7 +535,7 @@ namespace TagTool.MtnDewIt.Commands
                         output += $"\n{inputIndent}{internalIndent}{{";
 
                         var valueStructure = TagStructure.GetTagStructureInfo(valueArray.GetValue(i).GetType(), Cache.Version, Cache.Platform);
-                        output += FormatTagStructure(valueStructure, valueArray.GetValue(i), $"{inputIndent}{internalIndent}" + "    ", ",");
+                        output += FormatTagStructure(valueStructure, valueArray.GetValue(i), "", $"{inputIndent}{internalIndent}" + "    ", ",");
 
                         output += $"\n{inputIndent}{internalIndent}}}{terminator}";
                     }
@@ -547,29 +547,29 @@ namespace TagTool.MtnDewIt.Commands
             return output;
         }
         
-        private string FormatReferenceObject(object fieldValue, string nameString, string indent, string terminator) 
+        private string FormatReferenceObject(object fieldValue, string nameString, string objectName, string indent, string terminator) 
         {
             var output = "";
 
             var valueString = "new" + " " + FormatTypeName(fieldValue.ToString());
 
-            output += $"\n{indent}{nameString} = {valueString}";
+            output += $"\n{indent}{objectName}{nameString} = {valueString}";
             output += $"\n{indent}{{";
 
             var valueStructure = TagStructure.GetTagStructureInfo(fieldValue.GetType(), Cache.Version, Cache.Platform);
 
-            output += FormatTagStructure(valueStructure, fieldValue, indent + "    ", ",");
+            output += FormatTagStructure(valueStructure, fieldValue, "", indent + "    ", ",");
             output += $"\n{indent}}}{terminator}";
 
             if (IgnoreDefaultValues) 
             {
-                return ParseReferenceObject(output, nameString, valueString, indent, terminator);
+                return ParseReferenceObject(output, nameString, valueString, objectName, indent, terminator);
             }
 
             return output;
         }
 
-        private string FormatEnumerator(object fieldValue, Type fieldType, string nameString, string inputIndent, string terminator) 
+        private string FormatEnumerator(object fieldValue, Type fieldType, string nameString, string objectName, string inputIndent, string terminator) 
         {
             var output = "";
 
@@ -582,7 +582,7 @@ namespace TagTool.MtnDewIt.Commands
                 {
                     var enumList = "";
 
-                    output += $"\n{inputIndent}{nameString} = ";
+                    output += $"\n{inputIndent}{objectName}{nameString} = ";
 
                     for (int i = 0; i < Enum.GetValues(enumType).Length; i++)
                     {
@@ -603,26 +603,26 @@ namespace TagTool.MtnDewIt.Commands
                 }
                 else if (enumValues.ToString() == "0")
                 {
-                    output += $"\n{inputIndent}{nameString} = 0{terminator}";
+                    output += $"\n{inputIndent}{objectName}{nameString} = 0{terminator}";
                 }
                 else
                 {
-                    output += $"\n{inputIndent}{nameString} = {FormatTypeName(fieldType.ToString()) + "." + enumValues.ToString()}{terminator}";
+                    output += $"\n{inputIndent}{objectName}{nameString} = {FormatTypeName(fieldType.ToString()) + "." + enumValues.ToString()}{terminator}";
                 }
             }
             else
             {
-                output += $"\n{inputIndent}{nameString} = {FormatTypeName(fieldType.ToString()) + "." + fieldValue}{terminator}";
+                output += $"\n{inputIndent}{objectName}{nameString} = {FormatTypeName(fieldType.ToString()) + "." + fieldValue}{terminator}";
             }
 
             return output;
         }
 
-        private string ParseReferenceObject(string input, string nameString, string valueString, string indent, string terminator) 
+        private string ParseReferenceObject(string input, string nameString, string valueString, string objectName, string indent, string terminator)
         {
             string output;
 
-            if (input == $"\n{indent}{nameString} = {valueString}" + $"\n{indent}{{" + $"\n{indent}}}{terminator}")
+            if (input == $"\n{indent}{objectName}{nameString} = {valueString}" + $"\n{indent}{{" + $"\n{indent}}}{terminator}")
             {
                 output = null;
             }

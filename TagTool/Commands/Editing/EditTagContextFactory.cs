@@ -190,7 +190,7 @@ namespace TagTool.Commands.Editing
 
             var structure = TagStructure.GetTagStructureInfo(cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group), cache.Version, cache.Platform);
 
-            commandContext.AddCommand(new GenerateTagObjectCommand(cache, structure, definition));
+            commandContext.AddCommand(new GenerateTagObjectCommand(cache, tag, structure, definition));
             commandContext.AddCommand(new ListFieldsCommand(cache, structure, definition));
             commandContext.AddCommand(new SetFieldCommand(contextStack, cache, tag, structure, definition));
             commandContext.AddCommand(new EditBlockCommand(contextStack, cache, tag, definition));
