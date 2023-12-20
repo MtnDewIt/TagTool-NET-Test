@@ -18,8 +18,7 @@ namespace TagTool.MtnDewIt.Commands
         private object Value;
 
         private string Layout;
-        private string tagTypeName;
-        private string shortFormName;
+        private bool IgnoreDefaultValues;
 
         public GenerateTagObjectCommand(GameCache cache, TagStructureInfo structure, object value) : base
         (
@@ -27,7 +26,7 @@ namespace TagTool.MtnDewIt.Commands
             "GenerateTagObject",
             "Generates a C# object based on the current tag",
 
-            "GenerateTagObject <output file path + name>",
+            "GenerateTagObject <output file path + name> [IgnoreDefaultValues]",
             "Generates a C# object based on the current tag. This object will be formatted based on the specified tag's definition"
         )
         {
@@ -38,6 +37,13 @@ namespace TagTool.MtnDewIt.Commands
 
         public override object Execute(List<string> args)
         {
+            IgnoreDefaultValues = false;
+
+            if (args.Count > 1 && string.Equals(args[1], "IgnoreDefaultValues", StringComparison.OrdinalIgnoreCase)) 
+            {
+                IgnoreDefaultValues = true;
+            }
+
             Layout = GenerateLayout(Structure);
 
             FileInfo fileInfo = new FileInfo(args[0] + ".cs");
@@ -55,8 +61,8 @@ namespace TagTool.MtnDewIt.Commands
 
         public string GenerateLayout(object structure)
         {
-            tagTypeName = Structure.Types[0].Name;
-            shortFormName = "!!!!";
+            var tagTypeName = Structure.Types[0].Name;
+            var shortFormName = "!!!!";
 
             var layout = "";
 
@@ -73,7 +79,6 @@ namespace TagTool.MtnDewIt.Commands
             return layout;
         }
 
-        // TODO: Add flag for default values, so then it'll only dump values which contai
         public string FormatTagStructure(TagStructureInfo structure, object value, string indent, string terminator) 
         {
             var output = "";
@@ -82,12 +87,18 @@ namespace TagTool.MtnDewIt.Commands
             {
                 var tagFieldInfo = TagStructure.GetTagFieldEnumerable(structure)[j];
 
-                if (tagFieldInfo.Attribute != null && tagFieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.Padding) || (tagFieldInfo.Name.Contains("Unused") || tagFieldInfo.Name.Contains("unused") || tagFieldInfo.Name.Contains("Padding") || tagFieldInfo.Name.Contains("padding")))
-                    continue;
-
                 var nameString = tagFieldInfo.Name;
                 var fieldType = tagFieldInfo.FieldType;
                 var fieldValue = tagFieldInfo.GetValue(value);
+
+                if (tagFieldInfo.Attribute != null && tagFieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.Padding) || (tagFieldInfo.Name.Contains("Unused") || tagFieldInfo.Name.Contains("unused") || tagFieldInfo.Name.Contains("Padding") || tagFieldInfo.Name.Contains("padding")))
+                    continue;
+
+                if (IgnoreDefaultValues) 
+                {
+                    if (IsDefaultValue(fieldValue))
+                        continue;
+                }
 
                 // Checks if the field is a type of TagFunction, which in this case is just an object which contains a byte array
                 if (fieldType == typeof(TagFunction))
@@ -98,13 +109,13 @@ namespace TagTool.MtnDewIt.Commands
                 // Checks if the field is a type of array which uses a primitive type, rather than objects or generics
                 else if (ParseArray(fieldType))
                 {
-                    output += FormatPrimitiveArray((Array)fieldValue, nameString, indent, terminator);
+                    output += FormatPrimitiveArray(tagFieldInfo, (Array)fieldValue, nameString, indent, terminator);
                 }
 
                 // Checks if the field is a type of array which uses objects or generics
                 else if (fieldType.IsArray)
                 {
-                    output += FormatGenericArray((Array)fieldValue, fieldValue, nameString, indent, terminator);
+                    output += FormatGenericArray(tagFieldInfo, (Array)fieldValue, fieldValue, nameString, indent, terminator);
                 }
 
                 // Checks if the field is a type of list
@@ -374,10 +385,16 @@ namespace TagTool.MtnDewIt.Commands
             return output;
         }
 
-        private string FormatPrimitiveArray(Array valueArray, string valueName, string inputIndent, string terminator) 
+        private string FormatPrimitiveArray(TagFieldInfo tagFieldInfo, Array valueArray, string valueName, string inputIndent, string terminator) 
         {
             string output = "";
             string internalIndent = "    ";
+            string arraySize = "";
+
+            if (tagFieldInfo.Attribute.Length != 0) 
+            {
+                arraySize = $"{tagFieldInfo.Attribute.Length}";
+            }
 
             if (valueArray.Length == 0)
             {
@@ -387,8 +404,16 @@ namespace TagTool.MtnDewIt.Commands
             {
                 var valueType = valueArray.GetValue(0).GetType();
 
-                output = $"\n{inputIndent}{valueName} = new {FormatPrimitiveType(valueType.Name)}[]";
+                output = $"\n{inputIndent}{valueName} = new {FormatPrimitiveType(valueType.Name)}[{arraySize}]";
                 output += $"\n{inputIndent}{{";
+
+                if (IgnoreDefaultValues)
+                {
+                    if (ParsePrimitiveArray(valueArray))
+                    {
+                        return $"\n{inputIndent}{valueName} = new {FormatPrimitiveType(valueType.Name)}[{arraySize}]{terminator}";
+                    }
+                }
 
                 for (int i = 0; i < valueArray.Length; i++)
                 {
@@ -482,10 +507,16 @@ namespace TagTool.MtnDewIt.Commands
             return output;
         }
         
-        private string FormatGenericArray(Array valueArray, object fieldValue, string nameString, string inputIndent, string terminator) 
+        private string FormatGenericArray(TagFieldInfo tagFieldInfo, Array valueArray, object fieldValue, string nameString, string inputIndent, string terminator) 
         {
             string output = "";
             string internalIndent = "    ";
+            string arraySize = "";
+
+            if (tagFieldInfo.Attribute.Length != 0)
+            {
+                arraySize = $"{tagFieldInfo.Attribute.Length}";
+            }
 
             if (valueArray == null || valueArray.Length == 0)
             {
@@ -495,7 +526,7 @@ namespace TagTool.MtnDewIt.Commands
             {
                 if (valueArray.Length != 0)
                 {
-                    output += $"\n{inputIndent}{nameString} = new {FormatTypeName(fieldValue.ToString())}";
+                    output += $"\n{inputIndent}{nameString} = new {FormatTypeName(fieldValue.ToString().Replace("[]", ""))}[{arraySize}]";
                     output += $"\n{inputIndent}{{";
 
                     for (var i = 0; i < valueArray.Length; i++)
@@ -522,13 +553,18 @@ namespace TagTool.MtnDewIt.Commands
 
             var valueString = "new" + " " + FormatTypeName(fieldValue.ToString());
 
-            output += $"\n{indent}" + $"{nameString} = {valueString}";
+            output += $"\n{indent}{nameString} = {valueString}";
             output += $"\n{indent}{{";
 
             var valueStructure = TagStructure.GetTagStructureInfo(fieldValue.GetType(), Cache.Version, Cache.Platform);
 
             output += FormatTagStructure(valueStructure, fieldValue, indent + "    ", ",");
             output += $"\n{indent}}}{terminator}";
+
+            if (IgnoreDefaultValues) 
+            {
+                return ParseReferenceObject(output, nameString, valueString, indent, terminator);
+            }
 
             return output;
         }
@@ -580,6 +616,90 @@ namespace TagTool.MtnDewIt.Commands
             }
 
             return output;
+        }
+
+        private string ParseReferenceObject(string input, string nameString, string valueString, string indent, string terminator) 
+        {
+            string output;
+
+            if (input == $"\n{indent}{nameString} = {valueString}" + $"\n{indent}{{" + $"\n{indent}}}{terminator}")
+            {
+                output = null;
+            }
+            else 
+            {
+                output = input;
+            }
+
+            return output;
+        }
+
+        private bool ParsePrimitiveArray(Array valueArray) 
+        {
+            bool result = true;
+
+            for (int i = 0; i < valueArray.Length; i++) 
+            {
+                dynamic datum = Convert.ChangeType(valueArray.GetValue(i), Convert.GetTypeCode(valueArray.GetValue(i)));
+
+                if (datum != (dynamic)Activator.CreateInstance(valueArray.GetValue(i).GetType()))
+                {
+                    result = false;
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        private bool IsDefaultValue(object fieldValue) 
+        {
+            var defaultValue = GetDefaultValueFromObject(fieldValue);
+
+            if (fieldValue == null)
+                return defaultValue == null;
+
+            if (fieldValue is string s)
+                return string.IsNullOrEmpty(s);
+
+            if (fieldValue.GetType().GetInterface(typeof(IList).Name) != null) 
+            {
+                if (((IList)fieldValue).Count == 0) 
+                {
+                    return true;
+                }
+            }
+
+            return fieldValue.Equals(defaultValue);
+        }
+
+        private object GetDefaultValueFromObject(object fieldValue) 
+        {
+            if (fieldValue == null)
+                return null;
+
+            if (fieldValue is StringId)
+                return StringId.Invalid;
+
+            return GetDefaultValueFromType(fieldValue.GetType());
+        }
+
+        private object GetDefaultValueFromType(Type fieldType)
+        {
+            if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Nullable<>)) 
+            {
+                var valueProperty = fieldType.GetProperty("Value");
+                fieldType = valueProperty.PropertyType;
+            }
+
+            if (fieldType.IsValueType)
+            {
+                return Activator.CreateInstance(fieldType);
+            }
+            else 
+            {
+                return null;
+            }
         }
     }
 }
