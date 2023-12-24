@@ -20,27 +20,32 @@ namespace TagTool.MtnDewIt.Commands
         private string Layout;
         private bool IgnoreDefaultValues;
 
-        public GenerateTagObjectCommand(GameCache cache, CachedTag tag, TagStructureInfo structure, object value) : base
+        public GenerateTagObjectCommand(GameCache cache) : base
         (
             false,
             "GenerateTagObject",
             "Generates a C# object based on the current tag",
 
-            "GenerateTagObject <output file path + name> [IgnoreDefaultValues]",
+            "GenerateTagObject <output file path> <tag_name> [IgnoreDefaultValues]",
             "Generates a C# object based on the current tag. This object will be formatted based on the specified tag's definition"
         )
         {
             Cache = cache;
-            Tag = tag;
-            Structure = structure;
-            Value = value;
         }
 
         public override object Execute(List<string> args)
         {
             IgnoreDefaultValues = false;
 
-            if (args.Count > 1 && string.Equals(args[1], "IgnoreDefaultValues", StringComparison.OrdinalIgnoreCase)) 
+            Tag = Cache.TagCache.GetTag(args[1]);
+            Structure = TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(Tag.Group), Cache.Version, Cache.Platform);
+
+            using (var stream = Cache.OpenCacheRead()) 
+            {
+                Value = Cache.Deserialize(stream, Tag);
+            }
+
+            if (args.Count > 2 && string.Equals(args[2], "IgnoreDefaultValues", StringComparison.OrdinalIgnoreCase)) 
             {
                 IgnoreDefaultValues = true;
             }
