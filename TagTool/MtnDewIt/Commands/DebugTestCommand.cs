@@ -18,7 +18,7 @@ namespace TagTool.MtnDewIt.Commands
             "DebugTest",
             "Calls on specific functions from within the specified class",
             "DebugTest",
-            "Calls on specific functions from within the specified class"
+            "Calls on specific functions from within the specified class. Assumes that the specified functions are public"
         )
         {
             Cache = cache;
@@ -31,23 +31,10 @@ namespace TagTool.MtnDewIt.Commands
 
             var newCommandContext = new ConvertCacheCommand(Cache, CacheContext, ContextStack);
 
-            //newCommandContext.modifyStrings();
-            //newCommandContext.Globals();
-            //newCommandContext.MultiplayerGlobals();
-            //newCommandContext.ModGlobals();
-            //newCommandContext.ForgeGlobals();
-            //newCommandContext.ChudGlobals();
-            //newCommandContext.GameVariantSettingsSetup();
-            //newCommandContext.RasterizerGlobalsSetup();
-            //newCommandContext.SurvivalGlobalsSetup();
-            //newCommandContext.UserInterfaceGlobalsSetup();
-            //newCommandContext.ShieldImpactSetup();
-            //newCommandContext.SoundEffectTemplateSetup();
-            //newCommandContext.SquadTemplatesSetup();
-            //newCommandContext.ApplyUIPatches();
-            //newCommandContext.ApplyHUDPatches();
-            //newCommandContext.applyPlayerPatches();
-            //newCommandContext.MainMenuDependencies();
+            //newCommandContext.UpdateShaderData();
+            //newCommandContext.PortTagData();
+            //newCommandContext.UpdateTagData();
+            //newCommandContext.UpdateMapFiles();
 
             return true;            
         }

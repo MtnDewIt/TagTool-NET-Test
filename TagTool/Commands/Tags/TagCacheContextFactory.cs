@@ -69,6 +69,7 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new TagDependencyCommand(cache));
             context.AddCommand(new GuessTagDefCommand(cache));
             context.AddCommand(new GenerateTagObjectCommand(cache));
+            context.AddCommand(new GenerateMapObjectCommand(cache));
 
             // Halo Online Specific Commands
             if (cache is GameCacheHaloOnlineBase)

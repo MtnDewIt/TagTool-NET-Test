@@ -1372,7 +1372,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 1,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Crate>($@"objects\levels\dlc\bunkerworld\drum_55gal_bunker\drum_55gal_bunker"),
+                    Object = GetCachedTag<Crate>($@"ms30\objects\levels\dlc\bunkerworld\drum_55gal_bunker\drum_55gal_bunker"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {

@@ -196,12 +196,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             buffer.AppendLine("The last input will be for the output directory. ");
             buffer.AppendLine("This is where the converted data will be saved during execution.");
             buffer.AppendLine();
-            buffer.AppendLine("Minor Note: There will be some BLF errors which appear when the command retrieves the directory info for ");
-            buffer.AppendLine("ElDewrito 0.6.1 and when inputting the directory info for Halo Online MS23. This is mainly due to the fact ");
-            buffer.AppendLine("that ElDewrito 0.6.1 and Halo Online MS23 use different .map file formats from ElDewrito 0.7, and currently ");
-            buffer.AppendLine("the file reader in TagTool can only parse ElDewrito 0.7 .map files so it will display warnings about the ");
-            buffer.AppendLine("BLF files being invalid. So long as the accompanying tag data is valid, the command will function normally.");
-            buffer.AppendLine();
             buffer.AppendLine("DISCLAIMER: ");
             buffer.AppendLine("This command is highly, HIGHLY experimental. The resulting cache may exhibit behaviour anywhere from ");
             buffer.AppendLine("minor bugs or graphical issues, crashes and general instability, to being completely non-functional");
@@ -225,7 +219,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             UpdateShaderData();
             PortTagData();
             UpdateTagData();
-            CommandRunner.Current.RunCommand($"updatemapfiles \"{Program.TagToolDirectory}\\Tools\\BaseCache\\MapInfo\"");
+            UpdateMapFiles();
             ContextStack.Pop();
 
             Program._stopWatch.Stop();
@@ -241,12 +235,12 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
         public void GetCacheFiles()
         {
-            targetCache = GameCache.Open($@"{CacheContext.Directory.FullName}\mainmenu.map");
+            targetCache = GameCache.Open($@"{CacheContext.Directory.FullName}\tags.dat");
             UpdateTagNames(targetCache, targetCache, UpdateEDTagsCommand.tagNameTable);
 
             haloOnlineDirectoryInfo = GetDirectoryInfo(haloOnlineDirectoryInfo, "Halo Online MS23");
 
-            haloOnlineCache = GameCache.Open($@"{haloOnlineDirectoryInfo.FullName}\mainmenu.map");
+            haloOnlineCache = GameCache.Open($@"{haloOnlineDirectoryInfo.FullName}\tags.dat");
             UpdateTagNames(targetCache, haloOnlineCache, UpdateHOTagsCommand.tagNameTable);
 
             halo3DirectoryInfo = GetDirectoryInfo(halo3DirectoryInfo, "Halo 3");

@@ -17,7 +17,7 @@ using TagTool.Animations;
 using TagTool.Tags.Resources;
 using TagTool.Scripting.Compiler;
 
-namespace TagTool.MtnDewIt.Commands 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
 {
     public abstract class TagFile 
     {

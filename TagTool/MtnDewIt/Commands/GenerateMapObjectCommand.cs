@@ -3,54 +3,92 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Commands;
+using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.IO;
 using TagTool.Tags;
 
 namespace TagTool.MtnDewIt.Commands 
 {
-    public class GenerateTagObjectCommand : Command
+    public class GenerateMapObjectCommand : Command 
     {
         private GameCache Cache;
-        private CachedTag Tag;
-        private TagStructureInfo Structure;
         private object Value;
 
         private string Layout;
         private bool IgnoreDefaultValues;
-
-        public GenerateTagObjectCommand(GameCache cache) : base
+        public GenerateMapObjectCommand(GameCache cache) : base
         (
             false,
-            "GenerateTagObject",
-            "Generates a C# object based on the current tag",
+            "GenerateMapObject",
+            "Generates a C# object based on the current map file",
 
-            "GenerateTagObject <output file path> <tag_name> [IgnoreDefaultValues]",
-            "Generates a C# object based on the current tag. This object will be formatted based on the specified tag's definition"
+            "GenerateMapObject <output file path> <map_name> [IgnoreDefaultValues]",
+            "Generates a C# object based on the current map file. This object will be formatted based on the internal BLF layout"
         )
         {
             Cache = cache;
         }
 
-        public override object Execute(List<string> args)
+        public override object Execute(List<string> args) 
         {
             IgnoreDefaultValues = false;
 
-            Tag = Cache.TagCache.GetTag(args[1]);
-            Structure = TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(Tag.Group), Cache.Version, Cache.Platform);
+            var file = new FileInfo(args[1]);
+            var map = new MapFile();
+            var blf = new Blf(Cache.Version, Cache.Platform);
 
-            using (var stream = Cache.OpenCacheRead()) 
+            using (var stream = file.OpenRead()) 
             {
-                Value = Cache.Deserialize(stream, Tag);
+                var reader = new EndianReader(stream);
+
+                if (file.Name == "sandbox.map")
+                {
+                    blf.Read(reader);
+
+                    if (blf.Version == CacheVersion.HaloOnline106708) 
+                    {
+                        // Issue outlined below
+                        new TagToolWarning("Modification to the BLF reader is required to generate valid BLF data");
+
+                        blf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
+                        blf.MapVariantTagNames = GenerateTagNames(blf.MapVariant.MapVariant);
+                    }
+
+                    Value = blf;
+                }
+                else 
+                {
+                    map.Read(reader);
+
+                    if (map.Version == CacheVersion.HaloOnline106708) 
+                    {
+                        // INFO IS ELDEWRITO 0.6 SPECIFIC:
+                        // Chunk header data is in big endian, but the actual chunk data is in little endian
+                        // Change endiam format to little endian
+                        // Parse the specified chunk
+                        // Change endian format back to default value
+                        // Chunk header data will now be invalid
+                        // One option is to hardcode the chunk header data for every type other the start and end chunks
+                        new TagToolWarning("Modification to the BLF reader is required to generate valid BLF data");
+
+                        map.MapFileBlf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
+                        map.MapFileBlf.MapVariantTagNames = GenerateTagNames(map.MapFileBlf.MapVariant.MapVariant);
+                    }
+
+                    Value = map;
+                }
             }
 
-            if (args.Count > 2 && string.Equals(args[2], "IgnoreDefaultValues", StringComparison.OrdinalIgnoreCase)) 
+            if (args.Count > 2 && string.Equals(args[2], "IgnoreDefaultValues", StringComparison.OrdinalIgnoreCase))
             {
                 IgnoreDefaultValues = true;
             }
 
-            Layout = GenerateLayout(Structure);
+            Layout = GenerateLayout(Value);
 
             FileInfo fileInfo = new FileInfo(args[0] + ".cs");
 
@@ -65,41 +103,50 @@ namespace TagTool.MtnDewIt.Commands
             return true;
         }
 
-        public string GenerateLayout(object structure)
+        public string GenerateLayout(object value)
         {
-            var tagTypeName = Structure.Types[0].Name;
-            var shortFormName = "!!!!";
-
             var layout = "";
+            var objectName = "";
+            var blfInput = "";
 
-            if (structure is TagStructureInfo tagStructureInfo)
+            if (value.GetType() == typeof(Blf)) 
             {
-                shortFormName = tagStructureInfo.GroupTag.ToString();
+                var blfData = (Blf)value;
+
+                objectName = "blf";
+                blfInput = $"{FormatEnumerator(blfData.Version, blfData.Version.GetType(), "", "", "", "")}, CachePlatform.Original";
+                blfInput = blfInput.Replace("\n = ", "");
             }
 
-            layout = $"var tag = GetCachedTag<{tagTypeName}>($\"{Tag.Name}\");";
-            layout += $"\nvar {shortFormName} = CacheContext.Deserialize<{tagTypeName}>(Stream, tag);";
-            layout += FormatTagStructure(Structure, Value, $"{shortFormName}.", "", ";");
+            if (value.GetType() == typeof(MapFile)) 
+            {
+                objectName = "map";
+            }
+
+            layout = $"{FormatTypeName(value.GetType().Name)} {objectName} = new {FormatTypeName(value.GetType().Name)}({blfInput})";
+            layout += "\n{";
+            layout += FormatMapStructure(value, "", "    ", ",");
+            layout += "\n};";
 
             return layout;
         }
 
-        public string FormatTagStructure(TagStructureInfo structure, object value, string objectName, string indent, string terminator) 
+        public string FormatMapStructure(object value, string objectName, string indent, string terminator) 
         {
             var output = "";
 
-            for (int j = 0; j < TagStructure.GetTagFieldEnumerable(structure).Count; j++) 
+            for (int i = 0; i < value.GetType().GetFields().Length; i++)
             {
-                var tagFieldInfo = TagStructure.GetTagFieldEnumerable(structure)[j];
+                var fieldInfo = value.GetType().GetFields()[i];
 
-                var nameString = tagFieldInfo.Name;
-                var fieldType = tagFieldInfo.FieldType;
-                var fieldValue = tagFieldInfo.GetValue(value);
+                var nameString = fieldInfo.Name;
+                var fieldType = fieldInfo.FieldType;
+                var fieldValue = fieldInfo.GetValue(value);
 
-                if (tagFieldInfo.Attribute != null && tagFieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.Padding) || (tagFieldInfo.Name.Contains("Unused") || tagFieldInfo.Name.Contains("unused") || tagFieldInfo.Name.Contains("Padding") || tagFieldInfo.Name.Contains("padding")))
+                if (fieldInfo.Name.Contains("Unused") || fieldInfo.Name.Contains("unused") || fieldInfo.Name.Contains("Padding") || fieldInfo.Name.Contains("padding"))
                     continue;
 
-                if (IgnoreDefaultValues) 
+                if (IgnoreDefaultValues)
                 {
                     if (IsDefaultValue(fieldValue))
                         continue;
@@ -114,13 +161,13 @@ namespace TagTool.MtnDewIt.Commands
                 // Checks if the field is a type of array which uses a primitive type, rather than objects or generics
                 else if (ParseArray(fieldType))
                 {
-                    output += FormatPrimitiveArray(tagFieldInfo, (Array)fieldValue, nameString, objectName, indent, terminator);
+                    output += FormatPrimitiveArray((Array)fieldValue, nameString, objectName, indent, terminator);
                 }
 
                 // Checks if the field is a type of array which uses objects or generics
                 else if (fieldType.IsArray)
                 {
-                    output += FormatGenericArray(tagFieldInfo, (Array)fieldValue, fieldValue, nameString, objectName, indent, terminator);
+                    output += FormatGenericArray((Array)fieldValue, fieldValue, nameString, objectName, indent, terminator);
                 }
 
                 // Checks if the field is a type of list
@@ -165,7 +212,7 @@ namespace TagTool.MtnDewIt.Commands
 
         // Converts the type name for each type into the language keyword
         // Pulls the type and type name from one of the bounds values
-        private string FormatPrimitiveType(string typeName) 
+        private string FormatPrimitiveType(string typeName)
         {
             string name;
 
@@ -213,9 +260,11 @@ namespace TagTool.MtnDewIt.Commands
                 case null:
                     return "null";
                 case string str:
-                    return $"\"{str}\"";
+                    return $"$@\"{str}\"";
                 case float f:
                     return $"{f}f";
+                case bool boolean:
+                    return FormatBoolean(boolean);
                 case Angle angle:
                     return $"Angle.FromDegrees({angle.Degrees}f)";
                 case RealEulerAngles2d angles2d:
@@ -258,6 +307,8 @@ namespace TagTool.MtnDewIt.Commands
                     return $"new PlatformUnsignedValue({unsignedValue})";
                 case PlatformSignedValue signedValue:
                     return $"new PlatformSignedValue({signedValue})";
+                case Tag tag:
+                    return $"new Tag(\"{tag}\")";
                 default:
                     return $"{value}";
             }
@@ -273,7 +324,24 @@ namespace TagTool.MtnDewIt.Commands
             return $"new Bounds<{typeName}>({FormatValue(lower)}, {FormatValue(upper)})";
         }
 
-        private string FormatTypeName(string typeString) 
+        private string FormatBoolean(bool boolean) 
+        {
+            string name = "";
+
+            if (boolean == false) 
+            {
+                name = "false";
+            }
+
+            if (boolean == true) 
+            {
+                name = "true";
+            }
+
+            return name;
+        }
+
+        private string FormatTypeName(string typeString)
         {
             string output;
 
@@ -284,7 +352,7 @@ namespace TagTool.MtnDewIt.Commands
             return output;
         }
 
-        private string FormatTagFunction(TagFunction function, string nameString, string objectName, string inputIndent, string terminator) 
+        private string FormatTagFunction(TagFunction function, string nameString, string objectName, string inputIndent, string terminator)
         {
             string output;
             string internalIndent = "    ";
@@ -300,7 +368,7 @@ namespace TagTool.MtnDewIt.Commands
 
                 var offset = 0;
 
-                if (function.Data.Length <= 100) 
+                if (function.Data.Length <= 100)
                 {
                     offset = 10;
                 }
@@ -310,7 +378,7 @@ namespace TagTool.MtnDewIt.Commands
                     offset = 20;
                 }
 
-                if (function.Data.Length > 1000) 
+                if (function.Data.Length > 1000)
                 {
                     offset = 30;
                 }
@@ -330,17 +398,17 @@ namespace TagTool.MtnDewIt.Commands
 
             return output;
         }
-        
-        private string FormatListName(string listName) 
+
+        private string FormatListName(string listName)
         {
             string output;
 
             output = listName.Replace("`1", "");
-        
+
             return output;
         }
 
-        private string FormatPrimitiveList(IList list, Type type, string valueName, string objectName, string inputIndent, string terminator) 
+        private string FormatPrimitiveList(IList list, Type type, string valueName, string objectName, string inputIndent, string terminator)
         {
             string output;
             string internalIndent = "    ";
@@ -348,7 +416,7 @@ namespace TagTool.MtnDewIt.Commands
             output = $"\n{inputIndent}{objectName}{valueName} = new {FormatListName(type.Name)}<{FormatTypeName(list[0].GetType().Name)}>";
             output += $"\n{inputIndent}{{";
 
-            for (int i = 0; i < list.Count; i++) 
+            for (int i = 0; i < list.Count; i++)
             {
                 object datum = list[i];
 
@@ -379,7 +447,7 @@ namespace TagTool.MtnDewIt.Commands
                     var byteValue = (byte)datum;
                     output += "0x" + byteValue.ToString("X2") + ",";
                 }
-                else 
+                else
                 {
                     output += datum.ToString() + ",";
                 }
@@ -392,18 +460,18 @@ namespace TagTool.MtnDewIt.Commands
             return output;
         }
 
-        private string FormatPrimitiveArray(TagFieldInfo tagFieldInfo, Array valueArray, string valueName, string objectName, string inputIndent, string terminator) 
+        private string FormatPrimitiveArray(Array valueArray, string valueName, string objectName, string inputIndent, string terminator)
         {
             string output = "";
             string internalIndent = "    ";
             string arraySize = "";
 
-            if (tagFieldInfo.Attribute.Length != 0) 
+            if (valueArray != null && valueArray.Length != 0)
             {
-                arraySize = $"{tagFieldInfo.Attribute.Length}";
+                arraySize = $"{valueArray.Length}";
             }
 
-            if (valueArray.Length == 0)
+            if (valueArray == null || valueArray.Length == 0)
             {
                 output += $"\n{inputIndent}{objectName}{valueName} = null{terminator}";
             }
@@ -467,7 +535,7 @@ namespace TagTool.MtnDewIt.Commands
             return output;
         }
 
-        private string FormatGenericList(object fieldValue, Type fieldType, string nameString, string objectName, string inputIndent, string terminator) 
+        private string FormatGenericList(object fieldValue, Type fieldType, string nameString, string objectName, string inputIndent, string terminator)
         {
             string output = "";
             string internalIndent = "    ";
@@ -488,8 +556,7 @@ namespace TagTool.MtnDewIt.Commands
                             output += $"\n{inputIndent}{internalIndent}new {FormatTypeName($"{fieldType.GenericTypeArguments[0]}")}";
                             output += $"\n{inputIndent}{internalIndent}{{";
 
-                            var valueStructure = TagStructure.GetTagStructureInfo(valueType[i].GetType(), Cache.Version, Cache.Platform);
-                            output += FormatTagStructure(valueStructure, valueType[i], "", $"{inputIndent}{internalIndent}" + "    ", ",");
+                            output += FormatMapStructure(valueType[i], "", $"{inputIndent}{internalIndent}" + "    ", ",");
 
                             output += $"\n{inputIndent}{internalIndent}}},";
                         }
@@ -513,16 +580,16 @@ namespace TagTool.MtnDewIt.Commands
 
             return output;
         }
-        
-        private string FormatGenericArray(TagFieldInfo tagFieldInfo, Array valueArray, object fieldValue, string nameString, string objectName, string inputIndent, string terminator) 
+
+        private string FormatGenericArray(Array valueArray, object fieldValue, string nameString, string objectName, string inputIndent, string terminator)
         {
             string output = "";
             string internalIndent = "    ";
             string arraySize = "";
 
-            if (tagFieldInfo.Attribute.Length != 0)
+            if (valueArray != null && valueArray.Length != 0)
             {
-                arraySize = $"{tagFieldInfo.Attribute.Length}";
+                arraySize = $"{valueArray.Length}";
             }
 
             if (valueArray == null || valueArray.Length == 0)
@@ -541,8 +608,7 @@ namespace TagTool.MtnDewIt.Commands
                         output += $"\n{inputIndent}{internalIndent}new {FormatTypeName(fieldValue.ToString().Replace("[]", ""))}";
                         output += $"\n{inputIndent}{internalIndent}{{";
 
-                        var valueStructure = TagStructure.GetTagStructureInfo(valueArray.GetValue(i).GetType(), Cache.Version, Cache.Platform);
-                        output += FormatTagStructure(valueStructure, valueArray.GetValue(i), "", $"{inputIndent}{internalIndent}" + "    ", ",");
+                        output += FormatMapStructure(valueArray.GetValue(i), "", $"{inputIndent}{internalIndent}" + "    ", ",");
 
                         output += $"\n{inputIndent}{internalIndent}}}{terminator}";
                     }
@@ -553,22 +619,31 @@ namespace TagTool.MtnDewIt.Commands
 
             return output;
         }
-        
-        private string FormatReferenceObject(object fieldValue, string nameString, string objectName, string indent, string terminator) 
+
+        private string FormatReferenceObject(object fieldValue, string nameString, string objectName, string indent, string terminator)
         {
             var output = "";
 
             var valueString = "new" + " " + FormatTypeName(fieldValue.ToString());
 
-            output += $"\n{indent}{objectName}{nameString} = {valueString}";
+            if (fieldValue.GetType() == typeof(Blf))
+            {
+                var blfData = (Blf)fieldValue;
+                output += $"\n{indent}{objectName}{nameString} = new Blf({FormatEnumerator(blfData.Version, blfData.Version.GetType(), "", "", "", "")}, CachePlatform.Original)";
+                output = output.Replace("\n = ", "");
+            }
+            else 
+            {
+                output += $"\n{indent}{objectName}{nameString} = {valueString}";
+            }
+
             output += $"\n{indent}{{";
 
-            var valueStructure = TagStructure.GetTagStructureInfo(fieldValue.GetType(), Cache.Version, Cache.Platform);
+            output += FormatMapStructure(fieldValue, "", indent + "    ", ",");
 
-            output += FormatTagStructure(valueStructure, fieldValue, "", indent + "    ", ",");
             output += $"\n{indent}}}{terminator}";
 
-            if (IgnoreDefaultValues) 
+            if (IgnoreDefaultValues)
             {
                 return ParseReferenceObject(output, nameString, valueString, objectName, indent, terminator);
             }
@@ -576,7 +651,7 @@ namespace TagTool.MtnDewIt.Commands
             return output;
         }
 
-        private string FormatEnumerator(object fieldValue, Type fieldType, string nameString, string objectName, string inputIndent, string terminator) 
+        private string FormatEnumerator(object fieldValue, Type fieldType, string nameString, string objectName, string inputIndent, string terminator)
         {
             var output = "";
 
@@ -617,6 +692,11 @@ namespace TagTool.MtnDewIt.Commands
                     output += $"\n{inputIndent}{objectName}{nameString} = {FormatTypeName(fieldType.ToString()) + "." + enumValues.ToString()}{terminator}";
                 }
             }
+            else if (!Enum.IsDefined(fieldType, (Enum)fieldValue)) 
+            {
+                var enumValues = (Enum)fieldValue;
+                output += $"\n{inputIndent}{objectName}{nameString} = ({FormatTypeName(fieldType.ToString())}){enumValues}{terminator}";
+            }
             else
             {
                 output += $"\n{inputIndent}{objectName}{nameString} = {FormatTypeName(fieldType.ToString()) + "." + fieldValue}{terminator}";
@@ -633,7 +713,7 @@ namespace TagTool.MtnDewIt.Commands
             {
                 output = null;
             }
-            else 
+            else
             {
                 output = input;
             }
@@ -641,11 +721,11 @@ namespace TagTool.MtnDewIt.Commands
             return output;
         }
 
-        private bool ParsePrimitiveArray(Array valueArray) 
+        private bool ParsePrimitiveArray(Array valueArray)
         {
             bool result = true;
 
-            for (int i = 0; i < valueArray.Length; i++) 
+            for (int i = 0; i < valueArray.Length; i++)
             {
                 dynamic datum = Convert.ChangeType(valueArray.GetValue(i), Convert.GetTypeCode(valueArray.GetValue(i)));
 
@@ -659,7 +739,7 @@ namespace TagTool.MtnDewIt.Commands
             return result;
         }
 
-        private bool IsDefaultValue(object fieldValue) 
+        private bool IsDefaultValue(object fieldValue)
         {
             var defaultValue = GetDefaultValueFromObject(fieldValue);
 
@@ -669,9 +749,9 @@ namespace TagTool.MtnDewIt.Commands
             if (fieldValue is string s)
                 return string.IsNullOrEmpty(s);
 
-            if (fieldValue.GetType().GetInterface(typeof(IList).Name) != null) 
+            if (fieldValue.GetType().GetInterface(typeof(IList).Name) != null)
             {
-                if (((IList)fieldValue).Count == 0) 
+                if (((IList)fieldValue).Count == 0)
                 {
                     return true;
                 }
@@ -680,7 +760,7 @@ namespace TagTool.MtnDewIt.Commands
             return fieldValue.Equals(defaultValue);
         }
 
-        private object GetDefaultValueFromObject(object fieldValue) 
+        private object GetDefaultValueFromObject(object fieldValue)
         {
             if (fieldValue == null)
                 return null;
@@ -693,7 +773,7 @@ namespace TagTool.MtnDewIt.Commands
 
         private object GetDefaultValueFromType(Type fieldType)
         {
-            if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Nullable<>)) 
+            if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
                 var valueProperty = fieldType.GetProperty("Value");
                 fieldType = valueProperty.PropertyType;
@@ -703,10 +783,52 @@ namespace TagTool.MtnDewIt.Commands
             {
                 return Activator.CreateInstance(fieldType);
             }
-            else 
+            else
             {
                 return null;
             }
+        }
+
+        private BlfMapVariantTagNames GenerateTagNames(MapVariant mapVariant)
+        {
+            var tagNames = new BlfMapVariantTagNames
+            {
+                Names = PopulateTagNames(),
+            };
+
+            tagNames.Signature = new Tag("tagn");
+            tagNames.Length = (int)TagStructure.GetStructureSize(typeof(BlfMapVariantTagNames), Cache.Version, CachePlatform.Original);
+            tagNames.MajorVersion = 1;
+            tagNames.MinorVersion = 0;
+
+            for (int i = 0; i < mapVariant.Quotas.Length; i++)
+            {
+                var quota = mapVariant.Quotas[i];
+
+                if (quota.ObjectDefinitionIndex != -1)
+                {
+                    var tag = Cache.TagCache.GetTag(quota.ObjectDefinitionIndex);
+
+                    tagNames.Names[i].Name = $"{tag.Name}.{tag.Group.Tag}";
+                }
+            }
+
+            return tagNames;
+        }
+
+        private TagName[] PopulateTagNames()
+        {
+            var tagNames = new TagName[256];
+
+            for (int i = 0; i < tagNames.Length; i++)
+            {
+                tagNames[i] = new TagName()
+                {
+                    Name = "",
+                };
+            }
+
+            return tagNames;
         }
     }
 }
