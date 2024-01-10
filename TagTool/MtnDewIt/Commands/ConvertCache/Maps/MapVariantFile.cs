@@ -100,7 +100,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Maps
             {
                 var tagName = tagNames[i];
 
-                if (tagName.Name != null) 
+                if (tagName.Name != null && tagName.Name != "") 
                 {
                     var tag = CacheContext.TagCache.GetTag(tagName.Name);
 

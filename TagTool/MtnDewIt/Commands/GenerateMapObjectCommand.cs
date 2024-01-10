@@ -26,7 +26,7 @@ namespace TagTool.MtnDewIt.Commands
             "GenerateMapObject",
             "Generates a C# object based on the current map file",
 
-            "GenerateMapObject <output file path> <map_name> [IgnoreDefaultValues]",
+            "GenerateMapObject <Output File Path> <Map_Name> [IgnoreDefaultValues]",
             "Generates a C# object based on the current map file. This object will be formatted based on the internal BLF layout"
         )
         {

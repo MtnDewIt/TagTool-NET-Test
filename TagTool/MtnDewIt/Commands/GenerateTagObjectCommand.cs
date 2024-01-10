@@ -26,7 +26,7 @@ namespace TagTool.MtnDewIt.Commands
             "GenerateTagObject",
             "Generates a C# object based on the current tag",
 
-            "GenerateTagObject <output file path> <tag_name> [IgnoreDefaultValues]",
+            "GenerateTagObject <Output File Path> <Tag_Name> [IgnoreDefaultValues]",
             "Generates a C# object based on the current tag. This object will be formatted based on the specified tag's definition"
         )
         {
