@@ -16,6 +16,7 @@ namespace TagTool.MtnDewIt.Commands
     {
         private GameCache Cache;
         private GameCache EDCache;
+        private string OutputPath;
 
         public ConvertVariantCommand(GameCache cache) : base
         (
@@ -23,7 +24,7 @@ namespace TagTool.MtnDewIt.Commands
             "ConvertVariant",
             "Converts an ElDewrito 0.6 variant file so that it functions in an ElDewrito 0.7 cache",
             
-            "ConvertVariant <0.6 Cache Directory> <Input_Variant_Path> <Output_Path>",
+            "ConvertVariant <0.6 Cache Directory> <Input_Variant_Folder> [Output_Path]",
             "Converts an ElDewrito 0.6 variant file so that it functions in an ElDewrito 0.7 cache. Will pull required tag data from current cache context"
         )
         {
@@ -34,18 +35,38 @@ namespace TagTool.MtnDewIt.Commands
         {
             if (Cache.Version == CacheVersion.HaloOnlineED)
             {
-                var directoryInfo = new DirectoryInfo(args[0]);
+                DirectoryInfo directoryInfo = new DirectoryInfo(args[0]);
 
                 EDCache = GameCache.Open($@"{directoryInfo.FullName}\tags.dat");
 
-                var output = new FileInfo(args[2]);
-
-                if (!output.Directory.Exists)
+                if (args.Count == 3)
                 {
-                    output.Directory.Create();
+                    OutputPath = args[2];
+                }
+                else if (args.Count == 2)
+                {
+                    OutputPath = "";
+                }
+                else 
+                {
+                    new TagToolError(CommandError.ArgCount);
                 }
 
-                var input = new FileInfo(args[1]);
+                ConvertMaps(args[1]);
+            }
+            else 
+            {
+                new TagToolError(CommandError.CacheUnsupported, "Ensure you are using a 0.7 cache as the base cache when opening TagTool");
+            }
+
+            return true;
+        }
+
+        private void ConvertMaps(string targetDirectory) 
+        {
+            foreach (string filePath in Directory.GetFiles(targetDirectory, "sandbox.map"))
+            {
+                FileInfo input = new FileInfo(filePath);
 
                 var inputBlf = new Blf(CacheVersion.HaloOnline106708, CachePlatform.Original);
 
@@ -60,7 +81,7 @@ namespace TagTool.MtnDewIt.Commands
                     else
                     {
                         new TagToolError(CommandError.CustomError, "Unsupported Variant File");
-                        return false;
+                        return;
                     }
                 }
 
@@ -68,24 +89,28 @@ namespace TagTool.MtnDewIt.Commands
 
                 UpdateQuotaIndexes(outputBlf.MapVariantTagNames.Names, outputBlf.MapVariant.MapVariant.Quotas);
 
+                var output = new FileInfo(Path.Combine(OutputPath, $@"maps", $@"{outputBlf.MapVariant.MapVariant.Metadata.Name}\sandbox.map"));
+
+                if (!output.Directory.Exists)
+                {
+                    output.Directory.Create();
+                }
+
                 using (var stream = output.Create())
                 using (var writer = new EndianWriter(stream))
                 {
-                    // While converted variants are functional, they are 3KB smaller than expected (121KB vs 124KB).
-                    // TODO: Figure out why :/
                     outputBlf.Write(writer);
                 }
             }
-            else 
-            {
-                new TagToolError(CommandError.CacheUnsupported, "Ensure you are using a 0.7 cache as the base cache when opening TagTool");
-            }
 
-            return true;
+            foreach (string subdirectory in Directory.GetDirectories(targetDirectory))
+            {
+                ConvertMaps(subdirectory);
+            }
         }
 
         // New reader required as the 0.6 variant files are formatted strangely :/
-        // The chunk header uses the endianness as the rest of the file
+        // The chunk header uses the same endianness as the rest of the file
         // The actual data stored in the chunk header however uses the opposite endianess (in 0.6's case, LittleEndian vs BigEndian)
         // This does cause the chunk header's base attributes to be incorrect, however since we are creating a new BLF object, this isn't too big of an issue
         private Blf ReadBlf(EndianReader reader, Blf inputBlf) 
@@ -286,9 +311,7 @@ namespace TagTool.MtnDewIt.Commands
                 {
                     var tag = EDCache.TagCache.GetTag(quota.ObjectDefinitionIndex);
 
-                    // TODO: Calculate names based off of internal tag list, rather than the cache
-                    // The 0.6 indexes are static, while the tag names are dynamic, so as long we have a valid tag name and type, finding them in the 0.7 cache is trivial
-                    tagNames.Names[i].Name = $"{tag.Name}.{tag.Group.Tag}";
+                    tagNames.Names[i].Name = $"{UpdateEDTagsCommand.tagNameTable[quota.ObjectDefinitionIndex]}.{tag.Group.Tag}";
                 }
             }
 
