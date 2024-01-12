@@ -44,97 +44,37 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     Label = CacheContext.StringTable.GetStringId($@"armor_lock_enter"),
                     GraphIndex = 0,
-                    Animation = 1607,
+                    Animation = 1597,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
                     Label = CacheContext.StringTable.GetStringId($@"armor_lock_exit"),
                     GraphIndex = 0,
-                    Animation = 1608,
+                    Animation = 1598,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
                     Label = CacheContext.StringTable.GetStringId($@"armor_lock_idle"),
                     GraphIndex = 0,
-                    Animation = 1609,
+                    Animation = 1599,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
                     Label = CacheContext.StringTable.GetStringId($@"con_blast_enter"),
                     GraphIndex = 0,
-                    Animation = 1610,
+                    Animation = 1600,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
                     Label = CacheContext.StringTable.GetStringId($@"con_blast_exit"),
                     GraphIndex = 0,
-                    Animation = 1611,
+                    Animation = 1601,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
                     Label = CacheContext.StringTable.GetStringId($@"mag_pulse_enter"),
                     GraphIndex = 0,
-                    Animation = 1612,
-                },
-                new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                {
-                    Label = CacheContext.StringTable.GetStringId($@"thunder_clap"),
-                    GraphIndex = 0,
-                    Animation = 1597,
-                },
-                new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                {
-                    Label = CacheContext.StringTable.GetStringId($@"twerk"),
-                    GraphIndex = 0,
-                    Animation = 1604,
-                },
-                new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                {
-                    Label = CacheContext.StringTable.GetStringId($@"dance1test"),
-                    GraphIndex = 0,
-                    Animation = 1598,
-                },
-                new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                {
-                    Label = CacheContext.StringTable.GetStringId($@"dance1"),
-                    GraphIndex = 0,
-                    Animation = 1599,
-                },
-                new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                {
-                    Label = CacheContext.StringTable.GetStringId($@"mixamo"),
-                    GraphIndex = 0,
-                    Animation = 1600,
-                },
-                new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                {
-                    Label = CacheContext.StringTable.GetStringId($@"fingerlay"),
-                    GraphIndex = 0,
-                    Animation = 1601,
-                },
-                new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                {
-                    Label = CacheContext.StringTable.GetStringId($@"fingerstand"),
-                    GraphIndex = 0,
                     Animation = 1602,
-                },
-                new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                {
-                    Label = CacheContext.StringTable.GetStringId($@"breakdance"),
-                    GraphIndex = 0,
-                    Animation = 1603,
-                },
-                new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                {
-                    Label = CacheContext.StringTable.GetStringId($@"hiphop"),
-                    GraphIndex = 0,
-                    Animation = 1605,
-                },
-                new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                {
-                    Label = CacheContext.StringTable.GetStringId($@"ballskick"),
-                    GraphIndex = 0,
-                    Animation = 1606,
                 },
             };
             jmad.Modes.Add(new ModelAnimationGraph.Mode
@@ -158,7 +98,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Label = CacheContext.StringTable.GetStringId("move_front"),
                                             GraphIndex = 0,
-                                            Animation = 1615,
+                                            Animation = 1605,
                                         },
                                     },
                                 },
@@ -181,7 +121,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Label = CacheContext.StringTable.GetStringId("move_front"),
                                             GraphIndex = 0,
-                                            Animation = 1617,
+                                            Animation = 1607,
                                         },
                                     },
                                 },
@@ -204,7 +144,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Label = CacheContext.StringTable.GetStringId("move_front"),
                                             GraphIndex = 0,
-                                            Animation = 1616,
+                                            Animation = 1606,
                                         },
                                     },
                                 },
@@ -227,7 +167,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Label = CacheContext.StringTable.GetStringId("move_front"),
                                             GraphIndex = 0,
-                                            Animation = 1618,
+                                            Animation = 1608,
                                         },
                                     },
                                 },
@@ -250,7 +190,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Label = CacheContext.StringTable.GetStringId("move_front"),
                                             GraphIndex = 0,
-                                            Animation = 1613,
+                                            Animation = 1603,
                                         },
                                     },
                                 },
@@ -273,7 +213,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Label = CacheContext.StringTable.GetStringId("move_front"),
                                             GraphIndex = 0,
-                                            Animation = 1614,
+                                            Animation = 1604,
                                         },
                                     },
                                 },

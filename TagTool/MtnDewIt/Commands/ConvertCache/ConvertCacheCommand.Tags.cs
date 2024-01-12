@@ -10,15 +10,9 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             using (var stream = Cache.OpenCacheReadWrite())
             {
                 Cache.StringTable.Add($@"thunder_clap");
-                Cache.StringTable.Add($@"twerk");
-                Cache.StringTable.Add($@"dance1test");
-                Cache.StringTable.Add($@"dance1");
-                Cache.StringTable.Add($@"mixamo");
-                Cache.StringTable.Add($@"fingerlay");
-                Cache.StringTable.Add($@"fingerstand");
-                Cache.StringTable.Add($@"breakdance");
-                Cache.StringTable.Add($@"hiphop");
-                Cache.StringTable.Add($@"ballskick");
+                Cache.StringTable.Add($@"fresh");
+                Cache.StringTable.Add($@"orange_justice");
+                Cache.StringTable.Add($@"electro_swing");
                 Cache.StringTable.Add($@"con_blast_exit");
                 Cache.StringTable.Add($@"flaming_ninja_active");
                 Cache.StringTable.Add($@"menu_spartan2");

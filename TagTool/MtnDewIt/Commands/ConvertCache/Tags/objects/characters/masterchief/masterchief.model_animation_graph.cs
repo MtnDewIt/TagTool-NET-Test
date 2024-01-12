@@ -27,16 +27,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
         {
             var tag = GetCachedTag<ModelAnimationGraph>($@"objects\characters\masterchief\masterchief");
 
-            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\combat thunderclap.JMM");
-            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any dance1test.JMM");
-            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any dance1.JMM");
-            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any mixamo.JMM");
-            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any fingerlay.JMM");
-            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any fingerstand.JMM");
-            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any breakdance.JMM");
-            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any twerk.JMM");
-            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any hiphop.JMM");
-            AddAnimation(tag, $"{Program.TagToolDirectory}\\Tools\\BaseCache\\Animations\\Spartan\\any any ballskick.JMM");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Spartan\thunderclap.JMM");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Spartan\fresh.JMM");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Spartan\orangejustice.JMM");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Spartan\electroswing.JMM");
 
             var jmad = CacheContext.Deserialize<ModelAnimationGraph>(Stream, tag);
             jmad.Modes[0].WeaponClass[1].WeaponType[0].Set.Actions = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry> 
@@ -91,57 +85,21 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"twerk"),
-                    GraphIndex = -1,
-                    Animation = 1180,
-                },
-                new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                {
-                    Label = CacheContext.StringTable.GetStringId($@"dance1test"),
+                    Label = CacheContext.StringTable.GetStringId($@"fresh"),
                     GraphIndex = -1,
                     Animation = 1174,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"dance1"),
+                    Label = CacheContext.StringTable.GetStringId($@"orange_justice"),
                     GraphIndex = -1,
                     Animation = 1175,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"mixamo"),
+                    Label = CacheContext.StringTable.GetStringId($@"electro_swing"),
                     GraphIndex = -1,
                     Animation = 1176,
-                },
-                new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                {
-                    Label = CacheContext.StringTable.GetStringId($@"fingerlay"),
-                    GraphIndex = -1,
-                    Animation = 1177,
-                },
-                new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                {
-                    Label = CacheContext.StringTable.GetStringId($@"fingerstand"),
-                    GraphIndex = -1,
-                    Animation = 1178,
-                },
-                new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                {
-                    Label = CacheContext.StringTable.GetStringId($@"breakdance"),
-                    GraphIndex = -1,
-                    Animation = 1179,
-                },
-                new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                {
-                    Label = CacheContext.StringTable.GetStringId($@"hiphop"),
-                    GraphIndex = -1,
-                    Animation = 1181,
-                },
-                new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-                {
-                    Label = CacheContext.StringTable.GetStringId($@"ballskick"),
-                    GraphIndex = -1,
-                    Animation = 1182,
                 },
             };
             CacheContext.Serialize(Stream, tag, jmad);
