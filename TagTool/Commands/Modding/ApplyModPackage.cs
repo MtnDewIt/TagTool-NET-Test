@@ -397,7 +397,7 @@ namespace TagTool.Commands.Modding
             currentForg.InvisibleRenderMethod = forg.InvisibleRenderMethod;
             currentForg.DefaultRenderMethod = forg.DefaultRenderMethod;
             currentForg.PrematchCameraObject = forg.PrematchCameraObject;
-            currentForg.PostmatchObject = forg.PostmatchObject;
+            //currentForg.PostmatchObject = forg.PostmatchObject; // Uncomment for release
             currentForg.ModifierObject = forg.ModifierObject;
             currentForg.KillVolumeObject = forg.KillVolumeObject;
             currentForg.GarbageVolumeObject = forg.GarbageVolumeObject;

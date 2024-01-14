@@ -769,7 +769,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
                                                 GuiRenderBlock = new GuiDefinition
                                                 {
                                                     Name = CacheContext.StringTable.GetStringId($@"main_menu"),
-                                                    ScaledPositioning = GuiDefinition.WidgetPositioning.BottomReftCorner,
+                                                    ScaledPositioning = GuiDefinition.WidgetPositioning.BottomLeftCorner,
                                                     Bounds720p = new Rectangle2d(525, 111, 0, 0),
                                                     Bounds480i = new Rectangle2d(409, 63, 0, 0),
                                                 },

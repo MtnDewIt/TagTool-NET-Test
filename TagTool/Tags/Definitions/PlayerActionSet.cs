@@ -5,7 +5,8 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.Tags
 {
-    [TagStructure(Name = "player_action_set", Tag = "pact", Size = 0x148)]
+    [TagStructure(Name = "player_action_set", Tag = "pact", Size = 0x148)] // Remove for release
+    //[TagStructure(Name = "player_action_set", Tag = "pact", Size = 0x144)] // Uncomment for release
     public class PlayerActionSet : TagStructure
     {
         public WidgetData Widget;
@@ -15,7 +16,8 @@ namespace TagTool.Tags
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x100)]
         public byte[] Unused = new byte[0x100];
 
-        [TagStructure(Size = 0x3C)]
+        [TagStructure(Size = 0x3C)] // Remove for release
+        //[TagStructure(Size = 0x38)] // Uncomment for release
         public class WidgetData : TagStructure
         {
             [TagField(Length = 32)]

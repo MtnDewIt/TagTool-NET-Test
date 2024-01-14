@@ -7777,29 +7777,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             };
             scnr.Scripts = null;
             scnr.Globals = null;
-            scnr.ScriptSourceFileReferences = new List<TagReferenceBlock>
-            {
-                new TagReferenceBlock
-                {
-                    Instance = GetCachedTag<ModelAnimationGraph>($@"objects\characters\cinematic_camera\ui\valhalla\valhalla"),
-                },
-                new TagReferenceBlock
-                {
-                    Instance = GetCachedTag<SoundLooping>($@"sound\vehicles\phantom\phantom_engine_right\phantom_engine_right"),
-                },
-                new TagReferenceBlock
-                {
-                    Instance = GetCachedTag<SoundLooping>($@"sound\vehicles\phantom\phantom_hover_right\phantom_hover_right"),
-                },
-                new TagReferenceBlock
-                {
-                    Instance = GetCachedTag<SoundLooping>($@"sound\vehicles\phantom\phantom_engine_lod\phantom_engine_lod"),
-                },
-                new TagReferenceBlock
-                {
-                    Instance = GetCachedTag<SoundLooping>($@"sound\levels\main_menu\the_world\the_world"),
-                },
-            };
+            scnr.ScriptSourceFileReferences = null;
             scnr.ScriptingData = new List<Scenario.ScriptingDatum>
             {
                 new Scenario.ScriptingDatum
