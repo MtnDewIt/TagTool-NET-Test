@@ -39,7 +39,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Maps
                 StartOfFile = new BlfChunkStartOfFile
                 {
                     ByteOrderMarker = -2,
-                    Unknown = 0,
                     InternalName = $@"",
                     Signature = new Tag("_blf"),
                     Length = 48,
