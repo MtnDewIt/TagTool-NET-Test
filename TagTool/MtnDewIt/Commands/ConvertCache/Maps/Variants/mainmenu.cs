@@ -2,7 +2,7 @@ using System.IO;
 using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 using TagTool.Tags.Definitions;
-using TagTool.BlamFile;
+using TagTool.MtnDewIt.BlamFiles;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache.Maps 
 {
@@ -26,9 +26,9 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Maps
             var tag = GetCachedTag<Scenario>($@"levels\ui\mainmenu\mainmenu");
             var scnr = CacheContext.Deserialize<Scenario>(Stream, tag);
 
-            Blf blf = null;
+            BlfData blfData = null;
 
-            GenerateMapFile(tag, scnr, blf);
+            GenerateMapFile(tag, scnr, blfData);
         }
     }
 }

@@ -3,12 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Commands;
-using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.IO;
+using TagTool.MtnDewIt.BlamFiles;
 using TagTool.Tags;
 
 namespace TagTool.MtnDewIt.Commands 
@@ -38,48 +37,67 @@ namespace TagTool.MtnDewIt.Commands
             IgnoreDefaultValues = false;
 
             var file = new FileInfo(args[1]);
-            var map = new MapFile();
-            var blf = new Blf(Cache.Version, Cache.Platform);
+            var mapFileData = new MapFileData();
+            var blfData = new BlfData(Cache.Version, Cache.Platform);
 
-            using (var stream = file.OpenRead()) 
+            using (var stream = file.OpenRead())
             {
                 var reader = new EndianReader(stream);
 
-                if (file.Name == "sandbox.map")
+                if (file.Name == "sandbox.map" || IsGameVariant(file.Name))
                 {
-                    blf.Read(reader);
-
-                    if (blf.Version == CacheVersion.HaloOnline106708) 
+                    if (IsLegacyFile(reader) && blfData.Version == CacheVersion.HaloOnline106708)
                     {
-                        // Issue outlined below
-                        new TagToolWarning("Modification to the BLF reader is required to generate valid BLF data");
+                        blfData.ReadLegacyData(reader);
 
-                        blf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
-                        blf.MapVariantTagNames = GenerateTagNames(blf.MapVariant.MapVariant);
+                        blfData.ContentFlags |= BlfDataFileContentFlags.MapVariantTagNames;
+                        blfData.MapVariantTagNames = GenerateTagNames(blfData.MapVariant.MapVariant);
+                    }
+                    else
+                    {
+                        blfData.ReadData(reader);
                     }
 
-                    Value = blf;
+                    Value = blfData;
                 }
-                else 
+                else if (file.Name.EndsWith(".mapinfo"))
                 {
-                    map.Read(reader);
-
-                    if (map.Version == CacheVersion.HaloOnline106708) 
+                    if (reader.Length == 20113)
                     {
-                        // INFO IS ELDEWRITO 0.6 SPECIFIC:
-                        // Chunk header data is in big endian, but the actual chunk data is in little endian
-                        // Change endiam format to little endian
-                        // Parse the specified chunk
-                        // Change endian format back to default value
-                        // Chunk header data will now be invalid
-                        // One option is to hardcode the chunk header data for every type other the start and end chunks
-                        new TagToolWarning("Modification to the BLF reader is required to generate valid BLF data");
+                        blfData = new BlfData(CacheVersion.Halo3Retail, Cache.Platform);
 
-                        map.MapFileBlf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
-                        map.MapFileBlf.MapVariantTagNames = GenerateTagNames(map.MapFileBlf.MapVariant.MapVariant);
+                        blfData.ReadData(reader);
                     }
 
-                    Value = map;
+                    if (reader.Length == 39425)
+                    {
+                        blfData = new BlfData(CacheVersion.Halo3ODST, Cache.Platform);
+
+                        blfData.ReadData(reader);
+                    }
+
+                    Value = blfData;
+                }
+                else if (file.Name.EndsWith(".campaign") || file.Name.EndsWith(".blf")) 
+                {
+                    blfData.ReadData(reader);
+
+                    Value = blfData;
+                }
+                else
+                {
+                    mapFileData.ReadData(reader);
+
+                    if (mapFileData.MapFileBlf != null) 
+                    {
+                        if (mapFileData.Version == CacheVersion.HaloOnline106708)
+                        {
+                            mapFileData.MapFileBlf.ContentFlags |= BlfDataFileContentFlags.MapVariantTagNames;
+                            mapFileData.MapFileBlf.MapVariantTagNames = GenerateTagNames(mapFileData.MapFileBlf.MapVariant.MapVariant);
+                        }
+                    }
+
+                    Value = mapFileData;
                 }
             }
 
@@ -109,16 +127,16 @@ namespace TagTool.MtnDewIt.Commands
             var objectName = "";
             var blfInput = "";
 
-            if (value.GetType() == typeof(Blf)) 
+            if (value.GetType() == typeof(BlfData)) 
             {
-                var blfData = (Blf)value;
+                var blfData = (BlfData)value;
 
-                objectName = "blf";
+                objectName = "blfData";
                 blfInput = $"{FormatEnumerator(blfData.Version, blfData.Version.GetType(), "", "", "", "")}, CachePlatform.Original";
                 blfInput = blfInput.Replace("\n = ", "");
             }
 
-            if (value.GetType() == typeof(MapFile)) 
+            if (value.GetType() == typeof(MapFileData)) 
             {
                 objectName = "map";
             }
@@ -626,10 +644,10 @@ namespace TagTool.MtnDewIt.Commands
 
             var valueString = "new" + " " + FormatTypeName(fieldValue.ToString());
 
-            if (fieldValue.GetType() == typeof(Blf))
+            if (fieldValue.GetType() == typeof(BlfData))
             {
-                var blfData = (Blf)fieldValue;
-                output += $"\n{indent}{objectName}{nameString} = new Blf({FormatEnumerator(blfData.Version, blfData.Version.GetType(), "", "", "", "")}, CachePlatform.Original)";
+                var blfData = (BlfData)fieldValue;
+                output += $"\n{indent}{objectName}{nameString} = new BlfData({FormatEnumerator(blfData.Version, blfData.Version.GetType(), "", "", "", "")}, CachePlatform.Original)";
                 output = output.Replace("\n = ", "");
             }
             else 
@@ -789,45 +807,79 @@ namespace TagTool.MtnDewIt.Commands
             }
         }
 
-        private BlfMapVariantTagNames GenerateTagNames(MapVariant mapVariant)
+        private bool IsLegacyFile(EndianReader reader)
         {
-            var tagNames = new BlfMapVariantTagNames
+            reader.Format = EndianFormat.LittleEndian;
+            reader.SeekTo(0xC);
+
+            if (reader.ReadInt16() == -2)
             {
-                Names = PopulateTagNames(),
-            };
-
-            tagNames.Signature = new Tag("tagn");
-            tagNames.Length = (int)TagStructure.GetStructureSize(typeof(BlfMapVariantTagNames), Cache.Version, CachePlatform.Original);
-            tagNames.MajorVersion = 1;
-            tagNames.MinorVersion = 0;
-
-            for (int i = 0; i < mapVariant.Quotas.Length; i++)
+                reader.SeekTo(0);
+                return false;
+            }
+            else 
             {
-                var quota = mapVariant.Quotas[i];
+                reader.SeekTo(0);
+                return true;
+            }
+        }
 
-                if (quota.ObjectDefinitionIndex != -1)
+        private bool IsGameVariant(string fileName) 
+        {
+            var variants = new string[] { ".slayer", ".ctf", ".koth", ".zombiez", ".assault", ".vip", ".jugg", ".terries", ".oddball" };
+
+            for (int i = 0; i < variants.Length; i++) 
+            {
+                var variant = variants[i];
+
+                if (fileName.EndsWith(variant)) 
                 {
-                    var tag = Cache.TagCache.GetTag(quota.ObjectDefinitionIndex);
-
-                    tagNames.Names[i].Name = $"{tag.Name}.{tag.Group.Tag}";
+                    return true;
                 }
             }
 
+            return false;
+        }
+
+        private BlfDataMapVariantTagNames GenerateTagNames(MapVariantData mapVariant)
+        {
+            var tagNames = new BlfDataMapVariantTagNames
+            {
+                Names = PopulateTagNames(),
+            };
+        
+            tagNames.Signature = new Tag("tagn");
+            tagNames.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataMapVariantTagNames), Cache.Version, CachePlatform.Original);
+            tagNames.MajorVersion = 1;
+            tagNames.MinorVersion = 0;
+        
+            for (int i = 0; i < mapVariant.Quotas.Length; i++)
+            {
+                var quota = mapVariant.Quotas[i];
+        
+                if (quota.ObjectDefinitionIndex != -1)
+                {
+                    var tag = Cache.TagCache.GetTag(quota.ObjectDefinitionIndex);
+        
+                    tagNames.Names[i].Name = $"{tag.Name}.{tag.Group.Tag}";
+                }
+            }
+        
             return tagNames;
         }
 
-        private TagName[] PopulateTagNames()
+        private BlfTagName[] PopulateTagNames()
         {
-            var tagNames = new TagName[256];
-
+            var tagNames = new BlfTagName[256];
+        
             for (int i = 0; i < tagNames.Length; i++)
             {
-                tagNames[i] = new TagName()
+                tagNames[i] = new BlfTagName()
                 {
                     Name = "",
                 };
             }
-
+        
             return tagNames;
         }
     }

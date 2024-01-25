@@ -2,13 +2,12 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 using System.IO;
 using System.Linq;
-using TagTool.BlamFile;
 using TagTool.Common;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
 using TagTool.Tags;
 using TagTool.Commands.Common;
-using System;
+using TagTool.MtnDewIt.BlamFiles;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache.Maps 
 {
@@ -25,11 +24,11 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Maps
             Stream = stream;
         }
 
-        public void GenerateMapFile(CachedTag scnrTag, Scenario scnr, Blf mapVariant) 
+        public void GenerateMapFile(CachedTag scnrTag, Scenario scnr, BlfData mapVariant) 
         {
-            MapFile map;
+            MapFileData mapFileData;
 
-            map = GenerateMap(scnrTag, scnr, mapVariant, Cache.Endianness, Cache.Version);
+            mapFileData = GenerateMap(scnrTag, scnr, mapVariant, Cache.Endianness, Cache.Version);
 
             var mapFilePath = $"{Path.Combine(Cache.Directory.FullName, scnrTag.Name.Split('\\').Last())}.map";
             var mapFile = new FileInfo(mapFilePath);
@@ -37,13 +36,13 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Maps
             using (var stream = mapFile.Create())
             using (var writer = new EndianWriter(stream))
             {
-                map.Write(writer);
+                mapFileData.WriteData(writer);
             }
         }
 
-        public MapFile GenerateMap(CachedTag scnrTag, Scenario scnr, Blf mapVariant, EndianFormat format, CacheVersion version)
+        public MapFileData GenerateMap(CachedTag scnrTag, Scenario scnr, BlfData mapVariant, EndianFormat format, CacheVersion version)
         {
-            var mapFile = new MapFile();
+            var mapFile = new MapFileData();
             mapFile.Version = version;
             mapFile.CachePlatform = CachePlatform.Original;
             mapFile.EndianFormat = format;
@@ -94,7 +93,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Maps
             }
         }
 
-        public void UpdateQuotaIndexes(TagName[] tagNames, VariantObjectQuota[] quotaList) 
+        public void UpdateQuotaIndexes(BlfTagName[] tagNames, VariantDataObjectQuota[] quotaList) 
         {
             for (int i = 0; i < tagNames.Length; i++) 
             {
