@@ -50,8 +50,11 @@ namespace TagTool.MtnDewIt.Commands
                     {
                         blfData.ReadLegacyData(reader);
 
-                        blfData.ContentFlags |= BlfDataFileContentFlags.MapVariantTagNames;
-                        blfData.MapVariantTagNames = GenerateTagNames(blfData.MapVariant.MapVariant);
+                        if (file.Name == "sandbox.map") 
+                        {
+                            blfData.ContentFlags |= BlfDataFileContentFlags.MapVariantTagNames;
+                            blfData.MapVariantTagNames = GenerateTagNames(blfData.MapVariant.MapVariant);
+                        }
                     }
                     else
                     {

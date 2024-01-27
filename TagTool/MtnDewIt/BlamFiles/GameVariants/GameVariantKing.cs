@@ -36,10 +36,10 @@ namespace TagTool.MtnDewIt.BlamFiles
         public short ScoreUnknown;
         public MovingHillSettings MovingHill;
         public MovingHillOrderSettings MovingHillOrder;
-        public sbyte UncontestedHillBonus;
-        public sbyte KillPoints;
         public sbyte InsideHillPoints;
         public sbyte OutsideHillPoints;
+        public sbyte UncontestedHillBonus;
+        public sbyte KillPoints;
         public PlayerTraits InsideHillTraits;
 
         [TagField(Flags = TagFieldFlags.Padding, Length = 6)]

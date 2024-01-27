@@ -1,4 +1,5 @@
 using System;
+using TagTool.Cache;
 using TagTool.Tags;
 
 namespace TagTool.MtnDewIt.BlamFiles
@@ -6,17 +7,19 @@ namespace TagTool.MtnDewIt.BlamFiles
     [Flags]
     public enum MiscellaneousOptionsFlags : byte
     {
-        TeamsEnabled = 0,
-        RoundResetPlayers,
-        RoundResetMap,
+        None = 0,
+        TeamsEnabled = 1 << 0,
+        RoundResetPlayers = 1 << 1,
+        RoundResetMap = 1 << 2,
+        SpectatingEnabled = 1 << 3,
     }
 
     [TagStructure(Size = 0x4)]
     public class MiscellaneousOptions
     {
         public MiscellaneousOptionsFlags Flags;
-        public byte RoundTimeLimitMinutes;
-        public byte RoundLimit;
+        public byte TimeLimit;
+        public byte NumberOfRounds;
         public byte EarlyVictoryWinCount;
     }
 
@@ -45,6 +48,9 @@ namespace TagTool.MtnDewIt.BlamFiles
         Percent_1000,
         Percent_2000,
         Invulnerable,
+        Percent_1500,
+        Percent_3000,
+        Invincible,
     }
 
     public enum ShieldRechargeRatePercentage : byte
@@ -88,7 +94,8 @@ namespace TagTool.MtnDewIt.BlamFiles
         Shield_4X,
     }
 
-    [TagStructure(Size = 0x5)]
+    [TagStructure(Size = 0x5, Version = CacheVersion.HaloOnlineED)]
+    [TagStructure(Size = 0x8, Version = CacheVersion.HaloOnline106708)]
     public class PlayerShieldVitalityTraits
     {
         public DamageResistancePercentage DamageResistance;
@@ -96,34 +103,27 @@ namespace TagTool.MtnDewIt.BlamFiles
         public ShieldVampirismPercentage ShieldVampirism;
         public HeadshotImmunity HeadshotImmunity;
         public ShieldMultiplier ShieldMultiplier;
+
+        [TagField(Flags = TagFieldFlags.Padding, Length = 3, Version = CacheVersion.HaloOnline106708)]
+        public byte[] Padding1 = new byte[3];
     }
 
-    public enum SharedTraits : byte
+    [Flags]
+    public enum ExtendedTraits : byte
     {
-        // Might not be entirely correct
-        SprintUnchangedThirdPersonUnchanged = 0,
-        SprintEnabledThirdPersonUnchanged,
-        SprintDisabledThirdPersonUnchanged,
-        SprintUnknownThirdPersonUnchanged,
-        SprintUnchangedThirdPersonEnabled,
-        SprintEnabledThirdPersonEnabled,
-        SprintDisabledThirdPersonEnabled,
-        SprintUnknownThirdPersonEnabled,
-        SprintUnchangedThirdPersonDisabled,
-        SprintEnabledThirdPersonDisabled,
-        SprintDisabledThirdPersonDisabled,
-        SprintUnknownThirdPersonDisabled,   
+        None = 0,
+        SprintEnabled = 1 << 0,
+        SprintDisabled  = 1 << 1,
+        ThirdPersonEnabled = 1 << 2,
+        ThirdPersonDisabled = 1 << 3,
     }
 
     [TagStructure(Size = 0x3)]
     public class PlayerExtendedTraits
     {
         public byte PlayerCharacterValue;
-        public SharedTraits SharedTraitsValue;
-
-        // Might not be padding
-        [TagField(Flags = TagFieldFlags.Padding, Length = 1)]
-        public byte[] Padding1 = new byte[1];
+        public ExtendedTraits ExtendedTraits;
+        public byte Gap2;
     }
 
     public enum WeaponGrenadeCount : short
@@ -131,10 +131,6 @@ namespace TagTool.MtnDewIt.BlamFiles
         Unchanged,
         MapDefault,
         None,
-        One,
-        Two,
-        //Three,
-        //Four,
     }
 
     public enum DamageModifierPercentage : byte
@@ -159,7 +155,6 @@ namespace TagTool.MtnDewIt.BlamFiles
         Unchanged = 0,
         Enabled,
         Disabled,
-        //EnabledIncludingFirebombs,
     }
 
     public enum InfiniteAmmoSetting : byte
@@ -167,7 +162,7 @@ namespace TagTool.MtnDewIt.BlamFiles
         Unchanged = 0,
         Disabled,
         Enabled,
-        //BottomlessClip,
+        BottomlessClip,
     }
 
     public enum WeaponPickupSetting : byte
@@ -207,12 +202,16 @@ namespace TagTool.MtnDewIt.BlamFiles
     public enum PlayerGravitySetting : byte
     {
         Unchanged = 0,
-
         Percent_50,
         Percent_75,
         Percent_100,
         Percent_150,
         Percent_200,
+        Percent_0,
+        Percent_15,
+        Percent_25,
+        Percent_35,
+        Percent_125,
     }
 
     public enum PlayerVehicleUsage : byte
@@ -221,13 +220,6 @@ namespace TagTool.MtnDewIt.BlamFiles
         None,
         PassengerOnly,
         Full,
-    }
-
-    public enum PlayerSprintState : byte
-    {
-        Unchanged = 0,
-        Enabled,
-        Disabled,
     }
 
     [TagStructure(Size = 0x4)]
@@ -256,13 +248,38 @@ namespace TagTool.MtnDewIt.BlamFiles
         Off,
         Allies,
         All,
+        None,
+        NoneTeamOnly,
+    }
+
+    public enum PlayerSizeSetting : byte 
+    {
+        Unchanged = 0,
+        Default,
+        Percent_10,
+        Percent_15,
+        Percent_25,
+        Percent_35,
+        Percent_50,
+        Percent_75,
+        Percent_100,
+        Percent_125,
+        Percent_150,
+        Percent_200,
+        Percent_350,
+        Percent_500,
+        Percent_750,
+        Percent_1000,
+        Percent_1500,
+        Percent_2000,
+        Percent_3000,
     }
 
     public enum AuraSetting : byte
     {
         Unchanged = 0,
-        Off,
-        TeamColor,
+        Disabled,
+        Team,
         Black,
         White,
     }
@@ -274,15 +291,14 @@ namespace TagTool.MtnDewIt.BlamFiles
         Red,
         Blue,
         Green,
-        Yellow,
-        Purple,
         Orange,
+        Purple,
+        Gold,
         Brown,
-        Grey,
-        Primary,
-        Secondary,
-        Tertiary,
-        Quaternary,
+        Pink,
+        White,
+        Black,
+        Zombie,
     }
 
     [TagStructure(Size = 0x4)]
@@ -290,7 +306,13 @@ namespace TagTool.MtnDewIt.BlamFiles
     {
         public ActiveCamoSetting ActiveCamo;
         public WaypointSetting Waypoint;
+
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
+        public PlayerSizeSetting PlayerSize;
+
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST)]
         public AuraSetting Aura;
+
         public ForcedColorChangeSetting ForcedColorChange;
     }
 
@@ -326,7 +348,10 @@ namespace TagTool.MtnDewIt.BlamFiles
     public class PlayerTraits
     {
         public PlayerShieldVitalityTraits ShieldVitalityTraits;
+
+        [TagField(Version = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
         public PlayerExtendedTraits ExtendedTraits;
+
         public PlayerWeaponTraits WeaponTraits;
         public PlayerMovementTraits MovementTraits;
         public PlayerAppearanceTraits AppearanceTraits;
@@ -352,30 +377,38 @@ namespace TagTool.MtnDewIt.BlamFiles
         public PlayerTraits RespawnPlayerTraits;
     }
 
+    [Flags]
     public enum SocialOptionsFlags : short
     {
-        Observers = 0,
-        TeamChanging,
-        TeamChangingBalancingOnly,
-        FriendlyFire,
-        BetrayalBooting,
-        SpartansVsElites, // Halo Online Specific
-        EnemyVoice,       // Unused in Halo Online
-        OpenChannelVoice, // Unused in Halo Online
-        DeadPlayerVoice,  // Unused in Halo Online
+        None = 0,
+        FriendlyFireEnabled  = 1 << 0,
+        BetrayalBootingEnabled = 1 << 1,
+        SpartansVsElitesEnabled = 1 << 2,
+        EnemyVoiceEnabled = 1 << 3,
+        OpenChannelVoiceEnabled = 1 << 4,
+        DeadPlayerVoiceEnabled = 1 << 5,
+    }
+
+    public enum TeamChangingFlags : short 
+    {
+        None = 0,
+        TeamChangingEnabled,
+        TeamChangingBalancingOnlyEnabled,
     }
 
     [TagStructure(Size = 0x4)]
     public class SocialOptions
     {
         public SocialOptionsFlags Flags;
-        public short TeamChanging;
+        public TeamChangingFlags TeamChanging;
     }
 
+    [Flags]
     public enum MapOverrideOptionsFlags : int
     {
-        GrenadesOnMap = 0,
-        IndestructibleVehicles,
+        None = 0,
+        GrenadesOnMap = 1 << 0,
+        IndestructibleVehicles = 1 << 1,
     }
 
     [TagStructure(Size = 0x7C)]
@@ -402,6 +435,14 @@ namespace TagTool.MtnDewIt.BlamFiles
         BuiltIn = 0,
     }
 
+    public enum TeamScoringMethodFlag : short 
+    {
+        SumOfTeam = 0,
+        MinimumScore,
+        MaximumScore,
+        TeamControl,
+    }
+
     [TagStructure(Size = 0x1D0)]
     public class GameVariantBase : TagStructure
     {
@@ -416,6 +457,6 @@ namespace TagTool.MtnDewIt.BlamFiles
         public SocialOptions SocialOptions;
         public MapOverrideOptions MapOverrideOptions;
         public BaseVariantFlags BaseFlags;
-        public short TeamScoringMethod;
+        public TeamScoringMethodFlag TeamScoringMethod;
     }
 }
