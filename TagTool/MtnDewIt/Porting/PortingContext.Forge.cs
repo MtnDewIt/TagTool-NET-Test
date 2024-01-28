@@ -2,23 +2,21 @@ namespace TagTool.MtnDewIt.Porting
 {
     public partial class PortingContext
     {
-        public int PaletteCategory;
-        public string PaletteItemName;
-        public bool IsForgeItem = false;
+        public string[] ObjectParameters = new string[]{};
 
         // Does the same job as the MPobject flag in the porttag command, but instead moves the object data outside of the porting flags
-        public void PortMultiplayerObject(int paletteCategory, string paletteItemName, string portingOptions, string tag) 
+        public void PortMultiplayerObject(string paletteCategory, string paletteItemName, string portingOptions, string tag) 
         {
-            PaletteCategory = paletteCategory;
-            PaletteItemName = paletteItemName;
+            if (!portingOptions.Contains("MPobject")) 
+            {
+                portingOptions = portingOptions + " MPobject";
+            }
 
-            // Sets the flag to true
-            IsForgeItem = true;
+            string[] inputParameters = { paletteCategory, paletteItemName };
+
+            ObjectParameters = inputParameters;
 
             PortTag(portingOptions, tag);
-
-            // Resets the flag after the object has been ported
-            IsForgeItem = false;
         }
     }
 }

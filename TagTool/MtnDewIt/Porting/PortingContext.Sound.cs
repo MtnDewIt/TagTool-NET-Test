@@ -34,7 +34,7 @@ namespace TagTool.MtnDewIt.Porting
             ConcurrencyLimiter = new SemaphoreSlim(PortingProperties.MaxThreads);
         }
 
-        private void WaitForPendingSoundConversion()
+        public void WaitForPendingSoundConversion()
         {
             Task.WaitAll(SoundConversionTasks.Values.ToArray());
         }

@@ -23,6 +23,7 @@ using System.Collections.Concurrent;
 using TagTool.Geometry.BspCollisionGeometry;
 using TagTool.Commands.Porting;
 using TagTool.MtnDewIt.Shaders.LegacyShaderMatching;
+using TagTool.Commands.ScenarioStructureBSPs;
 
 namespace TagTool.MtnDewIt.Porting
 {
@@ -33,7 +34,7 @@ namespace TagTool.MtnDewIt.Porting
 		private RenderGeometryConverter GeometryConverter { get; }
         private PortingProperties PortingProperties { get; set; }
 
-        private Dictionary<Tag, List<string>> ReplacedTags = new Dictionary<Tag, List<string>>();
+		private Dictionary<Tag, List<string>> ReplacedTags = new Dictionary<Tag, List<string>>();
         private Dictionary<CachedTag, object> CachedTagData = new Dictionary<CachedTag, object>();
 
         private Dictionary<int, CachedTag> PortedTags = new Dictionary<int, CachedTag>();
@@ -59,7 +60,7 @@ namespace TagTool.MtnDewIt.Porting
         {
             ParsePortingOptions(portingOptions);
 
-            var initialStringIdCount = CacheContext.StringTableHaloOnline.Count;
+			var initialStringIdCount = CacheContext.StringTableHaloOnline.Count;
 
             InitializeSoundConverter();
             CachedTagData.Clear();
@@ -68,8 +69,8 @@ namespace TagTool.MtnDewIt.Porting
             if(CacheContext is GameCacheModPackage)
             {
                 SetFlags(PortingFlags.Memory);
-            }
-            */
+            }*/
+
 
             //
             // Convert Blam data to ElDorado data
@@ -95,6 +96,9 @@ namespace TagTool.MtnDewIt.Porting
 
                         ConvertTag(cacheStream, blamCacheStream, resourceStreams, blamTag);
                         Flags = oldFlags;
+
+                        if (FlagIsSet(PortingFlags.MPobject))
+                            TestForgePaletteCompatible(cacheStream, blamTag, ObjectParameters);
                     }
 
                     WaitForPendingSoundConversion();
@@ -102,8 +106,7 @@ namespace TagTool.MtnDewIt.Porting
                     if (BlamCache is GameCacheGen3 gen3Cache)
                         gen3Cache.ResourceCacheGen3.ResourcePageCache.Clear();
 
-                    if (FlagIsSet(PortingFlags.Memory)) 
-                    {
+                    if (FlagIsSet(PortingFlags.Memory))
                         using (var cacheFileStream = CacheContext.OpenCacheReadWrite())
                         {
                             cacheFileStream.Seek(0, SeekOrigin.Begin);
@@ -112,7 +115,6 @@ namespace TagTool.MtnDewIt.Porting
                             cacheStream.Seek(0, SeekOrigin.Begin);
                             cacheStream.CopyTo(cacheFileStream);
                         }
-                    }
                 }
             }
             finally
@@ -124,8 +126,7 @@ namespace TagTool.MtnDewIt.Porting
 
                 foreach (var entry in resourceStreams)
                 {
-                    if (FlagIsSet(PortingFlags.Memory)) 
-                    {
+                    if (FlagIsSet(PortingFlags.Memory))
                         using (var resourceFileStream = CacheContext.ResourceCaches.OpenCacheReadWrite(entry.Key))
                         {
                             resourceFileStream.Seek(0, SeekOrigin.Begin);
@@ -134,7 +135,6 @@ namespace TagTool.MtnDewIt.Porting
                             entry.Value.Seek(0, SeekOrigin.Begin);
                             entry.Value.CopyTo(resourceFileStream);
                         }
-                    }
 
                     entry.Value.Close();
                 }
@@ -142,7 +142,7 @@ namespace TagTool.MtnDewIt.Porting
                 Matcher.DeInit();
             }
 
-            ProcessDeferredActions();
+			ProcessDeferredActions();
         }
 
         public void SetPortingProperties
@@ -155,11 +155,7 @@ namespace TagTool.MtnDewIt.Porting
             bool normalMapConversion = true
         )
         {
-            if (maxThreads == 0)
-            {
-                maxThreads = Environment.ProcessorCount * 2;
-            }
-
+            maxThreads = Environment.ProcessorCount * 2;
             PortingProperties.MaxThreads = maxThreads;
             PortingProperties.AudioCodec = audioCodec;
             PortingProperties.ReachLightmapCache = lightmapCache;
@@ -248,8 +244,7 @@ namespace TagTool.MtnDewIt.Porting
                 string templateName = renderMethod.ShaderProperties[0].Template.Name;
                 if(LegacyShaderMatcherNew.Rmt2Descriptor.TryParse(templateName, out var rmt2Descriptor))
                 {
-                    foreach (var tag in CacheContext.TagCacheGenHO.TagTable) 
-                    {
+                    foreach (var tag in CacheContext.TagCacheGenHO.TagTable)
                         if (tag != null && tag.Group.Tag == "rmt2" && (tag.Name.Contains(rmt2Descriptor.Type) || FlagIsSet(PortingFlags.GenerateShaders)))
                         {
                             if ((FlagIsSet(PortingFlags.Ms30) && tag.Name.StartsWith("ms30\\")) || (!FlagIsSet(PortingFlags.Ms30) && !tag.Name.StartsWith("ms30\\")))
@@ -258,7 +253,6 @@ namespace TagTool.MtnDewIt.Porting
                             else if (tag.Name.StartsWith("ms30\\"))
                                 continue;
                         }
-                    }
                 };
                 // TODO: add code for "!MatchShaders" -- if a perfect match isnt found a null tag will be left in the cache
 
@@ -299,8 +293,8 @@ namespace TagTool.MtnDewIt.Porting
 
                     Flags = oldFlags;
                 }
-
-                else if (blamTag.Name != null && blamTag.IsInGroup("bitm"))
+                else
+                if (blamTag.Name != null && blamTag.IsInGroup("bitm"))
                 {
                     if(CacheContext.TagCache.TryGetTag($"{blamTag.Name}.{blamTag.Group}", out result))
                         new TagToolWarning($"using bitm tag reference \"{blamTag.Name}.{blamTag.Group}\" from source cache");
@@ -319,7 +313,7 @@ namespace TagTool.MtnDewIt.Porting
             return result;
         }
 
-        private void ProcessDeferredActions()
+        public void ProcessDeferredActions()
         {
             while(_deferredActions.TryTake(out Action action))
             {
@@ -415,10 +409,8 @@ namespace TagTool.MtnDewIt.Porting
                 //scenario.ScenarioKillTriggers.Clear();
                 scenario.ScenarioSafeTriggers.Clear();
 
-                scenario.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>() 
-                {
-                    new Scenario.PlayerStartingProfileBlock() 
-                    {
+                scenario.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>() {
+                    new Scenario.PlayerStartingProfileBlock() {
                         Name = "start_assault",
                         PrimaryWeapon = CacheContext.TagCache.GetTag(@"objects\weapons\rifle\assault_rifle\assault_rifle", "weap"),
                         PrimaryRoundsLoaded = 32,
@@ -832,34 +824,19 @@ namespace TagTool.MtnDewIt.Porting
 						foreach (var screenEffect in sefc.ScreenEffects)
 							screenEffect.HiddenFlags = AreaScreenEffect.HiddenFlagBits.UpdateThread | AreaScreenEffect.HiddenFlagBits.RenderThread;
                     }
-                    if (sefc.ScreenEffects.Count > 0 && sefc.ScreenEffects[0].Lifetime == 1.0f && sefc.ScreenEffects[0].MaximumDistance == 1.0f)
-                    {
-                        sefc.ScreenEffects[0].Lifetime = 1E+19f;
-                        sefc.ScreenEffects[0].MaximumDistance = 1E+19f;
-                    }
                     foreach (var screenEffect in sefc.ScreenEffects)
                     {
                         //convert flags
                         if (BlamCache.Version == CacheVersion.Halo3Retail)
-                            Enum.TryParse(screenEffect.Flags_H3.ToString(), out screenEffect.Flags);
-                        else if (BlamCache.Version == CacheVersion.Halo3ODST)
-                            Enum.TryParse(screenEffect.Flags_ODST.ToString(), out screenEffect.Flags);
+                            Enum.TryParse(screenEffect.Flags_H3.ToString(), out screenEffect.Flags_ODST);
+                        else if (BlamCache.Version >= CacheVersion.HaloOnline106708 && BlamCache.Version <= CacheVersion.HaloOnline700123)
+                            Enum.TryParse(screenEffect.Flags.ToString(), out screenEffect.Flags_ODST);
 
-                        if (screenEffect.InputVariable != null && screenEffect.InputVariable != StringId.Invalid)
-                        {
-                            //restore ODST stringid input variables using name field to store values
-                            screenEffect.Name = ConvertStringId(screenEffect.InputVariable);
+                        if (CacheContext.StringTable.GetString(screenEffect.InputVariable) == "saved_film_vision_mode_intensity")
+                            screenEffect.Flags_ODST |= AreaScreenEffect.ScreenEffectBlock.SefcFlagBits_ODST.DebugDisable; // prevents spawning and rendering
 
-                            screenEffect.Flags |= AreaScreenEffect.ScreenEffectBlock.SefcFlagBits.UseNameAsStringIDInput;
-                            if (screenEffect.RangeVariable != null && screenEffect.RangeVariable != StringId.Invalid)
-                            {
-                                screenEffect.Flags |= AreaScreenEffect.ScreenEffectBlock.SefcFlagBits.InvertStringIDInput;
-                            }
-
-                            //fixup for vision mode saved film sefc always displaying
-                            if (BlamCache.StringTable.GetStringId("saved_film_vision_mode_intensity") == screenEffect.InputVariable)
-                                screenEffect.Name = CacheContext.StringTable.GetStringId("flashlight_intensity");
-                        }
+                        if (screenEffect.ObjectFalloff.Data.Length == 0)
+                            screenEffect.ObjectFalloff = TagFunction.DefaultConstant;
                     }
                     
                     break;
@@ -904,16 +881,12 @@ namespace TagTool.MtnDewIt.Porting
                     }
                     break;
 
-                case CinematicScene cisc:
+                case CinematicScene cisc when BlamCache.Version == CacheVersion.Halo3ODST:
                     foreach (var shot in cisc.Shots)
                     {
                         foreach (var frame in shot.CameraFrames)
                         {
-                            frame.NearFocalPlaneDistance *= -1.0f;
-                            frame.FarFocalPlaneDistance *= -1.0f;
-
-                            if (BlamCache.Version == CacheVersion.Halo3ODST)
-                                frame.FocalLength *= 0.65535f; // fov change in ODST affected cisc too it seems
+                            frame.FocalLength *= 0.65535f; // fov change in ODST affected cisc too it seems
                         }
                     }
                     break;
@@ -1075,30 +1048,6 @@ namespace TagTool.MtnDewIt.Porting
                         default:
                             break;
                     };
-                    if ((FlagIsSet(PortingFlags.MPobject) || IsForgeItem) && blamDefinition is GameObject obj)
-                    {
-                        if (obj.MultiplayerObject.Count == 0)
-                        {
-                            obj.MultiplayerObject.Add(new GameObject.MultiplayerObjectBlock() { DefaultSpawnTime = 30, DefaultAbandonTime = 30 });
-                        }
-
-                        if (IsForgeItem)
-                        {
-                            var objTagName = $"{edTag.Name}.{(edTag.Group as TagGroupGen3).Name}";
-
-                            var itemName = PaletteItemName;
-
-                            if (itemName == $@"") 
-                            {
-                                itemName = edTag.Name.Split('.').First().Split('\\').Last();
-                            }
-
-                            _deferredActions.Add(() =>
-                            {
-                                AddForgePaletteItem(cacheStream, objTagName, PaletteCategory, itemName);
-                            });
-                        }
-                    }
                     break;
 
 				case Globals matg:
@@ -1199,15 +1148,30 @@ namespace TagTool.MtnDewIt.Porting
 
                 case RenderModel mode:
                     blamDefinition = ConvertGen3RenderModel(edTag, blamTag, mode);
-					break;
+                    break;
 
-				case Scenario scnr:
-					blamDefinition = ConvertScenario(cacheStream, blamCacheStream, resourceStreams, scnr, blamTag.Name);
-					break;
+                case Scenario scnr:
+                    {
+                        blamDefinition = ConvertScenario(cacheStream, blamCacheStream, resourceStreams, scnr, blamTag.Name);
+                        if (BlamCache.Platform == CachePlatform.MCC)
+                        {
+                            foreach (var block in scnr.StructureBsps)
+                            {
+                                if (block.StructureBsp == null)
+                                    continue;
 
-				case ScenarioLightmap sLdT:
+                                CachedTag sbspTag = block.StructureBsp;
+                                var sbsp = CacheContext.Deserialize<TagTool.Tags.Definitions.ScenarioStructureBsp>(cacheStream, sbspTag);
+                                new GenerateStructureSurfacesCommand(CacheContext, sbspTag, sbsp).Execute(new List<string> { });
+                                CacheContext.Serialize(cacheStream, sbspTag, sbsp);
+                            }
+                        }
+                    }
+                    break;
+
+                case ScenarioLightmap sLdT:
                     if(BlamCache.Version < CacheVersion.HaloReach)
-					    blamDefinition = ConvertScenarioLightmap(cacheStream, blamCacheStream, resourceStreams, blamTag.Name, sLdT);
+                        blamDefinition = ConvertScenarioLightmap(cacheStream, blamCacheStream, resourceStreams, blamTag.Name, sLdT);
                     //fixup lightmap bsp references
                     if (BlamCache.Version >= CacheVersion.HaloReach)
                     {
@@ -1228,9 +1192,9 @@ namespace TagTool.MtnDewIt.Porting
                         blamDefinition = ConvertScenarioLightmapBspData(Lbsp);
 					break;
 
-				case ScenarioStructureBsp sbsp:
+                case ScenarioStructureBsp sbsp:
                     blamDefinition = ConvertScenarioStructureBsp(sbsp, edTag, resourceStreams);
-					break;
+                    break;
 
                 case Sound sound:
                     //support sound conversion for HO generation caches
@@ -1347,16 +1311,74 @@ namespace TagTool.MtnDewIt.Porting
 			return edTag;
 		}
 
+        private void TestForgePaletteCompatible(Stream cacheStream, CachedTag blamTag, string[] argParameters)
+        {
+            if (!blamTag.IsInGroup("obje") || !CacheContext.TagCache.TryGetCachedTag(blamTag.ToString(), out CachedTag edTag))
+                return;
+
+            var definition = CacheContext.Deserialize(cacheStream, edTag);
+            if (definition is GameObject obj)
+            {
+                if (obj.MultiplayerObject.Count == 0)
+                {
+                    obj.MultiplayerObject.Add(new GameObject.MultiplayerObjectBlock() {
+                        DefaultSpawnTime = 30,
+                        DefaultAbandonTime = 30
+                    });
+                    CacheContext.Serialize(cacheStream, edTag, definition);
+                }
+
+                if (argParameters.Count() > 0)
+                {
+                    if (!int.TryParse(argParameters[0], out int paletteIndex) && argParameters[0] == "*")
+                        paletteIndex = -1;
+
+                    var objTagName = $"{edTag.Name}.{(edTag.Group as TagGroupGen3).Name}";
+
+                    var paletteItemName = edTag.Name.Split('.').First().Split('\\').Last();
+                    if (argParameters.Count() > 1)
+                        paletteItemName = argParameters[1].Replace('_', ' ');
+
+                    _deferredActions.Add(() =>
+                    {
+                        AddForgePaletteItem(cacheStream, objTagName, paletteIndex, paletteItemName);
+                    });
+                }
+            }
+        }
+
         private void AddForgePaletteItem(Stream cacheStream, string gameObjectName, int paletteCategory, string paletteItemName)
         {
             if (CacheContext.TagCache.TryGetCachedTag(@"multiplayer\forge_globals.forge_globals_definition", out CachedTag forge_globals))
                 if (CacheContext.TagCache.TryGetCachedTag(gameObjectName, out CachedTag objectTag))
                 {
                     var forg = CacheContext.Deserialize<ForgeGlobalsDefinition>(cacheStream, forge_globals);
+
+                    if (paletteCategory == -1)
+                        paletteCategory = (short)(forg.PaletteCategories.Count() - 1);
+
+                    var itemType = ForgeGlobalsDefinition.PaletteItemType.Prop;
+                    switch(objectTag.Group.ToString())
+                    {
+                        case "weapon":
+                            itemType = ForgeGlobalsDefinition.PaletteItemType.Weapon;
+                            break;
+                        case "equipment":
+                            itemType = ForgeGlobalsDefinition.PaletteItemType.Equipment;
+                            break;
+                        case "vehicle":
+                            itemType = ForgeGlobalsDefinition.PaletteItemType.Vehicle;
+                            break;
+                        case "effect_scenery":
+                        case "sound_scenery":
+                            itemType = ForgeGlobalsDefinition.PaletteItemType.Effects;
+                            break;
+                    }
+
                     forg.Palette.Add(new ForgeGlobalsDefinition.PaletteItem()
                     {
                         Name = paletteItemName,
-                        Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                        Type = itemType,
                         CategoryIndex = (short)paletteCategory,
                         DescriptionIndex = -1,
                         MaxAllowed = 0,
@@ -1517,6 +1539,21 @@ namespace TagTool.MtnDewIt.Porting
 
 				case CachedTag tag:
 					{
+                        if (IgnoreBlamTagCommand.UserDefinedIgnoredBlamTagsIndicies.Contains(tag.Index))
+                        {
+                            //find equivalent in base cache otherwise use null
+                            foreach (var instance in CacheContext.TagCache.FindAllInGroup(tag.Group.Tag))
+                            {
+                                if (instance == null || instance.Name == null)
+                                    continue;
+
+                                if (instance.Name == tag.Name)
+                                    return instance;
+                            }
+
+                            return null;
+                        }
+
 						if (!FlagIsSet(PortingFlags.Recursive))
 						{
 							foreach (var instance in CacheContext.TagCache.FindAllInGroup(tag.Group.Tag))
@@ -1816,28 +1853,28 @@ namespace TagTool.MtnDewIt.Porting
 		{
             foreach (var tagFieldInfo in TagStructure.GetTagFieldEnumerable(data.GetType(), CacheContext.Version, CacheContext.Platform))
             {
-                var attr = tagFieldInfo.Attribute;
-                if (!CacheVersionDetection.TestAttribute(attr, BlamCache.Version, BlamCache.Platform))
-                    continue;
-
-                // skip the field if no conversion is needed
-                if ((tagFieldInfo.FieldType.IsValueType && tagFieldInfo.FieldType != typeof(StringId)) || tagFieldInfo.FieldType == typeof(string))
+                var attributes = tagFieldInfo.FieldInfo.GetCustomAttributes(false).OfType<TagFieldAttribute>().ToList();
+                if (attributes.Count == 0 || attributes.Any(attr => CacheVersionDetection.TestAttribute(attr, BlamCache.Version, BlamCache.Platform)))
                 {
-                    if(!tagFieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.GlobalMaterial))
+                    // skip the field if no conversion is needed
+                    if ((tagFieldInfo.FieldType.IsValueType && tagFieldInfo.FieldType != typeof(StringId)) || tagFieldInfo.FieldType == typeof(string))
+                    {
+                        if (!tagFieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.GlobalMaterial))
+                            continue;
+                    }
+
+                    var oldValue = tagFieldInfo.GetValue(data);
+                    if (oldValue is null)
                         continue;
+
+                    // convert the field
+                    var newValue = ConvertData(cacheStream, blamCacheStream, resourceStreams, oldValue, definition, blamTagName);
+
+                    if (tagFieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.GlobalMaterial))
+                        newValue = ConvertGlobalMaterialTypeField(cacheStream, blamCacheStream, tagFieldInfo, newValue);
+
+                    tagFieldInfo.SetValue(data, newValue);
                 }
-                   
-                var oldValue = tagFieldInfo.GetValue(data);
-                if (oldValue is null)
-                    continue;
-
-                // convert the field
-                var newValue = ConvertData(cacheStream, blamCacheStream, resourceStreams, oldValue, definition, blamTagName);
-
-                if(tagFieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.GlobalMaterial))
-                    newValue = ConvertGlobalMaterialTypeField(cacheStream, blamCacheStream, tagFieldInfo, newValue);
-
-                tagFieldInfo.SetValue(data, newValue);
             }
 
             return UpgradeStructure(cacheStream, resourceStreams, data, definition, blamTagName);
