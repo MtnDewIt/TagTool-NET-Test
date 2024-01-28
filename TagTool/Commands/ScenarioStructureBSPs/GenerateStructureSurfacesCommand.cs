@@ -25,8 +25,9 @@ namespace TagTool.Commands.ScenarioStructureBSPs
         private GameCache Cache { get; }
         private ScenarioStructureBsp Definition { get; }
         private CachedTag Tag { get; }
+        private Stream InternalStream { get; }
 
-        public GenerateStructureSurfacesCommand(GameCache cache, CachedTag tag, ScenarioStructureBsp definition) :
+        public GenerateStructureSurfacesCommand(GameCache cache, CachedTag tag, ScenarioStructureBsp definition, Stream stream = null) :
             base(true,
 
                 "GenerateStructureSurfaces",
@@ -39,6 +40,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
             Cache = cache;
             Definition = definition;
             Tag = tag;
+            InternalStream = stream;
         }
 
         public override object Execute(List<string> args)
@@ -46,20 +48,26 @@ namespace TagTool.Commands.ScenarioStructureBSPs
             string lightmapTagName = Tag.Name;
 
             // Find and deserialize the lightmap bsp
+            Stream stream = (InternalStream != null ? InternalStream : Cache.OpenCacheRead());
             ScenarioLightmapBspData lbsp;
-            using (var stream = Cache.OpenCacheRead())
-                lbsp = Cache.Deserialize<ScenarioLightmapBspData>(stream, Cache.TagCache.GetTag<ScenarioLightmapBspData>(lightmapTagName));
 
+            lbsp = Cache.Deserialize<ScenarioLightmapBspData>(stream, Cache.TagCache.GetTag<ScenarioLightmapBspData>(lightmapTagName));
             var renderGeometry = lbsp.Geometry;
             var renderGeometryResource = Cache.ResourceCache.GetRenderGeometryApiResourceDefinition(renderGeometry.Resource);
+            if (renderGeometryResource == null)
+                return false;
             renderGeometry.SetResourceBuffers(renderGeometryResource, false);
 
             var tagResources = Cache.ResourceCache.GetStructureBspTagResources(Definition.CollisionBspResource);
+            if (tagResources == null)
+                return false;
             GenerateStructureSurfaces(tagResources, renderGeometry);           
             ((GameCacheHaloOnlineBase)Cache).ResourceCaches.ReplaceResource(Definition.CollisionBspResource.HaloOnlinePageableResource, tagResources);
 
             //optionally generate structure surfaces for sbsp if none are present
             var cacheFileTagResources = Cache.ResourceCache.GetStructureBspCacheFileTagResources(Definition.PathfindingResource);
+            if (cacheFileTagResources == null)
+                return false;
             if (cacheFileTagResources.SurfacePlanes == null || cacheFileTagResources.SurfacePlanes.Count == 0)
             {
                 GenerateStructureBspStructureSurfaces(tagResources, cacheFileTagResources, renderGeometry);
