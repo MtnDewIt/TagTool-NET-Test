@@ -139,7 +139,14 @@ namespace TagTool.MtnDewIt.Porting
                     entry.Value.Close();
                 }
 
-                Matcher.DeInit();
+                if (PortingProperties.LegacyShaderGenerator)
+                {
+                    LegacyMatcher.DeInit();
+                }
+                else 
+                {
+                    Matcher.DeInit();
+                }
             }
 
 			ProcessDeferredActions();
@@ -152,7 +159,8 @@ namespace TagTool.MtnDewIt.Porting
             string lightmapCache = null,
             bool reachDecorators = true,
             bool legacyCollision = false,
-            bool normalMapConversion = true
+            bool normalMapConversion = true,
+            bool legacyShaderGenerator = true
         )
         {
             maxThreads = Environment.ProcessorCount * 2;
@@ -162,6 +170,7 @@ namespace TagTool.MtnDewIt.Porting
             PortingProperties.ReachDecorators = reachDecorators;
             PortingProperties.Gen1Collision = legacyCollision;
             PortingProperties.HqNormalMapConversion = normalMapConversion;
+            PortingProperties.LegacyShaderGenerator = legacyShaderGenerator;
         }
 
         private bool TagIsValid(CachedTag blamTag, Stream blamCacheStream, out CachedTag resultTag)
@@ -1279,9 +1288,18 @@ namespace TagTool.MtnDewIt.Porting
                         return GetDefaultShader(blamTag.Group.Tag, edTag);
                     else
                     {
-                        // Verify that the ShaderMatcher is ready to use
-                        if (!Matcher.IsInitialized)
-                            Matcher.Init(CacheContext, BlamCache, cacheStream, blamCacheStream, FlagIsSet(PortingFlags.Ms30), FlagIsSet(PortingFlags.PefectShaderMatchOnly));
+                        if (PortingProperties.LegacyShaderGenerator)
+                        {
+                            // Verify that the ShaderMatcher is ready to use
+                            if (!LegacyMatcher.IsInitialized)
+                                LegacyMatcher.Init(CacheContext, BlamCache, cacheStream, blamCacheStream, FlagIsSet(PortingFlags.Ms30), FlagIsSet(PortingFlags.PefectShaderMatchOnly));
+                        }
+                        else 
+                        {
+                            // Verify that the ShaderMatcher is ready to use
+                            if (!Matcher.IsInitialized)
+                                Matcher.Init(CacheContext, BlamCache, cacheStream, blamCacheStream, FlagIsSet(PortingFlags.Ms30), FlagIsSet(PortingFlags.PefectShaderMatchOnly));
+                        }
 
                         blamDefinition = ConvertShader(cacheStream, blamCacheStream, blamDefinition, blamTag, BlamCache.Deserialize(blamCacheStream, blamTag));
                         if (blamDefinition == null) // convert shader failed

@@ -22,5 +22,8 @@ namespace TagTool.MtnDewIt.Porting
         
         // Convert CTX1 bitmaps to DXN (default is DXT1)
         public bool HqNormalMapConversion = true;
+
+        // Enable legacy shader generator
+        public bool LegacyShaderGenerator = true;
     }
 }

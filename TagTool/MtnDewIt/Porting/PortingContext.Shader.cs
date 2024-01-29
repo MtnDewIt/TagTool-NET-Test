@@ -17,7 +17,8 @@ namespace TagTool.MtnDewIt.Porting
 {
     partial class PortingContext
     {
-        public LegacyShaderMatcherNew Matcher = new LegacyShaderMatcherNew();
+        public ShaderMatcherNew Matcher = new ShaderMatcherNew();
+        public LegacyShaderMatcherNew LegacyMatcher = new LegacyShaderMatcherNew();
 
         private List<string> emblemTagNames = new List<string>
         {
@@ -121,7 +122,14 @@ namespace TagTool.MtnDewIt.Porting
             if (shaderProperty.Template == null)
                 return null;
 
-            return ConvertRenderMethod(cacheStream, blamCacheStream, definition, blamDefinition, blamShaderProperty.Template, blamTag);
+            if (PortingProperties.LegacyShaderGenerator)
+            {
+                return ConvertLegacyRenderMethod(cacheStream, blamCacheStream, definition, blamDefinition, blamShaderProperty.Template, blamTag);
+            }
+            else 
+            {
+                return ConvertRenderMethod(cacheStream, blamCacheStream, definition, blamDefinition, blamShaderProperty.Template, blamTag);
+            }
         }
 
         private CachedTag GetDefaultShader(Tag groupTag, CachedTag edTag)
@@ -179,14 +187,25 @@ namespace TagTool.MtnDewIt.Porting
 
         private CachedTag FindClosestRmt2(Stream cacheStream, Stream blamCacheStream, CachedTag blamRmt2)
         {
-            // Verify that the ShaderMatcher is ready to use
-            if (!Matcher.IsInitialized)
-                Matcher.Init(CacheContext, BlamCache, cacheStream, blamCacheStream, FlagIsSet(PortingFlags.Ms30), FlagIsSet(PortingFlags.PefectShaderMatchOnly));
+            if (PortingProperties.LegacyShaderGenerator)
+            {
+                // Verify that the ShaderMatcher is ready to use
+                if (!LegacyMatcher.IsInitialized)
+                    LegacyMatcher.Init(CacheContext, BlamCache, cacheStream, blamCacheStream, FlagIsSet(PortingFlags.Ms30), FlagIsSet(PortingFlags.PefectShaderMatchOnly));
 
-            return Matcher.FindClosestTemplate(blamRmt2, BlamCache.Deserialize<RenderMethodTemplate>(blamCacheStream, blamRmt2), FlagIsSet(PortingFlags.GenerateShaders));
+                return LegacyMatcher.FindClosestTemplate(blamRmt2, BlamCache.Deserialize<RenderMethodTemplate>(blamCacheStream, blamRmt2), FlagIsSet(PortingFlags.GenerateShaders));
+            }
+            else 
+            {
+                // Verify that the ShaderMatcher is ready to use
+                if (!Matcher.IsInitialized)
+                    Matcher.Init(CacheContext, BlamCache, cacheStream, blamCacheStream, FlagIsSet(PortingFlags.Ms30), FlagIsSet(PortingFlags.PefectShaderMatchOnly));
+
+                return Matcher.FindClosestTemplate(blamRmt2, BlamCache.Deserialize<RenderMethodTemplate>(blamCacheStream, blamRmt2), FlagIsSet(PortingFlags.GenerateShaders));
+            }
         }
 
-        private RenderMethod ConvertRenderMethod(Stream cacheStream, Stream blamCacheStream, RenderMethod finalRm, RenderMethod blamRm, CachedTag blamRmt2, CachedTag blamTag)
+        private RenderMethod ConvertLegacyRenderMethod(Stream cacheStream, Stream blamCacheStream, RenderMethod finalRm, RenderMethod blamRm, CachedTag blamRmt2, CachedTag blamTag)
         {
             var bmMaps = new List<string>();
             var bmRealConstants = new List<string>();
@@ -253,14 +272,14 @@ namespace TagTool.MtnDewIt.Porting
             LegacyShaderMatcherNew.Rmt2Descriptor.TryParse(edRmt2Instance.Name, out LegacyShaderMatcherNew.Rmt2Descriptor edRmt2Descriptor);
 
             // get relevant rmdf
-            CachedTag rmdfInstance = Matcher.FindRmdf(edRmt2Instance);
+            CachedTag rmdfInstance = LegacyMatcher.FindRmdf(edRmt2Instance);
             if (rmdfInstance == null) // shader matching will fail without an rmdf -- throw an exception
                 throw new Exception($"Unable to find valid \"{edRmt2Descriptor.Type}\" rmdf for rmt2");
 
             finalRm.BaseRenderMethod = rmdfInstance;
 
             // build new rm option indices
-            finalRm.Options = BuildRenderMethodOptionIndices(edRmt2Descriptor);
+            finalRm.Options = BuildLegacyRenderMethodOptionIndices(edRmt2Descriptor);
 
             // black has no options, skip conversion
             if (edRmt2Descriptor.Type == "black")
@@ -281,8 +300,8 @@ namespace TagTool.MtnDewIt.Porting
 
             // dictionaries for fast lookup
             //var optionParameters = Matcher.GetOptionParameters(rmt2Descriptor.Options.ToList(), renderMethodDefinition);
-            var optionBlocks = Matcher.GetOptionBlocks(edRmt2Descriptor.Options.ToList(), rmdf);
-            var optionBitmaps = Matcher.GetOptionBitmaps(edRmt2Descriptor.Options.ToList(), rmdf);
+            var optionBlocks = LegacyMatcher.GetOptionBlocks(edRmt2Descriptor.Options.ToList(), rmdf);
+            var optionBitmaps = LegacyMatcher.GetOptionBitmaps(edRmt2Descriptor.Options.ToList(), rmdf);
 
             List<string> methodNames = new List<string>();
             foreach (var method in rmdf.Categories)
@@ -295,7 +314,7 @@ namespace TagTool.MtnDewIt.Porting
                 newShaderProperty.IntegerConstants.Add(GetDefaultValue(a, edRmt2Descriptor.Type, methodNames, optionBlocks));
 
             foreach (var a in edMaps)
-                newShaderProperty.TextureConstants.Add(GetDefaultTextureConstant(a, edRmt2Descriptor, optionBitmaps));
+                newShaderProperty.TextureConstants.Add(GetLegacyDefaultTextureConstant(a, edRmt2Descriptor, optionBitmaps));
 
             // if we have bits enabled by default, this actually disables boolean args. fixes a few visual issues
             for (int a = 0; a < edRmt2.BooleanParameterNames.Count; a++)
@@ -303,7 +322,7 @@ namespace TagTool.MtnDewIt.Porting
             // newShaderProperty.BooleanConstants |= (GetDefaultValue(CacheContext.StringTable.GetString(edRmt2.BooleanParameterNames[a].Name), edRmt2Descriptor.Type, methodNames, optionBlocks) << a);
 
             // apply option->option conversion where applicable
-            ApplyDefaultOptionFixups(newShaderProperty, originalRm.ShaderProperties[0], blamRmt2Descriptor, edRmt2Descriptor, edRmt2, bmRmt2, rmdf);
+            ApplyLegacyDefaultOptionFixups(newShaderProperty, originalRm.ShaderProperties[0], blamRmt2Descriptor, edRmt2Descriptor, edRmt2, bmRmt2, rmdf);
 
             // Reorder blam bitmaps to match the HO rmt2 order
             // Reorder blam real constants to match the HO rmt2 order
@@ -369,7 +388,7 @@ namespace TagTool.MtnDewIt.Porting
                 newShaderProperty.Flags &= ~RenderMethodPostprocessFlags.ForceSinglePass;
 
             // apply post option->options fixups
-            ApplyPostOptionFixups(newShaderProperty, originalRm.ShaderProperties[0], blamRmt2Descriptor, edRmt2Descriptor, edRmt2, bmRmt2, rmdf);
+            ApplyLegacyPostOptionFixups(newShaderProperty, originalRm.ShaderProperties[0], blamRmt2Descriptor, edRmt2Descriptor, edRmt2, bmRmt2, rmdf);
 
             // hackfix for cook_torrance -> cook_torrance_rim_fresnel (ms23)
             // in rim_fresnel material parameters are multiplied against the material texture, we want to negate this behaviour
@@ -377,6 +396,316 @@ namespace TagTool.MtnDewIt.Porting
             if (BlamCache.Version != CacheVersion.Halo3ODST && 
                 edRmt2Descriptor.Type == "shader" && 
                 blamRmt2Descriptor.Options[4] == 1 && 
+                edRmt2Descriptor.Options[4] == 1)
+            {
+                bool using_material_texture = false;
+                for (int i = 0; i < bmRmt2.BooleanParameterNames.Count; i++)
+                {
+                    if (BlamCache.StringTable.GetString(bmRmt2.BooleanParameterNames[i].Name) == "use_material_texture")
+                    {
+                        if ((originalRm.ShaderProperties[0].BooleanConstants & (1 << i)) == 1)
+                            using_material_texture = true;
+                    }
+                }
+                for (int i = 0; i < bmRmt2.RealParameterNames.Count; i++)
+                {
+                    if (BlamCache.StringTable.GetString(bmRmt2.RealParameterNames[i].Name) == "use_material_texture")
+                    {
+                        if (originalRm.ShaderProperties[0].RealConstants[i].Arg0 != 0.0f)
+                            using_material_texture = true;
+                    }
+                }
+
+                if (using_material_texture)
+                {
+                    for (int i = 0; i < edRmt2.RealParameterNames.Count; i++)
+                    {
+                        switch (CacheContext.StringTable.GetString(edRmt2.RealParameterNames[i].Name))
+                        {
+                            case "specular_coefficient":
+                            case "environment_map_specular_contribution":
+                            case "albedo_blend":
+                            case "roughness":
+                                newShaderProperty.RealConstants[i].Arg0 = 1.0f;
+                                break;
+                        }
+                    }
+                }
+            }
+
+            finalRm.Parameters = new List<RenderMethodParameterBlock>(); // most likely not used
+            finalRm.ShaderProperties[0].Template = edRmt2Instance;
+            finalRm.ShaderProperties[0].TextureConstants = newShaderProperty.TextureConstants;
+            finalRm.ShaderProperties[0].RealConstants = newShaderProperty.RealConstants;
+            finalRm.ShaderProperties[0].IntegerConstants = newShaderProperty.IntegerConstants;
+            finalRm.ShaderProperties[0].BooleanConstants = newShaderProperty.BooleanConstants;
+            finalRm.ShaderProperties[0].BlendMode = newShaderProperty.BlendMode;
+            finalRm.ShaderProperties[0].Flags = newShaderProperty.Flags;
+
+            // fixup runtime queryable properties
+            if (BlamCache.Version < CacheVersion.HaloReach)
+            {
+                for (int i = 0; i < finalRm.ShaderProperties[0].QueryableProperties.Length; i++)
+                {
+                    if (finalRm.ShaderProperties[0].QueryableProperties[i] == -1)
+                        continue;
+
+                    switch (i)
+                    {
+                        case 0:
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 5:
+                            finalRm.ShaderProperties[0].QueryableProperties[i] = (short)edMaps.IndexOf(bmMaps[finalRm.ShaderProperties[0].QueryableProperties[i]]);
+                            break;
+                        case 4:
+                            finalRm.ShaderProperties[0].QueryableProperties[i] = (short)edRealConstants.IndexOf(bmRealConstants[finalRm.ShaderProperties[0].QueryableProperties[i]]);
+                            break;
+                        default:
+                            finalRm.ShaderProperties[0].QueryableProperties[i] = -1;
+                            break;
+                    }
+                }
+            }
+            else if (BlamCache.Version >= CacheVersion.HaloReach)
+            {
+                finalRm.ShaderProperties[0].QueryableProperties = new short[8];
+
+                for (int i = 0; i < finalRm.ShaderProperties[0].QueryableProperties.Length; i++)
+                {
+                    if (finalRm.ShaderProperties[0].QueryablePropertiesReach[i] == -1)
+                    {
+                        finalRm.ShaderProperties[0].QueryableProperties[i] = -1;
+                        continue;
+                    }
+
+                    switch (i)
+                    {
+                        case 0:
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 5:
+                            finalRm.ShaderProperties[0].QueryableProperties[i] = (short)edMaps.IndexOf(bmMaps[finalRm.ShaderProperties[0].QueryablePropertiesReach[i]]);
+                            break;
+                        case 4:
+                            finalRm.ShaderProperties[0].QueryableProperties[i] = (short)edRealConstants.IndexOf(bmRealConstants[finalRm.ShaderProperties[0].QueryablePropertiesReach[i]]);
+                            break;
+                        default:
+                            finalRm.ShaderProperties[0].QueryableProperties[i] = -1;
+                            break;
+                    }
+                }
+            }
+
+            // fixup xform arguments;
+            foreach (var tex in finalRm.ShaderProperties[0].TextureConstants)
+            {
+                if (tex.TextureTransformConstantIndex != -1)
+                    tex.TextureTransformConstantIndex = (sbyte)edRealConstants.IndexOf(bmRealConstants[tex.TextureTransformConstantIndex]);
+            }
+
+            // fixup rm animations
+            if (finalRm.ShaderProperties[0].Functions.Count > 0)
+            {
+                RebuildRenderMethodAnimationsFromRmt2(finalRm, blamRm, edRmt2, bmRmt2);
+            }
+
+            return finalRm;
+        }
+
+        private RenderMethod ConvertRenderMethod(Stream cacheStream, Stream blamCacheStream, RenderMethod finalRm, RenderMethod blamRm, CachedTag blamRmt2, CachedTag blamTag) 
+        {
+            var bmMaps = new List<string>();
+            var bmRealConstants = new List<string>();
+            var bmIntConstants = new List<string>();
+            var bmBoolConstants = new List<string>();
+            var edMaps = new List<string>();
+            var edRealConstants = new List<string>();
+            var edIntConstants = new List<string>();
+            var edBoolConstants = new List<string>();
+
+            // Make a template of ShaderProperty, with the correct bitmaps and arguments counts. 
+            var newShaderProperty = new RenderMethod.RenderMethodPostprocessBlock
+            {
+                TextureConstants = new List<TextureConstant>(),
+                RealConstants = new List<RealConstant>(),
+                IntegerConstants = new List<uint>(),
+                BooleanConstants = 0
+            };
+
+            RenderMethod originalRm = finalRm;
+
+            // convert filter mode
+            if (BlamCache.Version >= CacheVersion.HaloReach)
+            {
+                foreach (var textureConstant in finalRm.ShaderProperties[0].TextureConstants)
+                    textureConstant.FilterMode = textureConstant.FilterModeReach.FilterMode;
+            }
+            else if (BlamCache.Version == CacheVersion.Halo3ODST)
+            {
+                foreach (var textureConstant in finalRm.ShaderProperties[0].TextureConstants)
+                    textureConstant.FilterMode = textureConstant.FilterModeODST.FilterMode;
+            }
+            else if (BlamCache.Version <= CacheVersion.Halo3Retail)
+            {
+                foreach (var textureConstant in finalRm.ShaderProperties[0].TextureConstants)
+                    textureConstant.FilterMode = textureConstant.FilterModeH3;
+            }
+
+            // Get a simple list of bitmaps and arguments names
+            var bmRmt2Instance = blamRmt2;
+            var bmRmt2 = BlamCache.Deserialize<RenderMethodTemplate>(blamCacheStream, bmRmt2Instance);
+
+            // Get a simple list of H3 bitmaps and arguments names
+            foreach (var a in bmRmt2.TextureParameterNames)
+                bmMaps.Add(BlamCache.StringTable.GetString(a.Name));
+            foreach (var a in bmRmt2.RealParameterNames)
+                bmRealConstants.Add(BlamCache.StringTable.GetString(a.Name));
+            foreach (var a in bmRmt2.IntegerParameterNames)
+                bmIntConstants.Add(BlamCache.StringTable.GetString(a.Name));
+            foreach (var a in bmRmt2.BooleanParameterNames)
+                bmBoolConstants.Add(BlamCache.StringTable.GetString(a.Name));
+
+            // get template previously matched from porttag rmt2
+            CachedTag edRmt2Instance = finalRm.ShaderProperties[0].Template;
+
+            if (edRmt2Instance == null)
+            {
+                throw new Exception($"Failed to find HO rmt2 for this RenderMethod instance");
+            }
+
+            // create blam rmt2 descriptor
+            ShaderMatcherNew.Rmt2Descriptor.TryParse(bmRmt2Instance.Name, out ShaderMatcherNew.Rmt2Descriptor blamRmt2Descriptor);
+            // create ed rmt2 descriptor
+            ShaderMatcherNew.Rmt2Descriptor.TryParse(edRmt2Instance.Name, out ShaderMatcherNew.Rmt2Descriptor edRmt2Descriptor);
+
+            // get relevant rmdf
+            CachedTag rmdfInstance = Matcher.FindRmdf(edRmt2Instance);
+            if (rmdfInstance == null) // shader matching will fail without an rmdf -- throw an exception
+                throw new Exception($"Unable to find valid \"{edRmt2Descriptor.Type}\" rmdf for rmt2");
+
+            finalRm.BaseRenderMethod = rmdfInstance;
+
+            // build new rm option indices
+            finalRm.Options = BuildRenderMethodOptionIndices(edRmt2Descriptor);
+
+            // black has no options, skip conversion
+            if (edRmt2Descriptor.Type == "black")
+                return finalRm;
+
+            var edRmt2 = CacheContext.Deserialize<RenderMethodTemplate>(cacheStream, edRmt2Instance);
+
+            foreach (var a in edRmt2.TextureParameterNames)
+                edMaps.Add(CacheContext.StringTable.GetString(a.Name));
+            foreach (var a in edRmt2.RealParameterNames)
+                edRealConstants.Add(CacheContext.StringTable.GetString(a.Name));
+            foreach (var a in edRmt2.IntegerParameterNames)
+                edIntConstants.Add(CacheContext.StringTable.GetString(a.Name));
+            foreach (var a in edRmt2.BooleanParameterNames)
+                edBoolConstants.Add(CacheContext.StringTable.GetString(a.Name));
+
+            RenderMethodDefinition rmdf = CacheContext.Deserialize<RenderMethodDefinition>(cacheStream, rmdfInstance);
+
+            // dictionaries for fast lookup
+            //var optionParameters = Matcher.GetOptionParameters(rmt2Descriptor.Options.ToList(), renderMethodDefinition);
+            var optionBlocks = Matcher.GetOptionBlocks(edRmt2Descriptor.Options.ToList(), rmdf);
+            var optionBitmaps = Matcher.GetOptionBitmaps(edRmt2Descriptor.Options.ToList(), rmdf);
+
+            List<string> methodNames = new List<string>();
+            foreach (var method in rmdf.Categories)
+                methodNames.Add(CacheContext.StringTable.GetString(method.Name));
+
+            foreach (var a in edRealConstants)
+                newShaderProperty.RealConstants.Add(GetDefaultRealConstant(a, edRmt2Descriptor.Type, methodNames, optionBlocks));
+
+            foreach (var a in edIntConstants)
+                newShaderProperty.IntegerConstants.Add(GetDefaultValue(a, edRmt2Descriptor.Type, methodNames, optionBlocks));
+
+            foreach (var a in edMaps)
+                newShaderProperty.TextureConstants.Add(GetDefaultTextureConstant(a, edRmt2Descriptor, optionBitmaps));
+
+            // if we have bits enabled by default, this actually disables boolean args. fixes a few visual issues
+            for (int a = 0; a < edRmt2.BooleanParameterNames.Count; a++)
+                newShaderProperty.BooleanConstants |= (1u << a);
+            // newShaderProperty.BooleanConstants |= (GetDefaultValue(CacheContext.StringTable.GetString(edRmt2.BooleanParameterNames[a].Name), edRmt2Descriptor.Type, methodNames, optionBlocks) << a);
+
+            // apply option->option conversion where applicable
+            ApplyDefaultOptionFixups(newShaderProperty, originalRm.ShaderProperties[0], blamRmt2Descriptor, edRmt2Descriptor, edRmt2, bmRmt2, rmdf);
+
+            // Reorder blam bitmaps to match the HO rmt2 order
+            // Reorder blam real constants to match the HO rmt2 order
+            // Reorder blam int constants to match the HO rmt2 order
+            // Reorder blam bool constants to match the HO rmt2 order
+            foreach (var eM in edMaps)
+                foreach (var bM in bmMaps)
+                    if (eM == bM)
+                        newShaderProperty.TextureConstants[edMaps.IndexOf(eM)] = finalRm.ShaderProperties[0].TextureConstants[bmMaps.IndexOf(bM)];
+
+            foreach (var eA in edRealConstants)
+                foreach (var bA in bmRealConstants)
+                    if (eA == bA)
+                        newShaderProperty.RealConstants[edRealConstants.IndexOf(eA)] = finalRm.ShaderProperties[0].RealConstants[bmRealConstants.IndexOf(bA)];
+
+            foreach (var eA in edIntConstants)
+                foreach (var bA in bmIntConstants)
+                    if (eA == bA)
+                        newShaderProperty.IntegerConstants[edIntConstants.IndexOf(eA)] = finalRm.ShaderProperties[0].IntegerConstants[bmIntConstants.IndexOf(bA)];
+
+            foreach (var eA in edBoolConstants)
+            {
+                if (RealConstantToBoolConstant.Contains(eA) && bmRealConstants.Contains(eA))
+                {
+                    if (finalRm.ShaderProperties[0].RealConstants[bmRealConstants.IndexOf(eA)].Arg0 == 0.0f)
+                        newShaderProperty.BooleanConstants &= ~(1u << edBoolConstants.IndexOf(eA));
+                }
+                else
+                {
+                    foreach (var bA in bmBoolConstants)
+                        if (eA == bA)
+                        {
+                            if ((finalRm.ShaderProperties[0].BooleanConstants & (1u << bmBoolConstants.IndexOf(bA))) == 0)
+                                newShaderProperty.BooleanConstants &= ~(1u << edBoolConstants.IndexOf(eA));
+                        }
+                }
+            }
+
+            newShaderProperty.BlendMode = finalRm.ShaderProperties[0].BlendMode;
+            newShaderProperty.Flags = finalRm.ShaderProperties[0].Flags;
+
+            // We now disable ATOC completely, later games have conversion issues
+
+            //// Check for ATOC materials and flag accordingly --
+            //// ATOC materials changed in ODST. We use a base of H3, so we need to re-enable the ATOC flag where necessary.
+            //if (rmdf.ContainsCategory(CacheContext, "alpha_test") &&
+            //    !finalRm.CategoryOptionSelected(CacheContext, rmdf, "alpha_test", "none") &&
+            //    !finalRm.CategoryOptionSelected(CacheContext, rmdf, "material_model", "cook_torrance") &&
+            //    !finalRm.CategoryOptionSelected(CacheContext, rmdf, "material_model", "two_lobe_phong") &&
+            //    !finalRm.CategoryOptionSelected(CacheContext, rmdf, "material_model", "default_skin") &&
+            //    !finalRm.CategoryOptionSelected(CacheContext, rmdf, "material_model", "glass") &&
+            //    !finalRm.CategoryOptionSelected(CacheContext, rmdf, "material_model", "organism"))
+            //    newShaderProperty.Flags |= RenderMethodPostprocessFlags.EnableAlphaTest;
+            //else
+            newShaderProperty.Flags &= ~RenderMethodPostprocessFlags.EnableAlphaTest;
+
+            // Flag single pass accordingly (this should already be correct)
+            if (rmdf.ContainsCategory(CacheContext, "misc") &&
+                (finalRm.CategoryOptionSelected(CacheContext, rmdf, "misc", "first_person_always") ||
+                 finalRm.CategoryOptionSelected(CacheContext, rmdf, "misc", "first_person_never")))
+                newShaderProperty.Flags |= RenderMethodPostprocessFlags.ForceSinglePass;
+            else
+                newShaderProperty.Flags &= ~RenderMethodPostprocessFlags.ForceSinglePass;
+
+            // apply post option->options fixups
+            ApplyPostOptionFixups(newShaderProperty, originalRm.ShaderProperties[0], blamRmt2Descriptor, edRmt2Descriptor, edRmt2, bmRmt2, rmdf);
+
+            // hackfix for cook_torrance -> cook_torrance_rim_fresnel (ms23)
+            // in rim_fresnel material parameters are multiplied against the material texture, we want to negate this behaviour
+            // with new odst cook_torrance this can be removed in shader code
+            if (BlamCache.Version != CacheVersion.Halo3ODST &&
+                edRmt2Descriptor.Type == "shader" &&
+                blamRmt2Descriptor.Options[4] == 1 &&
                 edRmt2Descriptor.Options[4] == 1)
             {
                 bool using_material_texture = false;
@@ -864,7 +1193,33 @@ namespace TagTool.MtnDewIt.Porting
             ShaderFunctionHelper.BuildAnimatedParameters(CacheContext, finalRm, edRmt2, animatedParameters);
         }
 
-        private TextureConstant GetDefaultTextureConstant(string parameter, LegacyShaderMatcherNew.Rmt2Descriptor rmt2Descriptor, Dictionary<StringId, CachedTag> optionBitmaps)
+        private TextureConstant GetLegacyDefaultTextureConstant(string parameter, LegacyShaderMatcherNew.Rmt2Descriptor rmt2Descriptor, Dictionary<StringId, CachedTag> optionBitmaps)
+        {
+            TextureConstant textureConstant = new TextureConstant { TextureTransformConstantIndex = -1 };
+
+            if (rmt2Descriptor.Type == "particle")
+            {
+                textureConstant.SamplerAddressMode = new TextureConstant.PackedSamplerAddressMode
+                {
+                    AddressU = TextureConstant.SamplerAddressModeEnum.Clamp,
+                    AddressV = TextureConstant.SamplerAddressModeEnum.Clamp
+                };
+            }
+
+            // get default bitmap from dictionary
+            if (!optionBitmaps.TryGetValue(CacheContext.StringTable.GetStringId(parameter), out textureConstant.Bitmap) || textureConstant.Bitmap == null)
+            {
+                // null bitmap causes bad rendering, use default_detail in these cases
+                if (rmt2Descriptor.IsMs30)
+                    textureConstant.Bitmap = CacheContext.TagCache.GetTag(@"ms30\shaders\default_bitmaps\bitmaps\default_detail.bitm");
+                else
+                    textureConstant.Bitmap = CacheContext.TagCache.GetTag(@"shaders\default_bitmaps\bitmaps\default_detail.bitm");
+            }
+
+            return textureConstant;
+        }
+
+        private TextureConstant GetDefaultTextureConstant(string parameter, ShaderMatcherNew.Rmt2Descriptor rmt2Descriptor, Dictionary<StringId, CachedTag> optionBitmaps)
         {
             TextureConstant textureConstant = new TextureConstant { TextureTransformConstantIndex = -1 };
 
@@ -958,7 +1313,7 @@ namespace TagTool.MtnDewIt.Porting
             }
         }
 
-        private List<RenderMethodOptionIndex> BuildRenderMethodOptionIndices(LegacyShaderMatcherNew.Rmt2Descriptor rmt2Descriptor)
+        private List<RenderMethodOptionIndex> BuildLegacyRenderMethodOptionIndices(LegacyShaderMatcherNew.Rmt2Descriptor rmt2Descriptor)
         {
             List<RenderMethodOptionIndex> newRmIndices = new List<RenderMethodOptionIndex>();
 
@@ -972,7 +1327,21 @@ namespace TagTool.MtnDewIt.Porting
             return newRmIndices;
         }
 
-        private bool OptionChanged(string rmt2Type, string methodName, out int edOptionIndex, LegacyShaderMatcherNew.Rmt2Descriptor blamRmt2Descriptor, LegacyShaderMatcherNew.Rmt2Descriptor edRmt2Descriptor, RenderMethodDefinition rmdf)
+        private List<RenderMethodOptionIndex> BuildRenderMethodOptionIndices(ShaderMatcherNew.Rmt2Descriptor rmt2Descriptor)
+        {
+            List<RenderMethodOptionIndex> newRmIndices = new List<RenderMethodOptionIndex>();
+
+            foreach (var option in rmt2Descriptor.Options)
+            {
+                RenderMethodOptionIndex optionIndex = new RenderMethodOptionIndex();
+                optionIndex.OptionIndex = option;
+                newRmIndices.Add(optionIndex);
+            }
+
+            return newRmIndices;
+        }
+
+        private bool LegacyOptionChanged(string rmt2Type, string methodName, out int edOptionIndex, LegacyShaderMatcherNew.Rmt2Descriptor blamRmt2Descriptor, LegacyShaderMatcherNew.Rmt2Descriptor edRmt2Descriptor, RenderMethodDefinition rmdf)
         {
             //
             // This compares the original rmt2 with the matched rmt2 from the matching process and checks if the specified option has changed.
@@ -996,7 +1365,224 @@ namespace TagTool.MtnDewIt.Porting
             return false;
         }
 
-        private void ApplyDefaultOptionFixups(RenderMethodPostprocessBlock edShaderProperty, RenderMethodPostprocessBlock bmShaderProperty, LegacyShaderMatcherNew.Rmt2Descriptor blamRmt2Descriptor, LegacyShaderMatcherNew.Rmt2Descriptor edRmt2Descriptor, RenderMethodTemplate edRmt2, RenderMethodTemplate bmRmt2, RenderMethodDefinition rmdf)
+        private bool OptionChanged(string rmt2Type, string methodName, out int edOptionIndex, ShaderMatcherNew.Rmt2Descriptor blamRmt2Descriptor, ShaderMatcherNew.Rmt2Descriptor edRmt2Descriptor, RenderMethodDefinition rmdf)
+        {
+            //
+            // This compares the original rmt2 with the matched rmt2 from the matching process and checks if the specified option has changed.
+            //
+
+            edOptionIndex = -1;
+
+            if (edRmt2Descriptor.Type == rmt2Type)
+            {
+                for (int i = 0; i < rmdf.Categories.Count; i++)
+                {
+                    // find name, and compare the options at that index. maybe need to loop blam rmdf too?
+                    if (CacheContext.StringTable.GetString(rmdf.Categories[i].Name) == methodName && blamRmt2Descriptor.Options[i] != edRmt2Descriptor.Options[i])
+                    {
+                        edOptionIndex = i;
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private void ApplyLegacyDefaultOptionFixups(RenderMethodPostprocessBlock edShaderProperty, RenderMethodPostprocessBlock bmShaderProperty, LegacyShaderMatcherNew.Rmt2Descriptor blamRmt2Descriptor, LegacyShaderMatcherNew.Rmt2Descriptor edRmt2Descriptor, RenderMethodTemplate edRmt2, RenderMethodTemplate bmRmt2, RenderMethodDefinition rmdf)
+        {
+            //
+            // This applies manual option->option fixups for matching. This concept should not be used for rm creation/generation.
+            //
+
+            // special case, has no options.
+            if (blamRmt2Descriptor.Type == "black" || edRmt2Descriptor.Type == "black")
+                return;
+
+            // TODO: cleaner way of doing this
+
+            var realConstants = edShaderProperty.RealConstants;
+            var textureConstants = edShaderProperty.TextureConstants;
+            var bmRealConstants = bmShaderProperty.RealConstants;
+            var bmTextureConstants = bmShaderProperty.TextureConstants;
+
+            int optionIndex = -1;
+
+            if (LegacyOptionChanged("halogram", "overlay", out optionIndex, blamRmt2Descriptor, edRmt2Descriptor, rmdf))
+            {
+                // if overlay is new to the shader, set its intensity to 0
+                if (blamRmt2Descriptor.Options[optionIndex] == 0 && edRmt2Descriptor.Options[optionIndex] != 0)
+                {
+                    for (int i = 0; i < edRmt2.RealParameterNames.Count; i++)
+                        if (CacheContext.StringTable.GetString(edRmt2.RealParameterNames[i].Name) == "overlay_intensity")
+                        {
+                            realConstants[i] = new RealConstant { Arg0 = 0.0f, Arg1 = 0.0f, Arg2 = 0.0f, Arg3 = 0.0f };
+                            break;
+                        }
+                }
+                // overlay_detail_map to 0
+                for (int i = 0; i < edRmt2.RealParameterNames.Count; i++)
+                    if (CacheContext.StringTable.GetString(edRmt2.RealParameterNames[i].Name) == "overlay_detail_map")
+                    {
+                        realConstants[i] = new RealConstant { Arg0 = 0.0f, Arg1 = 0.0f, Arg2 = 0.0f, Arg3 = 0.0f };
+                        break;
+                    }
+            }
+            if (LegacyOptionChanged("halogram", "edge_fade", out optionIndex, blamRmt2Descriptor, edRmt2Descriptor, rmdf))
+            {
+                // prevent purple edge_fade
+                if (blamRmt2Descriptor.Options[optionIndex] == 0 && edRmt2Descriptor.Options[optionIndex] == 1)
+                {
+                    for (int i = 0; i < edRmt2.RealParameterNames.Count; i++)
+                        if (CacheContext.StringTable.GetString(edRmt2.RealParameterNames[i].Name) == "edge_fade_center_tint")
+                        {
+                            realConstants[i] = new RealConstant { Arg0 = 1.0f, Arg1 = 1.0f, Arg2 = 1.0f, Arg3 = 1.0f };
+                            break;
+                        }
+                }
+            }
+            if (LegacyOptionChanged("water", "bankalpha", out optionIndex, blamRmt2Descriptor, edRmt2Descriptor, rmdf))
+            {
+                // if the water shader uses bankalpha.depth when it didnt previously, set the depth to 0 to prevent transparent puddles
+                if (blamRmt2Descriptor.Options[optionIndex] != 1 && edRmt2Descriptor.Options[optionIndex] == 1)
+                {
+                    for (int i = 0; i < edRmt2.RealParameterNames.Count; i++)
+                        if (CacheContext.StringTable.GetString(edRmt2.RealParameterNames[i].Name) == "bankalpha_infuence_depth")
+                        {
+                            realConstants[i] = new RealConstant { Arg0 = 0.0f, Arg1 = 0.0f, Arg2 = 0.0f, Arg3 = 0.0f };
+                            break;
+                        }
+                }
+            }
+            if (LegacyOptionChanged("shader", "self_illumination", out optionIndex, blamRmt2Descriptor, edRmt2Descriptor, rmdf))
+            {
+                // if self_illumination is new to the shader, set self_illum_intensity to 0
+                if (blamRmt2Descriptor.Options[optionIndex] == 0 && edRmt2Descriptor.Options[optionIndex] != 0)
+                {
+                    for (int i = 0; i < edRmt2.RealParameterNames.Count; i++)
+                        if (CacheContext.StringTable.GetString(edRmt2.RealParameterNames[i].Name) == "self_illum_intensity")
+                        {
+                            realConstants[i] = new RealConstant { Arg0 = 0.0f, Arg1 = 0.0f, Arg2 = 0.0f, Arg3 = 0.0f };
+                            break;
+                        }
+                }
+            }
+            if (LegacyOptionChanged("terrain", "material_3", out optionIndex, blamRmt2Descriptor, edRmt2Descriptor, rmdf) && BlamCache.Version < CacheVersion.HaloReach)
+            {
+                // if the fourth material is new, set its bitmaps to be that of the first
+                if (blamRmt2Descriptor.Options[optionIndex] == 0 && edRmt2Descriptor.Options[optionIndex] != 0)
+                {
+                    bool baseIsSet = false, detailIsSet = false, bumpIsSet = false, detailBumpIsSet = false;
+
+                    for (int i = 0; i < edRmt2.TextureParameterNames.Count; i++)
+                    {
+                        if (!baseIsSet && CacheContext.StringTable.GetString(edRmt2.TextureParameterNames[i].Name) == "base_map_m_3")
+                            for (int j = 0; j < bmRmt2.TextureParameterNames.Count; j++)
+                                if (BlamCache.StringTable.GetString(bmRmt2.TextureParameterNames[j].Name) == "base_map_m_0")
+                                {
+                                    baseIsSet = true;
+                                    textureConstants[i].Bitmap = CacheContext.TagCache.GetTag(bmTextureConstants[j].Bitmap.Name + ".bitm");
+                                    textureConstants[i].BitmapIndex = bmTextureConstants[j].BitmapIndex;
+                                    break;
+                                }
+                        if (!detailIsSet && CacheContext.StringTable.GetString(edRmt2.TextureParameterNames[i].Name) == "detail_map_m_3")
+                            for (int j = 0; j < bmRmt2.TextureParameterNames.Count; j++)
+                                if (BlamCache.StringTable.GetString(bmRmt2.TextureParameterNames[j].Name) == "detail_map_m_0")
+                                {
+                                    detailIsSet = true;
+                                    textureConstants[i].Bitmap = CacheContext.TagCache.GetTag(bmTextureConstants[j].Bitmap.Name + ".bitm");
+                                    textureConstants[i].BitmapIndex = bmTextureConstants[j].BitmapIndex;
+                                    break;
+                                }
+                        if (!bumpIsSet && CacheContext.StringTable.GetString(edRmt2.TextureParameterNames[i].Name) == "bump_map_m_3")
+                            for (int j = 0; j < bmRmt2.TextureParameterNames.Count; j++)
+                                if (BlamCache.StringTable.GetString(bmRmt2.TextureParameterNames[j].Name) == "bump_map_m_0")
+                                {
+                                    bumpIsSet = true;
+                                    textureConstants[i].Bitmap = CacheContext.TagCache.GetTag(bmTextureConstants[j].Bitmap.Name + ".bitm");
+                                    textureConstants[i].BitmapIndex = bmTextureConstants[j].BitmapIndex;
+                                    break;
+                                }
+                        if (!detailBumpIsSet && CacheContext.StringTable.GetString(edRmt2.TextureParameterNames[i].Name) == "detail_bump_m_3")
+                            for (int j = 0; j < bmRmt2.TextureParameterNames.Count; j++)
+                                if (BlamCache.StringTable.GetString(bmRmt2.TextureParameterNames[j].Name) == "detail_bump_m_0")
+                                {
+                                    detailBumpIsSet = true;
+                                    textureConstants[i].Bitmap = CacheContext.TagCache.GetTag(bmTextureConstants[j].Bitmap.Name + ".bitm");
+                                    textureConstants[i].BitmapIndex = bmTextureConstants[j].BitmapIndex;
+                                    break;
+                                }
+                    }
+
+                    baseIsSet = false; detailIsSet = false; bumpIsSet = false; detailBumpIsSet = false;
+
+                    for (int i = 0; i < edRmt2.RealParameterNames.Count; i++)
+                    {
+                        if (!baseIsSet && CacheContext.StringTable.GetString(edRmt2.RealParameterNames[i].Name) == "base_map_m_3")
+                            for (int j = 0; j < bmRmt2.RealParameterNames.Count; j++)
+                                if (BlamCache.StringTable.GetString(bmRmt2.RealParameterNames[j].Name) == "base_map_m_0")
+                                {
+                                    baseIsSet = true;
+                                    realConstants[i] = bmRealConstants[j];
+                                    break;
+                                }
+                        if (!detailIsSet && CacheContext.StringTable.GetString(edRmt2.RealParameterNames[i].Name) == "detail_map_m_3")
+                            for (int j = 0; j < bmRmt2.RealParameterNames.Count; j++)
+                                if (BlamCache.StringTable.GetString(bmRmt2.RealParameterNames[j].Name) == "detail_map_m_0")
+                                {
+                                    detailIsSet = true;
+                                    realConstants[i] = bmRealConstants[j];
+                                    break;
+                                }
+                        if (!bumpIsSet && CacheContext.StringTable.GetString(edRmt2.RealParameterNames[i].Name) == "bump_map_m_3")
+                            for (int j = 0; j < bmRmt2.RealParameterNames.Count; j++)
+                                if (BlamCache.StringTable.GetString(bmRmt2.RealParameterNames[j].Name) == "bump_map_m_0")
+                                {
+                                    bumpIsSet = true;
+                                    realConstants[i] = bmRealConstants[j];
+                                    break;
+                                }
+                        if (!detailBumpIsSet && CacheContext.StringTable.GetString(edRmt2.RealParameterNames[i].Name) == "detail_bump_m_3")
+                            for (int j = 0; j < bmRmt2.RealParameterNames.Count; j++)
+                                if (BlamCache.StringTable.GetString(bmRmt2.RealParameterNames[j].Name) == "detail_bump_m_0")
+                                {
+                                    detailBumpIsSet = true;
+                                    realConstants[i] = bmRealConstants[j];
+                                    break;
+                                }
+                    }
+                }
+            }
+            if (LegacyOptionChanged("decal", "tinting", out optionIndex, blamRmt2Descriptor, edRmt2Descriptor, rmdf))
+            {
+                // if decal tinting is new, ensure its colour is white
+                if (blamRmt2Descriptor.Options[optionIndex] == 0 && edRmt2Descriptor.Options[optionIndex] != 0)
+                {
+                    for (int i = 0; i < edRmt2.RealParameterNames.Count; i++)
+                        if (CacheContext.StringTable.GetString(edRmt2.RealParameterNames[i].Name) == "tint_color")
+                        {
+                            realConstants[i] = new RealConstant { Arg0 = 1.0f, Arg1 = 1.0f, Arg2 = 1.0f, Arg3 = 1.0f };
+                            break;
+                        }
+                }
+            }
+            if (LegacyOptionChanged("shader", "parallax", out optionIndex, blamRmt2Descriptor, edRmt2Descriptor, rmdf))
+            {
+                if (blamRmt2Descriptor.Options[optionIndex] == 0 && edRmt2Descriptor.Options[optionIndex] != 0)
+                {
+                    for (int i = 0; i < edRmt2.RealParameterNames.Count; i++)
+                    {
+                        // prevent "smoothing"
+                        if (CacheContext.StringTable.GetString(edRmt2.RealParameterNames[i].Name) == "height_map")
+                            realConstants[i] = new RealConstant { Arg0 = 1.0f, Arg1 = 1.0f, Arg2 = 0.0f, Arg3 = 0.0f };
+                        if (CacheContext.StringTable.GetString(edRmt2.RealParameterNames[i].Name) == "height_scale")
+                            realConstants[i] = new RealConstant { Arg0 = 0.0f, Arg1 = 0.0f, Arg2 = 0.0f, Arg3 = 0.0f };
+                    }
+                }
+            }
+        }
+
+        private void ApplyDefaultOptionFixups(RenderMethodPostprocessBlock edShaderProperty, RenderMethodPostprocessBlock bmShaderProperty, ShaderMatcherNew.Rmt2Descriptor blamRmt2Descriptor, ShaderMatcherNew.Rmt2Descriptor edRmt2Descriptor, RenderMethodTemplate edRmt2, RenderMethodTemplate bmRmt2, RenderMethodDefinition rmdf)
         {
             //
             // This applies manual option->option fixups for matching. This concept should not be used for rm creation/generation.
@@ -1189,7 +1775,41 @@ namespace TagTool.MtnDewIt.Porting
             }
         }
 
-        private void ApplyPostOptionFixups(RenderMethodPostprocessBlock edShaderProperty, RenderMethodPostprocessBlock bmShaderProperty, LegacyShaderMatcherNew.Rmt2Descriptor blamRmt2Descriptor, LegacyShaderMatcherNew.Rmt2Descriptor edRmt2Descriptor, RenderMethodTemplate edRmt2, RenderMethodTemplate bmRmt2, RenderMethodDefinition rmdf)
+        private void ApplyLegacyPostOptionFixups(RenderMethodPostprocessBlock edShaderProperty, RenderMethodPostprocessBlock bmShaderProperty, LegacyShaderMatcherNew.Rmt2Descriptor blamRmt2Descriptor, LegacyShaderMatcherNew.Rmt2Descriptor edRmt2Descriptor, RenderMethodTemplate edRmt2, RenderMethodTemplate bmRmt2, RenderMethodDefinition rmdf)
+        {
+            //
+            // This applies manual option->option fixups for matching. This concept should not be used for rm creation/generation.
+            //
+
+            // special case, has no options.
+            if (blamRmt2Descriptor.Type == "black" || edRmt2Descriptor.Type == "black")
+                return;
+
+            // TODO: cleaner way of doing this
+
+            var realConstants = edShaderProperty.RealConstants;
+            var textureConstants = edShaderProperty.TextureConstants;
+            var bmRealConstants = bmShaderProperty.RealConstants;
+            var bmTextureConstants = bmShaderProperty.TextureConstants;
+
+            int optionIndex = -1;
+
+            if (LegacyOptionChanged("shader", "specular_mask", out optionIndex, blamRmt2Descriptor, edRmt2Descriptor, rmdf))
+            {
+                // if specular mask/texture is no longer used, 0 the specular coefficients (prevents blinding/bad env reflections)
+                if (blamRmt2Descriptor.Options[optionIndex] > 1 && edRmt2Descriptor.Options[optionIndex] == 0)
+                {
+                    for (int i = 0; i < edRmt2.RealParameterNames.Count; i++)
+                        if (CacheContext.StringTable.GetString(edRmt2.RealParameterNames[i].Name) == "specular_coefficient")
+                        {
+                            realConstants[i] = new RealConstant { Arg0 = 0.0f, Arg1 = 0.0f, Arg2 = 0.0f, Arg3 = 0.0f };
+                            break;
+                        }
+                }
+            }
+        }
+
+        private void ApplyPostOptionFixups(RenderMethodPostprocessBlock edShaderProperty, RenderMethodPostprocessBlock bmShaderProperty, ShaderMatcherNew.Rmt2Descriptor blamRmt2Descriptor, ShaderMatcherNew.Rmt2Descriptor edRmt2Descriptor, RenderMethodTemplate edRmt2, RenderMethodTemplate bmRmt2, RenderMethodDefinition rmdf)
         {
             //
             // This applies manual option->option fixups for matching. This concept should not be used for rm creation/generation.
