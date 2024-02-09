@@ -34,13 +34,6 @@ namespace TagTool.Commands.Porting.Gen2
                     var vertex = mesh.RawVertices[vertex_index];
                     RealVector2d Texcoord = vertex.Texcoord.IJ;
 
-                    // Normalize texcoords to 0 to 1 instead of -1 to 1 for h2v
-                    if (Gen2Cache.Version == CacheVersion.Halo2Vista)
-                    {
-                        Texcoord.I = (Texcoord.I + 1) / 2;
-                        Texcoord.J = (Texcoord.J + 1) / 2;
-                    }
-
                     switch (geometrytype)
                     {
                         case RenderGeometryClassification.Worldspace:
@@ -145,8 +138,10 @@ namespace TagTool.Commands.Porting.Gen2
                     default:
                         throw new NotSupportedException(geometrytype.ToString());
                 }
-
-                builder.BindIndexBuffer(mesh.StripIndices.Select(i => (ushort)i.Index), IndexBufferFormat.TriangleStrip);
+                var bufferFormat = IndexBufferFormat.TriangleStrip;
+                if (mesh.Parts.Any(p => p.FlagsOld.HasFlag(Part.PartFlagsOld.OverrideTriangleList)))
+                    bufferFormat = IndexBufferFormat.TriangleList;
+                builder.BindIndexBuffer(mesh.StripIndices.Select(i => (ushort)i.Index), bufferFormat);
 
                 builder.EndMesh();
             }
@@ -302,10 +297,18 @@ namespace TagTool.Commands.Porting.Gen2
                                 case 1:
                                     if (entry.Item2 == VertexDeclarationUsage.TextureCoordinate)
                                     {
-                                        vertex.Texcoord = element.XY;
+                                        RealVector2d Texcoord = element.IJ;
 
+                                        // Normalize texcoords to 0 to 1 instead of -1 to 1 for h2v
+                                        if (Gen2Cache.Version == CacheVersion.Halo2Vista)
+                                        {
+                                            Texcoord.I = (Texcoord.I + 1) / 2;
+                                            Texcoord.J = (Texcoord.J + 1) / 2;
+                                        }
+
+                                        vertex.Texcoord = Texcoord.XY;
                                         if (CompressionFlags.HasFlag(RenderGeometryCompressionFlags.CompressedTexcoord))
-                                            vertex.Texcoord = compressor.DecompressUv(new RealVector2d(vertex.Texcoord.ToArray())).XY;
+                                            vertex.Texcoord = compressor.DecompressUv(Texcoord).XY;
                                     }
                                     break;
 
