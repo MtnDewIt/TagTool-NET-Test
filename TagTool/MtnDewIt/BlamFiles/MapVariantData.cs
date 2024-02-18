@@ -52,8 +52,10 @@ namespace TagTool.MtnDewIt.BlamFiles
         All = 0x3FF,
     }
 
+    [Flags]
     public enum VariantDataPlacementFlags : byte
     {
+        None = 0,
         UniqueSpawn = 1 << 0,
         NotInitiallyPlaced = 1 << 1,
         Symmetric = 1 << 2,
@@ -62,6 +64,7 @@ namespace TagTool.MtnDewIt.BlamFiles
 
     public enum VariantDataMultiplayerTeamDesignator : sbyte
     {
+        None = -1,
         Red,
         Blue,
         Green,
@@ -105,6 +108,7 @@ namespace TagTool.MtnDewIt.BlamFiles
 
     public enum VariantDataMultiplayerObjectType : sbyte
     {
+        None = -1,
         Ordinary,
         Weapon,
         Grenade,

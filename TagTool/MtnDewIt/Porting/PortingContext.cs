@@ -250,6 +250,17 @@ namespace TagTool.MtnDewIt.Porting
             {
                 RenderMethod renderMethod = BlamCache.Deserialize<RenderMethod>(blamCacheStream, blamTag);
 
+                if (BlamCache.Version >= CacheVersion.HaloReach)
+                {
+                    switch (blamTag.Group.Tag.ToString())
+                    {
+                        case "rmcs":
+                        case "rmgl":
+                            resultTag = GetDefaultShader(blamTag.Group.Tag, resultTag);
+                            return false;
+                    }
+                }
+
                 string templateName = renderMethod.ShaderProperties[0].Template.Name;
                 if(LegacyShaderMatcherNew.Rmt2Descriptor.TryParse(templateName, out var rmt2Descriptor))
                 {
@@ -503,6 +514,9 @@ namespace TagTool.MtnDewIt.Porting
                                     item.ChildObject = null;
                                     break;
                             }
+
+                if (hlmt.NewDamageInfo == null || hlmt.NewDamageInfo.Count == 0)
+                    hlmt.NewDamageInfo = new List<Model.GlobalDamageInfoBlock>() { ConvertDamageInfoReach(hlmt.OmahaDamageInfo) };
             }
 
             if (definition is GameObject obj) {
@@ -1098,11 +1112,6 @@ namespace TagTool.MtnDewIt.Porting
                             else if (target.LockOnData.FlagsOld.HasFlag(Model.TargetLockOnData.FlagsValueOld.LockedByPlasmaTracking))
                                 target.LockOnData.TrackingType = CacheContext.StringTable.GetStringId("bipeds");
                         }
-                    }
-                    if(BlamCache.Version >= CacheVersion.HaloReach)
-                    {
-                        if(hlmt.NewDamageInfo == null || hlmt.NewDamageInfo.Count == 0)
-                            hlmt.NewDamageInfo = new List<Model.GlobalDamageInfoBlock>() { ConvertDamageInfoReach(hlmt.OmahaDamageInfo) };
                     }
                     break;
               
@@ -1714,8 +1723,8 @@ namespace TagTool.MtnDewIt.Porting
                             case "none":
                                 break;
                             default:
-                                if (!string.IsNullOrEmpty(scnrObj.MegaloLabel))
-                                    new TagToolWarning($"unknown megalo label: {scnrObj.MegaloLabel}");
+                                //if (!string.IsNullOrEmpty(scnrObj.MegaloLabel))
+                                //    new TagToolWarning($"unknown megalo label: {scnrObj.MegaloLabel}");
                                 break;
                         }
 
@@ -1766,7 +1775,11 @@ namespace TagTool.MtnDewIt.Porting
                 case CollisionGeometry collisionGeometry:
                     return ConvertCollisionBsp(collisionGeometry);
 
-				case RenderGeometry renderGeometry when BlamCache.Version >= CacheVersion.Halo3Retail:
+                case CollisionBspPhysicsDefinition collisionBspPhysics when BlamCache.Version >= CacheVersion.HaloReach:
+                    collisionBspPhysics = ConvertStructure(cacheStream, blamCacheStream, resourceStreams, collisionBspPhysics, definition, blamTagName);
+                    return ConvertCollisionBspPhysicsReach(collisionBspPhysics);
+
+                case RenderGeometry renderGeometry when BlamCache.Version >= CacheVersion.Halo3Retail:
 					renderGeometry = ConvertStructure(cacheStream, blamCacheStream, resourceStreams, renderGeometry, definition, blamTagName);
 					return renderGeometry;
 
@@ -1958,7 +1971,7 @@ namespace TagTool.MtnDewIt.Porting
                 if (matchIndex != -1)
                 {
                     if(name != originalName)
-                        new TagToolWarning($"Failed to find global material type '{originalName}', using '{name}' instead");
+                        Console.WriteLine($"Failed to find global material type '{originalName}', using '{name}'");
 
                     return matchIndex;
                 }
@@ -1968,7 +1981,7 @@ namespace TagTool.MtnDewIt.Porting
                 if (blamIndex == -1)
                 {
                     if (!originalName.StartsWith("default"))
-                        new TagToolWarning($"Failed to find global material type '{originalName}', using 'default_material'");
+                        Console.WriteLine($"Failed to find global material type '{originalName}', using 'default_material'");
                     return 0;
                 }
 
@@ -1985,7 +1998,7 @@ namespace TagTool.MtnDewIt.Porting
                     matchIndex = 0;
 
                 name = CacheContext.StringTable.GetString(materials[matchIndex].Name);
-                new TagToolWarning($"Failed to find global material type '{originalName}', using '{name}' instead");
+                Console.WriteLine($"Failed to find global material type '{originalName}', using '{name}'");
                 return matchIndex;
             }
         }

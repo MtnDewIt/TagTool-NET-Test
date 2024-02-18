@@ -12,6 +12,7 @@ using TagTool.Tags.Definitions;
 using TagTool.Tags.Definitions.Common;
 using TagTool.Tags.Resources;
 using TagTool.Geometry;
+using TagTool.BlamFile;
 
 namespace TagTool.MtnDewIt.Porting
 {
@@ -998,8 +999,8 @@ namespace TagTool.MtnDewIt.Porting
                         newPaletteIndex = -1;
                         break;
                     default:
-                        if (!string.IsNullOrEmpty(mpProperties.MegaloLabel))
-                            new TagToolWarning($"unknown megalo label: {mpProperties.MegaloLabel}");
+                        //if (!string.IsNullOrEmpty(mpProperties.MegaloLabel))
+                        //    new TagToolWarning($"unknown megalo label: {mpProperties.MegaloLabel}");
                         break;
                 }
 

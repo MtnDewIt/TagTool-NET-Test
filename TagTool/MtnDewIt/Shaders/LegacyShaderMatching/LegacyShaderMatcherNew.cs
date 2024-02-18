@@ -324,7 +324,19 @@ namespace TagTool.MtnDewIt.Shaders.LegacyShaderMatching
                 glvs = BaseCache.Deserialize<GlobalVertexShader>(BaseCacheStream, rmdf.GlobalVertexShader);
             }
 
-            var rmt2 = LegacyShaderGenerator.LegacyShaderGenerator.GenerateRenderMethodTemplate(BaseCache, BaseCacheStream, rmdf, glps, glvs, generator, tagName, out PixelShader pixl, out VertexShader vtsh);
+            RenderMethodTemplate rmt2;
+            PixelShader pixl;
+            VertexShader vtsh;
+
+            try
+            {
+                rmt2 = LegacyShaderGenerator.LegacyShaderGenerator.GenerateRenderMethodTemplate(BaseCache, BaseCacheStream, rmdf, glps, glvs, generator, tagName, out pixl, out vtsh);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Generation failed, finding best substitute");
+                return false;
+            }
 
             generatedRmt2 = BaseCache.TagCache.AllocateTag<RenderMethodTemplate>(tagName);
 

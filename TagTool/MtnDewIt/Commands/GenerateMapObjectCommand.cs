@@ -209,6 +209,11 @@ namespace TagTool.MtnDewIt.Commands
                     output += FormatReferenceObject(fieldValue, nameString, objectName, indent, terminator);
                 }
 
+                else if (nameString == $@"ObjectDefinitionIndex") 
+                {
+                    output += $"\n{indent}{objectName}{nameString} = {GetTagFromQuotaIndex(fieldValue)}{terminator}";
+                }
+
                 // Parses the specified value if all other checks return false
                 else
                 {
@@ -842,6 +847,26 @@ namespace TagTool.MtnDewIt.Commands
             }
 
             return false;
+        }
+
+        private string GetTagFromQuotaIndex(object fieldValue) 
+        {
+            string output;
+
+            var tagIndex = (int)fieldValue;
+
+            if (tagIndex != -1)
+            {
+                var tag = Cache.TagCache.GetTag(tagIndex);
+
+                output = $"GetCachedTag<{Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group).Name}>($@\"{tag.Name}\")";
+            }
+            else 
+            {
+                output = $@"{tagIndex}";
+            }
+
+            return output;
         }
 
         private BlfDataMapVariantTagNames GenerateTagNames(MapVariantData mapVariant)

@@ -1,0 +1,207 @@
+; Globals
+(global short ui_location -1)
+(global real mainmenu_offset 0)
+(global boolean loopmusic false)
+
+; Externs
+
+; Scripts
+(script static void (set_ui_location (short location))
+	(set ui_location location)
+	(sleep 1)
+)
+
+(script static void kill_camera_scripts
+    (print "kill camera scripts")
+	(kill_active_scripts)
+	(if (!= ui_location 0)
+		(sleep_forever mainmenu_cam)
+	)
+	(if (!= ui_location 3)
+		(sleep_forever custom_cam)
+	)
+	(if (!= ui_location 4)
+		(sleep_forever editor_cam)
+	)
+	(if (!= ui_location 6)
+		(sleep_forever settings_cam)
+	)
+	(if (!= ui_location 7)
+        (sleep_forever server_browser_cam)
+	)
+)
+
+(script startup void mainmenu
+    (camera_control true)
+    (sleep 1)
+    (custom_animation_loop "spartan_appearance" "objects\characters\masterchief\masterchief" "ui:rifle:idle:var1" false)
+    (object_hide "spartan_appearance" true)
+)
+
+(script static void custom_characters
+	(print "campaign characters [static script]")
+	(object_create_containing "custom_")
+	(sleep 1)
+	(pvs_set_object "custom_chief_01")
+	(pvs_set_object "custom_chief_02")
+	(objects_attach "custom_chief_01" "right_hand" "custom_ar_01" "invalid")
+	(objects_attach "custom_chief_02" "right_hand" "custom_sg_01" "invalid")
+	(custom_animation_loop "custom_chief_01" "objects\characters\masterchief\masterchief" "ui:rifle:idle:var3" false)
+	(custom_animation_loop "custom_chief_02" "objects\characters\masterchief\masterchief" "ui:rifle:sg:idle:var1" false)
+)
+
+(script static void editor_characters
+	(print "editor characters [static script]")
+	(object_create_anew_containing "editor_")
+	(sleep 1)
+	(scenery_animation_start_loop "editor_monitor" "levels\ui\mainmenu\objects\monitor_cheap\monitor_cheap" "ui:idle:var1")
+)
+
+(script static void mainmenu_cam
+	(print "mainmenu cam")
+	(if (< ui_location 6)
+		(sleep 10)
+	)
+	(if (!= ui_location -1)
+		(begin
+			(set ui_location 0)
+			(kill_camera_scripts)
+			false
+		)
+		(set ui_location 0)
+	)
+	(render_depth_of_field_enable false)
+	(object_destroy_containing "custom_")
+	(object_destroy_containing "editor_")
+	(object_destroy_containing "server_browser_")
+	(camera_set_animation_relative_with_speed_?boolean_real "objects\characters\cinematic_camera\ui\valhalla\valhalla" "camera_path_main1" "none" "xxxanchorxxx" 0.5 true mainmenu_offset)
+	(set mainmenu_offset (real_random_range 0 1))
+	(sleep_forever)
+)
+
+(script static void custom_cam
+	(print "custom cam")
+	(sleep 10)
+	(if (!= ui_location -1)
+		(begin
+			(set ui_location 3)
+			(kill_camera_scripts)
+			false
+		)
+		(set ui_location 3)
+	)
+	(object_destroy_containing "editor_")
+	(object_destroy_containing "server_browser_")
+	(custom_characters)
+	(render_depth_of_field_enable true)
+	(render_depth_of_field 1 2 4 10)
+	(camera_set "custom_in" 0)
+	(sleep 0)
+	(camera_set "custom_games" 11)
+	(sleep 30)
+	(sleep_until (begin
+		(camera_set "custom_path_02" 700)
+		(sleep 250)
+		(camera_set "custom_path_03" 700)
+		(sleep 250)
+		(camera_set "custom_path_04" 700)
+		(sleep 250)
+		(camera_set "custom_games" 700)
+		(sleep 250)
+	)
+	 -1)
+	(sleep_forever)
+)
+
+(script static void editor_cam
+	(print "editor cam")
+	(sleep 10)
+	(if (!= ui_location -1)
+		(begin
+			(set ui_location 4)
+			(kill_camera_scripts)
+			false
+		)
+		(set ui_location 4)
+	)
+	(object_destroy_containing "custom_")
+	(object_destroy_containing "server_browser_")
+	(editor_characters)
+	(render_depth_of_field_enable true)
+	(render_depth_of_field 1 2 6 10)
+	(camera_set "editor_in" 0)
+	(sleep 0)
+	(camera_set "editor" 11)
+	(sleep 30)
+	(sleep_until (begin
+		(camera_set "editor_path_02" 500)
+		(sleep 250)
+		(camera_set "editor_path_03" 700)
+		(sleep 250)
+		(camera_set "editor_path_04" 700)
+		(sleep 250)
+		(camera_set "editor" 700)
+		(sleep 250)
+	)
+	 -1)
+	(sleep_forever)
+)
+
+(script startup void settings_cam
+    (sleep 0)
+    (object_create_folder "settings")
+    (object_hide "spartan_appearance" false)
+    (camera_set "settings_cam" 0)
+)
+
+(script startup void leave_settings
+    (camera_set_animation_relative_with_speed_?boolean_real "objects\characters\cinematic_camera\ui\valhalla\valhalla" "camera_path_main1" none "xxxanchorxxx" 0.5 true mainmenu_offset)
+    (set mainmenu_offset (real_random_range 0 1))
+    (object_destroy_folder "settings")
+    (object_hide "spartan_appearance" true)
+)
+
+(script static void server_browser_cam
+	(print "server browser camera")
+	(set_ui_location 7)
+	(kill_camera_scripts)
+	(fade_out 0 0 0 0)
+	(sleep 5)
+	(object_destroy_containing "custom_")
+	(object_destroy_containing "editor_")
+	(object_create_containing "server_browser_")
+	(fade_in 0 0 0 9)
+	(render_depth_of_field_enable true)
+	(render_depth_of_field 1 2 5 10)
+	(camera_set "server_browser" 0)
+	(sleep 30)
+	(sleep_until (begin
+		(camera_set "server_browser_path_02" 500)
+		(sleep 250)
+		(camera_set "server_browser_path_03" 700)
+		(sleep 250)
+		(camera_set "server_browser_path_04" 700)
+		(sleep 250)
+		(camera_set "server_browser" 700)
+		(sleep 250)
+	)
+	 -1)
+)
+
+(script static void leave_server_browser
+	(print "leave server browser")
+	(fade_in 0 0 0 9)
+	(mainmenu_cam)
+)
+
+(script startup void music_intro
+    (sound_impulse_start "sound\music\main_menu_delta\delta_menu\in" none 1)
+    (sleep_until (= (sound_impulse_language_time "sound\music\main_menu_delta\delta_menu\in") 0))
+    (set loopmusic true)
+)
+
+(script continuous void music_loop
+    (sleep_until (= loopmusic true))
+    (sound_impulse_start "sound\music\main_menu_delta\delta_menu\loop" none 1)
+    (sleep_until (= (sound_impulse_language_time "sound\music\main_menu_delta\delta_menu\loop") 0))
+)
