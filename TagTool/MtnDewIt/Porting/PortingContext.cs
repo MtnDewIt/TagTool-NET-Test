@@ -1180,7 +1180,7 @@ namespace TagTool.MtnDewIt.Porting
 
                                 CachedTag sbspTag = block.StructureBsp;
                                 var sbsp = CacheContext.Deserialize<ScenarioStructureBsp>(cacheStream, sbspTag);
-                                new GenerateStructureSurfacesCommand(CacheContext, sbspTag, sbsp, cacheStream).Execute(new List<string> { });
+                                new GenerateStructureSurfacesCommand(CacheContext, sbspTag, sbsp, cacheStream, scnr).Execute(new List<string> { });
                                 CacheContext.Serialize(cacheStream, sbspTag, sbsp);
                             }
                         }
