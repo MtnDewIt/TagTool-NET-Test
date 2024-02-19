@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="..\Tools\JsonMoppNet.dll" />
+    <Reference Include="..\Tools\MIConvexHull.dll" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data.Entity.Design" />
@@ -74,6 +75,7 @@
     <PackageReference Include="AssimpNet" Version="4.1.0" />
     <PackageReference Include="lz4net" Version="1.0.15.93" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.6.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Poly2Tri.NetStandard" Version="1.0.2" />
   </ItemGroup>
   <ItemDefinitionGroup>
