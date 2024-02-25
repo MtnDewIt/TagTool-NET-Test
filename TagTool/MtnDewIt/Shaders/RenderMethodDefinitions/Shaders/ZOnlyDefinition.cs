@@ -8,9 +8,9 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
 {
-    public class ZonlyDefinition : RenderMethodData
+    public class ZOnlyDefinition : RenderMethodData
     {
-        public ZonlyDefinition(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public ZOnlyDefinition(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,
