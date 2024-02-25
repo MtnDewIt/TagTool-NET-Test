@@ -324,9 +324,23 @@ namespace TagTool.MtnDewIt.Commands
                 case IBounds bounds:
                     return FormatBounds(bounds);
                 case DatumHandle datumHandle:
-                    return $"new DatumHandle({datumHandle.Salt}, {datumHandle.Index})";
+                    if (datumHandle.Salt == ushort.MaxValue && datumHandle.Index == ushort.MaxValue)
+                    {
+                        return $"new DatumHandle.None";
+                    }
+                    else 
+                    {
+                        return $"new DatumHandle({datumHandle.Salt}, {datumHandle.Index})";
+                    }
                 case StringId stringId:
-                    return $"CacheContext.StringTable.GetStringId($@\"{Cache.StringTable.GetString(stringId)}\")";
+                    if (stringId == StringId.Invalid)
+                    {
+                        return $"StringId.Invalid";
+                    }
+                    else 
+                    {
+                        return $"CacheContext.StringTable.GetStringId($@\"{Cache.StringTable.GetString(stringId)}\")";
+                    }
                 case CachedTag tag:
                     return $"GetCachedTag<{Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group).Name}>($@\"{tag.Name}\")";
                 case PlatformUnsignedValue unsignedValue:

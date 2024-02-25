@@ -94,8 +94,8 @@ namespace TagTool.MtnDewIt.BlamFiles
         Shield_4X,
     }
 
-    [TagStructure(Size = 0x5, Version = CacheVersion.HaloOnlineED)]
-    [TagStructure(Size = 0x8, Version = CacheVersion.HaloOnline106708)]
+    [TagStructure(Size = 0x5, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+    [TagStructure(Size = 0x8, MinVersion = CacheVersion.HaloOnline106708)]
     public class PlayerShieldVitalityTraits
     {
         public DamageResistancePercentage DamageResistance;
@@ -104,7 +104,7 @@ namespace TagTool.MtnDewIt.BlamFiles
         public HeadshotImmunity HeadshotImmunity;
         public ShieldMultiplier ShieldMultiplier;
 
-        [TagField(Flags = TagFieldFlags.Padding, Length = 3, Version = CacheVersion.HaloOnline106708)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 3, MinVersion = CacheVersion.HaloOnline106708)]
         public byte[] Padding1 = new byte[3];
     }
 

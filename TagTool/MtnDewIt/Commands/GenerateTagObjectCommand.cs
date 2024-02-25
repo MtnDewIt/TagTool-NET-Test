@@ -77,7 +77,7 @@ namespace TagTool.MtnDewIt.Commands
                 shortFormName = tagStructureInfo.GroupTag.ToString();
             }
 
-            layout = $"var tag = GetCachedTag<{tagTypeName}>($\"{Tag.Name}\");";
+            layout = $"var tag = GetCachedTag<{tagTypeName}>($@\"{Tag.Name}\");";
             layout += $"\nvar {shortFormName} = CacheContext.Deserialize<{tagTypeName}>(Stream, tag);";
             layout += FormatTagStructure(Structure, Value, $"{shortFormName}.", "", ";");
 
@@ -213,9 +213,11 @@ namespace TagTool.MtnDewIt.Commands
                 case null:
                     return "null";
                 case string str:
-                    return $"\"{str}\"";
+                    return $"$@\"{str}\"";
                 case float f:
                     return $"{f}f";
+                case bool boolean:
+                    return FormatBoolean(boolean);
                 case Angle angle:
                     return $"Angle.FromDegrees({angle.Degrees}f)";
                 case RealEulerAngles2d angles2d:
@@ -249,15 +251,31 @@ namespace TagTool.MtnDewIt.Commands
                 case IBounds bounds:
                     return FormatBounds(bounds);
                 case DatumHandle datumHandle:
-                    return $"new DatumHandle({datumHandle.Salt}, {datumHandle.Index})";
+                    if (datumHandle.Salt == ushort.MaxValue && datumHandle.Index == ushort.MaxValue)
+                    {
+                        return $"new DatumHandle.None";
+                    }
+                    else 
+                    {
+                        return $"new DatumHandle({datumHandle.Salt}, {datumHandle.Index})";
+                    }
                 case StringId stringId:
-                    return $"CacheContext.StringTable.GetStringId($@\"{Cache.StringTable.GetString(stringId)}\")";
+                    if (stringId == StringId.Invalid)
+                    {
+                        return $"StringId.Invalid";
+                    }
+                    else 
+                    {
+                        return $"CacheContext.StringTable.GetStringId($@\"{Cache.StringTable.GetString(stringId)}\")";
+                    }
                 case CachedTag tag:
                     return $"GetCachedTag<{Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group).Name}>($@\"{tag.Name}\")";
                 case PlatformUnsignedValue unsignedValue:
                     return $"new PlatformUnsignedValue({unsignedValue})";
                 case PlatformSignedValue signedValue:
                     return $"new PlatformSignedValue({signedValue})";
+                case Tag tag:
+                    return $"new Tag(\"{tag}\")";
                 default:
                     return $"{value}";
             }
@@ -271,6 +289,23 @@ namespace TagTool.MtnDewIt.Commands
             var typeName = FormatPrimitiveType(lower.GetType().Name);
 
             return $"new Bounds<{typeName}>({FormatValue(lower)}, {FormatValue(upper)})";
+        }
+
+        private string FormatBoolean(bool boolean) 
+        {
+            string name = "";
+
+            if (boolean == false) 
+            {
+                name = "false";
+            }
+
+            if (boolean == true) 
+            {
+                name = "true";
+            }
+
+            return name;
         }
 
         private string FormatTypeName(string typeString) 
