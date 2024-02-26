@@ -65,7 +65,7 @@ namespace TagTool.MtnDewIt.Commands
                 GenerateRenderMethod(stream, $@"zonly", true);
 
                 new BeamDefinition(Cache, CacheContext, stream);
-                //new BlackDefinition(Cache, CacheContext, stream);
+                new BlackDefinition(Cache, CacheContext, stream);
                 new ContrailDefinition(Cache, CacheContext, stream);
                 new CortanaDefinition(Cache, CacheContext, stream);
                 new CustomDefinition(Cache, CacheContext, stream);
@@ -78,7 +78,7 @@ namespace TagTool.MtnDewIt.Commands
                 new ShaderDefinition(Cache, CacheContext, stream);
                 new TerrainDefinition(Cache, CacheContext, stream);
                 new WaterDefinition(Cache, CacheContext, stream);
-                //new ZOnlyDefinition(Cache, CacheContext, stream);
+                new ZOnlyDefinition(Cache, CacheContext, stream);
 
                 RecompileShaders(stream, $@"beam");
                 RecompileShaders(stream, $@"black");
