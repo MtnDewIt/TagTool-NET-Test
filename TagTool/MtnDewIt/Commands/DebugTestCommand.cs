@@ -48,21 +48,14 @@ namespace TagTool.MtnDewIt.Commands
         {
             using (var stream = Cache.OpenCacheReadWrite())
             {
-                GenerateRenderMethod(stream, $@"beam", true);
-                GenerateRenderMethod(stream, $@"black", true);
-                GenerateRenderMethod(stream, $@"contrail", true);
-                GenerateRenderMethod(stream, $@"cortana", true);
-                GenerateRenderMethod(stream, $@"custom", true);
-                GenerateRenderMethod(stream, $@"decal", true);
-                GenerateRenderMethod(stream, $@"foliage", true);
-                GenerateRenderMethod(stream, $@"halogram", true);
-                GenerateRenderMethod(stream, $@"light_volume", true);
-                GenerateRenderMethod(stream, $@"particle", true);
-                GenerateRenderMethod(stream, $@"screen", true);
-                GenerateRenderMethod(stream, $@"shader", true);
-                GenerateRenderMethod(stream, $@"terrain", true);
-                GenerateRenderMethod(stream, $@"water", true);
-                GenerateRenderMethod(stream, $@"zonly", true);
+                if (Cache.Version == CacheVersion.HaloOnlineED)
+                {
+                    GenerateRenderMethods(stream);
+                }
+                else
+                {
+                    UpdateRenderMethods(stream);
+                }
 
                 new BeamDefinition(Cache, CacheContext, stream);
                 new BlackDefinition(Cache, CacheContext, stream);
@@ -96,6 +89,51 @@ namespace TagTool.MtnDewIt.Commands
                 RecompileShaders(stream, $@"water");
                 RecompileShaders(stream, $@"zonly");
             }
+        }
+
+        // CURRENT ISSUES:
+        // - Broken Distortion Diffuse
+        // - Broken Weapon Screen Shaders
+        // - Broken Halogram Shaders? (Visible on s3d_waterfall and s3d_lockout)
+
+        // TODO: FIX ISSUES!
+
+        public void UpdateRenderMethods(Stream stream)
+        {
+            GenerateRenderMethod(stream, $@"beam", true);
+            GenerateRenderMethod(stream, $@"black", true);
+            GenerateRenderMethod(stream, $@"contrail", true);
+            GenerateRenderMethod(stream, $@"cortana", true);
+            GenerateRenderMethod(stream, $@"custom", true);
+            GenerateRenderMethod(stream, $@"decal", true);
+            GenerateRenderMethod(stream, $@"foliage", true);
+            GenerateRenderMethod(stream, $@"halogram", true);
+            GenerateRenderMethod(stream, $@"light_volume", true);
+            GenerateRenderMethod(stream, $@"particle", true);
+            GenerateRenderMethod(stream, $@"screen", true);
+            GenerateRenderMethod(stream, $@"shader", true);
+            GenerateRenderMethod(stream, $@"terrain", true);
+            GenerateRenderMethod(stream, $@"water", true);
+            GenerateRenderMethod(stream, $@"zonly", true);
+        }
+
+        public void GenerateRenderMethods(Stream stream)
+        {
+            GenerateRenderMethod(stream, $@"beam", false);
+            GenerateRenderMethod(stream, $@"black", false);
+            GenerateRenderMethod(stream, $@"contrail", false);
+            GenerateRenderMethod(stream, $@"cortana", false);
+            GenerateRenderMethod(stream, $@"custom", false);
+            GenerateRenderMethod(stream, $@"decal", false);
+            GenerateRenderMethod(stream, $@"foliage", false);
+            GenerateRenderMethod(stream, $@"halogram", false);
+            GenerateRenderMethod(stream, $@"light_volume", false);
+            GenerateRenderMethod(stream, $@"particle", false);
+            GenerateRenderMethod(stream, $@"screen", false);
+            GenerateRenderMethod(stream, $@"shader", false);
+            GenerateRenderMethod(stream, $@"terrain", false);
+            GenerateRenderMethod(stream, $@"water", false);
+            GenerateRenderMethod(stream, $@"zonly", false);
         }
 
         public void GenerateRenderMethod(Stream stream, string shaderType, bool updateRenderMethod)
