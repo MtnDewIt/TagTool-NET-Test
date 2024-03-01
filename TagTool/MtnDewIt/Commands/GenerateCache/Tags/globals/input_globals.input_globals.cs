@@ -6,9 +6,9 @@ using System.IO;
 
 namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags 
 {
-    public class globals_input_globals : TagFile
+    public class globals_input_globals_input_globals : TagFile
     {
-        public globals_input_globals(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public globals_input_globals_input_globals(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,

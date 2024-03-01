@@ -6,6 +6,8 @@ using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Commands;
 using TagTool.Audio;
+using TagTool.MtnDewIt.Porting;
+using TagTool.MtnDewIt.Commands.GenerateCache.Tags;
 
 namespace TagTool.MtnDewIt.Commands.GenerateCache
 {
@@ -13,8 +15,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
     {
         public void PortTagData()
         {
+            InitializePortingContext();
+
             sandbox.SetPortingProperties(audioCodec: Compression.OGG);
             GenerateTag<AiDialogueGlobals>($@"ai\ai_dialogue_globals");
+            UpdateData<ai_ai_dialogue_globals_ai_dialogue_globals>();
             sandbox.PortTag($@"", $@"ai\assaulting.style");
             sandbox.PortTag($@"", $@"ai\bunkering.style");
             sandbox.PortTag($@"", $@"ai\normal.style");
@@ -854,6 +859,76 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             h3MainMenu.PortTag($@"", $@"*.scnr");
             
             CommandRunner.Current.RunCommand($@"updatemapfiles {halo3DirectoryInfo}\info");
+        }
+
+        public void InitializePortingContext()
+        {
+            // These need to be defined after the new cache has been generated, otherwise it gets given the wrong cache context
+
+            haloOnline = new PortingContext(CacheContext, haloOnlineCache);
+
+            h3MainMenu = new PortingContext(CacheContext, h3MainMenuCache);
+            intro = new PortingContext(CacheContext, introCache);
+            jungle = new PortingContext(CacheContext, jungleCache);
+            crows = new PortingContext(CacheContext, crowsCache);
+            outskirts = new PortingContext(CacheContext, outskirtsCache);
+            voi = new PortingContext(CacheContext, voiCache);
+            floodvoi = new PortingContext(CacheContext, floodvoiCache);
+            waste = new PortingContext(CacheContext, wasteCache);
+            citadel = new PortingContext(CacheContext, citadelCache);
+            highCharity = new PortingContext(CacheContext, highCharityCache);
+            halo = new PortingContext(CacheContext, haloCache);
+            epilogue = new PortingContext(CacheContext, epilogueCache);
+
+            mythicMainMenu = new PortingContext(CacheContext, mythicMainMenuCache);
+            armory = new PortingContext(CacheContext, armoryCache);
+            bunkerworld = new PortingContext(CacheContext, bunkerworldCache);
+            chill = new PortingContext(CacheContext, chillCache);
+            chillout = new PortingContext(CacheContext, chilloutCache);
+            construct = new PortingContext(CacheContext, constructCache);
+            cyberdyne = new PortingContext(CacheContext, cyberdyneCache);
+            deadlock = new PortingContext(CacheContext, deadlockCache);
+            descent = new PortingContext(CacheContext, descentCache);
+            docks = new PortingContext(CacheContext, docksCache);
+            fortress = new PortingContext(CacheContext, fortressCache);
+            ghosttown = new PortingContext(CacheContext, ghosttownCache);
+            guardian = new PortingContext(CacheContext, guardianCache);
+            isolation = new PortingContext(CacheContext, isolationCache);
+            lockout = new PortingContext(CacheContext, lockoutCache);
+            midship = new PortingContext(CacheContext, midshipCache);
+            riverworld = new PortingContext(CacheContext, riverworldCache);
+            salvation = new PortingContext(CacheContext, salvationCache);
+            sandbox = new PortingContext(CacheContext, sandboxCache);
+            shrine = new PortingContext(CacheContext, shrineCache);
+            sidewinder = new PortingContext(CacheContext, sidewinderCache);
+            snowbound = new PortingContext(CacheContext, snowboundCache);
+            spacecamp = new PortingContext(CacheContext, spacecampCache);
+            warehouse = new PortingContext(CacheContext, warehouseCache);
+            zanzibar = new PortingContext(CacheContext, zanzibarCache);
+
+            odstMainMenu = new PortingContext(CacheContext, odstMainMenuCache);
+            h100 = new PortingContext(CacheContext, h100Cache);
+            c100 = new PortingContext(CacheContext, c100Cache);
+            c200 = new PortingContext(CacheContext, c200Cache);
+            l200 = new PortingContext(CacheContext, l200Cache);
+            l300 = new PortingContext(CacheContext, l300Cache);
+            sc100 = new PortingContext(CacheContext, sc100Cache);
+            sc110 = new PortingContext(CacheContext, sc110Cache);
+            sc120 = new PortingContext(CacheContext, sc120Cache);
+            sc130 = new PortingContext(CacheContext, sc130Cache);
+            sc140 = new PortingContext(CacheContext, sc140Cache);
+            sc150 = new PortingContext(CacheContext, sc150Cache);
+        }
+
+        //TODO: Figure out how to make all these functions use the same stream, and have it play nicely with the porting context
+
+        public void UpdateData<T>() where T : Tags.TagFile 
+        {
+            using (var stream  = Cache.OpenCacheReadWrite())
+            {
+                // Add inputs dipshit
+                var tagData = Activator.CreateInstance<T>();
+            }
         }
 
         public void GenerateTag<T>(string tagName) where T : TagStructure
