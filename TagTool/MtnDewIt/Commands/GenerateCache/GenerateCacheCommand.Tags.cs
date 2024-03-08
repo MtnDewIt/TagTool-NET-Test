@@ -15,6 +15,42 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
                 Cache.StringTable.Add($@"electro_swing");
                 Cache.SaveStrings();
 
+                new multiplayer_global_multiplayer_messages_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
+                new multiplayer_in_game_multiplayer_messages_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
+                new multiplayer_in_game_survival_messages_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
+                new ui_global_strings_damage_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
+                new ui_global_strings_global_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
+                new ui_halox_boot_betrayer_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
+                new ui_halox_campaign_campaign_settings_strings_campaign_settings_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
+                new ui_halox_dialog_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
+                new ui_halox_game_browser_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
+                new ui_halox_game_options_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
+                new ui_halox_in_progress_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
+                new ui_halox_main_menu_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
+                new ui_halox_pregame_lobby_selection_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
+                new ui_halox_pregame_lobby_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
+                new ui_halox_pregame_lobby_switch_lobby_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
+                new ui_halox_start_menu_panes_settings_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
+                new ui_halox_start_menu_panes_settings_appearance_colors_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
+                new ui_hud_hud_messages_multilingual_unicode_string_list(Cache, CacheContext, stream);
+
                 new ai_ai_dialogue_globals_ai_dialogue_globals(Cache, CacheContext, stream);
 
                 new ai_squad_templates_blank_squad_template(Cache, CacheContext, stream);
@@ -287,12 +323,6 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
                 new multiplayer_game_variant_settings_social_options_team_changing_text_value_pair_definition(Cache, CacheContext, stream);
 
-                new multiplayer_global_multiplayer_messages_multilingual_unicode_string_list(Cache, CacheContext, stream);
-
-                new multiplayer_in_game_multiplayer_messages_multilingual_unicode_string_list(Cache, CacheContext, stream);
-
-                new multiplayer_in_game_survival_messages_multilingual_unicode_string_list(Cache, CacheContext, stream);
-
                 new multiplayer_mod_globals_mod_globals(Cache, CacheContext, stream);
 
                 new multiplayer_multiplayer_globals_multiplayer_globals(Cache, CacheContext, stream);
@@ -475,35 +505,17 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
                 new ui_eldewrito_maps_map_list(Cache, CacheContext, stream);
 
-                new ui_global_strings_damage_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
-
-                new ui_global_strings_global_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
-
-                new ui_halox_boot_betrayer_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
-
                 new ui_halox_campaign_campaign_scoring_gui_skin_definition(Cache, CacheContext, stream);
 
                 new ui_halox_campaign_campaign_select_scoring_gui_screen_widget_definition(Cache, CacheContext, stream);
 
                 new ui_halox_campaign_campaign_select_skulls_gui_screen_widget_definition(Cache, CacheContext, stream);
 
-                new ui_halox_campaign_campaign_settings_strings_campaign_settings_multilingual_unicode_string_list(Cache, CacheContext, stream);
-
                 new ui_halox_common_roster_roster_gui_skin_definition(Cache, CacheContext, stream);
-
-                new ui_halox_dialog_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
-
-                new ui_halox_game_browser_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
-
-                new ui_halox_game_options_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
-
-                new ui_halox_in_progress_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
 
                 new ui_halox_main_menu_main_menu_gui_screen_widget_definition(Cache, CacheContext, stream);
 
                 new ui_halox_main_menu_main_menu_list_gui_datasource_definition(Cache, CacheContext, stream);
-
-                new ui_halox_main_menu_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
 
                 new ui_halox_pregame_lobby_lobby_list_campaign_gui_datasource_definition(Cache, CacheContext, stream);
 
@@ -523,21 +535,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
                 new ui_halox_pregame_lobby_selection_pregame_survival_level_selection_gui_screen_widget_definition(Cache, CacheContext, stream);
 
-                new ui_halox_pregame_lobby_selection_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
-
                 new ui_halox_pregame_lobby_selection_survival_select_difficulty_gui_screen_widget_definition(Cache, CacheContext, stream);
 
                 new ui_halox_pregame_lobby_selection_survival_select_skulls_gui_screen_widget_definition(Cache, CacheContext, stream);
 
-                new ui_halox_pregame_lobby_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
-
                 new ui_halox_pregame_lobby_switch_lobby_lobbies_gui_datasource_definition(Cache, CacheContext, stream);
-
-                new ui_halox_pregame_lobby_switch_lobby_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
-
-                new ui_halox_start_menu_panes_settings_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
-
-                new ui_halox_start_menu_panes_settings_appearance_colors_strings_multilingual_unicode_string_list(Cache, CacheContext, stream);
 
                 new ui_halox_start_menu_panes_settings_sidebar_items_gui_datasource_definition(Cache, CacheContext, stream);
 
@@ -547,14 +549,19 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
                 new ui_halox_start_menu_panes_settings_display_start_menu_settings_display_gui_screen_widget_definition(Cache, CacheContext, stream);
 
-                new ui_hud_hud_messages_multilingual_unicode_string_list(Cache, CacheContext, stream);
-
                 new ui_main_menu_user_interface_globals_definition(Cache, CacheContext, stream);
 
                 new ui_multiplayer_user_interface_globals_definition(Cache, CacheContext, stream);
 
                 new ui_single_player_user_interface_globals_definition(Cache, CacheContext, stream);
 
+                new levels_ui_mainmenu_mainmenu_h3_scenario(Cache, CacheContext, stream);
+
+                new levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_biped(Cache, CacheContext, stream);
+
+                new levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_model(Cache, CacheContext, stream);
+
+                new levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_render_model(Cache, CacheContext, stream);
             }
         }
     }

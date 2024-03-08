@@ -711,15 +711,15 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             sandbox.PortTag($@"", $@"objects\characters\monitor\monitor_editor.bipd");
 
             citadel.SetPortingProperties(audioCodec: Compression.OGG);
-            sandbox.PortTag($@"", $@"objects\characters\dervish\fp\fp.mode");
-            sandbox.PortTag($@"", $@"objects\characters\dervish\fp_body\fp_body.mode");
-            sandbox.PortTag($@"", $@"objects\characters\dervish\dervish.bipd");
-            sandbox.PortTag($@"", $@"objects\characters\elite\fp_arms\fp_arms.mode");
-            sandbox.PortTag($@"", $@"objects\characters\elite\fp_body\fp_body.mode");
-            sandbox.PortTag($@"", $@"objects\characters\elite\elite_sp.bipd");
-            sandbox.PortTag($@"", $@"objects\characters\masterchief\fp\fp.mode");
-            sandbox.PortTag($@"", $@"objects\characters\masterchief\fp_body\fp_body.mode");
-            sandbox.PortTag($@"", $@"objects\characters\masterchief\masterchief.bipd");
+            citadel.PortTag($@"", $@"objects\characters\dervish\fp\fp.mode");
+            citadel.PortTag($@"", $@"objects\characters\dervish\fp_body\fp_body.mode");
+            citadel.PortTag($@"", $@"objects\characters\dervish\dervish.bipd");
+            citadel.PortTag($@"", $@"objects\characters\elite\fp_arms\fp_arms.mode");
+            citadel.PortTag($@"", $@"objects\characters\elite\fp_body\fp_body.mode");
+            citadel.PortTag($@"", $@"objects\characters\elite\elite_sp.bipd");
+            citadel.PortTag($@"", $@"objects\characters\masterchief\fp\fp.mode");
+            citadel.PortTag($@"", $@"objects\characters\masterchief\fp_body\fp_body.mode");
+            citadel.PortTag($@"", $@"objects\characters\masterchief\masterchief.bipd");
 
             citadel.SetPortingProperties(audioCodec: Compression.OGG);
             citadel.PortTag($@"", $@"sound\characters\elite\shade_d_enter.sound");
@@ -738,6 +738,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             haloOnline.PortTag($@"replace single !audio", $@"objects\characters\elite\lipsync\lipsync.model_animation_graph");
             haloOnline.PortTag($@"replace single !audio", $@"objects\characters\elite\elite.model_animation_graph");
             haloOnline.PortTag($@"replace single !audio", $@"objects\characters\dervish\dervish.model_animation_graph");
+            haloOnline.PortTag($@"", $@"objects\characters\marine\marine.model_animation_graph");
 
             sandbox.SetPortingProperties(audioCodec: Compression.OGG);
             sandbox.PortTag($@"", $@"objects\ui\editor_gizmo\editor_gizmo.scen");
@@ -856,9 +857,39 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             sandbox.PortTag($@"", $@"objects\multi\powerups\powerup_yellow\powerup_yellow.eqip");
 
             h3MainMenu.SetPortingProperties(audioCodec: Compression.OGG);
+            h3MainMenu.PortTag($@"", $@"levels\ui\mainmenu\objects\monitor_cheap\monitor_cheap.scenery");
+            h3MainMenu.PortTag($@"", $@"levels\ui\mainmenu\objects\warthog_cheap\warthog_cheap.scenery");
+            h3MainMenu.PortTag($@"", $@"levels\ui\mainmenu\objects\matchmaking_earth\matchmaking_earth.scenery");
+            h3MainMenu.PortTag($@"", $@"levels\ui\mainmenu\lights\campaign.light");
+            h3MainMenu.PortTag($@"", $@"levels\ui\mainmenu\lights\custom_games.light");
+            h3MainMenu.PortTag($@"", $@"levels\ui\mainmenu\lights\editor.light");
+            h3MainMenu.PortTag($@"", $@"levels\ui\mainmenu\objects\spartan_cheap\spartan_cheap.biped");
+            h3MainMenu.PortTag($@"", $@"sound\levels\main_menu\the_world\the_world.sound_looping");
+
+            h100.SetPortingProperties(audioCodec: Compression.OGG);
+            h100.PortTag($@"", $@"objects\vehicles\phantom\hirez_cinematic_phantom\phantom_cinematic\phantom_cinematic.scenery");
+            RenameTag(GetCachedTag<ModelAnimationGraph>($@"objects\vehicles\phantom\hirez_cinematic_phantom\phantom_cinematic\cinematics\c200\c200"), $@"objects\vehicles\phantom\phantom");
+            h100.PortTag($@"replace", $@"objects\vehicles\phantom\phantom.model_animation_graph");
+            h100.PortTag($@"", $@"objects\vehicles\phantom\fx\running\cinematic_gravlift.light");
+            h100.PortTag($@"", $@"sound\vehicles\phantom\phantom_engine_right\phantom_engine_right.sound_looping");
+            h100.PortTag($@"", $@"sound\vehicles\phantom\phantom_hover_right\phantom_hover_right.sound_looping");
+            h100.PortTag($@"", $@"sound\vehicles\phantom\phantom_engine_lod\phantom_engine_lod.sound_looping");
+            h100.PortTag($@"", $@"objects\characters\odst\odst.render_model");
+            h100.PortTag($@"", $@"objects\characters\odst\odst.collision_model");
+            h100.PortTag($@"", $@"objects\characters\marine\marine.physics_model");
+            h100.PortTag($@"single", $@"objects\characters\odst_recon\odst_recon.model");
+            DuplicateTag(GetCachedTag<Biped>($@"levels\ui\mainmenu\objects\spartan_cheap\spartan_cheap"), $@"levels\ui\mainmenu\objects\odst_recon_cheap\odst_recon_cheap");
+            RenameTag(GetCachedTag<Scenery>($@"objects\vehicles\phantom\hirez_cinematic_phantom\phantom_cinematic\phantom_cinematic"), $@"levels\ui\mainmenu\objects\vehicles\phantom\hirez_cinematic_phantom");
+            RenameTag(GetCachedTag<Model>($@"objects\vehicles\phantom\hirez_cinematic_phantom\phantom_cinematic\phantom_cinematic"), $@"levels\ui\mainmenu\objects\vehicles\phantom\hirez_cinematic_phantom");
+            RenameTag(GetCachedTag<Model>($@"objects\characters\odst_recon\odst_recon"), $@"levels\ui\mainmenu\objects\odst_recon_cheap\odst_recon_cheap");
+            RenameTag(GetCachedTag<RenderModel>($@"objects\characters\odst\odst"), $@"levels\ui\mainmenu\objects\odst_recon_cheap\odst_recon_cheap");
+
+            odstMainMenu.SetPortingProperties(audioCodec: Compression.OGG);
+            odstMainMenu.PortTag($@"", $@"objects\weapons\pistol\automag\automag.scenery");
+            odstMainMenu.PortTag($@"", $@"objects\weapons\rifle\smg_silenced\smg_silenced.scenery");
+
+            h3MainMenu.SetPortingProperties(audioCodec: Compression.OGG);
             h3MainMenu.PortTag($@"", $@"*.scnr");
-            
-            CommandRunner.Current.RunCommand($@"updatemapfiles {halo3DirectoryInfo}\info");
         }
 
         public void InitializePortingContext()
@@ -926,8 +957,9 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
         {
             using (var stream  = Cache.OpenCacheReadWrite())
             {
-                // Add inputs dipshit
-                var tagData = Activator.CreateInstance<T>();
+                object[] args = { Cache, CacheContext, stream };
+
+                var tagData = Activator.CreateInstance(typeof(T), args);
             }
         }
 
@@ -950,6 +982,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
                 CacheContext.Serialize(stream, newTag, defintion);
                 CacheContext.SaveTagNames();
             }
+        }
+
+        public void RenameTag(CachedTag currentTag, string newName)
+        {
+            currentTag.Name = newName;
+            CacheContext.SaveTagNames();
         }
     }
 }

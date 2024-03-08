@@ -840,13 +840,21 @@ namespace TagTool.MtnDewIt.Porting
             switch (blamDefinition)
 			{
 				case AreaScreenEffect sefc:
-					if (BlamCache.Version < CacheVersion.Halo3ODST)
-					{
-						sefc.GlobalHiddenFlags = AreaScreenEffect.HiddenFlagBits.UpdateThread | AreaScreenEffect.HiddenFlagBits.RenderThread;
-
-						foreach (var screenEffect in sefc.ScreenEffects)
-							screenEffect.HiddenFlags = AreaScreenEffect.HiddenFlagBits.UpdateThread | AreaScreenEffect.HiddenFlagBits.RenderThread;
+                    if (BlamCache.Version < CacheVersion.Halo3ODST)
+                    {
+                    	sefc.GlobalHiddenFlags = AreaScreenEffect.HiddenFlagBits.UpdateThread | AreaScreenEffect.HiddenFlagBits.RenderThread;
+                    
+                    	foreach (var screenEffect in sefc.ScreenEffects)
+                    		screenEffect.HiddenFlags = AreaScreenEffect.HiddenFlagBits.UpdateThread | AreaScreenEffect.HiddenFlagBits.RenderThread;
                     }
+
+                    // Remove for release
+                    if (sefc.ScreenEffects.Count > 0 && sefc.ScreenEffects[0].Lifetime == 1.0f && sefc.ScreenEffects[0].MaximumDistance == 1.0f)
+                    {
+                        sefc.ScreenEffects[0].Lifetime = 1E+19f;
+                        sefc.ScreenEffects[0].MaximumDistance = 1E+19f;
+                    }
+
                     foreach (var screenEffect in sefc.ScreenEffects)
                     {
                         //convert flags
@@ -854,14 +862,14 @@ namespace TagTool.MtnDewIt.Porting
                             Enum.TryParse(screenEffect.Flags_H3.ToString(), out screenEffect.Flags_ODST);
                         else if (BlamCache.Version >= CacheVersion.HaloOnline106708 && BlamCache.Version <= CacheVersion.HaloOnline700123)
                             Enum.TryParse(screenEffect.Flags.ToString(), out screenEffect.Flags_ODST);
-
+                    
                         if (CacheContext.StringTable.GetString(screenEffect.InputVariable) == "saved_film_vision_mode_intensity")
                             screenEffect.Flags_ODST |= AreaScreenEffect.ScreenEffectBlock.SefcFlagBits_ODST.DebugDisable; // prevents spawning and rendering
-
+                    
                         if (screenEffect.ObjectFalloff.Data.Length == 0)
                             screenEffect.ObjectFalloff = TagFunction.DefaultConstant;
                     }
-                    
+
                     break;
 
 				case Bitmap bitm:

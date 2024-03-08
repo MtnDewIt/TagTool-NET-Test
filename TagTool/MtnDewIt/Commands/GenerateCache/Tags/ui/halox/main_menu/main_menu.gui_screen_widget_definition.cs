@@ -291,7 +291,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
             };
             scn3.OnLoadScriptName = "mainmenu_cam";
-            scn3.ScriptIndex = 47;
+            scn3.ScriptIndex = 8;
             CacheContext.Serialize(Stream, tag, scn3);
         }
     }

@@ -252,7 +252,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
             };
             scn3.OnLoadScriptName = "campaign_cam";
-            scn3.ScriptIndex = 48;
+            scn3.ScriptIndex = 9;
             CacheContext.Serialize(Stream, tag, scn3);
         }
     }

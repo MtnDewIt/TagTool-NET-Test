@@ -197,12 +197,6 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             buffer.AppendLine("The last input will be for the output directory.");
             buffer.AppendLine("This is where the converted data will be saved during execution.");
             buffer.AppendLine();
-            buffer.AppendLine("Minor Note: There will be some BLF errors which appear when the command retrieves the directory info for");
-            buffer.AppendLine("Halo Online MS23 and when inputting the directory info for ElDewrito 0.6.1. This is mainly due to the fact");
-            buffer.AppendLine("that Halo Online MS23 and ElDewrito 0.6.1 use different .map file formats from ElDewrito 0.7, and currently");
-            buffer.AppendLine("the file reader in TagTool can only parse ElDewrito 0.7 .map files so it will display warnings about the");
-            buffer.AppendLine("BLF files being invalid. So long as the accompanying tag data is valid, the command will function normally.");
-            buffer.AppendLine();
             buffer.AppendLine("DISCLAIMER:");
             buffer.AppendLine("This command is highly, HIGHLY experimental. The resulting cache may exhibit behaviour anywhere from");
             buffer.AppendLine("minor bugs or graphical issues, crashes and general instability, to being completely non-functional");
@@ -242,7 +236,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
         public void GetCacheFiles()
         {
-            haloOnlineCache = GameCache.Open($@"{CacheContext.Directory.FullName}\mainmenu.map");
+            haloOnlineCache = GameCache.Open($@"{CacheContext.Directory.FullName}\tags.dat");
             UpdateTagNames(haloOnlineCache, haloOnlineCache, UpdateHOTagsCommand.tagNameTable);
 
             halo3DirectoryInfo = GetDirectoryInfo(halo3DirectoryInfo, "Halo 3");

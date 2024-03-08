@@ -232,7 +232,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
             };
             scn3.OnLoadScriptName = "custom_cam";
-            scn3.ScriptIndex = 50;
+            scn3.ScriptIndex = 12;
             CacheContext.Serialize(Stream, tag, scn3);
         }
     }

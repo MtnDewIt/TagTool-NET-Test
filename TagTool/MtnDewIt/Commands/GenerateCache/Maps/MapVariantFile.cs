@@ -77,9 +77,16 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Maps
             return mapFile;
         }
 
-        public void GenerateCampaignFile() 
+        public void GenerateCampaignFile(BlfData mapVariant) 
         {
-            // TODO: Implement
+            var mapFilePath = $"{Path.Combine(Cache.Directory.FullName, $@"halo3.campaign")}";
+            var mapFile = new FileInfo(mapFilePath);
+
+            using (var stream = mapFile.Create())
+            using (var writer = new EndianWriter(stream))
+            {
+                mapVariant.WriteData(writer);
+            }
         }
 
         public CachedTag GetCachedTag<T>(string tagName) where T : TagStructure

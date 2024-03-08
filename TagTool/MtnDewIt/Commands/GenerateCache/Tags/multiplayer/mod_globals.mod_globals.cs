@@ -61,14 +61,71 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     HudGlobals = GetCachedTag<ChudGlobalsDefinition>($@"ui\chud\globals"),
                     VisionGlobals = GetCachedTag<VisionMode>($@"globals\default_vision_mode"),
                     ActionSet = GetCachedTag<PlayerActionSet>($@"objects\characters\masterchief\mp_masterchief\actions"),
+                    RegionCameraScripts = new List<ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript>
+                    {
+                        new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
+                        {
+                            RegionName = "helmet",
+                            ScriptNameWidescreen = "helmet_camera_wide",
+                            ScriptNameStandard = "helmet_camera_standard",
+                            BipedRotation = 50f,
+                            RotationDuration = 0.5f,
+                        },
+                        new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
+                        {
+                            RegionName = "body",
+                            ScriptNameWidescreen = "body_camera_wide",
+                            ScriptNameStandard = "body_camera_standard",
+                            BipedRotation = 60f,
+                            RotationDuration = 0.5f,
+                        },
+                        new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
+                        {
+                            RegionName = "leftshoulder",
+                            ScriptNameWidescreen = "leftshoulder_camera_wide",
+                            ScriptNameStandard = "leftshoulder_camera_standard",
+                            BipedRotation = 40f,
+                            RotationDuration = 0.5f,
+                        },
+                        new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
+                        {
+                            RegionName = "rightshoulder",
+                            ScriptNameWidescreen = "rightshoulder_camera_wide",
+                            ScriptNameStandard = "rightshoulder_camera_standard",
+                            BipedRotation = 110f,
+                            RotationDuration = 0.5f,
+                        },
+                        new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
+                        {
+                            RegionName = "emblem",
+                            ScriptNameWidescreen = "rightshoulder_camera_wide",
+                            ScriptNameStandard = "rightshoulder_camera_standard",
+                            BipedRotation = 110f,
+                            RotationDuration = 0.5f,
+                        },
+                        new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
+                        {
+                            RegionName = "exit",
+                            ScriptNameWidescreen = "exit_subcamera",
+                            ScriptNameStandard = "exit_subcamera",
+                            RotationDuration = 0.5f,
+                        },
+                        new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
+                        {
+                            RegionName = "colorsTertiary",
+                            ScriptNameWidescreen = "helmet_camera_wide",
+                            ScriptNameStandard = "helmet_camera_standard",
+                            BipedRotation = 50f,
+                            RotationDuration = 0.5f,
+                        },
+                    },
                     CharacterPositionData = new ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo()
                     {
-                        flags = ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo.FlagsValue.PlaceBipedRelativeToCamera,
+                        flags = ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo.FlagsValue.PlaceBipedRelativeToCamera | ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo.FlagsValue.RotateInCustomization,
                         BipedNameIndex = 15,
-                        SettingsCameraIndex = -1,
+                        SettingsCameraIndex = 26,
                         PlatformNameIndex = -1,
-                        BipedPositionWidescreen = new RealPoint3d(-45f, -10f, -35f),
-                        BipedPositionStandard = new RealPoint3d(-45f, -10f, -35f),
+                        RelativeBipedPosition = new RealVector3d(0f, 0f, 0f),
                     },
                     CharacterColors = new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors()
                     {
@@ -78,31 +135,31 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         {
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"cef_spartan_color_primary"),
-                                Description = CacheContext.StringTable.GetStringId($@"cef_spartan_color_primary_desc"),
+                                Name = CacheContext.StringTable.GetStringId($@"cef_color_primary"),
+                                Description = CacheContext.StringTable.GetStringId($@"cef_color_primary_desc"),
                                 Default = new ArgbColor(0, 84, 110, 38),
                             },
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"cef_spartan_color_secondary"),
-                                Description = CacheContext.StringTable.GetStringId($@"cef_spartan_color_secondary_desc"),
+                                Name = CacheContext.StringTable.GetStringId($@"cef_color_secondary"),
+                                Description = CacheContext.StringTable.GetStringId($@"cef_color_secondary_desc"),
                                 Default = new ArgbColor(0, 84, 110, 38),
                             },
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"cef_spartan_color_visor"),
-                                Description = CacheContext.StringTable.GetStringId($@"cef_spartan_color_visor_desc"),
+                                Name = CacheContext.StringTable.GetStringId($@"cef_color_visor"),
+                                Description = CacheContext.StringTable.GetStringId($@"cef_color_visor_desc"),
                                 Default = new ArgbColor(0, 255, 127, 0),
                             },
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"cef_spartan_color_light"),
-                                Description = CacheContext.StringTable.GetStringId($@"cef_spartan_color_light_desc"),
+                                Name = CacheContext.StringTable.GetStringId($@"cef_color_light"),
+                                Description = CacheContext.StringTable.GetStringId($@"cef_color_light_desc"),
                                 Default = new ArgbColor(0, 150, 133, 255),
                             },
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
                             {
-                                
+
                             },
                         },
                     },
@@ -115,50 +172,98 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     HudGlobals = GetCachedTag<ChudGlobalsDefinition>($@"ui\chud\globals"),
                     VisionGlobals = GetCachedTag<VisionMode>($@"globals\default_vision_mode"),
                     ActionSet = GetCachedTag<PlayerActionSet>($@"objects\characters\elite\mp_elite\actions"),
+                    RegionCameraScripts = new List<ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript>
+                    {
+                        new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
+                        {
+                            RegionName = "helmet",
+                            ScriptNameWidescreen = "helmet_camera_wide",
+                            ScriptNameStandard = "helmet_camera_standard",
+                            BipedRotation = 50f,
+                            RotationDuration = 0.5f,
+                        },
+                        new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
+                        {
+                            RegionName = "body",
+                            ScriptNameWidescreen = "body_camera_wide",
+                            ScriptNameStandard = "body_camera_standard",
+                            BipedRotation = 70f,
+                            RotationDuration = 0.5f,
+                        },
+                        new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
+                        {
+                            RegionName = "leftshoulder",
+                            ScriptNameWidescreen = "leftshoulder_camera_wide",
+                            ScriptNameStandard = "leftshoulder_camera_standard",
+                            BipedRotation = 0f,
+                            RotationDuration = 0.5f,
+                        },
+                        new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
+                        {
+                            RegionName = "rightshoulder",
+                            ScriptNameWidescreen = "rightshoulder_camera_wide",
+                            ScriptNameStandard = "rightshoulder_camera_standard",
+                            BipedRotation = 70f,
+                            RotationDuration = 0.5f,
+                        },
+                        new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
+                        {
+                            RegionName = "emblem",
+                            ScriptNameWidescreen = "rightshoulder_camera_wide",
+                            ScriptNameStandard = "rightshoulder_camera_standard",
+                            BipedRotation = 70f,
+                            RotationDuration = 0.5f,
+                        },
+                        new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
+                        {
+                            RegionName = "exit",
+                            ScriptNameWidescreen = "exit_subcamera",
+                            ScriptNameStandard = "exit_subcamera",
+                            RotationDuration = 0.5f,
+                        },
+                    },
                     CharacterPositionData = new ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo()
                     {
-                        flags = ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo.FlagsValue.PlaceBipedRelativeToCamera,
+                        flags = ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo.FlagsValue.PlaceBipedRelativeToCamera | ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo.FlagsValue.RotateInCustomization,
                         BipedNameIndex = 14,
-                        SettingsCameraIndex = -1,
+                        SettingsCameraIndex = 26,
                         PlatformNameIndex = -1,
-                        BipedPositionWidescreen = new RealPoint3d(-45f, -10f, -35f),
-                        BipedPositionStandard = new RealPoint3d(-45f, -10f, -35f),
+                        RelativeBipedPosition = new RealVector3d(0.3f, 0.04f, 0f),
+                        RelativeBipedRotation = -10f,
                     },
                     CharacterColors = new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors()
                     {
-                        ValidColorFlags = ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.PrimaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.SecondaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.TertiaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.QuaternaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.QuinaryColor,
-                        TeamOverrideFlags = ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.PrimaryColor,
+                        ValidColorFlags = ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.PrimaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.SecondaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.TertiaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.QuaternaryColor,
+                        TeamOverrideFlags = ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.PrimaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.SecondaryColor,
                         Colors = new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock[5]
                         {
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"cef_elite_color_primary"),
-                                Description = CacheContext.StringTable.GetStringId($@"cef_elite_color_primary_desc"),
-                                Default = new ArgbColor(0, 67, 189, 255),
+                                Name = CacheContext.StringTable.GetStringId($@"cef_color_primary"),
+                                Description = CacheContext.StringTable.GetStringId($@"cef_color_primary_desc"),
+                                Default = new ArgbColor(0, 11, 33, 86),
                             },
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"cef_elite_color_primary_sheen"),
-                                Description = CacheContext.StringTable.GetStringId($@"cef_elite_color_primary_sheen_desc"),
-                                Default = new ArgbColor(0, 224, 126, 255),
+                                Name = CacheContext.StringTable.GetStringId($@"cef_color_secondary"),
+                                Description = CacheContext.StringTable.GetStringId($@"cef_color_secondary_desc"),
+                                Default = new ArgbColor(0, 29, 16, 82),
                             },
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"cef_elite_color_secondary"),
-                                Description = CacheContext.StringTable.GetStringId($@"cef_elite_color_secondary_desc"),
-                                Default = new ArgbColor(0, 146, 17, 255),
-                            },
-                            new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
-                            {
-                                Name = CacheContext.StringTable.GetStringId($@"cef_elite_color_flair"),
-                                Description = CacheContext.StringTable.GetStringId($@"cef_elite_color_flair_desc"),
+                                Name = CacheContext.StringTable.GetStringId($@"cef_color_detail"),
+                                Description = CacheContext.StringTable.GetStringId($@"cef_color_detail_desc"),
                                 Default = new ArgbColor(0, 255, 255, 255),
                             },
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"cef_elite_color_light"),
-                                Description = CacheContext.StringTable.GetStringId($@"cef_elite_color_light_desc"),
-                                Default = new ArgbColor(0, 255, 255, 255),
+                                Name = CacheContext.StringTable.GetStringId($@"cef_color_light"),
+                                Description = CacheContext.StringTable.GetStringId($@"cef_color_light_desc"),
+                                Default = new ArgbColor(0, 27, 255, 104),
+                            },
+                            new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
+                            {
+
                             },
                         },
                     },
