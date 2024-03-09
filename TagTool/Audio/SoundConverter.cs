@@ -46,7 +46,7 @@ namespace TagTool.Audio
 
             var basePermutationCacheName = Path.Combine(newPath, endName); //combine the last portion of the tag name with the new path
 
-            var extension = AudioUtils.GetFormtFileExtension(targetFormat);
+            var extension = AudioUtils.GetFormatFileExtension(targetFormat);
             return $"{basePermutationCacheName}_{pitch_range_index}_{permutation_index}.{extension}";
         }
 
@@ -184,7 +184,7 @@ namespace TagTool.Audio
         {
             var id = Guid.NewGuid();
             var baseFileName = $"{id}";
-            var targetFileExt = AudioUtils.GetFormtFileExtension(targetFormat);
+            var targetFileExt = AudioUtils.GetFormatFileExtension(targetFormat);
             var XMAFileName = Path.Combine(IntermediateDirectory.FullName, $"{baseFileName}.xma");
             var WAVFileName = Path.Combine(IntermediateDirectory.FullName, $"{baseFileName}.wav");
             var targetFileName = Path.Combine(IntermediateDirectory.FullName, $"{baseFileName}.{targetFileExt}");
