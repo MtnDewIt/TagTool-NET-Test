@@ -17,6 +17,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache
         public GameCache Cache { get; set; }
         public GameCacheHaloOnline CacheContext { get; set; }
         public CommandContextStack ContextStack { get; set; }
+        public Stream CacheStream { get; set; }
 
         public static DirectoryInfo halo3DirectoryInfo { get; set; }
         public static DirectoryInfo halo3MythicDirectoryInfo { get; set; }
@@ -217,14 +218,21 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache
         public override object Execute(List<string> args)
         {
             GetCacheFiles();
+
             Program._stopWatch.Start();
+
             CopyCacheFiles(outputDirectoryInfo.FullName);
             RetargetCache(outputDirectoryInfo.FullName);
             UpdateTagNames();
-            //UpdateShaderData();
-            PortTagData();
-            UpdateTagData();
-            UpdateMapFiles();
+
+            using (CacheStream = Cache.OpenCacheReadWrite()) 
+            {
+                //UpdateShaderData();
+                PortTagData();
+                UpdateTagData();
+                UpdateMapFiles();
+            }
+            
             ContextStack.Pop();
 
             Program._stopWatch.Stop();

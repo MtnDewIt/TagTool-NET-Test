@@ -94,85 +94,79 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache
 
         public void InitializePortingContext()
         {
-            h3MainMenu = new PortingContext(CacheContext, h3MainMenuCache);
-            intro = new PortingContext(CacheContext, introCache);
-            jungle = new PortingContext(CacheContext, jungleCache);
-            crows = new PortingContext(CacheContext, crowsCache);
-            outskirts = new PortingContext(CacheContext, outskirtsCache);
-            voi = new PortingContext(CacheContext, voiCache);
-            floodvoi = new PortingContext(CacheContext, floodvoiCache);
-            waste = new PortingContext(CacheContext, wasteCache);
-            citadel = new PortingContext(CacheContext, citadelCache);
-            highCharity = new PortingContext(CacheContext, highCharityCache);
-            halo = new PortingContext(CacheContext, haloCache);
-            epilogue = new PortingContext(CacheContext, epilogueCache);
-
-            mythicMainMenu = new PortingContext(CacheContext, mythicMainMenuCache);
-            armory = new PortingContext(CacheContext, armoryCache);
-            bunkerworld = new PortingContext(CacheContext, bunkerworldCache);
-            chill = new PortingContext(CacheContext, chillCache);
-            chillout = new PortingContext(CacheContext, chilloutCache);
-            construct = new PortingContext(CacheContext, constructCache);
-            cyberdyne = new PortingContext(CacheContext, cyberdyneCache);
-            deadlock = new PortingContext(CacheContext, deadlockCache);
-            descent = new PortingContext(CacheContext, descentCache);
-            docks = new PortingContext(CacheContext, docksCache);
-            fortress = new PortingContext(CacheContext, fortressCache);
-            ghosttown = new PortingContext(CacheContext, ghosttownCache);
-            guardian = new PortingContext(CacheContext, guardianCache);
-            isolation = new PortingContext(CacheContext, isolationCache);
-            lockout = new PortingContext(CacheContext, lockoutCache);
-            midship = new PortingContext(CacheContext, midshipCache);
-            riverworld = new PortingContext(CacheContext, riverworldCache);
-            salvation = new PortingContext(CacheContext, salvationCache);
-            sandbox = new PortingContext(CacheContext, sandboxCache);
-            shrine = new PortingContext(CacheContext, shrineCache);
-            sidewinder = new PortingContext(CacheContext, sidewinderCache);
-            snowbound = new PortingContext(CacheContext, snowboundCache);
-            spacecamp = new PortingContext(CacheContext, spacecampCache);
-            warehouse = new PortingContext(CacheContext, warehouseCache);
-            zanzibar = new PortingContext(CacheContext, zanzibarCache);
-
-            odstMainMenu = new PortingContext(CacheContext, odstMainMenuCache);
-            h100 = new PortingContext(CacheContext, h100Cache);
-            c100 = new PortingContext(CacheContext, c100Cache);
-            c200 = new PortingContext(CacheContext, c200Cache);
-            l200 = new PortingContext(CacheContext, l200Cache);
-            l300 = new PortingContext(CacheContext, l300Cache);
-            sc100 = new PortingContext(CacheContext, sc100Cache);
-            sc110 = new PortingContext(CacheContext, sc110Cache);
-            sc120 = new PortingContext(CacheContext, sc120Cache);
-            sc130 = new PortingContext(CacheContext, sc130Cache);
-            sc140 = new PortingContext(CacheContext, sc140Cache);
-            sc150 = new PortingContext(CacheContext, sc150Cache);
-
-            s3d_waterfall = new PortingContext(CacheContext, s3d_waterfallCache);
-            s3d_sky_bridgenew = new PortingContext(CacheContext, s3d_sky_bridgenewCache);
-            s3d_lockout = new PortingContext(CacheContext, s3d_lockoutCache);
-            s3d_powerhouse = new PortingContext(CacheContext, s3d_powerhouseCache);
+            h3MainMenu = new PortingContext(CacheContext, h3MainMenuCache, CacheStream);
+            intro = new PortingContext(CacheContext, introCache, CacheStream);
+            jungle = new PortingContext(CacheContext, jungleCache, CacheStream);
+            crows = new PortingContext(CacheContext, crowsCache, CacheStream);
+            outskirts = new PortingContext(CacheContext, outskirtsCache, CacheStream);
+            voi = new PortingContext(CacheContext, voiCache, CacheStream);
+            floodvoi = new PortingContext(CacheContext, floodvoiCache, CacheStream);
+            waste = new PortingContext(CacheContext, wasteCache, CacheStream);
+            citadel = new PortingContext(CacheContext, citadelCache, CacheStream);
+            highCharity = new PortingContext(CacheContext, highCharityCache, CacheStream);
+            halo = new PortingContext(CacheContext, haloCache, CacheStream);
+            epilogue = new PortingContext(CacheContext, epilogueCache, CacheStream);
+            
+            mythicMainMenu = new PortingContext(CacheContext, mythicMainMenuCache, CacheStream);
+            armory = new PortingContext(CacheContext, armoryCache, CacheStream);
+            bunkerworld = new PortingContext(CacheContext, bunkerworldCache, CacheStream);
+            chill = new PortingContext(CacheContext, chillCache, CacheStream);
+            chillout = new PortingContext(CacheContext, chilloutCache, CacheStream);
+            construct = new PortingContext(CacheContext, constructCache, CacheStream);
+            cyberdyne = new PortingContext(CacheContext, cyberdyneCache, CacheStream);
+            deadlock = new PortingContext(CacheContext, deadlockCache, CacheStream);
+            descent = new PortingContext(CacheContext, descentCache, CacheStream);
+            docks = new PortingContext(CacheContext, docksCache, CacheStream);
+            fortress = new PortingContext(CacheContext, fortressCache, CacheStream);
+            ghosttown = new PortingContext(CacheContext, ghosttownCache, CacheStream);
+            guardian = new PortingContext(CacheContext, guardianCache, CacheStream);
+            isolation = new PortingContext(CacheContext, isolationCache, CacheStream);
+            lockout = new PortingContext(CacheContext, lockoutCache, CacheStream);
+            midship = new PortingContext(CacheContext, midshipCache, CacheStream);
+            riverworld = new PortingContext(CacheContext, riverworldCache, CacheStream);
+            salvation = new PortingContext(CacheContext, salvationCache, CacheStream);
+            sandbox = new PortingContext(CacheContext, sandboxCache, CacheStream);
+            shrine = new PortingContext(CacheContext, shrineCache, CacheStream);
+            sidewinder = new PortingContext(CacheContext, sidewinderCache, CacheStream);
+            snowbound = new PortingContext(CacheContext, snowboundCache, CacheStream);
+            spacecamp = new PortingContext(CacheContext, spacecampCache, CacheStream);
+            warehouse = new PortingContext(CacheContext, warehouseCache, CacheStream);
+            zanzibar = new PortingContext(CacheContext, zanzibarCache, CacheStream);
+            
+            odstMainMenu = new PortingContext(CacheContext, odstMainMenuCache, CacheStream);
+            h100 = new PortingContext(CacheContext, h100Cache, CacheStream);
+            c100 = new PortingContext(CacheContext, c100Cache, CacheStream);
+            c200 = new PortingContext(CacheContext, c200Cache, CacheStream);
+            l200 = new PortingContext(CacheContext, l200Cache, CacheStream);
+            l300 = new PortingContext(CacheContext, l300Cache, CacheStream);
+            sc100 = new PortingContext(CacheContext, sc100Cache, CacheStream);
+            sc110 = new PortingContext(CacheContext, sc110Cache, CacheStream);
+            sc120 = new PortingContext(CacheContext, sc120Cache, CacheStream);
+            sc130 = new PortingContext(CacheContext, sc130Cache, CacheStream);
+            sc140 = new PortingContext(CacheContext, sc140Cache, CacheStream);
+            sc150 = new PortingContext(CacheContext, sc150Cache, CacheStream);
+            
+            s3d_waterfall = new PortingContext(CacheContext, s3d_waterfallCache, CacheStream);
+            s3d_sky_bridgenew = new PortingContext(CacheContext, s3d_sky_bridgenewCache, CacheStream);
+            s3d_lockout = new PortingContext(CacheContext, s3d_lockoutCache, CacheStream);
+            s3d_powerhouse = new PortingContext(CacheContext, s3d_powerhouseCache, CacheStream);
         }
 
         //TODO: Figure out how to make all these functions use the same stream, and have it play nicely with the porting context
 
         public void GenerateTag<T>(string tagName) where T : TagStructure
         {
-            using (var stream = Cache.OpenCacheReadWrite())
-            {
-                var tag = Cache.TagCache.AllocateTag<T>(tagName);
-                var definition = Activator.CreateInstance<T>();
-                Cache.Serialize(stream, tag, definition);
-            }
+            var tag = Cache.TagCache.AllocateTag<T>(tagName);
+            var definition = Activator.CreateInstance<T>();
+            Cache.Serialize(CacheStream, tag, definition);
         }
 
         public void DuplicateTag(CachedTag tag, string newName)
         {
-            using (var stream = Cache.OpenCacheReadWrite())
-            {
-                var newTag = Cache.TagCache.AllocateTag(tag.Group, newName);
-                var definition = Cache.Deserialize(stream, tag);
-                Cache.Serialize(stream, newTag, definition);
-                CacheContext.SaveTagNames();
-            }
+            var newTag = Cache.TagCache.AllocateTag(tag.Group, newName);
+            var definition = Cache.Deserialize(CacheStream, tag);
+            Cache.Serialize(CacheStream, newTag, definition);
+            CacheContext.SaveTagNames();
         }
 
         public void RenameTag(CachedTag currentTag, string newName)

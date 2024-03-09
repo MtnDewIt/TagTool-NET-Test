@@ -684,12 +684,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             sandbox.PortTag($@"", $@"ui\chud\v_wraith.chud_definition");
             sandbox.PortTag($@"", $@"ui\chud\v_wraith_anti_air.chud_definition");
             sandbox.PortTag($@"", $@"ui\chud\v_wraithturret.chud_definition");
-            
+
             citadel.SetPortingProperties(audioCodec: Compression.OGG);
             citadel.PortTag($@"", $@"ui\chud\e_autoturret.chud_definition");
             citadel.PortTag($@"", $@"ui\chud\e_invincibility.chud_definition");
             citadel.PortTag($@"", $@"ui\chud\e_invisibility.chud_definition");
-            
+
             h100.SetPortingProperties(audioCodec: Compression.OGG);
             h100.PortTag($@"", $@"ui\chud\automag.chud_definition");
             h100.PortTag($@"", $@"ui\chud\smg_silenced.chud_definition");
@@ -791,10 +791,10 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             sandbox.PortTag($@"", $@"objects\vehicles\mauler\anti_infantry\anti_infantry.vehicle");
             sandbox.PortTag($@"", $@"objects\vehicles\mauler\mauler.vehicle");
             sandbox.PortTag($@"", $@"objects\vehicles\scorpion\scorpion.vehicle");
-            
+
             citadel.SetPortingProperties(audioCodec: Compression.OGG);
             citadel.PortTag($@"", $@"objects\vehicles\shade\shade.vehicle");
-            
+
             sandbox.SetPortingProperties(audioCodec: Compression.OGG);
             sandbox.PortTag($@"", $@"objects\vehicles\warthog\turrets\chaingun\chaingun.vehicle");
             sandbox.PortTag($@"", $@"objects\vehicles\warthog\turrets\gauss\gauss.vehicle");
@@ -804,7 +804,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             DuplicateTag(GetCachedTag<Vehicle>($@"objects\vehicles\warthog\warthog"), $@"objects\vehicles\warthog\warthog_troop");
             DuplicateTag(GetCachedTag<Vehicle>($@"objects\vehicles\warthog\warthog"), $@"objects\vehicles\warthog\warthog_no_turret");
             DuplicateTag(GetCachedTag<Vehicle>($@"objects\vehicles\warthog\warthog"), $@"objects\vehicles\warthog\warthog_wrecked");
-            
+
             sidewinder.SetPortingProperties(audioCodec: Compression.OGG);
             sidewinder.PortTag($@"", $@"objects\vehicles\warthog\turrets\chaingun\chaingun_snow.vehicle");
             sidewinder.PortTag($@"", $@"objects\vehicles\warthog\turrets\gauss\gauss_snow.vehicle");
@@ -813,7 +813,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             DuplicateTag(GetCachedTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow"), $@"objects\vehicles\warthog\warthog_snow_troop");
             DuplicateTag(GetCachedTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow"), $@"objects\vehicles\warthog\warthog_snow_no_turret");
             DuplicateTag(GetCachedTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow"), $@"objects\vehicles\warthog\warthog_snow_wrecked");
-            
+
             sandbox.SetPortingProperties(audioCodec: Compression.OGG);
             sandbox.PortTag($@"", $@"objects\vehicles\wraith\turrets\anti_air\anti_air.vehicle");
             sandbox.PortTag($@"", $@"objects\vehicles\wraith\turrets\anti_infantry\anti_infantry.vehicle");
@@ -823,10 +823,10 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             DuplicateTag(GetCachedTag<Vehicle>($@"objects\vehicles\wraith\wraith"), $@"objects\vehicles\wraith\wraith_anti_air");
             sandbox.PortTag($@"", $@"objects\weapons\turret\machinegun_turret\machinegun_turret.vehicle");
             sandbox.PortTag($@"", $@"objects\weapons\turret\plasma_cannon\plasma_cannon.vehicle");
-            
+
             voi.SetPortingProperties(audioCodec: Compression.OGG);
             voi.PortTag($@"", $@"objects\weapons\turret\missile_pod\missile_pod.vehicle");
-            
+
             shrine.SetPortingProperties(audioCodec: Compression.OGG);
             shrine.PortTag($@"", $@"objects\levels\multi\shrine\behemoth\behemoth.vehicle");
             DuplicateTag(GetCachedTag<Vehicle>($@"objects\levels\multi\shrine\behemoth\behemoth"), $@"objects\levels\multi\shrine\behemoth\behemoth_forge");
@@ -842,15 +842,15 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             sandbox.PortTag($@"", $@"objects\equipment\superflare_equipment\superflare_equipment.eqip");
             sandbox.PortTag($@"", $@"objects\equipment\tripmine_equipment\tripmine_equipment.eqip");
             DuplicateTag(GetCachedTag<Equipment>($@"objects\equipment\tripmine\tripmine"), $@"objects\equipment\tripmine\tripmine_forge");
-            
+
             citadel.SetPortingProperties(audioCodec: Compression.OGG);
             citadel.PortTag($@"", $@"objects\equipment\instantcover_equipment\instantcover_equipment.eqip");
             citadel.PortTag($@"", $@"objects\equipment\invincibility_equipment\invincibility_equipment.eqip");
             citadel.PortTag($@"", $@"objects\equipment\invisibility_equipment\invisibility_equipment.eqip");
-            
+
             halo.SetPortingProperties(audioCodec: Compression.OGG);
             halo.PortTag($@"", $@"objects\equipment\autoturret_equipment\autoturret_equipment.eqip");
-            
+
             sandbox.SetPortingProperties(audioCodec: Compression.OGG);
             sandbox.PortTag($@"", $@"objects\multi\powerups\powerup_blue\powerup_blue.eqip");
             sandbox.PortTag($@"", $@"objects\multi\powerups\powerup_red\powerup_red.eqip");
@@ -896,92 +896,83 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
         {
             // These need to be defined after the new cache has been generated, otherwise it gets given the wrong cache context
 
-            haloOnline = new PortingContext(CacheContext, haloOnlineCache);
+            haloOnline = new PortingContext(CacheContext, haloOnlineCache, CacheStream);
 
-            h3MainMenu = new PortingContext(CacheContext, h3MainMenuCache);
-            intro = new PortingContext(CacheContext, introCache);
-            jungle = new PortingContext(CacheContext, jungleCache);
-            crows = new PortingContext(CacheContext, crowsCache);
-            outskirts = new PortingContext(CacheContext, outskirtsCache);
-            voi = new PortingContext(CacheContext, voiCache);
-            floodvoi = new PortingContext(CacheContext, floodvoiCache);
-            waste = new PortingContext(CacheContext, wasteCache);
-            citadel = new PortingContext(CacheContext, citadelCache);
-            highCharity = new PortingContext(CacheContext, highCharityCache);
-            halo = new PortingContext(CacheContext, haloCache);
-            epilogue = new PortingContext(CacheContext, epilogueCache);
+            h3MainMenu = new PortingContext(CacheContext, h3MainMenuCache, CacheStream);
+            intro = new PortingContext(CacheContext, introCache, CacheStream);
+            jungle = new PortingContext(CacheContext, jungleCache, CacheStream);
+            crows = new PortingContext(CacheContext, crowsCache, CacheStream);
+            outskirts = new PortingContext(CacheContext, outskirtsCache, CacheStream);
+            voi = new PortingContext(CacheContext, voiCache, CacheStream);
+            floodvoi = new PortingContext(CacheContext, floodvoiCache, CacheStream);
+            waste = new PortingContext(CacheContext, wasteCache, CacheStream);
+            citadel = new PortingContext(CacheContext, citadelCache, CacheStream);
+            highCharity = new PortingContext(CacheContext, highCharityCache, CacheStream);
+            halo = new PortingContext(CacheContext, haloCache, CacheStream);
+            epilogue = new PortingContext(CacheContext, epilogueCache, CacheStream);
 
-            mythicMainMenu = new PortingContext(CacheContext, mythicMainMenuCache);
-            armory = new PortingContext(CacheContext, armoryCache);
-            bunkerworld = new PortingContext(CacheContext, bunkerworldCache);
-            chill = new PortingContext(CacheContext, chillCache);
-            chillout = new PortingContext(CacheContext, chilloutCache);
-            construct = new PortingContext(CacheContext, constructCache);
-            cyberdyne = new PortingContext(CacheContext, cyberdyneCache);
-            deadlock = new PortingContext(CacheContext, deadlockCache);
-            descent = new PortingContext(CacheContext, descentCache);
-            docks = new PortingContext(CacheContext, docksCache);
-            fortress = new PortingContext(CacheContext, fortressCache);
-            ghosttown = new PortingContext(CacheContext, ghosttownCache);
-            guardian = new PortingContext(CacheContext, guardianCache);
-            isolation = new PortingContext(CacheContext, isolationCache);
-            lockout = new PortingContext(CacheContext, lockoutCache);
-            midship = new PortingContext(CacheContext, midshipCache);
-            riverworld = new PortingContext(CacheContext, riverworldCache);
-            salvation = new PortingContext(CacheContext, salvationCache);
-            sandbox = new PortingContext(CacheContext, sandboxCache);
-            shrine = new PortingContext(CacheContext, shrineCache);
-            sidewinder = new PortingContext(CacheContext, sidewinderCache);
-            snowbound = new PortingContext(CacheContext, snowboundCache);
-            spacecamp = new PortingContext(CacheContext, spacecampCache);
-            warehouse = new PortingContext(CacheContext, warehouseCache);
-            zanzibar = new PortingContext(CacheContext, zanzibarCache);
+            mythicMainMenu = new PortingContext(CacheContext, mythicMainMenuCache, CacheStream);
+            armory = new PortingContext(CacheContext, armoryCache, CacheStream);
+            bunkerworld = new PortingContext(CacheContext, bunkerworldCache, CacheStream);
+            chill = new PortingContext(CacheContext, chillCache, CacheStream);
+            chillout = new PortingContext(CacheContext, chilloutCache, CacheStream);
+            construct = new PortingContext(CacheContext, constructCache, CacheStream);
+            cyberdyne = new PortingContext(CacheContext, cyberdyneCache, CacheStream);
+            deadlock = new PortingContext(CacheContext, deadlockCache, CacheStream);
+            descent = new PortingContext(CacheContext, descentCache, CacheStream);
+            docks = new PortingContext(CacheContext, docksCache, CacheStream);
+            fortress = new PortingContext(CacheContext, fortressCache, CacheStream);
+            ghosttown = new PortingContext(CacheContext, ghosttownCache, CacheStream);
+            guardian = new PortingContext(CacheContext, guardianCache, CacheStream);
+            isolation = new PortingContext(CacheContext, isolationCache, CacheStream);
+            lockout = new PortingContext(CacheContext, lockoutCache, CacheStream);
+            midship = new PortingContext(CacheContext, midshipCache, CacheStream);
+            riverworld = new PortingContext(CacheContext, riverworldCache, CacheStream);
+            salvation = new PortingContext(CacheContext, salvationCache, CacheStream);
+            sandbox = new PortingContext(CacheContext, sandboxCache, CacheStream);
+            shrine = new PortingContext(CacheContext, shrineCache, CacheStream);
+            sidewinder = new PortingContext(CacheContext, sidewinderCache, CacheStream);
+            snowbound = new PortingContext(CacheContext, snowboundCache, CacheStream);
+            spacecamp = new PortingContext(CacheContext, spacecampCache, CacheStream);
+            warehouse = new PortingContext(CacheContext, warehouseCache, CacheStream);
+            zanzibar = new PortingContext(CacheContext, zanzibarCache, CacheStream);
 
-            odstMainMenu = new PortingContext(CacheContext, odstMainMenuCache);
-            h100 = new PortingContext(CacheContext, h100Cache);
-            c100 = new PortingContext(CacheContext, c100Cache);
-            c200 = new PortingContext(CacheContext, c200Cache);
-            l200 = new PortingContext(CacheContext, l200Cache);
-            l300 = new PortingContext(CacheContext, l300Cache);
-            sc100 = new PortingContext(CacheContext, sc100Cache);
-            sc110 = new PortingContext(CacheContext, sc110Cache);
-            sc120 = new PortingContext(CacheContext, sc120Cache);
-            sc130 = new PortingContext(CacheContext, sc130Cache);
-            sc140 = new PortingContext(CacheContext, sc140Cache);
-            sc150 = new PortingContext(CacheContext, sc150Cache);
+            odstMainMenu = new PortingContext(CacheContext, odstMainMenuCache, CacheStream);
+            h100 = new PortingContext(CacheContext, h100Cache, CacheStream);
+            c100 = new PortingContext(CacheContext, c100Cache, CacheStream);
+            c200 = new PortingContext(CacheContext, c200Cache, CacheStream);
+            l200 = new PortingContext(CacheContext, l200Cache, CacheStream);
+            l300 = new PortingContext(CacheContext, l300Cache, CacheStream);
+            sc100 = new PortingContext(CacheContext, sc100Cache, CacheStream);
+            sc110 = new PortingContext(CacheContext, sc110Cache, CacheStream);
+            sc120 = new PortingContext(CacheContext, sc120Cache, CacheStream);
+            sc130 = new PortingContext(CacheContext, sc130Cache, CacheStream);
+            sc140 = new PortingContext(CacheContext, sc140Cache, CacheStream);
+            sc150 = new PortingContext(CacheContext, sc150Cache, CacheStream);
         }
 
         //TODO: Figure out how to make all these functions use the same stream, and have it play nicely with the porting context
 
         public void UpdateData<T>() where T : Tags.TagFile 
         {
-            using (var stream  = Cache.OpenCacheReadWrite())
-            {
-                object[] args = { Cache, CacheContext, stream };
+            object[] args = { Cache, CacheContext, CacheStream };
 
-                var tagData = Activator.CreateInstance(typeof(T), args);
-            }
+            var tagData = Activator.CreateInstance(typeof(T), args);
         }
 
         public void GenerateTag<T>(string tagName) where T : TagStructure
         {
-            using (var stream = Cache.OpenCacheReadWrite())
-            {
-                var tag = CacheContext.TagCache.AllocateTag<T>(tagName);
-                var definition = Activator.CreateInstance<T>();
-                CacheContext.Serialize(stream, tag, definition);
-            }
+            var tag = CacheContext.TagCache.AllocateTag<T>(tagName);
+            var definition = Activator.CreateInstance<T>();
+            CacheContext.Serialize(CacheStream, tag, definition);
         }
 
         public void DuplicateTag(CachedTag tag, string newName) 
         {
-            using (var stream = Cache.OpenCacheReadWrite()) 
-            {
-                var newTag = CacheContext.TagCache.AllocateTag(tag.Group, newName);
-                var defintion = CacheContext.Deserialize(stream, tag);
-                CacheContext.Serialize(stream, newTag, defintion);
-                CacheContext.SaveTagNames();
-            }
+            var newTag = CacheContext.TagCache.AllocateTag(tag.Group, newName);
+            var defintion = CacheContext.Deserialize(CacheStream, tag);
+            CacheContext.Serialize(CacheStream, newTag, defintion);
+            CacheContext.SaveTagNames();
         }
 
         public void RenameTag(CachedTag currentTag, string newName)

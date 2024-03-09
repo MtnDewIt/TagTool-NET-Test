@@ -15,34 +15,31 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
     {
         public void UpdateMapFiles()
         {
-            using (var stream = Cache.OpenCacheReadWrite()) 
-            {
-                new bunkerworld(Cache, CacheContext, stream);
+            new bunkerworld(Cache, CacheContext, CacheStream);
 
-                new chill(Cache, CacheContext, stream);
+            new chill(Cache, CacheContext, CacheStream);
 
-                new cyberdyne(Cache, CacheContext, stream);
+            new cyberdyne(Cache, CacheContext, CacheStream);
 
-                new deadlock(Cache, CacheContext, stream);
+            new deadlock(Cache, CacheContext, CacheStream);
 
-                new guardian(Cache, CacheContext, stream);
+            new guardian(Cache, CacheContext, CacheStream);
 
-                new mainmenu(Cache, CacheContext, stream);
+            new mainmenu(Cache, CacheContext, CacheStream);
 
-                new riverworld(Cache, CacheContext, stream);
+            new riverworld(Cache, CacheContext, CacheStream);
 
-                new s3d_avalanche(Cache, CacheContext, stream);
+            new s3d_avalanche(Cache, CacheContext, CacheStream);
 
-                new s3d_edge(Cache, CacheContext, stream);
+            new s3d_edge(Cache, CacheContext, CacheStream);
 
-                new s3d_reactor(Cache, CacheContext, stream);
+            new s3d_reactor(Cache, CacheContext, CacheStream);
 
-                new s3d_turf(Cache, CacheContext, stream);
+            new s3d_turf(Cache, CacheContext, CacheStream);
 
-                new shrine(Cache, CacheContext, stream);
+            new shrine(Cache, CacheContext, CacheStream);
 
-                new zanzibar(Cache, CacheContext, stream);
-            }
+            new zanzibar(Cache, CacheContext, CacheStream);
         }
     }
 }

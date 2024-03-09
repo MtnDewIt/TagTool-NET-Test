@@ -11,24 +11,21 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
     {
         public void UpdateShaderData()
         {
-            using (var stream = Cache.OpenCacheReadWrite())
-            {
-                //GenerateRenderMethod(stream, $@"beam", false);
-                GenerateRenderMethod(stream, $@"black", false);
-                //GenerateRenderMethod(stream, $@"contrail", false);
-                //GenerateRenderMethod(stream, $@"cortana", false);
-                //GenerateRenderMethod(stream, $@"custom", false);
-                //GenerateRenderMethod(stream, $@"decal", false);
-                //GenerateRenderMethod(stream, $@"foliage", false);
-                GenerateRenderMethod(stream, $@"halogram", false);
-                //GenerateRenderMethod(stream, $@"light_volume", false);
-                //GenerateRenderMethod(stream, $@"particle", false);
-                //GenerateRenderMethod(stream, $@"screen", false);
-                GenerateRenderMethod(stream, $@"shader", false);
-                GenerateRenderMethod(stream, $@"terrain", false);
-                //GenerateRenderMethod(stream, $@"water", false);
-                GenerateRenderMethod(stream, $@"zonly", false);
-            }
+            //GenerateRenderMethod(CacheStream, $@"beam", false);
+            GenerateRenderMethod(CacheStream, $@"black", false);
+            //GenerateRenderMethod(CacheStream, $@"contrail", false);
+            //GenerateRenderMethod(CacheStream, $@"cortana", false);
+            //GenerateRenderMethod(CacheStream, $@"custom", false);
+            //GenerateRenderMethod(CacheStream, $@"decal", false);
+            //GenerateRenderMethod(CacheStream, $@"foliage", false);
+            GenerateRenderMethod(CacheStream, $@"halogram", false);
+            //GenerateRenderMethod(CacheStream, $@"light_volume", false);
+            //GenerateRenderMethod(CacheStream, $@"particle", false);
+            //GenerateRenderMethod(CacheStream, $@"screen", false);
+            GenerateRenderMethod(CacheStream, $@"shader", false);
+            GenerateRenderMethod(CacheStream, $@"terrain", false);
+            //GenerateRenderMethod(CacheStream, $@"water", false);
+            GenerateRenderMethod(CacheStream, $@"zonly", false);
         }
 
         public void GenerateRenderMethod(Stream stream, string shaderType, bool updateRenderMethod)

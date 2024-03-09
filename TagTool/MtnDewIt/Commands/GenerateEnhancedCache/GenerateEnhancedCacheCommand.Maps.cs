@@ -7,74 +7,71 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache
     {
         public void UpdateMapFiles()
         {
-            using (var stream = Cache.OpenCacheReadWrite())
-            {
-                new armory(Cache, CacheContext, stream);
-                
-                new bunkerworld(Cache, CacheContext, stream);
-                
-                new chill(Cache, CacheContext, stream);
-                
-                new chillout(Cache, CacheContext, stream);
-                
-                new construct(Cache, CacheContext, stream);
-                
-                new cyberdyne(Cache, CacheContext, stream);
-                
-                new deadlock(Cache, CacheContext, stream);
-                
-                new descent(Cache, CacheContext, stream);
-                
-                new docks(Cache, CacheContext, stream);
-                
-                new fortress(Cache, CacheContext, stream);
-                
-                new ghosttown(Cache, CacheContext, stream);
-                
-                new guardian(Cache, CacheContext, stream);
-                
-                new isolation(Cache, CacheContext, stream);
-                
-                new lockout(Cache, CacheContext, stream);
-                
-                new mainmenu(Cache, CacheContext, stream);
-                
-                new midship(Cache, CacheContext, stream);
-                
-                new riverworld(Cache, CacheContext, stream);
-                
-                new s3d_avalanche(Cache, CacheContext, stream);
-                
-                new s3d_edge(Cache, CacheContext, stream);
-                
-                new s3d_lockout(Cache, CacheContext, stream);
-                
-                new s3d_powerhouse(Cache, CacheContext, stream);
-                
-                new s3d_reactor(Cache, CacheContext, stream);
-                
-                new s3d_sky_bridgenew(Cache, CacheContext, stream); 
-                
-                new s3d_turf(Cache, CacheContext, stream);
-                
-                new s3d_waterfall(Cache, CacheContext, stream);
+            new armory(Cache, CacheContext, CacheStream);
 
-                new salvation(Cache, CacheContext, stream);
-                
-                new sandbox(Cache, CacheContext, stream);
-                
-                new shrine(Cache, CacheContext, stream);
-                
-                new sidewinder(Cache, CacheContext, stream);
-                
-                new snowbound(Cache, CacheContext, stream);
-                
-                new spacecamp(Cache, CacheContext, stream);
-                
-                new warehouse(Cache, CacheContext, stream);
-                
-                new zanzibar(Cache, CacheContext, stream);
-            }
+            new bunkerworld(Cache, CacheContext, CacheStream);
+
+            new chill(Cache, CacheContext, CacheStream);
+
+            new chillout(Cache, CacheContext, CacheStream);
+
+            new construct(Cache, CacheContext, CacheStream);
+
+            new cyberdyne(Cache, CacheContext, CacheStream);
+
+            new deadlock(Cache, CacheContext, CacheStream);
+
+            new descent(Cache, CacheContext, CacheStream);
+
+            new docks(Cache, CacheContext, CacheStream);
+
+            new fortress(Cache, CacheContext, CacheStream);
+
+            new ghosttown(Cache, CacheContext, CacheStream);
+
+            new guardian(Cache, CacheContext, CacheStream);
+
+            new isolation(Cache, CacheContext, CacheStream);
+
+            new lockout(Cache, CacheContext, CacheStream);
+
+            new mainmenu(Cache, CacheContext, CacheStream);
+
+            new midship(Cache, CacheContext, CacheStream);
+
+            new riverworld(Cache, CacheContext, CacheStream);
+
+            new s3d_avalanche(Cache, CacheContext, CacheStream);
+
+            new s3d_edge(Cache, CacheContext, CacheStream);
+
+            new s3d_lockout(Cache, CacheContext, CacheStream);
+
+            new s3d_powerhouse(Cache, CacheContext, CacheStream);
+
+            new s3d_reactor(Cache, CacheContext, CacheStream);
+
+            new s3d_sky_bridgenew(Cache, CacheContext, CacheStream);
+
+            new s3d_turf(Cache, CacheContext, CacheStream);
+
+            new s3d_waterfall(Cache, CacheContext, CacheStream);
+
+            new salvation(Cache, CacheContext, CacheStream);
+
+            new sandbox(Cache, CacheContext, CacheStream);
+
+            new shrine(Cache, CacheContext, CacheStream);
+
+            new sidewinder(Cache, CacheContext, CacheStream);
+
+            new snowbound(Cache, CacheContext, CacheStream);
+
+            new spacecamp(Cache, CacheContext, CacheStream);
+
+            new warehouse(Cache, CacheContext, CacheStream);
+
+            new zanzibar(Cache, CacheContext, CacheStream);
         }
     }
 }

@@ -31,6 +31,7 @@ namespace TagTool.MtnDewIt.Porting
 	{
 		private GameCacheHaloOnline CacheContext { get; }
 		private GameCache BlamCache;
+        private Stream CacheStream;
 		private RenderGeometryConverter GeometryConverter { get; }
         private PortingProperties PortingProperties { get; set; }
 
@@ -45,10 +46,11 @@ namespace TagTool.MtnDewIt.Porting
 
 		private readonly Dictionary<Tag, CachedTag> DefaultTags = new Dictionary<Tag, CachedTag> { };
 
-        public PortingContext(GameCacheHaloOnline cacheContext, GameCache blamCache)
+        public PortingContext(GameCacheHaloOnline cacheContext, GameCache blamCache, Stream cacheStream)
         {
             CacheContext = cacheContext;
             BlamCache = blamCache;
+            CacheStream = cacheStream;
             GeometryConverter = new RenderGeometryConverter(cacheContext, blamCache);
             PortingProperties = new PortingProperties();
 
@@ -78,78 +80,74 @@ namespace TagTool.MtnDewIt.Porting
 
             var resourceStreams = new Dictionary<ResourceLocation, Stream>();
 
-            try
+            var cacheStream = FlagIsSet(PortingFlags.Memory) ? new MemoryStream() : CacheStream;
+
+            using (var blamCacheStream = BlamCache.OpenCacheRead())
             {
-                using (var cacheStream = FlagIsSet(PortingFlags.Memory) ? new MemoryStream() : (Stream)CacheContext.OpenCacheReadWrite())
-                using (var blamCacheStream = BlamCache.OpenCacheRead())
-                {
-                    if (FlagIsSet(PortingFlags.Memory))
-                        using (var cacheFileStream = CacheContext.OpenCacheRead())
-                            cacheFileStream.CopyTo(cacheStream);
+                if (FlagIsSet(PortingFlags.Memory))
+                    using (var cacheFileStream = CacheContext.OpenCacheRead())
+                        cacheFileStream.CopyTo(cacheStream);
 
                     var oldFlags = Flags;
 
-                    foreach (var blamTag in ParseLegacyTag(tag))
+                foreach (var blamTag in ParseLegacyTag(tag))
+                {
+                    if (blamTag == null)
+                        new TagToolError(CommandError.TagInvalid, tag);
+
+                    ConvertTag(cacheStream, blamCacheStream, resourceStreams, blamTag);
+                    Flags = oldFlags;
+
+                    if (FlagIsSet(PortingFlags.MPobject))
+                        TestForgePaletteCompatible(cacheStream, blamTag, ObjectParameters);
+                }
+
+                WaitForPendingSoundConversion();
+                ProcessDeferredActions();
+                if (BlamCache is GameCacheGen3 gen3Cache)
+                    gen3Cache.ResourceCacheGen3.ResourcePageCache.Clear();
+
+                if (FlagIsSet(PortingFlags.Memory))
+                    using (var cacheFileStream = CacheContext.OpenCacheReadWrite())
                     {
-                        if (blamTag == null)
-                            new TagToolError(CommandError.TagInvalid, tag);
+                        cacheFileStream.Seek(0, SeekOrigin.Begin);
+                        cacheFileStream.SetLength(cacheFileStream.Position);
+                    
+                        cacheStream.Seek(0, SeekOrigin.Begin);
+                        cacheStream.CopyTo(cacheFileStream);
+                    }
+            }
 
-                        ConvertTag(cacheStream, blamCacheStream, resourceStreams, blamTag);
-                        Flags = oldFlags;
+            if (initialStringIdCount != CacheContext.StringTable.Count)
+                CacheContext.SaveStrings();
 
-                        if (FlagIsSet(PortingFlags.MPobject))
-                            TestForgePaletteCompatible(cacheStream, blamTag, ObjectParameters);
+            CacheContext.SaveTagNames();
+
+            foreach (var entry in resourceStreams)
+            {
+                if (FlagIsSet(PortingFlags.Memory))
+                    using (var resourceFileStream = CacheContext.ResourceCaches.OpenCacheReadWrite(entry.Key))
+                    {
+                        resourceFileStream.Seek(0, SeekOrigin.Begin);
+                        resourceFileStream.SetLength(resourceFileStream.Position);
+
+                        entry.Value.Seek(0, SeekOrigin.Begin);
+                        entry.Value.CopyTo(resourceFileStream);
                     }
 
-                    WaitForPendingSoundConversion();
-                    ProcessDeferredActions();
-                    if (BlamCache is GameCacheGen3 gen3Cache)
-                        gen3Cache.ResourceCacheGen3.ResourcePageCache.Clear();
-
-                    if (FlagIsSet(PortingFlags.Memory))
-                        using (var cacheFileStream = CacheContext.OpenCacheReadWrite())
-                        {
-                            cacheFileStream.Seek(0, SeekOrigin.Begin);
-                            cacheFileStream.SetLength(cacheFileStream.Position);
-
-                            cacheStream.Seek(0, SeekOrigin.Begin);
-                            cacheStream.CopyTo(cacheFileStream);
-                        }
-                }
+                entry.Value.Close();
             }
-            finally
+
+            if (PortingProperties.LegacyShaderGenerator)
             {
-                if (initialStringIdCount != CacheContext.StringTable.Count)
-                    CacheContext.SaveStrings();
-
-                CacheContext.SaveTagNames();
-
-                foreach (var entry in resourceStreams)
-                {
-                    if (FlagIsSet(PortingFlags.Memory))
-                        using (var resourceFileStream = CacheContext.ResourceCaches.OpenCacheReadWrite(entry.Key))
-                        {
-                            resourceFileStream.Seek(0, SeekOrigin.Begin);
-                            resourceFileStream.SetLength(resourceFileStream.Position);
-
-                            entry.Value.Seek(0, SeekOrigin.Begin);
-                            entry.Value.CopyTo(resourceFileStream);
-                        }
-
-                    entry.Value.Close();
-                }
-
-                if (PortingProperties.LegacyShaderGenerator)
-                {
-                    LegacyMatcher.DeInit();
-                }
-                else 
-                {
-                    Matcher.DeInit();
-                }
+                LegacyMatcher.DeInit();
+            }
+            else
+            {
+                Matcher.DeInit();
             }
 
-			ProcessDeferredActions();
+            ProcessDeferredActions();
         }
 
         public void SetPortingProperties

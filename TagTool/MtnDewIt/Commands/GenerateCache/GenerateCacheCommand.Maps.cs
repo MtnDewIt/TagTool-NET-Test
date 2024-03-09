@@ -7,12 +7,9 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
     {
         public void UpdateMapFiles()
         {
-            using (var stream = Cache.OpenCacheReadWrite())
-            {
-                new mainmenu(Cache, CacheContext, stream);
+            new mainmenu(Cache, CacheContext, CacheStream);
 
-                new campaign(Cache, CacheContext, stream);
-            }
+            new campaign(Cache, CacheContext, CacheStream);
         }
     }
 }
