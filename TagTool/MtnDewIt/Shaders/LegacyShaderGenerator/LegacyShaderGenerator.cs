@@ -406,7 +406,7 @@ namespace TagTool.MtnDewIt.Shaders.LegacyShaderGenerator
         {
             if (mappings.Count > 0)
             {
-                table[usage] = new RenderMethodTemplate.TagBlockIndex
+                table[usage] = new TagBlockIndex
                 {
                     Offset = (ushort)rmt2.RoutingInfo.Count,
                     Count = (ushort)mappings.Count
@@ -489,16 +489,16 @@ namespace TagTool.MtnDewIt.Shaders.LegacyShaderGenerator
 
             rmt2.RoutingInfo = new List<RenderMethodTemplate.RoutingInfoBlock>();
             rmt2.Passes = new List<RenderMethodTemplate.PassBlock>();
-            rmt2.EntryPoints = new List<RenderMethodTemplate.TagBlockIndex>();
+            rmt2.EntryPoints = new List<TagBlockIndex>();
 
             foreach (ShaderStage mode in Enum.GetValues(typeof(ShaderStage)))
             {
-                var entryPoint = new RenderMethodTemplate.TagBlockIndex();
+                var entryPoint = new TagBlockIndex();
 
                 if (generator.IsEntryPointSupported(mode))
                 {
                     while (rmt2.EntryPoints.Count < (int)mode)
-                        rmt2.EntryPoints.Add(new RenderMethodTemplate.TagBlockIndex());
+                        rmt2.EntryPoints.Add(new TagBlockIndex());
 
                     entryPoint.Offset = (ushort)rmt2.Passes.Count();
                     entryPoint.Count = 1;
@@ -507,7 +507,7 @@ namespace TagTool.MtnDewIt.Shaders.LegacyShaderGenerator
                     var parameterTable = new RenderMethodTemplate.PassBlock();
 
                     for (int i = 0; i < parameterTable.Values.Length; i++)
-                        parameterTable.Values[i] = new RenderMethodTemplate.TagBlockIndex();
+                        parameterTable.Values[i] = new TagBlockIndex();
 
                     rmt2.Passes.Add(parameterTable);
 
