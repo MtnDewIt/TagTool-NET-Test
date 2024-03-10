@@ -23,37 +23,37 @@ namespace TagTool.Commands
 
         static void Main(string[] args)
         {
-			//allow dll resolution from Tools directory
-			AssemblyLoadContext.Default.Resolving += static (AssemblyLoadContext ctx, AssemblyName name) =>
-			{
-				foreach (var file in Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Tools")))
-				{
-					AssemblyName an;
-					try
-					{
-						an = AssemblyName.GetAssemblyName(file);
-					}
-					catch (ArgumentException)
-					{
-						//invalid assembly
-						continue;
-					}
-					catch (BadImageFormatException)
-					{
-						//not a managed assembly, or other invalid
-						continue;
-					}
-					catch (FileLoadException)
-					{
-						//invalid file miscellaneous
-						continue;
-					}
-					if (AssemblyName.ReferenceMatchesDefinition(name, an)) return ctx.LoadFromAssemblyPath(file);
-				}
-				return null;
-			};
+            //allow dll resolution from Tools directory
+            AssemblyLoadContext.Default.Resolving += static (AssemblyLoadContext ctx, AssemblyName name) =>
+            {
+                foreach (var file in Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Tools")))
+                {
+                    AssemblyName an;
+                    try
+                    {
+                        an = AssemblyName.GetAssemblyName(file);
+                    }
+                    catch (ArgumentException)
+                    {
+                        //invalid assembly
+                        continue;
+                    }
+                    catch (BadImageFormatException)
+                    {
+                        //not a managed assembly, or other invalid
+                        continue;
+                    }
+                    catch (FileLoadException)
+                    {
+                        //invalid file miscellaneous
+                        continue;
+                    }
+                    if (AssemblyName.ReferenceMatchesDefinition(name, an)) return ctx.LoadFromAssemblyPath(file);
+                }
+                return null;
+            };
 
-			SetDirectories();
+            SetDirectories();
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo("en-US");
             ConsoleHistory.Initialize();
 
@@ -106,7 +106,7 @@ namespace TagTool.Commands
             {
                 Console.WriteLine("\nEnter the path to a Halo cache file (.map/.dat):");
                 Console.Write("> ");
-				var tagCacheFile = Console.ReadLine();
+                var tagCacheFile = Console.ReadLine();
 
                 switch (tagCacheFile.ToLower())
                 {
