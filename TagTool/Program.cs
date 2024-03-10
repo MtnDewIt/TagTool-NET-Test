@@ -28,7 +28,26 @@ namespace TagTool.Commands
 			{
 				foreach (var file in Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Tools")))
 				{
-					var an = AssemblyName.GetAssemblyName(file);
+					AssemblyName an;
+					try
+					{
+						an = AssemblyName.GetAssemblyName(file);
+					}
+					catch (ArgumentException)
+					{
+						//invalid assembly
+						continue;
+					}
+					catch (BadImageFormatException)
+					{
+						//not a managed assembly, or other invalid
+						continue;
+					}
+					catch (FileLoadException)
+					{
+						//invalid file miscellaneous
+						continue;
+					}
 					if (AssemblyName.ReferenceMatchesDefinition(name, an)) return ctx.LoadFromAssemblyPath(file);
 				}
 				return null;
