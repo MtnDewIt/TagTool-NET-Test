@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using TagTool.Cache.Resources;
 using TagTool.Common;
 using TagTool.Tags;
@@ -9,9 +9,9 @@ using TagTool.Tags.Definitions;
 namespace TagTool.Cache.Gen3
 {
     public class TagDefinitionsGen3 : TagDefinitions
-	{
-		public ImmutableDictionary<TagGroup, Type> Gen3Types => Gen3Definitions.TagGroupToTypeLookup;
-		private static readonly CachedDefinitions Gen3Definitions = GetCachedDefinitions(new Dictionary<TagGroup, Type>
+    {
+        public FrozenDictionary<TagGroup, Type> Gen3Types => Gen3Definitions.TagGroupToTypeLookup;
+        private static readonly CachedDefinitions Gen3Definitions = GetCachedDefinitions(new Dictionary<TagGroup, Type>
         {
             { new TagGroupGen3("<fx>", "sound_effect_template"), typeof(SoundEffectTemplate) },
             { new TagGroupGen3("achi", "achievements"), typeof(Achievements) },
@@ -186,22 +186,22 @@ namespace TagTool.Cache.Gen3
             { new TagGroupGen3("wtuv", "gui_widget_texture_coordinate_animation_definition"), typeof(GuiWidgetTextureCoordinateAnimationDefinition) },
             { new TagGroupGen3("zone", "cache_file_resource_gestalt"), typeof(ResourceGestalt) }
         });
-		public TagDefinitionsGen3() : base(Gen3Definitions) { }
+        public TagDefinitionsGen3() : base(Gen3Definitions) { }
 
-		private static readonly ImmutableDictionary<string, Tag> NameToTagLookup = NameToTagLookupValue();
-		private static ImmutableDictionary<string, Tag> NameToTagLookupValue()
-		{
-			var result = ImmutableDictionary.CreateBuilder<string, Tag>();
-			foreach (var (key, _) in Gen3Definitions.TagGroupToTypeLookup)
-			{
-				result.Add(((TagGroupGen3)key).Name, key.Tag);
-			}
-			return result.ToImmutable();
-		}
+        private static readonly FrozenDictionary<string, Tag> NameToTagLookup = NameToTagLookupValue();
+        private static FrozenDictionary<string, Tag> NameToTagLookupValue()
+        {
+            var result = new Dictionary<string, Tag>();
+            foreach (var (key, _) in Gen3Definitions.TagGroupToTypeLookup)
+            {
+                result.Add(((TagGroupGen3)key).Name, key.Tag);
+            }
+            return result.ToFrozenDictionary();
+        }
 
-		public bool TryGetTagFromName(string name, out Tag tag)
-		{
-			return NameToTagLookup.TryGetValue(name, out tag);
-		}
-	}
+        public bool TryGetTagFromName(string name, out Tag tag)
+        {
+            return NameToTagLookup.TryGetValue(name, out tag);
+        }
+    }
 }

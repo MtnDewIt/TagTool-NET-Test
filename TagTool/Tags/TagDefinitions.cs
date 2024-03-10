@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
+using System.Collections.Frozen;
 using TagTool.Common;
 
 namespace TagTool.Tags
@@ -9,9 +9,9 @@ namespace TagTool.Tags
     {
         protected static CachedDefinitions GetCachedDefinitions(Dictionary<TagGroup, Type> dict)
 		{
-			ImmutableDictionary<Tag, Type>.Builder TagToTypeLookup = ImmutableDictionary.CreateBuilder<Tag, Type>();
-			ImmutableDictionary<Type, TagGroup>.Builder TypeToTagGroupLookup = ImmutableDictionary.CreateBuilder<Type, TagGroup>();
-			ImmutableDictionary<Tag, TagGroup>.Builder TagToTagGroupLookup = ImmutableDictionary.CreateBuilder<Tag, TagGroup>();
+			Dictionary<Tag, Type> TagToTypeLookup = [];
+			Dictionary<Type, TagGroup> TypeToTagGroupLookup = [];
+			Dictionary<Tag, TagGroup> TagToTagGroupLookup = [];
 
 			foreach (var (key, value) in dict)
 			{
@@ -21,10 +21,10 @@ namespace TagTool.Tags
 			}
 
 			CachedDefinitions definitions;
-			definitions.TagGroupToTypeLookup = dict.ToImmutableDictionary();
-			definitions.TagToTypeLookup = TagToTypeLookup.ToImmutable();
-			definitions.TypeToTagGroupLookup = TypeToTagGroupLookup.ToImmutable();
-			definitions.TagToTagGroupLookup = TagToTagGroupLookup.ToImmutable();
+			definitions.TagGroupToTypeLookup = dict.ToFrozenDictionary();
+			definitions.TagToTypeLookup = TagToTypeLookup.ToFrozenDictionary();
+			definitions.TypeToTagGroupLookup = TypeToTagGroupLookup.ToFrozenDictionary();
+			definitions.TagToTagGroupLookup = TagToTagGroupLookup.ToFrozenDictionary();
 			return definitions;
 		}
 
@@ -38,13 +38,13 @@ namespace TagTool.Tags
 		protected struct CachedDefinitions
 		{
 			public bool IsNull => TagGroupToTypeLookup == null;
-			public ImmutableDictionary<TagGroup, Type> TagGroupToTypeLookup;
-			public ImmutableDictionary<Tag, Type> TagToTypeLookup;
-			public ImmutableDictionary<Type, TagGroup> TypeToTagGroupLookup;
-			public ImmutableDictionary<Tag, TagGroup> TagToTagGroupLookup;
+			public FrozenDictionary<TagGroup, Type> TagGroupToTypeLookup;
+			public FrozenDictionary<Tag, Type> TagToTypeLookup;
+			public FrozenDictionary<Type, TagGroup> TypeToTagGroupLookup;
+			public FrozenDictionary<Tag, TagGroup> TagToTagGroupLookup;
 		}
 
-		public ImmutableDictionary<TagGroup, Type> Types => definitions.TagGroupToTypeLookup;
+		public FrozenDictionary<TagGroup, Type> Types => definitions.TagGroupToTypeLookup;
 
 		public bool TagDefinitionExists(TagGroup group)
         {

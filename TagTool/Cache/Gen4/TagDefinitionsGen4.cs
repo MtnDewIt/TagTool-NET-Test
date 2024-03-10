@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using TagTool.Cache.Gen3;
 using TagTool.Common;
 using TagTool.Tags;
@@ -9,9 +9,9 @@ using TagTool.Tags.Definitions.Gen4;
 namespace TagTool.Cache.Gen4
 {
     public class TagDefinitionsGen4 : TagDefinitions
-	{
-		public ImmutableDictionary<TagGroup, Type> Gen4Types => Gen4Definitions.TagGroupToTypeLookup;
-		private static readonly CachedDefinitions Gen4Definitions = GetCachedDefinitions(new Dictionary<TagGroup, Type>()
+    {
+        public FrozenDictionary<TagGroup, Type> Gen4Types => Gen4Definitions.TagGroupToTypeLookup;
+        private static readonly CachedDefinitions Gen4Definitions = GetCachedDefinitions(new Dictionary<TagGroup, Type>()
         {
             { new TagGroupGen4("hlmt", "model"), typeof(Model) },
             { new TagGroupGen4("mode", "render_model"), typeof(RenderModel) },
@@ -276,22 +276,22 @@ namespace TagTool.Cache.Gen4
             { new TagGroupGen4("sigd", "SuppressedIncident"), typeof(SuppressedIncident) },
             { new TagGroupGen4("narg", "NarrativeGlobals"), typeof(NarrativeGlobals) }
         });
-		public TagDefinitionsGen4() : base(Gen4Definitions) { }
+        public TagDefinitionsGen4() : base(Gen4Definitions) { }
 
-		private static readonly ImmutableDictionary<string, Tag> NameToTagLookup = NameToTagLookupValue();
-		private static ImmutableDictionary<string, Tag> NameToTagLookupValue()
-		{
-			var result = ImmutableDictionary.CreateBuilder<string, Tag>();
-			foreach (var (key, _) in Gen4Definitions.TagGroupToTypeLookup)
-			{
-				result.Add(((TagGroupGen4)key).Name, key.Tag);
-			}
-			return result.ToImmutable();
-		}
+        private static readonly FrozenDictionary<string, Tag> NameToTagLookup = NameToTagLookupValue();
+        private static FrozenDictionary<string, Tag> NameToTagLookupValue()
+        {
+            var result = new Dictionary<string, Tag>();
+            foreach (var (key, _) in Gen4Definitions.TagGroupToTypeLookup)
+            {
+                result.Add(((TagGroupGen4)key).Name, key.Tag);
+            }
+            return result.ToFrozenDictionary();
+        }
 
-		public bool TryGetTagFromName(string name, out Tag tag)
-		{
-			return NameToTagLookup.TryGetValue(name, out tag);
-		}
-	}
+        public bool TryGetTagFromName(string name, out Tag tag)
+        {
+            return NameToTagLookup.TryGetValue(name, out tag);
+        }
+    }
 }

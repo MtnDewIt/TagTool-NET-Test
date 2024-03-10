@@ -6,12 +6,12 @@
     <RootNamespace>TagTool</RootNamespace>
     <AssemblyName>TagTool</AssemblyName>
     <ApplicationIcon>TagTool.ico</ApplicationIcon>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>$(NoWarn),CS0169,CS0414,CS0649,CS1591</NoWarn>
-    <LangVersion>11</LangVersion>
+    <LangVersion>12</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
     <Platforms>x86;x64</Platforms>
@@ -75,7 +75,6 @@
     <PackageReference Include="PluralizeService.Core" Version="1.2.21147.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Poly2Tri.NetStandard" Version="1.0.2" />
-    <PackageReference Include="System.Collections.Immutable" Version="8.0.0-rc.2.23479.6" /> <!--Todo: move to release version-->
   </ItemGroup>
   <ItemDefinitionGroup>
     <ReferenceCopyLocalPaths>

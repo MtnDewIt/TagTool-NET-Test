@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,9 +12,9 @@ using TagTool.Tags.Definitions.Gen2;
 namespace TagTool.Cache.Gen2
 {
     public class TagDefinitionsGen2 : TagDefinitions
-	{
-		public ImmutableDictionary<TagGroup, Type> Gen2Types => Gen2Definitions.TagGroupToTypeLookup;
-		private static readonly CachedDefinitions Gen2Definitions = GetCachedDefinitions(new Dictionary<TagGroup, Type>
+    {
+        public FrozenDictionary<TagGroup, Type> Gen2Types => Gen2Definitions.TagGroupToTypeLookup;
+        private static readonly CachedDefinitions Gen2Definitions = GetCachedDefinitions(new Dictionary<TagGroup, Type>
         {
             { new TagGroupGen2("mode"), typeof(RenderModel) },
             { new TagGroupGen2("scnr"), typeof(Scenario) },
@@ -137,6 +137,6 @@ namespace TagTool.Cache.Gen2
             { new TagGroupGen2("wind"), typeof(Wind) },
             { new TagGroupGen2("wphi"), typeof(WeaponHudInterface) },
         });
-		public TagDefinitionsGen2() : base(Gen2Definitions) { }
-	}
+        public TagDefinitionsGen2() : base(Gen2Definitions) { }
+    }
 }
