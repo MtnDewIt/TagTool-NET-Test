@@ -332,7 +332,7 @@ namespace TagTool.MtnDewIt.Shaders.LegacyShaderMatching
             {
                 rmt2 = LegacyShaderGenerator.LegacyShaderGenerator.GenerateRenderMethodTemplate(BaseCache, BaseCacheStream, rmdf, glps, glvs, generator, tagName, out pixl, out vtsh);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Console.WriteLine($"Generation failed, finding best substitute");
                 return false;

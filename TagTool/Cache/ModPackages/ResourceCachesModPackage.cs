@@ -114,7 +114,7 @@ namespace TagTool.Cache.ModPackages
             dataStream.ReadAll(data, 0, dataSize);
 
             string hash;
-            using (SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider())
+            using (SHA1 sha1 = SHA1.Create())
             {
                 hash = Convert.ToBase64String(sha1.ComputeHash(data));
             }

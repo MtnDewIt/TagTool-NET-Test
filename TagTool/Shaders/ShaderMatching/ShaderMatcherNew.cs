@@ -332,7 +332,7 @@ namespace TagTool.Shaders.ShaderMatching
             {
                 rmt2 = ShaderGenerator.ShaderGeneratorNew.GenerateTemplateSafe(BaseCache, BaseCacheStream, rmdf, tagName, out pixl, out vtsh);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Console.WriteLine($"Generation failed, finding best substitute");
                 return false;

@@ -341,13 +341,11 @@ namespace TagTool.IO
                 iv[i] = (byte)(xor[i] ^ 0x3C);
             }
 
-            var aes = new AesManaged()
-            {
-                Mode = CipherMode.CBC,
-                Key = xor,
-                IV = iv,
-                Padding = PaddingMode.Zeros
-            };
+            var aes = Aes.Create();
+            aes.Mode = CipherMode.CBC;
+            aes.Key = xor;
+            aes.IV = iv;
+            aes.Padding = PaddingMode.Zeros;
 
             return new MemoryStream(aes.CreateDecryptor(aes.Key, aes.IV).TransformFinalBlock(data, 0, data.Length));
         }

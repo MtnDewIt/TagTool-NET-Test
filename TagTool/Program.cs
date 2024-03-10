@@ -29,7 +29,7 @@ namespace TagTool.Commands
 				foreach (var file in Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Tools")))
 				{
 					var an = AssemblyName.GetAssemblyName(file);
-					if (AssemblyName.ReferenceMatchesDefinition(name, an)) return Assembly.Load(file);
+					if (AssemblyName.ReferenceMatchesDefinition(name, an)) return ctx.LoadFromAssemblyPath(file);
 				}
 				return null;
 			};

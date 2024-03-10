@@ -279,7 +279,7 @@ namespace TagTool.Cache
                 //
 
                 packageStream.Position = typeof(ModPackageHeader).GetSize();
-                Header.SHA1 = new SHA1Managed().ComputeHash(packageStream);
+                Header.SHA1 = SHA1.Create().ComputeHash(packageStream);
 
                 //
                 // Sign the package using the ED profile keys
