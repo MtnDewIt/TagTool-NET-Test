@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{42814DEE-5A94-4901-BDA9-28AFD2D4F5AC}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="..\Tools\JsonMoppNet.dll" />
+    <Reference Include="..\Tools\MIConvexHull.dll" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
@@ -72,6 +73,7 @@
     <PackageReference Include="lz4net" Version="1.0.15.93" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.6.0" />
     <PackageReference Include="PluralizeService.Core" Version="1.2.21147.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Poly2Tri.NetStandard" Version="1.0.2" />
     <PackageReference Include="System.Collections.Immutable" Version="8.0.0-rc.2.23479.6" /> <!--Todo: move to release version-->
   </ItemGroup>

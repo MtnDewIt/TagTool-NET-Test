@@ -21,6 +21,7 @@ using TagTool.Cache.Monolithic;
 using TagTool.MtnDewIt.Commands;
 using TagTool.MtnDewIt.Commands.ConvertCache;
 using TagTool.MtnDewIt.Commands.GenerateCache;
+using TagTool.MtnDewIt.Commands.GenerateEnhancedCache;
 
 namespace TagTool.Commands.Tags
 {
@@ -68,6 +69,9 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new FindValueCommand(cache, null));
             context.AddCommand(new TagDependencyCommand(cache));
             context.AddCommand(new GuessTagDefCommand(cache));
+            context.AddCommand(new GenerateTagObjectCommand(cache));
+            context.AddCommand(new GenerateMapObjectCommand(cache));
+            context.AddCommand(new ConvertVariantCommand(cache));
 
             // Halo Online Specific Commands
             if (cache is GameCacheHaloOnlineBase)
@@ -89,7 +93,7 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new GenerateShaderCommand(hoCache));
                 context.AddCommand(new RecompileShadersCommand(hoCache));
                 context.AddCommand(new GenerateRenderMethodCommand(hoCache));
-                context.AddCommand(new GenerateRmdfCommand(hoCache));
+                //context.AddCommand(new GenerateRmdfCommand(hoCache));
                 context.AddCommand(new GenerateBitmapCommand(hoCache));
                 context.AddCommand(new SwitchObjectTypeCommand(hoCache));
 
@@ -121,8 +125,9 @@ namespace TagTool.Commands.Tags
             if(cache is GameCacheHaloOnline)
             {
                 var hoCache = cache as GameCacheHaloOnline;
-                context.AddCommand(new GenerateCacheCommand(cache, hoCache, contextStack));
                 context.AddCommand(new ConvertCacheCommand(cache, hoCache, contextStack));
+                context.AddCommand(new GenerateCacheCommand(cache, hoCache, contextStack));
+                context.AddCommand(new GenerateEnhancedCacheCommand(cache, hoCache, contextStack));
                 context.AddCommand(new DebugTestCommand(cache, hoCache, contextStack));
                 context.AddCommand(new UpdateEDTagsCommand(hoCache));
                 context.AddCommand(new UpdateHOTagsCommand(hoCache));

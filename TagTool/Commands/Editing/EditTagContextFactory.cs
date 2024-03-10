@@ -113,6 +113,8 @@ namespace TagTool.Commands.Editing
                     case "rmw ": // shader_water
                     case "rmzo": // shader_zonly
                     case "rmcs": // shader_custom
+                    case "rmct": // shader_cortana
+                    case "rmgl": // shader_glass
                         RenderMethodContextFactory.Populate(commandContext, cache, tag, (RenderMethod)definition);
                         break;
 
@@ -168,6 +170,9 @@ namespace TagTool.Commands.Editing
                         break;
                     case "jmad":
                         CommandsGen2.ModelAnimationGraphs.AnimationContextFactory.Populate(commandContext, cache, tag, (DefinitionsGen2.ModelAnimationGraph)definition);
+                        break;
+                    case "bitm":
+                        CommandsGen2.Bitmaps.BitmapContextFactory.Populate(commandContext, cache, tag, (DefinitionsGen2.Bitmap)definition);
                         break;
                 }
             }

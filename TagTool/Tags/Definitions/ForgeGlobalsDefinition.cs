@@ -5,7 +5,9 @@ using TagTool.Common;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "forge_globals_definition", Tag = "forg", Size = 0xE0)]
+    [TagStructure(Name = "forge_globals_definition", Tag = "forg", Size = 0x90, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
+    [TagStructure(Name = "forge_globals_definition", Tag = "forg", Size = 0xE0)] // Remove for release
+    //[TagStructure(Name = "forge_globals_definition", Tag = "forg", Size = 0xF0)] // Uncomment for release
     public class ForgeGlobalsDefinition : TagStructure
     {
         [TagField(ValidTags = new[] { "rm  " })]
@@ -15,11 +17,18 @@ namespace TagTool.Tags.Definitions
         public CachedTag DefaultRenderMethod;
 
         public List<ReForgeMaterial> ReForgeMaterials;
+
+        [TagField(MaxVersion = CacheVersion.HaloOnlineED)]
         public List<ReForgeMaterialType> ReForgeMaterialTypes;
+
+        [TagField(MaxVersion = CacheVersion.HaloOnlineED)]
         public List<TagReferenceBlock> ReForgeObjects;
 
         [TagField(ValidTags = new[] { "obje" })]
         public CachedTag PrematchCameraObject;
+
+        //[TagField(ValidTags = new[] { "obje" })] // Uncomment for release
+        //public CachedTag PostmatchObject;
 
         [TagField(ValidTags = new[] { "obje" })]
         public CachedTag ModifierObject;
@@ -30,16 +39,20 @@ namespace TagTool.Tags.Definitions
         [TagField(ValidTags = new[] { "obje" })]
         public CachedTag GarbageVolumeObject;
 
+        [TagField(MaxVersion = CacheVersion.HaloOnlineED)]
         public List<Description> Descriptions;
+
+        [TagField(MaxVersion = CacheVersion.HaloOnlineED)]
         public List<PaletteCategory> PaletteCategories;
+
         public List<PaletteItem> Palette;
         public List<WeatherEffect> WeatherEffects;
         public List<Sky> Skies;
 
-        [TagField(ValidTags = new[] { "obje" })]
+        [TagField(ValidTags = new[] { "obje" }, MaxVersion = CacheVersion.HaloOnlineED)]
         public CachedTag FxObject;
 
-        [TagField(ValidTags = new[] { "obje" })]
+        [TagField(ValidTags = new[] { "obje" }, MaxVersion = CacheVersion.HaloOnlineED)]
         public CachedTag FxLight;
 
         [TagStructure(Size = 0x30)]
@@ -102,6 +115,7 @@ namespace TagTool.Tags.Definitions
             public short ParentCategoryIndex;
         }
 
+        [TagStructure(Size = 0x40, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
         [TagStructure(Size = 0x44)]
         public class PaletteItem : TagStructure
         {
@@ -109,8 +123,13 @@ namespace TagTool.Tags.Definitions
             public string Name;
 
             public PaletteItemType Type;
+
+            [TagField(MaxVersion = CacheVersion.HaloOnlineED)]
             public short CategoryIndex;
+
+            [TagField(MaxVersion = CacheVersion.HaloOnlineED)]
             public short DescriptionIndex;
+
             public ushort MaxAllowed;
 
             [TagField(ValidTags = new[] { "obje" })]
@@ -217,6 +236,13 @@ namespace TagTool.Tags.Definitions
                 Real
             }
 
+            public enum SetterTypeED : short
+            {
+                Boolean,
+                Integer,
+                Real
+            }
+
             [Flags]
             public enum SetterFlags : byte
             {
@@ -224,12 +250,27 @@ namespace TagTool.Tags.Definitions
                 Hidden = 1 << 0
             }
 
+            [TagStructure(Size = 0x2C, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
             [TagStructure(Size = 0xC)]
             public class Setter : TagStructure
             {
+                [TagField(Length = 32, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
+                public string TargetED;
+
+                [TagField(MaxVersion = CacheVersion.HaloOnlineED)]
                 public SetterTarget Target;
+
+                [TagField(MaxVersion = CacheVersion.HaloOnlineED)]
                 public SetterType Type;
+
+                [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
+                public SetterTypeED TypeED;
+
                 public SetterFlags Flags;
+
+                [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
+                public bool BooleanValue;
+
                 public int IntegerValue;
                 public float RealValue;
             }

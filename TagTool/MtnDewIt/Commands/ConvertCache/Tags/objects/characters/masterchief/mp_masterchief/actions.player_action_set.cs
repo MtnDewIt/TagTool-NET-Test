@@ -55,9 +55,9 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new PlayerActionSet.Action
                 {
-                    Title = "twerk",
+                    Title = "Fresh",
                     IconName = "temp",
-                    AnimationEnter = CacheContext.StringTable.GetStringId($@"twerk"),
+                    AnimationEnter = CacheContext.StringTable.GetStringId($@"fresh"),
                     Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
                     OverrideCamera = new List<Unit.UnitCameraBlock>
                     {
@@ -76,9 +76,9 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new PlayerActionSet.Action
                 {
-                    Title = "dance1test",
+                    Title = "Orange Justice",
                     IconName = "temp",
-                    AnimationEnter = CacheContext.StringTable.GetStringId($@"dance1test"),
+                    AnimationEnter = CacheContext.StringTable.GetStringId($@"orange_justice"),
                     Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
                     OverrideCamera = new List<Unit.UnitCameraBlock>
                     {
@@ -97,135 +97,9 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new PlayerActionSet.Action
                 {
-                    Title = "dance1",
+                    Title = "Electro Swing",
                     IconName = "temp",
-                    AnimationEnter = CacheContext.StringTable.GetStringId($@"dance1"),
-                    Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
-                    OverrideCamera = new List<Unit.UnitCameraBlock>
-                    {
-                        new Unit.UnitCameraBlock
-                        {
-                            PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
-                            CameraTracks = new List<Unit.UnitCameraTrack>
-                            {
-                                new Unit.UnitCameraTrack
-                                {
-                                    Track = GetCachedTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
-                                },
-                            },
-                        },
-                    },
-                },
-                new PlayerActionSet.Action
-                {
-                    Title = "mixamo",
-                    IconName = "temp",
-                    AnimationEnter = CacheContext.StringTable.GetStringId($@"mixamo"),
-                    Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
-                    OverrideCamera = new List<Unit.UnitCameraBlock>
-                    {
-                        new Unit.UnitCameraBlock
-                        {
-                            PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
-                            CameraTracks = new List<Unit.UnitCameraTrack>
-                            {
-                                new Unit.UnitCameraTrack
-                                {
-                                    Track = GetCachedTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
-                                },
-                            },
-                        },
-                    },
-                },
-                new PlayerActionSet.Action
-                {
-                    Title = "fingerlay",
-                    IconName = "temp",
-                    AnimationEnter = CacheContext.StringTable.GetStringId($@"fingerlay"),
-                    Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
-                    OverrideCamera = new List<Unit.UnitCameraBlock>
-                    {
-                        new Unit.UnitCameraBlock
-                        {
-                            PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
-                            CameraTracks = new List<Unit.UnitCameraTrack>
-                            {
-                                new Unit.UnitCameraTrack
-                                {
-                                    Track = GetCachedTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
-                                },
-                            },
-                        },
-                    },
-                },
-                new PlayerActionSet.Action
-                {
-                    Title = "fingerstand",
-                    IconName = "temp",
-                    AnimationEnter = CacheContext.StringTable.GetStringId($@"fingerstand"),
-                    Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
-                    OverrideCamera = new List<Unit.UnitCameraBlock>
-                    {
-                        new Unit.UnitCameraBlock
-                        {
-                            PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
-                            CameraTracks = new List<Unit.UnitCameraTrack>
-                            {
-                                new Unit.UnitCameraTrack
-                                {
-                                    Track = GetCachedTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
-                                },
-                            },
-                        },
-                    },
-                },
-                new PlayerActionSet.Action
-                {
-                    Title = "breakdance",
-                    IconName = "temp",
-                    AnimationEnter = CacheContext.StringTable.GetStringId($@"breakdance"),
-                    Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
-                    OverrideCamera = new List<Unit.UnitCameraBlock>
-                    {
-                        new Unit.UnitCameraBlock
-                        {
-                            PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
-                            CameraTracks = new List<Unit.UnitCameraTrack>
-                            {
-                                new Unit.UnitCameraTrack
-                                {
-                                    Track = GetCachedTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
-                                },
-                            },
-                        },
-                    },
-                },
-                new PlayerActionSet.Action
-                {
-                    Title = "hiphop",
-                    IconName = "temp",
-                    AnimationEnter = CacheContext.StringTable.GetStringId($@"hiphop"),
-                    Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
-                    OverrideCamera = new List<Unit.UnitCameraBlock>
-                    {
-                        new Unit.UnitCameraBlock
-                        {
-                            PitchRange = new Bounds<Angle>(Angle.FromDegrees(-85f), Angle.FromDegrees(10f)),
-                            CameraTracks = new List<Unit.UnitCameraTrack>
-                            {
-                                new Unit.UnitCameraTrack
-                                {
-                                    Track = GetCachedTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera"),
-                                },
-                            },
-                        },
-                    },
-                },
-                new PlayerActionSet.Action
-                {
-                    Title = "ballskick",
-                    IconName = "temp",
-                    AnimationEnter = CacheContext.StringTable.GetStringId($@"ballskick"),
+                    AnimationEnter = CacheContext.StringTable.GetStringId($@"electro_swing"),
                     Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
                     OverrideCamera = new List<Unit.UnitCameraBlock>
                     {

@@ -5,16 +5,59 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using HaloShaderGenerator;
-using HaloShaderGenerator.Generator;
+using HaloShaderGenerator.LegacyGenerator;
+using HaloShaderGenerator.LegacyGenerator.Generator;
 using HaloShaderGenerator.Globals;
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Shaders;
+using TagTool.Shaders.ShaderFunctions;
 using TagTool.Tags.Definitions;
+using static TagTool.Shaders.ShaderFunctions.ShaderFunctionHelper;
+using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock;
 
-namespace TagTool.MtnDewIt.Shaders.ShaderGenerator 
+namespace TagTool.MtnDewIt.Shaders.LegacyShaderGenerator
 {
+    struct SDependentRenderMethodData
+    {
+        public CachedTag Tag;
+        public object Definition;
+        public AnimatedParameter[] AnimatedParameters;
+        public List<string> OrderedRealParameters;
+        public List<string> OrderedIntParameters;
+        public List<string> OrderedBoolParameters;
+        public List<string> OrderedTextures;
+        public int EffectIndex;
+
+        public static void AddDependant(List<SDependentRenderMethodData> dependentRenderMethods, GameCache cache, CachedTag dependent, RenderMethod renderMethod, RenderMethodTemplate origRmt2, int effectIndex = -1)
+        {
+            var animatedParams = GetAnimatedParameters(cache, renderMethod, origRmt2);
+
+            SDependentRenderMethodData dpData = new SDependentRenderMethodData
+            {
+                Tag = dependent,
+                Definition = renderMethod,
+                AnimatedParameters = animatedParams.ToArray(),
+                OrderedRealParameters = new List<string>(),
+                OrderedIntParameters = new List<string>(),
+                OrderedBoolParameters = new List<string>(),
+                OrderedTextures = new List<string>(),
+                EffectIndex = effectIndex,
+            };
+
+            foreach (var realP in origRmt2.RealParameterNames)
+                dpData.OrderedRealParameters.Add(cache.StringTable.GetString(realP.Name));
+            foreach (var intP in origRmt2.IntegerParameterNames)
+                dpData.OrderedIntParameters.Add(cache.StringTable.GetString(intP.Name));
+            foreach (var boolP in origRmt2.BooleanParameterNames)
+                dpData.OrderedBoolParameters.Add(cache.StringTable.GetString(boolP.Name));
+            foreach (var textureP in origRmt2.TextureParameterNames)
+                dpData.OrderedTextures.Add(cache.StringTable.GetString(textureP.Name));
+
+            dependentRenderMethods.Add(dpData);
+        }
+    }
+
     public class LegacyShaderGenerator 
     {
         private static StringId AddString(GameCache cache, string str)
@@ -30,7 +73,7 @@ namespace TagTool.MtnDewIt.Shaders.ShaderGenerator
             return stringId;
         }
 
-        private static List<TagTool.Shaders.ShaderParameter> GenerateShaderParametersFromGenerator(GameCache cache, ShaderGeneratorResult result)
+        private static List<TagTool.Shaders.ShaderParameter> GenerateShaderParametersFromGenerator(GameCache cache, LegacyShaderGeneratorResult result)
         {
             var parameters = new List<TagTool.Shaders.ShaderParameter>();
             foreach (var register in result.Registers)
@@ -43,16 +86,16 @@ namespace TagTool.MtnDewIt.Shaders.ShaderGenerator
 
                 switch (register.registerType)
                 {
-                    case ShaderGeneratorResult.ShaderRegister.RegisterType.Boolean:
+                    case LegacyShaderGeneratorResult.ShaderRegister.RegisterType.Boolean:
                         shaderParameter.RegisterType = TagTool.Shaders.ShaderParameter.RType.Boolean;
                         break;
-                    case ShaderGeneratorResult.ShaderRegister.RegisterType.Integer:
+                    case LegacyShaderGeneratorResult.ShaderRegister.RegisterType.Integer:
                         shaderParameter.RegisterType = TagTool.Shaders.ShaderParameter.RType.Integer;
                         break;
-                    case ShaderGeneratorResult.ShaderRegister.RegisterType.Sampler:
+                    case LegacyShaderGeneratorResult.ShaderRegister.RegisterType.Sampler:
                         shaderParameter.RegisterType = TagTool.Shaders.ShaderParameter.RType.Sampler;
                         break;
-                    case ShaderGeneratorResult.ShaderRegister.RegisterType.Vector:
+                    case LegacyShaderGeneratorResult.ShaderRegister.RegisterType.Vector:
                         shaderParameter.RegisterType = TagTool.Shaders.ShaderParameter.RType.Vector;
                         break;
                     default:
@@ -66,7 +109,7 @@ namespace TagTool.MtnDewIt.Shaders.ShaderGenerator
             return parameters;
         }
 
-        public static PixelShaderBlock GeneratePixelShaderBlock(GameCache cache, ShaderGeneratorResult result)
+        public static PixelShaderBlock GeneratePixelShaderBlock(GameCache cache, LegacyShaderGeneratorResult result)
         {
             if (result == null)
                 return null;
@@ -83,7 +126,7 @@ namespace TagTool.MtnDewIt.Shaders.ShaderGenerator
             return pixelShaderBlock;
         }
 
-        public static VertexShaderBlock GenerateVertexShaderBlock(GameCache cache, ShaderGeneratorResult result)
+        public static VertexShaderBlock GenerateVertexShaderBlock(GameCache cache, LegacyShaderGeneratorResult result)
         {
             if (result == null)
                 return null;
@@ -370,7 +413,7 @@ namespace TagTool.MtnDewIt.Shaders.ShaderGenerator
         {
             if (mappings.Count > 0)
             {
-                table[usage] = new RenderMethodTemplate.TagBlockIndex
+                table[usage] = new TagBlockIndex
                 {
                     Offset = (ushort)rmt2.RoutingInfo.Count,
                     Count = (ushort)mappings.Count
@@ -453,16 +496,16 @@ namespace TagTool.MtnDewIt.Shaders.ShaderGenerator
 
             rmt2.RoutingInfo = new List<RenderMethodTemplate.RoutingInfoBlock>();
             rmt2.Passes = new List<RenderMethodTemplate.PassBlock>();
-            rmt2.EntryPoints = new List<RenderMethodTemplate.TagBlockIndex>();
+            rmt2.EntryPoints = new List<TagBlockIndex>();
 
             foreach (ShaderStage mode in Enum.GetValues(typeof(ShaderStage)))
             {
-                var entryPoint = new RenderMethodTemplate.TagBlockIndex();
+                var entryPoint = new TagBlockIndex();
 
                 if (generator.IsEntryPointSupported(mode))
                 {
                     while (rmt2.EntryPoints.Count < (int)mode)
-                        rmt2.EntryPoints.Add(new RenderMethodTemplate.TagBlockIndex());
+                        rmt2.EntryPoints.Add(new TagBlockIndex());
 
                     entryPoint.Offset = (ushort)rmt2.Passes.Count();
                     entryPoint.Count = 1;
@@ -471,7 +514,7 @@ namespace TagTool.MtnDewIt.Shaders.ShaderGenerator
                     var parameterTable = new RenderMethodTemplate.PassBlock();
 
                     for (int i = 0; i < parameterTable.Values.Length; i++)
-                        parameterTable.Values[i] = new RenderMethodTemplate.TagBlockIndex();
+                        parameterTable.Values[i] = new TagBlockIndex();
 
                     rmt2.Passes.Add(parameterTable);
 
@@ -624,26 +667,313 @@ namespace TagTool.MtnDewIt.Shaders.ShaderGenerator
             return rmt2;
         }
 
+        public static void GenerateShaderTemplate(GameCache cache, Stream stream, string shaderType, byte[] options, RenderMethodDefinition rmdf)
+        {
+            string rmt2Name = $"shaders\\{shaderType}_templates\\_{string.Join("_", options)}";
+
+            // Collect dependent render methods, store arguments
+
+            List<SDependentRenderMethodData> dependentRenderMethods = new List<SDependentRenderMethodData>();
+
+            if (cache.TagCache.TryGetTag(rmt2Name + ".rmt2", out var rmt2Tag))
+            {
+                var origRmt2 = cache.Deserialize<RenderMethodTemplate>(stream, rmt2Tag);
+                var dependents = (cache as GameCacheHaloOnlineBase).TagCacheGenHO.NonNull().Where(t => ((Cache.HaloOnline.CachedTagHaloOnline)t).Dependencies.Contains(rmt2Tag.Index));
+
+                foreach (var dependent in dependents)
+                {
+                    object definition = null;
+
+                    if (dependent.IsInGroup("rm  "))
+                    {
+                        definition = cache.Deserialize(stream, dependent);
+                    }
+                    else
+                    {
+                        switch (dependent.Group.Tag.ToString())
+                        {
+                            case "prt3":
+                                var prt3 = cache.Deserialize<Particle>(stream, dependent);
+                                definition = prt3.RenderMethod;
+                                break;
+                            case "decs":
+                                var decs = cache.Deserialize<DecalSystem>(stream, dependent);
+                                for (int i = 0; i < decs.Decal.Count; i++)
+                                    if (decs.Decal[i].RenderMethod.ShaderProperties[0].Template.Name == rmt2Name)
+                                        SDependentRenderMethodData.AddDependant(dependentRenderMethods, cache, dependent, decs.Decal[i].RenderMethod, origRmt2, i);
+                                continue;
+                            case "beam":
+                                var beam = cache.Deserialize<BeamSystem>(stream, dependent);
+                                for (int i = 0; i < beam.Beams.Count; i++)
+                                    if (beam.Beams[i].RenderMethod.ShaderProperties[0].Template.Name == rmt2Name)
+                                        SDependentRenderMethodData.AddDependant(dependentRenderMethods, cache, dependent, beam.Beams[i].RenderMethod, origRmt2, i);
+                                continue;
+                            case "ltvl":
+                                var ltvl = cache.Deserialize<LightVolumeSystem>(stream, dependent);
+                                for (int i = 0; i < ltvl.LightVolumes.Count; i++)
+                                    if (ltvl.LightVolumes[i].RenderMethod.ShaderProperties[0].Template.Name == rmt2Name)
+                                        SDependentRenderMethodData.AddDependant(dependentRenderMethods, cache, dependent, ltvl.LightVolumes[i].RenderMethod, origRmt2, i);
+                                continue;
+                            case "cntl":
+                                var cntl = cache.Deserialize<ContrailSystem>(stream, dependent);
+                                for (int i = 0; i < cntl.Contrails.Count; i++)
+                                    if (cntl.Contrails[i].RenderMethod.ShaderProperties[0].Template.Name == rmt2Name)
+                                        SDependentRenderMethodData.AddDependant(dependentRenderMethods, cache, dependent, cntl.Contrails[i].RenderMethod, origRmt2, i);
+                                continue;
+                        }
+                    }
+
+                    SDependentRenderMethodData.AddDependant(dependentRenderMethods, cache, dependent, (RenderMethod)definition, origRmt2);
+                }
+            }
+
+            // Generate template
+
+            var generator = GetLegacyShaderGenerator(shaderType, options, true);
+
+            var glps = cache.Deserialize<GlobalPixelShader>(stream, rmdf.GlobalPixelShader);
+            var glvs = cache.Deserialize<GlobalVertexShader>(stream, rmdf.GlobalVertexShader);
+
+            var rmt2 = GenerateRenderMethodTemplate(cache, stream, rmdf, glps, glvs, generator, rmt2Name, out _, out _);
+
+            if (rmt2Tag == null)
+                rmt2Tag = cache.TagCache.AllocateTag<RenderMethodTemplate>(rmt2Name);
+
+            cache.Serialize(stream, rmt2Tag, rmt2);
+            cache.SaveStrings();
+            (cache as GameCacheHaloOnlineBase).SaveTagNames();
+
+            Console.WriteLine($"Generated shader template \"{rmt2Name}\"");
+
+            // Fixup render method parameters
+
+            foreach (var dependent in dependentRenderMethods)
+            {
+                var postprocess = (dependent.Definition as RenderMethod).ShaderProperties[0];
+
+                List<TextureConstant> reorderedTextureConstants = new List<TextureConstant>();
+                foreach (var textureName in rmt2.TextureParameterNames)
+                {
+                    int origIndex = dependent.OrderedTextures.IndexOf(cache.StringTable.GetString(textureName.Name));
+                    if (origIndex != -1)
+                        reorderedTextureConstants.Add(postprocess.TextureConstants[origIndex]);
+                    else
+                        reorderedTextureConstants.Add(new TextureConstant());
+                }
+                postprocess.TextureConstants = reorderedTextureConstants;
+
+                List<RealConstant> reorderedRealConstants = new List<RealConstant>();
+                foreach (var realName in rmt2.RealParameterNames)
+                {
+                    int origIndex = dependent.OrderedRealParameters.IndexOf(cache.StringTable.GetString(realName.Name));
+                    if (origIndex != -1)
+                        reorderedRealConstants.Add(postprocess.RealConstants[origIndex]);
+                    else
+                        reorderedRealConstants.Add(new RealConstant());
+                }
+                postprocess.RealConstants = reorderedRealConstants;
+
+                List<uint> reorderedIntConstants = new List<uint>();
+                foreach (var intName in rmt2.IntegerParameterNames)
+                {
+                    int origIndex = dependent.OrderedIntParameters.IndexOf(cache.StringTable.GetString(intName.Name));
+                    if (origIndex != -1)
+                        reorderedIntConstants.Add(postprocess.IntegerConstants[origIndex]);
+                    else
+                        reorderedIntConstants.Add(new uint());
+                }
+                postprocess.IntegerConstants = reorderedIntConstants;
+
+                uint reorderedBoolConstants = 0;
+                for (int i = 0; i < rmt2.BooleanParameterNames.Count; i++)
+                {
+                    int origIndex = dependent.OrderedBoolParameters.IndexOf(cache.StringTable.GetString(rmt2.BooleanParameterNames[i].Name));
+                    if (origIndex != -1)
+                        reorderedBoolConstants |= ((postprocess.BooleanConstants >> origIndex) & 1) == 1 ? 1u << i : 0;
+                }
+                postprocess.BooleanConstants = reorderedBoolConstants;
+
+                var textureAnimatedParams = dependent.AnimatedParameters.Where(x => x.Type == ShaderFunctionHelper.ParameterType.Texture);
+                var realAnimatedParams = dependent.AnimatedParameters.Where(x => x.Type == ShaderFunctionHelper.ParameterType.Real);
+                var intAnimatedParams = dependent.AnimatedParameters.Where(x => x.Type == ShaderFunctionHelper.ParameterType.Int);
+                var boolAnimatedParams = dependent.AnimatedParameters.Where(x => x.Type == ShaderFunctionHelper.ParameterType.Bool);
+
+                postprocess.RoutingInfo.Clear();
+                var routingInfo = postprocess.RoutingInfo;
+
+                foreach (var pass in postprocess.Passes)
+                {
+                    pass.RealPixel.Integer = 0;
+                    pass.RealVertex.Integer = 0;
+                    pass.Texture.Integer = 0;
+                }
+
+                for (int k = 0; k < postprocess.EntryPoints.Count; k++)
+                {
+                    var entry = postprocess.EntryPoints[k];
+                    var rmt2Entry = rmt2.EntryPoints[k];
+
+                    for (int i = entry.Offset; i < entry.Offset + entry.Count; i++)
+                    {
+                        var pass = postprocess.Passes[i];
+                        var rmt2Pass = rmt2.Passes[rmt2Entry.Offset + (i - entry.Offset)];
+
+                        // Texture
+
+                        int usageOffset = rmt2Pass.Values[(int)ParameterUsage.Texture].Offset;
+                        int usageCount = rmt2Pass.Values[(int)ParameterUsage.Texture].Count;
+
+                        pass.Texture.Offset = (ushort)routingInfo.Count;
+                        for (int j = usageOffset; j < usageOffset + usageCount; j++)
+                        {
+                            var rmt2RoutingInfo = rmt2.RoutingInfo[j];
+
+                            string paramName = cache.StringTable.GetString(rmt2.TextureParameterNames[rmt2RoutingInfo.SourceIndex].Name);
+
+                            foreach (var animatedParam in textureAnimatedParams)
+                            {
+                                if (animatedParam.Name == paramName)
+                                {
+                                    var newBlock = new RenderMethodRoutingInfoBlock
+                                    {
+                                        SourceIndex = rmt2RoutingInfo.SourceIndex,
+                                        FunctionIndex = (byte)animatedParam.FunctionIndex,
+                                        RegisterIndex = (short)rmt2RoutingInfo.DestinationIndex
+                                    };
+
+                                    routingInfo.Add(newBlock);
+                                    pass.Texture.Count++;
+                                    break;
+                                }
+                            }
+                        }
+                        pass.Texture.Offset = pass.Texture.Count == 0 ? (ushort)0 : pass.Texture.Offset;
+
+                        // Real PS
+
+                        usageOffset = rmt2Pass.Values[(int)ParameterUsage.PS_Real].Offset;
+                        usageCount = rmt2Pass.Values[(int)ParameterUsage.PS_Real].Count;
+
+                        pass.RealPixel.Offset = (ushort)routingInfo.Count;
+                        for (int j = usageOffset; j < usageOffset + usageCount; j++)
+                        {
+                            var rmt2RoutingInfo = rmt2.RoutingInfo[j];
+
+                            string paramName = cache.StringTable.GetString(rmt2.RealParameterNames[rmt2RoutingInfo.SourceIndex].Name);
+
+                            foreach (var animatedParam in realAnimatedParams)
+                            {
+                                if (animatedParam.Name == paramName)
+                                {
+                                    var newBlock = new RenderMethodRoutingInfoBlock
+                                    {
+                                        SourceIndex = rmt2RoutingInfo.SourceIndex,
+                                        FunctionIndex = (byte)animatedParam.FunctionIndex,
+                                        RegisterIndex = (short)rmt2RoutingInfo.DestinationIndex
+                                    };
+
+                                    routingInfo.Add(newBlock);
+                                    pass.RealPixel.Count++;
+                                    break;
+                                }
+                            }
+                        }
+                        pass.RealPixel.Offset = pass.RealPixel.Count == 0 ? (ushort)0 : pass.RealPixel.Offset;
+
+                        // Real VS
+
+                        usageOffset = rmt2Pass.Values[(int)ParameterUsage.VS_Real].Offset;
+                        usageCount = rmt2Pass.Values[(int)ParameterUsage.VS_Real].Count;
+
+                        pass.RealVertex.Offset = (ushort)routingInfo.Count;
+                        for (int j = usageOffset; j < usageOffset + usageCount; j++)
+                        {
+                            var rmt2RoutingInfo = rmt2.RoutingInfo[j];
+
+                            string paramName = cache.StringTable.GetString(rmt2.RealParameterNames[rmt2RoutingInfo.SourceIndex].Name);
+
+                            foreach (var animatedParam in realAnimatedParams)
+                            {
+                                if (animatedParam.Name == paramName)
+                                {
+                                    var newBlock = new RenderMethodRoutingInfoBlock
+                                    {
+                                        SourceIndex = rmt2RoutingInfo.SourceIndex,
+                                        FunctionIndex = (byte)animatedParam.FunctionIndex,
+                                        RegisterIndex = (short)rmt2RoutingInfo.DestinationIndex
+                                    };
+
+                                    routingInfo.Add(newBlock);
+                                    pass.RealVertex.Count++;
+                                    break;
+                                }
+                            }
+                        }
+                        pass.RealVertex.Offset = pass.RealVertex.Count == 0 ? (ushort)0 : pass.RealVertex.Offset;
+                    }
+                }
+
+                if (dependent.Tag.IsInGroup("rm  "))
+                {
+                    cache.Serialize(stream, dependent.Tag, dependent.Definition);
+                }
+                else
+                {
+                    switch (dependent.Tag.Group.Tag.ToString())
+                    {
+                        case "prt3":
+                            var prt3 = cache.Deserialize<Particle>(stream, dependent.Tag);
+                            prt3.RenderMethod = (RenderMethod)dependent.Definition;
+                            cache.Serialize(stream, dependent.Tag, prt3);
+                            break;
+                        case "decs":
+                            var decs = cache.Deserialize<DecalSystem>(stream, dependent.Tag);
+                            decs.Decal[dependent.EffectIndex].RenderMethod = (RenderMethod)dependent.Definition;
+                            cache.Serialize(stream, dependent.Tag, decs);
+                            break;
+                        case "beam":
+                            var beam = cache.Deserialize<BeamSystem>(stream, dependent.Tag);
+                            beam.Beams[dependent.EffectIndex].RenderMethod = (RenderMethod)dependent.Definition;
+                            cache.Serialize(stream, dependent.Tag, beam);
+                            break;
+                        case "ltvl":
+                            var ltvl = cache.Deserialize<LightVolumeSystem>(stream, dependent.Tag);
+                            ltvl.LightVolumes[dependent.EffectIndex].RenderMethod = (RenderMethod)dependent.Definition;
+                            cache.Serialize(stream, dependent.Tag, ltvl);
+                            break;
+                        case "cntl":
+                            var cntl = cache.Deserialize<ContrailSystem>(stream, dependent.Tag);
+                            cntl.Contrails[dependent.EffectIndex].RenderMethod = (RenderMethod)dependent.Definition;
+                            cache.Serialize(stream, dependent.Tag, cntl);
+                            break;
+                    }
+                }
+            }
+
+            if (dependentRenderMethods.Count > 0)
+                Console.WriteLine($"Corrected {dependentRenderMethods.Count} render method{(dependentRenderMethods.Count > 1 ? "s" : "")}");
+        }
+
         public static IShaderGenerator GetLegacyGlobalShaderGenerator(string shaderType, bool applyFixes = false)
         {
             switch (shaderType)
             {
-                case "beam": return new HaloShaderGenerator.Beam.BeamGenerator(applyFixes);
-                case "black": return new HaloShaderGenerator.Black.ShaderBlackGenerator();
-                case "contrail": return new HaloShaderGenerator.Contrail.ContrailGenerator(applyFixes);
-                case "cortana": return new HaloShaderGenerator.Cortana.CortanaGenerator(applyFixes);
-                case "custom": return new HaloShaderGenerator.Custom.CustomGenerator(applyFixes);
-                case "decal": return new HaloShaderGenerator.Decal.DecalGenerator(applyFixes);
-                case "foliage": return new HaloShaderGenerator.Foliage.FoliageGenerator(applyFixes);
-                //case "glass": return new HaloShaderGenerator.Glass.GlassGenerator(applyFixes);
-                case "halogram": return new HaloShaderGenerator.Halogram.HalogramGenerator(applyFixes);
-                case "light_volume": return new HaloShaderGenerator.LightVolume.LightVolumeGenerator(applyFixes);
-                case "particle": return new HaloShaderGenerator.Particle.ParticleGenerator(applyFixes);
-                case "screen": return new HaloShaderGenerator.Screen.ScreenGenerator(applyFixes);
-                case "shader": return new HaloShaderGenerator.Shader.ShaderGenerator(applyFixes);
-                case "terrain": return new HaloShaderGenerator.Terrain.TerrainGenerator(applyFixes);
-                case "water": return new HaloShaderGenerator.Water.WaterGenerator(applyFixes);
-                case "zonly": return new HaloShaderGenerator.ZOnly.ZOnlyGenerator(applyFixes);
+                case "beam": return new HaloShaderGenerator.LegacyGenerator.Beam.LegacyBeamGenerator(applyFixes);
+                case "black": return new HaloShaderGenerator.LegacyGenerator.Black.LegacyShaderBlackGenerator();
+                case "contrail": return new HaloShaderGenerator.LegacyGenerator.Contrail.LegacyContrailGenerator(applyFixes);
+                case "cortana": return new HaloShaderGenerator.LegacyGenerator.Cortana.LegacyCortanaGenerator(applyFixes);
+                case "custom": return new HaloShaderGenerator.LegacyGenerator.Custom.LegacyCustomGenerator(applyFixes);
+                case "decal": return new HaloShaderGenerator.LegacyGenerator.Decal.LegacyDecalGenerator(applyFixes);
+                case "foliage": return new HaloShaderGenerator.LegacyGenerator.Foliage.LegacyFoliageGenerator(applyFixes);
+                //case "glass": return new HaloShaderGenerator.LegacyGenerator.Glass.LegacyGlassGenerator(applyFixes); // No realistic way to add this without hlsl data
+                case "halogram": return new HaloShaderGenerator.LegacyGenerator.Halogram.LegacyHalogramGenerator(applyFixes);
+                case "light_volume": return new HaloShaderGenerator.LegacyGenerator.LightVolume.LegacyLightVolumeGenerator(applyFixes);
+                case "particle": return new HaloShaderGenerator.LegacyGenerator.Particle.LegacyParticleGenerator(applyFixes);
+                case "screen": return new HaloShaderGenerator.LegacyGenerator.Screen.LegacyScreenGenerator(applyFixes);
+                case "shader": return new HaloShaderGenerator.LegacyGenerator.Shader.LegacyShaderGenerator(applyFixes);
+                case "terrain": return new HaloShaderGenerator.LegacyGenerator.Terrain.LegacyTerrainGenerator(applyFixes);
+                case "water": return new HaloShaderGenerator.LegacyGenerator.Water.LegacyWaterGenerator(applyFixes);
+                case "zonly": return new HaloShaderGenerator.LegacyGenerator.ZOnly.LegacyZOnlyGenerator(applyFixes);
             }
 
             return null;
@@ -653,23 +983,24 @@ namespace TagTool.MtnDewIt.Shaders.ShaderGenerator
         {
             switch (shaderType)
             {
-                case "beam": return new HaloShaderGenerator.Beam.BeamGenerator(options, applyFixes);
-                case "black": return new HaloShaderGenerator.Black.ShaderBlackGenerator();
-                case "contrail": return new HaloShaderGenerator.Contrail.ContrailGenerator(options, applyFixes);
-                case "cortana": return new HaloShaderGenerator.Cortana.CortanaGenerator(options, applyFixes);
-                case "custom": return new HaloShaderGenerator.Custom.CustomGenerator(options, applyFixes);
-                case "decal": return new HaloShaderGenerator.Decal.DecalGenerator(options, applyFixes);
-                case "foliage": return new HaloShaderGenerator.Foliage.FoliageGenerator(options, applyFixes);
-                //case "glass": return new HaloShaderGenerator.Glass.GlassGenerator(options, applyFixes);
-                case "halogram": return new HaloShaderGenerator.Halogram.HalogramGenerator(options, applyFixes);
-                case "light_volume": return new HaloShaderGenerator.LightVolume.LightVolumeGenerator(options, applyFixes);
-                case "particle": return new HaloShaderGenerator.Particle.ParticleGenerator(options, applyFixes);
-                case "screen": return new HaloShaderGenerator.Screen.ScreenGenerator(options, applyFixes);
-                case "shader": return new HaloShaderGenerator.Shader.ShaderGenerator(options, applyFixes);
-                case "terrain": return new HaloShaderGenerator.Terrain.TerrainGenerator(options, applyFixes);
-                case "water": return new HaloShaderGenerator.Water.WaterGenerator(options, applyFixes);
-                case "zonly": return new HaloShaderGenerator.ZOnly.ZOnlyGenerator(options, applyFixes);
+                case "beam": return new HaloShaderGenerator.LegacyGenerator.Beam.LegacyBeamGenerator(options, applyFixes);
+                case "black": return new HaloShaderGenerator.LegacyGenerator.Black.LegacyShaderBlackGenerator();
+                case "contrail": return new HaloShaderGenerator.LegacyGenerator.Contrail.LegacyContrailGenerator(options, applyFixes);
+                case "cortana": return new HaloShaderGenerator.LegacyGenerator.Cortana.LegacyCortanaGenerator(options, applyFixes);
+                case "custom": return new HaloShaderGenerator.LegacyGenerator.Custom.LegacyCustomGenerator(options, applyFixes);
+                case "decal": return new HaloShaderGenerator.LegacyGenerator.Decal.LegacyDecalGenerator(options, applyFixes);
+                case "foliage": return new HaloShaderGenerator.LegacyGenerator.Foliage.LegacyFoliageGenerator(options, applyFixes);
+                //case "glass": return new HaloShaderGenerator.LegacyGenerator.Glass.LegacyGlassGenerator(options, applyFixes); // No realistic way to add this without hlsl data
+                case "halogram": return new HaloShaderGenerator.LegacyGenerator.Halogram.LegacyHalogramGenerator(options, applyFixes);
+                case "light_volume": return new HaloShaderGenerator.LegacyGenerator.LightVolume.LegacyLightVolumeGenerator(options, applyFixes);
+                case "particle": return new HaloShaderGenerator.LegacyGenerator.Particle.LegacyParticleGenerator(options, applyFixes);
+                case "screen": return new HaloShaderGenerator.LegacyGenerator.Screen.LegacyScreenGenerator(options, applyFixes);
+                case "shader": return new HaloShaderGenerator.LegacyGenerator.Shader.LegacyShaderGenerator(options, applyFixes);
+                case "terrain": return new HaloShaderGenerator.LegacyGenerator.Terrain.LegacyTerrainGenerator(options, applyFixes);
+                case "water": return new HaloShaderGenerator.LegacyGenerator.Water.LegacyWaterGenerator(options, applyFixes);
+                case "zonly": return new HaloShaderGenerator.LegacyGenerator.ZOnly.LegacyZOnlyGenerator(options, applyFixes);
             }
+
             return null;
         }
     }

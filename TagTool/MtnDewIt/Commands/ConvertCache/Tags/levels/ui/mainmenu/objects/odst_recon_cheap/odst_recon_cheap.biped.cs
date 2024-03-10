@@ -280,10 +280,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         ShapeType = 3,
                         Radius = 0.135f,
                     },
-                    Pad = new byte[]
-                    {
-                        12
-                    },
                     ConvexBase = new PhysicsModel.HavokShapeBase
                     {
                         FieldPointerSkip = new PlatformUnsignedValue(0x0),
@@ -307,10 +303,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         ShapeType = 3,
                         Radius = 0.18225f,
                     },
-                    Pad = new byte[]
-                    {
-                        12
-                    },
                     ConvexBase = new PhysicsModel.HavokShapeBase
                     {
                         FieldPointerSkip = new PlatformUnsignedValue(0x0),
@@ -333,10 +325,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         Userdata = new PlatformUnsignedValue(0xE0),
                         ShapeType = 3,
                         Radius = 0.2295f,
-                    },
-                    Pad = new byte[]
-                    {
-                        12
                     },
                     ConvexBase = new PhysicsModel.HavokShapeBase
                     {
@@ -364,10 +352,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         ShapeType = 7,
                         Radius = 0.135f,
                     },
-                    Pad = new byte[]
-                    {
-                        12
-                    },
                     Bottom = new RealVector3d(0f, 0f, 0.475f),
                     BottomRadius = 0.135f,
                     Top = new RealVector3d(0f, 0f, 0.135f),
@@ -384,10 +368,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         Userdata = new PlatformUnsignedValue(0x60),
                         ShapeType = 7,
                         Radius = 0.135f,
-                    },
-                    Pad = new byte[]
-                    {
-                        12
                     },
                     Bottom = new RealVector3d(0f, 0f, 0.315f),
                     BottomRadius = 0.135f,

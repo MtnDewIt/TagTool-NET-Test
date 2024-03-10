@@ -4,6 +4,8 @@ using TagTool.Common;
 using TagTool.Tags.Definitions;
 using System.IO;
 using System.Collections.Generic;
+using System.Xml.Linq;
+using System;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
@@ -1370,7 +1372,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 1,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Crate>($@"objects\levels\dlc\bunkerworld\drum_55gal_bunker\drum_55gal_bunker"),
+                    Object = GetCachedTag<Crate>($@"ms30\objects\levels\dlc\bunkerworld\drum_55gal_bunker\drum_55gal_bunker"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -2023,90 +2025,90 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         new ForgeGlobalsDefinition.PaletteItem.Setter
                         {
                             Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Saturation,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 1f,
-                        },  
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 1f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
+                        {
                             Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Desaturation,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
+                        {
                             Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Hue,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
+                        {
                             Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterR,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 1f,
-                        },  
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 1f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
+                        {
                             Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterG,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.92f,
-                        },  
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.92f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
+                        {
                             Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterB,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.83f,
-                        },  
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.83f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
+                        {
                             Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_LightIntensity,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
+                        {
                             Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_GammaDecrease,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.5f,
-                        },  
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
+                        {
                             Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_GammaIncrease,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
+                        {
                             Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Range,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 10f,
-                        },  
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 10f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
+                        {
                             Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 1,
-                        	RealValue = 0f,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 1,
+                            RealValue = 0f,
                         },
                     },
                 },
@@ -2122,91 +2124,91 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new ForgeGlobalsDefinition.PaletteItem.Setter
                         {
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Saturation,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.3f,
-                        },  
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Saturation,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.3f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Hue,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Hue,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterR,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.03f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterR,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.03f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterG,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.03f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterG,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.03f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterB,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.03f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterB,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.03f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Desaturation,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Desaturation,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_LightIntensity,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 1f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_LightIntensity,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 1f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_GammaDecrease,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_GammaDecrease,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_GammaIncrease,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_GammaIncrease,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Range,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 10f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Range,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 10f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 1,
-                        	RealValue = 0f,
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 1,
+                            RealValue = 0f,
                         },
                     },
                 },
@@ -2322,91 +2324,91 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new ForgeGlobalsDefinition.PaletteItem.Setter
                         {
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Saturation,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Saturation,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Desaturation,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 1f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Desaturation,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 1f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Hue,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Hue,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterR,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.784f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterR,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.784f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterG,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.784f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterG,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.784f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterB,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.784f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterB,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.784f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_LightIntensity,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_LightIntensity,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_GammaDecrease,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_GammaDecrease,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_GammaIncrease,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_GammaIncrease,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Range,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 10f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Range,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 10f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 1,
-                        	RealValue = 0f,
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 1,
+                            RealValue = 0f,
                         },
                     },
                 },
@@ -2422,91 +2424,91 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new ForgeGlobalsDefinition.PaletteItem.Setter
                         {
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Saturation,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Saturation,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Desaturation,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.4f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Desaturation,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.4f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Hue,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Hue,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterR,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.784f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterR,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.784f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterG,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.784f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterG,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.784f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterB,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.784f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_ColorFilterB,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.784f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_LightIntensity,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.6f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_LightIntensity,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.6f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_GammaDecrease,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 1f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_GammaDecrease,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 1f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_GammaIncrease,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.07f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_GammaIncrease,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.07f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Range,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 10f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Fx_Range,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 10f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 1,
-                        	RealValue = 0f,
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 1,
+                            RealValue = 0f,
                         },
                     },
                 },
@@ -2522,51 +2524,51 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new ForgeGlobalsDefinition.PaletteItem.Setter
                         {
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorR,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.5f,
-                        },  
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorR,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorG,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorG,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorB,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorB,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Intensity,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Intensity,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Radius,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Radius,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 1,
-                        	RealValue = 0f,
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 1,
+                            RealValue = 0f,
                         },
                     },
                 },
@@ -2582,51 +2584,51 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new ForgeGlobalsDefinition.PaletteItem.Setter
                         {
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorR,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.5f,
-                        },  
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorR,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorG,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.25f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorG,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.25f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorB,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorB,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Intensity,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Intensity,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Radius,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Radius,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 1,
-                        	RealValue = 0f,
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 1,
+                            RealValue = 0f,
                         },
                     },
                 },
@@ -2642,51 +2644,51 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new ForgeGlobalsDefinition.PaletteItem.Setter
                         {
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorR,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.5f,
-                        },  
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorR,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorG,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorG,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorB,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.25f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorB,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.25f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Intensity,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Intensity,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Radius,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Radius,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 1,
-                        	RealValue = 0f,
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 1,
+                            RealValue = 0f,
                         },
                     },
                 },
@@ -2702,51 +2704,51 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new ForgeGlobalsDefinition.PaletteItem.Setter
                         {
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorR,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.5f,
-                        },  
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorR,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorG,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorG,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorB,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorB,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Intensity,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Intensity,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Radius,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Radius,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 1,
-                        	RealValue = 0f,
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 1,
+                            RealValue = 0f,
                         },
                     },
                 },
@@ -2762,51 +2764,51 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new ForgeGlobalsDefinition.PaletteItem.Setter
                         {
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorR,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.5f,
-                        },  
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorR,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorG,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorG,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorB,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorB,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Intensity,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 50f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Intensity,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 50f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Radius,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Radius,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 1,
-                        	RealValue = 0f,
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 1,
+                            RealValue = 0f,
                         },
                     },
                 },
@@ -2822,51 +2824,51 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new ForgeGlobalsDefinition.PaletteItem.Setter
                         {
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorR,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorR,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorG,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorG,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorB,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorB,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Intensity,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Intensity,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Radius,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Radius,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 1,
-                        	RealValue = 0f,
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 1,
+                            RealValue = 0f,
                         },
                     },
                 },
@@ -2882,51 +2884,51 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new ForgeGlobalsDefinition.PaletteItem.Setter
                         {
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorR,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorR,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorG,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorG,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorB,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_ColorB,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Intensity,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 0.5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Intensity,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 0.5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Radius,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 0,
-                        	RealValue = 5f,
-                        },  
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.Light_Radius,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Real,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 0,
+                            RealValue = 5f,
+                        },
                         new ForgeGlobalsDefinition.PaletteItem.Setter
-                        {   
-                        	Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
-                        	Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                        	Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
-                        	IntegerValue = 1,
-                        	RealValue = 0f,
+                        {
+                            Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
+                            Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
+                            IntegerValue = 1,
+                            RealValue = 0f,
                         },
                     },
                 },
@@ -3732,1752 +3734,1752 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
-                	Name = "BLOCK [0.1 x 0.5 x 0.5]",
+                    Name = "BLOCK [0.1 x 0.5 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 15,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x05x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 1 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 16,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x1x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 1 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 16,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x1x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 2 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 17,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x2x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 2 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 17,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x2x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 2 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 17,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x2x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 3 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 18,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x3x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 3 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 18,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x3x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 3 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 18,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x3x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 3 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 18,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x3x3"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 4 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 19,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x4x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 4 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 19,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x4x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 4 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 19,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x4x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 4 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 19,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x4x3"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 4 x 4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 19,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x4x4"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 5 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 20,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 5 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 20,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 5 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 20,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 5 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 20,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x3"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 5 x 4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 20,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x4"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 5 x 5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 20,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x5x5"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 10 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 21,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 10 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 21,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 10 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 21,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 10 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 21,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x3"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 10 x 4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 21,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x4"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 10 x 5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 21,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x5"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 10 x 10]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 21,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x10x10"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.1 x 20 x 20]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 22,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x20x20"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 0.5 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 24,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x05x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 1 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 25,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x1x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 1 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 25,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x1x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 2 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 26,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x2x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 2 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 26,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x2x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 3 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 27,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x3x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 3 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 27,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x3x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 3 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 27,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x3x3"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 4 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 28,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x4x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 4 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 28,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x4x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 4 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 28,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x4x3"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 4 x 4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 28,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x4x4"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 5 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 29,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x5x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 5 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 29,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x5x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 5 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 29,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x5x3"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 5 x 4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 29,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x5x4"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 5 x 5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 29,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x5x5"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 10 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 30,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 10 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 30,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 10 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 30,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x3"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 10 x 4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 30,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x4"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 10 x 5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 30,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x5"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 10 x 10]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 30,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x10x10"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [0.5 x 20 x 20]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 31,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_05x20x20"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 1 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 33,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x1x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 2 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 34,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x2x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 2 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 34,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x2x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 3 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 35,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x3x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 3 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 35,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x3x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 3 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 35,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x3x3"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 4 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 36,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x4x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 4 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 36,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x4x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 4 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 36,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x4x3"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 4 x 4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 36,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x4x4"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 5 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 37,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x5x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 5 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 37,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x5x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 5 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 37,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x5x3"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 5 x 4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 37,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x5x4"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 5 x 5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 37,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x5x5"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 10 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 38,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 10 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 38,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 10 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 38,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x3"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 10 x 4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 38,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x4"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 10 x 5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 38,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x5"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 10 x 10]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 38,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x10x10"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BLOCK [1 x 20 x 20]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 39,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_1x20x20"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [0.1 x 0.5 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 42,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x05x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [0.1 x 1 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 42,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x1x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [0.1 x 2 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 42,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x2x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [0.1 x 3 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 42,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x3x3"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [0.1 x 4 x 4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 42,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x4x4"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [0.1 x 5 x 5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 42,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x5x5"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [0.1 x 10 x 10]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 42,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_01x10x10"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [0.5 x 0.5 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 43,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x05x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [0.5 x 1 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 43,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x1x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [0.5 x 2 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 43,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x2x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [0.5 x 3 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 43,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x3x3"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [0.5 x 4 x 4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 43,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x4x4"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [0.5 x 5 x 5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 43,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x5x5"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [0.5 x 10 x 10]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 43,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_05x10x10"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [1 x 0.5 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 44,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x05x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [1 x 1 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 44,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x1x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [1 x 2 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 44,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x2x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [1 x 3 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 44,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x3x3"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [1 x 4 x 4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 44,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x4x4"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [1 x 5 x 5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 44,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x5x5"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE [1 x 10 x 10]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 44,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\triangle_1x10x10"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE (EQUAL) [0.1 x 0.5 x 0]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 45,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x05x043"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE (EQUAL) [0.1 x 1 x 0.8]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 45,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x1x087"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE (EQUAL) [0.1 x 2 x 1.7]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 45,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x2x073"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE (EQUAL) [0.1 x 3 x 2.6]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 45,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x3x06"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE (EQUAL) [0.1 x 4 x 3.4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 45,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x4x046"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIANGLE (EQUAL) [0.1 x 5 x 4.3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 45,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\trianglee_01x5x033"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [0.5 x 0.5 x 0.1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x01"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [0.5 x 0.5 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [0.5 x 0.5 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [0.5 x 0.5 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [0.5 x 0.5 x 4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_05x05x4"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [1 x 1 x 0.1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x01"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [1 x 1 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [1 x 1 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [1 x 1 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [1 x 1 x 4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_1x1x4"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [2 x 2 x 0.1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x01"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [2 x 2 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [2 x 2 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [2 x 2 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [2 x 2 x 4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_2x2x4"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [5 x 5 x 0.1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x01"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [5 x 5 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [5 x 5 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [5 x 5 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [5 x 5 x 4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_5x5x4"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [10 x 10 x 0.1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x01"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [10 x 10 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [10 x 10 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [10 x 10 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER [10 x 10 x 4]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 47,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\cylinder_10x10x4"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER (HALF) [0.5 x 0.1 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 48,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x01x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER (HALF) [0.5 x 0.1 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 48,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x01x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER (HALF) [0.5 x 0.1 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 48,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x01x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER (HALF) [0.5 x 1 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 48,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x1x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER (HALF) [0.5 x 1 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 48,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x1x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER (HALF) [0.5 x 1 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 48,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x1x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER (HALF) [0.5 x 3 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 48,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x3x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER (HALF) [0.5 x 3 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 48,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x3x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER (HALF) [0.5 x 3 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 48,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x3x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER (HALF) [0.5 x 4 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 48,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x4x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER (HALF) [0.5 x 4 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 48,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x4x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER (HALF) [0.5 x 4 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 48,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x4x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER (HALF) [0.5 x 10 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 48,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_1x10x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER (HALF) [0.5 x 10 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 48,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_2x10x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "CYLINDER (HALF) [0.5 x 10 x 3]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 48,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\halfcylinder_3x10x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [2 x 2 x 0.1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 50,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x2x01"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [2 x 2 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 50,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x2x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [2 x 2 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 50,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x2x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [5 x 5 x 0.25]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 50,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x5x025"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [5 x 5 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 50,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x5x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [5 x 5 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 50,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x5x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [10 x 10 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 50,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x10x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [10 x 10 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 50,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x10x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [10 x 10 x 5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 50,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x10x5"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [20 x 20 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 50,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_20x20x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [20 x 20 x 5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 50,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_20x20x5"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [20 x 20 x 10]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 50,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_20x20x10"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [1 x 2 x 0.1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 51,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_1x2x01"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [1 x 2 x 0.5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 51,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_1x2x05"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [1 x 2 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 51,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_1x2x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [2 x 5 x 0.25]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 51,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x5x025"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [2 x 5 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 51,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x5x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [2 x 5 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 51,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_2x5x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [5 x 10 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 51,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x10x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [5 x 10 x 2]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 51,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x10x2"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [5 x 10 x 5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 51,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_5x10x5"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [10 x 20 x 1]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 51,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x20x1"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [10 x 20 x 5]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 51,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x20x5"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HEMISPHERE [10 x 20 x 10]",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Structure,
                     CategoryIndex = 51,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\eldewrito\reforge\hemisphere_10x20x10"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "RESPAWN POINT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = 54,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\spawning\respawn_point"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BOMB PLANT POINT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Assault,
                     CategoryIndex = 55,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\multi\assault\assault_bomb_goal_area"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BOMB SPAWN POINT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Assault,
                     CategoryIndex = 55,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\multi\assault\assault_bomb_spawn_point"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "STARTING POINT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Assault,
                     CategoryIndex = 55,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\assault\assault_initial_spawn_point"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "RESPAWN AREA",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Assault,
                     CategoryIndex = 55,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\assault\assault_respawn_zone"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "RESPAWN, FLAG HOME",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = 56,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\ctf\ctf_flag_at_home_respawn_zone"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "RESPAWN, FLAG AWAY",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = 56,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\ctf\ctf_flag_away_respawn_zone"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "FLAG RETURN POINT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = 56,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\multi\ctf\ctf_flag_return_area"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "FLAG SPAWN POINT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = 56,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\multi\ctf\ctf_flag_spawn_point"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "STARTING POINT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = 56,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\ctf\ctf_initial_spawn_point"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "RESPAWN AREA",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = 56,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\ctf\ctf_respawn_zone"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "STARTING POINT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Infection,
                     CategoryIndex = 57,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\infection\infection_initial_spawn_point"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "RESPAWN AREA",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Infection,
                     CategoryIndex = 57,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\infection\infection_respawn_zone"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "SAFE HAVEN",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Infection,
                     CategoryIndex = 57,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\multi\infection\infection_haven_static"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "GO TO POINT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Juggernaut,
                     CategoryIndex = 58,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\multi\juggernaut\juggernaut_destination_static"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "HILL MARKER",
                     Type = ForgeGlobalsDefinition.PaletteItemType.KingOfTheHill,
                     CategoryIndex = 59,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\multi\koth\koth_hill_static"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "STARTING POINT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.KingOfTheHill,
                     CategoryIndex = 59,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\koth\koth_initial_spawn_point"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "RESPAWN AREA",
                     Type = ForgeGlobalsDefinition.PaletteItemType.KingOfTheHill,
                     CategoryIndex = 59,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\koth\koth_respawn_zone"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BALL SPAWN POINT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = 60,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\multi\oddball\oddball_ball_spawn_point"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "STARTING POINT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = 60,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\oddball\oddball_initial_spawn_point"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "RESPAWN AREA",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = 60,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\oddball\oddball_respawn_zone"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "STARTING POINT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Territories,
                     CategoryIndex = 61,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\territories\territories_initial_spawn_point"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "RESPAWN AREA",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Territories,
                     CategoryIndex = 61,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\territories\territories_respawn_zone"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TERRITORY MARKER",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Territories,
                     CategoryIndex = 61,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\multi\territories\territory_static"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "STARTING POINT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Slayer,
                     CategoryIndex = 62,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\slayer\slayer_initial_spawn_point"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "RESPAWN AREA",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Slayer,
                     CategoryIndex = 62,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\slayer\slayer_respawn_zone"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "GO TO POINT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.VIP,
                     CategoryIndex = 63,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\multi\vip\vip_destination_static"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "STARTING POINT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.VIP,
                     CategoryIndex = 63,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\vip\vip_initial_spawn_point"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "RESPAWN AREA",
                     Type = ForgeGlobalsDefinition.PaletteItemType.VIP,
                     CategoryIndex = 63,
@@ -5527,15 +5529,15 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
-                	Name = "KILL VOLUME",
+                    Name = "KILL VOLUME",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Tool,
                     CategoryIndex = 64,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\multi\boundaries\kill_volume"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "GARBAGE COLLECTION VOLUME",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Tool,
                     CategoryIndex = 64,
@@ -5553,79 +5555,79 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Object = GetCachedTag<Crate>($@"objects\levels\multi\deadlock\deadlock_chainlinkgate_ii\deadlock_chainlinkgate_ii"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BUBBLE SHIELD",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
                     CategoryIndex = 66,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Equipment>($@"objects\equipment\bubbleshield_equipment\bubbleshield_equipment"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "DEPLOYABLE COVER",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
                     CategoryIndex = 66,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Equipment>($@"objects\equipment\instantcover_equipment\instantcover_equipment_mp"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "FLARE",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
                     CategoryIndex = 66,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Equipment>($@"objects\equipment\superflare_equipment\superflare_equipment"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "GRAV LIFT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
                     CategoryIndex = 66,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Equipment>($@"objects\equipment\gravlift_equipment\gravlift_equipment"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "INVINCIBILITY",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
                     CategoryIndex = 66,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Equipment>($@"objects\equipment\invincibility_equipment\invincibility_equipment"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "POWER DRAIN",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
                     CategoryIndex = 66,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Equipment>($@"objects\equipment\powerdrain_equipment\powerdrain_equipment"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "RADAR JAMMER",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
                     CategoryIndex = 66,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Equipment>($@"objects\equipment\jammer_equipment\jammer_equipment"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "REGENERATOR",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
                     CategoryIndex = 66,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Equipment>($@"objects\equipment\regenerator_equipment\regenerator_equipment"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "TRIP MINE",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
                     CategoryIndex = 66,
@@ -5688,34 +5690,34 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Object = GetCachedTag<Equipment>($@"objects\equipment\vision_equipment\vision_equipment"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "FRAG GRENADE",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
                     CategoryIndex = 68,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Equipment>($@"objects\weapons\grenade\frag_grenade\frag_grenade"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "PLASMA GRENADE",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
                     CategoryIndex = 68,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Equipment>($@"objects\weapons\grenade\plasma_grenade\plasma_grenade"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "FIREBOMB GRENADE",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
                     CategoryIndex = 68,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Equipment>($@"objects\weapons\grenade\firebomb_grenade\firebomb_grenade"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "SPIKE GRENADE",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
                     CategoryIndex = 68,
@@ -5725,7 +5727,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
-                	Name = "ACTIVE CAMO",
+                    Name = "ACTIVE CAMO",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
                     CategoryIndex = 69,
                     DescriptionIndex = -1,
@@ -5737,7 +5739,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         {
                             Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                             Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                             IntegerValue = 1,
                             RealValue = 0,
                         },
@@ -5745,19 +5747,19 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
-                	Name = "OVERSHIELDS",
-                	Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
-                	CategoryIndex = 69,
-                	DescriptionIndex = -1,
-                	MaxAllowed = 0,
-                	Object = GetCachedTag<Equipment>($@"objects\multi\powerups\powerup_red\powerup_red"),
-                	Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
+                    Name = "OVERSHIELDS",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
+                    CategoryIndex = 69,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<Equipment>($@"objects\multi\powerups\powerup_red\powerup_red"),
+                    Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                     {
                         new ForgeGlobalsDefinition.PaletteItem.Setter
                         {
                             Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                             Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                             IntegerValue = 1,
                             RealValue = 0,
                         },
@@ -5765,19 +5767,19 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
-                	Name = "CUSTOM POWERUP",
-                	Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
-                	CategoryIndex = 69,
-                	DescriptionIndex = -1,
-                	MaxAllowed = 0,
-                	Object = GetCachedTag<Equipment>($@"objects\multi\powerups\powerup_yellow\powerup_yellow"),
-                	Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
+                    Name = "CUSTOM POWERUP",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
+                    CategoryIndex = 69,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<Equipment>($@"objects\multi\powerups\powerup_yellow\powerup_yellow"),
+                    Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                     {
                         new ForgeGlobalsDefinition.PaletteItem.Setter
                         {
                             Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                             Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                             IntegerValue = 1,
                             RealValue = 0,
                         },
@@ -5785,24 +5787,24 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
-                	Name = "AMMO CRATE",
+                    Name = "AMMO CRATE",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
                     CategoryIndex = 69,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Equipment>($@"objects\powerups\ammo_packs\ammo_large\ammo_large"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "AMMO CRATE, SMALL",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
                     CategoryIndex = 69,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Equipment>($@"objects\powerups\ammo_packs\ammo_small\ammo_small"),
-                },  
+                },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "ASSAULT RIFLE",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
                     CategoryIndex = 71,
@@ -5847,7 +5849,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle_v3\assault_rifle_v3"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "BATTLE RIFLE",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
                     CategoryIndex = 72,
@@ -5910,7 +5912,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_v1\battle_rifle_v1"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
+                {
                     Name = "SMG",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
                     CategoryIndex = 73,
@@ -5947,12 +5949,12 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
-                    Name = "SMG, SILENCED",
+                    Name = "SMG, RATE OF FIRE",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
                     CategoryIndex = 73,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\smg_silenced\smg_silenced"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\smg\smg_v1\smg_v1"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -6117,15 +6119,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum_v3\magnum_v3"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
-                {
-                    Name = "AUTOMAG",
-                    Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                    CategoryIndex = 76,
-                    DescriptionIndex = -1,
-                    MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\automag\automag"),
-                },
-                new ForgeGlobalsDefinition.PaletteItem
                 {   
                     Name = "PLASMA PISTOL",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
@@ -6157,7 +6150,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         {
                             Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                             Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                             IntegerValue = 1,
                             RealValue = 0,
                         },
@@ -6186,7 +6179,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         {
                             Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                             Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                             IntegerValue = 1,
                             RealValue = 0,
                         },
@@ -6215,7 +6208,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         {
                             Target = ForgeGlobalsDefinition.PaletteItem.SetterTarget.General_Physics,
                             Type = ForgeGlobalsDefinition.PaletteItem.SetterType.Integer,
-                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.Hidden,
+                            Flags = ForgeGlobalsDefinition.PaletteItem.SetterFlags.None,
                             IntegerValue = 1,
                             RealValue = 0,
                         },
@@ -6310,15 +6303,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle_v6\plasma_rifle_v6"),
-                },
-                new ForgeGlobalsDefinition.PaletteItem
-                {
-                    Name = "PLASMA RIFLE, RED",
-                    Type = ForgeGlobalsDefinition.PaletteItemType.Weapon,
-                    CategoryIndex = 78,
-                    DescriptionIndex = -1,
-                    MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle_red\plasma_rifle_red"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {   
@@ -6655,7 +6639,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },  
                 new ForgeGlobalsDefinition.PaletteItem
                 {   
-                    Name = "",
+                    Name = "null",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = -1,
                     DescriptionIndex = -1,
@@ -6663,8 +6647,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Object = GetCachedTag<Vehicle>($@"objects\levels\multi\shrine\behemoth\behemoth"),
                 },  
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
-                    Name = "",
+                {
+                    Name = "null",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = -1,
                     DescriptionIndex = -1,
@@ -6672,8 +6656,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Object = GetCachedTag<Vehicle>($@"objects\levels\multi\shrine\shrine_defender\shrine_defender"),
                 },  
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
-                    Name = "",
+                {
+                    Name = "null",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = -1,
                     DescriptionIndex = -1,
@@ -6681,8 +6665,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Object = GetCachedTag<Crate>($@"objects\multi\box_l\box_l"),
                 },  
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
-                    Name = "",
+                {
+                    Name = "null",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = -1,
                     DescriptionIndex = -1,
@@ -6690,8 +6674,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Object = GetCachedTag<Crate>($@"objects\multi\box_m\box_m"),
                 },  
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
-                    Name = "",
+                {
+                    Name = "null",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = -1,
                     DescriptionIndex = -1,
@@ -6699,8 +6683,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Object = GetCachedTag<Crate>($@"objects\multi\box_xl\box_xl"),
                 },  
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
-                    Name = "",
+                {
+                    Name = "null",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = -1,
                     DescriptionIndex = -1,
@@ -6708,8 +6692,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Object = GetCachedTag<Crate>($@"objects\multi\box_xxl\box_xxl"),
                 },  
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
-                    Name = "",
+                {
+                    Name = "null",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = -1,
                     DescriptionIndex = -1,
@@ -6717,8 +6701,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Object = GetCachedTag<Crate>($@"objects\multi\box_xxxl\box_xxxl"),
                 },  
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
-                    Name = "",
+                {
+                    Name = "null",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = -1,
                     DescriptionIndex = -1,
@@ -6726,8 +6710,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Object = GetCachedTag<Crate>($@"objects\multi\wall_l\wall_l"),
                 },  
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
-                    Name = "",
+                {
+                    Name = "null",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = -1,
                     DescriptionIndex = -1,
@@ -6735,8 +6719,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Object = GetCachedTag<Crate>($@"objects\multi\wall_m\wall_m"),
                 },  
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
-                    Name = "",
+                {
+                    Name = "null",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = -1,
                     DescriptionIndex = -1,
@@ -6744,8 +6728,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Object = GetCachedTag<Crate>($@"objects\multi\wall_xl\wall_xl"),
                 },  
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
-                    Name = "",
+                {
+                    Name = "null",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = -1,
                     DescriptionIndex = -1,
@@ -6753,8 +6737,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Object = GetCachedTag<Crate>($@"objects\multi\wall_xxl\wall_xxl"),
                 },  
                 new ForgeGlobalsDefinition.PaletteItem
-                {   
-                    Name = "",
+                {
+                    Name = "null",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = -1,
                     DescriptionIndex = -1,
