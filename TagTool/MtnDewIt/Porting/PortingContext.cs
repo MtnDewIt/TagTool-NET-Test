@@ -148,6 +148,8 @@ namespace TagTool.MtnDewIt.Porting
             }
 
             ProcessDeferredActions();
+
+            CustomThreadPool.FreeAllThreads();
         }
 
         public void SetPortingProperties

@@ -218,7 +218,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             sandbox.PortTag($@"", $@"objects\characters\masterchief\mp_masterchief\fp_body\fp_body.mode");
             GenerateTag<Light>($@"objects\characters\masterchief\fx\shield\shield_down");
             GenerateRenderMethodTemplate($@"shader", $@"4 1 0 1 1 2 0 0 0 1 0 0");
-            CustomThreadPool.FreeAllThreads(); //release the custom thread pool
             sandbox.PortTag($@"", $@"objects\characters\masterchief\shaders\visor.rmsh");
             RenameTag(GetCachedTag<Shader>($@"objects\characters\masterchief\shaders\visor"), $@"objects\characters\masterchief\shaders\mp_visor");
             GenerateTag<Bitmap>($@"objects\characters\masterchief\bitmaps\mp_visor_cc");

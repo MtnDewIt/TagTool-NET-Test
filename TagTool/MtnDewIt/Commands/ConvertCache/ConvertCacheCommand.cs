@@ -223,7 +223,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             using (CacheStream = Cache.OpenCacheReadWrite()) 
             {
                 UpdateShaderData();
-                CustomThreadPool.FreeAllThreads(); //release the custom thread pool
                 PortTagData();
                 UpdateTagData();
                 UpdateMapFiles();

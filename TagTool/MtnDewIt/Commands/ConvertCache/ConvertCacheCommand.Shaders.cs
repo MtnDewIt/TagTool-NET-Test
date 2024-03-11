@@ -5,6 +5,7 @@ using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
 using TagTool.Commands;
 using TagTool.MtnDewIt.Shaders.LegacyShaderGenerator;
+using TagTool.Common;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache
 {
@@ -70,8 +71,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
                 regenTags.Add(tag);
             }
 
-            // TODO: add multithreading
-            // Need to figure out how to synchronize all the required data between threads first
             foreach (var tag in regenTags)
             {
                 List<byte> options = new List<byte>();
@@ -84,6 +83,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
                 LegacyShaderGenerator.GenerateShaderTemplate(Cache, stream, shaderType, options.ToArray(), rmdf);
             }
+
+            CustomThreadPool.FreeAllThreads();
         }
 
         public void GenerateRenderMethodTemplate(string shaderType, string shaderOptions)
@@ -103,6 +104,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(CacheStream, rmdfTag);
 
             LegacyShaderGenerator.GenerateShaderTemplate(Cache, CacheStream, shaderType, rawShaderOptions.ToArray(), rmdf);
+
+            CustomThreadPool.FreeAllThreads();
         }
     }
 }
