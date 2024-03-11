@@ -409,7 +409,7 @@ namespace TagTool.Commands.Porting.Gen2
             }
 
 
-            RealVector3d incident_direction = new RealVector3d();
+            //RealVector3d incident_direction = new RealVector3d();
             /*
             //NO INCIDENT DIRECTION FOR NOW DUE TO ARTIFACTS
             //get average incident direction across cluster mesh
