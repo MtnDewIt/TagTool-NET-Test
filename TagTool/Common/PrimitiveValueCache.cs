@@ -37,17 +37,17 @@ namespace TagTool.Common
 		public static object For(sbyte value) => SBytes[(byte)value];
 
 		//per thread cache helper types - Clock of size 16
-		private struct Object16 //todo: InlineArray
+		[InlineArray(16), StructLayout(LayoutKind.Sequential)]
+		private struct Object16
 		{
-			public object val0, val1, val2, val3, val4, val5, val6, val7, val8, val9, val10, val11, val12, val13, val14, val15;
-			[UnscopedRef] public ref object Value0 => ref Unsafe.As<Object16, object>(ref this);
+			private object _field;
 		}
 		private abstract class AutoCache<T> where T : IEquatable<T>
 		{
-			private struct T16 //todo: InlineArray
+			[InlineArray(16), StructLayout(LayoutKind.Sequential)]
+			private struct T16
 			{
-				public T val0, val1, val2, val3, val4, val5, val6, val7, val8, val9, val10, val11, val12, val13, val14, val15;
-				[UnscopedRef] public ref T Value0 => ref Unsafe.As<T16, T>(ref this);
+				private T _field;
 			}
 
 			private Object16 objects;
@@ -61,8 +61,8 @@ namespace TagTool.Common
 			public object GetOrCache(T value)
 			{
 				//check if it's in the cache
-				ref var obj0 = ref objects.Value0;
-				ref var val0 = ref values.Value0;
+				ref var obj0 = ref objects[0];
+				ref var val0 = ref values[0];
 				int idx = MemoryMarshal.CreateSpan(ref val0, 16).IndexOf(value);
 				if (idx >= 0)
 				{
