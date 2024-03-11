@@ -4,28 +4,27 @@ using System;
 using System.IO;
 using System.Linq;
 using TagTool.Tags;
+using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
 namespace Sytem.IO
 {
     public static class BinaryWriterExtensions
     {
-        public static void Write(this BinaryWriter writer, short value, EndianFormat format)
-        {
-            if (format == EndianFormat.BigEndian)
-                writer.Write(BitConverter.GetBytes(value).Reverse().ToArray());
-            else
-                writer.Write(value);
-        }
+		private unsafe static T ToLittleEndian<T>(T value, EndianFormat format) where T : unmanaged
+		{
+			if (format == EndianFormat.BigEndian) MemoryMarshal.CreateSpan(ref Unsafe.As<T, byte>(ref value), sizeof(T)).Reverse();
+			return value;
+		}
 
-        public static void Write(this BinaryWriter writer, ushort value, EndianFormat format)
-        {
-            if (format == EndianFormat.BigEndian)
-                writer.Write(BitConverter.GetBytes(value).Reverse().ToArray());
-            else
-                writer.Write(value);
-        }
+        public static void Write(this BinaryWriter writer, ushort value, EndianFormat format) => writer.Write(ToLittleEndian(value, format));
+        public static void Write(this BinaryWriter writer, short value, EndianFormat format) => writer.Write(ToLittleEndian(value, format));
+        public static void Write(this BinaryWriter writer, uint value, EndianFormat format) => writer.Write(ToLittleEndian(value, format));
+        public static void Write(this BinaryWriter writer, int value, EndianFormat format) => writer.Write(ToLittleEndian(value, format));
+		public static void Write(this BinaryWriter writer, ulong value, EndianFormat format) => writer.Write(ToLittleEndian(value, format));
+		public static void Write(this BinaryWriter writer, long value, EndianFormat format) => writer.Write(ToLittleEndian(value, format));
 
-        public static void Write(this BinaryWriter writer, float value, TagFieldCompression compression)
+		public static void Write(this BinaryWriter writer, float value, TagFieldCompression compression)
         {
             switch (compression)
             {
@@ -45,12 +44,12 @@ namespace Sytem.IO
 
         public static void Write(this BinaryWriter writer, Tag value, EndianFormat format = EndianFormat.LittleEndian)
         {
-            writer.Write(value.Value);
+            writer.Write(value.Value, format);
         }
 
         public static void Write(this BinaryWriter writer, Half value, EndianFormat format = EndianFormat.LittleEndian)
         {
-            writer.Write(value.value, format);
+            writer.Write(BitConverter.HalfToUInt16Bits(value), format);
         }
 
         public static void Write(this BinaryWriter writer, Point2d value, EndianFormat format = EndianFormat.LittleEndian)

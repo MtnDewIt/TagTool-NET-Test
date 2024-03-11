@@ -8,9 +8,9 @@ using TagTool.IO;
 
 namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Maps
 {
-    public class sidewinder : MapVariantFile
+    public class @sidewinder : MapVariantFile
     {
-        public sidewinder(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public @sidewinder(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,

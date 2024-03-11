@@ -8,9 +8,9 @@ using TagTool.MtnDewIt.BlamFiles;
 
 namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Maps
 {
-    public class guardian : MapVariantFile
+    public class @guardian : MapVariantFile
     {
-        public guardian(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public @guardian(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,

@@ -8,9 +8,9 @@ using TagTool.IO;
 
 namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Maps
 {
-    public class midship : MapVariantFile
+    public class @midship : MapVariantFile
     {
-        public midship(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public @midship(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,

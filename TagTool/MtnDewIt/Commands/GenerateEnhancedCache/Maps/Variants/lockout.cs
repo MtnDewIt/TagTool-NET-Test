@@ -8,9 +8,9 @@ using TagTool.IO;
 
 namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Maps
 {
-    public class lockout : MapVariantFile
+    public class @lockout : MapVariantFile
     {
-        public lockout(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public @lockout(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,

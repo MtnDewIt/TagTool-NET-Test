@@ -1,5 +1,7 @@
 using System;
+using System.Buffers.Binary;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using TagTool.Cache;
 using TagTool.Cache.Gen3;
@@ -10,7 +12,7 @@ namespace TagTool.Common
     /// <summary>
     /// Represents a magic number which looks like a string.
     /// </summary>
-    public struct Tag : IComparable<Tag>, IBlamType
+    public struct Tag : IComparable<Tag>, IBlamType, IEquatable<Tag>
 	{
         /// <summary>
         /// The null tag representation.
@@ -33,48 +35,30 @@ namespace TagTool.Common
         /// Constructs a magic number from a string.
         /// </summary>
         /// <param name="str">The string.</param>
-        public Tag(string str)
-        {
-            var bytes = Encoding.ASCII.GetBytes(str);
-            Value = 0;
-            foreach (var b in bytes)
-            {
-                Value <<= 8;
-                Value |= b;
-            }
+        public Tag(string str) : this(str.AsSpan())
+		{
         }
 
-        /// <summary>
-        /// Constructs a magic number from a character array.
-        /// </summary>
-        /// <param name="input">The character array.</param>
-        public Tag(char[] input)
-        {
-            var chars = new char[4] { ' ', ' ', ' ', ' ' };
+		/// <summary>
+		/// Constructs a magic number from a span of chars.
+		/// </summary>
+		/// <param name="text">The span.</param>
+		public Tag(ReadOnlySpan<char> text)
+		{
+			//read the last 4 unicode chars, which should give us at least 4 ascii chars (if at least 4 available)
+			Span<byte> sp = stackalloc byte[9];
+			int read = text.Length >= 4 ? Encoding.ASCII.GetBytes(text[^4..], sp[4..]) : Encoding.ASCII.GetBytes(text, sp[4..]);
+			Debug.Assert(read > 0);
 
-            for (var i = 0; i < input.Length; i++)
-            {
-                // hackfix to make h3 not crash
-                if (input[i] == 0)
-                    chars[i] = (char)0x20;
-                else
-                    chars[i] = input[i];
-            }
-                
+			//the result is the last 4 (or less if available) ascii chars read as big endian
+			Value = BinaryPrimitives.ReadInt32BigEndian(sp[read..(read + 4)]);
+		}
 
-            Value = 0;
-            foreach (var c in chars)
-            {
-                Value <<= 8;
-                Value |= c;
-            }
-        }
-
-        /// <summary>
-        /// Gets the value of the magic number as an integer. 
+		/// <summary>
+		/// Gets the value of the magic number as an integer. 
 		/// THERE BE DRAGONS HERE: Do not set this manually outside of serialization.
-        /// </summary>
-        public int Value { get; set; }
+		/// </summary>
+		public int Value { get; set; }
 
         public bool IsNull()
         {
@@ -88,17 +72,23 @@ namespace TagTool.Common
 		/// <returns>The string that the magic number looks like.</returns>
 		public override string ToString()
         {
-            var i = 4;
-            var chars = new char[4];
-            var val = Value;
-            while (val > 0)
-            {
-                i--;
-                chars[i] = (char)(val & 0xFF);
-                val >>= 8;
-            }
-            return (i < 4) ? new string(chars, i, chars.Length - i) : "";
+			return PrimitiveValueCache.GetStringFor(this);
         }
+
+		//for use only in PrimitiveValueCache
+		public unsafe string ToStringUncached()
+		{
+			var i = 4;
+			Span<char> chars = stackalloc char[4];
+			var val = Value;
+			while (val > 0)
+			{
+				i--;
+				chars[i] = (char)(val & 0xFF);
+				val >>= 8;
+			}
+			return i == 4 ? "" : chars[i..].ToString();
+		}
 
         public static Tag Parse(GameCache cache, string name)
         {
@@ -119,13 +109,10 @@ namespace TagTool.Common
                 return new Tag(attribute.Tag);
             }
             
-            if(cache.TagCache.TagDefinitions.GetType() == typeof(TagDefinitionsGen3))
+            if(cache.TagCache.TagDefinitions is TagDefinitionsGen3 td3)
             {
-                foreach (var pair in cache.TagCache.TagDefinitions.Types)
-                    if (name == (pair.Key as TagGroupGen3).Name)
-                        return pair.Key.Tag;
+				if (td3.TryGetTagFromName(name, out var result)) return result;
             }
-            
 
             return Null;
         }
@@ -162,14 +149,9 @@ namespace TagTool.Common
                 return true;
             }
 
-            if (cache.TagCache.TagDefinitions.GetType() == typeof(TagDefinitionsGen3))
+            if (cache.TagCache.TagDefinitions is TagDefinitionsGen3 td3)
             {
-                foreach (var pair in cache.TagCache.TagDefinitions.Types)
-                    if (name == (pair.Key as TagGroupGen3).Name)
-                    {
-                        result = pair.Key.Tag;
-                        return true;
-                    }
+				if (td3.TryGetTagFromName(name, out result)) return true;
             }
 
             result = Null;
@@ -178,11 +160,11 @@ namespace TagTool.Common
 
         public override bool Equals(object obj)
         {
-            if (!(obj is Tag))
-                return false;
-            var other = (Tag)obj;
-            return (Value == other.Value);
+            if (obj is not Tag other) return false;
+            return Equals(other);
         }
+
+		public bool Equals(Tag other) => Value == other.Value;
 
         public static bool operator ==(Tag a, Tag b)
         {

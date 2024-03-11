@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using HaloShaderGenerator.LegacyGenerator;
 using HaloShaderGenerator.LegacyGenerator.Generator;
@@ -252,8 +254,7 @@ namespace TagTool.MtnDewIt.Shaders.LegacyShaderGenerator
         {
             var pixl = new PixelShader { EntryPointShaders = new List<ShortOffsetCountBlock>(), Shaders = new List<PixelShaderBlock>() };
 
-            Dictionary<Task<LegacyShaderGeneratorResult>, int> tasks = new Dictionary<Task<LegacyShaderGeneratorResult>, int>(); // <task, entry point>
-
+            List<(CustomThreadPool.IScheduledTask Task, int EntryPoint)> tasks = new();
 
             foreach (ShaderStage entryPoint in Enum.GetValues(typeof(ShaderStage)))
             {
@@ -262,18 +263,24 @@ namespace TagTool.MtnDewIt.Shaders.LegacyShaderGenerator
 
                 if (generator.IsEntryPointSupported(entryPoint) && !generator.IsPixelShaderShared(entryPoint))
                 {
-                    Task<LegacyShaderGeneratorResult> generatorTask = Task.Run(() => { return generator.GeneratePixelShader(entryPoint); });
-                    tasks.Add(generatorTask, (int)entryPoint);
+                    tasks.Add((CustomThreadPool.Schedule((generator, entryPoint), static (values) =>
+                    {
+                        var (generator, entryPoint) = ((IShaderGenerator, ShaderStage))values;
+                        return generator.GeneratePixelShader(entryPoint);
+                    }), (int)entryPoint));
                 }
             }
 
-            Task.WaitAll(tasks.Keys.ToArray());
-
-            foreach (var task in tasks)
+            foreach (var (task, _) in tasks)
             {
-                pixl.EntryPointShaders[task.Value].Count = 1;
-                pixl.EntryPointShaders[task.Value].Offset = (byte)pixl.Shaders.Count;
-                pixl.Shaders.Add(GeneratePixelShaderBlock(cache, task.Key.Result));
+                task.Wait();
+            }
+
+            foreach (var (task, entryPoint) in tasks)
+            {
+                pixl.EntryPointShaders[entryPoint].Count = 1;
+                pixl.EntryPointShaders[entryPoint].Offset = (byte)pixl.Shaders.Count;
+                pixl.Shaders.Add(GeneratePixelShaderBlock(cache, (LegacyShaderGeneratorResult)task.Result));
             }
             return pixl;
         }

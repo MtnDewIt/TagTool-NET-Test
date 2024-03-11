@@ -8,6 +8,7 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
 using TagTool.Commands.Tags;
 using TagTool.Commands;
+using TagTool.Common;
 using TagTool.MtnDewIt.Porting;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache
@@ -215,7 +216,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             GetCacheFiles();
 
             Program._stopWatch.Start();
-
             MoveFontPackage(outputDirectoryInfo.FullName);
             RebuildCache(outputDirectoryInfo.FullName);
             RetargetCache(outputDirectoryInfo.FullName);
@@ -223,6 +223,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             using (CacheStream = Cache.OpenCacheReadWrite()) 
             {
                 UpdateShaderData();
+                CustomThreadPool.FreeAllThreads(); //release the custom thread pool
                 PortTagData();
                 UpdateTagData();
                 UpdateMapFiles();

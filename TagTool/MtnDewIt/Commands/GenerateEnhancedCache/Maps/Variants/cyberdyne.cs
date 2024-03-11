@@ -8,9 +8,9 @@ using TagTool.MtnDewIt.BlamFiles;
 
 namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Maps
 {
-    public class cyberdyne : MapVariantFile
+    public class @cyberdyne : MapVariantFile
     {
-        public cyberdyne(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public @cyberdyne(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,

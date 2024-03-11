@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Collections;
 using TagTool.Common;
 using TagTool.Commands.Common;
+using System.Runtime.CompilerServices;
 
 namespace TagTool.Tags
 {
@@ -46,12 +47,30 @@ namespace TagTool.Tags
 		/// </summary>
 		public int Count => TagFieldInfos.Count;
 
+		//standard .NET pattern, allows avoidance of boxing, and inlining better
+		public struct Enumerator : IEnumerator<TagFieldInfo>
+		{
+			private List<TagFieldInfo>.Enumerator enumerator;
+            public TagFieldInfo Current => enumerator.Current;
+            object IEnumerator.Current => enumerator.Current;
+			public void Dispose() => enumerator.Dispose();
+			public bool MoveNext() => enumerator.MoveNext();
+			void IEnumerator.Reset() => ((IEnumerator<TagFieldInfo>)enumerator).Reset();
+        }
+
 		/// <summary>
 		/// Gets an <see cref="IEnumerator{T}"/> over the <see cref="Tags.TagFieldInfo"/> <see cref="List{T}"/>.
 		/// </summary>
 		/// <returns></returns>
-		public IEnumerator<TagFieldInfo> GetEnumerator() => TagFieldInfos.GetEnumerator();
-		IEnumerator IEnumerable.GetEnumerator() => TagFieldInfos.GetEnumerator();
+		public Enumerator GetEnumerator()
+		{
+			var impl = TagFieldInfos.GetEnumerator();
+			//we use Unsafe.As to avoid having to expose a constructor which takes the enumerator, since this would expose implementation details
+			//it's safe since we have a struct with exactly 1 field of the same type
+			return Unsafe.As<List<TagFieldInfo>.Enumerator, Enumerator>(ref impl);
+		}
+		IEnumerator<TagFieldInfo> IEnumerable<TagFieldInfo>.GetEnumerator() => GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		/// <summary>
 		/// An indexer into the <see cref="Tags.TagFieldInfo"/> <see cref="List{T}"/>.

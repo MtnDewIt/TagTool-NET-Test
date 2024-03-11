@@ -324,7 +324,7 @@ namespace TagTool.MtnDewIt.Porting
                 Console.WriteLine();
                 Console.WriteLine($"{e.GetType().Name} while porting '{blamTag.Name}.{blamTag.Group.Tag.ToString()}':");
                 Console.WriteLine();
-                throw e;
+                throw;
             }
 #endif
             PortedTags[blamTag.Index] = result;

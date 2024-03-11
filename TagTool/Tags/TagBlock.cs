@@ -46,7 +46,7 @@ namespace TagTool.Tags
 
         public void Clear() => Elements.Clear();
         public void RemoveAt(int index) => Elements.RemoveAt(index);
-        
+
         int ICollection<T>.Count => Count;
         public void Add(T item) => Elements.Add(item);
         public bool Contains(T item) => Elements.Contains(item);
@@ -87,5 +87,14 @@ namespace TagTool.Tags
         {
             ((IList)Elements).CopyTo(array, index);
         }
+
+		public void AddRangeBoxed(ReadOnlySpan<object> values)
+		{
+			Elements.EnsureCapacity(Elements.Capacity + values.Length);
+			foreach (var x in values)
+			{
+				Elements.Add((T)x);
+			}
+		}
     }
 }

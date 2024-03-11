@@ -8,9 +8,9 @@ using TagTool.IO;
 
 namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Maps
 {
-    public class snowbound : MapVariantFile
+    public class @snowbound : MapVariantFile
     {
-        public snowbound(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public @snowbound(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,

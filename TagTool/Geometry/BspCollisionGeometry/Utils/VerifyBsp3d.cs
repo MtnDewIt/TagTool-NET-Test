@@ -9,11 +9,11 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
 {
     public class VerifyBsp3d
     {
-		private List<leaf> Leaves = new List<leaf>();
+		private List<@leaf> Leaves = new List<@leaf>();
 		public LargeCollisionBspBlock Bsp { get; set; }
 		public LargeCollisionBspBlock OldBsp { get; set; }
 		public LargeCollisionBSPBuilder Bsp_Builder { get; set; }
-		public class leaf
+		public class @leaf
 		{
 			public int immediate_parent_3dnode;
 			public List<int> node_stack = new List<int>();
@@ -89,7 +89,7 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
 			Bsp_Builder = new LargeCollisionBSPBuilder();
 			Bsp_Builder.Bsp = Bsp;
 			for (var i = 0; i < Bsp.Bsp3dNodes.Count + 1; i++)
-				Leaves.Add(new leaf());
+				Leaves.Add(new @leaf());
 			populate_leaves(new List<int>(), 0, -1);
 			LeafMap leafmapper = new LeafMap();
 			leafmapper.Bsp_Builder = Bsp_Builder;
@@ -136,7 +136,7 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
 			{
 				if (bsp3dnode_index == -1)
 					return true;
-				leaf current_leaf = Leaves[bsp3dnode_index & 0x7FFFFFFF];
+				@leaf current_leaf = Leaves[bsp3dnode_index & 0x7FFFFFFF];
 				current_leaf.immediate_parent_3dnode = parent_bsp3dnode_index;
 				current_leaf.node_stack = plane_designators.DeepClone();
 				current_leaf.surface_indices = leaf_collect_surfaces(bsp3dnode_index & 0x7FFFFFFF);

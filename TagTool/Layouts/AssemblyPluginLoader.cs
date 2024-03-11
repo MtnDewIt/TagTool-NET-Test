@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
 using System.Xml;
+using PluralizeService.Core;
 using TagTool.Common;
 
 namespace TagTool.Layouts
 {
     public class AssemblyPluginLoader
     {
-        private static readonly PluralizationService Pluralization =
-            PluralizationService.CreateService(new CultureInfo("en-US"));
-
         /// <summary>
         /// Parses an XML plugin into a <see cref="TagLayout"/>.
         /// </summary>
@@ -471,7 +468,7 @@ namespace TagTool.Layouts
 
             // Singularize the last word in the block name to get the layout name
             var words = name.Split(' ');
-            words[words.Length - 1] = Pluralization.Singularize(words[words.Length - 1]);
+            words[words.Length - 1] = PluralizationProvider.Singularize(words[words.Length - 1]);
             var layoutName = string.Join(" ", words);
 
             // Read the layout using a new loader (to keep track of conflicts)

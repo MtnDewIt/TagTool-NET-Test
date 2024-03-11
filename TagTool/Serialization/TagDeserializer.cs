@@ -12,6 +12,10 @@ using BindingFlags = System.Reflection.BindingFlags;
 using System.IO;
 using System.Linq;
 using TagTool.Geometry.BspCollisionGeometry;
+using System.Runtime.CompilerServices;
+using System.Reflection.Emit;
+using System.Diagnostics;
+using System.Buffers;
 
 namespace TagTool.Serialization
 {
@@ -107,7 +111,7 @@ namespace TagTool.Serialization
         {
             var attr = tagFieldInfo.Attribute;
 
-            if (attr.Flags.HasFlag(Runtime) || !CacheVersionDetection.TestAttribute(attr, Version, CachePlatform))
+            if ((attr.Flags & Runtime) != 0 || !CacheVersionDetection.TestAttribute(attr, Version, CachePlatform))
                 return;
 
             uint align = TagFieldInfo.GetFieldAlignment(tagFieldInfo.FieldType, tagFieldInfo.Attribute, Version, CachePlatform);
@@ -117,7 +121,7 @@ namespace TagTool.Serialization
                 reader.BaseStream.Position += -fieldOffset & (align - 1);
             }
 
-            if (attr.Flags.HasFlag(Padding))
+            if ((attr.Flags & Padding) != 0)
             {
                 //disable padding warnings for gen2 defs
                 if (Version <= CacheVersion.Halo2Vista)
@@ -174,28 +178,28 @@ namespace TagTool.Serialization
             switch (Type.GetTypeCode(valueType))
             {
                 case TypeCode.Single:
-                    return reader.ReadSingle();
+                    return PrimitiveValueCache.For(reader.ReadSingle());
                 case TypeCode.Byte:
-                    return reader.ReadByte();
-                case TypeCode.Int16:
-                    return reader.ReadInt16();
-                case TypeCode.Int32:
-                    return reader.ReadInt32();
-                case TypeCode.Int64:
-                    return reader.ReadInt64();
-                case TypeCode.SByte:
-                    return reader.ReadSByte();
-                case TypeCode.UInt16:
-                    return reader.ReadUInt16();
-                case TypeCode.UInt32:
-                    return reader.ReadUInt32();
-                case TypeCode.UInt64:
-                    return reader.ReadUInt64();
-                case TypeCode.Boolean:
-                    return reader.ReadBoolean();
-                case TypeCode.Double:
-                    return reader.ReadDouble();
-                default:
+                    return PrimitiveValueCache.For(reader.ReadByte());
+				case TypeCode.Int16:
+                    return PrimitiveValueCache.For(reader.ReadInt16());
+				case TypeCode.Int32:
+                    return PrimitiveValueCache.For(reader.ReadInt32());
+				case TypeCode.Int64:
+                    return PrimitiveValueCache.For(reader.ReadInt64());
+				case TypeCode.SByte:
+                    return PrimitiveValueCache.For(reader.ReadSByte());
+				case TypeCode.UInt16:
+                    return PrimitiveValueCache.For(reader.ReadUInt16());
+				case TypeCode.UInt32:
+                    return PrimitiveValueCache.For(reader.ReadUInt32());
+				case TypeCode.UInt64:
+                    return PrimitiveValueCache.For(reader.ReadUInt64());
+				case TypeCode.Boolean:
+                    return PrimitiveValueCache.For(reader.ReadBoolean());
+				case TypeCode.Double:
+                    return PrimitiveValueCache.For(reader.ReadDouble());
+				default:
                     throw new ArgumentException("Unsupported type " + valueType.Name);
             }
         }
@@ -212,7 +216,7 @@ namespace TagTool.Serialization
         {
             // Indirect objects
             // TODO: Remove ResourceReference hax, the Indirect flag wasn't available when I generated the tag structures
-            if (valueInfo != null && valueInfo.Flags.HasFlag(Pointer))
+            if (valueInfo != null && (valueInfo.Flags & Pointer) != 0)
                 return DeserializeIndirectValue(reader, context, valueType);
 
             var compression = TagFieldCompression.None;
@@ -496,31 +500,30 @@ namespace TagTool.Serialization
             // Read each value
             //
 
-            var methods = valueType.GetMethods();
-            // select the add method from IList<T> and not IList interfaces
-            var addMethod = methods.FirstOrDefault(method => method.Name == "Add" & method.ReturnType == typeof(void));
-
             reader.BaseStream.Position = context.AddressToOffset((uint)startOffset + 4, pointer.Value);
 
-            for (var i = 0; i < count; i++)
+			object[] pooledValuesToAdd = ArrayPool<object>.Shared.Rent(count);
+			Span<object> valuesToAdd = pooledValuesToAdd.AsSpan()[..count];
+			for (var i = 0; i < count; i++)
             {
-                var element = DeserializeValue(reader, context, null, elementType);
-                addMethod.Invoke(result, new[] { element });
+				valuesToAdd[i] = DeserializeValue(reader, context, null, elementType);
             }
+			ReflectionHelpers.GetAddRangeBoxedDelegate(valueType)(result, valuesToAdd);
+			ArrayPool<object>.Shared.Return(pooledValuesToAdd);
 
-            reader.BaseStream.Position = startOffset + (!CacheVersionDetection.IsInGen(CacheGeneration.Second, Version) ? 0xC : 0x8);
+			reader.BaseStream.Position = startOffset + (!CacheVersionDetection.IsInGen(CacheGeneration.Second, Version) ? 0xC : 0x8);
 
             return result;
         }
 
-        /// <summary>
-        /// Deserializes a value which is pointed to by an address.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <param name="context">The serialization context to use.</param>
-        /// <param name="valueType">The type of the value to deserialize.</param>
-        /// <returns>The deserialized value.</returns>
-        public virtual object DeserializeD3DStructure(EndianReader reader, ISerializationContext context, Type valueType)
+		/// <summary>
+		/// Deserializes a value which is pointed to by an address.
+		/// </summary>
+		/// <param name="reader">The reader.</param>
+		/// <param name="context">The serialization context to use.</param>
+		/// <param name="valueType">The type of the value to deserialize.</param>
+		/// <returns>The deserialized value.</returns>
+		public virtual object DeserializeD3DStructure(EndianReader reader, ISerializationContext context, Type valueType)
         {
           
             var result = Activator.CreateInstance(valueType);
@@ -573,7 +576,7 @@ namespace TagTool.Serialization
         /// <returns>The deserialized tag reference.</returns>
         public CachedTag DeserializeTagReference(EndianReader reader, ISerializationContext context, TagFieldAttribute valueInfo)
         {
-            if (valueInfo == null || !valueInfo.Flags.HasFlag(Short))
+            if (valueInfo == null || (valueInfo.Flags & Short) == 0)
                 reader.BaseStream.Position += (!CacheVersionDetection.IsInGen(CacheGeneration.Second, Version) ? 0xC : 0x4); // Skip the class name and zero bytes, it's not important
             
             var result = context.GetTagByIndex(reader.ReadInt32());
