@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 namespace TagTool.Common
 {
 	//note: this thread pool doesn't ever free allocated threads, unless FreeAllThreads is called
-    public static class CustomThreadPool
-    {
+	public static class CustomThreadPool
+	{
 		private static List<ThreadState> availableList = new();
 		private static readonly object availableListLocker = new();
 
@@ -93,7 +93,7 @@ namespace TagTool.Common
 				}
 			});
 			state.Thread.Priority = ThreadPriority.AboveNormal;
-			state.Thread.Start();
+			state.Thread.Start(state);
 			return state;
 		}
 
@@ -197,5 +197,5 @@ namespace TagTool.Common
 				availableList.Clear();
 			}
 		}
-    }
+	}
 }
