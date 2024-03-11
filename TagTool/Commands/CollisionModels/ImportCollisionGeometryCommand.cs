@@ -21,7 +21,7 @@ namespace TagTool.Commands.CollisionModels
         private CollisionGeometry Bsp { get; set; }
         private List<Assimp.Vector3D> Vertices { get; set; }
         private List<Face> Faces { get; set; }
-        private List<triangle> Triangles { get; set; }
+        private List<@triangle> Triangles { get; set; }
         private bool debug = false;
         private bool forceimport = false;
         private int max_surface_edges = 8;
@@ -177,7 +177,7 @@ namespace TagTool.Commands.CollisionModels
             Bsp = collisionModel.Regions[0].Permutations[0].Bsps[0].Geometry;
 
             //loop through each mesh and add the triangles to the global list
-            Triangles = new List<triangle>();
+            Triangles = new List<@triangle>();
             foreach (Assimp.Mesh currentmesh in model.Meshes)
             {
                 Vertices = currentmesh.Vertices;
@@ -279,7 +279,7 @@ namespace TagTool.Commands.CollisionModels
             return true;
         }
 
-        public struct triangle
+        public struct @triangle
         {
             public Vector3D a;
             public Vector3D b;
@@ -288,9 +288,9 @@ namespace TagTool.Commands.CollisionModels
             public float area;
         }
 
-        public class triangle_list_qsort_compar : IComparer<triangle>
+        public class triangle_list_qsort_compar : IComparer<@triangle>
         {
-            public int Compare(triangle element1, triangle element2)
+            public int Compare(@triangle element1, @triangle element2)
             {
                 int result = 0;
                 float v2 = element2.area;
@@ -329,7 +329,7 @@ namespace TagTool.Commands.CollisionModels
                     return false;
                 }
 
-                triangle newtriangle = new triangle{ a = Vertices[indices[0]], b = Vertices[indices[1]], c = Vertices[indices[2]], material_index = materialindex};
+                @triangle newtriangle = new @triangle{ a = Vertices[indices[0]], b = Vertices[indices[1]], c = Vertices[indices[2]], material_index = materialindex};
                 Vector3D point0 = Vertices[indices[0]];
                 Vector3D point1 = Vertices[indices[1]];
                 Vector3D point2 = Vertices[indices[2]];
@@ -372,7 +372,7 @@ namespace TagTool.Commands.CollisionModels
 
         public bool collision_geometry_add_surfaces()
         {
-            foreach(triangle newtriangle in Triangles)
+            foreach(@triangle newtriangle in Triangles)
             {
                 if (Bsp.Surfaces.Count >= ushort.MaxValue)
                 {

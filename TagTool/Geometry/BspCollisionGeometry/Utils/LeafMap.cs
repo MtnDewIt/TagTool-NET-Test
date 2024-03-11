@@ -17,21 +17,21 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
         public class leafy_bsp
         {
             public int bsp_leaf_count;
-            public List<leaf> leaves;
+            public List<@leaf> leaves;
             public List<leaf_map_leaf> leaf_map_leaves = new List<leaf_map_leaf>();
             public List<leaf_map_portal> leaf_map_portals = new List<leaf_map_portal>();
         }
-        public class leaf
+        public class @leaf
         {
             public int immediate_parent_3dnode;
             public List<int> plane_designators;
             public float[,] polygon_areas_by_type = new float[2,3];
             public float[] polygon_area_sums = new float[2];
             public short[,] polygon_counts = new short[2,3];
-            public List<polygon> polygons = new List<polygon>(); //cut with planes that do not include margins
-            public List<polygon> polygons2 = new List<polygon>(); //cut with planes that include margins
+            public List<@polygon> polygons = new List<@polygon>(); //cut with planes that do not include margins
+            public List<@polygon> polygons2 = new List<@polygon>(); //cut with planes that include margins
         };
-        public class polygon
+        public class @polygon
         {
             public int surface_index;
             public int plane_index;
@@ -71,7 +71,7 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
             {
                 for(var leaf_index = 0; leaf_index < leafybsp.leaf_map_leaves.Count; leaf_index++)
                 {
-                    leaf bsp_leaf = leafybsp.leaves[leaf_index];
+                    @leaf bsp_leaf = leafybsp.leaves[leaf_index];
                     if (leaf_portal_area_mismatch_count(leafybsp, leaf_index) > 0)
                     {
                         if (bsp_leaf.polygon_counts[1,0] > 0) //polygons2 type 0
@@ -132,7 +132,7 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
             return true;
         }
 
-        public bool reconstruct_bsp_leaf(leaf bsp_leaf, ref int new_leaf_index)
+        public bool reconstruct_bsp_leaf(@leaf bsp_leaf, ref int new_leaf_index)
         {
             int build_type = 0;
 
@@ -165,7 +165,7 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
                     for (int i = 0; i < 2; i++)
                     {
                         int child_index = -1;
-                        leaf new_leaf = new leaf();
+                        @leaf new_leaf = new @leaf();
                         if (!bsp3d_split_manual(bsp_leaf, i, plane_index, ref new_leaf))
                             return false;
                         if(!reconstruct_bsp_leaf(new_leaf, ref child_index))
@@ -201,14 +201,14 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
             return true;
         }
 
-        public bool bsp3d_split_manual(leaf bsp_leaf, int split_side, int plane_index, ref leaf new_leaf)
+        public bool bsp3d_split_manual(@leaf bsp_leaf, int split_side, int plane_index, ref @leaf new_leaf)
         {
             for(var use_plane_margins = 0; use_plane_margins < 2; use_plane_margins++)
             {
                 RealPlane3d plane_block = Bsp.Planes[plane_index].Value;
                 if (use_plane_margins == 1)
                     plane_block.D += split_side == 1 ? -0.00024414062f : 0.00024414062f;
-                List<polygon> polygonlist = use_plane_margins == 0 ? bsp_leaf.polygons : bsp_leaf.polygons2;
+                List<@polygon> polygonlist = use_plane_margins == 0 ? bsp_leaf.polygons : bsp_leaf.polygons2;
                 foreach(var polygon in polygonlist)
                 {
                     List<RealPoint3d> polygon_points = new List<RealPoint3d>();
@@ -230,7 +230,7 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
                     List<RealPoint2d> polygon_points2d = polygon_project_on_plane(polygon_points, polygon_plane, polygon.plane_index);
                     float polygon_area = polygon_get_area(polygon_points2d, polygon_plane);
 
-                    polygon new_polygon = new polygon
+                    @polygon new_polygon = new @polygon
                     {
                         polygon_type = polygon_type,
                         points = polygon_points,
@@ -259,7 +259,7 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
         public int leaf_portal_area_mismatch_count(leafy_bsp leafybsp, int leaf_index)
         {
             leaf_map_leaf map_leaf = leafybsp.leaf_map_leaves[leaf_index];
-            leaf bsp_leaf = leafybsp.leaves[leaf_index];
+            @leaf bsp_leaf = leafybsp.leaves[leaf_index];
             int mismatching_leaf_portal_count = 0;
             if(map_leaf.portal_indices.Count > 0)
             {
@@ -270,7 +270,7 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
                     {
                         leaf_map_portal leaf_portal = leafybsp.leaf_map_portals[portal_index & 0x7FFFFFFF];
                         int portal_other_leaf_index = leaf_portal.back_leaf_index == leaf_index ? leaf_portal.front_leaf_index : leaf_portal.back_leaf_index;
-                        leaf other_leaf = leafybsp.leaves[portal_other_leaf_index];
+                        @leaf other_leaf = leafybsp.leaves[portal_other_leaf_index];
 
                         if (other_leaf.polygon_area_sums[0] > bsp_leaf.polygon_area_sums[0] && //polygons1 area sum mismatch
                             (bsp_leaf.polygon_counts[1, 0] > 0 || //polygons2 type 0 count > 0
@@ -301,9 +301,9 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
         public bool setup_leafy_bsp(ref leafy_bsp leafybsp)
         {
             leafybsp.bsp_leaf_count = Bsp.Leaves.Count;
-            leafybsp.leaves = new List<leaf>(Bsp.Bsp3dNodes.Count + 1);
+            leafybsp.leaves = new List<@leaf>(Bsp.Bsp3dNodes.Count + 1);
             for (var i = 0; i < Bsp.Bsp3dNodes.Count + 1; i++)
-                leafybsp.leaves.Add(new leaf());
+                leafybsp.leaves.Add(new @leaf());
 
             if (!populate_plane_designators(ref leafybsp, new List<int>(), 0, -1))
                 return false;
@@ -328,16 +328,16 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
 
             for (int leaf_index = 0; leaf_index < leafybsp.leaves.Count; leaf_index++)
             {
-                leaf current_leaf = leafybsp.leaves[leaf_index];
+                @leaf current_leaf = leafybsp.leaves[leaf_index];
                 for (int use_plane_margins = 0; use_plane_margins < 2; use_plane_margins++)
                 {
                     int polygon_count = (use_plane_margins == 0) ? current_leaf.polygons.Count : current_leaf.polygons2.Count;
                     if (polygon_count > 0)
                     {
-                        List<polygon> polygon_block = (use_plane_margins == 0) ? current_leaf.polygons : current_leaf.polygons2;
+                        List<@polygon> polygon_block = (use_plane_margins == 0) ? current_leaf.polygons : current_leaf.polygons2;
                         for (int polygon_index = 0; polygon_index < polygon_block.Count; polygon_index++)
                         {
-                            polygon current_polygon = polygon_block[polygon_index];
+                            @polygon current_polygon = polygon_block[polygon_index];
                             int plane_index = current_polygon.plane_index;
                             RealPlane3d plane_block = Bsp.Planes[plane_index & 0x7FFFFFFF].Value;
                             List<RealPoint2d> polygon_points = polygon_project_on_plane(current_polygon.points, plane_block, plane_index);
@@ -372,7 +372,7 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
                 {
                     bool is_back_child = i == 0;
                     int portal_child = is_back_child ? leaf_portal.back_leaf_index : leaf_portal.front_leaf_index;
-                    leaf child_leaf = leafybsp.leaves[portal_child];
+                    @leaf child_leaf = leafybsp.leaves[portal_child];
                     if (child_leaf.polygons2.Count > 0)
                     {
                         foreach (var polygon in child_leaf.polygons2)
@@ -991,7 +991,7 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
         {
             if(bsp3dnode_index < 0)
             {
-                leaf current_leaf = leafybsp.leaves[bsp3dnode_index & 0x7FFFFFFF];
+                @leaf current_leaf = leafybsp.leaves[bsp3dnode_index & 0x7FFFFFFF];
                 current_leaf.immediate_parent_3dnode = parent_bsp3dnode_index;
                 current_leaf.plane_designators = plane_designators.DeepClone();
                 return true;
@@ -1015,8 +1015,8 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
         {
             if (bsp3dnode_index < 0)
             {
-                leaf current_leaf = leafybsp.leaves[bsp3dnode_index & 0x7FFFFFFF];
-                polygon new_polygon = new polygon 
+                @leaf current_leaf = leafybsp.leaves[bsp3dnode_index & 0x7FFFFFFF];
+                @polygon new_polygon = new @polygon 
                 { 
                     surface_index = surface_index,
                     plane_index = plane_index,

@@ -8,9 +8,9 @@ using TagTool.MtnDewIt.BlamFiles;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache.Maps
 {
-    public class shrine : MapVariantFile
+    public class @shrine : MapVariantFile
     {
-        public shrine(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public @shrine(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,

@@ -8,9 +8,9 @@ using TagTool.MtnDewIt.BlamFiles;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache.Maps
 {
-    public class bunkerworld : MapVariantFile
+    public class @bunkerworld : MapVariantFile
     {
-        public bunkerworld(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public @bunkerworld(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,

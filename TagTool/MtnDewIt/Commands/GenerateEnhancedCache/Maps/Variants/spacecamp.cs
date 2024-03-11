@@ -8,9 +8,9 @@ using TagTool.IO;
 
 namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Maps
 {
-    public class spacecamp : MapVariantFile
+    public class @spacecamp : MapVariantFile
     {
-        public spacecamp(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public @spacecamp(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,

@@ -8,9 +8,9 @@ using TagTool.Common;
 
 namespace TagTool.MtnDewIt.Commands.GenerateCache.Maps
 {
-    public class campaign : MapVariantFile
+    public class @campaign : MapVariantFile
     {
-        public campaign(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public @campaign(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,
