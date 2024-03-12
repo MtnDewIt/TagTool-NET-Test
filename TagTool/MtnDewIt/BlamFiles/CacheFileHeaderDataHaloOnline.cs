@@ -98,7 +98,7 @@ namespace TagTool.MtnDewIt.BlamFiles
 
         public int ScenarioTagIndex;
 
-        public int CacheFileResourceGestAltIndex;
+        public int CacheFileResourceGestaltIndex;
 
         [TagField(Length = 0x594, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
         [TagField(Length = 0x584, MinVersion = CacheVersion.HaloOnline235640)]
