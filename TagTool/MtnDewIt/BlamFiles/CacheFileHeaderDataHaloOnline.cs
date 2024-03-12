@@ -44,7 +44,8 @@ namespace TagTool.MtnDewIt.BlamFiles
 
         public LastModificationDate CreationTime;
 
-        [TagField(Length = 6)]
+        [TagField(Length = 6, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
+        [TagField(Length = 8, MinVersion = CacheVersion.HaloOnline235640)]
         public LastModificationDate[] SharedFileTimes;
 
         [TagField(Length = 0x20)]
