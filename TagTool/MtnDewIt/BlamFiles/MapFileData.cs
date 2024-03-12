@@ -21,7 +21,7 @@ namespace TagTool.MtnDewIt.BlamFiles
         public EndianFormat EndianFormat { get; set; }
         public CachePlatform CachePlatform { get; set; }
 
-        public CacheFileHeader Header;
+        public CacheFileHeaderData Header;
 
         public BlfData MapFileBlf;
 
@@ -71,7 +71,7 @@ namespace TagTool.MtnDewIt.BlamFiles
             Version = version;
             CachePlatform = platform;
 
-            Header = CacheFileHeader.Read(MapVersion, Version, CachePlatform, reader);
+            Header = CacheFileHeaderData.ReadData(Version, CachePlatform, reader);
 
             if (!Header.IsValid())
             {

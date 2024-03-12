@@ -44,7 +44,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Maps
                 EndOfFileCRC = null,
                 EndOfFileRSA = new BlfDataEndOfFileRSA
                 {
-                    RSASignature = new RSASignature
+                    RSASignature = new BlfRSASignature
                     {
                         Data = new byte[256]
                         {

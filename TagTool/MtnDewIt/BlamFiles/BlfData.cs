@@ -473,7 +473,7 @@ namespace TagTool.MtnDewIt.BlamFiles
     }
 
     [TagStructure(Size = 0x100)]
-    public class RSASignature
+    public class BlfRSASignature
     {
         [TagField(Length = 0x100)]
         public byte[] Data;
@@ -482,7 +482,7 @@ namespace TagTool.MtnDewIt.BlamFiles
     [TagStructure(Size = 0x100, Align = 0x1)]
     public class BlfDataEndOfFileRSA : BlfDataChunkEndOfFile
     {
-        public RSASignature RSASignature;
+        public BlfRSASignature RSASignature;
     }
 
     [TagStructure(Size = 0x44, Align = 0x1)]

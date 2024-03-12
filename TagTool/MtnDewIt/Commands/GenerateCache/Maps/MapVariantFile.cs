@@ -47,7 +47,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Maps
             mapFile.CachePlatform = CachePlatform.Original;
             mapFile.EndianFormat = format;
             mapFile.MapVersion = CacheFileVersion.HaloOnline;
-            var header = new CacheFileHeaderGenHaloOnline();
+            var header = new CacheFileHeaderDataHaloOnline();
             header.HeaderSignature = new Tag("head");
             header.FileVersion = CacheFileVersion.HaloOnline;
             header.FileLength = (int)TagStructure.GetStructureSize(typeof(CacheFileHeaderGenHaloOnline), version, CachePlatform.Original);
