@@ -66,11 +66,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             EmptyDirectory(destDirectory);
 
-            CreateTagCache(destDirectory);
-
             CacheContext.StringIdCacheFile.CopyTo($@"{destDirectory.FullName}\string_ids.dat");
 
-            var destResourceCaches = new Dictionary<ResourceLocation, ResourceCache>();
             var destCacheContext = new GameCacheHaloOnline(destDirectory);
 
             SetCacheVersion(destCacheContext, CacheVersion.HaloOnlineED);
@@ -83,9 +80,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
                     continue;
 
                 CopiedResources[location] = new Dictionary<int, PageableResource>();
-
-                destResourceCaches[location] = CreateResourceCache(destDirectory, location);
-                SourceResourceStreams[location] = CacheContext.ResourceCaches.OpenCacheRead(location);
+                SourceResourceStreams[location] = CacheContext.ResourceCaches.OpenCacheReadWrite(location);
                 DestinationResourceStreams[location] = destCacheContext.ResourceCaches.OpenCacheReadWrite(location);
             }
 
@@ -174,50 +169,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
                 entry.Value.Close();
 
             return true;
-        }
-
-        // Creates a new tags.dat file
-        public TagCache CreateTagCache(DirectoryInfo directory)
-        {
-            var file = new FileInfo(Path.Combine(directory.FullName, "tags.dat"));
-
-            TagCache cache = null;
-
-            using (var stream = file.Create())
-            using (var writer = new BinaryWriter(stream))
-            {
-                writer.Write(0);
-                writer.Write(32);
-                writer.Write(0);
-                writer.Write(0);
-                writer.Write(0x01D0631BCC791704);
-                writer.Write(0);
-                writer.Write(0);
-            }
-
-            return cache;
-        }
-
-        // Creates a new resource file
-        public ResourceCache CreateResourceCache(DirectoryInfo directory, ResourceLocation location)
-        {
-            var file = new FileInfo(Path.Combine(directory.FullName, ResourceCachesHaloOnline.ResourceCacheNames[location]));
-
-            ResourceCache cache = null;
-
-            using (var stream = file.Create())
-            using (var writer = new BinaryWriter(stream))
-            {
-                writer.Write(0);
-                writer.Write(32);
-                writer.Write(0);
-                writer.Write(0);
-                writer.Write(0x01D0631BCC92931B);
-                writer.Write(0);
-                writer.Write(0);
-            }
-
-            return cache;
         }
 
         private CachedTagHaloOnline CopyTag(CachedTagHaloOnline srcTag, GameCacheHaloOnline srcCacheContext, Stream srcStream, GameCacheHaloOnline destCacheContext, Stream destStream)

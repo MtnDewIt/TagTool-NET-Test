@@ -200,15 +200,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
             EmptyDirectory(destDirectory);
 
-            CreateTagCache(destDirectory);
-
             // At some point I would like to have it generate its own string_ids.dat, however all current solutions I have tried
             // cause issues when copying over existing tags from MS23. Need to look into string id functionality, as for some reason when porting
             // shaders, it complains about missing shader options, when the string ids are in the cache :/
 
             CacheContext.StringIdCacheFile.CopyTo($@"{destDirectory.FullName}\string_ids.dat");
 
-            var destResourceCaches = new Dictionary<ResourceLocation, ResourceCache>();
             var destCacheContext = new GameCacheHaloOnline(destDirectory);
 
             SetCacheVersion(destCacheContext, CacheVersion.HaloOnlineED);
@@ -221,9 +218,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
                     continue;
 
                 CopiedResources[location] = new Dictionary<int, PageableResource>();
-
-                destResourceCaches[location] = CreateResourceCache(destDirectory, location);
-                SourceResourceStreams[location] = CacheContext.ResourceCaches.OpenCacheRead(location);
+                SourceResourceStreams[location] = CacheContext.ResourceCaches.OpenCacheReadWrite(location);
                 DestinationResourceStreams[location] = destCacheContext.ResourceCaches.OpenCacheReadWrite(location);
             }
 
@@ -329,50 +324,6 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
                 entry.Value.Close();
 
             return true;
-        }
-
-        // Creates a new tags.dat file
-        public TagCache CreateTagCache(DirectoryInfo directory)
-        {
-            var file = new FileInfo(Path.Combine(directory.FullName, "tags.dat"));
-
-            TagCache cache = null;
-
-            using (var stream = file.Create())
-            using (var writer = new BinaryWriter(stream))
-            {
-                writer.Write(0);
-                writer.Write(32);
-                writer.Write(0);
-                writer.Write(0);
-                writer.Write(0x01D0631BCC791704);
-                writer.Write(0);
-                writer.Write(0);
-            }
-
-            return cache;
-        }
-
-        // Creates a new resource file
-        public ResourceCache CreateResourceCache(DirectoryInfo directory, ResourceLocation location)
-        {
-            var file = new FileInfo(Path.Combine(directory.FullName, ResourceCachesHaloOnline.ResourceCacheNames[location]));
-
-            ResourceCache cache = null;
-
-            using (var stream = file.Create())
-            using (var writer = new BinaryWriter(stream))
-            {
-                writer.Write(0);
-                writer.Write(32);
-                writer.Write(0);
-                writer.Write(0);
-                writer.Write(0x01D0631BCC92931B);
-                writer.Write(0);
-                writer.Write(0);
-            }
-
-            return cache;
         }
 
         public CachedTagHaloOnline CopyTag(CachedTagHaloOnline srcTag, GameCacheHaloOnline srcCacheContext, Stream srcStream, GameCacheHaloOnline destCacheContext, Stream destStream)
