@@ -200,12 +200,6 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
             EmptyDirectory(destDirectory);
 
-            // At some point I would like to have it generate its own string_ids.dat, however all current solutions I have tried
-            // cause issues when copying over existing tags from MS23. Need to look into string id functionality, as for some reason when porting
-            // shaders, it complains about missing shader options, when the string ids are in the cache :/
-
-            CacheContext.StringIdCacheFile.CopyTo($@"{destDirectory.FullName}\string_ids.dat");
-
             var destCacheContext = new GameCacheHaloOnline(destDirectory);
 
             SetCacheVersion(destCacheContext, CacheVersion.HaloOnlineED);
@@ -316,6 +310,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             }
 
             destCacheContext.SaveTagNames();
+            destCacheContext.SaveStrings();
 
             foreach (var entry in SourceResourceStreams)
                 entry.Value.Close();
@@ -389,6 +384,9 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
             if (type.IsSubclassOf(typeof(TagStructure)))
                 return CopyStructure((TagStructure)data, type, srcCacheContext, srcStream, destCacheContext, destStream);
+
+            if (type == typeof(StringId))
+                return destCacheContext.StringTable.GetOrAddString(srcCacheContext.StringTable.GetString((StringId)data));
 
             return data;
         }
