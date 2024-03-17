@@ -27,30 +27,30 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
             var tag = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_weapons_infinite_ammo");
             var sily = CacheContext.Deserialize<TextValuePairDefinition>(Stream, tag);
             sily.Parameter = TextValuePairDefinition.GameVariantParameters.IntGlobalTraitsTemplateInfiniteAmmo;
-            sily.Name = CacheContext.StringTable.GetStringId($@"traits_weapons_infinite_ammo");
-            sily.Description = CacheContext.StringTable.GetStringId($@"traits_weapons_infinite_ammo_desc");
+            sily.Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_infinite_ammo");
+            sily.Description = CacheContext.StringTable.GetOrAddString($@"traits_weapons_infinite_ammo_desc");
             sily.TextValuePairs = new List<TextValuePairDefinition.TextValuePair> 
             {
                 new TextValuePairDefinition.TextValuePair
                 {
                     Flags = TextValuePairDefinition.TextValuePair.TextValuePairFlags.DefaultSetting,
-                    Name = CacheContext.StringTable.GetStringId($@"unchanged"),
-                    Description = CacheContext.StringTable.GetStringId($@"unchanged_desc"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"unchanged"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"unchanged_desc"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 1,
-                    Name = CacheContext.StringTable.GetStringId($@"disabled"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"disabled"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 2,
-                    Name = CacheContext.StringTable.GetStringId($@"enabled"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"enabled"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 3,
-                    Name = CacheContext.StringTable.GetStringId($@"bottomless_clip"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"bottomless_clip"),
                 },
             };
             CacheContext.Serialize(Stream, tag, sily);

@@ -25,7 +25,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
         {
             var tag = GetCachedTag<SquadTemplate>($@"ai\squad_templates\campaign");
             var sqtm = CacheContext.Deserialize<SquadTemplate>(Stream, tag);
-            sqtm.Name = CacheContext.StringTable.GetStringId($@"campaign");
+            sqtm.Name = CacheContext.StringTable.GetOrAddString($@"campaign");
             CacheContext.Serialize(Stream, tag, sqtm);
         }
     }

@@ -37,7 +37,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     Title = "Berserk",
                     IconName = "temp",
-                    AnimationEnter = CacheContext.StringTable.GetStringId($@"berserk"),
+                    AnimationEnter = CacheContext.StringTable.GetOrAddString($@"berserk"),
                     Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
                     OverrideCamera = new List<Unit.UnitCameraBlock>
                     {
@@ -58,7 +58,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     Title = "Cheer",
                     IconName = "temp",
-                    AnimationEnter = CacheContext.StringTable.GetStringId($@"cheer"),
+                    AnimationEnter = CacheContext.StringTable.GetOrAddString($@"cheer"),
                     Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
                     OverrideCamera = new List<Unit.UnitCameraBlock>
                     {
@@ -79,7 +79,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     Title = "Warn",
                     IconName = "temp",
-                    AnimationEnter = CacheContext.StringTable.GetStringId($@"warn"),
+                    AnimationEnter = CacheContext.StringTable.GetOrAddString($@"warn"),
                     Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
                     OverrideCamera = new List<Unit.UnitCameraBlock>
                     {
@@ -100,7 +100,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     Title = "Taunt",
                     IconName = "temp",
-                    AnimationEnter = CacheContext.StringTable.GetStringId($@"taunt"),
+                    AnimationEnter = CacheContext.StringTable.GetOrAddString($@"taunt"),
                     Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
                     OverrideCamera = new List<Unit.UnitCameraBlock>
                     {

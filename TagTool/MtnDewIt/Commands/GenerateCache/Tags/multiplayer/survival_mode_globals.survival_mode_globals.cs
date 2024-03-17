@@ -35,419 +35,419 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_welcome"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_welcome"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_welcome"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_welcome"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_new_set"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_new_set"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_new_set"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_new_set"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_end_set"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_end_set"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_end_set"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_end_set"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_new_round"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_new_round"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_new_round"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_new_round"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_end_round"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_end_round"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_end_round"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_end_round"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_new_wave"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_new_wave"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_new_wave"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_new_wave"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_end_wave"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_end_wave"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_end_wave"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_end_wave"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_bonus_round"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_bonus_round"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_bonus_round"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_bonus_round"),
                     DisplayTime = 5f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_bonus_lives_awarded"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_bonus_lives_awarded"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_bonus_lives_awarded"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_bonus_lives_awarded"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_awarded_lives"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_awarded_lives"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_awarded_lives"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_awarded_lives"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_awarded_weapon"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_awarded_weapon"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_awarded_weapon"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_awarded_weapon"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_awarded_equipment"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_awarded_equipment"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_awarded_equipment"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_awarded_equipment"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_skull_thunderstorm"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_skull_thunderstorm"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_skull_thunderstorm"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_thunderstorm"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_skull_famine"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_skull_famine"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_skull_famine"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_famine"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_skull_tilt"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_skull_tilt"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_skull_tilt"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_tilt"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_skull_mythic"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_skull_mythic"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_skull_mythic"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_mythic"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_skull_catch"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_skull_catch"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_skull_catch"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_catch"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                               
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_skull_black_eye"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_skull_black_eye"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_skull_black_eye"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_black_eye"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_skull_tough_luck"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_skull_tough_luck"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_skull_tough_luck"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_tough_luck"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_skull_iron"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_skull_iron"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_skull_iron"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_iron"),
                     DisplayTime = 3f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_last_man_standing"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_last_man_standing"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_last_man_standing"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_last_man_standing"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                               
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_5_lives_left"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_5_lives_left"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_5_lives_left"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_5_lives_left"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_1_life_left"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_1_life_left"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_1_life_left"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_1_life_left"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_0_lives_left"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_0_lives_left"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_0_lives_left"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_0_lives_left"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_game_over"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_game_over"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_game_over"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_game_over"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_double_kill"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_double_kill"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_triple_kill"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_triple_kill"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_overkill"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_overkill"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                               
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_killtacular"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_killtacular"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_killtrocity"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_killtrocity"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_killamanjaro"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_killamanjaro"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_killtastrophe"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_killtastrophe"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_killpocalpyse"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_killpocalpyse"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_killionaire"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_killionaire"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_killing_spree"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_killing_spree"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_killing_frenzy"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_killing_frenzy"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_running_riot"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_running_riot"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_rampage"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_rampage"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_untouchable"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_untouchable"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_invincible"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_invincible"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_splatter_spree"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_splatter_spree"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_vehicluar_manslaughter"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_vehicluar_manslaughter"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_sniper_spree"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_sniper_spree"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_sharpshooter"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_sharpshooter"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                               
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_shotgun_spree"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_shotgun_spree"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_open_season"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_open_season"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_stick_spree"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_stick_spree"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_corrected"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_corrected"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_sword_spree"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_sword_spree"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_slice_n_dice"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_slice_n_dice"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_hammer_spree"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_hammer_spree"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_ball_peen_buster"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_ball_peen_buster"),
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_hero"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_hero"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
@@ -455,206 +455,206 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_5_ai_remaining"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_5_ai_remaining"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_5_ai_remaining"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_5_ai_remaining"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_2_ai_remaining"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_2_ai_remaining"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_2_ai_remaining"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_2_ai_remaining"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_1_ai_remaining"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_1_ai_remaining"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_1_ai_remaining"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_1_ai_remaining"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_garbage_trucking"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_garbage_trucking"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_garbage_trucking"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_garbage_trucking"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_garbage_collected"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_garbage_collected"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_garbage_collected"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_garbage_collected"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_reinforcements"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_reinforcements"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_reinforcements"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_reinforcements"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_skull_tilt_famine"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_skull_tilt_famine"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_skull_tilt_famine"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_tilt_famine"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_skull_tilt_famine_mythic"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_skull_tilt_famine_mythic"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_skull_tilt_famine_mythic"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_tilt_famine_mythic"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_skull_tough_catch"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_skull_tough_catch"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_skull_tough_catch"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_tough_catch"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_skull_tough_catch_black"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_skull_tough_catch_black"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_skull_tough_catch_black"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_tough_catch_black"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_skull_all"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_skull_all"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_skull_all"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_all"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_incredible_round"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_incredible_round"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_incredible_round"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_incredible_round"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_superb_set"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_superb_set"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_superb_set"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_superb_set"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,      
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_bonus_round_over"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_bonus_round_over"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_bonus_round_over"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_bonus_round_over"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_total_bonus"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_total_bonus"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_total_bonus"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_total_bonus"),
                     DisplayTime = 2f,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_better_luck_next_time"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_better_luck_next_time"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_better_luck_next_time"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_better_luck_next_time"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_no_bonus"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_no_bonus"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_no_bonus"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_no_bonus"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_bonus_information"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_bonus_information"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_bonus_information"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_bonus_information"),
                     DisplayTime = 63f,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_next_round_timer"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_next_round_timer"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_next_round_timer"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_next_round_timer"),
                     DisplayTime = 20f,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_next_set_timer"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_next_set_timer"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_next_set_timer"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_next_set_timer"),
                     DisplayTime = 20f,                                
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
-                    Event = CacheContext.StringTable.GetStringId($@"survival_bonus_skull_all"),
+                    Event = CacheContext.StringTable.GetOrAddString($@"survival_bonus_skull_all"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    DisplayString = CacheContext.StringTable.GetStringId($@"survival_bonus_skull_all"),
+                    DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_bonus_skull_all"),
                     DisplayTime = 2f,
                     SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
                 },

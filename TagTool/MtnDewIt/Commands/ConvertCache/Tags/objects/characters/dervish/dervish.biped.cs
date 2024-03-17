@@ -40,9 +40,9 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             bipd.Assassination = new Unit.UnitAssassination 
             {
                 Response = GetCachedTag<DamageResponseDefinition>($@"globals\damage_responses\player_assassination"),
-                ToolStowAnchor = CacheContext.StringTable.GetStringId($@"weapon_thigh"),
-                ToolHandMarker = CacheContext.StringTable.GetStringId($@"right_hand_elite"),
-                ToolMarker = CacheContext.StringTable.GetStringId($@"weapon_thigh"),
+                ToolStowAnchor = CacheContext.StringTable.GetOrAddString($@"weapon_thigh"),
+                ToolHandMarker = CacheContext.StringTable.GetOrAddString($@"right_hand_elite"),
+                ToolMarker = CacheContext.StringTable.GetOrAddString($@"weapon_thigh"),
             };
             bipd.ShieldPopDamage = GetCachedTag<DamageEffect>($@"globals\damage_effects\shield_pop_melee");
             bipd.AssassinationDamage = GetCachedTag<DamageEffect>($@"globals\damage_effects\assassination");

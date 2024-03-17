@@ -46,9 +46,9 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             chdt.HudWidgets[2].TextWidgets[3].PlacementData[0].Scale = new RealPoint2d(0.6476191f, 0.6476191f);
             chdt.HudWidgets[2].TextWidgets[4].PlacementData[0].Scale = new RealPoint2d(0.6476191f, 0.6476191f);
             chdt.HudWidgets[2].TextWidgets[5].PlacementData[0].Scale = new RealPoint2d(0.6476191f, 0.6476191f);
-            chdt.HudWidgets[2].TextWidgets[6].Name = CacheContext.StringTable.GetStringId("bomb_dropped");
+            chdt.HudWidgets[2].TextWidgets[6].Name = CacheContext.StringTable.GetOrAddString("bomb_dropped");
             chdt.HudWidgets[2].TextWidgets[6].PlacementData[0].Scale = new RealPoint2d(0.6476191f, 0.6476191f);
-            chdt.HudWidgets[2].TextWidgets[6].InputString = CacheContext.StringTable.GetStringId("gm_assault_bomb_dropped");
+            chdt.HudWidgets[2].TextWidgets[6].InputString = CacheContext.StringTable.GetOrAddString("gm_assault_bomb_dropped");
             chdt.HudWidgets[3].TextWidgets[0].PlacementData[0].Offset = new RealPoint2d(-2f, 2);
             chdt.HudWidgets[3].TextWidgets[0].PlacementData[0].Scale = new RealPoint2d(0.58f, 0.58f);
             chdt.HudWidgets[3].TextWidgets[0].Font = WidgetFontValue.LargeBodyText;

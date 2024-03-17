@@ -25,8 +25,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
         {
             var tag = GetCachedTag<Equipment>($@"objects\equipment\concussiveblast_equipment\concussiveblast_equipment");
             var eqip = CacheContext.Deserialize<Equipment>(Stream, tag);
-            eqip.EnterAnimation = CacheContext.StringTable.GetStringId($@"con_blast_enter");
-            eqip.ExitAnimation = CacheContext.StringTable.GetStringId($@"con_blast_exit");
+            eqip.EnterAnimation = CacheContext.StringTable.GetOrAddString($@"con_blast_enter");
+            eqip.ExitAnimation = CacheContext.StringTable.GetOrAddString($@"con_blast_exit");
             CacheContext.Serialize(Stream, tag, eqip);
         }
     }

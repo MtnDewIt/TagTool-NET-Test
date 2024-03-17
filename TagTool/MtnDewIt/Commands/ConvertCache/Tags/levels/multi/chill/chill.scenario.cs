@@ -52,14 +52,14 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"chill"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"chill"),
                     AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\chill\chill\chill"),
                     AmbienceCutoffDistance = 2f,
                     AmbienceInterpolationSpeed = 1f,
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"chill_verb"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"chill_verb"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_2_presets\cpaul_little_something_slightly_bigger_new"),
                     AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\chill\chill\chill"),
                     AmbienceCutoffDistance = 2f,

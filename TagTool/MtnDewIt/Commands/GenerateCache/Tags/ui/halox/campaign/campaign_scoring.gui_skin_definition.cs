@@ -40,7 +40,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                             Bounds720p = new Rectangle2d(2, 5, 45, 599),
                             AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\basic_fade"),
                         },
-                        ValueIdentifier = CacheContext.StringTable.GetStringId($@"name"),
+                        ValueIdentifier = CacheContext.StringTable.GetOrAddString($@"name"),
                         CustomFont = WidgetFontValue.BodyText,
                     },
                 },

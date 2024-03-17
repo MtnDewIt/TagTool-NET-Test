@@ -36,7 +36,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new PlayerActionSet.Action
                 {
                     Title = "Dance",
-                    AnimationEnter = CacheContext.StringTable.GetStringId($@"thunder_clap"),
+                    AnimationEnter = CacheContext.StringTable.GetOrAddString($@"thunder_clap"),
                     Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
                     OverrideCamera = new List<Unit.UnitCameraBlock>
                     {
@@ -57,7 +57,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     Title = "Fresh",
                     IconName = "temp",
-                    AnimationEnter = CacheContext.StringTable.GetStringId($@"fresh"),
+                    AnimationEnter = CacheContext.StringTable.GetOrAddString($@"fresh"),
                     Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
                     OverrideCamera = new List<Unit.UnitCameraBlock>
                     {
@@ -78,7 +78,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     Title = "Orange Justice",
                     IconName = "temp",
-                    AnimationEnter = CacheContext.StringTable.GetStringId($@"orange_justice"),
+                    AnimationEnter = CacheContext.StringTable.GetOrAddString($@"orange_justice"),
                     Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
                     OverrideCamera = new List<Unit.UnitCameraBlock>
                     {
@@ -99,7 +99,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     Title = "Electro Swing",
                     IconName = "temp",
-                    AnimationEnter = CacheContext.StringTable.GetStringId($@"electro_swing"),
+                    AnimationEnter = CacheContext.StringTable.GetOrAddString($@"electro_swing"),
                     Flags = PlayerActionSet.Action.ActionFlags.HideWeapon | PlayerActionSet.Action.ActionFlags.ForceThirdPersonCamera | PlayerActionSet.Action.ActionFlags.InhibitMovement,
                     OverrideCamera = new List<Unit.UnitCameraBlock>
                     {

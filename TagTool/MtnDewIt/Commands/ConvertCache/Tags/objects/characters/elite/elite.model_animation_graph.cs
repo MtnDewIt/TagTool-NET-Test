@@ -87,7 +87,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     Effect = 8,
                     Frame = 16,
-                    MarkerName = CacheContext.StringTable.GetStringId($@"shield_recharge"),
+                    MarkerName = CacheContext.StringTable.GetOrAddString($@"shield_recharge"),
                     DamageEffectReportingType = new Damage.DamageReportingType
                     {
                         HaloOnline = Damage.DamageReportingType.HaloOnlineValue.Guardians,
@@ -98,73 +98,73 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"airborne_dead"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"airborne_dead"),
                     GraphIndex = -1,
                     Animation = 109,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"landing_dead"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"landing_dead"),
                     GraphIndex = -1,
                     Animation = 252,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"armor_lock_enter"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"armor_lock_enter"),
                     GraphIndex = -1,
                     Animation = 1597,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"armor_lock_exit"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"armor_lock_exit"),
                     GraphIndex = -1,
                     Animation = 1598,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"armor_lock_idle"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"armor_lock_idle"),
                     GraphIndex = -1,
                     Animation = 1599,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"con_blast_enter"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"con_blast_enter"),
                     GraphIndex = -1,
                     Animation = 1600,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"con_blast_exit"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"con_blast_exit"),
                     GraphIndex = -1,
                     Animation = 1601,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"mag_pulse_enter"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"mag_pulse_enter"),
                     GraphIndex = -1,
                     Animation = 1602,
                 },
             };
             jmad.Modes.Add(new ModelAnimationGraph.Mode 
             {
-                Name = CacheContext.StringTable.GetStringId("sprint"),
+                Name = CacheContext.StringTable.GetOrAddString("sprint"),
                 WeaponClass = new List<ModelAnimationGraph.Mode.WeaponClassBlock> 
                 {
                     new ModelAnimationGraph.Mode.WeaponClassBlock
                     {
-                        Label = CacheContext.StringTable.GetStringId("missile"),
+                        Label = CacheContext.StringTable.GetOrAddString("missile"),
                         WeaponType = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock>
                         {
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock
                             {
-                                Label = CacheContext.StringTable.GetStringId("any"),
+                                Label = CacheContext.StringTable.GetOrAddString("any"),
                                 Set = new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.AnimationSet
                                 {
                                     Actions = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry>
                                     {
                                         new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                                         {
-                                            Label = CacheContext.StringTable.GetStringId("move_front"),
+                                            Label = CacheContext.StringTable.GetOrAddString("move_front"),
                                             GraphIndex = -1,
                                             Animation = 1605,
                                         },
@@ -175,19 +175,19 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     },
                     new ModelAnimationGraph.Mode.WeaponClassBlock
                     {
-                        Label = CacheContext.StringTable.GetStringId("rifle"),
+                        Label = CacheContext.StringTable.GetOrAddString("rifle"),
                         WeaponType = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock>
                         {
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock
                             {
-                                Label = CacheContext.StringTable.GetStringId("any"),
+                                Label = CacheContext.StringTable.GetOrAddString("any"),
                                 Set = new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.AnimationSet
                                 {
                                     Actions = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry>
                                     {
                                         new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                                         {
-                                            Label = CacheContext.StringTable.GetStringId("move_front"),
+                                            Label = CacheContext.StringTable.GetOrAddString("move_front"),
                                             GraphIndex = -1,
                                             Animation = 1607,
                                         },
@@ -198,19 +198,19 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     },
                     new ModelAnimationGraph.Mode.WeaponClassBlock
                     {
-                        Label = CacheContext.StringTable.GetStringId("pistol"),
+                        Label = CacheContext.StringTable.GetOrAddString("pistol"),
                         WeaponType = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock>
                         {
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock
                             {
-                                Label = CacheContext.StringTable.GetStringId("any"),
+                                Label = CacheContext.StringTable.GetOrAddString("any"),
                                 Set = new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.AnimationSet
                                 {
                                     Actions = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry>
                                     {
                                         new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                                         {
-                                            Label = CacheContext.StringTable.GetStringId("move_front"),
+                                            Label = CacheContext.StringTable.GetOrAddString("move_front"),
                                             GraphIndex = -1,
                                             Animation = 1606,
                                         },
@@ -221,19 +221,19 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     },
                     new ModelAnimationGraph.Mode.WeaponClassBlock
                     {
-                        Label = CacheContext.StringTable.GetStringId("sword"),
+                        Label = CacheContext.StringTable.GetOrAddString("sword"),
                         WeaponType = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock>
                         {
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock
                             {
-                                Label = CacheContext.StringTable.GetStringId("any"),
+                                Label = CacheContext.StringTable.GetOrAddString("any"),
                                 Set = new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.AnimationSet
                                 {
                                     Actions = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry>
                                     {
                                         new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                                         {
-                                            Label = CacheContext.StringTable.GetStringId("move_front"),
+                                            Label = CacheContext.StringTable.GetOrAddString("move_front"),
                                             GraphIndex = -1,
                                             Animation = 1608,
                                         },
@@ -244,19 +244,19 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     },
                     new ModelAnimationGraph.Mode.WeaponClassBlock
                     {
-                        Label = CacheContext.StringTable.GetStringId("ball"),
+                        Label = CacheContext.StringTable.GetOrAddString("ball"),
                         WeaponType = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock>
                         {
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock
                             {
-                                Label = CacheContext.StringTable.GetStringId("any"),
+                                Label = CacheContext.StringTable.GetOrAddString("any"),
                                 Set = new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.AnimationSet
                                 {
                                     Actions = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry>
                                     {
                                         new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                                         {
-                                            Label = CacheContext.StringTable.GetStringId("move_front"),
+                                            Label = CacheContext.StringTable.GetOrAddString("move_front"),
                                             GraphIndex = -1,
                                             Animation = 1603,
                                         },
@@ -267,19 +267,19 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     },
                     new ModelAnimationGraph.Mode.WeaponClassBlock
                     {
-                        Label = CacheContext.StringTable.GetStringId("hammer"),
+                        Label = CacheContext.StringTable.GetOrAddString("hammer"),
                         WeaponType = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock>
                         {
                             new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock
                             {
-                                Label = CacheContext.StringTable.GetStringId("any"),
+                                Label = CacheContext.StringTable.GetOrAddString("any"),
                                 Set = new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.AnimationSet
                                 {
                                     Actions = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry>
                                     {
                                         new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                                         {
-                                            Label = CacheContext.StringTable.GetStringId("move_front"),
+                                            Label = CacheContext.StringTable.GetOrAddString("move_front"),
                                             GraphIndex = -1,
                                             Animation = 1604,
                                         },

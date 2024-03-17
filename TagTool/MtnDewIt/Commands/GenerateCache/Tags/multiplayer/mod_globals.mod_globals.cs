@@ -32,20 +32,20 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 new ModGlobalsDefinition.PlayerCharacterSet()
                 {
                     DisplayName = "General",
-                    Name = CacheContext.StringTable.GetStringId($@"default"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"default"),
                     RandomChance = 0.1f,
                     Characters = new List<ModGlobalsDefinition.PlayerCharacterSet.PlayerCharacter>()
                     {
                         new ModGlobalsDefinition.PlayerCharacterSet.PlayerCharacter()
                         {
                             DisplayName = $@"Spartan",
-                            Name = CacheContext.StringTable.GetStringId($@"masterchief"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"masterchief"),
                             RandomChance = 0.1f,
                         },
                         new ModGlobalsDefinition.PlayerCharacterSet.PlayerCharacter()
                         {
                             DisplayName = $@"Elite",
-                            Name = CacheContext.StringTable.GetStringId($@"dervish"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"dervish"),
                             RandomChance = 0.1f,
                         },
                     },
@@ -56,8 +56,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 new ModGlobalsDefinition.PlayerCharacterCustomization()
                 {
                     GlobalPlayerCharacterTypeIndex = 0,
-                    CharacterName = CacheContext.StringTable.GetStringId($@"model_spartan"),
-                    CharacterDescription = CacheContext.StringTable.GetStringId($@"model_spartan_description"),
+                    CharacterName = CacheContext.StringTable.GetOrAddString($@"model_spartan"),
+                    CharacterDescription = CacheContext.StringTable.GetOrAddString($@"model_spartan_description"),
                     HudGlobals = GetCachedTag<ChudGlobalsDefinition>($@"ui\chud\globals"),
                     VisionGlobals = GetCachedTag<VisionMode>($@"globals\default_vision_mode"),
                     ActionSet = GetCachedTag<PlayerActionSet>($@"objects\characters\masterchief\mp_masterchief\actions"),
@@ -135,26 +135,26 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         {
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"cef_color_primary"),
-                                Description = CacheContext.StringTable.GetStringId($@"cef_color_primary_desc"),
+                                Name = CacheContext.StringTable.GetOrAddString($@"cef_color_primary"),
+                                Description = CacheContext.StringTable.GetOrAddString($@"cef_color_primary_desc"),
                                 Default = new ArgbColor(0, 84, 110, 38),
                             },
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"cef_color_secondary"),
-                                Description = CacheContext.StringTable.GetStringId($@"cef_color_secondary_desc"),
+                                Name = CacheContext.StringTable.GetOrAddString($@"cef_color_secondary"),
+                                Description = CacheContext.StringTable.GetOrAddString($@"cef_color_secondary_desc"),
                                 Default = new ArgbColor(0, 84, 110, 38),
                             },
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"cef_color_visor"),
-                                Description = CacheContext.StringTable.GetStringId($@"cef_color_visor_desc"),
+                                Name = CacheContext.StringTable.GetOrAddString($@"cef_color_visor"),
+                                Description = CacheContext.StringTable.GetOrAddString($@"cef_color_visor_desc"),
                                 Default = new ArgbColor(0, 255, 127, 0),
                             },
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"cef_color_light"),
-                                Description = CacheContext.StringTable.GetStringId($@"cef_color_light_desc"),
+                                Name = CacheContext.StringTable.GetOrAddString($@"cef_color_light"),
+                                Description = CacheContext.StringTable.GetOrAddString($@"cef_color_light_desc"),
                                 Default = new ArgbColor(0, 150, 133, 255),
                             },
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
@@ -167,8 +167,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 new ModGlobalsDefinition.PlayerCharacterCustomization()
                 {
                     GlobalPlayerCharacterTypeIndex = 1,
-                    CharacterName = CacheContext.StringTable.GetStringId($@"model_elite"),
-                    CharacterDescription = CacheContext.StringTable.GetStringId($@"model_elite_description"),
+                    CharacterName = CacheContext.StringTable.GetOrAddString($@"model_elite"),
+                    CharacterDescription = CacheContext.StringTable.GetOrAddString($@"model_elite_description"),
                     HudGlobals = GetCachedTag<ChudGlobalsDefinition>($@"ui\chud\globals"),
                     VisionGlobals = GetCachedTag<VisionMode>($@"globals\default_vision_mode"),
                     ActionSet = GetCachedTag<PlayerActionSet>($@"objects\characters\elite\mp_elite\actions"),
@@ -239,26 +239,26 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         {
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"cef_color_primary"),
-                                Description = CacheContext.StringTable.GetStringId($@"cef_color_primary_desc"),
+                                Name = CacheContext.StringTable.GetOrAddString($@"cef_color_primary"),
+                                Description = CacheContext.StringTable.GetOrAddString($@"cef_color_primary_desc"),
                                 Default = new ArgbColor(0, 11, 33, 86),
                             },
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"cef_color_secondary"),
-                                Description = CacheContext.StringTable.GetStringId($@"cef_color_secondary_desc"),
+                                Name = CacheContext.StringTable.GetOrAddString($@"cef_color_secondary"),
+                                Description = CacheContext.StringTable.GetOrAddString($@"cef_color_secondary_desc"),
                                 Default = new ArgbColor(0, 29, 16, 82),
                             },
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"cef_color_detail"),
-                                Description = CacheContext.StringTable.GetStringId($@"cef_color_detail_desc"),
+                                Name = CacheContext.StringTable.GetOrAddString($@"cef_color_detail"),
+                                Description = CacheContext.StringTable.GetOrAddString($@"cef_color_detail_desc"),
                                 Default = new ArgbColor(0, 255, 255, 255),
                             },
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
                             {
-                                Name = CacheContext.StringTable.GetStringId($@"cef_color_light"),
-                                Description = CacheContext.StringTable.GetStringId($@"cef_color_light_desc"),
+                                Name = CacheContext.StringTable.GetOrAddString($@"cef_color_light"),
+                                Description = CacheContext.StringTable.GetOrAddString($@"cef_color_light_desc"),
                                 Default = new ArgbColor(0, 27, 255, 104),
                             },
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock

@@ -40,28 +40,28 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                             Weight = 1,
                             ColorLowerBound = new RealRgbColor(0.501961f, 0.501961f, 0.501961f),
                             ColorUpperBound = new RealRgbColor(0.501961f, 0.501961f, 0.501961f),
-                            VariantName = CacheContext.StringTable.GetStringId($@"default"),
+                            VariantName = CacheContext.StringTable.GetOrAddString($@"default"),
                         },
                         new GameObject.ChangeColor.InitialPermutation
                         {
                             Weight = 1,
                             ColorLowerBound = new RealRgbColor(0.172549f, 0.231373f, 0.517647f),
                             ColorUpperBound = new RealRgbColor(0.172549f, 0.231373f, 0.517647f),
-                            VariantName = CacheContext.StringTable.GetStringId($@"blue"),
+                            VariantName = CacheContext.StringTable.GetOrAddString($@"blue"),
                         },
                         new GameObject.ChangeColor.InitialPermutation
                         {
                             Weight = 1,
                             ColorLowerBound = new RealRgbColor(0.156863f, 0.156863f, 0.156863f),
                             ColorUpperBound = new RealRgbColor(0.156863f, 0.156863f, 0.156863f),
-                            VariantName = CacheContext.StringTable.GetStringId($@"grey"),
+                            VariantName = CacheContext.StringTable.GetOrAddString($@"grey"),
                         },
                         new GameObject.ChangeColor.InitialPermutation
                         {
                             Weight = 1,
                             ColorLowerBound = new RealRgbColor(0.596078f, 0.133333f, 0.133333f),
                             ColorUpperBound = new RealRgbColor(0.596078f, 0.133333f, 0.133333f),
-                            VariantName = CacheContext.StringTable.GetStringId($@"red"),
+                            VariantName = CacheContext.StringTable.GetOrAddString($@"red"),
                         },
                     },
                 },
@@ -74,28 +74,28 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                             Weight = 1,
                             ColorLowerBound = new RealRgbColor(0.501961f, 0.501961f, 0.501961f),
                             ColorUpperBound = new RealRgbColor(0.501961f, 0.501961f, 0.501961f),
-                            VariantName = CacheContext.StringTable.GetStringId($@"default"),
+                            VariantName = CacheContext.StringTable.GetOrAddString($@"default"),
                         },
                         new GameObject.ChangeColor.InitialPermutation
                         {
                             Weight = 1,
                             ColorLowerBound = new RealRgbColor(0.564706f, 0.564706f, 0.564706f),
                             ColorUpperBound = new RealRgbColor(0.560784f, 0.560784f, 0.560784f),
-                            VariantName = CacheContext.StringTable.GetStringId($@"blue"),
+                            VariantName = CacheContext.StringTable.GetOrAddString($@"blue"),
                         },
                         new GameObject.ChangeColor.InitialPermutation
                         {
                             Weight = 1,
                             ColorLowerBound = new RealRgbColor(0.564706f, 0.564706f, 0.564706f),
                             ColorUpperBound = new RealRgbColor(0.560784f, 0.560784f, 0.560784f),
-                            VariantName = CacheContext.StringTable.GetStringId($@"grey"),
+                            VariantName = CacheContext.StringTable.GetOrAddString($@"grey"),
                         },
                         new GameObject.ChangeColor.InitialPermutation
                         {
                             Weight = 1,
                             ColorLowerBound = new RealRgbColor(0.835294f, 0.807843f, 0.545098f),
                             ColorUpperBound = new RealRgbColor(0.835294f, 0.807843f, 0.545098f),
-                            VariantName = CacheContext.StringTable.GetStringId($@"red"),
+                            VariantName = CacheContext.StringTable.GetOrAddString($@"red"),
                         },
                     },
                 },
@@ -108,7 +108,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                             Weight = 1,
                             ColorLowerBound = new RealRgbColor(1f, 0.294118f, 0f),
                             ColorUpperBound = new RealRgbColor(0.909804f, 0.329412f, 0f),
-                            VariantName = CacheContext.StringTable.GetStringId($@"default"),
+                            VariantName = CacheContext.StringTable.GetOrAddString($@"default"),
                         },
                     },
                 },
@@ -173,8 +173,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             bipd.CameraHeightVelocity = 0.8500001f;
             bipd.AreaDamageEffect = null;
             bipd.PhysicsFlags.Halo3ODST = Havok.BipedPhysicsFlags.Halo3OdstBits.None;
-            bipd.LivingMaterialName = CacheContext.StringTable.GetStringId($@"energy_holo");
-            bipd.DeadMaterialName = CacheContext.StringTable.GetStringId($@"energy_holo");
+            bipd.LivingMaterialName = CacheContext.StringTable.GetOrAddString($@"energy_holo");
+            bipd.DeadMaterialName = CacheContext.StringTable.GetOrAddString($@"energy_holo");
             bipd.LivingGlobalMaterialIndex = 157;
             bipd.DeadGlobalMaterialIndex = 157;
             CacheContext.Serialize(Stream, tag, bipd);

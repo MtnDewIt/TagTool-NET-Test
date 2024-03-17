@@ -26,8 +26,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
             var tag = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_appearance_player_model");
             var sily = CacheContext.Deserialize<TextValuePairDefinition>(Stream, tag);
             sily.Parameter = (TextValuePairDefinition.GameVariantParameters)626;
-            sily.Name = CacheContext.StringTable.GetStringId($@"traits_appearance_player_model");
-            sily.Description = CacheContext.StringTable.GetStringId($@"traits_appearance_player_model_desc");
+            sily.Name = CacheContext.StringTable.GetOrAddString($@"traits_appearance_player_model");
+            sily.Description = CacheContext.StringTable.GetOrAddString($@"traits_appearance_player_model_desc");
             CacheContext.Serialize(Stream, tag, sily);
         }
     }

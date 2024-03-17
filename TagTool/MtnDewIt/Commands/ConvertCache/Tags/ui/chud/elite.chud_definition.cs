@@ -35,14 +35,14 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             chdt.HudWidgets[0].BitmapWidgets[2].StateData[0].WindowState = ChudDefinition.HudWidgetBase.StateDatum.ChudWindowState.WideFull | ChudDefinition.HudWidgetBase.StateDatum.ChudWindowState.StandardFull;
             chdt.HudWidgets[0].BitmapWidgets[2].PlacementData[0].Origin = new RealPoint2d(1f, 5.69f);
             chdt.HudWidgets[0].BitmapWidgets[2].Flags = ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.MirrorHorizontally | ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.MirrorVertically | ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.Stretch;
-            chdt.HudWidgets[0].BitmapWidgets[3].Name = CacheContext.StringTable.GetStringId("upper_corners_480_wide");
+            chdt.HudWidgets[0].BitmapWidgets[3].Name = CacheContext.StringTable.GetOrAddString("upper_corners_480_wide");
             chdt.HudWidgets[0].BitmapWidgets[3].StateData[0].WindowState = ChudDefinition.HudWidgetBase.StateDatum.ChudWindowState.NativeFull;
             chdt.HudWidgets[0].BitmapWidgets[3].PlacementData[0].Origin = new RealPoint2d(-2.4f, 0f);
             chdt.HudWidgets[0].BitmapWidgets[3].PlacementData[0].Offset = new RealPoint2d(0f, 109.5f);
             chdt.HudWidgets[0].BitmapWidgets[3].PlacementData[0].Scale = new RealPoint2d(1.8f, -1.8f);
             chdt.HudWidgets[0].BitmapWidgets[3].RuntimeWidgetIndex = 7;
             chdt.HudWidgets[0].BitmapWidgets[3].Flags = ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.MirrorHorizontally;
-            chdt.HudWidgets[0].BitmapWidgets[4].Name = CacheContext.StringTable.GetStringId("center_480_wide");
+            chdt.HudWidgets[0].BitmapWidgets[4].Name = CacheContext.StringTable.GetOrAddString("center_480_wide");
             chdt.HudWidgets[0].BitmapWidgets[4].StateData[0].WindowState = ChudDefinition.HudWidgetBase.StateDatum.ChudWindowState.NativeFull;
             chdt.HudWidgets[0].BitmapWidgets[4].PlacementData[0].Anchor = ChudDefinition.HudWidgetBase.PlacementDatum.ChudAnchorType.Center;
             chdt.HudWidgets[0].BitmapWidgets[4].PlacementData[0].Origin = new RealPoint2d(1.01f, 9f);
@@ -51,7 +51,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             chdt.HudWidgets[0].BitmapWidgets[4].RuntimeWidgetIndex = 8;
             chdt.HudWidgets[0].BitmapWidgets[4].Flags = ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.MirrorHorizontally | ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.MirrorVertically;
             chdt.HudWidgets[0].BitmapWidgets[4].Bitmap = GetCachedTag<Bitmap>($@"ui\chud\bitmaps\elite_middle");
-            chdt.HudWidgets[0].BitmapWidgets[5].Name = CacheContext.StringTable.GetStringId("lower_corners_480_wide");
+            chdt.HudWidgets[0].BitmapWidgets[5].Name = CacheContext.StringTable.GetOrAddString("lower_corners_480_wide");
             chdt.HudWidgets[0].BitmapWidgets[5].StateData[0].WindowState = ChudDefinition.HudWidgetBase.StateDatum.ChudWindowState.NativeFull;
             chdt.HudWidgets[0].BitmapWidgets[5].PlacementData[0].Origin = new RealPoint2d(-2.4f, 0f);
             chdt.HudWidgets[0].BitmapWidgets[5].PlacementData[0].Offset = new RealPoint2d(0f, 0f);
@@ -153,7 +153,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             chdt.HudWidgets.Add(new ChudDefinition.HudWidget());
             chdt.HudWidgets[19] = new ChudDefinition.HudWidget 
             {
-                Name = CacheContext.StringTable.GetStringId("consumable1"),
+                Name = CacheContext.StringTable.GetOrAddString("consumable1"),
                 ScriptingClass = ChudDefinition.ChudScriptingClass.Consumable,
                 SortLayer = ChudDefinition.WidgetLayerEnum.Foreground,
                 StateData = new List<ChudDefinition.HudWidgetBase.StateDatum>()
@@ -177,7 +177,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     new ChudDefinition.HudWidget.BitmapWidget
                     {
-                        Name = CacheContext.StringTable.GetStringId("cons_icon"),
+                        Name = CacheContext.StringTable.GetOrAddString("cons_icon"),
                         SortLayer = ChudDefinition.WidgetLayerEnum.Foreground,
                         RuntimeWidgetIndex = 90,
                         Flags = ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.SpriteFromConsumable,
@@ -230,7 +230,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     },
                     new ChudDefinition.HudWidget.BitmapWidget
                     {
-                        Name = CacheContext.StringTable.GetStringId("consumable1_activation"),
+                        Name = CacheContext.StringTable.GetOrAddString("consumable1_activation"),
                         ScriptingClass = ChudDefinition.ChudScriptingClass.UseParent,
                         SortLayer = ChudDefinition.WidgetLayerEnum.Background,
                         RuntimeWidgetIndex = 175,
@@ -279,7 +279,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             };
             chdt.HudWidgets[20] = new ChudDefinition.HudWidget
             {
-                Name = CacheContext.StringTable.GetStringId("hit_marker"),
+                Name = CacheContext.StringTable.GetOrAddString("hit_marker"),
                 ScriptingClass = ChudDefinition.ChudScriptingClass.Crosshair,
                 SortLayer = ChudDefinition.WidgetLayerEnum.Foreground,
                 StateData = new List<ChudDefinition.HudWidgetBase.StateDatum>()
@@ -302,7 +302,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     new ChudDefinition.HudWidget.BitmapWidget
                     {
-                        Name = CacheContext.StringTable.GetStringId("hit_marker_low"),
+                        Name = CacheContext.StringTable.GetOrAddString("hit_marker_low"),
                         SortLayer = ChudDefinition.WidgetLayerEnum.Parent,
                         RuntimeWidgetIndex = 102,
                         Flags = ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.MirrorHorizontally | ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.MirrorVertically,
@@ -358,7 +358,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     },
                     new ChudDefinition.HudWidget.BitmapWidget
                     {
-                        Name = CacheContext.StringTable.GetStringId("hit_marker_med"),
+                        Name = CacheContext.StringTable.GetOrAddString("hit_marker_med"),
                         SortLayer = ChudDefinition.WidgetLayerEnum.Parent,
                         RuntimeWidgetIndex = 103,
                         Flags = ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.MirrorHorizontally,
@@ -414,7 +414,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     },
                     new ChudDefinition.HudWidget.BitmapWidget
                     {
-                        Name = CacheContext.StringTable.GetStringId("hit_marker_high"),
+                        Name = CacheContext.StringTable.GetOrAddString("hit_marker_high"),
                         SortLayer = ChudDefinition.WidgetLayerEnum.Parent,
                         RuntimeWidgetIndex = 104,
                         Flags = ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.MirrorHorizontally,
@@ -471,7 +471,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             };
             chdt.HudWidgets[21] = new ChudDefinition.HudWidget
             {
-                Name = CacheContext.StringTable.GetStringId("stamina_meter"),
+                Name = CacheContext.StringTable.GetOrAddString("stamina_meter"),
                 ScriptingClass = ChudDefinition.ChudScriptingClass.Stamina,
                 SortLayer = ChudDefinition.WidgetLayerEnum.Parent,
                 StateData = new List<ChudDefinition.HudWidgetBase.StateDatum> 
@@ -496,7 +496,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     new ChudDefinition.HudWidget.BitmapWidget
                     {
-                        Name = CacheContext.StringTable.GetStringId("border"),
+                        Name = CacheContext.StringTable.GetOrAddString("border"),
                         RuntimeWidgetIndex = 144,
                         Bitmap = GetCachedTag<Bitmap>($@"ui\chud\bitmaps\stamina_meter_border"),
                         StateData = new List<ChudDefinition.HudWidgetBase.StateDatum>
@@ -542,7 +542,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     },
                     new ChudDefinition.HudWidget.BitmapWidget
                     {
-                        Name = CacheContext.StringTable.GetStringId("meter"),
+                        Name = CacheContext.StringTable.GetOrAddString("meter"),
                         SortLayer = ChudDefinition.WidgetLayerEnum.Foreground,
                         RuntimeWidgetIndex = 145,
                         Bitmap = GetCachedTag<Bitmap>($@"ui\chud\bitmaps\stamina_meter"),
@@ -585,7 +585,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     },
                     new ChudDefinition.HudWidget.BitmapWidget
                     {
-                        Name = CacheContext.StringTable.GetStringId("icon"),
+                        Name = CacheContext.StringTable.GetOrAddString("icon"),
                         RuntimeWidgetIndex = 146,
                         Bitmap = GetCachedTag<Bitmap>($@"ui\chud\bitmaps\stamina_icon_elite"),
                         PlacementData = new List<ChudDefinition.HudWidgetBase.PlacementDatum>
@@ -626,7 +626,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             };
             chdt.HudWidgets[22] = new ChudDefinition.HudWidget
             {
-                Name = CacheContext.StringTable.GetStringId("vision_warning"),
+                Name = CacheContext.StringTable.GetOrAddString("vision_warning"),
                 ScriptingClass = ChudDefinition.ChudScriptingClass.UseParent,
                 SortLayer = ChudDefinition.WidgetLayerEnum.Parent,
                 StateData = new List<ChudDefinition.HudWidgetBase.StateDatum> 
@@ -653,7 +653,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     new ChudDefinition.HudWidget.BitmapWidget
                     {
-                        Name = CacheContext.StringTable.GetStringId("visr_warning"),
+                        Name = CacheContext.StringTable.GetOrAddString("visr_warning"),
                         SortLayer = ChudDefinition.WidgetLayerEnum.Inherited,
                         RuntimeWidgetIndex = 158,
                         Flags = ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.Stretch,

@@ -35,7 +35,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
             {
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"dth"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"dth"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -43,11 +43,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"aargh!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"aargh!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"dth_drama"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"dth_drama"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -55,11 +55,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"waaargh_guh_guh_gurgle_uh_choke_gurgle"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"waaargh_guh_guh_gurgle_uh_choke_gurgle"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"dth_fall"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"dth_fall"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -67,11 +67,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"aaaaaaaaaaaaargh_..._oomph!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"aaaaaaaaaaaaargh_..._oomph!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"dth_hdsht"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"dth_hdsht"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -79,11 +79,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"oof_[headshot]"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"oof_[headshot]"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"dth_mjr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"dth_mjr"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -91,11 +91,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"aaaaargh!!!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"aaaaargh!!!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"dth_slnt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"dth_slnt"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -103,11 +103,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"oof"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"oof"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"dth_slw"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"dth_slw"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -115,11 +115,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"erg_erg_arrgh_uh_uh_aargh!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"erg_erg_arrgh_uh_uh_aargh!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"dth_reanimated"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"dth_reanimated"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -127,11 +127,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"aarrgfgkdjhgdfdhk"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"aarrgfgkdjhgdfdhk"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"die_ass"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"die_ass"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Scripted,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -140,11 +140,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     Weight = 1f,
                     SpeakerEmotion = AiEmotion.Pain,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"added_for_assassinations"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"added_for_assassinations"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"pain"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"pain"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -152,11 +152,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"ah"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"ah"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"pain_fall"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"pain_fall"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -164,11 +164,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"oof_ow!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"oof_ow!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"pain_mdm"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"pain_mdm"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -176,11 +176,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"erg!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"erg!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"pain_mjr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"pain_mjr"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -188,11 +188,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"erk!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"erk!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"pain_shld"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"pain_shld"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -200,11 +200,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"uh!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"uh!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"flee"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"flee"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -212,11 +212,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"fleeing_?!!!!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"fleeing_?!!!!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"cower"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"cower"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -224,11 +224,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"cowering!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"cowering!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"fall"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"fall"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -236,11 +236,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"fall!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"fall!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"lift"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"lift"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -248,11 +248,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"lift!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"lift!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"dive"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"dive"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -260,11 +260,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"dive!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"dive!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"kill_ass"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"kill_ass"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Involuntary,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -272,11 +272,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"added_for_assassinations_[assassin_kills]"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"added_for_assassinations_[assassin_kills]"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ass_grabber"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ass_grabber"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -284,11 +284,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"added_for_assassinations_[assassin_grab]"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"added_for_assassinations_[assassin_grab]"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ass_grabbed"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ass_grabbed"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -297,11 +297,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     Weight = 1f,
                     SpeakerEmotion = AiEmotion.Surprised,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"added_for_assassinations_[assassin_victim_grabbed]"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"added_for_assassinations_[assassin_victim_grabbed]"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"dodge"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"dodge"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -309,11 +309,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"dodge!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"dodge!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"bump"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"bump"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -321,11 +321,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"*bump*"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"*bump*"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"stun"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"stun"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -333,11 +333,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"stunnnnn?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"stunnnnn?"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"thrwn"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"thrwn"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -345,11 +345,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"thrown!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"thrown!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"charge"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"charge"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -357,11 +357,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"charging!!!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"charging!!!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"melee"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"melee"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -369,11 +369,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"melee!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"melee!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"meleeleap"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"meleeleap"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -381,11 +381,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"meelee_leap"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"meelee_leap"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"brsrk"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"brsrk"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -393,11 +393,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"berserking!!!!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"berserking!!!!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"kamikaze"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"kamikaze"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -405,11 +405,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"kamikazeing!!!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"kamikazeing!!!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"reanimate"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"reanimate"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -417,11 +417,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"*reanimation*"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"*reanimation*"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"sigh"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"sigh"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -429,11 +429,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"sigh!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"sigh!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"contempt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"contempt"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -441,11 +441,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"what_contempt!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"what_contempt!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"anger"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"anger"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -453,11 +453,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"angerrrrrr?!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"angerrrrrr?!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"fear"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"fear"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -465,11 +465,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"fear_fear_fear!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"fear_fear_fear!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"relief"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"relief"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -477,11 +477,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"phew!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"phew!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"srprs"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"srprs"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Act,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -489,11 +489,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"yikes!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"yikes!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"panic"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"panic"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Act,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -501,11 +501,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"waaaaaa!!!!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"waaaaaa!!!!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"panic_infctnfrm"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"panic_infctnfrm"),
                     ParentIndex = 38,
                     Priority = VocalizationPriority.Act,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -513,11 +513,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"get_it_off_me!!!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"get_it_off_me!!!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"panic_onfire"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"panic_onfire"),
                     ParentIndex = 38,
                     Priority = VocalizationPriority.Act,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -525,11 +525,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i'm_burning!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i'm_burning!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"panic_plsmgrnd"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"panic_plsmgrnd"),
                     ParentIndex = 38,
                     Priority = VocalizationPriority.Act,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -537,11 +537,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"get_it_off!_someone_get_it_off!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"get_it_off!_someone_get_it_off!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"betray"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"betray"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Act,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -549,11 +549,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"get_him!_he's_a_traitor!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"get_him!_he's_a_traitor!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"forgive"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"forgive"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Act,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -561,11 +561,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i'll_trust_you_for_now_..."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i'll_trust_you_for_now_..."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"entervcl"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"entervcl"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Combat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -578,11 +578,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"let's_roll!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"let's_roll!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"entervcl_drvr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"entervcl_drvr"),
                     ParentIndex = 44,
                     Priority = VocalizationPriority.Combat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -595,11 +595,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i'll_drive!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i'll_drive!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"entervcl_gnr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"entervcl_gnr"),
                     ParentIndex = 44,
                     Priority = VocalizationPriority.Combat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -612,11 +612,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i_got_the_gun!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i_got_the_gun!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"entervcl_psngr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"entervcl_psngr"),
                     ParentIndex = 44,
                     Priority = VocalizationPriority.Combat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -629,11 +629,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"shotgun!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"shotgun!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"entervcl_trrt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"entervcl_trrt"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -646,11 +646,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i'm_on_the_turret!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i'm_on_the_turret!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"grt_intovcl"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"grt_intovcl"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -663,11 +663,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"let's_roll!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"let's_roll!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"grt_intovcl_imdvr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"grt_intovcl_imdvr"),
                     ParentIndex = 49,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -680,11 +680,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"here_we_go."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"here_we_go."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"grt_intovcl_imgnr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"grt_intovcl_imgnr"),
                     ParentIndex = 49,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -697,11 +697,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"find_me_something_to_shoot!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"find_me_something_to_shoot!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"grt_intovcl_mine"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"grt_intovcl_mine"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -714,11 +714,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"welcome_aboard."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"welcome_aboard."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"invt_vcl"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"invt_vcl"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Act,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -731,11 +731,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"want_a_ride?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"want_a_ride?"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"invt_vcl_gnr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"invt_vcl_gnr"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Act,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -748,11 +748,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i_could_use_a_gunner!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i_could_use_a_gunner!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"bye_extvhl"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"bye_extvhl"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -766,11 +766,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 1,
                     SkipFraction = 1,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i'll_just_wait_here_then."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i'll_just_wait_here_then."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"grt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"grt"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -780,11 +780,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PostVocalizationDelay = 15,
                     Weight = 1f,
                     PlayerSkipFraction = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"hey!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"hey!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"grt_plr_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"grt_plr_arb"),
                     ParentIndex = 56,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -797,11 +797,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"look_an_arbiter!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"look_an_arbiter!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"grt_plr_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"grt_plr_mc"),
                     ParentIndex = 56,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -814,11 +814,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"look_a_mark_6!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"look_a_mark_6!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"grt_plr_srprs"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"grt_plr_srprs"),
                     ParentIndex = 56,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -828,11 +828,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PostVocalizationDelay = 15,
                     Weight = 1f,
                     PlayerSkipFraction = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"woah!_don't_sneak_up_on_a_guy_like_that!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"woah!_don't_sneak_up_on_a_guy_like_that!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"grt_plr_vcl"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"grt_plr_vcl"),
                     ParentIndex = 56,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -842,11 +842,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PostVocalizationDelay = 30f,
                     Weight = 2,
                     PlayerSkipFraction = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"nice_ride!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"nice_ride!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"grt_plr_vcl_empty"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"grt_plr_vcl_empty"),
                     ParentIndex = 56,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -856,11 +856,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PostVocalizationDelay = 30f,
                     Weight = 2,
                     PlayerSkipFraction = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"got_room_for_me_in_there?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"got_room_for_me_in_there?"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"hail"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"hail"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -869,11 +869,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 5,
                     PostVocalizationDelay = 15,
                     Weight = 6,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"the_cavalry_has_arrived!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"the_cavalry_has_arrived!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"hail_plr_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"hail_plr_arb"),
                     ParentIndex = 62,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -889,7 +889,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"hail_plr_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"hail_plr_mc"),
                     ParentIndex = 62,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -905,7 +905,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"hail_agg"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"hail_agg"),
                     ParentIndex = 62,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -914,11 +914,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 5,
                     PostVocalizationDelay = 15,
                     Weight = 4f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"welcome_to_the_party!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"welcome_to_the_party!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"hail_tim"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"hail_tim"),
                     ParentIndex = 62,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -927,11 +927,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 5,
                     PostVocalizationDelay = 15,
                     Weight = 4f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"keep_yer_head_down_sir!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"keep_yer_head_down_sir!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"look"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"look"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -939,11 +939,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 2.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"what're_you_lookin'_at?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"what're_you_lookin'_at?"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"look_plr_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"look_plr_arb"),
                     ParentIndex = 67,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -956,11 +956,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"can_i_help_you?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"can_i_help_you?"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"look_plr_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"look_plr_mc"),
                     ParentIndex = 67,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -976,7 +976,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"look_plr_fllw"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"look_plr_fllw"),
                     ParentIndex = 67,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -984,11 +984,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 2.5f,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"following_your_lead."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"following_your_lead."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"look_pstcmbt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"look_pstcmbt"),
                     ParentIndex = 67,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1001,11 +1001,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.35f,
                     FloodSkipFraction = 0.35f,
                     SkipFraction = 0.35f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"that_was_some_fight_huh?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"that_was_some_fight_huh?"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"look_pstcmbt_ez"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"look_pstcmbt_ez"),
                     ParentIndex = 71,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1018,11 +1018,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.35f,
                     FloodSkipFraction = 0.35f,
                     SkipFraction = 0.35f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"did_you_see_me_kick_that_guy's_ass?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"did_you_see_me_kick_that_guy's_ass?"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"look_pstcmbt_hrd"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"look_pstcmbt_hrd"),
                     ParentIndex = 71,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1035,11 +1035,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.35f,
                     FloodSkipFraction = 0.35f,
                     SkipFraction = 0.35f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"we_wouldn't_have_stood_a_chance_without_you."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"we_wouldn't_have_stood_a_chance_without_you."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"look_lngtme"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"look_lngtme"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1047,11 +1047,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 2.5f,
                     Weight = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i_think_we_both_have_better_things_to_do..."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i_think_we_both_have_better_things_to_do..."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"lookcmbt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"lookcmbt"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1059,11 +1059,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 2.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"orders?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"orders?"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"lookcmbt_fllw"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"lookcmbt_fllw"),
                     ParentIndex = 75,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1071,11 +1071,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 2.5f,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"you_set_em_up_i'll_knock_em_down!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"you_set_em_up_i'll_knock_em_down!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"lookcmbt_agg"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"lookcmbt_agg"),
                     ParentIndex = 75,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1083,11 +1083,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 2.5f,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"let's_kick_some_ass!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"let's_kick_some_ass!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"lookcmbt_tim"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"lookcmbt_tim"),
                     ParentIndex = 75,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1095,11 +1095,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 2.5f,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"there's_no_place_like_home..."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"there's_no_place_like_home..."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ok"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ok"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1107,11 +1107,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 0.25f,
                     NotificationDelay = 0.5f,
                     Weight = 1.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"ok."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"ok."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ok_plr_trdwpn"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ok_plr_trdwpn"),
                     ParentIndex = 79,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1124,11 +1124,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"it's_all_yours."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"it's_all_yours."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ok_plr_trdst_dvr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ok_plr_trdst_dvr"),
                     ParentIndex = 79,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1141,11 +1141,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"how_come_you_get_to_drive?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"how_come_you_get_to_drive?"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ok_plr_trdst_gnr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ok_plr_trdst_gnr"),
                     ParentIndex = 79,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1158,11 +1158,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"aw_..._i_was_having_fun!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"aw_..._i_was_having_fun!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ok_plr_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ok_plr_arb"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1175,11 +1175,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"okay_arbiter."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"okay_arbiter."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ok_plr_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ok_plr_mc"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1192,11 +1192,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"okay_chief."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"okay_chief."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"thnk"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"thnk"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1204,11 +1204,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 0.25f,
                     NotificationDelay = 0.5f,
                     Weight = 1.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"thanks."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"thanks."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"thnk_plr_btrwpn"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"thnk_plr_btrwpn"),
                     ParentIndex = 85,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1221,11 +1221,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"nice!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"nice!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"thnk_plr_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"thnk_plr_arb"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1238,11 +1238,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"thanks_arbiter."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"thanks_arbiter."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"thnk_plr_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"thnk_plr_mc"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1255,11 +1255,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"thanks_chief."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"thanks_chief."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"scrn"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"scrn"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1267,11 +1267,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 0.25f,
                     NotificationDelay = 0.5f,
                     Weight = 1.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"great."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"great."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"scrn_plr_wrswpn"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"scrn_plr_wrswpn"),
                     ParentIndex = 89,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1284,11 +1284,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"you_gotta_be_kidding_me!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"you_gotta_be_kidding_me!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"scrn_plr_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"scrn_plr_arb"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1301,11 +1301,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"great_arbiter."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"great_arbiter."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"scrn_plr_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"scrn_plr_mc"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1318,11 +1318,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"great_chief."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"great_chief."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"hrdfoe"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"hrdfoe"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1332,11 +1332,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PostVocalizationDelay = 15,
                     Weight = 1f,
                     PlayerSkipFraction = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"did_you_hear_that?!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"did_you_hear_that?!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"seefoe"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"seefoe"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1349,11 +1349,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"we've_got_company!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"we've_got_company!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"seefoe_mjr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"seefoe_mjr"),
                     ParentIndex = 94,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1366,11 +1366,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.75f,
                     FloodSkipFraction = 0.4f,
                     SkipFraction = 0.4f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"scary_enemy!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"scary_enemy!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"seefoe_mjr_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"seefoe_mjr_arb"),
                     ParentIndex = 95,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1383,11 +1383,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.7f,
                     SkipFraction = 0.7f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"the_arbiter_is_here!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"the_arbiter_is_here!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"seefoe_mjr_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"seefoe_mjr_mc"),
                     ParentIndex = 95,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1400,11 +1400,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.7f,
                     SkipFraction = 0.7f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"the_demon_is_here!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"the_demon_is_here!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"seefoe_upthere"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"seefoe_upthere"),
                     ParentIndex = 94,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1417,11 +1417,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.1f,
                     SkipFraction = 0.1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"up_there!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"up_there!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"seefoe_downthere"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"seefoe_downthere"),
                     ParentIndex = 94,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1434,11 +1434,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.1f,
                     SkipFraction = 0.1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"down_there!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"down_there!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"seefoe_agg"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"seefoe_agg"),
                     ParentIndex = 94,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1451,11 +1451,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.1f,
                     SkipFraction = 0.1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"it's_go_time!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"it's_go_time!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"seefoe_tim"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"seefoe_tim"),
                     ParentIndex = 94,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1468,11 +1468,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.75f,
                     FloodSkipFraction = 0.1f,
                     SkipFraction = 0.1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"we're_under_attack!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"we're_under_attack!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"morefoe"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"morefoe"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1485,11 +1485,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.35f,
                     SkipFraction = 0.35f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"there's_another_one!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"there's_another_one!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"foundfoe"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"foundfoe"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1502,12 +1502,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"over_here!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"over_here!"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"foundfoe_re"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"foundfoe_re"),
                             VocalizationIndex = 108,
                             ResponseType = AiVocalizationResponseType.FriendInfantry,
                             DialogueIndexImport = -1,
@@ -1516,7 +1516,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"foundfoe_mjr_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"foundfoe_mjr_mc"),
                     ParentIndex = 103,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1530,11 +1530,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.65f,
                     FloodSkipFraction = 0.65f,
                     SkipFraction = 0.65f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"there_you_are_demon!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"there_you_are_demon!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"foundfoe_mjr_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"foundfoe_mjr_arb"),
                     ParentIndex = 103,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1548,11 +1548,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.65f,
                     FloodSkipFraction = 0.65f,
                     SkipFraction = 0.65f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"there_you_are_arbiter!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"there_you_are_arbiter!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"foundfoe_prst"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"foundfoe_prst"),
                     ParentIndex = 103,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1565,11 +1565,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"found_'em!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"found_'em!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"foundfoe_chasing"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"foundfoe_chasing"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1582,11 +1582,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.75f,
                     FloodSkipFraction = 0.75f,
                     SkipFraction = 0.75f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"he's_after_me!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"he's_after_me!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"foundfoe_re"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"foundfoe_re"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1599,11 +1599,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.75f,
                     FloodSkipFraction = 0.75f,
                     SkipFraction = 0.75f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"on_my_way!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"on_my_way!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1618,7 +1618,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_incmn"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_incmn"),
                     ParentIndex = 109,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1630,11 +1630,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"incoming!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"incoming!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_incmn_grnd"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_incmn_grnd"),
                     ParentIndex = 110,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1646,11 +1646,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"grenade!!!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"grenade!!!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_incmn_fldbm"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_incmn_fldbm"),
                     ParentIndex = 109,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1662,11 +1662,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"it's_gonna_pop!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"it's_gonna_pop!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_incmn_vclbm"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_incmn_vclbm"),
                     ParentIndex = 109,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1678,11 +1678,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"it's_gonna_blow!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"it's_gonna_blow!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_vcl"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_vcl"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1697,7 +1697,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_trrt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_trrt"),
                     ParentIndex = 114,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1709,11 +1709,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"they've_got_a_turret!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"they've_got_a_turret!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_vcl_bnsh"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_vcl_bnsh"),
                     ParentIndex = 114,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1725,11 +1725,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.35f,
                     FloodSkipFraction = 0.35f,
                     SkipFraction = 0.35f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"banshees_up_there!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"banshees_up_there!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_vcl_chpr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_vcl_chpr"),
                     ParentIndex = 114,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1741,11 +1741,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.35f,
                     FloodSkipFraction = 0.35f,
                     SkipFraction = 0.35f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"choppers!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"choppers!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_vcl_ghst"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_vcl_ghst"),
                     ParentIndex = 114,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1757,11 +1757,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.35f,
                     FloodSkipFraction = 0.35f,
                     SkipFraction = 0.35f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"ghosts!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"ghosts!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_vcl_phntm"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_vcl_phntm"),
                     ParentIndex = 114,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1770,11 +1770,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 300,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"here_comes_a_dropship!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"here_comes_a_dropship!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_vcl_wrth"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_vcl_wrth"),
                     ParentIndex = 114,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1786,11 +1786,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.35f,
                     FloodSkipFraction = 0.35f,
                     SkipFraction = 0.35f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"they're_bringin_in_heavy_armor!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"they're_bringin_in_heavy_armor!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_chr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_chr"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1805,7 +1805,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_stlth"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_stlth"),
                     ParentIndex = 121,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1817,11 +1817,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.2f,
                     FloodSkipFraction = 0.2f,
                     SkipFraction = 0.2f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"stealth_camo!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"stealth_camo!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_chr_bggr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_chr_bggr"),
                     ParentIndex = 121,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1833,11 +1833,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"buggers!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"buggers!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_chr_hntr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_chr_hntr"),
                     ParentIndex = 121,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1846,11 +1846,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 300,
                     Weight = 3,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"hunters!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"hunters!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_scrb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_scrb"),
                     ParentIndex = 121,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1859,11 +1859,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 300,
                     Weight = 4f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"scarab!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"scarab!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_flood"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_flood"),
                     ParentIndex = 121,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1877,11 +1877,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 1,
                     SkipFraction = 1,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"flood!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"flood!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_swarm"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_swarm"),
                     ParentIndex = 121,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1895,11 +1895,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.6f,
                     FloodSkipFraction = 0.6f,
                     SkipFraction = 0.6f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"a_swarm!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"a_swarm!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_pureforms"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_pureforms"),
                     ParentIndex = 121,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1913,11 +1913,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.6f,
                     FloodSkipFraction = 0.6f,
                     SkipFraction = 0.6f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"pureforms!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"pureforms!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_weapon"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_weapon"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1932,7 +1932,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_wpn_snpr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_wpn_snpr"),
                     ParentIndex = 129,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1944,11 +1944,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"sniper!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"sniper!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_wpn_hmmr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_wpn_hmmr"),
                     ParentIndex = 129,
                     Priority = VocalizationPriority.Respond,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1960,11 +1960,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"he's_got_a_hammer!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"he's_got_a_hammer!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_behavior"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_behavior"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1979,7 +1979,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_brsrk"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_brsrk"),
                     ParentIndex = 132,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -1991,11 +1991,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"he's_gone_berserk!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"he's_gone_berserk!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_stlth_again"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_stlth_again"),
                     ParentIndex = 132,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2007,11 +2007,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.2f,
                     FloodSkipFraction = 0.2f,
                     SkipFraction = 0.2f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"he's_going_stealth_again!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"he's_going_stealth_again!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_trrt_dply"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_trrt_dply"),
                     ParentIndex = 132,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2023,11 +2023,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"he's_deploying_a_turret!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"he's_deploying_a_turret!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"warn_fldreanimate"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"warn_fldreanimate"),
                     ParentIndex = 132,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2039,11 +2039,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"he's_getting_up!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"he's_getting_up!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"rmd"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"rmd"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2055,11 +2055,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"still_a_problem!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"still_a_problem!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"rmd_plr_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"rmd_plr_arb"),
                     ParentIndex = 137,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2071,11 +2071,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"someone_take_out_the_arbiter!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"someone_take_out_the_arbiter!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"rmd_plr_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"rmd_plr_mc"),
                     ParentIndex = 137,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2087,11 +2087,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"someone_take_out_the_demon!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"someone_take_out_the_demon!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"rmd_scrb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"rmd_scrb"),
                     ParentIndex = 137,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2103,11 +2103,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"someond_take_out_that_scarab!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"someond_take_out_that_scarab!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"rmd_stlth"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"rmd_stlth"),
                     ParentIndex = 137,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2119,11 +2119,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"someone_take_out_that_stealth!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"someone_take_out_that_stealth!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"rmd_wpn_snpr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"rmd_wpn_snpr"),
                     ParentIndex = 137,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2135,11 +2135,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"somebody_take_out_that_sniper!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"somebody_take_out_that_sniper!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"rmd_wpn_hmmr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"rmd_wpn_hmmr"),
                     ParentIndex = 137,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2151,11 +2151,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"someone_take_ouf_that_hammer!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"someone_take_ouf_that_hammer!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"rmd_trrt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"rmd_trrt"),
                     ParentIndex = 137,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2167,11 +2167,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"take_out_that_damn_turret!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"take_out_that_damn_turret!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"rmd_vcl_bnsh"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"rmd_vcl_bnsh"),
                     ParentIndex = 137,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2183,11 +2183,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"need_to_nail_that_banshee!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"need_to_nail_that_banshee!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"rmd_vcl_chpr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"rmd_vcl_chpr"),
                     ParentIndex = 137,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2199,11 +2199,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"someone_take_out_that_chopper!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"someone_take_out_that_chopper!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"rmd_vcl_ghst"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"rmd_vcl_ghst"),
                     ParentIndex = 137,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2215,11 +2215,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"someone_kill_that_ghost!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"someone_kill_that_ghost!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"rmd_vcl_phntm"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"rmd_vcl_phntm"),
                     ParentIndex = 137,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2231,11 +2231,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.75f,
                     FloodSkipFraction = 0.75f,
                     SkipFraction = 0.75f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"take_down_that_phantom!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"take_down_that_phantom!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"rmd_vcl_wrth"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"rmd_vcl_wrth"),
                     ParentIndex = 137,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2247,11 +2247,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"take_out_that_wraith!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"take_out_that_wraith!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"dwn"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"dwn"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2266,7 +2266,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"dwn_scrb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"dwn_scrb"),
                     ParentIndex = 150,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2275,11 +2275,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 60,
                     Weight = 4f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"scarab_down!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"scarab_down!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"dwn_vcl_bnsh"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"dwn_vcl_bnsh"),
                     ParentIndex = 150,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2291,11 +2291,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.75f,
                     FloodSkipFraction = 0.75f,
                     SkipFraction = 0.75f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"banshee_down!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"banshee_down!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"dwn_vcl_chpr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"dwn_vcl_chpr"),
                     ParentIndex = 150,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2307,11 +2307,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.75f,
                     FloodSkipFraction = 0.75f,
                     SkipFraction = 0.75f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"chopper_down!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"chopper_down!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"dwn_vcl_ghst"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"dwn_vcl_ghst"),
                     ParentIndex = 150,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2323,11 +2323,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.75f,
                     FloodSkipFraction = 0.75f,
                     SkipFraction = 0.75f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"ghost_is_down!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"ghost_is_down!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"dwn_vcl_wrth"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"dwn_vcl_wrth"),
                     ParentIndex = 150,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2339,11 +2339,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"wraith_is_down!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"wraith_is_down!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"dwn_wpn_snpr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"dwn_wpn_snpr"),
                     ParentIndex = 150,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2355,11 +2355,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.75f,
                     FloodSkipFraction = 0.75f,
                     SkipFraction = 0.75f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"sniper_down!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"sniper_down!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"lst_cntct"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"lst_cntct"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2372,11 +2372,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.65f,
                     SkipFraction = 0.65f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"lost_contact!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"lost_contact!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"srch_pinned"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"srch_pinned"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2389,11 +2389,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.65f,
                     SkipFraction = 0.65f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"he's_pinned_down!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"he's_pinned_down!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"invsgt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"invsgt"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2405,11 +2405,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i'll_flush_him_out!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i'll_flush_him_out!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"invsgt_fail"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"invsgt_fail"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2421,11 +2421,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"he's_not_here!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"he's_not_here!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ask_invsgt_fail"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ask_invsgt_fail"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2433,12 +2433,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"is_he_there?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"is_he_there?"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"invsgt_fail"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"invsgt_fail"),
                             VocalizationIndex = 160,
                             ResponseType = AiVocalizationResponseType.Listener,
                             DialogueIndexImport = -1,
@@ -2447,7 +2447,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"prst"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"prst"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2459,11 +2459,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i'm_going_to_look_for_him!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i'm_going_to_look_for_him!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"prst_fail"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"prst_fail"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2475,12 +2475,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"he's_not_over_here!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"he's_not_over_here!"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"ordr_prst_keeplooking"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"ordr_prst_keeplooking"),
                             VocalizationIndex = 197,
                             ResponseType = AiVocalizationResponseType.Leader,
                             DialogueIndexImport = -1,
@@ -2489,7 +2489,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ask_prst_fail"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ask_prst_fail"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2497,12 +2497,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"is_he_over_there?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"is_he_over_there?"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"prst_fail"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"prst_fail"),
                             VocalizationIndex = 163,
                             ResponseType = AiVocalizationResponseType.Listener,
                             DialogueIndexImport = -1,
@@ -2511,7 +2511,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"stayback"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"stayback"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2523,12 +2523,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"hold_here!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"hold_here!"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"ordr_keepwatch"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"ordr_keepwatch"),
                             VocalizationIndex = 199,
                             ResponseType = AiVocalizationResponseType.Leader,
                             DialogueIndexImport = -1,
@@ -2537,7 +2537,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"stayback_agg"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"stayback_agg"),
                     ParentIndex = 165,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2549,11 +2549,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"let_them_run!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"let_them_run!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"stayback_tim"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"stayback_tim"),
                     ParentIndex = 165,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2565,11 +2565,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"he's_drawing_us_into_a_trap!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"he's_drawing_us_into_a_trap!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"join_stayback"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"join_stayback"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2577,12 +2577,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"we_should_hold_here!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"we_should_hold_here!"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"ordr_keepwatch"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"ordr_keepwatch"),
                             VocalizationIndex = 199,
                             ResponseType = AiVocalizationResponseType.Leader,
                             DialogueIndexImport = -1,
@@ -2591,7 +2591,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"srchend"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"srchend"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2602,12 +2602,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSpeakerSkipFraction = 0.25f,
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 1,
-                    SampleLine = CacheContext.StringTable.GetStringId($"\"forget_it"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($"\"forget_it"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"ordr_keepwatch"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"ordr_keepwatch"),
                             VocalizationIndex = 199,
                             ResponseType = AiVocalizationResponseType.Leader,
                             DialogueIndexImport = -1,
@@ -2616,7 +2616,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"new_order"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"new_order"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2627,7 +2627,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"neworder_flanking"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"neworder_flanking"),
                     ParentIndex = 170,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2639,11 +2639,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"let's_flank_them!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"let's_flank_them!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"newordr_advance"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"newordr_advance"),
                     ParentIndex = 170,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2655,11 +2655,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"move_up!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"move_up!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"newordr_arrival"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"newordr_arrival"),
                     ParentIndex = 170,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2672,11 +2672,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"regroup_marines!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"regroup_marines!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"newordr_charge"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"newordr_charge"),
                     ParentIndex = 170,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2688,11 +2688,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"okay_move_out_and_kick_ass!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"okay_move_out_and_kick_ass!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"newordr_entervcl"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"newordr_entervcl"),
                     ParentIndex = 170,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2700,11 +2700,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 15,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"okay_men_smoke_em_if_you_got_em!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"okay_men_smoke_em_if_you_got_em!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"newordr_exitvcl"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"newordr_exitvcl"),
                     ParentIndex = 170,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2712,11 +2712,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 15,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"we've_lost_too_many_guys!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"we've_lost_too_many_guys!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"newordr_fallback"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"newordr_fallback"),
                     ParentIndex = 170,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2729,11 +2729,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"okay_move_out_and_find_those_bastards!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"okay_move_out_and_find_those_bastards!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"newordr_fllwplr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"newordr_fllwplr"),
                     ParentIndex = 170,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2741,11 +2741,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 45,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"the_cavalry_has_arrived!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"the_cavalry_has_arrived!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"newordr_leaveplr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"newordr_leaveplr"),
                     ParentIndex = 170,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2754,11 +2754,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 45,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"we're_with_you_chief!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"we're_with_you_chief!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"newordr_moveon"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"newordr_moveon"),
                     ParentIndex = 170,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2771,11 +2771,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"move_on!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"move_on!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"newordr_retreat"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"newordr_retreat"),
                     ParentIndex = 170,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2787,11 +2787,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"reatreat!_retreat!_get_outta_here!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"reatreat!_retreat!_get_outta_here!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"newordr_support"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"newordr_support"),
                     ParentIndex = 170,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2804,11 +2804,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"we're_here_to_help!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"we're_here_to_help!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"foe_orders"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"foe_orders"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2820,7 +2820,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"foeordr_advance"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"foeordr_advance"),
                     ParentIndex = 183,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2832,11 +2832,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"they're_being_cautious!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"they're_being_cautious!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"foeordr_charge"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"foeordr_charge"),
                     ParentIndex = 183,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2848,28 +2848,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"they're_advancing_on_us!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"they're_advancing_on_us!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"foeordr_fallback"),
-                    ParentIndex = 183,
-                    Priority = VocalizationPriority.Postcombat,
-                    MaxCombatStatus = AiCombatStatus.Dangerous,
-                    ProxyDialogueIndex = -1,
-                    AllowableQueueDelay = 1.5f,
-                    NotificationDelay = 0.5f,
-                    PostVocalizationDelay = 15,
-                    Weight = 2,
-                    PlayerSpeakerSkipFraction = 0.25f,
-                    PlayerSkipFraction = 0.25f,
-                    FloodSkipFraction = 0.25f,
-                    SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"here_they_come!"),
-                },
-                new VocalizationDefinition
-                {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"foeordr_flanking"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"foeordr_fallback"),
                     ParentIndex = 183,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2882,11 +2865,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"they're_flanking_us!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"here_they_come!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"foeordr_retreat"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"foeordr_flanking"),
                     ParentIndex = 183,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2899,11 +2882,28 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"careful_they're_after_us!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"they're_flanking_us!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"foeordr_support"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"foeordr_retreat"),
+                    ParentIndex = 183,
+                    Priority = VocalizationPriority.Postcombat,
+                    MaxCombatStatus = AiCombatStatus.Dangerous,
+                    ProxyDialogueIndex = -1,
+                    AllowableQueueDelay = 1.5f,
+                    NotificationDelay = 0.5f,
+                    PostVocalizationDelay = 15,
+                    Weight = 2,
+                    PlayerSpeakerSkipFraction = 0.25f,
+                    PlayerSkipFraction = 0.25f,
+                    FloodSkipFraction = 0.25f,
+                    SkipFraction = 0.25f,
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"careful_they're_after_us!"),
+                },
+                new VocalizationDefinition
+                {
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"foeordr_support"),
                     ParentIndex = 183,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2915,11 +2915,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"they've_got_backup!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"they've_got_backup!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ordr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ordr"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2932,7 +2932,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"ordr_re"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"ordr_re"),
                             VocalizationIndex = 202,
                             ResponseType = AiVocalizationResponseType.Listener,
                             DialogueIndexImport = -1,
@@ -2941,7 +2941,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ordr_openfire"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ordr_openfire"),
                     ParentIndex = 190,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2954,11 +2954,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.3f,
                     FloodSkipFraction = 0.3f,
                     SkipFraction = 0.3f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"open_fire!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"open_fire!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ordr_grenade"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ordr_grenade"),
                     ParentIndex = 190,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2971,11 +2971,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"throw_a_grenade!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"throw_a_grenade!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ordr_grenade_all"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ordr_grenade_all"),
                     ParentIndex = 190,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -2988,11 +2988,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"everyone!_grenades!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"everyone!_grenades!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ordr_pinned"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ordr_pinned"),
                     ParentIndex = 190,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3001,11 +3001,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 10,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"keep_him_pinned_down!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"keep_him_pinned_down!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ordr_stayback"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ordr_stayback"),
                     ParentIndex = 190,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3018,11 +3018,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.35f,
                     FloodSkipFraction = 0.35f,
                     SkipFraction = 0.35f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"stay_close_don't_spread_out!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"stay_close_don't_spread_out!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ordr_prst"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ordr_prst"),
                     ParentIndex = 190,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3031,11 +3031,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 10,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"spread_out!_find_him!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"spread_out!_find_him!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ordr_prst_keeplooking"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ordr_prst_keeplooking"),
                     ParentIndex = 190,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3044,11 +3044,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 10,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"keep_looking!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"keep_looking!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ordr_invsgt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ordr_invsgt"),
                     ParentIndex = 190,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3057,11 +3057,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 10,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"see_if_he's_still_there!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"see_if_he's_still_there!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ordr_keepwatch"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ordr_keepwatch"),
                     ParentIndex = 190,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3070,11 +3070,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 10,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"keep_your_eyes_peeled!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"keep_your_eyes_peeled!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ordr_keepwatch_agg"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ordr_keepwatch_agg"),
                     ParentIndex = 199,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3083,11 +3083,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 10,
                     Weight = 3,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"keep_watch_they_may_come_back!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"keep_watch_they_may_come_back!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ordr_keepwatch_tim"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ordr_keepwatch_tim"),
                     ParentIndex = 199,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3096,11 +3096,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 10,
                     Weight = 3,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"careful_we're_not_out_of_this_yet!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"careful_we're_not_out_of_this_yet!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ordr_re"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ordr_re"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3113,11 +3113,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"yes_sir!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"yes_sir!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"join"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"join"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3126,12 +3126,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 10,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"come_on!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"come_on!"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"join_re"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"join_re"),
                             VocalizationIndex = 207,
                             DialogueIndexImport = -1,
                         },
@@ -3139,7 +3139,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"join_invsgt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"join_invsgt"),
                     ParentIndex = 203,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3148,11 +3148,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 10,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"let's_go_and_get_him!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"let's_go_and_get_him!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"join_emrg"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"join_emrg"),
                     ParentIndex = 203,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3161,12 +3161,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 10,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"ready?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"ready?"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"join_emrg_re"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"join_emrg_re"),
                             VocalizationIndex = 208,
                             ResponseType = AiVocalizationResponseType.Listener,
                             DialogueIndexImport = -1,
@@ -3175,7 +3175,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"join_prst"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"join_prst"),
                     ParentIndex = 203,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3184,11 +3184,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 10,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"let's_spread_out_and_find_him."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"let's_spread_out_and_find_him."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"join_re"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"join_re"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3197,11 +3197,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 10,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"alright!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"alright!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"join_emrg_re"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"join_emrg_re"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3210,11 +3210,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 10,
                     Weight = 2,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"let's_get_out_there!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"let's_get_out_there!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"cvr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"cvr"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3227,12 +3227,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.3f,
                     FloodSkipFraction = 0.3f,
                     SkipFraction = 0.3f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"cover_me!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"cover_me!"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"cvr_re"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"cvr_re"),
                             VocalizationIndex = 211,
                             ResponseType = AiVocalizationResponseType.Listener,
                             DialogueIndexImport = -1,
@@ -3241,7 +3241,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"cvr_invsgt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"cvr_invsgt"),
                     ParentIndex = 209,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3254,11 +3254,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.3f,
                     FloodSkipFraction = 0.3f,
                     SkipFraction = 0.3f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"cover_me!_i'm_going_in!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"cover_me!_i'm_going_in!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"cvr_re"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"cvr_re"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3271,11 +3271,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i_got_your_back!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i_got_your_back!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"prs"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"prs"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Combat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3288,11 +3288,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"good_job!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"good_job!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"prs_plr_gdgrnd"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"prs_plr_gdgrnd"),
                     ParentIndex = 212,
                     Priority = VocalizationPriority.Combat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3305,11 +3305,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"good_grenade!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"good_grenade!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"prs_plr_kll"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"prs_plr_kll"),
                     ParentIndex = 212,
                     Priority = VocalizationPriority.Combat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3322,11 +3322,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.8f,
                     SkipFraction = 0.8f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"that_got_'em!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"that_got_'em!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"prs_plr_kll_blt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"prs_plr_kll_blt"),
                     ParentIndex = 214,
                     Priority = VocalizationPriority.Combat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3339,11 +3339,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 1,
                     SkipFraction = 1,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"nice_shot!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"nice_shot!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"prs_plr_kll_mjr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"prs_plr_kll_mjr"),
                     ParentIndex = 214,
                     Priority = VocalizationPriority.Combat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3356,11 +3356,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"thank_god_you_were_here_to_take_that_guy_out!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"thank_god_you_were_here_to_take_that_guy_out!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"prs_plr_kll_vclbmp"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"prs_plr_kll_vclbmp"),
                     ParentIndex = 214,
                     Priority = VocalizationPriority.Combat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3374,11 +3374,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"roadkill!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"roadkill!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"prs_plr_kll_wmelee"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"prs_plr_kll_wmelee"),
                     ParentIndex = 214,
                     Priority = VocalizationPriority.Combat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3392,11 +3392,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.8f,
                     SkipFraction = 0.8f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i_heard_that!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i_heard_that!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"prs_plr_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"prs_plr_arb"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3410,11 +3410,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"well_done_arbiter!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"well_done_arbiter!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"prs_plr_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"prs_plr_mc"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3428,11 +3428,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"well_done_chief!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"well_done_chief!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"prs_plr_kll_lots"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"prs_plr_kll_lots"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3445,11 +3445,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"he's_kicking_their_asses!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"he's_kicking_their_asses!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"prs_plr_sniping"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"prs_plr_sniping"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3462,11 +3462,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"nice_sniping!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"nice_sniping!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"kllmytrgt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"kllmytrgt"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3480,11 +3480,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.75f,
                     SkipFraction = 0.75f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"hey_that_one_was_mine!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"hey_that_one_was_mine!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"scld_plr_vclcrazy"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"scld_plr_vclcrazy"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Act,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3498,11 +3498,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"where'd_you_learn_to_drive_tijuana?!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"where'd_you_learn_to_drive_tijuana?!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"scld_plr_hrtme"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"scld_plr_hrtme"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Act,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3512,11 +3512,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     RepeatDelay = 5,
                     Weight = 1f,
                     PlayerSkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"hey_it's_me!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"hey_it's_me!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"scld_plr_wldgrnd"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"scld_plr_wldgrnd"),
                     ParentIndex = 225,
                     Priority = VocalizationPriority.Act,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3529,11 +3529,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"watch_where_you_throw_those_things!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"watch_where_you_throw_those_things!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"scld_plr_wldvcl"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"scld_plr_wldvcl"),
                     ParentIndex = 225,
                     Priority = VocalizationPriority.Act,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3546,11 +3546,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"you_hit_me!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"you_hit_me!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"scld_plr_hrt_blt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"scld_plr_hrt_blt"),
                     ParentIndex = 225,
                     Priority = VocalizationPriority.Act,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3563,11 +3563,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"point_that_thing_somewhere_else!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"point_that_thing_somewhere_else!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"scld"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"scld"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Act,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3576,11 +3576,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 5,
                     PostVocalizationDelay = 30f,
                     Weight = 0.75f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"hey_cut_it_out!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"hey_cut_it_out!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"scld_plr_kllally"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"scld_plr_kllally"),
                     ParentIndex = 229,
                     Priority = VocalizationPriority.Act,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3593,11 +3593,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"he_was_on_our_side!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"he_was_on_our_side!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"scld_plr_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"scld_plr_arb"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3610,11 +3610,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.7f,
                     FloodSkipFraction = 0.7f,
                     SkipFraction = 0.7f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"nice_going_arbiturd!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"nice_going_arbiturd!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"scld_plr_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"scld_plr_mc"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3627,11 +3627,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.7f,
                     FloodSkipFraction = 0.7f,
                     SkipFraction = 0.7f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"nice_going_masterdork!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"nice_going_masterdork!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"scld_plr_blocking"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"scld_plr_blocking"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3640,11 +3640,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 30f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"get_out_of_the_way!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"get_out_of_the_way!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"chr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"chr"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3657,11 +3657,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"woohoo!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"woohoo!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"chr_deadmc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"chr_deadmc"),
                     ParentIndex = 234,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3675,11 +3675,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.35f,
                     SkipFraction = 0.35f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"so_much_for_the_demon!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"so_much_for_the_demon!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"chr_deadarb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"chr_deadarb"),
                     ParentIndex = 234,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3693,11 +3693,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.35f,
                     SkipFraction = 0.35f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"we_killed_the_dervish!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"we_killed_the_dervish!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"chr_vcljmp"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"chr_vcljmp"),
                     ParentIndex = 234,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3711,11 +3711,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"vehicle_woohoo!!!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"vehicle_woohoo!!!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"chr_kllfoe"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"chr_kllfoe"),
                     ParentIndex = 234,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3729,12 +3729,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i_killed_one!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i_killed_one!"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"prs"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"prs"),
                             VocalizationIndex = 212,
                             DialogueIndexImport = -1,
                         },
@@ -3742,7 +3742,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"chr_kllfoe_blt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"chr_kllfoe_blt"),
                     ParentIndex = 238,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3756,11 +3756,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i_shot_one!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i_shot_one!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"chr_kllfoe_mjrfoe"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"chr_kllfoe_mjrfoe"),
                     ParentIndex = 238,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3774,11 +3774,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i_can't_believe_i_killed_that_one!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i_can't_believe_i_killed_that_one!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"chr_kllfoe_vclbmp"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"chr_kllfoe_vclbmp"),
                     ParentIndex = 238,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3792,11 +3792,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"eat_grill!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"eat_grill!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"chr_kllfoe_stkplsm"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"chr_kllfoe_stkplsm"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Act,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3804,11 +3804,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 0.5f,
                     NotificationDelay = 0.5f,
                     Weight = 5,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"stuck_him!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"stuck_him!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"lmnt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"lmnt"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Combat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3819,11 +3819,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Weight = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"nooo!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"nooo!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"lmnt_deadally"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"lmnt_deadally"),
                     ParentIndex = 243,
                     Priority = VocalizationPriority.Combat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3837,11 +3837,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"man_down!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"man_down!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"lmnt_deadplr_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"lmnt_deadplr_arb"),
                     ParentIndex = 243,
                     Priority = VocalizationPriority.Combat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3855,11 +3855,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"we_lost_the_arbiter!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"we_lost_the_arbiter!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"lmnt_deadplr_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"lmnt_deadplr_mc"),
                     ParentIndex = 243,
                     Priority = VocalizationPriority.Combat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3873,11 +3873,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"we_lost_the_chief!!!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"we_lost_the_chief!!!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"strk"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"strk"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3891,7 +3891,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.8f,
                     FloodSkipFraction = 0.2f,
                     SkipFraction = 0.2f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"take_it!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"take_it!"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
@@ -3912,7 +3912,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"strk_grnd"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"strk_grnd"),
                     ParentIndex = 247,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3923,11 +3923,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PostVocalizationDelay = 6,
                     Weight = 4f,
                     PlayerSkipFraction = 0.6f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"frag_out!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"frag_out!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"strk_grnd_uncvr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"strk_grnd_uncvr"),
                     ParentIndex = 248,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3938,11 +3938,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PostVocalizationDelay = 6,
                     Weight = 4f,
                     PlayerSkipFraction = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"this'll_flush_'em_out!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"this'll_flush_'em_out!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"strk_mjrfoe_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"strk_mjrfoe_arb"),
                     ParentIndex = 247,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3957,11 +3957,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.7f,
                     FloodSkipFraction = 0.6f,
                     SkipFraction = 0.6f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"take_this_arbiter!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"take_this_arbiter!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"strk_mjrfoe_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"strk_mjrfoe_mc"),
                     ParentIndex = 247,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3976,11 +3976,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.7f,
                     FloodSkipFraction = 0.6f,
                     SkipFraction = 0.6f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"take_this_demon!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"take_this_demon!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"strk_snpr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"strk_snpr"),
                     ParentIndex = 247,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -3994,11 +3994,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"headshot!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"headshot!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"strk_vcl_gnr"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"strk_vcl_gnr"),
                     ParentIndex = 247,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4013,11 +4013,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.2f,
                     SkipFraction = 0.2f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"you_set_'em_up_i'll_knock_'em_down!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"you_set_'em_up_i'll_knock_'em_down!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"thrtn"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"thrtn"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4030,12 +4030,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.85f,
                     FloodSkipFraction = 0.3f,
                     SkipFraction = 0.3f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i'm_gonna_kill_you!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i'm_gonna_kill_you!"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"thrtn_foe_re"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"thrtn_foe_re"),
                             VocalizationIndex = 258,
                             ResponseType = AiVocalizationResponseType.Enemy,
                             DialogueIndexImport = -1,
@@ -4051,7 +4051,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"thrtn_mjrfoe"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"thrtn_mjrfoe"),
                     ParentIndex = 254,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4064,11 +4064,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.85f,
                     FloodSkipFraction = 0.3f,
                     SkipFraction = 0.3f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"you_think_you're_so_tought!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"you_think_you're_so_tought!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"thrtn_mjrfoe_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"thrtn_mjrfoe_arb"),
                     ParentIndex = 255,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4082,11 +4082,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.85f,
                     FloodSkipFraction = 0.6f,
                     SkipFraction = 0.6f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"arbiter_you're_mine!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"arbiter_you're_mine!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"thrtn_mjrfoe_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"thrtn_mjrfoe_mc"),
                     ParentIndex = 255,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4100,11 +4100,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.85f,
                     FloodSkipFraction = 0.6f,
                     SkipFraction = 0.6f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i'll_show_you_demon!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i'll_show_you_demon!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"thrtn_foe_re"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"thrtn_foe_re"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4117,11 +4117,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.75f,
                     FloodSkipFraction = 0.85f,
                     SkipFraction = 0.85f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"is_that_supposed_to_scare_me?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"is_that_supposed_to_scare_me?"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"tnt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"tnt"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4134,11 +4134,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.2f,
                     SkipFraction = 0.2f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"is_that_all_you_got?!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"is_that_all_you_got?!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"tnt_mjrfoe"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"tnt_mjrfoe"),
                     ParentIndex = 259,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4151,11 +4151,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.2f,
                     SkipFraction = 0.2f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"not_so_tough!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"not_so_tough!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"tnt_mjrfoe_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"tnt_mjrfoe_arb"),
                     ParentIndex = 260,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4169,11 +4169,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.4f,
                     SkipFraction = 0.4f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"the_prophets_chose_you?!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"the_prophets_chose_you?!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"tnt_mjrfoe_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"tnt_mjrfoe_mc"),
                     ParentIndex = 260,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4187,11 +4187,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.4f,
                     SkipFraction = 0.4f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"you_will_die_demon!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"you_will_die_demon!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"tnt_invsgt_stayback"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"tnt_invsgt_stayback"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4204,12 +4204,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.3f,
                     SkipFraction = 0.3f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"come_back_coward!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"come_back_coward!"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"tnt_re"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"tnt_re"),
                             VocalizationIndex = 264,
                             DialogueIndexImport = -1,
                         },
@@ -4231,7 +4231,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"tnt_re"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"tnt_re"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4244,11 +4244,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.75f,
                     SkipFraction = 0.75f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"don't_make_'em_mad!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"don't_make_'em_mad!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"crs"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"crs"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4261,7 +4261,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.7f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"curse_you!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"curse_you!"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
@@ -4275,7 +4275,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"crs_mjrfoe"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"crs_mjrfoe"),
                     ParentIndex = 265,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4288,11 +4288,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.4f,
                     SkipFraction = 0.4f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"you_ain't_that_tought!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"you_ain't_that_tought!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"crs_mjrfoe_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"crs_mjrfoe_arb"),
                     ParentIndex = 266,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4306,11 +4306,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.7f,
                     FloodSkipFraction = 0.6f,
                     SkipFraction = 0.6f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"damn_you_dervish!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"damn_you_dervish!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"crs_mjrfoe_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"crs_mjrfoe_mc"),
                     ParentIndex = 266,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4324,11 +4324,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.7f,
                     FloodSkipFraction = 0.6f,
                     SkipFraction = 0.6f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"a_curse_on_you_demon!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"a_curse_on_you_demon!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"crs_betrayingplr_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"crs_betrayingplr_arb"),
                     ParentIndex = 265,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4342,11 +4342,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"damn_you_betraying_arbiter!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"damn_you_betraying_arbiter!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"crs_betrayingplr_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"crs_betrayingplr_mc"),
                     ParentIndex = 265,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4360,11 +4360,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"damn_you_betraying_chief!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"damn_you_betraying_chief!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"pld"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"pld"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Involuntary,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4376,11 +4376,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.2f,
                     FloodSkipFraction = 0.8f,
                     SkipFraction = 0.8f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"don't_hurt_me!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"don't_hurt_me!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"pld_mjrfoe"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"pld_mjrfoe"),
                     ParentIndex = 271,
                     Priority = VocalizationPriority.Involuntary,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4392,11 +4392,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.8f,
                     SkipFraction = 0.8f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"not_fair!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"not_fair!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"pld_mjrfoe_arb"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"pld_mjrfoe_arb"),
                     ParentIndex = 272,
                     Priority = VocalizationPriority.Involuntary,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4409,11 +4409,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.9f,
                     FloodSkipFraction = 0.9f,
                     SkipFraction = 0.9f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"don't_hurt_me_arbiter!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"don't_hurt_me_arbiter!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"pld_mjrfoe_mc"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"pld_mjrfoe_mc"),
                     ParentIndex = 272,
                     Priority = VocalizationPriority.Involuntary,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4426,11 +4426,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.9f,
                     FloodSkipFraction = 0.9f,
                     SkipFraction = 0.9f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"don't_hurt_me_mc!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"don't_hurt_me_mc!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"whn"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"whn"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4444,12 +4444,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"that_hurts!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"that_hurts!"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"whn_re"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"whn_re"),
                             VocalizationIndex = 277,
                             DialogueIndexImport = -1,
                         },
@@ -4457,7 +4457,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"whn_hrtblt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"whn_hrtblt"),
                     ParentIndex = 275,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4471,11 +4471,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i've_been_shot!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i've_been_shot!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"whn_re"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"whn_re"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4489,11 +4489,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.75f,
                     SkipFraction = 0.75f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"stop_whining!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"stop_whining!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"rtrt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"rtrt"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4501,11 +4501,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i'm_out_of_here!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i'm_out_of_here!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"rtrt_ldrdead"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"rtrt_ldrdead"),
                     ParentIndex = 278,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4519,11 +4519,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"leader_dead_run_away!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"leader_dead_run_away!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"endcmbt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"endcmbt"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4537,11 +4537,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"is_that_it?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"is_that_it?"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"pstcmbt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"pstcmbt"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4555,11 +4555,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"we_win!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"we_win!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"pstcmbt_brt"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"pstcmbt_brt"),
                     ParentIndex = 281,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4573,11 +4573,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"we_sure_took_those_brutes"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"we_sure_took_those_brutes"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"pstcmbt_fld"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"pstcmbt_fld"),
                     ParentIndex = 281,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4591,11 +4591,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.5f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i_hate_fighting_flood."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i_hate_fighting_flood."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"pstcmbt_ez"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"pstcmbt_ez"),
                     ParentIndex = 281,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4609,11 +4609,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.5f,
                     SkipFraction = 0.5f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"we_kicked_their_asses!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"we_kicked_their_asses!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"pstcmbt_hrd"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"pstcmbt_hrd"),
                     ParentIndex = 281,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4627,11 +4627,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"they_almost_kicked_our_asses!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"they_almost_kicked_our_asses!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"pstcmbt_agg"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"pstcmbt_agg"),
                     ParentIndex = 281,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4645,11 +4645,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 1f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"they_never_knew_what_hit_em!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"they_never_knew_what_hit_em!"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"pstcmbt_tim"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"pstcmbt_tim"),
                     ParentIndex = 281,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4663,11 +4663,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     PlayerSkipFraction = 0.25f,
                     FloodSkipFraction = 0.25f,
                     SkipFraction = 0.25f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"man_i_thought_we_were_screwed."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"man_i_thought_we_were_screwed."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"status"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"status"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4675,12 +4675,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"how_you_doin'?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"how_you_doin'?"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"status_re"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"status_re"),
                             VocalizationIndex = 289,
                             ResponseType = AiVocalizationResponseType.Listener,
                             DialogueIndexImport = -1,
@@ -4689,7 +4689,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"status_re"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"status_re"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4697,11 +4697,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 0.25f,
                     NotificationDelay = 0.5f,
                     Weight = 4f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i_need_ammo."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i_need_ammo."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ask_chkallybdy"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ask_chkallybdy"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4710,11 +4710,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 15,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"did_he_make_it?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"did_he_make_it?"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ask_chkallybdyf"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ask_chkallybdyf"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4723,11 +4723,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 15,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"did_she_make_it?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"did_she_make_it?"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"chckallybdy"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"chckallybdy"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4735,12 +4735,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"he's_gone."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"he's_gone."),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"regret"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"regret"),
                             VocalizationIndex = 299,
                             DialogueIndexImport = -1,
                         },
@@ -4748,7 +4748,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"chckallybdyf"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"chckallybdyf"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4756,12 +4756,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"she's_gone..."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"she's_gone..."),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"regret"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"regret"),
                             VocalizationIndex = 299,
                             DialogueIndexImport = -1,
                         },
@@ -4769,7 +4769,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"tchallybdy"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"tchallybdy"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4777,11 +4777,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"i'll_miss_you_buddy."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"i'll_miss_you_buddy."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"ordr_chkfoebdy"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"ordr_chkfoebdy"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4789,11 +4789,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"check_that_body."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"check_that_body."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"chkfoebdy"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"chkfoebdy"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4801,12 +4801,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 3f,
                     Weight = 2f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"yep_he's_dead!"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"yep_he's_dead!"),
                     Responses = new List<AiVocalizationResponse>
                     {
                         new AiVocalizationResponse
                         {
-                            VocalizationName = CacheContext.StringTable.GetStringId($@"approve"),
+                            VocalizationName = CacheContext.StringTable.GetOrAddString($@"approve"),
                             VocalizationIndex = 298,
                             DialogueIndexImport = -1,
                         },
@@ -4814,7 +4814,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"shotfoebdy"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"shotfoebdy"),
                     ParentIndex = 296,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4822,11 +4822,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 3f,
                     Weight = 2f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"how's_it_feel_to_be_dead!?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"how's_it_feel_to_be_dead!?"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"approve"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"approve"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4835,11 +4835,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 15f,
                     Weight = 4f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"good"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"good"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"regret"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"regret"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4848,11 +4848,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     NotificationDelay = 0.5f,
                     PostVocalizationDelay = 15,
                     Weight = 4f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"too_bad."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"too_bad."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"captured"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"captured"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4860,11 +4860,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"this_sucks_?"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"this_sucks_?"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"doze"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"doze"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4872,11 +4872,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"zzzzz?."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"zzzzz?."),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"injured"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"injured"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4884,11 +4884,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"uhh_aagh_cough_cough"),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"uhh_aagh_cough_cough"),
                 },
                 new VocalizationDefinition
                 {
-                    Vocalization = CacheContext.StringTable.GetStringId($@"peeing"),
+                    Vocalization = CacheContext.StringTable.GetOrAddString($@"peeing"),
                     ParentIndex = -1,
                     Priority = VocalizationPriority.Postcombat,
                     MaxCombatStatus = AiCombatStatus.Dangerous,
@@ -4896,7 +4896,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     AllowableQueueDelay = 5f,
                     NotificationDelay = 0.5f,
                     Weight = 1f,
-                    SampleLine = CacheContext.StringTable.GetStringId($@"pssssssss_?."),
+                    SampleLine = CacheContext.StringTable.GetOrAddString($@"pssssssss_?."),
                 },
             };
             adlg.Patterns = new List<VocalizationPattern>
@@ -4905,7 +4905,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 238,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"chr_kllfoe"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"chr_kllfoe"),
                     SpeakerType = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -4914,7 +4914,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 239,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"chr_kllfoe_blt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"chr_kllfoe_blt"),
                     SpeakerType = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -4924,7 +4924,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 241,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"chr_kllfoe_vclbmp"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"chr_kllfoe_vclbmp"),
                     SpeakerType = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -4934,7 +4934,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 240,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"chr_kllfoe_mjrfoe"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"chr_kllfoe_mjrfoe"),
                     SpeakerType = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -4944,7 +4944,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 235,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"chr_deadmc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"chr_deadmc"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -4954,7 +4954,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 236,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"chr_deadarb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"chr_deadarb"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -4964,72 +4964,72 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 151,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"dwn_scrb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"dwn_scrb"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
-                    SubjectAiTypeName = CacheContext.StringTable.GetStringId($@"scarab"),
+                    SubjectAiTypeName = CacheContext.StringTable.GetOrAddString($@"scarab"),
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 152,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"dwn_vcl_bnsh"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"dwn_vcl_bnsh"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                     SubjectType = VocalizationPattern.DialogueObjectTypesEnum.Driver,
-                    SubjectAiTypeName = CacheContext.StringTable.GetStringId($@"banshee"),
+                    SubjectAiTypeName = CacheContext.StringTable.GetOrAddString($@"banshee"),
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 153,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"dwn_vcl_chpr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"dwn_vcl_chpr"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                     SubjectType = VocalizationPattern.DialogueObjectTypesEnum.Driver,
-                    SubjectAiTypeName = CacheContext.StringTable.GetStringId($@"chopper"),
+                    SubjectAiTypeName = CacheContext.StringTable.GetOrAddString($@"chopper"),
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 154,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"dwn_vcl_ghst"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"dwn_vcl_ghst"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                     SubjectType = VocalizationPattern.DialogueObjectTypesEnum.Driver,
-                    SubjectAiTypeName = CacheContext.StringTable.GetStringId($@"ghost"),
+                    SubjectAiTypeName = CacheContext.StringTable.GetOrAddString($@"ghost"),
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 155,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"dwn_vcl_wrth"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"dwn_vcl_wrth"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                     SubjectType = VocalizationPattern.DialogueObjectTypesEnum.LastManInVehicle,
-                    SubjectAiTypeName = CacheContext.StringTable.GetStringId($@"wraith"),
+                    SubjectAiTypeName = CacheContext.StringTable.GetOrAddString($@"wraith"),
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 156,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"dwn_wpn_snpr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"dwn_wpn_snpr"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
-                    SubjectAiTypeName = CacheContext.StringTable.GetStringId($@"sniper"),
+                    SubjectAiTypeName = CacheContext.StringTable.GetOrAddString($@"sniper"),
                 },
                 new VocalizationPattern
                 {
                     DamageType = VocalizationPattern.DamageEnum.Bullet,
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 215,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"prs_plr_kll_blt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"prs_plr_kll_blt"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -5042,7 +5042,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     DamageType = VocalizationPattern.DamageEnum.Vehicle,
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 217,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"prs_plr_kll_vclbmp"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"prs_plr_kll_vclbmp"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -5054,7 +5054,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     DamageType = VocalizationPattern.DamageEnum.Melee,
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 218,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"prs_plr_kll_wmelee"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"prs_plr_kll_wmelee"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -5065,7 +5065,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 216,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"prs_plr_kll_mjr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"prs_plr_kll_mjr"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -5077,12 +5077,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 222,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"prs_plr_sniping"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"prs_plr_sniping"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Player,
-                    CauseAiTypeName = CacheContext.StringTable.GetStringId($@"sniper"),
+                    CauseAiTypeName = CacheContext.StringTable.GetOrAddString($@"sniper"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                     SpacialRelation = VocalizationPattern.SpatialRelationEnum.Far,
                     DamageType = VocalizationPattern.DamageEnum.Bullet,
@@ -5091,7 +5091,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 213,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"prs_plr_gdgrnd"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"prs_plr_gdgrnd"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -5103,7 +5103,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 223,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"kllmytrgt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"kllmytrgt"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -5116,7 +5116,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 230,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"scld_plr_kllally"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"scld_plr_kllally"),
                     SpeakerType = SpeakerTypeEnum.Friend,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
@@ -5129,7 +5129,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 244,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"lmnt_deadally"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"lmnt_deadally"),
                     SpeakerType = SpeakerTypeEnum.JointLeader,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -5139,7 +5139,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 245,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"lmnt_deadplr_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"lmnt_deadplr_arb"),
                     SpeakerType = SpeakerTypeEnum.Friend,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -5149,7 +5149,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Death,
                     VocalizationIndex = 246,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"lmnt_deadplr_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"lmnt_deadplr_mc"),
                     SpeakerType = SpeakerTypeEnum.Friend,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -5159,7 +5159,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DeathHeadshot,
                     VocalizationIndex = 275,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"whn"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"whn"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Flags = PatternFlags.CauseIsPlayer,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -5168,7 +5168,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DeathHeadshot,
                     VocalizationIndex = 276,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"whn_hrtblt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"whn_hrtblt"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Flags = PatternFlags.CauseIsPlayer,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -5178,7 +5178,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DeathHeadshot,
                     VocalizationIndex = 225,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"scld_plr_hrtme"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"scld_plr_hrtme"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Player,
@@ -5188,7 +5188,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DeathHeadshot,
                     VocalizationIndex = 228,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"scld_plr_hrt_blt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"scld_plr_hrt_blt"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Player,
@@ -5199,7 +5199,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DeathHeadshot,
                     VocalizationIndex = 226,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"scld_plr_wldgrnd"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"scld_plr_wldgrnd"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Player,
@@ -5210,7 +5210,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DeathHeadshot,
                     VocalizationIndex = 227,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"scld_plr_wldvcl"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"scld_plr_wldvcl"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Player,
@@ -5221,7 +5221,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DeathHeadshot,
                     VocalizationIndex = 40,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"panic_onfire"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"panic_onfire"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                     DamageType = VocalizationPattern.DamageEnum.Flame,
@@ -5230,7 +5230,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.SightedFirst,
                     VocalizationIndex = 93,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"hrdfoe"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"hrdfoe"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -5241,7 +5241,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.ReadyRocketLauncher,
                     VocalizationIndex = 37,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"srprs"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"srprs"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -5249,7 +5249,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Announce,
                     VocalizationIndex = 102,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"morefoe"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"morefoe"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.ActorOrPlayer,
@@ -5259,7 +5259,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.SightedNew,
                     VocalizationIndex = 94,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"seefoe"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"seefoe"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.ActorOrPlayer,
@@ -5269,7 +5269,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.SightedNew,
                     VocalizationIndex = 100,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"seefoe_agg"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"seefoe_agg"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.ActorOrPlayer,
@@ -5280,7 +5280,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.SightedNew,
                     VocalizationIndex = 101,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"seefoe_tim"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"seefoe_tim"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.ActorOrPlayer,
@@ -5291,7 +5291,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.SightedNew,
                     VocalizationIndex = 99,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"seefoe_downthere"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"seefoe_downthere"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.ActorOrPlayer,
@@ -5302,7 +5302,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.SightedNew,
                     VocalizationIndex = 98,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"seefoe_upthere"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"seefoe_upthere"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.ActorOrPlayer,
@@ -5313,7 +5313,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 111,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_incmn_grnd"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_incmn_grnd"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Grenade,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -5322,7 +5322,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 110,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_incmn"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_incmn"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Projectile,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -5331,7 +5331,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 115,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_trrt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_trrt"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.UnitInTurret,
@@ -5341,62 +5341,62 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 118,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_vcl_ghst"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_vcl_ghst"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Driver,
-                    CauseAiTypeName = CacheContext.StringTable.GetStringId($@"ghost"),
+                    CauseAiTypeName = CacheContext.StringTable.GetOrAddString($@"ghost"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 116,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_vcl_bnsh"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_vcl_bnsh"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Driver,
-                    CauseAiTypeName = CacheContext.StringTable.GetStringId($@"banshee"),
+                    CauseAiTypeName = CacheContext.StringTable.GetOrAddString($@"banshee"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 120,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_vcl_wrth"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_vcl_wrth"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Driver,
-                    CauseAiTypeName = CacheContext.StringTable.GetStringId($@"wraith"),
+                    CauseAiTypeName = CacheContext.StringTable.GetOrAddString($@"wraith"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 119,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_vcl_phntm"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_vcl_phntm"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Driver,
-                    CauseAiTypeName = CacheContext.StringTable.GetStringId($@"phantom"),
+                    CauseAiTypeName = CacheContext.StringTable.GetOrAddString($@"phantom"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 117,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_vcl_chpr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_vcl_chpr"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Driver,
-                    CauseAiTypeName = CacheContext.StringTable.GetStringId($@"chopper"),
+                    CauseAiTypeName = CacheContext.StringTable.GetOrAddString($@"chopper"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 97,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"seefoe_mjr_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"seefoe_mjr_mc"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerMasterchief,
@@ -5406,7 +5406,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 96,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"seefoe_mjr_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"seefoe_mjr_arb"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerDervish,
@@ -5416,7 +5416,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 95,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"seefoe_mjr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"seefoe_mjr"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.MajorlyScary,
@@ -5426,7 +5426,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 122,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_stlth"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_stlth"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Stealth,
@@ -5436,17 +5436,17 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 125,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_scrb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_scrb"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
-                    CauseAiTypeName = CacheContext.StringTable.GetStringId($@"scarab"),
+                    CauseAiTypeName = CacheContext.StringTable.GetOrAddString($@"scarab"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 123,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_chr_bggr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_chr_bggr"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseActorType = ActorTypeEnum.Juggernaut,
@@ -5456,7 +5456,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 124,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_chr_hntr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_chr_hntr"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseActorType = ActorTypeEnum.Engineer,
@@ -5466,7 +5466,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 126,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_flood"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_flood"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Flood,
@@ -5476,7 +5476,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 127,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_swarm"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_swarm"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseActorType = ActorTypeEnum.CarrierForm,
@@ -5486,7 +5486,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 128,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_pureforms"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_pureforms"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Pureform,
@@ -5496,27 +5496,27 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 130,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_wpn_snpr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_wpn_snpr"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
-                    CauseAiTypeName = CacheContext.StringTable.GetStringId($@"sniper"),
+                    CauseAiTypeName = CacheContext.StringTable.GetOrAddString($@"sniper"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 131,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_wpn_hmmr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_wpn_hmmr"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
-                    CauseAiTypeName = CacheContext.StringTable.GetStringId($@"hammer"),
+                    CauseAiTypeName = CacheContext.StringTable.GetOrAddString($@"hammer"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.DamageWeakspot,
                     VocalizationIndex = 135,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_trrt_dply"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_trrt_dply"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.UnitCarryingTurret,
@@ -5526,7 +5526,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderArriveCombat,
                     VocalizationIndex = 191,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ordr_openfire"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ordr_openfire"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -5535,21 +5535,21 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Emerge,
                     VocalizationIndex = 112,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_incmn_fldbm"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_incmn_fldbm"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.Curse,
                     VocalizationIndex = 113,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_incmn_vclbm"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_incmn_vclbm"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.Threaten,
                     VocalizationIndex = 133,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_brsrk"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_brsrk"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     Flags = PatternFlags.SubjectVisible,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -5558,7 +5558,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.CoverFriend,
                     VocalizationIndex = 134,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_stlth_again"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_stlth_again"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     Flags = PatternFlags.SubjectVisible,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -5567,14 +5567,14 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.MoveCover,
                     VocalizationIndex = 39,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"panic_infctnfrm"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"panic_infctnfrm"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.InCover,
                     VocalizationIndex = 136,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"warn_fldreanimate"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"warn_fldreanimate"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     ListenerTarget = SpeakerTypeEnum.Clump,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -5583,7 +5583,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.ReadyFlakCannon,
                     VocalizationIndex = 157,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"lst_cntct"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"lst_cntct"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsInfantry | PatternFlags.SubjectIsInfantry,
@@ -5594,7 +5594,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Fighting,
                     VocalizationIndex = 158,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"srch_pinned"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"srch_pinned"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsInfantry,
@@ -5604,7 +5604,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Fighting,
                     VocalizationIndex = 194,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ordr_pinned"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ordr_pinned"),
                     SpeakerType = SpeakerTypeEnum.Joint,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsInfantry,
@@ -5615,7 +5615,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Surprised,
                     VocalizationIndex = 159,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"invsgt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"invsgt"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsPlayer | PatternFlags.CauseIsInfantry,
@@ -5625,7 +5625,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Surprised,
                     VocalizationIndex = 198,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ordr_invsgt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ordr_invsgt"),
                     SpeakerType = SpeakerTypeEnum.Joint,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsInfantry,
@@ -5635,7 +5635,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Surprised,
                     VocalizationIndex = 204,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"join_invsgt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"join_invsgt"),
                     SpeakerType = SpeakerTypeEnum.JointLeader,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsSpeakerSTarget | PatternFlags.CauseIsPlayer | PatternFlags.CauseIsInfantry,
@@ -5646,7 +5646,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Surprised,
                     VocalizationIndex = 210,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"cvr_invsgt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"cvr_invsgt"),
                     SpeakerType = SpeakerTypeEnum.JointLeader,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsSpeakerSTarget | PatternFlags.CauseIsPlayer | PatternFlags.CauseIsInfantry,
@@ -5657,7 +5657,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.ReadyPlasmaLauncher,
                     VocalizationIndex = 160,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"invsgt_fail"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"invsgt_fail"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsPlayer | PatternFlags.CauseIsInfantry,
@@ -5667,7 +5667,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.ReadyPlasmaLauncher,
                     VocalizationIndex = 161,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ask_invsgt_fail"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ask_invsgt_fail"),
                     SpeakerType = SpeakerTypeEnum.Friend,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsPlayer | PatternFlags.CauseIsInfantry,
@@ -5677,7 +5677,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.InvestigateInterest,
                     VocalizationIndex = 162,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"prst"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"prst"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsInfantry,
@@ -5687,7 +5687,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.InvestigateInterest,
                     VocalizationIndex = 196,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ordr_prst"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ordr_prst"),
                     SpeakerType = SpeakerTypeEnum.Joint,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsSpeakerSTarget | PatternFlags.CauseIsPlayer | PatternFlags.CauseIsInfantry,
@@ -5698,7 +5698,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.InvestigateInterest,
                     VocalizationIndex = 206,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"join_prst"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"join_prst"),
                     SpeakerType = SpeakerTypeEnum.JointLeader,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsSpeakerSTarget | PatternFlags.CauseIsPlayer | PatternFlags.CauseIsInfantry,
@@ -5709,7 +5709,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.WeaponPickup,
                     VocalizationIndex = 163,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"prst_fail"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"prst_fail"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsPlayer | PatternFlags.CauseIsInfantry,
@@ -5719,7 +5719,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.WeaponPickup,
                     VocalizationIndex = 164,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ask_prst_fail"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ask_prst_fail"),
                     SpeakerType = SpeakerTypeEnum.Friend,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsSpeakerSTarget | PatternFlags.CauseIsPlayer | PatternFlags.CauseIsInfantry,
@@ -5729,7 +5729,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.HeardOld,
                     VocalizationIndex = 103,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"foundfoe"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"foundfoe"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsSpeakerSTarget,
@@ -5740,7 +5740,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.HeardOld,
                     VocalizationIndex = 104,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"foundfoe_mjr_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"foundfoe_mjr_mc"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsSpeakerSTarget,
@@ -5752,7 +5752,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.HeardOld,
                     VocalizationIndex = 105,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"foundfoe_mjr_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"foundfoe_mjr_arb"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsSpeakerSTarget,
@@ -5764,7 +5764,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.HeardOld,
                     VocalizationIndex = 107,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"foundfoe_chasing"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"foundfoe_chasing"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsSpeakerSTarget,
@@ -5775,7 +5775,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.HeardOld,
                     VocalizationIndex = 274,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"pld_mjrfoe_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"pld_mjrfoe_mc"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsSpeakerSTarget,
@@ -5787,7 +5787,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.HeardOld,
                     VocalizationIndex = 273,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"pld_mjrfoe_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"pld_mjrfoe_arb"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsSpeakerSTarget,
@@ -5799,7 +5799,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.FoundUnit,
                     VocalizationIndex = 106,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"foundfoe_prst"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"foundfoe_prst"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsSpeakerSTarget,
@@ -5810,7 +5810,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.FoundUnit,
                     VocalizationIndex = 107,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"foundfoe_chasing"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"foundfoe_chasing"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsSpeakerSTarget,
@@ -5822,7 +5822,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.InvestigateStart,
                     VocalizationIndex = 165,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"stayback"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"stayback"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsInfantry,
@@ -5832,7 +5832,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.InvestigateStart,
                     VocalizationIndex = 166,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"stayback_agg"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"stayback_agg"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsInfantry,
@@ -5843,7 +5843,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.InvestigateStart,
                     VocalizationIndex = 167,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"stayback_tim"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"stayback_tim"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsInfantry,
@@ -5854,7 +5854,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.InvestigateStart,
                     VocalizationIndex = 168,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"join_stayback"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"join_stayback"),
                     SpeakerType = SpeakerTypeEnum.JointLeader,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsSpeakerSTarget | PatternFlags.CauseIsPlayer | PatternFlags.CauseIsInfantry,
@@ -5864,7 +5864,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.InvestigateStart,
                     VocalizationIndex = 195,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ordr_stayback"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ordr_stayback"),
                     SpeakerType = SpeakerTypeEnum.Joint,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsSpeakerSTarget | PatternFlags.CauseIsPlayer | PatternFlags.CauseIsInfantry,
@@ -5874,7 +5874,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.InvestigateStart,
                     VocalizationIndex = 263,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"tnt_invsgt_stayback"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"tnt_invsgt_stayback"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsInfantry,
@@ -5884,7 +5884,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.LostContact,
                     VocalizationIndex = 169,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"srchend"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"srchend"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsInfantry,
@@ -5894,7 +5894,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.InvestigateFailed,
                     VocalizationIndex = 169,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"srchend"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"srchend"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseIsInfantry,
@@ -5904,7 +5904,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.OrderAckAttackInfantry,
                     VocalizationIndex = 144,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"rmd_trrt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"rmd_trrt"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -5915,18 +5915,18 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.OrderAckAttackInfantry,
                     VocalizationIndex = 140,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"rmd_scrb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"rmd_scrb"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
-                    CauseAiTypeName = CacheContext.StringTable.GetStringId($@"scarab"),
+                    CauseAiTypeName = CacheContext.StringTable.GetOrAddString($@"scarab"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.OrderAckAttackInfantry,
                     VocalizationIndex = 139,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"rmd_plr_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"rmd_plr_mc"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -5937,7 +5937,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.OrderAckAttackInfantry,
                     VocalizationIndex = 138,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"rmd_plr_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"rmd_plr_arb"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -5948,7 +5948,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.OrderAckAttackInfantry,
                     VocalizationIndex = 141,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"rmd_stlth"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"rmd_stlth"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -5959,89 +5959,89 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.OrderAckAttackInfantry,
                     VocalizationIndex = 145,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"rmd_vcl_bnsh"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"rmd_vcl_bnsh"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.UnitInVehicle,
-                    CauseAiTypeName = CacheContext.StringTable.GetStringId($@"banshee"),
+                    CauseAiTypeName = CacheContext.StringTable.GetOrAddString($@"banshee"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.OrderAckAttackInfantry,
                     VocalizationIndex = 146,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"rmd_vcl_chpr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"rmd_vcl_chpr"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.UnitInVehicle,
-                    CauseAiTypeName = CacheContext.StringTable.GetStringId($@"chopper"),
+                    CauseAiTypeName = CacheContext.StringTable.GetOrAddString($@"chopper"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.OrderAckAttackInfantry,
                     VocalizationIndex = 147,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"rmd_vcl_ghst"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"rmd_vcl_ghst"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.UnitInVehicle,
-                    CauseAiTypeName = CacheContext.StringTable.GetStringId($@"ghost"),
+                    CauseAiTypeName = CacheContext.StringTable.GetOrAddString($@"ghost"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.OrderAckAttackInfantry,
                     VocalizationIndex = 149,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"rmd_vcl_wrth"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"rmd_vcl_wrth"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.UnitInVehicle,
-                    CauseAiTypeName = CacheContext.StringTable.GetStringId($@"wraith"),
+                    CauseAiTypeName = CacheContext.StringTable.GetOrAddString($@"wraith"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.OrderAckAttackInfantry,
                     VocalizationIndex = 148,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"rmd_vcl_phntm"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"rmd_vcl_phntm"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.UnitInVehicle,
-                    CauseAiTypeName = CacheContext.StringTable.GetStringId($@"phantom"),
+                    CauseAiTypeName = CacheContext.StringTable.GetOrAddString($@"phantom"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.OrderAckAttackInfantry,
                     VocalizationIndex = 142,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"rmd_wpn_snpr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"rmd_wpn_snpr"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
-                    CauseAiTypeName = CacheContext.StringTable.GetStringId($@"sniper"),
+                    CauseAiTypeName = CacheContext.StringTable.GetOrAddString($@"sniper"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.OrderAckAttackInfantry,
                     VocalizationIndex = 143,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"rmd_wpn_hmmr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"rmd_wpn_hmmr"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
-                    CauseAiTypeName = CacheContext.StringTable.GetStringId($@"hammer"),
+                    CauseAiTypeName = CacheContext.StringTable.GetOrAddString($@"hammer"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.FoundUnitPursuit,
                     VocalizationIndex = 248,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"strk_grnd"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"strk_grnd"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6049,7 +6049,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.FoundUnitPursuit,
                     VocalizationIndex = 192,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ordr_grenade"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ordr_grenade"),
                     SpeakerType = SpeakerTypeEnum.Joint,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6057,7 +6057,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.SuppressingFire,
                     VocalizationIndex = 249,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"strk_grnd_uncvr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"strk_grnd_uncvr"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6065,7 +6065,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.SuppressingFire,
                     VocalizationIndex = 192,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ordr_grenade"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ordr_grenade"),
                     SpeakerType = SpeakerTypeEnum.Joint,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6073,14 +6073,14 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.ThrowingGrenade,
                     VocalizationIndex = 193,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ordr_grenade_all"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ordr_grenade_all"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.NewOrderAdvance,
                     VocalizationIndex = 205,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"join_emrg"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"join_emrg"),
                     SpeakerType = SpeakerTypeEnum.EnemyOfCause,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6088,7 +6088,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.ThrowingGrenadeAll,
                     VocalizationIndex = 242,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"chr_kllfoe_stkplsm"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"chr_kllfoe_stkplsm"),
                     SpeakerType = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -6097,7 +6097,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.PostcombatInspectBody,
                     VocalizationIndex = 278,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"rtrt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"rtrt"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -6106,14 +6106,14 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleGetIn,
                     VocalizationIndex = 279,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"rtrt_ldrdead"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"rtrt_ldrdead"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.VehicleSlowDown,
                     VocalizationIndex = 278,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"rtrt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"rtrt"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -6122,7 +6122,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Idle,
                     VocalizationIndex = 278,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"rtrt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"rtrt"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -6131,7 +6131,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.CombatIdle,
                     VocalizationIndex = 278,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"rtrt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"rtrt"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -6140,7 +6140,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.OrderAckWeaponChange,
                     VocalizationIndex = 41,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"panic_plsmgrnd"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"panic_plsmgrnd"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6148,14 +6148,14 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.AssassinationAttack,
                     VocalizationIndex = 284,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"pstcmbt_ez"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"pstcmbt_ez"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.AssassinationAttack,
                     VocalizationIndex = 286,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"pstcmbt_agg"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"pstcmbt_agg"),
                     Attitude = VocalizationPattern.StyleAttitudeEnum.Aggressive,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6163,7 +6163,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.AssassinationAttack,
                     VocalizationIndex = 287,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"pstcmbt_tim"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"pstcmbt_tim"),
                     Attitude = VocalizationPattern.StyleAttitudeEnum.Timid,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6171,7 +6171,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.AssassinationAttack,
                     VocalizationIndex = 282,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"pstcmbt_brt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"pstcmbt_brt"),
                     SpeakerBehavior = VocalizationPattern.SpeakerBehaviorEnum.FoughtBrutes,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6179,7 +6179,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.AssassinationAttack,
                     VocalizationIndex = 283,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"pstcmbt_fld"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"pstcmbt_fld"),
                     SpeakerBehavior = VocalizationPattern.SpeakerBehaviorEnum.FoughtFlood,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6187,14 +6187,14 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.AssassinationInterrupted,
                     VocalizationIndex = 285,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"pstcmbt_hrd"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"pstcmbt_hrd"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.AssassinationInterrupted,
                     VocalizationIndex = 282,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"pstcmbt_brt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"pstcmbt_brt"),
                     SpeakerBehavior = VocalizationPattern.SpeakerBehaviorEnum.FoughtBrutes,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6202,7 +6202,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.AssassinationInterrupted,
                     VocalizationIndex = 283,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"pstcmbt_fld"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"pstcmbt_fld"),
                     SpeakerBehavior = VocalizationPattern.SpeakerBehaviorEnum.FoughtFlood,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6210,14 +6210,14 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleFalling,
                     VocalizationIndex = 281,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"pstcmbt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"pstcmbt"),
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
                 new VocalizationPattern
                 {
                     DialogueType = DialogueTypeEnum.VehicleFalling,
                     VocalizationIndex = 282,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"pstcmbt_brt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"pstcmbt_brt"),
                     SpeakerBehavior = VocalizationPattern.SpeakerBehaviorEnum.FoughtBrutes,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6225,7 +6225,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleFalling,
                     VocalizationIndex = 283,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"pstcmbt_fld"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"pstcmbt_fld"),
                     SpeakerBehavior = VocalizationPattern.SpeakerBehaviorEnum.FoughtFlood,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6233,7 +6233,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleScared,
                     VocalizationIndex = 280,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"endcmbt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"endcmbt"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6241,7 +6241,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Searching,
                     VocalizationIndex = 294,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"tchallybdy"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"tchallybdy"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -6250,7 +6250,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Searching,
                     VocalizationIndex = 292,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"chckallybdy"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"chckallybdy"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Male,
@@ -6260,7 +6260,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Searching,
                     VocalizationIndex = 293,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"chckallybdyf"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"chckallybdyf"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Female,
@@ -6270,7 +6270,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleCrazy,
                     VocalizationIndex = 290,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ask_chkallybdy"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ask_chkallybdy"),
                     SpeakerType = SpeakerTypeEnum.Friend,
                     Hostility = HostilityEnum.Friend,
                     Flags = PatternFlags.CauseVisible,
@@ -6281,7 +6281,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleCrazy,
                     VocalizationIndex = 291,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ask_chkallybdyf"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ask_chkallybdyf"),
                     SpeakerType = SpeakerTypeEnum.Friend,
                     Hostility = HostilityEnum.Friend,
                     Flags = PatternFlags.CauseVisible,
@@ -6292,7 +6292,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleCrazy,
                     VocalizationIndex = 295,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ordr_chkfoebdy"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ordr_chkfoebdy"),
                     SpeakerType = SpeakerTypeEnum.Joint,
                     Hostility = HostilityEnum.Enemy,
                     Flags = PatternFlags.CauseVisible,
@@ -6302,7 +6302,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleWoohoo,
                     VocalizationIndex = 297,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"shotfoebdy"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"shotfoebdy"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -6311,7 +6311,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Leap,
                     VocalizationIndex = 288,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"status"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"status"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6319,7 +6319,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.PostcombatLose,
                     VocalizationIndex = 52,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"grt_intovcl_mine"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"grt_intovcl_mine"),
                     SpeakerType = SpeakerTypeEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                     SubjectType = VocalizationPattern.DialogueObjectTypesEnum.Player,
@@ -6328,7 +6328,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.PostcombatLose,
                     VocalizationIndex = 50,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"grt_intovcl_imdvr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"grt_intovcl_imdvr"),
                     Flags = PatternFlags.FriendsPresent,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                     SubjectType = VocalizationPattern.DialogueObjectTypesEnum.Driver,
@@ -6337,7 +6337,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.PostcombatLose,
                     VocalizationIndex = 51,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"grt_intovcl_imgnr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"grt_intovcl_imgnr"),
                     Flags = PatternFlags.FriendsPresent,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                     SubjectType = VocalizationPattern.DialogueObjectTypesEnum.Gunner,
@@ -6346,7 +6346,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.PostcombatWin,
                     VocalizationIndex = 45,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"entervcl_drvr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"entervcl_drvr"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Vehicle,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -6355,7 +6355,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.PostcombatNeutral,
                     VocalizationIndex = 46,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"entervcl_gnr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"entervcl_gnr"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Vehicle,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -6364,7 +6364,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.PostcombatNeutral,
                     VocalizationIndex = 48,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"entervcl_trrt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"entervcl_trrt"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Turret,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -6373,7 +6373,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.ShootCorpse,
                     VocalizationIndex = 47,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"entervcl_psngr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"entervcl_psngr"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Vehicle,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -6382,7 +6382,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.InspectBodyStart,
                     VocalizationIndex = 81,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ok_plr_trdst_dvr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ok_plr_trdst_dvr"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -6391,7 +6391,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.PostcombatStatus,
                     VocalizationIndex = 82,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ok_plr_trdst_gnr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ok_plr_trdst_gnr"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -6400,7 +6400,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.RetreatFromLowShield,
                     VocalizationIndex = 237,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"chr_vcljmp"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"chr_vcljmp"),
                     SpeakerType = SpeakerTypeEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6408,7 +6408,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.MeleeCharge,
                     VocalizationIndex = 224,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"scld_plr_vclcrazy"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"scld_plr_vclcrazy"),
                     SpeakerType = SpeakerTypeEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6416,7 +6416,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.PostcombatStart,
                     VocalizationIndex = 55,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"bye_extvhl"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"bye_extvhl"),
                     SpeakerType = SpeakerTypeEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                     SubjectType = VocalizationPattern.DialogueObjectTypesEnum.Player,
@@ -6425,7 +6425,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Gloat,
                     VocalizationIndex = 53,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"invt_vcl"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"invt_vcl"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Player,
@@ -6435,7 +6435,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.PlayerLook,
                     VocalizationIndex = 54,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"invt_vcl_gnr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"invt_vcl_gnr"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Player,
@@ -6445,7 +6445,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderInvestigate,
                     VocalizationIndex = 58,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"grt_plr_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"grt_plr_mc"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerMasterchief,
@@ -6455,7 +6455,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderInvestigate,
                     VocalizationIndex = 57,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"grt_plr_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"grt_plr_arb"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerDervish,
@@ -6465,7 +6465,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderInvestigate,
                     VocalizationIndex = 64,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"hail_plr_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"hail_plr_mc"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerMasterchief,
@@ -6475,7 +6475,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderInvestigate,
                     VocalizationIndex = 63,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"hail_plr_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"hail_plr_arb"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerDervish,
@@ -6485,7 +6485,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderInvestigate,
                     VocalizationIndex = 60,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"grt_plr_vcl"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"grt_plr_vcl"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.UnitInVehicle,
@@ -6495,7 +6495,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderInvestigate,
                     VocalizationIndex = 65,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"hail_agg"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"hail_agg"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Player,
@@ -6506,7 +6506,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderInvestigate,
                     VocalizationIndex = 66,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"hail_tim"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"hail_tim"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Player,
@@ -6517,7 +6517,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderInvestigate,
                     VocalizationIndex = 59,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"grt_plr_srprs"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"grt_plr_srprs"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Player,
@@ -6528,7 +6528,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderInvestigate,
                     VocalizationIndex = 61,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"grt_plr_vcl_empty"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"grt_plr_vcl_empty"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     Flags = PatternFlags.SpeakerIsDowned,
@@ -6539,7 +6539,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderSpread,
                     VocalizationIndex = 69,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"look_plr_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"look_plr_mc"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     Flags = PatternFlags.CauseVisible | PatternFlags.CauseIsInfantry,
@@ -6551,7 +6551,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderSpread,
                     VocalizationIndex = 68,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"look_plr_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"look_plr_arb"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     Flags = PatternFlags.CauseVisible | PatternFlags.CauseIsInfantry,
@@ -6563,7 +6563,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderSpread,
                     VocalizationIndex = 70,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"look_plr_fllw"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"look_plr_fllw"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     Flags = PatternFlags.CauseVisible | PatternFlags.CauseIsInfantry,
@@ -6575,7 +6575,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderSpread,
                     VocalizationIndex = 71,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"look_pstcmbt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"look_pstcmbt"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     Flags = PatternFlags.CauseVisible | PatternFlags.CauseIsInfantry,
@@ -6587,7 +6587,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderSpread,
                     VocalizationIndex = 72,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"look_pstcmbt_ez"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"look_pstcmbt_ez"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     Flags = PatternFlags.CauseVisible | PatternFlags.CauseIsInfantry,
@@ -6599,7 +6599,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderSpread,
                     VocalizationIndex = 73,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"look_pstcmbt_hrd"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"look_pstcmbt_hrd"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     Flags = PatternFlags.CauseVisible | PatternFlags.CauseIsInfantry,
@@ -6611,7 +6611,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderSpread,
                     VocalizationIndex = 75,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"lookcmbt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"lookcmbt"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     Flags = PatternFlags.CauseVisible | PatternFlags.CauseIsInfantry,
@@ -6623,7 +6623,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderSpread,
                     VocalizationIndex = 76,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"lookcmbt_fllw"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"lookcmbt_fllw"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     Flags = PatternFlags.CauseVisible | PatternFlags.CauseIsInfantry,
@@ -6635,7 +6635,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderSpread,
                     VocalizationIndex = 77,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"lookcmbt_agg"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"lookcmbt_agg"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     Flags = PatternFlags.CauseVisible | PatternFlags.CauseIsInfantry,
@@ -6648,7 +6648,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderSpread,
                     VocalizationIndex = 78,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"lookcmbt_tim"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"lookcmbt_tim"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     Flags = PatternFlags.CauseVisible | PatternFlags.CauseIsInfantry,
@@ -6661,7 +6661,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderHold,
                     VocalizationIndex = 74,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"look_lngtme"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"look_lngtme"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     Flags = PatternFlags.CauseVisible | PatternFlags.CauseIsInfantry,
@@ -6672,7 +6672,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.OrderAckInteract,
                     VocalizationIndex = 86,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"thnk_plr_btrwpn"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"thnk_plr_btrwpn"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Player,
@@ -6682,7 +6682,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.OrderAckPinnedDown,
                     VocalizationIndex = 90,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"scrn_plr_wrswpn"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"scrn_plr_wrswpn"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Player,
@@ -6692,7 +6692,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.FireteamMemberJoin,
                     VocalizationIndex = 80,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ok_plr_trdwpn"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ok_plr_trdwpn"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Player,
@@ -6702,7 +6702,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.PlayerLookLongtime,
                     VocalizationIndex = 233,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"scld_plr_blocking"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"scld_plr_blocking"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.Player,
@@ -6712,7 +6712,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.PanicGrenadeAttached,
                     VocalizationIndex = 221,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"prs_plr_kll_lots"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"prs_plr_kll_lots"),
                     SpeakerType = SpeakerTypeEnum.Friend,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                     SubjectType = VocalizationPattern.DialogueObjectTypesEnum.Player,
@@ -6721,7 +6721,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.FireteamMemberDanger,
                     VocalizationIndex = 42,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"betray"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"betray"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Traitor,
@@ -6731,7 +6731,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.FireteamMemberDied,
                     VocalizationIndex = 43,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"forgive"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"forgive"),
                     SpeakerType = SpeakerTypeEnum.Friend,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6739,7 +6739,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.ShootGunner,
                     VocalizationIndex = 83,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ok_plr_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ok_plr_arb"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerDervish,
@@ -6749,7 +6749,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.ShootGunner,
                     VocalizationIndex = 84,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"ok_plr_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"ok_plr_mc"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerMasterchief,
@@ -6759,7 +6759,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.ShootMultiple,
                     VocalizationIndex = 87,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"thnk_plr_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"thnk_plr_arb"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerDervish,
@@ -6769,7 +6769,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.ShootMultiple,
                     VocalizationIndex = 88,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"thnk_plr_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"thnk_plr_mc"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerMasterchief,
@@ -6779,7 +6779,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.OpenFire,
                     VocalizationIndex = 91,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"scrn_plr_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"scrn_plr_arb"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerDervish,
@@ -6789,7 +6789,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.OpenFire,
                     VocalizationIndex = 92,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"scrn_plr_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"scrn_plr_mc"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerMasterchief,
@@ -6799,7 +6799,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.PinnedDown,
                     VocalizationIndex = 231,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"scld_plr_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"scld_plr_arb"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerDervish,
@@ -6809,7 +6809,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.PinnedDown,
                     VocalizationIndex = 232,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"scld_plr_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"scld_plr_mc"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerMasterchief,
@@ -6819,7 +6819,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Strike,
                     VocalizationIndex = 219,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"prs_plr_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"prs_plr_arb"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerDervish,
@@ -6829,7 +6829,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.Strike,
                     VocalizationIndex = 220,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"prs_plr_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"prs_plr_mc"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Friend,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerMasterchief,
@@ -6839,7 +6839,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleEntryStartDriver,
                     VocalizationIndex = 172,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"newordr_advance"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"newordr_advance"),
                     SpeakerType = SpeakerTypeEnum.Vehicle,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6847,7 +6847,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleEntryStartDriver,
                     VocalizationIndex = 184,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"foeordr_advance"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"foeordr_advance"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6855,7 +6855,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleEnter,
                     VocalizationIndex = 174,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"newordr_charge"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"newordr_charge"),
                     SpeakerType = SpeakerTypeEnum.Vehicle,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6863,7 +6863,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleEnter,
                     VocalizationIndex = 185,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"foeordr_charge"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"foeordr_charge"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6871,7 +6871,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleEntryStartGun,
                     VocalizationIndex = 177,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"newordr_fallback"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"newordr_fallback"),
                     SpeakerType = SpeakerTypeEnum.Vehicle,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6879,7 +6879,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleEntryStartGun,
                     VocalizationIndex = 186,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"foeordr_fallback"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"foeordr_fallback"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6887,7 +6887,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleEntryStartPassenger,
                     VocalizationIndex = 181,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"newordr_retreat"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"newordr_retreat"),
                     SpeakerType = SpeakerTypeEnum.Vehicle,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6895,7 +6895,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleEntryStartPassenger,
                     VocalizationIndex = 188,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"foeordr_retreat"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"foeordr_retreat"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6903,7 +6903,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleExit,
                     VocalizationIndex = 180,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"newordr_moveon"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"newordr_moveon"),
                     SpeakerType = SpeakerTypeEnum.Vehicle,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6911,7 +6911,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.EvictDriver,
                     VocalizationIndex = 173,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"newordr_arrival"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"newordr_arrival"),
                     SpeakerType = SpeakerTypeEnum.Vehicle,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6919,7 +6919,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.EvictGunner,
                     VocalizationIndex = 175,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"newordr_entervcl"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"newordr_entervcl"),
                     SpeakerType = SpeakerTypeEnum.Vehicle,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6927,7 +6927,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.EvictPassenger,
                     VocalizationIndex = 176,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"newordr_exitvcl"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"newordr_exitvcl"),
                     SpeakerType = SpeakerTypeEnum.Vehicle,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6935,7 +6935,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.VehicleBoarded,
                     VocalizationIndex = 178,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"newordr_fllwplr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"newordr_fllwplr"),
                     SpeakerType = SpeakerTypeEnum.Vehicle,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6943,7 +6943,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderEnemyAdvancing,
                     VocalizationIndex = 179,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"newordr_leaveplr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"newordr_leaveplr"),
                     SpeakerType = SpeakerTypeEnum.Vehicle,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6951,7 +6951,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderEnemyCharging,
                     VocalizationIndex = 182,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"newordr_support"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"newordr_support"),
                     SpeakerType = SpeakerTypeEnum.Vehicle,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6959,7 +6959,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderEnemyCharging,
                     VocalizationIndex = 189,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"foeordr_support"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"foeordr_support"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6967,7 +6967,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderEnemyFallingback,
                     VocalizationIndex = 171,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"neworder_flanking"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"neworder_flanking"),
                     SpeakerType = SpeakerTypeEnum.Vehicle,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6975,7 +6975,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderEnemyFallingback,
                     VocalizationIndex = 187,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"foeordr_flanking"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"foeordr_flanking"),
                     SpeakerType = SpeakerTypeEnum.Target,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
                 },
@@ -6983,7 +6983,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderCharge,
                     VocalizationIndex = 265,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"crs"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"crs"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -6992,7 +6992,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderCharge,
                     VocalizationIndex = 268,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"crs_mjrfoe_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"crs_mjrfoe_mc"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerMasterchief,
@@ -7002,7 +7002,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderCharge,
                     VocalizationIndex = 267,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"crs_mjrfoe_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"crs_mjrfoe_arb"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerDervish,
@@ -7012,7 +7012,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderCharge,
                     VocalizationIndex = 266,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"crs_mjrfoe"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"crs_mjrfoe"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.MajorlyScary,
@@ -7022,7 +7022,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderCharge,
                     VocalizationIndex = 270,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"crs_betrayingplr_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"crs_betrayingplr_mc"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Traitor,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerMasterchief,
@@ -7032,7 +7032,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderCharge,
                     VocalizationIndex = 269,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"crs_betrayingplr_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"crs_betrayingplr_arb"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Traitor,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerDervish,
@@ -7042,7 +7042,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderFallback,
                     VocalizationIndex = 254,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"thrtn"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"thrtn"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -7051,7 +7051,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderFallback,
                     VocalizationIndex = 257,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"thrtn_mjrfoe_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"thrtn_mjrfoe_mc"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerMasterchief,
@@ -7061,7 +7061,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderFallback,
                     VocalizationIndex = 256,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"thrtn_mjrfoe_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"thrtn_mjrfoe_arb"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerDervish,
@@ -7071,7 +7071,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderFallback,
                     VocalizationIndex = 255,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"thrtn_mjrfoe"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"thrtn_mjrfoe"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.MajorlyScary,
@@ -7081,7 +7081,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderFllplr,
                     VocalizationIndex = 254,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"thrtn"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"thrtn"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -7094,7 +7094,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderFllplr,
                     VocalizationIndex = 257,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"thrtn_mjrfoe_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"thrtn_mjrfoe_mc"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -7108,7 +7108,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderFllplr,
                     VocalizationIndex = 256,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"thrtn_mjrfoe_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"thrtn_mjrfoe_arb"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -7122,7 +7122,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderFllplr,
                     VocalizationIndex = 255,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"thrtn_mjrfoe"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"thrtn_mjrfoe"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -7136,7 +7136,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderFllplr,
                     VocalizationIndex = 247,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"strk"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"strk"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -7149,7 +7149,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderFllplr,
                     VocalizationIndex = 251,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"strk_mjrfoe_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"strk_mjrfoe_mc"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -7163,7 +7163,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderFllplr,
                     VocalizationIndex = 250,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"strk_mjrfoe_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"strk_mjrfoe_arb"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -7177,7 +7177,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderFllplr,
                     VocalizationIndex = 253,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"strk_vcl_gnr"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"strk_vcl_gnr"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -7191,7 +7191,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderFllplr,
                     VocalizationIndex = 262,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"tnt_mjrfoe_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"tnt_mjrfoe_mc"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -7205,7 +7205,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.NewOrderFllplr,
                     VocalizationIndex = 261,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"tnt_mjrfoe_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"tnt_mjrfoe_arb"),
                     SpeakerType = SpeakerTypeEnum.Leader,
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
@@ -7219,7 +7219,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.AbandonedSearchRestricted,
                     VocalizationIndex = 259,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"tnt"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"tnt"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     Conditions = VocalizationPattern.DialogueConditionFlags.Asleep | VocalizationPattern.DialogueConditionFlags.Idle | VocalizationPattern.DialogueConditionFlags.Alert | VocalizationPattern.DialogueConditionFlags.Active | VocalizationPattern.DialogueConditionFlags.UninspectedOrphan | VocalizationPattern.DialogueConditionFlags.DefiniteOrphan | VocalizationPattern.DialogueConditionFlags.CertainOrphan | VocalizationPattern.DialogueConditionFlags.VisibleEnemy | VocalizationPattern.DialogueConditionFlags.ClearLosEnemy | VocalizationPattern.DialogueConditionFlags.DangerousEnemy | VocalizationPattern.DialogueConditionFlags.NoVehicle | VocalizationPattern.DialogueConditionFlags.VehicleDriver | VocalizationPattern.DialogueConditionFlags.VehiclePassenger,
@@ -7228,7 +7228,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.AbandonedSearchRestricted,
                     VocalizationIndex = 262,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"tnt_mjrfoe_mc"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"tnt_mjrfoe_mc"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerMasterchief,
@@ -7238,7 +7238,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.AbandonedSearchRestricted,
                     VocalizationIndex = 261,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"tnt_mjrfoe_arb"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"tnt_mjrfoe_arb"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.PlayerDervish,
@@ -7248,7 +7248,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     DialogueType = DialogueTypeEnum.AbandonedSearchRestricted,
                     VocalizationIndex = 260,
-                    VocalizationName = CacheContext.StringTable.GetStringId($@"tnt_mjrfoe"),
+                    VocalizationName = CacheContext.StringTable.GetOrAddString($@"tnt_mjrfoe"),
                     ListenerTarget = SpeakerTypeEnum.Cause,
                     Hostility = HostilityEnum.Enemy,
                     CauseType = VocalizationPattern.DialogueObjectTypesEnum.MajorlyScary,

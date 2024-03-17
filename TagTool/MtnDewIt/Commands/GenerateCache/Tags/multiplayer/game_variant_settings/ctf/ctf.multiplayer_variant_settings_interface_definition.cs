@@ -30,7 +30,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
             {
                 new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"ctf"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"ctf"),
                     SettingCategory = MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.SettingCategoryValue.CtfMain,
                     Options = new List<MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option>
                     {
@@ -58,8 +58,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         {
                             TemplateBasedSubmenu = GetCachedTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\player_traits_template\player_traits_dynamic_template"),
                             SubmenuSettingCategory = MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.SettingCategoryValue.CtfCarrierTraitsMain,
-                            SubmenuName = CacheContext.StringTable.GetStringId($@"ctf_flag_carrier_traits"),
-                            SubmenuDescription = CacheContext.StringTable.GetStringId($@"ctf_flag_carrier_traits_desc"),
+                            SubmenuName = CacheContext.StringTable.GetOrAddString($@"ctf_flag_carrier_traits"),
+                            SubmenuDescription = CacheContext.StringTable.GetOrAddString($@"ctf_flag_carrier_traits_desc"),
                         },
                     },
                 },

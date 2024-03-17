@@ -266,7 +266,7 @@ namespace TagTool.MtnDewIt.Commands
                     }
                     else 
                     {
-                        return $"CacheContext.StringTable.GetStringId($@\"{Cache.StringTable.GetString(stringId)}\")";
+                        return $"CacheContext.StringTable.GetOrAddString($@\"{Cache.StringTable.GetString(stringId)}\")";
                     }
                 case CachedTag tag:
                     return $"GetCachedTag<{Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group).Name}>($@\"{tag.Name}\")";

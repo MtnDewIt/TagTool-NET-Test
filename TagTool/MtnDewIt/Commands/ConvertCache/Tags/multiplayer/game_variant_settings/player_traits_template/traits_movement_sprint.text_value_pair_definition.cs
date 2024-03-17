@@ -27,25 +27,25 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             var tag = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_movement_sprint");
             var sily = CacheContext.Deserialize<TextValuePairDefinition>(Stream, tag);
             sily.Parameter = (TextValuePairDefinition.GameVariantParameters)692;
-            sily.Name = CacheContext.StringTable.GetStringId($@"traits_movement_sprint");
-            sily.Description = CacheContext.StringTable.GetStringId($@"traits_movement_sprint_desc");
+            sily.Name = CacheContext.StringTable.GetOrAddString($@"traits_movement_sprint");
+            sily.Description = CacheContext.StringTable.GetOrAddString($@"traits_movement_sprint_desc");
             sily.TextValuePairs = new List<TextValuePairDefinition.TextValuePair>
             {
                 new TextValuePairDefinition.TextValuePair
                 {
                     Flags = TextValuePairDefinition.TextValuePair.TextValuePairFlags.DefaultSetting,
-                    Name = CacheContext.StringTable.GetStringId($@"unchanged"),
-                    Description = CacheContext.StringTable.GetStringId($@"unchanged_desc"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"unchanged"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"unchanged_desc"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 1,
-                    Name = CacheContext.StringTable.GetStringId($@"enabled"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"enabled"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 2,
-                    Name = CacheContext.StringTable.GetStringId($@"disabled"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"disabled"),
                 },
             };
             CacheContext.Serialize(Stream, tag, sily);

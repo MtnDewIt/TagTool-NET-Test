@@ -27,27 +27,27 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             var tag = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\social_options\team_changing");
             var sily = CacheContext.Deserialize<TextValuePairDefinition>(Stream, tag);
             sily.Parameter = TextValuePairDefinition.GameVariantParameters.IntGlobalTeamChanging;
-            sily.Name = CacheContext.StringTable.GetStringId($@"social_team_changing");
-            sily.Description = CacheContext.StringTable.GetStringId($@"social_team_changing_desc");
+            sily.Name = CacheContext.StringTable.GetOrAddString($@"social_team_changing");
+            sily.Description = CacheContext.StringTable.GetOrAddString($@"social_team_changing_desc");
             sily.TextValuePairs = new List<TextValuePairDefinition.TextValuePair>
             {
                 new TextValuePairDefinition.TextValuePair
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"not_allowed"),
-                    Description = CacheContext.StringTable.GetStringId($@"social_team_changing_disabled_desc"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"not_allowed"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"social_team_changing_disabled_desc"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     Flags = TextValuePairDefinition.TextValuePair.TextValuePairFlags.DefaultSetting,
                     EnumeratedValue = 1,
-                    Name = CacheContext.StringTable.GetStringId($@"allowed"),
-                    Description = CacheContext.StringTable.GetStringId($@"social_team_changing_enabled_desc"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"allowed"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"social_team_changing_enabled_desc"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 2,
-                    Name = CacheContext.StringTable.GetStringId($@"balanced"),
-                    Description = CacheContext.StringTable.GetStringId($@"social_team_changing_balanced_desc"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"balanced"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"social_team_changing_balanced_desc"),
                 },
             };
             CacheContext.Serialize(Stream, tag, sily);

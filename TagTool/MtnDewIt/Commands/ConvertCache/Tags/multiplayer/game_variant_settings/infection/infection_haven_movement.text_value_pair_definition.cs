@@ -27,27 +27,27 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             var tag = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\infection\infection_haven_movement");
             var sily = CacheContext.Deserialize<TextValuePairDefinition>(Stream, tag);
             sily.Parameter = TextValuePairDefinition.GameVariantParameters.IntInfectionHavenMovement;
-            sily.Name = CacheContext.StringTable.GetStringId($@"infection_haven_movement");
-            sily.Description = CacheContext.StringTable.GetStringId($@"infection_haven_movement_none_desc");
+            sily.Name = CacheContext.StringTable.GetOrAddString($@"infection_haven_movement");
+            sily.Description = CacheContext.StringTable.GetOrAddString($@"infection_haven_movement_none_desc");
             sily.TextValuePairs = new List<TextValuePairDefinition.TextValuePair> 
             {
                 new TextValuePairDefinition.TextValuePair
                 {
                     Flags = TextValuePairDefinition.TextValuePair.TextValuePairFlags.DefaultSetting,
-                    Name = CacheContext.StringTable.GetStringId($@"infection_haven_movement_none"),
-                    Description = CacheContext.StringTable.GetStringId($@"infection_haven_movement_none_desc"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"infection_haven_movement_none"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"infection_haven_movement_none_desc"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 1,
-                    Name = CacheContext.StringTable.GetStringId($@"infection_haven_movement_random"),
-                    Description = CacheContext.StringTable.GetStringId($@"infection_haven_movement_random_desc"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"infection_haven_movement_random"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"infection_haven_movement_random_desc"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 2,
-                    Name = CacheContext.StringTable.GetStringId($@"infection_haven_movement_sequence"),
-                    Description = CacheContext.StringTable.GetStringId($@"infection_haven_movement_sequence_desc"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"infection_haven_movement_sequence"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"infection_haven_movement_sequence_desc"),
                 },
             };
             CacheContext.Serialize(Stream, tag, sily);

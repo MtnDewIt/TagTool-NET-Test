@@ -30,7 +30,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
             {
                 new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"base_map"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"base_map"),
                     Options = new List<MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option>
                     {
                         new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
@@ -49,14 +49,14 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         {
                             TemplateBasedSubmenu = GetCachedTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\player_traits_template\player_traits_template"),
                             SubmenuSettingCategory = MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.SettingCategoryValue.GlobalBaseTraitsMain,
-                            SubmenuName = CacheContext.StringTable.GetStringId($@"map_overrides_base_traits"),
-                            SubmenuDescription = CacheContext.StringTable.GetStringId($@"map_overrides_base_traits_desc"),
+                            SubmenuName = CacheContext.StringTable.GetOrAddString($@"map_overrides_base_traits"),
+                            SubmenuDescription = CacheContext.StringTable.GetOrAddString($@"map_overrides_base_traits_desc"),
                         },
                         new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                         {
                             ExplicitSubmenu = GetCachedTag<MultiplayerVariantSettingsInterfaceDefinition>($@"multiplayer\game_variant_settings\global_options\respawn_options"),
-                            SubmenuName = CacheContext.StringTable.GetStringId($@"respawn_options"),
-                            SubmenuDescription = CacheContext.StringTable.GetStringId($@"respawn_options_desc"),
+                            SubmenuName = CacheContext.StringTable.GetOrAddString($@"respawn_options"),
+                            SubmenuDescription = CacheContext.StringTable.GetOrAddString($@"respawn_options_desc"),
                         },
                         new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option
                         {

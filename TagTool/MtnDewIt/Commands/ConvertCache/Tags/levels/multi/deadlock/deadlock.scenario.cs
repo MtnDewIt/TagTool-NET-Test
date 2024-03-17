@@ -52,7 +52,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"deadlock_air"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"deadlock_air"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
                     ReverbCutoffDistance = 1.5f,
                     AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\deadlock\deadlock_air\deadlock_air"),
@@ -61,7 +61,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"deadlock_cave"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"deadlock_cave"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\jay_cave"),
                     ReverbCutoffDistance = 2f,
                     AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\deadlock\deadlock_cave\deadlock_cave"),
@@ -70,7 +70,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"deadlock_inside"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"deadlock_inside"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"ms30\sound\dsp_effects\reverbs\templates\stone_room"),
                     ReverbCutoffDistance = 2f,
                     AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\deadlock\deadlock_inside\deadlock_inside"),
@@ -79,7 +79,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"deadlock_tube"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"deadlock_tube"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\cpaul_sewer_pipe"),
                     ReverbCutoffDistance = 2f,
                     AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\deadlock\deadlock_tube\deadlock_tube"),
@@ -88,7 +88,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"deadlock_air_light"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"deadlock_air_light"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
                     ReverbCutoffDistance = 2f,
                     AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\deadlock\deadlock_air_light\deadlock_air_light"),

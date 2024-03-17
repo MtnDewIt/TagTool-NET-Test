@@ -53,7 +53,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 EdgeGlowIntensity = new ShieldImpactFunction
                 {
-                    InputVariable = CacheContext.StringTable.GetStringId($@"shield_intensity"),
+                    InputVariable = CacheContext.StringTable.GetOrAddString($@"shield_intensity"),
                     Function = new TagTool.Tags.TagFunction
                     {
                         Data = new byte[]
@@ -96,7 +96,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 PlasmaCenterIntensity = new ShieldImpactFunction
                 {
-                    InputVariable = CacheContext.StringTable.GetStringId($@"shield_intensity"),
+                    InputVariable = CacheContext.StringTable.GetOrAddString($@"shield_intensity"),
                     Function = new TagTool.Tags.TagFunction
                     {
                         Data = new byte[]
@@ -131,7 +131,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 PlasmaEdgeIntensity = new ShieldImpactFunction
                 {
-                    InputVariable = CacheContext.StringTable.GetStringId($@"shield_intensity"),
+                    InputVariable = CacheContext.StringTable.GetOrAddString($@"shield_intensity"),
                     Function = new TagTool.Tags.TagFunction
                     {
                         Data = new byte[]

@@ -545,7 +545,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Tags
                         NameIndex = -1,
                     },
                     CanAttachToBspFlags = 1,
-                    Variant = CacheContext.StringTable.GetStringId($@"enemy_no_turret"),
+                    Variant = CacheContext.StringTable.GetOrAddString($@"enemy_no_turret"),
                     AiSpawningSquad = -1,
                     Multiplayer = new Scenario.MultiplayerObjectProperties
                     {
@@ -859,7 +859,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Tags
                         NameIndex = -1,
                     },
                     CanAttachToBspFlags = 1,
-                    Variant = CacheContext.StringTable.GetStringId($@"menu_spartan2"),
+                    Variant = CacheContext.StringTable.GetOrAddString($@"menu_spartan2"),
                     ActiveChangeColors = Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Primary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Secondary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Tertiary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Quaternary,
                     PrimaryColor = new ArgbColor(255, 41, 41, 41),
                     SecondaryColor = new ArgbColor(255, 211, 68, 68),
@@ -881,7 +881,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Tags
                         NameIndex = -1,
                     },
                     CanAttachToBspFlags = 1,
-                    Variant = CacheContext.StringTable.GetStringId($@"menu_spartan1"),
+                    Variant = CacheContext.StringTable.GetOrAddString($@"menu_spartan1"),
                     ActiveChangeColors = Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Primary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Secondary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Tertiary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Quaternary,
                     PrimaryColor = new ArgbColor(255, 86, 86, 86),
                     SecondaryColor = new ArgbColor(255, 41, 49, 92),
@@ -903,7 +903,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Tags
                         NameIndex = -1,
                     },
                     CanAttachToBspFlags = 1,
-                    Variant = CacheContext.StringTable.GetStringId($@"mainmenu_odst01"),
+                    Variant = CacheContext.StringTable.GetOrAddString($@"mainmenu_odst01"),
                 },
                 new Scenario.BipedInstance
                 {
@@ -920,7 +920,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Tags
                         NameIndex = -1,
                     },
                     CanAttachToBspFlags = 1,
-                    Variant = CacheContext.StringTable.GetStringId($@"mainmenu_odst01"),
+                    Variant = CacheContext.StringTable.GetOrAddString($@"mainmenu_odst01"),
                 },
                 new Scenario.BipedInstance
                 {

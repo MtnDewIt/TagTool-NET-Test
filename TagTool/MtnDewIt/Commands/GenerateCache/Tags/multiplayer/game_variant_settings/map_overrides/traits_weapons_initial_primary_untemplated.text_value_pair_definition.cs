@@ -27,375 +27,375 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
             var tag = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\map_overrides\traits_weapons_initial_primary_untemplated");
             var sily = CacheContext.Deserialize<TextValuePairDefinition>(Stream, tag);
             sily.Parameter = TextValuePairDefinition.GameVariantParameters.SidGlobalBaseTraitsPrimaryWeapon;
-            sily.Name = CacheContext.StringTable.GetStringId($@"traits_weapons_initial_primary");
-            sily.Description = CacheContext.StringTable.GetStringId($@"traits_weapons_initial_primary_desc");
+            sily.Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_initial_primary");
+            sily.Description = CacheContext.StringTable.GetOrAddString($@"traits_weapons_initial_primary_desc");
             sily.TextValuePairs = new List<TextValuePairDefinition.TextValuePair>
             {
                 new TextValuePairDefinition.TextValuePair
                 {
                     Flags = TextValuePairDefinition.TextValuePair.TextValuePairFlags.DefaultSetting,
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"unchanged"),
-                    Name = CacheContext.StringTable.GetStringId($@"unchanged"),
-                    Description = CacheContext.StringTable.GetStringId($@"unchanged_desc"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"unchanged"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"unchanged"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"unchanged_desc"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"default"),
-                    Name = CacheContext.StringTable.GetStringId($@"map_default"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"default"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"map_default"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"assault_rifle"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_assault_rifle"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"assault_rifle"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_assault_rifle"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"battle_rifle"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_battle_rifle"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"battle_rifle"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_battle_rifle"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"beam_rifle"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_beam_rifle"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"beam_rifle"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_beam_rifle"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"brute_shot"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_brute_shot"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"brute_shot"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_brute_shot"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"carbine"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_carbine"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"carbine"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_carbine"),
                 },
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"dmr"),
-                //    Name = CacheContext.StringTable.GetStringId($@"dmr"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"dmr"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"dmr"),
                 //},
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"energy_sword"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_sword"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"energy_sword"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_sword"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"flamethrower"),
-                    Name = CacheContext.StringTable.GetStringId($@"flamethrower"),
-                    Description = CacheContext.StringTable.GetStringId($@"support_weapon_desc"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"flamethrower"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"flamethrower"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"support_weapon_desc"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"fuel_rod_gun"),
-                    Name = CacheContext.StringTable.GetStringId($@"fuel_rod_gun"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"fuel_rod_gun"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"fuel_rod_gun"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"gravity_hammer"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_gravity_hammer"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"gravity_hammer"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_gravity_hammer"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"machinegun_turret"),
-                    Name = CacheContext.StringTable.GetStringId($@"machinegun_turret"),
-                    Description = CacheContext.StringTable.GetStringId($@"support_weapon_desc"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"machinegun_turret"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"machinegun_turret"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"support_weapon_desc"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"magnum"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_magnum"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"magnum"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_magnum"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"excavator"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_excavator"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"excavator"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_excavator"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"missile_pod"),
-                    Name = CacheContext.StringTable.GetStringId($@"missile_pod"),
-                    Description = CacheContext.StringTable.GetStringId($@"support_weapon_desc"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"missile_pod"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"missile_pod"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"support_weapon_desc"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"needler"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_needler"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"needler"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_needler"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"plasma_cannon"),
-                    Name = CacheContext.StringTable.GetStringId($@"plasma_cannon"),
-                    Description = CacheContext.StringTable.GetStringId($@"support_weapon_desc"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"plasma_cannon"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"plasma_cannon"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"support_weapon_desc"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"plasma_pistol"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_plasma_pistol"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"plasma_pistol"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_plasma_pistol"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"plasma_rifle"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_plasma_rifle"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"plasma_rifle"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_plasma_rifle"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"rocket_launcher"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_rocket_launcher"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"rocket_launcher"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_rocket_launcher"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"smg"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_smg"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"smg"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_smg"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"sentinel_beam"),
-                    Name = CacheContext.StringTable.GetStringId($@"sentinel_beam"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"sentinel_beam"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"sentinel_beam"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"shotgun"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_shotgun"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"shotgun"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_shotgun"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"sniper_rifle"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_sniper_rifle"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"sniper_rifle"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_sniper_rifle"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"spartan_laser"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_laser"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"spartan_laser"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_laser"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"spike_rifle"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_spiker"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"spike_rifle"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_spiker"),
                 },
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"assault_rifle_v3"),
-                //    Name = CacheContext.StringTable.GetStringId($@"assault_rifle_v3"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"assault_rifle_v3"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"assault_rifle_v3"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"assault_rifle_v2"),
-                //    Name = CacheContext.StringTable.GetStringId($@"assault_rifle_v2"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"assault_rifle_v2"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"assault_rifle_v2"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"assault_rifle_v4"),
-                //    Name = CacheContext.StringTable.GetStringId($@"assault_rifle_v4"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"assault_rifle_v4"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"assault_rifle_v4"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"assault_rifle_v6"),
-                //    Name = CacheContext.StringTable.GetStringId($@"assault_rifle_v6"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"assault_rifle_v6"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"assault_rifle_v6"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"battle_rifle_v3"),
-                //    Name = CacheContext.StringTable.GetStringId($@"battle_rifle_v3"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"battle_rifle_v3"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"battle_rifle_v3"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"battle_rifle_v1"),
-                //    Name = CacheContext.StringTable.GetStringId($@"battle_rifle_v1"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"battle_rifle_v1"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"battle_rifle_v1"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"battle_rifle_v2"),
-                //    Name = CacheContext.StringTable.GetStringId($@"battle_rifle_v2"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"battle_rifle_v2"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"battle_rifle_v2"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"battle_rifle_v6"),
-                //    Name = CacheContext.StringTable.GetStringId($@"battle_rifle_v6"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"battle_rifle_v6"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"battle_rifle_v6"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"battle_rifle_v5"),
-                //    Name = CacheContext.StringTable.GetStringId($@"battle_rifle_v5"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"battle_rifle_v5"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"battle_rifle_v5"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"battle_rifle_v4"),
-                //    Name = CacheContext.StringTable.GetStringId($@"battle_rifle_v4"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"battle_rifle_v4"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"battle_rifle_v4"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"covenant_carbine_v3"),
-                //    Name = CacheContext.StringTable.GetStringId($@"covenant_carbine_v3"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"covenant_carbine_v3"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"covenant_carbine_v3"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"covenant_carbine_v1"),
-                //    Name = CacheContext.StringTable.GetStringId($@"covenant_carbine_v1"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"covenant_carbine_v1"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"covenant_carbine_v1"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"covenant_carbine_v2"),
-                //    Name = CacheContext.StringTable.GetStringId($@"covenant_carbine_v2"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"covenant_carbine_v2"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"covenant_carbine_v2"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"covenant_carbine_v6"),
-                //    Name = CacheContext.StringTable.GetStringId($@"covenant_carbine_v6"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"covenant_carbine_v6"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"covenant_carbine_v6"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"covenant_carbine_v5"),
-                //    Name = CacheContext.StringTable.GetStringId($@"covenant_carbine_v5"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"covenant_carbine_v5"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"covenant_carbine_v5"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"covenant_carbine_v4"),
-                //    Name = CacheContext.StringTable.GetStringId($@"covenant_carbine_v4"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"covenant_carbine_v4"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"covenant_carbine_v4"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"dmr_v3"),
-                //    Name = CacheContext.StringTable.GetStringId($@"dmr_v3"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"dmr_v3"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"dmr_v3"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"dmr_v1"),
-                //    Name = CacheContext.StringTable.GetStringId($@"dmr_v1"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"dmr_v1"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"dmr_v1"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"dmr_v2"),
-                //    Name = CacheContext.StringTable.GetStringId($@"dmr_v2"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"dmr_v2"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"dmr_v2"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"dmr_v6"),
-                //    Name = CacheContext.StringTable.GetStringId($@"dmr_v6"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"dmr_v6"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"dmr_v6"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"dmr_v4"),
-                //    Name = CacheContext.StringTable.GetStringId($@"dmr_v4"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"dmr_v4"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"dmr_v4"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"magnum_v2"),
-                //    Name = CacheContext.StringTable.GetStringId($@"magnum_v2"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"magnum_v2"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"magnum_v2"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"magnum_v3"),
-                //    Name = CacheContext.StringTable.GetStringId($@"magnum_v3"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"magnum_v3"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"magnum_v3"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"excavator_v3"),
-                //    Name = CacheContext.StringTable.GetStringId($@"excavator_v3"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"excavator_v3"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"excavator_v3"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"plasma_pistol_v3"),
-                //    Name = CacheContext.StringTable.GetStringId($@"plasma_pistol_v3"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"plasma_pistol_v3"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"plasma_pistol_v3"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"plasma_rifle_v6"),
-                //    Name = CacheContext.StringTable.GetStringId($@"plasma_rifle_v6"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"plasma_rifle_v6"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"plasma_rifle_v6"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"smg_v3"),
-                //    Name = CacheContext.StringTable.GetStringId($@"smg_v3"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"smg_v3"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"smg_v3"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"smg_v2"),
-                //    Name = CacheContext.StringTable.GetStringId($@"smg_v2"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"smg_v2"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"smg_v2"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"smg_v6"),
-                //    Name = CacheContext.StringTable.GetStringId($@"smg_v6"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"smg_v6"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"smg_v6"),
                 //},
                 //new TextValuePairDefinition.TextValuePair
                 //{
                 //    ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                //    StringidValue = CacheContext.StringTable.GetStringId($@"smg_v4"),
-                //    Name = CacheContext.StringTable.GetStringId($@"smg_v4"),
+                //    StringidValue = CacheContext.StringTable.GetOrAddString($@"smg_v4"),
+                //    Name = CacheContext.StringTable.GetOrAddString($@"smg_v4"),
                 //},
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"random"),
-                    Name = CacheContext.StringTable.GetStringId($@"traits_weapons_random"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"random"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_weapons_random"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"unarmed"),
-                    Name = CacheContext.StringTable.GetStringId($@"unarmed"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"unarmed"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"unarmed"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     ExpectedValueType = TextValuePairDefinition.TextValuePair.ExpectedValueTypeValue.StringidReference,
-                    StringidValue = CacheContext.StringTable.GetStringId($@"none"),
-                    Name = CacheContext.StringTable.GetStringId($@"none"),
+                    StringidValue = CacheContext.StringTable.GetOrAddString($@"none"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"none"),
                 },
             };
             CacheContext.Serialize(Stream, tag, sily);

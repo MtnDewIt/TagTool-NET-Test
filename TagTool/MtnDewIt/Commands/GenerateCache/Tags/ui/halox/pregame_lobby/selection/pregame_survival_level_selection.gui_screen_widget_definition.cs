@@ -30,11 +30,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
             scn3.Flags = GuiScreenWidgetDefinition.GuiScreenWidgetFlags.DoNotApplyOldContentUpscaling;
             scn3.GuiRenderBlock = new GuiDefinition
             {
-                Name = CacheContext.StringTable.GetStringId($@"survival_select_level"),
+                Name = CacheContext.StringTable.GetOrAddString($@"survival_select_level"),
                 Bounds720p = new Rectangle2d(-307, -756, 307, 756),
             };
             scn3.StringList = GetCachedTag<MultilingualUnicodeStringList>($@"ui\halox\campaign\strings_level");
-            scn3.InitialButtonKeyName = CacheContext.StringTable.GetStringId($@"a_select_b_back");
+            scn3.InitialButtonKeyName = CacheContext.StringTable.GetOrAddString($@"a_select_b_back");
             scn3.GroupWidgets = new List<GuiScreenWidgetDefinition.GroupWidget>
             {
                 new GuiScreenWidgetDefinition.GroupWidget
@@ -51,11 +51,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                                     Flags = GuiListWidgetDefinition.GuiListWidgetFlags.DoNotApplyOldContentUpscaling,
                                     GuiRenderBlock = new GuiDefinition
                                     {
-                                        Name = CacheContext.StringTable.GetStringId($@"level"),
+                                        Name = CacheContext.StringTable.GetOrAddString($@"level"),
                                         RenderDepthBias = 10,
                                         Bounds720p = new Rectangle2d(70, 245, 0, 0),
                                     },
-                                    DataSourceName = CacheContext.StringTable.GetStringId($@"level"),
+                                    DataSourceName = CacheContext.StringTable.GetOrAddString($@"level"),
                                     Skin = GetCachedTag<GuiSkinDefinition>($@"ui\halox\campaign\campaign_select_level"),
                                     Items = new List<GuiListWidgetDefinition.ListWidgetItem>
                                     {
@@ -192,13 +192,13 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                                     Flags = GuiTextWidgetDefinition.GuiTextFlags.DoNotApplyOldContentUpscaling | GuiTextWidgetDefinition.GuiTextFlags.LeftJustify | GuiTextWidgetDefinition.GuiTextFlags.NoDropShadow,
                                     GuiRenderBlock = new GuiDefinition
                                     {
-                                        Name = CacheContext.StringTable.GetStringId($@"title"),
+                                        Name = CacheContext.StringTable.GetOrAddString($@"title"),
                                         RenderDepthBias = 15,
                                         Bounds720p = new Rectangle2d(1, 242, 53, 1417),
                                         AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                     },
-                                    ValueIdentifier = CacheContext.StringTable.GetStringId($@"title"),
-                                    TextColorPreset = CacheContext.StringTable.GetStringId($@"hilite"),
+                                    ValueIdentifier = CacheContext.StringTable.GetOrAddString($@"title"),
+                                    TextColorPreset = CacheContext.StringTable.GetOrAddString($@"hilite"),
                                     CustomFont = WidgetFontValue.Title,
                                 },
                             },
@@ -209,13 +209,13 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                                     Flags = GuiTextWidgetDefinition.GuiTextFlags.DoNotApplyOldContentUpscaling | GuiTextWidgetDefinition.GuiTextFlags.LeftJustify | GuiTextWidgetDefinition.GuiTextFlags.LargeTextBuffer255Chars | GuiTextWidgetDefinition.GuiTextFlags.NoDropShadow,
                                     GuiRenderBlock = new GuiDefinition
                                     {
-                                        Name = CacheContext.StringTable.GetStringId($@"description"),
+                                        Name = CacheContext.StringTable.GetOrAddString($@"description"),
                                         RenderDepthBias = 15,
                                         Bounds720p = new Rectangle2d(225, 883, 525, 1266),
                                         AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                     },
-                                    ValueIdentifier = CacheContext.StringTable.GetStringId($@"description"),
-                                    TextColorPreset = CacheContext.StringTable.GetStringId($@"ice"),
+                                    ValueIdentifier = CacheContext.StringTable.GetOrAddString($@"description"),
+                                    TextColorPreset = CacheContext.StringTable.GetOrAddString($@"ice"),
                                     CustomFont = WidgetFontValue.BodyText,
                                 },
                             },
@@ -229,7 +229,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                                     Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling | GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.ScaleToFitBounds,
                                     GuiRenderBlock = new GuiDefinition
                                     {
-                                        Name = CacheContext.StringTable.GetStringId($@"background"),
+                                        Name = CacheContext.StringTable.GetOrAddString($@"background"),
                                         RenderDepthBias = -19,
                                         Bounds720p = new Rectangle2d(0, 0, 614, 1512),
                                         AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
@@ -245,7 +245,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                                     Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling,
                                     GuiRenderBlock = new GuiDefinition
                                     {
-                                        Name = CacheContext.StringTable.GetStringId($@"level_image"),
+                                        Name = CacheContext.StringTable.GetOrAddString($@"level_image"),
                                         RenderDepthBias = 5,
                                         Bounds720p = new Rectangle2d(86, 883, 225, 1256),
                                         Bounds480i = new Rectangle2d(57, 620, 175, 988),
@@ -261,7 +261,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                                     Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling,
                                     GuiRenderBlock = new GuiDefinition
                                     {
-                                        Name = CacheContext.StringTable.GetStringId($@"level_locked"),
+                                        Name = CacheContext.StringTable.GetOrAddString($@"level_locked"),
                                         RenderDepthBias = 5,
                                         Bounds720p = new Rectangle2d(86, 883, 0, 0),
                                         AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
@@ -277,7 +277,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                                     Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling | GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.ScaleToFitBounds | GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.RenderAsScreenBlur,
                                     GuiRenderBlock = new GuiDefinition
                                     {
-                                        Name = CacheContext.StringTable.GetStringId($@"background_blur"),
+                                        Name = CacheContext.StringTable.GetOrAddString($@"background_blur"),
                                         RenderDepthBias = -21,
                                         Bounds720p = new Rectangle2d(-157, 0, 840, 1512),
                                         AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
@@ -293,7 +293,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                                     Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling | GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.ScaleToFitBounds,
                                     GuiRenderBlock = new GuiDefinition
                                     {
-                                        Name = CacheContext.StringTable.GetStringId($@"background_darkening"),
+                                        Name = CacheContext.StringTable.GetOrAddString($@"background_darkening"),
                                         RenderDepthBias = -20,
                                         Bounds720p = new Rectangle2d(-157, 0, 840, 1512),
                                         AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
@@ -309,7 +309,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                                     Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling | GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.ScaleToFitBounds,
                                     GuiRenderBlock = new GuiDefinition
                                     {
-                                        Name = CacheContext.StringTable.GetStringId($@"level_image_background"),
+                                        Name = CacheContext.StringTable.GetOrAddString($@"level_image_background"),
                                         RenderDepthBias = -15,
                                         Bounds720p = new Rectangle2d(70, 872, 603, 1266),
                                         AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),

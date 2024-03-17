@@ -63,7 +63,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"amb_cave_dry"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"amb_cave_dry"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\cave"),
                     Type = ScenarioStructureBsp.SoundEnvironmentType.InteriorNarrow,
                     ReverbInterpolationSpeed = 2f,
@@ -72,7 +72,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"amb_edge_open_air"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"amb_edge_open_air"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
                     ReverbInterpolationSpeed = 2f,
                     AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_edge\amb_edge_open_air\amb_edge_open_air"),
@@ -80,7 +80,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"amb_sentinel_room"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"amb_sentinel_room"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\auditorium"),
                     Type = ScenarioStructureBsp.SoundEnvironmentType.InteriorNarrow,
                     ReverbInterpolationSpeed = 2f,
@@ -89,7 +89,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"amb_tech_room"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"amb_tech_room"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\hallway"),
                     Type = ScenarioStructureBsp.SoundEnvironmentType.InteriorNarrow,
                     ReverbInterpolationSpeed = 2f,

@@ -8,12 +8,6 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
     {
         public void UpdateTagData()
         {
-            Cache.StringTable.Add($@"thunder_clap");
-            Cache.StringTable.Add($@"fresh");
-            Cache.StringTable.Add($@"orange_justice");
-            Cache.StringTable.Add($@"electro_swing");
-            Cache.SaveStrings();
-
             new multiplayer_global_multiplayer_messages_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
 
             new multiplayer_in_game_multiplayer_messages_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
@@ -561,6 +555,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             new levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_model(Cache, CacheContext, CacheStream);
 
             new levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_render_model(Cache, CacheContext, CacheStream);
+
+            Cache.SaveStrings();
         }
     }
 }

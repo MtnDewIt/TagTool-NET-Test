@@ -27,99 +27,99 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
             var tag = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\player_traits_template\traits_appearance_player_size");
             var sily = CacheContext.Deserialize<TextValuePairDefinition>(Stream, tag);
             sily.Parameter = TextValuePairDefinition.GameVariantParameters.IntGlobalTraitsTemplateVisualAura;
-            sily.Name = CacheContext.StringTable.GetStringId($@"traits_appearance_player_size");
-            sily.Description = CacheContext.StringTable.GetStringId($@"traits_appearance_player_size_desc");
+            sily.Name = CacheContext.StringTable.GetOrAddString($@"traits_appearance_player_size");
+            sily.Description = CacheContext.StringTable.GetOrAddString($@"traits_appearance_player_size_desc");
             sily.TextValuePairs = new List<TextValuePairDefinition.TextValuePair> 
             {
                 new TextValuePairDefinition.TextValuePair
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"unchanged"),
-                    Description = CacheContext.StringTable.GetStringId($@"unchanged_desc"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"unchanged"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"unchanged_desc"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 2,
-                    Name = CacheContext.StringTable.GetStringId($@"percent_10"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"percent_10"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 3,
-                    Name = CacheContext.StringTable.GetStringId($@"percent_15"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"percent_15"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 4,
-                    Name = CacheContext.StringTable.GetStringId($@"percent_25"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"percent_25"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 5,
-                    Name = CacheContext.StringTable.GetStringId($@"percent_35"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"percent_35"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 6,
-                    Name = CacheContext.StringTable.GetStringId($@"percent_50"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"percent_50"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 7,
-                    Name = CacheContext.StringTable.GetStringId($@"percent_75"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"percent_75"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 8,
-                    Name = CacheContext.StringTable.GetStringId($@"percent_100"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"percent_100"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 9,
-                    Name = CacheContext.StringTable.GetStringId($@"percent_125"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"percent_125"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 10,
-                    Name = CacheContext.StringTable.GetStringId($@"percent_150"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"percent_150"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 11,
-                    Name = CacheContext.StringTable.GetStringId($@"percent_200"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"percent_200"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 12,
-                    Name = CacheContext.StringTable.GetStringId($@"percent_300"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"percent_300"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 13,
-                    Name = CacheContext.StringTable.GetStringId($@"percent_500"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"percent_500"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 14,
-                    Name = CacheContext.StringTable.GetStringId($@"percent_750"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"percent_750"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 15,
-                    Name = CacheContext.StringTable.GetStringId($@"percent_1000"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"percent_1000"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 16,
-                    Name = CacheContext.StringTable.GetStringId($@"percent_1500"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"percent_1500"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 17,
-                    Name = CacheContext.StringTable.GetStringId($@"percent_2000"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"percent_2000"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 18,
-                    Name = CacheContext.StringTable.GetStringId($@"percent_3000"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"percent_3000"),
                 },
             };
             CacheContext.Serialize(Stream, tag, sily);

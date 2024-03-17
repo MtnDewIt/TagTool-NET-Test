@@ -30,7 +30,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"autoaim_melee"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"autoaim_melee"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -44,7 +44,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"body"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"body"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -59,7 +59,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"fp_body_cam"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"fp_body_cam"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -74,7 +74,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"hammer_detonation"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"hammer_detonation"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -89,7 +89,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"head"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"head"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -104,7 +104,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"infection_back"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"infection_back"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -119,7 +119,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"infection_front"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"infection_front"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -134,7 +134,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"left_foot"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"left_foot"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -149,7 +149,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"left_hand"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"left_hand"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -164,7 +164,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"left_hand_elite"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"left_hand_elite"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -179,7 +179,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"melee"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"melee"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -194,7 +194,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"right_foot"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"right_foot"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -209,7 +209,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"right_hand"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"right_hand"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -224,7 +224,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"right_hand_elite"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"right_hand_elite"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -239,7 +239,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"shield_recharge"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"shield_recharge"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -253,7 +253,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"target_head"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"target_head"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -268,7 +268,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"target_leg_l"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"target_leg_l"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -291,7 +291,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"target_leg_r"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"target_leg_r"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -314,7 +314,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"target_main"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"target_main"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -336,7 +336,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_l_arm01"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_l_arm01"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -351,7 +351,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_l_arm02"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_l_arm02"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -366,7 +366,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_l_arm03"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_l_arm03"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -381,7 +381,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_l_thigh01"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_l_thigh01"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -396,7 +396,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_l_thigh02"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_l_thigh02"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -411,7 +411,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_neck01"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_neck01"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -426,7 +426,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_neck02"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_neck02"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -441,7 +441,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_r_arm01"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_r_arm01"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -456,7 +456,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_r_arm02"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_r_arm02"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -471,7 +471,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_r_arm03"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_r_arm03"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -486,7 +486,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_r_arm04"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_r_arm04"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -501,7 +501,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_r_arm05"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_r_arm05"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -516,7 +516,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_r_arm06"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_r_arm06"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -531,7 +531,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_r_thigh01"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_r_thigh01"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -546,7 +546,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_r_thigh02"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_r_thigh02"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -561,7 +561,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_r_thigh03"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_r_thigh03"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -576,7 +576,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_torso_back01"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_torso_back01"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -591,7 +591,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_torso_back02"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_torso_back02"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -606,7 +606,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_torso_back03"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_torso_back03"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -621,7 +621,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_torso_back04"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_torso_back04"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -636,7 +636,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_torso_back05"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_torso_back05"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -651,7 +651,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_torso_back06"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_torso_back06"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -666,7 +666,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_torso_back07"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_torso_back07"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -681,7 +681,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_torso_back08"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_torso_back08"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -696,7 +696,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_torso_back09"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_torso_back09"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -711,7 +711,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_torso_front01"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_torso_front01"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -726,7 +726,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_torso_front02"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_torso_front02"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -741,7 +741,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_torso_front03"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_torso_front03"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -756,7 +756,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"trans_muffin_torso_front04"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"trans_muffin_torso_front04"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -771,7 +771,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"weapon_back"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"weapon_back"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -786,7 +786,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"weapon_equip"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"weapon_equip"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -800,7 +800,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"weapon_grenade_frag"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"weapon_grenade_frag"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -815,7 +815,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"weapon_grenade_plasma"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"weapon_grenade_plasma"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -830,7 +830,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"weapon_thigh"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"weapon_thigh"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -845,7 +845,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"flashlight"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"flashlight"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker
@@ -860,7 +860,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new RenderModel.MarkerGroup
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"fx_light_flare"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"fx_light_flare"),
                     Markers = new List<RenderModel.MarkerGroup.Marker>
                     {
                         new RenderModel.MarkerGroup.Marker

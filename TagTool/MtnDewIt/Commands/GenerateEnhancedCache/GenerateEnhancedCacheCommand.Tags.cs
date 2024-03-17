@@ -8,10 +8,6 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache
     {
         public void UpdateTagData()
         {
-            Cache.StringTable.Add($@"menu_spartan1");
-            Cache.StringTable.Add($@"menu_spartan2");
-            Cache.SaveStrings();
-
             new ui_eldewrito_common_map_bitmaps_placeholder_bitmap(Cache, CacheContext, CacheStream);
 
             new ui_eldewrito_common_map_bitmaps_armory_bitmap(Cache, CacheContext, CacheStream);
@@ -165,6 +161,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache
             new levels_multi_snowbound_snowbound_scenario(Cache, CacheContext, CacheStream);
 
             new levels_multi_zanzibar_zanzibar_scenario(Cache, CacheContext, CacheStream);
+
+            Cache.SaveStrings();
         }
     }
 }

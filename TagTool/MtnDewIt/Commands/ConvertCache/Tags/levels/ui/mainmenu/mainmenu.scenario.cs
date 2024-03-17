@@ -2760,7 +2760,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new Scenario.ZoneSet
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"levels\multi\riverworld\riverworld"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"levels\multi\riverworld\riverworld"),
                     Bsps = Scenario.BspFlags.Bsp0,
                     HintPreviousZoneSet = -1,
                 },
@@ -3282,7 +3282,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         NameIndex = -1,
                     },
                     CanAttachToBspFlags = 1,
-                    Variant = CacheContext.StringTable.GetStringId($@"enemy_no_turret"),
+                    Variant = CacheContext.StringTable.GetOrAddString($@"enemy_no_turret"),
                     AiSpawningSquad = -1,
                     Multiplayer = new Scenario.MultiplayerObjectProperties
                     {
@@ -3596,7 +3596,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         NameIndex = -1,
                     },
                     CanAttachToBspFlags = 1,
-                    Variant = CacheContext.StringTable.GetStringId($@"menu_spartan2"),
+                    Variant = CacheContext.StringTable.GetOrAddString($@"menu_spartan2"),
                     ActiveChangeColors = Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Primary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Secondary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Tertiary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Quaternary,
                     PrimaryColor = new ArgbColor(255, 41, 41, 41),
                     SecondaryColor = new ArgbColor(255, 211, 68, 68),
@@ -3618,7 +3618,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         NameIndex = -1,
                     },
                     CanAttachToBspFlags = 1,
-                    Variant = CacheContext.StringTable.GetStringId($@"menu_spartan1"),
+                    Variant = CacheContext.StringTable.GetOrAddString($@"menu_spartan1"),
                     ActiveChangeColors = Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Primary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Secondary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Tertiary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Quaternary,
                     PrimaryColor = new ArgbColor(255, 86, 86, 86),
                     SecondaryColor = new ArgbColor(255, 41, 49, 92),
@@ -3640,7 +3640,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         NameIndex = -1,
                     },
                     CanAttachToBspFlags = 1,
-                    Variant = CacheContext.StringTable.GetStringId($@"mainmenu_odst01"),
+                    Variant = CacheContext.StringTable.GetOrAddString($@"mainmenu_odst01"),
                 },
                 new Scenario.BipedInstance
                 {
@@ -3657,7 +3657,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         NameIndex = -1,
                     },
                     CanAttachToBspFlags = 1,
-                    Variant = CacheContext.StringTable.GetStringId($@"mainmenu_odst01"),
+                    Variant = CacheContext.StringTable.GetOrAddString($@"mainmenu_odst01"),
                 },
                 new Scenario.BipedInstance
                 {
@@ -5609,7 +5609,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new Scenario.TriggerVolume
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"kill_happy_place"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"kill_happy_place"),
                     ObjectName = -1,
                     Forward = new RealVector3d(1f, 0f, 0f),
                     Up = new RealVector3d(0f, 0f, 1f),
@@ -5640,7 +5640,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new Scenario.TriggerVolume
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"reset_zone"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"reset_zone"),
                     ObjectName = -1,
                     Forward = new RealVector3d(1f, 0f, 0f),
                     Up = new RealVector3d(0f, 0f, 1f),
@@ -5671,7 +5671,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new Scenario.TriggerVolume
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"butterfly1"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"butterfly1"),
                     ObjectName = -1,
                     Forward = new RealVector3d(1f, 0f, 0f),
                     Up = new RealVector3d(0f, 0f, 1f),
@@ -5702,7 +5702,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new Scenario.TriggerVolume
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"butterfly3"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"butterfly3"),
                     ObjectName = -1,
                     Forward = new RealVector3d(1f, 0f, 0f),
                     Up = new RealVector3d(0f, 0f, 1f),
@@ -5733,7 +5733,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new Scenario.TriggerVolume
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"butterfly4"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"butterfly4"),
                     ObjectName = -1,
                     Forward = new RealVector3d(1f, 0f, 0f),
                     Up = new RealVector3d(0f, 0f, 1f),
@@ -5764,7 +5764,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new Scenario.TriggerVolume
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"butterfly5"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"butterfly5"),
                     ObjectName = -1,
                     Forward = new RealVector3d(1f, 0f, 0f),
                     Up = new RealVector3d(0f, 0f, 1f),
@@ -5795,7 +5795,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new Scenario.TriggerVolume
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"butterfly6"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"butterfly6"),
                     ObjectName = -1,
                     Forward = new RealVector3d(1f, 0f, 0f),
                     Up = new RealVector3d(0f, 0f, 1f),
@@ -5826,7 +5826,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new Scenario.TriggerVolume
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"fish1"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"fish1"),
                     ObjectName = -1,
                     Forward = new RealVector3d(1f, 0f, 0f),
                     Up = new RealVector3d(0f, 0f, 1f),
@@ -5857,7 +5857,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new Scenario.TriggerVolume
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"safe_zone"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"safe_zone"),
                     ObjectName = -1,
                     Forward = new RealVector3d(1f, 0f, 0f),
                     Up = new RealVector3d(0f, 0f, 1f),
@@ -7788,7 +7788,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new Scenario.CutsceneFlag
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"xxxanchorxxx"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"xxxanchorxxx"),
                     Position = new RealPoint3d(82.4f, -143.35f, 4.1f),
                     Facing = new RealEulerAngles2d(Angle.FromDegrees(0.2f), Angle.FromDegrees(0f)),
                     EditorFolderIndex = -1,
@@ -8063,7 +8063,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"halo_exterior"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"halo_exterior"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
                     ReverbCutoffDistance = 1f,
                     ReverbInterpolationSpeed = 0.25f,
@@ -8073,7 +8073,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"interior"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"interior"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\stone_room"),
                     ReverbCutoffDistance = 1f,
                     ReverbInterpolationSpeed = 0.25f,
@@ -8083,7 +8083,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"interior_tunnel"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"interior_tunnel"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\jay_stone_room"),
                     ReverbCutoffDistance = 1f,
                     ReverbInterpolationSpeed = 0.25f,
@@ -14618,7 +14618,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new Scenario.Flock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"flocks_0"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"flocks_0"),
                     BoundingTriggerVolume = 2,
                     Sources = new List<Scenario.Flock.Source>
                     {
@@ -14635,7 +14635,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new Scenario.Flock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"flocks_2"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"flocks_2"),
                     BoundingTriggerVolume = 3,
                     Sources = new List<Scenario.Flock.Source>
                     {
@@ -14653,7 +14653,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new Scenario.Flock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"flocks_3"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"flocks_3"),
                     BoundingTriggerVolume = 4,
                     Sources = new List<Scenario.Flock.Source>
                     {
@@ -14671,7 +14671,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new Scenario.Flock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"flocks_4"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"flocks_4"),
                     BoundingTriggerVolume = 5,
                     Sources = new List<Scenario.Flock.Source>
                     {
@@ -14689,7 +14689,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new Scenario.Flock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"flocks_5"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"flocks_5"),
                     BoundingTriggerVolume = 6,
                     Sources = new List<Scenario.Flock.Source>
                     {
@@ -14706,7 +14706,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new Scenario.Flock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"flocks_6"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"flocks_6"),
                     FlockPaletteIndex = 1,
                     BoundingTriggerVolume = 7,
                     Flags = Scenario.Flock.FlockFlags.HardBoundariesOnVolume,

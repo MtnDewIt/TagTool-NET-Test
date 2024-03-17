@@ -30,7 +30,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
             scn3.Flags = GuiScreenWidgetDefinition.GuiScreenWidgetFlags.DoNotApplyOldContentUpscaling;
             scn3.GuiRenderBlock = new GuiDefinition
             {
-                Name = CacheContext.StringTable.GetStringId($@"pregame_lobby_survival"),
+                Name = CacheContext.StringTable.GetOrAddString($@"pregame_lobby_survival"),
             };
             scn3.ScreenTemplate = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\pregame_lobby\pregame_lobby_template");
             scn3.DebugDatasources = new List<GuiScreenWidgetDefinition.DataSource>
@@ -54,7 +54,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         Flags = GuiGroupWidgetDefinition.GuiGroupWidgetFlags.DoNotApplyOldContentUpscaling,
                         GuiRenderBlock = new GuiDefinition
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"template"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"template"),
                         },
                         ListWidgets = new List<ListWidget>
                         {
@@ -66,11 +66,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                                     Flags = GuiListWidgetDefinition.GuiListWidgetFlags.DoNotApplyOldContentUpscaling | GuiListWidgetDefinition.GuiListWidgetFlags.ListWraps,
                                     GuiRenderBlock = new GuiDefinition
                                     {
-                                        Name = CacheContext.StringTable.GetStringId($@"lobby_list"),
+                                        Name = CacheContext.StringTable.GetOrAddString($@"lobby_list"),
                                         Bounds720p = new Rectangle2d(111, 112, 0, 0),
                                         AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\mainmenu_fade"),
                                     },
-                                    DataSourceName = CacheContext.StringTable.GetStringId($@"lobby_list"),
+                                    DataSourceName = CacheContext.StringTable.GetOrAddString($@"lobby_list"),
                                     Items = new List<GuiListWidgetDefinition.ListWidgetItem>
                                     {
                                         new GuiListWidgetDefinition.ListWidgetItem
@@ -135,7 +135,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         Flags = GuiGroupWidgetDefinition.GuiGroupWidgetFlags.DoNotApplyOldContentUpscaling,
                         GuiRenderBlock = new GuiDefinition
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"roster"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"roster"),
                             ScaledPositioning = GuiDefinition.WidgetPositioning.RightEdge,
                             Bounds720p = new Rectangle2d(84, 1106, 0, 0),
                             Bounds480i = new Rectangle2d(59, 580, 0, 0),
@@ -149,7 +149,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         Flags = GuiGroupWidgetDefinition.GuiGroupWidgetFlags.DoNotApplyOldContentUpscaling,
                         GuiRenderBlock = new GuiDefinition
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"images"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"images"),
                         },
                         TextWidgets = new List<TextWidget>
                         {
@@ -160,12 +160,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                                     Flags = GuiTextWidgetDefinition.GuiTextFlags.DoNotApplyOldContentUpscaling | GuiTextWidgetDefinition.GuiTextFlags.LeftJustify | GuiTextWidgetDefinition.GuiTextFlags.NoDropShadow,
                                     GuiRenderBlock = new GuiDefinition
                                     {
-                                        Name = CacheContext.StringTable.GetStringId($@"difficulty"),
+                                        Name = CacheContext.StringTable.GetOrAddString($@"difficulty"),
                                         Bounds720p = new Rectangle2d(656, 116, 695, 704),
                                         AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
                                     },
-                                    ValueIdentifier = CacheContext.StringTable.GetStringId($@"survival_difficulty"),
-                                    TextColorPreset = CacheContext.StringTable.GetStringId($@"ice"),
+                                    ValueIdentifier = CacheContext.StringTable.GetOrAddString($@"survival_difficulty"),
+                                    TextColorPreset = CacheContext.StringTable.GetOrAddString($@"ice"),
                                     CustomFont = WidgetFontValue.BodyText,
                                 },
                             },
@@ -176,11 +176,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                                     Flags = GuiTextWidgetDefinition.GuiTextFlags.DoNotApplyOldContentUpscaling | GuiTextWidgetDefinition.GuiTextFlags.LeftJustify | GuiTextWidgetDefinition.GuiTextFlags.LargeTextBuffer255Chars | GuiTextWidgetDefinition.GuiTextFlags.NoDropShadow,
                                     GuiRenderBlock = new GuiDefinition
                                     {
-                                        Name = CacheContext.StringTable.GetStringId($@"lobby_status"),
+                                        Name = CacheContext.StringTable.GetOrAddString($@"lobby_status"),
                                         Bounds720p = new Rectangle2d(334, 116, 494, 704),
                                         AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\global_animations\animation_collections\lobby_slide_with_alt_flash"),
                                     },
-                                    TextColorPreset = CacheContext.StringTable.GetStringId($@"ice"),
+                                    TextColorPreset = CacheContext.StringTable.GetOrAddString($@"ice"),
                                     CustomFont = WidgetFontValue.BodyText,
                                 },
                             },
@@ -194,7 +194,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                                     Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling,
                                     GuiRenderBlock = new GuiDefinition
                                     {
-                                        Name = CacheContext.StringTable.GetStringId($@"map_image"),
+                                        Name = CacheContext.StringTable.GetOrAddString($@"map_image"),
                                         RenderDepthBias = -30,
                                         Bounds720p = new Rectangle2d(454, 103, 653, 711),
                                         Bounds480i = new Rectangle2d(333, 72, 531, 679),
@@ -210,7 +210,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                                     Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling | GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.ScaleToFitBounds,
                                     GuiRenderBlock = new GuiDefinition
                                     {
-                                        Name = CacheContext.StringTable.GetStringId($@"difficulty_image"),
+                                        Name = CacheContext.StringTable.GetOrAddString($@"difficulty_image"),
                                         Bounds720p = new Rectangle2d(467, 118, 637, 288),
                                         AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\main_menu\animations\lobby_slide"),
                                     },
@@ -230,7 +230,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         Flags = GuiGroupWidgetDefinition.GuiGroupWidgetFlags.DoNotApplyOldContentUpscaling,
                         GuiRenderBlock = new GuiDefinition
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"precaching"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"precaching"),
                         },
                     },
                 },

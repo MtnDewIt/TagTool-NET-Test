@@ -63,7 +63,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"amb_heavy_snow"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"amb_heavy_snow"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\city"),
                     ReverbInterpolationSpeed = 0.5f,
                     AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_turf\amb_heavy_snow\amb_heavy_snow"),
@@ -72,7 +72,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"amb_light_snow"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"amb_light_snow"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\hallway"),
                     ReverbInterpolationSpeed = 2f,
                     AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_turf\amb_light_snow\amb_light_snow"),

@@ -27,27 +27,27 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             var tag = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\global_options\rounds_reset");
             var sily = CacheContext.Deserialize<TextValuePairDefinition>(Stream, tag);
             sily.Parameter = TextValuePairDefinition.GameVariantParameters.IntGlobalRoundsReset;
-            sily.Name = CacheContext.StringTable.GetStringId($@"rounds_reset");
-            sily.Description = CacheContext.StringTable.GetStringId($@"rounds_reset_desc");
+            sily.Name = CacheContext.StringTable.GetOrAddString($@"rounds_reset");
+            sily.Description = CacheContext.StringTable.GetOrAddString($@"rounds_reset_desc");
             sily.TextValuePairs = new List<TextValuePairDefinition.TextValuePair>
             {
                 new TextValuePairDefinition.TextValuePair
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"rounds_reset_none"),
-                    Description = CacheContext.StringTable.GetStringId($@"rounds_reset_none_desc"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"rounds_reset_none"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"rounds_reset_none_desc"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 1,
-                    Name = CacheContext.StringTable.GetStringId($@"rounds_reset_players"),
-                    Description = CacheContext.StringTable.GetStringId($@"rounds_reset_players_desc"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"rounds_reset_players"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"rounds_reset_players_desc"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     Flags = TextValuePairDefinition.TextValuePair.TextValuePairFlags.DefaultSetting,
                     EnumeratedValue = 2,
-                    Name = CacheContext.StringTable.GetStringId($@"rounds_reset_all"),
-                    Description = CacheContext.StringTable.GetStringId($@"rounds_reset_all_desc"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"rounds_reset_all"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"rounds_reset_all_desc"),
                 },
             };
             CacheContext.Serialize(Stream, tag, sily);

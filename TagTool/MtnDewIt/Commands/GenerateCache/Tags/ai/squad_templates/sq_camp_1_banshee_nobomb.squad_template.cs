@@ -26,12 +26,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
         {
             var tag = GetCachedTag<SquadTemplate>($@"ai\squad_templates\sq_camp_1_banshee_nobomb");
             var sqtm = CacheContext.Deserialize<SquadTemplate>(Stream, tag);
-            sqtm.Name = CacheContext.StringTable.GetStringId($@"sq_camp_banshee_no_bomb");
+            sqtm.Name = CacheContext.StringTable.GetOrAddString($@"sq_camp_banshee_no_bomb");
             sqtm.CellTemplates = new List<SquadTemplate.CellTemplate>
             {
                 new SquadTemplate.CellTemplate
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"1_banshee"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"1_banshee"),
                     NormalDiffCount = 1,
                     Characters = new List<SquadTemplate.CellTemplate.ObjectBlock>
                     {

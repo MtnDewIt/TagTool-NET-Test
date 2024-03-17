@@ -30,7 +30,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
             {
                 new MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"traits_appearance"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"traits_appearance"),
                     SettingCategory = MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.SettingCategoryValue.TemplatesTraitsAppearance,
                     Options = new List<MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting.Option>
                     {

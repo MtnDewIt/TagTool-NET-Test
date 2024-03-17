@@ -33,7 +33,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Tags
             {
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"amb_wind_mountains"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"amb_wind_mountains"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
                     ReverbInterpolationSpeed = 2f,
                     AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_reactor\amb_wind_mountains\amb_wind_mountains"),
@@ -41,7 +41,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"amb_interior_room_small"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"amb_interior_room_small"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\room"),
                     Type = ScenarioStructureBsp.SoundEnvironmentType.InteriorNarrow,
                     ReverbInterpolationSpeed = 2f,
@@ -50,7 +50,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"amb_interior_reactor"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"amb_interior_reactor"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\hallway"),
                     Type = ScenarioStructureBsp.SoundEnvironmentType.InteriorNarrow,
                     ReverbInterpolationSpeed = 2f,

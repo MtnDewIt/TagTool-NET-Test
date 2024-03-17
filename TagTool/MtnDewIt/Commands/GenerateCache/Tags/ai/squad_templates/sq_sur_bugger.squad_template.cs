@@ -26,12 +26,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
         {
             var tag = GetCachedTag<SquadTemplate>($@"ai\squad_templates\sq_sur_bugger");
             var sqtm = CacheContext.Deserialize<SquadTemplate>(Stream, tag);
-            sqtm.Name = CacheContext.StringTable.GetStringId($@"sq_sur_bugger_night");
+            sqtm.Name = CacheContext.StringTable.GetOrAddString($@"sq_sur_bugger_night");
             sqtm.CellTemplates = new List<SquadTemplate.CellTemplate>
             {
                 new SquadTemplate.CellTemplate
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"1_bugger_captain"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"1_bugger_captain"),
                     RoundRange = new Bounds<short>(2, 3),
                     NormalDiffCount = 1,
                     MajorUpgrade = SquadTemplate.CellTemplate.MajorUpgradeEnum.None,
@@ -59,7 +59,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new SquadTemplate.CellTemplate
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"4_buggers"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"4_buggers"),
                     RoundRange = new Bounds<short>(0, 1),
                     NormalDiffCount = 4,
                     MajorUpgrade = SquadTemplate.CellTemplate.MajorUpgradeEnum.None,
@@ -96,7 +96,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new SquadTemplate.CellTemplate
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"3_buggers"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"3_buggers"),
                     RoundRange = new Bounds<short>(2, 3),
                     NormalDiffCount = 3,
                     MajorUpgrade = SquadTemplate.CellTemplate.MajorUpgradeEnum.None,

@@ -29,7 +29,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             //chdt.HudWidgets[0].BitmapWidgets[0].PlacementData[0].Origin = new RealPoint2d(0.51f, 0f);
             //chdt.HudWidgets[0].BitmapWidgets[0].PlacementData[0].Offset = new RealPoint2d(0f, 64f);
             //chdt.HudWidgets[0].BitmapWidgets[0].Flags = ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.Stretch;
-            //chdt.HudWidgets[1].BitmapWidgets[0].Name = CacheContext.StringTable.GetStringId($@"overheat_flash");
+            //chdt.HudWidgets[1].BitmapWidgets[0].Name = CacheContext.StringTable.GetOrAddString($@"overheat_flash");
             //chdt.HudWidgets[1].BitmapWidgets[0].StateData[0].SkinState = ChudDefinition.HudWidgetBase.StateDatum.ChudSkinState.Elite;
             //chdt.HudWidgets[1].BitmapWidgets[0].StateData[0].WindowState = ChudDefinition.HudWidgetBase.StateDatum.ChudWindowState.WideFull | ChudDefinition.HudWidgetBase.StateDatum.ChudWindowState.NativeFull | ChudDefinition.HudWidgetBase.StateDatum.ChudWindowState.StandardFull;
             //chdt.HudWidgets[1].BitmapWidgets[0].StateData[0].Weapon_SpecialFlags = ChudDefinition.HudWidgetBase.StateDatum.Weapon_Special.Overheated;

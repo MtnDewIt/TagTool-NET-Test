@@ -26,7 +26,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
         {
             var tag = GetCachedTag<GuiDatasourceDefinition>($@"ui\halox\start_menu\panes\settings\sidebar_items");
             var dsrc = CacheContext.Deserialize<GuiDatasourceDefinition>(Stream, tag);
-            dsrc.Name = CacheContext.StringTable.GetStringId($@"sidebar_items");
+            dsrc.Name = CacheContext.StringTable.GetOrAddString($@"sidebar_items");
             dsrc.Elements = new List<GuiDatasourceDefinition.DatasourceElementBlock>
             {
                 new GuiDatasourceDefinition.DatasourceElementBlock
@@ -35,18 +35,18 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"name"),
-                            Value = CacheContext.StringTable.GetStringId($@"controls_settings"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"name"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"controls_settings"),
                         },
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"display_group"),
-                            Value = CacheContext.StringTable.GetStringId($@"controls_settings"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"display_group"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"controls_settings"),
                         },
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"target"),
-                            Value = CacheContext.StringTable.GetStringId($@"start_menu_settings_controls"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"target"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"start_menu_settings_controls"),
                         },
                     },
                 },
@@ -56,18 +56,18 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"name"),
-                            Value = CacheContext.StringTable.GetStringId($@"display_settings"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"name"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"display_settings"),
                         },
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"display_group"),
-                            Value = CacheContext.StringTable.GetStringId($@"display_settings"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"display_group"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"display_settings"),
                         },
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"target"),
-                            Value = CacheContext.StringTable.GetStringId($@"start_menu_settings_display"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"target"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"start_menu_settings_display"),
                         },
                     },
                 },

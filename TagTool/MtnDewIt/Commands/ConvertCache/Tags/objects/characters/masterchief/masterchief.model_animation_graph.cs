@@ -37,67 +37,67 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"airborne_dead"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"airborne_dead"),
                     GraphIndex = -1,
                     Animation = 88,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"landing_dead"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"landing_dead"),
                     GraphIndex = -1,
                     Animation = 89,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"armor_lock_enter"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"armor_lock_enter"),
                     GraphIndex = -1,
                     Animation = 91,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"armor_lock_exit"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"armor_lock_exit"),
                     GraphIndex = -1,
                     Animation = 92,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"armor_lock_idle"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"armor_lock_idle"),
                     GraphIndex = -1,
                     Animation = 93,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"con_blast_enter"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"con_blast_enter"),
                     GraphIndex = -1,
                     Animation = 123,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"mag_pulse_enter"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"mag_pulse_enter"),
                     GraphIndex = -1,
                     Animation = 238,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"thunder_clap"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"thunder_clap"),
                     GraphIndex = -1,
                     Animation = 1173,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"fresh"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"fresh"),
                     GraphIndex = -1,
                     Animation = 1174,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"orange_justice"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"orange_justice"),
                     GraphIndex = -1,
                     Animation = 1175,
                 },
                 new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
                 {
-                    Label = CacheContext.StringTable.GetStringId($@"electro_swing"),
+                    Label = CacheContext.StringTable.GetOrAddString($@"electro_swing"),
                     GraphIndex = -1,
                     Animation = 1176,
                 },

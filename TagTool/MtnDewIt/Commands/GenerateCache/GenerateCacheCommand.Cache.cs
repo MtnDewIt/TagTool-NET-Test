@@ -54,6 +54,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
         // These need to be copied over as the shader generator cannot generate these shaders
         public static readonly string[] MS23Shaders = new[]
         {
+            // Chud Shaders (Used in chud_globals)
             @"rasterizer\shaders\chud_simple",
             @"rasterizer\shaders\chud_meter",
             @"rasterizer\shaders\chud_text_simple",
@@ -79,6 +80,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             @"rasterizer\shaders\chud_cortana_composite",
             @"rasterizer\shaders\chud_directional_damage_apply",
             @"rasterizer\shaders\chud_really_simple",
+
+            // Explicit Shaders (Used in rasterizer_globals)
             @"rasterizer\shaders\debug",
             @"rasterizer\shaders\debug2d",
             @"rasterizer\shaders\copy_surface",
@@ -280,26 +283,26 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
                 {
                     CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
                 }
-
+                
                 foreach (var tagName in MS23Shaders)
                 {
                     foreach (var tag in CacheContext.TagCache.NonNull())
                     {
                         if (tag == null || !tag.IsInGroup("pixl"))
                             continue;
-
+                
                         if (tagName == tag.Name && tag.IsInGroup("pixl"))
                         {
                             CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
                             break;
                         }
                     }
-
+                
                     foreach (var tag in CacheContext.TagCache.NonNull())
                     {
                         if (tag == null || !tag.IsInGroup("vtsh"))
                             continue;
-
+                
                         if (tagName == tag.Name && tag.IsInGroup("vtsh"))
                         {
                             CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
@@ -385,8 +388,13 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             if (type.IsSubclassOf(typeof(TagStructure)))
                 return CopyStructure((TagStructure)data, type, srcCacheContext, srcStream, destCacheContext, destStream);
 
-            if (type == typeof(StringId))
-                return destCacheContext.StringTable.GetOrAddString(srcCacheContext.StringTable.GetString((StringId)data));
+            if (type == typeof(StringId)) 
+            {
+                if ((StringId)data != StringId.Invalid) 
+                {
+                    return destCacheContext.StringTable.GetOrAddString(srcCacheContext.StringTable.GetString((StringId)data));
+                }
+            }
 
             return data;
         }

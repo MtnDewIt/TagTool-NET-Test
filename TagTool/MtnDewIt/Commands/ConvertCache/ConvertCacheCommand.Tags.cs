@@ -7,17 +7,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
     {
         public void UpdateTagData()
         {
-            Cache.StringTable.Add($@"thunder_clap");
-            Cache.StringTable.Add($@"fresh");
-            Cache.StringTable.Add($@"orange_justice");
-            Cache.StringTable.Add($@"electro_swing");
-            Cache.StringTable.Add($@"con_blast_exit");
-            Cache.StringTable.Add($@"flaming_ninja_active");
-            Cache.StringTable.Add($@"menu_spartan2");
-            Cache.StringTable.Add($@"menu_spartan1");
-            Cache.StringTable.Add($@"mainmenu_odst01");
-            Cache.SaveStrings();
-
             new ui_chud_bitmaps_stamina_icon_elite_bitmap(Cache, CacheContext, CacheStream);
 
             new ui_eldewrito_common_map_bitmaps_placeholder_bitmap(Cache, CacheContext, CacheStream);
@@ -655,6 +644,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             new levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_model(Cache, CacheContext, CacheStream);
 
             new levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_render_model(Cache, CacheContext, CacheStream);
+
+            Cache.SaveStrings();
         }
     }
 }

@@ -52,7 +52,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"bunkerworld_ext"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"bunkerworld_ext"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
                     ReverbCutoffDistance = 2f,
                     ReverbInterpolationSpeed = 1f,
@@ -62,7 +62,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"hallway"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"hallway"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\cpaul_stone_room"),
                     ReverbCutoffDistance = 2f,
                     ReverbInterpolationSpeed = 1f,
@@ -72,7 +72,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"controlroom"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"controlroom"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\cpaul_stone_room"),
                     ReverbCutoffDistance = 2f,
                     ReverbInterpolationSpeed = 1f,

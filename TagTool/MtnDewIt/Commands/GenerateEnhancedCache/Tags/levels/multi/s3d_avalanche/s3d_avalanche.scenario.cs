@@ -33,7 +33,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Tags
             {
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"desert_wind"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"desert_wind"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
                     ReverbInterpolationSpeed = 1f,
                     AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_diamondback\amb_desert_wind\amb_desert_wind"),
@@ -41,7 +41,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"general_roomtone"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"general_roomtone"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\hallway"),
                     ReverbInterpolationSpeed = 1f,
                     AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_diamondback\amb_gen_roomtone\amb_gen_roomtone"),
@@ -49,7 +49,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"cave_wind"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"cave_wind"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\cave"),
                     ReverbInterpolationSpeed = 1f,
                     AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_diamondback\amb_cave_wind\amb_cave_wind"),
@@ -57,7 +57,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"cave_wind_and_drips"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"cave_wind_and_drips"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\cave"),
                     ReverbInterpolationSpeed = 1f,
                     AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\multi\s3d_diamondback\amb_cave_wind_and_drips\amb_cave_wind_and_drips"),

@@ -52,7 +52,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"halo_exterior"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"halo_exterior"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
                     ReverbCutoffDistance = 1,
                     ReverbInterpolationSpeed = 0.25f,
@@ -62,7 +62,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"interior"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"interior"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\stone_room"),
                     ReverbCutoffDistance = 1,
                     ReverbInterpolationSpeed = 0.25f,
@@ -72,7 +72,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"interior_tunnel"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"interior_tunnel"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\jay_stone_room"),
                     ReverbCutoffDistance = 1,
                     ReverbInterpolationSpeed = 0.25f,

@@ -26,7 +26,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
         {
             var tag = GetCachedTag<GuiDatasourceDefinition>($@"ui\halox\main_menu\main_menu_list");
             var dsrc = CacheContext.Deserialize<GuiDatasourceDefinition>(Stream, tag);
-            dsrc.Name = CacheContext.StringTable.GetStringId($@"main_menu");
+            dsrc.Name = CacheContext.StringTable.GetOrAddString($@"main_menu");
             dsrc.Elements = new List<GuiDatasourceDefinition.DatasourceElementBlock>()
             {
                 new GuiDatasourceDefinition.DatasourceElementBlock()
@@ -35,8 +35,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue()
                         {
-                            Name = CacheContext.StringTable.GetStringId("name"),
-                            Value = CacheContext.StringTable.GetStringId("server_browser"),
+                            Name = CacheContext.StringTable.GetOrAddString("name"),
+                            Value = CacheContext.StringTable.GetOrAddString("server_browser"),
                         },
                     }
                 },
@@ -46,8 +46,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue()
                         {
-                            Name = CacheContext.StringTable.GetStringId("name"),
-                            Value = CacheContext.StringTable.GetStringId("campaign"),
+                            Name = CacheContext.StringTable.GetOrAddString("name"),
+                            Value = CacheContext.StringTable.GetOrAddString("campaign"),
                         },
                     }
                 },
@@ -57,8 +57,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue()
                         {
-                            Name = CacheContext.StringTable.GetStringId("name"),
-                            Value = CacheContext.StringTable.GetStringId("multiplayer"),
+                            Name = CacheContext.StringTable.GetOrAddString("name"),
+                            Value = CacheContext.StringTable.GetOrAddString("multiplayer"),
                         },
                     }
                 },
@@ -68,8 +68,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue()
                         {
-                            Name = CacheContext.StringTable.GetStringId("name"),
-                            Value = CacheContext.StringTable.GetStringId("mapeditor"),
+                            Name = CacheContext.StringTable.GetOrAddString("name"),
+                            Value = CacheContext.StringTable.GetOrAddString("mapeditor"),
                         },
                     }
                 },
@@ -79,8 +79,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue()
                         {
-                            Name = CacheContext.StringTable.GetStringId("name"),
-                            Value = CacheContext.StringTable.GetStringId("survival"),
+                            Name = CacheContext.StringTable.GetOrAddString("name"),
+                            Value = CacheContext.StringTable.GetOrAddString("survival"),
                         },
                     }
                 },
@@ -90,8 +90,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue()
                         {
-                            Name = CacheContext.StringTable.GetStringId("name"),
-                            Value = CacheContext.StringTable.GetStringId("customization"),
+                            Name = CacheContext.StringTable.GetOrAddString("name"),
+                            Value = CacheContext.StringTable.GetOrAddString("customization"),
                         },
                     }
                 },
@@ -101,8 +101,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue()
                         {
-                            Name = CacheContext.StringTable.GetStringId("name"),
-                            Value = CacheContext.StringTable.GetStringId("eldewrito_settings"),
+                            Name = CacheContext.StringTable.GetOrAddString("name"),
+                            Value = CacheContext.StringTable.GetOrAddString("eldewrito_settings"),
                         },
                     }
                 },
@@ -112,8 +112,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue()
                         {
-                            Name = CacheContext.StringTable.GetStringId("name"),
-                            Value = CacheContext.StringTable.GetStringId("exit"),
+                            Name = CacheContext.StringTable.GetOrAddString("name"),
+                            Value = CacheContext.StringTable.GetOrAddString("exit"),
                         },
                     }
                 },

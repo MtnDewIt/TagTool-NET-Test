@@ -26,7 +26,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
         {
             var tag = GetCachedTag<GuiDatasourceDefinition>($@"ui\halox\start_menu\panes\settings_display\spinner_display_subtitles");
             var dsrc = CacheContext.Deserialize<GuiDatasourceDefinition>(Stream, tag);
-            dsrc.Name = CacheContext.StringTable.GetStringId($@"display_subtitles");
+            dsrc.Name = CacheContext.StringTable.GetOrAddString($@"display_subtitles");
             dsrc.Elements = new List<GuiDatasourceDefinition.DatasourceElementBlock>
             {
                 new GuiDatasourceDefinition.DatasourceElementBlock
@@ -35,7 +35,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.IntegerValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"value"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"value"),
                             Value = 0,
                         },
                     },
@@ -43,13 +43,13 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"name"),
-                            Value = CacheContext.StringTable.GetStringId($@"display_subtitles_on"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"name"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"display_subtitles_on"),
                         },
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"description"),
-                            Value = CacheContext.StringTable.GetStringId($@"display_subtitles_on_help"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"description"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"display_subtitles_on_help"),
                         },
                     },
                 },
@@ -59,7 +59,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.IntegerValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"value"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"value"),
                             Value = 1,
                         },
                     },
@@ -67,13 +67,13 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"name"),
-                            Value = CacheContext.StringTable.GetStringId($@"display_subtitles_off"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"name"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"display_subtitles_off"),
                         },
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"description"),
-                            Value = CacheContext.StringTable.GetStringId($@"display_subtitles_off_help"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"description"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"display_subtitles_off_help"),
                         },
                     },
                 },

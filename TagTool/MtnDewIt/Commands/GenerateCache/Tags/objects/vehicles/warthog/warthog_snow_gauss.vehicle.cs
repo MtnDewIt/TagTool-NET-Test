@@ -25,7 +25,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
         {
             var tag = GetCachedTag<Vehicle>($@"objects\vehicles\warthog\warthog_snow_gauss");
             var vehi = CacheContext.Deserialize<Vehicle>(Stream, tag);
-            vehi.DefaultModelVariant = CacheContext.StringTable.GetStringId($@"gauss");
+            vehi.DefaultModelVariant = CacheContext.StringTable.GetOrAddString($@"gauss");
             CacheContext.Serialize(Stream, tag, vehi);
         }
     }

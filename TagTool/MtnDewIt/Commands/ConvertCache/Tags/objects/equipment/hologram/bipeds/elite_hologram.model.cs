@@ -34,73 +34,73 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new Model.Material
                 {
-                    MaterialName = CacheContext.StringTable.GetStringId($@"armored_head"),
+                    MaterialName = CacheContext.StringTable.GetOrAddString($@"armored_head"),
                     MaterialType = Model.Material.MaterialTypeValue.Dirt,
                     RuntimeDamagerMaterialIndex = -1,
-                    GlobalMaterialName = CacheContext.StringTable.GetStringId($@"energy_holo"),
+                    GlobalMaterialName = CacheContext.StringTable.GetOrAddString($@"energy_holo"),
                     GlobalMaterialIndex = 157,
                 },
                 new Model.Material
                 {
-                    MaterialName = CacheContext.StringTable.GetStringId($@"nonheadshotable_head"),
+                    MaterialName = CacheContext.StringTable.GetOrAddString($@"nonheadshotable_head"),
                     MaterialType = Model.Material.MaterialTypeValue.Dirt,
                     RuntimeCollisionMaterialIndex = 1,
                     RuntimeDamagerMaterialIndex = -1,
-                    GlobalMaterialName = CacheContext.StringTable.GetStringId($@"energy_holo"),
+                    GlobalMaterialName = CacheContext.StringTable.GetOrAddString($@"energy_holo"),
                     GlobalMaterialIndex = 157,
                 },
                 new Model.Material
                 {
-                    MaterialName = CacheContext.StringTable.GetStringId($@"skinned_head"),
+                    MaterialName = CacheContext.StringTable.GetOrAddString($@"skinned_head"),
                     MaterialType = Model.Material.MaterialTypeValue.Dirt,
                     RuntimeCollisionMaterialIndex = 2,
                     RuntimeDamagerMaterialIndex = -1,
-                    GlobalMaterialName = CacheContext.StringTable.GetStringId($@"energy_holo"),
+                    GlobalMaterialName = CacheContext.StringTable.GetOrAddString($@"energy_holo"),
                     GlobalMaterialIndex = 157,
                 },
                 new Model.Material
                 {
-                    MaterialName = CacheContext.StringTable.GetStringId($@"skinned_arm"),
+                    MaterialName = CacheContext.StringTable.GetOrAddString($@"skinned_arm"),
                     MaterialType = Model.Material.MaterialTypeValue.Dirt,
                     RuntimeCollisionMaterialIndex = 3,
                     RuntimeDamagerMaterialIndex = -1,
-                    GlobalMaterialName = CacheContext.StringTable.GetStringId($@"energy_holo"),
+                    GlobalMaterialName = CacheContext.StringTable.GetOrAddString($@"energy_holo"),
                     GlobalMaterialIndex = 157,
                 },
                 new Model.Material
                 {
-                    MaterialName = CacheContext.StringTable.GetStringId($@"armored_arms"),
+                    MaterialName = CacheContext.StringTable.GetOrAddString($@"armored_arms"),
                     MaterialType = Model.Material.MaterialTypeValue.Dirt,
                     RuntimeCollisionMaterialIndex = 4,
                     RuntimeDamagerMaterialIndex = -1,
-                    GlobalMaterialName = CacheContext.StringTable.GetStringId($@"energy_holo"),
+                    GlobalMaterialName = CacheContext.StringTable.GetOrAddString($@"energy_holo"),
                     GlobalMaterialIndex = 157,
                 },
                 new Model.Material
                 {
-                    MaterialName = CacheContext.StringTable.GetStringId($@"skinned_torso"),
+                    MaterialName = CacheContext.StringTable.GetOrAddString($@"skinned_torso"),
                     MaterialType = Model.Material.MaterialTypeValue.Dirt,
                     RuntimeCollisionMaterialIndex = 5,
                     RuntimeDamagerMaterialIndex = -1,
-                    GlobalMaterialName = CacheContext.StringTable.GetStringId($@"energy_holo"),
+                    GlobalMaterialName = CacheContext.StringTable.GetOrAddString($@"energy_holo"),
                     GlobalMaterialIndex = 157,
                 },
                 new Model.Material
                 {
-                    MaterialName = CacheContext.StringTable.GetStringId($@"armored_legs"),
+                    MaterialName = CacheContext.StringTable.GetOrAddString($@"armored_legs"),
                     MaterialType = Model.Material.MaterialTypeValue.Dirt,
                     RuntimeCollisionMaterialIndex = 6,
                     RuntimeDamagerMaterialIndex = -1,
-                    GlobalMaterialName = CacheContext.StringTable.GetStringId($@"energy_holo"),
+                    GlobalMaterialName = CacheContext.StringTable.GetOrAddString($@"energy_holo"),
                     GlobalMaterialIndex = 157,
                 },
                 new Model.Material
                 {
-                    MaterialName = CacheContext.StringTable.GetStringId($@"skinned_legs"),
+                    MaterialName = CacheContext.StringTable.GetOrAddString($@"skinned_legs"),
                     MaterialType = Model.Material.MaterialTypeValue.Dirt,
                     RuntimeCollisionMaterialIndex = 7,
                     RuntimeDamagerMaterialIndex = -1,
-                    GlobalMaterialName = CacheContext.StringTable.GetStringId($@"energy_holo"),
+                    GlobalMaterialName = CacheContext.StringTable.GetOrAddString($@"energy_holo"),
                     GlobalMaterialIndex = 157,
                 },
             };
@@ -109,7 +109,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Model.GlobalDamageInfoBlock
                 {
                     Flags = Model.GlobalDamageInfoBlock.FlagsValue.TakesShieldDamageForChildren | Model.GlobalDamageInfoBlock.FlagsValue.TakesBodyDamageForChildren,
-                    GlobalIndirectMaterialName = CacheContext.StringTable.GetStringId($@"energy_holo"),
+                    GlobalIndirectMaterialName = CacheContext.StringTable.GetOrAddString($@"energy_holo"),
                     IndirectDamageSection = 0,
                     CollisionDamageReportingType = new Damage.DamageReportingType
                     {
@@ -126,7 +126,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     RechargeTime = 5,
                     RechargeFraction = 1,
                     MaxShieldVitality = 70,
-                    GlobalShieldMaterialName = CacheContext.StringTable.GetStringId($@"energy_shield_thin"),
+                    GlobalShieldMaterialName = CacheContext.StringTable.GetOrAddString($@"energy_shield_thin"),
                     ShieldMinStunDamage = 0,
                     ShieldStunTime = 5,
                     ShieldRechargeTime = 2,
@@ -138,7 +138,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new Model.GlobalDamageInfoBlock.DamageSection
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"main"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"main"),
                             Flags = FlagsValue.TakesFullDamageWhenShieldDepleted,
                             VitalityPercentage = 1,
                             InstantResponses = new List<InstantResponse>
@@ -394,14 +394,14 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Model.CollisionRegion
                 {
                     Pad1 = new byte[2],
-                    Name = CacheContext.StringTable.GetStringId($@"body"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"body"),
                     CollisionRegionIndex = 0,
                     PhysicsRegionIndex = 0,
                     Permutations = new List<Model.CollisionRegion.Permutation>
                     {
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"base"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"base"),
                             CollisionPermutationIndex = 0,
                             PhysicsPermutationIndex = 0,
                             Pad = new byte[1],
@@ -411,35 +411,35 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Model.CollisionRegion
                 {
                     Pad1 = new byte[2],
-                    Name = CacheContext.StringTable.GetStringId($@"chest"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"chest"),
                     CollisionRegionIndex = -1,
                     PhysicsRegionIndex = 0,
                     Permutations = new List<Model.CollisionRegion.Permutation>
                     {
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mp_raptor"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mp_raptor"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = -1,
                             Pad = new byte[1],
                         },
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mp_predator"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mp_predator"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = -1,
                             Pad = new byte[1],
                         },
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mp_blades"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mp_blades"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = -1,
                             Pad = new byte[1],
                         },
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mp_scythe"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mp_scythe"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = -1,
                             Pad = new byte[1],
@@ -449,14 +449,14 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Model.CollisionRegion
                 {
                     Pad1 = new byte[2],
-                    Name = CacheContext.StringTable.GetStringId($@"d_torso"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"d_torso"),
                     CollisionRegionIndex = -1,
                     PhysicsRegionIndex = 0,
                     Permutations = new List<Model.CollisionRegion.Permutation>
                     {
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"base"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"base"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = 0,
                             Pad = new byte[1],
@@ -466,14 +466,14 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Model.CollisionRegion
                 {
                     Pad1 = new byte[2],
-                    Name = CacheContext.StringTable.GetStringId($@"decals"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"decals"),
                     CollisionRegionIndex = -1,
                     PhysicsRegionIndex = 0,
                     Permutations = new List<Model.CollisionRegion.Permutation>
                     {
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"base"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"base"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = 0,
                             Pad = new byte[1],
@@ -483,14 +483,14 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Model.CollisionRegion
                 {
                     Pad1 = new byte[2],
-                    Name = CacheContext.StringTable.GetStringId($@"eyelids"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"eyelids"),
                     CollisionRegionIndex = -1,
                     PhysicsRegionIndex = -1,
                     Permutations = new List<Model.CollisionRegion.Permutation>
                     {
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"base"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"base"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = -1,
                             Pad = new byte[1],
@@ -500,42 +500,42 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Model.CollisionRegion
                 {
                     Pad1 = new byte[2],
-                    Name = CacheContext.StringTable.GetStringId($@"head"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"head"),
                     CollisionRegionIndex = 1,
                     PhysicsRegionIndex = 1,
                     Permutations = new List<Model.CollisionRegion.Permutation>
                     {
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mp_raptor"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mp_raptor"),
                             CollisionPermutationIndex = 1,
                             PhysicsPermutationIndex = 0,
                             Pad = new byte[1],
                         },
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mp_blades"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mp_blades"),
                             CollisionPermutationIndex = 2,
                             PhysicsPermutationIndex = 0,
                             Pad = new byte[1],
                         },
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"base"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"base"),
                             CollisionPermutationIndex = 0,
                             PhysicsPermutationIndex = 0,
                             Pad = new byte[1],
                         },
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mp_scythe"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mp_scythe"),
                             CollisionPermutationIndex = 4,
                             PhysicsPermutationIndex = 0,
                             Pad = new byte[1],
                         },
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mp_predator"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mp_predator"),
                             CollisionPermutationIndex = 3,
                             PhysicsPermutationIndex = 0,
                             Pad = new byte[1],
@@ -545,42 +545,42 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Model.CollisionRegion
                 {
                     Pad1 = new byte[2],
-                    Name = CacheContext.StringTable.GetStringId($@"leftshoulder"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"leftshoulder"),
                     CollisionRegionIndex = -1,
                     PhysicsRegionIndex = -1,
                     Permutations = new List<Model.CollisionRegion.Permutation>
                     {
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mp_raptor"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mp_raptor"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = -1,
                             Pad = new byte[1],
                         },
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mp_predator"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mp_predator"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = -1,
                             Pad = new byte[1],
                         },
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mp_blades"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mp_blades"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = -1,
                             Pad = new byte[1],
                         },
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mp_scythe"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mp_scythe"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = -1,
                             Pad = new byte[1],
                         },
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"base"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"base"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = -1,
                             Pad = new byte[1],
@@ -590,14 +590,14 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Model.CollisionRegion
                 {
                     Pad1 = new byte[2],
-                    Name = CacheContext.StringTable.GetStringId($@"lights"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"lights"),
                     CollisionRegionIndex = -1,
                     PhysicsRegionIndex = -1,
                     Permutations = new List<Model.CollisionRegion.Permutation>
                     {
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"base"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"base"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = -1,
                             Pad = new byte[1],
@@ -607,42 +607,42 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Model.CollisionRegion
                 {
                     Pad1 = new byte[2],
-                    Name = CacheContext.StringTable.GetStringId($@"rightshoulder"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"rightshoulder"),
                     CollisionRegionIndex = -1,
                     PhysicsRegionIndex = -1,
                     Permutations = new List<Model.CollisionRegion.Permutation>
                     {
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mp_raptor"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mp_raptor"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = -1,
                             Pad = new byte[1],
                         },
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"base"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"base"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = -1,
                             Pad = new byte[1],
                         },
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mp_predator"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mp_predator"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = -1,
                             Pad = new byte[1],
                         },
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mp_blades"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mp_blades"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = -1,
                             Pad = new byte[1],
                         },
                         new Model.CollisionRegion.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mp_scythe"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mp_scythe"),
                             CollisionPermutationIndex = -1,
                             PhysicsPermutationIndex = -1,
                             Pad = new byte[1],

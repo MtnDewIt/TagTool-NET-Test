@@ -30,24 +30,24 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
             {
                 new RenderModel.Region
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"badge"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"badge"),
                     Permutations = new List<RenderModel.Region.Permutation>
                     {
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"standard"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"standard"),
                             MeshCount = 1
                         },
                     },
                 },
                 new RenderModel.Region
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"body"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"body"),
                     Permutations = new List<RenderModel.Region.Permutation>
                     {
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"standard"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"standard"),
                             MeshIndex = 1,
                             MeshCount = 1,
                         },
@@ -55,18 +55,18 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new RenderModel.Region
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"chest"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"chest"),
                     Permutations = new List<RenderModel.Region.Permutation>
                     {
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"broken"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"broken"),
                             MeshIndex = 16,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"standard"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"standard"),
                             MeshIndex = 16,
                             MeshCount = 1,
                         },
@@ -82,24 +82,24 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new RenderModel.Region
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"emblem"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"emblem"),
                     Permutations = new List<RenderModel.Region.Permutation>
                     {
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"dutch"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"dutch"),
                             MeshIndex = 5,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"on"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"on"),
                             MeshIndex = 25,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"off"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"off"),
                             MeshIndex = 25,
                             MeshCount = 1,
                         },
@@ -107,42 +107,42 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new RenderModel.Region
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"gear"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"gear"),
                     Permutations = new List<RenderModel.Region.Permutation>
                     {
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mickey"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mickey"),
                             MeshIndex = 6,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"romeo"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"romeo"),
                             MeshIndex = 18,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"dutch"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"dutch"),
                             MeshIndex = 26,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"sergeant"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"sergeant"),
                             MeshIndex = 29,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"standard"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"standard"),
                             MeshIndex = 32,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"johnson"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"johnson"),
                             MeshIndex = 35,
                             MeshCount = 1,
                         },
@@ -150,12 +150,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new RenderModel.Region
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"hands"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"hands"),
                     Permutations = new List<RenderModel.Region.Permutation>
                     {
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"standard"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"standard"),
                             MeshIndex = 7,
                             MeshCount = 1,
                         },
@@ -163,42 +163,42 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new RenderModel.Region
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"head"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"head"),
                     Permutations = new List<RenderModel.Region.Permutation>
                     {
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"johnson"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"johnson"),
                             MeshIndex = 36,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"sergeant"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"sergeant"),
                             MeshIndex = 36,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"romeo"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"romeo"),
                             MeshIndex = 36,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mickey"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mickey"),
                             MeshIndex = 36,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"dutch"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"dutch"),
                             MeshIndex = 36,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"off"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"off"),
                             MeshIndex = 36,
                             MeshCount = 1,
                         },
@@ -206,36 +206,36 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new RenderModel.Region
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"headgear"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"headgear"),
                     Permutations = new List<RenderModel.Region.Permutation>
                     {
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"mickey"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"mickey"),
                             MeshIndex = 9,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"romeo"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"romeo"),
                             MeshIndex = 20,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"dutch"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"dutch"),
                             MeshIndex = 28,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"sergeant"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"sergeant"),
                             MeshIndex = 31,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"off"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"off"),
                             MeshIndex = 34,
                             MeshCount = 1,
                         },
@@ -243,18 +243,18 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new RenderModel.Region
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"helmet"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"helmet"),
                     Permutations = new List<RenderModel.Region.Permutation>
                     {
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"standard"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"standard"),
                             MeshIndex = 10,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"off"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"off"),
                             MeshIndex = 10,
                             MeshCount = 1,
                         },
@@ -262,18 +262,18 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new RenderModel.Region
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"knife"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"knife"),
                     Permutations = new List<RenderModel.Region.Permutation>
                     {
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"on"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"on"),
                             MeshIndex = 22,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"off"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"off"),
                             MeshIndex = 22,
                             MeshCount = 1,
                         },
@@ -281,12 +281,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new RenderModel.Region
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"l_shoulder"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"l_shoulder"),
                     Permutations = new List<RenderModel.Region.Permutation>
                     {
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"standard"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"standard"),
                             MeshIndex = 12,
                             MeshCount = 1,
                         },
@@ -294,18 +294,18 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new RenderModel.Region
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"r_shoulder"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"r_shoulder"),
                     Permutations = new List<RenderModel.Region.Permutation>
                     {
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"standard"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"standard"),
                             MeshIndex = 13,
                             MeshCount = 1,
                         },
                         new RenderModel.Region.Permutation
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"off"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"off"),
                             MeshIndex = 23,
                             MeshCount = 1,
                         },

@@ -33,7 +33,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Tags
             {
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"shrine_exterior"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"shrine_exterior"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
                     ReverbCutoffDistance = 1f,
                     AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\shrine\desert_wind2\desert_wind2"),
@@ -42,7 +42,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"interior"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"interior"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\jay_cave"),
                     ReverbCutoffDistance = 1f,
                     AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\shrine\desert_wind_inside\desert_wind_inside"),

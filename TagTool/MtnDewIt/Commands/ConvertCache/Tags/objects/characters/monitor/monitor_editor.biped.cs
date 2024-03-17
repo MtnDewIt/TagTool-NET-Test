@@ -32,8 +32,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new GameObject.Function
                 {
                     Flags = GameObject.Function.ObjectFunctionFlags.None,
-                    ImportName = CacheContext.StringTable.GetStringId($@"mouth_aperture"),
-                    ExportName = CacheContext.StringTable.GetStringId($@"talking"),
+                    ImportName = CacheContext.StringTable.GetOrAddString($@"mouth_aperture"),
+                    ExportName = CacheContext.StringTable.GetOrAddString($@"talking"),
                     DefaultFunction = new TagFunction
                     {
                         Data = new byte[]
@@ -50,8 +50,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new GameObject.Function
                 {
                     Flags = GameObject.Function.ObjectFunctionFlags.AlwaysActive,
-                    ImportName = CacheContext.StringTable.GetStringId($@"flying_speed"),
-                    ExportName = CacheContext.StringTable.GetStringId($@"audio_move"),
+                    ImportName = CacheContext.StringTable.GetOrAddString($@"flying_speed"),
+                    ExportName = CacheContext.StringTable.GetOrAddString($@"audio_move"),
                     DefaultFunction = new TagFunction
                     {
                         Data = new byte[]
@@ -68,8 +68,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new GameObject.Function
                 {
                     Flags = GameObject.Function.ObjectFunctionFlags.AlwaysActive,
-                    ImportName = CacheContext.StringTable.GetStringId($@"flying_speed"),
-                    ExportName = CacheContext.StringTable.GetStringId($@"audio_amb"),
+                    ImportName = CacheContext.StringTable.GetOrAddString($@"flying_speed"),
+                    ExportName = CacheContext.StringTable.GetOrAddString($@"audio_amb"),
                     DefaultFunction = new TagFunction
                     {
                         Data = new byte[]

@@ -26,12 +26,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
         {
             var tag = GetCachedTag<SquadTemplate>($@"ai\squad_templates\sq_camp_brute_stealth_4");
             var sqtm = CacheContext.Deserialize<SquadTemplate>(Stream, tag);
-            sqtm.Name = CacheContext.StringTable.GetStringId($@"sq_camp_brute_stealth_4");
+            sqtm.Name = CacheContext.StringTable.GetOrAddString($@"sq_camp_brute_stealth_4");
             sqtm.CellTemplates = new List<SquadTemplate.CellTemplate>
             {
                 new SquadTemplate.CellTemplate
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"engineer"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"engineer"),
                     NormalDiffCount = 1,
                     Characters = new List<SquadTemplate.CellTemplate.ObjectBlock>
                     {
@@ -43,7 +43,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new SquadTemplate.CellTemplate
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"brute_stalker"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"brute_stalker"),
                     NormalDiffCount = 3,
                     Characters = new List<SquadTemplate.CellTemplate.ObjectBlock>
                     {

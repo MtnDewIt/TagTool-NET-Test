@@ -30,7 +30,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
             chdt.HudWidgets.Add(new ChudDefinition.HudWidget());
             chdt.HudWidgets[19] = new ChudDefinition.HudWidget()
             {
-                Name = CacheContext.StringTable.GetStringId("consumable1"),
+                Name = CacheContext.StringTable.GetOrAddString("consumable1"),
                 ScriptingClass = ChudDefinition.ChudScriptingClass.Consumable,
                 SortLayer = ChudDefinition.WidgetLayerEnum.Foreground,
                 StateData = new List<ChudDefinition.HudWidgetBase.StateDatum>()
@@ -52,7 +52,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 {
                     new ChudDefinition.HudWidget.BitmapWidget
                     {
-                        Name = CacheContext.StringTable.GetStringId("cons_icon"),
+                        Name = CacheContext.StringTable.GetOrAddString("cons_icon"),
                         SortLayer = ChudDefinition.WidgetLayerEnum.Foreground,
                         RuntimeWidgetIndex = 90,
                         Flags = ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.SpriteFromConsumable,

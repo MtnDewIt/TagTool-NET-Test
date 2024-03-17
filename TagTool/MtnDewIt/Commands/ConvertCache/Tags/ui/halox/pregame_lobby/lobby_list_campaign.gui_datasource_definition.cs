@@ -26,7 +26,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
         {
             var tag = GetCachedTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\lobby_list_campaign");
             var dsrc = CacheContext.Deserialize<GuiDatasourceDefinition>(Stream, tag);
-            dsrc.Name = CacheContext.StringTable.GetStringId($@"lobby_list");
+            dsrc.Name = CacheContext.StringTable.GetOrAddString($@"lobby_list");
             dsrc.Elements = new List<GuiDatasourceDefinition.DatasourceElementBlock>
             {
                 new GuiDatasourceDefinition.DatasourceElementBlock
@@ -35,8 +35,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"name"),
-                            Value = CacheContext.StringTable.GetStringId($@"switch_lobby"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"name"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"switch_lobby"),
                         },
                     },
                 },
@@ -46,24 +46,13 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"name"),
-                            Value = CacheContext.StringTable.GetStringId($@"select_network_mode"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"name"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"select_network_mode"),
                         },
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"target"),
-                            Value = CacheContext.StringTable.GetStringId($@"network_mode"),
-                        },
-                    },
-                },
-                new GuiDatasourceDefinition.DatasourceElementBlock
-                {
-                    StringidValues = new List<GuiDatasourceDefinition.DatasourceElementBlock.StringidValue>
-                    {
-                        new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
-                        {
-                            Name = CacheContext.StringTable.GetStringId($@"name"),
-                            Value = CacheContext.StringTable.GetStringId($@"select_skulls"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"target"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"network_mode"),
                         },
                     },
                 },
@@ -73,8 +62,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"name"),
-                            Value = CacheContext.StringTable.GetStringId($@"select_scoring"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"name"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"select_skulls"),
                         },
                     },
                 },
@@ -84,13 +73,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"name"),
-                            Value = CacheContext.StringTable.GetStringId($@"switch_campaign_level"),
-                        },
-                        new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
-                        {
-                            Name = CacheContext.StringTable.GetStringId($@"target"),
-                            Value = CacheContext.StringTable.GetStringId($@"level"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"name"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"select_scoring"),
                         },
                     },
                 },
@@ -100,24 +84,13 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"name"),
-                            Value = CacheContext.StringTable.GetStringId($@"switch_campaign_difficulty"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"name"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"switch_campaign_level"),
                         },
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"target"),
-                            Value = CacheContext.StringTable.GetStringId($@"difficulty"),
-                        },
-                    },
-                },
-                new GuiDatasourceDefinition.DatasourceElementBlock
-                {
-                    StringidValues = new List<GuiDatasourceDefinition.DatasourceElementBlock.StringidValue>
-                    {
-                        new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
-                        {
-                            Name = CacheContext.StringTable.GetStringId($@"name"),
-                            Value = CacheContext.StringTable.GetStringId($@"switch_selected_mod"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"target"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"level"),
                         },
                     },
                 },
@@ -127,8 +100,35 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"name"),
-                            Value = CacheContext.StringTable.GetStringId($@"start_game"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"name"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"switch_campaign_difficulty"),
+                        },
+                        new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"target"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"difficulty"),
+                        },
+                    },
+                },
+                new GuiDatasourceDefinition.DatasourceElementBlock
+                {
+                    StringidValues = new List<GuiDatasourceDefinition.DatasourceElementBlock.StringidValue>
+                    {
+                        new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"name"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"switch_selected_mod"),
+                        },
+                    },
+                },
+                new GuiDatasourceDefinition.DatasourceElementBlock
+                {
+                    StringidValues = new List<GuiDatasourceDefinition.DatasourceElementBlock.StringidValue>
+                    {
+                        new GuiDatasourceDefinition.DatasourceElementBlock.StringidValue
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"name"),
+                            Value = CacheContext.StringTable.GetOrAddString($@"start_game"),
                         },
                     },
                 },

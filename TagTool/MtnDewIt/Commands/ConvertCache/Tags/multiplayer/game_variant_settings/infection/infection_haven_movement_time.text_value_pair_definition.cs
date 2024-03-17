@@ -27,54 +27,54 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             var tag = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\infection\infection_haven_movement_time");
             var sily = CacheContext.Deserialize<TextValuePairDefinition>(Stream, tag);
             sily.Parameter = TextValuePairDefinition.GameVariantParameters.IntInfectionHavenMovementTime;
-            sily.Name = CacheContext.StringTable.GetStringId($@"infection_haven_movement_time");
-            sily.Description = CacheContext.StringTable.GetStringId($@"infection_haven_movement_time_desc");
+            sily.Name = CacheContext.StringTable.GetOrAddString($@"infection_haven_movement_time");
+            sily.Description = CacheContext.StringTable.GetOrAddString($@"infection_haven_movement_time_desc");
             sily.TextValuePairs = new List<TextValuePairDefinition.TextValuePair> 
             {
                 new TextValuePairDefinition.TextValuePair
                 {
                     Flags = TextValuePairDefinition.TextValuePair.TextValuePairFlags.DefaultSetting,
-                    Name = CacheContext.StringTable.GetStringId($@"disabled"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"disabled"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 5,
-                    Name = CacheContext.StringTable.GetStringId($@"time_seconds_5"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"time_seconds_5"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 10,
-                    Name = CacheContext.StringTable.GetStringId($@"time_seconds_10"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"time_seconds_10"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 15,
-                    Name = CacheContext.StringTable.GetStringId($@"time_seconds_15"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"time_seconds_15"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 20,
-                    Name = CacheContext.StringTable.GetStringId($@"time_seconds_20"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"time_seconds_20"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 30,
-                    Name = CacheContext.StringTable.GetStringId($@"time_seconds_30"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"time_seconds_30"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 45,
-                    Name = CacheContext.StringTable.GetStringId($@"time_seconds_45"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"time_seconds_45"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 60,
-                    Name = CacheContext.StringTable.GetStringId($@"time_minutes_1"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"time_minutes_1"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 120,
-                    Name = CacheContext.StringTable.GetStringId($@"time_minutes_2"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"time_minutes_2"),
                 },
             };
             CacheContext.Serialize(Stream, tag, sily);

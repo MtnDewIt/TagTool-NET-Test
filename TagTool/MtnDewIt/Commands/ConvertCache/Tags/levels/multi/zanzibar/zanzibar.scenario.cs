@@ -52,7 +52,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"zanzibar_courtyard"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"zanzibar_courtyard"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
                     ReverbCutoffDistance = 2f,
                     ReverbInterpolationSpeed = 1f,
@@ -62,7 +62,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"zanzibar_ocean_waves"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"zanzibar_ocean_waves"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\templates\mountains"),
                     ReverbCutoffDistance = 2f,
                     ReverbInterpolationSpeed = 1f,
@@ -72,7 +72,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"ocean_waves_inside"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"ocean_waves_inside"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_2_presets\cpaul_little_somethin_slightly_smaller_new"),
                     ReverbCutoffDistance = 1f,
                     ReverbInterpolationSpeed = 1f,
@@ -83,7 +83,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"zanzibar_base_roomtone"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"zanzibar_base_roomtone"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\cpaul_stone_room_zanzibar_base"),
                     Type = ScenarioStructureBsp.SoundEnvironmentType.InteriorNarrow,
                     ReverbCutoffDistance = 2f,
@@ -94,7 +94,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"zanzaibar_froman_roomtone"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"zanzaibar_froman_roomtone"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\cpaul_stone_room_new_zanzibar"),
                     Type = ScenarioStructureBsp.SoundEnvironmentType.InteriorNarrow,
                     ReverbCutoffDistance = 2f,
@@ -105,7 +105,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"cave"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"cave"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\cpaul_stone_room_new_zanzibar"),
                     ReverbCutoffDistance = 1f,
                     ReverbInterpolationSpeed = 1f,
@@ -117,7 +117,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Scenario.LightmapAirprobe
                 {
                     Position = new RealPoint3d(0.0744535f, 3.68988f, 8.19632f),
-                    Name = CacheContext.StringTable.GetStringId($@"big_wheel_probe"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"big_wheel_probe"),
                 },
             };
             CacheContext.Serialize(Stream, tag, scnr);

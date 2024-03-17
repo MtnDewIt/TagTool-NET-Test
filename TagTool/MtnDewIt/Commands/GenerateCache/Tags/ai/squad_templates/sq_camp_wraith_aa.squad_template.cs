@@ -26,12 +26,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
         {
             var tag = GetCachedTag<SquadTemplate>($@"ai\squad_templates\sq_camp_wraith_aa");
             var sqtm = CacheContext.Deserialize<SquadTemplate>(Stream, tag);
-            sqtm.Name = CacheContext.StringTable.GetStringId($@"sq_camp_wraith_aa");
+            sqtm.Name = CacheContext.StringTable.GetOrAddString($@"sq_camp_wraith_aa");
             sqtm.CellTemplates = new List<SquadTemplate.CellTemplate>
             {
                 new SquadTemplate.CellTemplate
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"1_wraith"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"1_wraith"),
                     NormalDiffCount = 2,
                     Characters = new List<SquadTemplate.CellTemplate.ObjectBlock>
                     {
@@ -48,7 +48,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                             Probability = 1,
                         },
                     },
-                    VehicleVariant = CacheContext.StringTable.GetStringId($@"anti_air"),
+                    VehicleVariant = CacheContext.StringTable.GetOrAddString($@"anti_air"),
                 },
             };
             CacheContext.Serialize(Stream, tag, sqtm);

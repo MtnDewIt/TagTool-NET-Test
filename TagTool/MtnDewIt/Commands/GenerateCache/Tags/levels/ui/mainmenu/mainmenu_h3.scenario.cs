@@ -403,7 +403,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     ParentId = new ScenarioObjectParentStruct
                     {
                         NameIndex = 0,
-                        ParentMarker = CacheContext.StringTable.GetStringId($@"ark"),
+                        ParentMarker = CacheContext.StringTable.GetOrAddString($@"ark"),
                     },
                     CanAttachToBspFlags = 3,
                     AiSpawningSquad = -1,
@@ -432,7 +432,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     ParentId = new ScenarioObjectParentStruct
                     {
                         NameIndex = 0,
-                        ParentMarker = CacheContext.StringTable.GetStringId($@"ark"),
+                        ParentMarker = CacheContext.StringTable.GetOrAddString($@"ark"),
                     },
                     CanAttachToBspFlags = 1,
                     AiSpawningSquad = -1,
@@ -461,7 +461,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     ParentId = new ScenarioObjectParentStruct
                     {
                         NameIndex = 0,
-                        ParentMarker = CacheContext.StringTable.GetStringId($@"ship_1"),
+                        ParentMarker = CacheContext.StringTable.GetOrAddString($@"ship_1"),
                     },
                     CanAttachToBspFlags = 1,
                     AiSpawningSquad = -1,
@@ -488,7 +488,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     ParentId = new ScenarioObjectParentStruct
                     {
                         NameIndex = 0,
-                        ParentMarker = CacheContext.StringTable.GetStringId($@"clouds_ark"),
+                        ParentMarker = CacheContext.StringTable.GetOrAddString($@"clouds_ark"),
                     },
                     CanAttachToBspFlags = 1,
                     AiSpawningSquad = -1,
@@ -631,7 +631,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     ParentId = new ScenarioObjectParentStruct
                     {
                         NameIndex = 0,
-                        ParentMarker = CacheContext.StringTable.GetStringId($@"ark"),
+                        ParentMarker = CacheContext.StringTable.GetOrAddString($@"ark"),
                     },
                     CanAttachToBspFlags = 3,
                     AiSpawningSquad = -1,
@@ -660,7 +660,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     ParentId = new ScenarioObjectParentStruct
                     {
                         NameIndex = 0,
-                        ParentMarker = CacheContext.StringTable.GetStringId($@"forerunner_ship"),
+                        ParentMarker = CacheContext.StringTable.GetOrAddString($@"forerunner_ship"),
                     },
                     CanAttachToBspFlags = 1,
                     AiSpawningSquad = -1,
@@ -769,7 +769,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         NameIndex = -1,
                     },
                     CanAttachToBspFlags = 1,
-                    Variant = CacheContext.StringTable.GetStringId($@"enemy_no_turret"),
+                    Variant = CacheContext.StringTable.GetOrAddString($@"enemy_no_turret"),
                     AiSpawningSquad = -1,
                     Multiplayer = new Scenario.MultiplayerObjectProperties
                     {
@@ -1032,7 +1032,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         NameIndex = -1,
                     },
                     CanAttachToBspFlags = 1,
-                    Variant = CacheContext.StringTable.GetStringId($@"mainmenu_odst01"),
+                    Variant = CacheContext.StringTable.GetOrAddString($@"mainmenu_odst01"),
                 },
                 new Scenario.BipedInstance
                 {
@@ -1049,7 +1049,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         NameIndex = -1,
                     },
                     CanAttachToBspFlags = 1,
-                    Variant = CacheContext.StringTable.GetStringId($@"mainmenu_odst01"),
+                    Variant = CacheContext.StringTable.GetOrAddString($@"mainmenu_odst01"),
                 },
             };
             scnr.BipedPalette = new List<Scenario.ScenarioPaletteEntry>

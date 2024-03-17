@@ -27,19 +27,19 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             var tag = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\respawn_options\respawn_spectating");
             var sily = CacheContext.Deserialize<TextValuePairDefinition>(Stream, tag);
             sily.Parameter = TextValuePairDefinition.GameVariantParameters.IntGlobalNewUnknown;
-            sily.Name = CacheContext.StringTable.GetStringId($@"respawn_spectating");
-            sily.Description = CacheContext.StringTable.GetStringId($@"respawn_spectating_desc");
+            sily.Name = CacheContext.StringTable.GetOrAddString($@"respawn_spectating");
+            sily.Description = CacheContext.StringTable.GetOrAddString($@"respawn_spectating_desc");
             sily.TextValuePairs = new List<TextValuePairDefinition.TextValuePair> 
             {
                 new TextValuePairDefinition.TextValuePair
                 {
                     Flags = TextValuePairDefinition.TextValuePair.TextValuePairFlags.DefaultSetting,
                     EnumeratedValue = 1,
-                    Name = CacheContext.StringTable.GetStringId($@"allowed"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"allowed"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"not_allowed"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"not_allowed"),
                 },
             };
             CacheContext.Serialize(Stream, tag, sily);

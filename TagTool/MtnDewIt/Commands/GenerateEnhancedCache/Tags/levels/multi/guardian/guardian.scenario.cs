@@ -33,7 +33,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Tags
             {
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"gaurdian"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"gaurdian"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\cpaul_jungle4"),
                     ReverbCutoffDistance = 1,
                     ReverbInterpolationSpeed = 0.2f,
@@ -43,7 +43,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Tags
                 },
                 new ScenarioStructureBsp.AcousticsPaletteBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"gaurdian_inside"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"gaurdian_inside"),
                     SoundEnvironment = GetCachedTag<SoundEnvironment>($@"sound\dsp_effects\reverbs\halo_3_presets\jay_hallway"),
                     ReverbCutoffDistance = 1,
                     ReverbInterpolationSpeed = 0.2f,

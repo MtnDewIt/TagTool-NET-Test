@@ -27,33 +27,33 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             var tag = GetCachedTag<TextValuePairDefinition>($@"multiplayer\game_variant_settings\ctf\ctf_respawn_on_capture");
             var sily = CacheContext.Deserialize<TextValuePairDefinition>(Stream, tag);
             sily.Parameter = TextValuePairDefinition.GameVariantParameters.IntCtfRespawnDelay;
-            sily.Name = CacheContext.StringTable.GetStringId($@"territories_respawn_on_capture");
-            sily.Description = CacheContext.StringTable.GetStringId($@"territories_respawn_on_capture_desc");
+            sily.Name = CacheContext.StringTable.GetOrAddString($@"territories_respawn_on_capture");
+            sily.Description = CacheContext.StringTable.GetOrAddString($@"territories_respawn_on_capture_desc");
             sily.TextValuePairs = new List<TextValuePairDefinition.TextValuePair> 
             {
                 new TextValuePairDefinition.TextValuePair
                 {
                     Flags = TextValuePairDefinition.TextValuePair.TextValuePairFlags.DefaultSetting,
-                    Name = CacheContext.StringTable.GetStringId($@"disabled"),
-                    Description = CacheContext.StringTable.GetStringId($@"territories_respawn_on_capture_disabled_desc"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"disabled"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"territories_respawn_on_capture_disabled_desc"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 1,
-                    Name = CacheContext.StringTable.GetStringId($@"territories_respawn_on_capture_ally"),
-                    Description = CacheContext.StringTable.GetStringId($@"territories_respawn_on_capture_ally_desc"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"territories_respawn_on_capture_ally"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"territories_respawn_on_capture_ally_desc"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 2,
-                    Name = CacheContext.StringTable.GetStringId($@"territories_respawn_on_capture_enemy"),
-                    Description = CacheContext.StringTable.GetStringId($@"territories_respawn_on_capture_enemy_desc"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"territories_respawn_on_capture_enemy"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"territories_respawn_on_capture_enemy_desc"),
                 },
                 new TextValuePairDefinition.TextValuePair
                 {
                     EnumeratedValue = 3,
-                    Name = CacheContext.StringTable.GetStringId($@"territories_respawn_on_capture_all"),
-                    Description = CacheContext.StringTable.GetStringId($@"territories_respawn_on_capture_all_desc"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"territories_respawn_on_capture_all"),
+                    Description = CacheContext.StringTable.GetOrAddString($@"territories_respawn_on_capture_all_desc"),
                 },
             };
             CacheContext.Serialize(Stream, tag, sily);

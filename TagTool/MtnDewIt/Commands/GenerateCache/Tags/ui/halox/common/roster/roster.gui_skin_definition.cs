@@ -36,7 +36,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         Flags = GuiTextWidgetDefinition.GuiTextFlags.DoNotApplyOldContentUpscaling | GuiTextWidgetDefinition.GuiTextFlags.LeftJustify,
                         GuiRenderBlock = new GuiDefinition()
                         {
-                            Name = CacheContext.StringTable.GetStringId("name"),
+                            Name = CacheContext.StringTable.GetOrAddString("name"),
                             RenderDepthBias = 89,
                             Bounds720p = new Rectangle2d(5, 0, 43, 265),
                             AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_list_name"),
@@ -51,13 +51,13 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         Flags = GuiTextWidgetDefinition.GuiTextFlags.DoNotApplyOldContentUpscaling | GuiTextWidgetDefinition.GuiTextFlags.LeftJustify | GuiTextWidgetDefinition.GuiTextFlags.StringFromExportedText,
                         GuiRenderBlock = new GuiDefinition()
                         {
-                            Name = CacheContext.StringTable.GetStringId("name_hilite"),
+                            Name = CacheContext.StringTable.GetOrAddString("name_hilite"),
                             RenderDepthBias = 100,
                             Bounds720p = new Rectangle2d(-9, 9, 32, 274),
                             AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_name_hilite"),
                         },
-                        ValueOverrideList = CacheContext.StringTable.GetStringId("player_name"),
-                        ValueIdentifier = CacheContext.StringTable.GetStringId("player_name"),
+                        ValueOverrideList = CacheContext.StringTable.GetOrAddString("player_name"),
+                        ValueIdentifier = CacheContext.StringTable.GetOrAddString("player_name"),
                         CustomFont = WidgetFontValue.BodyText,
                     },
                 },
@@ -67,7 +67,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     {
                         GuiRenderBlock = new GuiDefinition()
                         {
-                            Name = CacheContext.StringTable.GetStringId("player_found"),
+                            Name = CacheContext.StringTable.GetOrAddString("player_found"),
                         },
                     },
                 },
@@ -78,12 +78,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         Flags = GuiTextWidgetDefinition.GuiTextFlags.DoNotApplyOldContentUpscaling | GuiTextWidgetDefinition.GuiTextFlags.LeftJustify | GuiTextWidgetDefinition.GuiTextFlags.Uppercase | GuiTextWidgetDefinition.GuiTextFlags.StringFromExportedText,
                         GuiRenderBlock = new GuiDefinition()
                         {
-                            Name = CacheContext.StringTable.GetStringId("service_tag"),
+                            Name = CacheContext.StringTable.GetOrAddString("service_tag"),
                             RenderDepthBias = 100,
                             Bounds720p = new Rectangle2d(19, 9, 60, 274),
                             AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\rank_hilite"),
                         },
-                        ValueIdentifier = CacheContext.StringTable.GetStringId("service_tag"),
+                        ValueIdentifier = CacheContext.StringTable.GetOrAddString("service_tag"),
                         CustomFont = WidgetFontValue.BodyText,
                     },
                 },
@@ -97,7 +97,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling,
                         GuiRenderBlock = new GuiDefinition()
                         {
-                            Name = CacheContext.StringTable.GetStringId("base_color"),
+                            Name = CacheContext.StringTable.GetOrAddString("base_color"),
                             RenderDepthBias = 83,
                             Bounds720p = new Rectangle2d(0, -47, 0, 0),
                             AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_list_bitmap"),
@@ -113,7 +113,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling,
                         GuiRenderBlock = new GuiDefinition()
                         {
-                            Name = CacheContext.StringTable.GetStringId("base_color_hilite"),
+                            Name = CacheContext.StringTable.GetOrAddString("base_color_hilite"),
                             RenderDepthBias = 93,
                             Bounds720p = new Rectangle2d(-15, -47, 0, 0),
                             AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_hilite"),
@@ -129,7 +129,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling | GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.ScaleToFitBounds,
                         GuiRenderBlock = new GuiDefinition()
                         {
-                            Name = CacheContext.StringTable.GetStringId("player_emblem"),
+                            Name = CacheContext.StringTable.GetOrAddString("player_emblem"),
                             RenderDepthBias = 87,
                             Bounds720p = new Rectangle2d(2, -42, 36, -7),
                             AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_list_emblem"),
@@ -145,7 +145,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling | GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.ScaleToFitBounds,
                         GuiRenderBlock = new GuiDefinition()
                         {
-                            Name = CacheContext.StringTable.GetStringId("player_emblem_hilite"),
+                            Name = CacheContext.StringTable.GetOrAddString("player_emblem_hilite"),
                             RenderDepthBias = 97,
                             Bounds720p = new Rectangle2d(-5, -43, 43, 5),
                             AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\emblem_hilite"),
@@ -160,7 +160,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     {
                         GuiRenderBlock = new GuiDefinition()
                         {
-                            Name = CacheContext.StringTable.GetStringId("skill_level"),
+                            Name = CacheContext.StringTable.GetOrAddString("skill_level"),
                         },
                     },
                 },
@@ -170,7 +170,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     {
                         GuiRenderBlock = new GuiDefinition()
                         {
-                            Name = CacheContext.StringTable.GetStringId("skill_level_hilite"),
+                            Name = CacheContext.StringTable.GetOrAddString("skill_level_hilite"),
                         },
                     },
                 },
@@ -181,7 +181,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling | GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.ScaleToFitBounds,
                         GuiRenderBlock = new GuiDefinition()
                         {
-                            Name = CacheContext.StringTable.GetStringId("experience"),
+                            Name = CacheContext.StringTable.GetOrAddString("experience"),
                             RenderDepthBias = 88,
                             Bounds720p = new Rectangle2d(3, 296, 35, 318),
                             AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\rating_list_bitmap"),
@@ -197,7 +197,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling | GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.ScaleToFitBounds,
                         GuiRenderBlock = new GuiDefinition()
                         {
-                            Name = CacheContext.StringTable.GetStringId("experience_hilite"),
+                            Name = CacheContext.StringTable.GetOrAddString("experience_hilite"),
                             RenderDepthBias = 98,
                             Bounds720p = new Rectangle2d(0, 295, 39, 322),
                             AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\rating_hilite"),
@@ -213,7 +213,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling,
                         GuiRenderBlock = new GuiDefinition()
                         {
-                            Name = CacheContext.StringTable.GetStringId("ring_of_light"),
+                            Name = CacheContext.StringTable.GetOrAddString("ring_of_light"),
                             RenderDepthBias = 85,
                             Bounds720p = new Rectangle2d(3, -82, 0, 0),
                             AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\roster_fade"),
@@ -228,7 +228,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     {
                         GuiRenderBlock = new GuiDefinition()
                         {
-                            Name = CacheContext.StringTable.GetStringId("player_found"),
+                            Name = CacheContext.StringTable.GetOrAddString("player_found"),
                         },
                     },
                 },
@@ -239,7 +239,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                         Flags = GuiBitmapWidgetDefinition.BitmapWidgetDefinitionFlags.DoNotApplyOldContentUpscaling,
                         GuiRenderBlock = new GuiDefinition()
                         {
-                            Name = CacheContext.StringTable.GetStringId("rank_tray"),
+                            Name = CacheContext.StringTable.GetOrAddString("rank_tray"),
                             RenderDepthBias = 85,
                             Bounds720p = new Rectangle2d(0, 253, 0, 0),
                             AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_list_bitmap"),
@@ -254,7 +254,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     {
                         GuiRenderBlock = new GuiDefinition()
                         {
-                            Name = CacheContext.StringTable.GetStringId("rank_tray_hilite"),
+                            Name = CacheContext.StringTable.GetOrAddString("rank_tray_hilite"),
                             RenderDepthBias = 95,
                             Bounds720p = new Rectangle2d(-10, 253, 0, 0),
                             AnimationCollection = GetCachedTag<GuiWidgetAnimationCollectionDefinition>($@"ui\halox\common\roster\animations\mp_hilite"),

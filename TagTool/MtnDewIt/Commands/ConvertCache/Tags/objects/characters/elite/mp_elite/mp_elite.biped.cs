@@ -31,8 +31,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new GameObject.Function
                 {
-                    ImportName = CacheContext.StringTable.GetStringId($@"current_shield_damage"),
-                    ExportName = CacheContext.StringTable.GetStringId($@"shield_glow_source"),
+                    ImportName = CacheContext.StringTable.GetOrAddString($@"current_shield_damage"),
+                    ExportName = CacheContext.StringTable.GetOrAddString($@"shield_glow_source"),
                     DefaultFunction = new TagFunction
                     {
                         Data = new byte[]
@@ -48,9 +48,9 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new GameObject.Function
                 {
-                    ImportName = CacheContext.StringTable.GetStringId($@"shield_depleted"),
-                    ExportName = CacheContext.StringTable.GetStringId($@"shield_down"),
-                    TurnOffWith = CacheContext.StringTable.GetStringId($@"body_vitality"),
+                    ImportName = CacheContext.StringTable.GetOrAddString($@"shield_depleted"),
+                    ExportName = CacheContext.StringTable.GetOrAddString($@"shield_down"),
+                    TurnOffWith = CacheContext.StringTable.GetOrAddString($@"body_vitality"),
                     DefaultFunction = new TagFunction
                     {
                         Data = new byte[]
@@ -66,8 +66,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new GameObject.Function
                 {
-                    ImportName = CacheContext.StringTable.GetStringId($@"one"),
-                    ExportName = CacheContext.StringTable.GetStringId($@"elite_burnt"),
+                    ImportName = CacheContext.StringTable.GetOrAddString($@"one"),
+                    ExportName = CacheContext.StringTable.GetOrAddString($@"elite_burnt"),
                     DefaultFunction = new TagFunction
                     {
                         Data = new byte[]
@@ -83,9 +83,9 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new GameObject.Function
                 {
-                    ImportName = CacheContext.StringTable.GetStringId($@"one"),
-                    ExportName = CacheContext.StringTable.GetStringId($@"shield_static"),
-                    TurnOffWith = CacheContext.StringTable.GetStringId($@"shield_depleted"),
+                    ImportName = CacheContext.StringTable.GetOrAddString($@"one"),
+                    ExportName = CacheContext.StringTable.GetOrAddString($@"shield_static"),
+                    TurnOffWith = CacheContext.StringTable.GetOrAddString($@"shield_depleted"),
                     DefaultFunction = new TagFunction
                     {
                         Data = new byte[]
@@ -101,8 +101,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new GameObject.Function
                 {
-                    ImportName = CacheContext.StringTable.GetStringId($@"shield_static"),
-                    ExportName = CacheContext.StringTable.GetStringId($@"shield_static_invert"),
+                    ImportName = CacheContext.StringTable.GetOrAddString($@"shield_static"),
+                    ExportName = CacheContext.StringTable.GetOrAddString($@"shield_static_invert"),
                     DefaultFunction = new TagFunction
                     {
                         Data = new byte[]
@@ -118,8 +118,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new GameObject.Function
                 {
-                    ImportName = CacheContext.StringTable.GetStringId($@"shield_vitality"),
-                    ExportName = CacheContext.StringTable.GetStringId($@"shield_intensity"),
+                    ImportName = CacheContext.StringTable.GetOrAddString($@"shield_vitality"),
+                    ExportName = CacheContext.StringTable.GetOrAddString($@"shield_intensity"),
                     DefaultFunction = new TagFunction
                     {
                         Data = new byte[]
@@ -134,12 +134,12 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                             0xA3, 0x3D,
                         },
                     },
-                    ScaleBy = CacheContext.StringTable.GetStringId($@"shield_static_invert"),
+                    ScaleBy = CacheContext.StringTable.GetOrAddString($@"shield_static_invert"),
                 },
                 new GameObject.Function
                 {
-                    ImportName = CacheContext.StringTable.GetStringId($@"alive"),
-                    ExportName = CacheContext.StringTable.GetStringId($@"membrane"),
+                    ImportName = CacheContext.StringTable.GetOrAddString($@"alive"),
+                    ExportName = CacheContext.StringTable.GetOrAddString($@"membrane"),
                     DefaultFunction = new TagFunction
                     {
                         Data = new byte[]
@@ -155,8 +155,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new GameObject.Function
                 {
-                    ImportName = CacheContext.StringTable.GetStringId($@"zero"),
-                    ExportName = CacheContext.StringTable.GetStringId($@"blade_right_on"),
+                    ImportName = CacheContext.StringTable.GetOrAddString($@"zero"),
+                    ExportName = CacheContext.StringTable.GetOrAddString($@"blade_right_on"),
                     DefaultFunction = new TagFunction
                     {
                         Data = new byte[]
@@ -172,8 +172,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new GameObject.Function
                 {
-                    ImportName = CacheContext.StringTable.GetStringId($@"zero"),
-                    ExportName = CacheContext.StringTable.GetStringId($@"blade_left_on"),
+                    ImportName = CacheContext.StringTable.GetOrAddString($@"zero"),
+                    ExportName = CacheContext.StringTable.GetOrAddString($@"blade_left_on"),
                     DefaultFunction = new TagFunction
                     {
                         Data = new byte[]
@@ -189,9 +189,9 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new GameObject.Function
                 {
-                    ImportName = CacheContext.StringTable.GetStringId($@"integrated_light_power"),
-                    ExportName = CacheContext.StringTable.GetStringId($@"flashlight_intensity"),
-                    TurnOffWith = CacheContext.StringTable.GetStringId($@"alive"),
+                    ImportName = CacheContext.StringTable.GetOrAddString($@"integrated_light_power"),
+                    ExportName = CacheContext.StringTable.GetOrAddString($@"flashlight_intensity"),
+                    TurnOffWith = CacheContext.StringTable.GetOrAddString($@"alive"),
                     DefaultFunction = new TagFunction
                     {
                         Data = new byte[]
@@ -211,30 +211,30 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new GameObject.Attachment
                 {
                     Type = GetCachedTag<Effect>($@"objects\characters\elite\fx\shield\shield_down"),
-                    PrimaryScale = CacheContext.StringTable.GetStringId($@"shield_down"),
+                    PrimaryScale = CacheContext.StringTable.GetOrAddString($@"shield_down"),
                 },
                 new GameObject.Attachment
                 {
                     Type = GetCachedTag<Light>($@"objects\characters\masterchief\flashlight_1p"),
-                    Marker = CacheContext.StringTable.GetStringId($@"flashlight"),
-                    PrimaryScale = CacheContext.StringTable.GetStringId($@"integrated_light_power"),
+                    Marker = CacheContext.StringTable.GetOrAddString($@"flashlight"),
+                    PrimaryScale = CacheContext.StringTable.GetOrAddString($@"integrated_light_power"),
                 },
                 new GameObject.Attachment
                 {
                     Type = GetCachedTag<Light>($@"objects\characters\masterchief\flashlight_3p"),
-                    Marker = CacheContext.StringTable.GetStringId($@"flashlight"),
-                    PrimaryScale = CacheContext.StringTable.GetStringId($@"integrated_light_power"),
+                    Marker = CacheContext.StringTable.GetOrAddString($@"flashlight"),
+                    PrimaryScale = CacheContext.StringTable.GetOrAddString($@"integrated_light_power"),
                 },
                 new GameObject.Attachment
                 {
                     Type = GetCachedTag<Effect>($@"objects\characters\dervish\fx\flashlight"),
-                    PrimaryScale = CacheContext.StringTable.GetStringId($@"integrated_light_power"),
+                    PrimaryScale = CacheContext.StringTable.GetOrAddString($@"integrated_light_power"),
                 },
                 new GameObject.Attachment
                 {
                     Type = GetCachedTag<Light>($@"objects\characters\dervish\fx\shield\shield_down"),
-                    Marker = CacheContext.StringTable.GetStringId($@"body"),
-                    PrimaryScale = CacheContext.StringTable.GetStringId($@"shield_down"),
+                    Marker = CacheContext.StringTable.GetOrAddString($@"body"),
+                    PrimaryScale = CacheContext.StringTable.GetOrAddString($@"shield_down"),
                 },
             };
             bipd.HologramUnit = GetCachedTag<Biped>($@"objects\equipment\hologram\bipeds\elite_hologram");

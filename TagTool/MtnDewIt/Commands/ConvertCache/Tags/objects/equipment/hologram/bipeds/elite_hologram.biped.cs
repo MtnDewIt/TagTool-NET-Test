@@ -78,8 +78,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             bipd.CameraHeights = null;
             bipd.AreaDamageEffect = null;
             bipd.PhysicsFlags.Halo3ODST = Havok.BipedPhysicsFlags.Halo3OdstBits.UsePlayerPhysics;
-            bipd.LivingMaterialName = CacheContext.StringTable.GetStringId($@"energy_holo");
-            bipd.DeadMaterialName = CacheContext.StringTable.GetStringId($@"energy_holo");
+            bipd.LivingMaterialName = CacheContext.StringTable.GetOrAddString($@"energy_holo");
+            bipd.DeadMaterialName = CacheContext.StringTable.GetOrAddString($@"energy_holo");
             bipd.LivingGlobalMaterialIndex = 157;
             bipd.DeadGlobalMaterialIndex = 157;
             CacheContext.Serialize(Stream, tag, bipd);

@@ -26,12 +26,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
         {
             var tag = GetCachedTag<SquadTemplate>($@"ai\squad_templates\sq_camp_brute_stealth_6");
             var sqtm = CacheContext.Deserialize<SquadTemplate>(Stream, tag);
-            sqtm.Name = CacheContext.StringTable.GetStringId($@"sq_camp_brute_stealth_6");
+            sqtm.Name = CacheContext.StringTable.GetOrAddString($@"sq_camp_brute_stealth_6");
             sqtm.CellTemplates = new List<SquadTemplate.CellTemplate>
             {
                 new SquadTemplate.CellTemplate
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"brute_stealth"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"brute_stealth"),
                     NormalDiffCount = 2,
                     Characters = new List<SquadTemplate.CellTemplate.ObjectBlock>
                     {
@@ -64,7 +64,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new SquadTemplate.CellTemplate
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"engineer"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"engineer"),
                     NormalDiffCount = 1,
                     Characters = new List<SquadTemplate.CellTemplate.ObjectBlock>
                     {
@@ -76,7 +76,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new SquadTemplate.CellTemplate
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"jackal_sniper"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"jackal_sniper"),
                     NormalDiffCount = 2,
                     Characters = new List<SquadTemplate.CellTemplate.ObjectBlock>
                     {
@@ -100,7 +100,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new SquadTemplate.CellTemplate
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"brute_captain"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"brute_captain"),
                     NormalDiffCount = 1,
                     Characters = new List<SquadTemplate.CellTemplate.ObjectBlock>
                     {

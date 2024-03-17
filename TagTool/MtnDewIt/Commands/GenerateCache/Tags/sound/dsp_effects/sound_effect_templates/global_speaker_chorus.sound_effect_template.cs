@@ -31,7 +31,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
             {
                 new SoundEffectTemplate.AdditionalSoundInput
                 {
-                    DspEffect = CacheContext.StringTable.GetStringId($@"sfx_oscillator_input"),
+                    DspEffect = CacheContext.StringTable.GetOrAddString($@"sfx_oscillator_input"),
                     LowFrequencySoundFunction = new TagTool.Tags.TagFunction
                     {
                         Data = new byte[]
