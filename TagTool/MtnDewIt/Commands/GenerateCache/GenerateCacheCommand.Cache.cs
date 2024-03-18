@@ -205,6 +205,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
             var destCacheContext = new GameCacheHaloOnline(destDirectory);
 
+            UpdateStringTable(destCacheContext.StringTable);
+
             SetCacheVersion(destCacheContext, CacheVersion.HaloOnlineED);
 
             foreach (var value in Enum.GetValues(typeof(ResourceLocation)))
