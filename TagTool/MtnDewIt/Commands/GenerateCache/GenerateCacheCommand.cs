@@ -18,7 +18,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
         public CommandContextStack ContextStack { get; set; }
         public Stream CacheStream { get; set; }
 
-        public static DirectoryInfo eldewritoDirectoryInfo { get; set; }
+        public static DirectoryInfo haloOnlineDirectoryInfo { get; set; }
         public static DirectoryInfo halo3DirectoryInfo { get; set; }
         public static DirectoryInfo halo3MythicDirectoryInfo { get; set; }
         public static DirectoryInfo halo3ODSTDirectoryInfo { get; set; }
@@ -128,7 +128,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
         public GameCache sc150Cache { get; set; }
         public PortingContext sc150 { get; set; }
 
-        public GenerateCacheCommand(GameCache cache, GameCacheHaloOnline cacheContext, CommandContextStack contextStack) : base
+        public GenerateCacheCommand(GameCache cache, CommandContextStack contextStack) : base
         (
             true,
             "GenerateCache",
@@ -138,7 +138,6 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
         )
         {
             Cache = cache;
-            CacheContext = cacheContext;
             ContextStack = contextStack;
         }
 
@@ -156,18 +155,15 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             buffer.AppendLine("These directories will contain the cache files for various different Halo builds, with these being:");
             buffer.AppendLine();
             buffer.AppendLine(" - Halo Online MS23 (1.106708 cert_ms23)");
-            buffer.AppendLine(" - ElDewrito 0.6.1");
             buffer.AppendLine(" - Halo 3 Retail (11855.07.08.20.2317.halo3_ship)");
             buffer.AppendLine(" - Halo 3 Mythic Retail (12065.08.08.26.0819.halo3_ship)");
             buffer.AppendLine(" - Halo 3 ODST Retail (13895.09.04.27.2201.atlas_relea)");
             buffer.AppendLine();
-            buffer.AppendLine("(Halo Online MS23 is automatically input, as it pulls the directory info from the current cache context)");
-            buffer.AppendLine();
-            buffer.AppendLine("For each build input (excluding MS23 and ElDewrito 0.6.1), ensure that ALL the cache files are");
-            buffer.AppendLine("present in the specified directory as the command will open new cache instances for every map");
+            buffer.AppendLine("For each build input, ensure that ALL the cache files are present in the specified ");
+            buffer.AppendLine("directory as the command will open new cache instances for every map");
             buffer.AppendLine("in that specified build, so if any are missing it will cause it to fail.");
             buffer.AppendLine();
-            buffer.AppendLine("For Halo Online MS23 and ElDewrito 0.6.1, ensure that all .dat files are present in the specified directory");
+            buffer.AppendLine("For Halo Online MS23, ensure that all .dat files are present in the specified directory");
             buffer.AppendLine("The tag lists for each cache will be updated by tagtool at runtime after the directories are input.");
             buffer.AppendLine("These tag lists are built into tagtool, as the tag names referenced internally by the command are hardcoded.");
             buffer.AppendLine();
@@ -244,8 +240,10 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
         public void GetCacheFiles()
         {
-            haloOnlineCache = GameCache.Open($@"{CacheContext.Directory.FullName}\tags.dat");
-            UpdateTagNames(haloOnlineCache, haloOnlineCache, UpdateHOTagsCommand.tagNameTable);
+            haloOnlineDirectoryInfo = GetDirectoryInfo(haloOnlineDirectoryInfo, "Halo Online MS23");
+
+            haloOnlineCache = GameCache.Open($@"{haloOnlineDirectoryInfo.FullName}\tags.dat");
+            UpdateTagNames(haloOnlineCache, UpdateHOTagsCommand.tagNameTable);
 
             halo3DirectoryInfo = GetDirectoryInfo(halo3DirectoryInfo, "Halo 3");
 
@@ -316,12 +314,14 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
             if (!directoryInfo.Exists)
             {
-                new TagToolError(CommandError.CustomMessage, $"Directory not found: '{directoryInfo.FullName}'");
+                new TagToolError(CommandError.CustomError, $"Directory not found: '{directoryInfo.FullName}'");
+                throw new ArgumentException();
             }
 
             if (directoryInfo.Exists && !directoryInfo.GetFiles().Any(x => x.FullName.EndsWith(".map")))
             {
-                new TagToolError(CommandError.CustomMessage, $"No .map files found in '{directoryInfo.FullName}'");
+                new TagToolError(CommandError.CustomError, $"No .map files found in '{directoryInfo.FullName}'");
+                throw new ArgumentException();
             }
 
             return directoryInfo;
@@ -339,32 +339,30 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
                 directoryInfo.Create();
             }
 
-            if (directoryInfo == eldewritoDirectoryInfo || directoryInfo == halo3DirectoryInfo || directoryInfo == halo3MythicDirectoryInfo || directoryInfo == halo3ODSTDirectoryInfo || directoryInfo == CacheContext.Directory)
+            if (directoryInfo.FullName == haloOnlineDirectoryInfo.FullName || directoryInfo.FullName == halo3DirectoryInfo.FullName || directoryInfo.FullName == halo3MythicDirectoryInfo.FullName || directoryInfo.FullName == halo3ODSTDirectoryInfo.FullName || directoryInfo.FullName == Cache.Directory.FullName)
             {
-                new TagToolError(CommandError.CustomMessage, "Output directory cannot be the same as an input directory");
+                new TagToolError(CommandError.CustomError, "Output directory cannot be the same as an input directory");
+                throw new ArgumentException();
             }
 
             return directoryInfo;
         }
 
-        public void UpdateTagNames(GameCache initialCache, GameCache targetCache, Dictionary<int, string> tagTable)
+        public void UpdateTagNames(GameCache cache, Dictionary<int, string> tagTable)
         {
-            CacheContext = targetCache as GameCacheHaloOnline;
+            CacheContext = cache as GameCacheHaloOnline;
 
-            using (var stream = CacheContext.OpenCacheRead())
+            foreach (var tag in CacheContext.TagCache.NonNull())
             {
-                foreach (var tag in CacheContext.TagCache.NonNull())
+                if (tagTable.TryGetValue(tag.Index, out string name))
                 {
-                    if (tagTable.TryGetValue(tag.Index, out string name))
-                    {
-                        tag.Name = name;
-                    }
+                    tag.Name = name;
                 }
             }
 
             CacheContext.SaveTagNames();
 
-            CacheContext = initialCache as GameCacheHaloOnline;
+            CacheContext = null;
         }
     }
 }

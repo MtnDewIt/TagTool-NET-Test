@@ -19,6 +19,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache
         public CommandContextStack ContextStack { get; set; }
         public Stream CacheStream { get; set; }
 
+        public static DirectoryInfo eldewritoDirectoryInfo { get; set; }
         public static DirectoryInfo halo3DirectoryInfo { get; set; }
         public static DirectoryInfo halo3MythicDirectoryInfo { get; set; }
         public static DirectoryInfo halo3ODSTDirectoryInfo { get; set; }
@@ -135,7 +136,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache
         public GameCache s3d_powerhouseCache { get; set; }
         public PortingContext s3d_powerhouse { get; set; }
 
-        public GenerateEnhancedCacheCommand(GameCache cache, GameCacheHaloOnline cacheContext, CommandContextStack contextStack) : base
+        public GenerateEnhancedCacheCommand(GameCache cache, CommandContextStack contextStack) : base
         (
             true,
             "GenerateEnhancedCache",
@@ -145,7 +146,6 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache
         )
         {
             Cache = cache;
-            CacheContext = cacheContext;
             ContextStack = contextStack;
         }
 
@@ -165,10 +165,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache
             buffer.AppendLine(" - Halo 3 ODST Retail (13895.09.04.27.2201.atlas_relea)");
             buffer.AppendLine(" - Halo 3 Editing Kit Maps (Peferably compiled from the most recent version)");
             buffer.AppendLine();
-            buffer.AppendLine("(ElDewrito 0.6.1 is automatically input, as it pulls the directory info from the current cache context)");
-            buffer.AppendLine();
-            buffer.AppendLine("For each build input (excluding ElDewrito 0.6.1), ensure that ALL the cache files are ");
-            buffer.AppendLine("present in the specified directory as the command will open new cache instances for every map ");
+            buffer.AppendLine("For each build input, ensure that ALL the cache files are present in the specified ");
+            buffer.AppendLine("directory as the command will open new cache instances for every map");
             buffer.AppendLine("in that specified build, so if any are missing it will cause it to fail.");
             buffer.AppendLine();
             buffer.AppendLine("For ElDewrito 0.6.1, ensure that all .dat files are present in the specified directory ");
@@ -248,6 +246,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache
 
         public void GetCacheFiles()
         {
+            eldewritoDirectoryInfo = GetDirectoryInfo(eldewritoDirectoryInfo, "ElDewrito 0.6.1");
+
             halo3DirectoryInfo = GetDirectoryInfo(halo3DirectoryInfo, "Halo 3");
 
             h3MainMenuCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\mainmenu.map");
@@ -324,12 +324,14 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache
 
             if (!directoryInfo.Exists)
             {
-                new TagToolError(CommandError.CustomMessage, $"Directory not found: '{directoryInfo.FullName}'");
+                new TagToolError(CommandError.CustomError, $"Directory not found: '{directoryInfo.FullName}'");
+                throw new ArgumentException();
             }
 
             if (directoryInfo.Exists && !directoryInfo.GetFiles().Any(x => x.FullName.EndsWith(".map")))
             {
-                new TagToolError(CommandError.CustomMessage, $"No .map files found in '{directoryInfo.FullName}'");
+                new TagToolError(CommandError.CustomError, $"No .map files found in '{directoryInfo.FullName}'");
+                throw new ArgumentException();
             }
 
             return directoryInfo;
@@ -347,9 +349,10 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache
                 directoryInfo.Create();
             }
 
-            if (directoryInfo == halo3DirectoryInfo || directoryInfo == halo3MythicDirectoryInfo || directoryInfo == halo3ODSTDirectoryInfo || directoryInfo == halo3MCCDirectoryInfo || directoryInfo == CacheContext.Directory)
+            if (directoryInfo.FullName == eldewritoDirectoryInfo.FullName || directoryInfo.FullName == halo3DirectoryInfo.FullName || directoryInfo.FullName == halo3MythicDirectoryInfo.FullName || directoryInfo.FullName == halo3ODSTDirectoryInfo.FullName || directoryInfo.FullName == halo3MCCDirectoryInfo.FullName ||directoryInfo.FullName == Cache.Directory.FullName)
             {
-                new TagToolError(CommandError.CustomMessage, "Output directory cannot be the same as an input directory");
+                new TagToolError(CommandError.CustomError, "Output directory cannot be the same as an input directory");
+                throw new ArgumentException();
             }
 
             return directoryInfo;
@@ -392,15 +395,15 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache
 
             if (!File.Exists($@"{outputDirectory}\fonts\font_package.bin"))
             {
-                File.Copy($@"{Cache.Directory.FullName}\fonts\font_package.bin", $@"{outputDirectory}\fonts\font_package.bin");
+                File.Copy($@"{eldewritoDirectoryInfo.FullName}\fonts\font_package.bin", $@"{outputDirectory}\fonts\font_package.bin");
             }
             else
             {
                 new TagToolWarning($@"Font Package Detected in Specified Directory! Replacing Anyway.");
-                File.Copy($@"{Cache.Directory.FullName}\fonts\font_package.bin", $@"{outputDirectory}\fonts\font_package.bin", true);
+                File.Copy($@"{eldewritoDirectoryInfo.FullName}\fonts\font_package.bin", $@"{outputDirectory}\fonts\font_package.bin", true);
             }
 
-            FileInfo[] cacheFiles = Cache.Directory.GetFiles("*.dat");
+            FileInfo[] cacheFiles = eldewritoDirectoryInfo.GetFiles("*.dat");
 
             foreach (FileInfo file in cacheFiles)
             {

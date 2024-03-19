@@ -69,6 +69,10 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new FindValueCommand(cache, null));
             context.AddCommand(new TagDependencyCommand(cache));
             context.AddCommand(new GuessTagDefCommand(cache));
+
+            context.AddCommand(new ConvertCacheCommand(cache, contextStack));
+            context.AddCommand(new GenerateCacheCommand(cache, contextStack));
+            context.AddCommand(new GenerateEnhancedCacheCommand(cache, contextStack));
             context.AddCommand(new GenerateTagObjectCommand(cache));
             context.AddCommand(new GenerateMapObjectCommand(cache));
             context.AddCommand(new ConvertVariantCommand(cache));
@@ -125,9 +129,6 @@ namespace TagTool.Commands.Tags
             if(cache is GameCacheHaloOnline)
             {
                 var hoCache = cache as GameCacheHaloOnline;
-                context.AddCommand(new ConvertCacheCommand(cache, hoCache, contextStack));
-                context.AddCommand(new GenerateCacheCommand(cache, hoCache, contextStack));
-                context.AddCommand(new GenerateEnhancedCacheCommand(cache, hoCache, contextStack));
                 context.AddCommand(new DebugTestCommand(cache, hoCache, contextStack));
                 context.AddCommand(new UpdateEDTagsCommand(hoCache));
                 context.AddCommand(new UpdateHOTagsCommand(hoCache));

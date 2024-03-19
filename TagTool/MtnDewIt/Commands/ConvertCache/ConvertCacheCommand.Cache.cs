@@ -62,11 +62,13 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             ConvertedTags.Clear();
             CopiedResources.Clear();
 
+            var srcCacheContext = eldewritoCache as GameCacheHaloOnline;
+
             var destDirectory = new DirectoryInfo(destCacheDirectory);
 
             EmptyDirectory(destDirectory);
 
-            CacheContext.StringIdCacheFile.CopyTo($@"{destDirectory.FullName}\string_ids.dat");
+            srcCacheContext.StringIdCacheFile.CopyTo($@"{destDirectory.FullName}\string_ids.dat");
 
             var destCacheContext = new GameCacheHaloOnline(destDirectory);
 
@@ -80,14 +82,14 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
                     continue;
 
                 CopiedResources[location] = new Dictionary<int, PageableResource>();
-                SourceResourceStreams[location] = CacheContext.ResourceCaches.OpenCacheReadWrite(location);
+                SourceResourceStreams[location] = srcCacheContext.ResourceCaches.OpenCacheReadWrite(location);
                 DestinationResourceStreams[location] = destCacheContext.ResourceCaches.OpenCacheReadWrite(location);
             }
 
-            using (var srcStream = CacheContext.OpenCacheRead())
+            using (var srcStream = srcCacheContext.OpenCacheRead())
             using (var destStream = destCacheContext.OpenCacheReadWrite())
             {
-                var cfgtTag = CopyTag((CachedTagHaloOnline)CacheContext.TagCache.FindFirstInGroup("cfgt"), CacheContext, srcStream, destCacheContext, destStream);
+                var cfgtTag = CopyTag((CachedTagHaloOnline)srcCacheContext.TagCache.FindFirstInGroup("cfgt"), srcCacheContext, srcStream, destCacheContext, destStream);
 
                 var modgTag = destCacheContext.TagCache.AllocateTag<ModGlobalsDefinition>($@"multiplayer\mod_globals");
                 var modg = new ModGlobalsDefinition();
@@ -123,15 +125,15 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
                 };
                 destCacheContext.Serialize(destStream, cfgtTag, cfgt);
 
-                foreach (var tag in CacheContext.TagCache.NonNull())
+                foreach (var tag in srcCacheContext.TagCache.NonNull())
                 {
                     if (tag == null || !tag.IsInGroup("scnr"))
                         continue;
 
-                    CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
+                    CopyTag((CachedTagHaloOnline)tag, srcCacheContext, srcStream, destCacheContext, destStream);
                 }
 
-                foreach (var tag in CacheContext.TagCache.NonNull())
+                foreach (var tag in srcCacheContext.TagCache.NonNull())
                 {
                     foreach (var requiredTag in requiredTags)
                     {
@@ -142,7 +144,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
                         {
                             if (tag.IsInGroup(requiredTagType) && tag.Name == requiredTagName)
                             {
-                                CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
+                                CopyTag((CachedTagHaloOnline)tag, srcCacheContext, srcStream, destCacheContext, destStream);
                             }
                         }
                     }
@@ -153,14 +155,15 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
                     if (tag.IsInGroup("sbsp"))
                     {
                         var sbsp = destCacheContext.Deserialize<ScenarioStructureBsp>(destStream, tag);
-                        destCacheContext.ResourceCaches.ReplaceResource(sbsp.CollisionBspResource.HaloOnlinePageableResource, GetSbspCollisionData(tag.Name, srcStream));
-                        destCacheContext.ResourceCaches.ReplaceResource(sbsp.PathfindingResource.HaloOnlinePageableResource, GetSbspPathfindingData(tag.Name, srcStream));
+                        destCacheContext.ResourceCaches.ReplaceResource(sbsp.CollisionBspResource.HaloOnlinePageableResource, GetSbspCollisionData(tag.Name, srcCacheContext, srcStream));
+                        destCacheContext.ResourceCaches.ReplaceResource(sbsp.PathfindingResource.HaloOnlinePageableResource, GetSbspPathfindingData(tag.Name, srcCacheContext, srcStream));
                         destCacheContext.Serialize(destStream, tag, sbsp);
                     }
                 }
             }
 
             destCacheContext.SaveTagNames();
+            destCacheContext.SaveStrings();
 
             foreach (var entry in SourceResourceStreams)
                 entry.Value.Close();
@@ -412,24 +415,24 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             }
         }
 
-        private StructureBspTagResources GetSbspCollisionData(string sbspTag, Stream srcStream)
+        private StructureBspTagResources GetSbspCollisionData(string sbspTag, GameCacheHaloOnline cacheContext, Stream srcStream)
         {
             StructureBspTagResources collisionData = null;
 
-            var tag = CacheContext.TagCache.GetTag<ScenarioStructureBsp>(sbspTag);
-            var sbsp = CacheContext.Deserialize<ScenarioStructureBsp>(srcStream, tag);
-            collisionData = CacheContext.ResourceCache.GetStructureBspTagResources(sbsp.CollisionBspResource);
+            var tag = cacheContext.TagCache.GetTag<ScenarioStructureBsp>(sbspTag);
+            var sbsp = cacheContext.Deserialize<ScenarioStructureBsp>(srcStream, tag);
+            collisionData = cacheContext.ResourceCache.GetStructureBspTagResources(sbsp.CollisionBspResource);
 
             return collisionData;
         }
 
-        private StructureBspCacheFileTagResources GetSbspPathfindingData(string sbspTag, Stream srcStream)
+        private StructureBspCacheFileTagResources GetSbspPathfindingData(string sbspTag, GameCacheHaloOnline cacheContext, Stream srcStream)
         {
             StructureBspCacheFileTagResources pathfindingData = null;
 
-            var tag = CacheContext.TagCache.GetTag<ScenarioStructureBsp>(sbspTag);
-            var sbsp = CacheContext.Deserialize<ScenarioStructureBsp>(srcStream, tag);
-            pathfindingData = CacheContext.ResourceCache.GetStructureBspCacheFileTagResources(sbsp.PathfindingResource);
+            var tag = cacheContext.TagCache.GetTag<ScenarioStructureBsp>(sbspTag);
+            var sbsp = cacheContext.Deserialize<ScenarioStructureBsp>(srcStream, tag);
+            pathfindingData = cacheContext.ResourceCache.GetStructureBspCacheFileTagResources(sbsp.PathfindingResource);
 
             return pathfindingData;
         }

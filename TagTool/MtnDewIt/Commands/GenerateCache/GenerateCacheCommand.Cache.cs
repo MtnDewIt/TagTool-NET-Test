@@ -199,6 +199,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             ConvertedTags.Clear();
             CopiedResources.Clear();
 
+            var srcCacheContext = haloOnlineCache as GameCacheHaloOnline;
+
             var destDirectory = new DirectoryInfo(destCacheDirectory);
 
             EmptyDirectory(destDirectory);
@@ -217,11 +219,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
                     continue;
 
                 CopiedResources[location] = new Dictionary<int, PageableResource>();
-                SourceResourceStreams[location] = CacheContext.ResourceCaches.OpenCacheReadWrite(location);
+                SourceResourceStreams[location] = srcCacheContext.ResourceCaches.OpenCacheReadWrite(location);
                 DestinationResourceStreams[location] = destCacheContext.ResourceCaches.OpenCacheReadWrite(location);
             }
 
-            using (var srcStream = CacheContext.OpenCacheRead())
+            using (var srcStream = srcCacheContext.OpenCacheRead())
             using (var destStream = destCacheContext.OpenCacheReadWrite())
             {
                 var cfgtTag = destCacheContext.TagCache.AllocateTag<CacheFileGlobalTags>($@"global_tags");
@@ -268,46 +270,46 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
                 foreach (var tagName in DefaultBitmapNames)
                 {
-                    foreach (var tag in CacheContext.TagCache.NonNull())
+                    foreach (var tag in srcCacheContext.TagCache.NonNull())
                     {
                         if (tag == null || !tag.IsInGroup("bitm"))
                             continue;
 
                         if (tagName == tag.Name && tag.IsInGroup("bitm"))
                         {
-                            CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
+                            CopyTag((CachedTagHaloOnline)tag, srcCacheContext, srcStream, destCacheContext, destStream);
                             break;
                         }
                     }
                 }
 
-                foreach (var tag in CacheContext.TagCache.FindAllInGroup("rmdf"))
+                foreach (var tag in srcCacheContext.TagCache.FindAllInGroup("rmdf"))
                 {
-                    CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
+                    CopyTag((CachedTagHaloOnline)tag, srcCacheContext, srcStream, destCacheContext, destStream);
                 }
                 
                 foreach (var tagName in MS23Shaders)
                 {
-                    foreach (var tag in CacheContext.TagCache.NonNull())
+                    foreach (var tag in srcCacheContext.TagCache.NonNull())
                     {
                         if (tag == null || !tag.IsInGroup("pixl"))
                             continue;
                 
                         if (tagName == tag.Name && tag.IsInGroup("pixl"))
                         {
-                            CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
+                            CopyTag((CachedTagHaloOnline)tag, srcCacheContext, srcStream, destCacheContext, destStream);
                             break;
                         }
                     }
                 
-                    foreach (var tag in CacheContext.TagCache.NonNull())
+                    foreach (var tag in srcCacheContext.TagCache.NonNull())
                     {
                         if (tag == null || !tag.IsInGroup("vtsh"))
                             continue;
                 
                         if (tagName == tag.Name && tag.IsInGroup("vtsh"))
                         {
-                            CopyTag((CachedTagHaloOnline)tag, CacheContext, srcStream, destCacheContext, destStream);
+                            CopyTag((CachedTagHaloOnline)tag, srcCacheContext, srcStream, destCacheContext, destStream);
                             break;
                         }
                     }
