@@ -26,7 +26,7 @@ namespace TagTool.MtnDewIt.Commands
             "GenerateTagObject",
             "Generates a C# object based on the current tag",
 
-            "GenerateTagObject <Output File Path> <Tag_Name> [IgnoreDefaultValues]",
+            "GenerateTagObject <Target_Folder> <Tag_Name> [IgnoreDefaultValues]",
             "Generates a C# object based on the current tag. This object will be formatted based on the specified tag's definition"
         )
         {
@@ -52,7 +52,12 @@ namespace TagTool.MtnDewIt.Commands
 
             Layout = GenerateLayout(Structure);
 
-            FileInfo fileInfo = new FileInfo(args[0] + ".cs");
+            FileInfo fileInfo = new FileInfo(Path.Combine(args[0], $"{Tag.Name}.{Structure.Structure.Name}.cs"));
+
+            if (!fileInfo.Directory.Exists)
+            {
+                fileInfo.Directory.Create();
+            }
 
             using (FileStream fileStream = fileInfo.Create())
             {
