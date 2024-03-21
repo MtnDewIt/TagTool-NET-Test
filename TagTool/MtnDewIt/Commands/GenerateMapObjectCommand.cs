@@ -179,6 +179,12 @@ namespace TagTool.MtnDewIt.Commands
                     output += FormatTagFunction((TagFunction)fieldValue, nameString, objectName, indent, terminator);
                 }
 
+                // Checks if the field is a type of file author, and returns the function to generate the specified file author
+                else if (fieldType == typeof(FileAuthor))
+                {
+                    output += FormatFileAuthor((FileAuthor)fieldValue, nameString, objectName, indent, terminator);
+                }
+
                 // Checks if the field is a type of array which uses a primitive type, rather than objects or generics
                 else if (ParseArray(fieldType))
                 {
@@ -209,7 +215,8 @@ namespace TagTool.MtnDewIt.Commands
                     output += FormatReferenceObject(fieldValue, nameString, objectName, indent, terminator);
                 }
 
-                else if (nameString == $@"ObjectDefinitionIndex") 
+                // Checks if the field is the object definition index used in the blf variant (probably need to check if its the correct variable)
+                else if (nameString == $@"ObjectDefinitionIndex")
                 {
                     output += $"\n{indent}{objectName}{nameString} = {GetTagFromQuotaIndex(fieldValue)}{terminator}";
                 }
@@ -861,6 +868,19 @@ namespace TagTool.MtnDewIt.Commands
             }
 
             return false;
+        }
+
+        private string FormatFileAuthor(FileAuthor author, string nameString, string objectName, string inputIndent, string terminator) 
+        {
+            string output;
+            string internalIndent = "    ";
+
+            output = $"\n{inputIndent}{objectName}{nameString} = new FileAuthor";
+            output += $"\n{inputIndent}{{";
+            output += $"\n{inputIndent}{internalIndent}Data = CacheFileHeaderData.SetAuthor(\"{CacheFileHeaderData.GetAuthor(author.Data)}\"),";
+            output += $"\n{inputIndent}}}{terminator}";
+
+            return output;
         }
 
         private string GetTagFromQuotaIndex(object fieldValue) 

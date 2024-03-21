@@ -65,13 +65,12 @@ namespace TagTool.MtnDewIt.BlamFiles
         [TagField(Length = 4)]
         public byte[] Unknown3;
 
-        // Figure out what's going on with this
-        // Its supposed to be a string :/
-        [TagField(Length = 32)]
-        public byte[] Author;
+        public FileAuthor Author;
 
-        [TagField(Length = 24)]
+        [TagField(Length = 0x10)]
         public byte[] Unknown4;
+
+        public ulong Unknown5;
 
         public NetworkRequestHash Hash;
 
@@ -102,7 +101,7 @@ namespace TagTool.MtnDewIt.BlamFiles
 
         [TagField(Length = 0x594, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
         [TagField(Length = 0x584, MinVersion = CacheVersion.HaloOnline235640)]
-        public byte[] Unknown5;
+        public byte[] Unknown6;
 
         public Tag FooterSignature;
 
@@ -159,6 +158,13 @@ namespace TagTool.MtnDewIt.BlamFiles
     public class InsertionPointResourceUsage
     {
         [TagField(Length = 0xB4)]
+        public byte[] Data;
+    }
+
+    [TagStructure(Size = 0x20)]
+    public class FileAuthor
+    {
+        [TagField(Length = 0x20)]
         public byte[] Data;
     }
 }
