@@ -73,6 +73,10 @@ namespace TagTool.MtnDewIt.Commands
                 new WaterDefinition(Cache, CacheContext, stream);
                 new ZOnlyDefinition(Cache, CacheContext, stream);
 
+                Cache.SaveStrings();
+
+                GenerateGlobalShaders(stream);
+
                 RecompileShaders(stream, $@"beam");
                 RecompileShaders(stream, $@"black");
                 RecompileShaders(stream, $@"contrail");
@@ -136,6 +140,41 @@ namespace TagTool.MtnDewIt.Commands
             GenerateRenderMethod(stream, $@"zonly", false);
         }
 
+        public void GenerateGlobalShaders(Stream stream) 
+        {
+            GenerateGlobalShader(stream, $@"beam", false);
+            GenerateGlobalShader(stream, $@"black", false);
+            //GenerateGlobalShader(stream, $@"contrail", false);
+            GenerateGlobalShader(stream, $@"cortana", false);
+            GenerateGlobalShader(stream, $@"custom", false);
+            GenerateGlobalShader(stream, $@"decal", false);
+            GenerateGlobalShader(stream, $@"foliage", false);
+            GenerateGlobalShader(stream, $@"halogram", false);
+            //GenerateGlobalShader(stream, $@"lightvolume", false);
+            //GenerateGlobalShader(stream, $@"particle", false);
+            GenerateGlobalShader(stream, $@"screen", false);
+            GenerateGlobalShader(stream, $@"shader", false);
+            GenerateGlobalShader(stream, $@"terrain", false);
+            GenerateGlobalShader(stream, $@"water", false);
+            GenerateGlobalShader(stream, $@"zonly", false);
+
+            GenerateGlobalShader(stream, $@"beam", true);
+            GenerateGlobalShader(stream, $@"black", true);
+            GenerateGlobalShader(stream, $@"contrail", true);
+            GenerateGlobalShader(stream, $@"cortana", true);
+            GenerateGlobalShader(stream, $@"custom", true);
+            GenerateGlobalShader(stream, $@"decal", true);
+            GenerateGlobalShader(stream, $@"foliage", true);
+            GenerateGlobalShader(stream, $@"halogram", true);
+            GenerateGlobalShader(stream, $@"lightvolume", true);
+            GenerateGlobalShader(stream, $@"particle", true);
+            GenerateGlobalShader(stream, $@"screen", true);
+            GenerateGlobalShader(stream, $@"shader", true);
+            GenerateGlobalShader(stream, $@"terrain", true);
+            GenerateGlobalShader(stream, $@"water", true);
+            GenerateGlobalShader(stream, $@"zonly", true);
+        }
+
         public void GenerateRenderMethod(Stream stream, string shaderType, bool updateRenderMethod)
         {
             if (updateRenderMethod)
@@ -157,6 +196,35 @@ namespace TagTool.MtnDewIt.Commands
 
                 CacheContext.SaveTagNames();
                 CacheContext.SaveStrings();
+            }
+        }
+
+        public void GenerateGlobalShader(Stream stream, string shaderType, bool pixel)
+        {
+            var type = (HaloShaderGenerator.Globals.ShaderType)Enum.Parse(typeof(HaloShaderGenerator.Globals.ShaderType), shaderType, true);
+
+            CachedTag rmdfTag = null;
+
+            if (shaderType == "lightvolume")
+            {
+                rmdfTag = Cache.TagCache.GetTag($"shaders\\light_volume.rmdf");
+            }
+            else
+            {
+                rmdfTag = Cache.TagCache.GetTag($"shaders\\{shaderType}.rmdf");
+            }
+
+            RenderMethodDefinition rmdf = Cache.Deserialize<RenderMethodDefinition>(stream, rmdfTag);
+
+            if (pixel)
+            {
+                GlobalPixelShader glps = ShaderGeneratorNew.GenerateSharedPixelShaders(Cache, rmdf, type);
+                Cache.Serialize(stream, rmdf.GlobalPixelShader, glps);
+            }
+            else
+            {
+                GlobalVertexShader glvs = ShaderGeneratorNew.GenerateSharedVertexShaders(Cache, rmdf, type);
+                Cache.Serialize(stream, rmdf.GlobalVertexShader, glvs);
             }
         }
 

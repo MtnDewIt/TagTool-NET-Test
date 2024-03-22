@@ -77,7 +77,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             Name = CacheContext.StringTable.GetOrAddString($@"from_albedo_alpha"),
                             Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\shader_options\alpha_test_off"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_alpha_test_from_albedo_alpha_ps"),
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_alpha_test_from_albedo_ps"),
                         },
                     },
                     VertexFunction = StringId.Invalid,
