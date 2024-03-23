@@ -1728,15 +1728,15 @@ namespace TagTool.MtnDewIt.Porting
                         expr.Opcode = 0x4B2; // -> objectives_show
                         return true;
                     case "mp_wake_script":
-                        if (CacheContext.Version == CacheVersion.HaloOnline106708)
+                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
                         {
-                            expr.Opcode = 0x017; // -> wake
+                            expr.Opcode = 0x6A7; // ^
+                            UpdateMpWakeScript(cacheStream, scnr, expr);
                             return true;
                         }
                         else 
                         {
-                            expr.Opcode = 0x6A7; // ^
-                            UpdateMpWakeScript(cacheStream, scnr, expr);
+                            expr.Opcode = 0x017; // -> wake
                             return true;
                         }
 
@@ -1801,56 +1801,85 @@ namespace TagTool.MtnDewIt.Porting
                         expr.Opcode = 0x391; // -> cinematic_object_get
                         return true;
 
-
-                    // These were disabled for some reason, and replaced with the legacy op codes
-                    // Since the legacy op codes cause the game to crash, these have been re-enabled
-                    case 0x34D: // cinematic_scripting_destroy_object; remove last argument
-                        expr.Opcode = 0x3A0;
-                        return true;
-                    
-                    case 0x353: // cinematic_scripting_create_and_animate_cinematic_object
-                        expr.Opcode = 0x3A6;
-                        // Remove the additional H3 argument
-                        if (expr.Flags == HsSyntaxNodeFlags.Group &&
-                            expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Void)
-                        {
-                            var exprIndex = scnr.ScriptExpressions.IndexOf(expr) + 1;
-                            for (var n = 1; n < 4; n++)
-                                exprIndex = scnr.ScriptExpressions[exprIndex].NextExpressionHandle.Index;
-                    
-                            var expr2 = scnr.ScriptExpressions[exprIndex];
-                            var expr3 = scnr.ScriptExpressions[expr2.NextExpressionHandle.Index];
-                    
-                            expr2.NextExpressionHandle = expr3.NextExpressionHandle;
-                        }
-                        return true;
-                    
-                    case 0x354: //cinematic_scripting_create_and_animate_object_no_animation
-                        expr.Opcode = 0x3A7; // ^
-                        return true;
-
-                    // Full functionality of the legacy script op codes is unknown
-                    // Since they cause the game to crash, they will be disabled for now
-                    /*
                     case 0x34A:
-                        expr.Opcode = 0x6A2;
-                        return true;
+                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
+                        {
+                            expr.Opcode = 0x6A2;
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     case 0x34C:
-                        expr.Opcode = 0x6A1;
-                        return true;
+                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
+                        {
+                            expr.Opcode = 0x6A1;
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     case 0x34D:
-                        expr.Opcode = 0x6A6;
-                        return true;
+                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
+                        {
+                            expr.Opcode = 0x6A6;
+                            return true;
+                        }
+                        else 
+                        {
+                            // cinematic_scripting_destroy_object
+                            expr.Opcode = 0x3A0;
+                            return true;
+                        }
                     case 0x352:
-                        expr.Opcode = 0x6A3;
-                        return true;
+                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
+                        {
+                            expr.Opcode = 0x6A3;
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     case 0x353:
-                        expr.Opcode = 0x6A5;
-                        return true;
+                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
+                        {
+                            expr.Opcode = 0x6A5;
+                            return true;
+                        }
+                        else
+                        {
+                            // cinematic_scripting_create_and_animate_cinematic_object
+                            expr.Opcode = 0x3A6;
+                            // Remove the additional H3 argument
+                            if (expr.Flags == HsSyntaxNodeFlags.Group &&
+                                expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Void)
+                            {
+                                var exprIndex = scnr.ScriptExpressions.IndexOf(expr) + 1;
+                                for (var n = 1; n < 4; n++)
+                                    exprIndex = scnr.ScriptExpressions[exprIndex].NextExpressionHandle.Index;
+
+                                var expr2 = scnr.ScriptExpressions[exprIndex];
+                                var expr3 = scnr.ScriptExpressions[expr2.NextExpressionHandle.Index];
+
+                                expr2.NextExpressionHandle = expr3.NextExpressionHandle;
+                            }
+                            return true;
+                        }
                     case 0x354:
-                        expr.Opcode = 0x6A4;
-                        return true;
-                    */
+                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
+                        {
+                            expr.Opcode = 0x6A4;
+                            return true;
+                        }
+                        else
+                        {
+                            // cinematic_scripting_create_and_animate_object_no_animation
+                            expr.Opcode = 0x3A7; // ^
+                            return true;
+                        }
 
                     case 0x3CD: // chud_show_weapon_stats
                         expr.Opcode = 0x423; // -> chud_show_crosshair
