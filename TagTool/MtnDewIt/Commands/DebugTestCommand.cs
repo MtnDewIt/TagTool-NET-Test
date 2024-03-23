@@ -48,14 +48,7 @@ namespace TagTool.MtnDewIt.Commands
         {
             using (var stream = Cache.OpenCacheReadWrite())
             {
-                if (Cache.Version == CacheVersion.HaloOnlineED)
-                {
-                    GenerateRenderMethods(stream);
-                }
-                else
-                {
-                    UpdateRenderMethods(stream);
-                }
+                UpdateRenderMethods(stream);
 
                 new BeamDefinition(Cache, CacheContext, stream);
                 new BlackDefinition(Cache, CacheContext, stream);
@@ -74,24 +67,6 @@ namespace TagTool.MtnDewIt.Commands
                 new ZOnlyDefinition(Cache, CacheContext, stream);
 
                 Cache.SaveStrings();
-
-                GenerateGlobalShaders(stream);
-
-                RecompileShaders(stream, $@"beam");
-                RecompileShaders(stream, $@"black");
-                RecompileShaders(stream, $@"contrail");
-                RecompileShaders(stream, $@"cortana");
-                RecompileShaders(stream, $@"custom");
-                RecompileShaders(stream, $@"decal");
-                RecompileShaders(stream, $@"foliage");
-                RecompileShaders(stream, $@"halogram");
-                RecompileShaders(stream, $@"light_volume");
-                RecompileShaders(stream, $@"particle");
-                RecompileShaders(stream, $@"screen");
-                RecompileShaders(stream, $@"shader");
-                RecompileShaders(stream, $@"terrain");
-                RecompileShaders(stream, $@"water");
-                RecompileShaders(stream, $@"zonly");
             }
         }
 
@@ -140,7 +115,7 @@ namespace TagTool.MtnDewIt.Commands
             GenerateRenderMethod(stream, $@"zonly", false);
         }
 
-        public void GenerateGlobalShaders(Stream stream) 
+        public void GenerateGlobalShaders(Stream stream)
         {
             GenerateGlobalShader(stream, $@"beam", false);
             GenerateGlobalShader(stream, $@"black", false);
@@ -173,6 +148,25 @@ namespace TagTool.MtnDewIt.Commands
             GenerateGlobalShader(stream, $@"terrain", true);
             GenerateGlobalShader(stream, $@"water", true);
             GenerateGlobalShader(stream, $@"zonly", true);
+        }
+
+        public void RecompileShaders(Stream stream)
+        {
+            RecompileShaders(stream, $@"beam");
+            RecompileShaders(stream, $@"black");
+            RecompileShaders(stream, $@"contrail");
+            RecompileShaders(stream, $@"cortana");
+            RecompileShaders(stream, $@"custom");
+            RecompileShaders(stream, $@"decal");
+            RecompileShaders(stream, $@"foliage");
+            RecompileShaders(stream, $@"halogram");
+            RecompileShaders(stream, $@"light_volume");
+            RecompileShaders(stream, $@"particle");
+            RecompileShaders(stream, $@"screen");
+            RecompileShaders(stream, $@"shader");
+            RecompileShaders(stream, $@"terrain");
+            RecompileShaders(stream, $@"water");
+            RecompileShaders(stream, $@"zonly");
         }
 
         public void GenerateRenderMethod(Stream stream, string shaderType, bool updateRenderMethod)
