@@ -402,6 +402,118 @@ namespace TagTool.MtnDewIt.BlamFiles
                 }
             }
         }
+
+        public void ConvertBlfFormat(CacheVersion targetVersion, CachePlatform platform = CachePlatform.Original)
+        {
+            switch (Version)
+            {
+                case CacheVersion.Halo3Retail:
+                case CacheVersion.Halo3Beta:
+                    switch (targetVersion)
+                    {
+                        case CacheVersion.Halo3ODST:
+                        case CacheVersion.HaloOnlineED:
+                        case CacheVersion.HaloOnline106708:
+                            ConvertHalo3ToODSTScenarioChunk();
+                            Version = targetVersion;
+                            if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
+                                Format = EndianFormat.LittleEndian;
+                            break;
+                        default:
+                            throw new NotImplementedException($"Conversion from Halo 3 to {targetVersion} not supported");
+                    }
+                    break;
+
+                case CacheVersion.Halo3ODST:
+                case CacheVersion.HaloOnlineED:
+                case CacheVersion.HaloOnline106708:
+                    if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
+                        Format = EndianFormat.LittleEndian;
+                    return;
+
+                case CacheVersion.HaloReach:
+                    switch (targetVersion)
+                    {
+                        case CacheVersion.Halo3ODST:
+                        case CacheVersion.HaloOnlineED:
+                        case CacheVersion.HaloOnline106708:
+                            ConvertReachToODSTScenarioChunk();
+                            Version = targetVersion;
+                            if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
+                                Format = EndianFormat.LittleEndian;
+                            break;
+                        default:
+                            throw new NotImplementedException($"Conversion from {Version} to {targetVersion} not supported");
+                    }
+                    break;
+
+                default:
+                    throw new NotImplementedException($"Conversion from {Version} to {targetVersion} not supported");
+            }
+        }
+
+        private void ConvertHalo3ToODSTScenarioChunk()
+        {
+            if (!ContentFlags.HasFlag(BlfDataFileContentFlags.Scenario))
+                return;
+
+            var insertions = new BlfDataScenarioInsertion[9];
+            for (int i = 0; i < 9; i++)
+            {
+                BlfDataScenarioInsertion ins;
+                if (i < 4)
+                    ins = Scenario.Insertions[i];
+                else
+                {
+                    ins = new BlfDataScenarioInsertion();
+                }
+                insertions[i] = ins;
+            }
+            Scenario.Insertions = insertions;
+            Scenario.Length = 0x98C0;
+        }
+
+        private void ConvertReachToODSTScenarioChunk()
+        {
+            if (!ContentFlags.HasFlag(BlfDataFileContentFlags.Scenario))
+                return;
+
+            var insertions = new BlfDataScenarioInsertion[9];
+
+            for (int i = 0; i < 9; i++)
+            {
+                BlfDataScenarioInsertion ins;
+                if (i < 9)
+                    ins = Scenario.Insertions[i];
+                else
+                    ins = new BlfDataScenarioInsertion();
+
+                insertions[i] = ins;
+            }
+
+            if (Scenario.MapFlags.HasFlag(BlfDataScenarioFlags.IsMultiplayer))
+            {
+                Scenario.GameEngineTeamCounts = new BlfDataGameEngineTeams 
+                {
+                    NoGametypeTeamCount = 8,
+                    OddballTeamCount = 8,
+                    VipTeamCount = 8,
+                    AssaultTeamCount = 8,
+                    CtfTeamCount = 8,
+                    KothTeamCount = 8,
+                    JuggernautTeamCount = 8,
+                    InfectionTeamCount = 8,
+                    SlayerTeamCount = 8,
+                    ForgeTeamCount = 8,
+                    TerritoriesTeamCount = 8,
+                };
+            }
+
+            Scenario.Insertions = insertions;
+            Scenario.Length = 0x98C0;
+            Scenario.MajorVersion = 3;
+            Scenario.MinorVersion = 1;
+        }
     }
 
     [Flags]
