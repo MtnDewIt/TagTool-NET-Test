@@ -61,6 +61,27 @@ namespace TagTool.MtnDewIt.BlamFiles
             }
         }
 
+        public bool IsLegacyBlf(EndianReader reader) 
+        {
+            reader.Format = EndianFormat;
+            var deserializer = new TagDeserializer(Version, CachePlatform);
+            var dataContext = new DataSerializationContext(reader, useAlignment: false);
+
+            var header = deserializer.Deserialize<BlfDataChunkHeader>(dataContext);
+            var mapFileHeaderSize = (int)TagStructure.GetTagStructureInfo(Header.GetType(), Version, CachePlatform).TotalSize;
+
+            reader.SeekTo(mapFileHeaderSize);
+
+            if (header.Signature == "flb_")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public void ReadData(EndianReader reader)
         {
             EndianFormat = DetectEndianFormat(reader);
@@ -88,8 +109,12 @@ namespace TagTool.MtnDewIt.BlamFiles
                 {
                     MapFileBlf = new BlfData(Version, CachePlatform);
 
-                    if (MapFileBlf.Version == CacheVersion.HaloOnlineEDLegacy)
+                    // 0.6 and MS23 map files share the same build version, so we need to check the blf signature to distinguish between the two
+                    if (IsLegacyBlf(reader) && MapFileBlf.Version == CacheVersion.HaloOnline106708)
                     {
+                        // We need to manually set the blf version as the 0.6 map files still use the MS23 build version
+                        MapFileBlf = new BlfData(CacheVersion.HaloOnlineEDLegacy, CachePlatform);
+
                         if (!MapFileBlf.ReadLegacyData(reader))
                         {
                             MapFileBlf = null;
