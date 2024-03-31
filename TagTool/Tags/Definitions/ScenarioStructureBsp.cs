@@ -715,7 +715,7 @@ namespace TagTool.Tags.Definitions
             public class StructureClusterCubemap : TagStructure
             {
                 [TagField(MaxVersion = CacheVersion.Halo3ODST)]
-                [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnline700123)]
                 public RealPoint3d Position;
                 public short ScenarioCubemapIndex;
                 public short CubemapBitmapIndex;

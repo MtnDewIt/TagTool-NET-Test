@@ -30,7 +30,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateEnhancedCache.Maps
 
             BlfData blfData = new BlfData(Cache.Version, CachePlatform.Original)
             {
-                Version = CacheVersion.HaloOnline106708,
+                Version = CacheVersion.HaloOnlineEDLegacy,
                 CachePlatform = CachePlatform.Original,
                 Format = EndianFormat.LittleEndian,
                 ContentFlags = BlfDataFileContentFlags.StartOfFile | BlfDataFileContentFlags.EndOfFile | BlfDataFileContentFlags.MapVariant | BlfDataFileContentFlags.Scenario,

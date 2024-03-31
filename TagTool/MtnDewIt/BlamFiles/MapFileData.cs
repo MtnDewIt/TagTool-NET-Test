@@ -88,7 +88,7 @@ namespace TagTool.MtnDewIt.BlamFiles
                 {
                     MapFileBlf = new BlfData(Version, CachePlatform);
 
-                    if (MapFileBlf.Version == CacheVersion.HaloOnline106708)
+                    if (MapFileBlf.Version == CacheVersion.HaloOnlineEDLegacy)
                     {
                         if (!MapFileBlf.ReadLegacyData(reader))
                         {

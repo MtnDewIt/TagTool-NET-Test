@@ -41,6 +41,7 @@ namespace TagTool.MtnDewIt.BlamFiles
             switch (version)
             {
                 case CacheVersion.HaloOnlineED:
+                case CacheVersion.HaloOnlineEDLegacy:
                 case CacheVersion.HaloOnline106708:
                 case CacheVersion.HaloOnline235640:
                 case CacheVersion.HaloOnline301003:

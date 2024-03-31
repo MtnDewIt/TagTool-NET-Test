@@ -56,7 +56,7 @@ namespace TagTool.MtnDewIt.BlamFiles
 
         private BlfData GenerateBlfData(BlfContentItemMetadata metadata, MapVariantData mapVariant) 
         {
-            var blf = new BlfData(CacheVersion.HaloOnline106708, CachePlatform.Original);
+            var blf = new BlfData(Cache.Version, CachePlatform.Original);
 
             blf.StartOfFile = new BlfDataChunkStartOfFile()
             {

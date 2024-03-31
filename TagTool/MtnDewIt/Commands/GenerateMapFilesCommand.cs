@@ -58,16 +58,21 @@ namespace TagTool.MtnDewIt.Commands
                     GenerateEDMap(mapInfo, forceUpdate, hasMapInfo);
                 }
 
+                if (Cache.Version == CacheVersion.HaloOnlineEDLegacy) 
+                {
+                    if (Is05Cache())
+                    {
+                        GenerateMS23Map(mapInfo, forceUpdate, hasMapInfo);
+                    }
+                    else 
+                    {
+                        GenerateLegacyMap(mapInfo, forceUpdate, hasMapInfo);
+                    }
+                }
+
                 if (Cache.Version == CacheVersion.HaloOnline106708)
                 {
-                    //if (/*insert function to which determines if its a 0.6 cache*/)
-                    //{
-                    //    GenerateLegacyMap(mapInfo, forceUpdate, hasMapInfo);
-                    //}
-                    //else 
-                    //{
-                    //    GenerateMS23Map(mapInfo, forceUpdate, hasMapInfo);
-                    //}
+                    GenerateMS23Map(mapInfo, forceUpdate, hasMapInfo);
                 }
 
                 if (Cache.Version >= CacheVersion.HaloOnline235640)
@@ -107,6 +112,44 @@ namespace TagTool.MtnDewIt.Commands
         public void GenerateAnvilMap(string mapInfo, bool forceUpdate, bool hasMapInfo)
         {
             // For any newer Halo Online builds (Potential Anvil Station Support???)
+        }
+
+        // Since the tag cache data for 0.5 is the exact same as 0.6, we need to perform addition checks to distinguish between the two
+        public bool Is05Cache()
+        {
+            // Tracks the number of legacy tags in the cache file globals
+            var legacyTagCount = 0;
+
+            using (var stream = Cache.OpenCacheRead()) 
+            {
+                var cfgtTag = Cache.TagCache.FindFirstInGroup("cfgt");
+
+                var cfgt = Cache.Deserialize<CacheFileGlobalTags>(stream, cfgtTag);
+
+                for (int i = 0; i < cfgt.GlobalTags.Count; i++)
+                {
+                    var globalTag = cfgt.GlobalTags[i];
+
+                    if (globalTag.Instance != null) 
+                    {
+                        // Since 0.6 lacks these specific tag types in the cache file globals, these should only appear in a 0.5 cache
+                        if (globalTag.Instance.IsInGroup("draw") || globalTag.Instance.IsInGroup("vfsl"))
+                        {
+                            legacyTagCount++;
+                        }
+                    }
+                }
+            }
+
+            // If it detects one or more legacy tags in the cache file globals, it is safe to assume that this is a 0.5 cache
+            if (legacyTagCount >= 1)
+            {
+                return true;
+            }
+            else 
+            {
+                return false;
+            }
         }
     }
 }

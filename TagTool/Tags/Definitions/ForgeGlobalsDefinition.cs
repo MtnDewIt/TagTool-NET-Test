@@ -5,7 +5,7 @@ using TagTool.Common;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "forge_globals_definition", Tag = "forg", Size = 0x90, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
+    [TagStructure(Name = "forge_globals_definition", Tag = "forg", Size = 0x90, MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnlineEDLegacy)]
     [TagStructure(Name = "forge_globals_definition", Tag = "forg", Size = 0xE0)] // Remove for release
     //[TagStructure(Name = "forge_globals_definition", Tag = "forg", Size = 0xF0)] // Uncomment for release
     public class ForgeGlobalsDefinition : TagStructure
@@ -115,7 +115,7 @@ namespace TagTool.Tags.Definitions
             public short ParentCategoryIndex;
         }
 
-        [TagStructure(Size = 0x40, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
+        [TagStructure(Size = 0x40, MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnlineEDLegacy)]
         [TagStructure(Size = 0x44)]
         public class PaletteItem : TagStructure
         {
@@ -236,7 +236,7 @@ namespace TagTool.Tags.Definitions
                 Real
             }
 
-            public enum SetterTypeED : short
+            public enum SetterTypeLegacy : short
             {
                 Boolean,
                 Integer,
@@ -250,11 +250,11 @@ namespace TagTool.Tags.Definitions
                 Hidden = 1 << 0
             }
 
-            [TagStructure(Size = 0x2C, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
+            [TagStructure(Size = 0x2C, MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnlineEDLegacy)]
             [TagStructure(Size = 0xC)]
             public class Setter : TagStructure
             {
-                [TagField(Length = 32, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
+                [TagField(Length = 32, MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnlineEDLegacy)]
                 public string TargetED;
 
                 [TagField(MaxVersion = CacheVersion.HaloOnlineED)]
@@ -263,12 +263,12 @@ namespace TagTool.Tags.Definitions
                 [TagField(MaxVersion = CacheVersion.HaloOnlineED)]
                 public SetterType Type;
 
-                [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
-                public SetterTypeED TypeED;
+                [TagField(MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnlineEDLegacy)]
+                public SetterTypeLegacy TypeLegacy;
 
                 public SetterFlags Flags;
 
-                [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
+                [TagField(MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnlineEDLegacy)]
                 public bool BooleanValue;
 
                 public int IntegerValue;

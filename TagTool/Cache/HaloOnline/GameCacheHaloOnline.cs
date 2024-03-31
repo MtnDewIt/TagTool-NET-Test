@@ -84,6 +84,18 @@ namespace TagTool.Cache.HaloOnline
             var deserializer = new TagDeserializer(CacheVersion.HaloOnlineED, Platform);
 
             TagCacheHaloOnlineHeader header = deserializer.Deserialize<TagCacheHaloOnlineHeader>(dataContext);
+
+            reader.BaseStream.Position = header.TagTableOffset;
+
+            var headerOffset = reader.ReadUInt32();
+
+            // if the very first offset is 0x38 there is a very high likelihood that this is an ElDewrito cache
+            if (headerOffset == 0x38) 
+            {
+                Version = CacheVersion.HaloOnlineEDLegacy;
+                return;
+            }
+
             if (CacheVersion.Unknown == (Version = CacheVersionDetection.DetectFromTimestamp(header.CreationTime, out var closestVersion)))
                 Version = closestVersion;
 

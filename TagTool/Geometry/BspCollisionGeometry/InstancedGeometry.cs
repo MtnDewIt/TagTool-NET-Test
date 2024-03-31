@@ -55,9 +55,9 @@ namespace TagTool.Geometry.BspCollisionGeometry
         [TagField(Length = 4, Flags = TagFieldFlags.Padding, Version = CacheVersion.HaloOnlineED)]
         public byte[] Unused2;
 
-        [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnline700123)]
         public TagBlock<TagHkpMoppCode> MeshMopp;
-        [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnline700123)]
         public uint MeshMoppBvTreePointer; // Runtime
 
         [Flags]

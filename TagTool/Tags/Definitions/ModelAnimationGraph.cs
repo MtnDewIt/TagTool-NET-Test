@@ -529,7 +529,7 @@ namespace TagTool.Tags.Definitions
                 public FrameEventType Type;
                 [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
                 public FrameEventTypeED TypeED;
-                [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnline700123)]
                 public FrameEventTypeHO TypeHO;
                 [TagField(MinVersion = CacheVersion.HaloReach)]
                 public FrameEventTypeReach ReachType;

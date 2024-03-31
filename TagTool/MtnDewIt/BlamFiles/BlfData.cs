@@ -210,7 +210,7 @@ namespace TagTool.MtnDewIt.BlamFiles
                         Scenario = deserializer.Deserialize<BlfDataScenario>(dataContext);
                         reader.Format = Format;
                         Scenario.Signature = new Tag("levl");
-                        Scenario.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataScenario), CacheVersion.HaloOnline106708, CachePlatform.Original);
+                        Scenario.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataScenario), CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original);
                         Scenario.MajorVersion = 3;
                         Scenario.MinorVersion = 1;
                         break;
@@ -221,7 +221,7 @@ namespace TagTool.MtnDewIt.BlamFiles
                         MapVariant = deserializer.Deserialize<BlfDataMapVariant>(dataContext);
                         reader.Format = Format;
                         MapVariant.Signature = new Tag("mapv");
-                        MapVariant.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataMapVariant), CacheVersion.HaloOnline106708, CachePlatform.Original);
+                        MapVariant.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataMapVariant), CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original);
                         MapVariant.MajorVersion = 12;
                         MapVariant.MinorVersion = 1;
                         break;
@@ -232,7 +232,7 @@ namespace TagTool.MtnDewIt.BlamFiles
                         GameVariant = deserializer.Deserialize<BlfDataGameVariant>(dataContext);
                         reader.Format = Format;
                         GameVariant.Signature = new Tag("mpvr");
-                        GameVariant.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataGameVariant), CacheVersion.HaloOnline106708, CachePlatform.Original);
+                        GameVariant.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataGameVariant), CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original);
                         GameVariant.MajorVersion = 3;
                         GameVariant.MinorVersion = 1;
                         break;
@@ -243,7 +243,7 @@ namespace TagTool.MtnDewIt.BlamFiles
                         ContentHeader = deserializer.Deserialize<BlfDataContentHeader>(dataContext);
                         reader.Format = Format;
                         ContentHeader.Signature = new Tag("chdr");
-                        ContentHeader.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataContentHeader), CacheVersion.HaloOnline106708, CachePlatform.Original);
+                        ContentHeader.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataContentHeader), CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original);
                         ContentHeader.MajorVersion = 9;
                         ContentHeader.MinorVersion = 3;
                         break;
@@ -561,7 +561,7 @@ namespace TagTool.MtnDewIt.BlamFiles
         AuthenticationTypeRSA,
     }
 
-    [TagStructure(Size = 0x4, Align = 0x1, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
+    [TagStructure(Size = 0x4, Align = 0x1, MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnlineEDLegacy)]
     [TagStructure(Size = 0x5, Align = 0x1)]
     public class BlfDataChunkEndOfFile : BlfDataChunkHeader 
     {
@@ -817,7 +817,7 @@ namespace TagTool.MtnDewIt.BlamFiles
     }
 
     [TagStructure(Size = 0x4D44, Align = 0x1, MaxVersion = CacheVersion.Halo3Retail)]
-    [TagStructure(Size = 0x89A4, Align = 0x1, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
+    [TagStructure(Size = 0x89A4, Align = 0x1, MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnlineEDLegacy)]
     [TagStructure(Size = 0x98B4, Align = 0x1, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
     public class BlfDataScenario : BlfDataChunkHeader 
     {
@@ -852,7 +852,7 @@ namespace TagTool.MtnDewIt.BlamFiles
         public byte[] Padding2;
 
         [TagField(Length = 0x4, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagField(Length = 0x8, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
+        [TagField(Length = 0x8, MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnlineEDLegacy)]
         [TagField(Length = 0x9, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         public BlfDataScenarioInsertion[] Insertions;
     }

@@ -46,7 +46,7 @@ namespace TagTool.MtnDewIt.Commands
 
                 if (file.Name == "sandbox.map" || IsGameVariant(file.Name))
                 {
-                    if (IsLegacyFile(reader) && blfData.Version == CacheVersion.HaloOnline106708)
+                    if (IsLegacyFile(reader) && blfData.Version == CacheVersion.HaloOnlineEDLegacy)
                     {
                         blfData.ReadLegacyData(reader);
 
@@ -91,13 +91,10 @@ namespace TagTool.MtnDewIt.Commands
                 {
                     mapFileData.ReadData(reader);
 
-                    if (mapFileData.MapFileBlf != null) 
+                    if (mapFileData.MapFileBlf != null && mapFileData.MapFileBlf.MapVariant != null) 
                     {
-                        if (mapFileData.Version == CacheVersion.HaloOnline106708)
-                        {
-                            mapFileData.MapFileBlf.ContentFlags |= BlfDataFileContentFlags.MapVariantTagNames;
-                            mapFileData.MapFileBlf.MapVariantTagNames = GenerateTagNames(mapFileData.MapFileBlf.MapVariant.MapVariant);
-                        }
+                        mapFileData.MapFileBlf.ContentFlags |= BlfDataFileContentFlags.MapVariantTagNames;
+                        mapFileData.MapFileBlf.MapVariantTagNames = GenerateTagNames(mapFileData.MapFileBlf.MapVariant.MapVariant);
                     }
 
                     Value = mapFileData;
