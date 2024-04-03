@@ -162,6 +162,9 @@ namespace TagTool.MtnDewIt.BlamFiles
 
             while (!reader.EOF)
             {
+                Format = EndianFormat.LittleEndian;
+                reader.Format = EndianFormat.LittleEndian;
+
                 var dataContext = new DataSerializationContext(reader, useAlignment: false);
                 var chunkHeaderPosition = reader.Position;
 
@@ -170,15 +173,24 @@ namespace TagTool.MtnDewIt.BlamFiles
 
                 switch (header.Signature.ToString())
                 {
-                    case "_blf":
+                    case "flb_":
                         ContentFlags |= BlfDataFileContentFlags.StartOfFile;
                         StartOfFile = deserializer.Deserialize<BlfDataChunkStartOfFile>(dataContext);
+                        StartOfFile.Signature = new Tag("_blf");
+                        StartOfFile.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataChunkStartOfFile), CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original);
+                        StartOfFile.MajorVersion = 1;
+                        StartOfFile.MinorVersion = 2;
+                        StartOfFile.ByteOrderMarker = -2;
                         break;
 
-                    case "_eof":
+                    case "foe_":
                         ContentFlags |= BlfDataFileContentFlags.EndOfFile;
                         var position = reader.Position;
                         EndOfFile = deserializer.Deserialize<BlfDataChunkEndOfFile>(dataContext);
+                        EndOfFile.Signature = new Tag("_eof");
+                        EndOfFile.Length = 0;
+                        EndOfFile.MajorVersion = 0;
+                        EndOfFile.MinorVersion = 0;
                         AuthenticationType = EndOfFile.AuthenticationType;
                         switch (AuthenticationType)
                         {
@@ -204,44 +216,36 @@ namespace TagTool.MtnDewIt.BlamFiles
                         Campaign = deserializer.Deserialize<BlfDataCampaign>(dataContext);
                         break;
 
-                    case "levl":
+                    case "lvel":
                         ContentFlags |= BlfDataFileContentFlags.Scenario;
-                        reader.Format = EndianFormat.LittleEndian;
                         Scenario = deserializer.Deserialize<BlfDataScenario>(dataContext);
-                        reader.Format = Format;
                         Scenario.Signature = new Tag("levl");
-                        Scenario.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataScenario), CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original);
-                        Scenario.MajorVersion = 3;
-                        Scenario.MinorVersion = 1;
+                        Scenario.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataScenario), CacheVersion.Halo3Retail, CachePlatform.Original);
+                        Scenario.MajorVersion = 0;
+                        Scenario.MinorVersion = 0;
                         break;
 
-                    case "mapv":
+                    case "vpam":
                         ContentFlags |= BlfDataFileContentFlags.MapVariant;
-                        reader.Format = EndianFormat.LittleEndian;
                         MapVariant = deserializer.Deserialize<BlfDataMapVariant>(dataContext);
-                        reader.Format = Format;
                         MapVariant.Signature = new Tag("mapv");
                         MapVariant.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataMapVariant), CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original);
                         MapVariant.MajorVersion = 12;
                         MapVariant.MinorVersion = 1;
                         break;
 
-                    case "mpvr":
+                    case "rvpm":
                         ContentFlags |= BlfDataFileContentFlags.GameVariant;
-                        reader.Format = EndianFormat.LittleEndian;
                         GameVariant = deserializer.Deserialize<BlfDataGameVariant>(dataContext);
-                        reader.Format = Format;
                         GameVariant.Signature = new Tag("mpvr");
                         GameVariant.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataGameVariant), CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original);
                         GameVariant.MajorVersion = 3;
                         GameVariant.MinorVersion = 1;
                         break;
 
-                    case "chdr":
+                    case "rdhc":
                         ContentFlags |= BlfDataFileContentFlags.ContentHeader;
-                        reader.Format = EndianFormat.LittleEndian;
                         ContentHeader = deserializer.Deserialize<BlfDataContentHeader>(dataContext);
-                        reader.Format = Format;
                         ContentHeader.Signature = new Tag("chdr");
                         ContentHeader.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataContentHeader), CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original);
                         ContentHeader.MajorVersion = 9;
@@ -414,7 +418,28 @@ namespace TagTool.MtnDewIt.BlamFiles
                         case CacheVersion.Halo3ODST:
                         case CacheVersion.HaloOnlineED:
                         case CacheVersion.HaloOnline106708:
+                        case CacheVersion.HaloOnline235640:
+                        case CacheVersion.HaloOnline301003:
+                        case CacheVersion.HaloOnline327043:
+                        case CacheVersion.HaloOnline372731:
+                        case CacheVersion.HaloOnline416097:
+                        case CacheVersion.HaloOnline430475:
+                        case CacheVersion.HaloOnline454665:
+                        case CacheVersion.HaloOnline449175:
+                        case CacheVersion.HaloOnline498295:
+                        case CacheVersion.HaloOnline530605:
+                        case CacheVersion.HaloOnline532911:
+                        case CacheVersion.HaloOnline554482:
+                        case CacheVersion.HaloOnline571627:
+                        case CacheVersion.HaloOnline604673:
+                        case CacheVersion.HaloOnline700123:
                             ConvertHalo3ToODSTScenarioChunk();
+                            Version = targetVersion;
+                            if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
+                                Format = EndianFormat.LittleEndian;
+                            break;
+                        case CacheVersion.HaloOnlineEDLegacy:
+                            ConvertHalo3ToEDLegacyScenarioChunk();
                             Version = targetVersion;
                             if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
                                 Format = EndianFormat.LittleEndian;
@@ -437,7 +462,28 @@ namespace TagTool.MtnDewIt.BlamFiles
                         case CacheVersion.Halo3ODST:
                         case CacheVersion.HaloOnlineED:
                         case CacheVersion.HaloOnline106708:
+                        case CacheVersion.HaloOnline235640:
+                        case CacheVersion.HaloOnline301003:
+                        case CacheVersion.HaloOnline327043:
+                        case CacheVersion.HaloOnline372731:
+                        case CacheVersion.HaloOnline416097:
+                        case CacheVersion.HaloOnline430475:
+                        case CacheVersion.HaloOnline454665:
+                        case CacheVersion.HaloOnline449175:
+                        case CacheVersion.HaloOnline498295:
+                        case CacheVersion.HaloOnline530605:
+                        case CacheVersion.HaloOnline532911:
+                        case CacheVersion.HaloOnline554482:
+                        case CacheVersion.HaloOnline571627:
+                        case CacheVersion.HaloOnline604673:
+                        case CacheVersion.HaloOnline700123:
                             ConvertReachToODSTScenarioChunk();
+                            Version = targetVersion;
+                            if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
+                                Format = EndianFormat.LittleEndian;
+                            break;
+                        case CacheVersion.HaloOnlineEDLegacy:
+                            ConvertReachToEDLegacyScenarioChunk();
                             Version = targetVersion;
                             if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
                                 Format = EndianFormat.LittleEndian;
@@ -450,6 +496,31 @@ namespace TagTool.MtnDewIt.BlamFiles
                 default:
                     throw new NotImplementedException($"Conversion from {Version} to {targetVersion} not supported");
             }
+
+            switch (AuthenticationType)
+            {
+                case BlfDataAuthenticationType.AuthenticationTypeCRC:
+                    EndOfFileCRC = null;
+                    AuthenticationType = BlfDataAuthenticationType.AuthenticationTypeNone;
+                    break;
+                case BlfDataAuthenticationType.AuthenticationTypeSHA1:
+                    EndOfFileSHA1 = null;
+                    AuthenticationType = BlfDataAuthenticationType.AuthenticationTypeNone;
+                    break;
+                case BlfDataAuthenticationType.AuthenticationTypeRSA:
+                    EndOfFileRSA = null;
+                    AuthenticationType = BlfDataAuthenticationType.AuthenticationTypeNone;
+                    break;
+            };
+
+            EndOfFile = new BlfDataChunkEndOfFile()
+            {
+                Signature = new Tag("_eof"),
+                Length = (int)TagStructure.GetStructureSize(typeof(BlfDataChunkEndOfFile), Version, CachePlatform.Original),
+                MajorVersion = 1,
+                MinorVersion = 2,
+                AuthenticationType = BlfDataAuthenticationType.AuthenticationTypeNone,
+            };
         }
 
         private void ConvertHalo3ToODSTScenarioChunk()
@@ -511,6 +582,69 @@ namespace TagTool.MtnDewIt.BlamFiles
 
             Scenario.Insertions = insertions;
             Scenario.Length = 0x98C0;
+            Scenario.MajorVersion = 3;
+            Scenario.MinorVersion = 1;
+        }
+
+        private void ConvertHalo3ToEDLegacyScenarioChunk()
+        {
+            if (!ContentFlags.HasFlag(BlfDataFileContentFlags.Scenario))
+                return;
+
+            var insertions = new BlfDataScenarioInsertion[8];
+            for (int i = 0; i < 8; i++)
+            {
+                BlfDataScenarioInsertion ins;
+                if (i < 4)
+                    ins = Scenario.Insertions[i];
+                else
+                {
+                    ins = new BlfDataScenarioInsertion();
+                }
+                insertions[i] = ins;
+            }
+            Scenario.Insertions = insertions;
+            Scenario.Length = 0x89B0;
+        }
+
+        private void ConvertReachToEDLegacyScenarioChunk()
+        {
+            if (!ContentFlags.HasFlag(BlfDataFileContentFlags.Scenario))
+                return;
+
+            var insertions = new BlfDataScenarioInsertion[8];
+
+            for (int i = 0; i < 8; i++)
+            {
+                BlfDataScenarioInsertion ins;
+                if (i < 8)
+                    ins = Scenario.Insertions[i];
+                else
+                    ins = new BlfDataScenarioInsertion();
+
+                insertions[i] = ins;
+            }
+
+            if (Scenario.MapFlags.HasFlag(BlfDataScenarioFlags.IsMultiplayer))
+            {
+                Scenario.GameEngineTeamCounts = new BlfDataGameEngineTeams
+                {
+                    NoGametypeTeamCount = 8,
+                    OddballTeamCount = 8,
+                    VipTeamCount = 8,
+                    AssaultTeamCount = 8,
+                    CtfTeamCount = 8,
+                    KothTeamCount = 8,
+                    JuggernautTeamCount = 8,
+                    InfectionTeamCount = 8,
+                    SlayerTeamCount = 8,
+                    ForgeTeamCount = 8,
+                    TerritoriesTeamCount = 8,
+                };
+            }
+
+            Scenario.Insertions = insertions;
+            Scenario.Length = 0x89B0;
             Scenario.MajorVersion = 3;
             Scenario.MinorVersion = 1;
         }

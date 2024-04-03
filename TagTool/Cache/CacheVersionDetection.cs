@@ -97,10 +97,6 @@ namespace TagTool.Cache
                     version = CacheVersion.HaloOnlineED;
                     cachePlatform = CachePlatform.Original;
                     break;
-                case "eldewrito 0.6":
-                    version = CacheVersion.HaloOnlineEDLegacy;
-                    cachePlatform = CachePlatform.Original;
-                    break;
                 case "1.106708 cert_ms23":
                     version = CacheVersion.HaloOnline106708;
                     cachePlatform = CachePlatform.Original;
@@ -241,7 +237,7 @@ namespace TagTool.Cache
                     case CacheVersion.HaloOnlineED:
                         return "eldewrito";
                     case CacheVersion.HaloOnlineEDLegacy:
-                        return "eldewrito 0.6";
+                        return "1.106708 cert_ms23";
                     case CacheVersion.HaloOnline106708:
                         return "1.106708 cert_ms23";
                     case CacheVersion.HaloOnline235640:

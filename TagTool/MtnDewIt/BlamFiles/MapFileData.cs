@@ -31,7 +31,7 @@ namespace TagTool.MtnDewIt.BlamFiles
             var serializer = new TagSerializer(Version, CachePlatform, EndianFormat);
             serializer.Serialize(dataContext, Header);
 
-            if (CacheVersionDetection.IsBetween(Version, CacheVersion.HaloOnlineED, CacheVersion.HaloOnline106708))
+            if (CacheVersionDetection.IsBetween(Version, CacheVersion.HaloOnlineED, CacheVersion.HaloOnline700123))
             {
                 if (MapFileBlf != null) 
                 {
@@ -44,21 +44,26 @@ namespace TagTool.MtnDewIt.BlamFiles
         {
             reader.Format = EndianFormat;
             var deserializer = new TagDeserializer(Version, CachePlatform);
-            var dataContext = new DataSerializationContext(reader, useAlignment: false);
 
-            var header = deserializer.Deserialize<BlfDataChunkHeader>(dataContext);
-            var mapFileHeaderSize = (int)TagStructure.GetTagStructureInfo(Header.GetType(), Version, CachePlatform).TotalSize;
-
-            reader.SeekTo(mapFileHeaderSize);
-
-            if (header.Signature == "_blf" || header.Signature == "flb_")
+            while (!reader.EOF) 
             {
-                return true;
+                var dataContext = new DataSerializationContext(reader, useAlignment: false);
+                var header = deserializer.Deserialize<BlfDataChunkHeader>(dataContext);
+                var mapFileHeaderSize = (int)TagStructure.GetTagStructureInfo(Header.GetType(), Version, CachePlatform).TotalSize;
+
+                reader.SeekTo(mapFileHeaderSize);
+
+                if (header.Signature == "_blf" || header.Signature == "flb_")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         public bool IsLegacyBlf(EndianReader reader) 
@@ -105,7 +110,7 @@ namespace TagTool.MtnDewIt.BlamFiles
 
                 reader.SeekTo(mapFileHeaderSize);
 
-                if (IsValidBlf(reader) && CacheVersionDetection.IsBetween(Version, CacheVersion.HaloOnlineED, CacheVersion.HaloOnline106708))
+                if (IsValidBlf(reader) && CacheVersionDetection.IsBetween(Version, CacheVersion.HaloOnlineED, CacheVersion.HaloOnline700123))
                 {
                     MapFileBlf = new BlfData(Version, CachePlatform);
 
