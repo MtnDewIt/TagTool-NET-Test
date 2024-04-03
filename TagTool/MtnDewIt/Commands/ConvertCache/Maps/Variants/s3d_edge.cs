@@ -989,7 +989,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Maps
                         RuntimeEngineSubType = VariantDataGameEngineSubType.All,
                         MaximumBudget = 13f,
                         SpentBudget = -8f,
-                        RuntimeShowHelpers = true,
                         MapVariantChecksum = 4151222698,
                         Objects = new VariantDataObjectDatum[640]
                         {
