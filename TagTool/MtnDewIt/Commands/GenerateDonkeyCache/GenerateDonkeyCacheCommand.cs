@@ -250,7 +250,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateDonkeyCache
         public DirectoryInfo GetDirectoryInfo(DirectoryInfo directoryInfo, String build)
         {
             Console.WriteLine("\nEnter the directory for your " + build + " cache files: ");
-            var inputDirectory = Console.ReadLine();
+            var inputDirectory = Console.ReadLine().Replace("\"", "");
             directoryInfo = new DirectoryInfo(inputDirectory);
 
             if (!directoryInfo.Exists)
@@ -271,7 +271,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateDonkeyCache
         public DirectoryInfo GetOutputDirectory(DirectoryInfo directoryInfo)
         {
             Console.WriteLine("\nEnter the ouput directory for the generated cache: ");
-            var inputDirectory = Console.ReadLine();
+            var inputDirectory = Console.ReadLine().Replace("\"", "");
             directoryInfo = new DirectoryInfo(inputDirectory);
 
             if (!directoryInfo.Exists)
