@@ -122,6 +122,48 @@ namespace TagTool.MtnDewIt.BlamFiles
                     case "mpvr":
                         ContentFlags |= BlfDataFileContentFlags.GameVariant;
                         GameVariant = deserializer.Deserialize<BlfDataGameVariant>(dataContext);
+                        position = reader.Position;
+                        reader.SeekTo(chunkHeaderPosition + (int)TagStructure.GetStructureSize(typeof(BlfDataChunkHeader), Version, CachePlatform) + 0x4);
+                        switch (GameVariant.GameVariant.GameVariantType)
+                        {
+                            case GameEngineType.Base:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantBase>(dataContext);
+                                break;
+                            case GameEngineType.CaptureTheFlag:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantCtf>(dataContext);
+                                break;
+                            case GameEngineType.Slayer:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantSlayer>(dataContext);
+                                break;
+                            case GameEngineType.Oddball:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantOddball>(dataContext);
+                                break;
+                            case GameEngineType.KingOfTheHill:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantKing>(dataContext);
+                                break;
+                            case GameEngineType.Sandbox:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantSandbox>(dataContext);
+                                break;
+                            case GameEngineType.Vip:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantVip>(dataContext);
+                                break;
+                            case GameEngineType.Juggernaut:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantJuggernaut>(dataContext);
+                                break;
+                            case GameEngineType.Territories:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantTerritories>(dataContext);
+                                break;
+                            case GameEngineType.Assault:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantAssault>(dataContext);
+                                break;
+                            case GameEngineType.Infection:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantInfection>(dataContext);
+                                break;
+                            default:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantBase>(dataContext);
+                                break;
+                        }
+                        reader.SeekTo(position);
                         break;
 
                     case "chdr":
@@ -237,6 +279,48 @@ namespace TagTool.MtnDewIt.BlamFiles
                     case "rvpm":
                         ContentFlags |= BlfDataFileContentFlags.GameVariant;
                         GameVariant = deserializer.Deserialize<BlfDataGameVariant>(dataContext);
+                        position = reader.Position;
+                        reader.SeekTo(chunkHeaderPosition + (int)TagStructure.GetStructureSize(typeof(BlfDataChunkHeader), CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original) + 0x4);
+                        switch (GameVariant.GameVariant.GameVariantType)
+                        {
+                            case GameEngineType.Base:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantBase>(dataContext);
+                                break;
+                            case GameEngineType.CaptureTheFlag:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantCtf>(dataContext);
+                                break;
+                            case GameEngineType.Slayer:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantSlayer>(dataContext);
+                                break;
+                            case GameEngineType.Oddball:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantOddball>(dataContext);
+                                break;
+                            case GameEngineType.KingOfTheHill:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantKing>(dataContext);
+                                break;
+                            case GameEngineType.Sandbox:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantSandbox>(dataContext);
+                                break;
+                            case GameEngineType.Vip:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantVip>(dataContext);
+                                break;
+                            case GameEngineType.Juggernaut:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantJuggernaut>(dataContext);
+                                break;
+                            case GameEngineType.Territories:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantTerritories>(dataContext);
+                                break;
+                            case GameEngineType.Assault:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantAssault>(dataContext);
+                                break;
+                            case GameEngineType.Infection:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantInfection>(dataContext);
+                                break;
+                            default:
+                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantBase>(dataContext);
+                                break;
+                        }
+                        reader.SeekTo(position);
                         GameVariant.Signature = new Tag("mpvr");
                         GameVariant.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataGameVariant), CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original);
                         GameVariant.MajorVersion = 3;

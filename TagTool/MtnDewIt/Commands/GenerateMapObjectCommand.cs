@@ -106,7 +106,8 @@ namespace TagTool.MtnDewIt.Commands
                 IgnoreDefaultValues = true;
             }
 
-            Layout = GenerateLayout(Value);
+            // TODO: Format output based on input file type
+            Layout = GenerateMapObject(Value, FormatFileName(file.Name, blfData));
 
             FileInfo fileInfo = new FileInfo(args[0] + ".cs");
 
@@ -121,7 +122,7 @@ namespace TagTool.MtnDewIt.Commands
             return true;
         }
 
-        public string GenerateLayout(object value)
+        public string GenerateLayout(object value, string indent)
         {
             var layout = "";
             var objectName = "";
@@ -141,10 +142,10 @@ namespace TagTool.MtnDewIt.Commands
                 objectName = "map";
             }
 
-            layout = $"{FormatTypeName(value.GetType().Name)} {objectName} = new {FormatTypeName(value.GetType().Name)}({blfInput})";
-            layout += "\n{";
-            layout += FormatMapStructure(value, "", "    ", ",");
-            layout += "\n};";
+            layout = $"{indent}{FormatTypeName(value.GetType().Name)} {objectName} = new {FormatTypeName(value.GetType().Name)}({blfInput})";
+            layout += $"\n{indent}{{";
+            layout += FormatMapStructure(value, "", indent + "    ", ",");
+            layout += $"\n{indent}}};";
 
             return layout;
         }
@@ -876,6 +877,64 @@ namespace TagTool.MtnDewIt.Commands
             output += $"\n{inputIndent}{{";
             output += $"\n{inputIndent}{internalIndent}Data = CacheFileHeaderData.SetAuthor(\"{CacheFileHeaderData.GetAuthor(author.Data)}\"),";
             output += $"\n{inputIndent}}}{terminator}";
+
+            return output;
+        }
+
+        private string GenerateMapObject(object mapData, string mapName)
+        {
+            string output = "";
+            string internalIndent = "    ";
+
+            output += $"using System.IO;";
+            output += $"\nusing TagTool.Cache.HaloOnline;";
+            output += $"\nusing TagTool.Cache;";
+            output += $"\nusing TagTool.Common;";
+            output += $"\nusing TagTool.IO;";
+            output += $"\nusing TagTool.MtnDewIt.BlamFiles;";
+            output += $"\nusing TagTool.Tags.Definitions;\n";
+            output += $"\nnamespace TagTool.MtnDewIt.Commands.GenerateCache.Maps";
+            output += $"\n{{";
+            output += $"\n{internalIndent}public class {mapName} : MapVariantFile";
+            output += $"\n{internalIndent}{{";
+            output += $"\n{internalIndent}{internalIndent}public {mapName}(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base";
+            output += $"\n{internalIndent}{internalIndent}(";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}cache,";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}cacheContext,";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}stream";
+            output += $"\n{internalIndent}{internalIndent})";
+            output += $"\n{internalIndent}{internalIndent}{{";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}Cache = cache;";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}CacheContext = cacheContext;";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}Stream = stream;";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}MapVariantData();";
+            output += $"\n{internalIndent}{internalIndent}}}\n";
+            output += $"\n{internalIndent}{internalIndent}public override void MapVariantData()";
+            output += $"\n{internalIndent}{internalIndent}{{";
+            output += $"\n{GenerateLayout(mapData, $"{internalIndent}{internalIndent}{internalIndent}")}";
+            output += $"\n{internalIndent}{internalIndent}}}";
+            output += $"\n{internalIndent}}}";
+            output += $"\n}}";
+
+            return output;
+        }
+
+        private string FormatFileName(string fileName, BlfData mapBlf) 
+        {
+            string output = fileName;
+
+            if (fileName == "sandbox.map" || IsGameVariant(fileName))
+            {
+                output = mapBlf.ContentHeader.Metadata.Name.ToPascalCase();
+            }
+            else if (fileName.EndsWith(".campaign"))
+            {
+                output = Path.GetExtension(fileName).Replace(".", "").ToPascalCase();
+            }
+            else
+            {
+                output = Path.GetFileNameWithoutExtension(fileName).ToPascalCase();
+            }
 
             return output;
         }

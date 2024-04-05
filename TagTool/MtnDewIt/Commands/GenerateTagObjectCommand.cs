@@ -19,15 +19,17 @@ namespace TagTool.MtnDewIt.Commands
 
         private string Layout;
         private bool IgnoreDefaultValues;
+        private bool IsRenderMethodObject;
 
         public GenerateTagObjectCommand(GameCache cache) : base
         (
             false,
             "GenerateTagObject",
-            "Generates a C# object based on the current tag",
+            "Generates a C# tag object file based on the specified tag",
 
-            "GenerateTagObject <Target_Folder> <Tag_Name> [IgnoreDefaultValues]",
-            "Generates a C# object based on the current tag. This object will be formatted based on the specified tag's definition"
+            "GenerateTagObject <Target_Path> <Tag_Name> [IgnoreDefaultValues] [RenderMethod]",
+            "Generates a C# tag object file based on the specified tag. This object can either be generated as a TagFile\n" +
+            "object or as a RenderMethod object. This object will be formatted based on the specified tag's definition"
         )
         {
             Cache = cache;
@@ -36,6 +38,7 @@ namespace TagTool.MtnDewIt.Commands
         public override object Execute(List<string> args)
         {
             IgnoreDefaultValues = false;
+            IsRenderMethodObject = false;
 
             Tag = Cache.TagCache.GetTag(args[1]);
             Structure = TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(Tag.Group), Cache.Version, Cache.Platform);
@@ -45,12 +48,31 @@ namespace TagTool.MtnDewIt.Commands
                 Value = Cache.Deserialize(stream, Tag);
             }
 
-            if (args.Count > 2 && string.Equals(args[2], "IgnoreDefaultValues", StringComparison.OrdinalIgnoreCase)) 
+            Layout = GenerateTagObject(Structure, $"{Tag.Name}_{Structure.Structure.Name}");
+
+            if (args.Count > 2) 
             {
-                IgnoreDefaultValues = true;
+                if (string.Equals(args[2], "IgnoreDefaultValues", StringComparison.OrdinalIgnoreCase))
+                {
+                    IgnoreDefaultValues = true;
+                    Layout = GenerateTagObject(Structure, $"{Tag.Name}_{Structure.Structure.Name}");
+                }
+
+                if (string.Equals(args[2], "RenderMethod", StringComparison.OrdinalIgnoreCase)) 
+                {
+                    IsRenderMethodObject = true;
+                    Layout = GenerateRenderMethodObject(Structure, $"{Tag.Name}_{Structure.Structure.Name}");
+                }
             }
 
-            Layout = GenerateLayout(Structure);
+            if (args.Count > 3) 
+            {
+                if (string.Equals(args[3], "RenderMethod", StringComparison.OrdinalIgnoreCase))
+                {
+                    IsRenderMethodObject = true;
+                    Layout = GenerateRenderMethodObject(Structure, $"{Tag.Name}_{Structure.Structure.Name}");
+                }
+            }
 
             FileInfo fileInfo = new FileInfo(Path.Combine(args[0], $"{Tag.Name}.{Structure.Structure.Name}.cs"));
 
@@ -70,7 +92,7 @@ namespace TagTool.MtnDewIt.Commands
             return true;
         }
 
-        public string GenerateLayout(object structure)
+        public string GenerateLayout(object structure, string indent)
         {
             var tagTypeName = Structure.Types[0].Name;
             var shortFormName = "!!!!";
@@ -82,9 +104,18 @@ namespace TagTool.MtnDewIt.Commands
                 shortFormName = tagStructureInfo.GroupTag.ToString();
             }
 
-            layout = $"var tag = GetCachedTag<{tagTypeName}>($@\"{Tag.Name}\");";
-            layout += $"\nvar {shortFormName} = CacheContext.Deserialize<{tagTypeName}>(Stream, tag);";
-            layout += FormatTagStructure(Structure, Value, $"{shortFormName}.", "", ";");
+            if (IsRenderMethodObject)
+            {
+                layout = $"{indent}var tag = Cache.TagCache.GetTag<{tagTypeName}>($@\"{Tag.Name}\");";
+            }
+            else
+            {
+                layout = $"{indent}var tag = GetCachedTag<{tagTypeName}>($@\"{Tag.Name}\");";
+            }
+
+            layout += $"\n{indent}var {shortFormName} = CacheContext.Deserialize<{tagTypeName}>(Stream, tag);";
+            layout += FormatTagStructure(Structure, Value, $"{shortFormName}.", $"{indent}", ";");
+            layout += $"\n\n{indent}CacheContext.Serialize(Stream, tag, {shortFormName});";
 
             return layout;
         }
@@ -274,7 +305,14 @@ namespace TagTool.MtnDewIt.Commands
                         return $"CacheContext.StringTable.GetOrAddString($@\"{Cache.StringTable.GetString(stringId)}\")";
                     }
                 case CachedTag tag:
-                    return $"GetCachedTag<{Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group).Name}>($@\"{tag.Name}\")";
+                    if (IsRenderMethodObject)
+                    {
+                        return $"Cache.TagCache.GetTag<{Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group).Name}>($@\"{tag.Name}\")";
+                    }
+                    else 
+                    {
+                        return $"GetCachedTag<{Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group).Name}>($@\"{tag.Name}\")";
+                    }
                 case PlatformUnsignedValue unsignedValue:
                     return $"new PlatformUnsignedValue({unsignedValue})";
                 case PlatformSignedValue signedValue:
@@ -747,6 +785,91 @@ namespace TagTool.MtnDewIt.Commands
             {
                 return null;
             }
+        }
+
+        private string GenerateRenderMethodObject(object tagData, string tagName) 
+        {
+            string output = "";
+            string internalIndent = "    ";
+
+            output += $"using System.Collections.Generic;";
+            output += $"\nusing System.IO;";
+            output += $"\nusing TagTool.Cache.HaloOnline;";
+            output += $"\nusing TagTool.Cache;";
+            output += $"\nusing TagTool.Common;";
+            output += $"\nusing TagTool.Shaders;";
+            output += $"\nusing TagTool.Tags.Definitions;\n";
+            output += $"\nnamespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders";
+            output += $"\n{{";
+            output += $"\n{internalIndent}public class {FormatTagName(tagName)} : RenderMethodData";
+            output += $"\n{internalIndent}{{";
+            output += $"\n{internalIndent}{internalIndent}public {FormatTagName(tagName)}(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base";
+            output += $"\n{internalIndent}{internalIndent}(";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}cache,";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}cacheContext,";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}stream";
+            output += $"\n{internalIndent}{internalIndent})";
+            output += $"\n{internalIndent}{internalIndent}{{";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}Cache = cache;";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}CacheContext = cacheContext;";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}Stream = stream;";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}RenderMethod();";
+            output += $"\n{internalIndent}{internalIndent}}}\n";
+            output += $"\n{internalIndent}{internalIndent}public override void RenderMethod()";
+            output += $"\n{internalIndent}{internalIndent}{{";
+            output += $"\n{GenerateLayout(tagData, $"{internalIndent}{internalIndent}{internalIndent}")}";
+            output += $"\n{internalIndent}{internalIndent}}}";
+            output += $"\n{internalIndent}}}";
+            output += $"\n}}";
+
+            return output;
+        }
+
+        private string GenerateTagObject(object tagData, string tagName)
+        {
+            string output = "";
+            string internalIndent = "    ";
+
+            output += $"using System.Collections.Generic;";
+            output += $"\nusing System.IO;";
+            output += $"\nusing TagTool.Cache.HaloOnline;";
+            output += $"\nusing TagTool.Cache;";
+            output += $"\nusing TagTool.Common;";
+            output += $"\nusing TagTool.Shaders;";
+            output += $"\nusing TagTool.Tags.Definitions;\n";
+            output += $"\nnamespace TagTool.MtnDewIt.Commands.GenerateCache.Tags";
+            output += $"\n{{";
+            output += $"\n{internalIndent}public class {FormatTagName(tagName)} : TagFile";
+            output += $"\n{internalIndent}{{";
+            output += $"\n{internalIndent}{internalIndent}public {FormatTagName(tagName)}(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base";
+            output += $"\n{internalIndent}{internalIndent}(";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}cache,";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}cacheContext,";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}stream";
+            output += $"\n{internalIndent}{internalIndent})";
+            output += $"\n{internalIndent}{internalIndent}{{";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}Cache = cache;";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}CacheContext = cacheContext;";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}Stream = stream;";
+            output += $"\n{internalIndent}{internalIndent}{internalIndent}TagData();";
+            output += $"\n{internalIndent}{internalIndent}}}\n";
+            output += $"\n{internalIndent}{internalIndent}public override void TagData()";
+            output += $"\n{internalIndent}{internalIndent}{{";
+            output += $"\n{GenerateLayout(tagData, $"{internalIndent}{internalIndent}{internalIndent}")}";
+            output += $"\n{internalIndent}{internalIndent}}}";
+            output += $"\n{internalIndent}}}";
+            output += $"\n}}";
+
+            return output;
+        }
+
+        private string FormatTagName(string tagName) 
+        {
+            string output = "";
+
+            output = tagName.Replace(@"\", "_");
+
+            return output;
         }
     }
 }
