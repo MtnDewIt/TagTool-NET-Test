@@ -62,7 +62,7 @@ namespace TagTool.Commands.Scenarios
                 MapAuthor = "ElDewrito",
                 MapId = 9001,
                 ScenarioPath = @"levels\eldewrito\canvas\canvas",
-                WorldBounds = new RealRectangle3d(-1000, 1000, -1000, 1000, -1000, 1000)
+                WorldBounds = new RealRectangle3d(-200, 200, -200, 200, -200, 200)
             };
 
             bool quick = false;
@@ -199,7 +199,7 @@ namespace TagTool.Commands.Scenarios
                         StructureBsp = sbspTag,
                         Cubemap = cubemapsTag,
                         Wind = windTag,
-                        Flags = 32,
+                        Flags = (Scenario.StructureBspBlock.StructureBspFlags)32,
                         DefaultSkyIndex = -1
                     }
                 };

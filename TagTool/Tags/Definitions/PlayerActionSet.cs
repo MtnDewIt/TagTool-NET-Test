@@ -6,10 +6,13 @@ using TagTool.Tags.Definitions;
 namespace TagTool.Tags
 {
     [TagStructure(Name = "player_action_set", Tag = "pact", Size = 0x148)] // Remove for release
-    //[TagStructure(Name = "player_action_set", Tag = "pact", Size = 0x144)] // Uncomment for release
+    //[TagStructure(Name = "player_action_set", Tag = "pact", Size = 0x11C)] // Uncomment for release
     public class PlayerActionSet : TagStructure
     {
-        public WidgetData Widget;
+        //public int version; // Uncomment for release
+
+        public WidgetData Widget; // Remove for release
+        //public List<WidgetData> Widget; // Uncomment for release
 
         public List<Action> Actions;
 
@@ -17,7 +20,7 @@ namespace TagTool.Tags
         public byte[] Unused = new byte[0x100];
 
         [TagStructure(Size = 0x3C)] // Remove for release
-        //[TagStructure(Size = 0x38)] // Uncomment for release
+        //[TagStructure(Size = 0x124)] // Uncomment for release
         public class WidgetData : TagStructure
         {
             [TagField(Length = 32)]
@@ -27,7 +30,10 @@ namespace TagTool.Tags
 
             public ushort Flags;
 
-            public byte[] Stylesheet;
+            public byte[] Stylesheet; // Remove for release
+
+            //[TagField(Flags = TagFieldFlags.Padding, Length = 0x100)] // Uncomment for release
+            //public byte[] Unused = new byte[0x100];
 
             public enum WidgetType : short
             {
@@ -36,7 +42,8 @@ namespace TagTool.Tags
             }
         }
 
-        [TagStructure(Size = 0x5C)]
+        [TagStructure(Size = 0x5C)] // Remove for release
+        //[TagStructure(Size = 0x15C)] // Uncomment for release
         public class Action : TagStructure
         {
             [TagField(Length = 32)]
@@ -55,12 +62,19 @@ namespace TagTool.Tags
 
             public List<Unit.UnitCameraBlock> OverrideCamera;
 
+            //[TagField(Flags = TagFieldFlags.Padding, Length = 0x100)] // Uncomment for release
+            //public byte[] Unused = new byte[0x100];
+
             [Flags]
             public enum ActionFlags : int
             {
                 HideWeapon = 1 << 0,
                 ForceThirdPersonCamera = 1 << 1,
-                InhibitMovement = 1 << 2
+                InhibitMovement = 1 << 2,
+                InhibitCameraMovement = 1 << 3,
+                InhibitCancel = 1 << 4,
+                DontPlayExitAnimationOnCancel = 1 << 5,
+                HoldOnLastFrame = 1 << 6
             }
         }
     }

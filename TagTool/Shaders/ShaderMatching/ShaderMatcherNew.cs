@@ -445,9 +445,6 @@ namespace TagTool.Shaders.ShaderMatching
                             case @"albedo\patchy_emblem":
                                 optionName = "emblem_change_color";
                                 break;
-                            case @"albedo\color_mask":
-                                optionName = "constant_color";
-                                break;
                             case @"bump_mapping\detail_blend":
                             case @"bump_mapping\three_detail_blend":
                                 optionName = "detail";
@@ -474,7 +471,6 @@ namespace TagTool.Shaders.ShaderMatching
                                 optionName = "per_vertex_ravi_order_0";
                                 break;
                             case @"depth_fade\low_res":
-                            case @"depth_fade\palette_shift":
                                 optionName = "on";
                                 break;
                             // MCC rmsh //

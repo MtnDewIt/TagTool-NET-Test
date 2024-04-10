@@ -10,10 +10,13 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Name = "area_screen_effect", Tag = "sefc", Size = 0x10, MaxVersion = CacheVersion.Halo3ODST)]
     [TagStructure(Name = "area_screen_effect", Tag = "sefc", Size = 0xC, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)] // Remove for release
     //[TagStructure(Name = "area_screen_effect", Tag = "sefc", Size = 0xC, MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnline700123)] // Uncomment for release
-    //[TagStructure(Name = "area_screen_effect", Tag = "sefc", Size = 0x10, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)] // Uncomment for release
+    //[TagStructure(Name = "area_screen_effect", Tag = "sefc", Size = 0x14, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)] // Uncomment for release
     [TagStructure(Name = "area_screen_effect", Tag = "sefc", Size = 0x10, MinVersion = CacheVersion.HaloReach)]
     public class AreaScreenEffect : TagStructure
 	{
+        //[TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)] // Uncomment for release
+        //public int version;
+
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
         [TagField(MinVersion = CacheVersion.HaloReach)]
         //[TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)] // Uncomment for release

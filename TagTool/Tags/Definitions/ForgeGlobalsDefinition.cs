@@ -7,9 +7,14 @@ namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "forge_globals_definition", Tag = "forg", Size = 0x90, MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnlineEDLegacy)]
     [TagStructure(Name = "forge_globals_definition", Tag = "forg", Size = 0xE0)] // Remove for release
-    //[TagStructure(Name = "forge_globals_definition", Tag = "forg", Size = 0xF0)] // Uncomment for release
+    //[TagStructure(Name = "forge_globals_definition", Tag = "forg", Size = 0x104)] // Uncomment for release
     public class ForgeGlobalsDefinition : TagStructure
     {
+        //public int version; // Uncomment for release
+
+        //[TagField(ValidTags = new[] { "rm  " })] // Uncomment for release
+        //public CachedTag DefaultBoundaryRenderMethod;
+
         [TagField(ValidTags = new[] { "rm  " })]
         public CachedTag InvisibleRenderMethod;
 
