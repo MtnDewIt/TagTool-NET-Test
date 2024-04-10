@@ -31,7 +31,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             {
                 new RenderMaterial
                 {
-                    RenderMethod = GetCachedTag<Shader>($@"levels\shared\shaders\simple\black"),
+                    RenderMethod = GetCachedTag<Shader>($@"levels\dlc\bunkerworld\shaders\z_black"),
                 },
             };
             CacheContext.Serialize(Stream, tag, mode);

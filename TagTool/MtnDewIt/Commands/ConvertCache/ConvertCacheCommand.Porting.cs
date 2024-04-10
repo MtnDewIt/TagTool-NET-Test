@@ -350,9 +350,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             odstMainMenu.PortTag($@"", $@"objects\weapons\pistol\automag\automag.scenery");
             odstMainMenu.PortTag($@"", $@"objects\weapons\rifle\smg_silenced\smg_silenced.scenery");
 
-            citadel.SetPortingProperties(audioCodec: Compression.OGG);
-            citadel.PortTag($@"", $@"levels\shared\shaders\simple\black.shader");
-
             DuplicateTag(GetCachedTag<Crate>($@"objects\eldewrito\reforge\block_01x20x20"), $@"objects\eldewrito\reforge\block_01x20x20_black_mainmenu");
             DuplicateTag(GetCachedTag<Model>($@"objects\eldewrito\reforge\block_01x20x20"), $@"objects\eldewrito\reforge\block_01x20x20_black_mainmenu");
             DuplicateTag(GetCachedTag<RenderModel>($@"objects\eldewrito\reforge\block_01x20x20"), $@"objects\eldewrito\reforge\block_01x20x20_black_mainmenu");

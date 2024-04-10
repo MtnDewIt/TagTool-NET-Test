@@ -639,6 +639,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new levels_ui_mainmenu_objects_spartan_cheap_spartan_cheap_biped(Cache, CacheContext, CacheStream);
 
+            new levels_ui_mainmenu_objects_spartan_cheap_spartan_cheap_model(Cache, CacheContext, CacheStream);
+
             new levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_biped(Cache, CacheContext, CacheStream);
 
             new levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_model(Cache, CacheContext, CacheStream);
