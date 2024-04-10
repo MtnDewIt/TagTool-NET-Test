@@ -639,6 +639,7 @@ namespace TagTool.Cache
             -1, // Halo Xbox
             -1, // Halo PC
             -1, // Halo Custom Edition
+            -1, // Halo2Alpha
             -1, // Halo2Beta
             -1, // Halo2Xbox
             -1, // Halo2Vista
@@ -664,6 +665,7 @@ namespace TagTool.Cache
             130893802351772672, // HaloOnline604673
             130930071628935939, // HaloOnline700123
             -1, // HaloReach
+            -1, // HaloReach11883
             -1  // Halo 4
         };
     }
