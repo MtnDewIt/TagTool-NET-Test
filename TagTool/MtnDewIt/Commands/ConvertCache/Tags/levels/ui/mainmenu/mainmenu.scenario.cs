@@ -36,7 +36,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     StructureBsp = GetCachedTag<ScenarioStructureBsp>($@"levels\multi\riverworld\riverworld"),
                     Design = GetCachedTag<StructureDesign>($@"levels\multi\riverworld\riverworld_design"),
-                    Flags = (Scenario.StructureBspBlock.StructureBspFlags)32,
+                    Flags = Scenario.StructureBspBlock.StructureBspFlags.LightmapsReduceStretchHack,
                     DefaultSkyIndex = -1,
                     Cubemap = GetCachedTag<Bitmap>($@"levels\multi\riverworld\riverworld_riverworld_cubemaps"),
                     Wind = GetCachedTag<Wind>($@"levels\multi\riverworld\wind_riverworld"),
