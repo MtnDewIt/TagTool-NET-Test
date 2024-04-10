@@ -25,5 +25,8 @@ namespace TagTool.MtnDewIt.Porting
 
         // Enable legacy shader generator
         public bool LegacyShaderGenerator = true;
+
+        // Tracks the current instance for porting properties
+        public static PortingProperties CurrentInstance = new PortingProperties();
     }
 }

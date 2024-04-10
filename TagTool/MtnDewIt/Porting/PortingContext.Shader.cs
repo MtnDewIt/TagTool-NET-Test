@@ -123,7 +123,7 @@ namespace TagTool.MtnDewIt.Porting
             if (shaderProperty.Template == null)
                 return null;
 
-            if (PortingProperties.LegacyShaderGenerator)
+            if (PortingProperties.CurrentInstance.LegacyShaderGenerator)
             {
                 return ConvertLegacyRenderMethod(cacheStream, blamCacheStream, definition, blamDefinition, blamShaderProperty.Template, blamTag);
             }
@@ -188,7 +188,7 @@ namespace TagTool.MtnDewIt.Porting
 
         private CachedTag FindClosestRmt2(Stream cacheStream, Stream blamCacheStream, CachedTag blamRmt2)
         {
-            if (PortingProperties.LegacyShaderGenerator)
+            if (PortingProperties.CurrentInstance.LegacyShaderGenerator)
             {
                 // Verify that the ShaderMatcher is ready to use
                 if (!LegacyMatcher.IsInitialized)

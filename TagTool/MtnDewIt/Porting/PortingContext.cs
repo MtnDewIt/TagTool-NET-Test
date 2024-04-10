@@ -138,7 +138,7 @@ namespace TagTool.MtnDewIt.Porting
                 entry.Value.Close();
             }
 
-            if (PortingProperties.LegacyShaderGenerator)
+            if (PortingProperties.CurrentInstance.LegacyShaderGenerator)
             {
                 LegacyMatcher.DeInit();
             }
@@ -164,13 +164,13 @@ namespace TagTool.MtnDewIt.Porting
         )
         {
             maxThreads = Environment.ProcessorCount * 2;
-            PortingProperties.MaxThreads = maxThreads;
-            PortingProperties.AudioCodec = audioCodec;
-            PortingProperties.ReachLightmapCache = lightmapCache;
-            PortingProperties.ReachDecorators = reachDecorators;
-            PortingProperties.Gen1Collision = legacyCollision;
-            PortingProperties.HqNormalMapConversion = normalMapConversion;
-            PortingProperties.LegacyShaderGenerator = legacyShaderGenerator;
+            PortingProperties.CurrentInstance.MaxThreads = maxThreads;
+            PortingProperties.CurrentInstance.AudioCodec = audioCodec;
+            PortingProperties.CurrentInstance.ReachLightmapCache = lightmapCache;
+            PortingProperties.CurrentInstance.ReachDecorators = reachDecorators;
+            PortingProperties.CurrentInstance.Gen1Collision = legacyCollision;
+            PortingProperties.CurrentInstance.HqNormalMapConversion = normalMapConversion;
+            PortingProperties.CurrentInstance.LegacyShaderGenerator = legacyShaderGenerator;
         }
 
         private bool TagIsValid(CachedTag blamTag, Stream blamCacheStream, out CachedTag resultTag)
@@ -263,7 +263,7 @@ namespace TagTool.MtnDewIt.Porting
 
                 string templateName = renderMethod.ShaderProperties[0].Template.Name;
 
-                if (PortingProperties.LegacyShaderGenerator)
+                if (PortingProperties.CurrentInstance.LegacyShaderGenerator)
                 {
                     if (LegacyShaderMatcherNew.Rmt2Descriptor.TryParse(templateName, out var rmt2Descriptor))
                     {
@@ -364,7 +364,7 @@ namespace TagTool.MtnDewIt.Porting
         {
             if(definition is ScenarioStructureBsp sbsp)
             {
-                if (!PortingProperties.ReachDecorators)
+                if (!PortingProperties.CurrentInstance.ReachDecorators)
                 {
                     sbsp.Decorators.Clear();
                     foreach (var cluster in sbsp.Clusters)
@@ -1353,7 +1353,7 @@ namespace TagTool.MtnDewIt.Porting
                         return GetDefaultShader(blamTag.Group.Tag, edTag);
                     else
                     {
-                        if (PortingProperties.LegacyShaderGenerator)
+                        if (PortingProperties.CurrentInstance.LegacyShaderGenerator)
                         {
                             // Verify that the ShaderMatcher is ready to use
                             if (!LegacyMatcher.IsInitialized)
