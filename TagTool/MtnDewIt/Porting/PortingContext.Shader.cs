@@ -12,6 +12,7 @@ using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock;
 using TagTool.MtnDewIt.Shaders.LegacyShaderMatching;
 using TagTool.Shaders;
 using TagTool.Shaders.ShaderMatching;
+using TagTool.Shaders.ShaderConverter;
 
 namespace TagTool.MtnDewIt.Porting
 {
@@ -542,93 +543,32 @@ namespace TagTool.MtnDewIt.Porting
             return finalRm;
         }
 
-        //private RenderMethod ConvertRenderMethodNew(
-        //    Stream stream,
-        //    Stream blamStream,
-        //    RenderMethod renderMethod,
-        //    RenderMethod blamRenderMethod,
-        //    CachedTag blamRmt2Tag,
-        //    CachedTag blamTag)
-        //{
-        //    RenderMethod newRm = new RenderMethod();
-        //
-        //    // should never be reached if null
-        //    //if (renderMethod.ShaderProperties[0].Template == null) 
-        //    //    throw new Exception($"Failed to find HO rmt2 for this RenderMethod instance");
-        //
-        //    // create blam rmt2 descriptor
-        //    ShaderMatcherNew.Rmt2Descriptor.TryParse(blamRenderMethod.ShaderProperties[0].Template.Name, out ShaderMatcherNew.Rmt2Descriptor blamRmt2Descriptor);
-        //    // create ed rmt2 descriptor
-        //    ShaderMatcherNew.Rmt2Descriptor.TryParse(renderMethod.ShaderProperties[0].Template.Name, out ShaderMatcherNew.Rmt2Descriptor edRmt2Descriptor);
-        //
-        //    // get relevant rmdf
-        //    CachedTag rmdfInstance = Matcher.FindRmdf(renderMethod.ShaderProperties[0].Template);
-        //    if (rmdfInstance == null) // shader matching will fail without an rmdf -- throw an exception
-        //        throw new Exception($"Unable to find valid \"{edRmt2Descriptor.Type}\" rmdf for rmt2");
-        //
-        //    var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(stream, rmdfInstance);
-        //    var rmt2 = CacheContext.Deserialize<RenderMethodTemplate>(stream, renderMethod.ShaderProperties[0].Template);
-        //    var blamRmt2 = BlamCache.Deserialize<RenderMethodTemplate>(stream, blamRenderMethod.ShaderProperties[0].Template);
-        //
-        //    newRm.BaseRenderMethod = rmdfInstance;
-        //    newRm.Options = BuildRenderMethodOptionIndices(edRmt2Descriptor);
-        //    newRm.RenderFlags = renderMethod.RenderFlags;
-        //    newRm.SortLayer = renderMethod.SortLayer;
-        //    newRm.Version = renderMethod.Version;
-        //    newRm.CustomFogSettingIndex = renderMethod.CustomFogSettingIndex;
-        //    newRm.PredictionAtomIndex = renderMethod.PredictionAtomIndex;
-        //    newRm.ShaderProperties = new List<RenderMethodPostprocessBlock>();
-        //
-        //    // --- Shader property ---
-        //
-        //    var parameters = ShaderGeneratorNew.GatherParameters(CacheContext, stream, rmdf, edRmt2Descriptor.Options.ToList(), false);
-        //
-        //    var shaderProperty = new RenderMethodPostprocessBlock
-        //    {
-        //        TextureConstants = new List<TextureConstant>(),
-        //        RealConstants = new List<RealConstant>(),
-        //        IntegerConstants = new List<uint>(),
-        //        BooleanConstants = 0
-        //    };
-        //
-        //    for (int i = 0; i < rmt2.TextureParameterNames.Count; i++)
-        //    {
-        //        string name = CacheContext.StringTable.GetString(rmt2.TextureParameterNames[i].Name);
-        //        var parameterBlock = parameters.Find(x => CacheContext.StringTable.GetString(x.Name) == name);
-        //
-        //        if (parameterBlock.Type != RenderMethodOption.ParameterBlock.OptionDataType.Bitmap)
-        //            new TagToolWarning("");
-        //
-        //        shaderProperty.TextureConstants.Add(new TextureConstant
-        //        {
-        //            Bitmap = parameterBlock.DefaultSamplerBitmap,
-        //            BitmapIndex = 0,
-        //            SamplerAddressMode = new TextureConstant.PackedSamplerAddressMode
-        //            {
-        //                AddressU = (TextureConstant.SamplerAddressModeEnum)parameterBlock.DefaultAddressMode,
-        //                AddressV = (TextureConstant.SamplerAddressModeEnum)parameterBlock.DefaultAddressMode
-        //            },
-        //            FilterMode = (TextureConstant.SamplerFilterMode)parameterBlock.DefaultFilterMode,
-        //            ExternTextureMode = TextureConstant.RenderMethodExternTextureMode.UseBitmapAsNormal,
-        //            TextureTransformConstantIndex = -1,
-        //            TextureTransformOverlayIndices = new TagBlockIndex()
-        //        });
-        //    }
-        //
-        //    // convert filter mode
-        //    if (BlamCache.Version == CacheVersion.Halo3ODST || BlamCache.Version >= CacheVersion.HaloReach)
-        //    {
-        //        foreach (var textureConstant in renderMethod.ShaderProperties[0].TextureConstants)
-        //            textureConstant.FilterMode = textureConstant.FilterModePacked.FilterMode;
-        //    }
-        //
-        //
-        //    renderMethod = newRm;
-        //    return renderMethod;
-        //}
-
         private RenderMethod ConvertRenderMethod(Stream cacheStream, Stream blamCacheStream, RenderMethod finalRm, RenderMethod blamRm, CachedTag blamRmt2, CachedTag blamTag) 
         {
+            ShaderConverter shaderConverter = new ShaderConverter(CacheContext,
+                BlamCache,
+                cacheStream,
+                blamCacheStream,
+                finalRm, 
+                blamRm, 
+                Matcher);
+            RenderMethod newRm = shaderConverter.ConvertRenderMethod();
+
+            // copy each field as at this point in conversion,
+            // we don't know the original tag type and what extra fields exist
+
+            finalRm.BaseRenderMethod = newRm.BaseRenderMethod;
+            finalRm.Options = newRm.Options;
+            finalRm.Parameters = newRm.Parameters;
+            finalRm.ShaderProperties = newRm.ShaderProperties;
+            finalRm.RenderFlags = newRm.RenderFlags;
+            finalRm.SortLayer = newRm.SortLayer;
+            finalRm.Version = newRm.Version;
+            finalRm.CustomFogSettingIndex = newRm.CustomFogSettingIndex;
+            finalRm.PredictionAtomIndex = newRm.PredictionAtomIndex;
+
+            return finalRm;
+
             var bmMaps = new List<string>();
             var bmRealConstants = new List<string>();
             var bmIntConstants = new List<string>();
@@ -730,7 +670,7 @@ namespace TagTool.MtnDewIt.Porting
 
             // if we have bits enabled by default, this actually disables boolean args. fixes a few visual issues
             for (int a = 0; a < edRmt2.BooleanParameterNames.Count; a++)
-                newShaderProperty.BooleanConstants |= (1u << a);
+                newShaderProperty.BooleanConstants |= (1u << a); 
             // newShaderProperty.BooleanConstants |= (GetDefaultValue(CacheContext.StringTable.GetString(edRmt2.BooleanParameterNames[a].Name), edRmt2Descriptor.Type, methodNames, optionBlocks) << a);
 
             // apply option->option conversion where applicable
@@ -826,10 +766,10 @@ namespace TagTool.MtnDewIt.Porting
             //    !finalRm.CategoryOptionSelected(CacheContext, rmdf, "material_model", "organism"))
             //    newShaderProperty.Flags |= RenderMethodPostprocessFlags.EnableAlphaTest;
             //else
-            newShaderProperty.Flags &= ~RenderMethodPostprocessFlags.EnableAlphaTest;
+                newShaderProperty.Flags &= ~RenderMethodPostprocessFlags.EnableAlphaTest;
 
             // Flag single pass accordingly (this should already be correct)
-            if (rmdf.ContainsCategory(CacheContext, "misc") &&
+            if (rmdf.ContainsCategory(CacheContext, "misc") && 
                 (finalRm.CategoryOptionSelected(CacheContext, rmdf, "misc", "first_person_always") ||
                  finalRm.CategoryOptionSelected(CacheContext, rmdf, "misc", "first_person_never")))
                 newShaderProperty.Flags |= RenderMethodPostprocessFlags.ForceSinglePass;
@@ -842,9 +782,9 @@ namespace TagTool.MtnDewIt.Porting
             // hackfix for cook_torrance -> cook_torrance_rim_fresnel (ms23)
             // in rim_fresnel material parameters are multiplied against the material texture, we want to negate this behaviour
             // with new odst cook_torrance this can be removed in shader code
-            if (BlamCache.Version != CacheVersion.Halo3ODST &&
-                edRmt2Descriptor.Type == "shader" &&
-                blamRmt2Descriptor.Options[4] == 1 &&
+            if (BlamCache.Version != CacheVersion.Halo3ODST && 
+                edRmt2Descriptor.Type == "shader" && 
+                blamRmt2Descriptor.Options[4] == 1 && 
                 edRmt2Descriptor.Options[4] == 1)
             {
                 bool using_material_texture = false;

@@ -82,7 +82,7 @@ namespace TagTool.MtnDewIt.Porting
 
             var cacheStream = FlagIsSet(PortingFlags.Memory) ? new MemoryStream() : CacheStream;
 
-            using (var blamCacheStream = BlamCache.OpenCacheRead())
+            using (var blamCacheStream = BlamCache is GameCacheModPackage ? ((GameCacheModPackage)BlamCache).OpenCacheRead(cacheStream) : BlamCache.OpenCacheRead())
             {
                 if (FlagIsSet(PortingFlags.Memory))
                     using (var cacheFileStream = CacheContext.OpenCacheRead())
@@ -262,18 +262,37 @@ namespace TagTool.MtnDewIt.Porting
                 }
 
                 string templateName = renderMethod.ShaderProperties[0].Template.Name;
-                if(LegacyShaderMatcherNew.Rmt2Descriptor.TryParse(templateName, out var rmt2Descriptor))
-                {
-                    foreach (var tag in CacheContext.TagCacheGenHO.TagTable)
-                        if (tag != null && tag.Group.Tag == "rmt2" && (tag.Name.Contains(rmt2Descriptor.Type) || FlagIsSet(PortingFlags.GenerateShaders)))
-                        {
-                            if ((FlagIsSet(PortingFlags.Ms30) && tag.Name.StartsWith("ms30\\")) || (!FlagIsSet(PortingFlags.Ms30) && !tag.Name.StartsWith("ms30\\")))
-                                return true;
 
-                            else if (tag.Name.StartsWith("ms30\\"))
-                                continue;
-                        }
-                };
+                if (PortingProperties.LegacyShaderGenerator)
+                {
+                    if (LegacyShaderMatcherNew.Rmt2Descriptor.TryParse(templateName, out var rmt2Descriptor))
+                    {
+                        foreach (var tag in CacheContext.TagCacheGenHO.TagTable)
+                            if (tag != null && tag.Group.Tag == "rmt2" && (tag.Name.Contains(rmt2Descriptor.Type) || FlagIsSet(PortingFlags.GenerateShaders)))
+                            {
+                                if ((FlagIsSet(PortingFlags.Ms30) && tag.Name.StartsWith("ms30\\")) || (!FlagIsSet(PortingFlags.Ms30) && !tag.Name.StartsWith("ms30\\")))
+                                    return true;
+
+                                else if (tag.Name.StartsWith("ms30\\"))
+                                    continue;
+                            }
+                    };
+                }
+                else 
+                {
+                    if (TagTool.Shaders.ShaderMatching.ShaderMatcherNew.Rmt2Descriptor.TryParse(templateName, out var rmt2Descriptor))
+                    {
+                        foreach (var tag in CacheContext.TagCacheGenHO.TagTable)
+                            if (tag != null && tag.Group.Tag == "rmt2" && (tag.Name.Contains(rmt2Descriptor.Type) || FlagIsSet(PortingFlags.GenerateShaders)))
+                            {
+                                if ((FlagIsSet(PortingFlags.Ms30) && tag.Name.StartsWith("ms30\\")) || (!FlagIsSet(PortingFlags.Ms30) && !tag.Name.StartsWith("ms30\\")))
+                                    return true;
+
+                                else if (tag.Name.StartsWith("ms30\\"))
+                                    continue;
+                            }
+                    };
+                }
                 // TODO: add code for "!MatchShaders" -- if a perfect match isnt found a null tag will be left in the cache
 
                 // "ConvertTagInternal" isnt called so the default shader needs to be set here
@@ -553,6 +572,28 @@ namespace TagTool.MtnDewIt.Porting
                 if (eqip.EquipmentFlagsReach.HasFlag(Equipment.EquipmentFlagBitsReach.ThirdPersonCameraWhileActive))
                     eqip.EquipmentFlags |= Equipment.EquipmentFlagBits.ThirdPersonCameraAlways;
             }
+
+            if (definition is Projectile proj)
+            {
+                // merge old and new material response lists
+                var newMaterials = new List<Projectile.ProjectileMaterialResponseBlock>();
+                var converter = new StructureAutoConverter(BlamCache, CacheContext);
+                converter.TranslateList(proj.MaterialResponsesNew, newMaterials);
+                if (proj.MaterialResponses != null && proj.MaterialResponses.Count > 0)
+                    proj.MaterialResponses.AddRange(newMaterials);
+                else
+                    proj.MaterialResponses = newMaterials;
+
+                // preconvert projectile flags
+                converter.TranslateEnum(proj.FlagsReach, out proj.Flags, proj.Flags.GetType());
+
+                // handle required flags Reach doesn't have
+                if (proj.SuperDetonationProjectileCount > 0)
+                    proj.Flags |= Projectile.ProjectileFlags.HasSuperCombiningExplosion;
+
+                if (proj.ConicalSpread.Any())
+                    proj.Flags |= Projectile.ProjectileFlags.TravelsInstantaneously;
+            }
         }
 
         public void CullNewObjects<T>(List<Scenario.ScenarioPaletteEntry> palette, List<T> instanceList, Dictionary<string,string> replacements)
@@ -610,7 +651,7 @@ namespace TagTool.MtnDewIt.Porting
             if (blamTag == null)
 				return null;
 
-			var groupTag = blamTag.Group.Tag;
+			var groupTag = blamTag.Group.Tag; 
 
 			// Handle tags that are undesired or not ready to be ported
 			switch (groupTag.ToString())
@@ -649,8 +690,6 @@ namespace TagTool.MtnDewIt.Porting
                     return null;//CacheContext.TagCache.GetTag<GlobalVertexShader>(@"shaders\shader_shared_vertex_shaders");
 				case "glps":
                     return null;// CacheContext.TagCache.GetTag<GlobalPixelShader>(@"shaders\shader_shared_pixel_shaders");
-				case "rmgl":
-					return CacheContext.TagCache.GetTag<Shader>(@"levels\multi\s3d_avalanche\materials\s3d_avalanche_collision_material_55");
 				case "rmt2":
                     // match rmt2 with current ones available, else return null
                     return FindClosestRmt2(cacheStream, blamCacheStream, blamTag);
@@ -720,7 +759,7 @@ namespace TagTool.MtnDewIt.Porting
                             }
                         }
 
-                        if (!ReplacedTags.ContainsKey(groupTag))
+						if (!ReplacedTags.ContainsKey(groupTag))
                             ReplacedTags[groupTag] = new List<string>();
 
                         ReplacedTags[groupTag].Add(blamTag.Name);
@@ -862,14 +901,14 @@ namespace TagTool.MtnDewIt.Porting
                             Enum.TryParse(screenEffect.Flags_H3.ToString(), out screenEffect.Flags_ODST);
                         else if (BlamCache.Version >= CacheVersion.HaloOnlineEDLegacy && BlamCache.Version <= CacheVersion.HaloOnline700123)
                             Enum.TryParse(screenEffect.Flags.ToString(), out screenEffect.Flags_ODST);
-                    
+
                         if (CacheContext.StringTable.GetString(screenEffect.InputVariable) == "saved_film_vision_mode_intensity")
                             screenEffect.Flags_ODST |= AreaScreenEffect.ScreenEffectBlock.SefcFlagBits_ODST.DebugDisable; // prevents spawning and rendering
-                    
+
                         if (screenEffect.ObjectFalloff.Data.Length == 0)
                             screenEffect.ObjectFalloff = TagFunction.DefaultConstant;
                     }
-
+                    
                     break;
 
 				case Bitmap bitm:
@@ -1192,6 +1231,14 @@ namespace TagTool.MtnDewIt.Porting
                                 CacheContext.Serialize(cacheStream, sbspTag, sbsp);
                             }
                         }
+
+                        if(BlamCache.Version >= CacheVersion.HaloReach)
+                        {
+                            foreach(var block in scnr.StructureBsps)
+                            {
+                                block.Flags = block.FlagsReach.ConvertLexical<Scenario.StructureBspBlock.StructureBspFlags>();
+                            }
+                        }
                     }
                     break;
 
@@ -1291,6 +1338,7 @@ namespace TagTool.MtnDewIt.Porting
                 case ShaderCustom rmcs:
                 case ShaderDecal rmd:
                 case ShaderHalogram rmhg:
+                case ShaderGlass rmgl:
                 case Shader rmsh:
                 case ShaderScreen rmss:
                 case ShaderWater rmw:
@@ -1424,6 +1472,192 @@ namespace TagTool.MtnDewIt.Porting
                 }
         }
 
+        private bool ConvertEmitterToCustomPoints(Stream cacheStream, Effect.Event.ParticleSystem.Emitter emitter, string blamTagName)
+        {
+            bool converted = false;
+
+            float maxEmissionRadius = 0.0f;
+            if (emitter.EmissionRadius.RuntimeMFlags.HasFlag(ParticlePropertyScalar.EditablePropertiesFlags.IsConstant))
+                maxEmissionRadius = emitter.EmissionRadius.RuntimeMConstantValue;
+            else if (emitter.EmissionRadius.Function.Data[2] == 0)
+                maxEmissionRadius = BitConverter.ToSingle(emitter.EmissionRadius.Function.Data, 8);
+            float maxEmissionAngle = 0.0f;
+            if (emitter.EmissionAngle.RuntimeMFlags.HasFlag(ParticlePropertyScalar.EditablePropertiesFlags.IsConstant))
+                maxEmissionAngle = emitter.EmissionAngle.RuntimeMConstantValue;
+            else if (emitter.EmissionAngle.Function.Data[2] == 0)
+                maxEmissionAngle = BitConverter.ToSingle(emitter.EmissionAngle.Function.Data, 8);
+
+            const int MaxPoints = 120; // adjust as needed
+            int pointsToGenerate = (int)(MaxPoints * maxEmissionRadius);
+            float stepSize = 2.0f / pointsToGenerate;
+
+            var random = new Random(0xFFFF); // conversion should always produce same results
+            var axisScale = emitter.AxisScale;
+
+            ParticleEmitterCustomPoints pecp = new ParticleEmitterCustomPoints();
+            pecp.Points = new List<ParticleEmitterCustomPoints.Point>();
+            pecp.ParticleModel = null; // not needed
+            // todo: optimize
+            int compressionValue = (int)(32767.0f / Math.Max(maxEmissionRadius, 1.0f));
+            pecp.CompressionScale = new RealVector3d(1.0f / compressionValue, 1.0f / compressionValue, 1.0f / compressionValue);
+            pecp.CompressionOffset = new RealVector3d(0, 0, 0);
+
+            if (emitter.EmissionShape == Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.Plane)
+            {
+                Console.WriteLine($"Converting emitter {CacheContext.StringTable.GetString(emitter.Name)} from {emitter.EmissionShape} to CustomPoints");
+                for (int i = 0; i < pointsToGenerate; i++)
+                {
+                    ParticleEmitterCustomPoints.Point point = new ParticleEmitterCustomPoints.Point
+                    {
+                        PositionX = (short)((2.0f * (float)random.NextDouble() - 1.0f) * maxEmissionRadius * axisScale.X * compressionValue),
+                        PositionY = (short)((2.0f * (float)random.NextDouble() - 1.0f) * maxEmissionRadius * axisScale.Y * compressionValue),
+                        PositionZ = (short)((2.0f * (float)random.NextDouble() - 1.0f) * maxEmissionRadius * axisScale.Z * compressionValue),
+                        // Planes have a constant velocity of {1,0,0}
+                        // Emission angle may cause random directions... not much can be done
+                        NormalX = 127,
+                        NormalY = 0,
+                        NormalZ = 0,
+                        Correlation = 0
+                    };
+                    pecp.Points.Add(point);
+                }
+                converted = true;
+            }
+            else if (emitter.EmissionShape == Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.Cube)
+            {
+                Console.WriteLine($"Converting emitter {CacheContext.StringTable.GetString(emitter.Name)} from {emitter.EmissionShape} to CustomPoints");
+                for (int i = 0; i < pointsToGenerate; i++)
+                {
+                    RealVector3d cubePoint = new RealVector3d
+                    {
+                        I = (2.0f * maxEmissionRadius * (float)random.NextDouble() - maxEmissionRadius),
+                        J = (2.0f * maxEmissionRadius * (float)random.NextDouble() - maxEmissionRadius),
+                        K = (2.0f * maxEmissionRadius * (float)random.NextDouble() - maxEmissionRadius)
+                    };
+                    ParticleEmitterCustomPoints.Point point = new ParticleEmitterCustomPoints.Point
+                    {
+                        PositionX = (short)(cubePoint.I * axisScale.X * compressionValue),
+                        PositionY = (short)(cubePoint.J * axisScale.Y * compressionValue),
+                        PositionZ = (short)(cubePoint.K * axisScale.Z * compressionValue),
+                        Correlation = 0
+                    };
+                    cubePoint = RealVector3d.Normalize(cubePoint);
+                    point.NormalX = (sbyte)(cubePoint.I * 127.0f);
+                    point.NormalY = (sbyte)(cubePoint.J * 127.0f);
+                    point.NormalZ = (sbyte)(cubePoint.K * 127.0f);
+                    pecp.Points.Add(point);
+                }
+                converted = true;
+            }
+            else if (emitter.EmissionShape == Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.Cylinder)
+            {
+                Console.WriteLine($"Converting emitter {CacheContext.StringTable.GetString(emitter.Name)} from {emitter.EmissionShape} to CustomPoints");
+                for (int i = 0; i < pointsToGenerate; i++)
+                {
+                    float randomCircular = (float)(random.NextDouble() * 2 * Math.PI);
+                    float randomizedRadius = (float)random.NextDouble() * maxEmissionRadius;
+                    RealVector3d cylinderPoint = new RealVector3d
+                    {
+                        I = (2.0f * (float)random.NextDouble() - 1.0f),
+                        J = randomizedRadius * (float)Math.Sin(randomCircular),
+                        K = randomizedRadius * (float)Math.Cos(randomCircular)
+                    };
+                    ParticleEmitterCustomPoints.Point point = new ParticleEmitterCustomPoints.Point
+                    {
+                        PositionX = (short)(cylinderPoint.I * axisScale.X * compressionValue),
+                        PositionY = (short)(cylinderPoint.J * axisScale.Y * compressionValue),
+                        PositionZ = (short)(cylinderPoint.K * axisScale.Z * compressionValue),
+                        Correlation = 0
+                    };
+                    cylinderPoint = RealVector3d.Normalize(cylinderPoint);
+                    point.NormalX = (sbyte)(cylinderPoint.I * 127.0f);
+                    point.NormalY = (sbyte)(cylinderPoint.J * 127.0f);
+                    point.NormalZ = (sbyte)(cylinderPoint.K * 127.0f);
+                    pecp.Points.Add(point);
+                }
+                converted = true;
+            }
+            else if (emitter.EmissionShape == Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.UnweightedLine)
+            {
+                Console.WriteLine($"Converting emitter {CacheContext.StringTable.GetString(emitter.Name)} from {emitter.EmissionShape} to CustomPoints");
+                for (int i = 0; i < pointsToGenerate; i++)
+                {
+                    float randomCircular = (float)(random.NextDouble() * 2 * Math.PI);
+                    float randomAngle = (float)random.NextDouble() * maxEmissionAngle * 0.017453292f;
+                    RealVector3d linePoint = new RealVector3d
+                    {
+                        I = 0.0f,
+                        J = (2.0f * maxEmissionRadius * (float)random.NextDouble() - maxEmissionRadius),
+                        K = 0.0f
+                    };
+                    ParticleEmitterCustomPoints.Point point = new ParticleEmitterCustomPoints.Point
+                    {
+                        PositionX = (short)(linePoint.I * axisScale.X * compressionValue),
+                        PositionY = (short)(linePoint.J * axisScale.Y * compressionValue),
+                        PositionZ = (short)(linePoint.K * axisScale.Z * compressionValue),
+                        Correlation = 0
+                    };
+                    RealVector3d lineNormal = new RealVector3d
+                    {
+                        I = (float)Math.Cos(randomAngle),
+                        J = (float)(Math.Sin(randomCircular) * Math.Sin(randomAngle)),
+                        K = (float)(Math.Cos(randomCircular) * Math.Sin(randomAngle)),
+                    };
+                    lineNormal = RealVector3d.Normalize(lineNormal);
+                    point.NormalX = (sbyte)(lineNormal.I * 127.0f);
+                    point.NormalY = (sbyte)(lineNormal.J * 127.0f);
+                    point.NormalZ = (sbyte)(lineNormal.K * 127.0f);
+                    pecp.Points.Add(point);
+                }
+                converted = true;
+            }
+            else if (emitter.EmissionShape == Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.Tube)
+            {
+                Console.WriteLine($"Converting emitter {CacheContext.StringTable.GetString(emitter.Name)} from {emitter.EmissionShape} to CustomPoints");
+                for (int i = 0; i < pointsToGenerate; i++)
+                {
+                    float randomCircular = (float)(random.NextDouble() * 2 * Math.PI);
+                    float emissionAngle = maxEmissionAngle * 0.017453292f;
+                    RealVector3d tubePoint = new RealVector3d
+                    {
+                        I = 0.0f,
+                        J = maxEmissionRadius * (float)Math.Sin(randomCircular),
+                        K = maxEmissionRadius * (float)Math.Cos(randomCircular)
+                    };
+                    ParticleEmitterCustomPoints.Point point = new ParticleEmitterCustomPoints.Point
+                    {
+                        PositionX = (short)(tubePoint.I * axisScale.X * compressionValue),
+                        PositionY = (short)(tubePoint.J * axisScale.Y * compressionValue),
+                        PositionZ = (short)(tubePoint.K * axisScale.Z * compressionValue),
+                        Correlation = 0
+                    };
+                    RealVector3d tubeNormal = new RealVector3d
+                    {
+                        I = (float)Math.Cos(emissionAngle),
+                        J = (float)(Math.Sin(randomCircular) * Math.Sin(emissionAngle)),
+                        K = (float)(Math.Cos(randomCircular) * Math.Sin(emissionAngle)),
+                    };
+                    tubeNormal = RealVector3d.Normalize(tubeNormal);
+                    point.NormalX = (sbyte)(tubeNormal.I * 127.0f);
+                    point.NormalY = (sbyte)(tubeNormal.J * 127.0f);
+                    point.NormalZ = (sbyte)(tubeNormal.K * 127.0f);
+                    pecp.Points.Add(point);
+                }
+                converted = true;
+            }
+
+            if (converted)
+            {
+                var pecpTag = CacheContext.TagCache.AllocateTag<ParticleEmitterCustomPoints>(blamTagName);
+                CacheContext.Serialize(cacheStream, pecpTag, pecp);
+
+                emitter.CustomShape = pecpTag;
+                emitter.EmissionShape = Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.CustomPoints;
+                return true;
+            }
+            return false;
+        }
+
         private Effect ConvertEffect(Stream cacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, Effect effe, string blamTagName)
         {
             if (BlamCache.Platform == CachePlatform.MCC)
@@ -1462,21 +1696,17 @@ namespace TagTool.MtnDewIt.Porting
                         foreach (var emitter in particleSystem.Emitters)
                         {
                             // Needs to be implemented in the engine
-                            if (emitter.EmissionShape >= Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.BoatHullSurface)
+                            if (emitter.EmissionShape == Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.BoatHullSurface ||
+                                emitter.EmissionShape == Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.Jetwash)
                             {
-                                switch (emitter.EmissionShape)
-                                {
-                                    case Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.Cylinder:
-                                        emitter.EmissionShape = Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.Tube;
-                                        break;
-                                    case Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.Plane:
-                                        emitter.EmissionShape = Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.Globe;
-                                        break;
-                                    default:
-                                        new TagToolWarning($"Unsupported particle emitter shape '{emitter.EmissionShape}'. Using default.");
-                                        emitter.EmissionShape = Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.Sprayer;
-                                        break;
-                                }
+                                new TagToolWarning($"Unsupported particle emitter shape '{emitter.EmissionShape}'. Using default.");
+                                emitter.EmissionShape = Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.Sprayer;
+                            }
+
+                            if (emitter.AxisScale.X != 1.0f || emitter.AxisScale.Y != 1.0f || emitter.AxisScale.Z != 1.0f)
+                            {
+                                if (!ConvertEmitterToCustomPoints(cacheStream, emitter, blamTagName))
+                                    new TagToolWarning($"Particle emitter \"{CacheContext.StringTable.GetString(emitter.Name)}\" will have incorrect dimensions: AxisScale {emitter.AxisScale}");
                             }
 
                             if (!Enum.TryParse(emitter.ParticleMovement.FlagsReach.ToString(), out emitter.ParticleMovement.Flags))
@@ -1792,7 +2022,7 @@ namespace TagTool.MtnDewIt.Porting
                     collisionBspPhysics = ConvertStructure(cacheStream, blamCacheStream, resourceStreams, collisionBspPhysics, definition, blamTagName);
                     return ConvertCollisionBspPhysicsReach(collisionBspPhysics);
 
-                case RenderGeometry renderGeometry when BlamCache.Version >= CacheVersion.Halo3Retail:
+				case RenderGeometry renderGeometry when BlamCache.Version >= CacheVersion.Halo3Retail:
 					renderGeometry = ConvertStructure(cacheStream, blamCacheStream, resourceStreams, renderGeometry, definition, blamTagName);
 					return renderGeometry;
 

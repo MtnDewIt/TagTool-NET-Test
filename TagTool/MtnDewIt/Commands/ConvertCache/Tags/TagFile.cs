@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using TagTool.Animations;
 using TagTool.Tags.Resources;
 using TagTool.Scripting.Compiler;
+using TagTool.MtnDewIt.Animations;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
 {
@@ -118,23 +119,30 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     break;
                 case ".JMT":
                     FrameInfoType = ModelAnimationTagResource.GroupMemberMovementDataType.dx_dy_dyaw;
-                    new TagToolWarning("Advanced Movement data not currently supported, animation may not display properly!");
                     break;
                 case ".JMZ":
                     FrameInfoType = ModelAnimationTagResource.GroupMemberMovementDataType.dx_dy_dz_dyaw;
-                    new TagToolWarning("Advanced Movement data not currently supported, animation may not display properly!");
                     break;
                 default:
                     new TagToolError(CommandError.CustomError, $"Filetype {file_extension.ToUpper()} not recognized!");
                     return;
             }
 
+            bool replacing = false;
             string file_name = Path.GetFileNameWithoutExtension(filepath.FullName).Replace(' ', ':');
             StringId animation_name = CacheContext.StringTable.GetStringId(file_name);
+
+            int existingIndex = -1;
             if (animation_name == StringId.Invalid)
                 animation_name = CacheContext.StringTable.AddString(file_name);
+            else
+            {
+                existingIndex = jmad.Animations.FindIndex(n => n.Name == animation_name);
+                if (existingIndex != -1)
+                    replacing = true;
+            }
 
-            var importer = new AnimationImporter();
+            var importer = new InlineAnimationImporter(Stream);
 
             if (!importer.Import(filepath.FullName)) 
             {
@@ -146,7 +154,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new TagToolError(CommandError.CustomError, $@"Invalid Animation Format");
             }
 
-            List<AnimationImporter.AnimationNode> newAnimationNodes = new List<AnimationImporter.AnimationNode>();
+            List<InlineAnimationImporter.AnimationNode> newAnimationNodes = new List<InlineAnimationImporter.AnimationNode>();
             foreach (var skellynode in jmad.SkeletonNodes)
             {
                 string nodeName = Cache.StringTable.GetString(skellynode.Name);
@@ -154,7 +162,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 if (matching_index == -1)
                 {
                     new TagToolWarning($"No node matching '{nodeName}' found in imported file! Will proceed with blank data for missing node");
-                    newAnimationNodes.Add(new AnimationImporter.AnimationNode()
+                    newAnimationNodes.Add(new InlineAnimationImporter.AnimationNode()
                     {
                         Name = nodeName,
                         FirstChildNode = skellynode.FirstChildNodeIndex,
@@ -164,7 +172,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 }
                 else
                 {
-                    AnimationImporter.AnimationNode matching_node = importer.AnimationNodes[matching_index];
+                    InlineAnimationImporter.AnimationNode matching_node = importer.AnimationNodes[matching_index];
                     matching_node.FirstChildNode = skellynode.FirstChildNodeIndex;
                     matching_node.NextSiblingNode = skellynode.NextSiblingNodeIndex;
                     matching_node.ParentNode = skellynode.ParentNodeIndex;
@@ -174,22 +182,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
 
             importer.AnimationNodes = newAnimationNodes;
 
-            importer.ProcessNodeFrames(CacheContext, AnimationType, FrameInfoType);
-
-            ModelAnimationTagResource newResource = new ModelAnimationTagResource
-            {
-                GroupMembers = new TagBlock<ModelAnimationTagResource.GroupMember>()
-            };
-            newResource.GroupMembers.Add(importer.SerializeAnimationData(CacheContext));
-            newResource.GroupMembers.AddressType = CacheAddressType.Definition;
-
-            TagResourceReference resourceref = CacheContext.ResourceCache.CreateModelAnimationGraphResource(newResource);
-
-            jmad.ResourceGroups.Add(new ModelAnimationGraph.ResourceGroup
-            {
-                ResourceReference = resourceref,
-                MemberCount = 1
-            });
+            importer.ProcessNodeFrames(CacheContext, jmad, AnimationType, FrameInfoType);
 
             var AnimationBlock = new ModelAnimationGraph.Animation
             {
@@ -217,7 +210,35 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             if (isWorldRelative)
                 AnimationBlock.AnimationData.InternalFlags |= ModelAnimationGraph.Animation.InternalFlagsValue.WorldRelative;
 
-            jmad.Animations.Add(AnimationBlock);
+            ModelAnimationTagResource newResource = new ModelAnimationTagResource
+            {
+                GroupMembers = new TagBlock<ModelAnimationTagResource.GroupMember>()
+            };
+            newResource.GroupMembers.Add(importer.SerializeAnimationData(CacheContext));
+            newResource.GroupMembers.AddressType = CacheAddressType.Definition;
+
+            TagResourceReference resourceref = CacheContext.ResourceCache.CreateModelAnimationGraphResource(newResource);
+
+            jmad.ResourceGroups.Add(new ModelAnimationGraph.ResourceGroup
+            {
+                ResourceReference = resourceref,
+                MemberCount = 1
+            });
+
+            AnimationBlock.AnimationData.ResourceGroupIndex = (short)(jmad.ResourceGroups.Count - 1);
+            AnimationBlock.AnimationData.ResourceGroupMemberIndex = 0;
+
+            if (replacing)
+            {
+                jmad.Animations[existingIndex] = AnimationBlock;
+            }
+            else
+            {
+                jmad.Animations.Add(AnimationBlock);
+                existingIndex = jmad.Animations.Count - 1;
+            }
+
+            AddModeEntries(file_name, existingIndex, jmad, AnimationType);
 
             CacheContext.SaveStrings();
             CacheContext.Serialize(Stream, tag, jmad);
@@ -268,6 +289,149 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             }
 
             CacheContext.Serialize(Stream, tag, jmad);
+        }
+
+        public void AddModeEntries(string filename, int animationIndex, ModelAnimationGraph jmad, ModelAnimationGraph.FrameType animationType)
+        {
+            List<string> tokens = filename.Split(':').ToList();
+            List<string> unsupportedTokens =
+                new List<string> { "s_kill", "s_ping", "h_kill", "h_ping", "sync_actions", "suspension", "tread", "object", "2", "device" };
+            if (tokens.Any(t => unsupportedTokens.Contains(t)))
+            {
+                new TagToolWarning($"Unsupported string token found in filename {filename}. Manual mode addition is required.");
+                return;
+            }
+
+            //variants are all handled by the same mode entry
+            if (tokens.Last().StartsWith("var"))
+                tokens.RemoveAt(tokens.Count - 1);
+
+            //fixups for specific mode tokens
+            List<string> edgeCases = new List<string> { "vehicle", "first_person", "weapon" };
+            if (edgeCases.Contains(tokens[0]))
+                tokens[0] = "any";
+
+            string modeString = "";
+            string classString = "";
+            string typeString = "";
+            string actionString = "";
+
+            switch (tokens.Count)
+            {
+                case 1:
+                    modeString = "any";
+                    classString = "any";
+                    typeString = "any";
+                    actionString = tokens[0];
+                    break;
+                case 2:
+                    modeString = tokens[0];
+                    classString = "any";
+                    typeString = "any";
+                    actionString = tokens[1];
+                    break;
+                case 3:
+                    modeString = tokens[0];
+                    classString = tokens[1];
+                    typeString = "any";
+                    actionString = tokens[2];
+                    break;
+                case 4:
+                    modeString = tokens[0];
+                    classString = tokens[1];
+                    typeString = tokens[2];
+                    actionString = tokens[3];
+                    break;
+            }
+
+            int modeIndex = AddMode(modeString, jmad);
+            int classIndex = AddClass(modeIndex, classString, jmad);
+            int typeIndex = AddType(modeIndex, classIndex, typeString, jmad);
+            AddAction(modeIndex, classIndex, typeIndex, actionString, animationIndex, jmad, animationType);
+        }
+
+        public int AddMode(string modeString, ModelAnimationGraph jmad)
+        {
+            StringId modeStringID = CacheContext.StringTable.GetStringId(modeString);
+            int modesIndex = jmad.Modes.FindIndex(m => m.Name == modeStringID);
+            if (modesIndex != -1)
+                return modesIndex;
+            else
+            {
+                jmad.Modes.Add(new ModelAnimationGraph.Mode
+                {
+                    Name = modeStringID,
+                    WeaponClass = new List<ModelAnimationGraph.Mode.WeaponClassBlock>()
+                });
+                return jmad.Modes.Count - 1;
+            }
+        }
+
+        public int AddClass(int modeIndex, string classString, ModelAnimationGraph jmad)
+        {
+            StringId classStringID = CacheContext.StringTable.GetStringId(classString);
+            int classIndex = jmad.Modes[modeIndex].WeaponClass.FindIndex(m => m.Label == classStringID);
+            if (classIndex != -1)
+                return classIndex;
+            else
+            {
+                jmad.Modes[modeIndex].WeaponClass.Add(new ModelAnimationGraph.Mode.WeaponClassBlock
+                {
+                    Label = classStringID,
+                    WeaponType = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock>()
+                });
+                return jmad.Modes[modeIndex].WeaponClass.Count - 1;
+            }
+        }
+
+        public int AddType(int modeIndex, int classIndex, string typeString, ModelAnimationGraph jmad)
+        {
+            StringId typeStringID = CacheContext.StringTable.GetStringId(typeString);
+            int typeIndex = jmad.Modes[modeIndex].WeaponClass[classIndex].WeaponType.
+                FindIndex(m => m.Label == typeStringID);
+            if (typeIndex != -1)
+                return typeIndex;
+            else
+            {
+                jmad.Modes[modeIndex].WeaponClass[classIndex].WeaponType.Add(new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock
+                {
+                    Label = typeStringID,
+                    Set = new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.AnimationSet
+                    {
+                        Actions = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry>(),
+                        Overlays = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry>()
+                    }
+                });
+                return jmad.Modes[modeIndex].WeaponClass[classIndex].WeaponType.Count - 1;
+            }
+        }
+
+        public void AddAction(int modeIndex, int classIndex, int typeIndex, string actionString, int animationIndex, ModelAnimationGraph jmad, ModelAnimationGraph.FrameType animationType)
+        {
+            StringId actionStringID = CacheContext.StringTable.GetStringId(actionString);
+            var set = jmad.Modes[modeIndex].WeaponClass[classIndex].WeaponType[typeIndex].Set;
+            var newAction = new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
+            {
+                Label = actionStringID,
+                GraphIndex = -1,
+                Animation = (short)animationIndex
+            };
+            if (animationType == ModelAnimationGraph.FrameType.Base) //for base actions
+            {
+                int actionIndex = set.Actions.FindIndex(m => m.Label == actionStringID);
+                if (actionIndex != -1)
+                    set.Actions[actionIndex] = newAction;
+                else
+                    set.Actions.Add(newAction);
+            }
+            else //handles overlays and replacements
+            {
+                int actionIndex = set.Overlays.FindIndex(m => m.Label == actionStringID);
+                if (actionIndex != -1)
+                    set.Overlays[actionIndex] = newAction;
+                else
+                    set.Overlays.Add(newAction);
+            }
         }
 
         public CachedTag GetCachedTag<T>(string tagName) where T : TagStructure

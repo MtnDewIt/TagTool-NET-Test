@@ -1827,7 +1827,7 @@ namespace TagTool.MtnDewIt.Porting
                             expr.Opcode = 0x6A6;
                             return true;
                         }
-                        else 
+                        else
                         {
                             // cinematic_scripting_destroy_object
                             expr.Opcode = 0x3A0;
@@ -1894,7 +1894,7 @@ namespace TagTool.MtnDewIt.Porting
                         expr.Opcode = 0x4B2; // -> objectives_show
                         return true;
                     case 0x118: // unit_add_equipment
-                        expr.Opcode = 0x126; // ^
+                        expr.Opcode = 0x136; // -> unit_add_equipment
                         UpdateUnitAddEquipmentScript(cacheStream, scnr, expr);
                         return true;
 
@@ -1946,7 +1946,7 @@ namespace TagTool.MtnDewIt.Porting
                         }
 
                         profileExpr.ValueType.Halo3Retail = HsType.Halo3RetailValue.StartingProfile;
-                        Array.Copy(BitConverter.GetBytes((short)startingProfileIndex), expr.Data, 2);
+                        profileExpr.Data = new byte[] { (byte)((startingProfileIndex >> 8)), (byte)(startingProfileIndex & 0xFF), 0xFF, 0xFF };
                         return;
                     }
                 }

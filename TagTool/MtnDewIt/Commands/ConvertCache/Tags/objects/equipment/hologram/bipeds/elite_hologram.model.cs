@@ -119,7 +119,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         HaloOnline = Damage.DamageReportingType.HaloOnlineValue.Guardians,
                     },
-                    UnknownHO = 0,
                     MaximumVitality = 45,
                     MinStunDamage = 0,
                     StunTime = 10,

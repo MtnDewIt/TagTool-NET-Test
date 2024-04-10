@@ -174,7 +174,7 @@ namespace TagTool.MtnDewIt.Porting
                         SecondaryNewState = InstantResponse.NewStateValue.Default,
                         SecondaryRuntimeRegionIndex = -1,
                         DestroyInstanceGroup = instantResponse.DestroyInstanceGroupIndex,
-                        CustomResponseBehavior = instantResponse.CustomResponseBehavior.ConvertLexical<InstantResponse.CustomResponseBehaviorValue>(),
+                        CustomResponseBehavior = instantResponse.CustomResponseBehavior.ConvertLexical <InstantResponse.CustomResponseBehaviorValue>(),
                         CustomResponseLabel = instantResponse.CustomResponseLabel,
                         EffectMarkerName = instantResponse.GenericEffectMarker,
                         DamageEffectMarkerName = instantResponse.DamageEffectMarkerName,

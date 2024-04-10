@@ -10,6 +10,7 @@ using TagTool.Tags;
 using TagTool.Serialization;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Resources;
+using TagTool.Animations.Codecs;
 
 namespace TagTool.MtnDewIt.Porting
 {
@@ -283,11 +284,11 @@ namespace TagTool.MtnDewIt.Porting
                             //uses Bonobo code to read the type9 animation, and hybrid code to write a type3 codec in its place
                             case ModelAnimationTagResource.AnimationCompressionFormats.Type9:
                                 sourceStream.Position = StaticDataSize;
-                                Animations.Codecs.CurveCodec type9 = (Animations.Codecs.CurveCodec)new Animations.Codecs.CurveCodec(member.FrameCount);
+                                CurveCodec type9 = (CurveCodec)new CurveCodec(member.FrameCount);
                                 type9.Read(sourceReader);
 
                                 //create a new type3 codec from the parsed type9 data
-                                Animations.Codecs._8ByteQuantizedRotationOnlyCodec type3 = new Animations.Codecs._8ByteQuantizedRotationOnlyCodec(member.FrameCount)
+                                _8ByteQuantizedRotationOnlyCodec type3 = new _8ByteQuantizedRotationOnlyCodec(member.FrameCount)
                                 {
                                     Rotations = type9.Rotations,
                                     Translations = type9.Translations,
@@ -469,8 +470,8 @@ namespace TagTool.MtnDewIt.Porting
                     animation.AnimationData.CurrentCompression = animation.AnimationData.CurrentCompressionReach;
                     animation.AnimationData.ProductionFlags = animation.ProductionFlagsReach;
                     animation.AnimationData.Heading = animation.AnimationData.HeadingReach;
-                    animation.AnimationData.HeadingAngle = animation.AnimationData.HeadingAngleReach;
-                    animation.AnimationData.TranslationMagnitude = animation.AnimationData.TranslationMagnitudeReach;
+                    animation.AnimationData.AveragePivotYaw = animation.AnimationData.AveragePivotYawReach;
+                    animation.AnimationData.AverageTranslationMagnitude = animation.AnimationData.AverageTranslationMagnitudeReach;
                     animation.AnimationData.BlendScreen = animation.BlendScreenReach;
                     foreach (var soundevent in animation.AnimationData.SoundEvents)
                         soundevent.MarkerName = ConvertStringId(soundevent.MarkerName);
