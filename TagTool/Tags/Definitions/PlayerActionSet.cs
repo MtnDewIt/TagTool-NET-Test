@@ -32,8 +32,13 @@ namespace TagTool.Tags
 
             public byte[] Stylesheet; // Remove for release
 
-            //[TagField(Flags = TagFieldFlags.Padding, Length = 0x100)] // Uncomment for release
-            //public byte[] Unused = new byte[0x100];
+            //public ArgbColor BackgroundColor; // Uncomment for release
+            //public ArgbColor BorderColor; // Uncomment for release
+            //public ArgbColor HighlightColor; // Uncomment for release
+            //public ArgbColor TextColor; // Uncomment for release
+
+            //[TagField(Flags = TagFieldFlags.Padding, Length = 0xF0)] // Uncomment for release
+            //public byte[] Unused = new byte[0xF0];
 
             public enum WidgetType : short
             {
