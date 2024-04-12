@@ -389,7 +389,7 @@ namespace TagTool.Commands.Porting.Gen2
             {
                 using (var stream = new MemoryStream(rawBitmapData))
                 using (var resultStream = new MemoryStream())
-                using (var zstream = new GZipStream(stream, CompressionMode.Decompress))
+                using (var zstream = new ZLibStream(stream, CompressionMode.Decompress))
                 {
                     zstream.CopyTo(resultStream);
                     rawBitmapData = resultStream.ToArray();
