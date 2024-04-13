@@ -13,6 +13,15 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 {
     partial class GenerateCacheCommand : Command 
     {
+        public enum GeneratedCacheType
+        {
+            Halo3,
+            Halo3Mythic,
+            Halo3ODST,
+            ElDewrito,
+            HaloOnline,
+        }
+
         public GameCache Cache { get; set; }
         public GameCacheHaloOnline CacheContext { get; set; }
         public CommandContextStack ContextStack { get; set; }
@@ -127,6 +136,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
         public PortingContext sc140 { get; set; }
         public GameCache sc150Cache { get; set; }
         public PortingContext sc150 { get; set; }
+
+        public GeneratedCacheType CacheType { get; set; }
 
         public GenerateCacheCommand(GameCache cache, CommandContextStack contextStack) : base
         (
@@ -304,6 +315,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             sc150Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc150.map");
 
             outputDirectoryInfo = GetOutputDirectory(outputDirectoryInfo);
+
+            CacheType = GeneratedCacheType.Halo3;
         }
 
         public DirectoryInfo GetDirectoryInfo(DirectoryInfo directoryInfo, String build)
