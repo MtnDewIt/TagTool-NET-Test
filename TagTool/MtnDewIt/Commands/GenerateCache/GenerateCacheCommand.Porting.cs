@@ -700,11 +700,18 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             sandbox.SetPortingProperties(audioCodec: Compression.OGG);
             sandbox.PortTag($@"", $@"objects\characters\masterchief\mp_masterchief\fp\fp.mode");
             sandbox.PortTag($@"", $@"objects\characters\masterchief\mp_masterchief\fp_body\fp_body.mode");
+            GenerateTag<Light>($@"objects\characters\masterchief\fx\shield\shield_down");
+            GenerateRenderMethodTemplate($@"shader", $@"10 3 0 1 1 2 9 0 0 1 0 0");
+            GenerateRenderMethodTemplate($@"shader", $@"4 1 0 1 1 2 0 0 0 1 0 0");
+            sandbox.PortTag($@"", $@"objects\characters\masterchief\shaders\visor.rmsh");
+            RenameTag(GetCachedTag<Shader>($@"objects\characters\masterchief\shaders\visor"), $@"objects\characters\masterchief\shaders\mp_visor");
+            GenerateTag<Bitmap>($@"objects\characters\masterchief\bitmaps\mp_visor_cc");
             sandbox.PortTag($@"", $@"objects\characters\masterchief\mp_masterchief\mp_masterchief.bipd");
             GenerateTag<CameraTrack>($@"objects\characters\masterchief\mp_masterchief\action_camera");
             GenerateTag<PlayerActionSet>($@"objects\characters\masterchief\mp_masterchief\actions");
             sandbox.PortTag($@"", $@"objects\characters\elite\mp_elite\fp\fp.mode");
             sandbox.PortTag($@"", $@"objects\characters\elite\mp_elite\fp_body\fp_body.mode");
+            GenerateTag<Light>($@"objects\characters\dervish\fx\shield\shield_down");
             sandbox.PortTag($@"", $@"objects\characters\elite\mp_elite\mp_elite.bipd");
             GenerateTag<CameraTrack>($@"objects\characters\elite\mp_elite\action_camera");
             GenerateTag<PlayerActionSet>($@"objects\characters\elite\mp_elite\actions");
@@ -720,6 +727,13 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             citadel.PortTag($@"", $@"objects\characters\masterchief\fp\fp.mode");
             citadel.PortTag($@"", $@"objects\characters\masterchief\fp_body\fp_body.mode");
             citadel.PortTag($@"", $@"objects\characters\masterchief\masterchief.bipd");
+
+            haloOnline.SetPortingProperties(audioCodec: Compression.OGG);
+            haloOnline.PortTag($@"", $@"camera\biped_assassination_camera.camera_track");
+            haloOnline.PortTag($@"", $@"globals\damage_responses\player_assassination.damage_response_definition");
+            haloOnline.PortTag($@"", $@"objects\props\human\unsc\spartan_knife\spartan_knife.scenery");
+            haloOnline.PortTag($@"", $@"globals\damage_effects\shield_pop_melee.damage_effect");
+            haloOnline.PortTag($@"", $@"globals\damage_effects\assassination.damage_effect");
 
             citadel.SetPortingProperties(audioCodec: Compression.OGG);
             citadel.PortTag($@"", $@"sound\characters\elite\shade_d_enter.sound");

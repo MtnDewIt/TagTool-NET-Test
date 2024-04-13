@@ -324,7 +324,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
             new objects_characters_dervish_dervish_model(Cache, CacheContext, CacheStream);
 
+            new objects_characters_dervish_dervish_biped(Cache, CacheContext, CacheStream);
+
             new objects_characters_dervish_dervish_model_animation_graph(Cache, CacheContext, CacheStream);
+
+            new objects_characters_dervish_fx_shield_shield_down_light(Cache, CacheContext, CacheStream);
 
             new objects_characters_elite_elite_model_animation_graph(Cache, CacheContext, CacheStream);
 
@@ -336,6 +340,10 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
             new objects_characters_elite_mp_elite_mp_elite_model(Cache, CacheContext, CacheStream);
 
+            new objects_characters_elite_mp_elite_mp_elite_biped(Cache, CacheContext, CacheStream);
+
+            new objects_characters_elite_mp_elite_mp_elite_render_model(Cache, CacheContext, CacheStream);
+
             new objects_characters_masterchief_masterchief_model(Cache, CacheContext, CacheStream);
 
             new objects_characters_masterchief_masterchief_model_animation_graph(Cache, CacheContext, CacheStream);
@@ -345,6 +353,42 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             new objects_characters_masterchief_mp_masterchief_actions_player_action_set(Cache, CacheContext, CacheStream);
 
             new objects_characters_masterchief_mp_masterchief_mp_masterchief_model(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_mp_masterchief_mp_masterchief_biped(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_mp_masterchief_mp_masterchief_render_model(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_fx_flaming_ninja_effect(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_fx_shield_shield_down_light(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_bitmaps_mp_visor_cc_bitmap(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_shaders_mp_masterchief_shader(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_shaders_mp_cobra_visor_shader(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_shaders_mp_intruder_visor_shader(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_shaders_mp_marathon_visor_shader(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_shaders_mp_markv_visor_shader(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_shaders_mp_ninja_visor_shader(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_shaders_mp_odst_visor_shader(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_shaders_mp_regulator_visor_shader(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_shaders_mp_rogue_visor_shader(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_shaders_mp_ryu_visor_shader(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_shaders_mp_scout_visor_shader(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_shaders_mp_visor_shader(Cache, CacheContext, CacheStream);
+
+            new objects_characters_monitor_monitor_editor_biped(Cache, CacheContext, CacheStream);
 
             new objects_equipment_tripmine_tripmine_forge_equipment(Cache, CacheContext, CacheStream);
 

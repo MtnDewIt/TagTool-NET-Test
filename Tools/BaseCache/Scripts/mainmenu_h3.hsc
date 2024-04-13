@@ -83,6 +83,7 @@
 	(custom_animation_loop "elite_appearance" "objects\characters\dervish\dervish" "ui:pistol:idle:var1" false)
 	(object_hide "spartan_appearance" true)
 	(object_hide "elite_appearance" true)
+    (texture_camera_enable_dynamic_lights true)
 )
 
 (script static void campaign_characters
@@ -95,6 +96,7 @@
 	(objects_attach "campaign_aribter" "right_hand_elite" "campaign_pr" "invalid")
 	(custom_animation_loop "campaign_chief" "objects\characters\masterchief\masterchief" "ui:rifle:idle:var2" false)
 	(custom_animation_loop "campaign_aribter" "objects\characters\elite\elite" "ui:pistol:idle:var1" false)
+	(texture_camera_enable_dynamic_lights true)
 )
 
 (script static void survival_characters
@@ -112,6 +114,7 @@
 	(objects_attach "survival_odst_recon_02" "weapon_thigh" "survival_automag_2" "weapon_stow_anchor")
 	(custom_animation_loop "survival_odst_recon_01" "objects\characters\marine\marine" "act_guard_crouch:idle" false)
 	(custom_animation_loop "survival_odst_recon_02" "objects\characters\marine\marine" "act_work_stand:idle:var1" false)
+	(texture_camera_enable_dynamic_lights true)
 )
 
 (script static void custom_characters
@@ -125,6 +128,7 @@
 	(objects_attach "custom_elite_01" "left_hand_elite" "custom_pr_02" "invalid")
 	(custom_animation_loop "custom_chief_01" "objects\characters\masterchief\masterchief" "ui:rifle:idle:var3" false)
 	(custom_animation_loop "custom_elite_01" "objects\characters\elite\elite" "ui:dual:idle:var1" false)
+	(texture_camera_enable_dynamic_lights true)
 )
 
 (script static void editor_characters
@@ -157,6 +161,14 @@
 	(object_destroy "cruiser3")
 	(object_create_anew "banshee1")
 	(object_create_anew "banshee2")
+	(cinematic_light_object "ark" "invalid" lighting_ark "light_anchor")
+	(cinematic_light_object "storm" "invalid" lighting_storm "light_anchor")
+	(cinematic_light_object "cruiser1" "invalid" lighting_ships "light_anchor")
+	(cinematic_light_object "cruiser2" "invalid" lighting_ships "light_anchor")
+	(cinematic_light_object "cruiser3" "invalid" lighting_ships "light_anchor")
+	(cinematic_light_object "cruiser4" "invalid" lighting_ships "light_anchor")
+	(cinematic_light_object "clouds_ark" "invalid" lighting_clouds "light_anchor")
+	(cinematic_lighting_rebuild_all)
 	(sleep_until (begin_random
 		(begin
 			(print "mainmenu: camera track 1")
@@ -418,6 +430,8 @@
 	(object_destroy "banshee1")
 	(object_destroy "banshee2")
 	(object_create "cruiser3")
+	(cinematic_light_object "cruiser3" "invalid" lighting_ships "light_anchor")
+	(cinematic_lighting_rebuild_all)
 	(camera_set "theater_in" 0)
 	(sleep 0)
 	(camera_set "theater" 11)

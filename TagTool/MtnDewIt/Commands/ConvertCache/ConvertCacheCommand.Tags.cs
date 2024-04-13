@@ -445,8 +445,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new objects_characters_masterchief_mp_masterchief_mp_masterchief_render_model(Cache, CacheContext, CacheStream);
 
-            new objects_characters_masterchief_masterchief_biped(Cache, CacheContext, CacheStream);
-
             new objects_characters_masterchief_fx_flaming_ninja_effect(Cache, CacheContext, CacheStream);
 
             new objects_characters_masterchief_fx_shield_shield_down_light(Cache, CacheContext, CacheStream);
@@ -468,6 +466,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             new objects_equipment_hologram_bipeds_elite_hologram_biped(Cache, CacheContext, CacheStream);
 
             new objects_equipment_hologram_bipeds_elite_hologram_model(Cache, CacheContext, CacheStream);
+
+            new objects_characters_masterchief_shaders_mp_masterchief_shader(Cache, CacheContext, CacheStream);
 
             new objects_characters_masterchief_shaders_mp_cobra_visor_shader(Cache, CacheContext, CacheStream);
 

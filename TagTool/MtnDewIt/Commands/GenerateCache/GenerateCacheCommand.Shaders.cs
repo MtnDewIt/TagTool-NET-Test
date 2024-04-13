@@ -4,6 +4,8 @@ using System.IO;
 using TagTool.Cache;
 using TagTool.MtnDewIt.Shaders.LegacyShaderGenerator;
 using TagTool.Tags.Definitions;
+using System.Collections.Generic;
+using TagTool.Common;
 
 namespace TagTool.MtnDewIt.Commands.GenerateCache
 {
@@ -49,6 +51,27 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
                 CacheContext.SaveTagNames();
             }
+        }
+
+        public void GenerateRenderMethodTemplate(string shaderType, string shaderOptions)
+        {
+            List<byte> rawShaderOptions = new List<byte>();
+
+            string[] optionsList = shaderOptions.Split(new char[] { ' ' });
+
+            for (int i = 0; i < optionsList.Length; i++)
+            {
+                var parsedShaderOption = byte.Parse(optionsList[i]);
+
+                rawShaderOptions.Add(parsedShaderOption);
+            }
+
+            var rmdfTag = CacheContext.TagCache.GetTag<RenderMethodDefinition>($@"shaders\{shaderType}");
+            var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(CacheStream, rmdfTag);
+
+            LegacyShaderGenerator.GenerateShaderTemplate(Cache, CacheStream, shaderType, rawShaderOptions.ToArray(), rmdf);
+
+            CustomThreadPool.FreeAllThreads();
         }
     }
 }
