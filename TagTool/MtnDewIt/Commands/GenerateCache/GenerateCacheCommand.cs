@@ -251,6 +251,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
         public void GetCacheFiles()
         {
+            CacheType = GetCacheType();
+
             haloOnlineDirectoryInfo = GetDirectoryInfo(haloOnlineDirectoryInfo, "Halo Online MS23");
 
             haloOnlineCache = GameCache.Open($@"{haloOnlineDirectoryInfo.FullName}\tags.dat");
@@ -315,8 +317,22 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             sc150Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc150.map");
 
             outputDirectoryInfo = GetOutputDirectory(outputDirectoryInfo);
+        }
 
-            CacheType = GeneratedCacheType.Halo3;
+        public GeneratedCacheType GetCacheType() 
+        {
+            Console.WriteLine("\nEnter the cache type: ");
+            var inputType = Console.ReadLine().Replace("\"", "");
+
+            if (Enum.TryParse(typeof(GeneratedCacheType), inputType, true, out object result))
+            {
+                return (GeneratedCacheType)result;
+            }
+            else 
+            {
+                new TagToolError(CommandError.CustomError, $"Invalid Cache Type: '{inputType}'");
+                throw new ArgumentException();
+            }
         }
 
         public DirectoryInfo GetDirectoryInfo(DirectoryInfo directoryInfo, String build)
