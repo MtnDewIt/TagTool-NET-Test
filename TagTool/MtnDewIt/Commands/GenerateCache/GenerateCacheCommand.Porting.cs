@@ -902,8 +902,32 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             odstMainMenu.PortTag($@"", $@"objects\weapons\pistol\automag\automag.scenery");
             odstMainMenu.PortTag($@"", $@"objects\weapons\rifle\smg_silenced\smg_silenced.scenery");
 
-            h3MainMenu.SetPortingProperties(audioCodec: Compression.OGG);
-            h3MainMenu.PortTag($@"", $@"*.scnr");
+            switch (CacheType)
+            {
+                case GeneratedCacheType.Halo3:
+                    h3MainMenu.SetPortingProperties(audioCodec: Compression.OGG);
+                    h3MainMenu.PortTag($@"", $@"*.scnr");
+                    break;            
+
+                case GeneratedCacheType.Halo3Mythic:
+                    mythicMainMenu.SetPortingProperties(audioCodec: Compression.OGG);
+                    mythicMainMenu.PortTag($@"", $@"*.scnr");
+                    break;            
+
+                case GeneratedCacheType.Halo3ODST:
+                    odstMainMenu.SetPortingProperties(audioCodec: Compression.OGG);
+                    odstMainMenu.PortTag($@"", $@"*.scnr");
+                    break;
+
+                case GeneratedCacheType.ElDewrito:
+                    GenerateTag<Scenario>($@"levels\ui\mainmenu\mainmenu");
+                    break;
+
+                case GeneratedCacheType.HaloOnline:
+                    haloOnline.SetPortingProperties(audioCodec: Compression.OGG);
+                    haloOnline.PortTag($@"", $@"levels\ui\mainmenu\mainmenu.scnr");
+                    break;
+            }
         }
 
         public void InitializePortingContext()

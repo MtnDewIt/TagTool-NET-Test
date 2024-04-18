@@ -592,13 +592,34 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
             new ui_single_player_user_interface_globals_definition(Cache, CacheContext, CacheStream);
 
-            new levels_ui_mainmenu_mainmenu_h3_scenario(Cache, CacheContext, CacheStream);
-
             new levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_biped(Cache, CacheContext, CacheStream);
 
             new levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_model(Cache, CacheContext, CacheStream);
 
             new levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_render_model(Cache, CacheContext, CacheStream);
+
+            switch (CacheType)
+            {
+                case GeneratedCacheType.Halo3:
+                    new levels_ui_mainmenu_mainmenu_h3_scenario(Cache, CacheContext, CacheStream);
+                    break;
+            
+                case GeneratedCacheType.Halo3Mythic:
+                    new levels_ui_mainmenu_mainmenu_mythic_scenario(Cache, CacheContext, CacheStream);
+                    break;
+            
+                case GeneratedCacheType.Halo3ODST:
+                    new levels_ui_mainmenu_mainmenu_odst_scenario(Cache, CacheContext, CacheStream);
+                    break;
+
+                case GeneratedCacheType.ElDewrito:
+                    new levels_ui_mainmenu_mainmenu_eldewrito_scenario(Cache, CacheContext, CacheStream);
+                    break;
+
+                case GeneratedCacheType.HaloOnline:
+                    new levels_ui_mainmenu_mainmenu_halo_online_scenario(Cache, CacheContext, CacheStream);
+                    break;
+            }
 
             Cache.SaveStrings();
         }
