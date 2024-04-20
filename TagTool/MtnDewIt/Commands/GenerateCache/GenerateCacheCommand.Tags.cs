@@ -613,6 +613,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
                     break;
 
                 case GeneratedCacheType.ElDewrito:
+                    new levels_ui_mainmenu_objects_spartan_cheap_spartan_cheap_model(Cache, CacheContext, CacheStream);
+
+                    new objects_characters_cinematic_camera_ui_valhalla_valhalla_model_animation_graph(Cache, CacheContext, CacheStream);
+
+                    new levels_ui_mainmenu_sky_ui_area_screen_effect(Cache, CacheContext, CacheStream);
+
                     new levels_ui_mainmenu_mainmenu_eldewrito_scenario(Cache, CacheContext, CacheStream);
                     break;
 
