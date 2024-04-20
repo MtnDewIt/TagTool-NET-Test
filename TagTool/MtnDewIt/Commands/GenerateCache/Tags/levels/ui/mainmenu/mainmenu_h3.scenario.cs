@@ -28,6 +28,792 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
         {
             var tag = GetCachedTag<Scenario>($@"levels\ui\mainmenu\mainmenu");
             var scnr = CacheContext.Deserialize<Scenario>(Stream, tag);
+            scnr.MapType = ScenarioMapType.MainMenu;
+            scnr.Flags = ScenarioFlags.H3Compatibility;
+            scnr.CampaignId = -1;
+            scnr.MapId = 270735729;
+            scnr.StructureBsps = new List<Scenario.StructureBspBlock>
+            {
+                new Scenario.StructureBspBlock
+                {
+                    StructureBsp = GetCachedTag<ScenarioStructureBsp>($@"levels\ui\mainmenu\bsp_menu"),
+                    SizeClass = Scenario.StructureBspBlock.ScenarioStructureSizeEnum._512x51215Meg,
+                    DefaultSkyIndex = -1,
+                    InstanceFadeStartPixels = 10,
+                    InstanceFadeEndPixels = 5,
+                    Wind = GetCachedTag<Wind>($@"levels\ui\mainmenu\main_menu"),
+                },
+                new Scenario.StructureBspBlock
+                {
+                    StructureBsp = GetCachedTag<ScenarioStructureBsp>($@"levels\ui\mainmenu\bsp_lobbies"),
+                    SizeClass = Scenario.StructureBspBlock.ScenarioStructureSizeEnum._512x51215Meg,
+                    DefaultSkyIndex = -1,
+                },
+            };
+            scnr.SkyReferences = new List<Scenario.SkyReference>
+            {
+                new Scenario.SkyReference
+                {
+                    SkyObject = GetCachedTag<Scenery>($@"levels\ui\mainmenu\sky\menu_sky"),
+                    ActiveBsps = Scenario.BspShortFlags.Bsp0,
+                },
+            };
+            scnr.ZoneSetPvs = new List<Scenario.ZoneSetPvsBlock>
+            {
+                new Scenario.ZoneSetPvsBlock
+                {
+                    StructureBspMask = Scenario.BspFlags.Bsp0 | Scenario.BspFlags.Bsp1,
+                    Flags = Scenario.ZoneSetPvsBlock.ZoneSetPvsFlags.Bit3,
+                    BspChecksums = new List<Scenario.ZoneSetPvsBlock.BspChecksum>
+                    {
+                        new Scenario.ZoneSetPvsBlock.BspChecksum
+                        {
+                            Checksum = 286986511,
+                        },
+                        new Scenario.ZoneSetPvsBlock.BspChecksum
+                        {
+                            Checksum = 521338881,
+                        },
+                    },
+                    StructureBspPvs = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock>
+                    {
+                        new Scenario.ZoneSetPvsBlock.BspPvsBlock
+                        {
+                            ClusterPvs = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock>
+                            {
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock
+                                {
+                                    ClusterPvsBitVectors = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock>
+                                    {
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                    Bits = Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit0 | Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit1,
+                                                },
+                                            },
+                                        },
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock
+                                {
+                                    ClusterPvsBitVectors = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock>
+                                    {
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                    Bits = Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit0 | Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit1,
+                                                },
+                                            },
+                                        },
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                            ClusterPvsDoorsClosed = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock>
+                            {
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock
+                                {
+                                    ClusterPvsBitVectors = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock>
+                                    {
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                    Bits = Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit0 | Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit1,
+                                                },
+                                            },
+                                        },
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock
+                                {
+                                    ClusterPvsBitVectors = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock>
+                                    {
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                    Bits = Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit0 | Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit1,
+                                                },
+                                            },
+                                        },
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                            AttachedSkyIndices = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock>
+                            {
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock
+                                {
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock
+                                {
+                                },
+                            },
+                            VisibleSkyIndices = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock>
+                            {
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock
+                                {
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock
+                                {
+                                },
+                            },
+                            ClusterAudioBitvector = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                            {
+                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                {
+                                },
+                            },
+                            ClusterMappings = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.BspSeamClusterMapping>
+                            {
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.BspSeamClusterMapping
+                                {
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.BspSeamClusterMapping
+                                {
+                                },
+                            },
+                        },
+                        new Scenario.ZoneSetPvsBlock.BspPvsBlock
+                        {
+                            ClusterPvs = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock>
+                            {
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock
+                                {
+                                    ClusterPvsBitVectors = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock>
+                                    {
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                },
+                                            },
+                                        },
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                    Bits = Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit0,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock
+                                {
+                                    ClusterPvsBitVectors = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock>
+                                    {
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                },
+                                            },
+                                        },
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                    Bits = Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit1,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock
+                                {
+                                    ClusterPvsBitVectors = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock>
+                                    {
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                },
+                                            },
+                                        },
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                    Bits = Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit2,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock
+                                {
+                                    ClusterPvsBitVectors = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock>
+                                    {
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                },
+                                            },
+                                        },
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                    Bits = Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit3,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock
+                                {
+                                    ClusterPvsBitVectors = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock>
+                                    {
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                },
+                                            },
+                                        },
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                    Bits = Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit4,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock
+                                {
+                                    ClusterPvsBitVectors = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock>
+                                    {
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                },
+                                            },
+                                        },
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                    Bits = Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit5,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                            ClusterPvsDoorsClosed = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock>
+                            {
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock
+                                {
+                                    ClusterPvsBitVectors = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock>
+                                    {
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                },
+                                            },
+                                        },
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                    Bits = Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit0,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock
+                                {
+                                    ClusterPvsBitVectors = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock>
+                                    {
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                },
+                                            },
+                                        },
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                    Bits = Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit1,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock
+                                {
+                                    ClusterPvsBitVectors = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock>
+                                    {
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                },
+                                            },
+                                        },
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                    Bits = Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit2,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock
+                                {
+                                    ClusterPvsBitVectors = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock>
+                                    {
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                },
+                                            },
+                                        },
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                    Bits = Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit3,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock
+                                {
+                                    ClusterPvsBitVectors = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock>
+                                    {
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                },
+                                            },
+                                        },
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                    Bits = Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit4,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock
+                                {
+                                    ClusterPvsBitVectors = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock>
+                                    {
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                },
+                                            },
+                                        },
+                                        new Scenario.ZoneSetPvsBlock.BspPvsBlock.ClusterPvsBlock.CluserPvsBitVectorBlock
+                                        {
+                                            Bits = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                                            {
+                                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                                {
+                                                    Bits = Scenario.ZoneSetPvsBlock.BitVectorDword.DwordBits.Bit5,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                            AttachedSkyIndices = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock>
+                            {
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock
+                                {
+                                    SkyIndex = -1,
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock
+                                {
+                                    SkyIndex = -1,
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock
+                                {
+                                    SkyIndex = -1,
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock
+                                {
+                                    SkyIndex = -1,
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock
+                                {
+                                    SkyIndex = -1,
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock
+                                {
+                                    SkyIndex = -1,
+                                },
+                            },
+                            VisibleSkyIndices = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock>
+                            {
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock
+                                {
+                                    SkyIndex = -1,
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock
+                                {
+                                    SkyIndex = -1,
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock
+                                {
+                                    SkyIndex = -1,
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock
+                                {
+                                    SkyIndex = -1,
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock
+                                {
+                                    SkyIndex = -1,
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.SkyIndicesBlock
+                                {
+                                    SkyIndex = -1,
+                                },
+                            },
+                            ClusterAudioBitvector = new List<Scenario.ZoneSetPvsBlock.BitVectorDword>
+                            {
+                                new Scenario.ZoneSetPvsBlock.BitVectorDword
+                                {
+                                },
+                            },
+                            ClusterMappings = new List<Scenario.ZoneSetPvsBlock.BspPvsBlock.BspSeamClusterMapping>
+                            {
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.BspSeamClusterMapping
+                                {
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.BspSeamClusterMapping
+                                {
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.BspSeamClusterMapping
+                                {
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.BspSeamClusterMapping
+                                {
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.BspSeamClusterMapping
+                                {
+                                },
+                                new Scenario.ZoneSetPvsBlock.BspPvsBlock.BspSeamClusterMapping
+                                {
+                                },
+                            },
+                        },
+                    },
+                    PortaldeviceMapping = new List<Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock>
+                    {
+                        new Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock
+                        {
+                        },
+                        new Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock
+                        {
+                        },
+                    },
+                },
+            };
+            scnr.ZoneSetAudibility = new List<Scenario.ZoneSetAudibilityBlock>
+            {
+                new Scenario.ZoneSetAudibilityBlock
+                {
+                    RoomCount = 8,
+                    RoomDistanceBounds = new Bounds<float>(3.4028235E+38f, 0f),
+                    AiDeafeningPas = new List<Scenario.ZoneSetAudibilityBlock.AiDeafeningPa>
+                    {
+                        new Scenario.ZoneSetAudibilityBlock.AiDeafeningPa
+                        {
+                            EncodedData = 268435454,
+                        },
+                    },
+                    RoomDistances = new List<Scenario.ZoneSetAudibilityBlock.RoomDistance>
+                    {
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.RoomDistance
+                        {
+                            EncodedData = -1,
+                        },
+                    },
+                    GamePortalToDoorOccluderMappings = new List<Scenario.ZoneSetAudibilityBlock.GamePortalToDoorOccluderMapping>
+                    {
+                        new Scenario.ZoneSetAudibilityBlock.GamePortalToDoorOccluderMapping
+                        {
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.GamePortalToDoorOccluderMapping
+                        {
+                        },
+                    },
+                    BspClusterToRoomBoundsMappings = new List<Scenario.ZoneSetAudibilityBlock.BspClusterToRoomBoundsMapping>
+                    {
+                        new Scenario.ZoneSetAudibilityBlock.BspClusterToRoomBoundsMapping
+                        {
+                            RoomIndexCount = 2,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.BspClusterToRoomBoundsMapping
+                        {
+                            FirstRoomIndex = 2,
+                            RoomIndexCount = 6,
+                        },
+                    },
+                    BspClusterToRoomIndices = new List<Scenario.ZoneSetAudibilityBlock.BspClusterToRoomIndex>
+                    {
+                        new Scenario.ZoneSetAudibilityBlock.BspClusterToRoomIndex
+                        {
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.BspClusterToRoomIndex
+                        {
+                            RoomIndex = 1,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.BspClusterToRoomIndex
+                        {
+                            RoomIndex = 2,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.BspClusterToRoomIndex
+                        {
+                            RoomIndex = 3,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.BspClusterToRoomIndex
+                        {
+                            RoomIndex = 4,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.BspClusterToRoomIndex
+                        {
+                            RoomIndex = 5,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.BspClusterToRoomIndex
+                        {
+                            RoomIndex = 6,
+                        },
+                        new Scenario.ZoneSetAudibilityBlock.BspClusterToRoomIndex
+                        {
+                            RoomIndex = 7,
+                        },
+                    },
+                },
+            };
+            scnr.ZoneSets = new List<Scenario.ZoneSet>
+            {
+                new Scenario.ZoneSet
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"set_menu"),
+                    Bsps = Scenario.BspFlags.Bsp0 | Scenario.BspFlags.Bsp1,
+                    HintPreviousZoneSet = -1,
+                },
+            };
             scnr.ObjectNames = new List<Scenario.ObjectName>
             {
                 new Scenario.ObjectName
@@ -1083,6 +1869,729 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Object = GetCachedTag<Biped>($@"objects\characters\elite\mp_elite\mp_elite"),
                 },
             };
+            scnr.Weapons = new List<Scenario.WeaponInstance>
+            {
+                new Scenario.WeaponInstance
+                {
+                    NameIndex = 20,
+                    Position = new RealPoint3d(-45.0263f, -10.732314f, -34.956886f),
+                    UniqueHandle = new DatumHandle(27096, 6),
+                    OriginBspIndex = -1,
+                    ObjectType = new GameObjectType8
+                    {
+                        Halo3ODST = GameObjectTypeHalo3ODST.Weapon,
+                    },
+                    Source = Scenario.ScenarioInstance.SourceValue.Editor,
+                    EditorFolder = -1,
+                    ParentId = new ScenarioObjectParentStruct
+                    {
+                        NameIndex = -1,
+                    },
+                    CanAttachToBspFlags = 2,
+                    Multiplayer = new Scenario.MultiplayerObjectProperties
+                    {
+                        MapVariantParent = new ScenarioObjectParentStruct
+                        {
+                            NameIndex = -1,
+                        },
+                    },
+                },
+                new Scenario.WeaponInstance
+                {
+                    PaletteIndex = 1,
+                    NameIndex = 21,
+                    Position = new RealPoint3d(-44.78546f, -19.013159f, -34.61306f),
+                    UniqueHandle = new DatumHandle(27096, 7),
+                    OriginBspIndex = -1,
+                    ObjectType = new GameObjectType8
+                    {
+                        Halo3ODST = GameObjectTypeHalo3ODST.Weapon,
+                    },
+                    Source = Scenario.ScenarioInstance.SourceValue.Editor,
+                    EditorFolder = -1,
+                    ParentId = new ScenarioObjectParentStruct
+                    {
+                        NameIndex = -1,
+                    },
+                    CanAttachToBspFlags = 2,
+                    Multiplayer = new Scenario.MultiplayerObjectProperties
+                    {
+                        MapVariantParent = new ScenarioObjectParentStruct
+                        {
+                            NameIndex = -1,
+                        },
+                    },
+                },
+                new Scenario.WeaponInstance
+                {
+                    NameIndex = 22,
+                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.StoreOrientations,
+                    Position = new RealPoint3d(22.070538f, 1.816689f, -1.3384286f),
+                    Rotation = new RealEulerAngles3d(Angle.FromDegrees(5.5847373f), Angle.FromDegrees(-11.504697f), Angle.FromDegrees(-102.32624f)),
+                    NodeOrientations = new List<Scenario.ObjectNodeOrientation>
+                    {
+                        new Scenario.ObjectNodeOrientation
+                        {
+                            NodeCount = 4,
+                            BitVectors = new List<Scenario.ObjectNodeOrientation.BitVector>
+                            {
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                    Data = 15,
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                            },
+                            Orientations = new List<Scenario.ObjectNodeOrientation.Orientation>
+                            {
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                    Number = 32767,
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                    Number = 32767,
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                    Number = 32767,
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                    Number = 32767,
+                                },
+                            },
+                        },
+                    },
+                    UniqueHandle = new DatumHandle(38276, 8),
+                    OriginBspIndex = -1,
+                    ObjectType = new GameObjectType8
+                    {
+                        Halo3ODST = GameObjectTypeHalo3ODST.Weapon,
+                    },
+                    Source = Scenario.ScenarioInstance.SourceValue.Editor,
+                    EditorFolder = -1,
+                    ParentId = new ScenarioObjectParentStruct
+                    {
+                        NameIndex = -1,
+                    },
+                    CanAttachToBspFlags = 1,
+                    Multiplayer = new Scenario.MultiplayerObjectProperties
+                    {
+                        MapVariantParent = new ScenarioObjectParentStruct
+                        {
+                            NameIndex = -1,
+                        },
+                    },
+                },
+                new Scenario.WeaponInstance
+                {
+                    PaletteIndex = 1,
+                    NameIndex = 23,
+                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.StoreOrientations,
+                    Position = new RealPoint3d(21.767262f, 1.8162398f, -1.2815572f),
+                    Rotation = new RealEulerAngles3d(Angle.FromDegrees(11.831498f), Angle.FromDegrees(-13.738079f), Angle.FromDegrees(-94.58431f)),
+                    NodeOrientations = new List<Scenario.ObjectNodeOrientation>
+                    {
+                        new Scenario.ObjectNodeOrientation
+                        {
+                            NodeCount = 5,
+                            BitVectors = new List<Scenario.ObjectNodeOrientation.BitVector>
+                            {
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                    Data = 3,
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                            },
+                            Orientations = new List<Scenario.ObjectNodeOrientation.Orientation>
+                            {
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                    Number = 32767,
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                    Number = 25995,
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                    Number = 19947,
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                            },
+                        },
+                    },
+                    UniqueHandle = new DatumHandle(38276, 9),
+                    OriginBspIndex = -1,
+                    ObjectType = new GameObjectType8
+                    {
+                        Halo3ODST = GameObjectTypeHalo3ODST.Weapon,
+                    },
+                    Source = Scenario.ScenarioInstance.SourceValue.Editor,
+                    EditorFolder = -1,
+                    ParentId = new ScenarioObjectParentStruct
+                    {
+                        NameIndex = -1,
+                    },
+                    CanAttachToBspFlags = 1,
+                    Multiplayer = new Scenario.MultiplayerObjectProperties
+                    {
+                        MapVariantParent = new ScenarioObjectParentStruct
+                        {
+                            NameIndex = -1,
+                        },
+                    },
+                },
+                new Scenario.WeaponInstance
+                {
+                    NameIndex = 24,
+                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.StoreOrientations,
+                    Position = new RealPoint3d(16.769732f, 2.359245f, -1.4936146f),
+                    Rotation = new RealEulerAngles3d(Angle.FromDegrees(-3.3159308f), Angle.FromDegrees(-24.418438f), Angle.FromDegrees(-88.92974f)),
+                    NodeOrientations = new List<Scenario.ObjectNodeOrientation>
+                    {
+                        new Scenario.ObjectNodeOrientation
+                        {
+                            NodeCount = 4,
+                            BitVectors = new List<Scenario.ObjectNodeOrientation.BitVector>
+                            {
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                    Data = 15,
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                            },
+                            Orientations = new List<Scenario.ObjectNodeOrientation.Orientation>
+                            {
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                    Number = 32767,
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                    Number = 32767,
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                    Number = 32767,
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                    Number = 32767,
+                                },
+                            },
+                        },
+                    },
+                    UniqueHandle = new DatumHandle(38276, 10),
+                    OriginBspIndex = -1,
+                    ObjectType = new GameObjectType8
+                    {
+                        Halo3ODST = GameObjectTypeHalo3ODST.Weapon,
+                    },
+                    Source = Scenario.ScenarioInstance.SourceValue.Editor,
+                    EditorFolder = -1,
+                    ParentId = new ScenarioObjectParentStruct
+                    {
+                        NameIndex = -1,
+                    },
+                    CanAttachToBspFlags = 1,
+                    Multiplayer = new Scenario.MultiplayerObjectProperties
+                    {
+                        MapVariantParent = new ScenarioObjectParentStruct
+                        {
+                            NameIndex = -1,
+                        },
+                    },
+                },
+                new Scenario.WeaponInstance
+                {
+                    PaletteIndex = 1,
+                    NameIndex = 25,
+                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.StoreOrientations,
+                    Position = new RealPoint3d(16.849157f, 2.9978907f, -1.4754308f),
+                    Rotation = new RealEulerAngles3d(Angle.FromDegrees(-2.5053535f), Angle.FromDegrees(-3.9313567f), Angle.FromDegrees(-93.00097f)),
+                    NodeOrientations = new List<Scenario.ObjectNodeOrientation>
+                    {
+                        new Scenario.ObjectNodeOrientation
+                        {
+                            NodeCount = 5,
+                            BitVectors = new List<Scenario.ObjectNodeOrientation.BitVector>
+                            {
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                    Data = 3,
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                            },
+                            Orientations = new List<Scenario.ObjectNodeOrientation.Orientation>
+                            {
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                    Number = 32767,
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                    Number = 25995,
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                    Number = 19947,
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                            },
+                        },
+                    },
+                    UniqueHandle = new DatumHandle(38276, 12),
+                    OriginBspIndex = -1,
+                    ObjectType = new GameObjectType8
+                    {
+                        Halo3ODST = GameObjectTypeHalo3ODST.Weapon,
+                    },
+                    Source = Scenario.ScenarioInstance.SourceValue.Editor,
+                    EditorFolder = -1,
+                    ParentId = new ScenarioObjectParentStruct
+                    {
+                        NameIndex = -1,
+                    },
+                    CanAttachToBspFlags = 1,
+                    Multiplayer = new Scenario.MultiplayerObjectProperties
+                    {
+                        MapVariantParent = new ScenarioObjectParentStruct
+                        {
+                            NameIndex = -1,
+                        },
+                    },
+                },
+                new Scenario.WeaponInstance
+                {
+                    PaletteIndex = 1,
+                    NameIndex = 26,
+                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.StoreOrientations,
+                    Position = new RealPoint3d(16.852026f, 3.4099126f, -1.4845734f),
+                    Rotation = new RealEulerAngles3d(Angle.FromDegrees(-1.5335854f), Angle.FromDegrees(-2.4621933f), Angle.FromDegrees(-90.44899f)),
+                    NodeOrientations = new List<Scenario.ObjectNodeOrientation>
+                    {
+                        new Scenario.ObjectNodeOrientation
+                        {
+                            NodeCount = 5,
+                            BitVectors = new List<Scenario.ObjectNodeOrientation.BitVector>
+                            {
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                    Data = 3,
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.BitVector
+                                {
+                                },
+                            },
+                            Orientations = new List<Scenario.ObjectNodeOrientation.Orientation>
+                            {
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                    Number = 32767,
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                    Number = 25995,
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                    Number = 19947,
+                                },
+                                new Scenario.ObjectNodeOrientation.Orientation
+                                {
+                                },
+                            },
+                        },
+                    },
+                    UniqueHandle = new DatumHandle(38276, 13),
+                    OriginBspIndex = -1,
+                    ObjectType = new GameObjectType8
+                    {
+                        Halo3ODST = GameObjectTypeHalo3ODST.Weapon,
+                    },
+                    Source = Scenario.ScenarioInstance.SourceValue.Editor,
+                    EditorFolder = -1,
+                    ParentId = new ScenarioObjectParentStruct
+                    {
+                        NameIndex = -1,
+                    },
+                    CanAttachToBspFlags = 1,
+                    Multiplayer = new Scenario.MultiplayerObjectProperties
+                    {
+                        MapVariantParent = new ScenarioObjectParentStruct
+                        {
+                            NameIndex = -1,
+                        },
+                    },
+                },
+                new Scenario.WeaponInstance
+                {
+                    PaletteIndex = 2,
+                    NameIndex = 27,
+                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.CreateAtRest,
+                    Position = new RealPoint3d(-6.9697638f, -0.36104357f, -1.2290297f),
+                    Rotation = new RealEulerAngles3d(Angle.FromDegrees(-24.174362f), Angle.FromDegrees(-10.390579f), Angle.FromDegrees(4.6285143f)),
+                    UniqueHandle = new DatumHandle(40592, 14),
+                    OriginBspIndex = -1,
+                    ObjectType = new GameObjectType8
+                    {
+                        Halo3ODST = GameObjectTypeHalo3ODST.Weapon,
+                    },
+                    Source = Scenario.ScenarioInstance.SourceValue.Editor,
+                    EditorFolder = -1,
+                    ParentId = new ScenarioObjectParentStruct
+                    {
+                        NameIndex = -1,
+                    },
+                    CanAttachToBspFlags = 1,
+                    Multiplayer = new Scenario.MultiplayerObjectProperties
+                    {
+                        MapVariantParent = new ScenarioObjectParentStruct
+                        {
+                            NameIndex = -1,
+                        },
+                    },
+                },
+            };
+            scnr.WeaponPalette = new List<Scenario.ScenarioPaletteEntry>
+            {
+                new Scenario.ScenarioPaletteEntry
+                {
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                },
+                new Scenario.ScenarioPaletteEntry
+                {
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
+                },
+                new Scenario.ScenarioPaletteEntry
+                {
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\multiplayer\flag\flag"),
+                },
+            };
+            scnr.Machines = new List<Scenario.MachineInstance>
+            {
+                new Scenario.MachineInstance
+                {
+                    NameIndex = 31,
+                    Position = new RealPoint3d(500f, -49.6586f, -122.152f),
+                    UniqueHandle = new DatumHandle(9144, 6),
+                    OriginBspIndex = -1,
+                    ObjectType = new GameObjectType8
+                    {
+                        Halo3ODST = GameObjectTypeHalo3ODST.Machine,
+                    },
+                    Source = Scenario.ScenarioInstance.SourceValue.Editor,
+                    EditorFolder = -1,
+                    ParentId = new ScenarioObjectParentStruct
+                    {
+                        NameIndex = 0,
+                        ParentMarker = CacheContext.StringTable.GetOrAddString($@"storm"),
+                    },
+                    CanAttachToBspFlags = 1,
+                    PowerGroup = -1,
+                    PositionGroup = -1,
+                },
+            };
+            scnr.MachinePalette = new List<Scenario.ScenarioPaletteEntry>
+            {
+                new Scenario.ScenarioPaletteEntry
+                {
+                    Object = GetCachedTag<DeviceMachine>($@"objects\skies\storm\storm_main_menu"),
+                },
+            };
+            scnr.EffectScenery = new List<Scenario.EffectSceneryInstance>
+            {
+                new Scenario.EffectSceneryInstance
+                {
+                    NameIndex = -1,
+                    Position = new RealPoint3d(25.567232f, 0.41305646f, -0.9508322f),
+                    Rotation = new RealEulerAngles3d(Angle.FromDegrees(89.769936f), Angle.FromDegrees(-15.625842f), Angle.FromDegrees(-88.14818f)),
+                    UniqueHandle = new DatumHandle(42868, 2),
+                    ObjectType = new GameObjectType8
+                    {
+                        Halo3ODST = GameObjectTypeHalo3ODST.EffectScenery,
+                    },
+                    Source = Scenario.ScenarioInstance.SourceValue.Editor,
+                    EditorFolder = -1,
+                    ParentId = new ScenarioObjectParentStruct
+                    {
+                        NameIndex = -1,
+                    },
+                    CanAttachToBspFlags = 1,
+                },
+                new Scenario.EffectSceneryInstance
+                {
+                    NameIndex = -1,
+                    Position = new RealPoint3d(14.468092f, -0.47144568f, -1.551068f),
+                    Rotation = new RealEulerAngles3d(Angle.FromDegrees(90.42518f), Angle.FromDegrees(1.7714343f), Angle.FromDegrees(-91.342186f)),
+                    UniqueHandle = new DatumHandle(42876, 3),
+                    ObjectType = new GameObjectType8
+                    {
+                        Halo3ODST = GameObjectTypeHalo3ODST.EffectScenery,
+                    },
+                    Source = Scenario.ScenarioInstance.SourceValue.Editor,
+                    EditorFolder = -1,
+                    ParentId = new ScenarioObjectParentStruct
+                    {
+                        NameIndex = -1,
+                    },
+                    CanAttachToBspFlags = 1,
+                },
+                new Scenario.EffectSceneryInstance
+                {
+                    NameIndex = -1,
+                    Position = new RealPoint3d(20.648605f, -1.4166644f, -1.018593f),
+                    Rotation = new RealEulerAngles3d(Angle.FromDegrees(89.15839f), Angle.FromDegrees(1.7714341f), Angle.FromDegrees(-91.342186f)),
+                    UniqueHandle = new DatumHandle(42876, 4),
+                    ObjectType = new GameObjectType8
+                    {
+                        Halo3ODST = GameObjectTypeHalo3ODST.EffectScenery,
+                    },
+                    Source = Scenario.ScenarioInstance.SourceValue.Editor,
+                    EditorFolder = -1,
+                    ParentId = new ScenarioObjectParentStruct
+                    {
+                        NameIndex = -1,
+                    },
+                    CanAttachToBspFlags = 1,
+                },
+                new Scenario.EffectSceneryInstance
+                {
+                    NameIndex = -1,
+                    Position = new RealPoint3d(9.607014f, 2.8281364f, -1.6489729f),
+                    Rotation = new RealEulerAngles3d(Angle.FromDegrees(87.85665f), Angle.FromDegrees(11.558924f), Angle.FromDegrees(-91.48823f)),
+                    UniqueHandle = new DatumHandle(42876, 5),
+                    ObjectType = new GameObjectType8
+                    {
+                        Halo3ODST = GameObjectTypeHalo3ODST.EffectScenery,
+                    },
+                    Source = Scenario.ScenarioInstance.SourceValue.Editor,
+                    EditorFolder = -1,
+                    ParentId = new ScenarioObjectParentStruct
+                    {
+                        NameIndex = -1,
+                    },
+                    CanAttachToBspFlags = 1,
+                },
+            };
+            scnr.EffectSceneryPalette = new List<Scenario.ScenarioPaletteEntry>
+            {
+                new Scenario.ScenarioPaletteEntry
+                {
+                    Object = GetCachedTag<EffectScenery>($@"levels\ui\mainmenu\fx\ground_dust\ground_dust"),
+                },
+            };
             scnr.LightVolumes = new List<Scenario.LightVolumeInstance>
             {
                 new Scenario.LightVolumeInstance
@@ -1309,9 +2818,570 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Object = GetCachedTag<Light>($@"objects\vehicles\phantom\fx\running\cinematic_gravlift"),
                 },
             };
+            scnr.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>
+            {
+                new Scenario.PlayerStartingProfileBlock
+                {
+                    Name = $@"start_assault",
+                    PrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                    PrimaryRoundsLoaded = 32,
+                    PrimaryRoundsTotal = 108,
+                    StartingFragGrenadeCount = 2,
+                },
+            };
+            scnr.PlayerStartingLocations = new List<Scenario.PlayerStartingLocation>
+            {
+                new Scenario.PlayerStartingLocation
+                {
+                    Position = new RealPoint3d(13.9289f, 3.14119f, -1.48594f),
+                    Facing = new RealEulerAngles2d(Angle.FromDegrees(25.5837f), Angle.FromDegrees(0f)),
+                },
+                new Scenario.PlayerStartingLocation
+                {
+                    Position = new RealPoint3d(27.309156f, 23.457037f, 9.778686f),
+                    Facing = new RealEulerAngles2d(Angle.FromDegrees(25.583675f), Angle.FromDegrees(0f)),
+                },
+                new Scenario.PlayerStartingLocation
+                {
+                    Position = new RealPoint3d(27.260944f, 25.121008f, 5.663933f),
+                    Facing = new RealEulerAngles2d(Angle.FromDegrees(26.95836f), Angle.FromDegrees(0f)),
+                },
+            };
+            scnr.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>
+            {
+                new Scenario.PlayerStartingProfileBlock
+                {
+                    Name = $@"start_assault",
+                    PrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle"),
+                    PrimaryRoundsLoaded = 32,
+                    PrimaryRoundsTotal = 108,
+                    StartingFragGrenadeCount = 2,
+                },
+            };
+            scnr.PlayerStartingLocations = new List<Scenario.PlayerStartingLocation>
+            {
+                new Scenario.PlayerStartingLocation
+                {
+                    Position = new RealPoint3d(13.9289f, 3.14119f, -1.48594f),
+                    Facing = new RealEulerAngles2d(Angle.FromDegrees(25.5837f), Angle.FromDegrees(0f)),
+                },
+                new Scenario.PlayerStartingLocation
+                {
+                    Position = new RealPoint3d(27.309156f, 23.457037f, 9.778686f),
+                    Facing = new RealEulerAngles2d(Angle.FromDegrees(25.583675f), Angle.FromDegrees(0f)),
+                },
+                new Scenario.PlayerStartingLocation
+                {
+                    Position = new RealPoint3d(27.260944f, 25.121008f, 5.663933f),
+                    Facing = new RealEulerAngles2d(Angle.FromDegrees(26.95836f), Angle.FromDegrees(0f)),
+                },
+            };
+            scnr.Decals = new List<Scenario.Decal>
+            {
+                new Scenario.Decal
+                {
+                    Rotation = new RealQuaternion(0.2873967f, 0.14006045f, -0.62745064f, 0.7099944f),
+                    Position = new RealPoint3d(23.955486f, -1.8850793f, -1.078431f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    Rotation = new RealQuaternion(0.24540044f, 0.31640744f, -0.57534444f, 0.7131926f),
+                    Position = new RealPoint3d(19.805977f, -2.4901903f, -1.4575313f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    Rotation = new RealQuaternion(0.28942978f, -0.14731182f, 0.76829255f, 0.5515942f),
+                    Position = new RealPoint3d(22.236567f, -2.66454f, -1.1926802f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    Rotation = new RealQuaternion(-0.33891636f, 0.28081945f, 0.5236686f, 0.7294158f),
+                    Position = new RealPoint3d(20.048168f, -7.282121f, -1.301463f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    Rotation = new RealQuaternion(-0.26158157f, 0.33087254f, 0.56231415f, 0.71126735f),
+                    Position = new RealPoint3d(22.317474f, -8.0994215f, -1.263986f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.00675528f, -0.04946691f, 0.4645976f, 0.8841134f),
+                    Position = new RealPoint3d(27.57511f, 5.1579165f, -0.80129313f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    Rotation = new RealQuaternion(-0.26158157f, 0.33087254f, 0.56231415f, 0.71126735f),
+                    Position = new RealPoint3d(24.973654f, -8.6629925f, -1.3054909f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.106356226f, 0.03703624f, -0.84619415f, 0.5208379f),
+                    Position = new RealPoint3d(26.575212f, 5.825367f, -0.83437574f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.03453042f, -0.11781674f, 0.60210425f, 0.78892165f),
+                    Position = new RealPoint3d(23.419485f, 7.2884464f, -1.0276847f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.03366938f, 0.010126941f, -0.8511923f, 0.52367544f),
+                    Position = new RealPoint3d(31.065115f, 7.7194934f, -0.4316462f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.041526478f, 0.07097155f, 0.50330716f, 0.86018634f),
+                    Position = new RealPoint3d(29.926193f, 8.3846f, -0.4583235f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.04851866f, 0.027867403f, 0.46877962f, 0.8815414f),
+                    Position = new RealPoint3d(28.81765f, 9.053642f, -0.5013205f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.036351755f, 0.026760248f, 0.5038113f, 0.8626335f),
+                    Position = new RealPoint3d(27.68764f, 9.746147f, -0.538818f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.019386318f, -0.00016911057f, 0.5608291f, 0.8277046f),
+                    Position = new RealPoint3d(26.57592f, 10.333483f, -0.5796502f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.0008421819f, -0.020005483f, -0.8333728f, 0.5523485f),
+                    Position = new RealPoint3d(25.540466f, 10.745887f, -0.6164308f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.034710415f, -0.12118052f, 0.61518604f, 0.77823955f),
+                    Position = new RealPoint3d(22.070158f, 7.6528306f, -1.1502542f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.046980318f, -0.011462231f, -0.78296894f, 0.6201783f),
+                    Position = new RealPoint3d(24.410686f, 11.152069f, -0.67912704f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.009247544f, -0.049638975f, -0.79456073f, 0.6050813f),
+                    Position = new RealPoint3d(23.169832f, 11.49438f, -0.77357465f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.073187605f, 0.013921693f, -0.8362913f, 0.5432004f),
+                    Position = new RealPoint3d(25.508814f, 6.3230944f, -0.9012744f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.11462334f, 0.036804926f, -0.8260807f, 0.55054295f),
+                    Position = new RealPoint3d(24.592955f, 6.769432f, -0.9558265f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    Rotation = new RealQuaternion(-0.29198417f, 0.4262246f, 0.36991528f, 0.77216613f),
+                    Position = new RealPoint3d(27.41296f, -9.95449f, -0.93764365f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.045350645f, -0.030604653f, -0.7560354f, 0.6522401f),
+                    Position = new RealPoint3d(20.751219f, 7.9047656f, -1.2783186f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.02273839f, -0.041347902f, -0.70251787f, 0.71009994f),
+                    Position = new RealPoint3d(19.38889f, 8.004389f, -1.4117352f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.016198592f, -0.040098175f, -0.702801f, 0.71007085f),
+                    Position = new RealPoint3d(18.043644f, 8.007076f, -1.5402566f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.013841647f, -0.039721802f, -0.62755406f, 0.77743584f),
+                    Position = new RealPoint3d(16.725714f, 7.8406935f, -1.6454686f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.0016910722f, -0.04825266f, -0.5756974f, 0.8162361f),
+                    Position = new RealPoint3d(15.460336f, 7.472858f, -1.7299752f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.0020311913f, -0.05648844f, -0.7416625f, 0.66838735f),
+                    Position = new RealPoint3d(21.875952f, 11.770434f, -0.86717904f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.0040271524f, -0.05522601f, -0.73481244f, 0.6760063f),
+                    Position = new RealPoint3d(20.563019f, 11.972646f, -0.97817326f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.006763041f, -0.061202146f, -0.724645f, 0.68636584f),
+                    Position = new RealPoint3d(19.201836f, 12.090767f, -1.1071922f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.010265177f, -0.060659215f, -0.6835558f, 0.7273009f),
+                    Position = new RealPoint3d(17.900461f, 12.067371f, -1.2227886f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.0063845646f, -0.055769097f, -0.6544897f, 0.7539843f),
+                    Position = new RealPoint3d(16.556042f, 11.96894f, -1.3467162f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.00954915f, -0.040393185f, -0.53006464f, 0.8469408f),
+                    Position = new RealPoint3d(14.177249f, 6.976414f, -1.785779f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.009814747f, -0.040309858f, -0.5309307f, 0.84639907f),
+                    Position = new RealPoint3d(12.988467f, 6.329856f, -1.816283f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.030807663f, -0.06665486f, 0.7624761f, 0.64283603f),
+                    Position = new RealPoint3d(15.194056f, 11.8607235f, -1.4664627f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.054232664f, -0.08511805f, 0.79373324f, 0.5998345f),
+                    Position = new RealPoint3d(13.845495f, 11.591665f, -1.5509269f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.04777335f, -0.06275224f, 0.81417406f, 0.5752395f),
+                    Position = new RealPoint3d(12.570675f, 11.163748f, -1.616632f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.0661446f, 0.037006404f, 0.83248794f, 0.54883486f),
+                    Position = new RealPoint3d(11.731902f, 5.745363f, -1.822795f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.042995933f, 0.005819864f, 0.8123758f, 0.58151793f),
+                    Position = new RealPoint3d(10.496983f, 5.245972f, -1.8714294f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.031423945f, -0.008291203f, 0.8081088f, 0.58813614f),
+                    Position = new RealPoint3d(9.266729f, 4.8402357f, -1.9338086f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.010157206f, -0.040845126f, -0.61922675f, 0.7840834f),
+                    Position = new RealPoint3d(8.01746f, 4.4778337f, -2.0047948f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.032614984f, -0.024376925f, 0.833538f, 0.5509596f),
+                    Position = new RealPoint3d(11.361833f, 10.6093445f, -1.7132015f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.032484367f, -0.024550721f, 0.8305846f, 0.55540216f),
+                    Position = new RealPoint3d(10.142898f, 10.032791f, -1.8152671f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.033699546f, -0.026215075f, 0.8203676f, 0.5702405f),
+                    Position = new RealPoint3d(8.899034f, 9.534753f, -1.9219596f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.024346381f, -0.044115067f, 0.8087322f, 0.5860147f),
+                    Position = new RealPoint3d(7.643027f, 9.061405f, -2.047941f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 3,
+                    Rotation = new RealQuaternion(-0.06811497f, -0.042115074f, 0.30290386f, 0.9496504f),
+                    Position = new RealPoint3d(-7.0288334f, -0.3475109f, -1.4919306f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 4,
+                    Rotation = new RealQuaternion(-0.009711112f, -0.0052375593f, 0.70716494f, 0.7069625f),
+                    Position = new RealPoint3d(16.884548f, 0.7832822f, -1.4988006f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.04207284f, -0.008606665f, 0.7608581f, 0.64749575f),
+                    Position = new RealPoint3d(6.7189283f, 4.2602305f, -2.0969436f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.042072844f, -0.008606657f, 0.76085824f, 0.6474957f),
+                    Position = new RealPoint3d(5.4392776f, 4.0481124f, -2.1846778f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.028996397f, 0.01648818f, 0.725385f, 0.68753475f),
+                    Position = new RealPoint3d(4.2396083f, 3.9209838f, -2.2525055f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.0293535f, 0.015843714f, 0.7100225f, 0.7033886f),
+                    Position = new RealPoint3d(3.117881f, 3.847685f, -2.269623f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.03446775f, 0.04949142f, 0.70529246f, 0.70634633f),
+                    Position = new RealPoint3d(1.9020666f, 3.8182373f, -2.2607942f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.030569594f, 0.033829898f, 0.70617336f, 0.7065694f),
+                    Position = new RealPoint3d(0.65700847f, 3.8002026f, -2.2320292f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.042719062f, -0.02453111f, -0.70907915f, 0.7034061f),
+                    Position = new RealPoint3d(-0.67485034f, 3.7756321f, -2.199421f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.0571817f, -0.031884998f, -0.7243593f, 0.68630695f),
+                    Position = new RealPoint3d(-1.984643f, 3.8044271f, -2.1558278f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.034915823f, -0.028264165f, -0.6180262f, 0.784873f),
+                    Position = new RealPoint3d(6.3637757f, 8.671837f, -2.174161f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.0057689766f, -0.028933879f, -0.6433384f, 0.7650133f),
+                    Position = new RealPoint3d(5.15411f, 8.462243f, -2.2632875f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.005349433f, -0.029014377f, -0.6543476f, 0.7556181f),
+                    Position = new RealPoint3d(3.8949265f, 8.294934f, -2.3020468f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.029529035f, 0.026184058f, 0.7067807f, 0.7063311f),
+                    Position = new RealPoint3d(2.592443f, 8.235989f, -2.3048048f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.0102807265f, -0.00032632102f, 0.706041f, 0.7080963f),
+                    Position = new RealPoint3d(1.2642653f, 8.198959f, -2.2867665f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(0.008389542f, -0.0050179716f, 0.7065464f, 0.70759916f),
+                    Position = new RealPoint3d(-0.056007825f, 8.20813f, -2.2736287f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.05711945f, 0.066490814f, 0.70424163f, 0.70452833f),
+                    Position = new RealPoint3d(-1.3415133f, 8.23508f, -2.2655666f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.03391644f, 0.056000665f, 0.65987104f, 0.7485211f),
+                    Position = new RealPoint3d(-3.263742f, 3.9769692f, -2.127114f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.03923174f, 0.043750156f, 0.66646177f, 0.7432198f),
+                    Position = new RealPoint3d(-4.503162f, 4.1366096f, -2.126016f),
+                    Scale = 1f,
+                },
+                new Scenario.Decal
+                {
+                    DecalPaletteIndex = 1,
+                    Rotation = new RealQuaternion(-0.046003368f, 0.03117442f, 0.6544256f, 0.7540816f),
+                    Position = new RealPoint3d(-5.7443795f, 4.301005f, -2.1412563f),
+                    Scale = 1f,
+                },
+            };
+            scnr.DecalPalette = new List<TagReferenceBlock>
+            {
+                new TagReferenceBlock
+                {
+                    Instance = GetCachedTag<DecalSystem>($@"levels\ui\mainmenu\decals\decal_natural_rockhack_blend"),
+                },
+                new TagReferenceBlock
+                {
+                    Instance = GetCachedTag<DecalSystem>($@"levels\ui\mainmenu\decals\decal_sand_patch"),
+                },
+                new TagReferenceBlock
+                {
+                    Instance = GetCachedTag<DecalSystem>($@"levels\shared\decals\human\damage\decal_damage_crack_dark"),
+                },
+                new TagReferenceBlock
+                {
+                    Instance = GetCachedTag<DecalSystem>($@"levels\shared\decals\human\damage\mortar_blast_small"),
+                },
+                new TagReferenceBlock
+                {
+                    Instance = GetCachedTag<DecalSystem>($@"levels\shared\decals\human\damage\scorch_sm"),
+                },
+            };
+            scnr.AiUserHintData = new List<Scenario.UserHintBlock>
+            {
+                new Scenario.UserHintBlock
+                {
+                    Unknown8 = new List<Scenario.UserHintBlock.UnknownBlock8>
+                    {
+                        new Scenario.UserHintBlock.UnknownBlock8
+                        {
+                        },
+                    },
+                    Unknown9 = new List<Scenario.UserHintBlock.UnknownBlock9>
+                    {
+                        new Scenario.UserHintBlock.UnknownBlock9
+                        {
+                        },
+                    },
+                },
+            };
             scnr.Scripts = null;
             scnr.Globals = null;
             scnr.ScriptSourceFileReferences = null;
+            scnr.ScriptingData = new List<Scenario.ScriptingDatum>
+            {
+                new Scenario.ScriptingDatum
+                {
+                },
+            };
+            scnr.CutsceneFlags = new List<Scenario.CutsceneFlag>
+            {
+                new Scenario.CutsceneFlag
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"anchor_flag_x01"),
+                    Position = new RealPoint3d(-471.391f, -74.6197f, 13.6494f),
+                },
+                new Scenario.CutsceneFlag
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"xxxanchorxxx"),
+                },
+            };
             scnr.CutsceneCameraPoints = new List<Scenario.CutsceneCameraPoint>
             {
                 new Scenario.CutsceneCameraPoint
@@ -1627,9 +3697,456 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Orientation = new RealEulerAngles3d(Angle.FromDegrees(-135.571f), Angle.FromDegrees(0.284f), Angle.FromDegrees(0.279f)),
                 },
             };
+            scnr.CutsceneTitles = new List<Scenario.CutsceneTitle>
+            {
+                new Scenario.CutsceneTitle
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"title_1"),
+                },
+            };
+            scnr.ScenarioResources = new List<Scenario.ScenarioResource>
+            {
+                new Scenario.ScenarioResource
+                {
+                    ScriptSource = new List<TagReferenceBlock>
+                    {
+                        new TagReferenceBlock
+                        {
+                        },
+                        new TagReferenceBlock
+                        {
+                        },
+                        new TagReferenceBlock
+                        {
+                        },
+                    },
+                    References = new List<Scenario.ScenarioResource.Reference>
+                    {
+                        new Scenario.ScenarioResource.Reference
+                        {
+                        },
+                    },
+                },
+            };
             scnr.ScriptExpressions = null;
-            scnr.SimulationDefinitionTable = null;
+            scnr.AcousticsPalette = new List<ScenarioStructureBsp.AcousticsPaletteBlock>
+            {
+                new ScenarioStructureBsp.AcousticsPaletteBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"the_world"),
+                    AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\main_menu\the_world\the_world"),
+                    AmbienceInterpolationSpeed = 2f,
+                },
+                new ScenarioStructureBsp.AcousticsPaletteBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"voi_ext"),
+                    AmbienceBackgroundSound = GetCachedTag<SoundLooping>($@"sound\levels\main_menu\voi_exterior\voi_exterior"),
+                    AmbienceInterpolationSpeed = 2f,
+                },
+            };
+            scnr.Atmosphere = new List<ScenarioStructureBsp.StructureBspAtmospherePaletteBlock>
+            {
+                new ScenarioStructureBsp.StructureBspAtmospherePaletteBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"foggy_morning"),
+                },
+                new ScenarioStructureBsp.StructureBspAtmospherePaletteBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"no_fog"),
+                    AtmosphereSettingIndex = 2,
+                },
+            };
+            scnr.ScenarioClusterData = new List<Scenario.ScenarioClusterDatum>
+            {
+                new Scenario.ScenarioClusterDatum
+                {
+                    BackgroundSoundEnvironments = new List<Scenario.ScenarioClusterDatum.BackgroundSoundEnvironment>
+                    {
+                        new Scenario.ScenarioClusterDatum.BackgroundSoundEnvironment
+                        {
+                            BackgroundSoundEnvironmentIndex = 1,
+                        },
+                        new Scenario.ScenarioClusterDatum.BackgroundSoundEnvironment
+                        {
+                        },
+                    },
+                    Unknown = new List<Scenario.ScenarioClusterDatum.UnknownBlock>
+                    {
+                        new Scenario.ScenarioClusterDatum.UnknownBlock
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.UnknownBlock
+                        {
+                            Unknown = -1,
+                        },
+                    },
+                    Unknown2 = new List<Scenario.ScenarioClusterDatum.UnknownBlock2>
+                    {
+                        new Scenario.ScenarioClusterDatum.UnknownBlock2
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.UnknownBlock2
+                        {
+                            Unknown = -1,
+                        },
+                    },
+                    BspChecksum = 286986511,
+                    ClusterCentroids = new List<Scenario.ScenarioClusterDatum.ClusterCentroid>
+                    {
+                        new Scenario.ScenarioClusterDatum.ClusterCentroid
+                        {
+                            Centroid = new RealPoint3d(5.6437893f, 2.9798346f, -7.612221f),
+                        },
+                        new Scenario.ScenarioClusterDatum.ClusterCentroid
+                        {
+                            Centroid = new RealPoint3d(3.4028235E+38f, 3.4028235E+38f, 3.4028235E+38f),
+                        },
+                    },
+                    WeatherProperties = new List<Scenario.ScenarioClusterDatum.WeatherProperty>
+                    {
+                        new Scenario.ScenarioClusterDatum.WeatherProperty
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.WeatherProperty
+                        {
+                            Unknown = -1,
+                        },
+                    },
+                    Fog = new List<Scenario.ScenarioClusterDatum.FogBlock>
+                    {
+                        new Scenario.ScenarioClusterDatum.FogBlock
+                        {
+                            FogIndex = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.FogBlock
+                        {
+                            FogIndex = -1,
+                        },
+                    },
+                    CameraEffects = new List<Scenario.ScenarioClusterDatum.CameraEffect>
+                    {
+                        new Scenario.ScenarioClusterDatum.CameraEffect
+                        {
+                            CameraEffectIndex = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.CameraEffect
+                        {
+                            CameraEffectIndex = -1,
+                        },
+                    },
+                },
+                new Scenario.ScenarioClusterDatum
+                {
+                    BackgroundSoundEnvironments = new List<Scenario.ScenarioClusterDatum.BackgroundSoundEnvironment>
+                    {
+                        new Scenario.ScenarioClusterDatum.BackgroundSoundEnvironment
+                        {
+                            BackgroundSoundEnvironmentIndex = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.BackgroundSoundEnvironment
+                        {
+                            BackgroundSoundEnvironmentIndex = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.BackgroundSoundEnvironment
+                        {
+                            BackgroundSoundEnvironmentIndex = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.BackgroundSoundEnvironment
+                        {
+                            BackgroundSoundEnvironmentIndex = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.BackgroundSoundEnvironment
+                        {
+                            BackgroundSoundEnvironmentIndex = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.BackgroundSoundEnvironment
+                        {
+                            BackgroundSoundEnvironmentIndex = -1,
+                        },
+                    },
+                    Unknown = new List<Scenario.ScenarioClusterDatum.UnknownBlock>
+                    {
+                        new Scenario.ScenarioClusterDatum.UnknownBlock
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.UnknownBlock
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.UnknownBlock
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.UnknownBlock
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.UnknownBlock
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.UnknownBlock
+                        {
+                            Unknown = -1,
+                        },
+                    },
+                    Unknown2 = new List<Scenario.ScenarioClusterDatum.UnknownBlock2>
+                    {
+                        new Scenario.ScenarioClusterDatum.UnknownBlock2
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.UnknownBlock2
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.UnknownBlock2
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.UnknownBlock2
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.UnknownBlock2
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.UnknownBlock2
+                        {
+                            Unknown = -1,
+                        },
+                    },
+                    BspChecksum = 521338881,
+                    ClusterCentroids = new List<Scenario.ScenarioClusterDatum.ClusterCentroid>
+                    {
+                        new Scenario.ScenarioClusterDatum.ClusterCentroid
+                        {
+                            Centroid = new RealPoint3d(-38.535553f, 17f, -26.393398f),
+                        },
+                        new Scenario.ScenarioClusterDatum.ClusterCentroid
+                        {
+                            Centroid = new RealPoint3d(-38.535553f, 51f, -26.393398f),
+                        },
+                        new Scenario.ScenarioClusterDatum.ClusterCentroid
+                        {
+                            Centroid = new RealPoint3d(-38.535553f, 85.000015f, -26.393398f),
+                        },
+                        new Scenario.ScenarioClusterDatum.ClusterCentroid
+                        {
+                            Centroid = new RealPoint3d(-38.535553f, -85f, -26.393398f),
+                        },
+                        new Scenario.ScenarioClusterDatum.ClusterCentroid
+                        {
+                            Centroid = new RealPoint3d(-38.535553f, -50.999992f, -26.393398f),
+                        },
+                        new Scenario.ScenarioClusterDatum.ClusterCentroid
+                        {
+                            Centroid = new RealPoint3d(-38.535553f, -17f, -26.393398f),
+                        },
+                    },
+                    WeatherProperties = new List<Scenario.ScenarioClusterDatum.WeatherProperty>
+                    {
+                        new Scenario.ScenarioClusterDatum.WeatherProperty
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.WeatherProperty
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.WeatherProperty
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.WeatherProperty
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.WeatherProperty
+                        {
+                            Unknown = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.WeatherProperty
+                        {
+                            Unknown = -1,
+                        },
+                    },
+                    Fog = new List<Scenario.ScenarioClusterDatum.FogBlock>
+                    {
+                        new Scenario.ScenarioClusterDatum.FogBlock
+                        {
+                            FogIndex = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.FogBlock
+                        {
+                            FogIndex = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.FogBlock
+                        {
+                            FogIndex = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.FogBlock
+                        {
+                            FogIndex = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.FogBlock
+                        {
+                            FogIndex = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.FogBlock
+                        {
+                            FogIndex = -1,
+                        },
+                    },
+                    CameraEffects = new List<Scenario.ScenarioClusterDatum.CameraEffect>
+                    {
+                        new Scenario.ScenarioClusterDatum.CameraEffect
+                        {
+                            CameraEffectIndex = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.CameraEffect
+                        {
+                            CameraEffectIndex = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.CameraEffect
+                        {
+                            CameraEffectIndex = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.CameraEffect
+                        {
+                            CameraEffectIndex = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.CameraEffect
+                        {
+                            CameraEffectIndex = -1,
+                        },
+                        new Scenario.ScenarioClusterDatum.CameraEffect
+                        {
+                            CameraEffectIndex = -1,
+                        },
+                    },
+                },
+            };
+            scnr.ObjectSalts = new int[32]
+            {
+                44, 4, 15, 1, 0, 0, 105, 7, 0, 69,
+                24, 0, 0, 6, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0,
+            };
+            scnr.SpawnData = new List<Scenario.SpawnDatum>
+            {
+                new Scenario.SpawnDatum
+                {
+                },
+            };
+            scnr.Crates = new List<Scenario.CrateInstance>
+            {
+                new Scenario.CrateInstance
+                {
+                    NameIndex = -1,
+                    Position = new RealPoint3d(22.3777f, 3.37402f, 1.82607f),
+                    UniqueHandle = new DatumHandle(41252, 23),
+                    OriginBspIndex = -1,
+                    ObjectType = new GameObjectType8
+                    {
+                        Halo3ODST = GameObjectTypeHalo3ODST.Crate,
+                    },
+                    Source = Scenario.ScenarioInstance.SourceValue.Editor,
+                    EditorFolder = -1,
+                    ParentId = new ScenarioObjectParentStruct
+                    {
+                        NameIndex = -1,
+                    },
+                    CanAttachToBspFlags = 1,
+                    Multiplayer = new Scenario.MultiplayerObjectProperties
+                    {
+                        MapVariantParent = new ScenarioObjectParentStruct
+                        {
+                            NameIndex = -1,
+                        },
+                    },
+                },
+            };
+            scnr.CratePalette = new List<Scenario.ScenarioPaletteEntry>
+            {
+                new Scenario.ScenarioPaletteEntry
+                {
+                    Object = GetCachedTag<Crate>($@"objects\levels\solo\020_base\dangling_wire\dangling_wire"),
+                },
+            };
+            scnr.FlockPalette = new List<TagReferenceBlock>
+            {
+                new TagReferenceBlock
+                {
+                    Instance = GetCachedTag<Flock>($@"objects\characters\ambient_life\banshee_flock"),
+                },
+            };
+            scnr.CreaturePalette = new List<Scenario.ScenarioPaletteEntry>
+            {
+                new Scenario.ScenarioPaletteEntry
+                {
+                    Object = GetCachedTag<Creature>($@"objects\characters\ambient_life\lod_banshee\lod_banshee"),
+                },
+                new Scenario.ScenarioPaletteEntry
+                {
+                    Object = GetCachedTag<Creature>($@"objects\characters\ambient_life\lod_hornet\lod_hornet"),
+                },
+            };
             scnr.EditorFolders = null;
+            scnr.SimulationDefinitionTable = null;
+            scnr.DefaultCameraFx = GetCachedTag<CameraFxSettings>($@"levels\ui\mainmenu\sky\menu");
+            scnr.DefaultScreenFx = GetCachedTag<AreaScreenEffect>($@"levels\ui\mainmenu\sky\ui");
+            scnr.SkyParameters = GetCachedTag<SkyAtmParameters>($@"levels\ui\mainmenu\sky\menu");
+            scnr.Lightmap = GetCachedTag<ScenarioLightmap>($@"fake_lightmap");
+            scnr.PerformanceThrottles = GetCachedTag<PerformanceThrottles>($@"levels\ui\mainmenu\mainmenu");
+            scnr.DesignerZoneSets = new List<Scenario.DesignerZoneSet>
+            {
+                new Scenario.DesignerZoneSet
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"empty"),
+                },
+            };
+            scnr.ZoneDebugger = new List<Scenario.ScenarioZoneDebuggerBlock>
+            {
+                new Scenario.ScenarioZoneDebuggerBlock
+                {
+                },
+            };
+            scnr.CinematicLighting = new List<Scenario.CinematicLightingBlock>
+            {
+                new Scenario.CinematicLightingBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"lighting_ark"),
+                    CinematicLight = GetCachedTag<NewCinematicLighting>($@"levels\ui\mainmenu\sky\lighting_ark"),
+                },
+                new Scenario.CinematicLightingBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"lighting_storm"),
+                    CinematicLight = GetCachedTag<NewCinematicLighting>($@"levels\ui\mainmenu\sky\lighting_storm"),
+                },
+                new Scenario.CinematicLightingBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"lighting_ships"),
+                    CinematicLight = GetCachedTag<NewCinematicLighting>($@"levels\ui\mainmenu\sky\lighting_ships"),
+                },
+                new Scenario.CinematicLightingBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"lighting_clouds"),
+                    CinematicLight = GetCachedTag<NewCinematicLighting>($@"levels\ui\mainmenu\sky\lighting_clouds"),
+                },
+            };
+            scnr.SoftSurfaces = new List<Scenario.SoftSurfaceBlock>
+            {
+                new Scenario.SoftSurfaceBlock
+                {
+                },
+            };
             CacheContext.Serialize(Stream, tag, scnr);
 
             CompileScript(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Scripts\mainmenu_h3.hsc");
