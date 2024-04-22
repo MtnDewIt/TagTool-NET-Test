@@ -21,7 +21,6 @@ using TagTool.Cache.Monolithic;
 using TagTool.MtnDewIt.Commands;
 using TagTool.MtnDewIt.Commands.ConvertCache;
 using TagTool.MtnDewIt.Commands.GenerateCache;
-using TagTool.MtnDewIt.Commands.GenerateEnhancedCache;
 
 namespace TagTool.Commands.Tags
 {
@@ -72,7 +71,6 @@ namespace TagTool.Commands.Tags
 
             context.AddCommand(new ConvertCacheCommand(cache, contextStack));
             context.AddCommand(new GenerateCacheCommand(cache, contextStack));
-            context.AddCommand(new GenerateEnhancedCacheCommand(cache, contextStack));
             context.AddCommand(new GenerateTagObjectCommand(cache));
             context.AddCommand(new GenerateMapObjectCommand(cache));
             context.AddCommand(new ConvertVariantCommand(cache));
