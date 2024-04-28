@@ -27,7 +27,7 @@ namespace TagTool.MtnDewIt.Commands
             "GenerateTagObject",
             "Generates a C# tag object file based on the specified tag",
 
-            "GenerateTagObject <Target_Path> <Tag_Name> [IgnoreDefaultValues] [RenderMethod]",
+            "GenerateTagObject <Target_Path> <Tag_Name> [IgnoreDefaultValues]",
             "Generates a C# tag object file based on the specified tag. This object can either be generated as a TagFile\n" +
             "object or as a RenderMethod object. This object will be formatted based on the specified tag's definition"
         )
@@ -48,30 +48,19 @@ namespace TagTool.MtnDewIt.Commands
                 Value = Cache.Deserialize(stream, Tag);
             }
 
-            Layout = GenerateTagObject(Structure, $"{Tag.Name}_{Structure.Structure.Name}");
-
-            if (args.Count > 2) 
+            if (args.Count > 2 && string.Equals(args[2], "IgnoreDefaultValues", StringComparison.OrdinalIgnoreCase))
             {
-                if (string.Equals(args[2], "IgnoreDefaultValues", StringComparison.OrdinalIgnoreCase))
-                {
-                    IgnoreDefaultValues = true;
-                    Layout = GenerateTagObject(Structure, $"{Tag.Name}_{Structure.Structure.Name}");
-                }
-
-                if (string.Equals(args[2], "RenderMethod", StringComparison.OrdinalIgnoreCase)) 
-                {
-                    IsRenderMethodObject = true;
-                    Layout = GenerateRenderMethodObject(Structure, $"{Tag.Name}_{Structure.Structure.Name}");
-                }
+                IgnoreDefaultValues = true;
             }
 
-            if (args.Count > 3) 
+            if (Structure.GroupTag == "rmdf")
             {
-                if (string.Equals(args[3], "RenderMethod", StringComparison.OrdinalIgnoreCase))
-                {
-                    IsRenderMethodObject = true;
-                    Layout = GenerateRenderMethodObject(Structure, $"{Tag.Name}_{Structure.Structure.Name}");
-                }
+                IsRenderMethodObject = true;
+                Layout = GenerateRenderMethodObject(Structure, $"{Tag.Name}_{Structure.Structure.Name}");
+            }
+            else 
+            {
+                Layout = GenerateTagObject(Structure, $"{Tag.Name}_{Structure.Structure.Name}");
             }
 
             FileInfo fileInfo = new FileInfo(Path.Combine(args[0], $"{Tag.Name}.{Structure.Structure.Name}.cs"));

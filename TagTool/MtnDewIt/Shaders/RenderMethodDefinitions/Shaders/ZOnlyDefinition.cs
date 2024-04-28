@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 using System.Collections.Generic;
@@ -25,26 +25,26 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
 
         public override void RenderMethod()
         {
-            var tag = Cache.TagCache.GetTag<RenderMethodDefinition>($@"shaders\zonly");
+            var tag = GenerateTag<RenderMethodDefinition>($@"shaders\zonly");
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(Stream, tag);
-            rmdf.GlobalOptions = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\shader_options\global_shader_options");
+            rmdf.GlobalOptions = GenerateTag<RenderMethodOption>($@"shaders\shader_options\global_shader_options");
             rmdf.Categories = new List<RenderMethodDefinition.CategoryBlock>
             {
                 new RenderMethodDefinition.CategoryBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"test"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"test"),
                     ShaderOptions = new List<RenderMethodDefinition.CategoryBlock.ShaderOption>
                     {
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
-                            Name = CacheContext.StringTable.GetStringId($@"default"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\shader_options\albedo_default"),
-                            VertexFunction = CacheContext.StringTable.GetStringId($@"calc_albedo_default_vs"),
-                            PixelFunction = CacheContext.StringTable.GetStringId($@"calc_albedo_default_ps"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"default"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\albedo_default"),
+                            VertexFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_default_vs"),
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_default_ps"),
                         },
                     },
-                    VertexFunction = CacheContext.StringTable.GetStringId($@"test_vs"),
-                    PixelFunction = CacheContext.StringTable.GetStringId($@"test_ps"),
+                    VertexFunction = CacheContext.StringTable.GetOrAddString($@"test_vs"),
+                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"test_ps"),
                 },
             };
             rmdf.EntryPoints = new List<RenderMethodDefinition.EntryPointBlock>
@@ -80,8 +80,8 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                     Dependencies = null,
                 },
             };
-            rmdf.GlobalPixelShader = Cache.TagCache.GetTag<GlobalPixelShader>($@"shaders\zonly_shared_pixel_shaders");
-            rmdf.GlobalVertexShader = Cache.TagCache.GetTag<GlobalVertexShader>($@"shaders\zonly_shared_vertex_shaders");
+            rmdf.GlobalPixelShader = GenerateTag<GlobalPixelShader>($@"shaders\zonly_shared_pixel_shaders");
+            rmdf.GlobalVertexShader = GenerateTag<GlobalVertexShader>($@"shaders\zonly_shared_vertex_shaders");
             rmdf.Flags = RenderMethodDefinition.RenderMethodDefinitionFlags.UseAutomaticMacros;
             rmdf.Version = 0;
 

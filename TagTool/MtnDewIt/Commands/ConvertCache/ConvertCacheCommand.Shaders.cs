@@ -16,6 +16,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             GenerateRenderMethod(CacheStream, $@"halogram", false);
             GenerateRenderMethod(CacheStream, $@"shader", false);
             GenerateRenderMethod(CacheStream, $@"terrain", false);
+            GenerateRenderMethod(CacheStream, $@"custom", false);
+            GenerateRenderMethod(CacheStream, $@"zonly", false);
+            GenerateRenderMethod(CacheStream, $@"cortana", false);
+            GenerateRenderMethod(CacheStream, $@"black", false);
 
             RecompileShaderType(CacheStream, $@"beam");
             RecompileShaderType(CacheStream, $@"contrail");

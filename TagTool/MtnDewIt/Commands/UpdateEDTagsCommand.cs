@@ -755,7 +755,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x035B, @"shaders\shader_options\alpha_test_on" },
             { 0x035C, @"shaders\shader_options\specular_mask_from_texture" },
             { 0x035D, @"shaders\shader_options\material_diffuse_only" },
-            { 0x035E, @"shaders\shader_options\material_cook_torrance_option" },
+            { 0x035E, @"shaders\shader_options\material_cook_torrance_rim_fresnel" },
             { 0x035F, @"shaders\shader_options\material_two_lobe_phong_option" },
             { 0x0360, @"shaders\shader_options\material_foliage" },
             { 0x0361, @"shaders\shader_options\glass_material" },

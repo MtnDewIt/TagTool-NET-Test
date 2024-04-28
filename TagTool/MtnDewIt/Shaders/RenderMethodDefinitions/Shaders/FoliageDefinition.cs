@@ -25,9 +25,9 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
 
         public override void RenderMethod()
         {
-            var tag = Cache.TagCache.GetTag<RenderMethodDefinition>($@"shaders\foliage");
+            var tag = GenerateTag<RenderMethodDefinition>($@"shaders\foliage");
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(Stream, tag);
-            rmdf.GlobalOptions = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\shader_options\global_shader_options");
+            rmdf.GlobalOptions = GenerateTag<RenderMethodOption>($@"shaders\shader_options\global_shader_options");
             rmdf.Categories = new List<RenderMethodDefinition.CategoryBlock>
             {
                 new RenderMethodDefinition.CategoryBlock
@@ -37,17 +37,17 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                     {
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
-                            Name = CacheContext.StringTable.GetOrAddString($@"default"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\shader_options\albedo_default"),
-                            VertexFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_default_vs"),
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_default_ps"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"simple"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\albedo_simple"),
+                            VertexFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_simple_vs"),
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_simple_ps"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
-                            Name = CacheContext.StringTable.GetOrAddString($@"simple"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\shader_options\albedo_simple"),
-                            VertexFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_simple_vs"),
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_simple_ps"),
+                            Name = CacheContext.StringTable.GetOrAddString($@"default"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\albedo_default"),
+                            VertexFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_default_vs"),
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_default_ps"),
                         },
                     },
                     VertexFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_vs"),
@@ -61,21 +61,21 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"none"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\shader_options\alpha_test_off"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\alpha_test_off"),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_alpha_test_off_ps"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"simple"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\shader_options\alpha_test_on"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\alpha_test_on"),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_alpha_test_on_ps"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"from_albedo_alpha"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\shader_options\alpha_test_off"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\alpha_test_off"),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_alpha_test_from_albedo_ps"),
                         },
@@ -91,7 +91,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"default"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\foliage_options\material_default"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\foliage_options\material_default"),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"calculate_material_default"),
                         },
@@ -223,8 +223,8 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                     Dependencies = null,
                 },
             };
-            rmdf.GlobalPixelShader = Cache.TagCache.GetTag<GlobalPixelShader>($@"shaders\foliage_shared_pixel_shaders");
-            rmdf.GlobalVertexShader = Cache.TagCache.GetTag<GlobalVertexShader>($@"shaders\foliage_shared_vertex_shaders");
+            rmdf.GlobalPixelShader = GenerateTag<GlobalPixelShader>($@"shaders\foliage_shared_pixel_shaders");
+            rmdf.GlobalVertexShader = GenerateTag<GlobalVertexShader>($@"shaders\foliage_shared_vertex_shaders");
             rmdf.Flags = RenderMethodDefinition.RenderMethodDefinitionFlags.None;
             rmdf.Version = 0;
 

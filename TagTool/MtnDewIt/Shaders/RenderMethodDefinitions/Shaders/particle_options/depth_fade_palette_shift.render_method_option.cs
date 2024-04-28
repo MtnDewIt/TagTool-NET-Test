@@ -8,9 +8,9 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
 {
-    public class shaders_shader_options_cortana_screenspace_render_method_option : RenderMethodData
+    public class shaders_particle_options_depth_fade_palette_shift_render_method_option : RenderMethodData
     {
-        public shaders_shader_options_cortana_screenspace_render_method_option(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public shaders_particle_options_depth_fade_palette_shift_render_method_option(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,
@@ -25,33 +25,17 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
 
         public override void RenderMethod()
         {
-            var tag = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\shader_options\cortana_screenspace");
+            var tag = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\depth_fade_palette_shift");
             var rmop = CacheContext.Deserialize<RenderMethodOption>(Stream, tag);
             rmop.Parameters = new List<RenderMethodOption.ParameterBlock>
             {
                 new RenderMethodOption.ParameterBlock
                 {
-                    Name = CacheContext.StringTable.GetOrAddString($@"scanline_map"),
-                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap,
-                    RenderMethodExtern = RenderMethodExtern.none,
-                    DefaultSamplerBitmap = Cache.TagCache.GetTag<Bitmap>($@"shaders\default_bitmaps\bitmaps\color_white"),
-                    DefaultFloatArgument = 0f,
-                    DefaultIntBoolArgument = 0,
-                    Flags = 0,
-                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
-                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
-                    AnisotropyAmount = 0,
-                    DefaultColor = new ArgbColor(0, 0, 0, 0),
-                    DefaultBitmapScale = 1f,
-                    HelpText = null,
-                },
-                new RenderMethodOption.ParameterBlock
-                {
-                    Name = CacheContext.StringTable.GetOrAddString($@"scanline_amount_opaque"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"depth_fade_range"),
                     Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
                     RenderMethodExtern = RenderMethodExtern.none,
                     DefaultSamplerBitmap = null,
-                    DefaultFloatArgument = 0f,
+                    DefaultFloatArgument = 0.1f,
                     DefaultIntBoolArgument = 0,
                     Flags = 0,
                     DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
@@ -63,11 +47,11 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                 },
                 new RenderMethodOption.ParameterBlock
                 {
-                    Name = CacheContext.StringTable.GetOrAddString($@"scanline_amount_transparent"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"palette_shift_amount"),
                     Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
                     RenderMethodExtern = RenderMethodExtern.none,
                     DefaultSamplerBitmap = null,
-                    DefaultFloatArgument = 1f,
+                    DefaultFloatArgument = 0.5f,
                     DefaultIntBoolArgument = 0,
                     Flags = 0,
                     DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,

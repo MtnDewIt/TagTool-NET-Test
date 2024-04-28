@@ -8,9 +8,9 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
 {
-    public class shaders_shader_options_material_cook_torrance_option_render_method_option : RenderMethodData
+    public class shaders_shader_options_material_cook_torrance_rim_fresnel_render_method_option : RenderMethodData
     {
-        public shaders_shader_options_material_cook_torrance_option_render_method_option(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public shaders_shader_options_material_cook_torrance_rim_fresnel_render_method_option(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,
@@ -25,7 +25,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
 
         public override void RenderMethod()
         {
-            var tag = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\shader_options\material_cook_torrance_option");
+            var tag = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\shader_options\material_cook_torrance_rim_fresnel");
             var rmop = CacheContext.Deserialize<RenderMethodOption>(Stream, tag);
             rmop.Parameters = new List<RenderMethodOption.ParameterBlock>
             {
@@ -90,6 +90,54 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                     DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
                     AnisotropyAmount = 0,
                     DefaultColor = new ArgbColor(1, 128, 128, 128),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"use_fresnel_color_environment"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Bool,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"fresnel_color_environment"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Color,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 128, 128, 128),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"fresnel_power"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 1f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
                     DefaultBitmapScale = 0f,
                     HelpText = null,
                 },
@@ -271,6 +319,22 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                 },
                 new RenderMethodOption.ParameterBlock
                 {
+                    Name = CacheContext.StringTable.GetOrAddString($@"albedo_blend_with_specular_tint"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Bool,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
                     Name = CacheContext.StringTable.GetOrAddString($@"albedo_blend"),
                     Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
                     RenderMethodExtern = RenderMethodExtern.none,
@@ -288,6 +352,70 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                 new RenderMethodOption.ParameterBlock
                 {
                     Name = CacheContext.StringTable.GetOrAddString($@"analytical_anti_shadow_control"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"rim_fresnel_coefficient"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"rim_fresnel_color"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Color,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 255, 255, 255),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"rim_fresnel_power"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 2f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"rim_fresnel_albedo_blend"),
                     Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
                     RenderMethodExtern = RenderMethodExtern.none,
                     DefaultSamplerBitmap = null,

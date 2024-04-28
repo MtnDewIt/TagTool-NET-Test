@@ -25,9 +25,9 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
 
         public override void RenderMethod()
         {
-            var tag = Cache.TagCache.GetTag<RenderMethodDefinition>($@"shaders\water");
+            var tag = GenerateTag<RenderMethodDefinition>($@"shaders\water");
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(Stream, tag);
-            rmdf.GlobalOptions = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\water_global");
+            rmdf.GlobalOptions = GenerateTag<RenderMethodOption>($@"shaders\water_options\water_global");
             rmdf.Categories = new List<RenderMethodDefinition.CategoryBlock>
             {
                 new RenderMethodDefinition.CategoryBlock
@@ -38,27 +38,27 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"default"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\waveshape_default"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\waveshape_default"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_waveshape_option_default"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"none"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_waveshape_option_none"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"bump"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\waveshape_bump"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\waveshape_bump"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_waveshape_option_bump"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_waveshape"),
+                    PixelFunction = StringId.Invalid,
                 },
                 new RenderMethodDefinition.CategoryBlock
                 {
@@ -68,20 +68,20 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"pure"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\watercolor_pure"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\watercolor_pure"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_watercolor_option_pure"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"texture"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\watercolor_texture"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\watercolor_texture"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_watercolor_option_texture"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_watercolor"),
+                    PixelFunction = StringId.Invalid,
                 },
                 new RenderMethodDefinition.CategoryBlock
                 {
@@ -93,25 +93,25 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             Name = CacheContext.StringTable.GetOrAddString($@"none"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_reflection_option_none"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"static"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\reflection_static"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\reflection_static"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_reflection_option_static"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"dynamic"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\reflection_dynamic"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\reflection_dynamic"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_reflection_option_dynamic"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_reflection"),
+                    PixelFunction = StringId.Invalid,
                 },
                 new RenderMethodDefinition.CategoryBlock
                 {
@@ -123,18 +123,18 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             Name = CacheContext.StringTable.GetOrAddString($@"none"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_refraction_option_none"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"dynamic"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\refraction_dynamic"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\refraction_dynamic"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_refraction_option_dynamic"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_refraction"),
+                    PixelFunction = StringId.Invalid,
                 },
                 new RenderMethodDefinition.CategoryBlock
                 {
@@ -146,32 +146,32 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             Name = CacheContext.StringTable.GetOrAddString($@"none"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_bankalpha_option_none"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"depth"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\bankalpha_depth"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\bankalpha_depth"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_bankalpha_option_depth"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"paint"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\bankalpha_paint"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\bankalpha_paint"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_bankalpha_option_paint"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"from_shape_texture_alpha"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\bankalpha_from_shape_texture_alpha"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\bankalpha_from_shape_texture_alpha"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_bankalpha_option_from_shape_texture_alpha"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_bankalpha"),
+                    PixelFunction = StringId.Invalid,
                 },
                 new RenderMethodDefinition.CategoryBlock
                 {
@@ -181,13 +181,13 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"default"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\appearance_default"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\appearance_default"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_appearance_option_default"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_appearance"),
+                    PixelFunction = StringId.Invalid,
                 },
                 new RenderMethodDefinition.CategoryBlock
                 {
@@ -199,25 +199,25 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             Name = CacheContext.StringTable.GetOrAddString($@"none"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_global_shape_option_none"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"paint"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\globalshape_paint"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\globalshape_paint"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_global_shape_option_paint"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"depth"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\globalshape_depth"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\globalshape_depth"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_global_shape_option_depth"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_global_shape"),
+                    PixelFunction = StringId.Invalid,
                 },
                 new RenderMethodDefinition.CategoryBlock
                 {
@@ -227,34 +227,34 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"none"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\foam_none"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\foam_none"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_foam_option_none"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"auto"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\foam_auto"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\foam_auto"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_foam_option_auto"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"paint"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\foam_paint"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\foam_paint"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_foam_option_paint"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"both"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\foam_both"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\foam_both"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_foam_option_both"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_foam"),
+                    PixelFunction = StringId.Invalid,
                 },
                 new RenderMethodDefinition.CategoryBlock
                 {
@@ -266,18 +266,18 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             Name = CacheContext.StringTable.GetOrAddString($@"disabled"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_reach_compatibility_option_disabled"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"enabled"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\water_options\reach_compatibility_enabled"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\reach_compatibility_enabled"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_reach_compatibility_option_enabled"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_reach_compatibility"),
+                    PixelFunction = StringId.Invalid,
                 },
             };
             rmdf.EntryPoints = new List<RenderMethodDefinition.EntryPointBlock>
@@ -327,8 +327,8 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                     Dependencies = null,
                 },
             };
-            rmdf.GlobalPixelShader = Cache.TagCache.GetTag<GlobalPixelShader>($@"shaders\water_shared_pixel_shaders");
-            rmdf.GlobalVertexShader = Cache.TagCache.GetTag<GlobalVertexShader>($@"shaders\water_shared_vertex_shaders");
+            rmdf.GlobalPixelShader = GenerateTag<GlobalPixelShader>($@"shaders\water_shared_pixel_shaders");
+            rmdf.GlobalVertexShader = GenerateTag<GlobalVertexShader>($@"shaders\water_shared_vertex_shaders");
             rmdf.Flags = RenderMethodDefinition.RenderMethodDefinitionFlags.UseAutomaticMacros;
             rmdf.Version = 0;
 

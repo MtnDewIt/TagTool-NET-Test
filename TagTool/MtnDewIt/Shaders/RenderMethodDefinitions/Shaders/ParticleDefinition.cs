@@ -25,9 +25,9 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
 
         public override void RenderMethod()
         {
-            var tag = Cache.TagCache.GetTag<RenderMethodDefinition>($@"shaders\particle");
+            var tag = GenerateTag<RenderMethodDefinition>($@"shaders\particle");
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(Stream, tag);
-            rmdf.GlobalOptions = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\global_particle_options");
+            rmdf.GlobalOptions = GenerateTag<RenderMethodOption>($@"shaders\particle_options\global_particle_options");
             rmdf.Categories = new List<RenderMethodDefinition.CategoryBlock>
             {
                 new RenderMethodDefinition.CategoryBlock
@@ -38,76 +38,76 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_only"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\albedo_diffuse_only"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\albedo_diffuse_only"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_albedo_option_diffuse_only"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_billboard_alpha"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\albedo_diffuse_plus_billboard_alpha"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\albedo_diffuse_plus_billboard_alpha"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_albedo_option_diffuse_plus_billboard_alpha"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"palettized"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\albedo_palettized"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\albedo_palettized"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_albedo_option_palettized"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"palettized_plus_billboard_alpha"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\albedo_palettized_plus_billboard_alpha"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\albedo_palettized_plus_billboard_alpha"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_albedo_option_palettized_plus_billboard_alpha"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_sprite_alpha"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\albedo_diffuse_plus_sprite_alpha"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\albedo_diffuse_plus_sprite_alpha"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_albedo_option_diffuse_plus_sprite_alpha"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"palettized_plus_sprite_alpha"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\albedo_palettized_plus_sprite_alpha"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\albedo_palettized_plus_sprite_alpha"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_albedo_option_palettized_plus_sprite_alpha"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_modulated"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\albedo_diffuse_modulated"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\albedo_diffuse_modulated"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_albedo_option_diffuse_modulated"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"palettized_glow"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\albedo_palettized_glow"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\albedo_palettized_glow"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_albedo_option_palettized_glow"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"palettized_plasma"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\albedo_palettized_plasma"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\albedo_palettized_plasma"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_albedo_option_palettized_plasma"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"palettized_2d_plasma"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\albedo_palettized_plasma"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\albedo_palettized_plasma"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_albedo_option_palettized_2d_plasma"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_albedo"),
+                    PixelFunction = StringId.Invalid,
                 },
                 new RenderMethodDefinition.CategoryBlock
                 {
@@ -119,81 +119,81 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             Name = CacheContext.StringTable.GetOrAddString($@"opaque"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_blend_mode_option_opaque"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"additive"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_blend_mode_option_additive"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"multiply"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_blend_mode_option_multiply"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"alpha_blend"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_blend_mode_option_alpha_blend"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"double_multiply"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_blend_mode_option_double_multiply"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"maximum"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_blend_mode_option_maximum"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"multiply_add"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_blend_mode_option_multiply_add"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"add_src_times_dstalpha"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_blend_mode_option_add_src_times_dstalpha"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"add_src_times_srcalpha"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_blend_mode_option_add_src_times_srcalpha"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"inv_alpha_blend"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_blend_mode_option_inv_alpha_blend"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"pre_multiplied_alpha"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_blend_mode_option_pre_multiplied_alpha"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_blend_mode"),
+                    PixelFunction = StringId.Invalid,
                 },
                 new RenderMethodDefinition.CategoryBlock
                 {
@@ -205,39 +205,39 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             Name = CacheContext.StringTable.GetOrAddString($@"none"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_specialized_rendering_option_none"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"distortion"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\specialized_rendering_distortion"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\specialized_rendering_distortion"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_specialized_rendering_option_distortion"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"distortion_expensive"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\specialized_rendering_distortion"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\specialized_rendering_distortion"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_specialized_rendering_option_distortion_expensive"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"distortion_diffuse"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\specialized_rendering_distortion"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\specialized_rendering_distortion"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_specialized_rendering_option_distortion_diffuse"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"distortion_expensive_diffuse"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\specialized_rendering_distortion"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\specialized_rendering_distortion"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_specialized_rendering_option_distortion_expensive_diffuse"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_specialized_rendering"),
+                    PixelFunction = StringId.Invalid,
                 },
                 new RenderMethodDefinition.CategoryBlock
                 {
@@ -249,25 +249,25 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             Name = CacheContext.StringTable.GetOrAddString($@"none"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_lighting_option_none"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"per_pixel_ravi_order_3"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_lighting_option_per_pixel_ravi_order_3"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"per_vertex_ravi_order_0"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_lighting_option_per_vertex_ravi_order_0"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_lighting"),
+                    PixelFunction = StringId.Invalid,
                 },
                 new RenderMethodDefinition.CategoryBlock
                 {
@@ -279,18 +279,18 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             Name = CacheContext.StringTable.GetOrAddString($@"ldr_and_hdr"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_render_targets_option_ldr_and_hdr"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"ldr_only"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_render_targets_option_ldr_only"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_render_targets"),
+                    PixelFunction = StringId.Invalid,
                 },
                 new RenderMethodDefinition.CategoryBlock
                 {
@@ -302,18 +302,25 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             Name = CacheContext.StringTable.GetOrAddString($@"off"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_depth_fade_option_off"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"on"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\depth_fade_on"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\depth_fade_on"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_depth_fade_option_on"),
+                            PixelFunction = StringId.Invalid,
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"palette_shift"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\depth_fade_palette_shift"),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_depth_fade"),
+                    PixelFunction = StringId.Invalid,
                 },
                 new RenderMethodDefinition.CategoryBlock
                 {
@@ -325,18 +332,18 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             Name = CacheContext.StringTable.GetOrAddString($@"off"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_black_point_option_off"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"on"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_black_point_option_on"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_black_point"),
+                    PixelFunction = StringId.Invalid,
                 },
                 new RenderMethodDefinition.CategoryBlock
                 {
@@ -348,18 +355,18 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             Name = CacheContext.StringTable.GetOrAddString($@"off"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_fog_option_off"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"on"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_fog_option_on"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_fog"),
+                    PixelFunction = StringId.Invalid,
                 },
                 new RenderMethodDefinition.CategoryBlock
                 {
@@ -371,18 +378,18 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             Name = CacheContext.StringTable.GetOrAddString($@"off"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_frame_blend_option_off"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"on"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\frame_blend_on"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\frame_blend_on"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_frame_blend_option_on"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_frame_blend"),
+                    PixelFunction = StringId.Invalid,
                 },
                 new RenderMethodDefinition.CategoryBlock
                 {
@@ -394,18 +401,18 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             Name = CacheContext.StringTable.GetOrAddString($@"none"),
                             Option = null,
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_self_illumination_option_none"),
+                            PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"constant_color"),
-                            Option = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\particle_options\self_illumination_constant_color"),
+                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\self_illumination_constant_color"),
                             VertexFunction = StringId.Invalid,
-                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_self_illumination_option_constant_color"),
+                            PixelFunction = StringId.Invalid,
                         },
                     },
                     VertexFunction = StringId.Invalid,
-                    PixelFunction = CacheContext.StringTable.GetOrAddString($@"category_self_illumination"),
+                    PixelFunction = StringId.Invalid,
                 },
             };
             rmdf.EntryPoints = new List<RenderMethodDefinition.EntryPointBlock>
@@ -436,8 +443,8 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                     Dependencies = null,
                 },
             };
-            rmdf.GlobalPixelShader = Cache.TagCache.GetTag<GlobalPixelShader>($@"shaders\particle_shared_pixel_shaders");
-            rmdf.GlobalVertexShader = Cache.TagCache.GetTag<GlobalVertexShader>($@"shaders\particle_shared_vertex_shaders");
+            rmdf.GlobalPixelShader = GenerateTag<GlobalPixelShader>($@"shaders\particle_shared_pixel_shaders");
+            rmdf.GlobalVertexShader = GenerateTag<GlobalVertexShader>($@"shaders\particle_shared_vertex_shaders");
             rmdf.Flags = RenderMethodDefinition.RenderMethodDefinitionFlags.UseAutomaticMacros;
             rmdf.Version = 0;
 

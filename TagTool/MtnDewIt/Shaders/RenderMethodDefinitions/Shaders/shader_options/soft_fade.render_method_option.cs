@@ -31,11 +31,27 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
             {
                 new RenderMethodOption.ParameterBlock
                 {
-                    Name = CacheContext.StringTable.GetOrAddString($@"soft_fresnel_enabled"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"depth_map"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap,
+                    RenderMethodExtern = RenderMethodExtern.texture_global_target_z,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Point,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"use_soft_fresnel"),
                     Type = RenderMethodOption.ParameterBlock.OptionDataType.Bool,
                     RenderMethodExtern = RenderMethodExtern.none,
                     DefaultSamplerBitmap = null,
-                    DefaultFloatArgument = 0f,
+                    DefaultFloatArgument = 0.1f,
                     DefaultIntBoolArgument = 0,
                     Flags = 0,
                     DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
@@ -63,7 +79,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                 },
                 new RenderMethodOption.ParameterBlock
                 {
-                    Name = CacheContext.StringTable.GetOrAddString($@"soft_z_enabled"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"use_soft_z"),
                     Type = RenderMethodOption.ParameterBlock.OptionDataType.Bool,
                     RenderMethodExtern = RenderMethodExtern.none,
                     DefaultSamplerBitmap = null,
@@ -82,6 +98,22 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                     Name = CacheContext.StringTable.GetOrAddString($@"soft_z_range"),
                     Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
                     RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"screen_params"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.screen_constants,
                     DefaultSamplerBitmap = null,
                     DefaultFloatArgument = 0f,
                     DefaultIntBoolArgument = 0,

@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 using System.Collections.Generic;
@@ -25,14 +25,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
 
         public override void RenderMethod()
         {
-            var tag = Cache.TagCache.GetTag<RenderMethodDefinition>($@"shaders\black");
+            var tag = GenerateTag<RenderMethodDefinition>($@"shaders\black");
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(Stream, tag);
-            rmdf.GlobalOptions = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\shader_options\global_shader_options");
+            rmdf.GlobalOptions = GenerateTag<RenderMethodOption>($@"shaders\shader_options\global_shader_options");
             rmdf.Categories = new List<RenderMethodDefinition.CategoryBlock>
             {
                 new RenderMethodDefinition.CategoryBlock
                 {
-                    Name = CacheContext.StringTable.GetStringId($@"blackness(no_options)"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"blackness(no_options)"),
                     ShaderOptions = null,
                     VertexFunction = StringId.Invalid,
                     PixelFunction = StringId.Invalid,
@@ -71,9 +71,9 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                     Dependencies = null,
                 },
             };
-            rmdf.GlobalPixelShader = Cache.TagCache.GetTag<GlobalPixelShader>($@"shaders\black_shared_pixel_shaders");
-            rmdf.GlobalVertexShader = Cache.TagCache.GetTag<GlobalVertexShader>($@"shaders\black_shared_vertex_shaders");
-            rmdf.Flags = RenderMethodDefinition.RenderMethodDefinitionFlags.UseAutomaticMacros;
+            rmdf.GlobalPixelShader = GenerateTag<GlobalPixelShader>($@"shaders\black_shared_pixel_shaders");
+            rmdf.GlobalVertexShader = GenerateTag<GlobalVertexShader>($@"shaders\black_shared_vertex_shaders");
+            rmdf.Flags = RenderMethodDefinition.RenderMethodDefinitionFlags.None;
             rmdf.Version = 0;
 
             CacheContext.Serialize(Stream, tag, rmdf);

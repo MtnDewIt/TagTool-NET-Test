@@ -35,7 +35,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                     Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
                     RenderMethodExtern = RenderMethodExtern.none,
                     DefaultSamplerBitmap = null,
-                    DefaultFloatArgument = 0f,
+                    DefaultFloatArgument = 100f,
                     DefaultIntBoolArgument = 0,
                     Flags = 0,
                     DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,

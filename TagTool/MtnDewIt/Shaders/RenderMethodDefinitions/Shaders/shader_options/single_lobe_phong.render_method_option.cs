@@ -173,6 +173,22 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                     DefaultBitmapScale = 0f,
                     HelpText = null,
                 },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"analytical_anti_shadow_control"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
             };
 
             CacheContext.Serialize(Stream, tag, rmop);

@@ -8,9 +8,9 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
 {
-    public class sshaders_shader_options_illum_multilayer_render_method_option : RenderMethodData
+    public class shaders_shader_options_bump_detail_plus_detail_masked_render_method_option : RenderMethodData
     {
-        public sshaders_shader_options_illum_multilayer_render_method_option(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public shaders_shader_options_bump_detail_plus_detail_masked_render_method_option(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,
@@ -25,16 +25,16 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
 
         public override void RenderMethod()
         {
-            var tag = Cache.TagCache.GetTag<RenderMethodOption>($@"sshaders\shader_options\illum_multilayer");
+            var tag = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\shader_options\bump_detail_plus_detail_masked");
             var rmop = CacheContext.Deserialize<RenderMethodOption>(Stream, tag);
             rmop.Parameters = new List<RenderMethodOption.ParameterBlock>
             {
                 new RenderMethodOption.ParameterBlock
                 {
-                    Name = CacheContext.StringTable.GetOrAddString($@"self_illum_map"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"bump_map"),
                     Type = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap,
                     RenderMethodExtern = RenderMethodExtern.none,
-                    DefaultSamplerBitmap = null,
+                    DefaultSamplerBitmap = Cache.TagCache.GetTag<Bitmap>($@"shaders\default_bitmaps\bitmaps\default_vector"),
                     DefaultFloatArgument = 0f,
                     DefaultIntBoolArgument = 0,
                     Flags = 0,
@@ -47,10 +47,26 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                 },
                 new RenderMethodOption.ParameterBlock
                 {
-                    Name = CacheContext.StringTable.GetOrAddString($@"self_illum_color"),
-                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Color,
+                    Name = CacheContext.StringTable.GetOrAddString($@"bump_detail_map"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap,
                     RenderMethodExtern = RenderMethodExtern.none,
-                    DefaultSamplerBitmap = null,
+                    DefaultSamplerBitmap = Cache.TagCache.GetTag<Bitmap>($@"shaders\default_bitmaps\bitmaps\default_vector"),
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 16f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"bump_detail_mask_map"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = Cache.TagCache.GetTag<Bitmap>($@"shaders\default_bitmaps\bitmaps\color_white"),
                     DefaultFloatArgument = 0f,
                     DefaultIntBoolArgument = 0,
                     Flags = 0,
@@ -63,11 +79,27 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                 },
                 new RenderMethodOption.ParameterBlock
                 {
-                    Name = CacheContext.StringTable.GetOrAddString($@"self_illum_intensity"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"bump_detail_masked_map"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = Cache.TagCache.GetTag<Bitmap>($@"shaders\default_bitmaps\bitmaps\default_vector"),
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"bump_detail_coefficient"),
                     Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
                     RenderMethodExtern = RenderMethodExtern.none,
                     DefaultSamplerBitmap = null,
-                    DefaultFloatArgument = 0f,
+                    DefaultFloatArgument = 1f,
                     DefaultIntBoolArgument = 0,
                     Flags = 0,
                     DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
@@ -79,91 +111,11 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                 },
                 new RenderMethodOption.ParameterBlock
                 {
-                    Name = CacheContext.StringTable.GetOrAddString($@"layer_depth"),
+                    Name = CacheContext.StringTable.GetOrAddString($@"bump_detail_masked_coefficient"),
                     Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
                     RenderMethodExtern = RenderMethodExtern.none,
                     DefaultSamplerBitmap = null,
-                    DefaultFloatArgument = 0f,
-                    DefaultIntBoolArgument = 0,
-                    Flags = 0,
-                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
-                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
-                    AnisotropyAmount = 0,
-                    DefaultColor = new ArgbColor(0, 0, 0, 0),
-                    DefaultBitmapScale = 0f,
-                    HelpText = null,
-                },
-                new RenderMethodOption.ParameterBlock
-                {
-                    Name = CacheContext.StringTable.GetOrAddString($@"layer_contrast"),
-                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
-                    RenderMethodExtern = RenderMethodExtern.none,
-                    DefaultSamplerBitmap = null,
-                    DefaultFloatArgument = 0f,
-                    DefaultIntBoolArgument = 0,
-                    Flags = 0,
-                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
-                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
-                    AnisotropyAmount = 0,
-                    DefaultColor = new ArgbColor(0, 0, 0, 0),
-                    DefaultBitmapScale = 0f,
-                    HelpText = null,
-                },
-                new RenderMethodOption.ParameterBlock
-                {
-                    Name = CacheContext.StringTable.GetOrAddString($@"layers_of_4"),
-                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
-                    RenderMethodExtern = RenderMethodExtern.none,
-                    DefaultSamplerBitmap = null,
-                    DefaultFloatArgument = 0f,
-                    DefaultIntBoolArgument = 0,
-                    Flags = 0,
-                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
-                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
-                    AnisotropyAmount = 0,
-                    DefaultColor = new ArgbColor(0, 0, 0, 0),
-                    DefaultBitmapScale = 0f,
-                    HelpText = null,
-                },
-                new RenderMethodOption.ParameterBlock
-                {
-                    Name = CacheContext.StringTable.GetOrAddString($@"layers_of_4"),
-                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Int,
-                    RenderMethodExtern = RenderMethodExtern.none,
-                    DefaultSamplerBitmap = null,
-                    DefaultFloatArgument = 0f,
-                    DefaultIntBoolArgument = 0,
-                    Flags = 0,
-                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
-                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
-                    AnisotropyAmount = 0,
-                    DefaultColor = new ArgbColor(0, 0, 0, 0),
-                    DefaultBitmapScale = 0f,
-                    HelpText = null,
-                },
-                new RenderMethodOption.ParameterBlock
-                {
-                    Name = CacheContext.StringTable.GetOrAddString($@"texcoord_aspect_ratio"),
-                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
-                    RenderMethodExtern = RenderMethodExtern.none,
-                    DefaultSamplerBitmap = null,
-                    DefaultFloatArgument = 0f,
-                    DefaultIntBoolArgument = 0,
-                    Flags = 0,
-                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
-                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
-                    AnisotropyAmount = 0,
-                    DefaultColor = new ArgbColor(0, 0, 0, 0),
-                    DefaultBitmapScale = 0f,
-                    HelpText = null,
-                },
-                new RenderMethodOption.ParameterBlock
-                {
-                    Name = CacheContext.StringTable.GetOrAddString($@"depth_darken"),
-                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
-                    RenderMethodExtern = RenderMethodExtern.none,
-                    DefaultSamplerBitmap = null,
-                    DefaultFloatArgument = 0f,
+                    DefaultFloatArgument = 1f,
                     DefaultIntBoolArgument = 0,
                     Flags = 0,
                     DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
