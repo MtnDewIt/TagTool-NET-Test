@@ -27,7 +27,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
         {
             var tag = GenerateTag<RenderMethodDefinition>($@"shaders\screen");
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(Stream, tag);
-            rmdf.GlobalOptions = GenerateTag<RenderMethodOption>($@"shaders\screen_options\global_screen_options");
+            rmdf.GlobalOptions = GenerateOptionData<shaders_screen_options_global_screen_options_render_method_option>();
             rmdf.Categories = new List<RenderMethodDefinition.CategoryBlock>
             {
                 new RenderMethodDefinition.CategoryBlock
@@ -45,14 +45,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"pixel_space"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\screen_options\warp_simple"),
+                            Option = GenerateOptionData<shaders_screen_options_warp_simple_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"pixel_space"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"screen_space"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\screen_options\warp_simple"),
+                            Option = GenerateOptionData<shaders_screen_options_warp_simple_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"screen_space"),
                         },
@@ -68,14 +68,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"single_screen_space"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\screen_options\base_single"),
+                            Option = GenerateOptionData<shaders_screen_options_base_single_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"single_screen_space"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"single_pixel_space"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\screen_options\base_single"),
+                            Option = GenerateOptionData<shaders_screen_options_base_single_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"single_pixel_space"),
                         },
@@ -98,28 +98,28 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"tint_add_color"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\screen_options\overlay_tint_add_color"),
+                            Option = GenerateOptionData<shaders_screen_options_overlay_tint_add_color_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"tint_add_color"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"detail_screen_space"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\screen_options\detail_a"),
+                            Option = GenerateOptionData<shaders_screen_options_detail_a_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"detail_screen_space"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"detail_pixel_space"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\screen_options\detail_a"),
+                            Option = GenerateOptionData<shaders_screen_options_detail_a_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"detail_pixel_space"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"detail_masked_screen_space"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\screen_options\detail_mask_a"),
+                            Option = GenerateOptionData<shaders_screen_options_detail_mask_a_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"detail_masked_screen_space"),
                         },
@@ -142,7 +142,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"tint_add_color"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\screen_options\overlay_tint_add_color"),
+                            Option = GenerateOptionData<shaders_screen_options_overlay_tint_add_color_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"tint_add_color"),
                         },
@@ -165,35 +165,35 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"additive"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\screen_options\blend"),
+                            Option = GenerateOptionData<shaders_screen_options_blend_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"additive"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"multiply"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\screen_options\blend"),
+                            Option = GenerateOptionData<shaders_screen_options_blend_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"multiply"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"alpha_blend"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\screen_options\blend"),
+                            Option = GenerateOptionData<shaders_screen_options_blend_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"alpha_blend"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"double_multiply"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\screen_options\blend"),
+                            Option = GenerateOptionData<shaders_screen_options_blend_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"double_multiply"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"pre_multiplied_alpha"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\screen_options\blend"),
+                            Option = GenerateOptionData<shaders_screen_options_blend_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"pre_multiplied_alpha"),
                         },

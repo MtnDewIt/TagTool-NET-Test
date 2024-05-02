@@ -27,7 +27,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
         {
             var tag = GenerateTag<RenderMethodDefinition>($@"shaders\terrain");
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(Stream, tag);
-            rmdf.GlobalOptions = GenerateTag<RenderMethodOption>($@"shaders\shader_options\global_shader_options");
+            rmdf.GlobalOptions = GenerateOptionData<shaders_shader_options_global_shader_options_render_method_option>();
             rmdf.Categories = new List<RenderMethodDefinition.CategoryBlock>
             {
                 new RenderMethodDefinition.CategoryBlock
@@ -38,14 +38,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"morph"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\default_blending"),
+                            Option = GenerateOptionData<shaders_terrain_options_default_blending_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"morph"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"dynamic_morph"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\dynamic_blending"),
+                            Option = GenerateOptionData<shaders_terrain_options_dynamic_blending_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"dynamic"),
                         },
@@ -68,14 +68,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"per_pixel"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\env_map_per_pixel"),
+                            Option = GenerateOptionData<shaders_shader_options_env_map_per_pixel_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"per_pixel"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"dynamic"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\env_map_dynamic"),
+                            Option = GenerateOptionData<shaders_shader_options_env_map_dynamic_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"dynamic"),
                         },
@@ -98,14 +98,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_only"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_only_m_0"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_only_m_0_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_only"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_plus_specular_m_0"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_plus_specular_m_0_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular"),
                         },
@@ -119,35 +119,35 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_only_plus_self_illum"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_only_plus_sefl_illum_m_0"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_only_plus_sefl_illum_m_0_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_only_plus_self_illum"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular_plus_self_illum"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_plus_specular_plus_self_illumm_0"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_plus_specular_plus_self_illumm_0_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular_plus_self_illum"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular_plus_heightmap"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_plus_specular_plus_heightmap_m_0"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_plus_specular_plus_heightmap_m_0_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular_plus_heightmap"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_two_detail"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_plus_two_detail_m_0"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_plus_two_detail_m_0_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_two_detail"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular_plus_up_vector_plus_heightmap"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_plus_specular_plus_up_vector_plus_heightmap_m_0"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_plus_specular_plus_up_vector_plus_heightmap_m_0_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular_plus_up_vector_plus_heightmap"),
                         },
@@ -163,14 +163,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_only"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_only_m_1"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_only_m_1_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_only"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_plus_specular_m_1"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_plus_specular_m_1_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular"),
                         },
@@ -184,28 +184,28 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_only_plus_self_illum"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_only_plus_sefl_illum_m_1"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_only_plus_sefl_illum_m_1_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_only_plus_self_illum"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular_plus_self_illum"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_plus_specular_plus_self_illumm_1"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_plus_specular_plus_self_illumm_1_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular_plus_self_illum"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular_plus_heightmap"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_plus_specular_plus_heightmap_m_1"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_plus_specular_plus_heightmap_m_1_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular_plus_heightmap"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular_plus_up_vector_plus_heightmap"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_plus_specular_plus_up_vector_plus_heightmap_m_1"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_plus_specular_plus_up_vector_plus_heightmap_m_1_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular_plus_up_vector_plus_heightmap"),
                         },
@@ -221,14 +221,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_only"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_only_m_2"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_only_m_2_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_only"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_plus_specular_m_2"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_plus_specular_m_2_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular"),
                         },
@@ -242,14 +242,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_only_plus_self_illum"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_only_plus_sefl_illum_m_2"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_only_plus_sefl_illum_m_2_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_only_plus_self_illum"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular_plus_self_illum"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_plus_specular_plus_self_illumm_2"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_plus_specular_plus_self_illumm_2_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular_plus_self_illum"),
                         },
@@ -272,14 +272,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_only_(four_material_shaders_disable_detail_bump)"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_only_m_3"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_only_m_3_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_only"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular_(four_material_shaders_disable_detail_bump)"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\terrain_options\diffuse_plus_specular_m_3"),
+                            Option = GenerateOptionData<shaders_terrain_options_diffuse_plus_specular_m_3_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_specular"),
                         },

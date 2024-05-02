@@ -27,7 +27,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
         {
             var tag = GenerateTag<RenderMethodDefinition>($@"shaders\decal");
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(Stream, tag);
-            rmdf.GlobalOptions = GenerateTag<RenderMethodOption>($@"shaders\decal_options\global_decal_options");
+            rmdf.GlobalOptions = GenerateOptionData<shaders_decal_options_global_decal_options_render_method_option>();
             rmdf.Categories = new List<RenderMethodDefinition.CategoryBlock>
             {
                 new RenderMethodDefinition.CategoryBlock
@@ -38,70 +38,70 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_only"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\decal_options\albedo_diffuse_only"),
+                            Option = GenerateOptionData<shaders_decal_options_albedo_diffuse_only_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"palettized"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\decal_options\albedo_palettized"),
+                            Option = GenerateOptionData<shaders_decal_options_albedo_palettized_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"palettized_plus_alpha"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\decal_options\albedo_palettized_plus_alpha"),
+                            Option = GenerateOptionData<shaders_decal_options_albedo_palettized_plus_alpha_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_alpha"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\decal_options\albedo_diffuse_plus_alpha"),
+                            Option = GenerateOptionData<shaders_decal_options_albedo_diffuse_plus_alpha_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"emblem_change_color"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\decal_options\albedo_emblem_change_color"),
+                            Option = GenerateOptionData<shaders_decal_options_albedo_emblem_change_color_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"change_color"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\decal_options\albedo_change_color"),
+                            Option = GenerateOptionData<shaders_decal_options_albedo_change_color_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_plus_alpha_mask"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\decal_options\albedo_diffuse_plus_alpha_mask"),
+                            Option = GenerateOptionData<shaders_decal_options_albedo_diffuse_plus_alpha_mask_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"palettized_plus_alpha_mask"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\decal_options\albedo_palettized_plus_alpha_mask"),
+                            Option = GenerateOptionData<shaders_decal_options_albedo_palettized_plus_alpha_mask_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"vector_alpha"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\decal_options\albedo_vector_alpha"),
+                            Option = GenerateOptionData<shaders_decal_options_albedo_vector_alpha_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"vector_alpha_drop_shadow"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\decal_options\albedo_vector_alpha_drop_shadow"),
+                            Option = GenerateOptionData<shaders_decal_options_albedo_vector_alpha_drop_shadow_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -233,7 +233,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"modulate"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\decal_options\specular_modulate"),
+                            Option = GenerateOptionData<shaders_decal_options_specular_modulate_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -256,14 +256,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"standard"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\decal_options\bump_mapping_standard"),
+                            Option = GenerateOptionData<shaders_decal_options_bump_mapping_standard_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"standard_mask"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\decal_options\bump_mapping_standard_mask"),
+                            Option = GenerateOptionData<shaders_decal_options_bump_mapping_standard_mask_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -286,21 +286,21 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"unmodulated"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\decal_options\tinting_unmodulated"),
+                            Option = GenerateOptionData<shaders_decal_options_tinting_unmodulated_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"partially_modulated"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\decal_options\tinting_partially_modulated"),
+                            Option = GenerateOptionData<shaders_decal_options_tinting_partially_modulated_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"fully_modulated"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\decal_options\tinting_fully_modulated"),
+                            Option = GenerateOptionData<shaders_decal_options_tinting_fully_modulated_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },

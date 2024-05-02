@@ -296,7 +296,18 @@ namespace TagTool.MtnDewIt.Commands
                 case CachedTag tag:
                     if (IsRenderMethodObject)
                     {
-                        return $"Cache.TagCache.GetTag<{Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group).Name}>($@\"{tag.Name}\")";
+                        if (tag.IsInGroup("rmop"))
+                        {
+                            return $"GenerateOptionData<{tag.Name.Replace("\\", "_")}_render_method_option>()";
+                        }
+                        else if (tag.IsInGroup("glps") || tag.IsInGroup("glvs"))
+                        {
+                            return $"GenerateTag<{Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group).Name}>($@\"{tag.Name}\")";
+                        }
+                        else
+                        {
+                            return $"Cache.TagCache.GetTag<{Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group).Name}>($@\"{tag.Name}\")";
+                        }
                     }
                     else 
                     {

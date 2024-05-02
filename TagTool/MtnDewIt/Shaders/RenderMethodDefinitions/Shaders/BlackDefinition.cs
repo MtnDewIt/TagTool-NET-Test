@@ -27,7 +27,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
         {
             var tag = GenerateTag<RenderMethodDefinition>($@"shaders\black");
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(Stream, tag);
-            rmdf.GlobalOptions = GenerateTag<RenderMethodOption>($@"shaders\shader_options\global_shader_options");
+            rmdf.GlobalOptions = GenerateOptionData<shaders_shader_options_global_shader_options_render_method_option>();
             rmdf.Categories = new List<RenderMethodDefinition.CategoryBlock>
             {
                 new RenderMethodDefinition.CategoryBlock

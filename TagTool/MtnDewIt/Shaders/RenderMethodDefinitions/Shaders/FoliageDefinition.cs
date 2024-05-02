@@ -27,7 +27,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
         {
             var tag = GenerateTag<RenderMethodDefinition>($@"shaders\foliage");
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(Stream, tag);
-            rmdf.GlobalOptions = GenerateTag<RenderMethodOption>($@"shaders\shader_options\global_shader_options");
+            rmdf.GlobalOptions = GenerateOptionData<shaders_shader_options_global_shader_options_render_method_option>();
             rmdf.Categories = new List<RenderMethodDefinition.CategoryBlock>
             {
                 new RenderMethodDefinition.CategoryBlock
@@ -38,14 +38,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"simple"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\albedo_simple"),
+                            Option = GenerateOptionData<shaders_shader_options_albedo_simple_render_method_option>(),
                             VertexFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_simple_vs"),
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_simple_ps"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"default"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\albedo_default"),
+                            Option = GenerateOptionData<shaders_shader_options_albedo_default_render_method_option>(),
                             VertexFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_default_vs"),
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_default_ps"),
                         },
@@ -61,21 +61,21 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"none"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\alpha_test_off"),
+                            Option = GenerateOptionData<shaders_shader_options_alpha_test_off_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_alpha_test_off_ps"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"simple"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\alpha_test_on"),
+                            Option = GenerateOptionData<shaders_shader_options_alpha_test_on_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_alpha_test_on_ps"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"from_albedo_alpha"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\alpha_test_off"),
+                            Option = GenerateOptionData<shaders_shader_options_alpha_test_off_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_alpha_test_from_albedo_ps"),
                         },
@@ -91,7 +91,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"default"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\foliage_options\material_default"),
+                            Option = GenerateOptionData<shaders_foliage_options_material_default_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"calculate_material_default"),
                         },

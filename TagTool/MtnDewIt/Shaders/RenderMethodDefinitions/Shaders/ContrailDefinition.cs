@@ -27,7 +27,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
         {
             var tag = GenerateTag<RenderMethodDefinition>($@"shaders\contrail");
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(Stream, tag);
-            rmdf.GlobalOptions = GenerateTag<RenderMethodOption>($@"shaders\contrail_options\global_contrail_options");
+            rmdf.GlobalOptions = GenerateOptionData<shaders_contrail_options_global_contrail_options_render_method_option>();
             rmdf.Categories = new List<RenderMethodDefinition.CategoryBlock>
             {
                 new RenderMethodDefinition.CategoryBlock
@@ -38,21 +38,21 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_only"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\contrail_options\albedo_diffuse_only"),
+                            Option = GenerateOptionData<shaders_contrail_options_albedo_diffuse_only_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"palettized"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\contrail_options\albedo_palettized"),
+                            Option = GenerateOptionData<shaders_contrail_options_albedo_palettized_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"palettized_plus_alpha"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\contrail_options\albedo_palettized_plus_alpha"),
+                            Option = GenerateOptionData<shaders_contrail_options_albedo_palettized_plus_alpha_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },

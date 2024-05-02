@@ -27,7 +27,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
         {
             var tag = GenerateTag<RenderMethodDefinition>($@"shaders\water");
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(Stream, tag);
-            rmdf.GlobalOptions = GenerateTag<RenderMethodOption>($@"shaders\water_options\water_global");
+            rmdf.GlobalOptions = GenerateOptionData<shaders_water_options_water_global_render_method_option>();
             rmdf.Categories = new List<RenderMethodDefinition.CategoryBlock>
             {
                 new RenderMethodDefinition.CategoryBlock
@@ -38,7 +38,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"default"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\waveshape_default"),
+                            Option = GenerateOptionData<shaders_water_options_waveshape_default_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -52,7 +52,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"bump"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\waveshape_bump"),
+                            Option = GenerateOptionData<shaders_water_options_waveshape_bump_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -68,14 +68,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"pure"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\watercolor_pure"),
+                            Option = GenerateOptionData<shaders_water_options_watercolor_pure_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"texture"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\watercolor_texture"),
+                            Option = GenerateOptionData<shaders_water_options_watercolor_texture_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -98,14 +98,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"static"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\reflection_static"),
+                            Option = GenerateOptionData<shaders_water_options_reflection_static_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"dynamic"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\reflection_dynamic"),
+                            Option = GenerateOptionData<shaders_water_options_reflection_dynamic_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -128,7 +128,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"dynamic"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\refraction_dynamic"),
+                            Option = GenerateOptionData<shaders_water_options_refraction_dynamic_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -151,21 +151,21 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"depth"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\bankalpha_depth"),
+                            Option = GenerateOptionData<shaders_water_options_bankalpha_depth_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"paint"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\bankalpha_paint"),
+                            Option = GenerateOptionData<shaders_water_options_bankalpha_paint_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"from_shape_texture_alpha"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\bankalpha_from_shape_texture_alpha"),
+                            Option = GenerateOptionData<shaders_water_options_bankalpha_from_shape_texture_alpha_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -181,7 +181,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"default"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\appearance_default"),
+                            Option = GenerateOptionData<shaders_water_options_appearance_default_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -204,14 +204,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"paint"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\globalshape_paint"),
+                            Option = GenerateOptionData<shaders_water_options_globalshape_paint_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"depth"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\globalshape_depth"),
+                            Option = GenerateOptionData<shaders_water_options_globalshape_depth_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -227,28 +227,28 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"none"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\foam_none"),
+                            Option = GenerateOptionData<shaders_water_options_foam_none_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"auto"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\foam_auto"),
+                            Option = GenerateOptionData<shaders_water_options_foam_auto_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"paint"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\foam_paint"),
+                            Option = GenerateOptionData<shaders_water_options_foam_paint_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"both"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\foam_both"),
+                            Option = GenerateOptionData<shaders_water_options_foam_both_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -271,7 +271,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"enabled"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\water_options\reach_compatibility_enabled"),
+                            Option = GenerateOptionData<shaders_water_options_reach_compatibility_enabled_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },

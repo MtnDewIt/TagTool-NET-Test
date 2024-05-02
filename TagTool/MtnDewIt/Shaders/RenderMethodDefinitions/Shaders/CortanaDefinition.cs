@@ -27,7 +27,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
         {
             var tag = GenerateTag<RenderMethodDefinition>($@"shaders\cortana");
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(Stream, tag);
-            rmdf.GlobalOptions = GenerateTag<RenderMethodOption>($@"shaders\shader_options\global_shader_options");
+            rmdf.GlobalOptions = GenerateOptionData<shaders_shader_options_global_shader_options_render_method_option>();
             rmdf.Categories = new List<RenderMethodDefinition.CategoryBlock>
             {
                 new RenderMethodDefinition.CategoryBlock
@@ -38,7 +38,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"default"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\cortana_albedo"),
+                            Option = GenerateOptionData<shaders_shader_options_cortana_albedo_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -54,7 +54,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"standard"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\bump_default"),
+                            Option = GenerateOptionData<shaders_shader_options_bump_default_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -70,14 +70,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"none"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\alpha_test_off"),
+                            Option = GenerateOptionData<shaders_shader_options_alpha_test_off_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_alpha_test_off_ps"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"simple"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\alpha_test_on"),
+                            Option = GenerateOptionData<shaders_shader_options_alpha_test_on_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_alpha_test_on_ps"),
                         },
@@ -93,7 +93,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"cook_torrance"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\material_cook_torrance_option"),
+                            Option = GenerateOptionData<shaders_shader_options_material_cook_torrance_option_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -116,14 +116,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"per_pixel"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\env_map_per_pixel"),
+                            Option = GenerateOptionData<shaders_shader_options_env_map_per_pixel_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"per_pixel"),
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"dynamic"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\env_map_dynamic"),
+                            Option = GenerateOptionData<shaders_shader_options_env_map_dynamic_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"dynamic"),
                         },
@@ -139,7 +139,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"default"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\warp_cortana_default"),
+                            Option = GenerateOptionData<shaders_shader_options_warp_cortana_default_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -171,7 +171,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"default"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\cortana_screenspace"),
+                            Option = GenerateOptionData<shaders_shader_options_cortana_screenspace_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -187,7 +187,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"default"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\shader_options\cortana_transparency"),
+                            Option = GenerateOptionData<shaders_shader_options_cortana_transparency_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },

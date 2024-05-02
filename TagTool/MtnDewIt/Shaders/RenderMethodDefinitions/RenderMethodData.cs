@@ -5,6 +5,7 @@ using System.IO;
 using TagTool.Tags;
 using System;
 using TagTool.Common;
+using TagTool.Tags.Definitions;
 
 namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions
 {
@@ -29,6 +30,26 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions
                 CacheContext.Serialize(Stream, result, definition);
                 CacheContext.SaveTagNames();
             }
+
+            return result;
+        }
+
+        public CachedTag GenerateOptionData<T>() where T : RenderMethodData
+        {
+            var typeName = typeof(T).Name;
+            var tagName = typeName.Replace("_render_method_option", "").Replace("shaders_", "shaders\\").Replace("_options_", "_options\\");
+
+            if (!Cache.TagCache.TryGetTag<RenderMethodOption>(tagName, out var result))
+            {
+                result = Cache.TagCache.AllocateTag<RenderMethodOption>(tagName);
+                var definition = Activator.CreateInstance<RenderMethodOption>();
+                CacheContext.Serialize(Stream, result, definition);
+                CacheContext.SaveTagNames();
+            }
+
+            object[] args = { Cache, CacheContext, Stream };
+
+            var tagObject = Activator.CreateInstance(typeof(T), args);
 
             return result;
         }

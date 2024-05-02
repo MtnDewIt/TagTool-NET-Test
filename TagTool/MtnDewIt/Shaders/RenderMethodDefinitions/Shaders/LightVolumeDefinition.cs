@@ -27,7 +27,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
         {
             var tag = GenerateTag<RenderMethodDefinition>($@"shaders\light_volume");
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(Stream, tag);
-            rmdf.GlobalOptions = GenerateTag<RenderMethodOption>($@"shaders\light_volume_options\global_light_volume");
+            rmdf.GlobalOptions = GenerateOptionData<shaders_light_volume_options_global_light_volume_render_method_option>();
             rmdf.Categories = new List<RenderMethodDefinition.CategoryBlock>
             {
                 new RenderMethodDefinition.CategoryBlock
@@ -38,14 +38,14 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_only"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\light_volume_options\albedo_diffuse_only"),
+                            Option = GenerateOptionData<shaders_light_volume_options_albedo_diffuse_only_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"circular"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\light_volume_options\albedo_circular"),
+                            Option = GenerateOptionData<shaders_light_volume_options_albedo_circular_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -177,7 +177,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"on"),
-                            Option = GenerateTag<RenderMethodOption>($@"shaders\particle_options\depth_fade_on"),
+                            Option = GenerateOptionData<shaders_particle_options_depth_fade_on_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
