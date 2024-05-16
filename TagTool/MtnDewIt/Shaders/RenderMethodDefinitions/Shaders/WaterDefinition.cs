@@ -275,6 +275,13 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"enabled_detail_repeat"),
+                            Option = GenerateOptionData<shaders_water_options_reach_compatibility_enabled_render_method_option>(),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = StringId.Invalid,
+                        },
                     },
                     VertexFunction = StringId.Invalid,
                     PixelFunction = StringId.Invalid,

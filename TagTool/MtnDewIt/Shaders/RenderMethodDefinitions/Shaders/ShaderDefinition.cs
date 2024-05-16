@@ -386,6 +386,34 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"cook_torrance"),
                         },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"cook_torrance_pbr_maps"),
+                            Option = GenerateOptionData<shaders_shader_options_material_cook_torrance_pbr_maps_option_render_method_option>(),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"cook_torrance_pbr_maps"),
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"two_lobe_phong_tint_map"),
+                            Option = GenerateOptionData<shaders_shader_options_material_two_lobe_phong_tint_map_option_render_method_option>(),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"two_lobe_phong_tint_map"),
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"cook_torrance_reach"),
+                            Option = GenerateOptionData<shaders_shader_options_material_cook_torrance_option_reach_render_method_option>(),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"cook_torrance_reach"),
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"two_lobe_phong_reach"),
+                            Option = GenerateOptionData<shaders_shader_options_material_two_lobe_phong_option_reach_render_method_option>(),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"two_lobe_phong_reach"),
+                        },
                     },
                     VertexFunction = StringId.Invalid,
                     PixelFunction = CacheContext.StringTable.GetOrAddString($@"material_type"),
@@ -533,7 +561,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"multilayer_additive"),
-                            Option = GenerateOptionData<sshaders_shader_options_illum_multilayer_render_method_option>(),
+                            Option = GenerateOptionData<shaders_shader_options_illum_multilayer_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_self_illumination_multilayer_ps"),
                         },
