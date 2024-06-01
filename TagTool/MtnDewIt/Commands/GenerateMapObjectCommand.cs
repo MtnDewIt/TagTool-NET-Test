@@ -949,7 +949,14 @@ namespace TagTool.MtnDewIt.Commands
             {
                 var tag = Cache.TagCache.GetTag(tagIndex);
 
-                output = $"GetCachedTag<{Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group).Name}>($@\"{tag.Name}\")";
+                if (tag != null)
+                {
+                    output = $"GetCachedTag<{Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group).Name}>($@\"{tag.Name}\")";
+                }
+                else
+                {
+                    output = $@"{tagIndex}";
+                }
             }
             else 
             {
