@@ -77,8 +77,8 @@ namespace TagTool.MtnDewIt.Commands
                 GenerateLegacyGlobalShader(stream, $@"decal", false);      // Compiled bytecode is completely different between MS23 and bytecode compiled from updated source (use legacy generator for now)
                 //GenerateGlobalShader(stream, $@"foliage", false);        // Data doesn't change between versions, Compiled bytecode is completely different from MS23 (disable for now)
                 GenerateGlobalShader(stream, $@"halogram", false);
-                //GenerateGlobalShader(stream, $@"lightvolume", false);    // Data doesn't change between versions, unabled to compile from source, both legacy and updated source (disable for now) 
-                //GenerateGlobalShader(stream, $@"particle", false);       // Data doesn't change between versions, unabled to compile from source, both legacy and updated source (disable for now) 
+                //GenerateGlobalShader(stream, $@"lightvolume", false);    // Data doesn't change between versions, Compiled bytecode is completely different from MS23 (disable for now) 
+                //GenerateGlobalShader(stream, $@"particle", false);       // Data doesn't change between versions, Compiled bytecode is completely different from MS23 (disable for now) 
                 GenerateGlobalShader(stream, $@"screen", false);
                 GenerateGlobalShader(stream, $@"shader", false);
                 GenerateLegacyGlobalShader(stream, $@"terrain", false);    // Compiled bytecode is completely different between MS23 and bytecode compiled from updated source (use legacy generator for now)
