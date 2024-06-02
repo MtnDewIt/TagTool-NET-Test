@@ -2,13 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands;
 using TagTool.Commands.Common;
-using TagTool.MtnDewIt.Commands.ConvertCache;
 using TagTool.MtnDewIt.Shaders.LegacyShaderGenerator;
 using TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders;
 using TagTool.Shaders.ShaderGenerator;
@@ -41,7 +39,7 @@ namespace TagTool.MtnDewIt.Commands
         {
             UpdateShaderData();
 
-            return true;            
+            return true;
         }
 
         public void UpdateShaderData()
@@ -69,33 +67,33 @@ namespace TagTool.MtnDewIt.Commands
                 // Some shaders appear to be using MS30 entry point enum for entry point count.
                 // This may be why there are issues with generating / recompiling halo online templates?
 
-                //GenerateGlobalShader(stream, $@"beam", false);           // Data doesn't change between versions, Compiled bytecode is completely different from MS23 (disable for now)
+                GenerateGlobalShader(stream, $@"beam", false);           // Data doesn't change between versions, Compiled bytecode is completely different from MS23 (disable for now)
                 GenerateGlobalShader(stream, $@"black", false);
-                //GenerateGlobalShader(stream, $@"contrail", false);       // Data doesn't change between versions, unabled to compile from source, both legacy and updated source (disable for now) 
+                GenerateGlobalShader(stream, $@"contrail", false);       // Data doesn't change between versions, Compiled bytecode is completely different from MS23 (disable for now) 
                 GenerateGlobalShader(stream, $@"cortana", false);
-                GenerateLegacyGlobalShader(stream, $@"custom", false);     // Compiled bytecode is completely different from bytecode compiled from updated source (use legacy generator for now)
-                GenerateLegacyGlobalShader(stream, $@"decal", false);      // Compiled bytecode is completely different between MS23 and bytecode compiled from updated source (use legacy generator for now)
-                //GenerateGlobalShader(stream, $@"foliage", false);        // Data doesn't change between versions, Compiled bytecode is completely different from MS23 (disable for now)
+                GenerateGlobalShader(stream, $@"custom", false);         // Compiled bytecode is completely different from bytecode compiled from updated source (use legacy generator for now)
+                GenerateGlobalShader(stream, $@"decal", false);          // Compiled bytecode is completely different between MS23 and bytecode compiled from updated source (use legacy generator for now)
+                GenerateGlobalShader(stream, $@"foliage", false);        // Having APPLY_FIXES undefined generates 1:1 data. 
                 GenerateGlobalShader(stream, $@"halogram", false);
-                //GenerateGlobalShader(stream, $@"lightvolume", false);    // Data doesn't change between versions, Compiled bytecode is completely different from MS23 (disable for now) 
-                //GenerateGlobalShader(stream, $@"particle", false);       // Data doesn't change between versions, Compiled bytecode is completely different from MS23 (disable for now) 
+                GenerateGlobalShader(stream, $@"lightvolume", false);    // Data doesn't change between versions, Compiled bytecode is completely different from MS23 (disable for now) 
+                GenerateGlobalShader(stream, $@"particle", false);       // Data doesn't change between versions, Compiled bytecode is completely different from MS23 (disable for now) 
                 GenerateGlobalShader(stream, $@"screen", false);
                 GenerateGlobalShader(stream, $@"shader", false);
-                GenerateLegacyGlobalShader(stream, $@"terrain", false);    // Compiled bytecode is completely different between MS23 and bytecode compiled from updated source (use legacy generator for now)
-                //GenerateGlobalShader(stream, $@"water", false);          // Data doesn't change between versions, Compiled bytecode is completely different from MS23 (disable for now)
+                GenerateGlobalShader(stream, $@"terrain", false);        // Compiled bytecode is completely different between MS23 and bytecode compiled from updated source (use legacy generator for now)
+                GenerateGlobalShader(stream, $@"water", false);          // Having APPLY_FIXES undefined generates 1:1 data. 
                 GenerateGlobalShader(stream, $@"zonly", false);
 
                 GenerateGlobalShader(stream, $@"beam", true);
                 GenerateGlobalShader(stream, $@"black", true);
                 GenerateGlobalShader(stream, $@"contrail", true);
                 GenerateGlobalShader(stream, $@"cortana", true);
-                GenerateLegacyGlobalShader(stream, $@"custom", true);      // Shader parameters are all the same, ordering appears within constants list is different, minor bytecode differences as it uses level 2 optimization, instead of level 3 (use legacy generator for now)
+                GenerateGlobalShader(stream, $@"custom", true);
                 GenerateGlobalShader(stream, $@"decal", true);
                 GenerateGlobalShader(stream, $@"foliage", true);
                 GenerateGlobalShader(stream, $@"halogram", true);
                 GenerateGlobalShader(stream, $@"lightvolume", true);
                 GenerateGlobalShader(stream, $@"particle", true);
-                //GenerateGlobalShader(stream, $@"screen", true);          // Data doesn't change between versions, Uses the MS30 entry point enumerator for the entry point count, at least in MS23 and for the 0.7 base cache (disable for now)
+                GenerateGlobalShader(stream, $@"screen", true);
                 GenerateGlobalShader(stream, $@"shader", true);
                 GenerateGlobalShader(stream, $@"terrain", true);
                 GenerateGlobalShader(stream, $@"water", true);
@@ -161,7 +159,7 @@ namespace TagTool.MtnDewIt.Commands
             }
         }
 
-        public void RecompileShaders(Stream stream, string shaderType) 
+        public void RecompileShaders(Stream stream, string shaderType)
         {
             if (!Cache.TagCache.TryGetTag($"shaders\\{shaderType}.rmdf", out CachedTag rmdfTag))
                 new TagToolError(CommandError.TagInvalid, $"Missing \"{shaderType}\" rmdf");
@@ -212,7 +210,8 @@ namespace TagTool.MtnDewIt.Commands
 
             foreach (var info in recompileInfo)
             {
-                Task<STemplateRecompileInfo> generatorTask = Task.Run(() => {
+                Task<STemplateRecompileInfo> generatorTask = Task.Run(() =>
+                {
                     return GenerateRenderMethodTemplateAsync(Cache, info, rmdf, glvs, glps);
                 });
                 tasks.Add(generatorTask);
