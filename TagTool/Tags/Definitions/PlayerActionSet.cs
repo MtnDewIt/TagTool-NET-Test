@@ -5,22 +5,20 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.Tags
 {
-    [TagStructure(Name = "player_action_set", Tag = "pact", Size = 0x148)] // Remove for release
-    //[TagStructure(Name = "player_action_set", Tag = "pact", Size = 0x11C)] // Uncomment for release
+    [TagStructure(Name = "player_action_set", Tag = "pact", Size = 0x11C)]
     public class PlayerActionSet : TagStructure
     {
-        //public int version; // Uncomment for release
+        [TagField(Flags = TagFieldFlags.Hidden)]
+        public int Version;
 
-        public WidgetData Widget; // Remove for release
-        //public List<WidgetData> Widget; // Uncomment for release
+        public List<WidgetData> Widget;
 
         public List<Action> Actions;
 
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x100)]
         public byte[] Unused = new byte[0x100];
 
-        [TagStructure(Size = 0x3C)] // Remove for release
-        //[TagStructure(Size = 0x124)] // Uncomment for release
+        [TagStructure(Size = 0x124)]
         public class WidgetData : TagStructure
         {
             [TagField(Length = 32)]
@@ -30,15 +28,13 @@ namespace TagTool.Tags
 
             public ushort Flags;
 
-            public byte[] Stylesheet; // Remove for release
+            public ArgbColor BackgroundColor;
+            public ArgbColor BorderColor;
+            public ArgbColor HighlightColor;
+            public ArgbColor TextColor;
 
-            //public ArgbColor BackgroundColor; // Uncomment for release
-            //public ArgbColor BorderColor; // Uncomment for release
-            //public ArgbColor HighlightColor; // Uncomment for release
-            //public ArgbColor TextColor; // Uncomment for release
-
-            //[TagField(Flags = TagFieldFlags.Padding, Length = 0xF0)] // Uncomment for release
-            //public byte[] Unused = new byte[0xF0];
+            [TagField(Flags = TagFieldFlags.Padding, Length = 0xF0)]
+            public byte[] Unused = new byte[0xF0];
 
             public enum WidgetType : short
             {
@@ -47,8 +43,7 @@ namespace TagTool.Tags
             }
         }
 
-        [TagStructure(Size = 0x5C)] // Remove for release
-        //[TagStructure(Size = 0x15C)] // Uncomment for release
+        [TagStructure(Size = 0x15C)]
         public class Action : TagStructure
         {
             [TagField(Length = 32)]
@@ -67,8 +62,8 @@ namespace TagTool.Tags
 
             public List<Unit.UnitCameraBlock> OverrideCamera;
 
-            //[TagField(Flags = TagFieldFlags.Padding, Length = 0x100)] // Uncomment for release
-            //public byte[] Unused = new byte[0x100];
+            [TagField(Flags = TagFieldFlags.Padding, Length = 0x100)]
+            public byte[] Unused = new byte[0x100];
 
             [Flags]
             public enum ActionFlags : int

@@ -17,6 +17,7 @@ using System.Reflection.Emit;
 using System.Diagnostics;
 using System.Buffers;
 using System.Runtime.ExceptionServices;
+using System.Diagnostics;
 
 namespace TagTool.Serialization
 {
@@ -74,15 +75,23 @@ namespace TagTool.Serialization
             if (reader.Length == 0)
                 return null;
             object result = null;
-            try
+            if (Debugger.IsAttached)
             {
                 result = DeserializeStruct(reader, context, info);
             }
-            catch(Exception ex)
+            //if no debugger then create a more user-friendly exception
+            else
             {
-                string outPath = string.Join(".", CurrentFieldPath.ToArray().Reverse());
-                new TagToolError(CommandError.CustomError, $"Structure deserialization failed at path {outPath}");
-                ExceptionDispatchInfo.Capture(ex).Throw();
+                try
+                {
+                    result = DeserializeStruct(reader, context, info);
+                }
+                catch (Exception ex)
+                {
+                    string outPath = string.Join(".", CurrentFieldPath.ToArray().Reverse());
+                    new TagToolError(CommandError.CustomError, $"Structure deserialization failed at path {outPath}");
+                    ExceptionDispatchInfo.Capture(ex).Throw();
+                }
             }
             
             context.EndDeserialize(info, result);

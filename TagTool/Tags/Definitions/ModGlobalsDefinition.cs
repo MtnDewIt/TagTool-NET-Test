@@ -6,21 +6,19 @@ using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "mod_globals", Tag = "modg", Size = 0x118)] // Remove for release
-    //[TagStructure(Name = "mod_globals", Tag = "modg", Size = 0x11C)] // Uncomment for release
+    [TagStructure(Name = "mod_globals", Tag = "modg", Size = 0x11C)]
     public class ModGlobalsDefinition : TagStructure
     {
-        //public int version; // Uncomment for release
+        [TagField(Flags = Hidden)]
+        public int Version;
 
         public List<PlayerCharacterSet> PlayerCharacterSets;
-
         public List<PlayerCharacterCustomization> PlayerCharacterCustomizations;
 
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x100)]
         public byte[] Unused = new byte[0x100];
 
-        [TagStructure(Size = 0x34)] // Remove for release
-        //[TagStructure(Size = 0x84)] // Uncomment for release
+        [TagStructure(Size = 0x84)]
         public class PlayerCharacterSet : TagStructure
         {
             [TagField(Length = 32)]
@@ -29,8 +27,8 @@ namespace TagTool.Tags.Definitions
             public float RandomChance;
             public List<PlayerCharacter> Characters;
 
-            //[TagField(Flags = TagFieldFlags.Padding, Length = 0x50)] // Uncomment for release
-            //public byte[] Unused = new byte[0x50];
+            [TagField(Flags = TagFieldFlags.Padding, Length = 0x50)]
+            public byte[] Unused = new byte[0x50];
 
             [TagStructure(Size = 0x28)]
             public class PlayerCharacter : TagStructure
@@ -42,8 +40,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0xC4)] // Remove for release
-        //[TagStructure(Size = 0x164)] // Uncomment for release
+        [TagStructure(Size = 0x164)]
         public class PlayerCharacterCustomization : TagStructure
         {
             /// <summary>
@@ -76,14 +73,15 @@ namespace TagTool.Tags.Definitions
 
             public PlayerCharacterColors CharacterColors;
 
-            //[TagField(Flags = TagFieldFlags.Padding, Length = 0x50)] // Uncomment for release
-            //public byte[] Unused = new byte[0x50];
+            [TagField(Flags = TagFieldFlags.Padding, Length = 0x50)]
+            public byte[] Unused = new byte[0x50];
 
-            [TagStructure(Size = 0x6C)] // Remove for release
-            //[TagStructure(Size = 0xBC)] // Uncomment for release
+            [TagStructure(Size = 0xBC)]
             public class PlayerCharacterRegionScript : TagStructure
             {
-                public int unused;
+                [TagField(Flags = Padding, Length = 0x4)]
+                public byte[] Padding0;
+
                 [TagField(Length = 32)]
                 public string RegionName;
                 [TagField(Length = 32)]
@@ -93,8 +91,8 @@ namespace TagTool.Tags.Definitions
                 public float BipedRotation;
                 public float RotationDuration;
 
-                //[TagField(Flags = TagFieldFlags.Padding, Length = 0x50)] // Uncomment for release
-                //public byte[] Unused = new byte[0x50];
+                [TagField(Flags = TagFieldFlags.Padding, Length = 0x50)]
+                public byte[] Unused = new byte[0x50];
             };
 
             [TagStructure(Size = 0x40)]
@@ -102,7 +100,10 @@ namespace TagTool.Tags.Definitions
             {
                 public ChangeColorFlagsValue ValidColorFlags;
                 public ChangeColorFlagsValue TeamOverrideFlags;
-                public short Unused;
+
+                [TagField(Flags = Padding, Length = 0x2)]
+                public byte[] Padding0;
+
                 [TagField(Length = 5)]
                 public ChangeColorBlock[] Colors;
 
@@ -126,8 +127,7 @@ namespace TagTool.Tags.Definitions
                 }
             };
 
-            [TagStructure(Size = 0x3C)] // Remove for release
-            //[TagStructure(Size = 0x8C)] // Uncomment for release
+            [TagStructure(Size = 0x8C)]
             public class CharacterPositionInfo : TagStructure
             {
                 /// <summary>
@@ -172,8 +172,8 @@ namespace TagTool.Tags.Definitions
                 /// </summary>
                 public float BipedRotation;
 
-                //[TagField(Flags = TagFieldFlags.Padding, Length = 0x50)]
-                //public byte[] Unused = new byte[0x50];
+                [TagField(Flags = TagFieldFlags.Padding, Length = 0x50)]
+                public byte[] Unused = new byte[0x50];
 
                 [Flags]
                 public enum FlagsValue : int
