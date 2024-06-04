@@ -27,9 +27,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
         {
             var tag = GetCachedTag<PlayerActionSet>($@"objects\characters\elite\mp_elite\actions");
             var pact = CacheContext.Deserialize<PlayerActionSet>(Stream, tag);
-            pact.Widget = new PlayerActionSet.WidgetData
+            pact.Widget = new List<PlayerActionSet.WidgetData>
             {
-                Title = "Elite Actions",
+                new PlayerActionSet.WidgetData
+                {
+                    Title = "Elite Actions",
+                },
             };
             pact.Actions = new List<PlayerActionSet.Action>
             {
