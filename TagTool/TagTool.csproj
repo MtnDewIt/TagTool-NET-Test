@@ -14,6 +14,7 @@
     <NoWarn>$(NoWarn),CS0169,CS0414,CS0649,CS1591;CA1416</NoWarn>
     <LangVersion>12</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Deterministic>false</Deterministic>
     <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
     <Platforms>x86;x64</Platforms>
     <Configuration>Release</Configuration> <!--Default value-->
