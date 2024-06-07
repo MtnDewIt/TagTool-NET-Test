@@ -14,6 +14,7 @@
     <NoWarn>$(NoWarn),CS0169,CS0414,CS0649,CS1591;CA1416</NoWarn>
     <LangVersion>12</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>obj\$(Platform)\$(ConfigurationName)\$(TargetFramework)\Documentation.xml</DocumentationFile>
     <Deterministic>false</Deterministic>
     <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
     <Platforms>x86;x64</Platforms>
@@ -46,6 +47,7 @@
     <None Include="VideoUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\ShaderGenerator\HaloShaderGenerator\bin\$(Platform)\$(ConfigurationName)\$(TargetFramework)\**\*" Link="Tools\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
     <None Include="..\Physics\**\*" Link="Physics\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
     <None Include="..\Tools\**\*" Link="Tools\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
     <None Remove="..\Tools\meshoptimizer32.dll" />
@@ -58,8 +60,8 @@
     <None Include="..\Tools\fmod64.dll" Condition=" '$(Platform)' == 'x64' " Link="Tools\fmod.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="..\Tools\JsonMoppNet.dll" />
-    <Reference Include="..\Tools\MIConvexHull.dll" />
+    <Reference Include="..\Tools\JsonMoppNet.dll" Private="false" />
+    <Reference Include="..\Tools\MIConvexHull.dll" Private="false" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
@@ -68,7 +70,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ShaderGenerator\HaloShaderGenerator\HaloShaderGenerator.csproj" />
+    <ProjectReference Include="..\ShaderGenerator\HaloShaderGenerator\HaloShaderGenerator.csproj" Private="false" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AssimpNet" Version="4.1.0" />
