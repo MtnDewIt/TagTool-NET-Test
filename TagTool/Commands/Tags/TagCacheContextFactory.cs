@@ -128,7 +128,7 @@ namespace TagTool.Commands.Tags
             if(cache is GameCacheHaloOnline)
             {
                 var hoCache = cache as GameCacheHaloOnline;
-                context.AddCommand(new DebugTestCommand(cache, hoCache, contextStack));
+                context.AddCommand(new UpdateShaderDataCommand(cache, hoCache, contextStack));
                 context.AddCommand(new UpdateEDTagsCommand(hoCache));
                 context.AddCommand(new UpdateHOTagsCommand(hoCache));
                 context.AddCommand(new RebuildCacheFileCommand(hoCache));
