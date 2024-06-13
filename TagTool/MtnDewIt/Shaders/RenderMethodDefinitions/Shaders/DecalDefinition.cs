@@ -214,6 +214,13 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"transparent"),
+                            Option = null,
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = StringId.Invalid,
+                        },
                     },
                     VertexFunction = StringId.Invalid,
                     PixelFunction = StringId.Invalid,

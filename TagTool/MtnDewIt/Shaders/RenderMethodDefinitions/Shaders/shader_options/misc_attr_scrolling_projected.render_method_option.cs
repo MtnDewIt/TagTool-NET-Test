@@ -1,0 +1,309 @@
+using System.Collections.Generic;
+using System.IO;
+using TagTool.Cache.HaloOnline;
+using TagTool.Cache;
+using TagTool.Common;
+using TagTool.Shaders;
+using TagTool.Tags.Definitions;
+
+namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
+{
+    public class shaders_shader_options_misc_attr_scrolling_projected_render_method_option : RenderMethodData
+    {
+        public shaders_shader_options_misc_attr_scrolling_projected_render_method_option(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        (
+            cache,
+            cacheContext,
+            stream
+        )
+        {
+            Cache = cache;
+            CacheContext = cacheContext;
+            Stream = stream;
+            RenderMethod();
+        }
+
+        public override void RenderMethod()
+        {
+            var tag = Cache.TagCache.GetTag<RenderMethodOption>($@"shaders\shader_options\misc_attr_scrolling_projected");
+            var rmop = CacheContext.Deserialize<RenderMethodOption>(Stream, tag);
+            rmop.Parameters = new List<RenderMethodOption.ParameterBlock>
+            {
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"misc_attr_animation_option"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Int,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 2,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultComparisionFunction = 0,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"object_center_x"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultComparisionFunction = 0,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"object_center_y"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultComparisionFunction = 0,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"object_center_z"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0.65f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultComparisionFunction = 0,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"plane_u_x"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultComparisionFunction = 0,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"plane_u_y"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 1f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultComparisionFunction = 0,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"plane_u_z"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultComparisionFunction = 0,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"plane_v_x"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultComparisionFunction = 0,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"plane_v_y"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultComparisionFunction = 0,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"plane_v_z"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 1f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultComparisionFunction = 0,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"scale_u"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 1f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultComparisionFunction = 0,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"scale_v"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 1f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultComparisionFunction = 0,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"translate_u"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultComparisionFunction = 0,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"translate_v"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultComparisionFunction = 0,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"speed_u"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0.1f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultComparisionFunction = 0,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+                new RenderMethodOption.ParameterBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"speed_v"),
+                    Type = RenderMethodOption.ParameterBlock.OptionDataType.Real,
+                    RenderMethodExtern = RenderMethodExtern.none,
+                    DefaultSamplerBitmap = null,
+                    DefaultFloatArgument = 0f,
+                    DefaultIntBoolArgument = 0,
+                    Flags = 0,
+                    DefaultFilterMode = RenderMethodOption.ParameterBlock.DefaultFilterModeValue.Trilinear,
+                    DefaultComparisionFunction = 0,
+                    DefaultAddressMode = RenderMethodOption.ParameterBlock.DefaultAddressModeValue.Wrap,
+                    AnisotropyAmount = 0,
+                    DefaultColor = new ArgbColor(0, 0, 0, 0),
+                    DefaultBitmapScale = 0f,
+                    HelpText = null,
+                },
+            };
+
+            CacheContext.Serialize(Stream, tag, rmop);
+        }
+    }
+}

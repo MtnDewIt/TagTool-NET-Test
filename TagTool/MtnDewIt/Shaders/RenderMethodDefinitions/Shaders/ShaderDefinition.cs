@@ -189,6 +189,34 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             VertexFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_default_vs"),
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_emblem_ps"),
                         },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"scrolling_cube_mask"),
+                            Option = GenerateOptionData<shaders_shader_options_albedo_scrolling_cube_mask_render_method_option>(),
+                            VertexFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_default_vs"),
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_scrolling_cube_mask_ps"),
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"scrolling_cube"),
+                            Option = GenerateOptionData<shaders_shader_options_albedo_scrolling_cube_render_method_option>(),
+                            VertexFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_default_vs"),
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_scrolling_cube_ps"),
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"scrolling_texture_uv"),
+                            Option = GenerateOptionData<shaders_shader_options_albedo_scrolling_texture_uv_render_method_option>(),
+                            VertexFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_default_vs"),
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_scrolling_texture_uv_ps"),
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"texture_from_misc"),
+                            Option = GenerateOptionData<shaders_shader_options_albedo_texture_from_misc_render_method_option>(),
+                            VertexFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_default_vs"),
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_texture_from_misc_ps"),
+                        },
                     },
                     VertexFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_vs"),
                     PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_albedo_ps"),
@@ -414,6 +442,41 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"two_lobe_phong_reach"),
                         },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"cook_torrance_custom_cube"),
+                            Option = GenerateOptionData<shaders_shader_options_material_cook_torrance_custom_cube_option_render_method_option>(),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"cook_torrance_custom_cube"),
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"cook_torrance_two_color_spec_tint"),
+                            Option = GenerateOptionData<shaders_shader_options_material_cook_torrance_two_color_spec_tint_render_method_option>(),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"cook_torrance_two_color_spec_tint"),
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"cook_torrance_scrolling_cube_mask"),
+                            Option = GenerateOptionData<shaders_shader_options_material_cook_torrance_scrolling_cube_mask_render_method_option>(),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"cook_torrance_scrolling_cube_mask"),
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"cook_torrance_scrolling_cube"),
+                            Option = GenerateOptionData<shaders_shader_options_material_cook_torrance_scrolling_cube_render_method_option>(),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"cook_torrance_scrolling_cube"),
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"cook_torrance_from_albedo"),
+                            Option = GenerateOptionData<shaders_shader_options_material_cook_torrance_from_albedo_render_method_option>(),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"cook_torrance_from_albedo"),
+                        },
                     },
                     VertexFunction = StringId.Invalid,
                     PixelFunction = CacheContext.StringTable.GetOrAddString($@"material_type"),
@@ -578,6 +641,13 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             Option = GenerateOptionData<shaders_shader_options_illum_change_color_detail_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_self_illumination_change_color_detail_ps"),
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"illum_detail_world_space_four_cc"),
+                            Option = GenerateOptionData<shaders_shader_options_illum_detail_world_space_four_cc_render_method_option>(),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_self_illumination_detail_world_space_ps"),
                         },
                     },
                     VertexFunction = StringId.Invalid,
@@ -760,6 +830,36 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                     },
                     VertexFunction = StringId.Invalid,
                     PixelFunction = CacheContext.StringTable.GetOrAddString($@"apply_soft_fade"),
+                },
+                new RenderMethodDefinition.CategoryBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"misc_attr_animation"),
+                    ShaderOptions = new List<RenderMethodDefinition.CategoryBlock.ShaderOption>
+                    {
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"off"),
+                            Option = null,
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = StringId.Invalid,
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"scrolling_cube"),
+                            Option = GenerateOptionData<shaders_shader_options_misc_attr_scrolling_cube_render_method_option>(),
+                            VertexFunction = StringId.Invalid, //CacheContext.StringTable.GetOrAddString($@"misc_attr_exist"),
+                            PixelFunction = StringId.Invalid,
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"scrolling_projected"),
+                            Option = GenerateOptionData<shaders_shader_options_misc_attr_scrolling_projected_render_method_option>(),
+                            VertexFunction = StringId.Invalid, //CacheContext.StringTable.GetOrAddString($@"misc_attr_exist"),
+                            PixelFunction = StringId.Invalid,
+                        },
+                    },
+                    VertexFunction = StringId.Invalid, //CacheContext.StringTable.GetOrAddString($@"misc_attr_define"),
+                    PixelFunction = StringId.Invalid,
                 },
             };
             rmdf.EntryPoints = new List<RenderMethodDefinition.EntryPointBlock>

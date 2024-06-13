@@ -219,6 +219,20 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                             VertexFunction = StringId.Invalid,
                             PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_self_illumination_palettized_depth_fade_ps"),
                         },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"plasma_wide_and_sharp_five_change_color"),
+                            Option = GenerateOptionData<shaders_shader_options_illum_plasma_wide_and_sharp_five_change_color_render_method_option>(),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_self_illumination_plasma_wide_and_sharp_five_change_color_ps"),
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"self_illum_holograms"),
+                            Option = GenerateOptionData<shaders_shader_options_illum_holograms_render_method_option>(),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_self_illumination_holograms_ps"),
+                        },
                     },
                     VertexFunction = StringId.Invalid,
                     PixelFunction = CacheContext.StringTable.GetOrAddString($@"calc_self_illumination_ps"),
