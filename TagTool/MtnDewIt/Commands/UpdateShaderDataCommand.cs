@@ -207,7 +207,7 @@ namespace TagTool.MtnDewIt.Commands
                 //GenerateExplicitShader(stream, $@"105"); // unknown_105
                 //GenerateExplicitShader(stream, $@"106"); // unknown_106
                 //GenerateExplicitShader(stream, $@"107"); // unknown_107
-                //GenerateExplicitShader(stream, $@"108"); // unknown_108 // hud_camera_nightvision?
+                //GenerateExplicitShader(stream, $@"108"); // hud_camera_nightvision // Uses a custom implementation when compared to the ODST shader source.
                 //GenerateExplicitShader(stream, $@"109"); // unknown_109
             }
         }
