@@ -46,9 +46,9 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             h3MainMenu.PortTag($@"autorescalegui", $@"ui\halox\campaign\campaign_select_difficulty.gui_screen_widget_definition");
             h3MainMenu.PortTag($@"autorescalegui", $@"ui\halox\campaign\campaign_select_level.gui_screen_widget_definition");
             h3MainMenu.PortTag($@"autorescalegui", $@"ui\halox\campaign\campaign_settings.gui_screen_widget_definition");
-            //h3MainMenu.PortTag($@"autorescalegui", $@"ui\halox\carnage_report\carnage_report.gui_screen_widget_definition");
-            //h3MainMenu.PortTag($@"autorescalegui", $@"ui\halox\common\player_select\carnage_report_player_details.gui_screen_widget_definition");
-            //h3MainMenu.PortTag($@"autorescalegui", $@"ui\halox\common\player_select\player_select.gui_screen_widget_definition");
+            h3MainMenu.PortTag($@"autorescalegui", $@"ui\halox\carnage_report\carnage_report.gui_screen_widget_definition");
+            h3MainMenu.PortTag($@"autorescalegui", $@"ui\halox\common\player_select\carnage_report_player_details.gui_screen_widget_definition");
+            h3MainMenu.PortTag($@"autorescalegui", $@"ui\halox\common\player_select\player_select.gui_screen_widget_definition");
             h3MainMenu.PortTag($@"autorescalegui", $@"ui\halox\dialog\dialog.gui_screen_widget_definition");
             h3MainMenu.PortTag($@"autorescalegui", $@"ui\halox\dialog\dialog_four.gui_screen_widget_definition");
             h3MainMenu.PortTag($@"autorescalegui", $@"ui\halox\director\observer_camera_list_screen.gui_screen_widget_definition");
@@ -131,7 +131,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             sandbox.PortTag($@"autorescalegui", $@"ui\halox\start_menu\panes\game_saved_film\start_menu_game_saved_films.gui_screen_widget_definition");
 
             citadel.SetPortingProperties(audioCodec: Compression.MP3);
-            //citadel.PortTag($@"autorescalegui", $@"ui\halox\carnage_report\campaign_carnage_report.gui_screen_widget_definition");
+            citadel.PortTag($@"autorescalegui", $@"ui\halox\carnage_report\campaign_carnage_report.gui_screen_widget_definition");
             citadel.PortTag($@"autorescalegui", $@"ui\halox\terminals\terminal_screen.gui_screen_widget_definition");
 
             GenerateTag<GuiDatasourceDefinition>($@"ui\halox\pregame_lobby\lobby_list_survival");

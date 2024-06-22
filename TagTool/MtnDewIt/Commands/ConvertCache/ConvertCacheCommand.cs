@@ -244,7 +244,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             eldewritoDirectoryInfo = GetDirectoryInfo(eldewritoDirectoryInfo, "ElDewrito 0.6.1");
 
             eldewritoCache = GameCache.Open($@"{eldewritoDirectoryInfo.FullName}\tags.dat");
-            UpdateTagNames(eldewritoCache, UpdateEDTagsCommand.tagNameTable);
+            UpdateTagNames(eldewritoCache, UpdateEDLegacyTagsCommand.tagNameTable);
 
             haloOnlineDirectoryInfo = GetDirectoryInfo(haloOnlineDirectoryInfo, "Halo Online MS23");
 

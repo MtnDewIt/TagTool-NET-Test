@@ -221,7 +221,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new UserInterfaceGlobalsDefinition.ScreenWidget
                 {
-                    //Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\common\player_select\player_select"),
+                    Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\common\player_select\player_select"),
                 },
                 new UserInterfaceGlobalsDefinition.ScreenWidget
                 {
@@ -269,11 +269,11 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new UserInterfaceGlobalsDefinition.ScreenWidget
                 {
-                    //Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\carnage_report\carnage_report"),
+                    Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\carnage_report\carnage_report"),
                 },
                 new UserInterfaceGlobalsDefinition.ScreenWidget
                 {
-                    //Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\common\player_select\carnage_report_player_details"),
+                    Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\common\player_select\carnage_report_player_details"),
                 },
                 new UserInterfaceGlobalsDefinition.ScreenWidget
                 {

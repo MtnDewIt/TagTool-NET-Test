@@ -139,7 +139,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new UserInterfaceGlobalsDefinition.ScreenWidget
                 {
-                    //Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\carnage_report\campaign_carnage_report"),
+                    Widget = GetCachedTag<GuiScreenWidgetDefinition>($@"ui\halox\carnage_report\campaign_carnage_report"),
                 },
                 new UserInterfaceGlobalsDefinition.ScreenWidget
                 {
