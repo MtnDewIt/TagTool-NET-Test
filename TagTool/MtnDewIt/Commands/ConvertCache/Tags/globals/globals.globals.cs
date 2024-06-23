@@ -7194,7 +7194,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     DialogColorTable = GetCachedTag<ColorTable>($@"ui\dialog"),
                     InterfaceGooMap3 = GetCachedTag<Bitmap>($@"rasterizer\plasma_noise"),
                     MainMenuUiGlobals = GetCachedTag<UserInterfaceGlobalsDefinition>($@"ui\main_menu"),
-                    SinglePlayerUiGlobals = GetCachedTag<UserInterfaceGlobalsDefinition>($@"ui\single_player"),
+                    SinglePlayerUiGlobals = GetCachedTag<UserInterfaceGlobalsDefinition>($@"ui\main_menu"),
                     MultiplayerUiGlobals = GetCachedTag<UserInterfaceGlobalsDefinition>($@"ui\multiplayer"),
                     HudGlobals = GetCachedTag<ChudGlobalsDefinition>($@"ui\chud\globals"),
                     GfxUiStrings = new List<Globals.InterfaceTagsBlock.GfxUiString>
@@ -7329,6 +7329,11 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                             Name = "mod",
                             Strings = GetCachedTag<MultilingualUnicodeStringList>($@"hf2p\strings\mod_strings"),
                         },
+                        new Globals.InterfaceTagsBlock.GfxUiString
+                        {
+                            Name = $@"weapon_offset_types",
+                            Strings = GetCachedTag<MultilingualUnicodeStringList>($@"ui\weapon_type_names"),
+                        },
                     },
                 },
             };
@@ -7434,9 +7439,9 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Globals.PlayerRepresentationBlock()
                 {
                     Name = CacheContext.StringTable.GetOrAddString($@"sp_elite"),
-                    FirstPersonHands = GetCachedTag<RenderModel>($@"objects\characters\elite\fp_arms\fp_arms"),
-                    FirstPersonBody = GetCachedTag<RenderModel>($@"objects\characters\elite\fp_body\fp_body"),
-                    ThirdPersonUnit = GetCachedTag<Biped>($@"objects\characters\elite\elite_sp"),
+                    FirstPersonHands = null,
+                    FirstPersonBody = null,
+                    ThirdPersonUnit = null,
                     BinocularsZoomInSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\binoculars\binocs_in_click"),
                     BinocularsZoomOutSound = GetCachedTag<Sound>($@"sound\game_sfx\ui\binoculars\binocs_out_click"),
                     Flags = 1,
@@ -15250,6 +15255,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             };
             matg.RasterizerGlobals = GetCachedTag<RasterizerGlobals>($@"globals\rasterizer_globals");
             matg.DefaultCameraFxSettings = GetCachedTag<CameraFxSettings>($@"globals\default");
+            matg.PodiumDefinition = GetCachedTag<PodiumSettings>($@"multiplayer\podium");
             matg.DefaultWindSettings = GetCachedTag<Wind>($@"globals\default_wind");
             matg.CollisionDamageEffect = GetCachedTag<DamageEffect>($@"globals\collision_damage\collision");
             matg.CollisionDamage = GetCachedTag<CollisionDamage>($@"globals\collision_damage\default");

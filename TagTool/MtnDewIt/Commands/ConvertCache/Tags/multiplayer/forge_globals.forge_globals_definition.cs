@@ -28,6 +28,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
         {
             var tag = GetCachedTag<ForgeGlobalsDefinition>($@"multiplayer\forge_globals");
             var forg = CacheContext.Deserialize<ForgeGlobalsDefinition>(Stream, tag);
+            forg.Version = 1;
+            forg.DefaultBoundaryRenderMethod = GetCachedTag<Shader>($@"objects\multi\shaders\multiplayer_object_plasma");
             forg.ReForgeMaterialTypes = new List<ForgeGlobalsDefinition.ReForgeMaterialType> 
             {
                 new ForgeGlobalsDefinition.ReForgeMaterialType
@@ -74,9 +76,9 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ForgeGlobalsDefinition.ReForgeMaterialType
                 {
-                    Name = "Metal, Human",
-                    CollisionMaterialIndex = 55,
-                    PhysicsMaterialIndex = 55,
+                    Name = $@"Metal, Thick",
+                    CollisionMaterialIndex = 69,
+                    PhysicsMaterialIndex = 69,
                 },
                 new ForgeGlobalsDefinition.ReForgeMaterialType
                 {
@@ -98,7 +100,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ForgeGlobalsDefinition.ReForgeMaterialType
                 {
-                    Name = "Underbush",
+                    Name = $@"Underbrush",
                     CollisionMaterialIndex = 170,
                     PhysicsMaterialIndex = 170,
                 },
@@ -119,6 +121,36 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Name = "Water",
                     CollisionMaterialIndex = 4,
                     PhysicsMaterialIndex = 207,
+                },
+                new ForgeGlobalsDefinition.ReForgeMaterialType
+                {
+                    Name = $@"Grate",
+                    CollisionMaterialIndex = 167,
+                    PhysicsMaterialIndex = 167,
+                },
+                new ForgeGlobalsDefinition.ReForgeMaterialType
+                {
+                    Name = $@"Concrete",
+                    CollisionMaterialIndex = 104,
+                    PhysicsMaterialIndex = 104,
+                },
+                new ForgeGlobalsDefinition.ReForgeMaterialType
+                {
+                    Name = $@"Wood Planks",
+                    CollisionMaterialIndex = 171,
+                    PhysicsMaterialIndex = 171,
+                },
+                new ForgeGlobalsDefinition.ReForgeMaterialType
+                {
+                    Name = $@"Carpet",
+                    CollisionMaterialIndex = 176,
+                    PhysicsMaterialIndex = 176,
+                },
+                new ForgeGlobalsDefinition.ReForgeMaterialType
+                {
+                    Name = $@"Glass",
+                    CollisionMaterialIndex = 107,
+                    PhysicsMaterialIndex = 107,
                 },
             };
             forg.ReForgeObjects = new List<TagReferenceBlock> 
@@ -817,6 +849,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
             };
             forg.PrematchCameraObject = GetCachedTag<Scenery>($@"objects\multi\generic\mp_cinematic_camera");
+            forg.PostmatchObject = GetCachedTag<Scenery>($@"objects\multi\podium_point\podium_point");
             forg.ModifierObject = GetCachedTag<Scenery>($@"objects\eldewrito\forge\map_modifier");
             forg.KillVolumeObject = GetCachedTag<Crate>($@"objects\multi\boundaries\kill_volume");
             forg.GarbageVolumeObject = GetCachedTag<Crate>($@"objects\multi\boundaries\garbage_collection_volume");
@@ -1335,6 +1368,18 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     DescriptionIndex = -1,
                     ParentCategoryIndex = 52,
                 },
+                new ForgeGlobalsDefinition.PaletteCategory
+                {
+                    Name = $@"SCALABLE",
+                    DescriptionIndex = -1,
+                    ParentCategoryIndex = -1,
+                },
+                new ForgeGlobalsDefinition.PaletteCategory
+                {
+                    Name = $@"DEVICES",
+                    DescriptionIndex = -1,
+                    ParentCategoryIndex = -1,
+                },
             };
             forg.Palette = new List<ForgeGlobalsDefinition.PaletteItem>
             {
@@ -1372,7 +1417,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 1,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Crate>($@"ms30\objects\levels\dlc\bunkerworld\drum_55gal_bunker\drum_55gal_bunker"),
+                    Object = GetCachedTag<Crate>($@"objects\levels\dlc\bunkerworld\drum_55gal_bunker\drum_55gal_bunker"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -5513,7 +5558,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     Type = ForgeGlobalsDefinition.PaletteItemType.Tool,
                     CategoryIndex = 64,
                     DescriptionIndex = -1,
-                    MaxAllowed = 1,
+                    MaxAllowed = 0,
                     Object = GetCachedTag<Scenery>($@"objects\multi\generic\mp_cinematic_camera"),
                     Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                     {
@@ -5544,15 +5589,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Crate>($@"objects\multi\boundaries\garbage_collection_volume"),
-                },
-                new ForgeGlobalsDefinition.PaletteItem
-                {
-                    Name = "CHAIN LINK GATE, RIGHT",
-                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
-                    CategoryIndex = 11,
-                    DescriptionIndex = -1,
-                    MaxAllowed = 0,
-                    Object = GetCachedTag<Crate>($@"objects\levels\multi\deadlock\deadlock_chainlinkgate_ii\deadlock_chainlinkgate_ii"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -6765,6 +6801,15 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
+                    Name = "CHAIN LINK GATE, RIGHT",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 11,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<Crate>($@"objects\levels\multi\deadlock\deadlock_chainlinkgate_ii\deadlock_chainlinkgate_ii"),
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
                     Name = "STARTING POINT",
                     Type = ForgeGlobalsDefinition.PaletteItemType.None,
                     CategoryIndex = 54,
@@ -6783,12 +6828,223 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
-                    Name = "AUTOTURRET",
+                    Name = $@"AMMO PACK",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
-                    CategoryIndex = 67,
+                    CategoryIndex = 65,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Equipment>($@"objects\equipment\autoturret_equipment\autoturret_equipment"),
+                    Object = GetCachedTag<Equipment>($@"objects\equipment\ammo_pack_equipment\ammo_pack_equipment"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"PODIUM POINT",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Tool,
+                    CategoryIndex = 64,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 1,
+                    Object = GetCachedTag<Scenery>($@"objects\multi\podium_point\podium_point"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"ROCK, GRAY A",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 81,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<Scenery>($@"objects\eldewrito\forge\nature\rocks\gray_a"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"ROCK, GRAY B",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 81,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<Scenery>($@"objects\eldewrito\forge\nature\rocks\gray_b"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"ROCK, TAN A",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 81,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<Scenery>($@"objects\eldewrito\forge\nature\rocks\tan_a"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"ROCK, TAN B",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 81,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<Scenery>($@"objects\eldewrito\forge\nature\rocks\tan_b"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"ROCK, LIGHT GRAY LONG",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 81,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<Scenery>($@"objects\eldewrito\forge\nature\rocks\light_gray_long"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"ROCK, LIGHT ORANGE",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 81,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<Scenery>($@"objects\eldewrito\forge\nature\rocks\orange"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"TREE, STANDARD A",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 81,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<Scenery>($@"objects\eldewrito\forge\nature\trees\green_leaves_a"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"TREE, STANDARD B",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 81,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<Scenery>($@"objects\eldewrito\forge\nature\trees\green_leaves_b"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"TREE, PINE",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 81,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<Scenery>($@"objects\eldewrito\forge\nature\trees\pine"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"TREE, PINE SNOWY",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 81,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<Scenery>($@"objects\eldewrito\forge\nature\trees\pine_snowy"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"TREE STUMP",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 81,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<Scenery>($@"objects\eldewrito\forge\nature\trees\stump_broken"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"TUNNEL DOOR",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 82,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<DeviceMachine>($@"objects\eldewrito\forge\devices\tunnel_door"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"TUNNEL DOOR, QUICK",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 82,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<DeviceMachine>($@"objects\eldewrito\forge\devices\tunnel_door_quick"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"ARMORED GATE",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 82,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<DeviceMachine>($@"objects\eldewrito\forge\devices\armored_gate"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"VEHICLE BARRICADE",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 82,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<DeviceMachine>($@"objects\eldewrito\forge\devices\vehicle_barricade"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"HOUSE GATE",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 82,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<DeviceMachine>($@"objects\eldewrito\forge\devices\house_gate"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"BIG WHEEL",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 82,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<DeviceMachine>($@"objects\eldewrito\forge\devices\big_wheel"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"BUTTON, TOGGLE",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 82,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<DeviceControl>($@"objects\eldewrito\forge\devices\button_toggle"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"BUTTON, ACTIVATE ONLY",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 82,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<DeviceControl>($@"objects\eldewrito\forge\devices\button_activate"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"BUTTON, DEACTIVATE ONLY",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Prop,
+                    CategoryIndex = 82,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<DeviceControl>($@"objects\eldewrito\forge\devices\button_deactivate"),
+                    Setters = null,
                 },
             };
             forg.WeatherEffects = new List<ForgeGlobalsDefinition.WeatherEffect>

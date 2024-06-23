@@ -114,6 +114,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_intruder"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_intruder_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_complete_campaign_normal"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -127,6 +129,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_ninja"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_ninja_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement | MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasSpecialRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"community"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -140,6 +144,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_regulator"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_regulator_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_complete_campaign_legendary"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -153,6 +159,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_ryu"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_ryu_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"skulls_third_tier"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -166,6 +174,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_marathon"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_marathon_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"achievements_1000"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -179,6 +189,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_scout"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_scout_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_full_vehicle_kill"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -192,6 +204,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_odst"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_odst_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_spartan_recruit"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -205,6 +219,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_markv"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_markv_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_spartan_graduate"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -218,6 +234,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_rogue"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_mp_rogue_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_spartan_officer"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -256,6 +274,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_leftshoulder_intruder"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_leftshoulder_intruder_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_complete_mission_wasteland"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -269,6 +289,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_leftshoulder_ninja"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_leftshoulder_ninja_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement | MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasSpecialRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"community"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -282,6 +304,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_leftshoulder_regulator"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_leftshoulder_regulator_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"completed_070_legendary"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -295,6 +319,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_leftshoulder_ryu"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_leftshoulder_ryu_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"skulls_second_tier"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -308,6 +334,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_leftshoulder_marathon"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_leftshoulder_marathon_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"achievements_750"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -321,6 +349,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_leftshoulder_scout"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_leftshoulder_scout_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_mongoose_splatter"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -359,6 +389,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_rightshoulder_intruder"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_rightshoulder_intruder_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_complete_mission_wasteland"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -372,6 +404,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_rightshoulder_ninja"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_rightshoulder_ninja_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement | MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasSpecialRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"community"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -385,6 +419,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_rightshoulder_regulator"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_rightshoulder_regulator_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"completed_070_legendary"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -398,6 +434,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_rightshoulder_ryu"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_rightshoulder_ryu_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"skulls_second_tier"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -411,6 +449,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_rightshoulder_marathon"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_rightshoulder_marathon_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"achievements_750"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -424,6 +464,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_rightshoulder_scout"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_rightshoulder_scout_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_mongoose_splatter"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -462,6 +504,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_body_intruder"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_body_intruder_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_complete_mission_outskirts"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -475,6 +519,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_body_ninja"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_body_ninja_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement | MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasSpecialRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"community"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -488,6 +534,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_body_ryu"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_body_ryu_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"skulls_first_tier"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -501,6 +549,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_body_regulator"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_body_regulator_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"completed_030_legendary"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -514,6 +564,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_body_scout"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_body_scout_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_laser_or_missle_kill_banshee"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -527,6 +579,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_body_katana"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_body_katana_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement | MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasSpecialRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"achievements_1000"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -540,6 +594,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"spartan_body_bungie"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"spartan_body_bungie_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement | MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasSpecialRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"bungie"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -565,13 +621,15 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                     {
                                         new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation()
                                         {
-                                            Name = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_default"),
-                                            Description = CacheContext.StringTable.GetOrAddString($@"spartan_helmet_default_description"),
+                                            Name = CacheContext.StringTable.GetOrAddString($@"elite_head_default"),
+                                            Description = CacheContext.StringTable.GetOrAddString($@"elite_head_default_description"),
                                         },
                                         new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation()
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"elite_head_mp_predator"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"elite_head_mp_predator_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.None,
+                                            AchievementRequirement = StringId.Invalid,
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -585,6 +643,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"elite_head_mp_raptor"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"elite_head_mp_raptor_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_complete_campaign_heroic"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -598,6 +658,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"elite_head_mp_blades"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"elite_head_mp_blades_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_triple_sword_kill"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -611,6 +673,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"elite_head_mp_scythe"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"elite_head_mp_scythe_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_overkill"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -649,6 +713,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"elite_leftshoulder_mp_raptor"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"elite_leftshoulder_mp_raptor_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"completed_070_heroic_or_legendary"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -662,6 +728,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"elite_leftshoulder_mp_blades"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"elite_leftshoulder_mp_blades_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_overkill"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -675,6 +743,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"elite_leftshoulder_mp_scythe"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"elite_leftshoulder_mp_scythe_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_killing_frenzy"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -713,6 +783,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"elite_rightshoulder_mp_raptor"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"elite_rightshoulder_mp_raptor_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"completed_070_heroic_or_legendary"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -726,6 +798,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"elite_rightshoulder_mp_blades"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"elite_rightshoulder_mp_blades_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_overkill"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -739,6 +813,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"elite_rightshoulder_mp_scythe"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"elite_rightshoulder_mp_scythe_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_killing_frenzy"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -777,6 +853,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"elite_body_mp_raptor"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"elite_body_mp_raptor_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"completed_030_heroic_or_legendary"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -790,6 +868,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"elite_body_mp_blades"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"elite_body_mp_blades_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_melee_kill_x5"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -803,6 +883,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                         {
                                             Name = CacheContext.StringTable.GetOrAddString($@"elite_body_mp_scythe"),
                                             Description = CacheContext.StringTable.GetOrAddString($@"elite_body_mp_scythe_description"),
+                                            Flags = MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.CustomizedModelSelectionFlags.HasRequirement,
+                                            AchievementRequirement = CacheContext.StringTable.GetOrAddString($@"_achievement_triple_kill"),
                                             Variant = new List<MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock>()
                                             {
                                                 new MultiplayerGlobals.MultiplayerUniversalBlock.CustomizedModelCharacter.Region.Permutation.VariantBlock()
@@ -822,7 +904,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                         {
                             Name = CacheContext.StringTable.GetOrAddString("empty"),
-                            Object = GetCachedTag<Equipment>(@"objects\equipment\concussiveblast_equipment\concussiveblast_equipment"),
+                            Object = null,
                             Type = 0,
                         },
                         new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
@@ -840,6 +922,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                         {
                             Name = CacheContext.StringTable.GetOrAddString("invisibility"),
+                            Object = GetCachedTag<Equipment>($@"objects\equipment\invisibility_equipment\invisibility_equipment"),
                             Type = 13,
                         },
                         new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
@@ -950,6 +1033,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                         {
                             Name = CacheContext.StringTable.GetOrAddString("ammo_pack"),
+                            Object = GetCachedTag<Equipment>($@"objects\equipment\ammo_pack_equipment\ammo_pack_equipment"),
                             Type = 23,
                         },
                         new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
@@ -969,25 +1053,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                             Name = CacheContext.StringTable.GetOrAddString("gravlift"),
                             Object = GetCachedTag<Equipment>(@"objects\equipment\gravlift_equipment\gravlift_equipment"),
                             Type = 3,
-                        },
-                        new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
-                        {
-                            Name = CacheContext.StringTable.GetOrAddString("bubbleshield"),
-                            Type = 2,
-                        },
-                        new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
-                        {
-                            Name = CacheContext.StringTable.GetOrAddString("deployable_cover"),
-                        },
-                        new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
-                        {
-                            Name = CacheContext.StringTable.GetOrAddString("deployable_cover"),
-                            Type = 21,
-                        },
-                        new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
-                        {
-                            Name = CacheContext.StringTable.GetOrAddString("vision"),
-                            Type = 15,
                         },
                     },
                     EnergyRegeneration = new List<MultiplayerGlobals.MultiplayerUniversalBlock.EnergyRegenerationBlock>()
@@ -1412,13 +1477,13 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                         {
                             Name = CacheContext.StringTable.GetOrAddString("machinegun_turret"),
-                            RandomChance = 0.1f,
+                            RandomChance = 0f,
                             Weapon = GetCachedTag<Weapon>(@"objects\weapons\turret\machinegun_turret\machinegun_turret")
                         },
                         new MultiplayerGlobals.MultiplayerUniversalBlock.GameVariantWeapon
                         {
                             Name = CacheContext.StringTable.GetOrAddString("plasma_cannon"),
-                            RandomChance = 0.1f,
+                            RandomChance = 0f,
                             Weapon = GetCachedTag<Weapon>(@"objects\weapons\turret\plasma_cannon\plasma_cannon")
                         },
                     },
@@ -6120,7 +6185,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.WeaponSet.Substitution
                                 {
                                     OriginalWeapon = CacheContext.StringTable.GetOrAddString("rocket_launcher"),
-                                    SubstitutedWeapon = CacheContext.StringTable.GetOrAddString("rocket_launch"),
+                                    SubstitutedWeapon = CacheContext.StringTable.GetOrAddString("rocket_launcher"),
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.WeaponSet.Substitution
                                 {
@@ -6334,32 +6399,32 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.WeaponSet.Substitution
                                 {
-                                    OriginalWeapon = CacheContext.StringTable.GetOrAddString("covenant_carbine"),
+                                    OriginalWeapon = CacheContext.StringTable.GetOrAddString("covenant_carbine_v1"),
                                     SubstitutedWeapon = CacheContext.StringTable.GetOrAddString("carbine"),
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.WeaponSet.Substitution
                                 {
-                                    OriginalWeapon = CacheContext.StringTable.GetOrAddString("covenant_carbine"),
+                                    OriginalWeapon = CacheContext.StringTable.GetOrAddString("covenant_carbine_v2"),
                                     SubstitutedWeapon = CacheContext.StringTable.GetOrAddString("carbine"),
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.WeaponSet.Substitution
                                 {
-                                    OriginalWeapon = CacheContext.StringTable.GetOrAddString("covenant_carbine"),
+                                    OriginalWeapon = CacheContext.StringTable.GetOrAddString("covenant_carbine_v3"),
                                     SubstitutedWeapon = CacheContext.StringTable.GetOrAddString("carbine"),
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.WeaponSet.Substitution
                                 {
-                                    OriginalWeapon = CacheContext.StringTable.GetOrAddString("covenant_carbine"),
+                                    OriginalWeapon = CacheContext.StringTable.GetOrAddString("covenant_carbine_v4"),
                                     SubstitutedWeapon = CacheContext.StringTable.GetOrAddString("carbine"),
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.WeaponSet.Substitution
                                 {
-                                    OriginalWeapon = CacheContext.StringTable.GetOrAddString("covenant_carbine"),
+                                    OriginalWeapon = CacheContext.StringTable.GetOrAddString("covenant_carbine_v5"),
                                     SubstitutedWeapon = CacheContext.StringTable.GetOrAddString("carbine"),
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.WeaponSet.Substitution
                                 {
-                                    OriginalWeapon = CacheContext.StringTable.GetOrAddString("covenant_carbine"),
+                                    OriginalWeapon = CacheContext.StringTable.GetOrAddString("covenant_carbine_v6"),
                                     SubstitutedWeapon = CacheContext.StringTable.GetOrAddString("carbine"),
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.WeaponSet.Substitution
@@ -7046,228 +7111,141 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation
                         {
-                            DefaultUnarmed = CacheContext.StringTable.GetOrAddString($@"combat:any:any:default_pose_unarmed"),
-                            DefaultArmed = CacheContext.StringTable.GetOrAddString($@"combat:any:any:default_pose_armed"),
-                            StanceAnimations = new List<MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.StanceAnimation>
-                            {
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.StanceAnimation
-                                {
-                                    Name = "podium_stance_standard",
-                                    BaseAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:standard"),
-                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:standard_loop"),
-                                    UnarmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:standard_transition_unarmed"),
-                                    ArmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:standard_transition_armed"),
-                                },
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.StanceAnimation
-                                {
-                                    Name = "podium_stance_assault",
-                                    BaseAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:assault"),
-                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:assault_loop"),
-                                    UnarmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:assault_transition_unarmed"),
-                                    ArmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:assault_transition_armed"),
-                                    CameraDistanceOffset = 0.04f,
-                                },
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.StanceAnimation
-                                {
-                                    Name = "podium_stance_gameover",
-                                    BaseAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:game_over"),
-                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:game_over_loop"),
-                                    UnarmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:game_over_transition_unarmed"),
-                                    ArmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:game_over_transition_armed"),
-                                },
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.StanceAnimation
-                                {
-                                    Name = "podium_stance_ready",
-                                    BaseAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:ready"),
-                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:ready_loop"),
-                                    UnarmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:ready_transition_unarmed"),
-                                    ArmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:ready_transition_armed"),
-                                    CameraDistanceOffset = 0.1f,
-                                },
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.StanceAnimation
-                                {
-                                    Name = "podium_stance_relaxed",
-                                    BaseAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:relaxed"),
-                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:relaxed_loop"),
-                                    UnarmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:relax_transition_unarmed"),
-                                    ArmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:relax_transition_armed"),
-                                },
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.StanceAnimation
-                                {
-                                    Name = "podium_stance_shoulder",
-                                    BaseAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:shoulder"),
-                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:shoulder_loop"),
-                                    UnarmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:shoulder_transition_unarmed"),
-                                    ArmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:shoulder_transition_armed"),
-                                    CameraDistanceOffset = 0.15f,
-                                },
-                            },
+                            AnimationGraph = GetCachedTag<ModelAnimationGraph>($@"objects\characters\masterchief\masterchief_podium"),
+                            DefaultUnarmed = StringId.Invalid,
+                            DefaultArmed = StringId.Invalid,
+                            StanceAnimations = null,
                             MoveAnimations = new List<MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation>
                             {
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
                                 {
-                                    Name = "podium_move_victory",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:victory"),
-                                    WeaponLoadout = WeaponLoadout.LoadoutPrimary,
+                                    Name = $@"podium_stance_standard",
+                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:standard"),
+                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:standard_loop"),
+                                    OutAnimation = StringId.Invalid,
+                                    Offset = 0f,
+                                    CustomPrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle"),
+                                    CustomSecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
                                 {
-                                    Name = "podium_move_comeon",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:come_on"),
+                                    Name = $@"podium_stance_assault",
+                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:assault"),
+                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:assault_loop"),
+                                    OutAnimation = StringId.Invalid,
+                                    Offset = 0.04f,
+                                    CustomPrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle"),
+                                    CustomSecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
                                 {
-                                    Name = "podium_move_comeon2",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:come_on_2"),
+                                    Name = $@"podium_stance_gameover",
+                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:game_over"),
+                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:game_over_loop"),
+                                    OutAnimation = StringId.Invalid,
+                                    Offset = 0f,
+                                    CustomPrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle"),
+                                    CustomSecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
                                 {
-                                    Name = "podium_move_mad",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:mad"),
+                                    Name = $@"podium_stance_ready",
+                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:ready"),
+                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:ready_loop"),
+                                    OutAnimation = StringId.Invalid,
+                                    Offset = 0.1f,
+                                    CustomPrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle"),
+                                    CustomSecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
                                 {
-                                    Name = "podium_move_melee",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:melee"),
+                                    Name = $@"podium_stance_relaxed",
+                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:relaxed"),
+                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:relaxed_loop"),
+                                    OutAnimation = StringId.Invalid,
+                                    Offset = 0f,
+                                    CustomPrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle"),
+                                    CustomSecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
                                 {
-                                    Name = "podium_move_menace",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:menace"),
-                                },
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
-                                {
-                                    Name = "podium_move_pistolero",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:pistolero_in"),
-                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:pistolero_loop"),
-                                    OutAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:pistolero_out"),
-                                    WeaponLoadout = WeaponLoadout.LoadoutSecondary,
-                                },
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
-                                {
-                                    Name = "podium_move_salute",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:salute"),
-                                    WeaponLoadout = WeaponLoadout.LoadoutPrimary,
-                                },
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
-                                {
-                                    Name = "podium_move_steroids",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:steroids"),
+                                    Name = $@"podium_stance_shoulder",
+                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:shoulder"),
+                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:shoulder_loop"),
+                                    OutAnimation = StringId.Invalid,
+                                    Offset = 0.15f,
+                                    CustomPrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle"),
+                                    CustomSecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum"),
                                 },
                             },
                         },
                         new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation
                         {
-                            DefaultUnarmed = CacheContext.StringTable.GetOrAddString($@"combat:any:any:default_pose_unarmed"),
-                            DefaultArmed = CacheContext.StringTable.GetOrAddString($@"combat:any:any:default_pose_armed"),
-                            StanceAnimations = new List<MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.StanceAnimation>
-                            {
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.StanceAnimation
-                                {
-                                    Name = "podium_e_stance_standard",
-                                    BaseAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:standart"),
-                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:standart_loop"),
-                                    UnarmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:standart_transition_unarmed"),
-                                    ArmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:standart_transition_armed"),
-                                },
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.StanceAnimation
-                                {
-                                    Name = "podium_e_stance_charge",
-                                    BaseAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:charge"),
-                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:charge_loop"),
-                                    UnarmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:charge_transition_unarmed"),
-                                    ArmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:charge_transition_armed"),
-                                },
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.StanceAnimation
-                                {
-                                    Name = "podium_e_stance_gameover",
-                                    BaseAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:gameover"),
-                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:gameover_loop"),
-                                    UnarmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:gameover_transition_unarmed"),
-                                    ArmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:gameover_transition_armed"),
-                                },
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.StanceAnimation
-                                {
-                                    Name = "podium_e_stance_honor",
-                                    BaseAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:honor"),
-                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:honor_loop"),
-                                    UnarmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:honor_transition_unarmed"),
-                                    ArmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:honor_transition_armed"),
-                                },
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.StanceAnimation
-                                {
-                                    Name = "podium_e_stance_watchman",
-                                    BaseAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:watchman"),
-                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:watchman_loop"),
-                                    UnarmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:watchman_transition_unarmed"),
-                                    ArmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:watchman_transition_armed"),
-                                },
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.StanceAnimation
-                                {
-                                    Name = "podium_e_stance_zealot",
-                                    BaseAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:zealot"),
-                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:zealot_loop"),
-                                    UnarmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:zealot_transition_unarmed"),
-                                    ArmedTransition = CacheContext.StringTable.GetOrAddString($@"combat:any:any:zealot_transition_armed"),
-                                },
-                            },
+                            AnimationGraph = GetCachedTag<ModelAnimationGraph>($@"objects\characters\elite\elite_podium"),
+                            DefaultUnarmed = StringId.Invalid,
+                            DefaultArmed = StringId.Invalid,
+                            StanceAnimations = null,
                             MoveAnimations = new List<MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation>
                             {
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
                                 {
-                                    Name = "podium_move_e_berserk",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:berserk"),
+                                    Name = $@"podium_e_stance_standard",
+                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:standart"),
+                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:standart_loop"),
+                                    OutAnimation = StringId.Invalid,
+                                    Offset = 0.5f,
+                                    CustomPrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
+                                    CustomSecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
                                 {
-                                    Name = "podium_move_e_confident",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:confident"),
+                                    Name = $@"podium_e_stance_charge",
+                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:charge"),
+                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:charge_loop"),
+                                    OutAnimation = StringId.Invalid,
+                                    Offset = 0.5f,
+                                    CustomPrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
+                                    CustomSecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
                                 {
-                                    Name = "podium_move_e_dual",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:dual"),
-                                    WeaponLoadout = WeaponLoadout.Custom,
-                                    CustomPrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\melee\energy_blade\energy_blade"),
-                                    CustomSecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\melee\energy_blade\energy_blade"),
+                                    Name = $@"podium_e_stance_gameover",
+                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:gameover"),
+                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:gameover_loop"),
+                                    OutAnimation = StringId.Invalid,
+                                    Offset = 0.5f,
+                                    CustomPrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
+                                    CustomSecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
                                 {
-                                    Name = "podium_move_e_howl",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:howl"),
-                                    WeaponLoadout = WeaponLoadout.LoadoutPrimary,
+                                    Name = $@"podium_e_stance_honor",
+                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:honor"),
+                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:honor_loop"),
+                                    OutAnimation = StringId.Invalid,
+                                    Offset = 0.5f,
+                                    CustomPrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
+                                    CustomSecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
                                 {
-                                    Name = "podium_move_e_sniper",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:sniper"),
-                                    WeaponLoadout = WeaponLoadout.Custom,
-                                    CustomPrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\beam_rifle\beam_rifle"),
+                                    Name = $@"podium_e_stance_watchman",
+                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:watchman"),
+                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:watchman_loop"),
+                                    OutAnimation = StringId.Invalid,
+                                    Offset = 0.5f,
+                                    CustomPrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
+                                    CustomSecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                 },
                                 new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
                                 {
-                                    Name = "podium_move_e_stomp",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:stomp"),
-                                    WeaponLoadout = WeaponLoadout.LoadoutPrimary,
-                                },
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
-                                {
-                                    Name = "podium_move_e_strike",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:strike"),
-                                    WeaponLoadout = WeaponLoadout.Custom,
-                                    CustomPrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\melee\energy_blade\energy_blade"),
-                                },
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
-                                {
-                                    Name = "podium_move_e_threaten",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:threaten"),
-                                    WeaponLoadout = WeaponLoadout.LoadoutPrimary,
-                                },
-                                new MultiplayerGlobals.MultiplayerUniversalBlock.PodiumAnimation.MoveAnimation
-                                {
-                                    Name = "podium_move_e_victory",
-                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:victory"),
-                                    WeaponLoadout = WeaponLoadout.LoadoutPrimary,
+                                    Name = $@"podium_e_stance_zealot",
+                                    InAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:zealot"),
+                                    LoopAnimation = CacheContext.StringTable.GetOrAddString($@"combat:any:any:zealot_loop"),
+                                    OutAnimation = StringId.Invalid,
+                                    Offset = 0.5f,
+                                    CustomPrimaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle"),
+                                    CustomSecondaryWeapon = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol"),
                                 },
                             },
                         },
@@ -7794,7 +7772,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         {
                             Event = CacheContext.StringTable.GetOrAddString($@"general_event_respawn_tick"),
                             DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
-                            SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
                             EnglishSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
                             JapaneseSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
                             GermanSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn"),
@@ -7810,7 +7787,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         {
                             Event = CacheContext.StringTable.GetOrAddString($@"general_event_respawn_final_tick"),
                             DisplayContext = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.EventResponseContext.Neutral,
-                            SoundFlags = TagTool.Tags.Definitions.MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock.SoundResponseFlags.AnnouncerSound,
                             EnglishSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
                             JapaneseSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
                             GermanSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn"),
@@ -10568,6 +10544,13 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                             FreeForAllMessage = CacheContext.StringTable.GetOrAddString($@"playing_losing_f_unlimited"),
                             TeamMessage = CacheContext.StringTable.GetOrAddString($@"playing_losing_t_unlimited"),
                         },
+                        new MultiplayerGlobals.MultiplayerRuntimeBlock.StateResponse
+                        {
+                            Flags = 0,
+                            State = MultiplayerGlobals.MultiplayerRuntimeBlock.StateResponse.GameEngineStatus.StartingSoon,
+                            FreeForAllMessage = CacheContext.StringTable.GetOrAddString($@"state_spawning_soon"),
+                            TeamMessage = CacheContext.StringTable.GetOrAddString($@"state_spawning_soon"),
+                        },
                     },
                     ScoreboardEmblemBitmap = GetCachedTag<Bitmap>($@"ui\halox\common\common_bitmaps\emblems"),
                     ScoreboardDeadBitmap = GetCachedTag<Bitmap>($@"ui\halox\scoreboard\dead_player_ui"),
@@ -10586,6 +10569,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         Assault = GetCachedTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_assault"),
                         Infection = GetCachedTag<ChudDefinition>($@"ui\chud\multiplayer_intro\summary_infection"),
                     },
+                    MusicFirstPlace = GetCachedTag<SoundLooping>($@"sound\music\postmatch_new\spartan_hero\postmatch_spartan_hero"),
+                    MusicSecondPlace = GetCachedTag<SoundLooping>($@"sound\music\postmatch_new\spartan_engage\postmatch_spartan_engage"),
+                    MusicThirdPlace = GetCachedTag<SoundLooping>($@"sound\music\postmatch_new\headhunters\postmatch_headhunters"),
+                    MusicPostMatch = GetCachedTag<SoundLooping>($@"sound\music\postmatch_new\spartan_hero\postmatch_spartan_hero"),
                 }
             };
             CacheContext.Serialize(Stream, tag, mulg);

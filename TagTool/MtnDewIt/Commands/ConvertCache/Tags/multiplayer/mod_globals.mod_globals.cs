@@ -27,6 +27,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
         {
             var tag = GetCachedTag<ModGlobalsDefinition>($@"multiplayer\mod_globals");
             var modg = CacheContext.Deserialize<ModGlobalsDefinition>(Stream, tag);
+            modg.Version = 1;
             modg.PlayerCharacterSets = new List<ModGlobalsDefinition.PlayerCharacterSet>()
             {
                 new ModGlobalsDefinition.PlayerCharacterSet()
@@ -92,7 +93,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                             RegionName = "rightshoulder",
                             ScriptNameWidescreen = "rightshoulder_camera_wide",
                             ScriptNameStandard = "rightshoulder_camera_standard",
-                            BipedRotation = 110f,
+                            BipedRotation = 100f,
                             RotationDuration = 0.5f,
                         },
                         new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
@@ -100,7 +101,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                             RegionName = "emblem",
                             ScriptNameWidescreen = "rightshoulder_camera_wide",
                             ScriptNameStandard = "rightshoulder_camera_standard",
-                            BipedRotation = 110f,
+                            BipedRotation = 100f,
                             RotationDuration = 0.5f,
                         },
                         new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
@@ -130,7 +131,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CharacterColors = new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors()
                     {
                         ValidColorFlags = ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.PrimaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.SecondaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.TertiaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.QuaternaryColor,
-                        TeamOverrideFlags = ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.PrimaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.SecondaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.QuaternaryColor,
+                        TeamOverrideFlags = ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.PrimaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.QuaternaryColor,
                         Colors = new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock[5]
                         {
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
@@ -234,7 +235,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CharacterColors = new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors()
                     {
                         ValidColorFlags = ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.PrimaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.SecondaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.TertiaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.QuaternaryColor,
-                        TeamOverrideFlags = ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.PrimaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.SecondaryColor,
+                        TeamOverrideFlags = ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.PrimaryColor,
                         Colors = new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock[5]
                         {
                             new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
