@@ -21,17 +21,17 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             GenerateRenderMethod(CacheStream, $@"cortana", false);
             GenerateRenderMethod(CacheStream, $@"black", false);
 
-            RecompileShaderType(CacheStream, $@"beam");
-            RecompileShaderType(CacheStream, $@"contrail");
-            RecompileShaderType(CacheStream, $@"decal");
-            RecompileShaderType(CacheStream, $@"foliage");
-            RecompileShaderType(CacheStream, $@"halogram");
-            RecompileShaderType(CacheStream, $@"light_volume");
-            RecompileShaderType(CacheStream, $@"particle");
-            RecompileShaderType(CacheStream, $@"screen");
-            RecompileShaderType(CacheStream, $@"shader");
-            RecompileShaderType(CacheStream, $@"terrain");
-            RecompileShaderType(CacheStream, $@"water");
+            //RecompileShaderType(CacheStream, $@"beam");
+            //RecompileShaderType(CacheStream, $@"contrail");
+            //RecompileShaderType(CacheStream, $@"decal");
+            //RecompileShaderType(CacheStream, $@"foliage");
+            //RecompileShaderType(CacheStream, $@"halogram");
+            //RecompileShaderType(CacheStream, $@"light_volume");
+            //RecompileShaderType(CacheStream, $@"particle");
+            //RecompileShaderType(CacheStream, $@"screen");
+            //RecompileShaderType(CacheStream, $@"shader");
+            //RecompileShaderType(CacheStream, $@"terrain");
+            //RecompileShaderType(CacheStream, $@"water");
         }
 
         public void GenerateRenderMethod(Stream stream, string shaderType, bool updateRenderMethod) 

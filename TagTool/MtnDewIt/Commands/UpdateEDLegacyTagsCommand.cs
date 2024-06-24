@@ -11145,7 +11145,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x34DC, @"levels\multi\riverworld\shaders\forerunner\panel_generic_dark" },
             { 0x34DD, @"levels\multi\riverworld\shaders\forerunner\panel_cust_wall" },
             { 0x34DE, @"levels\multi\riverworld\shaders\forerunner\panel_cust_wall_dark" },
-            { 0x34DF, @"levels\multi\riverworld\shaders\shaders\riverworld_tree_bark" },
+            { 0x34DF, @"levels\multi\riverworld\shaders\riverworld_tree_bark" },
             { 0x34E0, @"objects\levels\shared\pelican_crashed_h3\shaders\cr_pelican_hull" },
             { 0x34E1, @"objects\levels\shared\pelican_crashed_h3\shaders\cr_pelican_instances" },
             { 0x34E2, @"objects\levels\shared\pelican_crashed_h3\shaders\cr_pelican_interior" },
