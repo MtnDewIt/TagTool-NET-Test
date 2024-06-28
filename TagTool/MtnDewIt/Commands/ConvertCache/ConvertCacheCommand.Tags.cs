@@ -323,27 +323,27 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new ui_chud_assault_rifle_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_assault_rifle_v5_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_assault_rifle_accuracy_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_assault_rifle_v2_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_assault_rifle_damage_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_assault_rifle_v6_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_assault_rifle_power_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_assault_rifle_v3_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_assault_rifle_rof_chud_definition(Cache, CacheContext, CacheStream);
 
             new ui_chud_battle_rifle_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_battle_rifle_v2_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_battle_rifle_accuracy_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_battle_rifle_v3_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_battle_rifle_ammo_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_battle_rifle_v4_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_battle_rifle_damage_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_battle_rifle_v6_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_battle_rifle_power_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_battle_rifle_v5_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_battle_rifle_range_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_battle_rifle_v1_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_battle_rifle_rof_chud_definition(Cache, CacheContext, CacheStream);
 
             new ui_chud_beam_rifle_chud_definition(Cache, CacheContext, CacheStream);
 
@@ -351,31 +351,31 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new ui_chud_carbine_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_carbine_v2_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_covenant_carbine_ammo_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_carbine_v4_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_covenant_carbine_damage_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_carbine_v6_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_covenant_carbine_power_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_carbine_v3_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_covenant_carbine_range_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_carbine_v1_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_covenant_carbine_rof_chud_definition(Cache, CacheContext, CacheStream);
 
             new ui_chud_dmr_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_dmr_v2_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_dmr_accuracy_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_dmr_v1_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_dmr_ammo_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_dmr_v4_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_dmr_damage_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_dmr_v6_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_dmr_power_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_dmr_v3_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_dmr_rof_chud_definition(Cache, CacheContext, CacheStream);
 
             new ui_chud_excavator_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_excavator_v3_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_excavator_power_chud_definition(Cache, CacheContext, CacheStream);
 
             new ui_chud_flamethrower_chud_definition(Cache, CacheContext, CacheStream);
 
@@ -387,9 +387,9 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new ui_chud_magnum_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_magnum_v2_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_magnum_damage_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_magnum_v3_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_magnum_power_chud_definition(Cache, CacheContext, CacheStream);
 
             new ui_chud_missile_chud_definition(Cache, CacheContext, CacheStream);
 
@@ -397,11 +397,11 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new ui_chud_plasma_pistol_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_plasma_pistol_v3_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_plasma_pistol_power_chud_definition(Cache, CacheContext, CacheStream);
 
             new ui_chud_plasma_rifle_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_plasma_rifle_v6_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_plasma_rifle_power_chud_definition(Cache, CacheContext, CacheStream);
 
             new ui_chud_plasma_turret_chud_definition(Cache, CacheContext, CacheStream);
 
@@ -413,13 +413,13 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new ui_chud_smg_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_smg_v2_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_smg_accuracy_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_smg_v4_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_smg_damage_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_smg_v6_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_smg_power_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_smg_v1_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_smg_rof_chud_definition(Cache, CacheContext, CacheStream);
 
             new ui_chud_sniper_rifle_chud_definition(Cache, CacheContext, CacheStream);
 
@@ -507,87 +507,87 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new objects_weapons_pistol_excavator_excavator_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_pistol_excavator_excavator_v3_excavator_v3_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_pistol_excavator_excavator_power_excavator_power_weapon(Cache, CacheContext, CacheStream);
 
             new objects_weapons_pistol_magnum_magnum_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_pistol_magnum_magnum_v2_magnum_v2_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_pistol_magnum_magnum_damage_magnum_damage_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_pistol_magnum_magnum_v3_magnum_v3_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_pistol_magnum_magnum_power_magnum_power_weapon(Cache, CacheContext, CacheStream);
 
             new objects_weapons_pistol_needler_needler_weapon(Cache, CacheContext, CacheStream);
 
             new objects_weapons_pistol_plasma_pistol_plasma_pistol_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_pistol_plasma_pistol_plasma_pistol_v3_plasma_pistol_v3_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_pistol_plasma_pistol_plasma_pistol_power_plasma_pistol_power_weapon(Cache, CacheContext, CacheStream);
 
             new objects_weapons_rifle_assault_rifle_assault_rifle_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_assault_rifle_assault_rifle_v2_assault_rifle_v2_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_assault_rifle_assault_rifle_damage_assault_rifle_damage_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_assault_rifle_assault_rifle_v3_assault_rifle_v3_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_assault_rifle_assault_rifle_rof_assault_rifle_rof_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_assault_rifle_assault_rifle_v5_assault_rifle_v5_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_assault_rifle_assault_rifle_accuracy_assault_rifle_accuracy_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_assault_rifle_assault_rifle_v6_assault_rifle_v6_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_assault_rifle_assault_rifle_power_assault_rifle_power_weapon(Cache, CacheContext, CacheStream);
 
             new objects_weapons_rifle_battle_rifle_battle_rifle_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_battle_rifle_battle_rifle_v1_battle_rifle_v1_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_battle_rifle_battle_rifle_rof_battle_rifle_rof_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_battle_rifle_battle_rifle_v2_battle_rifle_v2_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_battle_rifle_battle_rifle_accuracy_battle_rifle_accuracy_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_battle_rifle_battle_rifle_v3_battle_rifle_v3_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_battle_rifle_battle_rifle_ammo_battle_rifle_ammo_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_battle_rifle_battle_rifle_v4_battle_rifle_v4_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_battle_rifle_battle_rifle_damage_battle_rifle_damage_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_battle_rifle_battle_rifle_v5_battle_rifle_v5_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_battle_rifle_battle_rifle_range_battle_rifle_range_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_battle_rifle_battle_rifle_v6_battle_rifle_v6_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_battle_rifle_battle_rifle_power_battle_rifle_power_weapon(Cache, CacheContext, CacheStream);
 
             new objects_weapons_rifle_beam_rifle_beam_rifle_weapon(Cache, CacheContext, CacheStream);
 
             new objects_weapons_rifle_covenant_carbine_covenant_carbine_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_covenant_carbine_covenant_carbine_v1_covenant_carbine_v1_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_covenant_carbine_covenant_carbine_rof_covenant_carbine_rof_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_covenant_carbine_covenant_carbine_v2_covenant_carbine_v2_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_covenant_carbine_covenant_carbine_ammo_covenant_carbine_ammo_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_covenant_carbine_covenant_carbine_v3_covenant_carbine_v3_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_covenant_carbine_covenant_carbine_range_covenant_carbine_range_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_covenant_carbine_covenant_carbine_v4_covenant_carbine_v4_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_covenant_carbine_covenant_carbine_damage_covenant_carbine_damage_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_covenant_carbine_covenant_carbine_v5_covenant_carbine_v5_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_covenant_carbine_covenant_carbine_accuracy_covenant_carbine_accuracy_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_covenant_carbine_covenant_carbine_v6_covenant_carbine_v6_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_covenant_carbine_covenant_carbine_power_covenant_carbine_power_weapon(Cache, CacheContext, CacheStream);
 
             new objects_weapons_rifle_dmr_dmr_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_dmr_dmr_v1_dmr_v1_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_dmr_dmr_ammo_dmr_ammo_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_dmr_dmr_v2_dmr_v2_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_dmr_dmr_accuracy_dmr_accuracy_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_dmr_dmr_v3_dmr_v3_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_dmr_dmr_rof_dmr_rof_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_dmr_dmr_v4_dmr_v4_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_dmr_dmr_damage_dmr_damage_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_dmr_dmr_v6_dmr_v6_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_dmr_dmr_power_dmr_power_weapon(Cache, CacheContext, CacheStream);
 
             new objects_weapons_rifle_plasma_rifle_plasma_rifle_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_plasma_rifle_plasma_rifle_v6_plasma_rifle_v6_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_plasma_rifle_plasma_rifle_power_plasma_rifle_power_weapon(Cache, CacheContext, CacheStream);
 
             new objects_weapons_rifle_shotgun_shotgun_weapon(Cache, CacheContext, CacheStream);
 
             new objects_weapons_rifle_smg_smg_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_smg_smg_v1_smg_v1_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_smg_smg_rof_smg_rof_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_smg_smg_v2_smg_v2_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_smg_smg_accuracy_smg_accuracy_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_smg_smg_v4_smg_v4_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_smg_smg_damage_smg_damage_weapon(Cache, CacheContext, CacheStream);
 
-            new objects_weapons_rifle_smg_smg_v6_smg_v6_weapon(Cache, CacheContext, CacheStream);
+            new objects_weapons_rifle_smg_smg_power_smg_power_weapon(Cache, CacheContext, CacheStream);
 
             new objects_weapons_rifle_sniper_rifle_sniper_rifle_weapon(Cache, CacheContext, CacheStream);
 
