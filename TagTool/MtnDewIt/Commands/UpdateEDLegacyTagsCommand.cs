@@ -3444,75 +3444,75 @@ namespace TagTool.MtnDewIt.Commands
             { 0x0F07, @"shaders\shader_templates\_2_0_0_0_0_0_8_1_0_1_0" },
             { 0x0F08, @"shaders\shader_templates\_2_0_0_0_0_0_8_1_0_1_0" },
             { 0x0F09, @"objects\weapons\rifle\assault_rifle\bitmaps\assault_rifle_number" },
-            { 0x0F0D, @"objects\weapons\rifle\assault_rifle\assault_rifle_v1\shaders\assault_rifle" },
-            { 0x0F18, @"objects\weapons\rifle\assault_rifle\assault_rifle_v1\bitmaps\assault_rifle_spec" },
+            { 0x0F0D, @"objects\weapons\rifle\assault_rifle\assault_rifle_ammo\shaders\assault_rifle" },
+            { 0x0F18, @"objects\weapons\rifle\assault_rifle\assault_rifle_ammo\bitmaps\assault_rifle_spec" },
             { 0x0F19, @"shaders\shader_templates\_8_2_0_0_1_4_0_0_0_1_0_0" },
             { 0x0F1A, @"shaders\shader_templates\_8_2_0_0_1_4_0_0_0_1_0" },
             { 0x0F1B, @"shaders\shader_templates\_8_2_0_0_1_4_0_0_0_1_0" },
-            { 0x0F1C, @"objects\weapons\rifle\assault_rifle\assault_rifle_v1\bitmaps\assault_rifle_rubber" },
-            { 0x0F1D, @"objects\weapons\rifle\assault_rifle\assault_rifle_v1\bitmaps\assault_rifle_bump" },
-            { 0x0F1E, @"objects\weapons\rifle\assault_rifle\assault_rifle_v1\bitmaps\assault_rifle_control" },
-            { 0x0F1F, @"objects\weapons\rifle\assault_rifle\assault_rifle_v1\bitmaps\assault_rifle" },
-            { 0x0F22, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\fp_assault_rifle\fp_assault_rifle_v2" },
-            { 0x0F23, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\assault_rifle" },
-            { 0x0F24, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\assault_rifle_rubber" },
-            { 0x0F25, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\assault_rifle_env" },
-            { 0x0F26, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\assault_rifle_plastic" },
-            { 0x0F27, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\assault_rifle_decals" },
-            { 0x0F28, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\assault_rifle_display" },
-            { 0x0F29, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\default_detail" },
-            { 0x0F2A, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\assault_rifle_scan_lines" },
-            { 0x0F2B, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\compass" },
-            { 0x0F2C, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\ones" },
-            { 0x0F2D, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\tens" },
-            { 0x0F2E, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\bitmaps\assault_rifle_cc" },
-            { 0x0F2F, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\bitmaps\assault_rifle_decals" },
-            { 0x0F30, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\bitmaps\assault_rifle_display" },
-            { 0x0F32, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\fp_assault_rifle\fp_assault_rifle_v3" },
-            { 0x0F33, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\assault_rifle" },
-            { 0x0F34, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\assault_rifle_rubber" },
-            { 0x0F35, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\assault_rifle_env" },
-            { 0x0F36, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\assault_rifle_plastic" },
-            { 0x0F37, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\assault_rifle_display" },
-            { 0x0F38, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\default_detail" },
-            { 0x0F39, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\assault_rifle_scan_lines" },
-            { 0x0F3A, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\assault_rifle_decals" },
-            { 0x0F3B, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\compass" },
-            { 0x0F3C, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\ones" },
-            { 0x0F3D, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\tens" },
-            { 0x0F3E, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\item" },
-            { 0x0F3F, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\bitmaps\assault_rifle_display" },
-            { 0x0F40, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\bitmaps\compass" },
-            { 0x0F41, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\bitmaps\item" },
-            { 0x0F52, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\fp_assault_rifle\fp_assault_rifle_v5" },
-            { 0x0F53, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\assault_rifle_metal" },
-            { 0x0F54, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\assault_rifle_rubber" },
-            { 0x0F55, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\assault_rifle_env" },
-            { 0x0F56, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\assault_rifle_plastic" },
-            { 0x0F57, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\assault_rifle" },
-            { 0x0F58, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\assault_rifle_decals" },
-            { 0x0F59, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\assault_rifle_display" },
-            { 0x0F5A, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\default_detail" },
-            { 0x0F5B, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\assault_rifle_scan_lines" },
-            { 0x0F5C, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\compass" },
-            { 0x0F5D, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\ones" },
-            { 0x0F5E, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\tens" },
-            { 0x0F5F, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\bitmaps\assault_rifle_display" },
-            { 0x0F61, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\fp_assault_rifle\fp_assault_rifle_v6" },
-            { 0x0F62, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\shaders\assault_rifle" },
-            { 0x0F63, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\shaders\assault_rifle_rubber" },
-            { 0x0F64, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\shaders\assault_rifle_env" },
-            { 0x0F65, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\shaders\assault_rifle_display" },
-            { 0x0F66, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\bitmaps\assault_rifle_spec" },
-            { 0x0F67, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\bitmaps\assault_rifle_control" },
-            { 0x0F68, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\bitmaps\assault_rifle_cc" },
+            { 0x0F1C, @"objects\weapons\rifle\assault_rifle\assault_rifle_ammo\bitmaps\assault_rifle_rubber" },
+            { 0x0F1D, @"objects\weapons\rifle\assault_rifle\assault_rifle_ammo\bitmaps\assault_rifle_bump" },
+            { 0x0F1E, @"objects\weapons\rifle\assault_rifle\assault_rifle_ammo\bitmaps\assault_rifle_control" },
+            { 0x0F1F, @"objects\weapons\rifle\assault_rifle\assault_rifle_ammo\bitmaps\assault_rifle" },
+            { 0x0F22, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\fp_assault_rifle\fp_assault_rifle_damage" },
+            { 0x0F23, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\shaders\assault_rifle" },
+            { 0x0F24, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\shaders\assault_rifle_rubber" },
+            { 0x0F25, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\shaders\assault_rifle_env" },
+            { 0x0F26, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\shaders\assault_rifle_plastic" },
+            { 0x0F27, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\shaders\assault_rifle_decals" },
+            { 0x0F28, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\shaders\assault_rifle_display" },
+            { 0x0F29, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\shaders\default_detail" },
+            { 0x0F2A, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\shaders\assault_rifle_scan_lines" },
+            { 0x0F2B, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\shaders\compass" },
+            { 0x0F2C, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\shaders\ones" },
+            { 0x0F2D, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\shaders\tens" },
+            { 0x0F2E, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\bitmaps\assault_rifle_cc" },
+            { 0x0F2F, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\bitmaps\assault_rifle_decals" },
+            { 0x0F30, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\bitmaps\assault_rifle_display" },
+            { 0x0F32, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\fp_assault_rifle\fp_assault_rifle_rof" },
+            { 0x0F33, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\shaders\assault_rifle" },
+            { 0x0F34, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\shaders\assault_rifle_rubber" },
+            { 0x0F35, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\shaders\assault_rifle_env" },
+            { 0x0F36, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\shaders\assault_rifle_plastic" },
+            { 0x0F37, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\shaders\assault_rifle_display" },
+            { 0x0F38, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\shaders\default_detail" },
+            { 0x0F39, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\shaders\assault_rifle_scan_lines" },
+            { 0x0F3A, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\shaders\assault_rifle_decals" },
+            { 0x0F3B, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\shaders\compass" },
+            { 0x0F3C, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\shaders\ones" },
+            { 0x0F3D, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\shaders\tens" },
+            { 0x0F3E, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\shaders\item" },
+            { 0x0F3F, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\bitmaps\assault_rifle_display" },
+            { 0x0F40, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\bitmaps\compass" },
+            { 0x0F41, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\bitmaps\item" },
+            { 0x0F52, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\fp_assault_rifle\fp_assault_rifle_accuracy" },
+            { 0x0F53, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\shaders\assault_rifle_metal" },
+            { 0x0F54, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\shaders\assault_rifle_rubber" },
+            { 0x0F55, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\shaders\assault_rifle_env" },
+            { 0x0F56, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\shaders\assault_rifle_plastic" },
+            { 0x0F57, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\shaders\assault_rifle" },
+            { 0x0F58, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\shaders\assault_rifle_decals" },
+            { 0x0F59, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\shaders\assault_rifle_display" },
+            { 0x0F5A, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\shaders\default_detail" },
+            { 0x0F5B, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\shaders\assault_rifle_scan_lines" },
+            { 0x0F5C, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\shaders\compass" },
+            { 0x0F5D, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\shaders\ones" },
+            { 0x0F5E, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\shaders\tens" },
+            { 0x0F5F, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\bitmaps\assault_rifle_display" },
+            { 0x0F61, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\fp_assault_rifle\fp_assault_rifle_power" },
+            { 0x0F62, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\shaders\assault_rifle" },
+            { 0x0F63, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\shaders\assault_rifle_rubber" },
+            { 0x0F64, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\shaders\assault_rifle_env" },
+            { 0x0F65, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\shaders\assault_rifle_display" },
+            { 0x0F66, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\bitmaps\assault_rifle_spec" },
+            { 0x0F67, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\bitmaps\assault_rifle_control" },
+            { 0x0F68, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\bitmaps\assault_rifle_cc" },
             { 0x0F69, @"shaders\shader_templates\_8_2_0_3_1_2_0_0_0_1_0_0" },
             { 0x0F6A, @"shaders\shader_templates\_8_2_0_3_1_2_0_0_0_1_0" },
             { 0x0F6B, @"shaders\shader_templates\_8_2_0_3_1_2_0_0_0_1_0" },
-            { 0x0F6C, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\bitmaps\assault_rifle_rubber_spec" },
-            { 0x0F6D, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\bitmaps\assault_rifle_rubber_control" },
-            { 0x0F6E, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\bitmaps\assault_rifle_rubber_cc" },
-            { 0x0F6F, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\bitmaps\assault_rifle_display" },
+            { 0x0F6C, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\bitmaps\assault_rifle_rubber_spec" },
+            { 0x0F6D, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\bitmaps\assault_rifle_rubber_control" },
+            { 0x0F6E, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\bitmaps\assault_rifle_rubber_cc" },
+            { 0x0F6F, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\bitmaps\assault_rifle_display" },
             { 0x0F71, @"objects\weapons\rifle\battle_rifle\fp_battle_rifle\fp_battle_rifle" },
             { 0x0F72, @"objects\weapons\rifle\battle_rifle\shaders\battle_rifle_metal" },
             { 0x0F73, @"objects\weapons\rifle\battle_rifle\shaders\battle_rifle_decals_font_00" },
@@ -3552,90 +3552,90 @@ namespace TagTool.MtnDewIt.Commands
             { 0x0F95, @"objects\weapons\rifle\battle_rifle\bitmaps\battle_rifle_ones" },
             { 0x0F96, @"objects\weapons\rifle\battle_rifle\bitmaps\battle_rifle_tens" },
             { 0x0F97, @"objects\weapons\rifle\battle_rifle\bitmaps\battle_rifle_top" },
-            { 0x0F99, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\fp_battle_rifle\fp_battle_rifle_v1" },
-            { 0x0F9A, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\shaders\battle_rifle_scope" },
-            { 0x0F9B, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\shaders\battle_rifle_metal" },
-            { 0x0F9C, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\shaders\battle_rifle_ones" },
-            { 0x0F9D, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\shaders\battle_rifle_tens" },
-            { 0x0F9E, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\shaders\battle_rifle_top" },
-            { 0x0F9F, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\shaders\battle_rifle_scan_lines" },
-            { 0x0FA0, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\shaders\battle_rifle_default_detail" },
+            { 0x0F99, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\fp_battle_rifle\fp_battle_rifle_rof" },
+            { 0x0F9A, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\shaders\battle_rifle_scope" },
+            { 0x0F9B, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\shaders\battle_rifle_metal" },
+            { 0x0F9C, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\shaders\battle_rifle_ones" },
+            { 0x0F9D, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\shaders\battle_rifle_tens" },
+            { 0x0F9E, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\shaders\battle_rifle_top" },
+            { 0x0F9F, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\shaders\battle_rifle_scan_lines" },
+            { 0x0FA0, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\shaders\battle_rifle_default_detail" },
             { 0x0FA1, @"shaders\shader_templates\_2_0_0_0_0_0_1_0_0_1_0_0" },
             { 0x0FA2, @"shaders\shader_templates\_2_0_0_0_0_0_1_0_0_1_0" },
             { 0x0FA3, @"shaders\shader_templates\_2_0_0_0_0_0_1_0_0_1_0" },
-            { 0x0FA4, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\bitmaps\battle_rifle" },
-            { 0x0FA5, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\bitmaps\battle_rifle_bump" },
-            { 0x0FA6, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\bitmaps\battle_rifle_control" },
-            { 0x0FA7, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\bitmaps\battle_rifle_mask" },
-            { 0x0FA8, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\bitmaps\battle_rifle_spec" },
-            { 0x0FA9, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\bitmaps\battle_rifle_cc" },
-            { 0x0FAA, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\bitmaps\battle_rifle_ones" },
-            { 0x0FAB, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\bitmaps\battle_rifle_tens" },
-            { 0x0FAC, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\bitmaps\battle_rifle_top" },
-            { 0x0FAE, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\fp_battle_rifle\fp_battle_rifle_v2" },
-            { 0x0FAF, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\shaders\battle_rifle_top" },
-            { 0x0FB0, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\shaders\battle_rifle_tens" },
-            { 0x0FB1, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\shaders\battle_rifle_ones" },
-            { 0x0FB2, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\shaders\battle_rifle_scan_lines" },
-            { 0x0FB3, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\shaders\battle_rifle_default_detail" },
-            { 0x0FB4, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\shaders\battle_rifle_scope" },
-            { 0x0FB5, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\bitmaps\battle_rifle_scope" },
+            { 0x0FA4, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\bitmaps\battle_rifle" },
+            { 0x0FA5, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\bitmaps\battle_rifle_bump" },
+            { 0x0FA6, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\bitmaps\battle_rifle_control" },
+            { 0x0FA7, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\bitmaps\battle_rifle_mask" },
+            { 0x0FA8, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\bitmaps\battle_rifle_spec" },
+            { 0x0FA9, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\bitmaps\battle_rifle_cc" },
+            { 0x0FAA, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\bitmaps\battle_rifle_ones" },
+            { 0x0FAB, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\bitmaps\battle_rifle_tens" },
+            { 0x0FAC, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\bitmaps\battle_rifle_top" },
+            { 0x0FAE, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\fp_battle_rifle\fp_battle_rifle_accuracy" },
+            { 0x0FAF, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\shaders\battle_rifle_top" },
+            { 0x0FB0, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\shaders\battle_rifle_tens" },
+            { 0x0FB1, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\shaders\battle_rifle_ones" },
+            { 0x0FB2, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\shaders\battle_rifle_scan_lines" },
+            { 0x0FB3, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\shaders\battle_rifle_default_detail" },
+            { 0x0FB4, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\shaders\battle_rifle_scope" },
+            { 0x0FB5, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\bitmaps\battle_rifle_scope" },
             { 0x0FB6, @"shaders\shader_templates\_0_0_0_3_5_2_1_0_0_1_0_0" },
             { 0x0FB7, @"shaders\shader_templates\_0_0_0_3_5_2_1_0_0_1_0" },
             { 0x0FB8, @"shaders\shader_templates\_0_0_0_3_5_2_1_0_0_1_0" },
-            { 0x0FBA, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\fp_battle_rifle\fp_battle_rifle_v3" },
-            { 0x0FBB, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\shaders\battle_rifle_default_detail" },
-            { 0x0FBC, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\shaders\battle_rifle_scan_lines" },
-            { 0x0FBD, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\shaders\battle_rifle_top" },
-            { 0x0FBE, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\shaders\battle_rifle_tens" },
-            { 0x0FBF, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\shaders\battle_rifle_ones" },
-            { 0x0FC0, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\shaders\battle_rifle_metal" },
-            { 0x0FC1, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\bitmaps\battle_rifle" },
+            { 0x0FBA, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\fp_battle_rifle\fp_battle_rifle_ammo" },
+            { 0x0FBB, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\shaders\battle_rifle_default_detail" },
+            { 0x0FBC, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\shaders\battle_rifle_scan_lines" },
+            { 0x0FBD, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\shaders\battle_rifle_top" },
+            { 0x0FBE, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\shaders\battle_rifle_tens" },
+            { 0x0FBF, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\shaders\battle_rifle_ones" },
+            { 0x0FC0, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\shaders\battle_rifle_metal" },
+            { 0x0FC1, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\bitmaps\battle_rifle" },
             { 0x0FC2, @"shaders\shader_templates\_8_3_0_3_1_2_0_0_0_1_0_0" },
             { 0x0FC3, @"shaders\shader_templates\_8_3_0_3_1_2_0_0_0_1_0" },
             { 0x0FC4, @"shaders\shader_templates\_8_3_0_3_1_2_0_0_0_1_0" },
-            { 0x0FC6, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\fp_battle_rifle\fp_battle_rifle_v4" },
-            { 0x0FC7, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\shaders\battle_rifle_metal" },
-            { 0x0FC8, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\shaders\battle_rifle_default_detail" },
-            { 0x0FC9, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\shaders\battle_rifle_scan_lines" },
-            { 0x0FCA, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\shaders\battle_rifle_ones" },
-            { 0x0FCB, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\shaders\battle_rifle_tens" },
-            { 0x0FCC, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\shaders\battle_rifle_top" },
-            { 0x0FCD, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\shaders\battle_rifle_empty" },
-            { 0x0FCE, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\bitmaps\battle_rifle" },
+            { 0x0FC6, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\fp_battle_rifle\fp_battle_rifle_damage" },
+            { 0x0FC7, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\shaders\battle_rifle_metal" },
+            { 0x0FC8, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\shaders\battle_rifle_default_detail" },
+            { 0x0FC9, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\shaders\battle_rifle_scan_lines" },
+            { 0x0FCA, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\shaders\battle_rifle_ones" },
+            { 0x0FCB, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\shaders\battle_rifle_tens" },
+            { 0x0FCC, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\shaders\battle_rifle_top" },
+            { 0x0FCD, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\shaders\battle_rifle_empty" },
+            { 0x0FCE, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\bitmaps\battle_rifle" },
             { 0x0FCF, @"objects\weapons\rifle\battle_rifle\bitmaps\gun_detail" },
-            { 0x0FD0, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\bitmaps\battle_rifle_bump" },
-            { 0x0FD1, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\bitmaps\battle_rifle_control" },
-            { 0x0FD2, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\bitmaps\battle_rifle_mask" },
-            { 0x0FD3, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\bitmaps\battle_rifle_spec" },
-            { 0x0FD4, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\bitmaps\battle_rifle_cc" },
-            { 0x0FD5, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\bitmaps\battle_rifle_empty" },
-            { 0x0FD7, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\fp_battle_rifle\fp_battle_rifle_v5" },
-            { 0x0FD8, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\shaders\battle_rifle_scope" },
-            { 0x0FD9, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\shaders\battle_rifle_default_detail" },
-            { 0x0FDA, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\shaders\battle_rifle_scan_lines" },
-            { 0x0FDB, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\shaders\battle_rifle_ones" },
-            { 0x0FDC, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\shaders\battle_rifle_top" },
-            { 0x0FDD, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\shaders\battle_rifle_tens" },
-            { 0x0FDE, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\bitmaps\battle_rifle_scope" },
-            { 0x0FDF, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\bitmaps\battle_rifle_top" },
-            { 0x0FE1, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\fp_battle_rifle\fp_battle_rifle_v6" },
-            { 0x0FE2, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\shaders\battle_rifle_metal" },
-            { 0x0FE3, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\shaders\battle_rifle_default_detail" },
-            { 0x0FE4, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\shaders\battle_rifle_top" },
-            { 0x0FE5, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\shaders\battle_rifle_tens" },
-            { 0x0FE6, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\shaders\battle_rifle_ones" },
-            { 0x0FE7, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\shaders\battle_rifle_empty" },
-            { 0x0FE8, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\shaders\battle_rifle_scope" },
-            { 0x0FE9, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\shaders\battle_rifle_display" },
-            { 0x0FEA, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\bitmaps\battle_rifle_control" },
-            { 0x0FEB, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\bitmaps\battle_rifle_spec" },
-            { 0x0FEC, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\bitmaps\battle_rifle_cc" },
-            { 0x0FED, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\bitmaps\battle_rifle_empty_control" },
-            { 0x0FEE, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\bitmaps\battle_rifle_empty_spec" },
-            { 0x0FEF, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\bitmaps\battle_rifle_empty_cc" },
-            { 0x0FF0, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\bitmaps\battle_rifle_scope" },
-            { 0x0FF1, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\bitmaps\battle_rifle_display" },
+            { 0x0FD0, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\bitmaps\battle_rifle_bump" },
+            { 0x0FD1, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\bitmaps\battle_rifle_control" },
+            { 0x0FD2, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\bitmaps\battle_rifle_mask" },
+            { 0x0FD3, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\bitmaps\battle_rifle_spec" },
+            { 0x0FD4, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\bitmaps\battle_rifle_cc" },
+            { 0x0FD5, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\bitmaps\battle_rifle_empty" },
+            { 0x0FD7, @"objects\weapons\rifle\battle_rifle\battle_rifle_range\fp_battle_rifle\fp_battle_rifle_range" },
+            { 0x0FD8, @"objects\weapons\rifle\battle_rifle\battle_rifle_range\shaders\battle_rifle_scope" },
+            { 0x0FD9, @"objects\weapons\rifle\battle_rifle\battle_rifle_range\shaders\battle_rifle_default_detail" },
+            { 0x0FDA, @"objects\weapons\rifle\battle_rifle\battle_rifle_range\shaders\battle_rifle_scan_lines" },
+            { 0x0FDB, @"objects\weapons\rifle\battle_rifle\battle_rifle_range\shaders\battle_rifle_ones" },
+            { 0x0FDC, @"objects\weapons\rifle\battle_rifle\battle_rifle_range\shaders\battle_rifle_top" },
+            { 0x0FDD, @"objects\weapons\rifle\battle_rifle\battle_rifle_range\shaders\battle_rifle_tens" },
+            { 0x0FDE, @"objects\weapons\rifle\battle_rifle\battle_rifle_range\bitmaps\battle_rifle_scope" },
+            { 0x0FDF, @"objects\weapons\rifle\battle_rifle\battle_rifle_range\bitmaps\battle_rifle_top" },
+            { 0x0FE1, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\fp_battle_rifle\fp_battle_rifle_power" },
+            { 0x0FE2, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\shaders\battle_rifle_metal" },
+            { 0x0FE3, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\shaders\battle_rifle_default_detail" },
+            { 0x0FE4, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\shaders\battle_rifle_top" },
+            { 0x0FE5, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\shaders\battle_rifle_tens" },
+            { 0x0FE6, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\shaders\battle_rifle_ones" },
+            { 0x0FE7, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\shaders\battle_rifle_empty" },
+            { 0x0FE8, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\shaders\battle_rifle_scope" },
+            { 0x0FE9, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\shaders\battle_rifle_display" },
+            { 0x0FEA, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\bitmaps\battle_rifle_control" },
+            { 0x0FEB, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\bitmaps\battle_rifle_spec" },
+            { 0x0FEC, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\bitmaps\battle_rifle_cc" },
+            { 0x0FED, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\bitmaps\battle_rifle_empty_control" },
+            { 0x0FEE, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\bitmaps\battle_rifle_empty_spec" },
+            { 0x0FEF, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\bitmaps\battle_rifle_empty_cc" },
+            { 0x0FF0, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\bitmaps\battle_rifle_scope" },
+            { 0x0FF1, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\bitmaps\battle_rifle_display" },
             { 0x0FF3, @"objects\weapons\rifle\dmr\fp_dmr\fp_dmr" },
             { 0x0FF4, @"objects\weapons\rifle\dmr\shaders\dmr_composite" },
             { 0x0FF5, @"objects\weapons\rifle\dmr\shaders\dmr_metal" },
@@ -3678,77 +3678,77 @@ namespace TagTool.MtnDewIt.Commands
             { 0x101A, @"shaders\shader_templates\_2_0_0_0_0_0_8_2_0_1_0" },
             { 0x101B, @"objects\weapons\rifle\dmr\bitmaps\dmr_display" },
             { 0x101C, @"objects\bitmaps\decals\bitmaps\unsc_decals_crest_eagle_diff" },
-            { 0x101E, @"objects\weapons\rifle\dmr\dmr_v1\fp_dmr\fp_dmr_v1" },
+            { 0x101E, @"objects\weapons\rifle\dmr\dmr_ammo\fp_dmr\fp_dmr_ammo" },
             { 0x101F, @"shaders\invalid" },
-            { 0x1020, @"objects\weapons\rifle\dmr\dmr_v1\shaders\dmr_composite" },
-            { 0x1021, @"objects\weapons\rifle\dmr\dmr_v1\shaders\tens" },
-            { 0x1022, @"objects\weapons\rifle\dmr\dmr_v1\shaders\dmr_display" },
-            { 0x1023, @"objects\weapons\rifle\dmr\dmr_v1\shaders\ones" },
+            { 0x1020, @"objects\weapons\rifle\dmr\dmr_ammo\shaders\dmr_composite" },
+            { 0x1021, @"objects\weapons\rifle\dmr\dmr_ammo\shaders\tens" },
+            { 0x1022, @"objects\weapons\rifle\dmr\dmr_ammo\shaders\dmr_display" },
+            { 0x1023, @"objects\weapons\rifle\dmr\dmr_ammo\shaders\ones" },
             { 0x1024, @"objects\bitmaps\default\grid_256x256" },
             { 0x1025, @"shaders\shader_templates\_0_1_0_0_0_0_0_0_0_1_0_0" },
             { 0x1026, @"shaders\shader_templates\_0_1_0_0_0_0_0_0_0_1_0" },
             { 0x1027, @"shaders\shader_templates\_0_1_0_0_0_0_0_0_0_1_0" },
-            { 0x1028, @"objects\weapons\rifle\dmr\dmr_v1\bitmaps\dmr" },
-            { 0x1029, @"objects\weapons\rifle\dmr\dmr_v1\bitmaps\dmr_control" },
-            { 0x102A, @"objects\weapons\rifle\dmr\dmr_v1\bitmaps\dmr_bump" },
+            { 0x1028, @"objects\weapons\rifle\dmr\dmr_ammo\bitmaps\dmr" },
+            { 0x1029, @"objects\weapons\rifle\dmr\dmr_ammo\bitmaps\dmr_control" },
+            { 0x102A, @"objects\weapons\rifle\dmr\dmr_ammo\bitmaps\dmr_bump" },
             { 0x102B, @"shaders\shader_templates\_0_3_0_3_1_4_0_0_0_1_0_0" },
             { 0x102C, @"shaders\shader_templates\_0_3_0_3_1_4_0_0_0_1_0" },
             { 0x102D, @"shaders\shader_templates\_0_3_0_3_1_4_0_0_0_1_0" },
-            { 0x102E, @"objects\weapons\rifle\dmr\dmr_v1\bitmaps\dmr_numbers_plate" },
-            { 0x102F, @"objects\weapons\rifle\dmr\dmr_v1\bitmaps\dmr_display" },
-            { 0x1031, @"objects\weapons\rifle\dmr\dmr_v2\fp_dmr\fp_dmr_v2" },
-            { 0x1032, @"objects\weapons\rifle\dmr\dmr_v2\shaders\dmr_composite" },
-            { 0x1033, @"objects\weapons\rifle\dmr\dmr_v2\shaders\dmr_metal" },
-            { 0x1034, @"objects\weapons\rifle\dmr\dmr_v2\shaders\tens" },
-            { 0x1035, @"objects\weapons\rifle\dmr\dmr_v2\shaders\dmr_display" },
-            { 0x1036, @"objects\weapons\rifle\dmr\dmr_v2\shaders\ones" },
-            { 0x1037, @"objects\weapons\rifle\dmr\dmr_v2\shaders\dmr_default_material" },
-            { 0x1038, @"objects\weapons\rifle\dmr\dmr_v2\shaders\dmr_scan_lines" },
-            { 0x1039, @"objects\weapons\rifle\dmr\dmr_v2\shaders\dmr_scope_glass" },
-            { 0x103A, @"objects\weapons\rifle\dmr\dmr_v2\shaders\dmr_scope_glass2" },
-            { 0x103B, @"objects\weapons\rifle\dmr\dmr_v2\bitmaps\dmr_cc" },
-            { 0x103D, @"objects\weapons\rifle\dmr\dmr_v3\fp_dmr\fp_dmr_v3" },
-            { 0x103E, @"objects\weapons\rifle\dmr\dmr_v3\shaders\dmr_composite" },
-            { 0x103F, @"objects\weapons\rifle\dmr\dmr_v3\shaders\dmr_metal" },
-            { 0x1040, @"objects\weapons\rifle\dmr\dmr_v3\shaders\tens" },
-            { 0x1041, @"objects\weapons\rifle\dmr\dmr_v3\shaders\dmr_display" },
-            { 0x1042, @"objects\weapons\rifle\dmr\dmr_v3\shaders\ones" },
-            { 0x1043, @"objects\weapons\rifle\dmr\dmr_v3\shaders\dmr_default_detail" },
-            { 0x1044, @"objects\weapons\rifle\dmr\dmr_v3\shaders\dmr_scan_lines" },
-            { 0x1045, @"objects\weapons\rifle\dmr\dmr_v3\shaders\dmr_scope_glass" },
-            { 0x1046, @"objects\weapons\rifle\dmr\dmr_v3\shaders\dmr_scope_glass2" },
-            { 0x1048, @"objects\weapons\rifle\dmr\dmr_v4\fp_dmr\fp_dmr_v4" },
-            { 0x1049, @"objects\weapons\rifle\dmr\dmr_v4\shaders\dmr_composite" },
-            { 0x104A, @"objects\weapons\rifle\dmr\dmr_v4\shaders\dmr_metal" },
-            { 0x104B, @"objects\weapons\rifle\dmr\dmr_v4\shaders\dmr_metal_shiny" },
-            { 0x104C, @"objects\weapons\rifle\dmr\dmr_v4\shaders\dmr_rubber" },
-            { 0x104D, @"objects\weapons\rifle\dmr\dmr_v4\shaders\tens" },
-            { 0x104E, @"objects\weapons\rifle\dmr\dmr_v4\shaders\dmr_display" },
-            { 0x104F, @"objects\weapons\rifle\dmr\dmr_v4\shaders\ones" },
-            { 0x1050, @"objects\weapons\rifle\dmr\dmr_v4\shaders\dmr_default_detail" },
-            { 0x1051, @"objects\weapons\rifle\dmr\dmr_v4\shaders\dmr_scan_lines" },
-            { 0x1052, @"objects\weapons\rifle\dmr\dmr_v4\bitmaps\dmr" },
-            { 0x1053, @"objects\weapons\rifle\dmr\dmr_v4\bitmaps\dmr_control" },
-            { 0x1054, @"objects\weapons\rifle\dmr\dmr_v4\bitmaps\dmr_bump" },
-            { 0x1055, @"objects\weapons\rifle\dmr\dmr_v4\bitmaps\dmr_cc" },
-            { 0x1059, @"objects\weapons\rifle\dmr\dmr_v6\fp_dmr\fp_dmr_v6" },
-            { 0x105A, @"objects\weapons\rifle\dmr\dmr_v6\shaders\dmr_composite" },
-            { 0x105B, @"objects\weapons\rifle\dmr\dmr_v6\shaders\dmr_metal" },
-            { 0x105C, @"objects\weapons\rifle\dmr\dmr_v6\shaders\dmr_rubber" },
-            { 0x105D, @"objects\weapons\rifle\dmr\dmr_v6\shaders\tens" },
-            { 0x105E, @"objects\weapons\rifle\dmr\dmr_v6\shaders\dmr_display" },
-            { 0x105F, @"objects\weapons\rifle\dmr\dmr_v6\shaders\ones" },
-            { 0x1060, @"objects\weapons\rifle\dmr\dmr_v6\shaders\dmr_default_detail" },
-            { 0x1061, @"objects\weapons\rifle\dmr\dmr_v6\shaders\dmr_scan_lines" },
-            { 0x1062, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_composite_control" },
-            { 0x1063, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_composite_spec" },
-            { 0x1064, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_composite_cc" },
-            { 0x1065, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_metal_spec" },
-            { 0x1066, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_metal_cc" },
-            { 0x1067, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_metal_control" },
-            { 0x1068, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_rubber_control" },
-            { 0x1069, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_rubber_spec" },
-            { 0x106A, @"objects\weapons\rifle\dmr\dmr_v6\bitmaps\dmr_rubber_cc" },
+            { 0x102E, @"objects\weapons\rifle\dmr\dmr_ammo\bitmaps\dmr_numbers_plate" },
+            { 0x102F, @"objects\weapons\rifle\dmr\dmr_ammo\bitmaps\dmr_display" },
+            { 0x1031, @"objects\weapons\rifle\dmr\dmr_accuracy\fp_dmr\fp_dmr_accuracy" },
+            { 0x1032, @"objects\weapons\rifle\dmr\dmr_accuracy\shaders\dmr_composite" },
+            { 0x1033, @"objects\weapons\rifle\dmr\dmr_accuracy\shaders\dmr_metal" },
+            { 0x1034, @"objects\weapons\rifle\dmr\dmr_accuracy\shaders\tens" },
+            { 0x1035, @"objects\weapons\rifle\dmr\dmr_accuracy\shaders\dmr_display" },
+            { 0x1036, @"objects\weapons\rifle\dmr\dmr_accuracy\shaders\ones" },
+            { 0x1037, @"objects\weapons\rifle\dmr\dmr_accuracy\shaders\dmr_default_material" },
+            { 0x1038, @"objects\weapons\rifle\dmr\dmr_accuracy\shaders\dmr_scan_lines" },
+            { 0x1039, @"objects\weapons\rifle\dmr\dmr_accuracy\shaders\dmr_scope_glass" },
+            { 0x103A, @"objects\weapons\rifle\dmr\dmr_accuracy\shaders\dmr_scope_glass2" },
+            { 0x103B, @"objects\weapons\rifle\dmr\dmr_accuracy\bitmaps\dmr_cc" },
+            { 0x103D, @"objects\weapons\rifle\dmr\dmr_rof\fp_dmr\fp_dmr_rof" },
+            { 0x103E, @"objects\weapons\rifle\dmr\dmr_rof\shaders\dmr_composite" },
+            { 0x103F, @"objects\weapons\rifle\dmr\dmr_rof\shaders\dmr_metal" },
+            { 0x1040, @"objects\weapons\rifle\dmr\dmr_rof\shaders\tens" },
+            { 0x1041, @"objects\weapons\rifle\dmr\dmr_rof\shaders\dmr_display" },
+            { 0x1042, @"objects\weapons\rifle\dmr\dmr_rof\shaders\ones" },
+            { 0x1043, @"objects\weapons\rifle\dmr\dmr_rof\shaders\dmr_default_detail" },
+            { 0x1044, @"objects\weapons\rifle\dmr\dmr_rof\shaders\dmr_scan_lines" },
+            { 0x1045, @"objects\weapons\rifle\dmr\dmr_rof\shaders\dmr_scope_glass" },
+            { 0x1046, @"objects\weapons\rifle\dmr\dmr_rof\shaders\dmr_scope_glass2" },
+            { 0x1048, @"objects\weapons\rifle\dmr\dmr_damage\fp_dmr\fp_dmr_damage" },
+            { 0x1049, @"objects\weapons\rifle\dmr\dmr_damage\shaders\dmr_composite" },
+            { 0x104A, @"objects\weapons\rifle\dmr\dmr_damage\shaders\dmr_metal" },
+            { 0x104B, @"objects\weapons\rifle\dmr\dmr_damage\shaders\dmr_metal_shiny" },
+            { 0x104C, @"objects\weapons\rifle\dmr\dmr_damage\shaders\dmr_rubber" },
+            { 0x104D, @"objects\weapons\rifle\dmr\dmr_damage\shaders\tens" },
+            { 0x104E, @"objects\weapons\rifle\dmr\dmr_damage\shaders\dmr_display" },
+            { 0x104F, @"objects\weapons\rifle\dmr\dmr_damage\shaders\ones" },
+            { 0x1050, @"objects\weapons\rifle\dmr\dmr_damage\shaders\dmr_default_detail" },
+            { 0x1051, @"objects\weapons\rifle\dmr\dmr_damage\shaders\dmr_scan_lines" },
+            { 0x1052, @"objects\weapons\rifle\dmr\dmr_damage\bitmaps\dmr" },
+            { 0x1053, @"objects\weapons\rifle\dmr\dmr_damage\bitmaps\dmr_control" },
+            { 0x1054, @"objects\weapons\rifle\dmr\dmr_damage\bitmaps\dmr_bump" },
+            { 0x1055, @"objects\weapons\rifle\dmr\dmr_damage\bitmaps\dmr_cc" },
+            { 0x1059, @"objects\weapons\rifle\dmr\dmr_power\fp_dmr\fp_dmr_power" },
+            { 0x105A, @"objects\weapons\rifle\dmr\dmr_power\shaders\dmr_composite" },
+            { 0x105B, @"objects\weapons\rifle\dmr\dmr_power\shaders\dmr_metal" },
+            { 0x105C, @"objects\weapons\rifle\dmr\dmr_power\shaders\dmr_rubber" },
+            { 0x105D, @"objects\weapons\rifle\dmr\dmr_power\shaders\tens" },
+            { 0x105E, @"objects\weapons\rifle\dmr\dmr_power\shaders\dmr_display" },
+            { 0x105F, @"objects\weapons\rifle\dmr\dmr_power\shaders\ones" },
+            { 0x1060, @"objects\weapons\rifle\dmr\dmr_power\shaders\dmr_default_detail" },
+            { 0x1061, @"objects\weapons\rifle\dmr\dmr_power\shaders\dmr_scan_lines" },
+            { 0x1062, @"objects\weapons\rifle\dmr\dmr_power\bitmaps\dmr_composite_control" },
+            { 0x1063, @"objects\weapons\rifle\dmr\dmr_power\bitmaps\dmr_composite_spec" },
+            { 0x1064, @"objects\weapons\rifle\dmr\dmr_power\bitmaps\dmr_composite_cc" },
+            { 0x1065, @"objects\weapons\rifle\dmr\dmr_power\bitmaps\dmr_metal_spec" },
+            { 0x1066, @"objects\weapons\rifle\dmr\dmr_power\bitmaps\dmr_metal_cc" },
+            { 0x1067, @"objects\weapons\rifle\dmr\dmr_power\bitmaps\dmr_metal_control" },
+            { 0x1068, @"objects\weapons\rifle\dmr\dmr_power\bitmaps\dmr_rubber_control" },
+            { 0x1069, @"objects\weapons\rifle\dmr\dmr_power\bitmaps\dmr_rubber_spec" },
+            { 0x106A, @"objects\weapons\rifle\dmr\dmr_power\bitmaps\dmr_rubber_cc" },
             { 0x106C, @"objects\weapons\rifle\covenant_carbine\fp_covenant_carbine\fp_covenant_carbine" },
             { 0x106D, @"objects\weapons\rifle\covenant_carbine\shaders\carbine" },
             { 0x106E, @"objects\weapons\rifle\covenant_carbine\shaders\carbine_metal" },
@@ -3775,65 +3775,65 @@ namespace TagTool.MtnDewIt.Commands
             { 0x1083, @"shaders\shader_templates\_0_0_0_0_0_0_1_1_0_1_0" },
             { 0x1084, @"objects\weapons\rifle\covenant_carbine\bitmaps\covglyph" },
             { 0x1085, @"objects\weapons\rifle\covenant_carbine\bitmaps\base_gradient" },
-            { 0x1087, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\fp_covenant_carbine\fp_covenant_carbine_v1" },
-            { 0x1088, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\shaders\carbine" },
-            { 0x1089, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\shaders\carbine_metal" },
-            { 0x108A, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\bitmaps\covenant_carbine" },
-            { 0x108B, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\bitmaps\covenant_carbine_bump" },
-            { 0x108C, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\bitmaps\covenant_carbine_illum" },
-            { 0x108D, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\bitmaps\covenant_carbine_control" },
-            { 0x108E, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\bitmaps\covenant_carbine_cube" },
+            { 0x1087, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\fp_covenant_carbine\fp_covenant_carbine_rof" },
+            { 0x1088, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\shaders\carbine" },
+            { 0x1089, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\shaders\carbine_metal" },
+            { 0x108A, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\bitmaps\covenant_carbine" },
+            { 0x108B, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\bitmaps\covenant_carbine_bump" },
+            { 0x108C, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\bitmaps\covenant_carbine_illum" },
+            { 0x108D, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\bitmaps\covenant_carbine_control" },
+            { 0x108E, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\bitmaps\covenant_carbine_cube" },
             { 0x108F, @"shaders\shader_templates\_0_1_0_1_1_4_1_0_0_1_0_0" },
             { 0x1090, @"shaders\shader_templates\_0_1_0_1_1_4_1_0_0_1_0" },
             { 0x1091, @"shaders\shader_templates\_0_1_0_1_1_4_1_0_0_1_0" },
-            { 0x1093, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\fp_covenant_carbine\fp_covenant_carbine_v2" },
-            { 0x1094, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\shaders\base_gradient" },
-            { 0x1095, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\shaders\base_gradient2" },
-            { 0x1096, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\shaders\carbine" },
-            { 0x1097, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\shaders\carbine_metal" },
-            { 0x1098, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\bitmaps\base_gradient" },
-            { 0x1099, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\bitmaps\covenant_carbine" },
-            { 0x109A, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\bitmaps\covenant_carbine_bump" },
-            { 0x109B, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\bitmaps\covenant_carbine_illum" },
-            { 0x109C, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\bitmaps\covenant_carbine_control" },
-            { 0x109D, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\bitmaps\covenant_carbine_cube" },
+            { 0x1093, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\fp_covenant_carbine\fp_covenant_carbine_ammo" },
+            { 0x1094, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\shaders\base_gradient" },
+            { 0x1095, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\shaders\base_gradient2" },
+            { 0x1096, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\shaders\carbine" },
+            { 0x1097, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\shaders\carbine_metal" },
+            { 0x1098, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\bitmaps\base_gradient" },
+            { 0x1099, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\bitmaps\covenant_carbine" },
+            { 0x109A, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\bitmaps\covenant_carbine_bump" },
+            { 0x109B, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\bitmaps\covenant_carbine_illum" },
+            { 0x109C, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\bitmaps\covenant_carbine_control" },
+            { 0x109D, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\bitmaps\covenant_carbine_cube" },
             { 0x109E, @"shaders\shader_templates\_13_1_0_1_1_4_1_0_0_1_0_0" },
             { 0x109F, @"shaders\shader_templates\_13_1_0_1_1_4_1_0_0_1_0" },
             { 0x10A0, @"shaders\shader_templates\_13_1_0_1_1_4_1_0_0_1_0" },
-            { 0x10A2, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v3\fp_covenant_carbine\fp_covenant_carbine_v3" },
-            { 0x10A3, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v3\shaders\wire_shape" },
-            { 0x10A4, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v3\shaders\base_gradient" },
-            { 0x10A5, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v3\shaders\carbine" },
-            { 0x10A6, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v3\bitmaps\wire_shape" },
-            { 0x10A7, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v3\bitmaps\base_gradient" },
+            { 0x10A2, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\fp_covenant_carbine\fp_covenant_carbine_range" },
+            { 0x10A3, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\shaders\wire_shape" },
+            { 0x10A4, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\shaders\base_gradient" },
+            { 0x10A5, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\shaders\carbine" },
+            { 0x10A6, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\bitmaps\wire_shape" },
+            { 0x10A7, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\bitmaps\base_gradient" },
             { 0x10A8, @"shaders\shader_templates\_0_0_0_0_1_0_1_0_0_1_0_0" },
             { 0x10A9, @"shaders\shader_templates\_0_0_0_0_1_0_1_0_0_1_0" },
             { 0x10AA, @"shaders\shader_templates\_0_0_0_0_1_0_1_0_0_1_0" },
-            { 0x10AC, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v4\fp_covenant_carbine\fp_covenant_carbine_v4" },
-            { 0x10AD, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v4\shaders\wire_shape" },
-            { 0x10AE, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v4\bitmaps\wire_shape" },
-            { 0x10B0, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v5\fp_covenant_carbine\fp_covenant_carbine_v5" },
-            { 0x10B2, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\fp_covenant_carbine\fp_covenant_carbine_v6" },
-            { 0x10B3, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\shaders\carbine" },
-            { 0x10B4, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\shaders\wire_shape" },
-            { 0x10B5, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\shaders\base_gradient" },
-            { 0x10B6, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\shaders\carbine_metal" },
-            { 0x10B7, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\shaders\carbine_base" },
-            { 0x10B8, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\shaders\default_detail" },
-            { 0x10B9, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\shaders\carbine_base_metal" },
-            { 0x10BA, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\shaders\carbine_organic" },
-            { 0x10BB, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\bitmaps\carbine_hex_bump" },
-            { 0x10BC, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\bitmaps\carbine_control" },
-            { 0x10BD, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\bitmaps\carbine_spec" },
+            { 0x10AC, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage\fp_covenant_carbine\fp_covenant_carbine_damage" },
+            { 0x10AD, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage\shaders\wire_shape" },
+            { 0x10AE, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage\bitmaps\wire_shape" },
+            { 0x10B0, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_accuracy\fp_covenant_carbine\fp_covenant_carbine_accuracy" },
+            { 0x10B2, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\fp_covenant_carbine\fp_covenant_carbine_power" },
+            { 0x10B3, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\shaders\carbine" },
+            { 0x10B4, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\shaders\wire_shape" },
+            { 0x10B5, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\shaders\base_gradient" },
+            { 0x10B6, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\shaders\carbine_metal" },
+            { 0x10B7, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\shaders\carbine_base" },
+            { 0x10B8, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\shaders\default_detail" },
+            { 0x10B9, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\shaders\carbine_base_metal" },
+            { 0x10BA, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\shaders\carbine_organic" },
+            { 0x10BB, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\bitmaps\carbine_hex_bump" },
+            { 0x10BC, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\bitmaps\carbine_control" },
+            { 0x10BD, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\bitmaps\carbine_spec" },
             { 0x10BE, @"shaders\shader_templates\_0_2_0_3_1_2_1_0_0_1_0_0" },
             { 0x10BF, @"shaders\shader_templates\_0_2_0_3_1_2_1_0_0_1_0" },
             { 0x10C0, @"shaders\shader_templates\_0_2_0_3_1_2_1_0_0_1_0" },
-            { 0x10C1, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\bitmaps\base_gradient" },
+            { 0x10C1, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\bitmaps\base_gradient" },
             { 0x10C2, @"shaders\shader_templates\_0_1_0_1_1_0_1_0_0_1_0_0" },
             { 0x10C3, @"shaders\shader_templates\_0_1_0_1_1_0_1_0_0_1_0" },
             { 0x10C4, @"shaders\shader_templates\_0_1_0_1_1_0_1_0_0_1_0" },
-            { 0x10C5, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\bitmaps\carbine_organic_control" },
-            { 0x10C6, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\bitmaps\carbine_organic_spec" },
+            { 0x10C5, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\bitmaps\carbine_organic_control" },
+            { 0x10C6, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\bitmaps\carbine_organic_spec" },
             { 0x10C8, @"objects\weapons\rifle\smg\fp_smg\fp_smg" },
             { 0x10C9, @"objects\weapons\rifle\smg\shaders\smg_new_metal" },  // new added so silenced smg textures aren't broken (ED specific)
             { 0x10CA, @"objects\weapons\rifle\smg\shaders\smg_new_rubber" },  // new added so silenced smg textures aren't broken (ED specific)
@@ -3845,51 +3845,51 @@ namespace TagTool.MtnDewIt.Commands
             { 0x10D0, @"shaders\shader_templates\_8_2_0_0_1_2_1_0_0_1_0" },
             { 0x10D1, @"shaders\shader_templates\_8_2_0_0_1_2_1_0_0_1_0" },
             { 0x10D2, @"objects\weapons\rifle\smg\bitmaps\smg_spec" },
-            { 0x10D4, @"objects\weapons\rifle\smg\smg_v1\fp_smg\fp_smg_v1" },
-            { 0x10D5, @"objects\weapons\rifle\smg\smg_v1\shaders\smg_base" },
-            { 0x10D6, @"objects\weapons\rifle\smg\smg_v1\shaders\smg_metal" },
-            { 0x10D7, @"objects\weapons\rifle\smg\smg_v1\shaders\smg_rubber" },
-            { 0x10D8, @"objects\weapons\rifle\smg\smg_v1\bitmaps\smg_base" },
-            { 0x10D9, @"objects\weapons\rifle\smg\smg_v1\bitmaps\smg_base_mask" },
-            { 0x10DA, @"objects\weapons\rifle\smg\smg_v1\bitmaps\smg_base_illum" },
+            { 0x10D4, @"objects\weapons\rifle\smg\smg_rof\fp_smg\fp_smg_rof" },
+            { 0x10D5, @"objects\weapons\rifle\smg\smg_rof\shaders\smg_base" },
+            { 0x10D6, @"objects\weapons\rifle\smg\smg_rof\shaders\smg_metal" },
+            { 0x10D7, @"objects\weapons\rifle\smg\smg_rof\shaders\smg_rubber" },
+            { 0x10D8, @"objects\weapons\rifle\smg\smg_rof\bitmaps\smg_base" },
+            { 0x10D9, @"objects\weapons\rifle\smg\smg_rof\bitmaps\smg_base_mask" },
+            { 0x10DA, @"objects\weapons\rifle\smg\smg_rof\bitmaps\smg_base_illum" },
             { 0x10DB, @"shaders\shader_templates\_14_2_0_0_1_2_1_0_0_1_0_0" },
             { 0x10DC, @"shaders\shader_templates\_14_2_0_0_1_2_1_0_0_1_0" },
             { 0x10DD, @"shaders\shader_templates\_14_2_0_0_1_2_1_0_0_1_0" },
-            { 0x10DE, @"objects\weapons\rifle\smg\smg_v1\bitmaps\smg" },
-            { 0x10DF, @"objects\weapons\rifle\smg\smg_v1\bitmaps\smg_bump" },
-            { 0x10E0, @"objects\weapons\rifle\smg\smg_v1\bitmaps\smg_control" },
-            { 0x10E1, @"objects\weapons\rifle\smg\smg_v1\bitmaps\smg_illum" },
-            { 0x10E2, @"objects\weapons\rifle\smg\smg_v1\bitmaps\smg_spec" },
-            { 0x10E4, @"objects\weapons\rifle\smg\smg_v2\fp_smg\fp_smg_v2" },
-            { 0x10E5, @"objects\weapons\rifle\smg\smg_v2\shaders\smg_base" },
-            { 0x10E6, @"objects\weapons\rifle\smg\smg_v2\shaders\smg_luminous" },
-            { 0x10E7, @"objects\weapons\rifle\smg\smg_v2\shaders\smg_metal" },
-            { 0x10E8, @"objects\weapons\rifle\smg\smg_v2\bitmaps\smg_base_illum" },
+            { 0x10DE, @"objects\weapons\rifle\smg\smg_rof\bitmaps\smg" },
+            { 0x10DF, @"objects\weapons\rifle\smg\smg_rof\bitmaps\smg_bump" },
+            { 0x10E0, @"objects\weapons\rifle\smg\smg_rof\bitmaps\smg_control" },
+            { 0x10E1, @"objects\weapons\rifle\smg\smg_rof\bitmaps\smg_illum" },
+            { 0x10E2, @"objects\weapons\rifle\smg\smg_rof\bitmaps\smg_spec" },
+            { 0x10E4, @"objects\weapons\rifle\smg\smg_accuracy\fp_smg\fp_smg_accuracy" },
+            { 0x10E5, @"objects\weapons\rifle\smg\smg_accuracy\shaders\smg_base" },
+            { 0x10E6, @"objects\weapons\rifle\smg\smg_accuracy\shaders\smg_luminous" },
+            { 0x10E7, @"objects\weapons\rifle\smg\smg_accuracy\shaders\smg_metal" },
+            { 0x10E8, @"objects\weapons\rifle\smg\smg_accuracy\bitmaps\smg_base_illum" },
             { 0x10E9, @"shaders\shader_templates\_2_0_0_0_1_4_0_2_0_1_0_0" },
             { 0x10EA, @"shaders\shader_templates\_2_0_0_0_1_4_0_2_0_1_0" },
             { 0x10EB, @"shaders\shader_templates\_2_0_0_0_1_4_0_2_0_1_0" },
-            { 0x10EC, @"objects\weapons\rifle\smg\smg_v2\bitmaps\smg" },
-            { 0x10ED, @"objects\weapons\rifle\smg\smg_v2\bitmaps\smg_bump" },
-            { 0x10EE, @"objects\weapons\rifle\smg\smg_v2\bitmaps\smg_control" },
-            { 0x10EF, @"objects\weapons\rifle\smg\smg_v2\bitmaps\smg_illum" },
-            { 0x10F3, @"objects\weapons\rifle\smg\smg_v4\fp_smg\fp_smg_v4" },
-            { 0x10F4, @"objects\weapons\rifle\smg\smg_v4\shaders\smg" },
-            { 0x10F5, @"objects\weapons\rifle\smg\smg_v4\shaders\smg_metal" },
-            { 0x10F6, @"objects\weapons\rifle\smg\smg_v4\bitmaps\smg_illum" },
-            { 0x10F7, @"objects\weapons\rifle\smg\smg_v4\bitmaps\smg_spec" },
-            { 0x10FB, @"objects\weapons\rifle\smg\smg_v6\fp_smg\fp_smg_v6" },
-            { 0x10FC, @"objects\weapons\rifle\smg\smg_v6\shaders\smg_base" },
-            { 0x10FD, @"objects\weapons\rifle\smg\smg_v6\shaders\smg_luminous" },
-            { 0x10FE, @"objects\weapons\rifle\smg\smg_v6\shaders\smg_metal" },
-            { 0x10FF, @"objects\weapons\rifle\smg\smg_v6\bitmaps\smg_base_spec" },
-            { 0x1100, @"objects\weapons\rifle\smg\smg_v6\bitmaps\smg_base_control" },
-            { 0x1101, @"objects\weapons\rifle\smg\smg_v6\bitmaps\smg_base_mask" },
+            { 0x10EC, @"objects\weapons\rifle\smg\smg_accuracy\bitmaps\smg" },
+            { 0x10ED, @"objects\weapons\rifle\smg\smg_accuracy\bitmaps\smg_bump" },
+            { 0x10EE, @"objects\weapons\rifle\smg\smg_accuracy\bitmaps\smg_control" },
+            { 0x10EF, @"objects\weapons\rifle\smg\smg_accuracy\bitmaps\smg_illum" },
+            { 0x10F3, @"objects\weapons\rifle\smg\smg_damage\fp_smg\fp_smg_damage" },
+            { 0x10F4, @"objects\weapons\rifle\smg\smg_damage\shaders\smg" },
+            { 0x10F5, @"objects\weapons\rifle\smg\smg_damage\shaders\smg_metal" },
+            { 0x10F6, @"objects\weapons\rifle\smg\smg_damage\bitmaps\smg_illum" },
+            { 0x10F7, @"objects\weapons\rifle\smg\smg_damage\bitmaps\smg_spec" },
+            { 0x10FB, @"objects\weapons\rifle\smg\smg_power\fp_smg\fp_smg_power" },
+            { 0x10FC, @"objects\weapons\rifle\smg\smg_power\shaders\smg_base" },
+            { 0x10FD, @"objects\weapons\rifle\smg\smg_power\shaders\smg_luminous" },
+            { 0x10FE, @"objects\weapons\rifle\smg\smg_power\shaders\smg_metal" },
+            { 0x10FF, @"objects\weapons\rifle\smg\smg_power\bitmaps\smg_base_spec" },
+            { 0x1100, @"objects\weapons\rifle\smg\smg_power\bitmaps\smg_base_control" },
+            { 0x1101, @"objects\weapons\rifle\smg\smg_power\bitmaps\smg_base_mask" },
             { 0x1102, @"shaders\shader_templates\_8_2_0_3_1_2_1_0_0_1_0_0" },
             { 0x1103, @"shaders\shader_templates\_8_2_0_3_1_2_1_0_0_1_0" },
             { 0x1104, @"shaders\shader_templates\_8_2_0_3_1_2_1_0_0_1_0" },
-            { 0x1105, @"objects\weapons\rifle\smg\smg_v6\bitmaps\smg_spec" },
-            { 0x1106, @"objects\weapons\rifle\smg\smg_v6\bitmaps\smg_control" },
-            { 0x1107, @"objects\weapons\rifle\smg\smg_v6\bitmaps\smg_mask" },
+            { 0x1105, @"objects\weapons\rifle\smg\smg_power\bitmaps\smg_spec" },
+            { 0x1106, @"objects\weapons\rifle\smg\smg_power\bitmaps\smg_control" },
+            { 0x1107, @"objects\weapons\rifle\smg\smg_power\bitmaps\smg_mask" },
             { 0x1109, @"objects\weapons\rifle\plasma_rifle\fp_plasma_rifle\fp_plasma_rifle" },
             { 0x110A, @"objects\weapons\rifle\plasma_rifle\shaders\plasma_rifle" },
             { 0x110B, @"objects\weapons\rifle\plasma_rifle\shaders\plasma_rifle_metal" },
@@ -3931,35 +3931,35 @@ namespace TagTool.MtnDewIt.Commands
             { 0x112F, @"shaders\shader_templates\_2_0_0_0_4_0_6_1_0_0_0_0" },
             { 0x1130, @"shaders\shader_templates\_2_0_0_0_4_0_6_1_0_0_0" },
             { 0x1131, @"shaders\shader_templates\_2_0_0_0_4_0_6_1_0_0_0" },
-            { 0x1135, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v1\shaders\plasma_rifle" },
-            { 0x1137, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v2\shaders\plasma_rifle" },
-            { 0x1138, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v1\bitmaps\plasma_rifle" },
-            { 0x1139, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v1\bitmaps\plasma_rifle_bump" },
-            { 0x113A, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v1\bitmaps\plasma_rifle_illum" },
-            { 0x113B, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v2\bitmaps\plasma_rifle" },
-            { 0x113C, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v2\bitmaps\plasma_rifle_bump" },
-            { 0x113D, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v2\bitmaps\plasma_rifle_illum" },
-            { 0x1143, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v4\shaders\plasma_rifle_metal" },
-            { 0x1148, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v5\shaders\plasma_rifle" },
-            { 0x114A, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v5\bitmaps\plasma_rifle" },
-            { 0x114B, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v5\bitmaps\plasma_rifle_bump" },
-            { 0x114C, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v5\bitmaps\plasma_rifle_illum" },
-            { 0x114E, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v6\fp_plasma_rifle\fp_plasma_rifle_v6" },
-            { 0x114F, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v2\shaders\plasma_rifle_shiny" },
-            { 0x1150, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v5\shaders\plasma_rifle_metal_tint_map" },
-            { 0x1151, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v1\shaders\plasma_rifle_metal_tint_map" },
-            { 0x1152, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v6\shaders\plasma_rifle" },
-            { 0x1153, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v2\bitmaps\plasma_rifle_control" },
-            { 0x1154, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v2\bitmaps\plasma_rifle_spec" },
-            { 0x1155, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v5\bitmaps\plasma_rifle_control" },
-            { 0x1156, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v5\bitmaps\plasma_rifle_spec" },
+            { 0x1135, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_damage\shaders\plasma_rifle" },
+            { 0x1137, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_rof\shaders\plasma_rifle" },
+            { 0x1138, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_damage\bitmaps\plasma_rifle" },
+            { 0x1139, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_damage\bitmaps\plasma_rifle_bump" },
+            { 0x113A, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_damage\bitmaps\plasma_rifle_illum" },
+            { 0x113B, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_rof\bitmaps\plasma_rifle" },
+            { 0x113C, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_rof\bitmaps\plasma_rifle_bump" },
+            { 0x113D, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_rof\bitmaps\plasma_rifle_illum" },
+            { 0x1143, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_ammo\shaders\plasma_rifle_metal" },
+            { 0x1148, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_range\shaders\plasma_rifle" },
+            { 0x114A, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_range\bitmaps\plasma_rifle" },
+            { 0x114B, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_range\bitmaps\plasma_rifle_bump" },
+            { 0x114C, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_range\bitmaps\plasma_rifle_illum" },
+            { 0x114E, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_power\fp_plasma_rifle\fp_plasma_rifle_power" },
+            { 0x114F, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_rof\shaders\plasma_rifle_shiny" },
+            { 0x1150, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_range\shaders\plasma_rifle_metal_tint_map" },
+            { 0x1151, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_damage\shaders\plasma_rifle_metal_tint_map" },
+            { 0x1152, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_power\shaders\plasma_rifle" },
+            { 0x1153, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_rof\bitmaps\plasma_rifle_control" },
+            { 0x1154, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_rof\bitmaps\plasma_rifle_spec" },
+            { 0x1155, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_range\bitmaps\plasma_rifle_control" },
+            { 0x1156, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_range\bitmaps\plasma_rifle_spec" },
             { 0x1157, @"shaders\shader_templates\_0_2_0_3_1_2_0_0_0_1_0_0" },
             { 0x1158, @"shaders\shader_templates\_0_2_0_3_1_2_0_0_0_1_0" },
             { 0x1159, @"shaders\shader_templates\_0_2_0_3_1_2_0_0_0_1_0" },
-            { 0x115A, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v1\bitmaps\plasma_rifle_control" },
-            { 0x115B, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v1\bitmaps\plasma_rifle_spec" },
-            { 0x115C, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v6\bitmaps\plasma_rifle_control" },
-            { 0x115D, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v6\bitmaps\plasma_rifle_spec" },
+            { 0x115A, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_damage\bitmaps\plasma_rifle_control" },
+            { 0x115B, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_damage\bitmaps\plasma_rifle_spec" },
+            { 0x115C, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_power\bitmaps\plasma_rifle_control" },
+            { 0x115D, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_power\bitmaps\plasma_rifle_spec" },
             { 0x115F, @"objects\weapons\pistol\magnum\fp_magnum\fp_magnum" },
             { 0x1160, @"objects\weapons\pistol\magnum\shaders\magnum" },
             { 0x1161, @"objects\weapons\pistol\magnum\bitmaps\magnum" },
@@ -3970,28 +3970,28 @@ namespace TagTool.MtnDewIt.Commands
             { 0x1166, @"shaders\shader_templates\_0_3_0_0_1_4_0_0_0_1_0_0" },
             { 0x1167, @"shaders\shader_templates\_0_3_0_0_1_4_0_0_0_1_0" },
             { 0x1168, @"shaders\shader_templates\_0_3_0_0_1_4_0_0_0_1_0" },
-            { 0x116B, @"objects\weapons\pistol\magnum\magnum_v1\shaders\magnum" },
-            { 0x116D, @"objects\weapons\pistol\magnum\magnum_v1\bitmaps\magnum" },
-            { 0x116E, @"objects\weapons\pistol\magnum\magnum_v1\bitmaps\magnum_bump" },
-            { 0x116F, @"objects\weapons\pistol\magnum\magnum_v1\bitmaps\magnum_control" },
-            { 0x1170, @"objects\weapons\pistol\magnum\magnum_v1\bitmaps\magnum_mask" },
-            { 0x1171, @"objects\weapons\pistol\magnum\magnum_v1\bitmaps\magnum_static" },
-            { 0x1172, @"objects\weapons\pistol\magnum\magnum_v1\bitmaps\magnum_static_mask" },
+            { 0x116B, @"objects\weapons\pistol\magnum\magnum_rof\shaders\magnum" },
+            { 0x116D, @"objects\weapons\pistol\magnum\magnum_rof\bitmaps\magnum" },
+            { 0x116E, @"objects\weapons\pistol\magnum\magnum_rof\bitmaps\magnum_bump" },
+            { 0x116F, @"objects\weapons\pistol\magnum\magnum_rof\bitmaps\magnum_control" },
+            { 0x1170, @"objects\weapons\pistol\magnum\magnum_rof\bitmaps\magnum_mask" },
+            { 0x1171, @"objects\weapons\pistol\magnum\magnum_rof\bitmaps\magnum_static" },
+            { 0x1172, @"objects\weapons\pistol\magnum\magnum_rof\bitmaps\magnum_static_mask" },
             { 0x1173, @"shaders\shader_templates\_8_3_0_0_1_4_0_0_0_1_0_0" },
             { 0x1174, @"shaders\shader_templates\_8_3_0_0_1_4_0_0_0_1_0" },
             { 0x1175, @"shaders\shader_templates\_8_3_0_0_1_4_0_0_0_1_0" },
-            { 0x1177, @"objects\weapons\pistol\magnum\magnum_v2\fp_magnum\fp_magnum_v2" },
-            { 0x1178, @"objects\weapons\pistol\magnum\magnum_v2\shaders\magnum_luminous" },
-            { 0x1179, @"objects\weapons\pistol\magnum\magnum_v2\shaders\magnum" },
-            { 0x117B, @"objects\weapons\pistol\magnum\magnum_v3\fp_magnum\fp_magnum_v3" },
-            { 0x117C, @"objects\weapons\pistol\magnum\magnum_v3\shaders\magnum" },
-            { 0x117D, @"objects\weapons\pistol\magnum\magnum_v3\shaders\magnum_static" },
-            { 0x117E, @"objects\weapons\pistol\magnum\magnum_v3\bitmaps\magnum_control" },
-            { 0x117F, @"objects\weapons\pistol\magnum\magnum_v3\bitmaps\magnum_mask" },
-            { 0x1180, @"objects\weapons\pistol\magnum\magnum_v3\bitmaps\magnum_spec" },
-            { 0x1181, @"objects\weapons\pistol\magnum\magnum_v3\bitmaps\magnum_static_control" },
-            { 0x1182, @"objects\weapons\pistol\magnum\magnum_v3\bitmaps\magnum_static_mask" },
-            { 0x1183, @"objects\weapons\pistol\magnum\magnum_v3\bitmaps\magnum_static_spec" },
+            { 0x1177, @"objects\weapons\pistol\magnum\magnum_damage\fp_magnum\fp_magnum_damage" },
+            { 0x1178, @"objects\weapons\pistol\magnum\magnum_damage\shaders\magnum_luminous" },
+            { 0x1179, @"objects\weapons\pistol\magnum\magnum_damage\shaders\magnum" },
+            { 0x117B, @"objects\weapons\pistol\magnum\magnum_power\fp_magnum\fp_magnum_power" },
+            { 0x117C, @"objects\weapons\pistol\magnum\magnum_power\shaders\magnum" },
+            { 0x117D, @"objects\weapons\pistol\magnum\magnum_power\shaders\magnum_static" },
+            { 0x117E, @"objects\weapons\pistol\magnum\magnum_power\bitmaps\magnum_control" },
+            { 0x117F, @"objects\weapons\pistol\magnum\magnum_power\bitmaps\magnum_mask" },
+            { 0x1180, @"objects\weapons\pistol\magnum\magnum_power\bitmaps\magnum_spec" },
+            { 0x1181, @"objects\weapons\pistol\magnum\magnum_power\bitmaps\magnum_static_control" },
+            { 0x1182, @"objects\weapons\pistol\magnum\magnum_power\bitmaps\magnum_static_mask" },
+            { 0x1183, @"objects\weapons\pistol\magnum\magnum_power\bitmaps\magnum_static_spec" },
             { 0x1185, @"objects\weapons\pistol\excavator\fp_excavator\fp_excavator" },
             { 0x1186, @"objects\weapons\pistol\excavator\shaders\excavator_metal" },
             { 0x1187, @"objects\weapons\pistol\excavator\bitmaps\excavator" },
@@ -4001,22 +4001,22 @@ namespace TagTool.MtnDewIt.Commands
             { 0x118B, @"shaders\shader_templates\_0_1_0_2_1_2_1_0_0_1_0_0" },
             { 0x118C, @"shaders\shader_templates\_0_1_0_2_1_2_1_0_0_1_0" },
             { 0x118D, @"shaders\shader_templates\_0_1_0_2_1_2_1_0_0_1_0" },
-            { 0x1192, @"objects\weapons\pistol\excavator\excavator_v1\bitmaps\excavator_bump" },
-            { 0x1193, @"objects\weapons\pistol\excavator\excavator_v1\bitmaps\excavator_illum" },
-            { 0x1198, @"objects\weapons\pistol\excavator\excavator_v3\fp_excavator\fp_excavator_v3" },
-            { 0x1199, @"objects\weapons\pistol\excavator\excavator_v3\shaders\excavator_metal" },
-            { 0x119A, @"objects\weapons\pistol\excavator\excavator_v3\shaders\excavator_blade" },
-            { 0x119B, @"objects\weapons\pistol\excavator\excavator_v3\bitmaps\excavator" },
-            { 0x119C, @"objects\weapons\pistol\excavator\excavator_v3\bitmaps\excavator_control" },
-            { 0x119D, @"objects\weapons\pistol\excavator\excavator_v3\bitmaps\excavator_mask" },
-            { 0x119E, @"objects\weapons\pistol\excavator\excavator_v3\bitmaps\excavator_spec" },
+            { 0x1192, @"objects\weapons\pistol\excavator\excavator_accuracy\bitmaps\excavator_bump" },
+            { 0x1193, @"objects\weapons\pistol\excavator\excavator_accuracy\bitmaps\excavator_illum" },
+            { 0x1198, @"objects\weapons\pistol\excavator\excavator_power\fp_excavator\fp_excavator_power" },
+            { 0x1199, @"objects\weapons\pistol\excavator\excavator_power\shaders\excavator_metal" },
+            { 0x119A, @"objects\weapons\pistol\excavator\excavator_power\shaders\excavator_blade" },
+            { 0x119B, @"objects\weapons\pistol\excavator\excavator_power\bitmaps\excavator" },
+            { 0x119C, @"objects\weapons\pistol\excavator\excavator_power\bitmaps\excavator_control" },
+            { 0x119D, @"objects\weapons\pistol\excavator\excavator_power\bitmaps\excavator_mask" },
+            { 0x119E, @"objects\weapons\pistol\excavator\excavator_power\bitmaps\excavator_spec" },
             { 0x119F, @"shaders\shader_templates\_8_1_0_3_1_2_1_0_0_1_0_0" },
             { 0x11A0, @"shaders\shader_templates\_8_1_0_3_1_2_1_0_0_1_0" },
             { 0x11A1, @"shaders\shader_templates\_8_1_0_3_1_2_1_0_0_1_0" },
-            { 0x11A2, @"objects\weapons\pistol\excavator\excavator_v3\bitmaps\excavator_blade" },
-            { 0x11A3, @"objects\weapons\pistol\excavator\excavator_v3\bitmaps\excavator_blade_control" },
-            { 0x11A4, @"objects\weapons\pistol\excavator\excavator_v3\bitmaps\excavator_blade_mask" },
-            { 0x11A5, @"objects\weapons\pistol\excavator\excavator_v3\bitmaps\excavator_blade_spec" },
+            { 0x11A2, @"objects\weapons\pistol\excavator\excavator_power\bitmaps\excavator_blade" },
+            { 0x11A3, @"objects\weapons\pistol\excavator\excavator_power\bitmaps\excavator_blade_control" },
+            { 0x11A4, @"objects\weapons\pistol\excavator\excavator_power\bitmaps\excavator_blade_mask" },
+            { 0x11A5, @"objects\weapons\pistol\excavator\excavator_power\bitmaps\excavator_blade_spec" },
             { 0x11A7, @"objects\weapons\pistol\plasma_pistol\fp_plasma_pistol\fp_plasma_pistol" },
             { 0x11A8, @"objects\weapons\pistol\plasma_pistol\shaders\plasma_pistol_gak" },
             { 0x11A9, @"objects\weapons\pistol\plasma_pistol\shaders\plasma_pistol_display" },
@@ -4056,38 +4056,38 @@ namespace TagTool.MtnDewIt.Commands
             { 0x11CB, @"shaders\shader_templates\_0_1_0_2_1_4_0_1_0_1_0_0" },
             { 0x11CC, @"shaders\shader_templates\_0_1_0_2_1_4_0_1_0_1_0" },
             { 0x11CD, @"shaders\shader_templates\_0_1_0_2_1_4_0_1_0_1_0" },
-            { 0x11CE, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v2\bitmaps\plasma_pistol_cube" },
+            { 0x11CE, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_damage\bitmaps\plasma_pistol_cube" },
             { 0x11CF, @"shaders\shader_templates\_11_1_0_2_1_4_0_0_0_1_0_0" },
             { 0x11D0, @"shaders\shader_templates\_11_1_0_2_1_4_0_0_0_1_0" },
             { 0x11D1, @"shaders\shader_templates\_11_1_0_2_1_4_0_0_0_1_0" },
             { 0x11D2, @"objects\weapons\pistol\plasma_pistol\bitmaps\plasma_pistol_cube_2" },
-            { 0x11D5, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v1\shaders\plasma_pistol_main" },
-            { 0x11D9, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v1\btimaps\plasma_pistol" },
-            { 0x11DA, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v1\btimaps\plasma_pistol_bump" },
-            { 0x11DB, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v1\btimaps\plasma_pistol_illum" },
+            { 0x11D5, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_rof\shaders\plasma_pistol_main" },
+            { 0x11D9, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_rof\btimaps\plasma_pistol" },
+            { 0x11DA, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_rof\btimaps\plasma_pistol_bump" },
+            { 0x11DB, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_rof\btimaps\plasma_pistol_illum" },
             { 0x11DC, @"shaders\shader_templates\_0_1_0_2_1_4_1_0_0_0_0_0" },
             { 0x11DD, @"shaders\shader_templates\_0_1_0_2_1_4_1_0_0_0_0" },
             { 0x11DE, @"shaders\shader_templates\_0_1_0_2_1_4_1_0_0_0_0" },
-            { 0x11E8, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v2\shaders\plasma_pistol_main" },
-            { 0x11E9, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v2\shaders\plasma_pistol_metal" },
-            { 0x11EC, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v2\bitmaps\pistol_plasma" },
-            { 0x11ED, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v2\bitmaps\pistol_plasma_bump" },
-            { 0x11EE, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v2\bitmaps\pistol_plasma_illum" },
+            { 0x11E8, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_damage\shaders\plasma_pistol_main" },
+            { 0x11E9, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_damage\shaders\plasma_pistol_metal" },
+            { 0x11EC, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_damage\bitmaps\pistol_plasma" },
+            { 0x11ED, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_damage\bitmaps\pistol_plasma_bump" },
+            { 0x11EE, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_damage\bitmaps\pistol_plasma_illum" },
             { 0x11EF, @"shaders\shader_templates\_0_1_0_0_1_4_1_0_0_0_0_0" },
             { 0x11F0, @"shaders\shader_templates\_0_1_0_0_1_4_1_0_0_0_0" },
             { 0x11F1, @"shaders\shader_templates\_0_1_0_0_1_4_1_0_0_0_0" },
             { 0x11F2, @"shaders\shader_templates\_0_1_0_0_1_4_0_0_0_0_0_0" },
             { 0x11F3, @"shaders\shader_templates\_0_1_0_0_1_4_0_0_0_0_0" },
             { 0x11F4, @"shaders\shader_templates\_0_1_0_0_1_4_0_0_0_0_0" },
-            { 0x11FA, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\fp_plasma_pistol\fp_plasma_pistol_v3" },
-            { 0x11FB, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\shaders\plasma_pistol_display" },
-            { 0x11FC, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\shaders\plasma_pistol_metal" },
-            { 0x11FD, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\shaders\plasma_pistol_metal_2" },
-            { 0x11FE, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\bitmaps\pistol_plasma_display" },
-            { 0x11FF, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\bitmaps\pistol_plasma_spec" },
-            { 0x1200, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\bitmaps\pistol_plasma_control" },
-            { 0x1201, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\bitmaps\pistol_plasma_spec_2" },
-            { 0x1202, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\bitmaps\pistol_plasma_control_2" },
+            { 0x11FA, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\fp_plasma_pistol\fp_plasma_pistol_power" },
+            { 0x11FB, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\shaders\plasma_pistol_display" },
+            { 0x11FC, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\shaders\plasma_pistol_metal" },
+            { 0x11FD, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\shaders\plasma_pistol_metal_2" },
+            { 0x11FE, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\bitmaps\pistol_plasma_display" },
+            { 0x11FF, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\bitmaps\pistol_plasma_spec" },
+            { 0x1200, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\bitmaps\pistol_plasma_control" },
+            { 0x1201, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\bitmaps\pistol_plasma_spec_2" },
+            { 0x1202, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\bitmaps\pistol_plasma_control_2" },
             { 0x1207, @"ui\halox\alert\alert_ingame_full" },
             { 0x1208, @"ui\halox\alert\alert_ingame_split" },
             { 0x1209, @"ui\halox\boot_betrayer\boot_betrayer" },
@@ -4821,27 +4821,27 @@ namespace TagTool.MtnDewIt.Commands
             { 0x157E, @"objects\weapons\pistol\magnum\magnum" },
             { 0x157F, @"objects\weapons\melee\energy_blade\energy_blade_useless" },
             { 0x1580, @"objects\weapons\rifle\dmr\dmr" },
-            { 0x1581, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\assault_rifle_v2" },
-            { 0x1582, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\assault_rifle_v3" },
-            { 0x1583, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\assault_rifle_v5" },
-            { 0x1584, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\assault_rifle_v6" },
-            { 0x1585, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\battle_rifle_v3" },
-            { 0x1586, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\battle_rifle_v4" },
-            { 0x1587, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\battle_rifle_v6" },
-            { 0x1588, @"objects\weapons\rifle\dmr\dmr_v2\dmr_v2" },
-            { 0x1589, @"objects\weapons\rifle\dmr\dmr_v3\dmr_v3" },
-            { 0x158A, @"objects\weapons\rifle\dmr\dmr_v4\dmr_v4" },
-            { 0x158B, @"objects\weapons\rifle\dmr\dmr_v6\dmr_v6" },
-            { 0x158C, @"objects\weapons\rifle\smg\smg_v1\smg_v1" },
-            { 0x158D, @"objects\weapons\rifle\smg\smg_v2\smg_v2" },
-            { 0x158E, @"objects\weapons\rifle\smg\smg_v4\smg_v4" },
-            { 0x158F, @"objects\weapons\rifle\smg\smg_v6\smg_v6" },
-            { 0x1590, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v6\plasma_rifle_v6" },
-            { 0x1591, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\covenant_carbine_v6" },
-            { 0x1592, @"objects\weapons\pistol\excavator\excavator_v3\excavator_v3" },
-            { 0x1593, @"objects\weapons\pistol\magnum\magnum_v2\magnum_v2" },
-            { 0x1594, @"objects\weapons\pistol\magnum\magnum_v3\magnum_v3" },
-            { 0x1595, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\plasma_pistol_v3" },
+            { 0x1581, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\assault_rifle_damage" },
+            { 0x1582, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\assault_rifle_rof" },
+            { 0x1583, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\assault_rifle_accuracy" },
+            { 0x1584, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\assault_rifle_power" },
+            { 0x1585, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\battle_rifle_ammo" },
+            { 0x1586, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\battle_rifle_damage" },
+            { 0x1587, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\battle_rifle_power" },
+            { 0x1588, @"objects\weapons\rifle\dmr\dmr_accuracy\dmr_accuracy" },
+            { 0x1589, @"objects\weapons\rifle\dmr\dmr_rof\dmr_rof" },
+            { 0x158A, @"objects\weapons\rifle\dmr\dmr_damage\dmr_damage" },
+            { 0x158B, @"objects\weapons\rifle\dmr\dmr_power\dmr_power" },
+            { 0x158C, @"objects\weapons\rifle\smg\smg_rof\smg_rof" },
+            { 0x158D, @"objects\weapons\rifle\smg\smg_accuracy\smg_accuracy" },
+            { 0x158E, @"objects\weapons\rifle\smg\smg_damage\smg_damage" },
+            { 0x158F, @"objects\weapons\rifle\smg\smg_power\smg_power" },
+            { 0x1590, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_power\plasma_rifle_power" },
+            { 0x1591, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\covenant_carbine_power" },
+            { 0x1592, @"objects\weapons\pistol\excavator\excavator_power\excavator_power" },
+            { 0x1593, @"objects\weapons\pistol\magnum\magnum_damage\magnum_damage" },
+            { 0x1594, @"objects\weapons\pistol\magnum\magnum_power\magnum_power" },
+            { 0x1595, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\plasma_pistol_power" },
             { 0x1596, @"objects\vehicles\mongoose\mongoose" },
             { 0x1598, @"objects\vehicles\hornet\hornet" },
             { 0x1599, @"objects\vehicles\warthog\warthog_snow" },
@@ -4873,15 +4873,15 @@ namespace TagTool.MtnDewIt.Commands
             { 0x15B6, @"objects\weapons\turret\machinegun_turret\machinegun_turret_integrated" },
             { 0x15B7, @"objects\weapons\turret\plasma_cannon\plasma_cannon_integrated" },
             { 0x15B8, @"objects\vehicles\warthog\turrets\gauss\weapon\gauss_turret" },
-            { 0x15BB, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\battle_rifle_v1" },
-            { 0x15BC, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\battle_rifle_v2" },
-            { 0x15BD, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\battle_rifle_v5" },
-            { 0x15BE, @"objects\weapons\rifle\dmr\dmr_v1\dmr_v1" },
-            { 0x15C0, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\covenant_carbine_v1" },
-            { 0x15C1, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\covenant_carbine_v2" },
-            { 0x15C2, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v3\covenant_carbine_v3" },
-            { 0x15C3, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v4\covenant_carbine_v4" },
-            { 0x15C4, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v5\covenant_carbine_v5" },
+            { 0x15BB, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\battle_rifle_rof" },
+            { 0x15BC, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\battle_rifle_accuracy" },
+            { 0x15BD, @"objects\weapons\rifle\battle_rifle\battle_rifle_range\battle_rifle_range" },
+            { 0x15BE, @"objects\weapons\rifle\dmr\dmr_ammo\dmr_ammo" },
+            { 0x15C0, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\covenant_carbine_rof" },
+            { 0x15C1, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\covenant_carbine_ammo" },
+            { 0x15C2, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\covenant_carbine_range" },
+            { 0x15C3, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage\covenant_carbine_damage" },
+            { 0x15C4, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_accuracy\covenant_carbine_accuracy" },
             { 0x15C8, @"objects\vehicles\banshee\weapon\banshee_bomb" },
             { 0x15C9, @"objects\weapons\support_high\rocket_launcher\projectiles\rocket" },
             { 0x15CA, @"objects\weapons\turret\missile_pod\projectiles\missile_pod_missile" },
@@ -7361,7 +7361,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x22F4, @"objects\weapons\lod\bitmaps\plasma_pistol" },
             { 0x22F5, @"objects\weapons\pistol\plasma_pistol\fx\particles\overheated_gas" },
             { 0x22F6, @"ui\chud\animations\crosshair_animations\plasma_pistol_crosshair" }, //unsure about this (tag is halo online specific)
-            { 0x22F7, @"ui\chud\bitmaps\plasma_pistol_v3_reticle" }, //unsure about this (tag is halo online specific)
+            { 0x22F7, @"ui\chud\bitmaps\plasma_pistol_power_reticle" }, //unsure about this (tag is halo online specific)
             { 0x22F8, @"ui\chud\animations\crosshair_animations\plasma_pistol_t" }, //unsure about this (tag is halo online specific)
             { 0x22F9, @"ui\chud\animations\crosshair_animations\plasma_pistol_se" }, //unsure about this (tag is halo online specific)
             { 0x22FA, @"ui\chud\animations\crosshair_animations\plasma_pistol_sw" }, //unsure about this (tag is halo online specific)
@@ -7398,279 +7398,279 @@ namespace TagTool.MtnDewIt.Commands
             { 0x231B, @"objects\weapons\melee\energy_blade\fp_energy_blade\cinematics\letterboxes\100ld_confront_truth\100ld_confront_truth" },
             { 0x231C, @"objects\weapons\melee\energy_blade\energy_blade" },
             { 0x231D, @"sound\weapons\energy_sword\energy_sword_drop" },
-            { 0x231E, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\assault_rifle_v2" },
-            { 0x231F, @"ui\chud\assault_rifle_v2" },
-            { 0x2320, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\projectiles\assault_rifle_v2_bullet" },
-            { 0x2321, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\fx\assault_rifle_v2_firing" }, //unsure about this (tag is halo online specific)
+            { 0x231E, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\assault_rifle_damage" },
+            { 0x231F, @"ui\chud\assault_rifle_damage" },
+            { 0x2320, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\projectiles\assault_rifle_damage_bullet" },
+            { 0x2321, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\fx\assault_rifle_damage_firing" }, //unsure about this (tag is halo online specific)
             { 0x2322, @"globals\damage_responses\trigger_fullauto_n2" }, //unsure about this (tag is halo online specific)
-            { 0x2323, @"sound\weapons\assault_rifle_v2\assault_rifle_v2_fire" }, //unsure about this (tag is halo online specific)
-            { 0x2324, @"sound\weapons\assault_rifle_v2\assault_rifle_v2_lod_near" }, //unsure about this (tag is halo online specific)
-            { 0x2325, @"sound\weapons\assault_rifle_v2\assault_rifle_v2_tails_int" }, //unsure about this (tag is halo online specific)
-            { 0x2326, @"sound\weapons\assault_rifle_v2\assault_rifle_v2_tails_ext" }, //unsure about this (tag is halo online specific)
-            { 0x2327, @"sound\weapons\assault_rifle_v2\assault_rifle_v2_lod_far" }, //unsure about this (tag is halo online specific)
-            { 0x2328, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\damage_effects\assault_rifle_v2_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x2329, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\assault_rifle_v2" }, //unsure about this (tag is halo online specific)
-            { 0x232A, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\assault_rifle_v2" }, //unsure about this (tag is halo online specific)
-            { 0x232B, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\assault_rifle_v2" }, //unsure about this (tag is halo online specific)
-            { 0x232C, @"objects\weapons\lod\lod_assault_rifle\lod_assault_rifle_v2" }, //unsure about this (tag is halo online specific)
-            { 0x232D, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\assault_rifle_metal_3p" }, //unsure about this (tag is halo online specific)
-            { 0x232E, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\compass_3p" }, //unsure about this (tag is halo online specific)
-            { 0x232F, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
-            { 0x2330, @"objects\weapons\rifle\assault_rifle\assault_rifle_v2\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
-            { 0x2331, @"objects\weapons\lod\shaders\lod_assault_rifle_v1" }, //unsure about this (tag is halo online specific)
-            { 0x2332, @"objects\weapons\lod\shaders\lod_assault_rifle_v2" }, //unsure about this (tag is halo online specific)
-            { 0x2333, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\assault_rifle_v3" },
-            { 0x2334, @"ui\chud\assault_rifle_v3" },
-            { 0x2335, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\projectiles\assault_rifle_v3_bullet" },
-            { 0x2336, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\fx\assault_rifle_v3_firing" }, //unsure about this (tag is halo online specific)
+            { 0x2323, @"sound\weapons\assault_rifle_damage\assault_rifle_damage_fire" }, //unsure about this (tag is halo online specific)
+            { 0x2324, @"sound\weapons\assault_rifle_damage\assault_rifle_damage_lod_near" }, //unsure about this (tag is halo online specific)
+            { 0x2325, @"sound\weapons\assault_rifle_damage\assault_rifle_damage_tails_int" }, //unsure about this (tag is halo online specific)
+            { 0x2326, @"sound\weapons\assault_rifle_damage\assault_rifle_damage_tails_ext" }, //unsure about this (tag is halo online specific)
+            { 0x2327, @"sound\weapons\assault_rifle_damage\assault_rifle_damage_lod_far" }, //unsure about this (tag is halo online specific)
+            { 0x2328, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\damage_effects\assault_rifle_damage_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x2329, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\assault_rifle_damage" }, //unsure about this (tag is halo online specific)
+            { 0x232A, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\assault_rifle_damage" }, //unsure about this (tag is halo online specific)
+            { 0x232B, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\assault_rifle_damage" }, //unsure about this (tag is halo online specific)
+            { 0x232C, @"objects\weapons\lod\lod_assault_rifle\lod_assault_rifle_damage" }, //unsure about this (tag is halo online specific)
+            { 0x232D, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\shaders\assault_rifle_metal_3p" }, //unsure about this (tag is halo online specific)
+            { 0x232E, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\shaders\compass_3p" }, //unsure about this (tag is halo online specific)
+            { 0x232F, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x2330, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
+            { 0x2331, @"objects\weapons\lod\shaders\lod_assault_rifle_ammo" }, //unsure about this (tag is halo online specific)
+            { 0x2332, @"objects\weapons\lod\shaders\lod_assault_rifle_damage" }, //unsure about this (tag is halo online specific)
+            { 0x2333, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\assault_rifle_rof" },
+            { 0x2334, @"ui\chud\assault_rifle_rof" },
+            { 0x2335, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\projectiles\assault_rifle_rof_bullet" },
+            { 0x2336, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\fx\assault_rifle_rof_firing" }, //unsure about this (tag is halo online specific)
             { 0x2337, @"globals\damage_responses\trigger_fullauto_n3" }, //unsure about this (tag is halo online specific)
-            { 0x2338, @"sound\weapons\assault_rifle_v3\assault_rifle_v3_fire" }, //unsure about this (tag is halo online specific)
-            { 0x2339, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\damage_effects\assault_rifle_v3_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x233A, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\assault_rifle_v3" }, //unsure about this (tag is halo online specific)
-            { 0x233B, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\assault_rifle_v3" }, //unsure about this (tag is halo online specific)
-            { 0x233C, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\assault_rifle_v3" }, //unsure about this (tag is halo online specific)
-            { 0x233D, @"objects\weapons\lod\lod_assault_rifle\lod_assault_rifle_v3" }, //unsure about this (tag is halo online specific)
-            { 0x233E, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
-            { 0x233F, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
-            { 0x2340, @"objects\weapons\rifle\assault_rifle\assault_rifle_v3\shaders\compass_3p" }, //unsure about this (tag is halo online specific)
-            { 0x2341, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\assault_rifle_v5" },
-            { 0x2342, @"ui\chud\assault_rifle_v5" },
-            { 0x2343, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\projectiles\assault_rifle_v5_bullet" },
-            { 0x2344, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\fx\assault_rifle_v5_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2345, @"sound\weapons\assault_rifle_v5\assault_rifle_v5_fire" }, //unsure about this (tag is halo online specific)
-            { 0x2346, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\damage_effects\assault_rifle_v5_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x2347, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\assault_rifle_v5" }, //unsure about this (tag is halo online specific)
-            { 0x2348, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\assault_rifle_v5" }, //unsure about this (tag is halo online specific)
-            { 0x2349, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\assault_rifle_v5" }, //unsure about this (tag is halo online specific)
-            { 0x234A, @"objects\weapons\lod\lod_assault_rifle\lod_assault_rifle_v5" }, //unsure about this (tag is halo online specific)
-            { 0x234B, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
-            { 0x234C, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
-            { 0x234D, @"objects\weapons\rifle\assault_rifle\assault_rifle_v5\shaders\compass_3p" }, //unsure about this (tag is halo online specific)
-            { 0x234E, @"objects\weapons\lod\shaders\lod_assault_rifle_v5" }, //unsure about this (tag is halo online specific)
+            { 0x2338, @"sound\weapons\assault_rifle_rof\assault_rifle_rof_fire" }, //unsure about this (tag is halo online specific)
+            { 0x2339, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\damage_effects\assault_rifle_rof_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x233A, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\assault_rifle_rof" }, //unsure about this (tag is halo online specific)
+            { 0x233B, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\assault_rifle_rof" }, //unsure about this (tag is halo online specific)
+            { 0x233C, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\assault_rifle_rof" }, //unsure about this (tag is halo online specific)
+            { 0x233D, @"objects\weapons\lod\lod_assault_rifle\lod_assault_rifle_rof" }, //unsure about this (tag is halo online specific)
+            { 0x233E, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x233F, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
+            { 0x2340, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\shaders\compass_3p" }, //unsure about this (tag is halo online specific)
+            { 0x2341, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\assault_rifle_accuracy" },
+            { 0x2342, @"ui\chud\assault_rifle_accuracy" },
+            { 0x2343, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\projectiles\assault_rifle_accuracy_bullet" },
+            { 0x2344, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\fx\assault_rifle_accuracy_firing" }, //unsure about this (tag is halo online specific)
+            { 0x2345, @"sound\weapons\assault_rifle_accuracy\assault_rifle_accuracy_fire" }, //unsure about this (tag is halo online specific)
+            { 0x2346, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\damage_effects\assault_rifle_accuracy_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x2347, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\assault_rifle_accuracy" }, //unsure about this (tag is halo online specific)
+            { 0x2348, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\assault_rifle_accuracy" }, //unsure about this (tag is halo online specific)
+            { 0x2349, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\assault_rifle_accuracy" }, //unsure about this (tag is halo online specific)
+            { 0x234A, @"objects\weapons\lod\lod_assault_rifle\lod_assault_rifle_accuracy" }, //unsure about this (tag is halo online specific)
+            { 0x234B, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x234C, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
+            { 0x234D, @"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\shaders\compass_3p" }, //unsure about this (tag is halo online specific)
+            { 0x234E, @"objects\weapons\lod\shaders\lod_assault_rifle_accuracy" }, //unsure about this (tag is halo online specific)
             { 0x234F, @"shaders\shader_templates\_0_0_0_0_1_0_0_0_0_0_0_0" },
             { 0x2350, @"shaders\shader_templates\_0_0_0_0_1_0_0_0_0_0_0" },
             { 0x2351, @"shaders\shader_templates\_0_0_0_0_1_0_0_0_0_0_0" },
-            { 0x2352, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\assault_rifle_v6" },
-            { 0x2353, @"ui\chud\assault_rifle_v6" },
-            { 0x2354, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\projectiles\assault_rifle_v6_bullet" },
-            { 0x2355, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\fx\assault_rifle_v6_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2356, @"sound\weapons\assault_rifle_v6\assault_rifle_v6_fire" }, //unsure about this (tag is halo online specific)
-            { 0x2357, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\damage_effects\assault_rifle_v6_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x2358, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\assault_rifle_v6" }, //unsure about this (tag is halo online specific)
-            { 0x2359, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\assault_rifle_v6" }, //unsure about this (tag is halo online specific)
-            { 0x235A, @"objects\weapons\rifle\assault_rifle\assault_rifle_v6\assault_rifle_v6" }, //unsure about this (tag is halo online specific)
-            { 0x235B, @"objects\weapons\lod\lod_assault_rifle\lod_assault_rifle_v6" }, //unsure about this (tag is halo online specific)
-            { 0x235C, @"objects\weapons\lod\shaders\lod_assault_rifle_v6" }, //unsure about this (tag is halo online specific)
+            { 0x2352, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\assault_rifle_power" },
+            { 0x2353, @"ui\chud\assault_rifle_power" },
+            { 0x2354, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\projectiles\assault_rifle_power_bullet" },
+            { 0x2355, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\fx\assault_rifle_power_firing" }, //unsure about this (tag is halo online specific)
+            { 0x2356, @"sound\weapons\assault_rifle_power\assault_rifle_power_fire" }, //unsure about this (tag is halo online specific)
+            { 0x2357, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\damage_effects\assault_rifle_power_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x2358, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\assault_rifle_power" }, //unsure about this (tag is halo online specific)
+            { 0x2359, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\assault_rifle_power" }, //unsure about this (tag is halo online specific)
+            { 0x235A, @"objects\weapons\rifle\assault_rifle\assault_rifle_power\assault_rifle_power" }, //unsure about this (tag is halo online specific)
+            { 0x235B, @"objects\weapons\lod\lod_assault_rifle\lod_assault_rifle_power" }, //unsure about this (tag is halo online specific)
+            { 0x235C, @"objects\weapons\lod\shaders\lod_assault_rifle_power" }, //unsure about this (tag is halo online specific)
             { 0x235D, @"shaders\shader_templates\_8_2_0_3_1_4_0_0_0_1_0_0" },
             { 0x235E, @"shaders\shader_templates\_8_2_0_3_1_4_0_0_0_1_0" },
             { 0x235F, @"shaders\shader_templates\_8_2_0_3_1_4_0_0_0_1_0" },
-            { 0x2360, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\battle_rifle_v3" },
-            { 0x2361, @"ui\chud\battle_rifle_v3" },
-            { 0x2362, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\projectiles\battle_rifle_v3_bullet" },
-            { 0x2363, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\fx\battle_rifle_v3_firing" }, //unsure about this (tag is halo online specific)
+            { 0x2360, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\battle_rifle_ammo" },
+            { 0x2361, @"ui\chud\battle_rifle_ammo" },
+            { 0x2362, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\projectiles\battle_rifle_ammo_bullet" },
+            { 0x2363, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\fx\battle_rifle_ammo_firing" }, //unsure about this (tag is halo online specific)
             { 0x2364, @"sound\weapons\battle_rifle\br_variant_lod_far" }, //unsure about this (tag is halo online specific)
             { 0x2365, @"sound\weapons\battle_rifle\fire_ammo_burst_ho" },
             { 0x2366, @"sound\weapons\battle_rifle\br_variant_fire" }, //unsure about this (tag is halo online specific)
-            { 0x2367, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\damage_effects\battle_rifle_v3_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x2368, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\battle_rifle_v3" }, //unsure about this (tag is halo online specific)
-            { 0x2369, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\battle_rifle_v3" }, //unsure about this (tag is halo online specific)
-            { 0x236A, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\battle_rifle_v3" }, //unsure about this (tag is halo online specific)
-            { 0x236B, @"objects\weapons\lod\lod_battle_rifle\lod_battle_rifle_v3" }, //unsure about this (tag is halo online specific)
-            { 0x236C, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\shaders\battle_rifle_tens_3p" }, //unsure about this (tag is halo online specific)
-            { 0x236D, @"objects\weapons\rifle\battle_rifle\battle_rifle_v3\shaders\battle_rifle_ones_3p" }, //unsure about this (tag is halo online specific)
-            { 0x236E, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\battle_rifle_v4" },
-            { 0x236F, @"ui\chud\battle_rifle_v4" },
-            { 0x2370, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\projectiles\battle_rifle_v4_bullet" },
-            { 0x2371, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\fx\battle_rifle_v4_firing" }, //unsure about this (tag is halo online specific)
+            { 0x2367, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\damage_effects\battle_rifle_ammo_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x2368, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\battle_rifle_ammo" }, //unsure about this (tag is halo online specific)
+            { 0x2369, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\battle_rifle_ammo" }, //unsure about this (tag is halo online specific)
+            { 0x236A, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\battle_rifle_ammo" }, //unsure about this (tag is halo online specific)
+            { 0x236B, @"objects\weapons\lod\lod_battle_rifle\lod_battle_rifle_ammo" }, //unsure about this (tag is halo online specific)
+            { 0x236C, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\shaders\battle_rifle_tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x236D, @"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\shaders\battle_rifle_ones_3p" }, //unsure about this (tag is halo online specific)
+            { 0x236E, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\battle_rifle_damage" },
+            { 0x236F, @"ui\chud\battle_rifle_damage" },
+            { 0x2370, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\projectiles\battle_rifle_damage_bullet" },
+            { 0x2371, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\fx\battle_rifle_damage_firing" }, //unsure about this (tag is halo online specific)
             { 0x2372, @"globals\damage_responses\trigger_fullauto_n4" }, //unsure about this (tag is halo online specific)
-            { 0x2373, @"sound\weapons\battle_rifle_v4\battle_rifle_v4_fire" }, //unsure about this (tag is halo online specific)
-            { 0x2374, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\damage_effects\battle_rifle_v4_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x2375, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\battle_rifle_v4" }, //unsure about this (tag is halo online specific)
-            { 0x2376, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\battle_rifle_v4" }, //unsure about this (tag is halo online specific)
-            { 0x2377, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\battle_rifle_v4" }, //unsure about this (tag is halo online specific)
-            { 0x2378, @"objects\weapons\lod\lod_battle_rifle\lod_battle_rifle_v4" }, //unsure about this (tag is halo online specific)
-            { 0x2379, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\shaders\battle_rifle_tens_3p" }, //unsure about this (tag is halo online specific)
-            { 0x237A, @"objects\weapons\rifle\battle_rifle\battle_rifle_v4\shaders\battle_rifle_ones_3p" }, //unsure about this (tag is halo online specific)
-            { 0x237B, @"objects\weapons\lod\shaders\lod_battle_rifle_v4" }, //unsure about this (tag is halo online specific)
-            { 0x237C, @"objects\weapons\lod\shaders\lod_battle_rifle_v1" }, //unsure about this (tag is halo online specific)
+            { 0x2373, @"sound\weapons\battle_rifle_damage\battle_rifle_damage_fire" }, //unsure about this (tag is halo online specific)
+            { 0x2374, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\damage_effects\battle_rifle_damage_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x2375, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\battle_rifle_damage" }, //unsure about this (tag is halo online specific)
+            { 0x2376, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\battle_rifle_damage" }, //unsure about this (tag is halo online specific)
+            { 0x2377, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\battle_rifle_damage" }, //unsure about this (tag is halo online specific)
+            { 0x2378, @"objects\weapons\lod\lod_battle_rifle\lod_battle_rifle_damage" }, //unsure about this (tag is halo online specific)
+            { 0x2379, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\shaders\battle_rifle_tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x237A, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\shaders\battle_rifle_ones_3p" }, //unsure about this (tag is halo online specific)
+            { 0x237B, @"objects\weapons\lod\shaders\lod_battle_rifle_damage" }, //unsure about this (tag is halo online specific)
+            { 0x237C, @"objects\weapons\lod\shaders\lod_battle_rifle_rof" }, //unsure about this (tag is halo online specific)
             { 0x237D, @"shaders\shader_templates\_3_3_0_3_1_2_0_0_0_1_0_0" },
             { 0x237E, @"shaders\shader_templates\_3_3_0_3_1_2_0_0_0_1_0" },
             { 0x237F, @"shaders\shader_templates\_3_3_0_3_1_2_0_0_0_1_0" },
-            { 0x2380, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\battle_rifle_v6" },
-            { 0x2381, @"ui\chud\battle_rifle_v6" },
-            { 0x2382, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\projectiles\battle_rifle_v6_bullet" },
-            { 0x2383, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\fx\battle_rifle_v6_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2384, @"sound\weapons\battle_rifle_v6\battle_rifle_v6_fire" }, //unsure about this (tag is halo online specific)
-            { 0x2385, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\damage_effects\battle_rifle_v6_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x2386, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\battle_rifle_v6" }, //unsure about this (tag is halo online specific)
-            { 0x2387, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\battle_rifle_v6" }, //unsure about this (tag is halo online specific)
-            { 0x2388, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\battle_rifle_v6" }, //unsure about this (tag is halo online specific)
-            { 0x2389, @"objects\weapons\lod\lod_battle_rifle\lod_battle_rifle_v6" }, //unsure about this (tag is halo online specific)
-            { 0x238A, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\shaders\battle_rifle_tens_3p" }, //unsure about this (tag is halo online specific)
-            { 0x238B, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\shaders\battle_rifle_ones_3p" }, //unsure about this (tag is halo online specific)
-            { 0x238C, @"objects\weapons\rifle\battle_rifle\battle_rifle_v6\shaders\battle_rifle_scope_3p" }, //unsure about this (tag is halo online specific)
+            { 0x2380, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\battle_rifle_power" },
+            { 0x2381, @"ui\chud\battle_rifle_power" },
+            { 0x2382, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\projectiles\battle_rifle_power_bullet" },
+            { 0x2383, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\fx\battle_rifle_power_firing" }, //unsure about this (tag is halo online specific)
+            { 0x2384, @"sound\weapons\battle_rifle_power\battle_rifle_power_fire" }, //unsure about this (tag is halo online specific)
+            { 0x2385, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\damage_effects\battle_rifle_power_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x2386, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\battle_rifle_power" }, //unsure about this (tag is halo online specific)
+            { 0x2387, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\battle_rifle_power" }, //unsure about this (tag is halo online specific)
+            { 0x2388, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\battle_rifle_power" }, //unsure about this (tag is halo online specific)
+            { 0x2389, @"objects\weapons\lod\lod_battle_rifle\lod_battle_rifle_power" }, //unsure about this (tag is halo online specific)
+            { 0x238A, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\shaders\battle_rifle_tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x238B, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\shaders\battle_rifle_ones_3p" }, //unsure about this (tag is halo online specific)
+            { 0x238C, @"objects\weapons\rifle\battle_rifle\battle_rifle_power\shaders\battle_rifle_scope_3p" }, //unsure about this (tag is halo online specific)
             { 0x238D, @"shaders\shader_templates\_2_0_0_3_5_2_1_0_0_1_0_0" },
             { 0x238E, @"shaders\shader_templates\_2_0_0_3_5_2_1_0_0_1_0" },
             { 0x238F, @"shaders\shader_templates\_2_0_0_3_5_2_1_0_0_1_0" },
-            { 0x2390, @"objects\weapons\lod\shaders\lod_battle_rifle_v6" }, //unsure about this (tag is halo online specific)
-            { 0x2391, @"objects\weapons\rifle\dmr\dmr_v2\dmr_v2" },
-            { 0x2392, @"ui\chud\dmr_v2" },
-            { 0x2393, @"objects\weapons\rifle\dmr\dmr_v2\projectiles\dmr_v2_bullet" },
-            { 0x2394, @"objects\weapons\rifle\dmr\dmr_v2\fx\dmr_v2_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2395, @"sound\weapons\dmr_v2\dmr_v2_fire" }, //unsure about this (tag is halo online specific)
-            { 0x2396, @"sound\weapons\dmr_v2\dmr_v2_tails_int" }, //unsure about this (tag is halo online specific)
-            { 0x2397, @"sound\weapons\dmr_v2\dmr_v2_tails_ext" }, //unsure about this (tag is halo online specific)
-            { 0x2398, @"sound\weapons\dmr_v2\dmr_v2_fire_lod_med" }, //unsure about this (tag is halo online specific)
-            { 0x2399, @"objects\weapons\rifle\dmr\dmr_v2\damage_effects\dmr_v2_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x239A, @"objects\weapons\rifle\dmr\dmr_v2\dmr_v2" }, //unsure about this (tag is halo online specific)
-            { 0x239B, @"objects\weapons\rifle\dmr\dmr_v2\dmr_v2" }, //unsure about this (tag is halo online specific)
-            { 0x239C, @"objects\weapons\rifle\dmr\dmr_v2\dmr_v2" }, //unsure about this (tag is halo online specific)
-            { 0x239D, @"objects\weapons\lod\lod_dmr\lod_dmr_v2" }, //unsure about this (tag is halo online specific)
-            { 0x239E, @"objects\weapons\rifle\dmr\dmr_v2\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
-            { 0x239F, @"objects\weapons\rifle\dmr\dmr_v2\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
-            { 0x23A0, @"objects\weapons\lod\shaders\lod_dmr_v2" }, //unsure about this (tag is halo online specific)
+            { 0x2390, @"objects\weapons\lod\shaders\lod_battle_rifle_power" }, //unsure about this (tag is halo online specific)
+            { 0x2391, @"objects\weapons\rifle\dmr\dmr_accuracy\dmr_accuracy" },
+            { 0x2392, @"ui\chud\dmr_accuracy" },
+            { 0x2393, @"objects\weapons\rifle\dmr\dmr_accuracy\projectiles\dmr_accuracy_bullet" },
+            { 0x2394, @"objects\weapons\rifle\dmr\dmr_accuracy\fx\dmr_accuracy_firing" }, //unsure about this (tag is halo online specific)
+            { 0x2395, @"sound\weapons\dmr_accuracy\dmr_accuracy_fire" }, //unsure about this (tag is halo online specific)
+            { 0x2396, @"sound\weapons\dmr_accuracy\dmr_accuracy_tails_int" }, //unsure about this (tag is halo online specific)
+            { 0x2397, @"sound\weapons\dmr_accuracy\dmr_accuracy_tails_ext" }, //unsure about this (tag is halo online specific)
+            { 0x2398, @"sound\weapons\dmr_accuracy\dmr_accuracy_fire_lod_med" }, //unsure about this (tag is halo online specific)
+            { 0x2399, @"objects\weapons\rifle\dmr\dmr_accuracy\damage_effects\dmr_accuracy_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x239A, @"objects\weapons\rifle\dmr\dmr_accuracy\dmr_accuracy" }, //unsure about this (tag is halo online specific)
+            { 0x239B, @"objects\weapons\rifle\dmr\dmr_accuracy\dmr_accuracy" }, //unsure about this (tag is halo online specific)
+            { 0x239C, @"objects\weapons\rifle\dmr\dmr_accuracy\dmr_accuracy" }, //unsure about this (tag is halo online specific)
+            { 0x239D, @"objects\weapons\lod\lod_dmr\lod_dmr_accuracy" }, //unsure about this (tag is halo online specific)
+            { 0x239E, @"objects\weapons\rifle\dmr\dmr_accuracy\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x239F, @"objects\weapons\rifle\dmr\dmr_accuracy\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
+            { 0x23A0, @"objects\weapons\lod\shaders\lod_dmr_accuracy" }, //unsure about this (tag is halo online specific)
             { 0x23A1, @"shaders\shader_templates\_0_3_0_3_1_4_0_0_0_0_0_0" },
             { 0x23A2, @"shaders\shader_templates\_0_3_0_3_1_4_0_0_0_0_0" },
             { 0x23A3, @"shaders\shader_templates\_0_3_0_3_1_4_0_0_0_0_0" },
-            { 0x23A4, @"objects\weapons\rifle\dmr\dmr_v3\dmr_v3" },
-            { 0x23A5, @"ui\chud\dmr_v3" },
-            { 0x23A6, @"objects\weapons\rifle\dmr\dmr_v3\projectiles\dmr_v3_bullet" },
-            { 0x23A7, @"objects\weapons\rifle\dmr\dmr_v3\fx\dmr_v3_firing" }, //unsure about this (tag is halo online specific)
-            { 0x23A8, @"sound\weapons\dmr_v3\dmr_v3_fire" }, //unsure about this (tag is halo online specific)
-            { 0x23A9, @"objects\weapons\rifle\dmr\dmr_v3\damage_effects\dmr_v3_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x23AA, @"objects\weapons\rifle\dmr\dmr_v3\dmr_v3" }, //unsure about this (tag is halo online specific)
-            { 0x23AB, @"objects\weapons\rifle\dmr\dmr_v3\dmr_v3" }, //unsure about this (tag is halo online specific)
-            { 0x23AC, @"objects\weapons\rifle\dmr\dmr_v3\dmr_v3" }, //unsure about this (tag is halo online specific)
-            { 0x23AD, @"objects\weapons\lod\lod_dmr\lod_dmr_v3" }, //unsure about this (tag is halo online specific)
-            { 0x23AE, @"objects\weapons\rifle\dmr\dmr_v3\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
-            { 0x23AF, @"objects\weapons\rifle\dmr\dmr_v3\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
-            { 0x23B0, @"objects\weapons\rifle\dmr\dmr_v4\dmr_v4" },
-            { 0x23B1, @"ui\chud\dmr_v4" },
-            { 0x23B2, @"objects\weapons\rifle\dmr\dmr_v4\projectiles\dmr_v4_bullet" },
-            { 0x23B3, @"objects\weapons\rifle\dmr\dmr_v4\fx\dmr_v4_firing" }, //unsure about this (tag is halo online specific)
-            { 0x23B4, @"sound\weapons\dmr_v4\dmr_v4_fire" }, //unsure about this (tag is halo online specific)
-            { 0x23B5, @"sound\weapons\dmr_v4\dmr_v4_tails_ext" }, //unsure about this (tag is halo online specific)
-            { 0x23B6, @"sound\weapons\dmr_v4\dmr_v4_tails_int" }, //unsure about this (tag is halo online specific)
-            { 0x23B7, @"sound\weapons\dmr_v4\dmr_v4_fire_lod_med" }, //unsure about this (tag is halo online specific)
-            { 0x23B8, @"objects\weapons\rifle\dmr\dmr_v4\damage_effects\dmr_v4_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x23B9, @"objects\weapons\rifle\dmr\dmr_v4\dmr_v4" }, //unsure about this (tag is halo online specific)
-            { 0x23BA, @"objects\weapons\rifle\dmr\dmr_v4\dmr_v4" }, //unsure about this (tag is halo online specific)
-            { 0x23BB, @"objects\weapons\rifle\dmr\dmr_v4\dmr_v4" }, //unsure about this (tag is halo online specific)
-            { 0x23BC, @"objects\weapons\lod\lod_dmr\lod_dmr_v4" }, //unsure about this (tag is halo online specific)
-            { 0x23BD, @"objects\weapons\rifle\dmr\dmr_v4\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
-            { 0x23BE, @"objects\weapons\rifle\dmr\dmr_v4\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
-            { 0x23BF, @"objects\weapons\rifle\dmr\dmr_v6\dmr_v6" },
-            { 0x23C0, @"ui\chud\dmr_v6" },
-            { 0x23C1, @"objects\weapons\rifle\dmr\dmr_v6\projectiles\dmr_v6_bullet" },
-            { 0x23C2, @"objects\weapons\rifle\dmr\dmr_v6\fx\dmr_v6_firing" }, //unsure about this (tag is halo online specific)
-            { 0x23C3, @"sound\weapons\dmr_v6\dmr_v6_fire" }, //unsure about this (tag is halo online specific)
-            { 0x23C4, @"objects\weapons\rifle\dmr\dmr_v6\damage_effects\dmr_v6_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x23C5, @"objects\weapons\rifle\dmr\dmr_v6\dmr_v6" }, //unsure about this (tag is halo online specific)
-            { 0x23C6, @"objects\weapons\rifle\dmr\dmr_v6\dmr_v6" }, //unsure about this (tag is halo online specific)
-            { 0x23C7, @"objects\weapons\rifle\dmr\dmr_v6\dmr_v6" }, //unsure about this (tag is halo online specific)
-            { 0x23C8, @"objects\weapons\lod\lod_dmr\lod_dmr_v6" }, //unsure about this (tag is halo online specific)
-            { 0x23C9, @"objects\weapons\rifle\dmr\dmr_v6\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
-            { 0x23CA, @"objects\weapons\lod\shaders\lod_dmr_v6" }, //unsure about this (tag is halo online specific)
-            { 0x23CB, @"objects\weapons\rifle\smg\smg_v1\smg_v1" },
-            { 0x23CC, @"ui\chud\smg_v1" },
-            { 0x23CD, @"objects\weapons\rifle\smg\smg_v1\projectiles\smg_v1_bullet" },
-            { 0x23CE, @"objects\weapons\rifle\smg\smg_v1\fx\smg_v1_firing" }, //unsure about this (tag is halo online specific)
-            { 0x23CF, @"sound\weapons\smg_v1\fire" },
-            { 0x23D0, @"objects\weapons\rifle\smg\smg_v1\damage_effects\smg_v1_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x23D1, @"objects\weapons\rifle\smg\smg_v1\smg_v1" }, //unsure about this (tag is halo online specific)
-            { 0x23D2, @"objects\weapons\rifle\smg\smg_v1\smg_v1" }, //unsure about this (tag is halo online specific)
-            { 0x23D3, @"objects\weapons\rifle\smg\smg_v1\smg_v1" }, //unsure about this (tag is halo online specific)
-            { 0x23D4, @"objects\weapons\rifle\smg\smg_v2\smg_v2" },
+            { 0x23A4, @"objects\weapons\rifle\dmr\dmr_rof\dmr_rof" },
+            { 0x23A5, @"ui\chud\dmr_rof" },
+            { 0x23A6, @"objects\weapons\rifle\dmr\dmr_rof\projectiles\dmr_rof_bullet" },
+            { 0x23A7, @"objects\weapons\rifle\dmr\dmr_rof\fx\dmr_rof_firing" }, //unsure about this (tag is halo online specific)
+            { 0x23A8, @"sound\weapons\dmr_rof\dmr_rof_fire" }, //unsure about this (tag is halo online specific)
+            { 0x23A9, @"objects\weapons\rifle\dmr\dmr_rof\damage_effects\dmr_rof_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x23AA, @"objects\weapons\rifle\dmr\dmr_rof\dmr_rof" }, //unsure about this (tag is halo online specific)
+            { 0x23AB, @"objects\weapons\rifle\dmr\dmr_rof\dmr_rof" }, //unsure about this (tag is halo online specific)
+            { 0x23AC, @"objects\weapons\rifle\dmr\dmr_rof\dmr_rof" }, //unsure about this (tag is halo online specific)
+            { 0x23AD, @"objects\weapons\lod\lod_dmr\lod_dmr_rof" }, //unsure about this (tag is halo online specific)
+            { 0x23AE, @"objects\weapons\rifle\dmr\dmr_rof\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x23AF, @"objects\weapons\rifle\dmr\dmr_rof\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
+            { 0x23B0, @"objects\weapons\rifle\dmr\dmr_damage\dmr_damage" },
+            { 0x23B1, @"ui\chud\dmr_damage" },
+            { 0x23B2, @"objects\weapons\rifle\dmr\dmr_damage\projectiles\dmr_damage_bullet" },
+            { 0x23B3, @"objects\weapons\rifle\dmr\dmr_damage\fx\dmr_damage_firing" }, //unsure about this (tag is halo online specific)
+            { 0x23B4, @"sound\weapons\dmr_damage\dmr_damage_fire" }, //unsure about this (tag is halo online specific)
+            { 0x23B5, @"sound\weapons\dmr_damage\dmr_damage_tails_ext" }, //unsure about this (tag is halo online specific)
+            { 0x23B6, @"sound\weapons\dmr_damage\dmr_damage_tails_int" }, //unsure about this (tag is halo online specific)
+            { 0x23B7, @"sound\weapons\dmr_damage\dmr_damage_fire_lod_med" }, //unsure about this (tag is halo online specific)
+            { 0x23B8, @"objects\weapons\rifle\dmr\dmr_damage\damage_effects\dmr_damage_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x23B9, @"objects\weapons\rifle\dmr\dmr_damage\dmr_damage" }, //unsure about this (tag is halo online specific)
+            { 0x23BA, @"objects\weapons\rifle\dmr\dmr_damage\dmr_damage" }, //unsure about this (tag is halo online specific)
+            { 0x23BB, @"objects\weapons\rifle\dmr\dmr_damage\dmr_damage" }, //unsure about this (tag is halo online specific)
+            { 0x23BC, @"objects\weapons\lod\lod_dmr\lod_dmr_damage" }, //unsure about this (tag is halo online specific)
+            { 0x23BD, @"objects\weapons\rifle\dmr\dmr_damage\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x23BE, @"objects\weapons\rifle\dmr\dmr_damage\shaders\ones_3p" }, //unsure about this (tag is halo online specific)
+            { 0x23BF, @"objects\weapons\rifle\dmr\dmr_power\dmr_power" },
+            { 0x23C0, @"ui\chud\dmr_power" },
+            { 0x23C1, @"objects\weapons\rifle\dmr\dmr_power\projectiles\dmr_power_bullet" },
+            { 0x23C2, @"objects\weapons\rifle\dmr\dmr_power\fx\dmr_power_firing" }, //unsure about this (tag is halo online specific)
+            { 0x23C3, @"sound\weapons\dmr_power\dmr_power_fire" }, //unsure about this (tag is halo online specific)
+            { 0x23C4, @"objects\weapons\rifle\dmr\dmr_power\damage_effects\dmr_power_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x23C5, @"objects\weapons\rifle\dmr\dmr_power\dmr_power" }, //unsure about this (tag is halo online specific)
+            { 0x23C6, @"objects\weapons\rifle\dmr\dmr_power\dmr_power" }, //unsure about this (tag is halo online specific)
+            { 0x23C7, @"objects\weapons\rifle\dmr\dmr_power\dmr_power" }, //unsure about this (tag is halo online specific)
+            { 0x23C8, @"objects\weapons\lod\lod_dmr\lod_dmr_power" }, //unsure about this (tag is halo online specific)
+            { 0x23C9, @"objects\weapons\rifle\dmr\dmr_power\shaders\tens_3p" }, //unsure about this (tag is halo online specific)
+            { 0x23CA, @"objects\weapons\lod\shaders\lod_dmr_power" }, //unsure about this (tag is halo online specific)
+            { 0x23CB, @"objects\weapons\rifle\smg\smg_rof\smg_rof" },
+            { 0x23CC, @"ui\chud\smg_rof" },
+            { 0x23CD, @"objects\weapons\rifle\smg\smg_rof\projectiles\smg_rof_bullet" },
+            { 0x23CE, @"objects\weapons\rifle\smg\smg_rof\fx\smg_rof_firing" }, //unsure about this (tag is halo online specific)
+            { 0x23CF, @"sound\weapons\smg_rof\fire" },
+            { 0x23D0, @"objects\weapons\rifle\smg\smg_rof\damage_effects\smg_rof_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x23D1, @"objects\weapons\rifle\smg\smg_rof\smg_rof" }, //unsure about this (tag is halo online specific)
+            { 0x23D2, @"objects\weapons\rifle\smg\smg_rof\smg_rof" }, //unsure about this (tag is halo online specific)
+            { 0x23D3, @"objects\weapons\rifle\smg\smg_rof\smg_rof" }, //unsure about this (tag is halo online specific)
+            { 0x23D4, @"objects\weapons\rifle\smg\smg_accuracy\smg_accuracy" },
             { 0x23D5, @"sound\weapons\smg\smg_zoom_in" },
             { 0x23D6, @"sound\weapons\smg\smg_zoom_out" },
-            { 0x23D7, @"ui\chud\smg_v2" },
-            { 0x23D8, @"objects\weapons\rifle\smg\smg_v2\projectiles\smg_v2_bullet" },
-            { 0x23D9, @"objects\weapons\rifle\smg\smg_v2\fx\smg_v2_firing" }, //unsure about this (tag is halo online specific)
+            { 0x23D7, @"ui\chud\smg_accuracy" },
+            { 0x23D8, @"objects\weapons\rifle\smg\smg_accuracy\projectiles\smg_accuracy_bullet" },
+            { 0x23D9, @"objects\weapons\rifle\smg\smg_accuracy\fx\smg_accuracy_firing" }, //unsure about this (tag is halo online specific)
             { 0x23DA, @"globals\damage_responses\trigger_fullauto_n5" }, //unsure about this (tag is halo online specific)
-            { 0x23DB, @"sound\weapons\smg_v2\smg_v2_fire" }, //unsure about this (tag is halo online specific)
-            { 0x23DC, @"objects\weapons\rifle\smg\smg_v2\damage_effects\smg_v2_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x23DD, @"objects\weapons\rifle\smg\smg_v2\smg_v2" }, //unsure about this (tag is halo online specific)
-            { 0x23DE, @"objects\weapons\rifle\smg\smg_v2\smg_v2" }, //unsure about this (tag is halo online specific)
-            { 0x23DF, @"objects\weapons\rifle\smg\smg_v2\smg_v2" }, //unsure about this (tag is halo online specific)
-            { 0x23E0, @"objects\weapons\rifle\smg\smg_v4\smg_v4" },
-            { 0x23E1, @"ui\chud\smg_v4" },
-            { 0x23E2, @"objects\weapons\rifle\smg\smg_v4\projectiles\smg_v4_bullet" },
-            { 0x23E3, @"objects\weapons\rifle\smg\smg_v4\fx\smg_v4_firing" }, //unsure about this (tag is halo online specific)
-            { 0x23E4, @"sound\weapons\smg_v4\smg_v4_fire" }, //unsure about this (tag is halo online specific)
-            { 0x23E5, @"objects\weapons\rifle\smg\smg_v4\damage_effects\smg_v4_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x23E6, @"objects\weapons\rifle\smg\smg_v4\smg_v4" }, //unsure about this (tag is halo online specific)
-            { 0x23E7, @"objects\weapons\rifle\smg\smg_v4\smg_v4" }, //unsure about this (tag is halo online specific)
-            { 0x23E8, @"objects\weapons\rifle\smg\smg_v4\smg_v4" }, //unsure about this (tag is halo online specific)
-            { 0x23E9, @"objects\weapons\rifle\smg\smg_v6\smg_v6" },
-            { 0x23EA, @"ui\chud\smg_v6" },
-            { 0x23EB, @"objects\weapons\rifle\smg\smg_v6\projectiles\smg_v6_bullet" },
-            { 0x23EC, @"objects\weapons\rifle\smg\smg_v6\fx\smg_v6_firing" }, //unsure about this (tag is halo online specific)
-            { 0x23ED, @"sound\weapons\smg_v6\fire" },
-            { 0x23EE, @"objects\weapons\rifle\smg\smg_v6\damage_effects\smg_v6_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x23EF, @"objects\weapons\rifle\smg\smg_v6\smg_v6" }, //unsure about this (tag is halo online specific)
-            { 0x23F0, @"objects\weapons\rifle\smg\smg_v6\smg_v6" }, //unsure about this (tag is halo online specific)
-            { 0x23F1, @"objects\weapons\rifle\smg\smg_v6\smg_v6" }, //unsure about this (tag is halo online specific)
-            { 0x23F2, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v6\plasma_rifle_v6" },
-            { 0x23F3, @"ui\chud\plasma_rifle_v6" },
-            { 0x23F4, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v6\projectiles\plasma_rifle_v6_bolt" },
-            { 0x23F5, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v6\fx\plasma_rifle_v6_firing" }, //unsure about this (tag is halo online specific)
-            { 0x23F6, @"sound\weapons\plasma_rifle_v6\plas_rifle_power_fire" }, //unsure about this (tag is halo online specific)
-            { 0x23F7, @"sound\weapons\plasma_rifle_v6\plasma_rifle_v6_lod_far" }, //unsure about this (tag is halo online specific)
-            { 0x23F8, @"sound\weapons\plasma_rifle_v6\plasma_rifle_v6_lod_med" }, //unsure about this (tag is halo online specific)
-            { 0x23F9, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v6\damage_effects\plasma_rifle_v6_bolt" }, //unsure about this (tag is halo online specific)
-            { 0x23FA, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v6\plasma_rifle_v6" },
-            { 0x23FB, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v6\plasma_rifle_v6" },
-            { 0x23FC, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_v6\plasma_rifle_v6" },
-            { 0x23FD, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\covenant_carbine_v6" },
-            { 0x23FE, @"ui\chud\carbine_v6" },
-            { 0x23FF, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\projectiles\carbine_slug\carbine_v6_slug" },
-            { 0x2400, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\fx\covenant_carbine_v6_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2401, @"sound\weapons\covenant_carbine_v6\carbine_v6_fire" }, //unsure about this (tag is halo online specific)
-            { 0x2402, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\damage_effects\carbine_v6_slug" }, //unsure about this (tag is halo online specific)
-            { 0x2403, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\covenant_carbine_v6" }, //unsure about this (tag is halo online specific)
-            { 0x2404, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\covenant_carbine_v6" }, //unsure about this (tag is halo online specific)
-            { 0x2405, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\covenant_carbine_v6" }, //unsure about this (tag is halo online specific)
-            { 0x2406, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\shaders\covenant_carbine_v6" }, //unsure about this (tag is halo online specific)
-            { 0x2407, @"objects\weapons\pistol\excavator\excavator_v3\excavator_v3" },
-            { 0x2408, @"objects\weapons\pistol\excavator\excavator_v3\damage_effects\cut_melee" }, //unsure about this (tag is halo online specific)
-            { 0x2409, @"ui\chud\excavator_v3" },
-            { 0x240A, @"objects\weapons\pistol\excavator\excavator_v3\projectiles\excavator_v6_shard" },
-            { 0x240B, @"objects\weapons\pistol\excavator\excavator_v3\fx\excavator_v3_firing" }, //unsure about this (tag is halo online specific)
-            { 0x240C, @"sound\weapons\excavator_v3\excavator_v3_fire" }, //unsure about this (tag is halo online specific)
-            { 0x240D, @"objects\weapons\pistol\excavator\excavator_v3\damage_effects\excavator_v6_shard" }, //unsure about this (tag is halo online specific)
-            { 0x240E, @"objects\weapons\pistol\excavator\excavator_v3\excavator_v3" }, //unsure about this (tag is halo online specific)
-            { 0x240F, @"objects\weapons\pistol\excavator\excavator_v3\excavator_v3" }, //unsure about this (tag is halo online specific)
-            { 0x2410, @"objects\weapons\pistol\excavator\excavator_v3\excavator_v3" }, //unsure about this (tag is halo online specific)
-            { 0x2411, @"objects\weapons\pistol\magnum\magnum_v2\magnum_v2" },
-            { 0x2412, @"ui\chud\magnum_v2" },
-            { 0x2413, @"objects\weapons\pistol\magnum\magnum_v2\projectiles\magnum_v2_bullet" },
-            { 0x2414, @"objects\weapons\pistol\magnum\magnum_v2\fx\magnum_v2_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2415, @"sound\weapons\magnum_v2\magnum_v2_fire" }, //unsure about this (tag is halo online specific)
-            { 0x2416, @"objects\weapons\pistol\magnum\magnum_v2\damage_effects\magnum_v2_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x2417, @"objects\weapons\pistol\magnum\magnum_v2\magnum_v2" }, //unsure about this (tag is halo online specific)
-            { 0x2418, @"objects\weapons\pistol\magnum\magnum_v2\magnum_v2" }, //unsure about this (tag is halo online specific)
-            { 0x2419, @"objects\weapons\pistol\magnum\magnum_v2\magnum_v2" }, //unsure about this (tag is halo online specific)
-            { 0x241A, @"objects\weapons\pistol\magnum\magnum_v3\magnum_v3" },
-            { 0x241B, @"ui\chud\magnum_v3" },
-            { 0x241C, @"objects\weapons\pistol\magnum\magnum_v3\fx\magnum_v3_firing" }, //unsure about this (tag is halo online specific)
-            { 0x241D, @"sound\weapons\magnum_v3\magnum_v3_fire" }, //unsure about this (tag is halo online specific)
-            { 0x241E, @"objects\weapons\pistol\magnum\magnum_v3\magnum_v3" }, //unsure about this (tag is halo online specific)
-            { 0x241F, @"objects\weapons\pistol\magnum\magnum_v3\magnum_v3" }, //unsure about this (tag is halo online specific)
-            { 0x2420, @"objects\weapons\pistol\magnum\magnum_v3\magnum_v3" }, //unsure about this (tag is halo online specific)
-            { 0x2421, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\plasma_pistol_v3" },
-            { 0x2422, @"sound\weapons\plasma_pistol_v3\plasmapistol_charging\plasmapistol_charging" }, //unsure about this (tag is halo online specific)
-            { 0x2423, @"ui\chud\plasma_pistol_v3" },
-            { 0x2424, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\fx\plasma_pistol_v3_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2425, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\projectiles\plasma_pistol_v3_charged_bolt" },
-            { 0x2426, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\fx\plasma_pistol_v3_charging" }, //unsure about this (tag is halo online specific)
-            { 0x2427, @"sound\weapons\plasma_pistol_v3\plasmapistol_charging\plasmapistol_charging\in" }, //unsure about this (tag is halo online specific)
-            { 0x2428, @"sound\weapons\plasma_pistol_v3\plasmapistol_charging\plasmapistol_charging\loop" }, //unsure about this (tag is halo online specific)
-            { 0x2429, @"sound\weapons\plasma_pistol_v3\plasma_pistol_v3_fire" }, //unsure about this (tag is halo online specific)
-            { 0x242A, @"sound\weapons\plasma_pistol_v3\chargefire" }, //unsure about this (tag is halo online specific)
-            { 0x242B, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\damage_effects\plasma_pistol_v3_overcharge_bolt" }, //unsure about this (tag is halo online specific)
-            { 0x242C, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\plasma_pistol_v3" }, //unsure about this (tag is halo online specific)
-            { 0x242D, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\plasma_pistol_v3" }, //unsure about this (tag is halo online specific)
-            { 0x242E, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\plasma_pistol_v3" }, //unsure about this (tag is halo online specific)
+            { 0x23DB, @"sound\weapons\smg_accuracy\smg_accuracy_fire" }, //unsure about this (tag is halo online specific)
+            { 0x23DC, @"objects\weapons\rifle\smg\smg_accuracy\damage_effects\smg_accuracy_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x23DD, @"objects\weapons\rifle\smg\smg_accuracy\smg_accuracy" }, //unsure about this (tag is halo online specific)
+            { 0x23DE, @"objects\weapons\rifle\smg\smg_accuracy\smg_accuracy" }, //unsure about this (tag is halo online specific)
+            { 0x23DF, @"objects\weapons\rifle\smg\smg_accuracy\smg_accuracy" }, //unsure about this (tag is halo online specific)
+            { 0x23E0, @"objects\weapons\rifle\smg\smg_damage\smg_damage" },
+            { 0x23E1, @"ui\chud\smg_damage" },
+            { 0x23E2, @"objects\weapons\rifle\smg\smg_damage\projectiles\smg_damage_bullet" },
+            { 0x23E3, @"objects\weapons\rifle\smg\smg_damage\fx\smg_damage_firing" }, //unsure about this (tag is halo online specific)
+            { 0x23E4, @"sound\weapons\smg_damage\smg_damage_fire" }, //unsure about this (tag is halo online specific)
+            { 0x23E5, @"objects\weapons\rifle\smg\smg_damage\damage_effects\smg_damage_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x23E6, @"objects\weapons\rifle\smg\smg_damage\smg_damage" }, //unsure about this (tag is halo online specific)
+            { 0x23E7, @"objects\weapons\rifle\smg\smg_damage\smg_damage" }, //unsure about this (tag is halo online specific)
+            { 0x23E8, @"objects\weapons\rifle\smg\smg_damage\smg_damage" }, //unsure about this (tag is halo online specific)
+            { 0x23E9, @"objects\weapons\rifle\smg\smg_power\smg_power" },
+            { 0x23EA, @"ui\chud\smg_power" },
+            { 0x23EB, @"objects\weapons\rifle\smg\smg_power\projectiles\smg_power_bullet" },
+            { 0x23EC, @"objects\weapons\rifle\smg\smg_power\fx\smg_power_firing" }, //unsure about this (tag is halo online specific)
+            { 0x23ED, @"sound\weapons\smg_power\fire" },
+            { 0x23EE, @"objects\weapons\rifle\smg\smg_power\damage_effects\smg_power_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x23EF, @"objects\weapons\rifle\smg\smg_power\smg_power" }, //unsure about this (tag is halo online specific)
+            { 0x23F0, @"objects\weapons\rifle\smg\smg_power\smg_power" }, //unsure about this (tag is halo online specific)
+            { 0x23F1, @"objects\weapons\rifle\smg\smg_power\smg_power" }, //unsure about this (tag is halo online specific)
+            { 0x23F2, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_power\plasma_rifle_power" },
+            { 0x23F3, @"ui\chud\plasma_rifle_power" },
+            { 0x23F4, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_power\projectiles\plasma_rifle_power_bolt" },
+            { 0x23F5, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_power\fx\plasma_rifle_power_firing" }, //unsure about this (tag is halo online specific)
+            { 0x23F6, @"sound\weapons\plasma_pistol_power\plas_rifle_power_fire" }, //unsure about this (tag is halo online specific)
+            { 0x23F7, @"sound\weapons\plasma_pistol_power\plasma_pistol_power_lod_far" }, //unsure about this (tag is halo online specific)
+            { 0x23F8, @"sound\weapons\plasma_pistol_power\plasma_pistol_power_lod_med" }, //unsure about this (tag is halo online specific)
+            { 0x23F9, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_power\damage_effects\plasma_rifle_power_bolt" }, //unsure about this (tag is halo online specific)
+            { 0x23FA, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_power\plasma_rifle_power" },
+            { 0x23FB, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_power\plasma_rifle_power" },
+            { 0x23FC, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_power\plasma_rifle_power" },
+            { 0x23FD, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\covenant_carbine_power" },
+            { 0x23FE, @"ui\chud\covenant_carbine_power" },
+            { 0x23FF, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\projectiles\carbine_slug\carbine_power_slug" },
+            { 0x2400, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\fx\covenant_carbine_power_firing" }, //unsure about this (tag is halo online specific)
+            { 0x2401, @"sound\weapons\covenant_carbine_power\carbine_power_fire" }, //unsure about this (tag is halo online specific)
+            { 0x2402, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\damage_effects\carbine_power_slug" }, //unsure about this (tag is halo online specific)
+            { 0x2403, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\covenant_carbine_power" }, //unsure about this (tag is halo online specific)
+            { 0x2404, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\covenant_carbine_power" }, //unsure about this (tag is halo online specific)
+            { 0x2405, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\covenant_carbine_power" }, //unsure about this (tag is halo online specific)
+            { 0x2406, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\shaders\covenant_carbine_power" }, //unsure about this (tag is halo online specific)
+            { 0x2407, @"objects\weapons\pistol\excavator\excavator_power\excavator_power" },
+            { 0x2408, @"objects\weapons\pistol\excavator\excavator_power\damage_effects\cut_melee" }, //unsure about this (tag is halo online specific)
+            { 0x2409, @"ui\chud\excavator_power" },
+            { 0x240A, @"objects\weapons\pistol\excavator\excavator_power\projectiles\excavator_power_shard" },
+            { 0x240B, @"objects\weapons\pistol\excavator\excavator_power\fx\excavator_power_firing" }, //unsure about this (tag is halo online specific)
+            { 0x240C, @"sound\weapons\excavator_power\excavator_power_fire" }, //unsure about this (tag is halo online specific)
+            { 0x240D, @"objects\weapons\pistol\excavator\excavator_power\damage_effects\excavator_power_shard" }, //unsure about this (tag is halo online specific)
+            { 0x240E, @"objects\weapons\pistol\excavator\excavator_power\excavator_power" }, //unsure about this (tag is halo online specific)
+            { 0x240F, @"objects\weapons\pistol\excavator\excavator_power\excavator_power" }, //unsure about this (tag is halo online specific)
+            { 0x2410, @"objects\weapons\pistol\excavator\excavator_power\excavator_power" }, //unsure about this (tag is halo online specific)
+            { 0x2411, @"objects\weapons\pistol\magnum\magnum_damage\magnum_damage" },
+            { 0x2412, @"ui\chud\magnum_damage" },
+            { 0x2413, @"objects\weapons\pistol\magnum\magnum_damage\projectiles\magnum_damage_bullet" },
+            { 0x2414, @"objects\weapons\pistol\magnum\magnum_damage\fx\magnum_damage_firing" }, //unsure about this (tag is halo online specific)
+            { 0x2415, @"sound\weapons\magnum_damage\magnum_damage_fire" }, //unsure about this (tag is halo online specific)
+            { 0x2416, @"objects\weapons\pistol\magnum\magnum_damage\damage_effects\magnum_damage_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x2417, @"objects\weapons\pistol\magnum\magnum_damage\magnum_damage" }, //unsure about this (tag is halo online specific)
+            { 0x2418, @"objects\weapons\pistol\magnum\magnum_damage\magnum_damage" }, //unsure about this (tag is halo online specific)
+            { 0x2419, @"objects\weapons\pistol\magnum\magnum_damage\magnum_damage" }, //unsure about this (tag is halo online specific)
+            { 0x241A, @"objects\weapons\pistol\magnum\magnum_power\magnum_power" },
+            { 0x241B, @"ui\chud\magnum_power" },
+            { 0x241C, @"objects\weapons\pistol\magnum\magnum_power\fx\magnum_power_firing" }, //unsure about this (tag is halo online specific)
+            { 0x241D, @"sound\weapons\magnum_power\magnum_power_fire" }, //unsure about this (tag is halo online specific)
+            { 0x241E, @"objects\weapons\pistol\magnum\magnum_power\magnum_power" }, //unsure about this (tag is halo online specific)
+            { 0x241F, @"objects\weapons\pistol\magnum\magnum_power\magnum_power" }, //unsure about this (tag is halo online specific)
+            { 0x2420, @"objects\weapons\pistol\magnum\magnum_power\magnum_power" }, //unsure about this (tag is halo online specific)
+            { 0x2421, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\plasma_pistol_power" },
+            { 0x2422, @"sound\weapons\plasma_pistol_power\plasmapistol_charging\plasmapistol_charging" }, //unsure about this (tag is halo online specific)
+            { 0x2423, @"ui\chud\plasma_pistol_power" },
+            { 0x2424, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\fx\plasma_pistol_power_firing" }, //unsure about this (tag is halo online specific)
+            { 0x2425, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\projectiles\plasma_pistol_power_charged_bolt" },
+            { 0x2426, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\fx\plasma_pistol_power_charging" }, //unsure about this (tag is halo online specific)
+            { 0x2427, @"sound\weapons\plasma_pistol_power\plasmapistol_charging\plasmapistol_charging\in" }, //unsure about this (tag is halo online specific)
+            { 0x2428, @"sound\weapons\plasma_pistol_power\plasmapistol_charging\plasmapistol_charging\loop" }, //unsure about this (tag is halo online specific)
+            { 0x2429, @"sound\weapons\plasma_pistol_power\plasma_pistol_power_fire" }, //unsure about this (tag is halo online specific)
+            { 0x242A, @"sound\weapons\plasma_pistol_power\chargefire" }, //unsure about this (tag is halo online specific)
+            { 0x242B, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\damage_effects\plasma_pistol_power_overcharge_bolt" }, //unsure about this (tag is halo online specific)
+            { 0x242C, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\plasma_pistol_power" }, //unsure about this (tag is halo online specific)
+            { 0x242D, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\plasma_pistol_power" }, //unsure about this (tag is halo online specific)
+            { 0x242E, @"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\plasma_pistol_power" }, //unsure about this (tag is halo online specific)
             { 0x242F, @"fx\material_effects\objects\weapons\energy_sword" },
             { 0x2430, @"sound\weapons\energy_sword\sword_loop\sword_loop" },
             { 0x2431, @"objects\weapons\melee\energy_blade\fx\blade_activate" },
@@ -8003,90 +8003,90 @@ namespace TagTool.MtnDewIt.Commands
             { 0x257C, @"objects\vehicles\wraith\fx\weapon\anti_infantry\projectile" },
             { 0x257D, @"objects\vehicles\banshee\fx\weapon\plasma_cannon\impact" },
             { 0x257E, @"objects\vehicles\banshee\fx\weapon\plasma_cannon\impact" },
-            { 0x2580, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\battle_rifle_v1" },
-            { 0x2581, @"ui\chud\battle_rifle_v1" },
-            { 0x2582, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\projectiles\battle_rifle_v1_bullet" },
-            { 0x2583, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\fx\battle_rifle_v1_firing" }, //unsure about this (tag is halo online specific)
+            { 0x2580, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\battle_rifle_rof" },
+            { 0x2581, @"ui\chud\battle_rifle_rof" },
+            { 0x2582, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\projectiles\battle_rifle_rof_bullet" },
+            { 0x2583, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\fx\battle_rifle_rof_firing" }, //unsure about this (tag is halo online specific)
             { 0x2584, @"globals\damage_responses\trigger_fullauto_n6" }, //unsure about this (tag is halo online specific)
-            { 0x2585, @"sound\weapons\battle_rifle_v1\battle_rifle_v1_fire" }, //unsure about this (tag is halo online specific)
-            { 0x2586, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\damage_effects\battle_rifle_v1_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x2587, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\battle_rifle_v1" }, //unsure about this (tag is halo online specific)
-            { 0x2588, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\battle_rifle_v1" }, //unsure about this (tag is halo online specific)
-            { 0x2589, @"objects\weapons\rifle\battle_rifle\battle_rifle_v1\battle_rifle_v1" }, //unsure about this (tag is halo online specific)
-            { 0x258A, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\battle_rifle_v2" },
-            { 0x258B, @"ui\chud\battle_rifle_v2" },
-            { 0x258C, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\projectiles\battle_rifle_v2_bullet" },
-            { 0x258D, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\fx\battle_rifle_v2_firing" }, //unsure about this (tag is halo online specific)
+            { 0x2585, @"sound\weapons\battle_rifle_rof\battle_rifle_rof_fire" }, //unsure about this (tag is halo online specific)
+            { 0x2586, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\damage_effects\battle_rifle_rof_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x2587, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\battle_rifle_rof" }, //unsure about this (tag is halo online specific)
+            { 0x2588, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\battle_rifle_rof" }, //unsure about this (tag is halo online specific)
+            { 0x2589, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\battle_rifle_rof" }, //unsure about this (tag is halo online specific)
+            { 0x258A, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\battle_rifle_accuracy" },
+            { 0x258B, @"ui\chud\battle_rifle_accuracy" },
+            { 0x258C, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\projectiles\battle_rifle_accuracy_bullet" },
+            { 0x258D, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\fx\battle_rifle_accuracy_firing" }, //unsure about this (tag is halo online specific)
             { 0x258E, @"globals\damage_responses\trigger_fullauto_n7" }, //unsure about this (tag is halo online specific)
-            { 0x258F, @"sound\weapons\battle_rifle_v2\battle_rifle_v2_fire" }, //unsure about this (tag is halo online specific)
-            { 0x2590, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\damage_effects\battle_rifle_v2_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x2591, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\battle_rifle_v2" }, //unsure about this (tag is halo online specific)
-            { 0x2592, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\battle_rifle_v2" }, //unsure about this (tag is halo online specific)
-            { 0x2593, @"objects\weapons\rifle\battle_rifle\battle_rifle_v2\battle_rifle_v2" }, //unsure about this (tag is halo online specific)
-            { 0x2594, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\battle_rifle_v5" },
-            { 0x2595, @"ui\chud\battle_rifle_v5" },
-            { 0x2596, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\projectiles\battle_rifle_v5_bullet" },
-            { 0x2597, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\fx\battle_rifle_v5_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2598, @"sound\weapons\battle_rifle_v5\battle_rifle_v5_fire" }, //unsure about this (tag is halo online specific)
-            { 0x2599, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\damage_effects\battle_rifle_v5_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x259A, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\battle_rifle_v5" }, //unsure about this (tag is halo online specific)
-            { 0x259B, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\battle_rifle_v5" }, //unsure about this (tag is halo online specific)
-            { 0x259C, @"objects\weapons\rifle\battle_rifle\battle_rifle_v5\battle_rifle_v5" }, //unsure about this (tag is halo online specific)
-            { 0x259D, @"objects\weapons\rifle\dmr\dmr_v1\dmr_v1" },
-            { 0x259E, @"ui\chud\dmr_v1" },
-            { 0x259F, @"objects\weapons\rifle\dmr\dmr_v1\projectiles\dmr_v1_bullet" },
-            { 0x25A0, @"objects\weapons\rifle\dmr\dmr_v1\fx\dmr_v1_firing" }, //unsure about this (tag is halo online specific)
-            { 0x25A1, @"sound\weapons\dmr_v1\dmr_v1_fire" },
-            { 0x25A2, @"objects\weapons\rifle\dmr\dmr_v1\damage_effects\dmr_v1_bullet" }, //unsure about this (tag is halo online specific)
-            { 0x25A3, @"objects\weapons\rifle\dmr\dmr_v1\dmr_v1" }, //unsure about this (tag is halo online specific)
-            { 0x25A4, @"objects\weapons\rifle\dmr\dmr_v1\dmr_v1" }, //unsure about this (tag is halo online specific)
-            { 0x25A5, @"objects\weapons\rifle\dmr\dmr_v1\dmr_v1" }, //unsure about this (tag is halo online specific)
+            { 0x258F, @"sound\weapons\battle_rifle_accuracy\battle_rifle_accuracy_fire" }, //unsure about this (tag is halo online specific)
+            { 0x2590, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\damage_effects\battle_rifle_accuracy_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x2591, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\battle_rifle_accuracy" }, //unsure about this (tag is halo online specific)
+            { 0x2592, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\battle_rifle_accuracy" }, //unsure about this (tag is halo online specific)
+            { 0x2593, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\battle_rifle_accuracy" }, //unsure about this (tag is halo online specific)
+            { 0x2594, @"objects\weapons\rifle\battle_rifle\battle_rifle_range\battle_rifle_range" },
+            { 0x2595, @"ui\chud\battle_rifle_range" },
+            { 0x2596, @"objects\weapons\rifle\battle_rifle\battle_rifle_range\projectiles\battle_rifle_range_bullet" },
+            { 0x2597, @"objects\weapons\rifle\battle_rifle\battle_rifle_range\fx\battle_rifle_range_firing" }, //unsure about this (tag is halo online specific)
+            { 0x2598, @"sound\weapons\battle_rifle_range\battle_rifle_range_fire" }, //unsure about this (tag is halo online specific)
+            { 0x2599, @"objects\weapons\rifle\battle_rifle\battle_rifle_range\damage_effects\battle_rifle_range_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x259A, @"objects\weapons\rifle\battle_rifle\battle_rifle_range\battle_rifle_range" }, //unsure about this (tag is halo online specific)
+            { 0x259B, @"objects\weapons\rifle\battle_rifle\battle_rifle_range\battle_rifle_range" }, //unsure about this (tag is halo online specific)
+            { 0x259C, @"objects\weapons\rifle\battle_rifle\battle_rifle_range\battle_rifle_range" }, //unsure about this (tag is halo online specific)
+            { 0x259D, @"objects\weapons\rifle\dmr\dmr_ammo\dmr_ammo" },
+            { 0x259E, @"ui\chud\dmr_ammo" },
+            { 0x259F, @"objects\weapons\rifle\dmr\dmr_ammo\projectiles\dmr_ammo_bullet" },
+            { 0x25A0, @"objects\weapons\rifle\dmr\dmr_ammo\fx\dmr_ammo_firing" }, //unsure about this (tag is halo online specific)
+            { 0x25A1, @"sound\weapons\dmr_ammo\dmr_ammo_fire" },
+            { 0x25A2, @"objects\weapons\rifle\dmr\dmr_ammo\damage_effects\dmr_ammo_bullet" }, //unsure about this (tag is halo online specific)
+            { 0x25A3, @"objects\weapons\rifle\dmr\dmr_ammo\dmr_ammo" }, //unsure about this (tag is halo online specific)
+            { 0x25A4, @"objects\weapons\rifle\dmr\dmr_ammo\dmr_ammo" }, //unsure about this (tag is halo online specific)
+            { 0x25A5, @"objects\weapons\rifle\dmr\dmr_ammo\dmr_ammo" }, //unsure about this (tag is halo online specific)
             { 0x25AA, @"globals\damage_responses\trigger_semiauto_n4" }, //unsure about this (tag is halo online specific)
-            { 0x25B0, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\covenant_carbine_v1" },
-            { 0x25B1, @"ui\chud\carbine_v1" },
-            { 0x25B2, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\projectiles\carbine_slug\carbine_v1_slug" },
-            { 0x25B3, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\fx\covenant_carbine_v1_firing" }, //unsure about this (tag is halo online specific)
-            { 0x25B4, @"sound\weapons\covenant_carbine_v1\carbine_v1_fire" }, //unsure about this (tag is halo online specific)
-            { 0x25B5, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\damage_effects\carbine_slug\carbine_v1_slug" }, //unsure about this (tag is halo online specific)
-            { 0x25B6, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\covenant_carbine_v1" }, //unsure about this (tag is halo online specific)
-            { 0x25B7, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\covenant_carbine_v1" }, //unsure about this (tag is halo online specific)
-            { 0x25B8, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\covenant_carbine_v1" }, //unsure about this (tag is halo online specific)
-            { 0x25B9, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\covenant_carbine_v2" },
-            { 0x25BA, @"ui\chud\carbine_v2" },
-            { 0x25BB, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\projectiles\carbine_slug\carbine_v2_slug" },
-            { 0x25BC, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\fx\covenant_carbine_v2_firing" }, //unsure about this (tag is halo online specific)
-            { 0x25BD, @"sound\weapons\covenant_carbine_v2\carbine_v2_fire" }, //unsure about this (tag is halo online specific)
-            { 0x25BE, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\damage_effects\carbine_slug\carbine_v2_slug" }, //unsure about this (tag is halo online specific)
-            { 0x25BF, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\covenant_carbine_v2" }, //unsure about this (tag is halo online specific)
-            { 0x25C0, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\covenant_carbine_v2" }, //unsure about this (tag is halo online specific)
-            { 0x25C1, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\covenant_carbine_v2" }, //unsure about this (tag is halo online specific)
-            { 0x25C2, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v3\covenant_carbine_v3" },
-            { 0x25C3, @"ui\chud\carbine_v3" },
-            { 0x25C4, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v3\projectiles\carbine_slug\carbine_v3_slug" },
-            { 0x25C5, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v3\fx\covenant_carbine_v3_firing" }, //unsure about this (tag is halo online specific)
-            { 0x25C6, @"sound\weapons\covenant_carbine_v3\carbine_v3_fire" }, //unsure about this (tag is halo online specific)
-            { 0x25C7, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v3\damage_effects\carbine_slug\carbine_v3_slug" }, //unsure about this (tag is halo online specific)
-            { 0x25C8, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v3\covenant_carbine_v3" }, //unsure about this (tag is halo online specific)
-            { 0x25C9, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v3\covenant_carbine_v3" }, //unsure about this (tag is halo online specific)
-            { 0x25CA, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v3\covenant_carbine_v3" }, //unsure about this (tag is halo online specific)
-            { 0x25CB, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v4\covenant_carbine_v4" },
-            { 0x25CC, @"ui\chud\carbine_v4" },
-            { 0x25CD, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v4\projectiles\carbine_slug\carbine_v4_slug" },
-            { 0x25CE, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v4\fx\covenant_carbine_v4_firing" }, //unsure about this (tag is halo online specific)
-            { 0x25CF, @"sound\weapons\covenant_carbine_v4\carbine_v4_fire" }, //unsure about this (tag is halo online specific)
-            { 0x25D0, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v4\damage_effects\carbine_slug\carbine_v4_slug" }, //unsure about this (tag is halo online specific)
-            { 0x25D1, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v4\covenant_carbine_v4" }, //unsure about this (tag is halo online specific)
-            { 0x25D2, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v4\covenant_carbine_v4" }, //unsure about this (tag is halo online specific)
-            { 0x25D3, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v4\covenant_carbine_v4" }, //unsure about this (tag is halo online specific)
-            { 0x25D4, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v5\covenant_carbine_v5" },
-            { 0x25D5, @"ui\chud\carbine_v5" },
-            { 0x25D6, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v5\projectiles\carbine_slug\carbine_v5_slug" },
-            { 0x25D7, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v5\fx\covenant_carbine_v5_firing" }, //unsure about this (tag is halo online specific)
-            { 0x25D8, @"sound\weapons\covenant_carbine_v5\carbine_v5_fire" }, //unsure about this (tag is halo online specific)
-            { 0x25D9, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v5\damage_effects\carbine_slug\carbine_v5_slug" }, //unsure about this (tag is halo online specific)
-            { 0x25DA, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v5\covenant_carbine_v5" }, //unsure about this (tag is halo online specific)
-            { 0x25DB, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v5\covenant_carbine_v5" }, //unsure about this (tag is halo online specific)
-            { 0x25DC, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_v5\covenant_carbine_v5" }, //unsure about this (tag is halo online specific)
+            { 0x25B0, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\covenant_carbine_rof" },
+            { 0x25B1, @"ui\chud\covenant_carbine_rof" },
+            { 0x25B2, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\projectiles\carbine_slug\carbine_rof_slug" },
+            { 0x25B3, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\fx\covenant_carbine_rof_firing" }, //unsure about this (tag is halo online specific)
+            { 0x25B4, @"sound\weapons\covenant_carbine_rof\carbine_rof_fire" }, //unsure about this (tag is halo online specific)
+            { 0x25B5, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\damage_effects\carbine_slug\carbine_rof_slug" }, //unsure about this (tag is halo online specific)
+            { 0x25B6, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\covenant_carbine_rof" }, //unsure about this (tag is halo online specific)
+            { 0x25B7, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\covenant_carbine_rof" }, //unsure about this (tag is halo online specific)
+            { 0x25B8, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\covenant_carbine_rof" }, //unsure about this (tag is halo online specific)
+            { 0x25B9, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\covenant_carbine_ammo" },
+            { 0x25BA, @"ui\chud\covenant_carbine_ammo" },
+            { 0x25BB, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\projectiles\carbine_slug\carbine_ammo_slug" },
+            { 0x25BC, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\fx\covenant_carbine_ammo_firing" }, //unsure about this (tag is halo online specific)
+            { 0x25BD, @"sound\weapons\covenant_carbine_ammo\carbine_ammo_fire" }, //unsure about this (tag is halo online specific)
+            { 0x25BE, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\damage_effects\carbine_slug\carbine_ammo_slug" }, //unsure about this (tag is halo online specific)
+            { 0x25BF, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\covenant_carbine_ammo" }, //unsure about this (tag is halo online specific)
+            { 0x25C0, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\covenant_carbine_ammo" }, //unsure about this (tag is halo online specific)
+            { 0x25C1, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\covenant_carbine_ammo" }, //unsure about this (tag is halo online specific)
+            { 0x25C2, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\covenant_carbine_range" },
+            { 0x25C3, @"ui\chud\covenant_carbine_range" },
+            { 0x25C4, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\projectiles\carbine_slug\carbine_range_slug" },
+            { 0x25C5, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\fx\covenant_carbine_range_firing" }, //unsure about this (tag is halo online specific)
+            { 0x25C6, @"sound\weapons\covenant_carbine_range\carbine_range_fire" }, //unsure about this (tag is halo online specific)
+            { 0x25C7, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\damage_effects\carbine_slug\carbine_range_slug" }, //unsure about this (tag is halo online specific)
+            { 0x25C8, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\covenant_carbine_range" }, //unsure about this (tag is halo online specific)
+            { 0x25C9, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\covenant_carbine_range" }, //unsure about this (tag is halo online specific)
+            { 0x25CA, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\covenant_carbine_range" }, //unsure about this (tag is halo online specific)
+            { 0x25CB, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage\covenant_carbine_damage" },
+            { 0x25CC, @"ui\chud\covenant_carbine_damage" },
+            { 0x25CD, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage\projectiles\carbine_slug\carbine_damage_slug" },
+            { 0x25CE, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage\fx\covenant_carbine_damage_firing" }, //unsure about this (tag is halo online specific)
+            { 0x25CF, @"sound\weapons\covenant_carbine_damage\carbine_damage_fire" }, //unsure about this (tag is halo online specific)
+            { 0x25D0, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage\damage_effects\carbine_slug\carbine_damage_slug" }, //unsure about this (tag is halo online specific)
+            { 0x25D1, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage\covenant_carbine_damage" }, //unsure about this (tag is halo online specific)
+            { 0x25D2, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage\covenant_carbine_damage" }, //unsure about this (tag is halo online specific)
+            { 0x25D3, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage\covenant_carbine_damage" }, //unsure about this (tag is halo online specific)
+            { 0x25D4, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_accuracy\covenant_carbine_accuracy" },
+            { 0x25D5, @"ui\chud\covenant_carbine_accuracy" },
+            { 0x25D6, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_accuracy\projectiles\carbine_slug\carbine_accuracy_slug" },
+            { 0x25D7, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_accuracy\fx\covenant_carbine_accuracy_firing" }, //unsure about this (tag is halo online specific)
+            { 0x25D8, @"sound\weapons\covenant_carbine_accuracy\carbine_accuracy_fire" }, //unsure about this (tag is halo online specific)
+            { 0x25D9, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_accuracy\damage_effects\carbine_slug\carbine_accuracy_slug" }, //unsure about this (tag is halo online specific)
+            { 0x25DA, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_accuracy\covenant_carbine_accuracy" }, //unsure about this (tag is halo online specific)
+            { 0x25DB, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_accuracy\covenant_carbine_accuracy" }, //unsure about this (tag is halo online specific)
+            { 0x25DC, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_accuracy\covenant_carbine_accuracy" }, //unsure about this (tag is halo online specific)
             { 0x25DD, @"fx\scenery_fx\explosions\human_explosion_huge\human_explosion_huge" },
             { 0x25DE, @"fx\scenery_fx\explosions\human_explosion_huge\human_explosion_huge" },
             { 0x25DF, @"sound\vehicles\damage_effects\hum_damage_large" },
