@@ -5855,7 +5855,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 71,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle_v5\assault_rifle_v5"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle_accuracy\assault_rifle_accuracy"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -5864,7 +5864,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 71,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle_v2\assault_rifle_v2"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle_damage\assault_rifle_damage"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -5873,7 +5873,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 71,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle_v6\assault_rifle_v6"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle_power\assault_rifle_power"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -5882,7 +5882,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 71,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle_v3\assault_rifle_v3"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\assault_rifle\assault_rifle_rof\assault_rifle_rof"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -5900,7 +5900,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 72,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_v2\battle_rifle_v2"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\battle_rifle_accuracy"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -5909,7 +5909,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 72,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_v3\battle_rifle_v3"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_ammo\battle_rifle_ammo"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -5918,7 +5918,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 72,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_v4\battle_rifle_v4"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_damage\battle_rifle_damage"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -5927,7 +5927,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 72,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_v6\battle_rifle_v6"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_power\battle_rifle_power"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -5936,7 +5936,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 72,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_v5\battle_rifle_v5"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_range\battle_rifle_range"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -5945,7 +5945,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 72,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_v1\battle_rifle_v1"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\battle_rifle\battle_rifle_rof\battle_rifle_rof"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -5963,7 +5963,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 73,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\smg\smg_v2\smg_v2"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\smg\smg_accuracy\smg_accuracy"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -5972,7 +5972,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 73,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\smg\smg_v4\smg_v4"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\smg\smg_damage\smg_damage"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -5981,7 +5981,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 73,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\smg\smg_v6\smg_v6"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\smg\smg_power\smg_power"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -5990,7 +5990,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 73,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\smg\smg_v1\smg_v1"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\smg\smg_rof\smg_rof"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -6008,7 +6008,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 74,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\dmr\dmr_v2\dmr_v2"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\dmr\dmr_accuracy\dmr_accuracy"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -6017,7 +6017,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 74,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\dmr\dmr_v1\dmr_v1"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\dmr\dmr_ammo\dmr_ammo"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -6026,7 +6026,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 74,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\dmr\dmr_v4\dmr_v4"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\dmr\dmr_damage\dmr_damage"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -6035,7 +6035,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 74,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\dmr\dmr_v6\dmr_v6"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\dmr\dmr_power\dmr_power"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -6044,7 +6044,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 74,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\dmr\dmr_v3\dmr_v3"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\dmr\dmr_rof\dmr_rof"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {   
@@ -6062,7 +6062,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 75,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_v5\covenant_carbine_v5"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_accuracy\covenant_carbine_accuracy"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -6071,7 +6071,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 75,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_v2\covenant_carbine_v2"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\covenant_carbine_ammo"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -6080,7 +6080,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 75,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_v4\covenant_carbine_v4"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage\covenant_carbine_damage"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -6089,7 +6089,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 75,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_v6\covenant_carbine_v6"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\covenant_carbine_power"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -6098,7 +6098,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 75,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_v3\covenant_carbine_v3"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\covenant_carbine_range"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -6107,7 +6107,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 75,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_v1\covenant_carbine_v1"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\covenant_carbine_rof"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {   
@@ -6125,7 +6125,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 76,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\excavator\excavator_v3\excavator_v3"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\excavator\excavator_power\excavator_power"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {   
@@ -6143,7 +6143,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 76,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum_v2\magnum_v2"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum_damage\magnum_damage"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -6152,7 +6152,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 76,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum_v3\magnum_v3"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\magnum\magnum_power\magnum_power"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {   
@@ -6170,7 +6170,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 76,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol_v3\plasma_pistol_v3"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\pistol\plasma_pistol\plasma_pistol_power\plasma_pistol_power"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -6338,7 +6338,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 78,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle_v6\plasma_rifle_v6"),
+                    Object = GetCachedTag<Weapon>($@"objects\weapons\rifle\plasma_rifle\plasma_rifle_power\plasma_rifle_power"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {   
