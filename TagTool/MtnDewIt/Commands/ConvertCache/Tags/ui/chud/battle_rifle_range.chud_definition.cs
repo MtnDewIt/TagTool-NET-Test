@@ -7,9 +7,9 @@ using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
-    public class ui_chud_battle_rifle_v6_chud_definition : TagFile
+    public class ui_chud_battle_rifle_range_chud_definition : TagFile
     {
-        public ui_chud_battle_rifle_v6_chud_definition(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public ui_chud_battle_rifle_range_chud_definition(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,
@@ -24,7 +24,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
 
         public override void TagData()
         {
-            var tag = GetCachedTag<ChudDefinition>($@"ui\chud\battle_rifle_v6");
+            var tag = GetCachedTag<ChudDefinition>($@"ui\chud\battle_rifle_range");
             var chdt = CacheContext.Deserialize<ChudDefinition>(Stream, tag);
             //chdt.HudWidgets[0].BitmapWidgets[0].PlacementData[0].Origin = new RealPoint2d(0.51f, 0f);
             //chdt.HudWidgets[0].BitmapWidgets[0].PlacementData[0].Offset = new RealPoint2d(0f, 64f);
@@ -34,7 +34,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             //chdt.HudWidgets[1].BitmapWidgets[0].PlacementData[0].Scale = new RealPoint2d(3.75f, 3.75f);
             //chdt.HudWidgets[1].BitmapWidgets[0].Flags = ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.Stretch;
             //chdt.HudWidgets[2].BitmapWidgets[0].PlacementData[0].Origin = new RealPoint2d(1.22f, 1.22f);
-            //chdt.HudWidgets[2].BitmapWidgets[0].PlacementData[0].Scale = new RealPoint2d(0.51f, 0.51f);
+            //chdt.HudWidgets[2].BitmapWidgets[0].PlacementData[0].Scale = new RealPoint2d(0.61f, 0.61f);
             //chdt.HudWidgets[2].BitmapWidgets[1].PlacementData[0].Scale = new RealPoint2d(0.6f, 0.6f);
             //chdt.HudWidgets[2].BitmapWidgets[2].PlacementData[0].Scale = new RealPoint2d(0.8f, 0.8f);
             //chdt.HudWidgets[2].BitmapWidgets[2].BitmapSequenceIndex = 14;

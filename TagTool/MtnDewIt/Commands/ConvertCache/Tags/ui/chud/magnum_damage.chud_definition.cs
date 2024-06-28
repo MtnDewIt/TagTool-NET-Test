@@ -7,9 +7,9 @@ using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
-    public class ui_chud_magnum_v3_chud_definition : TagFile
+    public class ui_chud_magnum_damage_chud_definition : TagFile
     {
-        public ui_chud_magnum_v3_chud_definition(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public ui_chud_magnum_damage_chud_definition(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,
@@ -24,7 +24,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
 
         public override void TagData()
         {
-            var tag = GetCachedTag<ChudDefinition>($@"ui\chud\magnum_v3");
+            var tag = GetCachedTag<ChudDefinition>($@"ui\chud\magnum_damage");
             var chdt = CacheContext.Deserialize<ChudDefinition>(Stream, tag);
             //chdt.HudWidgets[0].BitmapWidgets[0].PlacementData[0].Origin = new RealPoint2d(0.51f, 0f);
             //chdt.HudWidgets[0].BitmapWidgets[0].PlacementData[0].Offset = new RealPoint2d(0f, 64f);
@@ -38,7 +38,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             //chdt.HudWidgets[2].BitmapWidgets[0].PlacementData[0].Scale = new RealPoint2d(0.53f, 0.53f);
             //chdt.HudWidgets[2].BitmapWidgets[0].BitmapSequenceIndex = 14;
             //chdt.HudWidgets[2].BitmapWidgets[1].PlacementData[0].Scale = new RealPoint2d(0.6f, 0.6f);
-            //chdt.HudWidgets[2].BitmapWidgets[2].PlacementData[0].Scale = new RealPoint2d(0.615f, 0.615f);
+            //chdt.HudWidgets[2].BitmapWidgets[2].PlacementData[0].Scale = new RealPoint2d(0.6f, 0.6f);
             //chdt.HudWidgets[2].BitmapWidgets[3].PlacementData[0].Origin = new RealPoint2d(0f, 0f);
             //chdt.HudWidgets[2].BitmapWidgets[3].PlacementData[0].Offset = new RealPoint2d(37f, 37f);
             //chdt.HudWidgets[2].BitmapWidgets[3].BitmapSequenceIndex = 45;
@@ -56,11 +56,11 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             chdt.HudWidgets[3].TextWidgets[2].PlacementData[0].Offset = new RealPoint2d(134f, 16f);
             chdt.HudWidgets[3].TextWidgets[2].PlacementData[0].Scale = new RealPoint2d(0.465f, 0.465f);
             chdt.HudWidgets[3].TextWidgets[2].Font = WidgetFontValue.FullscreenHudMessage;
-            chdt.HudWidgets[7].TextWidgets[0].PlacementData[0].Scale = new RealPoint2d(0.5f, 0.5f);
-            chdt.HudWidgets[7].TextWidgets[1].PlacementData[0].Scale = new RealPoint2d(0.5f, 0.5f);
-            chdt.HudWidgets[7].TextWidgets[2].PlacementData[0].Offset = new RealPoint2d(-134f, 16f);
-            chdt.HudWidgets[7].TextWidgets[2].PlacementData[0].Scale = new RealPoint2d(0.465f, 0.465f);
-            chdt.HudWidgets[7].TextWidgets[2].Font = WidgetFontValue.FullscreenHudMessage;
+            chdt.HudWidgets[6].TextWidgets[0].PlacementData[0].Scale = new RealPoint2d(0.5f, 0.5f);
+            chdt.HudWidgets[6].TextWidgets[1].PlacementData[0].Scale = new RealPoint2d(0.5f, 0.5f);
+            chdt.HudWidgets[6].TextWidgets[2].PlacementData[0].Offset = new RealPoint2d(-134f, 16f);
+            chdt.HudWidgets[6].TextWidgets[2].PlacementData[0].Scale = new RealPoint2d(0.465f, 0.465f);
+            chdt.HudWidgets[6].TextWidgets[2].Font = WidgetFontValue.FullscreenHudMessage;
             CacheContext.Serialize(Stream, tag, chdt);
         }
     }

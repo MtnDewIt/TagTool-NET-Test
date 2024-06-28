@@ -7,9 +7,9 @@ using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
-    public class ui_chud_smg_v6_chud_definition : TagFile
+    public class ui_chud_smg_accuracy_chud_definition : TagFile
     {
-        public ui_chud_smg_v6_chud_definition(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public ui_chud_smg_accuracy_chud_definition(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,
@@ -24,7 +24,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
 
         public override void TagData()
         {
-            var tag = GetCachedTag<ChudDefinition>($@"ui\chud\smg_v6");
+            var tag = GetCachedTag<ChudDefinition>($@"ui\chud\smg_accuracy");
             var chdt = CacheContext.Deserialize<ChudDefinition>(Stream, tag);
             //chdt.HudWidgets[1].BitmapWidgets[0].PlacementData[0].Origin = new RealPoint2d(0f, 0f);
             //chdt.HudWidgets[1].BitmapWidgets[0].PlacementData[0].Scale = new RealPoint2d(0.745f, 0.745f);
