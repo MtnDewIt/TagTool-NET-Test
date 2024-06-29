@@ -356,6 +356,28 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             riverworld.SetPortingProperties(audioCodec: Compression.OGG);
             riverworld.PortTag($@"", $@"levels\multi\riverworld\riverworld.performance_throttles");
+
+            citadel.SetPortingProperties(audioCodec: Compression.OGG);
+            citadel.PortTag($@"", $@"levels\solo\100_citadel\shaders\panel_floor_ele_corner.shader");
+
+            sidewinder.SetPortingProperties(audioCodec: Compression.OGG);
+            sidewinder.PortTag($@"", $@"levels\dlc\sidewinder\shaders\side_hall_glass03.shader");
+
+            highCharity.SetPortingProperties(audioCodec: Compression.OGG);
+            highCharity.PortTag($@"", $@"levels\solo\110_hc\shaders\metals\fs_cov_purple.shader");
+
+            snowbound.SetPortingProperties(audioCodec: Compression.OGG);
+            snowbound.PortTag($@"", $@"levels\multi\snowbound\shaders\cable_wrap.shader");
+
+            midship.SetPortingProperties(audioCodec: Compression.OGG);
+            midship.PortTag($@"", $@"levels\dlc\midship\shaders\midship_strip_c_purple.shader");
+
+            lockout.SetPortingProperties(audioCodec: Compression.OGG);
+            lockout.PortTag($@"", $@"levels\dlc\lockout\shaders\metal_wall_white.shader");
+            lockout.PortTag($@"", $@"levels\dlc\lockout\shaders\metal_wall_white_flat.shader");
+
+            waste.SetPortingProperties(audioCodec: Compression.OGG);
+            waste.PortTag($@"", $@"levels\solo\070_waste\shaders\panel_floor_waste.shader");
         }
 
         public void InitializePortingContext() 

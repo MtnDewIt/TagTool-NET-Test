@@ -1884,7 +1884,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 4,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Crate>($@"ms30\objects\gear\human\industrial\crate_multi_single\crate_multi_single"),
+                    Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\crate_multi\crate_multi"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -1893,7 +1893,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 4,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\crate_multi\crate_multi"),
+                    Object = GetCachedTag<Crate>($@"objects\gear\human\industrial\crate_multi\crate_multi_destructible"),
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
