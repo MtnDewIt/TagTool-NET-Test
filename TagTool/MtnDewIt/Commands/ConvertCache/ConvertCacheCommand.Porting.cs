@@ -378,6 +378,19 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             waste.SetPortingProperties(audioCodec: Compression.OGG);
             waste.PortTag($@"", $@"levels\solo\070_waste\shaders\panel_floor_waste.shader");
+
+            haloOnline.SetPortingProperties(audioCodec: Compression.OGG);
+            haloOnline.PortTag($@"", $@"globals\podium_globals.podium_settings");
+            haloOnline.PortTag($@"", $@"objects\characters\masterchief\masterchief_podium.model_animation_graph");
+            haloOnline.PortTag($@"", $@"objects\characters\elite\elite_podium.model_animation_graph");
+            haloOnline.PortTag($@"", $@"sound\music\postmatch_new\spartan_hero\postmatch_spartan_hero.sound_looping");
+            haloOnline.PortTag($@"", $@"sound\music\postmatch_new\spartan_engage\postmatch_spartan_engage.sound_looping");
+            haloOnline.PortTag($@"", $@"sound\music\postmatch_new\headhunters\postmatch_headhunters.sound_looping");
+            haloOnline.PortTag($@"", $@"objects\equipment\forcedreload_equipment\forcedreload_equipment.equipment");
+            haloOnline.PortTag($@"", $@"objects\equipment\tankmode_equipment\tankmode_equipment.equipment");
+            haloOnline.PortTag($@"", $@"objects\equipment\armorlock_equipment\armorlock_equipment.equipment");
+            haloOnline.PortTag($@"", $@"objects\equipment\adrenaline_equipment\adrenaline_equipment.equipment");
+            haloOnline.PortTag($@"", $@"objects\equipment\ammopack_equipment\ammopack_equipment.equipment");
         }
 
         public void InitializePortingContext() 

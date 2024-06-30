@@ -3056,7 +3056,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 8,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Scenery>($@"objects\levels\multi\cyberdyne\cyber_monitor_med\cyber_monitor"),
+                    Object = GetCachedTag<Scenery>($@"objects\levels\solo\020_base\monitor_med\monitor_med"),
                     Setters = new List<ForgeGlobalsDefinition.PaletteItem.Setter>
                     {
                         new ForgeGlobalsDefinition.PaletteItem.Setter
@@ -6792,12 +6792,42 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
+                    Name = $@"ADRENALINE",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
+                    CategoryIndex = 67,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<Equipment>($@"objects\equipment\adrenaline_equipment\adrenaline_equipment"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"INSTANT RELOAD",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
+                    CategoryIndex = 67,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<Equipment>($@"objects\equipment\forcedreload_equipment\forcedreload_equipment"),
+                    Setters = null,
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
                     Name = "INVISIBILITY",
                     Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
                     CategoryIndex = 67,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
                     Object = GetCachedTag<Equipment>($@"objects\equipment\invisibility_equipment\invisibility_equipment"),
+                },
+                new ForgeGlobalsDefinition.PaletteItem
+                {
+                    Name = $@"TANK MODE",
+                    Type = ForgeGlobalsDefinition.PaletteItemType.Equipment,
+                    CategoryIndex = 67,
+                    DescriptionIndex = -1,
+                    MaxAllowed = 0,
+                    Object = GetCachedTag<Equipment>($@"objects\equipment\tankmode_equipment\tankmode_equipment"),
+                    Setters = null,
                 },
                 new ForgeGlobalsDefinition.PaletteItem
                 {
@@ -6833,7 +6863,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     CategoryIndex = 65,
                     DescriptionIndex = -1,
                     MaxAllowed = 0,
-                    Object = GetCachedTag<Equipment>($@"objects\equipment\ammo_pack_equipment\ammo_pack_equipment"),
+                    Object = GetCachedTag<Equipment>($@"objects\equipment\ammopack_equipment\ammopack_equipment"),
                     Setters = null,
                 },
                 new ForgeGlobalsDefinition.PaletteItem

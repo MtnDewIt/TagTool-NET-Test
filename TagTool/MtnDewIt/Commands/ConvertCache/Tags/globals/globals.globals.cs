@@ -15255,7 +15255,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             };
             matg.RasterizerGlobals = GetCachedTag<RasterizerGlobals>($@"globals\rasterizer_globals");
             matg.DefaultCameraFxSettings = GetCachedTag<CameraFxSettings>($@"globals\default");
-            matg.PodiumDefinition = GetCachedTag<PodiumSettings>($@"multiplayer\podium");
+            matg.PodiumDefinition = GetCachedTag<PodiumSettings>($@"globals\podium_globals");
             matg.DefaultWindSettings = GetCachedTag<Wind>($@"globals\default_wind");
             matg.CollisionDamageEffect = GetCachedTag<DamageEffect>($@"globals\collision_damage\collision");
             matg.CollisionDamage = GetCachedTag<CollisionDamage>($@"globals\collision_damage\default");

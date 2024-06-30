@@ -338,7 +338,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Maps
                         },
                         new BlfTagName
                         {
-                            Name = $@"objects\levels\multi\cyberdyne\cyber_monitor_med\cyber_monitor.scen",
+                            Name = $@"objects\levels\solo\020_base\monitor_med\monitor_med.scen",
                         },
                         new BlfTagName
                         {

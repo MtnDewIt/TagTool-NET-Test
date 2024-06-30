@@ -3101,7 +3101,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x0C10, @"objects\characters\masterchief\flashlight_1p" },
             { 0x0C11, @"objects\characters\masterchief\flashlight_3p" },
             { 0x0C12, @"objects\characters\masterchief\fx\flaming_ninja" },
-            { 0x0C13, @"objects\equipment\hologram\bipeds\masterchief_hologram" },
+            { 0x0C13, @"objects\equipment\hologram_equipment\bipeds\masterchief_hologram" },
             { 0x0C14, @"camera\biped_support_camera" },
             { 0x0C15, @"camera\biped_assassination_camera" },
             { 0x0C16, @"globals\damage_responses\player_assassination" },
@@ -3116,8 +3116,8 @@ namespace TagTool.MtnDewIt.Commands
             { 0x0C1F, @"fx\material_effects\objects\characters\contact\collision\blood_aoe_human_masterchief" },
             { 0x0C20, @"fx\shield_impacts\spartan_3p_down" }, //unsure about this (tag is halo online specific)
             { 0x0C21, @"fx\particles\energy\electric_arcs_gold_n1" }, //unsure about this (tag is halo online specific)
-            { 0x0C22, @"levels\shared\bitmaps\test_maps\plasma_noise_1" },
-            { 0x0C23, @"levels\shared\bitmaps\test_maps\plasma_noise_2" },
+            { 0x0C22, @"fx\bitmaps\plasma\plasma_clouds_512_a" },
+            { 0x0C23, @"fx\bitmaps\plasma\plasma_clouds_512_b" },
             { 0x0C24, @"test\chris\noise\blur_noise256_a" },
             { 0x0C25, @"test\chris\noise\blur_noise256_b" },
             { 0x0C26, @"fx\particles\energy\_bitmaps\electric_arcs_03" }, //unsure about this (tag is halo online specific)
@@ -3454,7 +3454,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x0D71, @"sound\game_sfx\armor_sounds\armor_light\shuffle" },
             { 0x0D72, @"sound\game_sfx\armor_sounds\armor_medium\shuffle" },
             { 0x0D73, @"sound\game_sfx\armor_sounds\armor_heavy\shuffle" },
-            { 0x0D74, @"objects\equipment\hologram\bipeds\masterchief_hologram" },
+            { 0x0D74, @"objects\equipment\hologram_equipment\bipeds\masterchief_hologram" },
             { 0x0D75, @"objects\characters\masterchief\masterchief" },
             { 0x0D76, @"objects\characters\masterchief\masterchief" },
             { 0x0D77, @"objects\equipment\hologram_equipment\fx\hologram_pop" },
@@ -5543,7 +5543,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x159A, @"null_tag_159A" },
             { 0x159B, @"objects\levels\dlc\sidewinder\hornet_lite\hornet_lite" },
             { 0x159C, @"null_tag_159C" },
-            { 0x159D, @"objects\characters\elite\mp_elite\mp_elite_podium" },
+            { 0x159D, @"objects\characters\elite\elite_podium" },
             { 0x159E, @"objects\weapons\melee\energy_blade\energy_blade" },
             { 0x159F, @"multiplayer\game_engine_settings" },
             { 0x15A0, @"objects\characters\monitor\monitor_editor" },
@@ -6508,8 +6508,8 @@ namespace TagTool.MtnDewIt.Commands
             { 0x195F, @"objects\equipment\invisibility_equipment\fx\equipment" },
             { 0x1960, @"sound\weapons\equipment\invisibility\invisibility_loop\invisibility_loop" },
             { 0x1961, @"ui\chud\e_invisibility" },
-            { 0x1962, @"sound\weapons\equipment\invisibility\invisibility_activate" },
-            { 0x1963, @"sound\weapons\equipment\invisibility\invisibility_deactivate" },
+            { 0x1962, @"sound\weapons\equipment\invisibility\invisibility_start" },
+            { 0x1963, @"sound\weapons\equipment\invisibility\invisibility_end" },
             { 0x1964, @"fx\lens_flares\_bitmaps\star_glow" },
             { 0x1965, @"sound\weapons\equipment\invisibility\invisibility_loop\invisibility\loop" },
             { 0x1966, @"objects\equipment\invisibility_equipment\invisibility_equipment" },
@@ -6937,9 +6937,9 @@ namespace TagTool.MtnDewIt.Commands
             { 0x1B0C, @"objects\equipment\tankmode_equipment\tankmode_equipment" },
             { 0x1B0D, @"ui\chud\e_tankmode_active" },
             { 0x1B0E, @"objects\equipment\tankmode_equipment\fx\activation" },
-            { 0x1B0F, @"ui\chud\animations\tankmode_top" },
+            { 0x1B0F, @"ui\chud\animations\tankmode_top_ready" },
             { 0x1B10, @"ui\chud\bitmaps\tankmode_top" },
-            { 0x1B11, @"ui\chud\animations\tankmode_bottom" },
+            { 0x1B11, @"ui\chud\animations\tankmode_bottom_ready" },
             { 0x1B12, @"ui\chud\bitmaps\tankmode_bottom" },
             { 0x1B13, @"objects\equipment\tankmode_equipment\tankmode_equipment" },
             { 0x1B14, @"objects\equipment\tankmode_equipment\tankmode_equipment" },
@@ -10176,7 +10176,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x27B3, @"multiplayer\podium\podium_biped_spawn_flash" }, //unsure about this (tag is halo online specific)
             { 0x27B4, @"fx\shield_impacts\podium_biped_spawn_scroll" }, //unsure about this (tag is halo online specific)
             { 0x27B5, @"multiplayer\podium\podium_biped_spawn" }, //unsure about this (tag is halo online specific)
-            { 0x27B6, @"sound\game_sfx\multiplayer\podium_spartan_appear" }, //unsure about this (tag is halo online specific)
+            { 0x27B6, @"sound\game_sfx\multiplayer\podium_biped_appear" }, //unsure about this (tag is halo online specific)
             { 0x27B7, @"globals\damage_responses\collision" },
             { 0x27B8, @"null_tag_27B8" },
             { 0x27B9, @"null_tag_27B9" },

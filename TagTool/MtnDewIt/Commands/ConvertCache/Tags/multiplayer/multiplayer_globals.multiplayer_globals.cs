@@ -963,11 +963,12 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                         {
                             Name = CacheContext.StringTable.GetOrAddString("deployable_cover"),
-                            Object = GetCachedTag<Equipment>(@"objects\equipment\instantcover_equipment\instantcover_equipment"),
+                            Object = GetCachedTag<Equipment>(@"objects\equipment\instantcover_equipment\instantcover_equipment_mp"),
                         },
                         new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                         {
                             Name = CacheContext.StringTable.GetOrAddString("forced_reload"),
+                            Object = GetCachedTag<Equipment>(@"objects\equipment\forcedreload_equipment\forcedreload_equipment"),
                             Type = 18,
                         },
                         new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
@@ -979,6 +980,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                         {
                             Name = CacheContext.StringTable.GetOrAddString("tank_mode"),
+                            Object = GetCachedTag<Equipment>(@"objects\equipment\tankmode_equipment\tankmode_equipment"),
                             Type = 20,
                         },
                         new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
@@ -1007,11 +1009,13 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                         {
                             Name = CacheContext.StringTable.GetOrAddString("armor_lock"),
+                            Object = GetCachedTag<Equipment>(@"objects\equipment\armorlock_equipment\armorlock_equipment"),
                             Type = 17,
                         },
                         new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                         {
                             Name = CacheContext.StringTable.GetOrAddString("adrenaline"),
+                            Object = GetCachedTag<Equipment>(@"objects\equipment\adrenaline_equipment\adrenaline_equipment"),
                             Type = 7,
                         },
                         new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
@@ -1033,7 +1037,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable
                         {
                             Name = CacheContext.StringTable.GetOrAddString("ammo_pack"),
-                            Object = GetCachedTag<Equipment>($@"objects\equipment\ammo_pack_equipment\ammo_pack_equipment"),
+                            Object = GetCachedTag<Equipment>($@"objects\equipment\ammopack_equipment\ammopack_equipment"),
                             Type = 23,
                         },
                         new MultiplayerGlobals.MultiplayerUniversalBlock.Consumable

@@ -2890,7 +2890,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x0C10, @"objects\characters\masterchief\flashlight_1p" },
             { 0x0C11, @"objects\characters\masterchief\flashlight_3p" },
             { 0x0C12, @"objects\characters\masterchief\fx\flaming_ninja" },
-            { 0x0C13, @"objects\equipment\hologram\bipeds\masterchief_hologram" },
+            { 0x0C13, @"objects\equipment\hologram_equipment\bipeds\masterchief_hologram" },
             { 0x0C14, @"camera\biped_support_camera" },
             { 0x0C15, @"camera\biped_assassination_camera" },
             { 0x0C16, @"globals\damage_responses\player_assassination" },
@@ -2905,8 +2905,8 @@ namespace TagTool.MtnDewIt.Commands
             { 0x0C1F, @"fx\material_effects\objects\characters\contact\collision\blood_aoe_human_masterchief" },
             { 0x0C20, @"fx\shield_impacts\spartan_3p_down" }, //unsure about this (tag is halo online specific)
             { 0x0C21, @"fx\particles\energy\electric_arcs_gold_n1" }, //unsure about this (tag is halo online specific)
-            { 0x0C22, @"levels\shared\bitmaps\test_maps\plasma_noise_1" },
-            { 0x0C23, @"levels\shared\bitmaps\test_maps\plasma_noise_2" },
+            { 0x0C22, @"fx\bitmaps\plasma\plasma_clouds_512_a" },
+            { 0x0C23, @"fx\bitmaps\plasma\plasma_clouds_512_b" },
             { 0x0C24, @"test\chris\noise\blur_noise256_a" },
             { 0x0C25, @"test\chris\noise\blur_noise256_b" },
             { 0x0C26, @"fx\particles\energy\_bitmaps\electric_arcs_03" }, //unsure about this (tag is halo online specific)
@@ -3145,7 +3145,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x0D5C, @"fx\particles\vehicle\sand\impact_chunks_small_sand" },
             { 0x0D5D, @"fx\particles\vehicle\sand\impact_chunks_medium_sand" },
             { 0x0D5E, @"fx\decals\impact_bullet\impact_bullet_large\tough_terrain_mud" },
-            { 0x0D74, @"objects\equipment\hologram\bipeds\masterchief_hologram" },
+            { 0x0D74, @"objects\equipment\hologram_equipment\bipeds\masterchief_hologram" },
             { 0x0D75, @"objects\characters\masterchief\masterchief" },
             { 0x0D76, @"objects\characters\masterchief\masterchief" },
             { 0x0D77, @"objects\equipment\hologram_equipment\fx\hologram_pop" },
@@ -20098,9 +20098,9 @@ namespace TagTool.MtnDewIt.Commands
             { 0x5A6C, @"objects\equipment\equipment_pack\bitmaps\unsc_equipment_drop_holo_pixels" },
             { 0x5A6D, @"ms30\objects\bitmaps\decals\bitmaps\unsc_decals_diffuse" },
             { 0x5A6E, @"objects\equipment\equipment_pack\shaders\unsc_equipment_metal" },
-            { 0x5A6F, @"ms30\objects\bitmaps\decals\shaders\unsc_decals" },
-            { 0x5A70, @"objects\equipment\equipment_pack\shaders\unsc_equipment_drop_holo_illum" }, //unsure about this (both tags (0x5A70 & 0x5A71) appear to be the reach "drop_holo" shaders separated into two separate shaders instead of a single tag
-            { 0x5A71, @"objects\equipment\equipment_pack\shaders\unsc_equipment_drop_holo_pixels" }, //unsure about this (both tags (0x5A70 & 0x5A71) appear to be the reach "drop_holo" shaders separated into two separate shaders instead of a single tag
+            { 0x5A6F, @"objects\bitmaps\decals\shaders\unsc_decals_fp" },
+            { 0x5A70, @"objects\equipment\equipment_pack\shaders\unsc_equipment_drop_holo_scan_lines" }, //unsure about this (both tags (0x5A70 & 0x5A71) appear to be the reach "drop_holo" shaders separated into two separate shaders instead of a single tag
+            { 0x5A71, @"objects\equipment\equipment_pack\shaders\unsc_equipment_drop_holo" }, //unsure about this (both tags (0x5A70 & 0x5A71) appear to be the reach "drop_holo" shaders separated into two separate shaders instead of a single tag
             { 0x5A72, @"objects\equipment\equipment_pack\shaders\unsc_equipment_armorlock" }, //unsure about this (tag data may have been modified from reach (missing bitmaps, may have been merged in drop_holo tags?))
             { 0x5A73, @"objects\equipment\equipment_pack\equipment_pack" },
             { 0x5A74, @"objects\equipment\hologram_equipment\fx\equipment_icon" },
@@ -20110,8 +20110,8 @@ namespace TagTool.MtnDewIt.Commands
             { 0x5A78, @"objects\equipment\bombrun_equipment\fx\equipment_icon" },
             { 0x5A79, @"objects\equipment\concussiveblast_equipment\bitmaps\equipment_icon" },
             { 0x5A7A, @"objects\equipment\concussiveblast_equipment\fx\equipment_icon" },
-            { 0x5A7B, @"objects\equipment\invisibility_equipment\bitmaps\equipment_icon" },
-            { 0x5A7C, @"objects\equipment\invisibility_equipment\fx\equipment_icon" },
+            { 0x5A7B, @"objects\equipment\invisibility_vehicle_equipment\bitmaps\equipment_icon" },
+            { 0x5A7C, @"objects\equipment\invisibility_vehicle_equipment\fx\equipment_icon" },
             { 0x5A7D, @"objects\equipment\lightningstrike_equipment\bitmaps\equipment_icon" },
             { 0x5A7E, @"objects\equipment\lightningstrike_equipment\fx\equipment_icon" },
             { 0x5A7F, @"objects\equipment\reactive_armor_equipment\bitmaps\equipment_icon" },
