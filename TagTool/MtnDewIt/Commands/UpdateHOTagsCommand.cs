@@ -3658,7 +3658,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x0E3D, @"shaders\particle_templates\_0_8_0_0_0_1_1_0_1_0" },
             { 0x0E3E, @"shaders\particle_templates\_0_8_0_0_0_1_1_0_1_0" },
             { 0x0E3F, @"shaders\particle_templates\_0_8_0_0_0_1_1_0_1_0" },
-            { 0x0E40, @"objects\characters\masterchief\feedback\concussive_blast" }, //unsure about this (tag is halo online specific)
+            { 0x0E40, @"objects\characters\masterchief\fx\damage_feedback\concussive_blast" }, //unsure about this (tag is halo online specific)
             { 0x0E41, @"objects\props\human\unsc\spartan_knife\spartan_knife" },
             { 0x0E42, @"objects\props\human\unsc\spartan_knife\spartan_knife" },
             { 0x0E43, @"objects\characters\masterchief\shaders\mp_chest_knife" },
@@ -12598,7 +12598,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x3129, @"shaders\shader_templates\_0_2_0_1_1_2_0_0_1_0_0" },
             { 0x312A, @"objects\vehicles\mongoose\bitmaps\mongoose" },
             { 0x312B, @"objects\vehicles\mongoose\bitmaps\mongoose_bump" },
-            { 0x312C, @"objects\vehicles\mongoose\bitmaps\mongoose_cc" },
+            { 0x312C, @"objects\vehicles\mongoose\bitmaps\mongoose_control" },
             { 0x312D, @"objects\vehicles\mongoose\garbage\ramp\ramp" },
             { 0x312E, @"objects\vehicles\mongoose\fx\destruction\trans_hull_destroyed" },
             { 0x312F, @"fx\particles\fire\fire_small_vertical_n1" }, //unsure about this (tag is halo online specific)
