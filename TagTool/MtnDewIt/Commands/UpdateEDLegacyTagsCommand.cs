@@ -6498,7 +6498,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x1F84, @"ui\chud\animations\crosshair_animations\smg_crosshair_lr" }, //unsure about this (tag is halo online specific)
             { 0x1F85, @"ui\chud\animations\crosshair_animations\smg_tb" }, //unsure about this (tag is halo online specific)
             { 0x1F86, @"ui\chud\animations\crosshair_animations\smg_lr" }, //unsure about this (tag is halo online specific)
-            { 0x1F87, @"ui\chud\bitmaps\variant_weapons\smg_scematics" }, //unsure about this (tag is halo online specific)
+            { 0x1F87, @"ui\chud\bitmaps\weapon_scematics\smg_scematics" }, //unsure about this (tag is halo online specific)
             { 0x1F88, @"objects\weapons\rifle\sniper_rifle\sniper_rifle" },
             { 0x1F89, @"fx\material_effects\objects\weapons\sniper_rifle" },
             { 0x1F8A, @"objects\weapons\rifle\sniper_rifle\fx\firing" },
@@ -7361,7 +7361,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x22F4, @"objects\weapons\lod\bitmaps\plasma_pistol" },
             { 0x22F5, @"objects\weapons\pistol\plasma_pistol\fx\particles\overheated_gas" },
             { 0x22F6, @"ui\chud\animations\crosshair_animations\plasma_pistol_crosshair" }, //unsure about this (tag is halo online specific)
-            { 0x22F7, @"ui\chud\bitmaps\plasma_pistol_power_reticle" }, //unsure about this (tag is halo online specific)
+            { 0x22F7, @"ui\chud\bitmaps\plasma_pistol_power_crosshair" }, //unsure about this (tag is halo online specific)
             { 0x22F8, @"ui\chud\animations\crosshair_animations\plasma_pistol_t" }, //unsure about this (tag is halo online specific)
             { 0x22F9, @"ui\chud\animations\crosshair_animations\plasma_pistol_se" }, //unsure about this (tag is halo online specific)
             { 0x22FA, @"ui\chud\animations\crosshair_animations\plasma_pistol_sw" }, //unsure about this (tag is halo online specific)
@@ -7622,7 +7622,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x23FB, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_power\plasma_rifle_power" },
             { 0x23FC, @"objects\weapons\rifle\plasma_rifle\plasma_rifle_power\plasma_rifle_power" },
             { 0x23FD, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\covenant_carbine_power" },
-            { 0x23FE, @"ui\chud\covenant_carbine_power" },
+            { 0x23FE, @"ui\chud\carbine_power" },
             { 0x23FF, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\projectiles\carbine_slug\carbine_power_slug" },
             { 0x2400, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_power\fx\covenant_carbine_power_firing" }, //unsure about this (tag is halo online specific)
             { 0x2401, @"sound\weapons\covenant_carbine_power\carbine_power_fire" }, //unsure about this (tag is halo online specific)
@@ -8043,7 +8043,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x25A5, @"objects\weapons\rifle\dmr\dmr_ammo\dmr_ammo" }, //unsure about this (tag is halo online specific)
             { 0x25AA, @"globals\damage_responses\trigger_semiauto_n4" }, //unsure about this (tag is halo online specific)
             { 0x25B0, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\covenant_carbine_rof" },
-            { 0x25B1, @"ui\chud\covenant_carbine_rof" },
+            { 0x25B1, @"ui\chud\carbine_rof" },
             { 0x25B2, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\projectiles\carbine_slug\carbine_rof_slug" },
             { 0x25B3, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\fx\covenant_carbine_rof_firing" }, //unsure about this (tag is halo online specific)
             { 0x25B4, @"sound\weapons\covenant_carbine_rof\carbine_rof_fire" }, //unsure about this (tag is halo online specific)
@@ -8052,7 +8052,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x25B7, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\covenant_carbine_rof" }, //unsure about this (tag is halo online specific)
             { 0x25B8, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\covenant_carbine_rof" }, //unsure about this (tag is halo online specific)
             { 0x25B9, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\covenant_carbine_ammo" },
-            { 0x25BA, @"ui\chud\covenant_carbine_ammo" },
+            { 0x25BA, @"ui\chud\carbine_ammo" },
             { 0x25BB, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\projectiles\carbine_slug\carbine_ammo_slug" },
             { 0x25BC, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\fx\covenant_carbine_ammo_firing" }, //unsure about this (tag is halo online specific)
             { 0x25BD, @"sound\weapons\covenant_carbine_ammo\carbine_ammo_fire" }, //unsure about this (tag is halo online specific)
@@ -8061,7 +8061,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x25C0, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\covenant_carbine_ammo" }, //unsure about this (tag is halo online specific)
             { 0x25C1, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_ammo\covenant_carbine_ammo" }, //unsure about this (tag is halo online specific)
             { 0x25C2, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\covenant_carbine_range" },
-            { 0x25C3, @"ui\chud\covenant_carbine_range" },
+            { 0x25C3, @"ui\chud\carbine_range" },
             { 0x25C4, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\projectiles\carbine_slug\carbine_range_slug" },
             { 0x25C5, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\fx\covenant_carbine_range_firing" }, //unsure about this (tag is halo online specific)
             { 0x25C6, @"sound\weapons\covenant_carbine_range\carbine_range_fire" }, //unsure about this (tag is halo online specific)
@@ -8070,7 +8070,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x25C9, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\covenant_carbine_range" }, //unsure about this (tag is halo online specific)
             { 0x25CA, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_range\covenant_carbine_range" }, //unsure about this (tag is halo online specific)
             { 0x25CB, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage\covenant_carbine_damage" },
-            { 0x25CC, @"ui\chud\covenant_carbine_damage" },
+            { 0x25CC, @"ui\chud\carbine_damage" },
             { 0x25CD, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage\projectiles\carbine_slug\carbine_damage_slug" },
             { 0x25CE, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage\fx\covenant_carbine_damage_firing" }, //unsure about this (tag is halo online specific)
             { 0x25CF, @"sound\weapons\covenant_carbine_damage\carbine_damage_fire" }, //unsure about this (tag is halo online specific)
@@ -8079,7 +8079,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x25D2, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage\covenant_carbine_damage" }, //unsure about this (tag is halo online specific)
             { 0x25D3, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_damage\covenant_carbine_damage" }, //unsure about this (tag is halo online specific)
             { 0x25D4, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_accuracy\covenant_carbine_accuracy" },
-            { 0x25D5, @"ui\chud\covenant_carbine_accuracy" },
+            { 0x25D5, @"ui\chud\carbine_accuracy" },
             { 0x25D6, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_accuracy\projectiles\carbine_slug\carbine_accuracy_slug" },
             { 0x25D7, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_accuracy\fx\covenant_carbine_accuracy_firing" }, //unsure about this (tag is halo online specific)
             { 0x25D8, @"sound\weapons\covenant_carbine_accuracy\carbine_accuracy_fire" }, //unsure about this (tag is halo online specific)
