@@ -7,7 +7,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
     {
         public void UpdateTagData()
         {
-            new ui_chud_bitmaps_stamina_icon_elite_bitmap(Cache, CacheContext, CacheStream);
+            new ui_chud_bitmaps_elite_stamina_icon_bitmap(Cache, CacheContext, CacheStream);
 
             new ui_eldewrito_common_map_bitmaps_placeholder_bitmap(Cache, CacheContext, CacheStream);
 

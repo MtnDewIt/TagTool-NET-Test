@@ -587,7 +587,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     {
                         Name = CacheContext.StringTable.GetOrAddString("icon"),
                         RuntimeWidgetIndex = 146,
-                        Bitmap = GetCachedTag<Bitmap>($@"ui\chud\bitmaps\stamina_icon_elite"),
+                        Bitmap = GetCachedTag<Bitmap>($@"ui\chud\bitmaps\elite_stamina_icon"),
                         PlacementData = new List<ChudDefinition.HudWidgetBase.PlacementDatum>
                         {
                             new ChudDefinition.HudWidgetBase.PlacementDatum

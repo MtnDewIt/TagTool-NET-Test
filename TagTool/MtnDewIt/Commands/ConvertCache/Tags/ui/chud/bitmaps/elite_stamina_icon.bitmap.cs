@@ -7,9 +7,9 @@ using TagTool.Commands;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
-    public class ui_chud_bitmaps_stamina_icon_elite_bitmap : TagFile
+    public class ui_chud_bitmaps_elite_stamina_icon_bitmap : TagFile
     {
-        public ui_chud_bitmaps_stamina_icon_elite_bitmap(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public ui_chud_bitmaps_elite_stamina_icon_bitmap(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,
@@ -24,9 +24,9 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
 
         public override void TagData()
         {
-            var tag = GetCachedTag<Bitmap>($@"ui\chud\bitmaps\stamina_icon_elite");
+            var tag = GetCachedTag<Bitmap>($@"ui\chud\bitmaps\elite_stamina_icon");
             var bitm = CacheContext.Deserialize<Bitmap>(Stream, tag);
-            AddBitmap(bitm, 0, $@"{Program.TagToolDirectory}\Tools\BaseCache\Images\Assets\stamina_icon_elite.dds");
+            AddBitmap(bitm, 0, $@"{Program.TagToolDirectory}\Tools\BaseCache\Images\Assets\elite_stamina_icon.dds");
             CacheContext.Serialize(Stream, tag, bitm);
         }
     }

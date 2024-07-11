@@ -435,31 +435,31 @@ namespace TagTool.MtnDewIt.Commands
             { 0x01BC, @"ui\multiplayer" },
             { 0x01BD, @"ui\chud\globals" },
             { 0x01BE, @"ui\global_strings\damage_strings" },
-            { 0x01BF, @"hf2p\strings\main_strings" },
-            { 0x01C0, @"hf2p\strings\settings_strings" },
-            { 0x01C1, @"hf2p\strings\lobby_strings" },
-            { 0x01C2, @"hf2p\strings\emblem_editor_strings" },
-            { 0x01C3, @"hf2p\strings\carousel_strings" },
-            { 0x01C4, @"hf2p\strings\consumable_strings" },
-            { 0x01C5, @"hf2p\strings\weapon_strings" },
-            { 0x01C6, @"hf2p\strings\ingame_strings" },
-            { 0x01C7, @"hf2p\strings\armor_strings" },
-            { 0x01C8, @"hf2p\strings\message_strings" },
-            { 0x01C9, @"hf2p\strings\buy_strings" },
-            { 0x01CA, @"hf2p\strings\game_mode_strings" },
-            { 0x01CB, @"hf2p\strings\map_strings" },
-            { 0x01CC, @"hf2p\strings\loading_strings" },
-            { 0x01CD, @"hf2p\strings\tip_strings" },
-            { 0x01CE, @"hf2p\strings\level_strings" },
-            { 0x01CF, @"hf2p\strings\profile_strings" },
-            { 0x01D0, @"hf2p\strings\class_strings" },
-            { 0x01D1, @"hf2p\strings\manufacturer_strings" },
-            { 0x01D2, @"hf2p\strings\medal_strings" },
-            { 0x01D3, @"hf2p\strings\playlist_strings" },
-            { 0x01D4, @"hf2p\strings\damage_reporting_type_strings" },
-            { 0x01D5, @"hf2p\strings\challenge_strings" },
-            { 0x01D6, @"hf2p\strings\career_strings" },
-            { 0x01D7, @"hf2p\strings\mod_strings" },
+            { 0x01BF, @"ui\global_strings\main_strings" },
+            { 0x01C0, @"ui\global_strings\settings_strings" },
+            { 0x01C1, @"ui\global_strings\lobby_strings" },
+            { 0x01C2, @"ui\global_strings\emblem_editor_strings" },
+            { 0x01C3, @"ui\global_strings\carousel_strings" },
+            { 0x01C4, @"ui\global_strings\consumable_strings" },
+            { 0x01C5, @"ui\global_strings\weapon_strings" },
+            { 0x01C6, @"ui\global_strings\ingame_strings" },
+            { 0x01C7, @"ui\global_strings\armor_strings" },
+            { 0x01C8, @"ui\global_strings\message_strings" },
+            { 0x01C9, @"ui\global_strings\buy_strings" },
+            { 0x01CA, @"ui\global_strings\game_mode_strings" },
+            { 0x01CB, @"ui\global_strings\map_strings" },
+            { 0x01CC, @"ui\global_strings\loading_strings" },
+            { 0x01CD, @"ui\global_strings\tip_strings" },
+            { 0x01CE, @"ui\global_strings\level_strings" },
+            { 0x01CF, @"ui\global_strings\profile_strings" },
+            { 0x01D0, @"ui\global_strings\class_strings" },
+            { 0x01D1, @"ui\global_strings\manufacturer_strings" },
+            { 0x01D2, @"ui\global_strings\medal_strings" },
+            { 0x01D3, @"ui\global_strings\playlist_strings" },
+            { 0x01D4, @"ui\global_strings\damage_reporting_type_strings" },
+            { 0x01D5, @"ui\global_strings\challenge_strings" },
+            { 0x01D6, @"ui\global_strings\career_strings" },
+            { 0x01D7, @"ui\global_strings\mod_strings" },
             { 0x01D8, @"objects\characters\masterchief\fx\coop_teleport" },
             { 0x01D9, @"sound\weapons\battle_rifle\flashlight" },
             { 0x01DA, @"globals\damage_responses\default" },
@@ -1592,7 +1592,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x06A0, @"objects\weapons\grenade\claymore_grenade\fx\projectile_tip" },
             { 0x06A1, @"objects\weapons\grenade\claymore_grenade\fx\projectile" },
             { 0x06A2, @"objects\weapons\grenade\claymore_grenade\fx\attach_sizzle" },
-            { 0x06A3, @"sound\weapons\claymore_grenade\brute_shot_projectile\brute_shot_projectile." },
+            { 0x06A3, @"sound\weapons\claymore_grenade\brute_shot_projectile\brute_shot_projectile" },
             { 0x06A4, @"objects\weapons\grenade\claymore_grenade\fx\airborne_detonation" },
             { 0x06A5, @"objects\weapons\grenade\claymore_grenade\fx\detonation" },
             { 0x06A6, @"objects\weapons\grenade\claymore_grenade\damage_effects\claymore_grenade_attached_explosion" },
@@ -2689,7 +2689,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x0AF6, @"ui\halox\start_menu\panes\hq_screenshots_viewer\strings_preview" },
             { 0x0AF7, @"ui\halox\start_menu\panes\hq_screenshots_viewer\b_back" },
             { 0x0AF8, @"ui\global_strings\global_strings" },
-            { 0x0AF9, @"ui\global_strings\halo_online" },
+            { 0x0AF9, @"ui\global_strings\ui_strings" },
             { 0x0AFA, @"ui\default_sounds" },
             { 0x0AFB, @"ui\global_datasources\game_variant" },
             { 0x0AFC, @"ui\global_datasources\player_rank" },
@@ -2924,11 +2924,11 @@ namespace TagTool.MtnDewIt.Commands
             { 0x0C32, @"ui\chud\animations\invisible" },
             { 0x0C33, @"ui\chud\animations\shields_out" },
             { 0x0C34, @"ui\chud\bitmaps\shield_flash_bleed" },
-            { 0x0C35, @"ui\chud\animations\shield_dimming2" }, //unsure about this (tag is halo online specific)
+            { 0x0C35, @"ui\chud\animations\shield_color" },
             { 0x0C36, @"ui\chud\animations\shield_dimming" },
             { 0x0C37, @"ui\chud\bitmaps\shield_border" },
-            { 0x0C38, @"ui\chud\bitmaps\shield_meter" },
-            { 0x0C39, @"ui\chud\bitmaps\shield_meter_campaign" }, //unsure about this (halo 3 shield meter)
+            { 0x0C38, @"ui\chud\bitmaps\shield_meter_hf2p" },
+            { 0x0C39, @"ui\chud\bitmaps\shield_meter" }, //unsure about this (halo 3 shield meter)
             { 0x0C3A, @"ui\chud\bitmaps\visr_warning" }, //unsure about this (tag is halo online specific)
             { 0x0C3B, @"ui\chud\animations\mt_readying2" }, //reach tag name (might not be entirely accurate)
             { 0x0C3C, @"ui\chud\bitmaps\motion_tracker" },
@@ -2948,7 +2948,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x0C4A, @"ui\chud\animations\boot_sequence\grid_boot" },
             { 0x0C4B, @"ui\chud\bitmaps\init_lines_grid" },
             { 0x0C4C, @"ui\chud\animations\boot_sequence\wipe_boot_up" },
-            { 0x0C4D, @"ui\chud\bitmaps\init_lines_vert_grid" }, //unsure about this (tag isn't in used in halo 3 or reach afaik)
+            { 0x0C4D, @"ui\chud\bitmaps\init_lines_wipe" }, //unsure about this (tag isn't in used in halo 3 or reach afaik)
             { 0x0C4E, @"ui\chud\animations\boot_sequence\wipe_boot_down" },
             { 0x0C4F, @"ui\chud\animations\boot_sequence\line_boot" },
             { 0x0C50, @"ui\chud\bitmaps\init_burst" },
@@ -2987,7 +2987,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x0C8B, @"ui\chud\bitmaps\bottom_middle" },
             { 0x0C8C, @"ui\chud\bitmaps\bottom_edge_right" }, //unsure about this (tag is halo online specific)
             { 0x0C8D, @"ui\chud\animations\hud_text_scale_1" }, //unsure about this (tag is halo online specific) // Will Need to Look Into These Tags Some More
-            { 0x0C8E, @"ui\chud\animations\hud_text_colour" }, //unsure about this (tag is halo online specific) // Will Need to Look Into These Tags Some More
+            { 0x0C8E, @"ui\chud\animations\hud_text_dimming" }, //unsure about this (tag is halo online specific) // Will Need to Look Into These Tags Some More
             { 0x0C8F, @"ui\chud\bitmaps\hud_text" }, //unsure about this (tag is halo online specific) // Will Need to Look Into These Tags Some More
             { 0x0C90, @"ui\chud\animations\hud_text_scale_3" }, //unsure about this (tag is halo online specific) // Will Need to Look Into These Tags Some More 
             { 0x0C91, @"ui\chud\animations\hud_text_scale_2" }, //unsure about this (tag is halo online specific) // Will Need to Look Into These Tags Some More
@@ -4264,11 +4264,11 @@ namespace TagTool.MtnDewIt.Commands
             { 0x12B5, @"sound\game_sfx\ui\switch_grenades\switch_to_fire_bomb" },
             { 0x12B6, @"ui\chud\bitmaps\chud_microtexture" },
             { 0x12B7, @"ui\chud\bitmaps\chud_noise" },
-            { 0x12B8, @"ui\chud\bitmaps\chud_directional_arrow_new" },
-            { 0x12B9, @"ui\chud\bitmaps\waypoints_grenade" },
+            { 0x12B8, @"ui\chud\bitmaps\chud_directional_arrow_hf2p" },
+            { 0x12B9, @"ui\chud\bitmaps\waypoints_grenades_hf2p" },
             { 0x12BA, @"ui\chud\bitmaps\objective_help" },
             { 0x12BB, @"ui\chud\bitmaps\waypoints" },
-            { 0x12BC, @"ui\chud\bitmaps\waypoints_player" },
+            { 0x12BC, @"ui\chud\bitmaps\waypoints_hf2p" },
             { 0x12BD, @"ui\chud\scoreboard" },
             { 0x12BE, @"ui\chud\metagame_scoreboard" },
             { 0x12BF, @"ui\chud\survival_scoreboard" },
@@ -4347,7 +4347,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x1308, @"sound\game_sfx\ui\stamina_charge\stamina_charge\in" },
             { 0x1309, @"sound\game_sfx\ui\stamina_charge\stamina_charge\loop" },
             { 0x130A, @"sound\game_sfx\ui\stamina_depleted\stamina_depleted\loop" },
-            { 0x130B, @"ui\chud\bitmaps\hud_meter" }, //unsure about this (tag is halo online specific)
+            { 0x130B, @"ui\chud\bitmaps\consumable_meter" }, //unsure about this (tag is halo online specific)
             { 0x130C, @"ui\chud\bitmaps\scoreboard_meter_static" }, //unsure about this (tag is halo online specific)
             { 0x130D, @"ui\chud\bitmaps\variant_items\gametypes" },
             { 0x130E, @"ui\chud\bitmaps\posession" },
@@ -19346,7 +19346,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x573D, @"ui\eldewrito\common\map_bitmaps\guardian" },
             { 0x573E, @"ui\eldewrito\common\map_bitmaps\s3d_avalanche" },
             { 0x573F, @"ui\chud\bitmaps\sentinel_beam_scematic" }, //unsure about this (tag is halo online specific)
-            { 0x5740, @"ui\chud\bitmaps\equipment_scematics_h3" }, //unsure about this (tag is halo online specific)
+            { 0x5740, @"ui\chud\bitmaps\consumable_scematics" }, //unsure about this (tag is halo online specific)
             { 0x5741, @"ui\chud\flag" },
             { 0x5742, @"objects\eldewrito\reforge\shaders\terrain\brick00" },
             { 0x5743, @"objects\eldewrito\reforge\shaders\terrain\concr00" },
