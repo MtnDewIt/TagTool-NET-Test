@@ -6489,7 +6489,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x1F7B, @"objects\weapons\rifle\smg\smg" },
             { 0x1F7C, @"objects\weapons\rifle\smg\smg" },
             { 0x1F7D, @"objects\weapons\lod\lod_smg\lod_smg" },
-            { 0x1F7E, @"objects\weapons\lod\shaders\lod_smg_2" },
+            { 0x1F7E, @"objects\weapons\lod\shaders\lod_smg_new" },
             { 0x1F7F, @"ui\chud\animations\crosshair_animations\smg_crosshair_tb" }, //unsure about this (tag is halo online specific)
             { 0x1F80, @"ui\chud\animations\crosshair_animations\smg_sw" }, //unsure about this (tag is halo online specific))
             { 0x1F81, @"ui\chud\animations\crosshair_animations\smg_se" }, //unsure about this (tag is halo online specific)
