@@ -6761,7 +6761,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x208F, @"objects\weapons\pistol\excavator\projectiles\excavator_shard" },
             { 0x2090, @"objects\weapons\pistol\excavator\fx\firing" },
             { 0x2091, @"sound\weapons\magnum\magnum_dryfire" },
-            { 0x2092, @"globals\damage_responses\trigger_semiauto_n2" }, //unsure about this (tag is halo online specific)
+            { 0x2092, @"globals\damage_responses\trigger_semiauto_heavy" }, //unsure about this (tag is halo online specific)
             { 0x2093, @"sound\weapons\excavator\excavator_fp\excavator_dual_reload_left" },
             { 0x2094, @"sound\weapons\excavator\excavator_fp\excavator_dual_reload_right" },
             { 0x2095, @"sound\weapons\excavator\excavator_fp\excavator_reload" },
@@ -6805,7 +6805,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x20BC, @"ui\chud\magnum" },
             { 0x20BD, @"objects\weapons\pistol\magnum\projectiles\magnum_bullet" },
             { 0x20BE, @"objects\weapons\pistol\magnum\fx\firing" },
-            { 0x20BF, @"globals\damage_responses\trigger_semiauto_n3" }, //unsure about this (tag is halo online specific)
+            { 0x20BF, @"globals\damage_responses\trigger_semiauto_medium" }, //unsure about this (tag is halo online specific)
             { 0x20C0, @"sound\weapons\magnum\magnum_fp\magnum_dual_pose_left" },
             { 0x20C1, @"sound\weapons\magnum\magnum_fp\magnum_dual_ready" },
             { 0x20C2, @"sound\weapons\magnum\magnum_fp\magnum_dual_reload_left" },
@@ -7402,7 +7402,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x231F, @"ui\chud\assault_rifle_damage" },
             { 0x2320, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\projectiles\assault_rifle_damage_bullet" },
             { 0x2321, @"objects\weapons\rifle\assault_rifle\assault_rifle_damage\fx\assault_rifle_damage_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2322, @"globals\damage_responses\trigger_fullauto_n2" }, //unsure about this (tag is halo online specific)
+            { 0x2322, @"globals\damage_responses\trigger_fullauto_heavy_low" }, //unsure about this (tag is halo online specific)
             { 0x2323, @"sound\weapons\assault_rifle_damage\assault_rifle_damage_fire" }, //unsure about this (tag is halo online specific)
             { 0x2324, @"sound\weapons\assault_rifle_damage\assault_rifle_damage_lod_near" }, //unsure about this (tag is halo online specific)
             { 0x2325, @"sound\weapons\assault_rifle_damage\assault_rifle_damage_tails_int" }, //unsure about this (tag is halo online specific)
@@ -7423,7 +7423,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x2334, @"ui\chud\assault_rifle_rof" },
             { 0x2335, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\projectiles\assault_rifle_rof_bullet" },
             { 0x2336, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\fx\assault_rifle_rof_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2337, @"globals\damage_responses\trigger_fullauto_n3" }, //unsure about this (tag is halo online specific)
+            { 0x2337, @"globals\damage_responses\trigger_fullauto_weak_low" }, //unsure about this (tag is halo online specific)
             { 0x2338, @"sound\weapons\assault_rifle_rof\assault_rifle_rof_fire" }, //unsure about this (tag is halo online specific)
             { 0x2339, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\damage_effects\assault_rifle_rof_bullet" }, //unsure about this (tag is halo online specific)
             { 0x233A, @"objects\weapons\rifle\assault_rifle\assault_rifle_rof\assault_rifle_rof" }, //unsure about this (tag is halo online specific)
@@ -7482,7 +7482,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x236F, @"ui\chud\battle_rifle_damage" },
             { 0x2370, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\projectiles\battle_rifle_damage_bullet" },
             { 0x2371, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\fx\battle_rifle_damage_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2372, @"globals\damage_responses\trigger_fullauto_n4" }, //unsure about this (tag is halo online specific)
+            { 0x2372, @"globals\damage_responses\trigger_fullauto_heavy_high" }, //unsure about this (tag is halo online specific)
             { 0x2373, @"sound\weapons\battle_rifle_damage\battle_rifle_damage_fire" }, //unsure about this (tag is halo online specific)
             { 0x2374, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\damage_effects\battle_rifle_damage_bullet" }, //unsure about this (tag is halo online specific)
             { 0x2375, @"objects\weapons\rifle\battle_rifle\battle_rifle_damage\battle_rifle_damage" }, //unsure about this (tag is halo online specific)
@@ -7586,7 +7586,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x23D7, @"ui\chud\smg_accuracy" },
             { 0x23D8, @"objects\weapons\rifle\smg\smg_accuracy\projectiles\smg_accuracy_bullet" },
             { 0x23D9, @"objects\weapons\rifle\smg\smg_accuracy\fx\smg_accuracy_firing" }, //unsure about this (tag is halo online specific)
-            { 0x23DA, @"globals\damage_responses\trigger_fullauto_n5" }, //unsure about this (tag is halo online specific)
+            { 0x23DA, @"globals\damage_responses\trigger_fullauto_medium_high" }, //unsure about this (tag is halo online specific)
             { 0x23DB, @"sound\weapons\smg_accuracy\smg_accuracy_fire" }, //unsure about this (tag is halo online specific)
             { 0x23DC, @"objects\weapons\rifle\smg\smg_accuracy\damage_effects\smg_accuracy_bullet" }, //unsure about this (tag is halo online specific)
             { 0x23DD, @"objects\weapons\rifle\smg\smg_accuracy\smg_accuracy" }, //unsure about this (tag is halo online specific)
@@ -8007,7 +8007,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x2581, @"ui\chud\battle_rifle_rof" },
             { 0x2582, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\projectiles\battle_rifle_rof_bullet" },
             { 0x2583, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\fx\battle_rifle_rof_firing" }, //unsure about this (tag is halo online specific)
-            { 0x2584, @"globals\damage_responses\trigger_fullauto_n6" }, //unsure about this (tag is halo online specific)
+            { 0x2584, @"globals\damage_responses\trigger_fullauto_weak_high" }, //unsure about this (tag is halo online specific)
             { 0x2585, @"sound\weapons\battle_rifle_rof\battle_rifle_rof_fire" }, //unsure about this (tag is halo online specific)
             { 0x2586, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\damage_effects\battle_rifle_rof_bullet" }, //unsure about this (tag is halo online specific)
             { 0x2587, @"objects\weapons\rifle\battle_rifle\battle_rifle_rof\battle_rifle_rof" }, //unsure about this (tag is halo online specific)
@@ -8017,7 +8017,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x258B, @"ui\chud\battle_rifle_accuracy" },
             { 0x258C, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\projectiles\battle_rifle_accuracy_bullet" },
             { 0x258D, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\fx\battle_rifle_accuracy_firing" }, //unsure about this (tag is halo online specific)
-            { 0x258E, @"globals\damage_responses\trigger_fullauto_n7" }, //unsure about this (tag is halo online specific)
+            { 0x258E, @"globals\damage_responses\trigger_fullauto_medium_low" }, //unsure about this (tag is halo online specific)
             { 0x258F, @"sound\weapons\battle_rifle_accuracy\battle_rifle_accuracy_fire" }, //unsure about this (tag is halo online specific)
             { 0x2590, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\damage_effects\battle_rifle_accuracy_bullet" }, //unsure about this (tag is halo online specific)
             { 0x2591, @"objects\weapons\rifle\battle_rifle\battle_rifle_accuracy\battle_rifle_accuracy" }, //unsure about this (tag is halo online specific)
@@ -8041,7 +8041,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x25A3, @"objects\weapons\rifle\dmr\dmr_ammo\dmr_ammo" }, //unsure about this (tag is halo online specific)
             { 0x25A4, @"objects\weapons\rifle\dmr\dmr_ammo\dmr_ammo" }, //unsure about this (tag is halo online specific)
             { 0x25A5, @"objects\weapons\rifle\dmr\dmr_ammo\dmr_ammo" }, //unsure about this (tag is halo online specific)
-            { 0x25AA, @"globals\damage_responses\trigger_semiauto_n4" }, //unsure about this (tag is halo online specific)
+            { 0x25AA, @"globals\damage_responses\trigger_semiauto_light" }, //unsure about this (tag is halo online specific)
             { 0x25B0, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\covenant_carbine_rof" },
             { 0x25B1, @"ui\chud\carbine_rof" },
             { 0x25B2, @"objects\weapons\rifle\covenant_carbine\covenant_carbine_rof\projectiles\carbine_slug\carbine_rof_slug" },
