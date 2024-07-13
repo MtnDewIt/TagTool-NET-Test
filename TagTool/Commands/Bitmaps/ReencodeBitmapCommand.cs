@@ -67,8 +67,8 @@ namespace TagTool.Commands.Bitmaps
                 {
                     for (int layerIndex = 0; layerIndex < Bitmap.Images[imageIndex].Depth; layerIndex++)
                     {
-                        var pixelDataOffset = BitmapUtilsPC.GetTextureOffset(Bitmap.Images[imageIndex], mipLevel);
-                        var pixelDataSize = BitmapUtilsPC.GetMipmapPixelDataSize(Bitmap.Images[imageIndex], mipLevel);
+                        var pixelDataOffset = BitmapUtilsPC.GetMipmapOffset(Bitmap.Images[imageIndex], layerIndex, mipLevel);
+                        var pixelDataSize = BitmapUtilsPC.GetMipmapPixelDataSize(Bitmap.Images[imageIndex], layerIndex, mipLevel);
 
                         byte[] pixelData = new byte[pixelDataSize];
                         if (mipLevel == 0 && resourceDefinition.Texture.Definition.Bitmap.HighResInSecondaryResource > 0 || primaryData == null)

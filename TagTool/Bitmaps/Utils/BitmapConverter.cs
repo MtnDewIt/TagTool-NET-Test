@@ -50,7 +50,7 @@ namespace TagTool.Bitmaps.Utils
                     otherDefinition, 
                     forDDS, 
                     cache.Version,
-                cache.Platform,
+                    cache.Platform,
                     tagName);
             }
             else
@@ -177,10 +177,9 @@ namespace TagTool.Bitmaps.Utils
 
             if (cachePlatform == CachePlatform.MCC)
             {
-                if (resultBitmap.Format == BitmapFormat.V8U8 ||
-                    resultBitmap.Format == BitmapFormat.V16U16)
+                if (resultBitmap.Format == BitmapFormat.V8U8 || resultBitmap.Format == BitmapFormat.V16U16)
                 {
-                    resultBitmap.UpdateFormat(BitmapFormat.Dxn);
+                    resultBitmap.UpdateFormat(BitmapFormat.A8R8G8B8);
                 }
             }
             // fix dxt5 bumpmaps (h3 wraith bump)
@@ -286,8 +285,8 @@ namespace TagTool.Bitmaps.Utils
 
         private unsafe static void ConvertGen3BitmapDataMCC(Stream resultStream, byte[] primaryData, byte[] secondaryData, BitmapTextureInteropDefinition definition, Bitmap bitmap, int imageIndex, int level, int layerIndex, bool isPaired, int pairIndex, BitmapTextureInteropDefinition otherDefinition, CacheVersion version)
         {
-            var pixelDataOffset = BitmapUtilsPC.GetTextureOffset(bitmap.Images[imageIndex], level);
-            var pixelDataSize = BitmapUtilsPC.GetMipmapPixelDataSize(bitmap.Images[imageIndex], level);
+            var pixelDataOffset = BitmapUtilsPC.GetMipmapOffset(bitmap.Images[imageIndex], layerIndex, level);
+            var pixelDataSize = BitmapUtilsPC.GetMipmapPixelDataSize(bitmap.Images[imageIndex], layerIndex, level);
             int width = BitmapUtilsPC.GetMipmapWidth(bitmap.Images[imageIndex], level);
             int height = BitmapUtilsPC.GetMipmapHeight(bitmap.Images[imageIndex], level);
 
@@ -302,23 +301,19 @@ namespace TagTool.Bitmaps.Utils
                     pixelDataOffset -= secondaryData.Length;
                 Array.Copy(primaryData, pixelDataOffset, pixelData, 0, pixelDataSize);
             }
-            
-            if(bitmap.Images[imageIndex].Format == BitmapFormat.Dxn)
+
+            if (bitmap.Images[imageIndex].Format == BitmapFormat.V8U8)
             {
-                // convert bc5_snorm to ati2n_unorm
-                byte[] rgba = BitmapDecoder.DecodeDxnSigned(pixelData, width, height, true);
-                pixelData = EncodeDXN(rgba, width, height, out var _);
-            }
-            else if (bitmap.Images[imageIndex].Format == BitmapFormat.V8U8)
-            {
-                // convert R8G8_SNORM to ati2n_unorm
-                var rgba = BitmapDecoder.DecodeV8U8(pixelData, width, height, true);
-                pixelData = EncodeDXN(rgba, width, height, out var _);
+                pixelData = BitmapDecoder.DecodeBitmap(pixelData, BitmapFormat.V8U8, width, height);
             }
             else if (bitmap.Images[imageIndex].Format == BitmapFormat.V16U16)
             {
-                // convert R16G16_SNORM to ati2n_unorm
-                var rgba = BitmapDecoder.DecodeV16U16(pixelData, width, height, true);
+                pixelData = BitmapDecoder.DecodeBitmap(pixelData, BitmapFormat.V16U16, width, height);
+            }
+            else if (bitmap.Images[imageIndex].Format == BitmapFormat.Dxn)
+            {
+                // convert bc5_snorm to ati2n_unorm
+                byte[] rgba = BitmapDecoder.DecodeDxnSigned(pixelData, width, height, true);
                 pixelData = EncodeDXN(rgba, width, height, out var _);
             }
             else if (bitmap.Images[imageIndex].Format == BitmapFormat.A2R10G10B10)

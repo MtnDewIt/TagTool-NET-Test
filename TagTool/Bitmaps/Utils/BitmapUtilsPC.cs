@@ -5,18 +5,18 @@ namespace TagTool.Bitmaps.Utils
 {
     public static class BitmapUtilsPC
     {
-        public static int GetTextureOffset(Image bitmap, int mipmapIndex)
+        public static int GetMipmapOffset(Image bitmap, int layerIndex, int mipmapIndex)
         {
             switch (bitmap.Type)
             {
                 case BitmapType.Texture2D:
                     return GetTexture2DOffset(bitmap, 0, 0, mipmapIndex);
                 case BitmapType.Texture3D:
-                    return GetTexture3DOffset(bitmap, 0, 0, 0, mipmapIndex);
+                    return GetTexture3DOffset(bitmap, 0, 0, layerIndex, mipmapIndex);
                 case BitmapType.CubeMap:
-                    return GetTextureCubemapOffset(bitmap, 0, 0, 0, mipmapIndex);
+                    return GetTextureCubemapOffset(bitmap, 0, 0, layerIndex, mipmapIndex);
                 case BitmapType.Array:
-                    return GetTextureArrayOffset(bitmap, 0, 0, 0, mipmapIndex);
+                    return GetTextureArrayOffset(bitmap, 0, 0, layerIndex, mipmapIndex);
                 default:
                     throw new NotImplementedException();
             }
@@ -56,7 +56,8 @@ namespace TagTool.Bitmaps.Utils
                 height = Math.Max(height >> 1, align);
                 depth = Math.Max(depth >> 1, align);
             }
-            return (bitsPerPixel * (offset + width * (y + z * height) + x) / 8);
+
+            return bitsPerPixel * (offset + x + y * width + z * width * height) / 8;
         }
 
         public static int GetTextureCubemapOffset(Image bitmap, int x, int y, int z, int mipmapIndex)
@@ -80,32 +81,21 @@ namespace TagTool.Bitmaps.Utils
             int width = bitmap.Width;
             int height = bitmap.Height;
             int align = bitmap.Flags.HasFlag(BitmapFlags.Compressed) ? 4 : 1;
-            
-            int offset = 0;
-            for(int i = 0; i < z; i++)
+            int bitsPerPixel = BitmapFormatUtils.GetBitsPerPixel(bitmap.Format);
+
+            int layerOffset = 0;
+            int mipOffset = 0;
+
+            for (int i = 0; i <= bitmap.MipmapCount; i++)
             {
-                for (int j = 0; j < mipmapIndex; j++)
-                {
-                    width = Math.Max(width >> 1, align);
-
-                    int size;
-                    if (bitmap.Flags.HasFlag(BitmapFlags.Compressed))
-                    {
-                        int bitsPerPixel = BitmapFormatUtils.GetBitsPerPixel(bitmap.Format);
-                        size = bitsPerPixel * (width >> 2) * (width >> 2);
-                    }
-                    else
-                    {
-                        int bytesPerBlock = GetBytesPerBlock(bitmap.Format);
-                        height = Math.Max(height >> 1, align);
-                        size = height * width * bytesPerBlock / 8;
-                    }
-
-                    offset += size;
-                }
+                if (i == mipmapIndex)
+                    mipOffset = layerOffset;
+                layerOffset += width * height;
+                width = Math.Max(width >> 1, align);
+                height = Math.Max(height >> 1, align);
             }
- 
-            return offset;
+
+            return (layerOffset * z + mipOffset + y * width + x) * bitsPerPixel / 8;
         }
 
         public static int GetMipmapWidth(Image bitmap, int mipmapIndex)
@@ -134,7 +124,6 @@ namespace TagTool.Bitmaps.Utils
             int width = GetMipmapWidth(bitmap, mipmapIndex);
             int height = GetMipmapHeight(bitmap, mipmapIndex);
             int depth = GetMipmapDepth(bitmap, mipmapIndex);
-
             int pixelCount = width * height * depth;
             if (bitmap.Type == BitmapType.CubeMap)
                 pixelCount *= 6;
@@ -142,11 +131,23 @@ namespace TagTool.Bitmaps.Utils
             return pixelCount;
         }
 
-        public static int GetMipmapPixelDataSize(Image bitmap, int mipmapIndex)
+        public static int GetMipmapPixelCount(Image bitmap, int layerIndex, int mipmapIndex)
         {
-            int pixelCount = GetMipmapPixelCount(bitmap, mipmapIndex);
+            int width = GetMipmapWidth(bitmap, mipmapIndex);
+            int height = GetMipmapHeight(bitmap, mipmapIndex);
+            int depth = GetMipmapDepth(bitmap, mipmapIndex);
+
+            int pixelCount = width * height;
+            if (bitmap.Type != BitmapType.Array)
+                pixelCount *= depth;
+
+            return pixelCount;
+        }
+
+        public static int GetMipmapPixelDataSize(Image bitmap, int layerIndex, int mipmapIndex)
+        {
             int bitsPerPixel = BitmapFormatUtils.GetBitsPerPixel(bitmap.Format);
-            return pixelCount * bitsPerPixel / 8;
+            return GetMipmapPixelCount(bitmap, layerIndex, mipmapIndex) * bitsPerPixel / 8;
         }
 
         public static int GetPixelCount(Image bitmap)

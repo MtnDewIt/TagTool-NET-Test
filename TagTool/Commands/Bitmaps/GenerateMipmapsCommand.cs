@@ -74,8 +74,8 @@ namespace TagTool.Commands.Bitmaps
             {
                 for (int layerIndex = 0; layerIndex < Bitmap.Images[imageIndex].Depth; layerIndex++)
                 {
-                    var pixelDataOffset = BitmapUtilsPC.GetTextureOffset(Bitmap.Images[imageIndex], 0);
-                    var pixelDataSize = BitmapUtilsPC.GetMipmapPixelDataSize(Bitmap.Images[imageIndex], 0);
+                    var pixelDataOffset = BitmapUtilsPC.GetMipmapOffset(Bitmap.Images[imageIndex], layerIndex, 0);
+                    var pixelDataSize = BitmapUtilsPC.GetMipmapPixelDataSize(Bitmap.Images[imageIndex], layerIndex, 0);
 
                     byte[] pixelData = new byte[pixelDataSize];
                     if (resourceDefinition.Texture.Definition.Bitmap.HighResInSecondaryResource > 0 || primaryData == null)
@@ -166,8 +166,8 @@ namespace TagTool.Commands.Bitmaps
             byte[] bitmapData;
             using (var result = new MemoryStream())
             {
-                var pixelDataOffset = BitmapUtilsPC.GetTextureOffset(Bitmap.Images[imageIndex], 0);
-                var pixelDataSize = BitmapUtilsPC.GetMipmapPixelDataSize(Bitmap.Images[imageIndex], 0);
+                var pixelDataOffset = BitmapUtilsPC.GetMipmapOffset(Bitmap.Images[imageIndex], 0, 0);
+                var pixelDataSize = BitmapUtilsPC.GetMipmapPixelDataSize(Bitmap.Images[imageIndex], 0, 0) * 6;
 
                 byte[] pixelData = new byte[pixelDataSize];
                 if (resourceDefinition.Texture.Definition.Bitmap.HighResInSecondaryResource > 0 || primaryData == null)
