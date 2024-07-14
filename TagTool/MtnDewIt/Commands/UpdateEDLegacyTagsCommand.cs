@@ -10574,7 +10574,7 @@ namespace TagTool.MtnDewIt.Commands
             { 0x3296, @"objects\gear\human\military\crate_packing\crate_packing" },
             { 0x3297, @"objects\gear\human\military\crate_packing\lid_spawn" },
             { 0x3298, @"objects\gear\human\military\crate_packing_lid\crate_packing_lid" },
-            { 0x3299, @"objects\gear\human\military\crate_packing\crate_packing" },
+            { 0x3299, @"sound\materials\gear\crate_packing_lid" },
             { 0x329A, @"objects\gear\human\military\crate_packing_lid\crate_packing_lid" },
             { 0x329B, @"objects\gear\human\military\crate_packing_lid\crate_packing_lid" },
             { 0x329C, @"objects\gear\human\military\crate_packing_lid\crate_packing_lid" },
