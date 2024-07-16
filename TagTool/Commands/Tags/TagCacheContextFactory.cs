@@ -142,6 +142,7 @@ namespace TagTool.Commands.Tags
             if (cache is GameCacheModPackage)
             {
                 var modCache = cache as GameCacheModPackage;
+                context.AddCommand(new UpdateEDTagsCommand(modCache));
                 context.AddCommand(new SwitchTagCacheCommand(modCache));
                 context.AddCommand(new ModCacheInfoCommand(modCache));
                 context.AddCommand(new SaveModPackageCommand(modCache));
