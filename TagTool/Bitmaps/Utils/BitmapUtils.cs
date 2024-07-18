@@ -6,6 +6,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using TagTool.Bitmaps.DDS;
+using TagTool.Bitmaps.Utils;
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Direct3D.D3D9;
@@ -29,30 +30,6 @@ namespace TagTool.Bitmaps
             return (size % minimalSize == 0) ? size : size + (minimalSize - (size % minimalSize));
         }
 
-        public static int GetMipMapSize(BaseBitmap blamBitmap)
-        {
-            int pixelCount = 0;
-            var mipMapCount = blamBitmap.MipMapCount;
-
-            if (blamBitmap.MipMapCount > 0)
-            {
-                int previousHeight = blamBitmap.Height;
-                int previousWidth = blamBitmap.Width;
-
-                for (int i = 0; i < mipMapCount; i++)
-                {
-                    var mipMapHeight = previousHeight / 2;
-                    var mipMapWidth = previousWidth / 2;
-
-                    previousHeight /= 2;
-                    previousWidth /= 2;
-
-                    pixelCount += mipMapHeight * mipMapWidth;
-                }
-            }
-            return (int)(pixelCount / blamBitmap.CompressionFactor);
-
-        }
 
         public static int NextNearestSize(int curSize, int minSize)
         {
@@ -75,6 +52,11 @@ namespace TagTool.Bitmaps
         public static bool IsPowerOfTwo(int size)
         {
             return (size != 0) && ((size & (size - 1)) == 0);
+        }
+
+        public static bool IsPowerOfTwo(int width, int height)
+        {
+            return IsPowerOfTwo(width) && IsPowerOfTwo(height);
         }
 
         public static BitmapTextureInteropDefinition CreateBitmapTextureInteropDefinition(BaseBitmap bitmap)
@@ -290,119 +272,31 @@ namespace TagTool.Bitmaps
                     return Commands.Porting.PortingOptions.Current.HqNormalMapConversion ? 
                         BitmapFormat.Dxn : BitmapFormat.Dxt1;
 
-                case BitmapFormat.DxnMonoAlpha:
-                case BitmapFormat.ReachDxnMonoAlpha:
                 case BitmapFormat.AY8:
                     return BitmapFormat.A8Y8;
 
-                case BitmapFormat.Dxt5a:
                 case BitmapFormat.Dxt5aAlpha:
                 case BitmapFormat.Dxt3aAlpha:
-                case BitmapFormat.ReachDxt3aAlpha:
-                case BitmapFormat.ReachDxt5aAlpha:
                     return BitmapFormat.A8;
 
                 case BitmapFormat.Dxt5aMono:
                 case BitmapFormat.Dxt3aMono:
-                case BitmapFormat.ReachDxt3aMono:
-                case BitmapFormat.ReachDxt5aMono:
-                case BitmapFormat.Y16:
+                case BitmapFormat.L16: // lossy
                     return BitmapFormat.Y8;
-            
-                case BitmapFormat.A4R4G4B4:
-                //case BitmapFormat.R5G6B5:
-                case BitmapFormat.V8U8:
-                case BitmapFormat.A8R8G8B8_reach:
+
+                case BitmapFormat.Q8W8V8U8:
+                case BitmapFormat.DxnMonoAlpha:
+                case BitmapFormat.Dxt5a:
+                case BitmapFormat.Dxt3a:
                     return BitmapFormat.A8R8G8B8;
 
                 default:
                     return format;
             }
         }
-        public static bool RequiresDecompression(BitmapFormat format, uint width, uint height) => IsCompressedFormat(format) && (width % 4 != 0 || height % 4 != 0);
+        public static bool RequiresDecompression(BitmapFormat format, int width, int height) => IsCompressedFormat(format) && (width % 4 != 0 || height % 4 != 0);
 
-        public static byte[] ConvertXboxFormats(byte[] data, uint width, uint height, BitmapFormat format, BitmapType type, bool requireDecompression, CacheVersion version)
-        {
-            // TODO: clean this up
-
-
-            // fix enum from reach
-            if (version >= CacheVersion.HaloReach) 
-            {
-                if (format >= (BitmapFormat)36)
-                    format -= 5;
-            }
-
-            BitmapFormat destinationFormat = GetEquivalentBitmapFormat(format);
-            
-            if (format == BitmapFormat.Dxn)
-            {
-                // flip x and y channels
-                data = BitmapDecoder.SwapXYDxn(data, (int)width, (int)height);
-            }
-
-            if (destinationFormat == format && !requireDecompression)
-                return data;
-
-
-            
-
-            /*if(format == BitmapFormat.Ctx1)
-            {
-                if (type == BitmapType.Array) //DXN array unsupported
-                {
-                    destinationFormat = BitmapFormat.A8R8G8B8;
-                    requireDecompression = false;
-
-                    data = ConvertNonMultipleBlockSizeBitmap(data, width, height, format);
-                    data = BitmapDecoder.EncodeBitmap(data, destinationFormat, (int)width, (int)height);
-                    format = destinationFormat;
-                }
-                else
-                {
-                    data = BitmapDecoder.Ctx1ToDxn(data, (int)width, (int)height);
-                    format = BitmapFormat.Dxn;
-                }
-            }*/
-            if (format == BitmapFormat.Ctx1 && type == BitmapType.Array) //DXN array unsupported
-            {
-                destinationFormat = BitmapFormat.A8R8G8B8;
-                requireDecompression = false;
-
-                data = ConvertNonMultipleBlockSizeBitmap(data, width, height, format);
-                data = BitmapDecoder.EncodeBitmap(data, destinationFormat, (int)width, (int)height);
-                format = destinationFormat;
-            }
-            else if(format != destinationFormat)
-            {
-                int blockDimension = BitmapFormatUtils.GetBlockDimension(format);
-                int alignedWidth = BitmapUtils.RoundSize((int)width, blockDimension);
-                int alignedHeight = BitmapUtils.RoundSize((int)height, blockDimension);
-
-
-                byte[] uncompressedData;
-                if (format == BitmapFormat.Ctx1 && (width % 4 != 0 || height % 4 != 0))
-                {
-                    uncompressedData = BitmapDecoder.DecodeBitmap(data, format, alignedWidth, alignedHeight);
-                }
-                else
-                {
-                    uncompressedData = BitmapDecoder.DecodeBitmap(data, format, alignedWidth, alignedHeight);
-                    uncompressedData = TrimAlignedBitmap(format, destinationFormat, (int)width, (int)height, uncompressedData);
-                }
-
-                data = BitmapDecoder.EncodeBitmap(uncompressedData, destinationFormat, (int)width, (int)height);
-                format = destinationFormat;
-            }
-
-            if (requireDecompression)
-            {
-                data = ConvertNonMultipleBlockSizeBitmap(data, width, height, format);
-            }
-                
-
-            return data;
-        }
+       
 
         public static byte[] ConvertNonMultipleBlockSizeBitmap(byte[] data, uint width, uint height, BitmapFormat format)
         {
@@ -435,17 +329,12 @@ namespace TagTool.Bitmaps
                 case BitmapFormat.Dxt3:
                 case BitmapFormat.Dxt5:
                 case BitmapFormat.Dxn:
-                case BitmapFormat.ReachDxt3aAlpha:
-                case BitmapFormat.ReachDxt3aMono:
-                case BitmapFormat.ReachDxt5aAlpha:
-                case BitmapFormat.ReachDxt5aMono:
-                case BitmapFormat.ReachDxnMonoAlpha:
                     blockSize = 4;
                     break;
                 case BitmapFormat.AY8:
                 case BitmapFormat.A4R4G4B4:
                 case BitmapFormat.R5G6B5:
-                case BitmapFormat.Y16:
+                case BitmapFormat.L16:
                 default:
                     blockSize = 1;
                     break;
@@ -474,52 +363,19 @@ namespace TagTool.Bitmaps
         {
             switch (format)
             {
-                case BitmapFormat.A8:
-                case BitmapFormat.Y8:
-                case BitmapFormat.AY8:
-                case BitmapFormat.A8Y8:
-                case BitmapFormat.Unused4:
-                case BitmapFormat.Unused5:
-                case BitmapFormat.R5G6B5:
-                case BitmapFormat.R6G5B5:
-                case BitmapFormat.A1R5G5B5:
-                case BitmapFormat.A4R4G4B4:
-                case BitmapFormat.X8R8G8B8:
-                case BitmapFormat.A8R8G8B8:
-                case BitmapFormat.UnusedC:
-                case BitmapFormat.UnusedD:
-                case BitmapFormat.A4R4G4B4Font:
-                case BitmapFormat.P8:
-                case BitmapFormat.ARGBFP32:
-                case BitmapFormat.RGBFP32:
-                case BitmapFormat.RGBFP16:
-                case BitmapFormat.V8U8:
-                case BitmapFormat.G8B8:
-                case BitmapFormat.A32B32G32R32F:
-                case BitmapFormat.A16B16G16R16F:
-                case BitmapFormat.Q8W8V8U8:
-                case BitmapFormat.A2R10G10B10:
-                case BitmapFormat.A8R8G8B8_reach:
-                case BitmapFormat.V16U16:
-                case BitmapFormat.Y16:
-                    return false;
                 case BitmapFormat.Dxt1:
                 case BitmapFormat.Dxt3:
                 case BitmapFormat.Dxt5:
-                case BitmapFormat.Unused1E:
-                case BitmapFormat.Dxt5a:
-                case BitmapFormat.Dxn:
-                case BitmapFormat.Ctx1:
-                case BitmapFormat.Dxt3aAlpha:
+                case BitmapFormat.Dxt3a:
                 case BitmapFormat.Dxt3aMono:
-                case BitmapFormat.Dxt5aAlpha:
+                case BitmapFormat.Dxt3aAlpha:
+                case BitmapFormat.Dxt3A1111:
+                case BitmapFormat.Dxt5a:
                 case BitmapFormat.Dxt5aMono:
+                case BitmapFormat.Dxt5aAlpha:
+                case BitmapFormat.Dxn:
                 case BitmapFormat.DxnMonoAlpha:
-                case BitmapFormat.ReachDxt3aMono:
-                case BitmapFormat.ReachDxt3aAlpha:
-                case BitmapFormat.ReachDxt5aMono:
-                case BitmapFormat.ReachDxt5aAlpha:
-                case BitmapFormat.ReachDxnMonoAlpha:
+                case BitmapFormat.Ctx1:
                     return true;
             }
             return false;
@@ -529,6 +385,46 @@ namespace TagTool.Bitmaps
         {
 
             image.Flags &= ~BitmapFlags.Compressed;
+        }
+
+        public static IEnumerable<(int layerIndex, int mipLevel)> GetBitmapSurfacesEnumerable(int layerCount, int mipLevelCount, bool forDDS)
+        {
+            if (!forDDS)
+            {
+                // order for d3d9, all faces first, then mipmaps
+                for (int mipLevel = 0; mipLevel < mipLevelCount; mipLevel++)
+                    for (int layerIndex = 0; layerIndex < layerCount; layerIndex++)
+                        yield return (layerIndex, mipLevel);
+            }
+            else
+            {
+                for (int layerIndex = 0; layerIndex < layerCount; layerIndex++)
+                    for (int mipLevel = 0; mipLevel < mipLevelCount; mipLevel++)
+                        yield return (layerIndex, mipLevel);
+            }
+        }
+
+        public static int TruncateMipmaps(int count, int width, int height, int minWidth, int minHeight)
+        {
+            int newCount = 0;
+            while (newCount < count)
+            {
+                if (width < minWidth || height < minHeight)
+                    break;
+
+                width /= 2;
+                height /= 2;
+                newCount++;
+            }
+            return newCount;
+        }
+
+        public static byte[] GetBitmapSurface(byte[] primaryData, byte[] secondaryData, BitmapTextureInteropDefinition definition, Bitmap bitmap, int imageIndex, int level, int layerIndex, bool isPaired, int pairIndex, BitmapTextureInteropDefinition otherDefinition, CachePlatform platform)
+        {
+            if (platform == CachePlatform.MCC)
+                return BitmapUtilsPC.GetBitmapLevelData(primaryData, secondaryData, definition, bitmap, imageIndex, level, layerIndex);
+            else
+                return XboxBitmapUtils.GetXboxBitmapLevelData(primaryData, secondaryData, definition, level, layerIndex, isPaired, pairIndex, otherDefinition);
         }
     }
 }

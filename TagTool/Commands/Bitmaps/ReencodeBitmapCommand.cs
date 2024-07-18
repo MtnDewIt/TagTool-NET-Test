@@ -119,7 +119,7 @@ namespace TagTool.Commands.Bitmaps
                 if (!Direct3D.D3D9x.D3D.IsPowerOfTwo(resultBitmap.Width) || 
                     !Direct3D.D3D9x.D3D.IsPowerOfTwo(resultBitmap.Height))
                 {
-                    BitmapConverter.GenerateCompressedMipMaps(resultBitmap);
+                    BitmapUtilsLegacy.GenerateCompressedMipMaps(resultBitmap);
                 }
                 else
                 {

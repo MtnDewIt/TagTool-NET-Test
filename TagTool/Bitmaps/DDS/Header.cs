@@ -307,11 +307,11 @@ namespace TagTool.Bitmaps.DDS
                         Flags |= DDSPixelFormatFlags.BumpDUDV;
                         break;
 
-                    case BitmapFormat.A32B32G32R32F:
+                    case BitmapFormat.Abgrfp32:
                         Flags |= DDSPixelFormatFlags.FourCC;
                         FourCC = 0x74;
                         break;
-                    case BitmapFormat.A16B16G16R16F:
+                    case BitmapFormat.Abgrfp16:
                         Flags |= DDSPixelFormatFlags.FourCC;
                         FourCC = 0x71;
                         break;

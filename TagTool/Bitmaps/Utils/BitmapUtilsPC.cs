@@ -1,4 +1,7 @@
 ﻿using System;
+using TagTool.Cache;
+using TagTool.Tags.Definitions;
+using TagTool.Tags.Resources;
 using static TagTool.Tags.Definitions.Bitmap;
 
 namespace TagTool.Bitmaps.Utils
@@ -136,11 +139,7 @@ namespace TagTool.Bitmaps.Utils
             int width = GetMipmapWidth(bitmap, mipmapIndex);
             int height = GetMipmapHeight(bitmap, mipmapIndex);
             int depth = GetMipmapDepth(bitmap, mipmapIndex);
-
             int pixelCount = width * height;
-            if (bitmap.Type != BitmapType.Array)
-                pixelCount *= depth;
-
             return pixelCount;
         }
 
@@ -158,66 +157,23 @@ namespace TagTool.Bitmaps.Utils
             return pixelCount;
         }
 
-        public static int GetBytesPerBlock(BitmapFormat format)
+        public static byte[] GetBitmapLevelData(byte[] primaryData, byte[] secondaryData, BitmapTextureInteropDefinition definition, Bitmap bitmap, int imageIndex, int level, int layerIndex)
         {
-            switch (format)
+            var pixelDataOffset = GetMipmapOffset(bitmap.Images[imageIndex], layerIndex, level);
+            var pixelDataSize = GetMipmapPixelDataSize(bitmap.Images[imageIndex], layerIndex, level);
+
+            byte[] pixelData = new byte[pixelDataSize];
+            if (level == 0 && definition.HighResInSecondaryResource > 0 || primaryData == null)
             {
-                case BitmapFormat.Unused5:
-                case BitmapFormat.R6G5B5:
-                case BitmapFormat.UnusedC:
-                case BitmapFormat.UnusedD:
-                case BitmapFormat.P8:
-                    return 0;
-                case BitmapFormat.A8:
-                case BitmapFormat.Y8:
-                case BitmapFormat.AY8:
-                case BitmapFormat.Unused4:
-                    return 1;
-                case BitmapFormat.A8Y8:
-                case BitmapFormat.R5G6B5:
-                case BitmapFormat.A1R5G5B5:
-                case BitmapFormat.A4R4G4B4:
-                case BitmapFormat.A4R4G4B4Font:
-                case BitmapFormat.V8U8:
-                case BitmapFormat.G8B8:
-                    return 2;
-                case BitmapFormat.X8R8G8B8:
-                case BitmapFormat.A8R8G8B8:
-                case BitmapFormat.Q8W8V8U8:
-                case BitmapFormat.A2R10G10B10:
-                case BitmapFormat.V16U16:
-                    return 4;
-                case BitmapFormat.RGBFP16:
-                    return 6;
-                case BitmapFormat.Dxt1:
-                case BitmapFormat.A16B16G16R16F:
-                case BitmapFormat.A8R8G8B8_reach:
-                case BitmapFormat.Unused1E:
-                case BitmapFormat.Dxt5a:
-                case BitmapFormat.Y16:
-                case BitmapFormat.Ctx1:
-                case BitmapFormat.Dxt3aAlpha:
-                case BitmapFormat.Dxt3aMono:
-                case BitmapFormat.Dxt5aAlpha:
-                case BitmapFormat.Dxt5aMono:
-                case BitmapFormat.ReachDxt3aMono:
-                case BitmapFormat.ReachDxt3aAlpha:
-                case BitmapFormat.ReachDxt5aMono:
-                case BitmapFormat.ReachDxt5aAlpha:
-                case BitmapFormat.ReachDxnMonoAlpha:
-                    return 8;
-                case BitmapFormat.RGBFP32:
-                    return 12;
-                case BitmapFormat.Dxt3:
-                case BitmapFormat.Dxt5:
-                case BitmapFormat.ARGBFP32:
-                case BitmapFormat.A32B32G32R32F:
-                case BitmapFormat.Dxn:
-                case BitmapFormat.DxnMonoAlpha:
-                    return 16;
-                default:
-                    throw new NotImplementedException();
+                Array.Copy(secondaryData, pixelDataOffset, pixelData, 0, pixelData.Length);
             }
+            else
+            {
+                if (secondaryData != null)
+                    pixelDataOffset -= secondaryData.Length;
+                Array.Copy(primaryData, pixelDataOffset, pixelData, 0, pixelDataSize);
+            }
+            return pixelData;
         }
     }
 }
