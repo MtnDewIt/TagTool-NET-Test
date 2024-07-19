@@ -1,22 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TagTool.Cache;
-using TagTool.Bitmaps;
-using TagTool.Tags;
-using TagTool.Tags.Definitions;
-using TagTool.Common;
-using TagTool.Commands.Common;
-using TagTool.Bitmaps.Utils;
-using TagTool.BlamFile;
-using System.IO;
-using System.Runtime.CompilerServices;
 using System.Diagnostics;
-using TagTool.Bitmaps.DDS;
-using TagTool.IO;
-using System.Runtime.Remoting.Messaging;
+using System.IO;
+using TagTool.Bitmaps;
+using TagTool.Bitmaps.Utils;
+using TagTool.Cache;
+using TagTool.Commands.Common;
+using TagTool.Tags.Definitions;
+using TagTool.Tags.Resources;
 
 namespace TagTool.Commands.Bitmaps
 {
@@ -43,125 +34,77 @@ namespace TagTool.Commands.Bitmaps
         public override object Execute(List<string> args)
         {
             // parse args
-            if (!Enum.TryParse<BitmapFormat>(args[0], out BitmapFormat destFormat))
+            if (!Enum.TryParse<BitmapFormat>(args[0], ignoreCase: true, out BitmapFormat destFormat))
                 return new TagToolError(CommandError.ArgInvalid, $"\"{args[0]}\" is not a valid bitmap format");
             int imageIndex = 0;
             if (args.Count > 1 && (!int.TryParse(args[1], out imageIndex) || imageIndex >= Bitmap.Images.Count))
                 return new TagToolError(CommandError.ArgInvalid, $"\"{args[1]}\" is not a valid image index");
 
-            // decode current bitmap resource
-
-            var resourceReference = Bitmap.HardwareTextures[imageIndex];
-            var resourceDefinition = Cache.ResourceCache.GetBitmapTextureInteropResource(resourceReference);
-
-            byte[] primaryData = resourceDefinition?.Texture.Definition.PrimaryResourceData.Data;
-            byte[] secondaryData = resourceDefinition?.Texture.Definition.SecondaryResourceData.Data;
-
-            BitmapFormat currentFormat = Bitmap.Images[imageIndex].Format;
-            int mipCount = Bitmap.Images[imageIndex].MipmapCount;
-
-            byte[] bitmapData;
-            using (var result = new MemoryStream())
+            var resourceDefinition = Cache.ResourceCache.GetBitmapTextureInteropResource(Bitmap.HardwareTextures[imageIndex]);
+            if (resourceDefinition == null)
             {
-                for (int mipLevel = 0; mipLevel < mipCount; mipLevel++)
-                {
-                    for (int layerIndex = 0; layerIndex < Bitmap.Images[imageIndex].Depth; layerIndex++)
-                    {
-                        var pixelDataOffset = BitmapUtilsPC.GetMipmapOffset(Bitmap.Images[imageIndex], layerIndex, mipLevel);
-                        var pixelDataSize = BitmapUtilsPC.GetMipmapPixelDataSize(Bitmap.Images[imageIndex], layerIndex, mipLevel);
-
-                        byte[] pixelData = new byte[pixelDataSize];
-                        if (mipLevel == 0 && resourceDefinition.Texture.Definition.Bitmap.HighResInSecondaryResource > 0 || primaryData == null)
-                        {
-                            Array.Copy(secondaryData, pixelDataOffset, pixelData, 0, pixelData.Length);
-                        }
-                        else
-                        {
-                            if (secondaryData != null)
-                                pixelDataOffset -= secondaryData.Length;
-                            Array.Copy(primaryData, pixelDataOffset, pixelData, 0, pixelDataSize);
-                        }
-
-                        result.Write(pixelData, 0, pixelData.Length);
-                    }
-                }
-
-                bitmapData = result.ToArray();
+                new TagToolWarning("No bitmap resource");
+                return true;
             }
 
-            byte[] rawData = BitmapDecoder.DecodeBitmap(bitmapData, Bitmap.Images[imageIndex].Format, Bitmap.Images[imageIndex].Width, Bitmap.Images[imageIndex].Height);
-            //rawData = BitmapUtils.TrimAlignedBitmap(Bitmap.Images[imageIndex].Format, destFormat, Bitmap.Images[imageIndex].Width, Bitmap.Images[imageIndex].Height, rawData);
-
-            // re-encode the bitmap to the specified format
-
-            BaseBitmap resultBitmap = new BaseBitmap(Bitmap.Images[imageIndex]);
-            rawData = BitmapDecoder.EncodeBitmap(rawData, destFormat, resultBitmap.Width, resultBitmap.Height);
-
-            //if (BitmapUtils.RequiresDecompression(destFormat, (uint)resultBitmap.Width, (uint)resultBitmap.Height))
-            //{
-            //    rawData = BitmapUtils.ConvertNonMultipleBlockSizeBitmap(rawData, (uint)resultBitmap.Width, (uint)resultBitmap.Height, destFormat);
-            //}
-
-            // update image data
-
-            resultBitmap.UpdateFormat(destFormat);
-
-            if (!BitmapUtils.IsCompressedFormat(resultBitmap.Format))
-                resultBitmap.Flags &= ~BitmapFlags.Compressed;
-            else
-                resultBitmap.Flags |= BitmapFlags.Compressed;
-
-            resultBitmap.Data = rawData;
-
-            // remove lowest mips from dxn
-            if (destFormat == BitmapFormat.Dxn)
-            {
-                if (!Direct3D.D3D9x.D3D.IsPowerOfTwo(resultBitmap.Width) || 
-                    !Direct3D.D3D9x.D3D.IsPowerOfTwo(resultBitmap.Height))
-                {
-                    BitmapUtilsLegacy.GenerateCompressedMipMaps(resultBitmap);
-                }
-                else
-                {
-                    int dataSize = SquishLib.Compressor.GetStorageRequirements(SquishLib.SquishFlags.kDxn, resultBitmap.Width, resultBitmap.Height);
-
-                    int mipMapCount = resultBitmap.MipMapCount;
-                    if (mipMapCount > 0)
-                    {
-                        var width = resultBitmap.Width;
-                        var height = resultBitmap.Height;
-
-                        for (mipMapCount = 0; mipMapCount < resultBitmap.MipMapCount; mipMapCount++)
-                        {
-                            width /= 2;
-                            height /= 2;
-
-                            if (width < 4 || height < 4)
-                                break;
-
-                            dataSize += SquishLib.Compressor.GetStorageRequirements(SquishLib.SquishFlags.kDxn, width, height);
-                        }
-                    }
-
-                    resultBitmap.MipMapCount = mipMapCount;
-                    byte[] raw = new byte[dataSize];
-                    Array.Copy(resultBitmap.Data, raw, dataSize);
-                    resultBitmap.Data = raw;
-                }
-            }
+            BaseBitmap resultBitmap = ReEncodeBitmap(Bitmap, imageIndex, resourceDefinition, destFormat, shouldGenerateMips: true);
 
             BitmapUtils.SetBitmapImageData(resultBitmap, Bitmap.Images[imageIndex]);
 
             // write to new resource
 
-            var bitmapResourceDefinition = BitmapUtils.CreateBitmapTextureInteropResource(resultBitmap);
-            var newResourceReference = Cache.ResourceCache.CreateBitmapResource(bitmapResourceDefinition);
-
-            Bitmap.HardwareTextures.Clear();
-            Bitmap.HardwareTextures.Add(newResourceReference);
-            Bitmap.InterleavedHardwareTextures = new List<TagResourceReference>();
-
+            BitmapTextureInteropResource newResourceDefinition = BitmapUtils.CreateBitmapTextureInteropResource(resultBitmap);
+            var resourceRef = Bitmap.HardwareTextures[imageIndex];
+            var hoCache = (GameCacheHaloOnlineBase)Cache;
+            hoCache.ResourceCaches.ReplaceResource(resourceRef.HaloOnlinePageableResource, newResourceDefinition);
             return true;
+        }
+
+        private BaseBitmap ReEncodeBitmap(Bitmap bitmap, int imageIndex, BitmapTextureInteropResource resourceDefinition, BitmapFormat destFormat, bool shouldGenerateMips)
+        {
+            Bitmap.Image image = bitmap.Images[imageIndex];
+
+            // for d3d9 dxn mips need to be >= 4x4 to avoid crashes
+            int minMipRes = destFormat == BitmapFormat.Dxn ? 4 : 1;
+
+            int mipCount = BitmapUtils.GetMipmapCount(image.Width, image.Height, minMipRes, minMipRes);
+            int layerCount = image.Type == BitmapType.CubeMap ? 6 : image.Depth;
+
+            // for each layer extract the base level and generate mips
+
+            var newSurfaces = new List<MipMap>();
+            for (int layerIndex = 0; layerIndex < layerCount; layerIndex++)
+            {
+                byte[] baseLevelData = BitmapUtilsPC.GetBitmapLevelData(resourceDefinition.Texture.Definition, Bitmap, imageIndex, 0, layerIndex);
+                baseLevelData = BitmapDecoder.DecodeBitmap(baseLevelData, image.Format, image.Width, image.Height, Cache.Version, Cache.Platform);
+
+                var mipGenerator = new MipMapGenerator();
+                mipGenerator.GenerateMipMap(image.Width, image.Height, baseLevelData, 4, mipCount);
+                Debug.Assert(mipCount == mipGenerator.MipMaps.Count + 1);
+
+                // append the base level to the list of surfaces
+                newSurfaces.Add(new MipMap(baseLevelData, image.Width, image.Height));
+                // append the mips to the list of surfaces
+                newSurfaces.AddRange(mipGenerator.MipMaps);
+            }
+
+            // re-encode the surface and append to the result data in the correct order
+
+            var result = new MemoryStream();
+            foreach (var (layerIndex, mipLevel) in BitmapUtils.GetBitmapSurfacesEnumerable(layerCount, mipCount, forDDS: false))
+            {
+                MipMap surface = newSurfaces[layerIndex * mipCount + mipLevel];
+                byte[] encoded = BitmapDecoder.EncodeBitmap(surface.Data, destFormat, surface.Width, surface.Height);
+                result.Write(encoded, 0, encoded.Length);
+            }
+
+            // rebuld the result bitmap
+
+            BaseBitmap resultBitmap = new BaseBitmap(image, result.ToArray());
+            resultBitmap.MipMapCount = mipCount;
+            resultBitmap.UpdateFormat(destFormat);
+
+            return resultBitmap;
         }
     }
 }

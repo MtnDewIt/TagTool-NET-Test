@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
 using TagTool.Bitmaps.DDS;
 using TagTool.Bitmaps.Utils;
 using TagTool.Cache;
-using TagTool.Common;
 using TagTool.Direct3D.D3D9;
-using TagTool.Direct3D.Xbox360;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Resources;
@@ -19,34 +12,9 @@ namespace TagTool.Bitmaps
 {
     public static class BitmapUtils
     {
-        /// <summary>
-        /// Get the virtual size of an Xbox 360 bitmap.
-        /// </summary>
-        /// <param name="size"></param>
-        /// <param name="minimalSize"></param>
-        /// <returns></returns>
-        public static int GetVirtualSize(int size, int minimalSize)
-        {
-            return (size % minimalSize == 0) ? size : size + (minimalSize - (size % minimalSize));
-        }
-
-
-        public static int NextNearestSize(int curSize, int minSize)
-        {
-            return minSize * ((curSize/2 + (minSize - 1)) / minSize);
-        }
-        
         public static int RoundSize(int size, int blockDimension)
         {
             return blockDimension * ((size + (blockDimension - 1)) / blockDimension);
-        }
-
-        public static int GetSingleMipMapSize(int width, int height, int minimalSize, double compressionFactor)
-        {
-            int virtualWidth = GetVirtualSize(width, minimalSize);
-            int virtualHeight = GetVirtualSize(height, minimalSize);
-            int size = (int)(virtualHeight * virtualWidth / compressionFactor); ;
-            return size;
         }
 
         public static bool IsPowerOfTwo(int size)
@@ -190,75 +158,6 @@ namespace TagTool.Bitmaps
 
         }
 
-        public static RealArgbColor DecodeBitmapPixelXbox(byte[] bitmapData, Bitmap.Image image, D3DTexture9 pTexture, int layerIndex, int mipmapIndex)
-        {
-            RealArgbColor result = new RealArgbColor(1,0,0,0);
-
-            if( image.Type != BitmapType.Texture3D && (
-                (image.Type == BitmapType.Texture2D && layerIndex == 1) || 
-                (image.Type == BitmapType.CubeMap && layerIndex >= 0 && layerIndex < 6)  ||
-                (image.Type == BitmapType.Array && layerIndex >= 0 && layerIndex < image.Depth)) && 
-                (pTexture.GetBaseOffset() > 0 || pTexture.GetMipOffset() > 0))
-            {
-                uint blockWidth = 0;
-                uint blockHeight = 0;
-                int dataOffset = 0;
-                int layerOffset = 0;
-
-                // verify the mipmap level index 
-                var minMipLevel = pTexture.GetMinMipLevel();
-                var maxMipLevel = pTexture.GetMaxMipLevel();
-
-                // if mipmapIndex is too low
-                if (mipmapIndex < minMipLevel)
-                    mipmapIndex = minMipLevel;
-                // if mipmapIndex is too high
-                if (mipmapIndex > maxMipLevel)
-                    mipmapIndex = maxMipLevel;
-
-                var currentHeight = image.Height >> mipmapIndex;
-                var currentWidth = image.Width >> mipmapIndex;
-
-                if (currentWidth < 1)
-                    currentWidth = 1;
-
-                if (currentHeight < 1)
-                    currentHeight = 1;
-
-
-                //XGGetTextureDesc
-                XboxGraphics.XGTEXTURE_DESC textureDesc = new XboxGraphics.XGTEXTURE_DESC();
-
-                
-                XboxGraphics.XGGetBlockDimensions(XboxGraphics.XGGetGpuFormat(textureDesc.D3DFormat), out blockWidth, out blockHeight);
-
-                layerOffset = 0; // Unknown XG function
-                
-
-                if (mipmapIndex > 0 && pTexture.GetMipOffset() > 0)
-                    dataOffset = pTexture.GetMipOffset() + layerOffset;
-                else
-                    dataOffset = pTexture.GetBaseOffset() + layerOffset;
-
-                for(int h = 0; h < currentHeight; h++)
-                {
-                    for(int w = 0; w < currentWidth; w++)
-                    {
-
-                    }
-                }
-            }
-
-
-            return result;
-        }
-
-
-        private static uint AlignToPage(uint offset)
-        {
-            return offset + 0xFFFu & ~0xFFFu;
-        }
-
         /// <summary>
         /// When converting xbox bitmap formats (and other rare formats), get the standard format that it can be converted it without loss
         /// </summary>
@@ -294,70 +193,6 @@ namespace TagTool.Bitmaps
                     return format;
             }
         }
-        public static bool RequiresDecompression(BitmapFormat format, int width, int height) => IsCompressedFormat(format) && (width % 4 != 0 || height % 4 != 0);
-
-       
-
-        public static byte[] ConvertNonMultipleBlockSizeBitmap(byte[] data, uint width, uint height, BitmapFormat format)
-        {
-            // assume block size 4 because that's all we deal with in tag data
-
-            if (!IsCompressedFormat(format))
-                return data;
-
-            uint alignedWidth = width % 4 != 0 ? width + 4 - width % 4 : width;
-            uint alignedHeight = height % 4 != 0 ? height + 4 - height % 4 : height;
-
-            byte[] uncompressedData = BitmapDecoder.DecodeBitmap(data, format, (int)alignedWidth, (int)alignedHeight);
-            return TrimAlignedBitmap(format, BitmapFormat.A8R8G8B8, (int)width, (int)height, uncompressedData);
-        }
-
-        public static byte[] TrimAlignedBitmap(BitmapFormat originalFormat, BitmapFormat destinationFormat, int width, int height, byte[] data)
-        {
-            byte[] result = new byte[width * height * 4];
-            uint blockSize;
-            switch (originalFormat)
-            {
-                case BitmapFormat.Ctx1:
-                case BitmapFormat.DxnMonoAlpha:
-                case BitmapFormat.Dxt5a:
-                case BitmapFormat.Dxt5aAlpha:
-                case BitmapFormat.Dxt3aAlpha:
-                case BitmapFormat.Dxt5aMono:
-                case BitmapFormat.Dxt3aMono:
-                case BitmapFormat.Dxt1:
-                case BitmapFormat.Dxt3:
-                case BitmapFormat.Dxt5:
-                case BitmapFormat.Dxn:
-                    blockSize = 4;
-                    break;
-                case BitmapFormat.AY8:
-                case BitmapFormat.A4R4G4B4:
-                case BitmapFormat.R5G6B5:
-                case BitmapFormat.L16:
-                default:
-                    blockSize = 1;
-                    break;
-            }
-
-            if (blockSize == 1)
-                return data;
-
-            uint alignedWidth = Direct3D.D3D9x.D3D.NextMultipleOf((uint)width, blockSize);
-            uint alignedHeight = Direct3D.D3D9x.D3D.NextMultipleOf((uint)height, blockSize);
-
-            for (int i = 0; i < width; i++)
-            {
-                for (int j = 0; j < height; j++)
-                {
-                    uint offset = (uint)((j* alignedWidth) + i) * 4;
-                    uint destOffset = (uint)((j * width) + i) * 4;
-                    Array.Copy(data, offset, result, destOffset, 4);
-                }
-            }
-
-            return result;
-        }
 
         public static bool IsCompressedFormat(BitmapFormat format)
         {
@@ -381,12 +216,6 @@ namespace TagTool.Bitmaps
             return false;
         }
 
-        public static void FixBitmapFlags(Bitmap.Image image)
-        {
-
-            image.Flags &= ~BitmapFlags.Compressed;
-        }
-
         public static IEnumerable<(int layerIndex, int mipLevel)> GetBitmapSurfacesEnumerable(int layerCount, int mipLevelCount, bool forDDS)
         {
             if (!forDDS)
@@ -404,27 +233,24 @@ namespace TagTool.Bitmaps
             }
         }
 
-        public static int TruncateMipmaps(int count, int width, int height, int minWidth, int minHeight)
-        {
-            int newCount = 0;
-            while (newCount < count)
-            {
-                if (width < minWidth || height < minHeight)
-                    break;
-
-                width /= 2;
-                height /= 2;
-                newCount++;
-            }
-            return newCount;
-        }
-
         public static byte[] GetBitmapSurface(byte[] primaryData, byte[] secondaryData, BitmapTextureInteropDefinition definition, Bitmap bitmap, int imageIndex, int level, int layerIndex, bool isPaired, int pairIndex, BitmapTextureInteropDefinition otherDefinition, CachePlatform platform)
         {
             if (platform == CachePlatform.MCC)
                 return BitmapUtilsPC.GetBitmapLevelData(primaryData, secondaryData, definition, bitmap, imageIndex, level, layerIndex);
             else
                 return XboxBitmapUtils.GetXboxBitmapLevelData(primaryData, secondaryData, definition, level, layerIndex, isPaired, pairIndex, otherDefinition);
+        }
+
+        public static int GetMipmapCount(int width, int height, int minWidth = 1, int minHeight = 1, int maxCount = int.MaxValue)
+        {
+            int count = 1; // include the base level
+            while (count < maxCount && (width > minWidth || height > minHeight))
+            {
+                width = Math.Max(1, width / 2);
+                height = Math.Max(1, height / 2);
+                count++;
+            }
+            return count;
         }
     }
 }

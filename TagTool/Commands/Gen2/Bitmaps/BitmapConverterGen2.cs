@@ -125,12 +125,8 @@ namespace TagTool.Commands.Gen2.Bitmaps
                     rawData[i + 3] = 0xFF;
                 }
 
-                baseBitmap.Data = TagTool.Bitmaps.Utils.BitmapUtilsLegacy.EncodeDXN(rawData, image.Width, image.Height, out baseBitmap.MipMapCount, true);
+                baseBitmap.Data = BitmapDecoder.EncodeBitmap(rawData, BitmapFormat.Dxn, image.Width, image.Height);
 
-                // Swap R and G channel (DX9 ATI2N)
-                baseBitmap.Data = BitmapDecoder.SwapXYDxn(baseBitmap.Data, image.Width, image.Height);
-                // Prevent memory allocation crash
-                TagTool.Bitmaps.Utils.BitmapUtilsLegacy.TrimLowestMipmaps(baseBitmap);
                 image.MipmapCount = (sbyte)(baseBitmap.MipMapCount - 1);
 
                 baseBitmap.UpdateFormat(BitmapFormat.Dxn);

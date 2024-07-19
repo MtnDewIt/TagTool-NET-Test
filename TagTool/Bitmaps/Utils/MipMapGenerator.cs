@@ -43,15 +43,15 @@ namespace TagTool.Bitmaps
             return result;
         }
 
-        public void GenerateMipMap(int height, int width, byte[] data, int channelCount, int mipMapCount = -1)
+        public void GenerateMipMap(int width, int height, byte[] data, int channelCount, int mipMapCount = -1)
         {
             MipMaps = new List<MipMap>();
             float[] floatData;
             floatData = NormalizeImage(data);
-            GenerateMipMapFloat(height, width, floatData, channelCount, mipMapCount);
+            GenerateMipMapFloat(width, height, floatData, channelCount, mipMapCount);
         }
 
-        private void GenerateMipMapFloat(int height, int width, float[] data, int channelCount = 4, int level = -1)
+        private void GenerateMipMapFloat(int width, int height, float[] data, int channelCount = 4, int level = -1)
         {
             int newHeight = Math.Max(1, ((height) / 2));
             int newWidth = Math.Max(1, ((width) / 2));
@@ -84,7 +84,7 @@ namespace TagTool.Bitmaps
             MipMaps.Add(new MipMap(byteResult, newWidth, newHeight));
 
             //Build the next mipmap
-            GenerateMipMapFloat(newHeight, newWidth, result, channelCount, level - 1);
+            GenerateMipMapFloat(newWidth, newHeight, result, channelCount, level - 1);
         }
 
         private static float GammaCorrectedAverage(float a, float b, float c, float d)

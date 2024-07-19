@@ -157,6 +157,11 @@ namespace TagTool.Bitmaps.Utils
             return pixelCount;
         }
 
+        public static byte[] GetBitmapLevelData(BitmapTextureInteropResource.BitmapDefinition definition, Bitmap bitmap, int imageIndex, int level, int layerIndex)
+        {
+            return GetBitmapLevelData(definition.PrimaryResourceData.Data, definition.SecondaryResourceData.Data, definition.Bitmap, bitmap, imageIndex, level, layerIndex);
+        }
+
         public static byte[] GetBitmapLevelData(byte[] primaryData, byte[] secondaryData, BitmapTextureInteropDefinition definition, Bitmap bitmap, int imageIndex, int level, int layerIndex)
         {
             var pixelDataOffset = GetMipmapOffset(bitmap.Images[imageIndex], layerIndex, level);

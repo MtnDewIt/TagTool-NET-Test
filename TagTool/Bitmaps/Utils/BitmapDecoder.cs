@@ -75,18 +75,22 @@ namespace TagTool.Bitmaps
                 case BitmapFormat.A8R8G8B8:
                 case BitmapFormat.Q8W8V8U8:
                     return EncodeA8R8G8B8(bitm, virtualWidth, virtualHeight);
+
                 case BitmapFormat.V8U8:
                     return EncodeV8U8(bitm, virtualWidth, virtualHeight);
 
                 case BitmapFormat.Dxn:
                     var dxnCompressor = new SquishLib.Compressor(SquishLib.SquishFlags.kDxn | SquishLib.SquishFlags.kSourceBgra, bitm, virtualWidth, virtualHeight);
                     return dxnCompressor.CompressTexture();
+
                 case BitmapFormat.Dxt1:
                     var dxt1Compressor = new SquishLib.Compressor(SquishLib.SquishFlags.kDxt1 | SquishLib.SquishFlags.kColourIterativeClusterFit | SquishLib.SquishFlags.kSourceBgra, bitm, virtualWidth, virtualHeight);
                     return dxt1Compressor.CompressTexture();
+
                 case BitmapFormat.Dxt3:
                     var dxt3Compressor = new SquishLib.Compressor(SquishLib.SquishFlags.kDxt3 | SquishLib.SquishFlags.kColourIterativeClusterFit | SquishLib.SquishFlags.kSourceBgra, bitm, virtualWidth, virtualHeight);
                     return dxt3Compressor.CompressTexture();
+
                 case BitmapFormat.Dxt5:
                     var dxt5Compressor = new SquishLib.Compressor(SquishLib.SquishFlags.kDxt5 | SquishLib.SquishFlags.kColourIterativeClusterFit | SquishLib.SquishFlags.kSourceBgra, bitm, virtualWidth, virtualHeight);
                     return dxt5Compressor.CompressTexture();

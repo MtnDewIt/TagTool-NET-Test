@@ -282,7 +282,6 @@
     <Compile Include="Bitmaps\BitmapCurveMode.cs" />
     <Compile Include="Bitmaps\Utils\BitmapCompression.cs" />
     <Compile Include="Bitmaps\Utils\BitmapDownsampler.cs" />
-    <Compile Include="Bitmaps\Utils\BitmapUtilsLegacy.cs" />
     <Compile Include="Bitmaps\Utils\BitmapSampler.cs" />
     <Compile Include="Bitmaps\Utils\BitmapUtilsPC.cs" />
     <Compile Include="Bitmaps\Utils\RGBAColor.cs" />
@@ -665,7 +664,7 @@
     <Compile Include="Bitmaps\BitmapRuntimeFlags.cs" />
     <Compile Include="Bitmaps\BitmapType.cs" />
     <Compile Include="Bitmaps\Utils\BitmapUtils.cs" />
-    <Compile Include="Bitmaps\Utils\BlamBitmap.cs" />
+    <Compile Include="Bitmaps\Utils\BaseBitmap.cs" />
     <Compile Include="Direct3D\D3D10\D3D10AlphaMode.cs" />
     <Compile Include="Direct3D\D3D10\D3D10Dimension.cs" />
     <Compile Include="Direct3D\D3D10\D3D10MiscFlags.cs" />
