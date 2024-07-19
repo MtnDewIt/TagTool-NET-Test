@@ -7,9 +7,7 @@ using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
-using HaloShaderGenerator.Shader;
-using static TagTool.Tags.Definitions.RenderMethodTemplate;
-using TagTool.Cache.HaloOnline;
+using System.Threading.Tasks;
 
 namespace TagTool.Shaders.ShaderMatching
 {
@@ -19,10 +17,14 @@ namespace TagTool.Shaders.ShaderMatching
         private GameCache PortingCache;
         private Stream BaseCacheStream;
         private Stream PortingCacheStream;
-        private Dictionary<CachedTag, RenderMethodTemplate> _rmt2Cache;
-        private List<string> UpdatedRmdf;
+        private Commands.Porting.PortTagCommand PortTagCommand;
+        // shader type, definition
+        private Dictionary<string, RenderMethodDefinition> RenderMethodDefinitions;
+        private Dictionary<string, RenderMethodDefinition> PortingRenderMethodDefinitions;
+        // tag name, definition
+        private Dictionary<string, RenderMethodOption> RenderMethodOptions;
+        private Dictionary<string, RenderMethodOption> PortingRenderMethodOptions;
 
-        public static string DefaultTemplate => @"shaders\shader_templates\_0_0_0_0_0_0_0_0_0_0_0.rmt2";
         public bool IsInitialized { get; private set; } = false;
         public bool UseMs30 { get; set; } = false;
         public bool PerfectMatchesOnly { get; set; } = false;
@@ -33,13 +35,17 @@ namespace TagTool.Shaders.ShaderMatching
            ["shader"] = new int[] { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 }
         };
 
-        
-
         public ShaderMatcherNew()
         {
         }
 
-        public void Init(GameCache baseCache, GameCache portingCache, Stream baseCacheStream, Stream portingCacheStream, bool useMS30 = false, bool perfectMatchesOnly = false)
+        public void Init(GameCache baseCache, 
+            GameCache portingCache, 
+            Stream baseCacheStream, 
+            Stream portingCacheStream,
+            Commands.Porting.PortTagCommand portTagCommand,
+            bool useMS30 = false, 
+            bool perfectMatchesOnly = false)
         {
             UseMs30 = useMS30;
             PerfectMatchesOnly = perfectMatchesOnly;
@@ -47,9 +53,24 @@ namespace TagTool.Shaders.ShaderMatching
             PortingCache = portingCache;
             BaseCacheStream = baseCacheStream;
             PortingCacheStream = portingCacheStream;
-            _rmt2Cache = new Dictionary<CachedTag, RenderMethodTemplate>();
-            UpdatedRmdf = new List<string>();
             IsInitialized = true;
+            PortTagCommand = portTagCommand;
+
+            // we need to store all of these for async. will save cpu time for map ports since we no longer deserialize for every shader tag
+            RenderMethodDefinitions = new Dictionary<string, RenderMethodDefinition>();
+            PortingRenderMethodDefinitions = new Dictionary<string, RenderMethodDefinition>();
+            RenderMethodOptions = new Dictionary<string, RenderMethodOption>();
+            PortingRenderMethodOptions = new Dictionary<string, RenderMethodOption>();
+
+            foreach (var rmdfTag in baseCache.TagCache.NonNull().Where(x => x.Group.Tag == "rmdf" && !x.Name.StartsWith("ms30\\")))
+                RenderMethodDefinitions.Add(rmdfTag.Name.Remove(0, 8), baseCache.Deserialize<RenderMethodDefinition>(baseCacheStream, rmdfTag));
+            foreach (var rmdfTag in portingCache.TagCache.NonNull().Where(x => x.Group.Tag == "rmdf"))
+                PortingRenderMethodDefinitions.Add(rmdfTag.Name.Remove(0, 8), portingCache.Deserialize<RenderMethodDefinition>(portingCacheStream, rmdfTag));
+
+            foreach (var rmopTag in baseCache.TagCache.NonNull().Where(x => x.Group.Tag == "rmop" && !x.Name.StartsWith("ms30\\")))
+                RenderMethodOptions.Add(rmopTag.Name, baseCache.Deserialize<RenderMethodOption>(baseCacheStream, rmopTag));
+            foreach (var rmopTag in portingCache.TagCache.NonNull().Where(x => x.Group.Tag == "rmop"))
+                PortingRenderMethodOptions.Add(rmopTag.Name, portingCache.Deserialize<RenderMethodOption>(portingCacheStream, rmopTag));
         }
 
         public void DeInit()
@@ -60,8 +81,12 @@ namespace TagTool.Shaders.ShaderMatching
             PortingCache = null;
             BaseCacheStream = null;
             PortingCacheStream = null;
-            UpdatedRmdf = null;
             IsInitialized = false;
+            PortTagCommand = null;
+            RenderMethodDefinitions = null;
+            PortingRenderMethodDefinitions = null;
+            RenderMethodOptions = null;
+            PortingRenderMethodOptions = null;
         }
 
         public Dictionary<StringId, RenderMethodOption.ParameterBlock.OptionDataType> GetOptionParameters(List<byte> options, RenderMethodDefinition rmdf)
@@ -72,7 +97,7 @@ namespace TagTool.Shaders.ShaderMatching
             {
                 if (rmdf.Categories[i].ShaderOptions[options[i]].Option != null)
                 {
-                    var rmop = BaseCache.Deserialize<RenderMethodOption>(BaseCacheStream, rmdf.Categories[i].ShaderOptions[options[i]].Option);
+                    var rmop = RenderMethodOptions[rmdf.Categories[i].ShaderOptions[options[i]].Option.Name];
                     foreach (var parameter in rmop.Parameters)
                         if (!optionParameters.ContainsKey(parameter.Name))
                             optionParameters.Add(parameter.Name, parameter.Type);
@@ -90,7 +115,7 @@ namespace TagTool.Shaders.ShaderMatching
             {
                 if (rmdf.Categories[i].ShaderOptions[options[i]].Option != null)
                 {
-                    var rmop = BaseCache.Deserialize<RenderMethodOption>(BaseCacheStream, rmdf.Categories[i].ShaderOptions[options[i]].Option);
+                    var rmop = RenderMethodOptions[rmdf.Categories[i].ShaderOptions[options[i]].Option.Name];
                     foreach (var parameter in rmop.Parameters)
                         if (!optionBlocks.ContainsKey(parameter.Name))
                             optionBlocks.Add(parameter.Name, parameter);
@@ -108,7 +133,7 @@ namespace TagTool.Shaders.ShaderMatching
             {
                 if (rmdf.Categories[i].ShaderOptions[options[i]].Option != null)
                 {
-                    var rmop = BaseCache.Deserialize<RenderMethodOption>(BaseCacheStream, rmdf.Categories[i].ShaderOptions[options[i]].Option);
+                    var rmop = RenderMethodOptions[rmdf.Categories[i].ShaderOptions[options[i]].Option.Name];
                     foreach (var parameter in rmop.Parameters)
                         if (parameter.Type == RenderMethodOption.ParameterBlock.OptionDataType.Bitmap && parameter.DefaultSamplerBitmap != null && !optionBitmaps.ContainsKey(parameter.Name))
                             optionBitmaps.Add(parameter.Name, parameter.DefaultSamplerBitmap);
@@ -132,17 +157,8 @@ namespace TagTool.Shaders.ShaderMatching
                 return null;
             }
 
-            //if (!UpdatedRmdf.Contains(sourceRmt2Desc.Type)) // will update or generate rmdf as needed
-            //{
-            //    if (!ShaderGenerator.RenderMethodDefinitionGenerator.UpdateRenderMethodDefinition(BaseCache, BaseCacheStream, sourceRmt2Desc.Type))
-            //        Console.WriteLine($"WARNING: rmdf for shader type \"{sourceRmt2Desc.Type}\" could not be updated or generated.");
-            //    else
-            //        Console.WriteLine($"Rmdf for shader type \"{sourceRmt2Desc.Type}\" updated or generated.");
-            //    UpdatedRmdf.Add(sourceRmt2Desc.Type);
-            //}
-
             // rebuild options to match base cache
-            sourceRmt2Desc = RebuildRmt2Options(sourceRmt2Desc, BaseCacheStream, PortingCacheStream);
+            sourceRmt2Desc = RebuildRmt2Options(sourceRmt2Desc);
 
             string tagName = $"shaders\\{sourceRmt2Desc.Type}_templates\\_{string.Join("_", sourceRmt2Desc.Options)}";
 
@@ -161,6 +177,7 @@ namespace TagTool.Shaders.ShaderMatching
             ScreenSorter screenTemplateSorter = new ScreenSorter();
             WaterSorter waterTemplateSorter = new WaterSorter();
 
+            // search
             foreach (var rmt2Tag in BaseCache.TagCache.NonNull().Where(tag => tag.IsInGroup("rmt2")))
             {
                 Rmt2Descriptor destRmt2Desc;
@@ -197,9 +214,9 @@ namespace TagTool.Shaders.ShaderMatching
                 // if we found an exact match, return it
                 if (commonOptions == sourceRmt2Desc.Options.Length)
                 {
-                    Console.WriteLine("Found perfect rmt2 match:");
-                    Console.WriteLine(sourceRmt2Tag.Name);
-                    Console.WriteLine(rmt2Tag.Name);
+                    //Console.WriteLine("Found perfect rmt2 match:");
+                    //Console.WriteLine(sourceRmt2Tag.Name);
+                    //Console.WriteLine(rmt2Tag.Name);
                     return rmt2Tag;
                 }
                     
@@ -253,20 +270,36 @@ namespace TagTool.Shaders.ShaderMatching
 
             if (ShaderCache.ExportTemplate(BaseCacheStream, BaseCache, tagName, out CachedTag cachedRmt2Tag))
             {
-                Console.WriteLine($"Found cached rmt2: {tagName}");
+                if (PortTagCommand.FlagIsSet(Commands.Porting.PortTagCommand.PortingFlags.Print))
+                    Console.WriteLine($"['{cachedRmt2Tag.Group.Tag}', 0x{cachedRmt2Tag.Index:X4}] {cachedRmt2Tag.Name}.{(cachedRmt2Tag.Group as Cache.Gen3.TagGroupGen3).Name}");
                 return cachedRmt2Tag;
             }
 
-            // if we've reached here, we haven't found an extract match.
-            // now we need to consider other factors such as which options they have, which parameters are missing etc..
-            // whatever can be used to narrow it down.
-            Console.WriteLine($"No rmt2 match found for {sourceRmt2Tag.Name}");
-
-            if (canGenerate && TryGenerateTemplate(tagName, sourceRmt2Desc, out CachedTag generatedRmt2))
+            // potentially async here. depends on: type (cannot be an effect type) and whether the rmt2 exists already.
+            if (canGenerate && TryGenerateTemplate(tagName, sourceRmt2Desc, out CachedTag generatedRmt2, (Commands.Porting.PortTagCommand.TemplateConversionResult result) =>
             {
-                Console.WriteLine($"Generated rmt2: {generatedRmt2.Name}.{generatedRmt2.Group}");
+                PortTagCommand._deferredActions.Add(() =>
+                {
+                    PortTagCommand.FinishConvertTemplate(result, tagName, out RenderMethodTemplate asyncRmt2, out PixelShader asyncPixl, out VertexShader asyncVtsh);
+
+                    if (!BaseCache.TagCache.TryGetTag(tagName + ".pixl", out asyncRmt2.PixelShader))
+                        asyncRmt2.PixelShader = BaseCache.TagCache.AllocateTag<PixelShader>(tagName);
+                    if (!BaseCache.TagCache.TryGetTag(tagName + ".vtsh", out asyncRmt2.VertexShader))
+                        asyncRmt2.VertexShader = BaseCache.TagCache.AllocateTag<VertexShader>(tagName);
+
+                    BaseCache.Serialize(BaseCacheStream, asyncRmt2.PixelShader, asyncPixl);
+                    BaseCache.Serialize(BaseCacheStream, asyncRmt2.VertexShader, asyncVtsh);
+                    BaseCache.Serialize(BaseCacheStream, result.Tag, asyncRmt2);
+                    
+                    if (PortTagCommand.FlagIsSet(Commands.Porting.PortTagCommand.PortingFlags.Print))
+                        Console.WriteLine($"['{result.Tag.Group.Tag}', 0x{result.Tag.Index:X4}] {result.Tag.Name}.{(result.Tag.Group as Cache.Gen3.TagGroupGen3).Name}");
+                });
+            }))
+            {
                 return generatedRmt2;
             }
+
+            Console.WriteLine($"No rmt2 match found for {sourceRmt2Tag.Name}");
 
             if (PerfectMatchesOnly)
                 return null;
@@ -295,34 +328,36 @@ namespace TagTool.Shaders.ShaderMatching
             }
         }
 
-        private bool TryGenerateTemplate(string tagName, Rmt2Descriptor rmt2Desc, out CachedTag generatedRmt2)
+        private bool CanGenerateAsync(string shaderType)
+        {
+            // todo: support rmd but avoid decs
+            switch (shaderType)
+            {
+                case "shader":
+                case "custom":
+                case "cortana":
+                case "halogram":
+                case "glass":
+                case "terrain":
+                case "foliage":
+                case "water":
+                case "zonly":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        private bool TryGenerateTemplate(string tagName, Rmt2Descriptor rmt2Desc, out CachedTag generatedRmt2, Action<Commands.Porting.PortTagCommand.TemplateConversionResult> callback)
         {
             generatedRmt2 = null;
 
-            //var generator = rmt2Desc.GetGenerator(true);
-            //if (generator == null)
-            //    return false;
-
-            RenderMethodDefinition rmdf;
-            CachedTag rmdfTag;
-            if (!BaseCache.TagCache.TryGetTag($"shaders\\{rmt2Desc.Type}.rmdf", out rmdfTag))
+            if (!RenderMethodDefinitions.ContainsKey(rmt2Desc.Type))
             {
                 new TagToolError(CommandError.CustomMessage, $"No rmdf tag present for {rmt2Desc.Type}");
                 return false;
-
-                //Console.WriteLine($"Generating rmdf for \"{rmt2Desc.Type}\"");
-                //rmdf = ShaderGenerator.RenderMethodDefinitionGenerator.GenerateRenderMethodDefinition(BaseCache, BaseCacheStream, generator, rmt2Desc.Type, out glps, out glvs);
-                //rmdfTag = BaseCache.TagCache.AllocateTag<RenderMethodDefinition>($"shaders\\{rmt2Desc.Type}");
-                //BaseCache.Serialize(BaseCacheStream, rmdfTag, rmdf);
-                //(BaseCache as GameCacheHaloOnlineBase).SaveTagNames();
-                //
-                //rmt2Desc = RebuildRmt2Options(rmt2Desc, BaseCacheStream, PortingCacheStream);
-                //tagName = $"shaders\\{rmt2Desc.Type}_templates\\_{string.Join("_", rmt2Desc.Options)}";
             }
-            else
-            {
-                rmdf = BaseCache.Deserialize<RenderMethodDefinition>(BaseCacheStream, rmdfTag);
-            }
+            RenderMethodDefinition rmdf = RenderMethodDefinitions[rmt2Desc.Type];
 
             RenderMethodTemplate rmt2;
             PixelShader pixl;
@@ -330,7 +365,46 @@ namespace TagTool.Shaders.ShaderMatching
 
             try
             {
-                rmt2 = ShaderGenerator.ShaderGeneratorNew.GenerateTemplateSafe(BaseCache, BaseCacheStream, rmdf, tagName, out pixl, out vtsh);
+                if (CanGenerateAsync(rmt2Desc.Type))
+                {
+                    CachedTag rmt2Tag = BaseCache.TagCache.AllocateTag<RenderMethodTemplate>(tagName);
+                    PortTagCommand.PendingTemplates.Add(tagName);
+
+                    var glps = BaseCache.Deserialize<GlobalPixelShader>(BaseCacheStream, rmdf.GlobalPixelShader);
+                    var glvs = BaseCache.Deserialize<GlobalVertexShader>(BaseCacheStream, rmdf.GlobalVertexShader);
+
+                    // get options in numeric array
+                    List<byte> options = new List<byte>();
+                    foreach (var option in tagName.Split('\\')[2].Remove(0, 1).Split('_'))
+                        options.Add(byte.Parse(option));
+
+                    var allRmopParameters = ShaderGenerator.ShaderGeneratorNew.GatherParametersAsync(RenderMethodOptions, rmdf, options);
+
+                    PortTagCommand.ConcurrencyLimiter.Wait();
+                    PortTagCommand.TemplateConversionTasks.Add(tagName, Task.Run(() =>
+                    {
+                        try
+                        {
+                            Commands.Porting.PortTagCommand.TemplateConversionResult result = new Commands.Porting.PortTagCommand.TemplateConversionResult();
+
+                            result.Tag = rmt2Tag;
+                            result.Definition = ShaderGenerator.ShaderGeneratorNew.GenerateTemplate(BaseCache, rmdf, glvs, glps, allRmopParameters, tagName, out result.PixelShaderDefinition, out result.VertexShaderDefinition);
+
+                            callback(result);
+                        }
+                        finally
+                        {
+                            PortTagCommand.ConcurrencyLimiter.Release();
+                        }
+                    }));
+
+                    generatedRmt2 = rmt2Tag;
+                    return true;
+                }
+                else
+                {
+                    rmt2 = ShaderGenerator.ShaderGeneratorNew.GenerateTemplateSafe(BaseCache, BaseCacheStream, rmdf, tagName, out pixl, out vtsh);
+                }
             }
             catch (Exception ex)
             {
@@ -374,27 +448,18 @@ namespace TagTool.Shaders.ShaderMatching
         }
 
         /// <summary>
-        /// Modifies the input render method to make it work using the matchedTemplate
-        /// </summary>
-        private RenderMethod MatchRenderMethods(RenderMethod renderMethod, RenderMethodTemplate matchedTemplate, RenderMethodTemplate originalTemplate)
-        {
-
-            return renderMethod;
-        }
-
-        /// <summary>
         /// Rebuilds an rmt2's options in memory so indices match up with the base cache
         /// </summary>
-        private Rmt2Descriptor RebuildRmt2Options(Rmt2Descriptor srcRmt2Descriptor, Stream baseStream, Stream portingStream)
+        private Rmt2Descriptor RebuildRmt2Options(Rmt2Descriptor srcRmt2Descriptor)
         {
             if (srcRmt2Descriptor.Type != "black" && PortingCache.Version >= CacheVersion.Halo3Beta)
             {
                 string rmdfName = $"shaders\\{srcRmt2Descriptor.Type}.rmdf";
-                if (!BaseCache.TagCache.TryGetTag(rmdfName, out var baseRmdfTag) || !PortingCache.TagCache.TryGetTag(rmdfName, out var portingRmdfTag))
+                if (!RenderMethodDefinitions.ContainsKey(srcRmt2Descriptor.Type) || !PortingRenderMethodDefinitions.ContainsKey(srcRmt2Descriptor.Type))
                     return srcRmt2Descriptor;
 
-                var baseRmdfDefinition = BaseCache.Deserialize<RenderMethodDefinition>(BaseCacheStream, baseRmdfTag);
-                var portingRmdfDefinition = PortingCache.Deserialize<RenderMethodDefinition>(PortingCacheStream, portingRmdfTag);
+                var baseRmdfDefinition = RenderMethodDefinitions[srcRmt2Descriptor.Type];
+                var portingRmdfDefinition = PortingRenderMethodDefinitions[srcRmt2Descriptor.Type];
 
                 List<byte> newOptions = new List<byte>();
 
@@ -405,9 +470,17 @@ namespace TagTool.Shaders.ShaderMatching
 
                     string methodName = BaseCache.StringTable.GetString(baseRmdfDefinition.Categories[i].Name);
 
-                    if (methodName == "reach_compatibility")
+                    if (PortingCache.Version >= CacheVersion.HaloReach && methodName == "reach_compatibility")
                     {
-                        newOptions.Add(PortingCache.Version >= CacheVersion.HaloReach ? (byte)1 : (byte)0);
+                        if (portingRmdfDefinition.GetCategoryOption(PortingCache, "detail", srcRmt2Descriptor.Options) == "repeat")
+                        {
+                            int potentialIndex = baseRmdfDefinition.GetCategoryOptionIndex(BaseCache, "reach_compatibility", "enabled_detail_repeat");
+                            newOptions.Add(potentialIndex != -1 ? (byte)potentialIndex : (byte)1);
+                        }
+                        else
+                        {
+                            newOptions.Add(1);
+                        }
                         continue;
                     }
 
@@ -434,8 +507,24 @@ namespace TagTool.Shaders.ShaderMatching
                         //    optionName = "cook_torrance_odst";
                         //if (methodName == "material_model" && optionName == "cook_torrance_rim_fresnel")
                         //    optionName = "cook_torrance";
-                        if (PortingCache.Version == CacheVersion.HaloReach && methodName == "environment_mapping" && optionName == "dynamic")
-                            optionName = "dynamic_reach";
+
+                        if (PortingCache.Version == CacheVersion.HaloReach)
+                        {
+                            // keep in sync with cubemap conversion - not needed anymore?
+                            //if (methodName == "environment_mapping" && optionName == "dynamic")
+                            //{
+                            //    optionName = "dynamic_reach";
+                            //}
+                            if (methodName == "material_model")
+                            {
+                                if (optionName == "cook_torrance")
+                                    optionName = "cook_torrance_reach";
+                                else if (optionName == "two_lobe_phong")
+                                    optionName = "two_lobe_phong_reach";
+                                //else if (optionName == "organism")
+                                //    optionName = "organism_reach";
+                            }
+                        }
 
                         // TODO: fill this switch, Reach shadergen might take some time...
                         // fixup names (remove when full rmdf + shader generation for each gen3 game)
@@ -473,10 +562,6 @@ namespace TagTool.Shaders.ShaderMatching
                             case @"depth_fade\low_res":
                                 optionName = "on";
                                 break;
-                            // MCC rmsh //
-                            case @"material_model\cook_torrance_pbr_maps":
-                                optionName = "cook_torrance";
-                                break;
                         }
 
                         bool matchFound = false;
@@ -504,31 +589,6 @@ namespace TagTool.Shaders.ShaderMatching
             }
 
             return srcRmt2Descriptor;
-        }
-
-        private Rmt2ParameterMatch MatchParameterBlocks(List<ShaderArgument> sourceBlock, List<ShaderArgument> destBlock)
-        {
-            var result = new Rmt2ParameterMatch();
-
-            var destNames = destBlock.Select(x => BaseCache.StringTable.GetString(x.Name));
-            var sourceNames = sourceBlock.Select(x => PortingCache.StringTable.GetString(x.Name));
-
-            result.SourceCount = sourceNames.Count();
-            result.DestCount = destNames.Count();
-            result.MissingFromDest = sourceNames.Except(destNames).Count();
-            result.MissingFromSource = destNames.Except(sourceNames).Count();
-            result.Common = destNames.Intersect(sourceNames).Count();
-
-            return result;
-        }
-
-        private RenderMethodTemplate GetTemplate(CachedTag tag)
-        {
-            RenderMethodTemplate template;
-            if (!_rmt2Cache.TryGetValue(tag, out template))
-                template = _rmt2Cache[tag] = BaseCache.Deserialize<RenderMethodTemplate>(BaseCacheStream, tag);
-
-            return template;
         }
 
         public class Rmt2Pairing
@@ -670,68 +730,6 @@ namespace TagTool.Shaders.ShaderMatching
             string rmdfName = $"{prefix}shaders\\{type}";
 
             return BaseCache.TagCache.GetTag(rmdfName, "rmdf");
-        }
-
-
-        private List<string> GetRenderMethodDefinitionMethods(RenderMethodDefinition rmdf, GameCache cache)
-        {
-            var result = new List<string>();
-            foreach(var method in rmdf.Categories)
-            {
-                var str = cache.StringTable.GetString(method.Name);
-                result.Add(str);
-            }
-            return result;
-        }
-
-        private List<string> GetMethodOptions(RenderMethodDefinition rmdf, int methodIndex, GameCache cache)
-        {
-            var result = new List<string>();
-            var method = rmdf.Categories[methodIndex];
-            foreach(var option in method.ShaderOptions)
-            {
-                result.Add(cache.StringTable.GetString(option.Name));
-            }
-            return result;
-        }
-
-        private void FindClosestShaderTemplate(CachedTag sourceRmt2)
-        {
-            // somehow build a list of rmt2 of the same type
-            List<CachedTag> candidateTemplates = new List<CachedTag>();
-
-            // defined method search order, ignore last method from ms30
-            List<int> methodOrder = new List<int> {0, 2, 3, 1, 6, 4, 5, 7, 8, 9, 10};
-
-            Dictionary<CachedTag, int> matchLevelDictionary = new Dictionary<CachedTag, int>();
-            Rmt2Descriptor sourceRmt2Desc;
-            if (!Rmt2Descriptor.TryParse(sourceRmt2.Name, out sourceRmt2Desc))
-                return;
-
-            while (candidateTemplates.Count != 0)
-            {
-                var template = candidateTemplates.Last();
-                Rmt2Descriptor destRmt2Desc;
-                if (!Rmt2Descriptor.TryParse(template.Name, out destRmt2Desc))
-                {
-                    candidateTemplates.Remove(template);
-                    matchLevelDictionary[template] = 0;
-                }
-                else
-                {
-                    var matchLevel = 0;
-                    for(int i = 0; i < methodOrder.Count; i++)
-                    {
-                        var methodIndex = methodOrder[i];
-                        // we need to define a ordering on the method options, so that there is a single best rmt2
-                        if (sourceRmt2Desc.Options[methodIndex] == destRmt2Desc.Options[methodIndex])
-                            matchLevel++;
-                        else
-                            break;
-                    }
-                    matchLevelDictionary[template] = matchLevel;
-                } 
-            }
         }
     }
 }

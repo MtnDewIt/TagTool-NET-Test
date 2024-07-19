@@ -34,10 +34,19 @@ namespace TagTool.Commands.Files
                 return new TagToolError(CommandError.ArgCount);
 
             bool forceUpdate = false;
-            bool hasMapInfo = false;
+            bool pathProvided = false;
+            string mapInfoPath = "";
 
             if (args.Count >= 1)
-                hasMapInfo = true;
+            {
+                pathProvided = true;
+
+                if (!Directory.Exists(args[0]))
+                    return new TagToolError(CommandError.ArgInvalid, "Given mapinfo directory does not exist.");
+                else
+                    mapInfoPath = args[0];
+            }
+
             if (args.Count == 2)
                 if (args[1].ToLower() == "forceupdate")
                     forceUpdate = true;
@@ -55,9 +64,9 @@ namespace TagTool.Commands.Files
                     MapFile map;
                     Blf mapInfo = null;
 
-                    if (hasMapInfo)
+                    if (pathProvided)
                     {
-                        var mapInfoDir = new DirectoryInfo(args[0]);
+                        var mapInfoDir = new DirectoryInfo(mapInfoPath);
                         var files = mapInfoDir.GetFiles(mapInfoName);
                         if (files.Length != 0)
                         {
@@ -112,7 +121,9 @@ namespace TagTool.Commands.Files
                             var scnr = Cache.Deserialize<Scenario>(tagStream, scenario);
 
                             var mapBuilder = new MapFileBuilder(Cache.Version);
-                            mapBuilder.MapInfo = mapInfo.Scenario;
+                            if (mapInfo != null)
+                                mapBuilder.MapInfo = mapInfo.Scenario;
+
                             map = mapBuilder.Build(scenario, scnr);
                         }
                         
@@ -134,7 +145,7 @@ namespace TagTool.Commands.Files
                 Console.WriteLine("Done!");
                 return true;
             }
-            else if(Cache is GameCacheModPackage modPackCache)
+            else if(Cache is GameCacheModPackage modCache)
             {
                 // Generate / update the map files
                 foreach (var scenario in Cache.TagCache.FindAllInGroup("scnr"))
@@ -150,9 +161,9 @@ namespace TagTool.Commands.Files
                     MapFile map;
                     Blf mapInfo = null;
 
-                    if (hasMapInfo)
+                    if (pathProvided)
                     {
-                        var mapInfoDir = new DirectoryInfo(args[0]);
+                        var mapInfoDir = new DirectoryInfo(mapInfoPath);
                         var files = mapInfoDir.GetFiles(mapInfoName);
                         if (files.Length != 0)
                         {
@@ -196,13 +207,14 @@ namespace TagTool.Commands.Files
                     map.Write(writer);
 
                     var header = (CacheFileHeaderGenHaloOnline)map.Header;
-                    modPackCache.AddMapFile(mapStream, header.MapId);
+                    modCache.AddMapFile(mapStream, header.MapId);
 
                     if (mapInfo != null)
-                        Console.WriteLine($"Scenario tag index for {name}: 0x{scenario.Index:X4} (using map info)");
+                        Console.WriteLine($"Scenario 0x{scenario.Index:X4} \"{name}\" using map info");
+                    else if (args.Count == 0)
+                        Console.WriteLine($"Scenario 0x{scenario.Index:X4} \"{name}\" NOT using map info");
                     else
-                        Console.WriteLine($"Scenario tag index for {name}: 0x{scenario.Index:X4} (WARNING: not using map info)");
-
+                        new TagToolWarning($"Scenario 0x{scenario.Index:X4} \"{name}\" NOT using map info");
                 }
                 Console.WriteLine("Done!");
                 return true;

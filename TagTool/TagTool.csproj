@@ -66,6 +66,7 @@
     <Prefer32Bit>true</Prefer32Bit>
     <DocumentationFile>bin\x64\Debug\Documentation.xml</DocumentationFile>
     <LangVersion>7.3</LangVersion>
+    <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -79,6 +80,8 @@
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <LangVersion>7.3</LangVersion>
     <DefineConstants>_x64</DefineConstants>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'test|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -102,6 +105,7 @@
     <LangVersion>7.3</LangVersion>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -276,6 +280,7 @@
     <Compile Include="Audio\SoundDistanceParameters.cs" />
     <Compile Include="Audio\Utils\AudioUtils.cs" />
     <Compile Include="Bitmaps\BitmapCurveMode.cs" />
+    <Compile Include="Bitmaps\Utils\BitmapDownsampler.cs" />
     <Compile Include="Bitmaps\Utils\BitmapSampler.cs" />
     <Compile Include="Bitmaps\Utils\BitmapUtilsPC.cs" />
     <Compile Include="Bitmaps\Utils\RGBAColor.cs" />
@@ -396,6 +401,7 @@
     <Compile Include="Cache\HaloOnline\StringTableHaloOnline.cs" />
     <Compile Include="Cache\HaloOnline\TagCacheHaloOnline.cs" />
     <Compile Include="Cache\ModPackages\GameCacheModPackage.cs" />
+    <Compile Include="Commands\Bitmaps\GenerateMipmapsCommand.cs" />
     <Compile Include="Commands\Bitmaps\ReencodeBitmapCommand.cs" />
     <Compile Include="Commands\Camera\CameraTrackContextFactory.cs" />
     <Compile Include="Commands\Camera\AdjustPositionCommand.cs" />
@@ -422,8 +428,10 @@
     <Compile Include="Commands\Porting\Gen2\Gen2ShaderTemplateMapBase.cs" />
     <Compile Include="Commands\Porting\IgnoreBlamTagCommand.cs" />
     <Compile Include="Commands\Porting\Gen4\PortTagGen4Command.Models.cs" />
+    <Compile Include="Commands\Porting\HaloOnline\PortTagHOCommand.cs" />
     <Compile Include="Commands\Porting\StructureAutoConverter.cs" />
     <Compile Include="Commands\ScenarioStructureBSPs\GenerateStructureSurfacesCommand.cs" />
+    <Compile Include="Commands\Scenarios\CompilePodiumScriptsCommand.cs" />
     <Compile Include="Commands\Shaders\RecompileShadersCommand.cs" />
     <Compile Include="Commands\StructureDesigns\MoppDataCommand.cs" />
     <Compile Include="Commands\Tags\ImportLooseTagCommand.cs" />
@@ -462,6 +470,7 @@
     <Compile Include="Effects\EditableProperty.cs" />
     <Compile Include="Effects\EmitterCustomPointPlotter.cs" />
     <Compile Include="Effects\ParticleGpu.cs" />
+    <Compile Include="Extensions\VectorExtensions.cs" />
     <Compile Include="Fonts\FontBitmapPacker.cs" />
     <Compile Include="Fonts\FontPackage.cs" />
     <Compile Include="Geometry\Ass\AssFormat.cs" />
@@ -573,7 +582,6 @@
     <Compile Include="Commands\Porting\PortTagCommand.Physics.cs" />
     <Compile Include="Commands\Porting\PortTagCommand.Scenario.cs" />
     <Compile Include="Commands\Porting\PortTagCommand.Shader.cs" />
-    <Compile Include="Commands\Porting\PortTagCommand.ShaderGen.cs" />
     <Compile Include="Commands\Porting\PortTagCommand.Sound.cs" />
     <Compile Include="Commands\Porting\PortTagCommand.Strings.cs" />
     <Compile Include="Commands\Porting\SetPortingOptionCommand.cs" />
@@ -1727,6 +1735,7 @@
     <Compile Include="Tags\Resources\BinkResource.cs" />
     <Compile Include="Tags\Resources\SoundResourceDefinition.cs" />
     <Compile Include="Havok\BipedPhysicsFlags.cs" />
+    <Compile Include="Tags\VersionedFlags.cs" />
     <Compile Include="Tools\Geometry\BlamModelFile.cs" />
     <Compile Include="Video\Utils\VideoUtils.cs" />
   </ItemGroup>

@@ -406,7 +406,7 @@ namespace TagTool.Commands.Porting
                 }
             }
 
-            AddPrematchCamera(cacheStream, scnr, tagName);
+            AddHOCameras(cacheStream, scnr, tagName);
 
             //
             // Convert PlayerStartingProfiles
@@ -708,48 +708,50 @@ namespace TagTool.Commands.Porting
                             {
                                 atmosphereSettings.Flags |= SkyAtmParameters.AtmosphereProperty.AtmosphereFlags.OverrideRealSunValues;
                                 atmosphereSettings.Color = fogSettings.FogColor;
-                                atmosphereSettings.Intensity = 3.0f; // tweak?
+                                atmosphereSettings.Intensity = 1.0f; // tweak?
                                 atmosphereSettings.SunAnglePitch = 0.0f;
                                 atmosphereSettings.SunAngleYaw = 0.0f;
 
-                                // Test for direction
-                                //if (scnr.SkyReferences.Count > 0 && scnr.SkyReferences[0].SkyObject != null)
-                                //{
-                                //    var skyObje = CacheContext.Deserialize<GameObject>(cacheStream, scnr.SkyReferences[0].SkyObject);
-                                //    var hlmt = CacheContext.Deserialize<Model>(cacheStream, skyObje.Model);
-                                //    var mode = CacheContext.Deserialize<RenderModel>(cacheStream, hlmt.RenderModel);
-                                //
-                                //    if (mode.LightgenLights.Count > 0)
-                                //    {
-                                //        var direction = mode.LightgenLights.Last().Direction;
-                                //
-                                //        atmosphereSettings.SunAnglePitch = (float)(Math.Acos(direction.K) / Math.PI) * 180.0f;
-                                //        atmosphereSettings.SunAngleYaw = (float)(Math.Asin(direction.J / Math.Sin(atmosphereSettings.SunAnglePitch)) / Math.PI) * 180.0f;
-                                //    }
-                                //}
+                                // reach has a fog light angle but i think this better for now
+                                if (scnr.SkyReferences.Count > 0 && scnr.SkyReferences[0].SkyObject != null)
+                                {
+                                    var skyObje = CacheContext.Deserialize<GameObject>(cacheStream, scnr.SkyReferences[0].SkyObject);
+                                    var hlmt = CacheContext.Deserialize<Model>(cacheStream, skyObje.Model);
+                                    var mode = CacheContext.Deserialize<RenderModel>(cacheStream, hlmt.RenderModel);
+                                
+                                    if (mode.LightgenLights.Count > 0)
+                                    {
+                                        var direction = mode.LightgenLights.Last().Direction; // last light is sun
+                                
+                                        atmosphereSettings.SunAnglePitch = (float)(Math.Asin(direction.K) * (180.0f / Math.PI));
+                                        if (atmosphereSettings.SunAnglePitch < 0.0f) // limit to 0-90
+                                            atmosphereSettings.SunAnglePitch = -atmosphereSettings.SunAnglePitch;
+
+                                        atmosphereSettings.SunAngleYaw = (float)(Math.Atan2(direction.J, direction.I) * (180.0f / Math.PI));
+                                    }
+                                }
 
                                 atmosphereSettings.SeaLevel = fogSettings.BaseHeight; // WU, lowest height of scenario
+
+                                // these are definitely wrong
                                 atmosphereSettings.RayleignHeightScale = fogSettings.FogHeight; // WU, height above sea where atmo 30% thick
                                 atmosphereSettings.MieHeightScale = fogSettings.FogHeight; // WU, height above sea where atmo 30% thick
 
-                                atmosphereSettings.MaxFogThickness = fogSettings.FogThickness * 10000.0f;
+                                atmosphereSettings.MaxFogThickness = fogSettings.FogThickness * 65536.0f;
                             }
 
-                            atmosphereSettings.RayleighMultiplier = 0.0f; // scattering amount, small
-                            atmosphereSettings.MieMultiplier = 0.0f; // scattering amount, large
+                            // todo: scale these with fog thickness
+                            atmosphereSettings.RayleighMultiplier = 0.05f; // scattering amount, small
+                            atmosphereSettings.MieMultiplier = 0.025f; // scattering amount, large
 
-                            atmosphereSettings.SunPhaseFunction = 0.2f;
+                            atmosphereSettings.SunPhaseFunction = 0.2f; //todo
                             atmosphereSettings.Desaturation = 0.0f;
                             atmosphereSettings.DistanceBias = fogg.DistanceBias;
-
-                            // placeholder for now
-
-                            atmosphereSettings.BetaM = new RealVector3d(0.0002946603f, 0.0005024257f, 0.001058603f);
-                            atmosphereSettings.BetaP = new RealVector3d(0.001434321f, 0.001849472f, 0.002627869f);
-                            atmosphereSettings.BetaMThetaPrefix = new RealVector3d(1.788872E-05f, 3.050209E-05f, 6.426741E-05f);
-                            atmosphereSettings.BetaPThetaPrefix = new RealVector3d(0.0003334733f, 0.0004336488f, 0.0006244543f);
                         }
                     }
+
+                    // validate all values and recalculate atmosphere constants
+                    skya.Postprocess();
 
                     CachedTag skyTag = CacheContext.TagCache.AllocateTag<SkyAtmParameters>(tagName);
                     CacheContext.Serialize(cacheStream, skyTag, skya);
@@ -875,6 +877,7 @@ namespace TagTool.Commands.Porting
                     });
 
                 ProcessMegaloLabels(scnr.CratePalette, scnr.Crates);
+                scnr.Crates = scnr.Crates.Where(e => e.PaletteIndex != -1).ToList();
 
                 // Teleporters must be neutral.
 
@@ -907,6 +910,11 @@ namespace TagTool.Commands.Porting
 
             if (scnr.SceneryPalette.Count > 0)
             {
+                var invisible_spawn = scnr.SceneryPalette.FindIndex(e => e.Object?.Name == "objects\\multi\\spawning\\respawn_point_invisible");
+                if (invisible_spawn != -1)
+                    foreach (var entry in scnr.Scenery.Where(e => e.PaletteIndex == invisible_spawn).Skip(1))
+                        entry.PaletteIndex = -1;
+
                 scnr.SceneryPalette.AddRange(new List<Scenario.ScenarioPaletteEntry>
                     {
                         new Scenario.ScenarioPaletteEntry { Object = CacheContext.TagCache.GetTag(@"objects\multi\assault\assault_respawn_zone", "scen") },
@@ -928,17 +936,23 @@ namespace TagTool.Commands.Porting
                     });
 
                 ProcessMegaloLabels(scnr.SceneryPalette, scnr.Scenery);
+                scnr.Scenery = scnr.Scenery.Where(e => e.PaletteIndex != -1).ToList();
             }
         }
 
         private void ProcessMegaloLabels<T>(List<Scenario.ScenarioPaletteEntry> palette, List<T> instanceList)
         {
+            List<string> stripped = new List<string>();
             foreach (var instance in instanceList)
             {
                 var mpProperties = (Scenario.MultiplayerObjectProperties)(instance.GetType().GetField("Multiplayer").GetValue(instance));
+                if (mpProperties == null)
+                    return;
+
                 var permutationInstance = (instance as Scenario.PermutationInstance);
                 var newPaletteIndex = permutationInstance.PaletteIndex;
                 var ctfReturnIndex = GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_return_area");
+
                 switch (mpProperties.MegaloLabel)
                 {
                     case "ctf_res_zone_away":
@@ -975,9 +989,6 @@ namespace TagTool.Commands.Porting
                     case "inf_spawn":
                         newPaletteIndex = GetPaletteIndex(palette, @"objects\multi\infection\infection_initial_spawn_point");
                         break;
-                    case "ffa_only":
-                        newPaletteIndex = -1;
-                        break;
                     case "inf_haven":
                         newPaletteIndex = GetPaletteIndex(palette, @"objects\multi\infection\infection_respawn_zone");
                         break;
@@ -989,20 +1000,31 @@ namespace TagTool.Commands.Porting
                         break;
                     case "oddball_ball":
                     case "koth_hill":
-                    case "team_only":
-                    case "hh_drop_point":
+                    case "slayer":
+                    case "lift":
                     case "none":
                         break;
-                    case "inv_objective":
-                    case "inv_obj_flag":
-                    case "invasion":
-                        newPaletteIndex = -1;
-                        break;
+                    //case "team_only":
+                    //case "hh_drop_point":
+                    //case "inv_objective":
+                    //case "inv_obj_flag":
+                    //case "invasion":
+                    //    newPaletteIndex = -1;
+                    //    break;
                     default:
-                        //if (!string.IsNullOrEmpty(mpProperties.MegaloLabel))
-                        //    new TagToolWarning($"unknown megalo label: {mpProperties.MegaloLabel}");
+                        if (!string.IsNullOrEmpty(mpProperties.MegaloLabel))
+                        {
+                            newPaletteIndex = -1;
+                            if(!stripped.Contains(mpProperties.MegaloLabel))
+                            {
+                                stripped.Add(mpProperties.MegaloLabel);
+                                Console.WriteLine($"Placements with label \"{mpProperties.MegaloLabel}\" stripped");
+                            }
+                        }
                         break;
                 }
+
+                mpProperties.SpawnFlags &= ~MultiplayerObjectPlacementSpawnFlags.HideUnlessRequired;
 
                 permutationInstance.PaletteIndex = newPaletteIndex;
             }
@@ -1028,20 +1050,32 @@ namespace TagTool.Commands.Porting
             return validforRvB;
         }
 
-        private void AddPrematchCamera(Stream cacheStream, Scenario scnr, string tagName)
+        private void AddHOCameras(Stream cacheStream, Scenario scnr, string tagName)
         {
+
+            //
+            // Add podium camera position
+            //
+
+            var existingPodiumCameraPoint = scnr.CutsceneCameraPoints.FirstOrDefault(cameraPoint => cameraPoint.Name == "podium_camera");
+            if (existingPodiumCameraPoint != null)
+            {
+                // if we already have one, just add the flag for HO
+                existingPodiumCameraPoint.Flags |= Scenario.CutsceneCameraPointFlags.PodiumCameraHack;
+            }
+
             //
             // Add prematch camera position
             //
 
-            var existingCameraPoint = scnr.CutsceneCameraPoints.FirstOrDefault(cameraPoint => cameraPoint.Name == "prematch_camera");
-            if (existingCameraPoint != null)
+            var existingPrematchCameraPoint = scnr.CutsceneCameraPoints.FirstOrDefault(cameraPoint => cameraPoint.Name == "prematch_camera");
+            if (existingPrematchCameraPoint != null)
             {
                 // if we already have one, just add the flag for HO
-                existingCameraPoint.Flags |= Scenario.CutsceneCameraPointFlags.PrematchCameraHack;
+                existingPrematchCameraPoint.Flags |= Scenario.CutsceneCameraPointFlags.PrematchCameraHack;
                 return;
-            }  
-
+            }
+            
             var createPrematchCamera = false;
 
             var position = new RealPoint3d();

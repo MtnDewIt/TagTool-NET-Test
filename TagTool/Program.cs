@@ -33,10 +33,25 @@ namespace TagTool.Commands
 
             if (autoexecCommand == null)
             {
-                Console.WriteLine($"TagTool [{Assembly.GetExecutingAssembly().GetName().Version}]");
+                Console.WriteLine($"TagTool [{Assembly.GetExecutingAssembly().GetName().Version} (Built {GetLinkerTimestampUtc(Assembly.GetExecutingAssembly())} UTC)]");
                 Console.WriteLine();
                 Console.WriteLine("Please report any bugs and/or feature requests:");
                 Console.WriteLine("https://github.com/TheGuardians-CI/TagTool/issues");
+            }
+
+            // Provide user with warnings if there are missing assemblies
+            // HaloShaderGenerator.dll:
+            try
+            {
+                TestShaderGeneratorAssembly();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("ERROR: Could not load shader generator. Most shader related operations will fail");
+                Console.WriteLine("Please confirm \"HaloShaderGenerator.dll\" is up to date and present in the \"Tools\" folder of your TagTool directory");
+                Console.ForegroundColor = ConsoleColor.White;
             }
 
             start:
@@ -211,6 +226,34 @@ namespace TagTool.Commands
             ErrorCount = 0;
             WarningCount = 0;
             _stopWatch.Reset();
+        }
+
+        public static DateTime GetLinkerTimestampUtc(Assembly assembly)
+        {
+            var location = assembly.Location;
+            return GetLinkerTimestampUtc(location);
+        }
+
+        public static DateTime GetLinkerTimestampUtc(string filePath)
+        {
+            const int peHeaderOffset = 60;
+            const int linkerTimestampOffset = 8;
+            var bytes = new byte[2048];
+
+            using (var file = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                file.Read(bytes, 0, bytes.Length);
+            }
+
+            var headerPos = BitConverter.ToInt32(bytes, peHeaderOffset);
+            var secondsSince1970 = BitConverter.ToInt32(bytes, headerPos + linkerTimestampOffset);
+            var dt = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return dt.AddSeconds(secondsSince1970);
+        }
+
+        private static void TestShaderGeneratorAssembly()
+        {
+            var hlslFloat = HaloShaderGenerator.Globals.HLSLType.Float;
         }
     }
 }
