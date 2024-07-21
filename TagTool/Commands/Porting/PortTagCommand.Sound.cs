@@ -16,7 +16,6 @@ namespace TagTool.Commands.Porting
     {
         private SoundCacheFileGestalt BlamSoundGestalt { get; set; } = null;
         private Dictionary<Sound, Task> SoundConversionTasks = new Dictionary<Sound, Task>();
-        private SemaphoreSlim ConcurrencyLimiter;
 
         class SoundConversionResult
         {
@@ -27,14 +26,18 @@ namespace TagTool.Commands.Porting
             public List<Action> PostConversionOperations = new List<Action>();
         }
 
-        public void InitializeSoundConverter()
-        {
-            ConcurrencyLimiter = new SemaphoreSlim(PortingOptions.Current.MaxThreads);
-        }
-
         public void WaitForPendingSoundConversion()
         {
-            Task.WaitAll(SoundConversionTasks.Values.ToArray());
+            try
+            {
+                Task.WaitAll(SoundConversionTasks.Values.ToArray());
+            }
+            catch (AggregateException ex)
+            {
+                foreach (var inner in ex.InnerExceptions)
+                    new TagToolError(CommandError.CustomError, inner.Message);
+                throw (ex);
+            }         
         }
 
         private Sound FinishConvertSound(SoundConversionResult result)

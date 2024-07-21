@@ -150,7 +150,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
         {
             // Do nothing if the instanced geometry has no collision
             var collisionBsp = instanceDef.CollisionInfo;
-            if (collisionBsp.Surfaces.Count == 0)
+            if (collisionBsp.Surfaces.Count == 0 || instanceDef.MeshIndex == -1)
                 return;
 
             // Do nothing if the instanced geometry has no vertex data
@@ -224,10 +224,10 @@ namespace TagTool.Commands.ScenarioStructureBSPs
         public static List<SurfaceTriangle>[] GenerateStructureSurfaceTriangleLists(CollisionGeometry collisionBsp, MeshData meshData)
         {
             var surfaceTriangleLists = new List<SurfaceTriangle>[collisionBsp.Surfaces.Count];
-            Parallel.For(0, collisionBsp.Surfaces.Count, surfaceIndex =>
+            for(var surfaceIndex = 0; surfaceIndex < collisionBsp.Surfaces.Count; surfaceIndex++)
             {
                 surfaceTriangleLists[surfaceIndex] = GenerateSurfaceTrianglesList(collisionBsp, surfaceIndex, meshData);
-            });
+            };
             return surfaceTriangleLists;
         }
 
@@ -675,7 +675,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
             {
                 Mesh = renderGeometry.Meshes[meshIndex];
                 Indices = ReadMeshIndices(cache, Mesh);
-                Vertices = ReadMeshVertices(cache, Mesh, compressionIndex == -1 ? null : new VertexCompressor(renderGeometry.Compression[compressionIndex]));
+                Vertices = ReadMeshVertices(cache, Mesh, compressionIndex == -1 || compressionIndex >= renderGeometry.Compression.Count ? null : new VertexCompressor(renderGeometry.Compression[compressionIndex]));
             }
 
             private static ushort[] ReadMeshIndices(GameCache cache, Mesh mesh)

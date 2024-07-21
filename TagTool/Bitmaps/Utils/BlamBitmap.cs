@@ -14,16 +14,11 @@ public class BaseBitmap
     public int MipMapCount;
     public BitmapFormat Format;
     public int BlockSize;
-    public int BlockDimension;
-    public double CompressionFactor;
     public BitmapType Type;
     public BitmapImageCurve Curve;
     public BitmapFlags Flags;
     public int MipMapOffset;
     public byte[] Data;
-
-    public int NearestHeight;
-    public int NearestWidth;
 
     public BaseBitmap() { }
 
@@ -107,119 +102,9 @@ public class BaseBitmap
     {
         Format = format;
         BlockSize = BitmapFormatUtils.GetBlockSize(Format);
-        BlockDimension = BitmapFormatUtils.GetBlockDimension(Format);
-        CompressionFactor = BitmapFormatUtils.GetCompressionFactor(Format);
-        NearestHeight = BlockDimension * ((Height + (BlockDimension - 1)) / BlockDimension);
-        NearestWidth = BlockDimension * ((Width + (BlockDimension - 1)) / BlockDimension);
-    }
-}
-
-public class XboxBitmap : BaseBitmap
-{
-    public int VirtualHeight;
-    public int VirtualWidth;
-    public int TilePitch;
-    public int Pitch;
-    public int MinimalBitmapSize;
-    public int Offset;
-    public bool MultipleOfBlockDimension;
-    public bool InTile;
-    public bool NotExact;
-
-    public XboxBitmap(Bitmap.Image image) : base(image)
-    {
-        UpdateFormat(image.Format);
-        MultipleOfBlockDimension = Width % BlockDimension == 0 && Height % BlockDimension == 0;
-        NotExact = Width != VirtualWidth || Height != VirtualHeight;
-        InTile = Width <= MinimalBitmapSize / 2 && Height <= MinimalBitmapSize / 2;
-        Offset = 0;
-    }
-
-    public XboxBitmap(BitmapTextureInteropResource definition, Bitmap.Image image) : base(definition, image)
-    {
-        UpdateFormat(image.Format);
-        MultipleOfBlockDimension = Width % BlockDimension == 0 && Height % BlockDimension == 0;
-        NotExact = Width != VirtualWidth || Height != VirtualHeight;
-        InTile = Width <= MinimalBitmapSize / 2 && Height <= MinimalBitmapSize / 2;
-        Offset = 0;
-
-    }
-
-    public XboxBitmap(BitmapTextureInterleavedInteropResource definition, int index, Bitmap.Image image) : base(definition, index, image)
-    {
-        UpdateFormat(image.Format);
-        MultipleOfBlockDimension = Width % BlockDimension == 0 && Height % BlockDimension == 0;
-        NotExact = Width != VirtualWidth || Height != VirtualHeight;
-        InTile = Width <= MinimalBitmapSize / 2 && Height <= MinimalBitmapSize / 2;
-        Offset = 0;
-    }
-
-    public XboxBitmap(BitmapTextureInteropDefinition definition, Bitmap.Image image) : base(definition, image)
-    {
-        UpdateFormat(image.Format);
-        MultipleOfBlockDimension = Width % BlockDimension == 0 && Height % BlockDimension == 0;
-        NotExact = Width != VirtualWidth || Height != VirtualHeight;
-        InTile = Width <= MinimalBitmapSize / 2 && Height <= MinimalBitmapSize / 2;
-        Offset = 0;
-    }
-
-    public XboxBitmap(XboxBitmap bitmap) : base(bitmap)
-    {
-        UpdateFormat(bitmap.Format);
-        MultipleOfBlockDimension = Width % BlockDimension == 0 && Height % BlockDimension == 0;
-        NotExact = Width != VirtualWidth || Height != VirtualHeight;
-        InTile = Width <= MinimalBitmapSize / 2 && Height <= MinimalBitmapSize / 2;
-        Offset = 0;
-    }
-
-    public new void UpdateFormat(BitmapFormat format)
-    {
-        Format = format;
-        BlockSize = BitmapFormatUtils.GetBlockSize(Format);
-        BlockDimension = BitmapFormatUtils.GetBlockDimension(Format);
-        CompressionFactor = BitmapFormatUtils.GetCompressionFactor(Format);
-        MinimalBitmapSize = BitmapFormatUtils.GetMinimalVirtualSize(Format);
-        VirtualWidth = BitmapUtils.GetVirtualSize(Width, MinimalBitmapSize);
-        VirtualHeight = BitmapUtils.GetVirtualSize(Height, MinimalBitmapSize);
-        TilePitch = (int)(VirtualWidth * BlockDimension / CompressionFactor);
-        Pitch = (int)(NearestWidth * BlockDimension / CompressionFactor);
-        NearestHeight = BlockDimension * ((Height + (BlockDimension - 1)) / BlockDimension);
-        NearestWidth = BlockDimension * ((Width + (BlockDimension - 1)) / BlockDimension);
-    }
-
-    public XboxBitmap ShallowCopy()
-    {
-        return (XboxBitmap)this.MemberwiseClone();
-    }
-    
-}
-
-public class XboxMipMap : XboxBitmap
-{
-    public XboxMipMap (XboxBitmap bitmap, int width, int height, int offset, byte[] data) : base(bitmap)
-    {
-        Height = height;
-        Width = width;
-        Offset = offset;
-        Data = data;
-        UpdateFormat(bitmap.Format);
-    }
-
-    public new void UpdateFormat(BitmapFormat format)
-    {
-        Format = format;
-        BlockSize = BitmapFormatUtils.GetBlockSize(Format);
-        BlockDimension = BitmapFormatUtils.GetBlockDimension(Format);
-        CompressionFactor = BitmapFormatUtils.GetCompressionFactor(Format);
-        MinimalBitmapSize = BitmapFormatUtils.GetMinimalVirtualSize(Format);
-        VirtualWidth = BitmapUtils.GetVirtualSize(Width, MinimalBitmapSize);
-        VirtualHeight = BitmapUtils.GetVirtualSize(Height, MinimalBitmapSize);
-        NearestHeight = BlockDimension * ((Height + (BlockDimension - 1)) / BlockDimension);
-        NearestWidth = BlockDimension * ((Width + (BlockDimension - 1)) / BlockDimension);
-        TilePitch = (int)(VirtualWidth * BlockDimension / CompressionFactor);
-        Pitch = (int)(NearestWidth * BlockDimension / CompressionFactor);
-        MultipleOfBlockDimension = Width % BlockDimension == 0 && Height % BlockDimension == 0;
-        NotExact = Width != VirtualWidth || Height != VirtualHeight;
-        InTile = Width <= MinimalBitmapSize / 2 && Height <= MinimalBitmapSize / 2;
+        if (BitmapUtils.IsCompressedFormat(format))
+            Flags |= BitmapFlags.Compressed;
+        else
+            Flags &= ~BitmapFlags.Compressed;
     }
 }
