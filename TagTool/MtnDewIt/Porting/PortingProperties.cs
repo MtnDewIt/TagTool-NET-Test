@@ -26,9 +26,6 @@ namespace TagTool.MtnDewIt.Porting
         // Regenerates the structure surface triangle mappings
         public bool RegenerateStructureSurfaces = false;
 
-        // Enable legacy shader generator
-        public bool LegacyShaderGenerator = true;
-
         // Tracks the current instance for porting properties
         public static PortingProperties CurrentInstance = new PortingProperties();
     }

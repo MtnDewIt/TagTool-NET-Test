@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.IO;
 using TagTool.Cache;
-using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
 using TagTool.Commands;
-using TagTool.MtnDewIt.Shaders.LegacyShaderGenerator;
-using TagTool.Common;
+using TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders;
+using System;
+using TagTool.Shaders.ShaderGenerator;
+using TagTool.Commands.Shaders;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache
 {
@@ -13,82 +14,59 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
     {
         public void UpdateShaderData()
         {
-            GenerateRenderMethod(CacheStream, $@"halogram", false);
-            GenerateRenderMethod(CacheStream, $@"shader", false);
-            GenerateRenderMethod(CacheStream, $@"terrain", false);
-            GenerateRenderMethod(CacheStream, $@"custom", false);
-            GenerateRenderMethod(CacheStream, $@"zonly", false);
-            GenerateRenderMethod(CacheStream, $@"cortana", false);
-            GenerateRenderMethod(CacheStream, $@"black", false);
+            // This tag isn't in the rebuilt cache by default
+            GenerateTag<Bitmap>($@"shaders\default_bitmaps\bitmaps\color_green");
 
-            //RecompileShaderType(CacheStream, $@"beam");
-            //RecompileShaderType(CacheStream, $@"contrail");
-            //RecompileShaderType(CacheStream, $@"decal");
-            //RecompileShaderType(CacheStream, $@"foliage");
-            //RecompileShaderType(CacheStream, $@"halogram");
-            //RecompileShaderType(CacheStream, $@"light_volume");
-            //RecompileShaderType(CacheStream, $@"particle");
-            //RecompileShaderType(CacheStream, $@"screen");
-            //RecompileShaderType(CacheStream, $@"shader");
-            //RecompileShaderType(CacheStream, $@"terrain");
-            //RecompileShaderType(CacheStream, $@"water");
+            new BeamDefinition(Cache, CacheContext, CacheStream);
+            new BlackDefinition(Cache, CacheContext, CacheStream);
+            new ContrailDefinition(Cache, CacheContext, CacheStream);
+            new CortanaDefinition(Cache, CacheContext, CacheStream);
+            new CustomDefinition(Cache, CacheContext, CacheStream);
+            new DecalDefinition(Cache, CacheContext, CacheStream);
+            new FoliageDefinition(Cache, CacheContext, CacheStream);
+            new HalogramDefinition(Cache, CacheContext, CacheStream);
+            new LightVolumeDefinition(Cache, CacheContext, CacheStream);
+            new ParticleDefinition(Cache, CacheContext, CacheStream);
+            new ScreenDefinition(Cache, CacheContext, CacheStream);
+            new ShaderDefinition(Cache, CacheContext, CacheStream);
+            new TerrainDefinition(Cache, CacheContext, CacheStream);
+            new WaterDefinition(Cache, CacheContext, CacheStream);   
+            new ZOnlyDefinition(Cache, CacheContext, CacheStream);
+
+            Cache.SaveStrings();
+
+            GenerateGlobalShaders(CacheStream, $@"beam");           // Data doesn't change between versions, Compiled vertex data is completely different from MS23 (disable for now)
+            GenerateGlobalShaders(CacheStream, $@"black");
+            GenerateGlobalShaders(CacheStream, $@"contrail");       // Data doesn't change between versions, Compiled vertex data is completely different from MS23 (disable for now) 
+            GenerateGlobalShaders(CacheStream, $@"cortana");
+            GenerateGlobalShaders(CacheStream, $@"custom");         // Vertex data is completely different from vertex data from updated source (use legacy generator for 1:1 data)
+            GenerateGlobalShaders(CacheStream, $@"decal");          // Vertex data is completely different between MS23 and vertex data from updated source (use legacy generator for 1:1 data)
+            GenerateGlobalShaders(CacheStream, $@"foliage");        // Having APPLY_FIXES undefined generates 1:1 vertex data. 
+            GenerateGlobalShaders(CacheStream, $@"halogram");
+            GenerateGlobalShaders(CacheStream, $@"lightvolume");    // Data doesn't change between versions, Compiled vertex data is completely different from MS23 (disable for now) 
+            GenerateGlobalShaders(CacheStream, $@"particle");       // Data doesn't change between versions, Compiled vertex data is completely different from MS23 (disable for now) 
+            GenerateGlobalShaders(CacheStream, $@"screen");
+            GenerateGlobalShaders(CacheStream, $@"shader");
+            GenerateGlobalShaders(CacheStream, $@"terrain");        // Vertex data is completely different between MS23 and vertex data from updated source (use legacy generator for 1:1 data)
+            GenerateGlobalShaders(CacheStream, $@"water");          // Having APPLY_FIXES undefined generates 1:1 vertex data. 
+            GenerateGlobalShaders(CacheStream, $@"zonly");
         }
 
-        public void GenerateRenderMethod(Stream stream, string shaderType, bool updateRenderMethod) 
+
+        // TODO: Expose APPLY_FIXES
+        public void GenerateGlobalShaders(Stream stream, string shaderType)
         {
-            if (updateRenderMethod)
-            {
-                LegacyRenderMethodDefinitionGenerator.UpdateRenderMethodDefinition(Cache, stream, shaderType);
-            }
+            var type = (HaloShaderGenerator.Globals.ShaderType)Enum.Parse(typeof(HaloShaderGenerator.Globals.ShaderType), shaderType, true);
 
-            else 
-            {
-                var generator = LegacyShaderGenerator.GetLegacyGlobalShaderGenerator(shaderType, true);
+            CachedTag rmdfTag = Cache.TagCache.GetTag<RenderMethodDefinition>(shaderType == "lightvolume" ? "shaders\\light_volume" : $"shaders\\{shaderType}");
 
-                if (!CacheContext.TagCache.TryGetTag<RenderMethodDefinition>($@"shaders\{shaderType}", out CachedTag rmdfTag))
-                {
-                    rmdfTag = CacheContext.TagCache.AllocateTag<RenderMethodDefinition>($@"shaders\{shaderType}");
-                }
+            RenderMethodDefinition rmdf = Cache.Deserialize<RenderMethodDefinition>(stream, rmdfTag);
 
-                var rmdf = LegacyRenderMethodDefinitionGenerator.GenerateRenderMethodDefinition(Cache, stream, generator, shaderType, out _, out _);
-                CacheContext.Serialize(stream, rmdfTag, rmdf);
+            GlobalPixelShader glps = ShaderGeneratorNew.GenerateSharedPixelShaders(Cache, rmdf, type);
+            GlobalVertexShader glvs = ShaderGeneratorNew.GenerateSharedVertexShaders(Cache, rmdf, type);
 
-                CacheContext.SaveTagNames();
-            }
-        }
-
-        public void RecompileShaderType(Stream stream, string shaderType)
-        {
-            var rmdfTag = CacheContext.TagCache.GetTag<RenderMethodDefinition>($@"shaders\{shaderType}");
-            var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(stream, rmdfTag);
-
-            if (rmdf.GlobalVertexShader == null || rmdf.GlobalPixelShader == null)
-                new TagToolError(CommandError.TagInvalid, "A global shader was missing from rmdf");
-
-            List<CachedTag> regenTags = new List<CachedTag>();
-
-            foreach (var tag in CacheContext.TagCache.NonNull())
-            {
-                if (tag.Group.Tag != "rmt2" || tag.Name.StartsWith("ms30") || !tag.Name.Split('\\')[1].StartsWith(shaderType + "_templates"))
-                    continue;
-
-                regenTags.Add(tag);
-            }
-
-            foreach (var tag in regenTags)
-            {
-                List<byte> options = new List<byte>();
-
-                foreach (var option in tag.Name.Split('\\')[2].Remove(0, 1).Split('_'))
-                    options.Add(byte.Parse(option));
-
-                while (options.Count != rmdf.Categories.Count)
-                    options.Add(0);
-
-                LegacyShaderGenerator.GenerateShaderTemplate(Cache, stream, shaderType, options.ToArray(), rmdf);
-            }
-
-            CustomThreadPool.FreeAllThreads();
+            Cache.Serialize(stream, rmdf.GlobalPixelShader, glps);
+            Cache.Serialize(stream, rmdf.GlobalVertexShader, glvs);
         }
 
         public void GenerateRenderMethodTemplate(string shaderType, string shaderOptions)
@@ -107,9 +85,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             var rmdfTag = CacheContext.TagCache.GetTag<RenderMethodDefinition>($@"shaders\{shaderType}");
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(CacheStream, rmdfTag);
 
-            LegacyShaderGenerator.GenerateShaderTemplate(Cache, CacheStream, shaderType, rawShaderOptions.ToArray(), rmdf);
-
-            CustomThreadPool.FreeAllThreads();
+            GenerateShaderCommand.GenerateRenderMethodTemplate(Cache, CacheStream, shaderType, rawShaderOptions.ToArray(), rmdf, true);
         }
     }
 }

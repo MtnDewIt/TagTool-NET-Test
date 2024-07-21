@@ -22,7 +22,6 @@ using TagTool.IO;
 using System.Collections.Concurrent;
 using TagTool.Geometry.BspCollisionGeometry;
 using TagTool.Commands.Porting;
-using TagTool.MtnDewIt.Shaders.LegacyShaderMatching;
 using TagTool.Commands.ScenarioStructureBSPs;
 
 namespace TagTool.MtnDewIt.Porting
@@ -138,18 +137,9 @@ namespace TagTool.MtnDewIt.Porting
                 entry.Value.Close();
             }
 
-            if (PortingProperties.CurrentInstance.LegacyShaderGenerator)
-            {
-                LegacyMatcher.DeInit();
-            }
-            else
-            {
-                Matcher.DeInit();
-            }
+            Matcher.DeInit();
 
             ProcessDeferredActions();
-
-            CustomThreadPool.FreeAllThreads();
         }
 
         public void SetPortingProperties
@@ -159,8 +149,7 @@ namespace TagTool.MtnDewIt.Porting
             string lightmapCache = null,
             bool reachDecorators = true,
             bool legacyCollision = false,
-            bool normalMapConversion = true,
-            bool legacyShaderGenerator = true
+            bool normalMapConversion = true
         )
         {
             maxThreads = Environment.ProcessorCount * 2;
@@ -170,7 +159,6 @@ namespace TagTool.MtnDewIt.Porting
             PortingProperties.CurrentInstance.ReachDecorators = reachDecorators;
             PortingProperties.CurrentInstance.Gen1Collision = legacyCollision;
             PortingProperties.CurrentInstance.HqNormalMapConversion = normalMapConversion;
-            PortingProperties.CurrentInstance.LegacyShaderGenerator = legacyShaderGenerator;
         }
 
         private bool TagIsValid(CachedTag blamTag, Stream blamCacheStream, out CachedTag resultTag)
@@ -262,37 +250,18 @@ namespace TagTool.MtnDewIt.Porting
                 }
 
                 string templateName = renderMethod.ShaderProperties[0].Template.Name;
-
-                if (PortingProperties.CurrentInstance.LegacyShaderGenerator)
+                if(TagTool.Shaders.ShaderMatching.ShaderMatcherNew.Rmt2Descriptor.TryParse(templateName, out var rmt2Descriptor))
                 {
-                    if (LegacyShaderMatcherNew.Rmt2Descriptor.TryParse(templateName, out var rmt2Descriptor))
-                    {
-                        foreach (var tag in CacheContext.TagCacheGenHO.TagTable)
-                            if (tag != null && tag.Group.Tag == "rmt2" && (tag.Name.Contains(rmt2Descriptor.Type) || FlagIsSet(PortingFlags.GenerateShaders)))
-                            {
-                                if ((FlagIsSet(PortingFlags.Ms30) && tag.Name.StartsWith("ms30\\")) || (!FlagIsSet(PortingFlags.Ms30) && !tag.Name.StartsWith("ms30\\")))
-                                    return true;
+                    foreach (var tag in CacheContext.TagCacheGenHO.TagTable)
+                        if (tag != null && tag.Group.Tag == "rmt2" && (tag.Name.Contains(rmt2Descriptor.Type) || FlagIsSet(PortingFlags.GenerateShaders)))
+                        {
+                            if ((FlagIsSet(PortingFlags.Ms30) && tag.Name.StartsWith("ms30\\")) || (!FlagIsSet(PortingFlags.Ms30) && !tag.Name.StartsWith("ms30\\")))
+                                return true;
 
-                                else if (tag.Name.StartsWith("ms30\\"))
-                                    continue;
-                            }
-                    };
-                }
-                else 
-                {
-                    if (TagTool.Shaders.ShaderMatching.ShaderMatcherNew.Rmt2Descriptor.TryParse(templateName, out var rmt2Descriptor))
-                    {
-                        foreach (var tag in CacheContext.TagCacheGenHO.TagTable)
-                            if (tag != null && tag.Group.Tag == "rmt2" && (tag.Name.Contains(rmt2Descriptor.Type) || FlagIsSet(PortingFlags.GenerateShaders)))
-                            {
-                                if ((FlagIsSet(PortingFlags.Ms30) && tag.Name.StartsWith("ms30\\")) || (!FlagIsSet(PortingFlags.Ms30) && !tag.Name.StartsWith("ms30\\")))
-                                    return true;
-
-                                else if (tag.Name.StartsWith("ms30\\"))
-                                    continue;
-                            }
-                    };
-                }
+                            else if (tag.Name.StartsWith("ms30\\"))
+                                continue;
+                        }
+                };
                 // TODO: add code for "!MatchShaders" -- if a perfect match isnt found a null tag will be left in the cache
 
                 // "ConvertTagInternal" isnt called so the default shader needs to be set here
@@ -879,21 +848,13 @@ namespace TagTool.MtnDewIt.Porting
             switch (blamDefinition)
 			{
 				case AreaScreenEffect sefc:
-                    if (BlamCache.Version < CacheVersion.Halo3ODST)
-                    {
-                    	sefc.GlobalHiddenFlags = AreaScreenEffect.HiddenFlagBits.UpdateThread | AreaScreenEffect.HiddenFlagBits.RenderThread;
-                    
-                    	foreach (var screenEffect in sefc.ScreenEffects)
-                    		screenEffect.HiddenFlags = AreaScreenEffect.HiddenFlagBits.UpdateThread | AreaScreenEffect.HiddenFlagBits.RenderThread;
-                    }
+					if (BlamCache.Version < CacheVersion.Halo3ODST)
+					{
+						sefc.GlobalHiddenFlags = AreaScreenEffect.HiddenFlagBits.UpdateThread | AreaScreenEffect.HiddenFlagBits.RenderThread;
 
-                    // Remove for release
-                    if (sefc.ScreenEffects.Count > 0 && sefc.ScreenEffects[0].Lifetime == 1.0f && sefc.ScreenEffects[0].MaximumDistance == 1.0f)
-                    {
-                        sefc.ScreenEffects[0].Lifetime = 1E+19f;
-                        sefc.ScreenEffects[0].MaximumDistance = 1E+19f;
+						foreach (var screenEffect in sefc.ScreenEffects)
+							screenEffect.HiddenFlags = AreaScreenEffect.HiddenFlagBits.UpdateThread | AreaScreenEffect.HiddenFlagBits.RenderThread;
                     }
-
                     foreach (var screenEffect in sefc.ScreenEffects)
                     {
                         //convert flags
@@ -1353,18 +1314,9 @@ namespace TagTool.MtnDewIt.Porting
                         return GetDefaultShader(blamTag.Group.Tag, edTag);
                     else
                     {
-                        if (PortingProperties.CurrentInstance.LegacyShaderGenerator)
-                        {
-                            // Verify that the ShaderMatcher is ready to use
-                            if (!LegacyMatcher.IsInitialized)
-                                LegacyMatcher.Init(CacheContext, BlamCache, cacheStream, blamCacheStream, FlagIsSet(PortingFlags.Ms30), FlagIsSet(PortingFlags.PefectShaderMatchOnly));
-                        }
-                        else 
-                        {
-                            // Verify that the ShaderMatcher is ready to use
-                            if (!Matcher.IsInitialized)
-                                Matcher.Init(CacheContext, BlamCache, cacheStream, blamCacheStream, FlagIsSet(PortingFlags.Ms30), FlagIsSet(PortingFlags.PefectShaderMatchOnly));
-                        }
+                        // Verify that the ShaderMatcher is ready to use
+                        if (!Matcher.IsInitialized)
+                            Matcher.Init(CacheContext, BlamCache, cacheStream, blamCacheStream, FlagIsSet(PortingFlags.Ms30), FlagIsSet(PortingFlags.PefectShaderMatchOnly));
 
                         blamDefinition = ConvertShader(cacheStream, blamCacheStream, blamDefinition, blamTag, BlamCache.Deserialize(blamCacheStream, blamTag));
                         if (blamDefinition == null) // convert shader failed
