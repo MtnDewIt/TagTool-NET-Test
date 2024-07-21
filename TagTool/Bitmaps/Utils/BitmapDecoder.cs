@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TagTool.Bitmaps.Utils;
 using TagTool.Cache;
 
 namespace TagTool.Bitmaps
@@ -55,7 +54,7 @@ namespace TagTool.Bitmaps
                     if (BitmapUtils.IsCompressedFormat(format))
                         return BitmapCompression.Decompress(bitmRaw, virtualWidth, virtualHeight, format, version, platform);
                     else
-                        throw new NotSupportedException("Unsupported bitmap format.");
+                        throw new NotSupportedException($"Unsupported bitmap format {format}.");
             }
         }
 
@@ -79,24 +78,11 @@ namespace TagTool.Bitmaps
                 case BitmapFormat.V8U8:
                     return EncodeV8U8(bitm, virtualWidth, virtualHeight);
 
-                case BitmapFormat.Dxn:
-                    var dxnCompressor = new SquishLib.Compressor(SquishLib.SquishFlags.kDxn | SquishLib.SquishFlags.kSourceBgra, bitm, virtualWidth, virtualHeight);
-                    return dxnCompressor.CompressTexture();
-
-                case BitmapFormat.Dxt1:
-                    var dxt1Compressor = new SquishLib.Compressor(SquishLib.SquishFlags.kDxt1 | SquishLib.SquishFlags.kColourIterativeClusterFit | SquishLib.SquishFlags.kSourceBgra, bitm, virtualWidth, virtualHeight);
-                    return dxt1Compressor.CompressTexture();
-
-                case BitmapFormat.Dxt3:
-                    var dxt3Compressor = new SquishLib.Compressor(SquishLib.SquishFlags.kDxt3 | SquishLib.SquishFlags.kColourIterativeClusterFit | SquishLib.SquishFlags.kSourceBgra, bitm, virtualWidth, virtualHeight);
-                    return dxt3Compressor.CompressTexture();
-
-                case BitmapFormat.Dxt5:
-                    var dxt5Compressor = new SquishLib.Compressor(SquishLib.SquishFlags.kDxt5 | SquishLib.SquishFlags.kColourIterativeClusterFit | SquishLib.SquishFlags.kSourceBgra, bitm, virtualWidth, virtualHeight);
-                    return dxt5Compressor.CompressTexture();
-
                 default:
-                    throw new NotSupportedException($"Unsupported bitmap format for encoding {format}.");
+                    if(BitmapUtils.IsCompressedFormat(format))
+                        return BitmapCompression.Compress(bitm, virtualWidth, virtualHeight, format);
+                    else
+                        throw new NotSupportedException($"Unsupported bitmap format {format}.");
             }
         }
 

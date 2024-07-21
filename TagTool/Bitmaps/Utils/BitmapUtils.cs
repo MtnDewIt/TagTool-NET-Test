@@ -208,6 +208,7 @@ namespace TagTool.Bitmaps
                 case BitmapFormat.Dxt5a:
                 case BitmapFormat.Dxt5aMono:
                 case BitmapFormat.Dxt5aAlpha:
+                case BitmapFormat.Dxt5nm:
                 case BitmapFormat.Dxn:
                 case BitmapFormat.DxnMonoAlpha:
                 case BitmapFormat.Ctx1:

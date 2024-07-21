@@ -1,16 +1,66 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using TagTool.Bitmaps.Utils;
 using TagTool.Cache;
+using static TagTool.Tags.Definitions.Scenario.AiObjective;
 
 namespace TagTool.Bitmaps
 {
     public static class BitmapCompression
     {
-        private delegate void BlockDecompressor(byte[] compressedData, int blockX, int blockY, int width, int height, byte[] decompressedData);
-
         public static byte[] Decompress(byte[] compressedData, int width, int height, BitmapFormat format, CacheVersion version, CachePlatform platform)
         {
             return Decompress(compressedData, width, height, GetBlockDecompresor(format, version, platform));
+        }
+
+        public static byte[] Compress(byte[] data, int width, int height, BitmapFormat format)
+        {
+            Debug.Assert((width * height * 4) == data.Length);
+
+            switch (format)
+            {
+                case BitmapFormat.Dxn: // ATI2
+                    return Compress(SquishLib.SquishFlags.kDxn, data, width, height);
+                case BitmapFormat.Dxt1:
+                    return Compress(SquishLib.SquishFlags.kDxt1, data, width, height);
+                case BitmapFormat.Dxt3:
+                    return Compress(SquishLib.SquishFlags.kDxt3, data, width, height);
+                case BitmapFormat.Dxt5:
+                    return Compress(SquishLib.SquishFlags.kDxt5, data, width, height);
+                case BitmapFormat.Dxt5nm:
+                    return CompressDXT5nm(data, width, height);
+                default:
+                    throw new NotSupportedException($"Unsupported bitmap format {format}");
+            }
+        }
+
+
+        private delegate void BlockDecompressor(byte[] compressedData, int blockX, int blockY, int width, int height, byte[] decompressedData);
+
+        private unsafe static byte[] CompressDXT5nm(byte[] data, int width, int height)
+        {
+            byte[] buffer = new byte[data.Length];
+            fixed (byte* src = data)
+            fixed (byte* dest = buffer)
+            {
+                for (int i = 0; i < data.Length; i += 4)
+                {
+                    byte y = src[i + 1];
+                    byte x = src[i + 2];
+                    dest[i + 0] = y;
+                    dest[i + 1] = y;
+                    dest[i + 2] = y;
+                    dest[i + 3] = x;
+                }
+            }
+            return Compress(SquishLib.SquishFlags.kDxt5, buffer, width, height);
+        }
+
+        private static byte[] Compress(SquishLib.SquishFlags flags, byte[] data, int width, int height)
+        {
+            flags |= SquishLib.SquishFlags.kColourIterativeClusterFit | SquishLib.SquishFlags.kSourceBgra;
+            return new SquishLib.Compressor(flags, data, width, height).CompressTexture();
         }
 
         private static BlockDecompressor GetBlockDecompresor(BitmapFormat format, CacheVersion version, CachePlatform platform)
@@ -27,6 +77,7 @@ namespace TagTool.Bitmaps
                 case BitmapFormat.Dxt5a: return DecompressDXT5a;
                 case BitmapFormat.Dxt5aMono: return DecompressDXT5aMono;
                 case BitmapFormat.Dxt5aAlpha: return DecompressDXT5aAlpha;
+                case BitmapFormat.Dxt5nm: return DecompressDXT5nm;
                 case BitmapFormat.Dxn:
                     // not ideal, but i'm not sure how else to handle it currently
                     if (platform == CachePlatform.MCC)
@@ -243,6 +294,40 @@ namespace TagTool.Bitmaps
         private static unsafe void DecompressATI2(byte[] compressedData, int blockX, int blockY, int width, int height, byte[] decompressedData)
             => DecompressDXN(compressedData, blockX, blockY, width, height, decompressedData, signed: false, swapXY: true);
 
+
+        private unsafe static void DecompressDXT5nm(byte[] compressedData, int blockX, int blockY, int width, int height, byte[] decompressedData)
+        {
+            int blockIndex = (blockY * ((width + 3) / 4) + blockX) * 16;
+
+            byte* alphas = stackalloc byte[8];
+            ulong alphaIndices = UnpackDXT5AlphaBlock(alphas, compressedData, blockIndex);
+            RGBAColor* colors = stackalloc RGBAColor[4];
+            uint colorIndices = UnpackColorBlock(compressedData, blockIndex + 8, colors, hasAlpha: false);
+
+            for (int j = 0; j < 4; j++)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    int pixelX = blockX * 4 + i;
+                    int pixelY = blockY * 4 + j;
+                    if (pixelX >= width || pixelY >= height) continue;
+
+                    int pixelIndex = 4 * (pixelY * width + pixelX);
+                    int colorIndex = (int)(colorIndices >> (2 * (4 * j + i))) & 0x3;
+                    int alphaIndex = (int)(alphaIndices >> (3 * (4 * j + i))) & 0x7;
+
+                    byte r = alphas[alphaIndex];
+                    byte g = colors[colorIndex].G;
+
+                    decompressedData[pixelIndex + 0] = CalculateNormalZ(r, g);
+                    decompressedData[pixelIndex + 1] = g;
+                    decompressedData[pixelIndex + 2] = r;
+                    decompressedData[pixelIndex + 3] = 255;
+                }
+            }
+        }
+
+
         private static unsafe void DecompressDXN(byte[] compressedData, int blockX, int blockY, int width, int height, byte[] decompressedData, bool signed, bool swapXY)
         {
             int blockIndex = (blockY * ((width + 3) / 4) + blockX) * 16;
@@ -308,7 +393,7 @@ namespace TagTool.Bitmaps
             }
         }
 
-        public unsafe static void DecompressCTX1(byte[] compressedData, int blockX, int blockY, int width, int height, byte[] decompressedData)
+        private unsafe static void DecompressCTX1(byte[] compressedData, int blockX, int blockY, int width, int height, byte[] decompressedData)
         {
             int blockIndex = (blockY * ((width + 3) / 4) + blockX) * 8;
 
