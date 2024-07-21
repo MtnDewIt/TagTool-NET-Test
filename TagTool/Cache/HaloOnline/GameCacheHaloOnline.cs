@@ -89,13 +89,6 @@ namespace TagTool.Cache.HaloOnline
 
             var headerOffset = reader.ReadUInt32();
 
-            // if the very first offset is 0x38 there is a very high likelihood that this is an ElDewrito cache
-            if (headerOffset == 0x38) 
-            {
-                Version = CacheVersion.HaloOnlineEDLegacy;
-                return;
-            }
-
             if (CacheVersion.Unknown == (Version = CacheVersionDetection.DetectFromTimestamp(header.CreationTime, out var closestVersion)))
                 Version = closestVersion;
 

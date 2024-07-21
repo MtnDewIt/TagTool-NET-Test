@@ -7,9 +7,9 @@ using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags 
 {
-    public class ui_chud_covenant_carbine_rof_chud_definition : TagFile
+    public class ui_chud_carbine_damage_chud_definition : TagFile
     {
-        public ui_chud_covenant_carbine_rof_chud_definition(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public ui_chud_carbine_damage_chud_definition(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,
@@ -24,7 +24,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
 
         public override void TagData()
         {
-            var tag = GetCachedTag<ChudDefinition>($@"ui\chud\covenant_carbine_rof");
+            var tag = GetCachedTag<ChudDefinition>($@"ui\chud\carbine_damage");
             var chdt = CacheContext.Deserialize<ChudDefinition>(Stream, tag);
             //chdt.HudWidgets[0].BitmapWidgets[0].PlacementData[0].Origin = new RealPoint2d(0.51f, 0f);
             //chdt.HudWidgets[0].BitmapWidgets[0].PlacementData[0].Offset = new RealPoint2d(0f, 64f);
@@ -37,8 +37,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             //chdt.HudWidgets[2].BitmapWidgets[0].PlacementData[0].Scale = new RealPoint2d(0.45f, 0.42f);
             //chdt.HudWidgets[2].BitmapWidgets[0].BitmapSequenceIndex = 39;
             //chdt.HudWidgets[2].BitmapWidgets[1].PlacementData[0].Scale = new RealPoint2d(0.6f, 0.6f);
-            //chdt.HudWidgets[2].BitmapWidgets[2].PlacementData[0].Scale = new RealPoint2d(0.4f, 0.6f);
-            //chdt.HudWidgets[2].BitmapWidgets[2].BitmapSequenceIndex = 37;
             //chdt.HudWidgets[2].BitmapWidgets[2].PlacementData[0].Scale = new RealPoint2d(0.4f, 0.6f);
             //chdt.HudWidgets[2].BitmapWidgets[2].BitmapSequenceIndex = 37;
             //chdt.HudWidgets[2].BitmapWidgets[3].PlacementData[0].Origin = new RealPoint2d(10.5f, 0f);

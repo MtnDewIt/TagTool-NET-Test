@@ -8,6 +8,7 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
 using TagTool.Commands;
 using TagTool.MtnDewIt.Porting;
+using Newtonsoft.Json;
 
 namespace TagTool.MtnDewIt.Commands.GenerateCache
 {
@@ -256,7 +257,11 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             haloOnlineDirectoryInfo = GetDirectoryInfo(haloOnlineDirectoryInfo, "Halo Online MS23");
 
             haloOnlineCache = GameCache.Open($@"{haloOnlineDirectoryInfo.FullName}\tags.dat");
-            UpdateTagNames(haloOnlineCache, UpdateHOTagsCommand.tagNameTable);
+
+            var ms23Data = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\tag_names\ms23_tag_name_table.json");
+            var ms23TagTable = JsonConvert.DeserializeObject<Dictionary<int, string>>(ms23Data);
+
+            UpdateTagNames(haloOnlineCache, ms23TagTable);
 
             halo3DirectoryInfo = GetDirectoryInfo(halo3DirectoryInfo, "Halo 3");
 

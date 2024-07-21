@@ -240,8 +240,6 @@ namespace TagTool.Cache
                         return "13895.09.04.27.2201.atlas_relea";
                     case CacheVersion.HaloOnlineED:
                         return "eldewrito";
-                    case CacheVersion.HaloOnlineEDLegacy:
-                        return "1.106708 cert_ms23";
                     case CacheVersion.HaloOnline106708:
                         return "1.106708 cert_ms23";
                     case CacheVersion.HaloOnline235640:
@@ -315,7 +313,6 @@ namespace TagTool.Cache
 				case CacheVersion.Halo2Xbox:
 				case CacheVersion.Halo2Vista:
 				case CacheVersion.HaloOnlineED:
-                case CacheVersion.HaloOnlineEDLegacy:
                 case CacheVersion.HaloOnline106708:
 				case CacheVersion.HaloOnline235640:
 				case CacheVersion.HaloOnline301003:
@@ -517,7 +514,6 @@ namespace TagTool.Cache
                     return CacheGeneration.Third;
 
                 case CacheVersion.HaloOnlineED:
-                case CacheVersion.HaloOnlineEDLegacy:
                 case CacheVersion.HaloOnline106708:
                 case CacheVersion.HaloOnline235640:
                 case CacheVersion.HaloOnline301003:
@@ -576,7 +572,6 @@ namespace TagTool.Cache
                 case CacheVersion.Halo3ODST:
                     return GameTitle.Halo3ODST;
                 case CacheVersion.HaloOnlineED:
-                case CacheVersion.HaloOnlineEDLegacy:
                 case CacheVersion.HaloOnline106708:
                 case CacheVersion.HaloOnline235640:
                 case CacheVersion.HaloOnline301003:
@@ -611,7 +606,6 @@ namespace TagTool.Cache
         private static readonly Dictionary<long, CacheVersion> HaloOnlineTimestampMapping = new Dictionary<long, CacheVersion>
         {
             [132699675831101597] = CacheVersion.HaloOnlineED,
-            [130713360239499012] = CacheVersion.HaloOnlineEDLegacy,
             [130713360239499012] = CacheVersion.HaloOnline106708,
             [130772932862346058] = CacheVersion.HaloOnline235640,
             [130785901486445524] = CacheVersion.HaloOnline301003,
@@ -647,7 +641,6 @@ namespace TagTool.Cache
             -1, // Halo3Retail
             -1, // Halo3ODST
             132699675831101597, // HaloOnlineED
-            130713360239499012, // HaloOnlineEDLegacy (same as MS23)
             130713360239499012, // HaloOnline106708
             130772932862346058, // HaloOnline235640
             130785901486445524, // HaloOnline301003
@@ -684,7 +677,6 @@ namespace TagTool.Cache
         Halo3Retail,
         Halo3ODST,
         HaloOnlineED,
-        HaloOnlineEDLegacy,
         HaloOnline106708,
         HaloOnline235640,
         HaloOnline301003,

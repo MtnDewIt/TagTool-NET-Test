@@ -117,9 +117,6 @@ namespace TagTool.MtnDewIt.BlamFiles
                     // 0.6 and MS23 map files share the same build version, so we need to check the blf signature to distinguish between the two
                     if (IsLegacyBlf(reader) && MapFileBlf.Version == CacheVersion.HaloOnline106708)
                     {
-                        // We need to manually set the blf version as the 0.6 map files still use the MS23 build version
-                        MapFileBlf = new BlfData(CacheVersion.HaloOnlineEDLegacy, CachePlatform);
-
                         if (!MapFileBlf.ReadLegacyData(reader))
                         {
                             MapFileBlf = null;

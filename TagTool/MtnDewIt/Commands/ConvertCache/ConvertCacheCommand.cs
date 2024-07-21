@@ -10,6 +10,7 @@ using TagTool.Commands.Tags;
 using TagTool.Commands;
 using TagTool.Common;
 using TagTool.MtnDewIt.Porting;
+using Newtonsoft.Json;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache
 {
@@ -243,13 +244,19 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
         {
             eldewritoDirectoryInfo = GetDirectoryInfo(eldewritoDirectoryInfo, "ElDewrito 0.6.1");
 
+            var edData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\tag_names\ed_legacy_tag_name_table.json");
+            var edTagTable = JsonConvert.DeserializeObject<Dictionary<int, string>>(edData);
+
             eldewritoCache = GameCache.Open($@"{eldewritoDirectoryInfo.FullName}\tags.dat");
-            UpdateTagNames(eldewritoCache, UpdateEDLegacyTagsCommand.tagNameTable);
+            UpdateTagNames(eldewritoCache, edTagTable);
 
             haloOnlineDirectoryInfo = GetDirectoryInfo(haloOnlineDirectoryInfo, "Halo Online MS23");
 
+            var ms23Data = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\tag_names\ms23_tag_name_table.json");
+            var ms23TagTable = JsonConvert.DeserializeObject<Dictionary<int, string>>(ms23Data);
+
             haloOnlineCache = GameCache.Open($@"{haloOnlineDirectoryInfo.FullName}\tags.dat");
-            UpdateTagNames(haloOnlineCache, UpdateHOTagsCommand.tagNameTable);
+            UpdateTagNames(haloOnlineCache, ms23TagTable);
 
             halo3DirectoryInfo = GetDirectoryInfo(halo3DirectoryInfo, "Halo 3");
 

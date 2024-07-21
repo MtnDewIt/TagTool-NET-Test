@@ -552,18 +552,18 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
-                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_5A"),
-                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_5A"),
+                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\decorator_edit"),
+                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\decorator_edit"),
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
-                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\exposure_hdr_retrieve"),
-                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\exposure_hdr_retrieve"),
+                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\hdr_retrieve"),
+                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\hdr_retrieve"),
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
-                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_debug_5C"),
-                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_debug_5C"),
+                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\smirnov"),
+                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\smirnov"),
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
@@ -572,28 +572,28 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
-                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_5E"),
-                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_5E"),
+                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_94"),
+                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_94"),
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
-                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_5F"),
-                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_5F"),
+                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\sniper_scope_stencil_pc"),
+                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\sniper_scope_stencil_pc"),
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
-                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\ssao_ldr"),
-                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\ssao_ldr"),
+                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\ssao"),
+                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\ssao"),
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
-                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\ssao_hdr"),
-                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\ssao_hdr"),
+                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\ssao_blur"),
+                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\ssao_blur"),
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
-                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\ssao_apply"),
-                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\ssao_apply"),
+                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_98"),
+                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_98"),
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
@@ -602,43 +602,43 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
-                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\lightshafts_blur"),
-                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\lightshafts_blur"),
+                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\radial_blur"),
+                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\radial_blur"),
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
-                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\screen_space_reflection"),
-                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\screen_space_reflection"),
+                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_101"),
+                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_101"),
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
-                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_66"),
-                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_66"),
+                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_102"),
+                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_102"),
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
-                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\halve_depth_color"),
-                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\halve_depth_color"),
+                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_103"),
+                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_103"),
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
-                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\halve_depth_normal"),
-                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\halve_depth_normal"),
+                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_104"),
+                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_104"),
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
-                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_69"),
-                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_69"),
+                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_105"),
+                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_105"),
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
-                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\screen_space_reflection_blur"),
-                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\screen_space_reflection_blur"),
+                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_106"),
+                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_106"),
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
-                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_6B"),
-                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_6B"),
+                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_107"),
+                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_107"),
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
@@ -647,8 +647,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
                 new RasterizerGlobals.ExplicitShader()
                 {
-                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_6D"),
-                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_6D"),
+                    VertexShader = GetCachedTag<VertexShader>($@"rasterizer\shaders\unknown_109"),
+                    PixelShader = GetCachedTag<PixelShader>($@"rasterizer\shaders\unknown_109"),
                 },
             };
             rasg.ActiveCamoDistortion = GetCachedTag<Bitmap>($@"rasterizer\active_camouflage_distortion");

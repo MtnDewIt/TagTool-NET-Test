@@ -95,7 +95,7 @@ namespace TagTool.MtnDewIt.BlamFiles
     }
 
     [TagStructure(Size = 0x5, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
-    [TagStructure(Size = 0x8, MinVersion = CacheVersion.HaloOnlineEDLegacy)]
+    [TagStructure(Size = 0x8, MinVersion = CacheVersion.HaloOnline106708)]
     public class PlayerShieldVitalityTraits
     {
         public DamageResistancePercentage DamageResistance;
@@ -104,7 +104,7 @@ namespace TagTool.MtnDewIt.BlamFiles
         public HeadshotImmunity HeadshotImmunity;
         public ShieldMultiplier ShieldMultiplier;
 
-        [TagField(Flags = TagFieldFlags.Padding, Length = 3, MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnlineEDLegacy)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 3, MinVersion = CacheVersion.HaloOnline106708)]
         public byte[] Padding1 = new byte[3];
     }
 
@@ -307,7 +307,7 @@ namespace TagTool.MtnDewIt.BlamFiles
         public ActiveCamoSetting ActiveCamo;
         public WaypointSetting Waypoint;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineEDLegacy)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
         public PlayerSizeSetting PlayerSize;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST)]

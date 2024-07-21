@@ -181,7 +181,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         SortLayer = ChudDefinition.WidgetLayerEnum.Foreground,
                         RuntimeWidgetIndex = 90,
                         Flags = ChudDefinition.HudWidget.BitmapWidget.WidgetBitmapFlagsHO.SpriteFromConsumable,
-                        Bitmap = GetCachedTag<Bitmap>($@"ui\chud\bitmaps\equipment_scematics_h3"),
+                        Bitmap = GetCachedTag<Bitmap>($@"ui\chud\bitmaps\equipment_scematics"),
                         StateData = new List<ChudDefinition.HudWidgetBase.StateDatum>()
                         {
                             new ChudDefinition.HudWidgetBase.StateDatum()
@@ -234,7 +234,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                         ScriptingClass = ChudDefinition.ChudScriptingClass.UseParent,
                         SortLayer = ChudDefinition.WidgetLayerEnum.Background,
                         RuntimeWidgetIndex = 175,
-                        Bitmap = GetCachedTag<Bitmap>($@"ui\chud\bitmaps\hud_meter"),
+                        Bitmap = GetCachedTag<Bitmap>($@"ui\chud\bitmaps\consumable_meter"),
                         StateData = new List<ChudDefinition.HudWidgetBase.StateDatum>()
                         {
                             new ChudDefinition.HudWidgetBase.StateDatum()

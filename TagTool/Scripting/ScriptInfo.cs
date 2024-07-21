@@ -22588,11 +22588,6 @@ namespace TagTool.Scripting
             ValueTypes[(CacheVersion.HaloOnline106708, CachePlatform.Original)] = ValueTypes[(CacheVersion.HaloOnlineED, CachePlatform.Original)];
             Globals[(CacheVersion.HaloOnline106708, CachePlatform.Original)] = Globals[(CacheVersion.HaloOnlineED, CachePlatform.Original)];
             Scripts[(CacheVersion.HaloOnline106708, CachePlatform.Original)] = Scripts[(CacheVersion.HaloOnlineED, CachePlatform.Original)];
-
-            // Ideally, once script versioning has been properly worked out, Legacy will inherit from MS23
-            ValueTypes[(CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original)] = ValueTypes[(CacheVersion.HaloOnline106708, CachePlatform.Original)];
-            Globals[(CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original)] = Globals[(CacheVersion.HaloOnline106708, CachePlatform.Original)];
-            Scripts[(CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original)] = Scripts[(CacheVersion.HaloOnline106708, CachePlatform.Original)];
         }
     }
 }

@@ -73,8 +73,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             shit.Plasma = new ShieldImpact.PlasmaBlock
             {
                 PlasmaDepthFadeRange = 0.05f,
-                PlasmaNoiseBitmap1 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\plasma_noise_1"),
-                PlasmaNoiseBitmap2 = GetCachedTag<Bitmap>($@"levels\shared\bitmaps\test_maps\plasma_noise_2"),
+                PlasmaNoiseBitmap1 = GetCachedTag<Bitmap>($@"fx\bitmaps\plasma\plasma_clouds_512_a"),
+                PlasmaNoiseBitmap2 = GetCachedTag<Bitmap>($@"fx\bitmaps\plasma\plasma_clouds_512_b"),
                 TilingScale = 3f,
                 ScrollSpeed = 1f,
                 EdgeSharpness = 4f,

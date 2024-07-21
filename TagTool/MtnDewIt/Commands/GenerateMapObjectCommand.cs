@@ -46,7 +46,7 @@ namespace TagTool.MtnDewIt.Commands
 
                 if (file.Name == "sandbox.map" || IsGameVariant(file.Name))
                 {
-                    if (IsLegacyFile(reader) && blfData.Version == CacheVersion.HaloOnlineEDLegacy)
+                    if (IsLegacyFile(reader) && blfData.Version == CacheVersion.HaloOnline106708)
                     {
                         blfData.ReadLegacyData(reader);
 

@@ -35,9 +35,9 @@ namespace TagTool.Tags.Definitions
             [TagField(MaxVersion = CacheVersion.HaloOnlineED)]
             public List<CustomizedModelCharacter> CustomizableCharacters;
 
-            [TagField(MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnline235640)]
+            [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline235640)]
             public List<CustomizedModelCharacter_HO> SpartanArmorCustomization;
-            [TagField(MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnline235640)]
+            [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline235640)]
             public List<CustomizedModelCharacter_HO> EliteArmorCustomization;
             [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             public List<Consumable> Equipment;
@@ -297,7 +297,7 @@ namespace TagTool.Tags.Definitions
                     public StringId OutAnimation;
                     [TagField(MaxVersion = CacheVersion.HaloOnlineED)]
                     public float Offset;
-                    [TagField(MinVersion = CacheVersion.HaloOnlineEDLegacy)]
+                    [TagField(MinVersion = CacheVersion.HaloOnline106708)]
                     public WeaponLoadout WeaponLoadout;
 
                     [TagField(Flags = Label, ValidTags = new[] { "weap" })]

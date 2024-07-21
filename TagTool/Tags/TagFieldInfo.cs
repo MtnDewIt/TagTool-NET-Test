@@ -167,7 +167,7 @@ namespace TagTool.Tags
 				case TypeCode.Char:
 				case TypeCode.Int16:
 				case TypeCode.UInt16:
-				case TypeCode.Object when type == typeof(IndexBufferIndex) && (targetVersion <= CacheVersion.Halo3ODST || (targetVersion >= CacheVersion.HaloOnlineEDLegacy && targetVersion < CacheVersion.HaloReach)):
+				case TypeCode.Object when type == typeof(IndexBufferIndex) && (targetVersion <= CacheVersion.Halo3ODST || (targetVersion >= CacheVersion.HaloOnline106708 && targetVersion < CacheVersion.HaloReach)):
 					return 0x02;
 
 				case TypeCode.Single:

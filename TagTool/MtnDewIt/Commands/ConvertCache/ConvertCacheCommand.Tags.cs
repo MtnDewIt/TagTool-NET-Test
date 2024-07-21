@@ -351,15 +351,15 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new ui_chud_carbine_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_covenant_carbine_ammo_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_carbine_ammo_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_covenant_carbine_damage_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_carbine_damage_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_covenant_carbine_power_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_carbine_power_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_covenant_carbine_range_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_carbine_range_chud_definition(Cache, CacheContext, CacheStream);
 
-            new ui_chud_covenant_carbine_rof_chud_definition(Cache, CacheContext, CacheStream);
+            new ui_chud_carbine_rof_chud_definition(Cache, CacheContext, CacheStream);
 
             new ui_chud_dmr_chud_definition(Cache, CacheContext, CacheStream);
 

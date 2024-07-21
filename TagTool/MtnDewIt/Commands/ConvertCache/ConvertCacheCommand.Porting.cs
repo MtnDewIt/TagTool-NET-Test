@@ -16,7 +16,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             InitializePortingContext();
 
             sandbox.SetPortingProperties(audioCodec: Compression.OGG);
-            GenerateTag<Bitmap>($@"ui\chud\bitmaps\stamina_icon_elite");
+            GenerateTag<Bitmap>($@"ui\chud\bitmaps\elite_stamina_icon");
             sandbox.PortTag($@"", $@"ui\chud\elite.chud_definition");
             DuplicateTag(GetCachedTag<ChudDefinition>($@"ui\chud\scoreboard"), $@"ui\chud\scoreboard_elite");
             sandbox.PortTag($@"", $@"sound\dialog\multiplayer_en\juggernaut\juggernaut.sound");

@@ -219,7 +219,7 @@ namespace TagTool.MtnDewIt.BlamFiles
                         ContentFlags |= BlfDataFileContentFlags.StartOfFile;
                         StartOfFile = deserializer.Deserialize<BlfDataChunkStartOfFile>(dataContext);
                         StartOfFile.Signature = new Tag("_blf");
-                        StartOfFile.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataChunkStartOfFile), CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original);
+                        StartOfFile.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataChunkStartOfFile), CacheVersion.HaloOnline106708, CachePlatform.Original);
                         StartOfFile.MajorVersion = 1;
                         StartOfFile.MinorVersion = 2;
                         StartOfFile.ByteOrderMarker = -2;
@@ -271,7 +271,7 @@ namespace TagTool.MtnDewIt.BlamFiles
                         ContentFlags |= BlfDataFileContentFlags.MapVariant;
                         MapVariant = deserializer.Deserialize<BlfDataMapVariant>(dataContext);
                         MapVariant.Signature = new Tag("mapv");
-                        MapVariant.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataMapVariant), CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original);
+                        MapVariant.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataMapVariant), CacheVersion.HaloOnline106708, CachePlatform.Original);
                         MapVariant.MajorVersion = 12;
                         MapVariant.MinorVersion = 1;
                         break;
@@ -280,7 +280,7 @@ namespace TagTool.MtnDewIt.BlamFiles
                         ContentFlags |= BlfDataFileContentFlags.GameVariant;
                         GameVariant = deserializer.Deserialize<BlfDataGameVariant>(dataContext);
                         position = reader.Position;
-                        reader.SeekTo(chunkHeaderPosition + (int)TagStructure.GetStructureSize(typeof(BlfDataChunkHeader), CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original) + 0x4);
+                        reader.SeekTo(chunkHeaderPosition + (int)TagStructure.GetStructureSize(typeof(BlfDataChunkHeader), CacheVersion.HaloOnline106708, CachePlatform.Original) + 0x4);
                         switch (GameVariant.GameVariant.GameVariantType)
                         {
                             case GameEngineType.Base:
@@ -322,7 +322,7 @@ namespace TagTool.MtnDewIt.BlamFiles
                         }
                         reader.SeekTo(position);
                         GameVariant.Signature = new Tag("mpvr");
-                        GameVariant.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataGameVariant), CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original);
+                        GameVariant.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataGameVariant), CacheVersion.HaloOnline106708, CachePlatform.Original);
                         GameVariant.MajorVersion = 3;
                         GameVariant.MinorVersion = 1;
                         break;
@@ -331,7 +331,7 @@ namespace TagTool.MtnDewIt.BlamFiles
                         ContentFlags |= BlfDataFileContentFlags.ContentHeader;
                         ContentHeader = deserializer.Deserialize<BlfDataContentHeader>(dataContext);
                         ContentHeader.Signature = new Tag("chdr");
-                        ContentHeader.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataContentHeader), CacheVersion.HaloOnlineEDLegacy, CachePlatform.Original);
+                        ContentHeader.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataContentHeader), CacheVersion.HaloOnline106708, CachePlatform.Original);
                         ContentHeader.MajorVersion = 9;
                         ContentHeader.MinorVersion = 3;
                         break;
@@ -522,12 +522,6 @@ namespace TagTool.MtnDewIt.BlamFiles
                             if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
                                 Format = EndianFormat.LittleEndian;
                             break;
-                        case CacheVersion.HaloOnlineEDLegacy:
-                            ConvertHalo3ToEDLegacyScenarioChunk();
-                            Version = targetVersion;
-                            if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
-                                Format = EndianFormat.LittleEndian;
-                            break;
                         default:
                             throw new NotImplementedException($"Conversion from Halo 3 to {targetVersion} not supported");
                     }
@@ -562,12 +556,6 @@ namespace TagTool.MtnDewIt.BlamFiles
                         case CacheVersion.HaloOnline604673:
                         case CacheVersion.HaloOnline700123:
                             ConvertReachToODSTScenarioChunk();
-                            Version = targetVersion;
-                            if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
-                                Format = EndianFormat.LittleEndian;
-                            break;
-                        case CacheVersion.HaloOnlineEDLegacy:
-                            ConvertReachToEDLegacyScenarioChunk();
                             Version = targetVersion;
                             if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
                                 Format = EndianFormat.LittleEndian;
@@ -669,69 +657,6 @@ namespace TagTool.MtnDewIt.BlamFiles
             Scenario.MajorVersion = 3;
             Scenario.MinorVersion = 1;
         }
-
-        private void ConvertHalo3ToEDLegacyScenarioChunk()
-        {
-            if (!ContentFlags.HasFlag(BlfDataFileContentFlags.Scenario))
-                return;
-
-            var insertions = new BlfDataScenarioInsertion[8];
-            for (int i = 0; i < 8; i++)
-            {
-                BlfDataScenarioInsertion ins;
-                if (i < 4)
-                    ins = Scenario.Insertions[i];
-                else
-                {
-                    ins = new BlfDataScenarioInsertion();
-                }
-                insertions[i] = ins;
-            }
-            Scenario.Insertions = insertions;
-            Scenario.Length = 0x89B0;
-        }
-
-        private void ConvertReachToEDLegacyScenarioChunk()
-        {
-            if (!ContentFlags.HasFlag(BlfDataFileContentFlags.Scenario))
-                return;
-
-            var insertions = new BlfDataScenarioInsertion[8];
-
-            for (int i = 0; i < 8; i++)
-            {
-                BlfDataScenarioInsertion ins;
-                if (i < 8)
-                    ins = Scenario.Insertions[i];
-                else
-                    ins = new BlfDataScenarioInsertion();
-
-                insertions[i] = ins;
-            }
-
-            if (Scenario.MapFlags.HasFlag(BlfDataScenarioFlags.IsMultiplayer))
-            {
-                Scenario.GameEngineTeamCounts = new BlfDataGameEngineTeams
-                {
-                    NoGametypeTeamCount = 8,
-                    OddballTeamCount = 8,
-                    VipTeamCount = 8,
-                    AssaultTeamCount = 8,
-                    CtfTeamCount = 8,
-                    KothTeamCount = 8,
-                    JuggernautTeamCount = 8,
-                    InfectionTeamCount = 8,
-                    SlayerTeamCount = 8,
-                    ForgeTeamCount = 8,
-                    TerritoriesTeamCount = 8,
-                };
-            }
-
-            Scenario.Insertions = insertions;
-            Scenario.Length = 0x89B0;
-            Scenario.MajorVersion = 3;
-            Scenario.MinorVersion = 1;
-        }
     }
 
     [Flags]
@@ -779,7 +704,6 @@ namespace TagTool.MtnDewIt.BlamFiles
         AuthenticationTypeRSA,
     }
 
-    [TagStructure(Size = 0x4, Align = 0x1, MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnlineEDLegacy)]
     [TagStructure(Size = 0x5, Align = 0x1)]
     public class BlfDataChunkEndOfFile : BlfDataChunkHeader 
     {
@@ -1035,7 +959,6 @@ namespace TagTool.MtnDewIt.BlamFiles
     }
 
     [TagStructure(Size = 0x4D44, Align = 0x1, MaxVersion = CacheVersion.Halo3Retail)]
-    [TagStructure(Size = 0x89A4, Align = 0x1, MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnlineEDLegacy)]
     [TagStructure(Size = 0x98B4, Align = 0x1, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
     public class BlfDataScenario : BlfDataChunkHeader 
     {
@@ -1070,7 +993,6 @@ namespace TagTool.MtnDewIt.BlamFiles
         public byte[] Padding2;
 
         [TagField(Length = 0x4, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagField(Length = 0x8, MinVersion = CacheVersion.HaloOnlineEDLegacy, MaxVersion = CacheVersion.HaloOnlineEDLegacy)]
         [TagField(Length = 0x9, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         public BlfDataScenarioInsertion[] Insertions;
     }
