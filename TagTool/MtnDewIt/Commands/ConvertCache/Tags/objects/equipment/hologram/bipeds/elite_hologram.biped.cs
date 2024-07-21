@@ -26,7 +26,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
         {
             var tag = GetCachedTag<Biped>($@"objects\equipment\hologram\bipeds\elite_hologram");
             var bipd = CacheContext.Deserialize<Biped>(Stream, tag);
-            bipd.ObjectFlags = ObjectDefinitionFlags.DoesNotCastShadow;
+            bipd.ObjectFlags = new ObjectDefinitionFlags()
+            {
+                Flags = ObjectFlags.DoesNotCastShadow,
+            };
             bipd.Model = GetCachedTag<Model>($@"objects\equipment\hologram\bipeds\elite_hologram");
             bipd.CollisionDamage = null;
             bipd.MaterialEffects = null;
@@ -35,7 +38,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             bipd.AiProperties = null;
             bipd.Functions = null;
             bipd.Attachments = null;
-            bipd.UnitFlags = Unit.UnitFlagBits.ShieldSapping;
+            bipd.UnitFlags = new Unit.UnitDefinitionFlags()
+            {
+                Flags = Unit.UnitFlagBits.FlashlightPowerDoesntTransferToWeapon,
+            };
             bipd.DefaultTeam = Unit.DefaultTeamValue.Player;
             bipd.EvictionMeleeResponse = GetCachedTag<DamageEffect>($@"objects\characters\masterchief\damage_effects\masterchief_ejection_melee_response");
             bipd.UnitCamera = new Unit.UnitCameraBlock 

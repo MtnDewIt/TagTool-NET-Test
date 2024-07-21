@@ -3184,7 +3184,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Scenario.SceneryInstance
                 {
                     PaletteIndex = 1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    { 
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically,
+                    },
                     Position = new RealPoint3d(74.108f, -101.926f, -20f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(180f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
                     UniqueHandle = new DatumHandle(0, 3),
@@ -3212,7 +3215,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 26,
                     NameIndex = 14,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    { 
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically,
+                    },
                     Position = new RealPoint3d(55.12044f, -98.26942f, 3.532973f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-28.29517f), Angle.FromDegrees(-14.60906f), Angle.FromDegrees(5.956088f)),
                     UniqueHandle = new DatumHandle(0, 17),
@@ -3240,7 +3246,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 27,
                     NameIndex = 15,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    { 
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically,
+                    },
                     Position = new RealPoint3d(54.739f, -98.738f, 2.832f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(36.857f), Angle.FromDegrees(-11.491f), Angle.FromDegrees(6.565f)),
                     UniqueHandle = new DatumHandle(0, 18),
@@ -3268,7 +3277,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 28,
                     NameIndex = 17,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    { 
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically,
+                    },
                     Position = new RealPoint3d(0f, 0f, 10.147f),
                     UniqueHandle = new DatumHandle(0, 20),
                     ObjectType = new GameObjectType8
@@ -3296,7 +3308,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 29,
                     NameIndex = 21,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    { 
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically,
+                    },
                     UniqueHandle = new DatumHandle(0, 24),
                     ObjectType = new GameObjectType8
                     {
@@ -3322,7 +3337,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 30,
                     NameIndex = 22,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    { 
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically,
+                    },
                     UniqueHandle = new DatumHandle(0, 25),
                     ObjectType = new GameObjectType8
                     {
@@ -3348,7 +3366,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 30,
                     NameIndex = 23,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    { 
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically,
+                    },
                     UniqueHandle = new DatumHandle(0, 26),
                     ObjectType = new GameObjectType8
                     {
@@ -3534,7 +3555,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Scenario.BipedInstance
                 {
                     NameIndex = 1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(74.108f, -101.926f, 11.65f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(120f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
                     Scale = 1.1f,
@@ -3553,7 +3577,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 2,
                     NameIndex = 2,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(88.52471f, -92.73032f, 3.0033f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-155.3412f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
                     UniqueHandle = new DatumHandle(0, 5),
@@ -3569,7 +3596,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 1,
                     NameIndex = 3,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(89.14196f, -93.00212f, 2.9926f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-169.868f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
                     UniqueHandle = new DatumHandle(0, 6),
@@ -3585,7 +3615,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 3,
                     NameIndex = 8,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(80.835f, -153.812f, 1.979f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-91.98899f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
                     UniqueHandle = new DatumHandle(0, 11),
@@ -3597,7 +3630,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     },
                     CanAttachToBspFlags = 1,
                     Variant = CacheContext.StringTable.GetOrAddString($@"menu_spartan2"),
-                    ActiveChangeColors = Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Primary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Secondary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Tertiary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Quaternary,
+                    ActiveChangeColors = Scenario.ActiveChangeColorFlags.Primary | Scenario.ActiveChangeColorFlags.Secondary | Scenario.ActiveChangeColorFlags.Tertiary | Scenario.ActiveChangeColorFlags.Quaternary,
                     PrimaryColor = new ArgbColor(255, 41, 41, 41),
                     SecondaryColor = new ArgbColor(255, 211, 68, 68),
                     TertiaryColor = new ArgbColor(255, 255, 148, 0),
@@ -3607,7 +3640,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 3,
                     NameIndex = 9,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(80.893f, -153.553f, 1.979f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-163.1319f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
                     UniqueHandle = new DatumHandle(0, 12),
@@ -3619,7 +3655,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                     },
                     CanAttachToBspFlags = 1,
                     Variant = CacheContext.StringTable.GetOrAddString($@"menu_spartan1"),
-                    ActiveChangeColors = Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Primary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Secondary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Tertiary | Scenario.PermutationInstance.ScenarioObjectActiveChangeColorFlags.Quaternary,
+                    ActiveChangeColors = Scenario.ActiveChangeColorFlags.Primary | Scenario.ActiveChangeColorFlags.Secondary | Scenario.ActiveChangeColorFlags.Tertiary | Scenario.ActiveChangeColorFlags.Quaternary,
                     PrimaryColor = new ArgbColor(255, 86, 86, 86),
                     SecondaryColor = new ArgbColor(255, 41, 49, 92),
                     TertiaryColor = new ArgbColor(255, 255, 148, 0),
@@ -3629,7 +3665,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 4,
                     NameIndex = 19,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(-0.123f, -2.991f, 11.551f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-104.257f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
                     UniqueHandle = new DatumHandle(0, 22),
@@ -3646,7 +3685,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 4,
                     NameIndex = 20,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(-1.988f, -0.989f, 11.828f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-90f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
                     UniqueHandle = new DatumHandle(0, 23),
@@ -3663,7 +3705,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 5,
                     NameIndex = 26,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(74.108f, -101.926f, 11.65f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(120f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
                     Scale = 1.1f,
@@ -3710,7 +3755,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Scenario.WeaponInstance
                 {
                     NameIndex = 4,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     UniqueHandle = new DatumHandle(0, 7),
                     ObjectType = new GameObjectType8
                     {
@@ -3735,7 +3783,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 1,
                     NameIndex = 5,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     UniqueHandle = new DatumHandle(0, 8),
                     ObjectType = new GameObjectType8
                     {
@@ -3759,7 +3810,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Scenario.WeaponInstance
                 {
                     NameIndex = 7,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     UniqueHandle = new DatumHandle(0, 10),
                     ObjectType = new GameObjectType8
                     {
@@ -3783,7 +3837,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Scenario.WeaponInstance
                 {
                     NameIndex = 10,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     UniqueHandle = new DatumHandle(0, 13),
                     ObjectType = new GameObjectType8
                     {
@@ -3808,7 +3865,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 3,
                     NameIndex = 11,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     UniqueHandle = new DatumHandle(0, 14),
                     ObjectType = new GameObjectType8
                     {
@@ -3833,7 +3893,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 2,
                     NameIndex = 12,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(81.397f, -153.856f, 2.210711f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-81.45872f), Angle.FromDegrees(-10.39058f), Angle.FromDegrees(4.628513f)),
                     UniqueHandle = new DatumHandle(0, 15),
@@ -3860,7 +3923,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 1,
                     NameIndex = 27,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     ObjectType = new GameObjectType8
                     {
                         Halo3ODST = GameObjectTypeHalo3ODST.Weapon,
@@ -5469,7 +5535,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 new Scenario.LightVolumeInstance
                 {
                     NameIndex = 6,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    { 
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically,
+                    },
                     Position = new RealPoint3d(87.95523f, -91.52019f, 3.164429f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(7.247242f), Angle.FromDegrees(-10.34807f), Angle.FromDegrees(60.06319f)),
                     UniqueHandle = new DatumHandle(0, 9),
@@ -5500,7 +5569,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 1,
                     NameIndex = 13,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    { 
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically,
+                    },
                     Position = new RealPoint3d(81.37815f, -152.6445f, 2.375807f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(63.09137f), Angle.FromDegrees(17.67388f), Angle.FromDegrees(92.07263f)),
                     UniqueHandle = new DatumHandle(0, 16),
@@ -5531,7 +5603,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 2,
                     NameIndex = 16,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    { 
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically,
+                    },
                     Position = new RealPoint3d(56.47885f, -98.81166f, 4.854488f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(4.631807f), Angle.FromDegrees(48.29739f), Angle.FromDegrees(177.1723f)),
                     UniqueHandle = new DatumHandle(0, 19),
@@ -5562,7 +5637,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 3,
                     NameIndex = 18,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    { 
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically,
+                    },
                     Position = new RealPoint3d(-2.028954f, 0.04164451f, 12.14188f),
                     UniqueHandle = new DatumHandle(0, 21),
                     OriginBspIndex = -1,
@@ -8989,7 +9067,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 7,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(55.2181f, -93.367f, 3.39098f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(0.00315627f), Angle.FromDegrees(0.152158f), Angle.FromDegrees(-0.143134f)),
                     UniqueHandle = new DatumHandle(55836, 40),
@@ -9020,7 +9101,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 8,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(55.2781f, -94.43f, 3.37838f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-0.161738f), Angle.FromDegrees(1.45908f), Angle.FromDegrees(3.96555f)),
                     UniqueHandle = new DatumHandle(55836, 42),
@@ -9051,7 +9135,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 9,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(54.8503f, -93.4026f, 3.39398f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(118.878f), Angle.FromDegrees(-1.42381f), Angle.FromDegrees(-0.0332819f)),
                     UniqueHandle = new DatumHandle(55836, 43),
@@ -9082,7 +9169,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 6,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(55.1228f, -94.1875f, 3.68882f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-1.4065f), Angle.FromDegrees(-0.310194f), Angle.FromDegrees(-89.9454f)),
                     UniqueHandle = new DatumHandle(55836, 47),
@@ -9207,7 +9297,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 3,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(97.58749f, -102.2085f, 3.353781f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-96.31224f), Angle.FromDegrees(6.914569f), Angle.FromDegrees(-2.89644f)),
                     UniqueHandle = new DatumHandle(63656, 51),
@@ -9238,7 +9331,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 10,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(80.7472f, -142.03f, 4.2433f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(90.0081f), Angle.FromDegrees(0.0697498f), Angle.FromDegrees(90f)),
                     UniqueHandle = new DatumHandle(1432, 52),
@@ -9269,7 +9365,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 9,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(80.8345f, -142.667f, 4.10471f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(177.329f), Angle.FromDegrees(-0.230709f), Angle.FromDegrees(-0.397928f)),
                     UniqueHandle = new DatumHandle(1432, 53),
@@ -9300,7 +9399,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 10,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(82.3423f, -61.9768f, 3.3484f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(89.959f), Angle.FromDegrees(-0.0162934f), Angle.FromDegrees(89.9557f)),
                     UniqueHandle = new DatumHandle(1432, 54),
@@ -9331,7 +9433,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 11,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(83.2876f, -62.0242f, 2.45998f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-0.0009941329f), Angle.FromDegrees(-0.0248938f), Angle.FromDegrees(0.00130895f)),
                     UniqueHandle = new DatumHandle(1432, 55),
@@ -9362,7 +9467,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 11,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(83.287f, -62.1586f, 2.46016f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-0.0193956f), Angle.FromDegrees(0.341322f), Angle.FromDegrees(-0.12768f)),
                     UniqueHandle = new DatumHandle(1432, 56),
@@ -9393,7 +9501,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 11,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(95.3214f, -93.6129f, 2.54849f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(2.58068f), Angle.FromDegrees(-38.1643f), Angle.FromDegrees(86.2996f)),
                     UniqueHandle = new DatumHandle(1436, 61),
@@ -9424,7 +9535,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 11,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(96.7029f, -98.2882f, 2.90641f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-41.4827f), Angle.FromDegrees(-55.271f), Angle.FromDegrees(85.0975f)),
                     UniqueHandle = new DatumHandle(1436, 62),
@@ -9624,7 +9738,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 16,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(51.18001f, -107.3762f, 3.464443f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(5.650116f), Angle.FromDegrees(74.38197f), Angle.FromDegrees(1.959057f)),
                     UniqueHandle = new DatumHandle(1512, 71),
@@ -9654,7 +9771,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 16,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(95.0155f, -97.5372f, 2.92663f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(95.9787f), Angle.FromDegrees(79.8178f), Angle.FromDegrees(94.5635f)),
                     UniqueHandle = new DatumHandle(1512, 72),
@@ -9684,7 +9804,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 16,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(100.013f, -101.708f, 3.83229f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-61.2035f), Angle.FromDegrees(37.4607f), Angle.FromDegrees(101.167f)),
                     UniqueHandle = new DatumHandle(1512, 73),
@@ -9714,7 +9837,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 11,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(102.312f, -104.858f, 3.82136f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(164.523f), Angle.FromDegrees(-65.4259f), Angle.FromDegrees(81.706f)),
                     UniqueHandle = new DatumHandle(1512, 74),
@@ -9970,7 +10096,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 8,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(92.2137f, -91.8829f, 2.57696f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-0.298925f), Angle.FromDegrees(1.62492f), Angle.FromDegrees(-12.1614f)),
                     UniqueHandle = new DatumHandle(8972, 91),
@@ -10061,7 +10190,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 22,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(95.9026f, -100.872f, 3.21009f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-96.1524f), Angle.FromDegrees(10.226f), Angle.FromDegrees(-2.07378E-07f)),
                     UniqueHandle = new DatumHandle(25408, 107),
@@ -10124,7 +10256,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 17,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(84.4004f, -153.901f, 1.54089f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-7.70968f), Angle.FromDegrees(-72.0696f), Angle.FromDegrees(99.942f)),
                     UniqueHandle = new DatumHandle(11636, 97),
@@ -10154,7 +10289,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 17,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(84.4789f, -154.151f, 1.48953f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(14.4356f), Angle.FromDegrees(-2.42724f), Angle.FromDegrees(0.829414f)),
                     UniqueHandle = new DatumHandle(11636, 98),
@@ -10184,7 +10322,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 12,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(76.6112f, -51.3018f, 0.525322f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(99.4492f), Angle.FromDegrees(45.475f), Angle.FromDegrees(89.3162f)),
                     UniqueHandle = new DatumHandle(11636, 99),
@@ -10214,7 +10355,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 17,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(76.293f, -51.6978f, 0.397189f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(131.484f), Angle.FromDegrees(7.26191f), Angle.FromDegrees(-6.87392f)),
                     UniqueHandle = new DatumHandle(11636, 100),
@@ -10451,7 +10595,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 22,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(95.9026f, -100.872f, 3.21009f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-96.1524f), Angle.FromDegrees(10.226f), Angle.FromDegrees(-2.07378E-07f)),
                     UniqueHandle = new DatumHandle(25408, 110),
@@ -10769,7 +10916,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 24,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.StoreOrientations,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.StoreOrientations,
+                    },
                     Position = new RealPoint3d(85.6133f, -121.082f, 2.98847f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(0f), Angle.FromDegrees(0f), Angle.FromDegrees(2.99796f)),
                     NodeOrientations = new List<Scenario.ObjectNodeOrientation>
@@ -10997,7 +11147,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 24,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.StoreOrientations,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.StoreOrientations,
+                    },
                     Position = new RealPoint3d(72.4726f, -77.9601f, 3.01574f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(164.65f), Angle.FromDegrees(-4.44972f), Angle.FromDegrees(0f)),
                     NodeOrientations = new List<Scenario.ObjectNodeOrientation>
@@ -11239,7 +11392,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 24,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.StoreOrientations,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.StoreOrientations,
+                    },
                     Position = new RealPoint3d(71.2153f, -74.4041f, 3.21789f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-86.7571f), Angle.FromDegrees(-0.415209f), Angle.FromDegrees(-3.52906f)),
                     NodeOrientations = new List<Scenario.ObjectNodeOrientation>
@@ -11483,7 +11639,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 25,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.StoreOrientations,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.StoreOrientations,
+                    },
                     Position = new RealPoint3d(71.6165f, -78.0496f, 3.24951f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-33.7462f), Angle.FromDegrees(-5.29115f), Angle.FromDegrees(-7.71016f)),
                     NodeOrientations = new List<Scenario.ObjectNodeOrientation>
@@ -11711,7 +11870,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 24,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.StoreOrientations,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.StoreOrientations,
+                    },
                     Position = new RealPoint3d(74.6567f, -83.129f, 2.49623f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(6.72464f), Angle.FromDegrees(0f), Angle.FromDegrees(0f)),
                     NodeOrientations = new List<Scenario.ObjectNodeOrientation>
@@ -11939,7 +12101,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 24,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.StoreOrientations,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.StoreOrientations,
+                    },
                     Position = new RealPoint3d(87.0449f, -106.241f, 4.01366f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(164.65f), Angle.FromDegrees(1.30201f), Angle.FromDegrees(0f)),
                     NodeOrientations = new List<Scenario.ObjectNodeOrientation>
@@ -12183,7 +12348,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 24,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.StoreOrientations,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.StoreOrientations,
+                    },
                     Position = new RealPoint3d(88.5995f, -114.545f, 2.69899f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-171.057f), Angle.FromDegrees(1.18676f), Angle.FromDegrees(0.535613f)),
                     NodeOrientations = new List<Scenario.ObjectNodeOrientation>
@@ -12428,7 +12596,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 24,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.StoreOrientations,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.StoreOrientations,
+                    },
                     Position = new RealPoint3d(93.7792f, -128.393f, 3.48919f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(78.572f), Angle.FromDegrees(0.0890814f), Angle.FromDegrees(-1.29896f)),
                     NodeOrientations = new List<Scenario.ObjectNodeOrientation>
@@ -12673,7 +12844,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 24,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.StoreOrientations,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.StoreOrientations,
+                    },
                     Position = new RealPoint3d(90.2448f, -128.221f, 2.67069f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(164.65f), Angle.FromDegrees(-2.09624f), Angle.FromDegrees(0f)),
                     NodeOrientations = new List<Scenario.ObjectNodeOrientation>
@@ -12917,7 +13091,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 24,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.StoreOrientations,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.StoreOrientations,
+                    },
                     Position = new RealPoint3d(74.4966f, -86.7925f, 2.12612f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(164.65f), Angle.FromDegrees(-2.09624f), Angle.FromDegrees(-6.26744f)),
                     NodeOrientations = new List<Scenario.ObjectNodeOrientation>
@@ -13159,7 +13336,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 24,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.StoreOrientations,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.StoreOrientations,
+                    },
                     Position = new RealPoint3d(88.3602f, -99.9714f, 3.63971f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(176.914f), Angle.FromDegrees(-7.41199f), Angle.FromDegrees(-15.8917f)),
                     NodeOrientations = new List<Scenario.ObjectNodeOrientation>
@@ -13433,7 +13613,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 27,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest,
+                    },
                     Position = new RealPoint3d(55.7763f, -93.7475f, 3.51947f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(12.2654f), Angle.FromDegrees(1.35789f), Angle.FromDegrees(-2.20627f)),
                     UniqueHandle = new DatumHandle(57868, 147),
@@ -13463,7 +13646,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 25,
                     NameIndex = -1,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.StoreOrientations,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    {
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.CreateAtRest | Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.StoreOrientations,
+                    },
                     Position = new RealPoint3d(91.5979f, -130.075f, 2.4999f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-56.7772f), Angle.FromDegrees(6.34539f), Angle.FromDegrees(10.6483f)),
                     NodeOrientations = new List<Scenario.ObjectNodeOrientation>
@@ -14409,7 +14595,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
                 {
                     PaletteIndex = 43,
                     NameIndex = 25,
-                    PlacementFlags = Scenario.ObjectPlacementFlags.NotAutomatically,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags()
+                    { 
+                        Flags = Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags.NotAutomatically,
+                    },
                     Position = new RealPoint3d(3.068f, -102.909f, 328.322f),
                     Rotation = new RealEulerAngles3d(Angle.FromDegrees(-135.244f), Angle.FromDegrees(-18.04f), Angle.FromDegrees(-18.975f)),
                     UniqueHandle = new DatumHandle(0, 28),

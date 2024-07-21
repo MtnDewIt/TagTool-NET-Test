@@ -25,7 +25,10 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
         {
             var tag = GetCachedTag<Vehicle>($@"objects\levels\multi\shrine\behemoth\behemoth_forge");
             var vehi = CacheContext.Deserialize<Vehicle>(Stream, tag);
-            vehi.ObjectFlags = ObjectDefinitionFlags.None;
+            vehi.ObjectFlags = new ObjectDefinitionFlags() 
+            {
+                Flags = ObjectFlags.None,
+            };
             vehi.VehicleFlags = Vehicle.VehicleFlagBits.NoFrictionWithDriver | Vehicle.VehicleFlagBits.CanTriggerAutomaticOpeningDoors | Vehicle.VehicleFlagBits.AiDriverEnable;
             CacheContext.Serialize(Stream, tag, vehi);
         }

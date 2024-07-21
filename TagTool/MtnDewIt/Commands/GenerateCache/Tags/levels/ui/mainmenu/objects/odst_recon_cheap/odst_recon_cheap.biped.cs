@@ -91,7 +91,10 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                 },
             };
             bipd.PathfindingSpheres = null;
-            bipd.UnitFlags = Unit.UnitFlagBits.FiresFromCamera | Unit.UnitFlagBits.MeleeAttackersCannotAttach | Unit.UnitFlagBits.ShieldSapping | Unit.UnitFlagBits.UseAimStillXxForAirborne;
+            bipd.UnitFlags = new Unit.UnitDefinitionFlags
+            {
+                Flags = Unit.UnitFlagBits.FiresFromCamera | Unit.UnitFlagBits.MeleeAttackersCannotAttach | Unit.UnitFlagBits.FlashlightPowerDoesntTransferToWeapon | Unit.UnitFlagBits.UseAimStillXxForAirborne,
+            };
             bipd.CameraFieldOfView = Angle.FromDegrees(80f);
             bipd.MotionTrackerRangeModifier = 25f;
             bipd.GrenadeAngle = Angle.FromDegrees(15f);
