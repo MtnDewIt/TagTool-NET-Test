@@ -75,6 +75,9 @@ namespace TagTool.MtnDewIt.Porting
 
 			// Auto rescale gui during porting.
 			AutoRescaleGui = 1 << 20,
+			
+			// Auto Update map files
+			UpdateMapFiles = 1 << 21,
 
 			// Default porting flags
 			Default = Print | Recursive | Merge | Scripts | Squads | ForgePalette | Elites | Audio | Dialogue | MatchShaders | GenerateShaders

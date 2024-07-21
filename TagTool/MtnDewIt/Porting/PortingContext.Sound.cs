@@ -6,11 +6,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using TagTool.Audio;
 using TagTool.Cache;
+using TagTool.Commands;
 using TagTool.Commands.Common;
+using TagTool.Commands.Sounds;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
-using TagTool.Commands.Sounds;
-using TagTool.Commands;
 
 namespace TagTool.MtnDewIt.Porting
 {
@@ -18,7 +18,6 @@ namespace TagTool.MtnDewIt.Porting
     {
         private SoundCacheFileGestalt BlamSoundGestalt { get; set; } = null;
         private Dictionary<Sound, Task> SoundConversionTasks = new Dictionary<Sound, Task>();
-        private SemaphoreSlim ConcurrencyLimiter;
 
         class SoundConversionResult
         {
@@ -29,14 +28,18 @@ namespace TagTool.MtnDewIt.Porting
             public List<Action> PostConversionOperations = new List<Action>();
         }
 
-        public void InitializeSoundConverter()
-        {
-            ConcurrencyLimiter = new SemaphoreSlim(PortingProperties.CurrentInstance.MaxThreads);
-        }
-
         public void WaitForPendingSoundConversion()
         {
-            Task.WaitAll(SoundConversionTasks.Values.ToArray());
+            try
+            {
+                Task.WaitAll(SoundConversionTasks.Values.ToArray());
+            }
+            catch (AggregateException ex)
+            {
+                foreach (var inner in ex.InnerExceptions)
+                    new TagToolError(CommandError.CustomError, inner.Message);
+                throw (ex);
+            }         
         }
 
         private Sound FinishConvertSound(SoundConversionResult result)

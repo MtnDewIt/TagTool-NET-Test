@@ -23,6 +23,7 @@ using System.Collections.Concurrent;
 using TagTool.Geometry.BspCollisionGeometry;
 using TagTool.Commands.Porting;
 using TagTool.Commands.ScenarioStructureBSPs;
+using System.Threading;
 
 namespace TagTool.MtnDewIt.Porting
 {
@@ -41,9 +42,12 @@ namespace TagTool.MtnDewIt.Porting
         private Dictionary<uint, StringId> PortedStringIds = new Dictionary<uint, StringId>();
 
         private DirectoryInfo TempDirectory { get; } = new DirectoryInfo(Path.GetTempPath());
-        private BlockingCollection<Action> _deferredActions = new BlockingCollection<Action>();
+        internal BlockingCollection<Action> _deferredActions = new BlockingCollection<Action>();
 
-		private readonly Dictionary<Tag, CachedTag> DefaultTags = new Dictionary<Tag, CachedTag> { };
+        internal SemaphoreSlim ConcurrencyLimiter;
+
+        private readonly Dictionary<Tag, CachedTag> DefaultTags = new Dictionary<Tag, CachedTag> { };
+		private bool ScenarioPort = false;
 
         public PortingContext(GameCacheHaloOnline cacheContext, GameCache blamCache, Stream cacheStream)
         {
@@ -63,7 +67,7 @@ namespace TagTool.MtnDewIt.Porting
 
 			var initialStringIdCount = CacheContext.StringTableHaloOnline.Count;
 
-            InitializeSoundConverter();
+            ConcurrencyLimiter = new SemaphoreSlim(PortingProperties.CurrentInstance.MaxThreads); // for async conversion
             CachedTagData.Clear();
 
             /*
@@ -102,7 +106,10 @@ namespace TagTool.MtnDewIt.Porting
                 }
 
                 WaitForPendingSoundConversion();
+                WaitForPendingBitmapConversion();
+                WaitForPendingTemplateConversion();
                 ProcessDeferredActions();
+                FinalizeRenderMethods(cacheStream, blamCacheStream);
                 if (BlamCache is GameCacheGen3 gen3Cache)
                     gen3Cache.ResourceCacheGen3.ResourcePageCache.Clear();
 
@@ -244,7 +251,7 @@ namespace TagTool.MtnDewIt.Porting
                     {
                         case "rmcs":
                         case "rmgl":
-                            resultTag = GetDefaultShader(blamTag.Group.Tag, resultTag);
+                            resultTag = GetDefaultShader(blamTag.Group.Tag);
                             return false;
                     }
                 }
@@ -265,7 +272,7 @@ namespace TagTool.MtnDewIt.Porting
                 // TODO: add code for "!MatchShaders" -- if a perfect match isnt found a null tag will be left in the cache
 
                 // "ConvertTagInternal" isnt called so the default shader needs to be set here
-                resultTag = GetDefaultShader(blamTag.Group.Tag, resultTag);
+                resultTag = GetDefaultShader(blamTag.Group.Tag);
                 return false;
             }
             else if (blamTag.Group.Tag == "glvs" || blamTag.Group.Tag == "glps" || blamTag.Group.Tag == "rmdf")
@@ -311,10 +318,8 @@ namespace TagTool.MtnDewIt.Porting
             }
             catch (Exception e)
             {
-                Console.WriteLine();
-                Console.WriteLine($"{e.GetType().Name} while porting '{blamTag.Name}.{blamTag.Group.Tag.ToString()}':");
-                Console.WriteLine();
-                throw;
+                new TagToolError(CommandError.CustomError, $"{e.GetType().Name} while porting '{blamTag.Name}.{blamTag.Group.Tag.ToString()}':");
+                ExceptionDispatchInfo.Capture(e).Throw();
             }
 #endif
             PortedTags[blamTag.Index] = result;
@@ -329,7 +334,7 @@ namespace TagTool.MtnDewIt.Porting
             }
         }
 
-        private void PreConvertReachDefinition(object definition)
+        private void PreConvertReachDefinition(object definition, Stream blamCacheStream)
         {
             if(definition is ScenarioStructureBsp sbsp)
             {
@@ -457,15 +462,27 @@ namespace TagTool.MtnDewIt.Porting
                     {"objects\\equipment\\active_camouflage\\active_camouflage", "objects\\equipment\\invisibility_equipment\\invisibility_equipment"}
                 };
 
+                Dictionary<string, string> reachWeapons = new Dictionary<string, string>()
+                {
+                    {"objects\\weapons\\melee\\energy_sword\\energy_sword", "objects\\weapons\\melee\\energy_blade\\energy_blade"}
+                };
+
                 ReplaceObjects(scenario.SceneryPalette, reachObjectives);
                 ReplaceObjects(scenario.CratePalette, reachObjectives);
                 ReplaceObjects(scenario.VehiclePalette, reachVehicles);
                 ReplaceObjects(scenario.EquipmentPalette, reachEquipment);
+                ReplaceObjects(scenario.WeaponPalette, reachWeapons);
 
-                if (!FlagIsSet(PortingFlags.ReachMisc))
+                foreach (var entry in scenario.Weapons)
                 {
-                    CullNewObjects(scenario.SceneryPalette, scenario.Scenery, reachObjectives);
-                    CullNewObjects(scenario.CratePalette, scenario.Crates, reachObjectives);
+                    if (entry.Multiplayer.MegaloLabel == "inv_weapon")
+                        entry.PaletteIndex = -1;
+                }
+
+                foreach (var entry in scenario.Vehicles)
+                {
+                    if (entry.Multiplayer.MegaloLabel == "inv_vehicle")
+                        entry.PaletteIndex = -1;
                 }
 
                 CullNewObjects(scenario.VehiclePalette, scenario.Vehicles, reachObjectives);
@@ -474,6 +491,16 @@ namespace TagTool.MtnDewIt.Porting
 
                 RemoveNullPlacements(scenario.SceneryPalette, scenario.Scenery);
                 RemoveNullPlacements(scenario.CratePalette, scenario.Crates);
+
+                // remove unsupported healthpack controls
+                if (BlamCache.TagCache.TryGetCachedTag("objects\\levels\\shared\\device_controls\\health_station\\health_station.ctrl", out CachedTag healthCtrl))
+                {
+                    short index = (short)scenario.ControlPalette.FindIndex(e => e.Object == healthCtrl);
+                    if (index != -1)
+                        scenario.ControlPalette[index].Object = null;
+
+                    RemoveNullPlacements(scenario.ControlPalette, scenario.Controls);
+                }
             }
 
             //if (definition is SkyAtmParameters skya)
@@ -548,10 +575,22 @@ namespace TagTool.MtnDewIt.Porting
                 var newMaterials = new List<Projectile.ProjectileMaterialResponseBlock>();
                 var converter = new StructureAutoConverter(BlamCache, CacheContext);
                 converter.TranslateList(proj.MaterialResponsesNew, newMaterials);
+
                 if (proj.MaterialResponses != null && proj.MaterialResponses.Count > 0)
                     proj.MaterialResponses.AddRange(newMaterials);
                 else
                     proj.MaterialResponses = newMaterials;
+
+                // some reach old materials have mismatched names and indices
+                var reachGlobals = DeserializeTagCached<Globals>(BlamCache, blamCacheStream, BlamCache.TagCache.FindFirstInGroup<Globals>());
+                var reachMaterials = reachGlobals.AlternateMaterials;
+                foreach (var response in proj.MaterialResponses)
+                {
+                    if (response.RuntimeMaterialIndex < 0 || response.RuntimeMaterialIndex >= reachMaterials.Count)
+                        response.RuntimeMaterialIndex = -1;
+                    else if (reachMaterials[response.RuntimeMaterialIndex].Name != response.MaterialName)
+                        response.RuntimeMaterialIndex = (short)reachMaterials.FindIndex(m => m.Name == response.MaterialName);
+                }
 
                 // preconvert projectile flags
                 converter.TranslateEnum(proj.FlagsReach, out proj.Flags, proj.Flags.GetType());
@@ -586,8 +625,22 @@ namespace TagTool.MtnDewIt.Porting
                     string name = block.Object.Name;
                     if (replacements.TryGetValue(name, out string result))
                         block.Object.Name = result;
-                    else if (name.EndsWith("weak_anti_respawn_zone") || name.EndsWith("weak_respawn_zone") || name.EndsWith("danger_zone"))
+                    
+                    if (name.Contains("spawning\\fireteam"))
                         block.Object = null;
+
+                    switch(name)
+                    {
+                        case "objects\\multi\\boundaries\\soft_kill_volume":
+                            BlamCache.TagCache.TryGetCachedTag("objects\\multi\\boundaries\\kill_volume.scen", out block.Object);
+                            break;
+                        case "objects\\multi\\boundaries\\safe_volume":
+                        case "objects\\multi\\boundaries\\soft_safe_volume":
+                        case "objects\\multi\\named_location_area\\named_location_area":
+                        case "objects\\multi\\spawning\\danger_zone":
+                            block.Object = null;
+                            break;
+                    }
                 }
             }
         }
@@ -598,13 +651,13 @@ namespace TagTool.MtnDewIt.Porting
             {
                 List<int> indices = new List<int>();
 
-                foreach (Scenario.ScenarioPaletteEntry block in palette)
-                    if (block.Object == null)
-                        foreach (var instance in instanceList)
-                        {
-                            if (!(instance is Scenario.EquipmentInstance) && (instance as Scenario.PermutationInstance).PaletteIndex == palette.IndexOf(block))
-                                indices.Add(instanceList.IndexOf(instance));
-                        }
+                for (int i = 0; i < instanceList.Count; i++)
+                {
+                    var paletteIndex = (instanceList[i] as Scenario.ScenarioInstance).PaletteIndex;
+                    if (paletteIndex == -1 || palette[paletteIndex].Object == null)
+                        indices.Add(i);
+                }
+
 
                 indices.Sort();
                 indices.Reverse();
@@ -784,7 +837,7 @@ namespace TagTool.MtnDewIt.Porting
 
             if(BlamCache.Version >= CacheVersion.HaloReach)
             {
-                PreConvertReachDefinition(blamDefinition);
+                PreConvertReachDefinition(blamDefinition, blamCacheStream);
             }
 
 			switch (blamDefinition)
@@ -884,8 +937,19 @@ namespace TagTool.MtnDewIt.Porting
                         blamDefinition = bitm;
                         break;
                     }
-                    blamDefinition = ConvertBitmap(blamTag, bitm, resourceStreams);
-					break;
+                    isDeferred = true;
+                    blamDefinition = ConvertBitmapAsync(blamTag, bitm, (BitmapConversionResult result) =>
+                    {
+                        _deferredActions.Add(() =>
+                        {
+                            blamDefinition = FinishConvertBitmap(result, blamTag.Name);
+                            CacheContext.Serialize(cacheStream, edTag, blamDefinition);
+
+                            if (FlagIsSet(PortingFlags.Print))
+                                Console.WriteLine($"['{edTag.Group.Tag}', 0x{edTag.Index:X4}] {edTag.Name}.{(edTag.Group as TagGroupGen3).Name}");
+                        });
+                    });
+                    break;
 
 				case CameraFxSettings cfxs:
 					blamDefinition = ConvertCameraFxSettings(cfxs, blamTag.Name);
@@ -1200,6 +1264,8 @@ namespace TagTool.MtnDewIt.Porting
                                 block.Flags = block.FlagsReach.ConvertLexical<Scenario.StructureBspBlock.StructureBspFlags>();
                             }
                         }
+
+                        ScenarioPort = true;
                     }
                     break;
 
@@ -1311,16 +1377,16 @@ namespace TagTool.MtnDewIt.Porting
                 case BeamSystem beam:
                 case ShaderCortana rmct:
                     if (!FlagIsSet(PortingFlags.MatchShaders))
-                        return GetDefaultShader(blamTag.Group.Tag, edTag);
+                        return GetDefaultShader(blamTag.Group.Tag);
                     else
                     {
                         // Verify that the ShaderMatcher is ready to use
                         if (!Matcher.IsInitialized)
-                            Matcher.Init(CacheContext, BlamCache, cacheStream, blamCacheStream, FlagIsSet(PortingFlags.Ms30), FlagIsSet(PortingFlags.PefectShaderMatchOnly));
+                            Matcher.Init(CacheContext, BlamCache, cacheStream, blamCacheStream, this, FlagIsSet(PortingFlags.Ms30), FlagIsSet(PortingFlags.PefectShaderMatchOnly));
 
-                        blamDefinition = ConvertShader(cacheStream, blamCacheStream, blamDefinition, blamTag, BlamCache.Deserialize(blamCacheStream, blamTag));
+                        blamDefinition = ConvertShader(cacheStream, blamCacheStream, blamDefinition, blamTag, BlamCache.Deserialize(blamCacheStream, blamTag), edTag, out isDeferred);
                         if (blamDefinition == null) // convert shader failed
-                            return GetDefaultShader(blamTag.Group.Tag, edTag);
+                            return GetDefaultShader(blamTag.Group.Tag);
                     }
                     break;
             }
@@ -1439,7 +1505,8 @@ namespace TagTool.MtnDewIt.Porting
 
             foreach (var effectEvent in effe.Events)
             {
-                if (BlamCache.Platform == CachePlatform.MCC)
+                if (effectEvent.Parts.Any(p => p.Flags.HasFlag(EffectEventPartFlags.MakeEveryTick)) 
+                    && BlamCache.Platform == CachePlatform.MCC)
                 {
                     effectEvent.DurationBounds.Lower *= 2;
                     effectEvent.DurationBounds.Upper *= 2;
@@ -1641,6 +1708,10 @@ namespace TagTool.MtnDewIt.Porting
                 case ObjectTypeFlags objectTypeFlags:
 					return ConvertObjectTypeFlags(objectTypeFlags);
 
+                case VersionedFlags versionedFlags:
+                    versionedFlags.ConvertFlags(BlamCache.Version, BlamCache.Platform, CacheContext.Version, CacheContext.Platform);
+                    return versionedFlags;
+
                 case GameObject.MultiplayerObjectBlock multiplayer when BlamCache.Version >= CacheVersion.HaloReach:
                     {
                         multiplayer.Type = multiplayer.TypeReach.ConvertLexical<MultiplayerObjectType>();
@@ -1723,19 +1794,17 @@ namespace TagTool.MtnDewIt.Porting
                             case "stockpile":
                                 scnrObj.EngineFlags |= GameEngineSubTypeFlags.Vip;
                                 break;
-                            case "ffa_only":
-                            case "team_only":
-                            case "hh_drop_point":
-                            case "rally":
-                            case "rally_flag":
-                            case "race_flag":
-                            case "race_spawn":
-                            case "as_spawn":
-                            case "none":
-                                break;
+                            //case "ffa_only":
+                            //case "team_only":
+                            //case "hh_drop_point":
+                            //case "rally":
+                            //case "rally_flag":
+                            //case "race_flag":
+                            //case "race_spawn":
+                            //case "as_spawn":
+                            //case "none":
+                            //    break;
                             default:
-                                //if (!string.IsNullOrEmpty(scnrObj.MegaloLabel))
-                                //    new TagToolWarning($"unknown megalo label: {scnrObj.MegaloLabel}");
                                 break;
                         }
 
@@ -1977,6 +2046,17 @@ namespace TagTool.MtnDewIt.Porting
                 if (name.StartsWith("wet_"))
                     name = name.Substring(4);
 
+                // other reach fixups
+                Dictionary<string, string> substitutions = new Dictionary<string, string>
+                {
+                    {"hard_metal_thin_hum_spartan", "hard_metal_thin_hum_masterchief"},
+                    {"energy_shield_thin_hum_spartan", "energy_shield_thin_hum_masterchief"},
+                    {"energy_shield_invulnerable", "energy_shield_invincible"},
+                    {"energy_hologram", "energy_holo"},
+                };
+                if (substitutions.TryGetValue(name, out var sub))
+                    name = sub;
+
                 // search for the name in the destination materials
                 var matchIndex = (short)materials.FindIndex(x => CacheContext.StringTable.GetString(x.Name) == name);
                 if (matchIndex != -1)
@@ -2058,6 +2138,16 @@ namespace TagTool.MtnDewIt.Porting
 
             if (CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, BlamCache.Version))
                 return weaponFlags;
+
+            if(BlamCache.Platform == CachePlatform.MCC)
+            {
+                weaponFlags.NewFlagsMCC &= ~WeaponFlags.NewWeaponFlagsMCC.WeaponUsesOldDualFireErrorCode;
+
+                if (!Enum.TryParse(weaponFlags.NewFlagsMCC.ToString(), out weaponFlags.NewFlags))
+                    throw new FormatException(BlamCache.Version.ToString());
+
+                return weaponFlags;
+            }
 
             if (weaponFlags.OldFlags.HasFlag(WeaponFlags.OldWeaponFlags.WeaponUsesOldDualFireErrorCode))
 				weaponFlags.OldFlags &= ~WeaponFlags.OldWeaponFlags.WeaponUsesOldDualFireErrorCode;
