@@ -445,8 +445,8 @@ namespace TagTool.Commands.Porting
                 tagRenamer.Rename(sldtTag, $"{scenarioPath}_faux_lightmap");
                 var sldt = (ScenarioLightmap)srcCache.Deserialize(srcStream, sldtTag);
                 ConvertLightmap(srcCache.Version, srcStream, sldt, includeBspMask);
-                sldt = (ScenarioLightmap)porttag.ConvertData(destStream, srcStream, resourceStreams, sldt, sldt, sldtTag.Name);
-                sldt = porttag.ConvertScenarioLightmap(destStream, srcStream, resourceStreams, sldtTag.Name, sldt);
+                sldt = (ScenarioLightmap)porttag.ConvertData(destStream, srcStream, sldt, sldt, sldtTag.Name);
+                sldt = porttag.ConvertScenarioLightmap(destStream, srcStream, sldtTag.Name, sldt);
 
                 FixupLightmapBpsData(destCache, destStream, sldt);
                 sldtTag = CreateOrReplaceTag<Scenario>(destCache, sldtTag.Name);
@@ -462,8 +462,8 @@ namespace TagTool.Commands.Porting
                     tagRenamer.Rename(scnr.StructureBsps[i].StructureBsp, $"{scenarioPath}_bsp_{i}");
 
                 scnr.Lightmap = null;
-                scnr = (Scenario)porttag.ConvertData(destStream, srcStream, resourceStreams, scnr, scnr, scnrTag.Name);
-                scnr = porttag.ConvertScenario(destStream, srcStream, resourceStreams, scnr, scnrTag.Name);
+                scnr = (Scenario)porttag.ConvertData(destStream, srcStream, scnr, scnr, scnrTag.Name);
+                scnr = porttag.ConvertScenario(destStream, srcStream, scnr, scnrTag.Name);
                 scnrTag = CreateOrReplaceTag<Scenario>(destCache, scnrTag.Name);
                 scnr.MapId = mapId;
                 scnr.MapType = ScenarioMapType.Multiplayer;

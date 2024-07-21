@@ -104,8 +104,6 @@ namespace TagTool.Commands.Porting
             // Convert Blam data to ElDorado data
             //
 
-            var resourceStreams = new Dictionary<ResourceLocation, Stream>();
-
             try
             {
                 using (var cacheStream = FlagIsSet(PortingFlags.Memory) ? new MemoryStream() : (Stream)CacheContext.OpenCacheReadWrite())
@@ -122,7 +120,7 @@ namespace TagTool.Commands.Porting
                         if (blamTag == null)
                             return new TagToolError(CommandError.TagInvalid, args.Last());
 
-                        ConvertTag(cacheStream, blamCacheStream, resourceStreams, blamTag);
+                        ConvertTag(cacheStream, blamCacheStream, blamTag);
                         Flags = oldFlags;
 
                         if (FlagIsSet(PortingFlags.MPobject))
@@ -154,21 +152,6 @@ namespace TagTool.Commands.Porting
                     CacheContext.SaveStrings();
 
                 CacheContext.SaveTagNames();
-
-                foreach (var entry in resourceStreams)
-                {
-                    if (FlagIsSet(PortingFlags.Memory))
-                        using (var resourceFileStream = CacheContext.ResourceCaches.OpenCacheReadWrite(entry.Key))
-                        {
-                            resourceFileStream.Seek(0, SeekOrigin.Begin);
-                            resourceFileStream.SetLength(resourceFileStream.Position);
-
-                            entry.Value.Seek(0, SeekOrigin.Begin);
-                            entry.Value.CopyTo(resourceFileStream);
-                        }
-
-                    entry.Value.Close();
-                }
 
                 Matcher.DeInit();
             }
@@ -293,7 +276,7 @@ namespace TagTool.Commands.Porting
             return true;
         }
 
-        public CachedTag ConvertTag(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, CachedTag blamTag)
+        public CachedTag ConvertTag(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag)
         {
             if (blamTag == null)
                 return null;
@@ -313,15 +296,14 @@ namespace TagTool.Commands.Porting
                         blamTag.Name = $"{blamTag.Group.Tag}_" + $"{blamTag.Index:X4}";
                     }
                     var oldFlags = Flags;
-                    result = ConvertTagInternal(cacheStream, blamCacheStream, resourceStreams, blamTag);
+                    result = ConvertTagInternal(cacheStream, blamCacheStream, blamTag);
 
                     if (result == null)
                         new TagToolWarning($"null tag allocated for reference \"{blamTag.Name}.{blamTag.Group}\"");
 
                     Flags = oldFlags;
                 }
-                else
-                if (blamTag.Name != null && blamTag.IsInGroup("bitm"))
+                else if (blamTag.Name != null && blamTag.IsInGroup("bitm"))
                 {
                     if(CacheContext.TagCache.TryGetTag($"{blamTag.Name}.{blamTag.Group}", out result))
                         new TagToolWarning($"using bitm tag reference \"{blamTag.Name}.{blamTag.Group}\" from source cache");
@@ -678,7 +660,7 @@ namespace TagTool.Commands.Porting
             }
         }
 
-        public CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, CachedTag blamTag)
+        public CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag)
 		{
             ProcessDeferredActions();
 
@@ -780,15 +762,15 @@ namespace TagTool.Commands.Porting
                             switch (groupTag.ToString())
                             {
                                 case "char":
-                                    MergeCharacter(cacheStream, blamCacheStream, resourceStreams, instance, blamTag);
+                                    MergeCharacter(cacheStream, blamCacheStream, instance, blamTag);
                                     break;
 
                                 case "mulg":
-                                    MergeMultiplayerGlobals(cacheStream, blamCacheStream, resourceStreams, instance, blamTag);
+                                    MergeMultiplayerGlobals(cacheStream, blamCacheStream, instance, blamTag);
                                     break;
 
                                 case "unic":
-                                    MergeMultilingualUnicodeStringList(cacheStream, blamCacheStream, resourceStreams, instance, blamTag);
+                                    MergeMultilingualUnicodeStringList(cacheStream, blamCacheStream, instance, blamTag);
                                     break;
                             }
                         }
@@ -876,8 +858,8 @@ namespace TagTool.Commands.Porting
                 case ShieldImpact shit when BlamCache.Version < CacheVersion.HaloOnlineED:
                     shit = PreConvertShieldImpact(shit, BlamCache.Version, CacheContext);
                     // These won't convert automatically due to versioning
-                    shit.Plasma.PlasmaNoiseBitmap1 = (CachedTag)ConvertData(cacheStream, blamCacheStream, resourceStreams, shit.Plasma.PlasmaNoiseBitmap1, null, shit.Plasma.PlasmaNoiseBitmap1.Name);
-                    shit.Plasma.PlasmaNoiseBitmap2 = (CachedTag)ConvertData(cacheStream, blamCacheStream, resourceStreams, shit.Plasma.PlasmaNoiseBitmap2, null, shit.Plasma.PlasmaNoiseBitmap2.Name);
+                    shit.Plasma.PlasmaNoiseBitmap1 = (CachedTag)ConvertData(cacheStream, blamCacheStream, shit.Plasma.PlasmaNoiseBitmap1, null, shit.Plasma.PlasmaNoiseBitmap1.Name);
+                    shit.Plasma.PlasmaNoiseBitmap2 = (CachedTag)ConvertData(cacheStream, blamCacheStream, shit.Plasma.PlasmaNoiseBitmap2, null, shit.Plasma.PlasmaNoiseBitmap2.Name);
                     shit.ExtrusionOscillation.OscillationBitmap1 = shit.Plasma.PlasmaNoiseBitmap1;
                     shit.ExtrusionOscillation.OscillationBitmap2 = shit.Plasma.PlasmaNoiseBitmap2;
                     blamDefinition = shit;
@@ -891,7 +873,7 @@ namespace TagTool.Commands.Porting
                 if (blamDefinition is Scenario scnr)
                 {
                     var lightmap = BlamCache.Deserialize<ScenarioLightmap>(blamCacheStream, scnr.Lightmap);
-                    ConvertReachLightmap(cacheStream, blamCacheStream, resourceStreams, scnr.Lightmap.Name, lightmap);
+                    ConvertReachLightmap(cacheStream, blamCacheStream, scnr.Lightmap.Name, lightmap);
                 }
             }
            
@@ -900,7 +882,7 @@ namespace TagTool.Commands.Porting
 			// Perform automatic conversion on the Blam tag definition
 			//
 
-			blamDefinition = ConvertData(cacheStream, blamCacheStream, resourceStreams, blamDefinition, blamDefinition, blamTag.Name);
+			blamDefinition = ConvertData(cacheStream, blamCacheStream, blamDefinition, blamDefinition, blamTag.Name);
 
             //
             // Perform post-conversion fixups to Blam data
@@ -976,7 +958,7 @@ namespace TagTool.Commands.Porting
 					break;
 
 				case ChudGlobalsDefinition chudGlobals:
-					blamDefinition = ConvertChudGlobalsDefinition(cacheStream, blamCacheStream, resourceStreams, chudGlobals);
+					blamDefinition = ConvertChudGlobalsDefinition(cacheStream, blamCacheStream, chudGlobals);
 					break;
 
                 case ChudAnimationDefinition chudAnimation:
@@ -1031,7 +1013,7 @@ namespace TagTool.Commands.Porting
 					break;
 
                 case Effect effe:
-                    blamDefinition = ConvertEffect(cacheStream, resourceStreams, effe, blamTag.Name);
+                    blamDefinition = ConvertEffect(cacheStream, effe, blamTag.Name);
                     break;
 
                 case Equipment eqip:
@@ -1114,8 +1096,8 @@ namespace TagTool.Commands.Porting
                                 };
                                 if (weapon.Tracking == Weapon.TrackingType.HumanTracking)
                                 {
-                                    weapon.TargetTracking[0].TrackingSound = ConvertTag(cacheStream, blamCacheStream, resourceStreams, ParseLegacyTag(@"sound\weapons\missile_launcher\tracking_locking\tracking_locking.sound_looping")[0]);
-                                    weapon.TargetTracking[0].LockedSound = ConvertTag(cacheStream, blamCacheStream, resourceStreams, ParseLegacyTag(@"sound\weapons\missile_launcher\tracking_locked\tracking_locked.sound_looping")[0]);                                      
+                                    weapon.TargetTracking[0].TrackingSound = ConvertTag(cacheStream, blamCacheStream, ParseLegacyTag(@"sound\weapons\missile_launcher\tracking_locking\tracking_locking.sound_looping")[0]);
+                                    weapon.TargetTracking[0].LockedSound = ConvertTag(cacheStream, blamCacheStream, ParseLegacyTag(@"sound\weapons\missile_launcher\tracking_locked\tracking_locked.sound_looping")[0]);                                      
                                 }
                             }
                             break;
@@ -1162,7 +1144,7 @@ namespace TagTool.Commands.Porting
 					break;
 
 				case LensFlare lens:
-					blamDefinition = ConvertLensFlare(lens, cacheStream, blamCacheStream, resourceStreams);
+					blamDefinition = ConvertLensFlare(lens, cacheStream, blamCacheStream);
 					break;
 
                 case Light ligh when BlamCache.Version >= CacheVersion.HaloReach:
@@ -1200,11 +1182,11 @@ namespace TagTool.Commands.Porting
                     break;
               
 				case ModelAnimationGraph jmad:
-					blamDefinition = ConvertModelAnimationGraph(cacheStream, blamCacheStream, resourceStreams, jmad);
+					blamDefinition = ConvertModelAnimationGraph(cacheStream, blamCacheStream, jmad);
 					break;
 
 				case MultilingualUnicodeStringList unic:
-					blamDefinition = ConvertMultilingualUnicodeStringList(cacheStream, blamCacheStream, resourceStreams, unic);
+					blamDefinition = ConvertMultilingualUnicodeStringList(cacheStream, blamCacheStream, unic);
 					break;
 
                 case Particle particle:
@@ -1254,7 +1236,7 @@ namespace TagTool.Commands.Porting
 
                 case Scenario scnr:
                     {
-                        blamDefinition = ConvertScenario(cacheStream, blamCacheStream, resourceStreams, scnr, blamTag.Name);
+                        blamDefinition = ConvertScenario(cacheStream, blamCacheStream, scnr, blamTag.Name);
                         if (PortingOptions.Current.RegenerateStructureSurfaces)
                         {
                             foreach (var block in scnr.StructureBsps)
@@ -1283,7 +1265,7 @@ namespace TagTool.Commands.Porting
 
                 case ScenarioLightmap sLdT:
                     if(BlamCache.Version < CacheVersion.HaloReach)
-                        blamDefinition = ConvertScenarioLightmap(cacheStream, blamCacheStream, resourceStreams, blamTag.Name, sLdT);
+                        blamDefinition = ConvertScenarioLightmap(cacheStream, blamCacheStream, blamTag.Name, sLdT);
                     //fixup lightmap bsp references
                     if (BlamCache.Version >= CacheVersion.HaloReach)
                     {
@@ -1305,7 +1287,7 @@ namespace TagTool.Commands.Porting
 					break;
 
                 case ScenarioStructureBsp sbsp:
-                    blamDefinition = ConvertScenarioStructureBsp(sbsp, edTag, resourceStreams);
+                    blamDefinition = ConvertScenarioStructureBsp(sbsp, edTag);
                     break;
 
                 case Sound sound:
@@ -1318,7 +1300,7 @@ namespace TagTool.Commands.Porting
                         break;
                     }
                     isDeferred = true;
-                    blamDefinition = ConvertSound(cacheStream, blamCacheStream, resourceStreams, sound, edTag, blamTag.Name, (SoundConversionResult result) =>
+                    blamDefinition = ConvertSound(cacheStream, blamCacheStream, sound, edTag, blamTag.Name, (SoundConversionResult result) =>
                     {
                         _deferredActions.Add(() =>
                         {
@@ -1502,7 +1484,7 @@ namespace TagTool.Commands.Porting
                 }
         }
 
-        private Effect ConvertEffect(Stream cacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, Effect effe, string blamTagName)
+        private Effect ConvertEffect(Stream cacheStream, Effect effe, string blamTagName)
         {
             if (BlamCache.Platform == CachePlatform.MCC)
             {
@@ -1630,7 +1612,7 @@ namespace TagTool.Commands.Porting
             return decoratorSet;
         }
 
-        public object ConvertData(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, object data, object definition, string blamTagName)
+        public object ConvertData(Stream cacheStream, Stream blamCacheStream, object data, object definition, string blamTagName)
 		{
 			switch (data)
 			{
@@ -1685,7 +1667,7 @@ namespace TagTool.Commands.Porting
 						if (tag != null && !(FlagsAnySet(PortingFlags.New | PortingFlags.Replace)))
 							return tag;
 
-						return ConvertTag(cacheStream, blamCacheStream, resourceStreams, (CachedTag)data);
+						return ConvertTag(cacheStream, blamCacheStream, (CachedTag)data);
 					}
 
                 case TagHkpMoppCode hkpMoppCode:
@@ -1699,7 +1681,7 @@ namespace TagTool.Commands.Porting
                     return ConvertPhantomTypeFlags(blamTagName, phantomTypeFlags);
 
                 case PhysicsModel.Shape shape:
-                    shape = ConvertStructure(cacheStream, blamCacheStream, resourceStreams, shape, definition, blamTagName);
+                    shape = ConvertStructure(cacheStream, blamCacheStream, shape, definition, blamTagName);
                     // might be from 3, had no reference
                     shape.ProxyCollisionGroup = shape.ProxyCollisionGroup > 2 ? (sbyte)(shape.ProxyCollisionGroup + 1) : shape.ProxyCollisionGroup;
                     return shape;
@@ -1736,8 +1718,8 @@ namespace TagTool.Commands.Porting
                         multiplayer.SpawnTimerType = multiplayer.SpawnTimerTypeReach.ConvertLexical<MultiplayerObjectSpawnTimerType>();
                         foreach (var boundary in multiplayer.BoundaryShaders)
                         {
-                            boundary.StandardShader = (CachedTag)ConvertData(cacheStream, blamCacheStream, resourceStreams, boundary.StandardShader, definition, blamTagName);
-                            boundary.OpaqueShader = (CachedTag)ConvertData(cacheStream, blamCacheStream, resourceStreams, boundary.OpaqueShader, definition, blamTagName);
+                            boundary.StandardShader = (CachedTag)ConvertData(cacheStream, blamCacheStream, boundary.StandardShader, definition, blamTagName);
+                            boundary.OpaqueShader = (CachedTag)ConvertData(cacheStream, blamCacheStream, boundary.OpaqueShader, definition, blamTagName);
                         }
                         return multiplayer;
                     }
@@ -1749,7 +1731,7 @@ namespace TagTool.Commands.Porting
 					return ConvertWeaponFlags(weaponFlags);
 
                 case Weapon.Trigger trigger:
-                    trigger = ConvertStructure(cacheStream, blamCacheStream, resourceStreams, trigger, definition, blamTagName);
+                    trigger = ConvertStructure(cacheStream, blamCacheStream, trigger, definition, blamTagName);
                     return ConvertWeaponTrigger(trigger);
 
                 case BarrelFlags barrelflags:
@@ -1759,11 +1741,11 @@ namespace TagTool.Commands.Porting
                     return ConvertTargetLockOnData(lockOnData);
 
 				case RenderMethod renderMethod:
-                    return ConvertStructure(cacheStream, blamCacheStream, resourceStreams, renderMethod, definition, blamTagName);
+                    return ConvertStructure(cacheStream, blamCacheStream, renderMethod, definition, blamTagName);
 
                 case Scenario.MultiplayerObjectProperties scnrObj when BlamCache.Version >= CacheVersion.HaloReach:
                     {
-                        scnrObj = ConvertStructure(cacheStream, blamCacheStream, resourceStreams, scnrObj, definition, blamTagName);
+                        scnrObj = ConvertStructure(cacheStream, blamCacheStream, scnrObj, definition, blamTagName);
                         scnrObj.BoundaryWidthRadius = scnrObj.BoundaryWidthRadiusReach;
                         scnrObj.BoundaryBoxLength = scnrObj.BoundaryBoxLengthReach;
                         scnrObj.BoundaryPositiveHeight = scnrObj.BoundaryPositiveHeightReach;
@@ -1827,7 +1809,7 @@ namespace TagTool.Commands.Porting
 					return soundClass.ConvertSoundClass(BlamCache.Version);
 
 				case GuiTextWidgetDefinition guiTextWidget:
-                    guiTextWidget = ConvertStructure(cacheStream, blamCacheStream, resourceStreams, guiTextWidget, definition, blamTagName);
+                    guiTextWidget = ConvertStructure(cacheStream, blamCacheStream, guiTextWidget, definition, blamTagName);
                     switch (BlamCache.Version)
                     {
                         case CacheVersion.Halo3Retail when BlamCache.Platform == CachePlatform.Original:
@@ -1842,7 +1824,7 @@ namespace TagTool.Commands.Porting
                     }
                     return guiTextWidget;
                 case GuiDefinition guidefinition:
-                    guidefinition = ConvertStructure(cacheStream, blamCacheStream, resourceStreams, guidefinition, definition, blamTagName);
+                    guidefinition = ConvertStructure(cacheStream, blamCacheStream, guidefinition, definition, blamTagName);
                     if(FlagIsSet(PortingFlags.AutoRescaleGui))
                         RescaleGUIDef(guidefinition, 1.3125f);
                     break;
@@ -1861,33 +1843,33 @@ namespace TagTool.Commands.Porting
 
                 case Array _:
 				case IList _: // All arrays and List<T> implement IList, so we should just use that
-					data = ConvertCollection(cacheStream, blamCacheStream, resourceStreams, data as IList, definition, blamTagName);
+					data = ConvertCollection(cacheStream, blamCacheStream, data as IList, definition, blamTagName);
 					return data;
 
                 case CollisionGeometry collisionGeometry:
                     return ConvertCollisionBsp(collisionGeometry);
 
                 case CollisionBspPhysicsDefinition collisionBspPhysics when BlamCache.Version >= CacheVersion.HaloReach:
-                    collisionBspPhysics = ConvertStructure(cacheStream, blamCacheStream, resourceStreams, collisionBspPhysics, definition, blamTagName);
+                    collisionBspPhysics = ConvertStructure(cacheStream, blamCacheStream, collisionBspPhysics, definition, blamTagName);
                     return ConvertCollisionBspPhysicsReach(collisionBspPhysics);
 
 				case RenderGeometry renderGeometry when BlamCache.Version >= CacheVersion.Halo3Retail:
-					renderGeometry = ConvertStructure(cacheStream, blamCacheStream, resourceStreams, renderGeometry, definition, blamTagName);
+					renderGeometry = ConvertStructure(cacheStream, blamCacheStream, renderGeometry, definition, blamTagName);
 					return renderGeometry;
 
 				case Part part when BlamCache.Version < CacheVersion.Halo3Retail:
-					part = ConvertStructure(cacheStream, blamCacheStream, resourceStreams, part, definition, blamTagName);
+					part = ConvertStructure(cacheStream, blamCacheStream, part, definition, blamTagName);
 					if (!Enum.TryParse(part.TypeOld.ToString(), out part.TypeNew))
 						throw new NotSupportedException(part.TypeOld.ToString());
 					return part;
 
 				case RenderMaterial.Property property when BlamCache.Version < CacheVersion.Halo3Retail:
-					property = ConvertStructure(cacheStream, blamCacheStream, resourceStreams, property, definition, blamTagName);
+					property = ConvertStructure(cacheStream, blamCacheStream, property, definition, blamTagName);
 					property.IntValue = property.ShortValue;
 					return property;
 
 				case TagStructure tagStructure: // much faster to pattern match a type than to check for custom attributes.
-					tagStructure = ConvertStructure(cacheStream, blamCacheStream, resourceStreams, tagStructure, definition, blamTagName);
+					tagStructure = ConvertStructure(cacheStream, blamCacheStream, tagStructure, definition, blamTagName);
 					return data;
 
 				case PixelShaderReference _:
@@ -1918,7 +1900,7 @@ namespace TagTool.Commands.Porting
             return GUIdef;
         }
 
-        private IList ConvertCollection(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, IList data, object definition, string blamTagName)
+        private IList ConvertCollection(Stream cacheStream, Stream blamCacheStream, IList data, object definition, string blamTagName)
 		{
 			// return early where possible
 			if (data is null || data.Count == 0) 
@@ -1936,14 +1918,14 @@ namespace TagTool.Commands.Porting
 			for (var i = 0; i < data.Count; i++)
 			{
 				var oldValue = data[i];
-				var newValue = ConvertData(cacheStream, blamCacheStream, resourceStreams, oldValue, definition, blamTagName);
+				var newValue = ConvertData(cacheStream, blamCacheStream, oldValue, definition, blamTagName);
 				data[i] = newValue;
 			}
 
 			return data;
 		}
 
-        private T UpgradeStructure<T>(Stream cacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, T data, object definition, string blamTagName) where T : TagStructure
+        private T UpgradeStructure<T>(Stream cacheStream, T data, object definition, string blamTagName) where T : TagStructure
         {
             if (BlamCache.Version >= CacheVersion.Halo3Retail)
                 return data;
@@ -1963,7 +1945,7 @@ namespace TagTool.Commands.Porting
             return data;
         }
 
-        private T ConvertStructure<T>(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, T data, object definition, string blamTagName) where T : TagStructure
+        private T ConvertStructure<T>(Stream cacheStream, Stream blamCacheStream, T data, object definition, string blamTagName) where T : TagStructure
 		{
             foreach (var tagFieldInfo in TagStructure.GetTagFieldEnumerable(data.GetType(), CacheContext.Version, CacheContext.Platform))
             {
@@ -1982,7 +1964,7 @@ namespace TagTool.Commands.Porting
                         continue;
 
                     // convert the field
-                    var newValue = ConvertData(cacheStream, blamCacheStream, resourceStreams, oldValue, definition, blamTagName);
+                    var newValue = ConvertData(cacheStream, blamCacheStream, oldValue, definition, blamTagName);
 
                     if (tagFieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.GlobalMaterial))
                         newValue = ConvertGlobalMaterialTypeField(cacheStream, blamCacheStream, tagFieldInfo, newValue);
@@ -1991,7 +1973,7 @@ namespace TagTool.Commands.Porting
                 }
             }
 
-            return UpgradeStructure(cacheStream, resourceStreams, data, definition, blamTagName);
+            return UpgradeStructure(cacheStream, data, definition, blamTagName);
 		}
 
         private object ConvertGlobalMaterialTypeField(Stream cacheStream, Stream blamCacheStream, TagFieldInfo fieldinfo, object value)

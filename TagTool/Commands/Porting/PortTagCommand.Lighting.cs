@@ -15,7 +15,7 @@ namespace TagTool.Commands.Porting
 {
     partial class PortTagCommand
     {
-        private LensFlare ConvertLensFlare(LensFlare lensFlare, Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams)
+        private LensFlare ConvertLensFlare(LensFlare lensFlare, Stream cacheStream, Stream blamCacheStream)
         {
             lensFlare.OcclusionReflectionIndex = 0;
 
@@ -161,7 +161,7 @@ namespace TagTool.Commands.Porting
             return lensFlare;
         }
 
-        public ScenarioLightmap ConvertScenarioLightmap(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, string blamTagName, ScenarioLightmap scenarioLightmap)
+        public ScenarioLightmap ConvertScenarioLightmap(Stream cacheStream, Stream blamCacheStream, string blamTagName, ScenarioLightmap scenarioLightmap)
         {  
             if (BlamCache.Version > CacheVersion.Halo3Retail || BlamCache.Platform == CachePlatform.MCC)
                 return scenarioLightmap;
@@ -175,7 +175,7 @@ namespace TagTool.Commands.Porting
                 var wasReplacing = FlagIsSet(PortingFlags.Replace);
 
                 RemoveFlags(PortingFlags.Replace);
-                var Lbsp = ConvertStructure(cacheStream, blamCacheStream, resourceStreams, entry, scenarioLightmap, blamTagName);
+                var Lbsp = ConvertStructure(cacheStream, blamCacheStream, entry, scenarioLightmap, blamTagName);
                 Lbsp = ConvertScenarioLightmapBspData(Lbsp);
                 if (wasReplacing)
                     SetFlags(PortingFlags.Replace);
@@ -259,7 +259,7 @@ namespace TagTool.Commands.Porting
         }
 
 
-        private ScenarioLightmap ConvertReachLightmap(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, string blamTagName, ScenarioLightmap scenarioLightmap)
+        private ScenarioLightmap ConvertReachLightmap(Stream cacheStream, Stream blamCacheStream, string blamTagName, ScenarioLightmap scenarioLightmap)
         {
             for (int i = 0; i < scenarioLightmap.PerPixelLightmapDataReferences.Count; i++)
             {
@@ -271,16 +271,16 @@ namespace TagTool.Commands.Porting
 
                 var Lbsp = BlamCache.Deserialize<ScenarioLightmapBspData>(blamCacheStream, lbspTag);
                 Lbsp.BspIndex = (short)i;
-                Lbsp = ConvertScenarioLightmapBspDataReach(cacheStream, blamCacheStream, resourceStreams, lbspTag.Name, lbspTag, Lbsp);
+                Lbsp = ConvertScenarioLightmapBspDataReach(cacheStream, blamCacheStream,  lbspTag.Name, lbspTag, Lbsp);
 
                 CachedTag edTag = CacheContext.TagCacheGenHO.AllocateTag<ScenarioLightmapBspData>(scenarioLightmap.PerPixelLightmapDataReferences[i].LightmapBspData.Name);
                 CacheContext.Serialize(cacheStream, edTag, Lbsp);
             }
 
-            return ConvertStructure(cacheStream, blamCacheStream, resourceStreams, scenarioLightmap, scenarioLightmap, blamTagName);
+            return ConvertStructure(cacheStream, blamCacheStream, scenarioLightmap, scenarioLightmap, blamTagName);
         }
 
-        private ScenarioLightmapBspData ConvertScenarioLightmapBspDataReach(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, string blamTagName, CachedTag LbspTag, ScenarioLightmapBspData Lbsp)
+        private ScenarioLightmapBspData ConvertScenarioLightmapBspDataReach(Stream cacheStream, Stream blamCacheStream, string blamTagName, CachedTag LbspTag, ScenarioLightmapBspData Lbsp)
         {
             var lightmapResourceDefinition = BlamCache.ResourceCache.GetRenderGeometryApiResourceDefinition(Lbsp.Geometry.Resource);
 
@@ -325,7 +325,7 @@ namespace TagTool.Commands.Porting
             }
 
             // convert main structure (recursive)
-            Lbsp = ConvertStructure(cacheStream, blamCacheStream, resourceStreams, Lbsp, blamTagName, blamTagName);
+            Lbsp = ConvertStructure(cacheStream, blamCacheStream, Lbsp, blamTagName, blamTagName);
 
             //
             // import converted lightprobe textures
