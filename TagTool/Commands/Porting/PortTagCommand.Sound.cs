@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TagTool.Audio;
 using TagTool.Cache;
+using TagTool.Cache.Gen3;
 using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
@@ -15,7 +16,6 @@ namespace TagTool.Commands.Porting
     partial class PortTagCommand
     {
         private SoundCacheFileGestalt BlamSoundGestalt { get; set; } = null;
-        private Dictionary<Sound, Task> SoundConversionTasks = new Dictionary<Sound, Task>();
 
         class SoundConversionResult
         {
@@ -26,43 +26,17 @@ namespace TagTool.Commands.Porting
             public List<Action> PostConversionOperations = new List<Action>();
         }
 
-        public void WaitForPendingSoundConversion()
-        {
-            try
-            {
-                Task.WaitAll(SoundConversionTasks.Values.ToArray());
-            }
-            catch (AggregateException ex)
-            {
-                foreach (var inner in ex.InnerExceptions)
-                    new TagToolError(CommandError.CustomError, inner.Message);
-                throw (ex);
-            }         
-        }
-
         private Sound FinishConvertSound(SoundConversionResult result)
         {
-            var task = SoundConversionTasks[result.Definition];
-            SoundConversionTasks.Remove(result.Definition);
-
-            if (!task.IsFaulted)
-            {
-                var sound = result.Definition;
-                var resourceDefinition = AudioUtils.CreateSoundResourceDefinition(result.Data);
-                sound.Resource = CacheContext.ResourceCache.CreateSoundResource(resourceDefinition);
-                // do post conversion operations
-                result.PostConversionOperations.ForEach(op => op());
-                return sound;
-            }
-            else
-            {
-                // rethrow the exception
-                task.GetAwaiter().GetResult();
-                return null;
-            }
+            var sound = result.Definition;
+            var resourceDefinition = AudioUtils.CreateSoundResourceDefinition(result.Data);
+            sound.Resource = CacheContext.ResourceCache.CreateSoundResource(resourceDefinition);
+            // do post conversion operations
+            result.PostConversionOperations.ForEach(op => op());
+            return sound;
         }
 
-        private Sound ConvertSound(Stream cacheStream, Stream blamCacheStream, Sound sound,CachedTag destTag, string blamTag_Name, Action<SoundConversionResult> callback)
+        private Sound ConvertSound(Stream cacheStream, Stream blamCacheStream, Sound sound, CachedTag destTag, string blamTag_Name)
         {
             if (BlamSoundGestalt == null)
                 BlamSoundGestalt = PortingContextFactory.LoadSoundGestalt(BlamCache, blamCacheStream);
@@ -76,10 +50,8 @@ namespace TagTool.Commands.Porting
                 return null;
             }
 
-            ConcurrencyLimiter.Wait();
-            SoundConversionTasks.Add(sound, Task.Run(() =>
-            {
-                try
+            RunAsync(
+                onExecute: () =>
                 {
                     SoundConversionResult result;
                     if (sound.SoundReference == null)
@@ -87,13 +59,17 @@ namespace TagTool.Commands.Porting
                     else
                         result = ConvertSoundInternal(sound, blamTag_Name);
 
-                    callback(result);
-                }
-                finally
+                    return result;
+                },
+                onSuccess: (SoundConversionResult result) =>
                 {
-                    ConcurrencyLimiter.Release();
-                }
-            }));
+                    Sound blamDefinition = FinishConvertSound(result);
+
+                    CacheContext.Serialize(cacheStream, destTag, blamDefinition);
+
+                    if (FlagIsSet(PortingFlags.Print))
+                        Console.WriteLine($"['{destTag.Group.Tag}', 0x{destTag.Index:X4}] {destTag.Name}.{(destTag.Group as TagGroupGen3).Name}");
+                });
 
             return sound;
         }

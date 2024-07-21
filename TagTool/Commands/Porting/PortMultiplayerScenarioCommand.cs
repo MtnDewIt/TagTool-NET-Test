@@ -439,7 +439,7 @@ namespace TagTool.Commands.Porting
             {
                 var porttag = new PortTagCommand(destCache, srcCache);
                 porttag.SetFlags(portingFlags);
-                porttag.ConcurrencyLimiter = new SemaphoreSlim(PortingOptions.Current.MaxThreads); // for async conversion
+                porttag.InitAsync();
 
                 var sldtTag = scnr.Lightmap;
                 tagRenamer.Rename(sldtTag, $"{scenarioPath}_faux_lightmap");
@@ -490,8 +490,7 @@ namespace TagTool.Commands.Porting
                 // finalize the scenario
                 destCache.Serialize(destStream, scnrTag, scnr);
 
-                porttag.WaitForPendingSoundConversion();
-                porttag.WaitForPendingBitmapConversion();
+                porttag.FinishAsync();
                 porttag.ProcessDeferredActions();
             }
     

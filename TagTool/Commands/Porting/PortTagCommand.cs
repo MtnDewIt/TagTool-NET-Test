@@ -23,7 +23,6 @@ using TagTool.Geometry.BspCollisionGeometry;
 using TagTool.Commands.ScenarioStructureBSPs;
 using TagTool.Commands.Files;
 using System.Runtime.ExceptionServices;
-using System.Threading;
 
 namespace TagTool.Commands.Porting
 {
@@ -46,7 +45,6 @@ namespace TagTool.Commands.Porting
         private DirectoryInfo TempDirectory { get; } = new DirectoryInfo(Path.GetTempPath());
         internal BlockingCollection<Action> _deferredActions = new BlockingCollection<Action>();
 
-        internal SemaphoreSlim ConcurrencyLimiter;
 
         string[] argParameters = new string[0];
 
@@ -90,7 +88,8 @@ namespace TagTool.Commands.Porting
 
 			var initialStringIdCount = CacheContext.StringTableHaloOnline.Count;
 
-            ConcurrencyLimiter = new SemaphoreSlim(PortingOptions.Current.MaxThreads); // for async conversion
+            InitAsync();
+
             CachedTagData.Clear();
 
             //
@@ -116,9 +115,7 @@ namespace TagTool.Commands.Porting
                             TestForgePaletteCompatible(cacheStream, blamTag, argParameters);
                     }
 
-                    WaitForPendingSoundConversion();
-                    WaitForPendingBitmapConversion();
-                    WaitForPendingTemplateConversion();
+                    FinishAsync();
                     ProcessDeferredActions();
                     FinalizeRenderMethods(cacheStream, blamCacheStream);
                     if (BlamCache is GameCacheGen3 gen3Cache)
@@ -135,7 +132,9 @@ namespace TagTool.Commands.Porting
                 Matcher.DeInit();
             }
 
-			ProcessDeferredActions();
+            FinishAsync();
+            ProcessDeferredActions();
+         
 
 			if (ScenarioPort && FlagIsSet(PortingFlags.UpdateMapFiles))
 				new UpdateMapFilesCommand(CacheContext).Execute(new List<string> { });
@@ -911,17 +910,7 @@ namespace TagTool.Commands.Porting
                         break;
                     }
                     isDeferred = true;
-                    blamDefinition = ConvertBitmapAsync(blamTag, bitm, (BitmapConversionResult result) =>
-                    {
-                        _deferredActions.Add(() =>
-                        {
-                            blamDefinition = FinishConvertBitmap(result, blamTag.Name);
-                            CacheContext.Serialize(cacheStream, edTag, blamDefinition);
-
-                            if (FlagIsSet(PortingFlags.Print))
-                                Console.WriteLine($"['{edTag.Group.Tag}', 0x{edTag.Index:X4}] {edTag.Name}.{(edTag.Group as TagGroupGen3).Name}");
-                        });
-                    });
+                    blamDefinition = ConvertBitmapAsync(cacheStream, edTag, blamTag, bitm);
                     break;
 
 				case CameraFxSettings cfxs:
@@ -1279,17 +1268,7 @@ namespace TagTool.Commands.Porting
                         break;
                     }
                     isDeferred = true;
-                    blamDefinition = ConvertSound(cacheStream, blamCacheStream, sound, edTag, blamTag.Name, (SoundConversionResult result) =>
-                    {
-                        _deferredActions.Add(() =>
-                        {
-                            blamDefinition = FinishConvertSound(result);
-                            CacheContext.Serialize(cacheStream, edTag, blamDefinition);
-                    
-                            if (FlagIsSet(PortingFlags.Print))
-                                Console.WriteLine($"['{edTag.Group.Tag}', 0x{edTag.Index:X4}] {edTag.Name}.{(edTag.Group as TagGroupGen3).Name}");
-                        });
-                    });
+                    blamDefinition = ConvertSound(cacheStream, blamCacheStream, sound, edTag, blamTag.Name);
 					break;
                 case SoundClasses sncl:
                     blamDefinition = ConvertSoundClasses(sncl, BlamCache.Version);
