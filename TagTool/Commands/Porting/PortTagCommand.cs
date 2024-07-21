@@ -93,26 +93,15 @@ namespace TagTool.Commands.Porting
             ConcurrencyLimiter = new SemaphoreSlim(PortingOptions.Current.MaxThreads); // for async conversion
             CachedTagData.Clear();
 
-            /*
-            if(CacheContext is GameCacheModPackage)
-            {
-                SetFlags(PortingFlags.Memory);
-            }*/
-
-
             //
             // Convert Blam data to ElDorado data
             //
 
             try
             {
-                using (var cacheStream = FlagIsSet(PortingFlags.Memory) ? new MemoryStream() : (Stream)CacheContext.OpenCacheReadWrite())
+                using (var cacheStream = CacheContext.OpenCacheReadWrite())
                 using (var blamCacheStream = BlamCache is GameCacheModPackage ? ((GameCacheModPackage)BlamCache).OpenCacheRead(cacheStream) : BlamCache.OpenCacheRead())
                 {
-                    if (FlagIsSet(PortingFlags.Memory))
-                        using (var cacheFileStream = CacheContext.OpenCacheRead())
-                            cacheFileStream.CopyTo(cacheStream);
-
                     var oldFlags = Flags;
 
                     foreach (var blamTag in ParseLegacyTag(args.Last()))
@@ -134,16 +123,6 @@ namespace TagTool.Commands.Porting
                     FinalizeRenderMethods(cacheStream, blamCacheStream);
                     if (BlamCache is GameCacheGen3 gen3Cache)
                         gen3Cache.ResourceCacheGen3.ResourcePageCache.Clear();
-
-                    if (FlagIsSet(PortingFlags.Memory))
-                        using (var cacheFileStream = CacheContext.OpenCacheReadWrite())
-                        {
-                            cacheFileStream.Seek(0, SeekOrigin.Begin);
-                            cacheFileStream.SetLength(cacheFileStream.Position);
-
-                            cacheStream.Seek(0, SeekOrigin.Begin);
-                            cacheStream.CopyTo(cacheFileStream);
-                        }
                 }
             }
             finally
