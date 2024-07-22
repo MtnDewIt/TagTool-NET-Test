@@ -831,7 +831,6 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                     VertexFunction = StringId.Invalid,
                     PixelFunction = CacheContext.StringTable.GetOrAddString($@"apply_soft_fade"),
                 },
-                /*
                 new RenderMethodDefinition.CategoryBlock
                 {
                     Name = CacheContext.StringTable.GetOrAddString($@"misc_attr_animation"),
@@ -862,7 +861,6 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                     VertexFunction = StringId.Invalid, //CacheContext.StringTable.GetOrAddString($@"misc_attr_define"),
                     PixelFunction = StringId.Invalid,
                 },
-                */
             };
             rmdf.EntryPoints = new List<RenderMethodDefinition.EntryPointBlock>
             {
