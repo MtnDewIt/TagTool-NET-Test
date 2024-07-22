@@ -76,7 +76,7 @@ namespace TagTool.MtnDewIt.Animations
                     new TagToolError(CommandError.CustomError, "Imported Animation doesn't have any frames!");
                     return false;
                 }
-                else if (frameCount > 2048)
+                else if(frameCount > 2048)
                 {
                     new TagToolError(CommandError.CustomError, "Imported Animation has too many frames (must be <= 2048)!");
                     return false;
@@ -130,7 +130,7 @@ namespace TagTool.MtnDewIt.Animations
                 //add first child and next sibling nodes for newer animation formats, or parent nodes for old formats
                 FixupNodeTree(Version);
 
-                RealPoint3d maxtranslation = new RealPoint3d();
+                RealPoint3d maxtranslation = new RealPoint3d(); 
 
                 //populate node frames values
                 for (int frame_index = 0; frame_index < frameCount; frame_index++)
@@ -174,7 +174,7 @@ namespace TagTool.MtnDewIt.Animations
                 }
 
                 //check the max translation values to determine whether or not to print a debug message
-                if (maxtranslation.X * 100.0f < 39.37f &&
+                if(maxtranslation.X * 100.0f < 39.37f &&
                     maxtranslation.Y * 100.0f < 39.37f &&
                     maxtranslation.Z * 100.0f < 39.37f)
                 {
