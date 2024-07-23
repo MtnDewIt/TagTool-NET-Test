@@ -7,7 +7,7 @@ using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
-using System.Threading.Tasks;
+using TagTool.Commands.Porting;
 
 namespace TagTool.Shaders.ShaderMatching
 {
@@ -276,25 +276,7 @@ namespace TagTool.Shaders.ShaderMatching
             }
 
             // potentially async here. depends on: type (cannot be an effect type) and whether the rmt2 exists already.
-            if (canGenerate && TryGenerateTemplate(tagName, sourceRmt2Desc, out CachedTag generatedRmt2, (Commands.Porting.PortTagCommand.TemplateConversionResult result) =>
-            {
-                PortTagCommand._deferredActions.Add(() =>
-                {
-                    PortTagCommand.FinishConvertTemplate(result, tagName, out RenderMethodTemplate asyncRmt2, out PixelShader asyncPixl, out VertexShader asyncVtsh);
-
-                    if (!BaseCache.TagCache.TryGetTag(tagName + ".pixl", out asyncRmt2.PixelShader))
-                        asyncRmt2.PixelShader = BaseCache.TagCache.AllocateTag<PixelShader>(tagName);
-                    if (!BaseCache.TagCache.TryGetTag(tagName + ".vtsh", out asyncRmt2.VertexShader))
-                        asyncRmt2.VertexShader = BaseCache.TagCache.AllocateTag<VertexShader>(tagName);
-
-                    BaseCache.Serialize(BaseCacheStream, asyncRmt2.PixelShader, asyncPixl);
-                    BaseCache.Serialize(BaseCacheStream, asyncRmt2.VertexShader, asyncVtsh);
-                    BaseCache.Serialize(BaseCacheStream, result.Tag, asyncRmt2);
-                    
-                    if (PortTagCommand.FlagIsSet(Commands.Porting.PortTagCommand.PortingFlags.Print))
-                        Console.WriteLine($"['{result.Tag.Group.Tag}', 0x{result.Tag.Index:X4}] {result.Tag.Name}.{(result.Tag.Group as Cache.Gen3.TagGroupGen3).Name}");
-                });
-            }))
+            if (canGenerate && TryGenerateTemplate(tagName, sourceRmt2Desc, out CachedTag generatedRmt2))
             {
                 return generatedRmt2;
             }
@@ -348,7 +330,7 @@ namespace TagTool.Shaders.ShaderMatching
             }
         }
 
-        private bool TryGenerateTemplate(string tagName, Rmt2Descriptor rmt2Desc, out CachedTag generatedRmt2, Action<Commands.Porting.PortTagCommand.TemplateConversionResult> callback)
+        private bool TryGenerateTemplate(string tagName, Rmt2Descriptor rmt2Desc, out CachedTag generatedRmt2)
         {
             generatedRmt2 = null;
 
@@ -380,23 +362,35 @@ namespace TagTool.Shaders.ShaderMatching
 
                     var allRmopParameters = ShaderGenerator.ShaderGeneratorNew.GatherParametersAsync(RenderMethodOptions, rmdf, options);
 
-                    PortTagCommand.ConcurrencyLimiter.Wait();
-                    PortTagCommand.TemplateConversionTasks.Add(tagName, Task.Run(() =>
-                    {
-                        try
+                    PortTagCommand.RunAsync(
+                        onExecute: () =>
                         {
-                            Commands.Porting.PortTagCommand.TemplateConversionResult result = new Commands.Porting.PortTagCommand.TemplateConversionResult();
+                            var result = new PortTagCommand.TemplateConversionResult();
 
                             result.Tag = rmt2Tag;
-                            result.Definition = ShaderGenerator.ShaderGeneratorNew.GenerateTemplate(BaseCache, rmdf, glvs, glps, allRmopParameters, tagName, out result.PixelShaderDefinition, out result.VertexShaderDefinition);
+                            result.Definition = ShaderGenerator.ShaderGeneratorNew.GenerateTemplate(BaseCache, 
+                                rmdf, glvs, glps, allRmopParameters, tagName, out result.PixelShaderDefinition, out result.VertexShaderDefinition);
 
-                            callback(result);
-                        }
-                        finally
+                            return result;
+                        },
+                        onSuccess: (PortTagCommand.TemplateConversionResult result) =>
                         {
-                            PortTagCommand.ConcurrencyLimiter.Release();
-                        }
-                    }));
+                            var asyncRmt2 = result.Definition;
+                            var asyncPixl = result.PixelShaderDefinition;
+                            var asyncVtsh = result.VertexShaderDefinition;
+
+                            if (!BaseCache.TagCache.TryGetTag(tagName + ".pixl", out asyncRmt2.PixelShader))
+                                asyncRmt2.PixelShader = BaseCache.TagCache.AllocateTag<PixelShader>(tagName);
+                            if (!BaseCache.TagCache.TryGetTag(tagName + ".vtsh", out asyncRmt2.VertexShader))
+                                asyncRmt2.VertexShader = BaseCache.TagCache.AllocateTag<VertexShader>(tagName);
+
+                            BaseCache.Serialize(BaseCacheStream, asyncRmt2.PixelShader, asyncPixl);
+                            BaseCache.Serialize(BaseCacheStream, asyncRmt2.VertexShader, asyncVtsh);
+                            BaseCache.Serialize(BaseCacheStream, result.Tag, asyncRmt2);
+
+                            if (PortTagCommand.FlagIsSet(PortTagCommand.PortingFlags.Print))
+                                Console.WriteLine($"['{result.Tag.Group.Tag}', 0x{result.Tag.Index:X4}] {result.Tag.Name}.{(result.Tag.Group as Cache.Gen3.TagGroupGen3).Name}");
+                        });
 
                     generatedRmt2 = rmt2Tag;
                     return true;

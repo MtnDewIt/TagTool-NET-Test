@@ -226,6 +226,7 @@ namespace TagTool.Bitmaps.DDS
                 switch (format)
                 {
                     case BitmapFormat.Dxt5:
+                    case BitmapFormat.Dxt5nm:
                         Flags |= DDSPixelFormatFlags.FourCC;
                         FourCC = 0x35545844;
                         break;

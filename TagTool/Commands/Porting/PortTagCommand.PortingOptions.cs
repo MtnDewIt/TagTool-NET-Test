@@ -90,11 +90,13 @@ namespace TagTool.Commands.Porting
 			[PortingFlagDescription("Only use templates that have the exact same render method options")]
 			PefectShaderMatchOnly = 1 << 11,
 
+			/// REMOVED: Use a mod package instead. Feel free to reuse this flag for something else
+			/// 
 			/// <summary>
 			/// Keep cache in memory during porting.
 			/// </summary>
-			[PortingFlagDescription("Keep cache in memory during porting.")]
-			Memory = 1 << 12,
+			/// [PortingFlagDescription("Keep cache in memory during porting.")]
+			/// Memory = 1 << 12,
 
 			/// <summary>
 			/// Allow using existing tags from Ms30.

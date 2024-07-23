@@ -170,7 +170,7 @@ namespace TagTool.Commands.Common
                     command.Execute(commandAndArgs);
                     CurrentCommandName = "";
                 }
-                catch (Exception e)
+                catch (Exception e) when (!Debugger.IsAttached)
                 {
                     new TagToolError(CommandError.CustomError, e.Message);
                     Console.WriteLine("STACKTRACE: " + Environment.NewLine + e.StackTrace);

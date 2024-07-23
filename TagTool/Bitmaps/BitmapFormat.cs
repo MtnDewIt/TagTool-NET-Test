@@ -22,7 +22,7 @@ namespace TagTool.Bitmaps
         X8R8G8B8,
         A8R8G8B8,
         Unused4,
-        Unused5,
+        Dxt5nm,
         Dxt1,
         Dxt3,
         Dxt5,
@@ -83,7 +83,7 @@ namespace TagTool.Bitmaps
             32,  // X8R8G8B8
             32,  // A8R8G8B8
             0,   // Unused4
-            0,   // Unused5
+            8,   // Dxt5nm
             4,   // Dxt1
             8,   // Dxt3
             8,   // Dxt5
@@ -154,6 +154,7 @@ namespace TagTool.Bitmaps
                     break;
                 case BitmapFormat.Dxt3:
                 case BitmapFormat.Dxt5:
+                case BitmapFormat.Dxt5nm:
                 case BitmapFormat.Dxn:
                 case BitmapFormat.DxnMonoAlpha:
                     blockSize = 16;

@@ -275,7 +275,7 @@ namespace TagTool.Commands.Tags
                         var portTag = new PortTagCommand(Cache, srcCache);
                         portTag.SetFlags(PortTagCommand.PortingFlags.Default);
 
-                        var convertedTag = portTag.ConvertTag(dstStream, srcStream, resourceStreams, tag);
+                        var convertedTag = portTag.ConvertTag(dstStream, srcStream, tag);
 
                         if (convertedTag == null)
                         {

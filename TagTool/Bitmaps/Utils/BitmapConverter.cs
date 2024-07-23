@@ -75,7 +75,6 @@ namespace TagTool.Bitmaps.Utils
                 return null;
 
             Bitmap.Image image = bitmap.Images[imageIndex];
-
             BitmapFormat destinationformat = GestDestinationFormat(image.Format, tagName, bitmap, imageIndex, version, cachePlatform);
 
             int mipLevelCount = definition.MipmapCount;
@@ -87,7 +86,7 @@ namespace TagTool.Bitmaps.Utils
                 mipLevelCount = 1;
             // for d3d9 dxn mips have to be >= 4x4 to avoid a crash
             if (destinationformat == BitmapFormat.Dxn)
-                mipLevelCount = BitmapUtils.TruncateMipmaps(mipLevelCount, image.Width, image.Height, 4, 4);
+                mipLevelCount = BitmapUtils.GetMipmapCount(image.Width, image.Height, 4, 4, maxCount: mipLevelCount);
 
             // convert the surfaces
             var result = new MemoryStream();
@@ -106,14 +105,10 @@ namespace TagTool.Bitmaps.Utils
             BaseBitmap resultBitmap = new BaseBitmap(image);
             resultBitmap.Data = result.ToArray();
             resultBitmap.MipMapCount = mipLevelCount;
-
             if (resultBitmap.Type == BitmapType.Array)
-            {
                 resultBitmap.Type = BitmapType.Texture3D;
-                resultBitmap.MipMapCount = 1;
-            }
-
             resultBitmap.UpdateFormat(destinationformat);
+
             return resultBitmap;
         }
 
