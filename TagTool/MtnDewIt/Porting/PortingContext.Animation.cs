@@ -16,7 +16,7 @@ namespace TagTool.MtnDewIt.Porting
 {
     partial class PortingContext
     {
-        public List<ModelAnimationGraph.ResourceGroup> ConvertModelAnimationGraphResourceGroups(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, List<ModelAnimationGraph.ResourceGroup> resourceGroups)
+        public List<ModelAnimationGraph.ResourceGroup> ConvertModelAnimationGraphResourceGroups(Stream cacheStream, Stream blamCacheStream, List<ModelAnimationGraph.ResourceGroup> resourceGroups)
         {
             foreach (var group in resourceGroups)
             {
@@ -40,7 +40,6 @@ namespace TagTool.MtnDewIt.Porting
                     int CompressedDataSize = 0;
                     int StaticDataSize = 0;
                     int ExtraData = 0;
-
                     if(BlamCache.Version >= CacheVersion.HaloReach)
                     {
                         MovementDataSize = member.PackedDataSizesReach.MovementData;
@@ -435,9 +434,9 @@ namespace TagTool.MtnDewIt.Porting
             return resourceGroups;
         }
 
-        public ModelAnimationGraph ConvertModelAnimationGraph(Stream cacheStream, Stream blamCacheStream,  Dictionary<ResourceLocation, Stream> resourceStreams, ModelAnimationGraph definition)
+        public ModelAnimationGraph ConvertModelAnimationGraph(Stream cacheStream, Stream blamCacheStream, ModelAnimationGraph definition)
         {
-            definition.ResourceGroups = ConvertModelAnimationGraphResourceGroups(cacheStream, blamCacheStream, resourceStreams, definition.ResourceGroups);
+            definition.ResourceGroups = ConvertModelAnimationGraphResourceGroups(cacheStream, blamCacheStream, definition.ResourceGroups);
             
             if(BlamCache.Version <= CacheVersion.Halo3ODST)
             {

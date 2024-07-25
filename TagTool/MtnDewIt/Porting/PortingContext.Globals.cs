@@ -82,46 +82,46 @@ namespace TagTool.MtnDewIt.Porting
             return matg;
         }
 
-        private void MergeMultiplayerEvent(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock edEvent, MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock h3Event)
+        private void MergeMultiplayerEvent(Stream cacheStream, Stream blamCacheStream, MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock edEvent, MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock h3Event)
         {
             if (h3Event.EnglishSound != null)
-                edEvent.EnglishSound = ConvertTag(cacheStream, blamCacheStream, resourceStreams, h3Event.EnglishSound);
+                edEvent.EnglishSound = ConvertTag(cacheStream, blamCacheStream, h3Event.EnglishSound);
 
             if (h3Event.JapaneseSound != null)
-                edEvent.JapaneseSound = ConvertTag(cacheStream, blamCacheStream, resourceStreams, h3Event.JapaneseSound);
+                edEvent.JapaneseSound = ConvertTag(cacheStream, blamCacheStream, h3Event.JapaneseSound);
 
             if (h3Event.GermanSound != null)
-                edEvent.GermanSound = ConvertTag(cacheStream, blamCacheStream, resourceStreams, h3Event.GermanSound);
+                edEvent.GermanSound = ConvertTag(cacheStream, blamCacheStream, h3Event.GermanSound);
 
             if (h3Event.FrenchSound != null)
-                edEvent.FrenchSound = ConvertTag(cacheStream, blamCacheStream, resourceStreams, h3Event.FrenchSound);
+                edEvent.FrenchSound = ConvertTag(cacheStream, blamCacheStream, h3Event.FrenchSound);
 
             if (h3Event.SpanishSound != null)
-                edEvent.SpanishSound = ConvertTag(cacheStream, blamCacheStream, resourceStreams, h3Event.SpanishSound);
+                edEvent.SpanishSound = ConvertTag(cacheStream, blamCacheStream, h3Event.SpanishSound);
 
             if (h3Event.LatinAmericanSpanishSound != null)
-                edEvent.LatinAmericanSpanishSound = ConvertTag(cacheStream, blamCacheStream, resourceStreams, h3Event.LatinAmericanSpanishSound);
+                edEvent.LatinAmericanSpanishSound = ConvertTag(cacheStream, blamCacheStream, h3Event.LatinAmericanSpanishSound);
 
             if (h3Event.ItalianSound != null)
-                edEvent.ItalianSound = ConvertTag(cacheStream, blamCacheStream, resourceStreams, h3Event.ItalianSound);
+                edEvent.ItalianSound = ConvertTag(cacheStream, blamCacheStream, h3Event.ItalianSound);
 
             if (h3Event.KoreanSound != null)
-                edEvent.KoreanSound = ConvertTag(cacheStream, blamCacheStream, resourceStreams, h3Event.KoreanSound);
+                edEvent.KoreanSound = ConvertTag(cacheStream, blamCacheStream, h3Event.KoreanSound);
 
             if (h3Event.ChineseTraditionalSound != null)
-                edEvent.ChineseTraditionalSound = ConvertTag(cacheStream, blamCacheStream, resourceStreams, h3Event.ChineseTraditionalSound);
+                edEvent.ChineseTraditionalSound = ConvertTag(cacheStream, blamCacheStream, h3Event.ChineseTraditionalSound);
 
             if (h3Event.ChineseSimplifiedSound != null)
-                edEvent.ChineseSimplifiedSound = ConvertTag(cacheStream, blamCacheStream, resourceStreams, h3Event.ChineseSimplifiedSound);
+                edEvent.ChineseSimplifiedSound = ConvertTag(cacheStream, blamCacheStream, h3Event.ChineseSimplifiedSound);
 
             if (h3Event.PortugueseSound != null)
-                edEvent.PortugueseSound = ConvertTag(cacheStream, blamCacheStream, resourceStreams, h3Event.PortugueseSound);
+                edEvent.PortugueseSound = ConvertTag(cacheStream, blamCacheStream, h3Event.PortugueseSound);
 
             if (h3Event.PolishSound != null)
-                edEvent.PolishSound = ConvertTag(cacheStream, blamCacheStream, resourceStreams, h3Event.PolishSound);
+                edEvent.PolishSound = ConvertTag(cacheStream, blamCacheStream,  h3Event.PolishSound);
         }
 
-        private void MergeMultiplayerGlobals(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, CachedTag edTag, CachedTag h3Tag)
+        private void MergeMultiplayerGlobals(Stream cacheStream, Stream blamCacheStream, CachedTag edTag, CachedTag h3Tag)
         {
             var edDef = CacheContext.Deserialize<MultiplayerGlobals>(cacheStream, edTag);
             var h3Def = BlamCache.Deserialize<MultiplayerGlobals>(blamCacheStream, h3Tag);
@@ -144,7 +144,7 @@ namespace TagTool.MtnDewIt.Porting
                     var edString = CacheContext.StringTable.GetString(edEvent.DisplayString);
 
                     if (edString == h3String)
-                        MergeMultiplayerEvent(cacheStream, blamCacheStream, resourceStreams, edEvent, h3Event);
+                        MergeMultiplayerEvent(cacheStream, blamCacheStream, edEvent, h3Event);
                 }
             }
 
@@ -163,7 +163,7 @@ namespace TagTool.MtnDewIt.Porting
                     var edString = CacheContext.StringTable.GetString(edEvent.DisplayString);
 
                     if (edString == h3String)
-                        MergeMultiplayerEvent(cacheStream, blamCacheStream, resourceStreams, edEvent, h3Event);
+                        MergeMultiplayerEvent(cacheStream, blamCacheStream, edEvent, h3Event);
                 }
             }
 
@@ -182,7 +182,7 @@ namespace TagTool.MtnDewIt.Porting
                     var edString = CacheContext.StringTable.GetString(edEvent.DisplayString);
 
                     if (edString == h3String)
-                        MergeMultiplayerEvent(cacheStream, blamCacheStream, resourceStreams, edEvent, h3Event);
+                        MergeMultiplayerEvent(cacheStream, blamCacheStream, edEvent, h3Event);
                 }
             }
 
@@ -201,7 +201,7 @@ namespace TagTool.MtnDewIt.Porting
                     var edString = CacheContext.StringTable.GetString(edEvent.DisplayString);
 
                     if (edString == h3String)
-                        MergeMultiplayerEvent(cacheStream, blamCacheStream, resourceStreams, edEvent, h3Event);
+                        MergeMultiplayerEvent(cacheStream, blamCacheStream, edEvent, h3Event);
                 }
             }
 
@@ -220,7 +220,7 @@ namespace TagTool.MtnDewIt.Porting
                     var edString = CacheContext.StringTable.GetString(edEvent.DisplayString);
 
                     if (edString == h3String)
-                        MergeMultiplayerEvent(cacheStream, blamCacheStream, resourceStreams, edEvent, h3Event);
+                        MergeMultiplayerEvent(cacheStream, blamCacheStream, edEvent, h3Event);
                 }
             }
 
@@ -239,7 +239,7 @@ namespace TagTool.MtnDewIt.Porting
                     var edString = CacheContext.StringTable.GetString(edEvent.DisplayString);
 
                     if (edString == h3String)
-                        MergeMultiplayerEvent(cacheStream, blamCacheStream, resourceStreams, edEvent, h3Event);
+                        MergeMultiplayerEvent(cacheStream, blamCacheStream, edEvent, h3Event);
                 }
             }
 
@@ -258,7 +258,7 @@ namespace TagTool.MtnDewIt.Porting
                     var edString = CacheContext.StringTable.GetString(edEvent.DisplayString);
 
                     if (edString == h3String)
-                        MergeMultiplayerEvent(cacheStream, blamCacheStream, resourceStreams, edEvent, h3Event);
+                        MergeMultiplayerEvent(cacheStream, blamCacheStream, edEvent, h3Event);
                 }
             }
 
@@ -277,7 +277,7 @@ namespace TagTool.MtnDewIt.Porting
                     var edString = CacheContext.StringTable.GetString(edEvent.DisplayString);
 
                     if (edString == h3String)
-                        MergeMultiplayerEvent(cacheStream, blamCacheStream, resourceStreams, edEvent, h3Event);
+                        MergeMultiplayerEvent(cacheStream, blamCacheStream, edEvent, h3Event);
                 }
             }
 
@@ -296,7 +296,7 @@ namespace TagTool.MtnDewIt.Porting
                     var edString = CacheContext.StringTable.GetString(edEvent.DisplayString);
 
                     if (edString == h3String)
-                        MergeMultiplayerEvent(cacheStream, blamCacheStream, resourceStreams, edEvent, h3Event);
+                        MergeMultiplayerEvent(cacheStream, blamCacheStream, edEvent, h3Event);
                 }
             }
 
@@ -315,7 +315,7 @@ namespace TagTool.MtnDewIt.Porting
                     var edString = CacheContext.StringTable.GetString(edEvent.DisplayString);
 
                     if (edString == h3String)
-                        MergeMultiplayerEvent(cacheStream, blamCacheStream, resourceStreams, edEvent, h3Event);
+                        MergeMultiplayerEvent(cacheStream, blamCacheStream, edEvent, h3Event);
                 }
             }
 
@@ -334,7 +334,7 @@ namespace TagTool.MtnDewIt.Porting
                     var edString = CacheContext.StringTable.GetString(edEvent.DisplayString);
 
                     if (edString == h3String)
-                        MergeMultiplayerEvent(cacheStream, blamCacheStream, resourceStreams, edEvent, h3Event);
+                        MergeMultiplayerEvent(cacheStream, blamCacheStream, edEvent, h3Event);
                 }
             }
 

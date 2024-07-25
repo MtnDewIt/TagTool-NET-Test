@@ -321,7 +321,7 @@ namespace TagTool.MtnDewIt.Porting
             return chudDefinition;
         }
 
-        private ChudGlobalsDefinition ConvertChudGlobalsDefinition(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, ChudGlobalsDefinition H3Definition)
+        private ChudGlobalsDefinition ConvertChudGlobalsDefinition(Stream cacheStream, Stream blamCacheStream, ChudGlobalsDefinition H3Definition)
         {
             for (int hudGlobalsIndex = 0; hudGlobalsIndex < H3Definition.HudGlobals.Count; hudGlobalsIndex++)
             {
@@ -377,14 +377,14 @@ namespace TagTool.MtnDewIt.Porting
                         {
                             var spartanBiped = new ChudGlobalsDefinition.HudGlobal.HudSound.BipedData();
                             spartanBiped.BipedType_HO = ChudGlobalsDefinition.HudGlobal.HudSound.BipedData.BipedTypeValue_HO.Spartan;
-                            spartanBiped.Sound = (CachedTag)ConvertData(cacheStream, blamCacheStream, resourceStreams, H3snd.SpartanSound, null, H3snd.SpartanSound.Name);
+                            spartanBiped.Sound = (CachedTag)ConvertData(cacheStream, blamCacheStream, H3snd.SpartanSound, null, H3snd.SpartanSound.Name);
                             H3snd.Bipeds.Add(spartanBiped);
                         }
                         if (H3snd.EliteSound != null)
                         {
                             var eliteBiped = new ChudGlobalsDefinition.HudGlobal.HudSound.BipedData();
                             eliteBiped.BipedType_HO = ChudGlobalsDefinition.HudGlobal.HudSound.BipedData.BipedTypeValue_HO.Elite;
-                            eliteBiped.Sound = (CachedTag)ConvertData(cacheStream, blamCacheStream, resourceStreams, H3snd.EliteSound, null, H3snd.EliteSound.Name);
+                            eliteBiped.Sound = (CachedTag)ConvertData(cacheStream, blamCacheStream, H3snd.EliteSound, null, H3snd.EliteSound.Name);
                             H3snd.Bipeds.Add(eliteBiped);
                         }
                     }

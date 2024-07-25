@@ -16,7 +16,7 @@ namespace TagTool.MtnDewIt.Porting
 {
     partial class PortingContext
     {
-        public ScenarioStructureBsp ConvertScenarioStructureBsp(ScenarioStructureBsp sbsp, CachedTag instance, Dictionary<ResourceLocation, Stream> resourceStreams)
+        public ScenarioStructureBsp ConvertScenarioStructureBsp(ScenarioStructureBsp sbsp, CachedTag instance)
         {
             var converter = new RenderGeometryConverter(CacheContext, BlamCache);   // should be made static
 

@@ -22,7 +22,7 @@ namespace TagTool.MtnDewIt.Porting
 
         private static readonly byte[] DefaultScenarioFxFunction = new byte[] { 0x01, 0x34, 0x00, 0x00, 0x00, 0x00, 0x80, 0x3F, 0x00, 0x00, 0x80, 0x3F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
-        public Scenario ConvertScenario(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, Scenario scnr, string tagName)
+        public Scenario ConvertScenario(Stream cacheStream, Stream blamCacheStream, Scenario scnr, string tagName)
         {
             CurrentScenario = scnr;
 
@@ -467,7 +467,7 @@ namespace TagTool.MtnDewIt.Porting
 
                 foreach (var expr in scnr.ScriptExpressions)
                 {
-                    ConvertScriptExpression(cacheStream, blamCacheStream, resourceStreams, scnr, expr);
+                    ConvertScriptExpression(cacheStream, blamCacheStream, scnr, expr);
                 }
 
                 AdjustScripts(scnr, tagName);
@@ -517,7 +517,7 @@ namespace TagTool.MtnDewIt.Porting
                     }
                     else
                     {
-                        var sddtTag = ConvertTag(cacheStream, blamCacheStream, resourceStreams, scnr.StructureDesigns[0].StructureDesign);
+                        var sddtTag = ConvertTag(cacheStream, blamCacheStream, scnr.StructureDesigns[0].StructureDesign);
                         for (int i = 0; i < scnr.StructureBsps.Count; i++)
                             scnr.StructureBsps[i].Design = sddtTag;
                     }
@@ -612,7 +612,7 @@ namespace TagTool.MtnDewIt.Porting
                         var atgf = BlamCache.Deserialize<AtmosphereGlobals>(blamCacheStream, scnr.AtmosphereGlobals);
 
                         skya.Flags = SkyAtmParameters.SkyAtmFlags.None;
-                        skya.FogBitmap = atgf.FogBitmap != null ? (CachedTag)ConvertData(cacheStream, blamCacheStream, resourceStreams, atgf.FogBitmap, null, atgf.FogBitmap.Name) : null;
+                        skya.FogBitmap = atgf.FogBitmap != null ? (CachedTag)ConvertData(cacheStream, blamCacheStream, atgf.FogBitmap, null, atgf.FogBitmap.Name) : null;
                         skya.TextureRepeatRate = atgf.TextureRepeatRate;
                         skya.DistanceBetweenSheets = atgf.DistanceBetweenSheets;
                         skya.DepthFadeFactor = atgf.DepthFadeFactor;
@@ -624,7 +624,7 @@ namespace TagTool.MtnDewIt.Porting
                         {
                             var unwt = new SkyAtmParameters.UnderwaterBlock
                             {
-                                Name = (StringId)ConvertData(cacheStream, blamCacheStream, resourceStreams, underwaterSetting.Name, null, null),
+                                Name = (StringId)ConvertData(cacheStream, blamCacheStream, underwaterSetting.Name, null, null),
                                 Murkiness = underwaterSetting.Murkiness,
                                 FogColor = underwaterSetting.FogColor
                             };
@@ -645,7 +645,7 @@ namespace TagTool.MtnDewIt.Porting
 
                             foreach (var waterInstance in blamSddt.WaterInstances)
                             {
-                                var waterNameId = (StringId)ConvertData(cacheStream, blamCacheStream, resourceStreams, blamSddt.WaterGroups[waterInstance.WaterNameIndex].Name, null, null);
+                                var waterNameId = (StringId)ConvertData(cacheStream, blamCacheStream, blamSddt.WaterGroups[waterInstance.WaterNameIndex].Name, null, null);
                                 var waterName = CacheContext.StringTable.GetString(waterNameId);
 
                                 if (!convertedWaterFog.Contains(waterName))
@@ -679,7 +679,7 @@ namespace TagTool.MtnDewIt.Porting
                             var atmosphereSettings = skya.AtmosphereSettings[atmospherePalette.AtmosphereSettingIndex];
 
                             atmosphereSettings.Flags |= SkyAtmParameters.AtmosphereProperty.AtmosphereFlags.EnableAtmosphere;
-                            atmosphereSettings.Name = (StringId)ConvertData(cacheStream, blamCacheStream, resourceStreams, atmospherePalette.Name, null, null);
+                            atmosphereSettings.Name = (StringId)ConvertData(cacheStream, blamCacheStream, atmospherePalette.Name, null, null);
 
                             // Patchy Fog
 
@@ -692,7 +692,7 @@ namespace TagTool.MtnDewIt.Porting
                             atmosphereSettings.WindDirection = fogg.PatchyFog.WindDirection;
 
                             if (fogg.WeatherEffect != null)
-                                atmosphereSettings.WeatherEffect = (CachedTag)ConvertData(cacheStream, blamCacheStream, resourceStreams, fogg.WeatherEffect, null, null);
+                                atmosphereSettings.WeatherEffect = (CachedTag)ConvertData(cacheStream, blamCacheStream, fogg.WeatherEffect, null, null);
 
                             // Scattering
                             // TODO: proper conversion for fog.
@@ -1293,7 +1293,7 @@ namespace TagTool.MtnDewIt.Porting
             return new RealEulerAngles3d(Angle.FromRadians(x2), Angle.FromRadians(y2), Angle.FromRadians(z2));
         }
 
-        public void ConvertScriptExpression(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, Scenario scnr, HsSyntaxNode expr)
+        public void ConvertScriptExpression(Stream cacheStream, Stream blamCacheStream, Scenario scnr, HsSyntaxNode expr)
         {
             if (expr.Opcode == 0xBABA)
                 return;
@@ -1319,7 +1319,7 @@ namespace TagTool.MtnDewIt.Porting
                     break;
             }
 
-            ConvertScriptExpressionData(cacheStream, blamCacheStream, resourceStreams, expr);
+            ConvertScriptExpressionData(cacheStream, blamCacheStream, expr);
         }
 
         public bool ScriptExpressionIsValue(HsSyntaxNode expr)
@@ -1484,7 +1484,7 @@ namespace TagTool.MtnDewIt.Porting
             ConvertScriptExpressionUnsupportedOpcode(expr);
         }
 
-        public void ConvertScriptExpressionData(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, HsSyntaxNode expr)
+        public void ConvertScriptExpressionData(Stream cacheStream, Stream blamCacheStream, HsSyntaxNode expr)
         {
             if (expr.Flags == HsSyntaxNodeFlags.Expression)
                 switch (expr.ValueType.HaloOnline)
@@ -1506,12 +1506,12 @@ namespace TagTool.MtnDewIt.Porting
                     case HsType.HaloOnlineValue.BinkDefinition:
                     case HsType.HaloOnlineValue.AnyTag:
                     case HsType.HaloOnlineValue.AnyTagNotResolving:
-                        ConvertScriptTagReferenceExpressionData(cacheStream, blamCacheStream, resourceStreams, expr);
+                        ConvertScriptTagReferenceExpressionData(cacheStream, blamCacheStream, expr);
                         return;
 
                     case HsType.HaloOnlineValue.AiLine when BitConverter.ToInt32(expr.Data, 0) != -1:
                     case HsType.HaloOnlineValue.StringId:
-                        ConvertScriptStringIdExpressionData(cacheStream, blamCacheStream, resourceStreams, expr);
+                        ConvertScriptStringIdExpressionData(cacheStream, blamCacheStream, expr);
                         return;
 
                     default:
@@ -1651,7 +1651,7 @@ namespace TagTool.MtnDewIt.Porting
             return (uint)(prevSpawnPoints + spawnPointIndex);
         }
 
-        public void ConvertScriptTagReferenceExpressionData(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, HsSyntaxNode expr)
+        public void ConvertScriptTagReferenceExpressionData(Stream cacheStream, Stream blamCacheStream, HsSyntaxNode expr)
         {
             if (!FlagIsSet(PortingFlags.Recursive))
                 return;
@@ -1662,7 +1662,7 @@ namespace TagTool.MtnDewIt.Porting
             else
                 tagIndex = BitConverter.ToUInt32(expr.Data.Reverse().ToArray(), 0);
 
-            var tag = ConvertTag(cacheStream, blamCacheStream, resourceStreams, BlamCache.TagCache.GetTag(tagIndex));
+            var tag = ConvertTag(cacheStream, blamCacheStream, BlamCache.TagCache.GetTag(tagIndex));
 
             if (tag == null)
                 return;
@@ -1670,7 +1670,7 @@ namespace TagTool.MtnDewIt.Porting
             expr.Data = BitConverter.GetBytes(tag?.Index ?? -1).ToArray();
         }
 
-        public void ConvertScriptStringIdExpressionData(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, HsSyntaxNode expr)
+        public void ConvertScriptStringIdExpressionData(Stream cacheStream, Stream blamCacheStream, HsSyntaxNode expr)
         {
             uint blamStringId;
             if (CacheVersionDetection.IsLittleEndian(BlamCache.Version, BlamCache.Platform))
