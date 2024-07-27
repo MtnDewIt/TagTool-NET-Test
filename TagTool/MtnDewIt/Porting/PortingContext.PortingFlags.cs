@@ -49,35 +49,32 @@ namespace TagTool.MtnDewIt.Porting
 			// Only use templates that have the exact same render method options.
 			PefectShaderMatchOnly = 1 << 11,
 
-			// Keep cache in memory during porting.
-			Memory = 1 << 12,
-
 			// Allow using existing tags from Ms30.
-			Ms30 = 1 << 13,
+			Ms30 = 1 << 12,
 
 			// Allow writing output to the console.
-			Print = 1 << 14,
+			Print = 1 << 13,
 
             // Merges new data if tags exist.
-            Merge = 1 << 15,
+            Merge = 1 << 14,
 
             // Use a regular expression to determine target tags.
-            Regex = 1 << 16,
+            Regex = 1 << 15,
 
 			// Attempt to generate shaders.
-			GenerateShaders = 1 << 17,
+			GenerateShaders = 1 << 16,
 
             // Add a multiplayerobject block for spawnable tag types.
-            MPobject = 1 << 18,
+            MPobject = 1 << 17,
 
 			// Multipurpose Reach flag used for specific tweaks.
-			ReachMisc = 1 << 19,
+			ReachMisc = 1 << 18,
 
 			// Auto rescale gui during porting.
-			AutoRescaleGui = 1 << 20,
+			AutoRescaleGui = 1 << 19,
 			
 			// Auto Update map files
-			UpdateMapFiles = 1 << 21,
+			UpdateMapFiles = 1 << 20,
 
 			// Default porting flags
 			Default = Print | Recursive | Merge | Scripts | Squads | ForgePalette | Elites | Audio | Dialogue | MatchShaders | GenerateShaders

@@ -70,56 +70,33 @@ namespace TagTool.MtnDewIt.Porting
             ConcurrencyLimiter = new SemaphoreSlim(PortingProperties.CurrentInstance.MaxThreads); // for async conversion
             CachedTagData.Clear();
 
-            /*
-            if(CacheContext is GameCacheModPackage)
-            {
-                SetFlags(PortingFlags.Memory);
-            }*/
-
-
             //
             // Convert Blam data to ElDorado data
             //
 
-            var cacheStream = FlagIsSet(PortingFlags.Memory) ? new MemoryStream() : CacheStream;
-
-            using (var blamCacheStream = BlamCache is GameCacheModPackage ? ((GameCacheModPackage)BlamCache).OpenCacheRead(cacheStream) : BlamCache.OpenCacheRead())
+            using (var blamCacheStream = BlamCache is GameCacheModPackage ? ((GameCacheModPackage)BlamCache).OpenCacheRead(CacheStream) : BlamCache.OpenCacheRead())
             {
-                if (FlagIsSet(PortingFlags.Memory))
-                    using (var cacheFileStream = CacheContext.OpenCacheRead())
-                        cacheFileStream.CopyTo(cacheStream);
-
-                    var oldFlags = Flags;
+                var oldFlags = Flags;
 
                 foreach (var blamTag in ParseLegacyTag(tag))
                 {
                     if (blamTag == null)
                         new TagToolError(CommandError.TagInvalid, tag);
 
-                    ConvertTag(cacheStream, blamCacheStream, blamTag);
+                    ConvertTag(CacheStream, blamCacheStream, blamTag);
                     Flags = oldFlags;
 
                     if (FlagIsSet(PortingFlags.MPobject))
-                        TestForgePaletteCompatible(cacheStream, blamTag, ObjectParameters);
+                        TestForgePaletteCompatible(CacheStream, blamTag, ObjectParameters);
                 }
 
                 WaitForPendingSoundConversion();
                 WaitForPendingBitmapConversion();
                 WaitForPendingTemplateConversion();
                 ProcessDeferredActions();
-                FinalizeRenderMethods(cacheStream, blamCacheStream);
+                FinalizeRenderMethods(CacheStream, blamCacheStream);
                 if (BlamCache is GameCacheGen3 gen3Cache)
                     gen3Cache.ResourceCacheGen3.ResourcePageCache.Clear();
-
-                if (FlagIsSet(PortingFlags.Memory))
-                    using (var cacheFileStream = CacheContext.OpenCacheReadWrite())
-                    {
-                        cacheFileStream.Seek(0, SeekOrigin.Begin);
-                        cacheFileStream.SetLength(cacheFileStream.Position);
-                    
-                        cacheStream.Seek(0, SeekOrigin.Begin);
-                        cacheStream.CopyTo(cacheFileStream);
-                    }
             }
 
             if (initialStringIdCount != CacheContext.StringTable.Count)
