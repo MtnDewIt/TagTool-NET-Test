@@ -338,7 +338,6 @@ namespace TagTool.MtnDewIt.Porting
 
                 // can't async bitmaps here... only pending should be the lightmaps anyway as they are the first tagref ported from a scenario
                 WaitForPendingBitmapConversion();
-                ProcessDeferredActions(); // process pending bitmaps (and sounds if any are ready)
                 convertedLightmap.ImportIntoLbsp(CacheContext, cacheStream, Lbsp);
             }
 

@@ -23,7 +23,6 @@ using System.Collections.Concurrent;
 using TagTool.Geometry.BspCollisionGeometry;
 using TagTool.Commands.Porting;
 using TagTool.Commands.ScenarioStructureBSPs;
-using System.Threading;
 
 namespace TagTool.MtnDewIt.Porting
 {
@@ -44,7 +43,6 @@ namespace TagTool.MtnDewIt.Porting
         private DirectoryInfo TempDirectory { get; } = new DirectoryInfo(Path.GetTempPath());
         internal BlockingCollection<Action> _deferredActions = new BlockingCollection<Action>();
 
-        internal SemaphoreSlim ConcurrencyLimiter;
 
         private readonly Dictionary<Tag, CachedTag> DefaultTags = new Dictionary<Tag, CachedTag> { };
 		private bool ScenarioPort = false;
@@ -56,6 +54,7 @@ namespace TagTool.MtnDewIt.Porting
             CacheStream = cacheStream;
             GeometryConverter = new RenderGeometryConverter(cacheContext, blamCache);
             PortingProperties = new PortingProperties();
+            InitAsync();
 
             foreach (var tagType in CacheContext.TagCache.TagDefinitions.Types.Keys)
                 DefaultTags[tagType.Tag] = CacheContext.TagCache.FindFirstInGroup(tagType.Tag);
@@ -67,7 +66,6 @@ namespace TagTool.MtnDewIt.Porting
 
 			var initialStringIdCount = CacheContext.StringTableHaloOnline.Count;
 
-            ConcurrencyLimiter = new SemaphoreSlim(PortingProperties.CurrentInstance.MaxThreads); // for async conversion
             CachedTagData.Clear();
 
             //
@@ -90,9 +88,7 @@ namespace TagTool.MtnDewIt.Porting
                         TestForgePaletteCompatible(CacheStream, blamTag, ObjectParameters);
                 }
 
-                WaitForPendingSoundConversion();
-                WaitForPendingBitmapConversion();
-                WaitForPendingTemplateConversion();
+                FinishAsync();
                 ProcessDeferredActions();
                 FinalizeRenderMethods(CacheStream, blamCacheStream);
                 if (BlamCache is GameCacheGen3 gen3Cache)
@@ -106,6 +102,7 @@ namespace TagTool.MtnDewIt.Porting
 
             Matcher.DeInit();
 
+            FinishAsync();
             ProcessDeferredActions();
         }
 
@@ -897,17 +894,7 @@ namespace TagTool.MtnDewIt.Porting
                         break;
                     }
                     isDeferred = true;
-                    blamDefinition = ConvertBitmapAsync(blamTag, bitm, (BitmapConversionResult result) =>
-                    {
-                        _deferredActions.Add(() =>
-                        {
-                            blamDefinition = FinishConvertBitmap(result, blamTag.Name);
-                            CacheContext.Serialize(cacheStream, edTag, blamDefinition);
-
-                            if (FlagIsSet(PortingFlags.Print))
-                                Console.WriteLine($"['{edTag.Group.Tag}', 0x{edTag.Index:X4}] {edTag.Name}.{(edTag.Group as TagGroupGen3).Name}");
-                        });
-                    });
+                    blamDefinition = ConvertBitmapAsync(cacheStream, edTag, blamTag, bitm);
                     break;
 
 				case CameraFxSettings cfxs:
@@ -1265,18 +1252,8 @@ namespace TagTool.MtnDewIt.Porting
                         break;
                     }
                     isDeferred = true;
-                    blamDefinition = ConvertSound(cacheStream, blamCacheStream, sound, edTag, blamTag.Name, (SoundConversionResult result) =>
-                    {
-                        _deferredActions.Add(() =>
-                        {
-                            blamDefinition = FinishConvertSound(result);
-                            CacheContext.Serialize(cacheStream, edTag, blamDefinition);
-                    
-                            if (FlagIsSet(PortingFlags.Print))
-                                Console.WriteLine($"['{edTag.Group.Tag}', 0x{edTag.Index:X4}] {edTag.Name}.{(edTag.Group as TagGroupGen3).Name}");
-                        });
-                    });
-					break;
+                    blamDefinition = ConvertSound(cacheStream, blamCacheStream, sound, edTag, blamTag.Name);
+                    break;
                 case SoundClasses sncl:
                     blamDefinition = ConvertSoundClasses(sncl, BlamCache.Version);
                     break;

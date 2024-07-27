@@ -276,25 +276,7 @@ namespace TagTool.MtnDewIt.Shaders.ShaderMatching
             }
 
             // potentially async here. depends on: type (cannot be an effect type) and whether the rmt2 exists already.
-            if (canGenerate && TryGenerateTemplate(tagName, sourceRmt2Desc, out CachedTag generatedRmt2, (result) =>
-            {
-                PortingContext._deferredActions.Add(() =>
-                {
-                    PortingContext.FinishConvertTemplate(result, tagName, out RenderMethodTemplate asyncRmt2, out PixelShader asyncPixl, out VertexShader asyncVtsh);
-
-                    if (!BaseCache.TagCache.TryGetTag(tagName + ".pixl", out asyncRmt2.PixelShader))
-                        asyncRmt2.PixelShader = BaseCache.TagCache.AllocateTag<PixelShader>(tagName);
-                    if (!BaseCache.TagCache.TryGetTag(tagName + ".vtsh", out asyncRmt2.VertexShader))
-                        asyncRmt2.VertexShader = BaseCache.TagCache.AllocateTag<VertexShader>(tagName);
-
-                    BaseCache.Serialize(BaseCacheStream, asyncRmt2.PixelShader, asyncPixl);
-                    BaseCache.Serialize(BaseCacheStream, asyncRmt2.VertexShader, asyncVtsh);
-                    BaseCache.Serialize(BaseCacheStream, result.Tag, asyncRmt2);
-
-                    if (PortingContext.FlagIsSet(PortingContext.PortingFlags.Print))
-                        Console.WriteLine($"['{result.Tag.Group.Tag}', 0x{result.Tag.Index:X4}] {result.Tag.Name}.{(result.Tag.Group as Cache.Gen3.TagGroupGen3).Name}");
-                });
-            }))
+            if (canGenerate && TryGenerateTemplate(tagName, sourceRmt2Desc, out CachedTag generatedRmt2))
             {
                 return generatedRmt2;
             }
@@ -348,7 +330,7 @@ namespace TagTool.MtnDewIt.Shaders.ShaderMatching
             }
         }
 
-        private bool TryGenerateTemplate(string tagName, Rmt2Descriptor rmt2Desc, out CachedTag generatedRmt2, Action<PortingContext.TemplateConversionResult> callback)
+        private bool TryGenerateTemplate(string tagName, Rmt2Descriptor rmt2Desc, out CachedTag generatedRmt2)
         {
             generatedRmt2 = null;
 
@@ -380,23 +362,35 @@ namespace TagTool.MtnDewIt.Shaders.ShaderMatching
 
                     var allRmopParameters = ShaderGeneratorNew.GatherParametersAsync(RenderMethodOptions, rmdf, options);
 
-                    PortingContext.ConcurrencyLimiter.Wait();
-                    PortingContext.TemplateConversionTasks.Add(tagName, Task.Run(() =>
-                    {
-                        try
+                    PortingContext.RunAsync(
+                        onExecute: () =>
                         {
-                            PortingContext.TemplateConversionResult result = new PortingContext.TemplateConversionResult();
+                            var result = new PortingContext.TemplateConversionResult();
 
                             result.Tag = rmt2Tag;
-                            result.Definition = ShaderGeneratorNew.GenerateTemplate(BaseCache, rmdf, glvs, glps, allRmopParameters, tagName, out result.PixelShaderDefinition, out result.VertexShaderDefinition);
+                            result.Definition = ShaderGeneratorNew.GenerateTemplate(BaseCache,
+                                rmdf, glvs, glps, allRmopParameters, tagName, out result.PixelShaderDefinition, out result.VertexShaderDefinition);
 
-                            callback(result);
-                        }
-                        finally
+                            return result;
+                        },
+                        onSuccess: (PortingContext.TemplateConversionResult result) =>
                         {
-                            PortingContext.ConcurrencyLimiter.Release();
-                        }
-                    }));
+                            var asyncRmt2 = result.Definition;
+                            var asyncPixl = result.PixelShaderDefinition;
+                            var asyncVtsh = result.VertexShaderDefinition;
+
+                            if (!BaseCache.TagCache.TryGetTag(tagName + ".pixl", out asyncRmt2.PixelShader))
+                                asyncRmt2.PixelShader = BaseCache.TagCache.AllocateTag<PixelShader>(tagName);
+                            if (!BaseCache.TagCache.TryGetTag(tagName + ".vtsh", out asyncRmt2.VertexShader))
+                                asyncRmt2.VertexShader = BaseCache.TagCache.AllocateTag<VertexShader>(tagName);
+
+                            BaseCache.Serialize(BaseCacheStream, asyncRmt2.PixelShader, asyncPixl);
+                            BaseCache.Serialize(BaseCacheStream, asyncRmt2.VertexShader, asyncVtsh);
+                            BaseCache.Serialize(BaseCacheStream, result.Tag, asyncRmt2);
+
+                            if (PortingContext.FlagIsSet(PortingContext.PortingFlags.Print))
+                                Console.WriteLine($"['{result.Tag.Group.Tag}', 0x{result.Tag.Index:X4}] {result.Tag.Name}.{(result.Tag.Group as Cache.Gen3.TagGroupGen3).Name}");
+                        });
 
                     generatedRmt2 = rmt2Tag;
                     return true;
