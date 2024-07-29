@@ -19,13 +19,25 @@ namespace TagTool.MtnDewIt.JSON
 
         public override void WriteJson(JsonWriter writer, StringId value, JsonSerializer serializer)
         {
-            writer.WriteValue(Cache.StringTable.GetString(value));
+            var stringId = new InlineStringId(Cache.StringTable.GetString(value));
+
+            serializer.Serialize(writer, stringId);
         }
 
         public override StringId ReadJson(JsonReader reader, Type objectType, StringId existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             // TODO: Add a proper reader
             return StringId.Invalid;
+        }
+    }
+
+    public class InlineStringId
+    {
+        public string StringId { get; set; }
+
+        public InlineStringId(string stringId)
+        {
+            StringId = stringId;
         }
     }
 }

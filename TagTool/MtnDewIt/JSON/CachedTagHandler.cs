@@ -19,7 +19,9 @@ namespace TagTool.MtnDewIt.JSON
 
         public override void WriteJson(JsonWriter writer, CachedTag value, JsonSerializer serializer)
         {
-            writer.WriteValue($"GetCachedTag<{Cache.TagCache.TagDefinitions.GetTagDefinitionType(value.Group).Name}>(\"{value.Name}\")");
+            var cachedTag = new InlineCachedTag(Cache.TagCache.TagDefinitions.GetTagDefinitionType(value.Group).Name, value.Name);
+
+            serializer.Serialize(writer, cachedTag);
         }
 
         public override CachedTag ReadJson(JsonReader reader, Type objectType, CachedTag existingValue, bool hasExistingValue, JsonSerializer serializer)
@@ -27,5 +29,17 @@ namespace TagTool.MtnDewIt.JSON
             // TODO: Add a proper reader
             return null;
         }
+    }
+
+    public class InlineCachedTag
+    {
+        public string Type { get; set; }
+        public string Name { get; set; }
+
+        public InlineCachedTag(string type, string name)
+        {
+            Type = type;
+            Name = name;
+        };
     }
 }
