@@ -40,6 +40,6 @@ namespace TagTool.MtnDewIt.JSON
         {
             Type = type;
             Name = name;
-        };
+        }
     }
 }
