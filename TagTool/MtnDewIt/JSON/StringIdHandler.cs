@@ -27,6 +27,11 @@ namespace TagTool.MtnDewIt.JSON
         public override StringId ReadJson(JsonReader reader, Type objectType, StringId existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             // TODO: Add a proper reader
+
+            // var inlineStringId = /* some function which retrieves the inline stringid object from the json */
+
+            // return CacheContext.StringTable.GetOrAddString(inlineStringId.StringId),
+
             return StringId.Invalid;
         }
     }

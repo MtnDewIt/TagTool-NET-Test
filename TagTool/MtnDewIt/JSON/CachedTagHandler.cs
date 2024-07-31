@@ -27,6 +27,11 @@ namespace TagTool.MtnDewIt.JSON
         public override CachedTag ReadJson(JsonReader reader, Type objectType, CachedTag existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             // TODO: Add a proper reader
+
+            // var inlineTag = /* some function which retrieves the inline tag object from the json */
+
+            // return GetCachedTag<ConvertToType(inlineTag.Type)>(inlineTag.Name);
+
             return null;
         }
     }
