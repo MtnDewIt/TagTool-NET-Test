@@ -5,6 +5,7 @@ using System.IO;
 using System;
 using TagTool.Common;
 using System.Collections.Generic;
+using TagTool.Tags;
 
 namespace TagTool.MtnDewIt.JSON
 {
@@ -19,13 +20,7 @@ namespace TagTool.MtnDewIt.JSON
             CacheContext = cacheContext;
         }
 
-        public void TestNew(object input) 
-        {
-            var json = SerializeToJson(input);
-            File.WriteAllText("json_test.json", json);
-        }
-
-        public string SerializeToJson(object input)
+        public string Serialize(object input)
         {
             var stringIdHandler = new StringIdHandler(Cache, CacheContext);
             var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
@@ -41,6 +36,24 @@ namespace TagTool.MtnDewIt.JSON
             };
 
             return JsonConvert.SerializeObject(input, settings);
+        }
+
+        public object Deserialize<T>(string input) where T : TagStructure
+        {
+            var stringIdHandler = new StringIdHandler(Cache, CacheContext);
+            var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
+
+            var settings = new JsonSerializerSettings
+            {
+                Converters = new List<JsonConverter>
+                {
+                    stringIdHandler,
+                    cachedTagHandler,
+                },
+                Formatting = Formatting.Indented
+            };
+
+            return JsonConvert.DeserializeObject<T>(input, settings);
         }
     }
 }
