@@ -38,7 +38,7 @@ namespace TagTool.MtnDewIt.JSON
             return JsonConvert.SerializeObject(input, settings);
         }
 
-        public object Deserialize<T>(string input) where T : TagStructure
+        public object Deserialize<T>(string input)
         {
             var stringIdHandler = new StringIdHandler(Cache, CacheContext);
             var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);

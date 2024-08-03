@@ -34,9 +34,7 @@ namespace TagTool.MtnDewIt.Commands
 
         public override object Execute(List<string> args)
         {
-            var handler = new JsonHandler(Cache, CacheContext);
-
-            var modg = new ModGlobalsDefinition() 
+            var modg = new ModGlobalsDefinition()
             {
                 Version = 1,
                 PlayerCharacterSets = new List<ModGlobalsDefinition.PlayerCharacterSet>()
@@ -283,35 +281,46 @@ namespace TagTool.MtnDewIt.Commands
                 },
             };
 
+            var handler = new JsonHandler(Cache, CacheContext);
+
+            var tagObject = new TagObject();
+
+            tagObject.TagName = $@"json_data\multiplayer\mod_globals";
+            tagObject.TagType = $@"mod_globals";
+            tagObject.TagData = modg;
+
             Console.WriteLine($@"Serializing JSON Data...");
 
-            var json = handler.Serialize(modg);
+            var json = handler.Serialize(tagObject);
             File.WriteAllText("json_serializer_test.json", json);
 
             Console.WriteLine($@"Deserializing JSON Data...");
 
             using (var stream = Cache.OpenCacheReadWrite())
             {
-                // TODO: Pull tag type from json file, along with object data
-                var modgTag = CacheContext.TagCache.AllocateTag<ModGlobalsDefinition>($@"json_data\multiplayer\mod_globals");
+                // The amount of template functions makes doing this really annoying :/
 
-                // TODO: Pull the object type from the json file (No clue how I'm gonna do this as the type needs to be pulled before the tag object data is deserialized)
-                var definition = handler.Deserialize<ModGlobalsDefinition>(File.ReadAllText("json_serializer_test.json"));
+                // Deserialize the data from the JSON file
+                var jsonData = handler.Deserialize<TagObject>(File.ReadAllText("json_serializer_test.json"));
 
-                Cache.Serialize(stream, modgTag, definition);
+                // Converts the JSON data into a tag object
+                var parsedObject = (TagObject)jsonData;
 
-                Cache.SaveStrings();
+                // TODO: Maybe try converting the tag data object so that it uses a dynamic type?
+                // Tag data needs to be serialized back into a JSON object which can then converted in a tag definition object
+                var tagData = handler.Deserialize<ModGlobalsDefinition>(handler.Serialize(parsedObject.TagData));
+
+                // We assume that the tag we wanna modify is already in the cache
+                GenerateTag<ModGlobalsDefinition>(stream, $@"{parsedObject.TagName}");
+
+                // Get the specified tag
+                var modgTag = CacheContext.TagCache.GetTag($@"{parsedObject.TagName}.{parsedObject.TagType}");
+
+                // Serialize using the data from the JSON file
+                Cache.Serialize(stream, modgTag, tagData);
             }
 
-            // CURRENT ISSUES:
-
-            // Unable to deserialize non-static types. Cached tags are an example of this, as most of the tag is static and tied to the cache.
-
-            // Tag structure and object types need to be defined before the tag object data has been deserialized. Resolving this may require some form of custom file struct, with each class having its own reader and writer
-
-            // Still doesn't fully account for all non-static types used within the tag definitions. More testing is needed.
-
-            // Will probably need an entirely separate handler for map variant data, however considering they are both a type of tag structure, it shouldn't be too difficult. It may just require a custom reader and writer for any non-static data within the variant struct (tag indexes and names, etc)
+            Cache.SaveStrings();
 
             return true;
         }
@@ -330,6 +339,13 @@ namespace TagTool.MtnDewIt.Commands
                 new TagToolWarning($@"Could not find tag: '{tagName}.{typeName}'. Assigning null tag instead");
                 return null;
             }
+        }
+
+        public void GenerateTag<T>(Stream stream, string tagName) where T : TagStructure
+        {
+            var tag = Cache.TagCache.AllocateTag<T>(tagName);
+            var definition = Activator.CreateInstance<T>();
+            Cache.Serialize(stream, tag, definition);
         }
     }
 }
