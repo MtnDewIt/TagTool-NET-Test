@@ -22,7 +22,7 @@ namespace TagTool.MtnDewIt.JSON
 
         public override void WriteJson(JsonWriter writer, CachedTag value, JsonSerializer serializer)
         {
-            var cachedTag = new InlineCachedTag(Cache.TagCache.TagDefinitions.GetTagDefinitionType(value.Group).Name, value.Name);
+            var cachedTag = new InlineCachedTag(TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(value.Group), Cache.Version, Cache.Platform).Structure.Name, value.Name);
 
             serializer.Serialize(writer, cachedTag);
         }
@@ -33,44 +33,21 @@ namespace TagTool.MtnDewIt.JSON
 
             if (inlineTag != null) 
             {
-                // TODO: REDO ALL THIS, BECAUSE THIS SUCKS
-
-                // This needs a complete rework. General idea would be to keep the current system where the tag type and name are separate,
-                // but use one of the other tag retrieval functions, which uses the full name, so all that needs to be done is that the inline tag type 
-                // justs needs to be appended to the end of the inline tag name.
-
-                Type tagType = Type.GetType($@"TagTool.Tags.Definitions.{inlineTag.Type}");
-
-                if (tagType == null) 
-                {
-                    // This is only here because apparently keeping all the definitions in the same namespace is rocket science
-                    tagType = Type.GetType($@"TagTool.Tags.{inlineTag.Type}");
-                }
-
-                // I hate reflection, but I'm forced to use it since all the tag retrieval functions use template functions :/
-                // Another option is I use one of the other functions which uses the full tag name, including the tag type.
-                var method = GetType().GetMethod(nameof(GetCachedTag));
-                var genericMethod = method.MakeGenericMethod(tagType);
-                var cachedTag = genericMethod.Invoke(this, [inlineTag.Name]);
-
-                return (CachedTag)cachedTag;
+                return GetCachedTag(inlineTag.Name, inlineTag.Type);
             }
 
             return null;
         }
 
-        public CachedTag GetCachedTag<T>(string tagName) where T : TagStructure
+        public CachedTag GetCachedTag(string tagName, string tagType)
         {
-            var tagAttribute = TagStructure.GetTagStructureAttribute(typeof(T), CacheContext.Version, CacheContext.Platform);
-            var typeName = tagAttribute.Tag;
-
-            if (CacheContext.TagCache.TryGetTag<T>(tagName, out var result))
+            if (CacheContext.TagCache.TryGetTag($@"{tagName}.{tagType}", out var result)) 
             {
                 return result;
             }
             else
             {
-                new TagToolWarning($@"Could not find tag: '{tagName}.{typeName}'. Assigning null tag instead");
+                new TagToolWarning($@"Could not find tag: '{tagName}.{tagType}'. Assigning null tag instead");
                 return null;
             }
         }
