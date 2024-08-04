@@ -9,6 +9,8 @@ using TagTool.Tags;
 using TagTool.Commands.Common;
 using System;
 using System.IO;
+using TagTool.IO;
+using TagTool.MtnDewIt.BlamFiles;
 
 namespace TagTool.MtnDewIt.Commands
 {
@@ -281,7 +283,7 @@ namespace TagTool.MtnDewIt.Commands
                 },
             };
 
-            var handler = new JsonHandler(Cache, CacheContext);
+            var tagHandler = new TagObjectHandler(Cache, CacheContext);
 
             var tagObject = new TagObject();
 
@@ -289,34 +291,59 @@ namespace TagTool.MtnDewIt.Commands
             tagObject.TagType = $@"ModGlobalsDefinition";
             tagObject.TagData = modg;
 
-            Console.WriteLine($@"Serializing JSON Data...");
+            Console.WriteLine($@"Serializing Tag JSON Data...");
 
-            var json = handler.Serialize(tagObject);
-            File.WriteAllText("json_serializer_test.json", json);
+            var tagJson = tagHandler.Serialize(tagObject);
+            File.WriteAllText("json_serializer_tag_test.json", tagJson);
 
-            Console.WriteLine($@"Deserializing JSON Data...");
+            Console.WriteLine($@"Deserializing Tag JSON Data...");
 
             using (var stream = Cache.OpenCacheReadWrite())
             {
                 // The amount of template functions makes doing this really annoying :/
 
                 // Deserialize the data from the JSON file
-                var jsonData = handler.Deserialize<TagObject>(File.ReadAllText("json_serializer_test.json"));
+                var parsedTagObject = tagHandler.Deserialize(File.ReadAllText("json_serializer_tag_test.json"));
 
-                // Converts the JSON data into a tag object
-                var parsedObject = (TagObject)jsonData;
-
-                // We assume that the tag we wanna modify is already in the cache
-                GenerateTag<ModGlobalsDefinition>(stream, $@"{parsedObject.TagName}");
+                // We assume that the tag we want to modify is already in the cache
+                GenerateTag<ModGlobalsDefinition>(stream, $@"{parsedTagObject.TagName}");
 
                 // Get the specified tag using the tag name and the tag structure name
-                var modgTag = CacheContext.TagCache.GetTag($@"{parsedObject.TagName}.{parsedObject.TagData.GetTagStructureInfo(Cache.Version, Cache.Platform).Structure.Name}");
+                var modgTag = CacheContext.TagCache.GetTag($@"{parsedTagObject.TagName}.{parsedTagObject.TagData.GetTagStructureInfo(Cache.Version, Cache.Platform).Structure.Name}");
 
                 // Serialize using the data from the JSON file
-                Cache.Serialize(stream, modgTag, parsedObject.TagData);
+                Cache.Serialize(stream, modgTag, parsedTagObject.TagData);
             }
 
             Cache.SaveStrings();
+
+            var mapHandler = new MapObjectHandler(Cache, CacheContext);
+
+            var mapObject = new MapObject();
+
+            mapObject.MapName = $@"guardian_test";
+            mapObject.MapData = GetMapData($@"{CacheContext.Directory.FullName}\guardian.map");
+
+            Console.WriteLine($@"Serializing Map JSON Data...");
+
+            var mapJson = mapHandler.Serialize(mapObject);
+            File.WriteAllText("json_serializer_map_test.json", mapJson);
+
+            Console.WriteLine($@"Deserializing Map JSON Data...");
+
+            // Deserialize the data from the JSON file (Currently can't deserialize correctly as some of field types are abstract)
+            var parsedMapObject = mapHandler.Deserialize(File.ReadAllText("json_serializer_map_test.json"));
+
+            // Creates a new file info for the map file based on the map name
+            var mapFile = new FileInfo($@"{CacheContext.Directory.FullName}\{parsedMapObject.MapName}.map");
+
+            // Creates a new file, opens a stream to said file and writes the deserialized data to the map file
+            using (var stream = mapFile.Create())
+            using (var writer = new EndianWriter(stream))
+            {
+                parsedMapObject.MapData.WriteData(writer);
+            }
+
 
             return true;
         }
@@ -342,6 +369,22 @@ namespace TagTool.MtnDewIt.Commands
             var tag = Cache.TagCache.AllocateTag<T>(tagName);
             var definition = Activator.CreateInstance<T>();
             Cache.Serialize(stream, tag, definition);
+        }
+
+        public MapFileData GetMapData(string input) 
+        {
+            var file = new FileInfo(input);
+
+            var mapFileData = new MapFileData();
+
+            using (var stream = file.OpenRead()) 
+            {
+                var reader = new EndianReader(stream);
+
+                mapFileData.ReadData(reader);
+            }
+
+            return mapFileData;
         }
     }
 }

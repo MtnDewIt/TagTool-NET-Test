@@ -1,44 +1,22 @@
-﻿using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
-using Newtonsoft.Json;
-using System.IO;
-using System;
-using TagTool.Common;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using TagTool.Tags;
+using TagTool.Cache.HaloOnline;
+using TagTool.Cache;
 
 namespace TagTool.MtnDewIt.JSON
 {
-    public class JsonHandler 
+    public class TagObjectHandler 
     {
         GameCache Cache;
         GameCacheHaloOnline CacheContext;
 
-        public JsonHandler(GameCache cache, GameCacheHaloOnline cacheContext)
+        public TagObjectHandler(GameCache cache, GameCacheHaloOnline cacheContext)
         {
             Cache = cache;
             CacheContext = cacheContext;
         }
 
         public string Serialize(object input)
-        {
-            var stringIdHandler = new StringIdHandler(Cache, CacheContext);
-            var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
-
-            var settings = new JsonSerializerSettings
-            {
-                Converters = new List<JsonConverter> 
-                { 
-                    stringIdHandler,
-                    cachedTagHandler,
-                },
-                Formatting = Formatting.Indented
-            };
-
-            return JsonConvert.SerializeObject(input, settings);
-        }
-
-        public object Deserialize<T>(string input)
         {
             var stringIdHandler = new StringIdHandler(Cache, CacheContext);
             var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
@@ -53,7 +31,25 @@ namespace TagTool.MtnDewIt.JSON
                 Formatting = Formatting.Indented
             };
 
-            return JsonConvert.DeserializeObject<T>(input, settings);
+            return JsonConvert.SerializeObject(input, settings);
+        }
+
+        public TagObject Deserialize(string input)
+        {
+            var stringIdHandler = new StringIdHandler(Cache, CacheContext);
+            var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
+
+            var settings = new JsonSerializerSettings
+            {
+                Converters = new List<JsonConverter>
+                {
+                    stringIdHandler,
+                    cachedTagHandler,
+                },
+                Formatting = Formatting.Indented
+            };
+
+            return JsonConvert.DeserializeObject<TagObject>(input, settings);
         }
     }
 }
