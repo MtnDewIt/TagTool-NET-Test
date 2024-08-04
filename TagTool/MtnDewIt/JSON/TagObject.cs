@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TagTool.Cache;
 using TagTool.Tags;
 
 namespace TagTool.MtnDewIt.JSON
@@ -8,6 +9,7 @@ namespace TagTool.MtnDewIt.JSON
     {
         public string TagName { get; set; }
         public string TagType { get; set; }
+        public CacheVersion TagVersion { get; set; }
 
         public List<AddStringFunction> AddStrings { get; set; }
         public List<AddBitmapFunction> AddBitmaps { get; set; }

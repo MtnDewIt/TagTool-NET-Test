@@ -285,11 +285,13 @@ namespace TagTool.MtnDewIt.Commands
 
             var tagHandler = new TagObjectHandler(Cache, CacheContext);
 
-            var tagObject = new TagObject();
-
-            tagObject.TagName = $@"json_data\multiplayer\mod_globals";
-            tagObject.TagType = $@"ModGlobalsDefinition";
-            tagObject.TagData = modg;
+            var tagObject = new TagObject() 
+            {
+                TagName = $@"json_data\multiplayer\mod_globals",
+                TagType = $@"ModGlobalsDefinition",
+                TagVersion = Cache.Version,
+                TagData = modg,
+            };
 
             Console.WriteLine($@"Serializing Tag JSON Data...");
 
@@ -319,10 +321,15 @@ namespace TagTool.MtnDewIt.Commands
 
             var mapHandler = new MapObjectHandler(Cache, CacheContext);
 
-            var mapObject = new MapObject();
+            var mapData = GetMapData($@"{CacheContext.Directory.FullName}\guardian.map");
 
-            mapObject.MapName = $@"guardian_test";
-            mapObject.MapData = GetMapData($@"{CacheContext.Directory.FullName}\guardian.map");
+            var mapObject = new MapObject() 
+            {
+                MapName = $@"guardian_test",
+                MapVersion = mapData.Version,
+                CacheFileHeaderData = mapData.Header,
+                BlfData = mapData.MapFileBlf,
+            };
 
             Console.WriteLine($@"Serializing Map JSON Data...");
 
@@ -331,7 +338,7 @@ namespace TagTool.MtnDewIt.Commands
 
             Console.WriteLine($@"Deserializing Map JSON Data...");
 
-            // Deserialize the data from the JSON file (Currently can't deserialize correctly as some of field types are abstract)
+            // Deserialize the data from the JSON file
             var parsedMapObject = mapHandler.Deserialize(File.ReadAllText("json_serializer_map_test.json"));
 
             // Creates a new file info for the map file based on the map name
@@ -341,7 +348,14 @@ namespace TagTool.MtnDewIt.Commands
             using (var stream = mapFile.Create())
             using (var writer = new EndianWriter(stream))
             {
-                parsedMapObject.MapData.WriteData(writer);
+                var data = new MapFileData() 
+                {
+                    Version = parsedMapObject.MapVersion,
+                    Header = parsedMapObject.CacheFileHeaderData,
+                    MapFileBlf = parsedMapObject.BlfData,
+                };
+
+                data.WriteData(writer);
             }
 
 
