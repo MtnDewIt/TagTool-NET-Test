@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using TagTool.Common;
-using TagTool.Tags.Definitions;
 
-namespace TagTool.Tags
+namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "player_action_set", Tag = "pact", Size = 0x11C)]
     public class PlayerActionSet : TagStructure
