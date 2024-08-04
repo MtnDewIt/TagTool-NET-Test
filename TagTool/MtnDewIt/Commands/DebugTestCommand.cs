@@ -286,7 +286,7 @@ namespace TagTool.MtnDewIt.Commands
             var tagObject = new TagObject();
 
             tagObject.TagName = $@"json_data\multiplayer\mod_globals";
-            tagObject.TagType = $@"mod_globals";
+            tagObject.TagType = $@"ModGlobalsDefinition";
             tagObject.TagData = modg;
 
             Console.WriteLine($@"Serializing JSON Data...");
@@ -306,18 +306,14 @@ namespace TagTool.MtnDewIt.Commands
                 // Converts the JSON data into a tag object
                 var parsedObject = (TagObject)jsonData;
 
-                // TODO: Maybe try converting the tag data object so that it uses a dynamic type?
-                // Tag data needs to be serialized back into a JSON object which can then converted in a tag definition object
-                var tagData = handler.Deserialize<ModGlobalsDefinition>(handler.Serialize(parsedObject.TagData));
-
                 // We assume that the tag we wanna modify is already in the cache
                 GenerateTag<ModGlobalsDefinition>(stream, $@"{parsedObject.TagName}");
 
-                // Get the specified tag
-                var modgTag = CacheContext.TagCache.GetTag($@"{parsedObject.TagName}.{parsedObject.TagType}");
+                // Get the specified tag using the tag name and the tag structure name
+                var modgTag = CacheContext.TagCache.GetTag($@"{parsedObject.TagName}.{parsedObject.TagData.GetTagStructureInfo(Cache.Version, Cache.Platform).Structure.Name}");
 
                 // Serialize using the data from the JSON file
-                Cache.Serialize(stream, modgTag, tagData);
+                Cache.Serialize(stream, modgTag, parsedObject.TagData);
             }
 
             Cache.SaveStrings();

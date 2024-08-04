@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using TagTool.Tags;
 
 namespace TagTool.MtnDewIt.JSON
 {
@@ -13,7 +15,25 @@ namespace TagTool.MtnDewIt.JSON
         public CompileScriptFunction CompileScript { get; set; }
         public SortModesFunction SortModes {get; set;}
 
-        public object TagData { get; set; }
+        private TagStructure InlineTagData { get; set; }
+        public TagStructure TagData 
+        {
+            get 
+            {
+                if (InlineTagData == null && !string.IsNullOrEmpty(TagType)) 
+                {
+                    // We assume that the all the tag definitions are in the same namespace
+                    var type = Type.GetType($@"TagTool.Tags.Definitions.{TagType}");
+                    InlineTagData = (TagStructure)Activator.CreateInstance(type);
+                }
+
+                return InlineTagData;
+            }
+            set 
+            {
+                InlineTagData = value;
+            }
+        }
     }
 
     public class AddStringFunction 
