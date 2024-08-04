@@ -875,7 +875,7 @@ namespace TagTool.MtnDewIt.Commands
 
             output = $"\n{inputIndent}{objectName}{nameString} = new FileAuthor";
             output += $"\n{inputIndent}{{";
-            output += $"\n{inputIndent}{internalIndent}Data = CacheFileHeaderData.SetAuthor(\"{CacheFileHeaderData.GetAuthor(author.Data)}\"),";
+            output += $"\n{inputIndent}{internalIndent}Data = CacheFileHeaderData.SetAuthor(\"{CacheFileHeaderDataHaloOnline.GetAuthor(author.Data)}\"),";
             output += $"\n{inputIndent}}}{terminator}";
 
             return output;

@@ -21,6 +21,7 @@ namespace TagTool.MtnDewIt.JSON
             var stringIdHandler = new StringIdHandler(Cache, CacheContext);
             var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
             var tagHandler = new  TagHandler(Cache, CacheContext);
+            var fileAuthorHandler = new FileAuthorHandler(Cache, CacheContext);
 
             var settings = new JsonSerializerSettings
             {
@@ -29,6 +30,7 @@ namespace TagTool.MtnDewIt.JSON
                     stringIdHandler,
                     cachedTagHandler,
                     tagHandler,
+                    fileAuthorHandler,
                 },
                 Formatting = Formatting.Indented
             };
@@ -41,6 +43,7 @@ namespace TagTool.MtnDewIt.JSON
             var stringIdHandler = new StringIdHandler(Cache, CacheContext);
             var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
             var tagHandler = new TagHandler(Cache, CacheContext);
+            var fileAuthorHandler = new FileAuthorHandler(Cache, CacheContext);
 
             var settings = new JsonSerializerSettings
             {
@@ -49,6 +52,7 @@ namespace TagTool.MtnDewIt.JSON
                     stringIdHandler,
                     cachedTagHandler,
                     tagHandler,
+                    fileAuthorHandler,
                 },
                 Formatting = Formatting.Indented
             };

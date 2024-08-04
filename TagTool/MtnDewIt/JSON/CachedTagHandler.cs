@@ -2,10 +2,8 @@
 using System;
 using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
-using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.Tags;
-using Assimp;
 
 namespace TagTool.MtnDewIt.JSON
 {
