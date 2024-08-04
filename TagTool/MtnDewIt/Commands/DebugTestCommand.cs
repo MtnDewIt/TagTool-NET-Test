@@ -3,6 +3,7 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 using TagTool.Commands;
 using TagTool.MtnDewIt.JSON;
+using TagTool.MtnDewIt.JSON.Handlers;
 using TagTool.Tags.Definitions;
 using TagTool.Common;
 using TagTool.Tags;

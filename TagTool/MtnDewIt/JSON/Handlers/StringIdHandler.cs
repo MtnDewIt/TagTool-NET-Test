@@ -4,7 +4,7 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 using TagTool.Common;
 
-namespace TagTool.MtnDewIt.JSON
+namespace TagTool.MtnDewIt.JSON.Handlers
 {
     public class StringIdHandler : JsonConverter<StringId>
     {

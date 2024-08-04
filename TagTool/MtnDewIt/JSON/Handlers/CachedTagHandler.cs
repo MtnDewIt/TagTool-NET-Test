@@ -5,7 +5,7 @@ using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Tags;
 
-namespace TagTool.MtnDewIt.JSON
+namespace TagTool.MtnDewIt.JSON.Handlers
 {
     public class CachedTagHandler : JsonConverter<CachedTag>
     {

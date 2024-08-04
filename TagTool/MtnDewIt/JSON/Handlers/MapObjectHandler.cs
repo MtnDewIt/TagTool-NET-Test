@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 
-namespace TagTool.MtnDewIt.JSON
+namespace TagTool.MtnDewIt.JSON.Handlers
 {
-    public class TagObjectHandler 
+    public class MapObjectHandler
     {
         GameCache Cache;
         GameCacheHaloOnline CacheContext;
 
-        public TagObjectHandler(GameCache cache, GameCacheHaloOnline cacheContext)
+        public MapObjectHandler(GameCache cache, GameCacheHaloOnline cacheContext)
         {
             Cache = cache;
             CacheContext = cacheContext;
@@ -20,7 +20,8 @@ namespace TagTool.MtnDewIt.JSON
         {
             var stringIdHandler = new StringIdHandler(Cache, CacheContext);
             var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
-            var tagHandler = new TagHandler(Cache, CacheContext);
+            var tagHandler = new  TagHandler(Cache, CacheContext);
+            var fileAuthorHandler = new FileAuthorHandler(Cache, CacheContext);
 
             var settings = new JsonSerializerSettings
             {
@@ -29,6 +30,7 @@ namespace TagTool.MtnDewIt.JSON
                     stringIdHandler,
                     cachedTagHandler,
                     tagHandler,
+                    fileAuthorHandler,
                 },
                 Formatting = Formatting.Indented
             };
@@ -36,11 +38,12 @@ namespace TagTool.MtnDewIt.JSON
             return JsonConvert.SerializeObject(input, settings);
         }
 
-        public TagObject Deserialize(string input)
+        public MapObject Deserialize(string input)
         {
             var stringIdHandler = new StringIdHandler(Cache, CacheContext);
             var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
             var tagHandler = new TagHandler(Cache, CacheContext);
+            var fileAuthorHandler = new FileAuthorHandler(Cache, CacheContext);
 
             var settings = new JsonSerializerSettings
             {
@@ -49,11 +52,12 @@ namespace TagTool.MtnDewIt.JSON
                     stringIdHandler,
                     cachedTagHandler,
                     tagHandler,
+                    fileAuthorHandler,
                 },
                 Formatting = Formatting.Indented
             };
 
-            return JsonConvert.DeserializeObject<TagObject>(input, settings);
+            return JsonConvert.DeserializeObject<MapObject>(input, settings);
         }
     }
 }

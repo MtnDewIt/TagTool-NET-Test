@@ -4,7 +4,7 @@ using TagTool.Cache;
 using TagTool.MtnDewIt.BlamFiles;
 using System;
 
-namespace TagTool.MtnDewIt.JSON
+namespace TagTool.MtnDewIt.JSON.Handlers
 {
     public class FileAuthorHandler : JsonConverter<FileAuthor>
     {
