@@ -121,7 +121,7 @@ namespace TagTool.MtnDewIt.Commands
                 var fieldType = tagFieldInfo.FieldType;
                 var fieldValue = tagFieldInfo.GetValue(value);
 
-                if (tagFieldInfo.Attribute != null && tagFieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.Padding) || (tagFieldInfo.Name.Contains("Unused") || tagFieldInfo.Name.Contains("unused") || tagFieldInfo.Name.Contains("Padding") || tagFieldInfo.Name.Contains("padding")))
+                if (tagFieldInfo.Attribute != null && tagFieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.Padding) || (tagFieldInfo.Name.Contains("unused", StringComparison.OrdinalIgnoreCase) || tagFieldInfo.Name.Contains("padding", StringComparison.OrdinalIgnoreCase)))
                     continue;
 
                 if (IgnoreDefaultValues) 
