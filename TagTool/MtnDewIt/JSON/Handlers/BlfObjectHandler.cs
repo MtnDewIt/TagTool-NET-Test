@@ -1,33 +1,29 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-using TagTool.Cache.HaloOnline;
+﻿using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace TagTool.MtnDewIt.JSON.Handlers
 {
-    public class TagObjectHandler 
+    public class BlfObjectHandler 
     {
         GameCache Cache;
         GameCacheHaloOnline CacheContext;
 
-        public TagObjectHandler(GameCache cache, GameCacheHaloOnline cacheContext)
+        public BlfObjectHandler(GameCache cache, GameCacheHaloOnline cacheContext)
         {
             Cache = cache;
             CacheContext = cacheContext;
         }
 
-        public string Serialize(TagObject input)
+        public string Serialize(BlfObject input)
         {
-            var stringIdHandler = new StringIdHandler(Cache, CacheContext);
-            var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
             var tagHandler = new TagHandler(Cache, CacheContext);
 
             var settings = new JsonSerializerSettings
             {
                 Converters = new List<JsonConverter>
                 {
-                    stringIdHandler,
-                    cachedTagHandler,
                     tagHandler,
                 },
                 Formatting = Formatting.Indented
@@ -36,24 +32,20 @@ namespace TagTool.MtnDewIt.JSON.Handlers
             return JsonConvert.SerializeObject(input, settings);
         }
 
-        public TagObject Deserialize(string input)
+        public BlfObject Deserialize(string input)
         {
-            var stringIdHandler = new StringIdHandler(Cache, CacheContext);
-            var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
             var tagHandler = new TagHandler(Cache, CacheContext);
 
             var settings = new JsonSerializerSettings
             {
                 Converters = new List<JsonConverter>
                 {
-                    stringIdHandler,
-                    cachedTagHandler,
                     tagHandler,
                 },
                 Formatting = Formatting.Indented
             };
 
-            return JsonConvert.DeserializeObject<TagObject>(input, settings);
+            return JsonConvert.DeserializeObject<BlfObject>(input, settings);
         }
     }
 }

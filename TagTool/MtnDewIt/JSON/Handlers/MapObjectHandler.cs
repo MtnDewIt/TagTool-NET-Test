@@ -16,7 +16,7 @@ namespace TagTool.MtnDewIt.JSON.Handlers
             CacheContext = cacheContext;
         }
 
-        public string Serialize(object input)
+        public string Serialize(MapObject input)
         {
             var stringIdHandler = new StringIdHandler(Cache, CacheContext);
             var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
