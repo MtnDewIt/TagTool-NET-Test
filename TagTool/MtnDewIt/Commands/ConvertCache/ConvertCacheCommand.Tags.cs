@@ -647,8 +647,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_render_model(Cache, CacheContext, CacheStream);
 
-            new objects_eldewrito_reforge_hemisphere_2x2x05_render_model(Cache, CacheContext, CacheStream);
-
             Cache.SaveStrings();
         }
     }
