@@ -15,6 +15,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
         {
             InitializePortingContext();
 
+            GenerateTag<Bitmap>($@"shaders\default_bitmaps\bitmaps\monochrome_random");
+
             sandbox.SetPortingProperties(audioCodec: Compression.OGG);
             GenerateTag<Bitmap>($@"ui\chud\bitmaps\elite_stamina_icon");
             sandbox.PortTag($@"", $@"ui\chud\elite.chud_definition");
@@ -391,6 +393,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             haloOnline.PortTag($@"", $@"objects\equipment\armorlock_equipment\armorlock_equipment.equipment");
             haloOnline.PortTag($@"", $@"objects\equipment\adrenaline_equipment\adrenaline_equipment.equipment");
             haloOnline.PortTag($@"", $@"objects\equipment\ammopack_equipment\ammopack_equipment.equipment");
+
+            //GenerateTag<MultilingualUnicodeStringList>($@"ui\global_strings\weapon_type_name_strings");
         }
 
         public void InitializePortingContext() 

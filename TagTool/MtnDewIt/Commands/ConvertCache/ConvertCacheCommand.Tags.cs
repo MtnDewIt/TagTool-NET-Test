@@ -245,6 +245,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new globals_elite_fp_shield_impact_shield_impact(Cache, CacheContext, CacheStream);
 
+            new globals_rasterizer_globals_rasterizer_globals(Cache, CacheContext, CacheStream);
+
             new fx_shield_impacts_overshield_3p_shield_impact(Cache, CacheContext, CacheStream);
 
             new fx_shield_impacts_overshield_1p_shield_impact(Cache, CacheContext, CacheStream);
@@ -646,6 +648,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             new levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_model(Cache, CacheContext, CacheStream);
 
             new levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_render_model(Cache, CacheContext, CacheStream);
+
+            //new ui_global_strings_weapon_type_name_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
 
             Cache.SaveStrings();
         }

@@ -1,11 +1,11 @@
-using TagTool.Cache;
+﻿using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 using System.IO;
 using System.Collections.Generic;
 
-namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
 {
     public class globals_rasterizer_globals_rasterizer_globals : TagFile
     {

@@ -17,6 +17,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
         {
             InitializePortingContext();
 
+            GenerateTag<Bitmap>($@"shaders\default_bitmaps\bitmaps\monochrome_random");
+
             sandbox.SetPortingProperties(audioCodec: Compression.OGG);
             GenerateTag<AiDialogueGlobals>($@"ai\ai_dialogue_globals");
             UpdateData<ai_ai_dialogue_globals_ai_dialogue_globals>();
