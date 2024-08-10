@@ -11,11 +11,10 @@ namespace TagTool.MtnDewIt.JSON
         public string TagType { get; set; }
         public CacheVersion TagVersion { get; set; }
 
-        public List<AddStringFunction> AddStrings { get; set; }
-        public List<AddBitmapFunction> AddBitmaps { get; set; }
-        public List<AddAnimationFunction> AddAnimations { get; set; }
-        public CompileScriptFunction CompileScript { get; set; }
-        public SortModesFunction SortModes {get; set;}
+        public List<UnicodeStringData> UnicodeStrings { get; set; }
+        public List<BitmapResource> BitmapResources { get; set; }
+        public List<AnimationResource> AnimationResources { get; set; }
+        public BlamScriptResource BlamScriptResource { get; set; }
 
         private TagStructure InlineTagData { get; set; }
         public TagStructure TagData 
@@ -38,56 +37,49 @@ namespace TagTool.MtnDewIt.JSON
         }
     }
 
-    public class AddStringFunction 
+    public class UnicodeStringData 
     {
         public string StringIdName { get; set; }
         public string StringIdContent { get; set; }
 
-        public AddStringFunction(string stringIdName, string stringIdContent) 
+        public UnicodeStringData(string stringIdName, string stringIdContent) 
         {
             StringIdName = stringIdName;
             StringIdContent = stringIdContent;
         }
     }
 
-    public class AddBitmapFunction
+    public class BitmapResource
     {
         public int BitmapIndex { get; set; }
         public string DDSFile { get; set; }
 
-        public AddBitmapFunction(int bitmapIndex, string ddsFile) 
+        public BitmapResource(int bitmapIndex, string ddsFile) 
         {
             BitmapIndex = bitmapIndex;
             DDSFile = ddsFile;
         }
     }
 
-    public class AddAnimationFunction
+    public class AnimationResource
     {
         public string AnimationFile { get; set; }
-
-        public AddAnimationFunction(string animationFile) 
-        {
-            AnimationFile = animationFile;
-        }
-    }
-
-    public class CompileScriptFunction
-    {
-        public string ScriptFile { get; set; }
-
-        public CompileScriptFunction(string scriptFile) 
-        {
-            ScriptFile = scriptFile;
-        }
-    }
-    public class SortModesFunction
-    {
         public bool SortModes { get; set; }
 
-        public SortModesFunction(bool sortModes) 
+        public AnimationResource(string animationFile, bool sortModes) 
         {
+            AnimationFile = animationFile;
             SortModes = sortModes;
+        }
+    }
+
+    public class BlamScriptResource
+    {
+        public string BlamScriptFile { get; set; }
+
+        public BlamScriptResource(string scriptFile) 
+        {
+            BlamScriptFile = scriptFile;
         }
     }
 }
