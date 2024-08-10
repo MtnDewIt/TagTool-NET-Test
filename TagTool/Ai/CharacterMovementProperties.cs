@@ -1,3 +1,4 @@
+using TagTool.Cache;
 using TagTool.Tags;
 using static TagTool.Tags.TagFieldFlags;
 
@@ -5,8 +6,13 @@ namespace TagTool.Ai
 {
     [TagStructure(Size = 0x2C)]
     public class CharacterMovementProperties : TagStructure
-	{
-        public CharacterMovementFlags Flags;
+    {
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
+        public CharacterMovementFlagsH3 FlagsH3;
+        [TagField(MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach11883)]
+        public CharacterMovementFlagsReach FlagsReach;
+        [TagField(Version = CacheVersion.Halo4)]
+        public CharacterMovementFlagsH4 FlagsH4;
         public float PathfindingRadius;
         public float DestinationRadius;
         public float DiveGrenadeChance;
