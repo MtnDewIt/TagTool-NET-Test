@@ -23,6 +23,11 @@ namespace TagTool.MtnDewIt.JSON.Handlers
             var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
             var tagHandler = new TagHandler(Cache, CacheContext);
             var tagStructureHandler = new TagStructureHandler(Cache, CacheContext);
+            var enumHandler  = new EnumHandler(Cache, CacheContext);
+            var unicodeStringHandler = new UnicodeStringHandler(Cache, CacheContext);
+            var animationResourceHandler = new AnimationResourceHandler(Cache, CacheContext);
+            var bitmapResourceHandler = new BitmapResourceHandler(Cache, CacheContext);
+            var blamScriptResourceHandler = new BlamScriptResourceHandler(Cache, CacheContext);
 
             var settings = new JsonSerializerSettings
             {
@@ -32,6 +37,11 @@ namespace TagTool.MtnDewIt.JSON.Handlers
                     cachedTagHandler,
                     tagHandler,
                     tagStructureHandler,
+                    enumHandler,
+                    unicodeStringHandler,
+                    animationResourceHandler,
+                    bitmapResourceHandler,
+                    blamScriptResourceHandler,
                 },
                 Formatting = Formatting.Indented,
             };
@@ -44,6 +54,11 @@ namespace TagTool.MtnDewIt.JSON.Handlers
             var stringIdHandler = new StringIdHandler(Cache, CacheContext);
             var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
             var tagHandler = new TagHandler(Cache, CacheContext);
+            var enumHandler  = new EnumHandler(Cache, CacheContext);
+            var unicodeStringHandler = new UnicodeStringHandler(Cache, CacheContext);
+            var animationResourceHandler = new AnimationResourceHandler(Cache, CacheContext);
+            var bitmapResourceHandler = new BitmapResourceHandler(Cache, CacheContext);
+            var blamScriptResourceHandler = new BlamScriptResourceHandler(Cache, CacheContext);
 
             var settings = new JsonSerializerSettings
             {
@@ -52,6 +67,11 @@ namespace TagTool.MtnDewIt.JSON.Handlers
                     stringIdHandler,
                     cachedTagHandler,
                     tagHandler,
+                    enumHandler,
+                    unicodeStringHandler,
+                    animationResourceHandler,
+                    bitmapResourceHandler,
+                    blamScriptResourceHandler,
                 },
                 Formatting = Formatting.Indented
             };
