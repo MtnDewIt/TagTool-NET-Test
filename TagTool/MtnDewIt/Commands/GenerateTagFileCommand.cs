@@ -10,7 +10,7 @@ using TagTool.Tags;
 
 namespace TagTool.MtnDewIt.Commands 
 {
-    public class GenerateTagObjectCommand : Command
+    public class GenerateTagFileCommand : Command
     {
         private GameCache Cache;
         private CachedTag Tag;
@@ -21,13 +21,13 @@ namespace TagTool.MtnDewIt.Commands
         private bool IgnoreDefaultValues;
         private bool IsRenderMethodObject;
 
-        public GenerateTagObjectCommand(GameCache cache) : base
+        public GenerateTagFileCommand(GameCache cache) : base
         (
             false,
-            "GenerateTagObject",
+            "GenerateTagFile",
             "Generates a C# tag object file based on the specified tag",
 
-            "GenerateTagObject <Target_Path> <Tag_Name> [IgnoreDefaultValues]",
+            "GenerateTagFile <Target_Path> <Tag_Name> [IgnoreDefaultValues]",
             "Generates a C# tag object file based on the specified tag. This object can either be generated as a TagFile\n" +
             "object or as a RenderMethod object. This object will be formatted based on the specified tag's definition"
         )

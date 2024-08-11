@@ -12,20 +12,20 @@ using TagTool.Tags;
 
 namespace TagTool.MtnDewIt.Commands 
 {
-    public class GenerateMapObjectCommand : Command 
+    public class GenerateMapFileCommand : Command 
     {
         private GameCache Cache;
         private object Value;
 
         private string Layout;
         private bool IgnoreDefaultValues;
-        public GenerateMapObjectCommand(GameCache cache) : base
+        public GenerateMapFileCommand(GameCache cache) : base
         (
             false,
-            "GenerateMapObject",
+            "GenerateMapFile",
             "Generates a C# object based on the current map file",
 
-            "GenerateMapObject <Output File Path> <Map_Name> [IgnoreDefaultValues]",
+            "GenerateMapFile <Output File Path> <Map_Name> [IgnoreDefaultValues]",
             "Generates a C# object based on the current map file. This object will be formatted based on the internal BLF layout"
         )
         {
