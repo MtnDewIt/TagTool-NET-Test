@@ -71,8 +71,8 @@ namespace TagTool.Commands.Tags
 
             context.AddCommand(new ConvertCacheCommand(cache, contextStack));
             context.AddCommand(new GenerateCacheCommand(cache, contextStack));
-            context.AddCommand(new GenerateTagObjectCommand(cache));
-            context.AddCommand(new GenerateMapObjectCommand(cache));
+            context.AddCommand(new GenerateTagFileCommand(cache));
+            context.AddCommand(new GenerateMapFileCommand(cache));
 
             // Halo Online Specific Commands
             if (cache is GameCacheHaloOnlineBase)
@@ -128,9 +128,7 @@ namespace TagTool.Commands.Tags
                 var hoCache = cache as GameCacheHaloOnline;
                 context.AddCommand(new DebugTestCommand(cache, hoCache, contextStack));
                 context.AddCommand(new UpdateShaderDataCommand(cache, hoCache));
-                context.AddCommand(new UpdateEDLegacyTagsCommand(hoCache));
-                context.AddCommand(new UpdateEDTagsCommand(hoCache));
-                context.AddCommand(new UpdateHOTagsCommand(hoCache));
+                context.AddCommand(new UpdateTagListCommand(hoCache));
                 context.AddCommand(new RebuildCacheFileCommand(hoCache));
                 context.AddCommand(new CreateModPackageCommand(contextStack, hoCache));
                 context.AddCommand(new UpdateModPackageCommand(contextStack, hoCache));
@@ -141,7 +139,7 @@ namespace TagTool.Commands.Tags
             if (cache is GameCacheModPackage)
             {
                 var modCache = cache as GameCacheModPackage;
-                context.AddCommand(new UpdateEDTagsCommand(modCache));
+                context.AddCommand(new UpdateTagListCommand(modCache));
                 context.AddCommand(new SwitchTagCacheCommand(modCache));
                 context.AddCommand(new ModCacheInfoCommand(modCache));
                 context.AddCommand(new SaveModPackageCommand(modCache));
