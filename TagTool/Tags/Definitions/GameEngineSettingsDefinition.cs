@@ -581,7 +581,10 @@ namespace TagTool.Tags.Definitions
         [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloOnlineED)]
         public class AssaultVariant : BaseVariant
         {
-            public FlagsValue Flags;
+            [TagField(MaxVersion = CacheVersion.Halo3ODST)]
+            public FlagsValue FlagsH3;
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+            public FlagsValueHO FlagsHO;
             public RespawnOnCaptureValue RespawnOnCapture;
             public GameModeValue GameMode;
             public EnemyBombWaypointValue EnemyBombWaypoint;
@@ -608,6 +611,13 @@ namespace TagTool.Tags.Definitions
             {
                 None,
                 ResetOnDisarm = 1 << 0
+            }
+            [Flags]
+            public enum FlagsValueHO : int
+            {
+                None,
+                ResetOnDisarm = 1 << 0,
+                SiegeMode = 1 << 1
             }
 
             public enum RespawnOnCaptureValue : short
