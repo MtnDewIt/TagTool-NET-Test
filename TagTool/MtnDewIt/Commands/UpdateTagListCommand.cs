@@ -44,17 +44,17 @@ namespace TagTool.MtnDewIt.Commands
             if (!Enum.TryParse(args[0], true, out TagListVersion tagListVersion))
                 return new TagToolError(CommandError.ArgInvalid);
 
-            // TODO: Figure out a proper folder structure for all these JSON files
+            // TODO: Figure out how to route the file path through a handler (the folder tree is static)
             switch (tagListVersion)
             {
                 case TagListVersion.ElDewrito:
-                    jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\tag_names\ed_tag_name_table.json");
+                    jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\bin\eldewrito_tags.json");
                     break;
                 case TagListVersion.ElDewritoLegacy:
-                    jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\tag_names\ed_legacy_tag_name_table.json");
+                    jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\bin\eldewrito_legacy_tags.json");
                     break;
                 case TagListVersion.MS23:
-                    jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\tag_names\ms23_tag_name_table.json");
+                    jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\bin\ms23_tags.json");
                     break;
             }
 
