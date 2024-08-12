@@ -15265,8 +15265,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             matg.GameProgressionGlobals = GetCachedTag<GameProgression>($@"globals\game_progression");
             matg.AchievementGlobals = GetCachedTag<Achievements>($@"globals\global_achievements");
             matg.InputGlobals = GetCachedTag<InputGlobals>($@"globals\input_globals");
-            matg.Unknown266 = 1f;
-            matg.Unknown267 = 0.9f;
+            matg.UnitCamouflageMaximum = 1f;
+            matg.VehicleCamouflageMaximum = 0.9f;
             matg.Unknown268 = 3.5f;
             matg.Unknown269 = 5f;
             matg.Unknown270 = new TagTool.Tags.TagFunction()
