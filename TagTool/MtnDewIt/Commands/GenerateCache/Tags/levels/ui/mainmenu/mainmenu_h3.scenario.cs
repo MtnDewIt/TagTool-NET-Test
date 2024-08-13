@@ -4221,7 +4221,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
             };
             CacheContext.Serialize(Stream, tag, scnr);
 
-            CompileScript(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Scripts\mainmenu_h3.hsc");
+            CompileScript(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\scripts\mainmenu_h3.hsc");
         }
     }
 }
