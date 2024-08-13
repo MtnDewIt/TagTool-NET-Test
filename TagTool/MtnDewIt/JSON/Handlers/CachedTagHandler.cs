@@ -20,7 +20,7 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override void WriteJson(JsonWriter writer, CachedTag value, JsonSerializer serializer)
         {
-            var cachedTag = new InlineCachedTag(TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(value.Group), Cache.Version, Cache.Platform).Structure.Name, value.Name);
+            var cachedTag = new InlineCachedTag(TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(value.Group), Cache.Version, Cache.Platform).Structure.Name, value.Name, false);
 
             serializer.Serialize(writer, cachedTag);
         }
@@ -31,7 +31,14 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
             if (inlineTag != null) 
             {
-                return GetCachedTag(inlineTag.Name, inlineTag.Type);
+                if (inlineTag.Generate)
+                {
+                    return GenerateCachedTag(inlineTag.Name, inlineTag.Type);
+                }
+                else
+                {
+                    return GetCachedTag(inlineTag.Name, inlineTag.Type);
+                }
             }
 
             return null;
@@ -49,17 +56,36 @@ namespace TagTool.MtnDewIt.JSON.Handlers
                 return null;
             }
         }
+
+        public CachedTag GenerateCachedTag(string tagName, string tagType)
+        {
+            if (!Cache.TagCache.TryGetTag($@"{tagName}.{tagType}", out var result)) 
+            {
+                // Once again, we assume that the all the tag definitions are in the same namespace
+                // TODO: Find some way of getting the type?
+                //var type = Type.GetType($@"TagTool.Tags.Definitions.{}");
+                //result = Cache.TagCache.AllocateTag(type, tagName);
+                //var definition = (TagStructure)Activator.CreateInstance(type);
+                // TODO: Add stream to handler constructor
+                //CacheContext.Serialize(Stream, result, definition);
+                //CacheContext.SaveTagNames();
+            }
+            
+            return result;
+        }
     }
 
     public class InlineCachedTag
     {
         public string Type { get; set; }
         public string Name { get; set; }
+        public bool Generate { get; set; }
 
-        public InlineCachedTag(string type, string name)
+        public InlineCachedTag(string type, string name, bool generate)
         {
             Type = type;
             Name = name;
+            Generate = generate;
         }
     }
 }
