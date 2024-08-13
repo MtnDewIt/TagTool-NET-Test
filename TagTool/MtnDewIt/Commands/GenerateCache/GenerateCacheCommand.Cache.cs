@@ -513,12 +513,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
             if (!File.Exists($@"{path}\fonts\font_package.bin"))
             {
-                File.Copy($@"{Program.TagToolDirectory}\Tools\BaseCache\Fonts\Upscaled\font_package.bin", $@"{path}\fonts\font_package.bin");
+                File.Copy($@"{Program.TagToolDirectory}\Tools\JSON\maps\fonts\font_package_upscaled.bin", $@"{path}\fonts\font_package.bin");
             }
             else
             {
                 new TagToolWarning($@"Font Package Detected in Specified Directory! Replacing Anyway.");
-                File.Copy($@"{Program.TagToolDirectory}\Tools\BaseCache\Fonts\Upscaled\font_package.bin", $@"{path}\fonts\font_package.bin", true);
+                File.Copy($@"{Program.TagToolDirectory}\Tools\JSON\maps\fonts\font_package_upscaled.bin", $@"{path}\fonts\font_package.bin", true);
             }
         }
 
