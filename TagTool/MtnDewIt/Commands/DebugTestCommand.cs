@@ -283,9 +283,7 @@ namespace TagTool.MtnDewIt.Commands
                     },
                 },
             };
-
-            var tagHandler = new TagObjectHandler(Cache, CacheContext);
-
+            
             var tagObject = new TagObject() 
             {
                 TagName = $@"json_data\multiplayer\mod_globals",
@@ -294,33 +292,40 @@ namespace TagTool.MtnDewIt.Commands
                 TagData = modg,
             };
 
-            Console.WriteLine($@"Serializing Tag JSON Data...");
-
-            var tagJson = tagHandler.Serialize(tagObject);
-            File.WriteAllText("json_serializer_tag_test.json", tagJson);
-
-            Console.WriteLine($@"Deserializing Tag JSON Data...");
-
-            using (var stream = Cache.OpenCacheReadWrite())
+            using (var cacheStream = Cache.OpenCacheReadWrite())
             {
-                // The amount of template functions makes doing this really annoying :/
+                // Create a new instance of the JSON handler
+                var tagHandler = new TagObjectHandler(Cache, CacheContext);
+
+                // Easy Serializer Breakpoint
+                Console.WriteLine($@"Serializing Tag JSON Data...");
+    
+                // Serialize the tag object into a JSON string
+                var tagJson = tagHandler.Serialize(tagObject);
+
+                // Write the JSON string to a file
+                File.WriteAllText("json_serializer_tag_test.json", tagJson);
+    
+                // Easy Deserializer Breakpoint
+                Console.WriteLine($@"Deserializing Tag JSON Data...");
 
                 // Deserialize the data from the JSON file
                 var parsedTagObject = tagHandler.Deserialize(File.ReadAllText("json_serializer_tag_test.json"));
 
                 // We assume that the tag we want to modify is already in the cache
-                GenerateTag<ModGlobalsDefinition>(stream, $@"{parsedTagObject.TagName}");
+                GenerateTag<ModGlobalsDefinition>(cacheStream, $@"{parsedTagObject.TagName}");
 
                 // Get the specified tag using the tag name and the tag structure name
                 var modgTag = CacheContext.TagCache.GetTag($@"{parsedTagObject.TagName}.{parsedTagObject.TagData.GetTagStructureInfo(Cache.Version, Cache.Platform).Structure.Name}");
 
                 // Serialize using the data from the JSON file
-                Cache.Serialize(stream, modgTag, parsedTagObject.TagData);
+                Cache.Serialize(cacheStream, modgTag, parsedTagObject.TagData);
+
+                // Serialize strings to the string list
+                Cache.SaveStrings();
             }
 
-            Cache.SaveStrings();
 
-            var mapHandler = new MapObjectHandler(Cache, CacheContext);
 
             var mapData = GetMapData($@"{CacheContext.Directory.FullName}\guardian.map");
 
@@ -332,33 +337,43 @@ namespace TagTool.MtnDewIt.Commands
                 BlfData = mapData.MapFileBlf,
             };
 
-            Console.WriteLine($@"Serializing Map JSON Data...");
-
-            var mapJson = mapHandler.Serialize(mapObject);
-            File.WriteAllText("json_serializer_map_test.json", mapJson);
-
-            Console.WriteLine($@"Deserializing Map JSON Data...");
-
-            // Deserialize the data from the JSON file
-            var parsedMapObject = mapHandler.Deserialize(File.ReadAllText("json_serializer_map_test.json"));
-
-            // Creates a new file info for the map file based on the map name
-            var mapFile = new FileInfo($@"{CacheContext.Directory.FullName}\{parsedMapObject.MapName}.map");
-
-            // Creates a new file, opens a stream to said file and writes the deserialized data to the map file
-            using (var stream = mapFile.Create())
-            using (var writer = new EndianWriter(stream))
+            using (var cacheStream = Cache.OpenCacheReadWrite())
             {
-                var data = new MapFileData() 
+                // Create a new instance of the JSON handler
+                var mapHandler = new MapObjectHandler(Cache, CacheContext);
+    
+                // Easy Serializer Breakpoint
+                Console.WriteLine($@"Serializing Map JSON Data...");
+    
+                // Serialize the tag object into a JSON string
+                var mapJson = mapHandler.Serialize(mapObject);
+    
+                // Write the JSON string to a file
+                File.WriteAllText("json_serializer_map_test.json", mapJson);
+    
+                // Easy Deserializer Breakpoint
+                Console.WriteLine($@"Deserializing Map JSON Data...");
+    
+                // Deserialize the data from the JSON file
+                var parsedMapObject = mapHandler.Deserialize(File.ReadAllText("json_serializer_map_test.json"));
+    
+                // Creates a new file info for the map file based on the map name
+                var mapFile = new FileInfo($@"{CacheContext.Directory.FullName}\{parsedMapObject.MapName}.map");
+    
+                // Creates a new file, opens a stream to said file and writes the deserialized data to the map file
+                using (var fileStream = mapFile.Create())
+                using (var writer = new EndianWriter(fileStream))
                 {
-                    Version = parsedMapObject.MapVersion,
-                    Header = parsedMapObject.CacheFileHeaderData,
-                    MapFileBlf = parsedMapObject.BlfData,
-                };
-
-                data.WriteData(writer);
+                    var data = new MapFileData() 
+                    {
+                        Version = parsedMapObject.MapVersion,
+                        Header = parsedMapObject.CacheFileHeaderData,
+                        MapFileBlf = parsedMapObject.BlfData,
+                    };
+    
+                    data.WriteData(writer);
+                }
             }
-
 
             return true;
         }
