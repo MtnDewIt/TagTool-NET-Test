@@ -9,6 +9,7 @@ namespace TagTool.MtnDewIt.JSON
     {
         public string TagName { get; set; }
         public string TagType { get; set; }
+        public bool Generate {get; set;}
         public CacheVersion TagVersion { get; set; }
 
         public List<UnicodeStringData> UnicodeStrings { get; set; }
