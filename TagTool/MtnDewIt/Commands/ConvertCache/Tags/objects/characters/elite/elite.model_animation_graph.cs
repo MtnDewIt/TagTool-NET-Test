@@ -27,18 +27,18 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
         {
             var tag = GetCachedTag<ModelAnimationGraph>($@"objects\characters\elite\elite");
 
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\combat armor_lock_enter.JMM"); // Use unknown
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\combat armor_lock_exit.JMM"); // Use unknown
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\combat armor_lock_idle.JMM"); // Use unknown
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\combat con_blast_enter.JMM");
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\combat con_blast_exit.JMM"); // Might remove, usefulness questionable
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\combat mag_pulse_enter.JMM"); // Use unknown
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\sprint ball any move_front.JMA");
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\sprint hammer any move_front.JMA");
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\sprint missile any move_front.JMA");
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\sprint pistol any move_front.JMA");
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\sprint rifle any move_front.JMA");
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\sprint sword any move_front.JMA");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\combat armor_lock_enter.JMM"); // Use unknown
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\combat armor_lock_exit.JMM"); // Use unknown
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\combat armor_lock_idle.JMM"); // Use unknown
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\combat con_blast_enter.JMM");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\combat con_blast_exit.JMM"); // Might remove, usefulness questionable
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\combat mag_pulse_enter.JMM"); // Use unknown
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\sprint ball any move_front.JMA");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\sprint hammer any move_front.JMA");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\sprint missile any move_front.JMA");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\sprint pistol any move_front.JMA");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\sprint rifle any move_front.JMA");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\sprint sword any move_front.JMA");
 
             var jmad = CacheContext.Deserialize<ModelAnimationGraph>(Stream, tag);
             jmad.EffectReferences = new List<ModelAnimationGraph.AnimationTagReference> 

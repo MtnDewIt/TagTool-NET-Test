@@ -27,12 +27,12 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
         {
             var tag = GetCachedTag<ModelAnimationGraph>($@"objects\characters\elite\elite");
 
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\sprint ball any move_front.JMA");
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\sprint hammer any move_front.JMA");
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\sprint missile any move_front.JMA");
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\sprint pistol any move_front.JMA");
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\sprint rifle any move_front.JMA");
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Elite\sprint sword any move_front.JMA");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\sprint ball any move_front.JMA");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\sprint hammer any move_front.JMA");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\sprint missile any move_front.JMA");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\sprint pistol any move_front.JMA");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\sprint rifle any move_front.JMA");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\sprint sword any move_front.JMA");
 
             var jmad = CacheContext.Deserialize<ModelAnimationGraph>(Stream, tag);
             jmad.Modes.Add(new ModelAnimationGraph.Mode

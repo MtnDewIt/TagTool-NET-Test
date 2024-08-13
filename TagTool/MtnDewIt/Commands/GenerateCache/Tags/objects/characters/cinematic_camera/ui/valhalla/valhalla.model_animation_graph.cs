@@ -57,7 +57,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
             };
             CacheContext.Serialize(Stream, tag, jmad);
 
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\BaseCache\Animations\Cinematic\camera_path_main1.JMM");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\camera_path_main1.JMM");
         }
     }
 }
