@@ -26,7 +26,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
         {
             var tag = GetCachedTag<Bitmap>($@"ui\eldewrito\common\map_bitmaps\warehouse");
             var bitm = CacheContext.Deserialize<Bitmap>(Stream, tag);
-            AddBitmap(bitm, 0, $@"{Program.TagToolDirectory}\Tools\BaseCache\Images\Maps\warehouse.dds");
+            AddBitmap(bitm, 0, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tag.Name}\warehouse.dds");
             CacheContext.Serialize(Stream, tag, bitm);
         }
     }
