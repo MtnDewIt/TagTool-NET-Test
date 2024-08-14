@@ -34,7 +34,6 @@ namespace TagTool.MtnDewIt.Commands
         {
             var handler = new MapObjectHandler(Cache, CacheContext);
 
-            // TODO: Add exceptions for different map file types (Map variants, Non HO map files, etc)
             var file = new FileInfo(args[0]);
             var mapData = new MapFileData();
 

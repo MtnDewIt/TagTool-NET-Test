@@ -35,7 +35,6 @@ namespace TagTool.MtnDewIt.Commands
         {
             var handler = new BlfObjectHandler(Cache, CacheContext);
 
-            // TODO: Add exceptions for different blf file types
             var file = new FileInfo(args[0]);
             var blfData = new BlfData(Cache.Version, Cache.Platform);
 
@@ -44,13 +43,25 @@ namespace TagTool.MtnDewIt.Commands
             {
                 var reader = new EndianReader(stream);
 
+                if (file.Name.EndsWith(".mapinfo"))
+                {
+                    if (reader.Length == 20113)
+                    {
+                        blfData = new BlfData(CacheVersion.Halo3Retail, Cache.Platform);
+                    }
+
+                    if (reader.Length == 39425)
+                    {
+                        blfData = new BlfData(CacheVersion.Halo3ODST, Cache.Platform);
+                    }
+                }
+
                 blfData.ReadData(reader);
 
                 var blfObject = new BlfObject() 
                 {
                     FileName = file.Name,
                     FileType = file.Extension.Trim(),
-                    FileVersion = blfData.Version,
                     BlfData = blfData,
                 };
 

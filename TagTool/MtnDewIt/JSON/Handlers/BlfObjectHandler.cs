@@ -19,12 +19,16 @@ namespace TagTool.MtnDewIt.JSON.Handlers
         public string Serialize(BlfObject input)
         {
             var tagHandler = new TagHandler(Cache, CacheContext);
+            var tagStructureHandler = new TagStructureHandler(Cache, CacheContext);
+            var enumHandler  = new EnumHandler(Cache, CacheContext);
 
             var settings = new JsonSerializerSettings
             {
                 Converters = new List<JsonConverter>
                 {
                     tagHandler,
+                    tagStructureHandler,
+                    enumHandler,
                 },
                 Formatting = Formatting.Indented
             };
@@ -35,12 +39,16 @@ namespace TagTool.MtnDewIt.JSON.Handlers
         public BlfObject Deserialize(string input)
         {
             var tagHandler = new TagHandler(Cache, CacheContext);
+            var tagStructureHandler = new TagStructureHandler(Cache, CacheContext);
+            var enumHandler  = new EnumHandler(Cache, CacheContext);
 
             var settings = new JsonSerializerSettings
             {
                 Converters = new List<JsonConverter>
                 {
                     tagHandler,
+                    tagStructureHandler,
+                    enumHandler,
                 },
                 Formatting = Formatting.Indented
             };
