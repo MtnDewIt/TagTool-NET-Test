@@ -30,7 +30,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
             var scnr = CacheContext.Deserialize<Scenario>(Stream, tag);
             CacheContext.Serialize(Stream, tag, scnr);
 
-            //CompileScript(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\scripts\mainmenu_mythic.hsc");
+            //CompileScript(tag, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tag.Name}\scripts\mainmenu_mythic.hsc");
         }
     }
 }

@@ -244,7 +244,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
         {
             eldewritoDirectoryInfo = GetDirectoryInfo(eldewritoDirectoryInfo, "ElDewrito 0.6.1");
 
-            var edData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\tag_names\ed_legacy_tag_name_table.json");
+            var edData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\bin\eldewrito_legacy_tags.json");
             var edTagTable = JsonConvert.DeserializeObject<Dictionary<int, string>>(edData);
 
             eldewritoCache = GameCache.Open($@"{eldewritoDirectoryInfo.FullName}\tags.dat");
@@ -252,7 +252,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             haloOnlineDirectoryInfo = GetDirectoryInfo(haloOnlineDirectoryInfo, "Halo Online MS23");
 
-            var ms23Data = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\tag_names\ms23_tag_name_table.json");
+            var ms23Data = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\bin\ms23_tags.json");
             var ms23TagTable = JsonConvert.DeserializeObject<Dictionary<int, string>>(ms23Data);
 
             haloOnlineCache = GameCache.Open($@"{haloOnlineDirectoryInfo.FullName}\tags.dat");

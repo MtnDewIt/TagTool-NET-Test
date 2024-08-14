@@ -27,10 +27,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
         {
             var tag = GetCachedTag<ModelAnimationGraph>($@"objects\characters\masterchief\masterchief");
 
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\thunderclap.JMM");
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\fresh.JMM");
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\orangejustice.JMM");
-            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\electroswing.JMM");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tag.Name}\thunderclap.JMM");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tag.Name}\fresh.JMM");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tag.Name}\orangejustice.JMM");
+            AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tag.Name}\electroswing.JMM");
 
             var jmad = CacheContext.Deserialize<ModelAnimationGraph>(Stream, tag);
             jmad.Modes[0].WeaponClass[1].WeaponType[0].Set.Actions = new List<ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry> 

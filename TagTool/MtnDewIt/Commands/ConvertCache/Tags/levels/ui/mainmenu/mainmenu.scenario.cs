@@ -15233,7 +15233,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
             };
             CacheContext.Serialize(Stream, tag, scnr);
 
-            CompileScript(tag, $@"{Program.TagToolDirectory}\Tools\data\{tag.Name}\scripts\mainmenu.hsc");
+            CompileScript(tag, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tag.Name}\scripts\mainmenu.hsc");
         }
     }
 }

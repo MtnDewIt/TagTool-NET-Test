@@ -258,7 +258,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
             haloOnlineCache = GameCache.Open($@"{haloOnlineDirectoryInfo.FullName}\tags.dat");
 
-            var ms23Data = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\tag_names\ms23_tag_name_table.json");
+            var ms23Data = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\bin\ms23_tags.json");
             var ms23TagTable = JsonConvert.DeserializeObject<Dictionary<int, string>>(ms23Data);
 
             UpdateTagNames(haloOnlineCache, ms23TagTable);
