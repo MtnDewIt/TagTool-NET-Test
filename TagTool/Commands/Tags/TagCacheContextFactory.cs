@@ -71,8 +71,9 @@ namespace TagTool.Commands.Tags
 
             context.AddCommand(new ConvertCacheCommand(cache, contextStack));
             context.AddCommand(new GenerateCacheCommand(cache, contextStack));
-            context.AddCommand(new GenerateTagFileCommand(cache));
-            context.AddCommand(new GenerateMapFileCommand(cache));
+            context.AddCommand(new GenerateBlfObjectCommand(cache, cache as GameCacheHaloOnline));
+            context.AddCommand(new GenerateMapObjectCommand(cache, cache as GameCacheHaloOnline));
+            context.AddCommand(new GenerateTagObjectCommand(cache, cache as GameCacheHaloOnline));
 
             // Halo Online Specific Commands
             if (cache is GameCacheHaloOnlineBase)

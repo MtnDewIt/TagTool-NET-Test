@@ -23,9 +23,10 @@ namespace TagTool.MtnDewIt.Commands
 
         public DebugTestCommand(GameCache cache, GameCacheHaloOnline cacheContext, CommandContextStack contextStack) : base
         (
-            true,
+            false,
             "DebugTest",
             "Self Explanatory",
+            
             "DebugTest",
             "Self Explanatory"
         )
