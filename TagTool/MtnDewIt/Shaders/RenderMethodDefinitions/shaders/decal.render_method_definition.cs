@@ -8,9 +8,9 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
 {
-    public class DecalDefinition : RenderMethodData
+    public class shaders_decal_render_method_definition : RenderMethodData
     {
-        public DecalDefinition(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public shaders_decal_render_method_definition(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,

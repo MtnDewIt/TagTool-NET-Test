@@ -8,9 +8,9 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
 {
-    public class ContrailDefinition : RenderMethodData
+    public class shaders_beam_render_method_definition : RenderMethodData 
     {
-        public ContrailDefinition(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public shaders_beam_render_method_definition(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,
@@ -25,9 +25,9 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
 
         public override void RenderMethod()
         {
-            var tag = GenerateTag<RenderMethodDefinition>($@"shaders\contrail");
+            var tag = GenerateTag<RenderMethodDefinition>($@"shaders\beam");
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(Stream, tag);
-            rmdf.GlobalOptions = GenerateOptionData<shaders_contrail_options_global_contrail_options_render_method_option>();
+            rmdf.GlobalOptions = GenerateOptionData<shaders_beam_options_global_beam_options_render_method_option>();
             rmdf.Categories = new List<RenderMethodDefinition.CategoryBlock>
             {
                 new RenderMethodDefinition.CategoryBlock
@@ -38,21 +38,35 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"diffuse_only"),
-                            Option = GenerateOptionData<shaders_contrail_options_albedo_diffuse_only_render_method_option>(),
+                            Option = GenerateOptionData<shaders_beam_options_albedo_diffuse_only_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"palettized"),
-                            Option = GenerateOptionData<shaders_contrail_options_albedo_palettized_render_method_option>(),
+                            Option = GenerateOptionData<shaders_beam_options_albedo_palettized_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
                         new RenderMethodDefinition.CategoryBlock.ShaderOption
                         {
                             Name = CacheContext.StringTable.GetOrAddString($@"palettized_plus_alpha"),
-                            Option = GenerateOptionData<shaders_contrail_options_albedo_palettized_plus_alpha_render_method_option>(),
+                            Option = GenerateOptionData<shaders_beam_options_albedo_palettized_plus_alpha_render_method_option>(),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = StringId.Invalid,
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"palettized_plasma"),
+                            Option = GenerateOptionData<shaders_particle_options_albedo_palettized_plasma_render_method_option>(),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = StringId.Invalid,
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"palettized_2d_plasma"),
+                            Option = GenerateOptionData<shaders_particle_options_albedo_palettized_plasma_render_method_option>(),
                             VertexFunction = StringId.Invalid,
                             PixelFunction = StringId.Invalid,
                         },
@@ -192,6 +206,36 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                     VertexFunction = StringId.Invalid,
                     PixelFunction = StringId.Invalid,
                 },
+                new RenderMethodDefinition.CategoryBlock
+                {
+                    Name = CacheContext.StringTable.GetOrAddString($@"depth_fade"),
+                    ShaderOptions = new List<RenderMethodDefinition.CategoryBlock.ShaderOption>
+                    {
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"off"),
+                            Option = null,
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = StringId.Invalid,
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"on"),
+                            Option = GenerateOptionData<shaders_particle_options_depth_fade_on_render_method_option>(),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = StringId.Invalid,
+                        },
+                        new RenderMethodDefinition.CategoryBlock.ShaderOption
+                        {
+                            Name = CacheContext.StringTable.GetOrAddString($@"palette_shift"),
+                            Option = GenerateOptionData<shaders_particle_options_depth_fade_palette_shift_render_method_option>(),
+                            VertexFunction = StringId.Invalid,
+                            PixelFunction = StringId.Invalid,
+                        },
+                    },
+                    VertexFunction = StringId.Invalid,
+                    PixelFunction = StringId.Invalid,
+                },
             };
             rmdf.EntryPoints = new List<RenderMethodDefinition.EntryPointBlock>
             {
@@ -212,12 +256,12 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
             {
                 new RenderMethodDefinition.VertexBlock
                 {
-                    VertexType = RenderMethodDefinition.VertexBlock.VertexTypeValue.Contrail,
+                    VertexType = RenderMethodDefinition.VertexBlock.VertexTypeValue.Beam,
                     Dependencies = null,
                 },
             };
-            rmdf.GlobalPixelShader = GenerateTag<GlobalPixelShader>($@"shaders\contrail_shared_pixel_shaders");
-            rmdf.GlobalVertexShader = GenerateTag<GlobalVertexShader>($@"shaders\contrail_shared_vertex_shaders");
+            rmdf.GlobalPixelShader = GenerateTag<GlobalPixelShader>($@"shaders\beam_shared_pixel_shaders");
+            rmdf.GlobalVertexShader = GenerateTag<GlobalVertexShader>($@"shaders\beam_shared_vertex_shaders");
             rmdf.Flags = RenderMethodDefinition.RenderMethodDefinitionFlags.UseAutomaticMacros;
             rmdf.Version = 0;
 

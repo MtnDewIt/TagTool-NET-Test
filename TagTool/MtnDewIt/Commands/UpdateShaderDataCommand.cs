@@ -39,21 +39,21 @@ namespace TagTool.MtnDewIt.Commands
         {
             using (var stream = Cache.OpenCacheReadWrite())
             {
-                new BeamDefinition(Cache, CacheContext, stream);
-                new BlackDefinition(Cache, CacheContext, stream);
-                new ContrailDefinition(Cache, CacheContext, stream);
-                new CortanaDefinition(Cache, CacheContext, stream);
-                new CustomDefinition(Cache, CacheContext, stream);
-                new DecalDefinition(Cache, CacheContext, stream);
-                new FoliageDefinition(Cache, CacheContext, stream);
-                new HalogramDefinition(Cache, CacheContext, stream);
-                new LightVolumeDefinition(Cache, CacheContext, stream);
-                new ParticleDefinition(Cache, CacheContext, stream);
-                new ScreenDefinition(Cache, CacheContext, stream);
-                new ShaderDefinition(Cache, CacheContext, stream);
-                new TerrainDefinition(Cache, CacheContext, stream);
-                new WaterDefinition(Cache, CacheContext, stream);
-                new ZOnlyDefinition(Cache, CacheContext, stream);
+                new shaders_beam_render_method_definition(Cache, CacheContext, stream);
+                new shaders_black_render_method_definition(Cache, CacheContext, stream);
+                new shaders_contrail_render_method_definition(Cache, CacheContext, stream);
+                new shaders_cortana_render_method_definition(Cache, CacheContext, stream);
+                new shaders_custom_render_method_definition(Cache, CacheContext, stream);
+                new shaders_decal_render_method_definition(Cache, CacheContext, stream);
+                new shaders_foliage_render_method_definition(Cache, CacheContext, stream);
+                new shaders_halogram_render_method_definition(Cache, CacheContext, stream);
+                new shaders_light_volume_render_method_definition(Cache, CacheContext, stream);
+                new shaders_particle_render_method_definition(Cache, CacheContext, stream);
+                new shaders_screen_render_method_definition(Cache, CacheContext, stream);
+                new shaders_shader_render_method_definition(Cache, CacheContext, stream);
+                new shaders_terrain_render_method_definition(Cache, CacheContext, stream);
+                new shaders_water_render_method_definition(Cache, CacheContext, stream);
+                new shaders_zonly_render_method_definition(Cache, CacheContext, stream);
 
                 Cache.SaveStrings();
 

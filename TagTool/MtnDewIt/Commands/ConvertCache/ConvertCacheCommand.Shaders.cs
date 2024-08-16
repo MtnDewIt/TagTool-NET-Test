@@ -17,21 +17,21 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             // This tag isn't in the rebuilt cache by default
             GenerateTag<Bitmap>($@"shaders\default_bitmaps\bitmaps\color_green");
 
-            new BeamDefinition(Cache, CacheContext, CacheStream);
-            new BlackDefinition(Cache, CacheContext, CacheStream);
-            new ContrailDefinition(Cache, CacheContext, CacheStream);
-            new CortanaDefinition(Cache, CacheContext, CacheStream);
-            new CustomDefinition(Cache, CacheContext, CacheStream);
-            new DecalDefinition(Cache, CacheContext, CacheStream);
-            new FoliageDefinition(Cache, CacheContext, CacheStream);
-            new HalogramDefinition(Cache, CacheContext, CacheStream);
-            new LightVolumeDefinition(Cache, CacheContext, CacheStream);
-            new ParticleDefinition(Cache, CacheContext, CacheStream);
-            new ScreenDefinition(Cache, CacheContext, CacheStream);
-            new ShaderDefinition(Cache, CacheContext, CacheStream);
-            new TerrainDefinition(Cache, CacheContext, CacheStream);
-            new WaterDefinition(Cache, CacheContext, CacheStream);   
-            new ZOnlyDefinition(Cache, CacheContext, CacheStream);
+            new shaders_beam_render_method_definition(Cache, CacheContext, CacheStream);
+            new shaders_black_render_method_definition(Cache, CacheContext, CacheStream);
+            new shaders_contrail_render_method_definition(Cache, CacheContext, CacheStream);
+            new shaders_cortana_render_method_definition(Cache, CacheContext, CacheStream);
+            new shaders_custom_render_method_definition(Cache, CacheContext, CacheStream);
+            new shaders_decal_render_method_definition(Cache, CacheContext, CacheStream);
+            new shaders_foliage_render_method_definition(Cache, CacheContext, CacheStream);
+            new shaders_halogram_render_method_definition(Cache, CacheContext, CacheStream);
+            new shaders_light_volume_render_method_definition(Cache, CacheContext, CacheStream);
+            new shaders_particle_render_method_definition(Cache, CacheContext, CacheStream);
+            new shaders_screen_render_method_definition(Cache, CacheContext, CacheStream);
+            new shaders_shader_render_method_definition(Cache, CacheContext, CacheStream);
+            new shaders_terrain_render_method_definition(Cache, CacheContext, CacheStream);
+            new shaders_water_render_method_definition(Cache, CacheContext, CacheStream);   
+            new shaders_zonly_render_method_definition(Cache, CacheContext, CacheStream);
 
             Cache.SaveStrings();
 

@@ -8,9 +8,9 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
 {
-    public class FoliageDefinition : RenderMethodData
+    public class shaders_foliage_render_method_definition : RenderMethodData
     {
-        public FoliageDefinition(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
+        public shaders_foliage_render_method_definition(GameCache cache, GameCacheHaloOnline cacheContext, Stream stream) : base
         (
             cache,
             cacheContext,
