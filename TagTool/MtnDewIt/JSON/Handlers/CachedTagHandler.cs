@@ -64,9 +64,8 @@ namespace TagTool.MtnDewIt.JSON.Handlers
         {
             if (!Cache.TagCache.TryGetTag($@"{tagName}.{tagType}", out var result)) 
             {
-                // Once again, we assume that the all the tag definitions are in the same namespace
-                // TODO: Find some way of getting the type?
-                var type = Type.GetType($@"TagTool.Tags.Definitions.");
+                Cache.TagCache.TryParseGroupTag(tagType, out var tagGroup);
+                var type = Cache.TagCache.TagDefinitions.GetTagDefinitionType(tagGroup);
                 result = Cache.TagCache.AllocateTag(type, tagName);
                 var definition = (TagStructure)Activator.CreateInstance(type);
                 CacheContext.Serialize(CacheStream, result, definition);

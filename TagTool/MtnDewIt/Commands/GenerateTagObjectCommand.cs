@@ -34,13 +34,13 @@ namespace TagTool.MtnDewIt.Commands
 
         public override object Execute(List<string> args)
         {
-            var handler = new TagObjectHandler(Cache, CacheContext);
-
             // Wrapping the whole thing in a using statement probably isn't the best idea
-            using (var stream = Cache.OpenCacheRead()) 
+            using (var cacheStream = Cache.OpenCacheRead()) 
             {
+                var handler = new TagObjectHandler(Cache, CacheContext, cacheStream);
+
                 var tag = Cache.TagCache.GetTag(args[0]);
-                var definition = (TagStructure)Cache.Deserialize(stream, tag);
+                var definition = (TagStructure)Cache.Deserialize(cacheStream, tag);
 
                 var tagObject = new TagObject()
                 {
