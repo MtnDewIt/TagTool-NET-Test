@@ -296,7 +296,7 @@ namespace TagTool.MtnDewIt.Commands
             using (var cacheStream = Cache.OpenCacheReadWrite())
             {
                 // Create a new instance of the JSON handler
-                var tagHandler = new TagObjectHandler(Cache, CacheContext);
+                var tagHandler = new TagObjectHandler(Cache, CacheContext, cacheStream);
 
                 // Easy Serializer Breakpoint
                 Console.WriteLine($@"Serializing Tag JSON Data...");

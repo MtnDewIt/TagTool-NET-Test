@@ -9,27 +9,27 @@ namespace TagTool.MtnDewIt.JSON.Handlers
     {
         GameCache Cache;
         GameCacheHaloOnline CacheContext;
+        
+        private static List<JsonConverter> Converters;
 
         public BlfObjectHandler(GameCache cache, GameCacheHaloOnline cacheContext)
         {
             Cache = cache;
             CacheContext = cacheContext;
+
+            Converters = new List<JsonConverter>
+            {
+                new TagHandler(Cache, CacheContext),
+                new TagStructureHandler(Cache, CacheContext),
+                new EnumHandler(Cache, CacheContext),
+            };
         }
 
         public string Serialize(BlfObject input)
         {
-            var tagHandler = new TagHandler(Cache, CacheContext);
-            var tagStructureHandler = new TagStructureHandler(Cache, CacheContext);
-            var enumHandler  = new EnumHandler(Cache, CacheContext);
-
             var settings = new JsonSerializerSettings
             {
-                Converters = new List<JsonConverter>
-                {
-                    tagHandler,
-                    tagStructureHandler,
-                    enumHandler,
-                },
+                Converters = Converters,
                 Formatting = Formatting.Indented
             };
 
@@ -38,18 +38,9 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public BlfObject Deserialize(string input)
         {
-            var tagHandler = new TagHandler(Cache, CacheContext);
-            var tagStructureHandler = new TagStructureHandler(Cache, CacheContext);
-            var enumHandler  = new EnumHandler(Cache, CacheContext);
-
             var settings = new JsonSerializerSettings
             {
-                Converters = new List<JsonConverter>
-                {
-                    tagHandler,
-                    tagStructureHandler,
-                    enumHandler,
-                },
+                Converters = Converters,
                 Formatting = Formatting.Indented
             };
 

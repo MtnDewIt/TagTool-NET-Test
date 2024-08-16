@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.IO;
 using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 using TagTool.Tags;
@@ -10,31 +11,31 @@ namespace TagTool.MtnDewIt.JSON.Handlers
     {
         GameCache Cache;
         GameCacheHaloOnline CacheContext;
+        Stream CacheStream;
 
-        public TagObjectHandler(GameCache cache, GameCacheHaloOnline cacheContext)
+        private static List<JsonConverter> Converters;
+
+        public TagObjectHandler(GameCache cache, GameCacheHaloOnline cacheContext, Stream cacheStream)
         {
             Cache = cache;
             CacheContext = cacheContext;
+            CacheStream = cacheStream;
+
+            Converters = new List<JsonConverter>
+            {
+                new StringIdHandler(Cache, CacheContext),
+                new CachedTagHandler(Cache, CacheContext, CacheStream),
+                new TagHandler(Cache, CacheContext),
+                new TagStructureHandler(Cache, CacheContext),
+                new EnumHandler(Cache, CacheContext),
+            };
         }
 
         public string Serialize(TagObject input)
         {
-            var stringIdHandler = new StringIdHandler(Cache, CacheContext);
-            var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
-            var tagHandler = new TagHandler(Cache, CacheContext);
-            var tagStructureHandler = new TagStructureHandler(Cache, CacheContext);
-            var enumHandler  = new EnumHandler(Cache, CacheContext);
-
             var settings = new JsonSerializerSettings
             {
-                Converters = new List<JsonConverter>
-                {
-                    stringIdHandler,
-                    cachedTagHandler,
-                    tagHandler,
-                    tagStructureHandler,
-                    enumHandler,
-                },
+                Converters = Converters,
                 Formatting = Formatting.Indented,
             };
 
@@ -43,20 +44,9 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public TagObject Deserialize(string input)
         {
-            var stringIdHandler = new StringIdHandler(Cache, CacheContext);
-            var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
-            var tagHandler = new TagHandler(Cache, CacheContext);
-            var enumHandler  = new EnumHandler(Cache, CacheContext);
-
             var settings = new JsonSerializerSettings
             {
-                Converters = new List<JsonConverter>
-                {
-                    stringIdHandler,
-                    cachedTagHandler,
-                    tagHandler,
-                    enumHandler,
-                },
+                Converters = Converters,
                 Formatting = Formatting.Indented
             };
 

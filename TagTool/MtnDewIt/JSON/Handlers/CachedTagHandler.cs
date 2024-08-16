@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.IO;
 using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 using TagTool.Commands.Common;
@@ -11,11 +12,13 @@ namespace TagTool.MtnDewIt.JSON.Handlers
     {
         GameCache Cache;
         GameCacheHaloOnline CacheContext;
+        Stream CacheStream;
 
-        public CachedTagHandler(GameCache cache, GameCacheHaloOnline cacheContext)
+        public CachedTagHandler(GameCache cache, GameCacheHaloOnline cacheContext, Stream cacheStream)
         {
             Cache = cache;
             CacheContext = cacheContext;
+            CacheStream = cacheStream;
         }
 
         public override void WriteJson(JsonWriter writer, CachedTag value, JsonSerializer serializer)
@@ -63,12 +66,11 @@ namespace TagTool.MtnDewIt.JSON.Handlers
             {
                 // Once again, we assume that the all the tag definitions are in the same namespace
                 // TODO: Find some way of getting the type?
-                //var type = Type.GetType($@"TagTool.Tags.Definitions.{}");
-                //result = Cache.TagCache.AllocateTag(type, tagName);
-                //var definition = (TagStructure)Activator.CreateInstance(type);
-                // TODO: Add stream to handler constructor
-                //CacheContext.Serialize(Stream, result, definition);
-                //CacheContext.SaveTagNames();
+                var type = Type.GetType($@"TagTool.Tags.Definitions.");
+                result = Cache.TagCache.AllocateTag(type, tagName);
+                var definition = (TagStructure)Activator.CreateInstance(type);
+                CacheContext.Serialize(CacheStream, result, definition);
+                CacheContext.SaveTagNames();
             }
             
             return result;

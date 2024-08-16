@@ -10,32 +10,28 @@ namespace TagTool.MtnDewIt.JSON.Handlers
         GameCache Cache;
         GameCacheHaloOnline CacheContext;
 
+        private static List<JsonConverter> Converters;
+
         public MapObjectHandler(GameCache cache, GameCacheHaloOnline cacheContext)
         {
             Cache = cache;
             CacheContext = cacheContext;
+
+            Converters = new List<JsonConverter>
+            {
+                new StringIdHandler(Cache, CacheContext),
+                new TagHandler(Cache, CacheContext),
+                new TagStructureHandler(Cache, CacheContext),
+                new FileAuthorHandler(Cache, CacheContext),
+                new EnumHandler(Cache, CacheContext),
+            };
         }
 
         public string Serialize(MapObject input)
         {
-            var stringIdHandler = new StringIdHandler(Cache, CacheContext);
-            var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
-            var tagHandler = new  TagHandler(Cache, CacheContext);
-            var tagStructureHandler = new TagStructureHandler(Cache, CacheContext);
-            var fileAuthorHandler = new FileAuthorHandler(Cache, CacheContext);
-            var enumHandler  = new EnumHandler(Cache, CacheContext);
-
             var settings = new JsonSerializerSettings
             {
-                Converters = new List<JsonConverter>
-                {
-                    stringIdHandler,
-                    cachedTagHandler,
-                    tagHandler,
-                    tagStructureHandler,
-                    fileAuthorHandler,
-                    enumHandler,
-                },
+                Converters = Converters,
                 Formatting = Formatting.Indented
             };
 
@@ -44,22 +40,9 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public MapObject Deserialize(string input)
         {
-            var stringIdHandler = new StringIdHandler(Cache, CacheContext);
-            var cachedTagHandler = new CachedTagHandler(Cache, CacheContext);
-            var tagHandler = new TagHandler(Cache, CacheContext);
-            var fileAuthorHandler = new FileAuthorHandler(Cache, CacheContext);
-            var enumHandler  = new EnumHandler(Cache, CacheContext);
-
             var settings = new JsonSerializerSettings
             {
-                Converters = new List<JsonConverter>
-                {
-                    stringIdHandler,
-                    cachedTagHandler,
-                    tagHandler,
-                    fileAuthorHandler,
-                    enumHandler,
-                },
+                Converters = Converters,
                 Formatting = Formatting.Indented
             };
 
