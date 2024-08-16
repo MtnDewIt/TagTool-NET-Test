@@ -56,6 +56,11 @@ namespace TagTool.MtnDewIt.Commands
                     }
                 }
 
+                if (file.Name.EndsWith(".campaign")) 
+                {
+                    ExportPath = $@"data\levels";
+                }
+
                 blfData.ReadData(reader);
 
                 var blfObject = new BlfObject() 
