@@ -65,7 +65,7 @@ namespace TagTool.MtnDewIt.Commands
                     fileInfo.Directory.Create();
                 }
 
-                File.WriteAllText(Path.Combine(ExportPath, $"{tag.Name}.json"), jsonData);
+                File.WriteAllText(Path.Combine(ExportPath, $"{tag.Name}.{TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group), Cache.Version, Cache.Platform).Structure.Name}.json"), jsonData);
             }
 
             return true;
