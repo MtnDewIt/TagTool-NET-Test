@@ -6,8 +6,8 @@ using TagTool.Tags.Definitions;
 using System.Collections.Generic;
 using System;
 using TagTool.Commands.Shaders;
-using TagTool.Shaders.ShaderGenerator;
 using TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders;
+using TagTool.MtnDewIt.Shaders.ShaderGenerator;
 
 namespace TagTool.MtnDewIt.Commands.GenerateCache
 {
@@ -36,25 +36,24 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
             Cache.SaveStrings();
 
-            GenerateGlobalShaders(CacheStream, $@"beam");           // Data doesn't change between versions, Compiled vertex data is completely different from MS23 (disable for now)
+            GenerateGlobalShaders(CacheStream, $@"beam");           // Data doesn't change between versions, Compiled vertex data is completely different from MS23
             GenerateGlobalShaders(CacheStream, $@"black");
-            GenerateGlobalShaders(CacheStream, $@"contrail");       // Data doesn't change between versions, Compiled vertex data is completely different from MS23 (disable for now) 
+            GenerateGlobalShaders(CacheStream, $@"contrail");       // Data doesn't change between versions, Compiled vertex data is completely different from MS23 
             GenerateGlobalShaders(CacheStream, $@"cortana");
             GenerateGlobalShaders(CacheStream, $@"custom");         // Vertex data is completely different from vertex data from updated source (use legacy generator for 1:1 data)
             GenerateGlobalShaders(CacheStream, $@"decal");          // Vertex data is completely different between MS23 and vertex data from updated source (use legacy generator for 1:1 data)
-            GenerateGlobalShaders(CacheStream, $@"foliage");        // Having APPLY_FIXES undefined generates 1:1 vertex data. 
+            GenerateGlobalShaders(CacheStream, $@"foliage", false); // Having APPLY_FIXES undefined generates 1:1 vertex data. 
             GenerateGlobalShaders(CacheStream, $@"halogram");
-            GenerateGlobalShaders(CacheStream, $@"lightvolume");    // Data doesn't change between versions, Compiled vertex data is completely different from MS23 (disable for now) 
-            GenerateGlobalShaders(CacheStream, $@"particle");       // Data doesn't change between versions, Compiled vertex data is completely different from MS23 (disable for now) 
+            GenerateGlobalShaders(CacheStream, $@"lightvolume");    // Data doesn't change between versions, Compiled vertex data is completely different from MS23 
+            GenerateGlobalShaders(CacheStream, $@"particle");       // Data doesn't change between versions, Compiled vertex data is completely different from MS23 
             GenerateGlobalShaders(CacheStream, $@"screen");
             GenerateGlobalShaders(CacheStream, $@"shader");
             GenerateGlobalShaders(CacheStream, $@"terrain");        // Vertex data is completely different between MS23 and vertex data from updated source (use legacy generator for 1:1 data)
-            GenerateGlobalShaders(CacheStream, $@"water");          // Having APPLY_FIXES undefined generates 1:1 vertex data. 
+            GenerateGlobalShaders(CacheStream, $@"water", false);   // Having APPLY_FIXES undefined generates 1:1 vertex data. 
             GenerateGlobalShaders(CacheStream, $@"zonly");
         }
 
-        // TODO: Expose APPLY_FIXES
-        public void GenerateGlobalShaders(Stream stream, string shaderType)
+        public void GenerateGlobalShaders(Stream stream, string shaderType, bool applyFixes = true)
         {
             var type = (HaloShaderGenerator.Globals.ShaderType)Enum.Parse(typeof(HaloShaderGenerator.Globals.ShaderType), shaderType, true);
 
@@ -62,8 +61,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
             RenderMethodDefinition rmdf = Cache.Deserialize<RenderMethodDefinition>(stream, rmdfTag);
 
-            GlobalPixelShader glps = ShaderGeneratorNew.GenerateSharedPixelShaders(Cache, rmdf, type);
-            GlobalVertexShader glvs = ShaderGeneratorNew.GenerateSharedVertexShaders(Cache, rmdf, type);
+            GlobalPixelShader glps = InlineShaderGenerator.GenerateSharedPixelShaders(Cache, rmdf, type, applyFixes);
+            GlobalVertexShader glvs = InlineShaderGenerator.GenerateSharedVertexShaders(Cache, rmdf, type, applyFixes);
 
             Cache.Serialize(stream, rmdf.GlobalPixelShader, glps);
             Cache.Serialize(stream, rmdf.GlobalVertexShader, glvs);
