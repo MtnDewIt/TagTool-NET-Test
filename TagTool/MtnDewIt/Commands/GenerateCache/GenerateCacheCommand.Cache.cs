@@ -13,6 +13,7 @@ using TagTool.Serialization;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Commands;
+using Newtonsoft.Json;
 
 namespace TagTool.MtnDewIt.Commands.GenerateCache
 {
@@ -542,6 +543,22 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             }
         }
 
+        public void UpdateStringTable(StringTable stringTable) 
+        {
+            var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\bin\ms23_strings.json");
+            var ms23Strings = JsonConvert.DeserializeObject<List<string>>(jsonData);
+
+            var startingIndex = 0x10DE;
+
+            for (int i = stringTable.Count; i < startingIndex; i++) 
+            {
+                stringTable.Add(null);
+            }
+
+            foreach (var str in ms23Strings)
+                stringTable.Add(str);
+        }
+        
         public void SetCacheVersion(GameCacheHaloOnline cache, CacheVersion version)
         {
             cache.Version = version;
