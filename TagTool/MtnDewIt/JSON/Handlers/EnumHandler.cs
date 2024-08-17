@@ -9,8 +9,8 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 {
     public class EnumHandler : JsonConverter<Enum>
     {
-        GameCache Cache;
-        GameCacheHaloOnline CacheContext;
+        private GameCache Cache;
+        private GameCacheHaloOnline CacheContext;
 
         public EnumHandler(GameCache cache, GameCacheHaloOnline cacheContext)
         {

@@ -9,9 +9,9 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 {
     public class TagObjectHandler 
     {
-        GameCache Cache;
-        GameCacheHaloOnline CacheContext;
-        Stream CacheStream;
+        private GameCache Cache;
+        private GameCacheHaloOnline CacheContext;
+        private Stream CacheStream;
 
         private static List<JsonConverter> Converters;
 

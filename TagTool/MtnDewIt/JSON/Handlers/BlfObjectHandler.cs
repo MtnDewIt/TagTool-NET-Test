@@ -7,8 +7,8 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 {
     public class BlfObjectHandler 
     {
-        GameCache Cache;
-        GameCacheHaloOnline CacheContext;
+        private GameCache Cache;
+        private GameCacheHaloOnline CacheContext;
         
         private static List<JsonConverter> Converters;
 

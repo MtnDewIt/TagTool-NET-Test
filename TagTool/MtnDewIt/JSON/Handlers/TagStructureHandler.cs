@@ -8,9 +8,8 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 {
     public class TagStructureHandler : JsonConverter<TagStructure>
     {
-        GameCache Cache;
-        GameCacheHaloOnline CacheContext;
-        object TagData;
+        private GameCache Cache;
+        private GameCacheHaloOnline CacheContext;
 
         public TagStructureHandler(GameCache cache, GameCacheHaloOnline cacheContext)
         {
