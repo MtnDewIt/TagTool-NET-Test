@@ -82,7 +82,7 @@ namespace TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders
                     Name = CacheContext.StringTable.GetOrAddString($@"floors"),
                     Type = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap,
                     RenderMethodExtern = RenderMethodExtern.none,
-                    DefaultSamplerBitmap = Cache.TagCache.GetTag<Bitmap>($@"shaders\default_bitmaps\bitmaps\color_green"),
+                    DefaultSamplerBitmap = null, //Cache.TagCache.GetTag<Bitmap>($@"shaders\default_bitmaps\bitmaps\color_green"),
                     DefaultFloatArgument = 0f,
                     DefaultIntBoolArgument = 0,
                     Flags = 0,

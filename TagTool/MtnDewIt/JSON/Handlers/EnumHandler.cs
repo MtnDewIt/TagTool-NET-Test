@@ -2,8 +2,6 @@ using Newtonsoft.Json;
 using System;
 using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
-using TagTool.Commands.Common;
-using TagTool.Tags;
 
 namespace TagTool.MtnDewIt.JSON.Handlers
 {

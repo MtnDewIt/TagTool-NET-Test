@@ -1,7 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 using TagTool.MtnDewIt.JSON.Handlers;
+using TagTool.Tags;
 
 namespace TagTool.MtnDewIt.JSON
 {
@@ -24,6 +26,22 @@ namespace TagTool.MtnDewIt.JSON
         {
             var jsonData = File.ReadAllText($@"{filePath}.json");
             var tagObject = Handler.Deserialize(jsonData);
+
+            // TODO: Try and reduce the number of passes required to get a tag
+
+            if (tagObject.Generate)
+            {
+                if (!Cache.TagCache.TryGetTag($@"{tagObject.TagName}.{tagObject.TagData.GetTagStructureInfo(Cache.Version, Cache.Platform).Structure.Name}", out var result)) 
+                {
+                    // TODO: Figure out how to pull definition from existing tag table
+                    // Once again, we assume that the all the tag definitions are in the same namespace
+                    var type = Type.GetType($@"TagTool.Tags.Definitions.{tagObject.TagType}");
+                    result = Cache.TagCache.AllocateTag(type, tagObject.TagName);
+                    var definition = (TagStructure)Activator.CreateInstance(type);
+                    CacheContext.Serialize(CacheStream, result, definition);
+                    CacheContext.SaveTagNames();
+                }
+            }
 
             var tag = Cache.TagCache.GetTag($@"{tagObject.TagName}.{tagObject.TagData.GetTagStructureInfo(Cache.Version, Cache.Platform).Structure.Name}");
 

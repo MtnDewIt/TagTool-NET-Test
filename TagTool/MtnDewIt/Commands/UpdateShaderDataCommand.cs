@@ -1,10 +1,13 @@
+using HaloShaderGenerator.Globals;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands;
-using TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders;
+using TagTool.MtnDewIt.JSON;
 using TagTool.MtnDewIt.Shaders.ShaderGenerator;
 using TagTool.Tags.Definitions;
 
@@ -15,11 +18,6 @@ namespace TagTool.MtnDewIt.Commands
         public GameCache Cache { get; set; }
         public GameCacheHaloOnline CacheContext { get; set; }
 
-        // Really gotta figure out how I'm gonna handle this
-        // TODO's TODO: Write custom JSON parser :/
-        // TODO: Unless tag data has any prerequisites, list files alphabetically
-        // TODO: After all this data has been serialized, generate global shaders
-        // TODO: Maybe add the extension to the file name in the parser?
         public static List<string> TagObjectList;
 
         public UpdateShaderDataCommand(GameCache cache, GameCacheHaloOnline cacheContext) : base
@@ -43,185 +41,67 @@ namespace TagTool.MtnDewIt.Commands
         }
 
         public void UpdateShaderData()
-        {
-            // TODO: Run the tag list through the parser
-            //var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\updateshaderdata\tags.json");
-            //var TagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
-
-            // Ideally, we'll just loop through each string in the tag list, and parse that into the parser
-            
+        {            
             using (var stream = Cache.OpenCacheReadWrite())
             {
-                new shaders_beam_render_method_definition(Cache, CacheContext, stream);
-                new shaders_black_render_method_definition(Cache, CacheContext, stream);
-                new shaders_contrail_render_method_definition(Cache, CacheContext, stream);
-                new shaders_cortana_render_method_definition(Cache, CacheContext, stream);
-                new shaders_custom_render_method_definition(Cache, CacheContext, stream);
-                new shaders_decal_render_method_definition(Cache, CacheContext, stream);
-                new shaders_foliage_render_method_definition(Cache, CacheContext, stream);
-                new shaders_halogram_render_method_definition(Cache, CacheContext, stream);
-                new shaders_light_volume_render_method_definition(Cache, CacheContext, stream);
-                new shaders_particle_render_method_definition(Cache, CacheContext, stream);
-                new shaders_screen_render_method_definition(Cache, CacheContext, stream);
-                new shaders_shader_render_method_definition(Cache, CacheContext, stream);
-                new shaders_terrain_render_method_definition(Cache, CacheContext, stream);
-                new shaders_water_render_method_definition(Cache, CacheContext, stream);
-                new shaders_zonly_render_method_definition(Cache, CacheContext, stream);
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
 
-                Cache.SaveStrings();
+                var tagParser = new TagObjectParser(Cache, CacheContext, stream);
+                
+                var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\updateshaderdata\tags.json");
+                TagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
+                
+                foreach (var file in TagObjectList)
+                    tagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\{file}");
 
-                GenerateGlobalShaders(stream, $@"beam");           // Data doesn't change between versions, Compiled vertex data is completely different from MS23
-                GenerateGlobalShaders(stream, $@"black");
-                GenerateGlobalShaders(stream, $@"contrail");       // Data doesn't change between versions, Compiled vertex data is completely different from MS23 
-                GenerateGlobalShaders(stream, $@"cortana");
-                GenerateGlobalShaders(stream, $@"custom");         // Vertex data is completely different from vertex data from updated source (use legacy generator for 1:1 data)
-                GenerateGlobalShaders(stream, $@"decal");          // Vertex data is completely different between MS23 and vertex data from updated source (use legacy generator for 1:1 data)
-                GenerateGlobalShaders(stream, $@"foliage", false); // Having APPLY_FIXES undefined generates 1:1 vertex data. 
-                GenerateGlobalShaders(stream, $@"halogram");
-                GenerateGlobalShaders(stream, $@"lightvolume");    // Data doesn't change between versions, Compiled vertex data is completely different from MS23 
-                GenerateGlobalShaders(stream, $@"particle");       // Data doesn't change between versions, Compiled vertex data is completely different from MS23 
-                GenerateGlobalShaders(stream, $@"screen");
-                GenerateGlobalShaders(stream, $@"shader");
-                GenerateGlobalShaders(stream, $@"terrain");        // Vertex data is completely different between MS23 and vertex data from updated source (use legacy generator for 1:1 data)
-                GenerateGlobalShaders(stream, $@"water", false);   // Having APPLY_FIXES undefined generates 1:1 vertex data. 
-                GenerateGlobalShaders(stream, $@"zonly");
+                // TODO: Create separate lists for types which don't requires the APPLY_FIXES macro
+                // TODO: Create a better system for checking whether or not an enum value is actually a valid shader (Looking at you Glass and ShadowApply2)
+                // TODO: Maybe modify the shader generation functions so they just take the type as an input, instead of a string :/
 
-                GenerateChudShader(stream, $@"chud_cortana_camera");
-                GenerateChudShader(stream, $@"chud_cortana_composite", false);
-                GenerateChudShader(stream, $@"chud_cortana_offscreen");
-                GenerateChudShader(stream, $@"chud_cortana_screen");
-                GenerateChudShader(stream, $@"chud_cortana_screen_final");
-                GenerateChudShader(stream, $@"chud_crosshair");
-                GenerateChudShader(stream, $@"chud_directional_damage");
-                GenerateChudShader(stream, $@"chud_directional_damage_apply");
-                GenerateChudShader(stream, $@"chud_emblem");
-                GenerateChudShader(stream, $@"chud_medal");
-                GenerateChudShader(stream, $@"chud_meter");
-                GenerateChudShader(stream, $@"chud_meter_chapter");
-                GenerateChudShader(stream, $@"chud_meter_double_gradient");
-                GenerateChudShader(stream, $@"chud_meter_gradient");
-                GenerateChudShader(stream, $@"chud_meter_gradient_inverse");
-                GenerateChudShader(stream, $@"chud_meter_radial_gradient");
-                GenerateChudShader(stream, $@"chud_meter_shield", false);
-                GenerateChudShader(stream, $@"chud_meter_single_color");
-                GenerateChudShader(stream, $@"chud_navpoint");
-                GenerateChudShader(stream, $@"chud_really_simple");
-                GenerateChudShader(stream, $@"chud_sensor");
-                GenerateChudShader(stream, $@"chud_simple", false);
-                GenerateChudShader(stream, $@"chud_solid");
-                GenerateChudShader(stream, $@"chud_text_simple", false);
-                GenerateChudShader(stream, $@"chud_texture_cam");
-                GenerateChudShader(stream, $@"chud_turbulence");
+                // May not be all that useful, but here is the approximate time taken for this whole function to run. The time taken did go up after redoing the shader compile code for some reason :/
+                // Given that the total time taken to generate a cache using the current system varies by around 4 - 15 seconds on average from run to run, these measurements are within
+                // the margin of error. Once most of the issues with the JSON Deserializer have been ironed out, the speed of this function should increase slightly. So long as the total
+                // elapsed time remains within the margin of error, it is acceptable :/ 
 
-                GenerateExplicitShader(stream, $@"add");
-                GenerateExplicitShader(stream, $@"add_downsampled");
-                GenerateExplicitShader(stream, $@"alpha_test_explicit");
-                GenerateExplicitShader(stream, $@"apply_color_matrix");
-                GenerateExplicitShader(stream, $@"beam_update");
-                GenerateExplicitShader(stream, $@"blend3");
-                GenerateExplicitShader(stream, $@"bloom_add_alpha1");
-                GenerateExplicitShader(stream, $@"bloom_curve");
-                GenerateExplicitShader(stream, $@"blur_11_horizontal", false);
-                GenerateExplicitShader(stream, $@"blur_11_vertical", false);
-                GenerateExplicitShader(stream, $@"bspline_resample");
-                GenerateExplicitShader(stream, $@"chud_overlay_blend");
-                GenerateExplicitShader(stream, $@"contrail_spawn");
-                GenerateExplicitShader(stream, $@"contrail_update");
-                GenerateExplicitShader(stream, $@"copy");
-                GenerateExplicitShader(stream, $@"copy_rgbe_to_rgb");
-                GenerateExplicitShader(stream, $@"copy_surface");
-                GenerateExplicitShader(stream, $@"crop");
-                GenerateExplicitShader(stream, $@"cubemap_clamp");
-                GenerateExplicitShader(stream, $@"cubemap_divide");
-                GenerateExplicitShader(stream, $@"cubemap_phi_blur");
-                GenerateExplicitShader(stream, $@"cubemap_theta_blur");
-                GenerateExplicitShader(stream, $@"custom_gamma_correct");
-                GenerateExplicitShader(stream, $@"debug");
-                GenerateExplicitShader(stream, $@"debug2d");
-                GenerateExplicitShader(stream, $@"decorator_default");
-                GenerateExplicitShader(stream, $@"decorator_edit");
-                GenerateExplicitShader(stream, $@"decorator_no_wind");
-                GenerateExplicitShader(stream, $@"decorator_shaded");
-                GenerateExplicitShader(stream, $@"decorator_static");
-                GenerateExplicitShader(stream, $@"decorator_sun");
-                GenerateExplicitShader(stream, $@"decorator_wavy");
-                GenerateExplicitShader(stream, $@"displacement");
-                GenerateExplicitShader(stream, $@"displacement_motion_blur");
-                GenerateExplicitShader(stream, $@"double_gradient", false);
-                GenerateExplicitShader(stream, $@"downsample_2x2");
-                GenerateExplicitShader(stream, $@"downsample_4x4_block");
-                GenerateExplicitShader(stream, $@"downsample_4x4_block_bloom");
-                GenerateExplicitShader(stream, $@"downsample_4x4_block_bloom_ldr");
-                GenerateExplicitShader(stream, $@"downsample_4x4_block_bloom_new");
-                GenerateExplicitShader(stream, $@"downsample_4x4_bloom_dof");
-                GenerateExplicitShader(stream, $@"downsample_4x4_gaussian");
-                GenerateExplicitShader(stream, $@"downsample_4x4_gaussian_bloom");
-                GenerateExplicitShader(stream, $@"downsample_4x4_gaussian_bloom_ldr");
-                GenerateExplicitShader(stream, $@"downsize_2x_target");
-                GenerateExplicitShader(stream, $@"downsize_2x_to_bloom");
-                GenerateExplicitShader(stream, $@"exposure_downsample");
-                GenerateExplicitShader(stream, $@"final_composite");
-                GenerateExplicitShader(stream, $@"final_composite_debug");
-                GenerateExplicitShader(stream, $@"final_composite_dof");
-                GenerateExplicitShader(stream, $@"final_composite_zoom");
-                GenerateExplicitShader(stream, $@"fxaa");
-                GenerateExplicitShader(stream, $@"gamma_correct");
-                GenerateExplicitShader(stream, $@"gradient", false);
-                GenerateExplicitShader(stream, $@"hdr_retrieve");
-                GenerateExplicitShader(stream, $@"hud_camera_nightvision"); // Uses a custom implementation when compared to the ODST shader source.
-                GenerateExplicitShader(stream, $@"implicit_hill");
-                GenerateExplicitShader(stream, $@"kernel_5", false);
-                GenerateExplicitShader(stream, $@"legacy_hud_bitmap");
-                GenerateExplicitShader(stream, $@"legacy_meter");
-                GenerateExplicitShader(stream, $@"lens_flare");
-                GenerateExplicitShader(stream, $@"light_volume_update");
-                GenerateExplicitShader(stream, $@"lightshafts");
-                GenerateExplicitShader(stream, $@"overhead_map_geometry");
-                GenerateExplicitShader(stream, $@"particle_spawn");
-                GenerateExplicitShader(stream, $@"particle_update");
-                GenerateExplicitShader(stream, $@"patchy_fog", false);
-                GenerateExplicitShader(stream, $@"pixel_copy");
-                GenerateExplicitShader(stream, $@"player_emblem_screen");
-                GenerateExplicitShader(stream, $@"player_emblem_world");
-                GenerateExplicitShader(stream, $@"radial_blur");
-                GenerateExplicitShader(stream, $@"restore_ldr_hdr_depth");
-                GenerateExplicitShader(stream, $@"rotate_2d");
-                GenerateExplicitShader(stream, $@"screenshot_combine", false);
-                GenerateExplicitShader(stream, $@"screenshot_combine_dof", false);
-                GenerateExplicitShader(stream, $@"screenshot_display");
-                GenerateExplicitShader(stream, $@"screenshot_memexport");
-                GenerateExplicitShader(stream, $@"shadow_apply");
-                GenerateExplicitShader(stream, $@"shadow_apply_bilinear");
-                GenerateExplicitShader(stream, $@"shadow_apply_fancy");
-                GenerateExplicitShader(stream, $@"shadow_apply_faster");
-                GenerateExplicitShader(stream, $@"shadow_apply_point");
-                GenerateExplicitShader(stream, $@"shadow_geometry");
-                GenerateExplicitShader(stream, $@"shield_impact");
-                GenerateExplicitShader(stream, $@"shield_meter");
-                GenerateExplicitShader(stream, $@"sky_dome_simple");
-                GenerateExplicitShader(stream, $@"smirnov");
-                GenerateExplicitShader(stream, $@"sniper_scope");
-                GenerateExplicitShader(stream, $@"sniper_scope_stencil_pc");
-                GenerateExplicitShader(stream, $@"spike_blur_horizontal");
-                GenerateExplicitShader(stream, $@"spike_blur_vertical");
-                GenerateExplicitShader(stream, $@"ssao");
-                GenerateExplicitShader(stream, $@"ssao_blur");
-                GenerateExplicitShader(stream, $@"stencil_stipple");
-                GenerateExplicitShader(stream, $@"transparent");
-                GenerateExplicitShader(stream, $@"update_persistence");
-                GenerateExplicitShader(stream, $@"water_ripple");
-                GenerateExplicitShader(stream, $@"write_depth");
-                GenerateExplicitShader(stream, $@"yuv_to_rgb");
-                GenerateExplicitShader(stream, $@"unknown_94"); // unknown_94 // fxaa_alpha?
-                GenerateExplicitShader(stream, $@"unknown_98"); // unknown_98
-                GenerateExplicitShader(stream, $@"unknown_101"); // unknown_101
-                GenerateExplicitShader(stream, $@"unknown_102"); // unknown_102
-                GenerateExplicitShader(stream, $@"unknown_103"); // unknown_103
-                GenerateExplicitShader(stream, $@"unknown_104"); // unknown_104
-                GenerateExplicitShader(stream, $@"unknown_105"); // unknown_105
-                GenerateExplicitShader(stream, $@"unknown_106"); // unknown_106
-                GenerateExplicitShader(stream, $@"unknown_107"); // unknown_107
-                GenerateExplicitShader(stream, $@"unknown_109"); // unknown_109
+                // NEW - JUST JSON 
+                // Elapsed time: 62643022800 nanoseconds
+
+                // NEW - JSON + NEW COMPILE LOOPS
+                // Elapsed time: 62733337800 nanoseconds : 90315000ns slower (0.090315 seconds)
+
+                // OLD - C# OBJECTS
+                // Elapsed time: 61286682300 nanoseconds : 1356340500ns faster (1.3563405 seconds)
+
+                foreach (ShaderType shaderType in Enum.GetValues(typeof(ShaderType)))
+                    if (shaderType != ShaderType.Glass)
+                        GenerateGlobalShaders(stream, shaderType.ToString().ToLower(), 
+                            shaderType == ShaderType.Foliage || 
+                            shaderType == ShaderType.Water ? false : true);
+
+                foreach (ChudShader chudShader in Enum.GetValues(typeof(ChudShader)))
+                    GenerateChudShader(stream, chudShader.ToString().ToLower(), 
+                        chudShader == ChudShader.chud_cortana_composite || 
+                        chudShader == ChudShader.chud_meter_shield || 
+                        chudShader == ChudShader.chud_simple || 
+                        chudShader == ChudShader.chud_text_simple ? false : true);
+
+                foreach (ExplicitShader explicitShader in Enum.GetValues(typeof(ExplicitShader)))
+                    if (explicitShader != ExplicitShader.shadow_apply2)
+                        GenerateExplicitShader(stream, explicitShader.ToString().ToLower(),
+                            explicitShader == ExplicitShader.blur_11_horizontal ||
+                            explicitShader == ExplicitShader.blur_11_vertical ||
+                            explicitShader == ExplicitShader.double_gradient ||
+                            explicitShader == ExplicitShader.gradient ||
+                            explicitShader == ExplicitShader.kernel_5 ||
+                            explicitShader == ExplicitShader.patchy_fog ||
+                            explicitShader == ExplicitShader.screenshot_combine ||
+                            explicitShader == ExplicitShader.screenshot_combine_dof ? false : true);
+
+                stopwatch.Stop();
+                long ticks = stopwatch.ElapsedTicks;
+                long nanoseconds = ticks * (1000000000L / Stopwatch.Frequency);
+                Console.WriteLine($"Elapsed time: {nanoseconds} nanoseconds");
             }
         }
 

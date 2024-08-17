@@ -51,7 +51,7 @@ namespace TagTool.MtnDewIt.Commands
                 };
 
                 // When deserialising the data for these types we want to ensure that the tag exists in the cache no matter what
-                if (definition.GetType() == typeof(RenderMethodDefinition) || definition.GetType() == typeof(RenderMethodOption))
+                if (definition.GetType() == typeof(RenderMethodDefinition))
                 {
                     tagObject.Generate = true;
                 }

@@ -19,31 +19,17 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override void WriteJson(JsonWriter writer, FileAuthor value, JsonSerializer serializer)
         {
-            var fileAuthor = new InlineFileAuthor(CacheFileHeaderDataHaloOnline.GetAuthor(value.Data));
-
-            serializer.Serialize(writer, fileAuthor);
+            writer.WriteValue(CacheFileHeaderDataHaloOnline.GetAuthor(value.Data));
         }
 
         public override FileAuthor ReadJson(JsonReader reader, Type objectType, FileAuthor existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            var inlineFileAuthor = serializer.Deserialize<InlineFileAuthor>(reader);
-
             var fileAuthor = new FileAuthor() 
             {
-                Data = CacheFileHeaderDataHaloOnline.SetAuthor(inlineFileAuthor.FileAuthor),
+                Data = CacheFileHeaderDataHaloOnline.SetAuthor(reader.Value.ToString()),
             };
 
             return fileAuthor;
-        }
-    }
-
-    public class InlineFileAuthor 
-    {
-        public string FileAuthor { get; set; }
-
-        public InlineFileAuthor(string author)
-        {
-            FileAuthor = author;
         }
     }
 }

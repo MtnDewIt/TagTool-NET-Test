@@ -25,6 +25,7 @@ namespace TagTool.MtnDewIt.JSON
                 if (InlineTagData == null && !string.IsNullOrEmpty(TagType)) 
                 {
                     // TODO: Figure out how to pull definition from existing tag table
+                    // May need to change the type in this case from the definition type, to the definition long form name
                     // We assume that the all the tag definitions are in the same namespace
                     var type = Type.GetType($@"TagTool.Tags.Definitions.{TagType}");
                     InlineTagData = (TagStructure)Activator.CreateInstance(type);

@@ -19,26 +19,14 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override void WriteJson(JsonWriter writer, Tag value, JsonSerializer serializer)
         {
-            var tag = new InlineTag(value.ToString());
-
-            serializer.Serialize(writer, tag);
+            writer.WriteValue(value.ToString());
         }
 
         public override Tag ReadJson(JsonReader reader, Type objectType, Tag existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            var inlineTag = serializer.Deserialize<InlineTag>(reader);
+            var tag = reader.Value.ToString();
 
-            return new Tag(inlineTag.Tag);
-        }
-    }
-
-    public class InlineTag 
-    {
-        public string Tag { get; set; }
-
-        public InlineTag(string tag)
-        {
-            Tag = tag;
+            return new Tag(tag);
         }
     }
 }
