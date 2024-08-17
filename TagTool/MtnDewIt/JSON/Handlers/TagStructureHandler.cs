@@ -45,6 +45,7 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override TagStructure ReadJson(JsonReader reader, Type objectType, TagStructure existingValue, bool hasExistingValue, JsonSerializer serializer) 
         {
+            // TODO: Maybe figure out a proper way of deserializing the data
             return existingValue;
         }
     }

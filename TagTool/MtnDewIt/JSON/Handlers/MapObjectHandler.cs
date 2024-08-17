@@ -40,9 +40,17 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public MapObject Deserialize(string input)
         {
+            var converters = new List<JsonConverter>
+            {
+                new StringIdHandler(Cache, CacheContext),
+                new TagHandler(Cache, CacheContext),
+                new FileAuthorHandler(Cache, CacheContext),
+                new EnumHandler(Cache, CacheContext),
+            };
+
             var settings = new JsonSerializerSettings
             {
-                Converters = Converters,
+                Converters = converters,
                 Formatting = Formatting.Indented
             };
 

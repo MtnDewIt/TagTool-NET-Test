@@ -44,9 +44,17 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public TagObject Deserialize(string input)
         {
+            var converters = new List<JsonConverter> 
+            {
+                new StringIdHandler(Cache, CacheContext),
+                new CachedTagHandler(Cache, CacheContext, CacheStream),
+                new TagHandler(Cache, CacheContext),
+                new EnumHandler(Cache, CacheContext),
+            };
+
             var settings = new JsonSerializerSettings
             {
-                Converters = Converters,
+                Converters = converters,
                 Formatting = Formatting.Indented
             };
 
