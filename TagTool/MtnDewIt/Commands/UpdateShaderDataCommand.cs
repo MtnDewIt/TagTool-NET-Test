@@ -20,6 +20,32 @@ namespace TagTool.MtnDewIt.Commands
 
         public static List<string> TagObjectList;
 
+        public static HashSet<ShaderType> noFixesShaders = new HashSet<ShaderType> 
+        {
+            ShaderType.Water,
+            ShaderType.Foliage,
+        };
+
+        public static HashSet<ChudShader> noFixesChudShaders = new HashSet<ChudShader>
+        {
+            ChudShader.chud_simple,
+            ChudShader.chud_text_simple,
+            ChudShader.chud_meter_shield,
+            ChudShader.chud_cortana_composite,
+        };
+
+        public static HashSet<ExplicitShader> noFixesExplicitShaders = new HashSet<ExplicitShader>
+        {
+            ExplicitShader.blur_11_horizontal,
+            ExplicitShader.blur_11_vertical,
+            ExplicitShader.screenshot_combine,
+            ExplicitShader.kernel_5,
+            ExplicitShader.screenshot_combine_dof,
+            ExplicitShader.gradient,
+            ExplicitShader.patchy_fog,
+            ExplicitShader.double_gradient,
+        };
+
         public UpdateShaderDataCommand(GameCache cache, GameCacheHaloOnline cacheContext) : base
         (
             true,
@@ -44,9 +70,6 @@ namespace TagTool.MtnDewIt.Commands
         {            
             using (var stream = Cache.OpenCacheReadWrite())
             {
-                Stopwatch stopwatch = new Stopwatch();
-                stopwatch.Start();
-
                 var tagParser = new TagObjectParser(Cache, CacheContext, stream);
                 
                 var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\updateshaderdata\tags.json");
@@ -55,92 +78,67 @@ namespace TagTool.MtnDewIt.Commands
                 foreach (var file in TagObjectList)
                     tagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\{file}");
 
-                // TODO: Create separate lists for types which don't requires the APPLY_FIXES macro
-                // TODO: Create a better system for checking whether or not an enum value is actually a valid shader (Looking at you Glass and ShadowApply2)
-                // TODO: Maybe modify the shader generation functions so they just take the type as an input, instead of a string :/
+                // Don't really know if I should use a cast when retrieving values, as while it does
+                // improve type safety, I have no clue what impact it may have on performance
 
-                // May not be all that useful, but here is the approximate time taken for this whole function to run. The time taken did go up after redoing the shader compile code for some reason :/
-                // Given that the total time taken to generate a cache using the current system varies by around 4 - 15 seconds on average from run to run, these measurements are within
-                // the margin of error. Once most of the issues with the JSON Deserializer have been ironed out, the speed of this function should increase slightly. So long as the total
-                // elapsed time remains within the margin of error, it is acceptable :/ 
+                foreach (ShaderType shaderType in Enum.GetValues(typeof(ShaderType))) 
+                {
+                    if (shaderType == ShaderType.Glass)
+                        continue;
 
-                // NEW - JUST JSON 
-                // Elapsed time: 62643022800 nanoseconds
+                    bool applyFixes = !noFixesShaders.Contains(shaderType);
+                    GenerateGlobalShaders(stream, shaderType, applyFixes);
+                }
 
-                // NEW - JSON + NEW COMPILE LOOPS
-                // Elapsed time: 62733337800 nanoseconds : 90315000ns slower (0.090315 seconds)
+                foreach (ChudShader chudShader in Enum.GetValues(typeof(ChudShader))) 
+                {
+                    bool applyFixes = !noFixesChudShaders.Contains(chudShader);
+                    GenerateChudShader(stream, chudShader, applyFixes); 
+                }
 
-                // OLD - C# OBJECTS
-                // Elapsed time: 61286682300 nanoseconds : 1356340500ns faster (1.3563405 seconds)
+                foreach (ExplicitShader explicitShader in Enum.GetValues(typeof(ExplicitShader))) 
+                {
+                    if (explicitShader == ExplicitShader.shadow_apply2)
+                        continue;
 
-                foreach (ShaderType shaderType in Enum.GetValues(typeof(ShaderType)))
-                    if (shaderType != ShaderType.Glass)
-                        GenerateGlobalShaders(stream, shaderType.ToString().ToLower(), 
-                            shaderType == ShaderType.Foliage || 
-                            shaderType == ShaderType.Water ? false : true);
-
-                foreach (ChudShader chudShader in Enum.GetValues(typeof(ChudShader)))
-                    GenerateChudShader(stream, chudShader.ToString().ToLower(), 
-                        chudShader == ChudShader.chud_cortana_composite || 
-                        chudShader == ChudShader.chud_meter_shield || 
-                        chudShader == ChudShader.chud_simple || 
-                        chudShader == ChudShader.chud_text_simple ? false : true);
-
-                foreach (ExplicitShader explicitShader in Enum.GetValues(typeof(ExplicitShader)))
-                    if (explicitShader != ExplicitShader.shadow_apply2)
-                        GenerateExplicitShader(stream, explicitShader.ToString().ToLower(),
-                            explicitShader == ExplicitShader.blur_11_horizontal ||
-                            explicitShader == ExplicitShader.blur_11_vertical ||
-                            explicitShader == ExplicitShader.double_gradient ||
-                            explicitShader == ExplicitShader.gradient ||
-                            explicitShader == ExplicitShader.kernel_5 ||
-                            explicitShader == ExplicitShader.patchy_fog ||
-                            explicitShader == ExplicitShader.screenshot_combine ||
-                            explicitShader == ExplicitShader.screenshot_combine_dof ? false : true);
-
-                stopwatch.Stop();
-                long ticks = stopwatch.ElapsedTicks;
-                long nanoseconds = ticks * (1000000000L / Stopwatch.Frequency);
-                Console.WriteLine($"Elapsed time: {nanoseconds} nanoseconds");
+                    bool applyFixes = !noFixesExplicitShaders.Contains(explicitShader);
+                    GenerateExplicitShader(stream, explicitShader, applyFixes);
+                }
             }
         }
 
-        public void GenerateGlobalShaders(Stream stream, string shaderType, bool applyFixes = true)
+        public void GenerateGlobalShaders(Stream stream, ShaderType shader, bool applyFixes = true)
         {
-            var type = (HaloShaderGenerator.Globals.ShaderType)Enum.Parse(typeof(HaloShaderGenerator.Globals.ShaderType), shaderType, true);
+            string shaderName = shader.ToString().ToLowerInvariant();
+            string rmdfName = shaderName == "lightvolume" ? "shaders\\light_volume" : $"shaders\\{shaderName}";
 
-            CachedTag rmdfTag = Cache.TagCache.GetTag<RenderMethodDefinition>(shaderType == "lightvolume" ? "shaders\\light_volume" : $"shaders\\{shaderType}");
-
+            CachedTag rmdfTag = Cache.TagCache.GetTag<RenderMethodDefinition>(rmdfName);
             RenderMethodDefinition rmdf = Cache.Deserialize<RenderMethodDefinition>(stream, rmdfTag);
 
-            GlobalPixelShader glps = InlineShaderGenerator.GenerateSharedPixelShaders(Cache, rmdf, type, applyFixes);
-            GlobalVertexShader glvs = InlineShaderGenerator.GenerateSharedVertexShaders(Cache, rmdf, type, applyFixes);
+            GlobalPixelShader glps = InlineShaderGenerator.GenerateSharedPixelShaders(Cache, rmdf, shader, applyFixes);
+            GlobalVertexShader glvs = InlineShaderGenerator.GenerateSharedVertexShaders(Cache, rmdf, shader, applyFixes);
 
             Cache.Serialize(stream, rmdf.GlobalPixelShader, glps);
             Cache.Serialize(stream, rmdf.GlobalVertexShader, glvs);
         }
 
-        public void GenerateExplicitShader(Stream stream, string shader, bool applyFixes = true)
+        public void GenerateExplicitShader(Stream stream, ExplicitShader shader, bool applyFixes = true)
         {
-            var type = (HaloShaderGenerator.Globals.ExplicitShader)Enum.Parse(typeof(HaloShaderGenerator.Globals.ExplicitShader), shader, true);
+            CachedTag pixlTag = Cache.TagCache.GetTag<PixelShader>($"rasterizer\\shaders\\{shader}") ?? Cache.TagCache.AllocateTag<PixelShader>($"rasterizer\\shaders\\{shader}");
+            CachedTag vtshTag = Cache.TagCache.GetTag<VertexShader>($"rasterizer\\shaders\\{shader}") ?? Cache.TagCache.AllocateTag<VertexShader>($"rasterizer\\shaders\\{shader}");
 
-            CachedTag pixlTag = Cache.TagCache.GetTag<PixelShader>($"rasterizer\\shaders\\{type}") ?? Cache.TagCache.AllocateTag<PixelShader>($"rasterizer\\shaders\\{type}");
-            CachedTag vtshTag = Cache.TagCache.GetTag<VertexShader>($"rasterizer\\shaders\\{type}") ?? Cache.TagCache.AllocateTag<VertexShader>($"rasterizer\\shaders\\{type}");
-
-            InlineShaderGenerator.GenerateExplicitShader(Cache, type.ToString(), applyFixes, out PixelShader pixl, out VertexShader vtsh);
+            InlineShaderGenerator.GenerateExplicitShader(Cache, shader.ToString(), applyFixes, out PixelShader pixl, out VertexShader vtsh);
 
             Cache.Serialize(stream, vtshTag, vtsh);
             Cache.Serialize(stream, pixlTag, pixl);
         }
 
-        public void GenerateChudShader(Stream stream, string shader, bool applyFixes = true)
+        public void GenerateChudShader(Stream stream, ChudShader shader, bool applyFixes = true)
         {
-            var type = (HaloShaderGenerator.Globals.ChudShader)Enum.Parse(typeof(HaloShaderGenerator.Globals.ChudShader), shader, true);
+            CachedTag pixlTag = Cache.TagCache.GetTag<PixelShader>($"rasterizer\\shaders\\{shader}") ?? Cache.TagCache.AllocateTag<PixelShader>($"rasterizer\\shaders\\{shader}");
+            CachedTag vtshTag = Cache.TagCache.GetTag<VertexShader>($"rasterizer\\shaders\\{shader}") ?? Cache.TagCache.AllocateTag<VertexShader>($"rasterizer\\shaders\\{shader}");
 
-            CachedTag pixlTag = Cache.TagCache.GetTag<PixelShader>($"rasterizer\\shaders\\{type}") ?? Cache.TagCache.AllocateTag<PixelShader>($"rasterizer\\shaders\\{type}");
-            CachedTag vtshTag = Cache.TagCache.GetTag<VertexShader>($"rasterizer\\shaders\\{type}") ?? Cache.TagCache.AllocateTag<VertexShader>($"rasterizer\\shaders\\{type}");
-
-            InlineShaderGenerator.GenerateChudShader(Cache, type.ToString(), applyFixes, out PixelShader pixl, out VertexShader vtsh);
+            InlineShaderGenerator.GenerateChudShader(Cache, shader.ToString(), applyFixes, out PixelShader pixl, out VertexShader vtsh);
 
             Cache.Serialize(stream, vtshTag, vtsh);
             Cache.Serialize(stream, pixlTag, pixl);
