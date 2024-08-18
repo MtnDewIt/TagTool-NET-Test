@@ -38,6 +38,9 @@ namespace TagTool.MtnDewIt.Commands
             var file = new FileInfo(args[0]);
             var blfData = new BlfData(Cache.Version, Cache.Platform);
 
+            var fileName = Path.GetFileNameWithoutExtension(file.Name);
+            var fileExtension = file.Extension.TrimStart('.');
+
             // Wrapping the whole thing in a using statement probably isn't the best idea
             using (var stream = file.OpenRead())
             {
@@ -65,21 +68,21 @@ namespace TagTool.MtnDewIt.Commands
 
                 var blfObject = new BlfObject() 
                 {
-                    FileName = file.Name,
-                    FileType = file.Extension.Trim(),
+                    FileName = fileName,
+                    FileType = fileExtension,
                     BlfData = blfData,
                 };
 
                 var jsonData = handler.Serialize(blfObject);
 
-                var fileInfo = new FileInfo(Path.Combine(ExportPath, $"{file.Name}.json"));
+                var fileInfo = new FileInfo(Path.Combine(ExportPath, $"{fileName}.json"));
 
                 if (!fileInfo.Directory.Exists)
                 {
                     fileInfo.Directory.Create();
                 }
 
-                File.WriteAllText(Path.Combine(ExportPath, $"{file.Name}.json"), jsonData);
+                File.WriteAllText(Path.Combine(ExportPath, $"{fileName}.json"), jsonData);
             }
 
             return true;

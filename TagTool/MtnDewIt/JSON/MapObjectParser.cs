@@ -4,6 +4,7 @@ using TagTool.Cache;
 using TagTool.MtnDewIt.JSON.Handlers;
 using TagTool.IO;
 using TagTool.MtnDewIt.BlamFiles;
+using TagTool.Tags.Definitions;
 
 namespace TagTool.MtnDewIt.JSON
 {
@@ -39,7 +40,32 @@ namespace TagTool.MtnDewIt.JSON
                     MapFileBlf = mapObject.BlfData,
                 };
 
-                // TODO: Add checks for map variant data, check if the map variant or the tag list isn't null
+                var headerData = mapData.Header as CacheFileHeaderDataHaloOnline;
+                var scnrTag = Cache.TagCache.GetTag<Scenario>(headerData.ScenarioPath);
+                var scnr = CacheContext.Deserialize<Scenario>(CacheStream, scnrTag);
+
+                switch (scnr.MapType)
+                {
+                    case ScenarioMapType.MainMenu:
+                        headerData.CacheType = CacheFileType.MainMenu;
+                        break;
+                    case ScenarioMapType.SinglePlayer:
+                        headerData.CacheType = CacheFileType.Campaign;
+                        break;
+                    case ScenarioMapType.Multiplayer:
+                        headerData.CacheType = CacheFileType.Multiplayer;
+                        break;
+                }
+
+                headerData.ScenarioTagIndex = scnrTag.Index;
+
+                if (mapData.Version == CacheVersion.HaloOnlineED) 
+                {
+                    if (mapData.MapFileBlf != null && mapData.MapFileBlf.MapVariant.MapVariant != null && mapData.MapFileBlf.MapVariantTagNames.Names != null) 
+                    {
+                        UpdateQuotaIndexes(mapData.MapFileBlf.MapVariantTagNames.Names, mapData.MapFileBlf.MapVariant.MapVariant.Quotas);
+                    }
+                }
 
                 mapData.WriteData(writer);
             }

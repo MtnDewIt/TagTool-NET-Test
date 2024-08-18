@@ -7,6 +7,7 @@ using TagTool.IO;
 using TagTool.MtnDewIt.BlamFiles;
 using TagTool.MtnDewIt.JSON;
 using TagTool.MtnDewIt.JSON.Handlers;
+using TagTool.Tags.Definitions;
 
 namespace TagTool.MtnDewIt.Commands 
 {
@@ -37,6 +38,8 @@ namespace TagTool.MtnDewIt.Commands
             var file = new FileInfo(args[0]);
             var mapData = new MapFileData();
 
+            var fileName = Path.GetFileNameWithoutExtension(file.Name);
+
             // Wrapping the whole thing in a using statement probably isn't the best idea
             using (var stream = file.OpenRead()) 
             {
@@ -46,22 +49,26 @@ namespace TagTool.MtnDewIt.Commands
 
                 var mapObject = new MapObject() 
                 {
-                    MapName = file.Name,
+                    MapName = fileName,
                     MapVersion = mapData.Version,
                     CacheFileHeaderData = mapData.Header,
                     BlfData = mapData.MapFileBlf,
                 };
 
+                var headerData = mapData.Header as CacheFileHeaderDataHaloOnline;
+
+                headerData.ScenarioTagIndex = 0;
+
                 var jsonData = handler.Serialize(mapObject);
 
-                var fileInfo = new FileInfo(Path.Combine(ExportPath, $"{file.Name}.json"));
+                var fileInfo = new FileInfo(Path.Combine(ExportPath, $"{fileName}.json"));
 
                 if (!fileInfo.Directory.Exists)
                 {
                     fileInfo.Directory.Create();
                 }
 
-                File.WriteAllText(Path.Combine(ExportPath, $"{file.Name}.json"), jsonData);
+                File.WriteAllText(Path.Combine(ExportPath, $"{fileName}.json"), jsonData);
             }
 
             return true;
