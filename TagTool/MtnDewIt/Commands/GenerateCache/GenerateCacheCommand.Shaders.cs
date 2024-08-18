@@ -1,14 +1,14 @@
-using TagTool.Commands.Common;
-using TagTool.Commands;
-using System.IO;
-using TagTool.Cache;
-using TagTool.Tags.Definitions;
-using System.Collections.Generic;
-using System;
-using TagTool.Commands.Shaders;
-using TagTool.MtnDewIt.Shaders.RenderMethodDefinitions.Shaders;
-using TagTool.MtnDewIt.Shaders.ShaderGenerator;
 using HaloShaderGenerator.Globals;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
+using System;
+using TagTool.Cache;
+using TagTool.Commands.Shaders;
+using TagTool.Commands;
+using TagTool.MtnDewIt.JSON;
+using TagTool.MtnDewIt.Shaders.ShaderGenerator;
+using TagTool.Tags.Definitions;
 
 namespace TagTool.MtnDewIt.Commands.GenerateCache
 {
@@ -22,28 +22,17 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
         public void UpdateShaderData()
         {
-            // This tag isn't in the rebuilt cache by default
-            GenerateTag<Bitmap>($@"shaders\default_bitmaps\bitmaps\color_green");
+            // This will eventually get defined at runtime, along with all the other JSON related objects
+            // Right now, we just need to replace the existing system with JSON, ensuring 1:1 functionality, or as close as we can get
+            var tagParser = new TagObjectParser(Cache, CacheContext, CacheStream);
 
-            new shaders_beam_render_method_definition(Cache, CacheContext, CacheStream);
-            new shaders_black_render_method_definition(Cache, CacheContext, CacheStream);
-            new shaders_contrail_render_method_definition(Cache, CacheContext, CacheStream);
-            new shaders_cortana_render_method_definition(Cache, CacheContext, CacheStream);
-            new shaders_custom_render_method_definition(Cache, CacheContext, CacheStream);
-            new shaders_decal_render_method_definition(Cache, CacheContext, CacheStream);
-            new shaders_foliage_render_method_definition(Cache, CacheContext, CacheStream);
-            new shaders_halogram_render_method_definition(Cache, CacheContext, CacheStream);
-            new shaders_light_volume_render_method_definition(Cache, CacheContext, CacheStream);
-            new shaders_particle_render_method_definition(Cache, CacheContext, CacheStream);
-            new shaders_screen_render_method_definition(Cache, CacheContext, CacheStream);
-            new shaders_shader_render_method_definition(Cache, CacheContext, CacheStream);
-            new shaders_terrain_render_method_definition(Cache, CacheContext, CacheStream);
-            new shaders_water_render_method_definition(Cache, CacheContext, CacheStream);
-            new shaders_zonly_render_method_definition(Cache, CacheContext, CacheStream);
+            var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\updateshaderdata\tags.json");
+            var tagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
-            Cache.SaveStrings();
-            
-            foreach (ShaderType shaderType in Enum.GetValues(typeof(ShaderType))) 
+            foreach (var file in tagObjectList)
+                tagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\{file}");
+
+            foreach (ShaderType shaderType in Enum.GetValues(typeof(ShaderType)))
             {
                 if (shaderType == ShaderType.Glass)
                     continue;

@@ -2,7 +2,6 @@ using HaloShaderGenerator.Globals;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
