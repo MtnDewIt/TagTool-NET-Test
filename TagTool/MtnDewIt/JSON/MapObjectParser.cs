@@ -39,7 +39,24 @@ namespace TagTool.MtnDewIt.JSON
                     MapFileBlf = mapObject.BlfData,
                 };
 
+                // TODO: Add checks for map variant data, check if the map variant or the tag list isn't null
+
                 mapData.WriteData(writer);
+            }
+        }
+
+        public void UpdateQuotaIndexes(BlfTagName[] tagNames, VariantDataObjectQuota[] quotaList) 
+        {
+            for (int i = 0; i < tagNames.Length; i++) 
+            {
+                var tagName = tagNames[i];
+
+                if (tagName.Name != null && tagName.Name != "") 
+                {
+                    var tag = CacheContext.TagCache.GetTag(tagName.Name);
+
+                    quotaList[i].ObjectDefinitionIndex = tag.Index;
+                }
             }
         }
     }
