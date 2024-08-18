@@ -87,7 +87,7 @@ namespace TagTool.MtnDewIt.Commands
                         continue;
 
                     bool applyFixes = !noFixesShaders.Contains(shaderType);
-                    GenerateGlobalShaders(stream, shaderType, applyFixes);
+                    GenerateGlobalShader(stream, shaderType, applyFixes);
                 }
 
                 foreach (ChudShader chudShader in Enum.GetValues(typeof(ChudShader))) 
@@ -107,7 +107,7 @@ namespace TagTool.MtnDewIt.Commands
             }
         }
 
-        public void GenerateGlobalShaders(Stream stream, ShaderType shader, bool applyFixes = true)
+        public void GenerateGlobalShader(Stream stream, ShaderType shader, bool applyFixes = true)
         {
             string shaderName = shader.ToString().ToLowerInvariant();
             string rmdfName = shaderName == "lightvolume" ? "shaders\\light_volume" : $"shaders\\{shaderName}";
