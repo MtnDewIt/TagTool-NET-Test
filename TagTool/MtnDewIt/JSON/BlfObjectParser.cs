@@ -35,7 +35,7 @@ namespace TagTool.MtnDewIt.JSON
             {
                 if (blfObject.BlfData.Version == CacheVersion.HaloOnlineED)
                 {
-                    if (blfObject.BlfData != null && blfObject.BlfData.MapVariant.MapVariant != null && blfObject.BlfData.MapVariantTagNames.Names != null)
+                    if (blfObject.BlfData != null && blfObject.BlfData.MapVariant != null && blfObject.BlfData.MapVariantTagNames != null)
                     {
                         UpdateQuotaIndexes(blfObject.BlfData.MapVariantTagNames.Names, blfObject.BlfData.MapVariant.MapVariant.Quotas);
                     }

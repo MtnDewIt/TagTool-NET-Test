@@ -356,31 +356,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             DuplicateTag(GetCachedTag<Model>($@"objects\eldewrito\reforge\block_01x20x20"), $@"objects\eldewrito\reforge\block_01x20x20_black_mainmenu");
             DuplicateTag(GetCachedTag<RenderModel>($@"objects\eldewrito\reforge\block_01x20x20"), $@"objects\eldewrito\reforge\block_01x20x20_black_mainmenu");
 
-            riverworld.SetPortingProperties(audioCodec: Compression.OGG);
-            riverworld.PortTag($@"", $@"levels\multi\riverworld\riverworld.performance_throttles");
-
-            citadel.SetPortingProperties(audioCodec: Compression.OGG);
-            citadel.PortTag($@"", $@"levels\solo\100_citadel\shaders\panel_floor_ele_corner.shader");
-
-            sidewinder.SetPortingProperties(audioCodec: Compression.OGG);
-            sidewinder.PortTag($@"", $@"levels\dlc\sidewinder\shaders\side_hall_glass03.shader");
-
-            highCharity.SetPortingProperties(audioCodec: Compression.OGG);
-            highCharity.PortTag($@"", $@"levels\solo\110_hc\shaders\metals\fs_cov_purple.shader");
-
-            snowbound.SetPortingProperties(audioCodec: Compression.OGG);
-            snowbound.PortTag($@"", $@"levels\multi\snowbound\shaders\cable_wrap.shader");
-
-            midship.SetPortingProperties(audioCodec: Compression.OGG);
-            midship.PortTag($@"", $@"levels\dlc\midship\shaders\midship_strip_c_purple.shader");
-
-            lockout.SetPortingProperties(audioCodec: Compression.OGG);
-            lockout.PortTag($@"", $@"levels\dlc\lockout\shaders\metal_wall_white.shader");
-            lockout.PortTag($@"", $@"levels\dlc\lockout\shaders\metal_wall_white_flat.shader");
-
-            waste.SetPortingProperties(audioCodec: Compression.OGG);
-            waste.PortTag($@"", $@"levels\solo\070_waste\shaders\panel_floor_waste.shader");
-
             haloOnline.SetPortingProperties(audioCodec: Compression.OGG);
             haloOnline.PortTag($@"", $@"globals\podium_globals.podium_settings");
             haloOnline.PortTag($@"", $@"objects\characters\masterchief\masterchief_podium.model_animation_graph");
@@ -388,11 +363,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             haloOnline.PortTag($@"", $@"sound\music\postmatch_new\spartan_hero\postmatch_spartan_hero.sound_looping");
             haloOnline.PortTag($@"", $@"sound\music\postmatch_new\spartan_engage\postmatch_spartan_engage.sound_looping");
             haloOnline.PortTag($@"", $@"sound\music\postmatch_new\headhunters\postmatch_headhunters.sound_looping");
-            haloOnline.PortTag($@"", $@"objects\equipment\forcedreload_equipment\forcedreload_equipment.equipment");
-            haloOnline.PortTag($@"", $@"objects\equipment\tankmode_equipment\tankmode_equipment.equipment");
-            haloOnline.PortTag($@"", $@"objects\equipment\armorlock_equipment\armorlock_equipment.equipment");
-            haloOnline.PortTag($@"", $@"objects\equipment\adrenaline_equipment\adrenaline_equipment.equipment");
-            haloOnline.PortTag($@"", $@"objects\equipment\ammopack_equipment\ammopack_equipment.equipment");
 
             //GenerateTag<MultilingualUnicodeStringList>($@"ui\global_strings\weapon_type_name_strings");
         }

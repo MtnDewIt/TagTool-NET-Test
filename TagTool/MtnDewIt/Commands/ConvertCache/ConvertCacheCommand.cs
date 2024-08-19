@@ -224,7 +224,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
                 UpdateShaderData();
                 PortTagData();
                 UpdateTagData();
-                UpdateMapFiles();
+                UpdateMapData();
             }
 
             ContextStack.Pop();
