@@ -22,6 +22,12 @@ namespace TagTool.MtnDewIt.JSON.Handlers
             typeof(TagResourceReference),
         };
 
+        private HashSet<string> ExcludedNames = new HashSet<string> 
+        {
+            $@"ScriptStrings",
+            $@"ScriptSourceFileReferences",
+        };
+
         public TagStructureHandler(GameCache cache, GameCacheHaloOnline cacheContext)
         {
             Cache = cache;
@@ -43,8 +49,8 @@ namespace TagTool.MtnDewIt.JSON.Handlers
                 var fieldInfo = tagFieldInfo.FieldInfo;
                 var fieldValue = tagFieldInfo.GetValue(value);
                 var isInvalidField = tagFieldInfo.Attribute != null && tagFieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.Padding) || fieldName.Contains("unused", StringComparison.OrdinalIgnoreCase) || fieldName.Contains("padding", StringComparison.OrdinalIgnoreCase);
-
-                if (!isInvalidField && !ExludedTypes.Contains(fieldType))
+                
+                if (!isInvalidField && !ExludedTypes.Contains(fieldType) && !ExcludedNames.Contains(fieldName))
                 {
                     writer.WritePropertyName(fieldName);
                     serializer.Serialize(writer, fieldValue);
