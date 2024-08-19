@@ -16,6 +16,9 @@ namespace TagTool.MtnDewIt.JSON.Handlers
         private HashSet<Type> ExludedTypes = new HashSet<Type>
         {
             typeof(List<ResourceGroup>),
+            typeof(List<Scripting.HsScript>),
+            typeof(List<Scripting.HsGlobal>),
+            typeof(List<Scripting.HsSyntaxNode>),
             typeof(TagResourceReference),
         };
 
