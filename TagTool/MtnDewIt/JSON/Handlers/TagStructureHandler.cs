@@ -3,6 +3,8 @@ using TagTool.Cache;
 using TagTool.Tags;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using static TagTool.Tags.Definitions.ModelAnimationGraph;
 
 namespace TagTool.MtnDewIt.JSON.Handlers
 {
@@ -10,6 +12,12 @@ namespace TagTool.MtnDewIt.JSON.Handlers
     {
         private GameCache Cache;
         private GameCacheHaloOnline CacheContext;
+
+        private HashSet<Type> ExludedTypes = new HashSet<Type>
+        {
+            typeof(List<ResourceGroup>),
+            typeof(TagResourceReference),
+        };
 
         public TagStructureHandler(GameCache cache, GameCacheHaloOnline cacheContext)
         {
@@ -33,7 +41,7 @@ namespace TagTool.MtnDewIt.JSON.Handlers
                 var fieldValue = tagFieldInfo.GetValue(value);
                 var isInvalidField = tagFieldInfo.Attribute != null && tagFieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.Padding) || fieldName.Contains("unused", StringComparison.OrdinalIgnoreCase) || fieldName.Contains("padding", StringComparison.OrdinalIgnoreCase);
 
-                if (!isInvalidField)
+                if (!isInvalidField && !ExludedTypes.Contains(fieldType))
                 {
                     writer.WritePropertyName(fieldName);
                     serializer.Serialize(writer, fieldValue);
