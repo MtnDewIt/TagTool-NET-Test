@@ -639,8 +639,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new objects_eldewrito_reforge_block_01x20x20_black_mainmenu_render_model(Cache, CacheContext, CacheStream);
 
-            new levels_ui_mainmenu_objects_spartan_cheap_spartan_cheap_biped(Cache, CacheContext, CacheStream);
-
             new levels_ui_mainmenu_objects_spartan_cheap_spartan_cheap_model(Cache, CacheContext, CacheStream);
 
             new levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_biped(Cache, CacheContext, CacheStream);
