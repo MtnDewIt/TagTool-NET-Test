@@ -215,7 +215,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             GetCacheFiles();
 
             Program._stopWatch.Start();
-            MoveFontPackage(outputDirectoryInfo.FullName);
+            
             RebuildCache(outputDirectoryInfo.FullName);
             RetargetCache(outputDirectoryInfo.FullName);
 

@@ -206,6 +206,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
             EmptyDirectory(destDirectory);
 
+            MoveFontPackage(destDirectory.FullName);
+
             var destCacheContext = new GameCacheHaloOnline(destDirectory);
 
             UpdateStringTable(destCacheContext.StringTable);

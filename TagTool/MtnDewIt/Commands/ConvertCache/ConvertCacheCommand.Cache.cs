@@ -68,9 +68,11 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             EmptyDirectory(destDirectory);
 
-            srcCacheContext.StringIdCacheFile.CopyTo($@"{destDirectory.FullName}\string_ids.dat");
+            MoveFontPackage(destDirectory.FullName);
 
             var destCacheContext = new GameCacheHaloOnline(destDirectory);
+
+            srcCacheContext.StringIdCacheFile.CopyTo($@"{destDirectory.FullName}\string_ids.dat");
 
             SetCacheVersion(destCacheContext, CacheVersion.HaloOnlineED);
 
