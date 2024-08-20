@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands;
@@ -23,7 +24,7 @@ namespace TagTool.MtnDewIt.Commands
             "GenerateTagObject",
             "Generates a JSON tag object file based on the specified tag",
 
-            "GenerateTagObject <Tag_Name>",
+            "GenerateTagObject <Tag_Name> [Suffix]",
             "Generates a JSON tag object file based on the specified tag. Flags within\n" + 
             "the generated JSON data may change depending on the tag's definition and type"
         )
@@ -40,6 +41,7 @@ namespace TagTool.MtnDewIt.Commands
                 var handler = new TagObjectHandler(Cache, CacheContext, cacheStream);
 
                 var tag = Cache.TagCache.GetTag(args[0]);
+                var suffix = args[1];
                 var definition = (TagStructure)Cache.Deserialize(cacheStream, tag);
 
                 var tagObject = new TagObject()
@@ -47,7 +49,11 @@ namespace TagTool.MtnDewIt.Commands
                     TagName = tag.Name,
                     TagType = definition.GetType().Name,
                     TagVersion = Cache.Version,
-                    TagData = definition,
+                    BitmapResources = new List<BitmapResource>
+                    {
+                        new BitmapResource(0, $@"{tag.Name.Split('\\').Last()}.dds"),
+                    },
+                    TagData = null,
                 };
 
                 // When deserialising the data for these types we want to ensure that the tag exists in the cache no matter what
@@ -58,14 +64,14 @@ namespace TagTool.MtnDewIt.Commands
                 
                 var jsonData = handler.Serialize(tagObject);
 
-                var fileInfo = new FileInfo(Path.Combine(ExportPath, $"{tag.Name}.json"));
+                var fileInfo = new FileInfo(Path.Combine(ExportPath, $"{tag.Name}_{suffix}.{TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group), Cache.Version, Cache.Platform).Structure.Name}.json"));
 
                 if (!fileInfo.Directory.Exists)
                 {
                     fileInfo.Directory.Create();
                 }
 
-                File.WriteAllText(Path.Combine(ExportPath, $"{tag.Name}.{TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group), Cache.Version, Cache.Platform).Structure.Name}.json"), jsonData);
+                File.WriteAllText(Path.Combine(ExportPath, $"{tag.Name}_{suffix}.{TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group), Cache.Version, Cache.Platform).Structure.Name}.json"), jsonData);
             }
 
             return true;

@@ -18,6 +18,7 @@ using TagTool.Commands.Common;
 using TagTool.Animations;
 using TagTool.MtnDewIt.Animations;
 using TagTool.Tags.Resources;
+using TagTool.Commands;
 
 namespace TagTool.MtnDewIt.JSON
 {
@@ -58,44 +59,55 @@ namespace TagTool.MtnDewIt.JSON
             }
 
             var tag = Cache.TagCache.GetTag($@"{tagObject.TagName}.{tagObject.TagData.GetTagStructureInfo(Cache.Version, Cache.Platform).Structure.Name}");
+            var tagDefinition = Cache.Deserialize(CacheStream, tag);
 
-            /*
             if (tagObject.UnicodeStrings != null && tagObject.TagType == $@"MultilingualUnicodeStringList") 
             {
                 foreach (var unicodeString in tagObject.UnicodeStrings)
                 {
-                    AddString(definition, unicodeString.StringIdName, unicodeString.StringIdContent);
+                    AddString((MultilingualUnicodeStringList)tagDefinition, unicodeString.StringIdName, unicodeString.StringIdContent);
                 }
+
+                Cache.Serialize(CacheStream, tag, tagDefinition);
             }
 
             if (tagObject.BitmapResources != null && tagObject.TagType == $@"Bitmap") 
             {
-                foreach (var resource in tagObject.BitmapResources) 
+                foreach (var resource in tagObject.BitmapResources)
                 {
-                    AddBitmap(definition, resource.BitmapIndex, resource.DDSFile);
+                    AddBitmap((Bitmap)tagDefinition, resource.BitmapIndex, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\{resource.DDSFile}");
                 }
+
+                Cache.Serialize(CacheStream, tag, tagDefinition);
             }
 
             if (tagObject.AnimationData != null && tagObject.TagType == $@"ModelAnimationGraph") 
             {
                 foreach (var resource in tagObject.AnimationData.AnimationResources) 
                 {
-                    AddAnimation(tag, resource.AnimationFile);
+                    AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\{resource.AnimationFile}");
                 }
+            }
 
-                if (tagObject.AnimationData.SortModes) 
+            // Add proper check to see if tag data is either null, or uses the default value for that tag type
+            if (tagObject.TagType != $@"Bitmap" || tagObject.TagType != $@"MultilingualUnicodeStringList") 
+            {
+                Cache.Serialize(CacheStream, tag, tagObject.TagData);
+            }
+
+            if (tagObject.AnimationData != null && tagObject.TagType == $@"ModelAnimationGraph") 
+            {
+                if (tagObject.AnimationData.SortModes)
                 {
                     SortModes(tag);
                 }
             }
-
+            
             if (tagObject.BlamScriptResource != null && tagObject.TagType == $@"Scenario") 
             {
-                CompileScript(tag, tagObject.BlamScriptResource.BlamScriptFile);
+                CompileScript(tag, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\scripts\{tagObject.BlamScriptResource.BlamScriptFile}");
             }
-            */
 
-            Cache.Serialize(CacheStream, tag, tagObject.TagData);
             Cache.SaveStrings();
         }
 

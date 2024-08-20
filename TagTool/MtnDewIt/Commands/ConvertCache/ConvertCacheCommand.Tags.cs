@@ -1,5 +1,6 @@
 using TagTool.MtnDewIt.Commands.ConvertCache.Tags;
 using TagTool.Commands;
+using TagTool.MtnDewIt.JSON;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache 
 {
@@ -7,111 +8,166 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
     {
         public void UpdateTagData()
         {
+            TagParser = new TagObjectParser(Cache, CacheContext, CacheStream);
+
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\005_intro_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\010_jungle_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\020_base_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\030_outskirts_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\040_voi_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\050_floodvoi_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\070_waste_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\100_citadel_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\110_hc_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\120_halo_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\130_epilogue_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\armory_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\bunkerworld_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\c100_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\c200_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\chill_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\chillout_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\construct_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\cyberdyne_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\deadlock_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\descent_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\docks_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\fortress_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\ghosttown_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\guardian_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\h100_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\isolation_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\l200_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\l300_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\lockout_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\midship_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\placeholder_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\riverworld_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\s3d_avalanche_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\s3d_edge_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\s3d_reactor_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\s3d_turf_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\s3d_waterfall_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\salvation_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sandbox_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc100_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc110_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc120_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc130_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc140_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc150_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\shrine_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sidewinder_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\snowbound_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\spacecamp_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\warehouse_convert.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\zanzibar_convert.bitmap");
+
             new ui_chud_bitmaps_elite_stamina_icon_bitmap(Cache, CacheContext, CacheStream);
 
-            new ui_eldewrito_common_map_bitmaps_placeholder_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_armory_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_bunkerworld_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_chillout_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_descent_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_docks_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_fortress_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_ghosttown_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_lockout_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_midship_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_sandbox_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_sidewinder_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_spacecamp_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_warehouse_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_chill_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_construct_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_cyberdyne_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_deadlock_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_guardian_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_isolation_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_riverworld_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_s3d_avalanche_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_s3d_edge_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_s3d_reactor_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_s3d_turf_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_s3d_waterfall_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_salvation_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_shrine_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_snowbound_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_zanzibar_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_005_intro_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_010_jungle_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_020_base_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_030_outskirts_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_040_voi_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_050_floodvoi_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_070_waste_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_100_citadel_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_110_hc_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_120_halo_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_130_epilogue_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_c100_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_c200_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_h100_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_l200_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_l300_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_sc100_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_sc110_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_sc120_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_sc130_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_sc140_bitmap(Cache, CacheContext, CacheStream);
-
-            new ui_eldewrito_common_map_bitmaps_sc150_bitmap(Cache, CacheContext, CacheStream);
+            //new ui_eldewrito_common_map_bitmaps_placeholder_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_armory_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_bunkerworld_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_chillout_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_descent_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_docks_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_fortress_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_ghosttown_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_lockout_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_midship_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_sandbox_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_sidewinder_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_spacecamp_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_warehouse_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_chill_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_construct_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_cyberdyne_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_deadlock_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_guardian_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_isolation_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_riverworld_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_s3d_avalanche_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_s3d_edge_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_s3d_reactor_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_s3d_turf_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_s3d_waterfall_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_salvation_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_shrine_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_snowbound_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_zanzibar_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_005_intro_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_010_jungle_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_020_base_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_030_outskirts_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_040_voi_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_050_floodvoi_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_070_waste_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_100_citadel_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_110_hc_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_120_halo_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_130_epilogue_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_c100_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_c200_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_h100_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_l200_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_l300_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_sc100_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_sc110_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_sc120_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_sc130_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_sc140_bitmap(Cache, CacheContext, CacheStream);
+            //
+            //new ui_eldewrito_common_map_bitmaps_sc150_bitmap(Cache, CacheContext, CacheStream);
 
             new ui_eldewrito_maps_map_list(Cache, CacheContext, CacheStream);
 
