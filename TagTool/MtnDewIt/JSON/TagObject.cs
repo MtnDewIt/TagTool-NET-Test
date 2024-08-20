@@ -14,7 +14,7 @@ namespace TagTool.MtnDewIt.JSON
 
         public List<UnicodeStringData> UnicodeStrings { get; set; }
         public List<BitmapResource> BitmapResources { get; set; }
-        public List<AnimationResource> AnimationResources { get; set; }
+        public AnimationData AnimationData { get; set; }
         public BlamScriptResource BlamScriptResource { get; set; }
 
         private TagStructure InlineTagData { get; set; }
@@ -64,16 +64,25 @@ namespace TagTool.MtnDewIt.JSON
         }
     }
 
-    public class AnimationResource
+    public class AnimationData
     {
-        public string AnimationFile { get; set; }
+        public List<AnimationResource> AnimationResources { get; set; }
         public bool SortModes { get; set; }
 
-        public AnimationResource(string animationFile, bool sortModes) 
+        public AnimationData(bool sortModes) 
         {
-            AnimationFile = animationFile;
             SortModes = sortModes;
         }
+
+        public class AnimationResource
+        {
+            public string AnimationFile { get; set; }
+
+            public AnimationResource(string animationFile)
+            {
+                AnimationFile = animationFile;
+            }
+        };
     }
 
     public class BlamScriptResource
