@@ -43,16 +43,40 @@ namespace TagTool.MtnDewIt.Commands
                 var tag = Cache.TagCache.GetTag(args[0]);
                 var suffix = args[1];
                 var definition = (TagStructure)Cache.Deserialize(cacheStream, tag);
+                var definitionName = TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group), Cache.Version, Cache.Platform).Structure.Name;
+                
+                var fileName = suffix == null ? $"{tag.Name}_{suffix}" : tag.Name;
+
+                if (suffix == null)
+                {
+                    fileName = tag.Name;
+                }
 
                 var tagObject = new TagObject()
                 {
                     TagName = tag.Name,
                     TagType = definition.GetType().Name,
                     TagVersion = Cache.Version,
+                    /*
+                    UnicodeStrings = new List<UnicodeStringData>
+                    {
+                        new UnicodeStringData("string_name", "Hold [B] to Add String"),
+                    },
                     BitmapResources = new List<BitmapResource>
                     {
                         new BitmapResource(0, $@"{tag.Name.Split('\\').Last()}.dds"),
                     },
+                    AnimationData = new AnimationData
+                    {
+                        AnimationResources = new List<AnimationData.AnimationResource>
+                        {
+                            new AnimationData.AnimationResource("file_name.JMA"),
+                        },
+
+                        SortModes = true,
+                    },
+                    BlamScriptResource = new BlamScriptResource("file_name.hsc"),
+                    */
                     TagData = null,
                 };
 
@@ -64,14 +88,14 @@ namespace TagTool.MtnDewIt.Commands
                 
                 var jsonData = handler.Serialize(tagObject);
 
-                var fileInfo = new FileInfo(Path.Combine(ExportPath, $"{tag.Name}_{suffix}.{TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group), Cache.Version, Cache.Platform).Structure.Name}.json"));
+                var fileInfo = new FileInfo(Path.Combine(ExportPath, $"{fileName}.{definitionName}.json"));
 
                 if (!fileInfo.Directory.Exists)
                 {
                     fileInfo.Directory.Create();
                 }
 
-                File.WriteAllText(Path.Combine(ExportPath, $"{tag.Name}_{suffix}.{TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group), Cache.Version, Cache.Platform).Structure.Name}.json"), jsonData);
+                File.WriteAllText(Path.Combine(ExportPath, $"{fileName}.{definitionName}.json"), jsonData);
             }
 
             return true;

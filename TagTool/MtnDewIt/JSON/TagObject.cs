@@ -69,11 +69,6 @@ namespace TagTool.MtnDewIt.JSON
         public List<AnimationResource> AnimationResources { get; set; }
         public bool SortModes { get; set; }
 
-        public AnimationData(bool sortModes) 
-        {
-            SortModes = sortModes;
-        }
-
         public class AnimationResource
         {
             public string AnimationFile { get; set; }
