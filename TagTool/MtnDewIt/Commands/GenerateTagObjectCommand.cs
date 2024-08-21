@@ -45,7 +45,7 @@ namespace TagTool.MtnDewIt.Commands
                 var definition = (TagStructure)Cache.Deserialize(cacheStream, tag);
                 var definitionName = TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group), Cache.Version, Cache.Platform).Structure.Name;
                 
-                var fileName = suffix == null ? $"{tag.Name}_{suffix}" : tag.Name;
+                var fileName = suffix != null ? $"{tag.Name}_{suffix}" : tag.Name;
 
                 if (suffix == null)
                 {

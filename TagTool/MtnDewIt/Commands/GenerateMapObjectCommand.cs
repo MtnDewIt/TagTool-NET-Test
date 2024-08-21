@@ -36,9 +36,12 @@ namespace TagTool.MtnDewIt.Commands
             var handler = new MapObjectHandler(Cache, CacheContext);
 
             var file = new FileInfo(args[0]);
+            var suffix = args[1];
             var mapData = new MapFileData();
 
-            var fileName = Path.GetFileNameWithoutExtension(file.Name);
+            var mapName = Path.GetFileNameWithoutExtension(file.Name);
+
+            var fileName = suffix != null ? $"{mapName}_{suffix}" : mapName;
 
             // Wrapping the whole thing in a using statement probably isn't the best idea
             using (var stream = file.OpenRead()) 
@@ -49,7 +52,7 @@ namespace TagTool.MtnDewIt.Commands
 
                 var mapObject = new MapObject() 
                 {
-                    MapName = fileName,
+                    MapName = mapName,
                     MapVersion = mapData.Version,
                     CacheFileHeaderData = mapData.Header,
                     BlfData = mapData.MapFileBlf,
