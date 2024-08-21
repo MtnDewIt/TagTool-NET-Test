@@ -23,7 +23,7 @@ namespace TagTool.MtnDewIt.Commands
             "GenerateMapObject",
             "Generates a JSON map object file based on the specified map file",
 
-            "GenerateMapObject <Map_Path>",
+            "GenerateMapObject <Map_Path> [Suffix]",
             "Generates a JSON map object file based on the specified map file"
         )
         {
