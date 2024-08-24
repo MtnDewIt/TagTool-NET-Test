@@ -1077,6 +1077,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             var tag = CacheContext.TagCache.AllocateTag<T>(tagName);
             var definition = Activator.CreateInstance<T>();
             CacheContext.Serialize(CacheStream, tag, definition);
+            CacheContext.SaveTagNames();
         }
 
         public void DuplicateTag(CachedTag tag, string newName) 

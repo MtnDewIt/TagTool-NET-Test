@@ -10,96 +10,60 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
         {
             TagParser = new TagObjectParser(Cache, CacheContext, CacheStream);
 
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\005_intro_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\010_jungle_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\020_base_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\030_outskirts_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\040_voi_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\050_floodvoi_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\070_waste_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\100_citadel_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\110_hc_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\120_halo_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\130_epilogue_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\armory_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\bunkerworld_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\c100_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\c200_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\chill_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\chillout_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\construct_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\cyberdyne_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\deadlock_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\descent_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\docks_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\fortress_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\ghosttown_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\guardian_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\h100_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\isolation_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\l200_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\l300_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\lockout_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\midship_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\placeholder_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\riverworld_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\s3d_avalanche_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\s3d_edge_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\s3d_reactor_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\s3d_turf_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\s3d_waterfall_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\salvation_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sandbox_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc100_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc110_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc120_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc130_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc140_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc150_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\shrine_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sidewinder_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\snowbound_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\spacecamp_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\warehouse_generate.bitmap");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\zanzibar_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\multiplayer\global_multiplayer_messages.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\multiplayer\in_game_multiplayer_messages.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\multiplayer\in_game_survival_messages.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\global_strings\damage_strings.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\global_strings\global_strings_generate.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\boot_betrayer\strings_generate.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\campaign\campaign_settings\strings_campaign_settings_generate.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\dialog\strings_generate.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\game_browser\strings_generate.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\game_options\strings_generate.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\in_progress\strings_generate.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\main_menu\strings_generate.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\pregame_lobby\selection\strings_generate.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\pregame_lobby\strings_generate.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\pregame_lobby\switch_lobby\strings_generate.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\start_menu\panes\settings\strings_generate.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\start_menu\panes\settings_appearance_colors\strings_generate.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\hud\hud_messages.multilingual_unicode_string_list");
 
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\objects\characters\masterchief\bitmaps\mp_visor_cc_generate.bitmap");
-
-            new multiplayer_global_multiplayer_messages_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new multiplayer_in_game_multiplayer_messages_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new multiplayer_in_game_survival_messages_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_global_strings_damage_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_global_strings_global_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_boot_betrayer_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_campaign_campaign_settings_strings_campaign_settings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_dialog_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_game_browser_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_game_options_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_in_progress_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_main_menu_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_pregame_lobby_selection_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_pregame_lobby_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_pregame_lobby_switch_lobby_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_start_menu_panes_settings_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_start_menu_panes_settings_appearance_colors_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_hud_hud_messages_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //new multiplayer_global_multiplayer_messages_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new multiplayer_in_game_multiplayer_messages_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new multiplayer_in_game_survival_messages_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_global_strings_damage_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_global_strings_global_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_boot_betrayer_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_campaign_campaign_settings_strings_campaign_settings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_dialog_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_game_browser_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_game_options_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_in_progress_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_main_menu_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_pregame_lobby_selection_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_pregame_lobby_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_pregame_lobby_switch_lobby_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_start_menu_panes_settings_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_start_menu_panes_settings_appearance_colors_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_hud_hud_messages_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
 
             new ai_ai_dialogue_globals_ai_dialogue_globals(Cache, CacheContext, CacheStream);
 
@@ -419,6 +383,8 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
             new objects_characters_masterchief_fx_shield_shield_down_light(Cache, CacheContext, CacheStream);
 
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\objects\characters\masterchief\bitmaps\mp_visor_cc_generate.bitmap");
+
             //new objects_characters_masterchief_bitmaps_mp_visor_cc_bitmap(Cache, CacheContext, CacheStream);
             //
             new objects_characters_masterchief_shaders_mp_masterchief_shader(Cache, CacheContext, CacheStream);
@@ -492,6 +458,59 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             new ui_chud_scoreboard_chud_definition(Cache, CacheContext, CacheStream);
 
             new ui_chud_spartan_chud_definition(Cache, CacheContext, CacheStream);
+
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\005_intro_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\010_jungle_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\020_base_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\030_outskirts_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\040_voi_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\050_floodvoi_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\070_waste_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\100_citadel_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\110_hc_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\120_halo_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\130_epilogue_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\armory_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\bunkerworld_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\c100_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\c200_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\chill_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\chillout_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\construct_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\cyberdyne_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\deadlock_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\descent_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\docks_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\fortress_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\ghosttown_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\guardian_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\h100_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\isolation_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\l200_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\l300_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\lockout_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\midship_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\placeholder_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\riverworld_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\s3d_avalanche_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\s3d_edge_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\s3d_reactor_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\s3d_turf_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\s3d_waterfall_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\salvation_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sandbox_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc100_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc110_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc120_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc130_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc140_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sc150_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\shrine_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\sidewinder_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\snowbound_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\spacecamp_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\warehouse_generate.bitmap");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\zanzibar_generate.bitmap");
 
             //new ui_eldewrito_common_map_bitmaps_005_intro_bitmap(Cache, CacheContext, CacheStream);
             //
