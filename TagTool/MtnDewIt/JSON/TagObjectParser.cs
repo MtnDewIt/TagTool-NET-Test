@@ -90,7 +90,7 @@ namespace TagTool.MtnDewIt.JSON
             }
 
             // Add proper check to see if tag data is either null, or uses the default value for that tag type
-            if (tagObject.TagType != $@"Bitmap" || tagObject.TagType != $@"MultilingualUnicodeStringList") 
+            if (tagObject.TagType != $@"Bitmap" && tagObject.TagType != $@"MultilingualUnicodeStringList") 
             {
                 Cache.Serialize(CacheStream, tag, tagObject.TagData);
             }

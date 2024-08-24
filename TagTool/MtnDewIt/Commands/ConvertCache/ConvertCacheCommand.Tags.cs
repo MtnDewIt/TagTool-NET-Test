@@ -10,6 +10,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
         {
             TagParser = new TagObjectParser(Cache, CacheContext, CacheStream);
 
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\chud\bitmaps\elite_stamina_icon.bitmap");
             TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\005_intro_convert.bitmap");
             TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\010_jungle_convert.bitmap");
             TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\020_base_convert.bitmap");
@@ -63,8 +64,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\warehouse_convert.bitmap");
             TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\zanzibar_convert.bitmap");
 
-            new ui_chud_bitmaps_elite_stamina_icon_bitmap(Cache, CacheContext, CacheStream);
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\objects\characters\masterchief\bitmaps\mp_visor_cc_convert.bitmap");
 
+            //new ui_chud_bitmaps_elite_stamina_icon_bitmap(Cache, CacheContext, CacheStream);
+            //
             //new ui_eldewrito_common_map_bitmaps_placeholder_bitmap(Cache, CacheContext, CacheStream);
             //
             //new ui_eldewrito_common_map_bitmaps_armory_bitmap(Cache, CacheContext, CacheStream);
@@ -185,8 +188,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new objects_characters_dervish_dervish_model_animation_graph(Cache, CacheContext, CacheStream);
 
-            new objects_characters_masterchief_bitmaps_mp_visor_cc_bitmap(Cache, CacheContext, CacheStream);
-
+            //new objects_characters_masterchief_bitmaps_mp_visor_cc_bitmap(Cache, CacheContext, CacheStream);
+            //
             new ui_halox_game_browser_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
 
             new ui_halox_dialog_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
