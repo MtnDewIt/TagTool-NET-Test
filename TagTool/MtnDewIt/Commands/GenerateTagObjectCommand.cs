@@ -41,22 +41,12 @@ namespace TagTool.MtnDewIt.Commands
                 var handler = new TagObjectHandler(Cache, CacheContext, cacheStream);
 
                 var tag = Cache.TagCache.GetTag(args[0]);
-                var suffix = "";
-
-                if (args.Count > 1) 
-                {
-                    suffix = args[1];
-                }
+                var suffix = args.Count > 1 ? args[1] : null;
 
                 var definition = (TagStructure)Cache.Deserialize(cacheStream, tag);
                 var definitionName = TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group), Cache.Version, Cache.Platform).Structure.Name;
                 
                 var fileName = suffix != null ? $"{tag.Name}_{suffix}" : tag.Name;
-
-                if (suffix == null)
-                {
-                    fileName = tag.Name;
-                }
 
                 var tagObject = new TagObject()
                 {
