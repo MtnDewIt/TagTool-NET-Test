@@ -64,8 +64,6 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\warehouse_convert.bitmap");
             TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\eldewrito\common\map_bitmaps\zanzibar_convert.bitmap");
 
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\objects\characters\masterchief\bitmaps\mp_visor_cc_convert.bitmap");
-
             //new ui_chud_bitmaps_elite_stamina_icon_bitmap(Cache, CacheContext, CacheStream);
             //
             //new ui_eldewrito_common_map_bitmaps_placeholder_bitmap(Cache, CacheContext, CacheStream);
@@ -188,34 +186,50 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new objects_characters_dervish_dervish_model_animation_graph(Cache, CacheContext, CacheStream);
 
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\objects\characters\masterchief\bitmaps\mp_visor_cc_convert.bitmap");
+
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\global_strings\global_strings_convert.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\boot_betrayer\strings_convert.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\campaign\campaign_settings\strings_campaign_settings_convert.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\dialog\strings_convert.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\game_browser\strings_convert.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\game_options\strings_convert.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\in_progress\strings_convert.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\main_menu\strings_convert.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\pregame_lobby\selection\strings_convert.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\pregame_lobby\strings_convert.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\pregame_lobby\switch_lobby\strings_convert.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\start_menu\panes\settings\strings_convert.multilingual_unicode_string_list");
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\halox\start_menu\panes\settings_appearance_colors\strings_convert.multilingual_unicode_string_list");
+
             //new objects_characters_masterchief_bitmaps_mp_visor_cc_bitmap(Cache, CacheContext, CacheStream);
             //
-            new ui_halox_game_browser_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_dialog_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_main_menu_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_start_menu_panes_settings_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_start_menu_panes_settings_appearance_colors_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_pregame_lobby_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_pregame_lobby_switch_lobby_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_pregame_lobby_selection_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_in_progress_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_campaign_campaign_settings_strings_campaign_settings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_game_options_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_global_strings_global_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
-            new ui_halox_boot_betrayer_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
-
+            //new ui_halox_game_browser_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_dialog_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_main_menu_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_start_menu_panes_settings_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_start_menu_panes_settings_appearance_colors_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_pregame_lobby_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_pregame_lobby_switch_lobby_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_pregame_lobby_selection_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_in_progress_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_campaign_campaign_settings_strings_campaign_settings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_game_options_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_global_strings_global_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
+            //new ui_halox_boot_betrayer_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
             new globals_globals_globals(Cache, CacheContext, CacheStream);
 
             new multiplayer_multiplayer_globals_multiplayer_globals(Cache, CacheContext, CacheStream);
@@ -706,8 +720,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new levels_ui_mainmenu_objects_odst_recon_cheap_odst_recon_cheap_render_model(Cache, CacheContext, CacheStream);
 
-            //new ui_global_strings_weapon_type_name_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ui\global_strings\weapon_type_name_strings.multilingual_unicode_string_list");
 
+            //new ui_global_strings_weapon_type_name_strings_multilingual_unicode_string_list(Cache, CacheContext, CacheStream);
+            //
             Cache.SaveStrings();
         }
     }

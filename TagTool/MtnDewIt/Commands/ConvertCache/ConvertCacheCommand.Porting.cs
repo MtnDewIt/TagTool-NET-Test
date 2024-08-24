@@ -364,7 +364,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             haloOnline.PortTag($@"", $@"sound\music\postmatch_new\spartan_engage\postmatch_spartan_engage.sound_looping");
             haloOnline.PortTag($@"", $@"sound\music\postmatch_new\headhunters\postmatch_headhunters.sound_looping");
 
-            //GenerateTag<MultilingualUnicodeStringList>($@"ui\global_strings\weapon_type_name_strings");
+            GenerateTag<MultilingualUnicodeStringList>($@"ui\global_strings\weapon_type_name_strings");
         }
 
         public void InitializePortingContext() 
@@ -433,6 +433,7 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             var tag = Cache.TagCache.AllocateTag<T>(tagName);
             var definition = Activator.CreateInstance<T>();
             Cache.Serialize(CacheStream, tag, definition);
+            CacheContext.SaveTagNames();
         }
 
         public void DuplicateTag(CachedTag tag, string newName)

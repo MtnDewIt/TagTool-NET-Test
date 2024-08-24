@@ -41,7 +41,13 @@ namespace TagTool.MtnDewIt.Commands
                 var handler = new TagObjectHandler(Cache, CacheContext, cacheStream);
 
                 var tag = Cache.TagCache.GetTag(args[0]);
-                var suffix = args[1];
+                var suffix = "";
+
+                if (args.Count > 1) 
+                {
+                    suffix = args[1];
+                }
+
                 var definition = (TagStructure)Cache.Deserialize(cacheStream, tag);
                 var definitionName = TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group), Cache.Version, Cache.Platform).Structure.Name;
                 
