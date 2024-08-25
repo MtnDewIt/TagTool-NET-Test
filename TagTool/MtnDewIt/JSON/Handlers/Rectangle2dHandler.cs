@@ -24,7 +24,20 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override Rectangle2d ReadJson(JsonReader reader, Type objectType, Rectangle2d existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            return new Rectangle2d();
+            var value = reader.Value.ToString();
+            var valueArray = value
+            .Replace("Top: ", "")
+            .Replace("Left: ", "")
+            .Replace("Bottom: ", "")
+            .Replace("Right: ", "")
+            .Split(',');
+            
+            var top = short.Parse(valueArray[0]);
+            var left = short.Parse(valueArray[1]);
+            var bottom = short.Parse(valueArray[2]);
+            var right = short.Parse(valueArray[3]);
+
+            return new Rectangle2d(top, left, bottom, right);
         }
     }
 }

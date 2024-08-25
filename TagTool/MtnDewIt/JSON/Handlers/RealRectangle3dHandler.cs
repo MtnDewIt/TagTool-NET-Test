@@ -24,7 +24,24 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override RealRectangle3d ReadJson(JsonReader reader, Type objectType, RealRectangle3d existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            return new RealRectangle3d();
+            var value = reader.Value.ToString();
+            var valueArray = value
+            .Replace("X0: ", "")
+            .Replace("X1: ", "")
+            .Replace("Y0: ", "")
+            .Replace("Y1: ", "")
+            .Replace("Z0: ", "")
+            .Replace("Z1: ", "")
+            .Split(",");
+
+            var x0 = float.Parse(valueArray[0]);
+            var x1 = float.Parse(valueArray[1]);
+            var y0 = float.Parse(valueArray[2]);
+            var y1 = float.Parse(valueArray[3]);
+            var z0 = float.Parse(valueArray[4]);
+            var z1 = float.Parse(valueArray[5]);
+
+            return new RealRectangle3d(x0, x1, y0, y1, z0, z1);
         }
     }
 }

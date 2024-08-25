@@ -24,7 +24,18 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override RealVector3d ReadJson(JsonReader reader, Type objectType, RealVector3d existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            return new RealVector3d();
+            var value = reader.Value.ToString();
+            var valueArray = value
+            .Replace("I: ", "")
+            .Replace("J: ", "")
+            .Replace("K: ", "")
+            .Split(',');
+
+            var i = float.Parse(valueArray[0]);
+            var j = float.Parse(valueArray[1]);
+            var k = float.Parse(valueArray[2]);
+
+            return new RealVector3d(i, j, k);
         }
     }
 }

@@ -37,7 +37,20 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override IBounds ReadJson(JsonReader reader, Type objectType, IBounds existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            return new Bounds<byte>();
+            // TODO: Update to support generic types
+            // Currently only works with byte bounds
+            // No clue how its gonna pull the type from just string data
+            // Attempting to parse each potential type would be pretty inefficient
+            var value = reader.Value.ToString();
+            var valueArray = value
+            .Replace("Lower: ", "")
+            .Replace("Upper: ", "")
+            .Split(',');
+
+            var lower = byte.Parse(valueArray[0]);
+            var upper = byte.Parse(valueArray[1]);
+
+            return new Bounds<byte>(lower, upper);
         }
     }
 }

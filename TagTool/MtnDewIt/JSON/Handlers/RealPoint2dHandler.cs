@@ -24,7 +24,16 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override RealPoint2d ReadJson(JsonReader reader, Type objectType, RealPoint2d existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            return new RealPoint2d();
+            var value = reader.Value.ToString();
+            var valueArray = value
+            .Replace("X: ", "")
+            .Replace("Y: ", "")
+            .Split(',');
+
+            var x = float.Parse(valueArray[0]);
+            var y = float.Parse(valueArray[1]);
+
+            return new RealPoint2d(x, y);
         }
     }
 }

@@ -24,7 +24,20 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override RealQuaternion ReadJson(JsonReader reader, Type objectType, RealQuaternion existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            return new RealQuaternion();
+            var value = reader.Value.ToString();
+            var valueArray = value
+            .Replace("I: ", "")
+            .Replace("J: ", "")
+            .Replace("K: ", "")
+            .Replace("W: ", "")
+            .Split(',');
+
+            var i = float.Parse(valueArray[0]);
+            var j = float.Parse(valueArray[1]);
+            var k = float.Parse(valueArray[2]);
+            var w = float.Parse(valueArray[3]);
+
+            return new RealQuaternion(i, j, k, w);
         }
     }
 }

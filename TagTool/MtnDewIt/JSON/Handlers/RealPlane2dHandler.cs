@@ -24,7 +24,19 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override RealPlane2d ReadJson(JsonReader reader, Type objectType, RealPlane2d existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            return new RealPlane2d();
+            var value = reader.Value.ToString();
+            var valueArray = value
+            .Replace("Normal: ", "")
+            .Replace("I: ", "")
+            .Replace("J: ", "")
+            .Replace("Distance: ", "")
+            .Split(",");
+
+            var i = float.Parse(valueArray[0]);
+            var j = float.Parse(valueArray[1]);
+            var distance = float.Parse(valueArray[2]);
+
+            return new RealPlane2d(new RealVector2d(i, j), distance);
         }
     }
 }
