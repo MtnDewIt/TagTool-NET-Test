@@ -24,7 +24,20 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override ArgbColor ReadJson(JsonReader reader, Type objectType, ArgbColor existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            return new ArgbColor();
+            var value = reader.Value.ToString();
+            var valueArray = value
+            .Replace("Alpha: ", "")
+            .Replace("Red: ", "")
+            .Replace("Green: ", "")
+            .Replace("Blue: ", "")
+            .Split(',');
+
+            var a = byte.Parse(valueArray[0]);
+            var r = byte.Parse(valueArray[1]);
+            var g = byte.Parse(valueArray[2]);
+            var b = byte.Parse(valueArray[3]);
+
+            return new ArgbColor(a, r, g, b);
         }
     }
 }

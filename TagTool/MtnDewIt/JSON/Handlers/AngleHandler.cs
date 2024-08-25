@@ -24,7 +24,11 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override Angle ReadJson(JsonReader reader, Type objectType, Angle existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            return new Angle();
+            var value = reader.Value.ToString();
+            var valueString = value.Replace("Degrees: ", "");
+            var degrees = float.Parse(valueString);
+
+            return Angle.FromDegrees(degrees);
         }
     }
 }

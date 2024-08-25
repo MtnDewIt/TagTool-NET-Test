@@ -24,7 +24,20 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override RealArgbColor ReadJson(JsonReader reader, Type objectType, RealArgbColor existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            return new RealArgbColor();
+            var value = reader.Value.ToString();
+            var valueArray = value
+            .Replace("Alpha: ", "")
+            .Replace("Red: ", "")
+            .Replace("Green: ", "")
+            .Replace("Blue: ", "")
+            .Split(',');
+
+            var a = float.Parse(valueArray[0]);
+            var r = float.Parse(valueArray[1]);
+            var g = float.Parse(valueArray[2]);
+            var b = float.Parse(valueArray[3]);
+
+            return new RealArgbColor(a, r, g, b);
         }
     }
 }

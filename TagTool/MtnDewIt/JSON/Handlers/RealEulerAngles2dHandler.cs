@@ -24,7 +24,16 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override RealEulerAngles2d ReadJson(JsonReader reader, Type objectType, RealEulerAngles2d existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            return new RealEulerAngles2d();
+            var value = reader.Value.ToString();
+            var valueArray = value
+            .Replace("Yaw: ", "")
+            .Replace("Pitch: ", "")
+            .Split(',');
+
+            var yaw = float.Parse(valueArray[0]);
+            var pitch = float.Parse(valueArray[1]);
+
+            return new RealEulerAngles2d(Angle.FromDegrees(yaw), Angle.FromDegrees(pitch));
         }
     }
 }

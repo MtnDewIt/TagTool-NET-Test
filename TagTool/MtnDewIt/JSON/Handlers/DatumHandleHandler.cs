@@ -24,7 +24,16 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override DatumHandle ReadJson(JsonReader reader, Type objectType, DatumHandle existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            return new DatumHandle();
+            var value = reader.Value.ToString();
+            var valueArray = value
+            .Replace("Salt: ", "")
+            .Replace("Index: ", "")
+            .Split(',');
+
+            var salt = ushort.Parse(valueArray[0]);
+            var index = ushort.Parse(valueArray[1]);
+
+            return new DatumHandle(salt, index);
         }
     }
 }
