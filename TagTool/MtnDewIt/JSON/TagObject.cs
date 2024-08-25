@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TagTool.Cache;
+using TagTool.Cache.Gen3;
 using TagTool.Tags;
 
 namespace TagTool.MtnDewIt.JSON
@@ -25,7 +26,15 @@ namespace TagTool.MtnDewIt.JSON
                 if (InlineTagData == null && !string.IsNullOrEmpty(TagType)) 
                 {
                     // TODO: Figure out how to pull definition from existing tag table
-                    // May need to change the type in this case from the definition type, to the definition long form name
+
+                    // We're juts gonna assume we're only using Gen 3 definitions :/
+                    // Mildly annoying, but I can't think of any real use cases where 
+                    // we would need tag defintions from any other engine version
+                    
+                    //var td3 = new TagDefinitionsGen3();
+                    //td3.TryGetTagFromName(TagType, out var tagGroup);
+                    //var type = td3.GetTagDefinitionType(tagGroup);
+
                     // We assume that the all the tag definitions are in the same namespace
                     var type = Type.GetType($@"TagTool.Tags.Definitions.{TagType}");
                     InlineTagData = (TagStructure)Activator.CreateInstance(type);
