@@ -19,7 +19,7 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override void WriteJson(JsonWriter writer, RealVector3d value, JsonSerializer serializer)
         {
-            writer.WriteValue(value.ToString());
+            writer.WriteValue($@"I: {value.I}, J: {value.J}, K: {value.K}");
         }
 
         public override RealVector3d ReadJson(JsonReader reader, Type objectType, RealVector3d existingValue, bool hasExistingValue, JsonSerializer serializer)

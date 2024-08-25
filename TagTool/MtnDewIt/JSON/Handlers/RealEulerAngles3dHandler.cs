@@ -19,7 +19,7 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override void WriteJson(JsonWriter writer, RealEulerAngles3d value, JsonSerializer serializer)
         {
-            writer.WriteValue(value.ToString());
+            writer.WriteValue($@"Yaw: {value.Yaw.Degrees}, Pitch: {value.Pitch.Degrees}, Roll: {value.Roll.Degrees}");
         }
 
         public override RealEulerAngles3d ReadJson(JsonReader reader, Type objectType, RealEulerAngles3d existingValue, bool hasExistingValue, JsonSerializer serializer)

@@ -73,7 +73,7 @@ namespace TagTool.MtnDewIt.Commands
                     },
                     BlamScriptResource = new BlamScriptResource("file_name.hsc"),
                     */
-                    TagData = null,
+                    TagData = definition,
                 };
 
                 // When deserialising the data for these types we want to ensure that the tag exists in the cache no matter what

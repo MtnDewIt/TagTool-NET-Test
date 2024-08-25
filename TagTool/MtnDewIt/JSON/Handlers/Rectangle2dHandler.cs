@@ -19,7 +19,7 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override void WriteJson(JsonWriter writer, Rectangle2d value, JsonSerializer serializer)
         {
-            writer.WriteValue(value.ToString());
+            writer.WriteValue($@"Top: {value.Top}, Left: {value.Left}, Bottom: {value.Bottom}, Right: {value.Right}");
         }
 
         public override Rectangle2d ReadJson(JsonReader reader, Type objectType, Rectangle2d existingValue, bool hasExistingValue, JsonSerializer serializer)

@@ -19,7 +19,7 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override void WriteJson(JsonWriter writer, RealRgbColor value, JsonSerializer serializer)
         {
-            writer.WriteValue(value.ToString());
+            writer.WriteValue($@"Red: {value.Red}, Green: {value.Green}, Blue: {value.Blue}");
         }
 
         public override RealRgbColor ReadJson(JsonReader reader, Type objectType, RealRgbColor existingValue, bool hasExistingValue, JsonSerializer serializer)

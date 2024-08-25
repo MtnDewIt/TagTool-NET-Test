@@ -19,7 +19,7 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override void WriteJson(JsonWriter writer, RealPoint2d value, JsonSerializer serializer)
         {
-            writer.WriteValue(value.ToString());
+            writer.WriteValue($@"X: {value.X}, Y: {value.Y}");
         }
 
         public override RealPoint2d ReadJson(JsonReader reader, Type objectType, RealPoint2d existingValue, bool hasExistingValue, JsonSerializer serializer)

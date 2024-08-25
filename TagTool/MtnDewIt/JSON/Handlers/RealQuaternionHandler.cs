@@ -19,7 +19,7 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         public override void WriteJson(JsonWriter writer, RealQuaternion value, JsonSerializer serializer)
         {
-            writer.WriteValue(value.ToString());
+            writer.WriteValue($@"I: {value.I}, J: {value.J}, K: {value.K}, W: {value.W}");
         }
 
         public override RealQuaternion ReadJson(JsonReader reader, Type objectType, RealQuaternion existingValue, bool hasExistingValue, JsonSerializer serializer)
