@@ -49,6 +49,12 @@ namespace TagTool.MtnDewIt.JSON
                 if (!Cache.TagCache.TryGetTag($@"{tagObject.TagName}.{tagObject.TagData.GetTagStructureInfo(Cache.Version, Cache.Platform).Structure.Name}", out var result)) 
                 {
                     // TODO: Figure out how to pull definition from existing tag table
+
+                    // Gonna have to replace the TagType variable in the tag object with 
+                    // the long form tag group name instead of the the definition type name :/
+                    //Cache.TagCache.TryParseGroupTag(tagObject.TagType, out var tagGroup);
+                    //var type = Cache.TagCache.TagDefinitions.GetTagDefinitionType(tagGroup);
+
                     // Once again, we assume that the all the tag definitions are in the same namespace
                     var type = Type.GetType($@"TagTool.Tags.Definitions.{tagObject.TagType}");
                     result = Cache.TagCache.AllocateTag(type, tagObject.TagName);
