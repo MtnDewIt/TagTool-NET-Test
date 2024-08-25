@@ -1,22 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
-using TagTool.Cache.HaloOnline;
-using TagTool.Cache;
 using TagTool.Common;
 
 namespace TagTool.MtnDewIt.JSON.Handlers
 {
     public class RealArgbColorHandler : JsonConverter<RealArgbColor>
     {
-        private GameCache Cache;
-        private GameCacheHaloOnline CacheContext;
-
-        public RealArgbColorHandler(GameCache cache, GameCacheHaloOnline cacheContext)
-        {
-            Cache = cache;
-            CacheContext = cacheContext;
-        }
-
         public override void WriteJson(JsonWriter writer, RealArgbColor value, JsonSerializer serializer)
         {
             writer.WriteValue($@"Alpha: {value.Alpha}, Red: {value.Red}, Green: {value.Green}, Blue: {value.Blue}");
