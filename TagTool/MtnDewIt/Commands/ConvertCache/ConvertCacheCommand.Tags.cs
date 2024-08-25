@@ -234,6 +234,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new multiplayer_multiplayer_globals_multiplayer_globals(Cache, CacheContext, CacheStream);
 
+            new multiplayer_survival_mode_globals_survival_mode_globals(Cache, CacheContext, CacheStream);
+
             new multiplayer_mod_globals_mod_globals(Cache, CacheContext, CacheStream);
 
             new objects_multi_spawning_initial_spawn_point_scenery(Cache, CacheContext, CacheStream);

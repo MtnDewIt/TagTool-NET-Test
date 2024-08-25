@@ -1,11 +1,11 @@
-using TagTool.Cache;
+﻿using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 using System.IO;
 using System.Collections.Generic;
 
-namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags 
+namespace TagTool.MtnDewIt.Commands.ConvertCache.Tags
 {
     public class multiplayer_survival_mode_globals_survival_mode_globals : TagFile
     {
@@ -30,7 +30,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
             smdt.SurvivalModeStrings = GetCachedTag<MultilingualUnicodeStringList>($@"multiplayer\in_game_survival_messages");
             smdt.CountdownSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\countdown_for_respawn");
             smdt.RespawnSound = GetCachedTag<Sound>($@"sound\game_sfx\multiplayer\player_respawn");
-            smdt.SurvivalEvents = new List<SurvivalModeGlobals.SurvivalEvent>() 
+            smdt.SurvivalEvents = new List<SurvivalModeGlobals.SurvivalEvent>()
             {
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -40,7 +40,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_welcome"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -50,7 +50,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_new_set"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -60,7 +60,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_end_set"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -70,7 +70,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_new_round"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -80,7 +80,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_end_round"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -90,7 +90,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_new_wave"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -100,7 +100,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_end_wave"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -110,7 +110,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_bonus_round"),
                     DisplayTime = 5f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -120,7 +120,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_bonus_lives_awarded"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -130,7 +130,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_awarded_lives"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -140,7 +140,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_awarded_weapon"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -150,7 +150,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_awarded_equipment"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -160,7 +160,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_thunderstorm"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -170,7 +170,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_famine"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -180,7 +180,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_tilt"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -190,7 +190,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_mythic"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -200,7 +200,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_catch"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                               
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -210,7 +210,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_black_eye"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -220,7 +220,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_tough_luck"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -230,7 +230,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_iron"),
                     DisplayTime = 3f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -240,7 +240,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_last_man_standing"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                               
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -250,7 +250,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_5_lives_left"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -260,7 +260,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_1_life_left"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -270,7 +270,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_0_lives_left"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -280,169 +280,169 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_game_over"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_double_kill"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_triple_kill"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_overkill"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                               
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_killtacular"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_killtrocity"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_killamanjaro"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_killtastrophe"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_killpocalpyse"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_killionaire"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_killing_spree"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_killing_frenzy"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_running_riot"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_rampage"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_untouchable"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_invincible"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_splatter_spree"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_vehicluar_manslaughter"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_sniper_spree"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_sharpshooter"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                               
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_shotgun_spree"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_open_season"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_stick_spree"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_corrected"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_sword_spree"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_slice_n_dice"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_hammer_spree"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
                     Type = SurvivalModeGlobals.SurvivalEvent.TypeValue.Survival,
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_ball_peen_buster"),
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -450,7 +450,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Event = CacheContext.StringTable.GetOrAddString($@"survival_hero"),
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -460,7 +460,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_5_ai_remaining"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -470,7 +470,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_2_ai_remaining"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -480,7 +480,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_1_ai_remaining"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -490,7 +490,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_garbage_trucking"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -500,7 +500,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_garbage_collected"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -510,7 +510,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_reinforcements"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -520,7 +520,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_tilt_famine"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -530,7 +530,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_tilt_famine_mythic"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -540,7 +540,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_tough_catch"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -550,7 +550,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_tough_catch_black"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -560,7 +560,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_skull_all"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -570,7 +570,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_incredible_round"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -580,7 +580,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_superb_set"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,      
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -590,7 +590,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_bonus_round_over"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -599,7 +599,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_total_bonus"),
-                    DisplayTime = 2f,                                
+                    DisplayTime = 2f,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -619,7 +619,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_no_bonus"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -628,7 +628,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_bonus_information"),
-                    DisplayTime = 63f,                                
+                    DisplayTime = 63f,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -637,7 +637,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_next_round_timer"),
-                    DisplayTime = 20f,                                
+                    DisplayTime = 20f,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -646,7 +646,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Audience = SurvivalModeGlobals.SurvivalEvent.AudienceValue.All,
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_next_set_timer"),
-                    DisplayTime = 20f,                                
+                    DisplayTime = 20f,
                 },
                 new SurvivalModeGlobals.SurvivalEvent
                 {
@@ -656,7 +656,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache.Tags
                     Team = SurvivalModeGlobals.SurvivalEvent.TeamValue.All,
                     DisplayString = CacheContext.StringTable.GetOrAddString($@"survival_bonus_skull_all"),
                     DisplayTime = 2f,
-                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,                                
+                    SoundFlags = SurvivalModeGlobals.SurvivalEvent.GameEngineSoundResponseFlagsDefinition.AnnouncerSound,
                 },
             };
 
