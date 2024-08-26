@@ -19,24 +19,17 @@ namespace TagTool.MtnDewIt.JSON
         public BlamScriptResource BlamScriptResource { get; set; }
 
         private TagStructure InlineTagData { get; set; }
+
+        // TODO: Make TagData a nullable field :/
         public TagStructure TagData 
         {
             get 
             {
                 if (InlineTagData == null && !string.IsNullOrEmpty(TagType)) 
                 {
-                    // TODO: Figure out how to pull definition from existing tag table
-
-                    // We're juts gonna assume we're only using Gen 3 definitions :/
-                    // Mildly annoying, but I can't think of any real use cases where 
-                    // we would need tag defintions from any other engine version
-                    
-                    //var td3 = new TagDefinitionsGen3();
-                    //td3.TryGetTagFromName(TagType, out var tagGroup);
-                    //var type = td3.GetTagDefinitionType(tagGroup);
-
-                    // We assume that the all the tag definitions are in the same namespace
-                    var type = Type.GetType($@"TagTool.Tags.Definitions.{TagType}");
+                    var tagDefinitionTable = new TagDefinitionsGen3();
+                    tagDefinitionTable.TryGetTagFromName(TagType, out var tagGroup);
+                    var type = tagDefinitionTable.GetTagDefinitionType(tagGroup);
                     InlineTagData = (TagStructure)Activator.CreateInstance(type);
                 }
 

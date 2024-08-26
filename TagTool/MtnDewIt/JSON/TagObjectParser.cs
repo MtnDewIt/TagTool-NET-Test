@@ -46,17 +46,10 @@ namespace TagTool.MtnDewIt.JSON
 
             if (tagObject.Generate)
             {
-                if (!Cache.TagCache.TryGetTag($@"{tagObject.TagName}.{tagObject.TagData.GetTagStructureInfo(Cache.Version, Cache.Platform).Structure.Name}", out var result)) 
+                if (!Cache.TagCache.TryGetTag($@"{tagObject.TagName}.{tagObject.TagType}", out var result)) 
                 {
-                    // TODO: Figure out how to pull definition from existing tag table
-
-                    // Gonna have to replace the TagType variable in the tag object with 
-                    // the long form tag group name instead of the the definition type name :/
-                    //Cache.TagCache.TryParseGroupTag(tagObject.TagType, out var tagGroup);
-                    //var type = Cache.TagCache.TagDefinitions.GetTagDefinitionType(tagGroup);
-
-                    // Once again, we assume that the all the tag definitions are in the same namespace
-                    var type = Type.GetType($@"TagTool.Tags.Definitions.{tagObject.TagType}");
+                    Cache.TagCache.TryParseGroupTag(tagObject.TagType, out var tagGroup);
+                    var type = Cache.TagCache.TagDefinitions.GetTagDefinitionType(tagGroup);
                     result = Cache.TagCache.AllocateTag(type, tagObject.TagName);
                     var definition = (TagStructure)Activator.CreateInstance(type);
                     CacheContext.Serialize(CacheStream, result, definition);
@@ -64,10 +57,10 @@ namespace TagTool.MtnDewIt.JSON
                 }
             }
 
-            var tag = Cache.TagCache.GetTag($@"{tagObject.TagName}.{tagObject.TagData.GetTagStructureInfo(Cache.Version, Cache.Platform).Structure.Name}");
+            var tag = Cache.TagCache.GetTag($@"{tagObject.TagName}.{tagObject.TagType}");
             var tagDefinition = Cache.Deserialize(CacheStream, tag);
 
-            if (tagObject.UnicodeStrings != null && tagObject.TagType == $@"MultilingualUnicodeStringList") 
+            if (tagObject.UnicodeStrings != null && tagObject.TagData is MultilingualUnicodeStringList)
             {
                 foreach (var unicodeString in tagObject.UnicodeStrings)
                 {
@@ -77,7 +70,7 @@ namespace TagTool.MtnDewIt.JSON
                 Cache.Serialize(CacheStream, tag, tagDefinition);
             }
 
-            if (tagObject.BitmapResources != null && tagObject.TagType == $@"Bitmap") 
+            if (tagObject.BitmapResources != null && tagObject.TagData is Bitmap) 
             {
                 foreach (var resource in tagObject.BitmapResources)
                 {
@@ -87,7 +80,7 @@ namespace TagTool.MtnDewIt.JSON
                 Cache.Serialize(CacheStream, tag, tagDefinition);
             }
 
-            if (tagObject.AnimationData != null && tagObject.TagType == $@"ModelAnimationGraph") 
+            if (tagObject.AnimationData != null && tagObject.TagData is ModelAnimationGraph) 
             {
                 foreach (var resource in tagObject.AnimationData.AnimationResources) 
                 {
@@ -95,13 +88,14 @@ namespace TagTool.MtnDewIt.JSON
                 }
             }
 
+            // TODO: Make TagData a nullable field :/
             // Add proper check to see if tag data is either null, or uses the default value for that tag type
-            if (tagObject.TagType != $@"Bitmap" && tagObject.TagType != $@"MultilingualUnicodeStringList") 
+            if (tagObject.TagType != $@"bitmap" && tagObject.TagType != $@"multilingual_unicode_string_list") 
             {
                 Cache.Serialize(CacheStream, tag, tagObject.TagData);
             }
 
-            if (tagObject.AnimationData != null && tagObject.TagType == $@"ModelAnimationGraph") 
+            if (tagObject.AnimationData != null && tagObject.TagData is ModelAnimationGraph) 
             {
                 if (tagObject.AnimationData.SortModes)
                 {
@@ -109,7 +103,7 @@ namespace TagTool.MtnDewIt.JSON
                 }
             }
             
-            if (tagObject.BlamScriptResource != null && tagObject.TagType == $@"Scenario") 
+            if (tagObject.BlamScriptResource != null && tagObject.TagData is Scenario) 
             {
                 CompileScript(tag, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\scripts\{tagObject.BlamScriptResource.BlamScriptFile}");
             }

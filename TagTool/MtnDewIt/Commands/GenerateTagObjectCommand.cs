@@ -51,7 +51,7 @@ namespace TagTool.MtnDewIt.Commands
                 var tagObject = new TagObject()
                 {
                     TagName = tag.Name,
-                    TagType = definition.GetType().Name,
+                    TagType = definitionName,
                     TagVersion = Cache.Version,
                     /*
                     UnicodeStrings = new List<UnicodeStringData>
