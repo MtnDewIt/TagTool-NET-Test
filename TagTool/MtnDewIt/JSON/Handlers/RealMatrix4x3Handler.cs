@@ -15,18 +15,18 @@ namespace TagTool.MtnDewIt.JSON.Handlers
         {
             var value = reader.Value.ToString();
             var valueArray = value
-            .Replace("M11", "")
-            .Replace("M12", "")
-            .Replace("M13", "")
-            .Replace("M21", "")
-            .Replace("M22", "")
-            .Replace("M23", "")
-            .Replace("M31", "")
-            .Replace("M32", "")
-            .Replace("M33", "")
-            .Replace("M41", "")
-            .Replace("M42", "")
-            .Replace("M43", "")
+            .Replace("M11: ", "")
+            .Replace("M12: ", "")
+            .Replace("M13: ", "")
+            .Replace("M21: ", "")
+            .Replace("M22: ", "")
+            .Replace("M23: ", "")
+            .Replace("M31: ", "")
+            .Replace("M32: ", "")
+            .Replace("M33: ", "")
+            .Replace("M41: ", "")
+            .Replace("M42: ", "")
+            .Replace("M43: ", "")
             .Split(',');
 
             var m11 = float.Parse(valueArray[0]);

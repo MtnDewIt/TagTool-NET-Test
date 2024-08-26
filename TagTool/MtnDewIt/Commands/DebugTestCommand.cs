@@ -38,259 +38,119 @@ namespace TagTool.MtnDewIt.Commands
 
         public override object Execute(List<string> args)
         {
-            var modg = new ModGlobalsDefinition()
+            var test = new TestDefinition 
             {
-                Version = 1,
-                PlayerCharacterSets = new List<ModGlobalsDefinition.PlayerCharacterSet>()
+                TestBlockField = new List<TestDefinition.TestBlockDefinition> 
                 {
-                    new ModGlobalsDefinition.PlayerCharacterSet()
+                    new TestDefinition.TestBlockDefinition
                     {
-                        DisplayName = "General",
-                        Name = CacheContext.StringTable.GetOrAddString($@"default_test"),
-                        RandomChance = 0.1f,
-                        Characters = new List<ModGlobalsDefinition.PlayerCharacterSet.PlayerCharacter>()
-                        {
-                            new ModGlobalsDefinition.PlayerCharacterSet.PlayerCharacter()
-                            {
-                                DisplayName = $@"Spartan",
-                                Name = CacheContext.StringTable.GetOrAddString($@"masterchief_test"),
-                                RandomChance = 0.1f,
-                            },
-                            new ModGlobalsDefinition.PlayerCharacterSet.PlayerCharacter()
-                            {
-                                DisplayName = $@"Elite",
-                                Name = CacheContext.StringTable.GetOrAddString($@"dervish_test"),
-                                RandomChance = 0.1f,
-                            },
-                        },
+                        Byte = 1,
+                        SByte = 1,
+                        UShort = 2,
+                        Short = 2,
+                        UInt = 4,
+                        Int = 4,
+                        ULong = 8,
+                        Long = 8,
+                        Float = 4,
+
+                        //Enum = TestDefinition.TestEnumDefinition.Test1,
+                        //Flags = TestDefinition.TestFlagsDefinition.Test1 | TestDefinition.TestFlagsDefinition.Test2 | TestDefinition.TestFlagsDefinition.Test3,
+
+                        Angle = Angle.FromDegrees(69.420f),
+                        ArgbColor = new ArgbColor(1, 2, 3, 4),
+                        CachedTagInstance = Cache.TagCache.GetTag<CacheFileGlobalTags>($@"global_tags"),
+                        CacheAddress = new CacheAddress(CacheAddressType.Memory, 69420),
+                        DatumIndex = new DatumHandle(42069, 42069),
+                        PageableResource = null,
+                        Point2d = new Point2d(420, 420),
+                        RealArgbColor = new RealArgbColor(1.420f, 2.420f, 3.420f, 4.420f),
+                        RealBoundingBox = new RealBoundingBox(new Bounds<float>(1f, 2f), new Bounds<float>(3f, 4f), new Bounds<float>(5f, 6f)),
+                        RealEulerAngles2d = new RealEulerAngles2d(Angle.FromDegrees(69.420f), Angle.FromDegrees(69.420f)),
+                        RealEulerAngles3d = new RealEulerAngles3d(Angle.FromDegrees(69.420f), Angle.FromDegrees(69.420f), Angle.FromDegrees(69.420f)),
+                        RealMatrix4x3 = new RealMatrix4x3(1.1f, 1.2f, 1.3f, 2.1f, 2.2f, 2.3f, 3.1f, 3.2f, 3.3f, 4.1f, 4.2f, 4.3f),
+                        RealPlane2d = new RealPlane2d(new RealVector2d(1.420f, 2.420f), 3.420f),
+                        RealPlane3d = new RealPlane3d(new RealVector3d(1.420f, 2.420f, 3.420f), 4.420f),
+                        RealPoint2d = new RealPoint2d(1.420f, 2.420f),
+                        RealPoint3d = new RealPoint3d(1.420f, 2.420f, 3.420f),
+                        RealQuaternion = new RealQuaternion(1.420f, 2.420f, 3.420f, 4.420f),
+                        RealRgbColor = new RealRgbColor(1.420f, 2.420f, 3.420f),
+                        RealVector2d = new RealVector2d(1.420f, 2.420f),
+                        RealVector3d = new RealVector3d(1.420f, 2.420f, 3.420f),
+                        Rectangle2d = new Rectangle2d(420, -420, 420, -420),
+                        StringId = Cache.StringTable.GetStringId($@"masterchief"),
+                        Tag = new Tag("lgma"),
+
+                        BoundsAngle = new Bounds<Angle>(Angle.FromDegrees(420.69f), Angle.FromDegrees(69.420f)),
+                        BoundsByte = new Bounds<byte>(0, 1),
+                        BoundsSByte = new Bounds<sbyte>(-1, 1),
+                        BoundsUShort = new Bounds<ushort>(0, 420),
+                        BoundsShort = new Bounds<short>(-420, 420),
+                        BoundsUInt = new Bounds<uint>(0, 69420),
+                        BoundsInt = new Bounds<int>(-69420, 69420),
+                        BoundsULong = new Bounds<ulong>(0, 69420),
+                        BoundsLong = new Bounds<long>(-69420, 69420),
+                        BoundsFloat = new Bounds<float>(0.0f, 69420.420f),
                     },
-                },
-                PlayerCharacterCustomizations = new List<ModGlobalsDefinition.PlayerCharacterCustomization>()
-                {
-                    new ModGlobalsDefinition.PlayerCharacterCustomization()
+                    new TestDefinition.TestBlockDefinition
                     {
-                        GlobalPlayerCharacterTypeIndex = 0,
-                        CharacterName = CacheContext.StringTable.GetOrAddString($@"model_spartan"),
-                        CharacterDescription = CacheContext.StringTable.GetOrAddString($@"model_spartan_description"),
-                        HudGlobals = GetCachedTag<ChudGlobalsDefinition>($@"ui\chud\globals"),
-                        VisionGlobals = GetCachedTag<VisionMode>($@"globals\default_vision_mode"),
-                        ActionSet = GetCachedTag<PlayerActionSet>($@"objects\characters\masterchief\mp_masterchief\actions"),
-                        RegionCameraScripts = new List<ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript>
-                        {
-                            new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
-                            {
-                                RegionName = "helmet",
-                                ScriptNameWidescreen = "helmet_camera_wide",
-                                ScriptNameStandard = "helmet_camera_standard",
-                                BipedRotation = 50f,
-                                RotationDuration = 0.5f,
-                            },
-                            new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
-                            {
-                                RegionName = "body",
-                                ScriptNameWidescreen = "body_camera_wide",
-                                ScriptNameStandard = "body_camera_standard",
-                                BipedRotation = 60f,
-                                RotationDuration = 0.5f,
-                            },
-                            new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
-                            {
-                                RegionName = "leftshoulder",
-                                ScriptNameWidescreen = "leftshoulder_camera_wide",
-                                ScriptNameStandard = "leftshoulder_camera_standard",
-                                BipedRotation = 40f,
-                                RotationDuration = 0.5f,
-                            },
-                            new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
-                            {
-                                RegionName = "rightshoulder",
-                                ScriptNameWidescreen = "rightshoulder_camera_wide",
-                                ScriptNameStandard = "rightshoulder_camera_standard",
-                                BipedRotation = 100f,
-                                RotationDuration = 0.5f,
-                            },
-                            new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
-                            {
-                                RegionName = "emblem",
-                                ScriptNameWidescreen = "rightshoulder_camera_wide",
-                                ScriptNameStandard = "rightshoulder_camera_standard",
-                                BipedRotation = 100f,
-                                RotationDuration = 0.5f,
-                            },
-                            new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
-                            {
-                                RegionName = "exit",
-                                ScriptNameWidescreen = "exit_subcamera",
-                                ScriptNameStandard = "exit_subcamera",
-                                RotationDuration = 0.5f,
-                            },
-                            new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
-                            {
-                                RegionName = "colorsTertiary",
-                                ScriptNameWidescreen = "helmet_camera_wide",
-                                ScriptNameStandard = "helmet_camera_standard",
-                                BipedRotation = 50f,
-                                RotationDuration = 0.5f,
-                            },
-                        },
-                        CharacterPositionData = new ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo()
-                        {
-                            Flags = ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo.FlagsValue.PlaceBipedRelativeToCamera | ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo.FlagsValue.RotateInCustomization,
-                            BipedNameIndex = 1,
-                            SettingsCameraIndex = 15,
-                            PlatformNameIndex = 0,
-                            RelativeBipedPosition = new RealVector3d(0f, 0f, 0f),
-                        },
-                        CharacterColors = new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors()
-                        {
-                            ValidColorFlags = ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.PrimaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.SecondaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.TertiaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.QuaternaryColor,
-                            TeamOverrideFlags = ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.PrimaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.QuaternaryColor,
-                            Colors = new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock[5]
-                            {
-                                new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
-                                {
-                                    Name = CacheContext.StringTable.GetOrAddString($@"cef_color_primary"),
-                                    Description = CacheContext.StringTable.GetOrAddString($@"cef_color_primary_desc"),
-                                    Default = new ArgbColor(0, 84, 110, 38),
-                                },
-                                new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
-                                {
-                                    Name = CacheContext.StringTable.GetOrAddString($@"cef_color_secondary"),
-                                    Description = CacheContext.StringTable.GetOrAddString($@"cef_color_secondary_desc"),
-                                    Default = new ArgbColor(0, 84, 110, 38),
-                                },
-                                new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
-                                {
-                                    Name = CacheContext.StringTable.GetOrAddString($@"cef_color_visor"),
-                                    Description = CacheContext.StringTable.GetOrAddString($@"cef_color_visor_desc"),
-                                    Default = new ArgbColor(0, 255, 127, 0),
-                                },
-                                new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
-                                {
-                                    Name = CacheContext.StringTable.GetOrAddString($@"cef_color_light"),
-                                    Description = CacheContext.StringTable.GetOrAddString($@"cef_color_light_desc"),
-                                    Default = new ArgbColor(0, 150, 133, 255),
-                                },
-                                new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
-                                {
-                
-                                },
-                            },
-                        },
+                        Byte = 1,
+                        SByte = 1,
+                        UShort = 2,
+                        Short = 2,
+                        UInt = 4,
+                        Int = 4,
+                        ULong = 8,
+                        Long = 8,
+                        Float = 4,
+
+                        //Enum = TestDefinition.TestEnumDefinition.Test1,
+                        //Flags = TestDefinition.TestFlagsDefinition.Test1 | TestDefinition.TestFlagsDefinition.Test2 | TestDefinition.TestFlagsDefinition.Test3,
+
+                        Angle = Angle.FromDegrees(69.420f),
+                        ArgbColor = new ArgbColor(1, 2, 3, 4),
+                        CachedTagInstance = Cache.TagCache.GetTag<CacheFileGlobalTags>($@"global_tags"),
+                        CacheAddress = new CacheAddress(CacheAddressType.Memory, 69420),
+                        DatumIndex = new DatumHandle(42069, 42069),
+                        PageableResource = null,
+                        Point2d = new Point2d(420, 420),
+                        RealArgbColor = new RealArgbColor(1.420f, 2.420f, 3.420f, 4.420f),
+                        RealBoundingBox = new RealBoundingBox(new Bounds<float>(1f, 2f), new Bounds<float>(3f, 4f), new Bounds<float>(5f, 6f)),
+                        RealEulerAngles2d = new RealEulerAngles2d(Angle.FromDegrees(69.420f), Angle.FromDegrees(69.420f)),
+                        RealEulerAngles3d = new RealEulerAngles3d(Angle.FromDegrees(69.420f), Angle.FromDegrees(69.420f), Angle.FromDegrees(69.420f)),
+                        RealMatrix4x3 = new RealMatrix4x3(1.1f, 1.2f, 1.3f, 2.1f, 2.2f, 2.3f, 3.1f, 3.2f, 3.3f, 4.1f, 4.2f, 4.3f),
+                        RealPlane2d = new RealPlane2d(new RealVector2d(1.420f, 2.420f), 3.420f),
+                        RealPlane3d = new RealPlane3d(new RealVector3d(1.420f, 2.420f, 3.420f), 4.420f),
+                        RealPoint2d = new RealPoint2d(1.420f, 2.420f),
+                        RealPoint3d = new RealPoint3d(1.420f, 2.420f, 3.420f),
+                        RealQuaternion = new RealQuaternion(1.420f, 2.420f, 3.420f, 4.420f),
+                        RealRgbColor = new RealRgbColor(1.420f, 2.420f, 3.420f),
+                        RealVector2d = new RealVector2d(1.420f, 2.420f),
+                        RealVector3d = new RealVector3d(1.420f, 2.420f, 3.420f),
+                        Rectangle2d = new Rectangle2d(420, -420, 420, -420),
+                        StringId = Cache.StringTable.GetStringId($@"masterchief"),
+                        Tag = new Tag("lgma"),
+
+                        BoundsAngle = new Bounds<Angle>(Angle.FromDegrees(420.69f), Angle.FromDegrees(69.420f)),
+                        BoundsByte = new Bounds<Byte>(0, 1),
+                        BoundsSByte = new Bounds<SByte>(-1, 1),
+                        BoundsUShort = new Bounds<ushort>(0, 420),
+                        BoundsShort = new Bounds<short>(-420, 420),
+                        BoundsUInt = new Bounds<uint>(0, 69420),
+                        BoundsInt = new Bounds<int>(-69420, 69420),
+                        BoundsULong = new Bounds<ulong>(0, 69420),
+                        BoundsLong = new Bounds<long>(-69420, 69420),
+                        BoundsFloat = new Bounds<float>(0.0f, 69420.420f),
                     },
-                    new ModGlobalsDefinition.PlayerCharacterCustomization()
-                    {
-                        GlobalPlayerCharacterTypeIndex = 1,
-                        CharacterName = CacheContext.StringTable.GetOrAddString($@"model_elite"),
-                        CharacterDescription = CacheContext.StringTable.GetOrAddString($@"model_elite_description"),
-                        HudGlobals = GetCachedTag<ChudGlobalsDefinition>($@"objects\characters\elite\mp_elite\chud\globals_test"),
-                        VisionGlobals = GetCachedTag<VisionMode>($@"objects\characters\elite\mp_elite\vision_mode_test"),
-                        ActionSet = GetCachedTag<PlayerActionSet>($@"objects\characters\elite\mp_elite\actions"),
-                        RegionCameraScripts = new List<ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript>
-                        {
-                            new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
-                            {
-                                RegionName = "helmet",
-                                ScriptNameWidescreen = "helmet_camera_wide",
-                                ScriptNameStandard = "helmet_camera_standard",
-                                BipedRotation = 50f,
-                                RotationDuration = 0.5f,
-                            },
-                            new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
-                            {
-                                RegionName = "body",
-                                ScriptNameWidescreen = "body_camera_wide",
-                                ScriptNameStandard = "body_camera_standard",
-                                BipedRotation = 70f,
-                                RotationDuration = 0.5f,
-                            },
-                            new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
-                            {
-                                RegionName = "leftshoulder",
-                                ScriptNameWidescreen = "leftshoulder_camera_wide",
-                                ScriptNameStandard = "leftshoulder_camera_standard",
-                                BipedRotation = 0f,
-                                RotationDuration = 0.5f,
-                            },
-                            new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
-                            {
-                                RegionName = "rightshoulder",
-                                ScriptNameWidescreen = "rightshoulder_camera_wide",
-                                ScriptNameStandard = "rightshoulder_camera_standard",
-                                BipedRotation = 70f,
-                                RotationDuration = 0.5f,
-                            },
-                            new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
-                            {
-                                RegionName = "emblem",
-                                ScriptNameWidescreen = "rightshoulder_camera_wide",
-                                ScriptNameStandard = "rightshoulder_camera_standard",
-                                BipedRotation = 70f,
-                                RotationDuration = 0.5f,
-                            },
-                            new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript
-                            {
-                                RegionName = "exit",
-                                ScriptNameWidescreen = "exit_subcamera",
-                                ScriptNameStandard = "exit_subcamera",
-                                RotationDuration = 0.5f,
-                            },
-                        },
-                        CharacterPositionData = new ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo()
-                        {
-                            Flags = ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo.FlagsValue.PlaceBipedRelativeToCamera | ModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo.FlagsValue.RotateInCustomization,
-                            BipedNameIndex = 26,
-                            SettingsCameraIndex = 15,
-                            PlatformNameIndex = 0,
-                            RelativeBipedPosition = new RealVector3d(0.3f, 0.04f, 0f),
-                            RelativeBipedRotation = -10f,
-                        },
-                        CharacterColors = new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors()
-                        {
-                            ValidColorFlags = ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.PrimaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.SecondaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.TertiaryColor | ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.QuaternaryColor,
-                            TeamOverrideFlags = ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorFlagsValue.PrimaryColor,
-                            Colors = new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock[5]
-                            {
-                                new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
-                                {
-                                    Name = CacheContext.StringTable.GetOrAddString($@"cef_color_primary"),
-                                    Description = CacheContext.StringTable.GetOrAddString($@"cef_color_primary_desc"),
-                                    Default = new ArgbColor(0, 11, 33, 86),
-                                },
-                                new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
-                                {
-                                    Name = CacheContext.StringTable.GetOrAddString($@"cef_color_secondary"),
-                                    Description = CacheContext.StringTable.GetOrAddString($@"cef_color_secondary_desc"),
-                                    Default = new ArgbColor(0, 29, 16, 82),
-                                },
-                                new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
-                                {
-                                    Name = CacheContext.StringTable.GetOrAddString($@"cef_color_detail"),
-                                    Description = CacheContext.StringTable.GetOrAddString($@"cef_color_detail_desc"),
-                                    Default = new ArgbColor(0, 255, 255, 255),
-                                },
-                                new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
-                                {
-                                    Name = CacheContext.StringTable.GetOrAddString($@"cef_color_light"),
-                                    Description = CacheContext.StringTable.GetOrAddString($@"cef_color_light_desc"),
-                                    Default = new ArgbColor(0, 27, 255, 104),
-                                },
-                                new ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterColors.ChangeColorBlock
-                                {
-                
-                                },
-                            },
-                        },
-                    },
-                },
+                }
             };
             
             var tagObject = new TagObject() 
             {
-                TagName = $@"json_data\multiplayer\mod_globals",
-                TagType = $@"ModGlobalsDefinition",
+                TagName = $@"json_data\json_test_tag",
+                TagType = $@"test_blah",
                 TagVersion = Cache.Version,
-                TagData = modg,
+                TagData = test,
             };
 
             using (var cacheStream = Cache.OpenCacheReadWrite())
@@ -314,7 +174,7 @@ namespace TagTool.MtnDewIt.Commands
                 var parsedTagObject = tagHandler.Deserialize(File.ReadAllText("json_serializer_tag_test.json"));
 
                 // We assume that the tag we want to modify is already in the cache
-                GenerateTag<ModGlobalsDefinition>(cacheStream, $@"{parsedTagObject.TagName}");
+                GenerateTag<TestDefinition>(cacheStream, $@"{parsedTagObject.TagName}");
 
                 // Get the specified tag using the tag name and the tag structure name
                 var modgTag = CacheContext.TagCache.GetTag($@"{parsedTagObject.TagName}.{parsedTagObject.TagData.GetTagStructureInfo(Cache.Version, Cache.Platform).Structure.Name}");
@@ -400,6 +260,7 @@ namespace TagTool.MtnDewIt.Commands
             var tag = Cache.TagCache.AllocateTag<T>(tagName);
             var definition = Activator.CreateInstance<T>();
             Cache.Serialize(stream, tag, definition);
+            CacheContext.SaveTagNames();
         }
 
         public MapFileData GetMapData(string input) 
