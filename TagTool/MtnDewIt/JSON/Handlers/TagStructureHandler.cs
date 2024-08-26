@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using static TagTool.Tags.Definitions.ModelAnimationGraph;
+using TagTool.Geometry;
 
 namespace TagTool.MtnDewIt.JSON.Handlers
 {
@@ -20,6 +21,7 @@ namespace TagTool.MtnDewIt.JSON.Handlers
             typeof(List<Scripting.HsGlobal>),
             typeof(List<Scripting.HsSyntaxNode>),
             typeof(TagResourceReference),
+            typeof(RenderGeometry),
         };
 
         private HashSet<string> ExcludedNames = new HashSet<string> 
