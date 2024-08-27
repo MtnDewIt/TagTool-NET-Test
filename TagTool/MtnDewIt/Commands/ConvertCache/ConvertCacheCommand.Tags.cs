@@ -682,8 +682,10 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new objects_equipment_concussiveblast_equipment_concussiveblast_equipment_equipment(Cache, CacheContext, CacheStream);
 
-            new levels_ui_mainmenu_mainmenu_scenario(Cache, CacheContext, CacheStream);
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\levels\ui\mainmenu\mainmenu.scenario");
 
+            //new levels_ui_mainmenu_mainmenu_scenario(Cache, CacheContext, CacheStream);
+            //
             new levels_multi_guardian_guardian_scenario(Cache, CacheContext, CacheStream);
 
             new levels_multi_riverworld_riverworld_scenario(Cache, CacheContext, CacheStream);
