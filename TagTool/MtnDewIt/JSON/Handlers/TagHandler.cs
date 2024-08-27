@@ -8,15 +8,6 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 {
     public class TagHandler : JsonConverter<Tag> 
     {
-        private GameCache Cache;
-        private GameCacheHaloOnline CacheContext;
-
-        public TagHandler(GameCache cache, GameCacheHaloOnline cacheContext)
-        {
-            Cache = cache;
-            CacheContext = cacheContext;
-        }
-
         public override void WriteJson(JsonWriter writer, Tag value, JsonSerializer serializer)
         {
             writer.WriteValue(value.ToString());

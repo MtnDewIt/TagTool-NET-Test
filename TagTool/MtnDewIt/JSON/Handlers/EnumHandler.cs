@@ -1,21 +1,10 @@
 using Newtonsoft.Json;
 using System;
-using TagTool.Cache.HaloOnline;
-using TagTool.Cache;
 
 namespace TagTool.MtnDewIt.JSON.Handlers
 {
     public class EnumHandler : JsonConverter<Enum>
     {
-        private GameCache Cache;
-        private GameCacheHaloOnline CacheContext;
-
-        public EnumHandler(GameCache cache, GameCacheHaloOnline cacheContext)
-        {
-            Cache = cache;
-            CacheContext = cacheContext;
-        }
-
         public override void WriteJson(JsonWriter writer, Enum value, JsonSerializer serializer)
         {
             string enumValue = value.ToString();

@@ -1,23 +1,11 @@
 ﻿using Newtonsoft.Json;
-using TagTool.Cache.HaloOnline;
-using TagTool.Cache;
 using TagTool.MtnDewIt.BlamFiles;
 using System;
-using System.Collections;
 
 namespace TagTool.MtnDewIt.JSON.Handlers
 {
     public class FileAuthorHandler : JsonConverter<FileAuthor>
     {
-        private GameCache Cache;
-        private GameCacheHaloOnline CacheContext;
-
-        public FileAuthorHandler(GameCache cache, GameCacheHaloOnline cacheContext)
-        {
-            Cache = cache;
-            CacheContext = cacheContext;
-        }
-
         public override void WriteJson(JsonWriter writer, FileAuthor value, JsonSerializer serializer)
         {
             var authorString = "";
