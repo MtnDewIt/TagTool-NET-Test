@@ -36,7 +36,7 @@ namespace TagTool.MtnDewIt.Commands
             var handler = new MapObjectHandler(Cache, CacheContext);
 
             var file = new FileInfo(args[0]);
-            var suffix = args[1];
+            var suffix = args.Count > 1 ? args[1] : null;
             var mapData = new MapFileData();
 
             var mapName = Path.GetFileNameWithoutExtension(file.Name);
