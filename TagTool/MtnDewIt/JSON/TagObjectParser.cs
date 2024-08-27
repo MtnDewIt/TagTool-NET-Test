@@ -58,6 +58,15 @@ namespace TagTool.MtnDewIt.JSON
             }
 
             var tag = Cache.TagCache.GetTag($@"{tagObject.TagName}.{tagObject.TagType}");
+
+            if (tagObject.AnimationData != null && tagObject.TagData is ModelAnimationGraph)
+            {
+                foreach (var resource in tagObject.AnimationData.AnimationResources)
+                {
+                    AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\{resource.AnimationFile}");
+                }
+            }
+
             var tagDefinition = Cache.Deserialize(CacheStream, tag);
 
             if (tagObject.UnicodeStrings != null && tagObject.TagData is MultilingualUnicodeStringList)
@@ -78,14 +87,6 @@ namespace TagTool.MtnDewIt.JSON
                 }
 
                 Cache.Serialize(CacheStream, tag, tagDefinition);
-            }
-
-            if (tagObject.AnimationData != null && tagObject.TagData is ModelAnimationGraph) 
-            {
-                foreach (var resource in tagObject.AnimationData.AnimationResources) 
-                {
-                    AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\{resource.AnimationFile}");
-                }
             }
 
             // TODO: Make TagData a nullable field :/
