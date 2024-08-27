@@ -677,15 +677,21 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             switch (CacheType)
             {
                 case GeneratedCacheType.Halo3:
-                    new levels_ui_mainmenu_mainmenu_h3_scenario(Cache, CacheContext, CacheStream);
+                    TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\levels\ui\mainmenu\mainmenu_h3.scenario");
+                    
+                    //new levels_ui_mainmenu_mainmenu_h3_scenario(Cache, CacheContext, CacheStream);
                     break;
             
                 case GeneratedCacheType.Halo3Mythic:
-                    new levels_ui_mainmenu_mainmenu_mythic_scenario(Cache, CacheContext, CacheStream);
+                    TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\levels\ui\mainmenu\mainmenu_mythic.scenario");
+                    
+                    //new levels_ui_mainmenu_mainmenu_mythic_scenario(Cache, CacheContext, CacheStream);
                     break;
             
                 case GeneratedCacheType.Halo3ODST:
-                    new levels_ui_mainmenu_mainmenu_odst_scenario(Cache, CacheContext, CacheStream);
+                    TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\levels\ui\mainmenu\mainmenu_odst.scenario");
+                    
+                    //new levels_ui_mainmenu_mainmenu_odst_scenario(Cache, CacheContext, CacheStream);
                     break;
 
                 case GeneratedCacheType.ElDewrito:
@@ -695,11 +701,15 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
                     new levels_ui_mainmenu_sky_ui_area_screen_effect(Cache, CacheContext, CacheStream);
 
-                    new levels_ui_mainmenu_mainmenu_eldewrito_scenario(Cache, CacheContext, CacheStream);
+                    TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\levels\ui\mainmenu\mainmenu_eldewrito.scenario");
+
+                    //new levels_ui_mainmenu_mainmenu_eldewrito_scenario(Cache, CacheContext, CacheStream);
                     break;
 
                 case GeneratedCacheType.HaloOnline:
-                    new levels_ui_mainmenu_mainmenu_halo_online_scenario(Cache, CacheContext, CacheStream);
+                    TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\levels\ui\mainmenu\mainmenu_halo_online.scenario");
+                    
+                    //new levels_ui_mainmenu_mainmenu_halo_online_scenario(Cache, CacheContext, CacheStream);
                     break;
             }
 
