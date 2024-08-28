@@ -7,43 +7,69 @@ namespace TagTool.MtnDewIt.JSON
     {
         public void UpdateResourceData(TagStructure tagDefinition, TagStructure tagObjectData) 
         {
+            switch (tagDefinition, tagObjectData) 
+            {
+                case (Bitmap bitmDefinition, Bitmap bitmObjectData):
+                    UpdateBitmapData(bitmDefinition, bitmObjectData);
+                    break;
+
+                case (ModelAnimationGraph jmadDefinition, ModelAnimationGraph jmadObjectData):
+                    UpdateModelAnimationGraphData(jmadDefinition, jmadObjectData);
+                    break;
+
+                case (ParticleModel pmdfDefinition, ParticleModel pmdfObjectData):
+                    UpdateParticleModelData(pmdfDefinition, pmdfObjectData);
+                    break;
+
+                case (RenderModel modeDefinition, RenderModel modeObjectData):
+                    UpdateRenderModelData(modeDefinition, modeObjectData);
+                    break;
+
+                case (Scenario scnrDefinition, Scenario scnrObjectData):
+                    UpdateScenarioData(scnrDefinition, scnrObjectData);
+                    break;
+
+                case (ScenarioLightmapBspData lbspDefinition, ScenarioLightmapBspData lbspObjectData):
+                    UpdateLightmapBspData(lbspDefinition, lbspObjectData);
+                    break;
+
+                case (ScenarioStructureBsp sbspDefinition, ScenarioStructureBsp sbspObjectData):
+                    UpdateStructureBspData(sbspDefinition, sbspObjectData);
+                    break;
+
+                case (Sound sndDefinition, Sound sndObjectData):
+                    UpdateSoundData(sndDefinition, sndObjectData);
+                    break;
+            }
+        }
+
+        private void UpdateBitmapData(Bitmap bitmDefinition, Bitmap bitmObjectData) 
+        {
             // Tag Resource References:
             // List<TagResourceReference> HardwareTextures
             // List<TagResourceReference> InterleavedHardwareTextures
+        }
 
-            if (tagDefinition is Bitmap && tagObjectData is Bitmap) 
-            {
-                var bitmDefinition = tagDefinition as Bitmap;
-                var bitmObjectData = tagObjectData as Bitmap;
-            }
-
+        private void UpdateModelAnimationGraphData(ModelAnimationGraph jmadDefinition, ModelAnimationGraph jmadObjectData) 
+        {
             // Tag Resource Groups:
             // List<ResourceGroup> ResourceGroups
+        }
 
-            if (tagDefinition is ModelAnimationGraph && tagObjectData is ModelAnimationGraph)
-            {
-                var jmadDefinition = tagDefinition as ModelAnimationGraph;
-                var jmadObjectData = tagObjectData as ModelAnimationGraph;
-            }
-
+        private void UpdateParticleModelData(ParticleModel pmdfDefinition, ParticleModel pmdfObjectData) 
+        {
             // Tag Geometry References:
             // RenderGeometry Geometry
+        }
 
-            if (tagDefinition is ParticleModel && tagObjectData is ParticleModel)
-            {
-                var pmdfDefinition = tagDefinition as ParticleModel;
-                var pmdfObjectData = tagObjectData as ParticleModel;
-            }
-
+        private void UpdateRenderModelData(RenderModel modeDefinition, RenderModel modeObjectData) 
+        {
             // Tag Geometry References:
             // RenderGeometry Geometry
+        }
 
-            if (tagDefinition is RenderModel && tagObjectData is RenderModel) 
-            {
-                var modeDefinition = tagDefinition as RenderModel;
-                var modeObjectData = tagObjectData as RenderModel;
-            }
-
+        private void UpdateScenarioData(Scenario scnrDefinition, Scenario scnrObjectData) 
+        {
             // Questionable as technically the script data is stored in the hsc file, and is generated when the tag data gets serialized
             // This would probably only be required if the scenario tag object doesn't contain a script file reference :/
             // byte[] ScriptStrings
@@ -51,42 +77,27 @@ namespace TagTool.MtnDewIt.JSON
             // List<HsGlobal> Globals
             // List<TagReferenceBlock> ScriptSourceFileReferences
             // List<HsSyntaxNode> ScriptExpressions
+        }
 
-            if (tagDefinition is Scenario && tagObjectData is Scenario)
-            {
-                var scnrDefinition = tagDefinition as Scenario;
-                var scnrObjectData = tagObjectData as Scenario;
-            }
-
+        private void UpdateLightmapBspData(ScenarioLightmapBspData lbspDefinition, ScenarioLightmapBspData lbspObjectData) 
+        {
             // Tag Geometry References:
             // RenderGeometry Geometry
+        }
 
-            if (tagDefinition is ScenarioLightmapBspData && tagObjectData is ScenarioLightmapBspData)
-            {
-                var lbspDefinition = tagDefinition as ScenarioLightmapBspData;
-                var lbspObjectData = tagObjectData as ScenarioLightmapBspData;
-            }
-
+        private void UpdateStructureBspData(ScenarioStructureBsp sbspDefinition, ScenarioStructureBsp sbspObjectData) 
+        {
             // Tag Resource and Geometry References:
             // RenderGeometry DecoratorGeometry
             // RenderGeometry Geometry
             // TagResourceReference CollisionBspResource
             // TagResourceReference PathfindingResource
+        }
 
-            if (tagDefinition is ScenarioStructureBsp && tagObjectData is ScenarioStructureBsp)
-            {
-                var sbspDefinition = tagDefinition as ScenarioStructureBsp;
-                var sbspObjectData = tagObjectData as ScenarioStructureBsp;
-            }
-
+        private void UpdateSoundData(Sound sndDefinition, Sound sndObjectData) 
+        {
             // Tag Resource References:
-            //TagResourceReference Resource
-
-            if (tagDefinition is Sound && tagObjectData is Sound)
-            {
-                var sndDefinition = tagDefinition as Sound;
-                var sndObjectData = tagObjectData as Sound;
-            }
+            // TagResourceReference Resource
         }
     }
 }
