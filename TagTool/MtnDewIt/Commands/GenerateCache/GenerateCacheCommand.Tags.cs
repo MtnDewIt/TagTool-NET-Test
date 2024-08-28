@@ -351,8 +351,10 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
             new objects_characters_dervish_fx_shield_shield_down_light(Cache, CacheContext, CacheStream);
 
-            new objects_characters_elite_elite_model_animation_graph(Cache, CacheContext, CacheStream);
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\objects\characters\elite\elite_generate.model_animation_graph");
 
+            //new objects_characters_elite_elite_model_animation_graph(Cache, CacheContext, CacheStream);
+            //
             new objects_characters_elite_elite_sp_model(Cache, CacheContext, CacheStream);
 
             new objects_characters_elite_mp_elite_action_camera_camera_track(Cache, CacheContext, CacheStream);
@@ -367,8 +369,10 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
             new objects_characters_masterchief_masterchief_model(Cache, CacheContext, CacheStream);
 
-            new objects_characters_masterchief_masterchief_model_animation_graph(Cache, CacheContext, CacheStream);
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\objects\characters\masterchief\masterchief_generate.model_animation_graph");
 
+            //new objects_characters_masterchief_masterchief_model_animation_graph(Cache, CacheContext, CacheStream);
+            //
             new objects_characters_masterchief_mp_masterchief_action_camera_camera_track(Cache, CacheContext, CacheStream);
 
             new objects_characters_masterchief_mp_masterchief_actions_player_action_set(Cache, CacheContext, CacheStream);

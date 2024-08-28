@@ -53,26 +53,6 @@ namespace TagTool.MtnDewIt.Commands
                     TagName = tag.Name,
                     TagType = definitionName,
                     TagVersion = Cache.Version,
-                    /*
-                    UnicodeStrings = new List<UnicodeStringData>
-                    {
-                        new UnicodeStringData("string_name", "Hold [B] to Add String"),
-                    },
-                    BitmapResources = new List<BitmapResource>
-                    {
-                        new BitmapResource(0, $@"{tag.Name.Split('\\').Last()}.dds"),
-                    },
-                    AnimationData = new AnimationData
-                    {
-                        AnimationResources = new List<AnimationData.AnimationResource>
-                        {
-                            new AnimationData.AnimationResource("file_name.JMA"),
-                        },
-
-                        SortModes = true,
-                    },
-                    BlamScriptResource = new BlamScriptResource("file_name.hsc"),
-                    */
                     TagData = definition,
                 };
 

@@ -45,59 +45,50 @@ namespace TagTool.MtnDewIt.JSON
 
         private void UpdateBitmapData(Bitmap bitmDefinition, Bitmap bitmObjectData) 
         {
-            // Tag Resource References:
-            // List<TagResourceReference> HardwareTextures
-            // List<TagResourceReference> InterleavedHardwareTextures
+            bitmObjectData.HardwareTextures = bitmDefinition.HardwareTextures;
+            bitmObjectData.InterleavedHardwareTextures = bitmDefinition.InterleavedHardwareTextures;
         }
 
         private void UpdateModelAnimationGraphData(ModelAnimationGraph jmadDefinition, ModelAnimationGraph jmadObjectData) 
         {
-            // Tag Resource Groups:
-            // List<ResourceGroup> ResourceGroups
+            jmadObjectData.ResourceGroups = jmadDefinition.ResourceGroups;
         }
 
         private void UpdateParticleModelData(ParticleModel pmdfDefinition, ParticleModel pmdfObjectData) 
         {
-            // Tag Geometry References:
-            // RenderGeometry Geometry
+            pmdfObjectData.Geometry = pmdfDefinition.Geometry;
         }
 
         private void UpdateRenderModelData(RenderModel modeDefinition, RenderModel modeObjectData) 
         {
-            // Tag Geometry References:
-            // RenderGeometry Geometry
+            modeObjectData.Geometry = modeDefinition.Geometry;
         }
 
         private void UpdateScenarioData(Scenario scnrDefinition, Scenario scnrObjectData) 
         {
-            // Questionable as technically the script data is stored in the hsc file, and is generated when the tag data gets serialized
-            // This would probably only be required if the scenario tag object doesn't contain a script file reference :/
-            // byte[] ScriptStrings
-            // List<HsScript> Scripts
-            // List<HsGlobal> Globals
-            // List<TagReferenceBlock> ScriptSourceFileReferences
-            // List<HsSyntaxNode> ScriptExpressions
+            scnrObjectData.ScriptStrings = scnrDefinition.ScriptStrings;
+            scnrObjectData.Scripts = scnrDefinition.Scripts;
+            scnrObjectData.Globals = scnrDefinition.Globals;
+            scnrObjectData.ScriptSourceFileReferences = scnrDefinition.ScriptSourceFileReferences;
+            scnrObjectData.ScriptExpressions = scnrDefinition.ScriptExpressions;
         }
 
         private void UpdateLightmapBspData(ScenarioLightmapBspData lbspDefinition, ScenarioLightmapBspData lbspObjectData) 
         {
-            // Tag Geometry References:
-            // RenderGeometry Geometry
+            lbspObjectData.Geometry = lbspDefinition.Geometry;
         }
 
         private void UpdateStructureBspData(ScenarioStructureBsp sbspDefinition, ScenarioStructureBsp sbspObjectData) 
         {
-            // Tag Resource and Geometry References:
-            // RenderGeometry DecoratorGeometry
-            // RenderGeometry Geometry
-            // TagResourceReference CollisionBspResource
-            // TagResourceReference PathfindingResource
+            sbspObjectData.DecoratorGeometry = sbspDefinition.DecoratorGeometry;
+            sbspObjectData.Geometry = sbspDefinition.Geometry;
+            sbspObjectData.CollisionBsp = sbspDefinition.CollisionBsp;
+            sbspObjectData.PathfindingResource = sbspDefinition.PathfindingResource;
         }
 
         private void UpdateSoundData(Sound sndDefinition, Sound sndObjectData) 
         {
-            // Tag Resource References:
-            // TagResourceReference Resource
+            sndObjectData.Resource = sndDefinition.Resource;
         }
     }
 }

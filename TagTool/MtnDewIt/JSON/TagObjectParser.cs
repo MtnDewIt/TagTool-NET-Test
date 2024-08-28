@@ -28,6 +28,7 @@ namespace TagTool.MtnDewIt.JSON
         private GameCacheHaloOnline CacheContext;
         private Stream CacheStream;
         private TagObjectHandler Handler;
+        private ResourceParser ResourceParser; 
 
         public TagObjectParser(GameCache cache, GameCacheHaloOnline cacheContext, Stream cacheStream)
         {
@@ -35,6 +36,7 @@ namespace TagTool.MtnDewIt.JSON
             CacheContext = cacheContext;
             CacheStream = cacheStream;
             Handler = new TagObjectHandler(Cache, CacheContext, CacheStream);
+            ResourceParser = new ResourceParser();
         }
 
         public void ParseFile(string filePath) 
@@ -73,7 +75,7 @@ namespace TagTool.MtnDewIt.JSON
             {
                 foreach (var unicodeString in tagObject.UnicodeStrings)
                 {
-                    AddString((MultilingualUnicodeStringList)tagDefinition, unicodeString.StringIdName, unicodeString.StringIdContent);
+                    AddString(tagDefinition as MultilingualUnicodeStringList, unicodeString.StringIdName, unicodeString.StringIdContent);
                 }
 
                 Cache.Serialize(CacheStream, tag, tagDefinition);
@@ -83,15 +85,17 @@ namespace TagTool.MtnDewIt.JSON
             {
                 foreach (var resource in tagObject.BitmapResources)
                 {
-                    AddBitmap((Bitmap)tagDefinition, resource.BitmapIndex, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\{resource.DDSFile}");
+                    AddBitmap(tagDefinition as Bitmap, resource.BitmapIndex, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\{resource.DDSFile}");
                 }
 
                 Cache.Serialize(CacheStream, tag, tagDefinition);
             }
 
+            ResourceParser.UpdateResourceData(tagDefinition as TagStructure, tagObject.TagData);
+
             // TODO: Make TagData a nullable field :/
             // Add proper check to see if tag data is either null, or uses the default value for that tag type
-            if (tagObject.TagType != $@"bitmap" && tagObject.TagType != $@"multilingual_unicode_string_list") 
+            if (!(tagObject.TagData is Bitmap) && !(tagObject.TagData is MultilingualUnicodeStringList))
             {
                 Cache.Serialize(CacheStream, tag, tagObject.TagData);
             }

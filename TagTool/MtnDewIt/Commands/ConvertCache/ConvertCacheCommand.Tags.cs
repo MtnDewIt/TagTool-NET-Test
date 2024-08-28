@@ -180,10 +180,15 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
 
             new objects_characters_elite_mp_elite_actions_player_action_set(Cache, CacheContext, CacheStream);
 
-            new objects_characters_masterchief_masterchief_model_animation_graph(Cache, CacheContext, CacheStream);
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\objects\characters\masterchief\masterchief_convert.model_animation_graph");
 
-            new objects_characters_elite_elite_model_animation_graph(Cache, CacheContext, CacheStream);
+            //new objects_characters_masterchief_masterchief_model_animation_graph(Cache, CacheContext, CacheStream);
+            //
 
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\objects\characters\elite\elite_convert.model_animation_graph");
+
+            //new objects_characters_elite_elite_model_animation_graph(Cache, CacheContext, CacheStream);
+            //
             new objects_characters_dervish_dervish_model_animation_graph(Cache, CacheContext, CacheStream);
 
             TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\objects\characters\masterchief\bitmaps\mp_visor_cc_convert.bitmap");
