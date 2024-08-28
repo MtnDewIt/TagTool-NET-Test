@@ -18,16 +18,16 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
         private List<string> TagObjectList;
         private List<string> MapObjectList;
 
-        // TODO: Add Tag Support :/
-        // I will come back to you at some point, as I need to figure out how to handle resource data :/
-        // I don't want to store any resource data in JSON, as that data is cache specific, and will not transfer over to a generated cache
-        //public void UpdateTagData()
-        //{
-        //    TagParser = new TagObjectParser(Cache, CacheContext, CacheStream);
-        //
-        //    var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\convertcache\tags.json");
-        //    TagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
-        //}
+        public void UpdateTagData()
+        {
+            TagParser = new TagObjectParser(Cache, CacheContext, CacheStream);
+        
+            var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\convertcache\tags.json");
+            TagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
+        
+            foreach (var file in TagObjectList)
+                TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\{file}");
+        }
 
         public void UpdateMapData()
         {

@@ -26,7 +26,7 @@ namespace TagTool.MtnDewIt.JSON.Handlers
         {
             string stringId = reader.Value.ToString();
 
-            return CacheContext.StringTable.GetOrAddString(stringId);
+            return stringId == $@"invalid" ? StringId.Invalid : CacheContext.StringTable.GetOrAddString(stringId);
         }
     }
 }
