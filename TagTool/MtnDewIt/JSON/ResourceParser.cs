@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using TagTool.Geometry;
-using TagTool.Tags;
+﻿using TagTool.Tags;
 using TagTool.Tags.Definitions;
-using static TagTool.Tags.Definitions.ModelAnimationGraph;
 
 namespace TagTool.MtnDewIt.JSON 
 {
@@ -10,8 +7,6 @@ namespace TagTool.MtnDewIt.JSON
     {
         public void UpdateResourceData(TagStructure tagDefinition, TagStructure tagObjectData) 
         {
-            // The main issue with this is that I'm gonna need to track which tags contain resource types or data that isn't static between caches
-
             // Tag Resource References:
             // List<TagResourceReference> HardwareTextures
             // List<TagResourceReference> InterleavedHardwareTextures
@@ -55,8 +50,6 @@ namespace TagTool.MtnDewIt.JSON
             // List<HsScript> Scripts
             // List<HsGlobal> Globals
             // List<TagReferenceBlock> ScriptSourceFileReferences
-            // List<TagReferenceBlock> ScriptExternalFileReferences // Unknown
-            // List<ScriptingDatum> ScriptingData // Unknown
             // List<HsSyntaxNode> ScriptExpressions
 
             if (tagDefinition is Scenario && tagObjectData is Scenario)
