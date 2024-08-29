@@ -20,62 +20,32 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
         private List<string> MapObjectList;
         private List<string> BlfObjectList;
 
-        // TODO: Add Tag Support :/
-        // I will come back to you at some point, as I need to figure out how to handle resource data :/
-        // I don't want to store any resource data in JSON, as that data is cache specific, and will not transfer over to a generated cache
-        public void UpdateTagData()
+        private Dictionary<GeneratedCacheType, string> CacheTypePath = new Dictionary<GeneratedCacheType, string>
         {
-            TagParser = new TagObjectParser(Cache, CacheContext, CacheStream);
-        
-            var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags.json");
+            { GeneratedCacheType.Halo3, $@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags_h3.json" },
+            { GeneratedCacheType.Halo3Mythic, $@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags_mythic.json" },
+            { GeneratedCacheType.Halo3ODST, $@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags_odst.json" },
+            { GeneratedCacheType.ElDewrito, $@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags_eldewrito.json" },
+            { GeneratedCacheType.HaloOnline, $@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags_halo_online.json" },
+        };
+
+        public void ParseTagList(string jsonPath)
+        {
+            var jsonData = File.ReadAllText(jsonPath);
             TagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
             foreach (var file in TagObjectList)
                 TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\{file}");
+        }
 
-            switch (CacheType)
-            {
-                case GeneratedCacheType.Halo3:
-                    var jsonDataH3 = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags_h3.json");
-                    TagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonDataH3);
+        public void UpdateTagData()
+        {
+            TagParser = new TagObjectParser(Cache, CacheContext, CacheStream);
 
-                    foreach (var file in TagObjectList)
-                        TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\{file}");
+            ParseTagList($@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags.json");
 
-                    break;
-                case GeneratedCacheType.Halo3Mythic:
-                    var jsonDataH3M = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags_mythic.json");
-                    TagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonDataH3M);
-
-                    foreach (var file in TagObjectList)
-                        TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\{file}");
-
-                    break;
-                case GeneratedCacheType.Halo3ODST:
-                    var jsonDataODST = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags_odst.json");
-                    TagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonDataODST);
-
-                    foreach (var file in TagObjectList)
-                        TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\{file}");
-
-                    break;
-                case GeneratedCacheType.ElDewrito:
-                    var jsonDataED = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags_eldewrito.json");
-                    TagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonDataED);
-
-                    foreach (var file in TagObjectList)
-                        TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\{file}");
-
-                    break;
-                case GeneratedCacheType.HaloOnline:
-                    var jsonDataHO = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags_halo_online.json");
-                    TagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonDataHO);
-
-                    foreach (var file in TagObjectList)
-                        TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\{file}");
-
-                    break;
-            }
+            if (CacheTypePath.TryGetValue(CacheType, out var jsonPath))
+                ParseTagList(jsonPath);
         }
 
         public void UpdateMapData()
