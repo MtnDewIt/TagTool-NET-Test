@@ -6,7 +6,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 {
     partial class GenerateCacheCommand : Command
     {
-        public void UpdateTagData()
+        public void UpdateTagDataOld()
         {
             TagParser = new TagObjectParser(Cache, CacheContext, CacheStream);
 
