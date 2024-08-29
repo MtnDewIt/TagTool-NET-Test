@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using static TagTool.Tags.Definitions.ModelAnimationGraph;
 using TagTool.Geometry;
+using TagTool.Scripting;
 
 namespace TagTool.MtnDewIt.JSON.Handlers
 {
@@ -16,12 +17,13 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
         private HashSet<Type> ExludedTypes = new HashSet<Type>
         {
+            typeof(List<HsGlobal>),
+            typeof(List<HsScript>),
+            typeof(List<HsSyntaxNode>),
             typeof(List<ResourceGroup>),
-            typeof(List<Scripting.HsScript>),
-            typeof(List<Scripting.HsGlobal>),
-            typeof(List<Scripting.HsSyntaxNode>),
-            typeof(TagResourceReference),
+            typeof(List<TagResourceReference>),
             typeof(RenderGeometry),
+            typeof(TagResourceReference),
         };
 
         private HashSet<string> ExcludedNames = new HashSet<string> 

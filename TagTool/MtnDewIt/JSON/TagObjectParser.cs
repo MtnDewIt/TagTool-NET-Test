@@ -61,14 +61,6 @@ namespace TagTool.MtnDewIt.JSON
 
             var tag = Cache.TagCache.GetTag($@"{tagObject.TagName}.{tagObject.TagType}");
 
-            if (tagObject.AnimationData != null && tagObject.TagData is ModelAnimationGraph)
-            {
-                foreach (var resource in tagObject.AnimationData.AnimationResources)
-                {
-                    AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\{resource.AnimationFile}");
-                }
-            }
-
             var tagDefinition = Cache.Deserialize(CacheStream, tag);
 
             if (tagObject.UnicodeStrings != null && tagObject.TagData is MultilingualUnicodeStringList)
@@ -95,13 +87,25 @@ namespace TagTool.MtnDewIt.JSON
 
             // TODO: Make TagData a nullable field :/
             // Add proper check to see if tag data is either null, or uses the default value for that tag type
-            if (!(tagObject.TagData is Bitmap) && !(tagObject.TagData is MultilingualUnicodeStringList))
+
+            // Need to figure out how to set the TagData as nullable, as currently it only creates an empty instance of the data instead of just setting it to null
+
+            // Only issue with this is that in the event we want to import bitmap data, but also store modified bitmap tag data, there isn't a way to serialize it, yet :/
+            // if tagObject.TagData == null && tagObject.BitmapResources != null => Serialize(*, *, tagDefinition) else Serialize(*, *, tagObject.TagData)
+
+            // Temporary fix for the time being is to just assume that if the BitmapResources are null, then we serialize using the object TagData
+            if (!(tagObject.TagData is MultilingualUnicodeStringList) && tagObject.BitmapResources == null)
             {
                 Cache.Serialize(CacheStream, tag, tagObject.TagData);
             }
 
-            if (tagObject.AnimationData != null && tagObject.TagData is ModelAnimationGraph) 
+            if (tagObject.AnimationData != null && tagObject.TagData is ModelAnimationGraph)
             {
+                foreach (var resource in tagObject.AnimationData.AnimationResources)
+                {
+                    AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\{resource.AnimationFile}");
+                }
+
                 if (tagObject.AnimationData.SortModes)
                 {
                     SortModes(tag);

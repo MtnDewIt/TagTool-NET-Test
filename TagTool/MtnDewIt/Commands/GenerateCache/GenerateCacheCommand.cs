@@ -232,7 +232,7 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
             {
                 UpdateShaderData();
                 PortTagData();
-                UpdateTagDataOld();
+                UpdateTagData();
                 UpdateMapData();
                 UpdateBlfData();
             }
