@@ -63,6 +63,28 @@ namespace TagTool.MtnDewIt.JSON
 
             var tagDefinition = Cache.Deserialize(CacheStream, tag);
 
+            switch (tagObject.TagData) 
+            {
+                case Bitmap:
+                    break;
+                case ModelAnimationGraph:
+                    break;
+                case MultilingualUnicodeStringList:
+                    break;
+                case ParticleModel:
+                    break;
+                case Scenario:
+                    break;
+                case ScenarioLightmapBspData:
+                    break;
+                case ScenarioStructureBsp:
+                    break;
+                case Sound:
+                    break;
+                default:
+                    break;
+            }
+
             if (tagObject.UnicodeStrings != null && tagObject.TagData is MultilingualUnicodeStringList)
             {
                 foreach (var unicodeString in tagObject.UnicodeStrings)
@@ -118,6 +140,56 @@ namespace TagTool.MtnDewIt.JSON
             }
 
             Cache.SaveStrings();
+        }
+
+        public void ParseBitmapData(TagObject tagObject, CachedTag tagInstance, object tagDefinition) 
+        {
+            if (tagObject.BitmapResources != null) 
+            {
+                foreach (var resource in tagObject.BitmapResources)
+                {
+                    AddBitmap(tagDefinition as Bitmap, resource.BitmapIndex, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\{resource.DDSFile}");
+                }
+            }
+
+            Cache.Serialize(CacheStream, tagInstance, tagDefinition);
+        }
+
+        public void ParseAnimationData(TagObject tagObject, CachedTag tagInstance, object tagDefinition) 
+        {
+            if (tagObject.AnimationData != null) 
+            {
+                foreach (var resource in tagObject.AnimationData.AnimationResources)
+                {
+                    AddAnimation(tagInstance, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\{resource.AnimationFile}");
+                }
+
+                if (tagObject.AnimationData.SortModes)
+                {
+                    SortModes(tagInstance);
+                }
+            }
+        }
+
+        public void ParseUnicodeStringData(TagObject tagObject, CachedTag tagInstance, object tagDefinition) 
+        {
+            if (tagObject.UnicodeStrings != null) 
+            {
+                foreach (var unicodeString in tagObject.UnicodeStrings)
+                {
+                    AddString(tagDefinition as MultilingualUnicodeStringList, unicodeString.StringIdName, unicodeString.StringIdContent);
+                }
+
+                Cache.Serialize(CacheStream, tagInstance, tagDefinition);
+            }
+        }
+
+        public void ParseScenarioData(TagObject tagObject, CachedTag tagInstance, object tagDefinition) 
+        {
+            if (tagObject.BlamScriptResource != null)
+            {
+                CompileScript(tagInstance, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\scripts\{tagObject.BlamScriptResource.BlamScriptFile}");
+            }
         }
 
         public void AddString(MultilingualUnicodeStringList unic, string stringIdName, string stringIdContent)
