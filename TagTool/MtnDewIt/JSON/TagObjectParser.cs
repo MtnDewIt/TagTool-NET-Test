@@ -73,6 +73,8 @@ namespace TagTool.MtnDewIt.JSON
                     break;
                 case ParticleModel:
                     break;
+                case RenderModel:
+                    break;
                 case Scenario:
                     break;
                 case ScenarioLightmapBspData:
@@ -142,6 +144,17 @@ namespace TagTool.MtnDewIt.JSON
             Cache.SaveStrings();
         }
 
+
+        // Ok, so the general idea here is that the tag gets deserialized either before or after the resource data has been imported.
+        // (This will depend on the resource type and the tag type). The TagData will then be updated with resource data pulled from
+        // the deserialized tag instance. This data will then be serialized to the specified tag instance. This *should* hopefully 
+        // resolve most of the issues with the current system, and should also avoid any need to check if the TagData in the object
+        // is either empty (Just a new instance of the specified tag structure) or populated. This should also mean that the TagData
+        // can be populated even if the data in question gets overridden when importing resource data.
+
+        // The default case for any tag types which aren't converted by these functions is that the TagData just gets serialized straight
+        // to the specified tag instance, without any modifications.
+
         public void ParseBitmapData(TagObject tagObject, CachedTag tagInstance, object tagDefinition) 
         {
             if (tagObject.BitmapResources != null) 
@@ -184,12 +197,50 @@ namespace TagTool.MtnDewIt.JSON
             }
         }
 
+        public void ParseParticleModelData(TagObject tagObject, CachedTag tagInstance)
+        {
+            var tagDefinition = Cache.Deserialize(CacheStream, tagInstance);
+
+            tagObject.TagData.Geometry = tagDefinition.Geometry;
+        }
+
+        public void ParseRenderModelData(TagObject tagObject, CachedTag tagInstance)
+        {
+            var tagDefinition = Cache.Deserialize(CacheStream, tagInstance);
+
+            tagObject.TagData.Geometry = tagDefinition.Geometry;
+        }
+
         public void ParseScenarioData(TagObject tagObject, CachedTag tagInstance, object tagDefinition) 
         {
             if (tagObject.BlamScriptResource != null)
             {
                 CompileScript(tagInstance, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\scripts\{tagObject.BlamScriptResource.BlamScriptFile}");
             }
+        }
+
+        public void ParseScenarioLightmapBspData(TagObject tagObject, CachedTag tagInstance)
+        {
+            var tagDefinition = Cache.Deserialize(CacheStream, tagInstance);
+
+            tagObject.TagData.Geometry = tagDefinition.Geometry;
+        }
+
+        public void ParseScenarioStructureBspData(TagObject tagObject, CachedTag tagInstance)
+        {
+            var tagDefinition = Cache.Deserialize(CacheStream, tagInstance);
+
+            tagObject.TagData.DecoratorGeometry = tagDefinition.DecoratorGeometry;
+            tagObject.TagData.Geometry = tagDefinition.Geometry;
+            tagObject.TagData.CollisionBsp = tagDefinition.CollisionBsp;
+            tagObject.TagData.PathfindingResource = tagDefinition.PathfindingResource;
+        }
+
+        public void ParseSoundData(TagObject tagObject, CachedTag tagInstance)
+        {
+            var tagDefinition = Cache.Deserialize(CacheStream, tagInstance);
+
+            tagObject.TagData.Resource = tagDefinition.Resource;
         }
 
         public void AddString(MultilingualUnicodeStringList unic, string stringIdName, string stringIdContent)
