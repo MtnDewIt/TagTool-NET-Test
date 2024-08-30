@@ -7,7 +7,7 @@ using TagTool.Tags.Definitions;
 using TagTool.Commands;
 using TagTool.Audio;
 using TagTool.MtnDewIt.Porting;
-using TagTool.MtnDewIt.Commands.GenerateCache.Tags;
+using TagTool.MtnDewIt.JSON;
 
 namespace TagTool.MtnDewIt.Commands.GenerateCache
 {
@@ -15,13 +15,17 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
     {
         public void PortTagData()
         {
+            TagParser = new TagObjectParser(Cache, CacheContext, CacheStream);
+            MapParser = new MapObjectParser(Cache, CacheContext, CacheStream);
+            BlfParser = new BlfObjectParser(Cache, CacheContext, CacheStream);
+
             InitializePortingContext();
 
             GenerateTag<Bitmap>($@"shaders\default_bitmaps\bitmaps\monochrome_random");
 
             sandbox.SetPortingProperties(audioCodec: Compression.OGG);
             GenerateTag<AiDialogueGlobals>($@"ai\ai_dialogue_globals");
-            UpdateData<ai_ai_dialogue_globals_ai_dialogue_globals>();
+            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ai\ai_dialogue_globals.ai_dialogue_globals");
             sandbox.PortTag($@"", $@"ai\assaulting.style");
             sandbox.PortTag($@"", $@"ai\bunkering.style");
             sandbox.PortTag($@"", $@"ai\normal.style");
@@ -1064,13 +1068,6 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
         }
 
         //TODO: Figure out how to make all these functions use the same stream, and have it play nicely with the porting context
-
-        public void UpdateData<T>() where T : Tags.TagFile 
-        {
-            object[] args = { Cache, CacheContext, CacheStream };
-
-            var tagData = Activator.CreateInstance(typeof(T), args);
-        }
 
         public void GenerateTag<T>(string tagName) where T : TagStructure
         {

@@ -36,8 +36,6 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
         public void UpdateTagData()
         {
-            TagParser = new TagObjectParser(Cache, CacheContext, CacheStream);
-
             ParseTagList($@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags.json");
 
             if (CacheTypePath.TryGetValue(CacheType, out var jsonPath))
@@ -46,8 +44,6 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
         public void UpdateMapData()
         {
-            MapParser = new MapObjectParser(Cache, CacheContext, CacheStream);
-
             var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\maps.json");
             MapObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
@@ -57,8 +53,6 @@ namespace TagTool.MtnDewIt.Commands.GenerateCache
 
         public void UpdateBlfData()
         {
-            BlfParser = new BlfObjectParser(Cache, CacheContext, CacheStream);
-
             var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\blf.json");
             BlfObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
