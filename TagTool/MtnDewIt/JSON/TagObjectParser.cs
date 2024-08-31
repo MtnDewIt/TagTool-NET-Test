@@ -28,7 +28,6 @@ namespace TagTool.MtnDewIt.JSON
         private GameCacheHaloOnline CacheContext;
         private Stream CacheStream;
         private TagObjectHandler Handler;
-        private ResourceParser ResourceParser; 
 
         public TagObjectParser(GameCache cache, GameCacheHaloOnline cacheContext, Stream cacheStream)
         {
@@ -36,7 +35,6 @@ namespace TagTool.MtnDewIt.JSON
             CacheContext = cacheContext;
             CacheStream = cacheStream;
             Handler = new TagObjectHandler(Cache, CacheContext, CacheStream);
-            ResourceParser = new ResourceParser();
         }
 
         public void ParseFile(string filePath) 
@@ -44,132 +42,87 @@ namespace TagTool.MtnDewIt.JSON
             var jsonData = File.ReadAllText($@"{filePath}.json");
             var tagObject = Handler.Deserialize(jsonData);
 
-            // TODO: Try and reduce the number of passes required to get a tag
+            Cache.TagCache.TryGetTag($@"{tagObject.TagName}.{tagObject.TagType}", out var tag);
 
-            if (tagObject.Generate)
+            if (tagObject.Generate && tag == null)
             {
-                if (!Cache.TagCache.TryGetTag($@"{tagObject.TagName}.{tagObject.TagType}", out var result)) 
-                {
-                    Cache.TagCache.TryParseGroupTag(tagObject.TagType, out var tagGroup);
-                    var type = Cache.TagCache.TagDefinitions.GetTagDefinitionType(tagGroup);
-                    result = Cache.TagCache.AllocateTag(type, tagObject.TagName);
-                    var definition = (TagStructure)Activator.CreateInstance(type);
-                    CacheContext.Serialize(CacheStream, result, definition);
-                    CacheContext.SaveTagNames();
-                }
+                Cache.TagCache.TryParseGroupTag(tagObject.TagType, out var tagGroup);
+                var type = Cache.TagCache.TagDefinitions.GetTagDefinitionType(tagGroup);
+                tag = Cache.TagCache.AllocateTag(type, tagObject.TagName);
+                var definition = (TagStructure)Activator.CreateInstance(type);
+                CacheContext.Serialize(CacheStream, tag, definition);
+                CacheContext.SaveTagNames();
             }
-
-            var tag = Cache.TagCache.GetTag($@"{tagObject.TagName}.{tagObject.TagType}");
-
-            var tagDefinition = Cache.Deserialize(CacheStream, tag);
 
             switch (tagObject.TagData) 
             {
                 case Bitmap:
+                    ParseBitmapData(tagObject, tag);
                     break;
                 case ModelAnimationGraph:
+                    ParseAnimationData(tagObject, tag);
                     break;
                 case MultilingualUnicodeStringList:
+                    ParseUnicodeStringData(tagObject, tag);
                     break;
                 case ParticleModel:
+                    ParseParticleModelData(tagObject, tag);
                     break;
                 case RenderModel:
+                    ParseRenderModelData(tagObject, tag);
                     break;
                 case Scenario:
+                    ParseScenarioData(tagObject, tag);
                     break;
                 case ScenarioLightmapBspData:
+                    ParseScenarioLightmapBspData(tagObject, tag);
                     break;
                 case ScenarioStructureBsp:
+                    ParseScenarioStructureBspData(tagObject, tag);
                     break;
                 case Sound:
+                    ParseSoundData(tagObject, tag);
                     break;
                 default:
+                    Cache.Serialize(CacheStream, tag, tagObject.TagData);
                     break;
-            }
-
-            if (tagObject.UnicodeStrings != null && tagObject.TagData is MultilingualUnicodeStringList)
-            {
-                foreach (var unicodeString in tagObject.UnicodeStrings)
-                {
-                    AddString(tagDefinition as MultilingualUnicodeStringList, unicodeString.StringIdName, unicodeString.StringIdContent);
-                }
-
-                Cache.Serialize(CacheStream, tag, tagDefinition);
-            }
-
-            if (tagObject.BitmapResources != null && tagObject.TagData is Bitmap) 
-            {
-                foreach (var resource in tagObject.BitmapResources)
-                {
-                    AddBitmap(tagDefinition as Bitmap, resource.BitmapIndex, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\{resource.DDSFile}");
-                }
-
-                Cache.Serialize(CacheStream, tag, tagDefinition);
-            }
-
-            ResourceParser.UpdateResourceData(tagDefinition as TagStructure, tagObject.TagData);
-
-            // TODO: Make TagData a nullable field :/
-            // Add proper check to see if tag data is either null, or uses the default value for that tag type
-
-            // Need to figure out how to set the TagData as nullable, as currently it only creates an empty instance of the data instead of just setting it to null
-
-            // Only issue with this is that in the event we want to import bitmap data, but also store modified bitmap tag data, there isn't a way to serialize it, yet :/
-            // if tagObject.TagData == null && tagObject.BitmapResources != null => Serialize(*, *, tagDefinition) else Serialize(*, *, tagObject.TagData)
-
-            // Temporary fix for the time being is to just assume that if the BitmapResources are null, then we serialize using the object TagData
-            if (!(tagObject.TagData is MultilingualUnicodeStringList) && tagObject.BitmapResources == null)
-            {
-                Cache.Serialize(CacheStream, tag, tagObject.TagData);
-            }
-
-            if (tagObject.AnimationData != null && tagObject.TagData is ModelAnimationGraph)
-            {
-                foreach (var resource in tagObject.AnimationData.AnimationResources)
-                {
-                    AddAnimation(tag, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\{resource.AnimationFile}");
-                }
-
-                if (tagObject.AnimationData.SortModes)
-                {
-                    SortModes(tag);
-                }
-            }
-            
-            if (tagObject.BlamScriptResource != null && tagObject.TagData is Scenario) 
-            {
-                CompileScript(tag, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\scripts\{tagObject.BlamScriptResource.BlamScriptFile}");
             }
 
             Cache.SaveStrings();
         }
 
-
-        // Ok, so the general idea here is that the tag gets deserialized either before or after the resource data has been imported.
-        // (This will depend on the resource type and the tag type). The TagData will then be updated with resource data pulled from
-        // the deserialized tag instance. This data will then be serialized to the specified tag instance. This *should* hopefully 
-        // resolve most of the issues with the current system, and should also avoid any need to check if the TagData in the object
-        // is either empty (Just a new instance of the specified tag structure) or populated. This should also mean that the TagData
-        // can be populated even if the data in question gets overridden when importing resource data.
-
-        // The default case for any tag types which aren't converted by these functions is that the TagData just gets serialized straight
-        // to the specified tag instance, without any modifications.
-
-        public void ParseBitmapData(TagObject tagObject, CachedTag tagInstance, object tagDefinition) 
+        public void ParseBitmapData(TagObject tagObject, CachedTag tagInstance) 
         {
-            if (tagObject.BitmapResources != null) 
+            var tagDefinition = Cache.Deserialize<Bitmap>(CacheStream, tagInstance);
+            var tagData = tagObject.TagData as Bitmap;
+
+            if (tagObject.BitmapResources != null)
             {
                 foreach (var resource in tagObject.BitmapResources)
                 {
-                    AddBitmap(tagDefinition as Bitmap, resource.BitmapIndex, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\{resource.DDSFile}");
+                    AddBitmap(tagDefinition, resource.BitmapIndex, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\{resource.DDSFile}");
                 }
-            }
 
-            Cache.Serialize(CacheStream, tagInstance, tagDefinition);
+                Cache.Serialize(CacheStream, tagInstance, tagDefinition);
+            }
+            else 
+            {
+                tagData.HardwareTextures = tagDefinition.HardwareTextures;
+                tagData.InterleavedHardwareTextures = tagDefinition.InterleavedHardwareTextures;
+
+                Cache.Serialize(CacheStream, tagInstance, tagData);
+            }
         }
 
-        public void ParseAnimationData(TagObject tagObject, CachedTag tagInstance, object tagDefinition) 
+        public void ParseAnimationData(TagObject tagObject, CachedTag tagInstance) 
         {
+            var tagDefinition = Cache.Deserialize<ModelAnimationGraph>(CacheStream, tagInstance);
+            var tagData = tagObject.TagData as ModelAnimationGraph;
+
+            tagData.ResourceGroups = tagDefinition.ResourceGroups;
+
+            Cache.Serialize(CacheStream, tagInstance, tagData);
+
             if (tagObject.AnimationData != null) 
             {
                 foreach (var resource in tagObject.AnimationData.AnimationResources)
@@ -184,35 +137,54 @@ namespace TagTool.MtnDewIt.JSON
             }
         }
 
-        public void ParseUnicodeStringData(TagObject tagObject, CachedTag tagInstance, object tagDefinition) 
+        public void ParseUnicodeStringData(TagObject tagObject, CachedTag tagInstance) 
         {
+            var tagDefinition = Cache.Deserialize<MultilingualUnicodeStringList>(CacheStream, tagInstance);
+
             if (tagObject.UnicodeStrings != null) 
             {
                 foreach (var unicodeString in tagObject.UnicodeStrings)
                 {
-                    AddString(tagDefinition as MultilingualUnicodeStringList, unicodeString.StringIdName, unicodeString.StringIdContent);
+                    AddString(tagDefinition, unicodeString.StringIdName, unicodeString.StringIdContent);
                 }
-
-                Cache.Serialize(CacheStream, tagInstance, tagDefinition);
             }
+
+            Cache.Serialize(CacheStream, tagInstance, tagDefinition);
         }
 
         public void ParseParticleModelData(TagObject tagObject, CachedTag tagInstance)
         {
-            var tagDefinition = Cache.Deserialize(CacheStream, tagInstance);
+            var tagDefinition = Cache.Deserialize<ParticleModel>(CacheStream, tagInstance);
+            var tagData = tagObject.TagData as ParticleModel;
 
-            tagObject.TagData.Geometry = tagDefinition.Geometry;
+            tagData.Geometry = tagDefinition.Geometry;
+
+            Cache.Serialize(CacheStream, tagInstance, tagData);
         }
 
         public void ParseRenderModelData(TagObject tagObject, CachedTag tagInstance)
         {
-            var tagDefinition = Cache.Deserialize(CacheStream, tagInstance);
+            var tagDefinition = Cache.Deserialize<RenderModel>(CacheStream, tagInstance);
+            var tagData = tagObject.TagData as RenderModel;
 
-            tagObject.TagData.Geometry = tagDefinition.Geometry;
+            tagData.Geometry = tagDefinition.Geometry;
+
+            Cache.Serialize(CacheStream, tagInstance, tagData);
         }
 
-        public void ParseScenarioData(TagObject tagObject, CachedTag tagInstance, object tagDefinition) 
+        public void ParseScenarioData(TagObject tagObject, CachedTag tagInstance) 
         {
+            var tagDefinition = Cache.Deserialize<Scenario>(CacheStream, tagInstance);
+            var tagData = tagObject.TagData as Scenario;
+
+            tagData.ScriptStrings = tagDefinition.ScriptStrings;
+            tagData.Scripts = tagDefinition.Scripts;
+            tagData.Globals = tagDefinition.Globals;
+            tagData.ScriptSourceFileReferences = tagDefinition.ScriptSourceFileReferences;
+            tagData.ScriptExpressions = tagDefinition.ScriptExpressions;
+
+            Cache.Serialize(CacheStream, tagInstance, tagData);
+
             if (tagObject.BlamScriptResource != null)
             {
                 CompileScript(tagInstance, $@"{Program.TagToolDirectory}\Tools\JSON\data\{tagObject.TagName}\scripts\{tagObject.BlamScriptResource.BlamScriptFile}");
@@ -221,26 +193,35 @@ namespace TagTool.MtnDewIt.JSON
 
         public void ParseScenarioLightmapBspData(TagObject tagObject, CachedTag tagInstance)
         {
-            var tagDefinition = Cache.Deserialize(CacheStream, tagInstance);
+            var tagDefinition = Cache.Deserialize<ScenarioLightmapBspData>(CacheStream, tagInstance);
+            var tagData = tagObject.TagData as ScenarioLightmapBspData;
 
-            tagObject.TagData.Geometry = tagDefinition.Geometry;
+            tagData.Geometry = tagDefinition.Geometry;
+
+            Cache.Serialize(CacheStream, tagInstance, tagData);
         }
 
         public void ParseScenarioStructureBspData(TagObject tagObject, CachedTag tagInstance)
         {
-            var tagDefinition = Cache.Deserialize(CacheStream, tagInstance);
+            var tagDefinition = Cache.Deserialize<ScenarioStructureBsp>(CacheStream, tagInstance);
+            var tagData = tagObject.TagData as ScenarioStructureBsp;
 
-            tagObject.TagData.DecoratorGeometry = tagDefinition.DecoratorGeometry;
-            tagObject.TagData.Geometry = tagDefinition.Geometry;
-            tagObject.TagData.CollisionBsp = tagDefinition.CollisionBsp;
-            tagObject.TagData.PathfindingResource = tagDefinition.PathfindingResource;
+            tagData.DecoratorGeometry = tagDefinition.DecoratorGeometry;
+            tagData.Geometry = tagDefinition.Geometry;
+            tagData.CollisionBsp = tagDefinition.CollisionBsp;
+            tagData.PathfindingResource = tagDefinition.PathfindingResource;
+
+            Cache.Serialize(CacheStream, tagInstance, tagData);
         }
 
         public void ParseSoundData(TagObject tagObject, CachedTag tagInstance)
         {
-            var tagDefinition = Cache.Deserialize(CacheStream, tagInstance);
+            var tagDefinition = Cache.Deserialize<Sound>(CacheStream, tagInstance);
+            var tagData = tagObject.TagData as Sound;
 
-            tagObject.TagData.Resource = tagDefinition.Resource;
+            tagData.Resource = tagDefinition.Resource;
+
+            Cache.Serialize(CacheStream, tagInstance, tagData);
         }
 
         public void AddString(MultilingualUnicodeStringList unic, string stringIdName, string stringIdContent)
@@ -254,6 +235,7 @@ namespace TagTool.MtnDewIt.JSON
 
                 stringIdIndex = Cache.StringTable.IndexOf(stringIdName);
             }
+
             var stringId = Cache.StringTable.GetStringId(stringIdIndex);
 
             var parsedContent = new Regex(@"\\[uU]([0-9A-F]{4})").Replace(stringIdContent, match => ((char)Int32.Parse(match.Value.Substring(2), NumberStyles.HexNumber)).ToString());
