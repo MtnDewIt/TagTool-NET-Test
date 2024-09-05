@@ -12,13 +12,9 @@ namespace TagTool.MtnDewIt.BlamFiles
         public virtual bool IsValid()
         {
             if (GetHeadTag() == "head" && GetFootTag() == "foot")
-            {
                 return true;
-            }
-            else 
-            {
+            else
                 return false;
-            }
         }
 
         public static CacheFileHeaderData ReadData(CacheVersion version, CachePlatform cachePlatform, EndianReader reader)
@@ -65,28 +61,44 @@ namespace TagTool.MtnDewIt.BlamFiles
         public abstract TagMemoryHeader GetTagMemoryHeader();
     }
 
-    [TagStructure(Size = 0x10)]
-    public class StringIDHeader
+    [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo3Beta)]
+    [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3Retail)]
+    public class StringIDHeader : TagStructure
     {
-        public int IndexBufferLength;
-        public int StringStorageLength;
-        public uint IndexBuffer;
-        public uint StringStorage;
+        [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo3Beta)]
+        public uint BufferAlignedOffset;
+
+        public int Count;
+        public int BufferSize;
+        public uint IndicesOffset;
+        public uint BufferOffset;
     }
 
     [TagStructure(Size = 0x10)]
-    public class TagNameHeader 
+    public class TagNameHeader
     {
-        public int TagNameCount;
-        public uint TagNameBuffer;
-        public int TagNameBufferLength;
-        public uint TagNameOffsets;
+        public int TagNamesCount;
+        public uint TagNamesBufferOffset;
+        public int TagNamesBufferSize;
+        public uint TagNameIndicesOffset;
     }
 
-    [TagStructure(Size = 0x8)]
+    [TagStructure(Size = 0xC, MaxVersion = CacheVersion.HaloCustomEdition)]
+    [TagStructure(Size = 0xC, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Xbox)]
+    [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo2Vista, MaxVersion = CacheVersion.Halo2Vista)]
+    [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo3Beta)]
     public class TagMemoryHeader
     {
+        [TagField(MaxVersion = CacheVersion.HaloCustomEdition)]
+        public int TagDataSize;
+
         public uint MemoryBufferOffset;
         public int MemoryBufferSize;
+
+        [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Vista)]
+        public int MemoryBufferCapacity;
+
+        [TagField(MinVersion = CacheVersion.Halo2Vista, MaxVersion = CacheVersion.Halo2Vista)]
+        public uint VirtualAddress;
     }
 }

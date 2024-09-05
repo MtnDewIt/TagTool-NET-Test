@@ -19,6 +19,7 @@ using TagTool.Animations;
 using TagTool.MtnDewIt.Animations;
 using TagTool.Tags.Resources;
 using TagTool.Commands;
+using TagTool.MtnDewIt.JSON.Objects;
 
 namespace TagTool.MtnDewIt.JSON.Parsers
 {
