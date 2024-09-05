@@ -20,7 +20,7 @@ using TagTool.MtnDewIt.Animations;
 using TagTool.Tags.Resources;
 using TagTool.Commands;
 
-namespace TagTool.MtnDewIt.JSON
+namespace TagTool.MtnDewIt.JSON.Parsers
 {
     public class TagObjectParser 
     {

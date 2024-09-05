@@ -6,7 +6,7 @@ using System;
 using TagTool.Cache;
 using TagTool.Commands.Shaders;
 using TagTool.Commands;
-using TagTool.MtnDewIt.JSON;
+using TagTool.MtnDewIt.JSON.Parsers;
 using TagTool.MtnDewIt.Shaders.ShaderGenerator;
 using TagTool.Tags.Definitions;
 

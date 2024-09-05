@@ -7,7 +7,7 @@ using TagTool.Tags.Definitions;
 using TagTool.Commands;
 using TagTool.Audio;
 using TagTool.MtnDewIt.Porting;
-using TagTool.MtnDewIt.JSON;
+using TagTool.MtnDewIt.JSON.Parsers;
 
 namespace TagTool.MtnDewIt.Commands.GenerateCache
 {

@@ -6,7 +6,7 @@ using TagTool.IO;
 using TagTool.MtnDewIt.BlamFiles;
 using TagTool.Tags.Definitions;
 
-namespace TagTool.MtnDewIt.JSON
+namespace TagTool.MtnDewIt.JSON.Parsers
 {
     public class MapObjectParser 
     {

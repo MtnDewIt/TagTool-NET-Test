@@ -5,7 +5,7 @@ using System.Linq;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands;
-using TagTool.MtnDewIt.JSON;
+using TagTool.MtnDewIt.JSON.Objects;
 using TagTool.MtnDewIt.JSON.Handlers;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;

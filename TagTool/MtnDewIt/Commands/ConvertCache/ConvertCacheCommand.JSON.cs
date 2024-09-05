@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using TagTool.Commands;
-using TagTool.MtnDewIt.JSON;
+using TagTool.MtnDewIt.JSON.Parsers;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache
 {

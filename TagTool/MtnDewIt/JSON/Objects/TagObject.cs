@@ -4,7 +4,7 @@ using TagTool.Cache;
 using TagTool.Cache.Gen3;
 using TagTool.Tags;
 
-namespace TagTool.MtnDewIt.JSON
+namespace TagTool.MtnDewIt.JSON.Objects
 {
     public class TagObject 
     {

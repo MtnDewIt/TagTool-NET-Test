@@ -6,7 +6,7 @@ using System.IO;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands;
-using TagTool.MtnDewIt.JSON;
+using TagTool.MtnDewIt.JSON.Parsers;
 using TagTool.MtnDewIt.Shaders.ShaderGenerator;
 using TagTool.Tags.Definitions;
 

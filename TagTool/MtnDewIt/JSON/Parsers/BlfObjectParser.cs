@@ -6,7 +6,7 @@ using TagTool.IO;
 using TagTool.Tags;
 using TagTool.MtnDewIt.BlamFiles;
 
-namespace TagTool.MtnDewIt.JSON
+namespace TagTool.MtnDewIt.JSON.Parsers
 {
     public class BlfObjectParser 
     {

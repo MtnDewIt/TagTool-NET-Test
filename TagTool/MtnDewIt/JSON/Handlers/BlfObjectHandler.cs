@@ -2,6 +2,7 @@
 using TagTool.Cache;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using TagTool.MtnDewIt.JSON.Objects;
 
 namespace TagTool.MtnDewIt.JSON.Handlers
 {

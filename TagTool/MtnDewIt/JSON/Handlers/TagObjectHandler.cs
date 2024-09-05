@@ -4,6 +4,7 @@ using System.IO;
 using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 using TagTool.Tags;
+using TagTool.MtnDewIt.JSON.Objects;
 
 namespace TagTool.MtnDewIt.JSON.Handlers
 {
