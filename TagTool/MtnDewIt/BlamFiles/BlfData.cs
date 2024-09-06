@@ -639,16 +639,16 @@ namespace TagTool.MtnDewIt.BlamFiles
                 Scenario.GameEngineTeamCounts = new BlfDataGameEngineTeams 
                 {
                     NoGametypeTeamCount = 8,
-                    OddballTeamCount = 8,
-                    VipTeamCount = 8,
-                    AssaultTeamCount = 8,
                     CtfTeamCount = 8,
-                    KothTeamCount = 8,
-                    JuggernautTeamCount = 8,
-                    InfectionTeamCount = 8,
                     SlayerTeamCount = 8,
-                    ForgeTeamCount = 8,
+                    OddballTeamCount = 8,
+                    KingTeamCount = 8,
+                    SandboxTeamCount = 8,                    
+                    VipTeamCount = 8,
+                    JuggernautTeamCount = 8,
                     TerritoriesTeamCount = 8,
+                    AssaultTeamCount = 8,
+                    InfectionTeamCount = 8,
                 };
             }
 
@@ -751,7 +751,7 @@ namespace TagTool.MtnDewIt.BlamFiles
         public string BuildString;
 
         [TagField(Length = 16)]
-        public string Author;
+        public string AuthorName;
     }
 
     public enum BlfContentItemType : int
@@ -803,12 +803,12 @@ namespace TagTool.MtnDewIt.BlamFiles
         public string Author = string.Empty;
 
         public BlfContentItemType ContentType;
-        public bool UserIsOnline;
+        public bool AuthorIsOnline;
 
         [TagField(Flags = TagFieldFlags.Padding, Length = 3)]
         public byte[] Padding1 = new byte[3];
 
-        public ulong UserId;
+        public ulong AuthorId;
         public ulong ContentSize;
         public ulong Timestamp;
         public int FilmDuration;
@@ -817,7 +817,7 @@ namespace TagTool.MtnDewIt.BlamFiles
         public BlfGameEngineType GameEngineType;
         public int CampaignDifficulty = -1;
         public sbyte CampaignInsertionPoint = -1;
-        public bool IsSurvival;
+        public bool SurvivalEnabled;
 
         [TagField(Flags = TagFieldFlags.Padding, Length = 2)]
         public byte[] Padding2 = new byte[2];
@@ -864,7 +864,7 @@ namespace TagTool.MtnDewIt.BlamFiles
     public class BlfDataCampaign : BlfDataChunkHeader 
     {
         public int CampaignId;
-        public uint Type;
+        public uint TypeFlags;
 
         [TagField(Length = 0xC)]
         public NameUnicode64[] Names;
@@ -881,15 +881,10 @@ namespace TagTool.MtnDewIt.BlamFiles
 
     public enum BlfDataScenarioInsertionFlags : byte
     {
-        None = 0,
-        SurvivalBit1,
+        SurvivalBit = 0,
+        SurvivalAlwaysUnlockedBit,
         Bit2,
-        SurvivalBit2,
-        Bit3,
-        Bit4,
-        Bit6,
-        Bit5,
-        FlashbackBit,
+        ReturnFromMapBit,
     }
 
     [TagStructure(Size = 0x40, Align = 0x1)]
@@ -904,14 +899,14 @@ namespace TagTool.MtnDewIt.BlamFiles
     public class BlfDataScenarioInsertion 
     {
         public bool Visible;
-        public BlfDataScenarioInsertionFlags Flags;
+        public byte Flags;
         public short ZoneSetIndex;
 
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-        public int FlashbackMapId;
+        public int ReturnFromMapId;
 
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-        public int SurvivalIndex;
+        public int SurvivalPresenceContextId;
 
         [TagField(Length = 4, Flags = TagFieldFlags.Padding)]
         public byte[] Padding1;
@@ -946,16 +941,16 @@ namespace TagTool.MtnDewIt.BlamFiles
     public class BlfDataGameEngineTeams 
     {
         public byte NoGametypeTeamCount;
-        public byte OddballTeamCount;
-        public byte VipTeamCount;
-        public byte AssaultTeamCount;
         public byte CtfTeamCount;
-        public byte KothTeamCount;
-        public byte JuggernautTeamCount;
-        public byte InfectionTeamCount;
         public byte SlayerTeamCount;
-        public byte ForgeTeamCount;
+        public byte OddballTeamCount;
+        public byte KingTeamCount;
+        public byte SandboxTeamCount;
+        public byte VipTeamCount;
+        public byte JuggernautTeamCount;
         public byte TerritoriesTeamCount;
+        public byte AssaultTeamCount;
+        public byte InfectionTeamCount;
     }
 
     [TagStructure(Size = 0x4D44, Align = 0x1, MaxVersion = CacheVersion.Halo3Retail)]
@@ -972,13 +967,13 @@ namespace TagTool.MtnDewIt.BlamFiles
         public NameUnicode128[] Descriptions;
 
         [TagField(Length = 0x100)]
-        public string ImageName;
+        public string ImageFileBase;
 
         [TagField(Length = 0x100)]
-        public string MapName;
+        public string ScenarioPath;
 
-        public int MapIndex;
-        public int GuiSelectableItemType;
+        public int PresenceContextId;
+        public int SortOrder;
         public byte MinimumDesiredPlayers;
         public byte MaximumDesiredPlayers;
 
@@ -986,11 +981,8 @@ namespace TagTool.MtnDewIt.BlamFiles
 
         public bool AllowSavedFilms;
 
-        [TagField(Length = 2, Flags = TagFieldFlags.Padding)]
+        [TagField(Length = 0x6, Flags = TagFieldFlags.Padding)]
         public byte[] Padding1;
-
-        [TagField(Length = 4, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding2;
 
         [TagField(Length = 0x4, MaxVersion = CacheVersion.Halo3Retail)]
         [TagField(Length = 0x9, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
