@@ -12,7 +12,7 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
             if (!Array.TrueForAll(value.Data, b => b == 0))
             {
-                authorString = CacheFileHeaderDataHaloOnline.GetAuthor(value.Data);
+                authorString = FileAuthor.GetAuthor(value.Data);
             }
 
             writer.WriteValue(authorString);
@@ -25,7 +25,7 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
             if (authorString != "") 
             {
-                authorData = CacheFileHeaderDataHaloOnline.SetAuthor(authorString);
+                authorData = FileAuthor.SetAuthor(authorString);
             }
 
             var fileAuthor = new FileAuthor() 
