@@ -29,12 +29,12 @@ namespace TagTool.MtnDewIt.BlamFiles
 
         public bool Unknown1;
         public bool TrackedBuild;
-        public bool HasInsertionPoints;
+        public bool SharedResourceUsageAvailable;
         public byte HeaderFlags;
 
         public LastModificationDate ModificationDate;
 
-        [TagField(Length = 12)]
+        [TagField(Length = 0xC)]
         public byte[] Unknown2;
 
         public StringIDHeader StringIdsHeader;
@@ -47,7 +47,7 @@ namespace TagTool.MtnDewIt.BlamFiles
         [TagField(Length = 8, MinVersion = CacheVersion.HaloOnline235640)]
         public LastModificationDate[] SharedFileTimes;
 
-        [TagField(Length = 0x20)]
+        [TagField(Length = 32)]
         public string Name;
 
         public GameLanguage GameLanguage;
