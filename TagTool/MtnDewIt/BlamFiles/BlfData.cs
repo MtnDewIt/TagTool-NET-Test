@@ -709,7 +709,6 @@ namespace TagTool.MtnDewIt.BlamFiles
     {
         public int AuthenticationDataSize;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnlineED)]
         public BlfDataAuthenticationType AuthenticationType;
     }
 

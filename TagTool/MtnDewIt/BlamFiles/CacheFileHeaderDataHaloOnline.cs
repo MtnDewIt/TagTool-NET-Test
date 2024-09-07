@@ -37,8 +37,8 @@ namespace TagTool.MtnDewIt.BlamFiles
 
         public LastModificationDate ModificationDate;
 
-        [TagField(Length = 0xC)]
-        public byte[] Unknown2;
+        [TagField(Length = 0xC, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding1;
 
         public StringIDHeader StringIdsHeader;
 
@@ -64,15 +64,20 @@ namespace TagTool.MtnDewIt.BlamFiles
 
         public SectionFileBounds Reports;
 
-        [TagField(Length = 4)]
-        public byte[] Unknown3;
+        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding2;
 
         public FileAuthor Author;
 
-        [TagField(Length = 0x10)]
-        public byte[] Unknown4;
+        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding3;
 
-        public ulong Unknown5;
+        public short Unknown2; // 6132
+
+        [TagField(Length = 0xA, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding4;
+
+        public ulong Unknown3; // 1693369567698058236
 
         public NetworkRequestHash Hash;
 
@@ -101,9 +106,9 @@ namespace TagTool.MtnDewIt.BlamFiles
 
         public int CacheFileResourceGestaltIndex;
 
-        [TagField(Length = 0x594, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
-        [TagField(Length = 0x584, MinVersion = CacheVersion.HaloOnline235640)]
-        public byte[] Unknown6;
+        [TagField(Length = 0x594, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708, Flags = TagFieldFlags.Padding)]
+        [TagField(Length = 0x584, MinVersion = CacheVersion.HaloOnline235640, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding5;
 
         public Tag FooterSignature;
 
@@ -131,7 +136,7 @@ namespace TagTool.MtnDewIt.BlamFiles
         public uint Low;
         public uint High;
 
-        public LastModificationDate() 
+        public LastModificationDate()
         {
             Low = 0;
             High = 0;
