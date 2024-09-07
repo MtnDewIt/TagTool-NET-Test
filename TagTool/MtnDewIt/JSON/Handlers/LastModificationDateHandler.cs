@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Globalization;
 using TagTool.MtnDewIt.BlamFiles;
 
 namespace TagTool.MtnDewIt.JSON.Handlers
@@ -27,7 +26,7 @@ namespace TagTool.MtnDewIt.JSON.Handlers
 
             if (date != "") 
             {
-                var dateTime = DateTime.ParseExact(date, "yyyy-MM-dd HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture);
+                var dateTime = DateTime.Parse(date);
                 modificationDate.SetModificationDate(dateTime);
             }
 

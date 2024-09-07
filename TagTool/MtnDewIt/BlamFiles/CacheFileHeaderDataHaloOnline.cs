@@ -131,8 +131,6 @@ namespace TagTool.MtnDewIt.BlamFiles
         public uint Low;
         public uint High;
 
-        private static readonly DateTime EpochStart = new DateTime(1601, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
         public LastModificationDate() 
         {
             Low = 0;
@@ -141,33 +139,25 @@ namespace TagTool.MtnDewIt.BlamFiles
 
         public LastModificationDate(long timeStamp)
         {
-            var dateTime = EpochStart.AddTicks(timeStamp);
+            var dateTime = DateTime.FromFileTimeUtc(timeStamp);
 
             SetModificationDate(dateTime);
         }
 
         public DateTime GetModificationDate()
         {
-            var low = BinaryPrimitives.ReverseEndianness(Low);
-            var high = BinaryPrimitives.ReverseEndianness(High);
-            var ldap = BinaryPrimitives.ReverseEndianness(Convert.ToInt64($@"{low:X}{high:X}", 16));
+            var high = (long)High << 32;
+            var ldap = high + Low;
 
-            var dateTime = EpochStart.AddTicks(ldap);
-
-            return dateTime;
+            return DateTime.FromFileTimeUtc(ldap);
         }
 
         public void SetModificationDate(DateTime date)
         {
             var ldap = date.ToFileTimeUtc();
 
-            var timeStamp = $@"{BinaryPrimitives.ReverseEndianness(ldap):X}";
-
-            var low = Convert.ToUInt32(timeStamp.Substring(0, 8), 16);
-            var high = Convert.ToUInt32(timeStamp.Substring(8, 8), 16);
-
-            Low = BinaryPrimitives.ReverseEndianness(low);
-            High = BinaryPrimitives.ReverseEndianness(high);
+            Low = (uint)(ldap & uint.MaxValue);
+            High = (uint)(ldap >> 32);
         }
     }
 
