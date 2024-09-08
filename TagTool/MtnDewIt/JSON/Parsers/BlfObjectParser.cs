@@ -4,7 +4,7 @@ using TagTool.Cache;
 using TagTool.MtnDewIt.JSON.Handlers;
 using TagTool.IO;
 using TagTool.Tags;
-using TagTool.MtnDewIt.BlamFiles;
+using TagTool.BlamFile;
 
 namespace TagTool.MtnDewIt.JSON.Parsers
 {
@@ -33,19 +33,19 @@ namespace TagTool.MtnDewIt.JSON.Parsers
             using (var stream = blfFile.Create())
             using (var writer = new EndianWriter(stream)) 
             {
-                if (blfObject.BlfData.Version == CacheVersion.HaloOnlineED)
+                if (blfObject.Blf.Version == CacheVersion.HaloOnlineED)
                 {
-                    if (blfObject.BlfData != null && blfObject.BlfData.MapVariant != null && blfObject.BlfData.MapVariantTagNames != null)
+                    if (blfObject.Blf != null && blfObject.Blf.MapVariant != null && blfObject.Blf.MapVariantTagNames != null)
                     {
-                        UpdateQuotaIndexes(blfObject.BlfData.MapVariantTagNames.Names, blfObject.BlfData.MapVariant.MapVariant.Quotas);
+                        UpdateQuotaIndexes(blfObject.Blf.MapVariantTagNames.Names, blfObject.Blf.MapVariant.MapVariant.Quotas);
                     }
                 }
 
-                blfObject.BlfData.WriteData(writer);
+                blfObject.Blf.Write(writer);
             }
         }
 
-        public void UpdateQuotaIndexes(BlfTagName[] tagNames, VariantDataObjectQuota[] quotaList)
+        public void UpdateQuotaIndexes(TagName[] tagNames, VariantObjectQuota[] quotaList)
         {
             for (int i = 0; i < tagNames.Length; i++)
             {

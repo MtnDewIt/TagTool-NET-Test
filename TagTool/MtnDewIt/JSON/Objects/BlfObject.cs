@@ -1,5 +1,5 @@
 ﻿using TagTool.Cache;
-using TagTool.MtnDewIt.BlamFiles;
+using TagTool.BlamFile;
 
 namespace TagTool.MtnDewIt.JSON.Objects
 {
@@ -8,6 +8,6 @@ namespace TagTool.MtnDewIt.JSON.Objects
         public string FileName { get; set; }
         public string FileType { get; set; }
 
-        public BlfData BlfData { get; set; }
+        public Blf Blf { get; set; }
     }
 }
