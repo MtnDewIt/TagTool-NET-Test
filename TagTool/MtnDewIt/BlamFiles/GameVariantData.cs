@@ -2,7 +2,7 @@ using TagTool.Tags;
 
 namespace TagTool.MtnDewIt.BlamFiles
 {
-    public enum GameEngineType : int
+    public enum GameVariantEngineType : int
     {
         Base = 0,
         CaptureTheFlag,
@@ -20,7 +20,7 @@ namespace TagTool.MtnDewIt.BlamFiles
     [TagStructure(Size = 0x264)]
     public class GameVariantData : TagStructure 
     {
-        public GameEngineType GameVariantType;
+        public GameVariantEngineType GameVariantType;
 
         public GameVariantBase Variant;
     }

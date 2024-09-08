@@ -1,14 +1,16 @@
-using TagTool.Common;
-using TagTool.Tags;
-using System.Runtime.InteropServices;
 using System;
 using TagTool.Cache;
+using TagTool.Commands.Common;
+using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
-using TagTool.Commands.Common;
+using TagTool.Tags;
 
 namespace TagTool.MtnDewIt.BlamFiles
 {
+    /// <summary>
+    /// Main class for blf format. Reads, parse and writes blf.
+    /// </summary>
     public class BlfData
     {
         public CacheVersion Version;
@@ -40,14 +42,14 @@ namespace TagTool.MtnDewIt.BlamFiles
             CachePlatform = cachePlatform;
         }
 
-        public bool ReadData(EndianReader reader) 
+        public bool ReadData(EndianReader reader)
         {
             if (!IsValidBlf(reader))
                 return false;
 
             var deserializer = new TagDeserializer(Version, CachePlatform);
 
-            while (!reader.EOF) 
+            while (!reader.EOF)
             {
                 var dataContext = new DataSerializationContext(reader, useAlignment: false);
                 var chunkHeaderPosition = reader.Position;
@@ -55,7 +57,7 @@ namespace TagTool.MtnDewIt.BlamFiles
                 var header = deserializer.Deserialize<BlfDataChunkHeader>(dataContext);
                 reader.SeekTo(chunkHeaderPosition);
 
-                switch (header.Signature.ToString()) 
+                switch (header.Signature.ToString())
                 {
                     case "_blf":
                         ContentFlags |= BlfDataFileContentFlags.StartOfFile;
@@ -98,10 +100,10 @@ namespace TagTool.MtnDewIt.BlamFiles
 
                     case "modp":
                         ContentFlags |= BlfDataFileContentFlags.ModReference;
-                        if (header.MajorVersion == (short)BlfDataModPackageReferenceVersion.Version1)
+                        if(header.MajorVersion == (short)BlfDataModPackageReferenceVersion.Version1)
                         {
                             var v1 = deserializer.Deserialize<BlfDataModPackageReferenceV1>(dataContext);
-                            ModReference = new BlfDataModPackageReference(v1);
+                            ModReference = new BlfDataModPackageReference(v1); // Convert to the new format
                         }
                         else
                         {
@@ -113,57 +115,15 @@ namespace TagTool.MtnDewIt.BlamFiles
                         ContentFlags |= BlfDataFileContentFlags.MapVariant;
                         MapVariant = deserializer.Deserialize<BlfDataMapVariant>(dataContext);
                         break;
-
                     case "tagn":
                         ContentFlags |= BlfDataFileContentFlags.MapVariantTagNames;
                         MapVariantTagNames = deserializer.Deserialize<BlfDataMapVariantTagNames>(dataContext);
                         break;
 
+
                     case "mpvr":
                         ContentFlags |= BlfDataFileContentFlags.GameVariant;
                         GameVariant = deserializer.Deserialize<BlfDataGameVariant>(dataContext);
-                        position = reader.Position;
-                        reader.SeekTo(chunkHeaderPosition + (int)TagStructure.GetStructureSize(typeof(BlfDataChunkHeader), Version, CachePlatform) + 0x4);
-                        switch (GameVariant.GameVariant.GameVariantType)
-                        {
-                            case GameEngineType.Base:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantBase>(dataContext);
-                                break;
-                            case GameEngineType.CaptureTheFlag:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantCtf>(dataContext);
-                                break;
-                            case GameEngineType.Slayer:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantSlayer>(dataContext);
-                                break;
-                            case GameEngineType.Oddball:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantOddball>(dataContext);
-                                break;
-                            case GameEngineType.KingOfTheHill:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantKing>(dataContext);
-                                break;
-                            case GameEngineType.Sandbox:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantSandbox>(dataContext);
-                                break;
-                            case GameEngineType.Vip:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantVip>(dataContext);
-                                break;
-                            case GameEngineType.Juggernaut:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantJuggernaut>(dataContext);
-                                break;
-                            case GameEngineType.Territories:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantTerritories>(dataContext);
-                                break;
-                            case GameEngineType.Assault:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantAssault>(dataContext);
-                                break;
-                            case GameEngineType.Infection:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantInfection>(dataContext);
-                                break;
-                            default:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantBase>(dataContext);
-                                break;
-                        }
-                        reader.SeekTo(position);
                         break;
 
                     case "chdr":
@@ -195,172 +155,7 @@ namespace TagTool.MtnDewIt.BlamFiles
             return true;
         }
 
-        public bool ReadLegacyData(EndianReader reader) 
-        {
-            if (!IsValidBlf(reader))
-                return false;
-
-            var deserializer = new TagDeserializer(Version, CachePlatform);
-
-            while (!reader.EOF)
-            {
-                Format = EndianFormat.LittleEndian;
-                reader.Format = EndianFormat.LittleEndian;
-
-                var dataContext = new DataSerializationContext(reader, useAlignment: false);
-                var chunkHeaderPosition = reader.Position;
-
-                var header = deserializer.Deserialize<BlfDataChunkHeader>(dataContext);
-                reader.SeekTo(chunkHeaderPosition);
-
-                switch (header.Signature.ToString())
-                {
-                    case "flb_":
-                        ContentFlags |= BlfDataFileContentFlags.StartOfFile;
-                        StartOfFile = deserializer.Deserialize<BlfDataChunkStartOfFile>(dataContext);
-                        StartOfFile.Signature = new Tag("_blf");
-                        StartOfFile.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataChunkStartOfFile), CacheVersion.HaloOnline106708, CachePlatform.Original);
-                        StartOfFile.MajorVersion = 1;
-                        StartOfFile.MinorVersion = 2;
-                        StartOfFile.ByteOrderMarker = -2;
-                        break;
-
-                    case "foe_":
-                        ContentFlags |= BlfDataFileContentFlags.EndOfFile;
-                        var position = reader.Position;
-                        EndOfFile = deserializer.Deserialize<BlfDataChunkEndOfFile>(dataContext);
-                        EndOfFile.Signature = new Tag("_eof");
-                        EndOfFile.Length = 0;
-                        EndOfFile.MajorVersion = 0;
-                        EndOfFile.MinorVersion = 0;
-                        AuthenticationType = EndOfFile.AuthenticationType;
-                        switch (AuthenticationType)
-                        {
-                            case BlfDataAuthenticationType.AuthenticationTypeNone:
-                                break;
-                            case BlfDataAuthenticationType.AuthenticationTypeCRC:
-                                reader.SeekTo(position);
-                                EndOfFileCRC = deserializer.Deserialize<BlfDataEndOfFileCRC>(dataContext);
-                                break;
-                            case BlfDataAuthenticationType.AuthenticationTypeRSA:
-                                reader.SeekTo(position);
-                                EndOfFileRSA = deserializer.Deserialize<BlfDataEndOfFileRSA>(dataContext);
-                                break;
-                            case BlfDataAuthenticationType.AuthenticationTypeSHA1:
-                                reader.SeekTo(position);
-                                EndOfFileSHA1 = deserializer.Deserialize<BlfDataEndOfFileSHA1>(dataContext);
-                                break;
-                        }
-                        return true;
-
-                    case "cmpn":
-                        ContentFlags |= BlfDataFileContentFlags.Campaign;
-                        Campaign = deserializer.Deserialize<BlfDataCampaign>(dataContext);
-                        break;
-
-                    case "lvel":
-                        ContentFlags |= BlfDataFileContentFlags.Scenario;
-                        Scenario = deserializer.Deserialize<BlfDataScenario>(dataContext);
-                        Scenario.Signature = new Tag("levl");
-                        Scenario.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataScenario), CacheVersion.Halo3Retail, CachePlatform.Original);
-                        Scenario.MajorVersion = 0;
-                        Scenario.MinorVersion = 0;
-                        break;
-
-                    case "vpam":
-                        ContentFlags |= BlfDataFileContentFlags.MapVariant;
-                        MapVariant = deserializer.Deserialize<BlfDataMapVariant>(dataContext);
-                        MapVariant.Signature = new Tag("mapv");
-                        MapVariant.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataMapVariant), CacheVersion.HaloOnline106708, CachePlatform.Original);
-                        MapVariant.MajorVersion = 12;
-                        MapVariant.MinorVersion = 1;
-                        break;
-
-                    case "rvpm":
-                        ContentFlags |= BlfDataFileContentFlags.GameVariant;
-                        GameVariant = deserializer.Deserialize<BlfDataGameVariant>(dataContext);
-                        position = reader.Position;
-                        reader.SeekTo(chunkHeaderPosition + (int)TagStructure.GetStructureSize(typeof(BlfDataChunkHeader), CacheVersion.HaloOnline106708, CachePlatform.Original) + 0x4);
-                        switch (GameVariant.GameVariant.GameVariantType)
-                        {
-                            case GameEngineType.Base:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantBase>(dataContext);
-                                break;
-                            case GameEngineType.CaptureTheFlag:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantCtf>(dataContext);
-                                break;
-                            case GameEngineType.Slayer:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantSlayer>(dataContext);
-                                break;
-                            case GameEngineType.Oddball:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantOddball>(dataContext);
-                                break;
-                            case GameEngineType.KingOfTheHill:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantKing>(dataContext);
-                                break;
-                            case GameEngineType.Sandbox:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantSandbox>(dataContext);
-                                break;
-                            case GameEngineType.Vip:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantVip>(dataContext);
-                                break;
-                            case GameEngineType.Juggernaut:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantJuggernaut>(dataContext);
-                                break;
-                            case GameEngineType.Territories:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantTerritories>(dataContext);
-                                break;
-                            case GameEngineType.Assault:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantAssault>(dataContext);
-                                break;
-                            case GameEngineType.Infection:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantInfection>(dataContext);
-                                break;
-                            default:
-                                GameVariant.GameVariant.Variant = deserializer.Deserialize<GameVariantBase>(dataContext);
-                                break;
-                        }
-                        reader.SeekTo(position);
-                        GameVariant.Signature = new Tag("mpvr");
-                        GameVariant.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataGameVariant), CacheVersion.HaloOnline106708, CachePlatform.Original);
-                        GameVariant.MajorVersion = 3;
-                        GameVariant.MinorVersion = 1;
-                        break;
-
-                    case "rdhc":
-                        ContentFlags |= BlfDataFileContentFlags.ContentHeader;
-                        ContentHeader = deserializer.Deserialize<BlfDataContentHeader>(dataContext);
-                        ContentHeader.Signature = new Tag("chdr");
-                        ContentHeader.Length = (int)TagStructure.GetStructureSize(typeof(BlfDataContentHeader), CacheVersion.HaloOnline106708, CachePlatform.Original);
-                        ContentHeader.MajorVersion = 9;
-                        ContentHeader.MinorVersion = 3;
-                        break;
-
-                    case "mapi":
-                        ContentFlags |= BlfDataFileContentFlags.MapImage;
-                        MapImage = deserializer.Deserialize<BlfDataMapImage>(dataContext);
-                        Buffer = reader.ReadBytes(MapImage.BufferSize);
-                        break;
-
-                    case "scnd":
-                    case "scnc":
-                    case "flmh":
-                    case "flmd":
-                    case "athr":
-                        Author = deserializer.Deserialize<BlfDataAuthor>(dataContext);
-                        break;
-                    case "ssig":
-                    case "mps2":
-                    case "chrt":
-                    default:
-                        throw new NotImplementedException($"BLF chunk type {header.Signature} not implemented!");
-                }
-            }
-
-            return true;
-        }
-
-        public bool WriteData(EndianWriter writer) 
+        public bool WriteData(EndianWriter writer)
         {
             if (!ContentFlags.HasFlag(BlfDataFileContentFlags.StartOfFile) || !ContentFlags.HasFlag(BlfDataFileContentFlags.EndOfFile))
                 return false;
@@ -368,7 +163,7 @@ namespace TagTool.MtnDewIt.BlamFiles
             TagSerializer serializer = new TagSerializer(Version, CachePlatform, Format);
             writer.Format = Format;
             var dataContext = new DataSerializationContext(writer, useAlignment: false);
-
+            
             serializer.Serialize(dataContext, StartOfFile);
 
             if (ContentFlags.HasFlag(BlfDataFileContentFlags.Scenario))
@@ -398,7 +193,6 @@ namespace TagTool.MtnDewIt.BlamFiles
                 {
                     MapImage.BufferSize = Buffer.Length;
                     serializer.Serialize(dataContext, MapImage);
-
                     // image is always little endian
                     writer.Format = EndianFormat.LittleEndian;
                     writer.WriteBlock(Buffer);
@@ -430,16 +224,20 @@ namespace TagTool.MtnDewIt.BlamFiles
             return true;
         }
 
+        /// <summary>
+        /// Verifies if the stream points to a valid blf start chunk and set the endian format.
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
         private bool IsValidBlf(EndianReader reader)
         {
             var position = reader.Position;
-
             try
             {
                 Format = FindChunkEndianFormat(reader);
                 reader.Format = Format;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Console.WriteLine($"BLF file is invalid: {e.Message}");
                 return false;
@@ -452,23 +250,23 @@ namespace TagTool.MtnDewIt.BlamFiles
             reader.SeekTo(position);
 
             if (header.Signature == "_blf")
-            {
                 return true;
-            }
-            else 
-            {
+            else
                 return false;
-            }
         }
 
+        /// <summary>
+        /// Find the endian format of the file. Assumes that the reader points to the beginning of the blf file stream.
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
         private EndianFormat FindChunkEndianFormat(EndianReader reader)
         {
             reader.Format = EndianFormat.LittleEndian;
             var startOfFile = reader.Position;
             var chunkHeaderSize = (int)TagStructure.GetTagStructureInfo(typeof(BlfDataChunkHeader), Version, CachePlatform).TotalSize;
             reader.SeekTo(startOfFile + chunkHeaderSize);
-
-            if (reader.ReadInt16() == -2)
+            if(reader.ReadInt16() == -2)
             {
                 reader.SeekTo(startOfFile);
                 return EndianFormat.LittleEndian;
@@ -477,8 +275,7 @@ namespace TagTool.MtnDewIt.BlamFiles
             {
                 reader.SeekTo(startOfFile + chunkHeaderSize);
                 reader.Format = EndianFormat.BigEndian;
-
-                if (reader.ReadInt16() == -2)
+                if(reader.ReadInt16() == -2)
                 {
                     reader.SeekTo(startOfFile);
                     return EndianFormat.BigEndian;
@@ -491,16 +288,73 @@ namespace TagTool.MtnDewIt.BlamFiles
             }
         }
 
+        /// <summary>
+        /// Convert to specified Cache Version.
+        /// </summary>
+        /// <param name="targetVersion"></param>
+        /// <param name="platform"></param>
+        public void ConvertBlf(CacheVersion targetVersion, CachePlatform platform = CachePlatform.Original)
+        {
+            switch (Version)
+            {
+                case CacheVersion.Halo3Retail:
+                case CacheVersion.Halo3Beta:
+                    switch (targetVersion)
+                    {
+                        case CacheVersion.Halo3ODST:
+                        case CacheVersion.HaloOnlineED:
+                        case CacheVersion.HaloOnline106708:
+                            ConvertHalo3ToODSTScenarioChunk();
+                            Version = targetVersion;
+                            if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
+                                Format = EndianFormat.LittleEndian;
+                            break;
+                        default:
+                            throw new NotImplementedException($"Conversion from Halo 3 to {targetVersion} not supported");
+                    }
+                    break;
+
+                case CacheVersion.Halo3ODST:
+                case CacheVersion.HaloOnlineED:
+                case CacheVersion.HaloOnline106708:
+                    if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
+                        Format = EndianFormat.LittleEndian;
+                    return;
+
+                case CacheVersion.HaloReach:
+                    switch (targetVersion)
+                    {
+                        case CacheVersion.Halo3ODST:
+                        case CacheVersion.HaloOnlineED:
+                        case CacheVersion.HaloOnline106708:
+                            ConvertReachToODSTScenarioChunk();
+                            Version = targetVersion;
+                            if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
+                                Format = EndianFormat.LittleEndian;
+                            break;
+                        default:
+                            throw new NotImplementedException($"Conversion from {Version} to {targetVersion} not supported");
+                    }
+                    break;
+
+                default:
+                    throw new NotImplementedException($"Conversion from {Version} to {targetVersion} not supported");
+            }
+        }
+
+        /// <summary>
+        /// Converts a Halo 3 Scenario chunk (levl) to ODST format (HO)
+        /// </summary>
         private void ConvertHalo3ToODSTScenarioChunk()
         {
             if (!ContentFlags.HasFlag(BlfDataFileContentFlags.Scenario))
                 return;
 
             var insertions = new BlfDataScenarioInsertion[9];
-            for (int i = 0; i < 9; i++)
+            for(int i = 0; i < 9; i++)
             {
                 BlfDataScenarioInsertion ins;
-                if (i < 4)
+                if( i < 4)
                     ins = Scenario.Insertions[i];
                 else
                 {
@@ -530,7 +384,7 @@ namespace TagTool.MtnDewIt.BlamFiles
                 insertions[i] = ins;
             }
 
-            if (Scenario.MapFlags.HasFlag(BlfDataScenarioFlags.IsMultiplayer))
+            if(Scenario.MapFlags.HasFlag(BlfDataScenarioFlags.IsMultiplayer))
             {
                 for (int i = 0; i < 11; i++)
                     Scenario.GameEngineTeamCounts[i] = 8;
@@ -644,6 +498,7 @@ namespace TagTool.MtnDewIt.BlamFiles
 
     [TagStructure(Size = 0x4D44, Align = 0x1, MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Size = 0x98B4, Align = 0x1, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0xCC8C, Align = 0x1, MinVersion = CacheVersion.HaloReach)]
     public class BlfDataScenario : BlfDataChunkHeader
     {
         public int MapId;
@@ -662,8 +517,12 @@ namespace TagTool.MtnDewIt.BlamFiles
         public string ScenarioPath;
 
         public int PresenceContextId;
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public int SortOrder;
+
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public byte MinimumDesiredPlayers;
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public byte MaximumDesiredPlayers;
 
         [TagField(Length = 0xB)]
@@ -671,30 +530,47 @@ namespace TagTool.MtnDewIt.BlamFiles
 
         public bool AllowSavedFilms;
 
-        [TagField(Length = 0x6, Flags = TagFieldFlags.Padding)]
+        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Padding1;
+
+        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding2;
+
+        [TagField(Length = 64, MinVersion = CacheVersion.HaloReach)]
+        public uint[] MultiplayerObjects; // bit vector
 
         [TagField(Length = 0x4, MaxVersion = CacheVersion.Halo3Retail)]
         [TagField(Length = 0x9, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 0xC, MinVersion = CacheVersion.HaloReach)]
         public BlfDataScenarioInsertion[] Insertions;
+
+        [TagField(Length = 0x10, MinVersion = CacheVersion.HaloReach)]
+        public string DefaultAuthor;
     }
 
     [TagStructure(Size = 0xF08, Align = 0x1, MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Size = 0xF10, Align = 0x1, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0xF88, Align = 0x1, MinVersion = CacheVersion.HaloReach)]
     public class BlfDataScenarioInsertion
     {
         public bool Visible;
         public BlfDataScenarioInsertionFlags Flags;
+
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public short ZoneSetIndex;
+        [TagField(Length = 0x2, MinVersion = CacheVersion.HaloReach)]
+        public byte[] Padding1;
+
+        [TagField(Length = 128, MinVersion = CacheVersion.HaloReach)]
+        public string ZoneSetName;
 
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-        public int ReturnFromMapId;
-
+        public int ReturnFromMapId; // mombasa streets
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-        public int SurvivalPresenceContextId;
+        public int SurvivalPresenceContextId; // not entirely sure what this is, but it's used in rich presence
 
         [TagField(Length = 4, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding1;
+        public byte[] Padding2;
 
         [TagField(Length = 0xC)]
         public NameUnicode32[] Names;
@@ -720,7 +596,7 @@ namespace TagTool.MtnDewIt.BlamFiles
     [TagStructure(Size = 0x44, Align = 0x1)]
     public class BlfDataModPackageReferenceV1 : BlfDataChunkHeader
     {
-        [TagField(Length = 0x10, CharSet = CharSet.Unicode)]
+        [TagField(Length = 0x10, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
         public string Name;
         [TagField(Length = 0x10)]
         public string Author;
@@ -825,21 +701,21 @@ namespace TagTool.MtnDewIt.BlamFiles
     [TagStructure(Size = 0x40, Align = 0x1)]
     public class NameUnicode32
     {
-        [TagField(CharSet = CharSet.Unicode, Length = 0x20, DataAlign = 0x1)]
+        [TagField(CharSet = System.Runtime.InteropServices.CharSet.Unicode, Length = 0x20, DataAlign = 0x1)]
         public string Name;
     }
 
     [TagStructure(Size = 0x100, Align = 0x1)]
     public class NameUnicode128
     {
-        [TagField(CharSet = CharSet.Unicode, Length = 0x80, DataAlign = 0x1)]
+        [TagField(CharSet = System.Runtime.InteropServices.CharSet.Unicode, Length = 0x80, DataAlign = 0x1)]
         public string Name;
     }
 
     [TagStructure(Size = 0x80, Align = 0x1)]
     public class NameUnicode64
     {
-        [TagField(CharSet = CharSet.Unicode, Length = 0x40, DataAlign = 0x1)]
+        [TagField(CharSet = System.Runtime.InteropServices.CharSet.Unicode, Length = 0x40, DataAlign = 0x1)]
         public string Name;
     }
 
@@ -848,84 +724,10 @@ namespace TagTool.MtnDewIt.BlamFiles
     {
         [TagField(Length = 16)]
         public string BuildName;
-
         public ulong BuildIdentifier;
-
         [TagField(Length = 28)]
         public string BuildString;
-
         [TagField(Length = 16)]
         public string AuthorName;
-    }
-
-    public enum BlfContentItemType : int
-    {
-        None = -1,
-        GameState,
-        CtfVariant,
-        SlayerVariant,
-        OddballVariant,
-        KingOfTheHillVariant,
-        JuggernautVariant,
-        TerritoriesVariant,
-        AssaultVariant,
-        InfectionVariant,
-        VipVariant,
-        SandboxMap,
-        Film,
-        FilmClip,
-        ScreenShot,
-    }
-
-    public enum BlfGameEngineType : int
-    {
-        None,
-        CaptureTheFlag,
-        Slayer,
-        Oddball,
-        KingOfTheHill,
-        Sandbox,
-        Vip,
-        Juggernaut,
-        Territories,
-        Assault,
-        Infection,
-    }
-
-    [TagStructure(Size = 0xF8)]
-    public class BlfContentItemMetadata : TagStructure 
-    {
-        public ulong UniqueId;
-
-        [TagField(CharSet = CharSet.Unicode, Length = 16)]
-        public string Name = string.Empty;
-
-        [TagField(CharSet = CharSet.Ansi, Length = 128)]
-        public string Description = string.Empty;
-
-        [TagField(CharSet = CharSet.Ansi, Length = 16)]
-        public string Author = string.Empty;
-
-        public BlfContentItemType ContentType;
-        public bool AuthorIsOnline;
-
-        [TagField(Flags = TagFieldFlags.Padding, Length = 3)]
-        public byte[] Padding1 = new byte[3];
-
-        public ulong AuthorId;
-        public ulong ContentSize;
-        public ulong Timestamp;
-        public int FilmDuration;
-        public int CampaignId = -1;
-        public int MapId = -1;
-        public BlfGameEngineType GameEngineType;
-        public int CampaignDifficulty = -1;
-        public sbyte CampaignInsertionPoint = -1;
-        public bool SurvivalEnabled;
-
-        [TagField(Flags = TagFieldFlags.Padding, Length = 2)]
-        public byte[] Padding2 = new byte[2];
-
-        public ulong GameId;
     }
 }
