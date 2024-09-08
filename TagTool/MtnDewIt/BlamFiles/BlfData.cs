@@ -5,6 +5,7 @@ using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
+using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.MtnDewIt.BlamFiles
 {
@@ -695,7 +696,9 @@ namespace TagTool.MtnDewIt.BlamFiles
     [TagStructure(Size = 0x264, Align = 0x1)]
     public class BlfDataGameVariant : BlfDataChunkHeader
     {
-        public GameVariantData GameVariant;
+        public GameEngineType GameVariantType;
+        [TagField(Length = 0x260)]
+        public byte[] Data; // TODO implement all the structures for each variant and take the union
     }
 
     [TagStructure(Size = 0x40, Align = 0x1)]
