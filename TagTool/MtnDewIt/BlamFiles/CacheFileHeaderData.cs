@@ -1,5 +1,5 @@
-using System.Linq;
 using TagTool.Cache;
+using TagTool.Cache.MCC;
 using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
@@ -7,7 +7,7 @@ using TagTool.Tags;
 
 namespace TagTool.MtnDewIt.BlamFiles
 {
-    public abstract class CacheFileHeaderData : TagStructure
+    public abstract class CacheFileHeaderData :  TagStructure
     {
         public virtual bool IsValid()
         {
@@ -17,14 +17,54 @@ namespace TagTool.MtnDewIt.BlamFiles
                 return false;
         }
 
-        public static CacheFileHeaderData ReadData(CacheVersion version, CachePlatform cachePlatform, EndianReader reader)
+        public static CacheFileHeaderData ReadData(CacheFileVersion fileVersion, CacheVersion version, CachePlatform cachePlatform, EndianReader reader)
         {
             var deserializer = new TagDeserializer(version, cachePlatform);
             reader.SeekTo(0);
             var dataContext = new DataSerializationContext(reader);
 
+            if (fileVersion == CacheFileVersion.HaloMCCUniversal)
+            {
+                // TODO: cleanup
+                // adapt the header for gen3 for now
+                var header = deserializer.Deserialize<CacheFileHeaderMCC>(dataContext);
+                var adapter = new CacheFileHeaderGen3()
+                {
+                    HeaderSignature = header.HeaderSignature,
+                    FileVersion = header.FileVersion,
+                    TagTableHeaderOffset = header.TagTableHeaderOffset,
+                    TagMemoryHeader = header.TagMemoryHeader,
+                    SourceFile = header.SourceFile,
+                    Build = header.Build,
+                    CacheType = header.CacheType,
+                    SharedCacheType = header.SharedCacheType,
+                    StringIdsHeader = header.GetStringIDHeader(),
+                    TagNamesHeader = header.TagNamesHeader,
+                    Name = header.Name,
+                    VirtualBaseAddress = header.VirtualBaseAddress,
+                    Partitions = header.Partitions,
+                    SectionTable = header.SectionTable,
+                    FooterSignature = header.FooterSignature
+                };
+                //return adapter;
+            }
+
             switch (version)
             {
+                case CacheVersion.HaloPC:
+                case CacheVersion.HaloXbox:
+                case CacheVersion.HaloCustomEdition:
+                    //return deserializer.Deserialize<CacheFileHeaderGen1>(dataContext);
+                case CacheVersion.Halo2Alpha:
+                case CacheVersion.Halo2Beta:
+                case CacheVersion.Halo2Xbox:
+                case CacheVersion.Halo2Vista:
+                    //return deserializer.Deserialize<CacheFileHeaderGen2>(dataContext);
+                case CacheVersion.Halo3Beta:
+                case CacheVersion.Halo3Retail:
+                case CacheVersion.Halo3ODST:
+                case CacheVersion.HaloReach:
+                    //return deserializer.Deserialize<CacheFileHeaderGen3>(dataContext);
                 case CacheVersion.HaloOnlineED:
                 case CacheVersion.HaloOnline106708:
                 case CacheVersion.HaloOnline235640:
@@ -43,6 +83,8 @@ namespace TagTool.MtnDewIt.BlamFiles
                 case CacheVersion.HaloOnline604673:
                 case CacheVersion.HaloOnline700123:
                     return deserializer.Deserialize<CacheFileHeaderDataHaloOnline>(dataContext);
+                case CacheVersion.Halo4:
+                    break; //return deserializer.Deserialize<CacheFileHeaderGen4>(dataContext);
             }
             return null;
         }
@@ -59,6 +101,7 @@ namespace TagTool.MtnDewIt.BlamFiles
         public abstract StringIDHeader GetStringIDHeader();
         public abstract TagNameHeader GetTagNameHeader();
         public abstract TagMemoryHeader GetTagMemoryHeader();
+
     }
 
     [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo3Beta)]
