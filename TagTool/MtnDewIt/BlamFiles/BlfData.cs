@@ -491,110 +491,6 @@ namespace TagTool.MtnDewIt.BlamFiles
             }
         }
 
-        public void ConvertBlfFormat(CacheVersion targetVersion, CachePlatform platform = CachePlatform.Original)
-        {
-            switch (Version)
-            {
-                case CacheVersion.Halo3Retail:
-                case CacheVersion.Halo3Beta:
-                    switch (targetVersion)
-                    {
-                        case CacheVersion.Halo3ODST:
-                        case CacheVersion.HaloOnlineED:
-                        case CacheVersion.HaloOnline106708:
-                        case CacheVersion.HaloOnline235640:
-                        case CacheVersion.HaloOnline301003:
-                        case CacheVersion.HaloOnline327043:
-                        case CacheVersion.HaloOnline372731:
-                        case CacheVersion.HaloOnline416097:
-                        case CacheVersion.HaloOnline430475:
-                        case CacheVersion.HaloOnline454665:
-                        case CacheVersion.HaloOnline449175:
-                        case CacheVersion.HaloOnline498295:
-                        case CacheVersion.HaloOnline530605:
-                        case CacheVersion.HaloOnline532911:
-                        case CacheVersion.HaloOnline554482:
-                        case CacheVersion.HaloOnline571627:
-                        case CacheVersion.HaloOnline604673:
-                        case CacheVersion.HaloOnline700123:
-                            ConvertHalo3ToODSTScenarioChunk();
-                            Version = targetVersion;
-                            if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
-                                Format = EndianFormat.LittleEndian;
-                            break;
-                        default:
-                            throw new NotImplementedException($"Conversion from Halo 3 to {targetVersion} not supported");
-                    }
-                    break;
-
-                case CacheVersion.Halo3ODST:
-                case CacheVersion.HaloOnlineED:
-                case CacheVersion.HaloOnline106708:
-                    if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
-                        Format = EndianFormat.LittleEndian;
-                    return;
-
-                case CacheVersion.HaloReach:
-                    switch (targetVersion)
-                    {
-                        case CacheVersion.Halo3ODST:
-                        case CacheVersion.HaloOnlineED:
-                        case CacheVersion.HaloOnline106708:
-                        case CacheVersion.HaloOnline235640:
-                        case CacheVersion.HaloOnline301003:
-                        case CacheVersion.HaloOnline327043:
-                        case CacheVersion.HaloOnline372731:
-                        case CacheVersion.HaloOnline416097:
-                        case CacheVersion.HaloOnline430475:
-                        case CacheVersion.HaloOnline454665:
-                        case CacheVersion.HaloOnline449175:
-                        case CacheVersion.HaloOnline498295:
-                        case CacheVersion.HaloOnline530605:
-                        case CacheVersion.HaloOnline532911:
-                        case CacheVersion.HaloOnline554482:
-                        case CacheVersion.HaloOnline571627:
-                        case CacheVersion.HaloOnline604673:
-                        case CacheVersion.HaloOnline700123:
-                            ConvertReachToODSTScenarioChunk();
-                            Version = targetVersion;
-                            if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
-                                Format = EndianFormat.LittleEndian;
-                            break;
-                        default:
-                            throw new NotImplementedException($"Conversion from {Version} to {targetVersion} not supported");
-                    }
-                    break;
-
-                default:
-                    throw new NotImplementedException($"Conversion from {Version} to {targetVersion} not supported");
-            }
-
-            switch (AuthenticationType)
-            {
-                case BlfDataAuthenticationType.AuthenticationTypeCRC:
-                    EndOfFileCRC = null;
-                    AuthenticationType = BlfDataAuthenticationType.AuthenticationTypeNone;
-                    break;
-                case BlfDataAuthenticationType.AuthenticationTypeSHA1:
-                    EndOfFileSHA1 = null;
-                    AuthenticationType = BlfDataAuthenticationType.AuthenticationTypeNone;
-                    break;
-                case BlfDataAuthenticationType.AuthenticationTypeRSA:
-                    EndOfFileRSA = null;
-                    AuthenticationType = BlfDataAuthenticationType.AuthenticationTypeNone;
-                    break;
-            };
-
-            EndOfFile = new BlfDataChunkEndOfFile()
-            {
-                Signature = new Tag("_eof"),
-                Length = (int)TagStructure.GetStructureSize(typeof(BlfDataChunkEndOfFile), Version, CachePlatform.Original),
-                MajorVersion = 1,
-                MinorVersion = 2,
-                AuthenticationType = BlfDataAuthenticationType.AuthenticationTypeNone,
-            };
-        }
-
         private void ConvertHalo3ToODSTScenarioChunk()
         {
             if (!ContentFlags.HasFlag(BlfDataFileContentFlags.Scenario))
@@ -675,6 +571,33 @@ namespace TagTool.MtnDewIt.BlamFiles
         MapImage = 1 << 9,
     }
 
+    [Flags]
+    public enum BlfDataScenarioFlags : uint
+    {
+        None = 0,
+        Bit1 = 1 << 0,
+        Bit2 = 1 << 1,
+        Visible = 1 << 2,
+        GeneratesFilm = 1 << 3,
+        IsMainmenu = 1 << 4,
+        IsCampaign = 1 << 5,
+        IsMultiplayer = 1 << 6,
+        IsDlc = 1 << 7,
+        TestBit = 1 << 8,
+        TempBit = 1 << 9,
+        IsFirefight = 1 << 10,
+        IsCinematic = 1 << 11,
+        IsForgeOnly = 1 << 12,
+    }
+
+    public enum BlfDataAuthenticationType : byte
+    {
+        AuthenticationTypeNone,
+        AuthenticationTypeCRC,
+        AuthenticationTypeSHA1,
+        AuthenticationTypeRSA,
+    }
+
     [TagStructure(Size = 0xC, Align = 0x1)]
     public class BlfDataChunkHeader
     {
@@ -687,6 +610,7 @@ namespace TagTool.MtnDewIt.BlamFiles
     [TagStructure(Size = 0x24, Align = 0x1)]
     public class BlfDataChunkStartOfFile : BlfDataChunkHeader
     {
+        // when -2, order is little endian, else order is big endian. Check byteswapepd BOM to be -2 otherwise invalid.
         public short ByteOrderMarker;
 
         [TagField(Length = 0x20)]
@@ -694,14 +618,6 @@ namespace TagTool.MtnDewIt.BlamFiles
         
         [TagField(Length = 2, Flags = TagFieldFlags.Padding)]
         public byte[] Padding;
-    }
-
-    public enum BlfDataAuthenticationType : byte
-    {
-        AuthenticationTypeNone,
-        AuthenticationTypeCRC,
-        AuthenticationTypeSHA1,
-        AuthenticationTypeRSA,
     }
 
     [TagStructure(Size = 0x5, Align = 0x1)]
@@ -736,6 +652,206 @@ namespace TagTool.MtnDewIt.BlamFiles
     public class BlfDataEndOfFileRSA : BlfDataChunkEndOfFile
     {
         public BlfRSASignature RSASignature;
+    }
+
+    [TagStructure(Size = 0x4D44, Align = 0x1, MaxVersion = CacheVersion.Halo3Retail)]
+    [TagStructure(Size = 0x98B4, Align = 0x1, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+    public class BlfDataScenario : BlfDataChunkHeader
+    {
+        public int MapId;
+        public BlfDataScenarioFlags MapFlags;
+
+        [TagField(Length = 0xC)]
+        public NameUnicode32[] Names;
+
+        [TagField(Length = 0xC)]
+        public NameUnicode128[] Descriptions;
+
+        [TagField(Length = 0x100)]
+        public string ImageFileBase;
+
+        [TagField(Length = 0x100)]
+        public string ScenarioPath;
+
+        public int PresenceContextId;
+        public int SortOrder;
+        public byte MinimumDesiredPlayers;
+        public byte MaximumDesiredPlayers;
+
+        public BlfDataGameEngineTeams GameEngineTeamCounts;
+
+        public bool AllowSavedFilms;
+
+        [TagField(Length = 0x6, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding1;
+
+        [TagField(Length = 0x4, MaxVersion = CacheVersion.Halo3Retail)]
+        [TagField(Length = 0x9, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        public BlfDataScenarioInsertion[] Insertions;
+    }
+
+    [TagStructure(Size = 0xF08, Align = 0x1, MaxVersion = CacheVersion.Halo3Retail)]
+    [TagStructure(Size = 0xF10, Align = 0x1, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+    public class BlfDataScenarioInsertion
+    {
+        public bool Visible;
+        public BlfDataScenarioInsertionFlags Flags;
+        public short ZoneSetIndex;
+
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        public int ReturnFromMapId;
+
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        public int SurvivalPresenceContextId;
+
+        [TagField(Length = 4, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding1;
+
+        [TagField(Length = 0xC)]
+        public NameUnicode32[] Names;
+
+        [TagField(Length = 0xC)]
+        public NameUnicode128[] Descriptions;
+
+        public enum BlfDataScenarioInsertionFlags : byte
+        {
+            SurvivalBit = 1 << 0,
+            SurvivalAlwaysUnlockedBit = 1 << 1,
+            Bit2 = 1 << 2,
+            ReturnFromMapBit = 1 << 3,
+        }
+    }
+
+    enum BlfDataModPackageReferenceVersion : short
+    {
+        Version1 = 1,
+        Current = 2
+    }
+
+    [TagStructure(Size = 0x44, Align = 0x1)]
+    public class BlfDataModPackageReferenceV1 : BlfDataChunkHeader
+    {
+        [TagField(Length = 0x10, CharSet = CharSet.Unicode)]
+        public string Name;
+        [TagField(Length = 0x10)]
+        public string Author;
+        [TagField(Length = 0x14)]
+        public byte[] Hash;
+    }
+
+    [TagStructure(Size = 0x484)]
+    public class BlfDataModPackageReference : BlfDataChunkHeader
+    {
+        [TagField(Length = 0x14)]
+        public byte[] Hash;
+
+        public ModPackageMetadata Metadata;
+
+        public BlfDataModPackageReference()
+        {
+            Signature = new Tag("modp");
+            Length = (int)typeof(BlfDataModPackageReference).GetSize() - (int)typeof(BlfDataChunkHeader).GetSize();
+            MajorVersion = (short)BlfDataModPackageReferenceVersion.Current;
+            MinorVersion = 0;
+        }
+
+        public BlfDataModPackageReference(BlfDataModPackageReferenceV1 v1) : this()
+        {
+            Hash = v1.Hash;
+            Metadata = new ModPackageMetadata
+            {
+                Name = v1.Name,
+                Author = v1.Author
+            };
+        }
+    }
+
+    [TagStructure(Size = 0x130C, Align = 0x1)]
+    public class BlfDataCampaign : BlfDataChunkHeader
+    {
+        public int CampaignId;
+        public uint TypeFlags;
+
+        [TagField(Length = 0xC)]
+        public NameUnicode64[] Names;
+
+        [TagField(Length = 0xC)]
+        public NameUnicode128[] Descriptions;
+
+        [TagField(Length = 0x40)]
+        public int[] MapIds;
+
+        [TagField(Length = 4, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding1;
+    }
+
+    [TagStructure(Size = 0xE094, Align = 0x1)]
+    public class BlfDataMapVariant : BlfDataChunkHeader
+    {
+        public uint VariantVersion;
+        public MapVariantData MapVariant;
+    }
+
+    [TagStructure(Size = 0x10000, Align = 0x1)]
+    public class BlfDataMapVariantTagNames : BlfDataChunkHeader
+    {
+        [TagField(Length = 0x100)]
+        public BlfTagName[] Names;
+    }
+
+    [TagStructure(Size = 0xFC, Align = 0x1)]
+    public class BlfDataContentHeader : BlfDataChunkHeader
+    {
+        public ushort BuildVersion;
+        public ushort MapMinorVersion;
+        public BlfContentItemMetadata Metadata;
+    }
+
+    [TagStructure(Size = 0x8, Align = 0x1)]
+    public class BlfDataMapImage : BlfDataChunkHeader
+    {
+        public BlfDataImageType Type;
+        public int BufferSize;
+
+        public enum BlfDataImageType : uint
+        {
+            JPG,
+            PNG,
+        }
+    }
+
+    [TagStructure(Size = 0x100, Align = 0x1)]
+    public class BlfTagName
+    {
+        [TagField(Length = 0x100)]
+        public string Name;
+    }
+
+    [TagStructure(Size = 0x264, Align = 0x1)]
+    public class BlfDataGameVariant : BlfDataChunkHeader
+    {
+        public GameVariantData GameVariant;
+    }
+
+    [TagStructure(Size = 0x40, Align = 0x1)]
+    public class NameUnicode32
+    {
+        [TagField(CharSet = CharSet.Unicode, Length = 0x20, DataAlign = 0x1)]
+        public string Name;
+    }
+
+    [TagStructure(Size = 0x100, Align = 0x1)]
+    public class NameUnicode128
+    {
+        [TagField(CharSet = CharSet.Unicode, Length = 0x80, DataAlign = 0x1)]
+        public string Name;
+    }
+
+    [TagStructure(Size = 0x80, Align = 0x1)]
+    public class NameUnicode64
+    {
+        [TagField(CharSet = CharSet.Unicode, Length = 0x40, DataAlign = 0x1)]
+        public string Name;
     }
 
     [TagStructure(Size = 0x44, Align = 0x1)]
@@ -824,118 +940,6 @@ namespace TagTool.MtnDewIt.BlamFiles
         public ulong GameId;
     }
 
-    [TagStructure(Size = 0xFC, Align = 0x1)]
-    public class BlfDataContentHeader : BlfDataChunkHeader 
-    {
-        public ushort BuildVersion;
-        public ushort MapMinorVersion;
-        public BlfContentItemMetadata Metadata;
-    }
-
-    [TagStructure(Size = 0x264, Align = 0x1)]
-    public class BlfDataGameVariant : BlfDataChunkHeader
-    {
-        public GameVariantData GameVariant;
-    }
-
-    [TagStructure(Size = 0xE094, Align = 0x1)]
-    public class BlfDataMapVariant : BlfDataChunkHeader
-    {
-        public uint VariantVersion;
-        public MapVariantData MapVariant;
-    }
-
-    [TagStructure(Size = 0x80, Align = 0x1)]
-    public class NameUnicode64
-    {
-        [TagField(CharSet = CharSet.Unicode, Length = 0x40, DataAlign = 0x1)]
-        public string Name;
-    }
-
-    [TagStructure(Size = 0x100, Align = 0x1)]
-    public class NameUnicode128
-    {
-        [TagField(CharSet = CharSet.Unicode, Length = 0x80, DataAlign = 0x1)]
-        public string Name;
-    }
-
-    [TagStructure(Size = 0x130C, Align = 0x1)]
-    public class BlfDataCampaign : BlfDataChunkHeader 
-    {
-        public int CampaignId;
-        public uint TypeFlags;
-
-        [TagField(Length = 0xC)]
-        public NameUnicode64[] Names;
-
-        [TagField(Length = 0xC)]
-        public NameUnicode128[] Descriptions;
-
-        [TagField(Length = 0x40)]
-        public int[] MapIds;
-
-        [TagField(Length = 4, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding1;
-    }
-
-    public enum BlfDataScenarioInsertionFlags : byte
-    {
-        SurvivalBit = 0,
-        SurvivalAlwaysUnlockedBit,
-        Bit2,
-        ReturnFromMapBit,
-    }
-
-    [TagStructure(Size = 0x40, Align = 0x1)]
-    public class NameUnicode32
-    {
-        [TagField(CharSet = CharSet.Unicode, Length = 0x20, DataAlign = 0x1)]
-        public string Name;
-    }
-
-    [TagStructure(Size = 0xF08, Align = 0x1, MaxVersion = CacheVersion.Halo3Retail)]
-    [TagStructure(Size = 0xF10, Align = 0x1, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-    public class BlfDataScenarioInsertion 
-    {
-        public bool Visible;
-        public byte Flags;
-        public short ZoneSetIndex;
-
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-        public int ReturnFromMapId;
-
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-        public int SurvivalPresenceContextId;
-
-        [TagField(Length = 4, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding1;
-
-        [TagField(Length = 0xC)]
-        public NameUnicode32[] Names;
-
-        [TagField(Length = 0xC)]
-        public NameUnicode128[] Descriptions;
-    }
-
-    [Flags]
-    public enum BlfDataScenarioFlags : uint
-    {
-        None = 0,
-        Bit1 = 1 << 0,
-        Bit2 = 1 << 1,
-        Visible = 1 << 2,
-        GeneratesFilm = 1 << 3,
-        IsMainmenu = 1 << 4,
-        IsCampaign = 1 << 5,
-        IsMultiplayer = 1 << 6,
-        IsDlc = 1 << 7,
-        TestBit = 1 << 8,
-        TempBit = 1 << 9,
-        IsFirefight = 1 << 10,
-        IsCinematic = 1 << 11,
-        IsForgeOnly = 1 << 12,
-    }
-
     [TagStructure(Size = 0xB)]
     public class BlfDataGameEngineTeams 
     {
@@ -950,115 +954,5 @@ namespace TagTool.MtnDewIt.BlamFiles
         public byte TerritoriesTeamCount;
         public byte AssaultTeamCount;
         public byte InfectionTeamCount;
-    }
-
-    [TagStructure(Size = 0x4D44, Align = 0x1, MaxVersion = CacheVersion.Halo3Retail)]
-    [TagStructure(Size = 0x98B4, Align = 0x1, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-    public class BlfDataScenario : BlfDataChunkHeader 
-    {
-        public int MapId;
-        public BlfDataScenarioFlags MapFlags;
-
-        [TagField(Length = 0xC)]
-        public NameUnicode32[] Names;
-
-        [TagField(Length = 0xC)]
-        public NameUnicode128[] Descriptions;
-
-        [TagField(Length = 0x100)]
-        public string ImageFileBase;
-
-        [TagField(Length = 0x100)]
-        public string ScenarioPath;
-
-        public int PresenceContextId;
-        public int SortOrder;
-        public byte MinimumDesiredPlayers;
-        public byte MaximumDesiredPlayers;
-
-        public BlfDataGameEngineTeams GameEngineTeamCounts;
-
-        public bool AllowSavedFilms;
-
-        [TagField(Length = 0x6, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding1;
-
-        [TagField(Length = 0x4, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagField(Length = 0x9, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-        public BlfDataScenarioInsertion[] Insertions;
-    }
-
-    public enum BlfDataImageType : uint 
-    {
-        JPG = 0,
-        PNG,
-    }
-
-    [TagStructure(Size = 0x8, Align = 0x1)]
-    public class BlfDataMapImage : BlfDataChunkHeader
-    {
-        public BlfDataImageType Type;
-        public int BufferSize;
-    }
-
-
-    // EVERYTHING BELOW HERE IS 0.7 SPECIFIC
-
-    [TagStructure(Size = 0x100, Align = 0x1)]
-    public class BlfTagName
-    {
-        [TagField(Length = 0x100)]
-        public string Name;
-    }
-    
-    [TagStructure(Size = 0x10000, Align = 0x1)]
-    public class BlfDataMapVariantTagNames : BlfDataChunkHeader
-    {
-        [TagField(Length = 0x100)]
-        public BlfTagName[] Names;
-    }
-
-    [TagStructure(Size = 0x44, Align = 0x1)]
-    public class BlfDataModPackageReferenceV1 : BlfDataChunkHeader
-    {
-        [TagField(Length = 0x10, CharSet = CharSet.Unicode)]
-        public string Name;
-        [TagField(Length = 0x10)]
-        public string Author;
-        [TagField(Length = 0x14)]
-        public byte[] Hash;
-    }
-
-    enum BlfDataModPackageReferenceVersion : short
-    {
-        Version1 = 1,
-        Current = 2
-    }
-
-    [TagStructure(Size = 0x484)]
-    public class BlfDataModPackageReference : BlfDataChunkHeader
-    {
-        [TagField(Length = 0x14)]
-        public byte[] Hash;
-
-        public ModPackageMetadata Metadata;
-
-        public BlfDataModPackageReference()
-        {
-            Signature = new Tag("modp");
-            Length = (int)typeof(BlfDataModPackageReference).GetSize() - (int)typeof(BlfDataChunkHeader).GetSize();
-            MajorVersion = (short)BlfDataModPackageReferenceVersion.Current;
-            MinorVersion = 0;
-        }
-
-        public BlfDataModPackageReference(BlfDataModPackageReferenceV1 v1) : this()
-        {
-            Hash = v1.Hash;
-            Metadata = new ModPackageMetadata
-            {
-                Name = v1.Name,
-                Author = v1.Author
-            };
-        }
     }
 }
