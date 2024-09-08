@@ -1462,7 +1462,7 @@ namespace TagTool.Shaders.ShaderGenerator
             return fakeOptions;
         }
 
-        public static GlobalPixelShader GenerateSharedPixelShaders(GameCache cache, RenderMethodDefinition rmdf, HaloShaderGenerator.Globals.ShaderType shaderType)
+        public static GlobalPixelShader GenerateSharedPixelShaders(GameCache cache, RenderMethodDefinition rmdf, HaloShaderGenerator.Globals.ShaderType shaderType, bool applyFixes)
         {
             GlobalPixelShader glps = new GlobalPixelShader { EntryPoints = new List<GlobalPixelShader.EntryPointBlock>(), Shaders = new List<PixelShaderBlock>() };
             for (int i = 0; i < Enum.GetValues(typeof(EntryPoint)).Length; i++)
@@ -1494,7 +1494,7 @@ namespace TagTool.Shaders.ShaderGenerator
 
                                 List<OptionInfo> optionInfo = BuildOptionInfo(cache, rmdf, fakeOptions.ToArray(), shaderType);
 
-                                ShaderGeneratorResult generatorResult = generator.GeneratePixelShader(shaderType, entry, optionInfo, true);
+                                ShaderGeneratorResult generatorResult = generator.GeneratePixelShader(shaderType, entry, optionInfo, applyFixes);
 
                                 dependencyBlock.OptionDependency.Add(new GlobalPixelShader.EntryPointBlock.CategoryDependencyBlock.GlobalShaderOptionDependency { 
                                     CompiledShaderIndex = glps.Shaders.Count });
@@ -1516,7 +1516,7 @@ namespace TagTool.Shaders.ShaderGenerator
                         List<byte> fakeOptions = Enumerable.Repeat((byte)0, rmdf.Categories.Count).ToList();
                         List<OptionInfo> optionInfo = BuildOptionInfo(cache, rmdf, fakeOptions.ToArray(), shaderType);
 
-                        ShaderGeneratorResult generatorResult = generator.GeneratePixelShader(shaderType, entry, optionInfo, true);
+                        ShaderGeneratorResult generatorResult = generator.GeneratePixelShader(shaderType, entry, optionInfo, applyFixes);
 
                         glps.EntryPoints[(int)entry].DefaultCompiledShaderIndex = glps.Shaders.Count;
 
@@ -1534,7 +1534,7 @@ namespace TagTool.Shaders.ShaderGenerator
             return glps;
         }
 
-        public static GlobalVertexShader GenerateSharedVertexShaders(GameCache cache, RenderMethodDefinition rmdf, HaloShaderGenerator.Globals.ShaderType shaderType)
+        public static GlobalVertexShader GenerateSharedVertexShaders(GameCache cache, RenderMethodDefinition rmdf, HaloShaderGenerator.Globals.ShaderType shaderType, bool applyFixes)
         {
             GlobalVertexShader glvs = new GlobalVertexShader { Shaders = new List<VertexShaderBlock>(), VertexTypes = new List<GlobalVertexShader.VertexTypeShaders>() };
             for (int i = 0; i < Enum.GetValues(typeof(VertexType)).Length; i++)
@@ -1569,7 +1569,7 @@ namespace TagTool.Shaders.ShaderGenerator
                         List<byte> fakeOptions = Enumerable.Repeat((byte)0, rmdf.Categories.Count).ToList();
                         List<OptionInfo> optionInfo = BuildOptionInfo(cache, rmdf, fakeOptions.ToArray(), shaderType, false);
 
-                        ShaderGeneratorResult generatorResult = generator.GenerateVertexShader(shaderType, entry, vertexType, optionInfo, true);
+                        ShaderGeneratorResult generatorResult = generator.GenerateVertexShader(shaderType, entry, vertexType, optionInfo, applyFixes);
 
                         glvs.VertexTypes[(int)vertexType].EntryPoints[(int)entry].ShaderIndex = glvs.Shaders.Count;
 
@@ -1587,7 +1587,7 @@ namespace TagTool.Shaders.ShaderGenerator
             return glvs;
         }
 
-        public static void GenerateExplicitShader(GameCache cache, Stream stream, string explicitShader, out PixelShader pixl, out VertexShader vtsh)
+        public static void GenerateExplicitShader(GameCache cache, Stream stream, string explicitShader, bool applyFixes, out PixelShader pixl, out VertexShader vtsh)
         {
             ExplicitGenerator generator = new ExplicitGenerator();
             
@@ -1608,7 +1608,7 @@ namespace TagTool.Shaders.ShaderGenerator
             foreach (var entry in supportedEntries)
             {
                 // pixel shader
-                ShaderGeneratorResult pixelResult = generator.GeneratePixelShader(eExplicitShader, entry);
+                ShaderGeneratorResult pixelResult = generator.GeneratePixelShader(eExplicitShader, entry, applyFixes);
 
                 pixl.EntryPointShaders[(int)entry].Count = 1;
                 pixl.EntryPointShaders[(int)entry].Offset = (byte)pixl.Shaders.Count;
@@ -1627,7 +1627,7 @@ namespace TagTool.Shaders.ShaderGenerator
                     for (int i = 0; vtsh.EntryPoints[(int)entry].SupportedVertexTypes.Count <= (int)vertex; i++)
                         vtsh.EntryPoints[(int)entry].SupportedVertexTypes.Add(new ShortOffsetCountBlock());
 
-                    ShaderGeneratorResult vertexResult = generator.GenerateVertexShader(eExplicitShader, entry, vertex);
+                    ShaderGeneratorResult vertexResult = generator.GenerateVertexShader(eExplicitShader, entry, vertex, applyFixes);
 
                     vtsh.EntryPoints[(int)entry].SupportedVertexTypes[(int)vertex].Count = 1;
                     vtsh.EntryPoints[(int)entry].SupportedVertexTypes[(int)vertex].Offset = (byte)vtsh.Shaders.Count;
@@ -1643,7 +1643,7 @@ namespace TagTool.Shaders.ShaderGenerator
             }
         }
 
-        public static void GenerateChudShader(GameCache cache, Stream stream, string chudShader, out PixelShader pixl, out VertexShader vtsh)
+        public static void GenerateChudShader(GameCache cache, Stream stream, string chudShader, bool applyFixes, out PixelShader pixl, out VertexShader vtsh)
         {
             //ChudShader eChudShader = (ChudShader)Enum.Parse(typeof(ChudShader), chudShader, true);
 
@@ -1677,7 +1677,7 @@ namespace TagTool.Shaders.ShaderGenerator
             foreach (var entry in supportedEntries)
             {
                 // pixel shader
-                ShaderGeneratorResult pixelResult = GenericPixelShaderGenerator.GeneratePixelShader(chudShader, entry.ToString().ToLower(), true);
+                ShaderGeneratorResult pixelResult = GenericPixelShaderGenerator.GeneratePixelShader(chudShader, entry.ToString().ToLower(), applyFixes);
 
                 pixl.EntryPointShaders[(int)entry].Count = 1;
                 pixl.EntryPointShaders[(int)entry].Offset = (byte)pixl.Shaders.Count;
@@ -1696,7 +1696,7 @@ namespace TagTool.Shaders.ShaderGenerator
                     for (int i = 0; vtsh.EntryPoints[(int)entry].SupportedVertexTypes.Count <= (int)vertex; i++)
                         vtsh.EntryPoints[(int)entry].SupportedVertexTypes.Add(new ShortOffsetCountBlock());
 
-                    ShaderGeneratorResult vertexResult = GenericVertexShaderGenerator.GenerateVertexShader(chudShader, entry.ToString().ToLower(), vertex, true);
+                    ShaderGeneratorResult vertexResult = GenericVertexShaderGenerator.GenerateVertexShader(chudShader, entry.ToString().ToLower(), vertex, applyFixes);
 
                     vtsh.EntryPoints[(int)entry].SupportedVertexTypes[(int)vertex].Count = 1;
                     vtsh.EntryPoints[(int)entry].SupportedVertexTypes[(int)vertex].Offset = (byte)vtsh.Shaders.Count;

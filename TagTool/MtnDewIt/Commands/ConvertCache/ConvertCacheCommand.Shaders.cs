@@ -7,7 +7,7 @@ using TagTool.Cache;
 using TagTool.Commands.Shaders;
 using TagTool.Commands;
 using TagTool.MtnDewIt.JSON.Parsers;
-using TagTool.MtnDewIt.Shaders.ShaderGenerator;
+using TagTool.Shaders.ShaderGenerator;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache
@@ -50,8 +50,8 @@ namespace TagTool.MtnDewIt.Commands.ConvertCache
             CachedTag rmdfTag = Cache.TagCache.GetTag<RenderMethodDefinition>(rmdfName);
             RenderMethodDefinition rmdf = Cache.Deserialize<RenderMethodDefinition>(stream, rmdfTag);
 
-            GlobalPixelShader glps = InlineShaderGenerator.GenerateSharedPixelShaders(Cache, rmdf, shader, applyFixes);
-            GlobalVertexShader glvs = InlineShaderGenerator.GenerateSharedVertexShaders(Cache, rmdf, shader, applyFixes);
+            GlobalPixelShader glps = ShaderGeneratorNew.GenerateSharedPixelShaders(Cache, rmdf, shader, applyFixes);
+            GlobalVertexShader glvs = ShaderGeneratorNew.GenerateSharedVertexShaders(Cache, rmdf, shader, applyFixes);
 
             Cache.Serialize(stream, rmdf.GlobalPixelShader, glps);
             Cache.Serialize(stream, rmdf.GlobalVertexShader, glvs);

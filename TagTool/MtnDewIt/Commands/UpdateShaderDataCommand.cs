@@ -7,7 +7,7 @@ using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands;
 using TagTool.MtnDewIt.JSON.Parsers;
-using TagTool.MtnDewIt.Shaders.ShaderGenerator;
+using TagTool.Shaders.ShaderGenerator;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.MtnDewIt.Commands
@@ -19,7 +19,7 @@ namespace TagTool.MtnDewIt.Commands
 
         public static List<string> TagObjectList;
 
-        public static HashSet<ShaderType> noFixesShaders = new HashSet<ShaderType> 
+        public static HashSet<ShaderType> noFixesGlobalShaders = new HashSet<ShaderType> 
         {
             ShaderType.Water,
             ShaderType.Foliage,
@@ -85,7 +85,7 @@ namespace TagTool.MtnDewIt.Commands
                     if (shaderType == ShaderType.Glass)
                         continue;
 
-                    bool applyFixes = !noFixesShaders.Contains(shaderType);
+                    bool applyFixes = !noFixesGlobalShaders.Contains(shaderType);
                     GenerateGlobalShader(stream, shaderType, applyFixes);
                 }
 
@@ -114,8 +114,8 @@ namespace TagTool.MtnDewIt.Commands
             CachedTag rmdfTag = Cache.TagCache.GetTag<RenderMethodDefinition>(rmdfName);
             RenderMethodDefinition rmdf = Cache.Deserialize<RenderMethodDefinition>(stream, rmdfTag);
 
-            GlobalPixelShader glps = InlineShaderGenerator.GenerateSharedPixelShaders(Cache, rmdf, shader, applyFixes);
-            GlobalVertexShader glvs = InlineShaderGenerator.GenerateSharedVertexShaders(Cache, rmdf, shader, applyFixes);
+            GlobalPixelShader glps = ShaderGeneratorNew.GenerateSharedPixelShaders(Cache, rmdf, shader, applyFixes);
+            GlobalVertexShader glvs = ShaderGeneratorNew.GenerateSharedVertexShaders(Cache, rmdf, shader, applyFixes);
 
             Cache.Serialize(stream, rmdf.GlobalPixelShader, glps);
             Cache.Serialize(stream, rmdf.GlobalVertexShader, glvs);
@@ -126,7 +126,7 @@ namespace TagTool.MtnDewIt.Commands
             CachedTag pixlTag = Cache.TagCache.GetTag<PixelShader>($"rasterizer\\shaders\\{shader}") ?? Cache.TagCache.AllocateTag<PixelShader>($"rasterizer\\shaders\\{shader}");
             CachedTag vtshTag = Cache.TagCache.GetTag<VertexShader>($"rasterizer\\shaders\\{shader}") ?? Cache.TagCache.AllocateTag<VertexShader>($"rasterizer\\shaders\\{shader}");
 
-            InlineShaderGenerator.GenerateExplicitShader(Cache, shader.ToString(), applyFixes, out PixelShader pixl, out VertexShader vtsh);
+            ShaderGeneratorNew.GenerateExplicitShader(Cache, stream, shader.ToString(), applyFixes, out PixelShader pixl, out VertexShader vtsh);
 
             Cache.Serialize(stream, vtshTag, vtsh);
             Cache.Serialize(stream, pixlTag, pixl);
@@ -137,7 +137,7 @@ namespace TagTool.MtnDewIt.Commands
             CachedTag pixlTag = Cache.TagCache.GetTag<PixelShader>($"rasterizer\\shaders\\{shader}") ?? Cache.TagCache.AllocateTag<PixelShader>($"rasterizer\\shaders\\{shader}");
             CachedTag vtshTag = Cache.TagCache.GetTag<VertexShader>($"rasterizer\\shaders\\{shader}") ?? Cache.TagCache.AllocateTag<VertexShader>($"rasterizer\\shaders\\{shader}");
 
-            InlineShaderGenerator.GenerateChudShader(Cache, shader.ToString(), applyFixes, out PixelShader pixl, out VertexShader vtsh);
+            ShaderGeneratorNew.GenerateChudShader(Cache, stream, shader.ToString(), applyFixes, out PixelShader pixl, out VertexShader vtsh);
 
             Cache.Serialize(stream, vtshTag, vtsh);
             Cache.Serialize(stream, pixlTag, pixl);
