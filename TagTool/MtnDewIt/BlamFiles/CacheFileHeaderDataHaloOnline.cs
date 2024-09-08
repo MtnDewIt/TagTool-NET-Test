@@ -1,6 +1,4 @@
-using Newtonsoft.Json.Linq;
 using System;
-using System.Buffers.Binary;
 using System.Linq;
 using TagTool.Cache;
 using TagTool.Common;

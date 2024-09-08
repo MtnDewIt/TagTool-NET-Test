@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using TagTool.MtnDewIt.BlamFiles;
+using TagTool.Cache;
 using System;
 
 namespace TagTool.MtnDewIt.JSON.Handlers
