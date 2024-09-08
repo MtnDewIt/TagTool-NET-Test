@@ -92,7 +92,7 @@ namespace TagTool.Commands.Forge
                     GameEngineType = 0,
                     CampaignDifficulty = -1,
                     CampaignInsertionPoint = 0,
-                    IsSurvival = false,
+                    SurvivalEnabled = false,
                     GameId = 0
                 };
 

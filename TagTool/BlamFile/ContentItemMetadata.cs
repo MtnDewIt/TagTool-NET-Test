@@ -8,7 +8,7 @@ namespace TagTool.BlamFile
     [TagStructure(Size = 0xF8)]
     public class ContentItemMetadata : TagStructure
     {
-        public ulong Identifier;
+        public ulong UniqueId;
         [TagField(CharSet = Unicode, Length = 16)]
         public string Name = string.Empty;
         [TagField(CharSet = Ansi, Length = 128)]
@@ -16,10 +16,10 @@ namespace TagTool.BlamFile
         [TagField(CharSet = Ansi, Length = 16)]
         public string Author = string.Empty;
         public ContentItemType ContentType;
-        public bool UserIsOnline;
+        public bool AuthorIsOnline;
         [TagField(Flags = Padding, Length = 3)]
-        public byte[] Unused1 = new byte[3];
-        public ulong UserId;
+        public byte[] Padding1 = new byte[3];
+        public ulong AuthorId;
         public ulong ContentSize;
         public ulong Timestamp;
         public int FilmDuration;
@@ -28,14 +28,15 @@ namespace TagTool.BlamFile
         public GameEngineType GameEngineType;
         public int CampaignDifficulty = -1;
         public sbyte CampaignInsertionPoint = -1;
-        public bool IsSurvival;
+        public bool SurvivalEnabled;
         [TagField(Flags = Padding, Length = 2)]
-        public byte[] Unused3 = new byte[2];
+        public byte[] Padding2 = new byte[2];
         public ulong GameId;
     }
 
     public enum ContentItemType : int
     {
+        None = -1,
         GameState,
         CtfVariant,
         SlayerVariant,

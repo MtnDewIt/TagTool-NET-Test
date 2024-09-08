@@ -1,4 +1,5 @@
 using System;
+using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
@@ -670,7 +671,7 @@ namespace TagTool.MtnDewIt.BlamFiles
     {
         public ushort BuildVersion;
         public ushort MapMinorVersion;
-        public BlfContentItemMetadata Metadata;
+        public ContentItemMetadata Metadata;
     }
 
     [TagStructure(Size = 0x8, Align = 0x1)]

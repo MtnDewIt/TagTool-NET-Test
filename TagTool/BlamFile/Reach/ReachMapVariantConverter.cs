@@ -44,7 +44,7 @@ namespace TagTool.BlamFile.Reach
             metadata.ContentSize = typeof(BlfMapVariant).GetSize();
             metadata.GameEngineType = GameEngineType.None;
             metadata.MapId = sourceMapVariant.MapId;
-            metadata.Identifier = sourceMapVariant.Metadata.Uid;
+            metadata.UniqueId = sourceMapVariant.Metadata.Uid;
 
             if (sourceMapVariant.Metadata.ModificationHistory.Timestamp >= sourceMapVariant.Metadata.CreationHistory.Timestamp)
                 SetAuthorInfo(sourceMapVariant.Metadata.ModificationHistory);
@@ -54,7 +54,7 @@ namespace TagTool.BlamFile.Reach
             void SetAuthorInfo(ContentItemHistory history)
             {
                 metadata.Author = history.AuthorName;
-                metadata.UserId = history.AuthorUID;
+                metadata.AuthorId = history.AuthorUID;
                 metadata.Timestamp = (ulong)history.Timestamp.ToUnixTimeSeconds();
             }
 

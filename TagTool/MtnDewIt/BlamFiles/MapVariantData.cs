@@ -1,4 +1,5 @@
 using System;
+using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Tags;
@@ -215,7 +216,7 @@ namespace TagTool.MtnDewIt.BlamFiles
     [TagStructure(Size = 0xE090)]
     public class MapVariantData : TagStructure
     {
-        public BlfContentItemMetadata Metadata;
+        public ContentItemMetadata Metadata;
         public short VariantVersion;
         public short ScenarioObjectCount;
         public short VariantObjectCount;
