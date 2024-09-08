@@ -228,7 +228,7 @@ namespace TagTool.MtnDewIt.BlamFiles
         public bool RuntimeShowHelpers;
         public bool BuiltIn;
 
-        [TagField(Length = 2, Flags = TagFieldFlags.Padding)]
+        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
         public byte[] Padding1;
 
         public uint MapVariantChecksum;
@@ -243,7 +243,10 @@ namespace TagTool.MtnDewIt.BlamFiles
         [TagField(Length = 0x100)]
         public VariantDataObjectQuota[] Quotas;
 
-        [TagField(Length = 80)]
+        [TagField(Length = 31)]
         public int[] SimulationEntities;
+
+        [TagField(Length = 0xC4, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding2;
     }
 }

@@ -895,7 +895,7 @@ namespace TagTool.MtnDewIt.BlamFiles
     [TagStructure(Size = 0xF8)]
     public class BlfContentItemMetadata : TagStructure 
     {
-        public ulong Identifier;
+        public ulong UniqueId;
 
         [TagField(CharSet = CharSet.Unicode, Length = 16)]
         public string Name = string.Empty;
