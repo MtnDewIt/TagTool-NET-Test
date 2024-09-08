@@ -532,20 +532,8 @@ namespace TagTool.MtnDewIt.BlamFiles
 
             if (Scenario.MapFlags.HasFlag(BlfDataScenarioFlags.IsMultiplayer))
             {
-                Scenario.GameEngineTeamCounts = new BlfDataGameEngineTeams 
-                {
-                    NoGametypeTeamCount = 8,
-                    CtfTeamCount = 8,
-                    SlayerTeamCount = 8,
-                    OddballTeamCount = 8,
-                    KingTeamCount = 8,
-                    SandboxTeamCount = 8,                    
-                    VipTeamCount = 8,
-                    JuggernautTeamCount = 8,
-                    TerritoriesTeamCount = 8,
-                    AssaultTeamCount = 8,
-                    InfectionTeamCount = 8,
-                };
+                for (int i = 0; i < 11; i++)
+                    Scenario.GameEngineTeamCounts[i] = 8;
             }
 
             Scenario.Insertions = insertions;
@@ -678,7 +666,8 @@ namespace TagTool.MtnDewIt.BlamFiles
         public byte MinimumDesiredPlayers;
         public byte MaximumDesiredPlayers;
 
-        public BlfDataGameEngineTeams GameEngineTeamCounts;
+        [TagField(Length = 0xB)]
+        public byte[] GameEngineTeamCounts;
 
         public bool AllowSavedFilms;
 
@@ -938,21 +927,5 @@ namespace TagTool.MtnDewIt.BlamFiles
         public byte[] Padding2 = new byte[2];
 
         public ulong GameId;
-    }
-
-    [TagStructure(Size = 0xB)]
-    public class BlfDataGameEngineTeams 
-    {
-        public byte NoGametypeTeamCount;
-        public byte CtfTeamCount;
-        public byte SlayerTeamCount;
-        public byte OddballTeamCount;
-        public byte KingTeamCount;
-        public byte SandboxTeamCount;
-        public byte VipTeamCount;
-        public byte JuggernautTeamCount;
-        public byte TerritoriesTeamCount;
-        public byte AssaultTeamCount;
-        public byte InfectionTeamCount;
     }
 }
