@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using TagTool.Cache;
 using TagTool.Cache.MCC;
 using TagTool.Commands.Common;
@@ -7,6 +8,7 @@ using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
+using TagTool.Tags.Definitions;
 
 namespace TagTool.MtnDewIt.BlamFiles
 {
@@ -25,65 +27,20 @@ namespace TagTool.MtnDewIt.BlamFiles
 
         public BlfData MapFileBlf;
 
+        public MapFileData()
+        {
+        }
+
         public void WriteData(EndianWriter writer)
         {
             var dataContext = new DataSerializationContext(writer);
             var serializer = new TagSerializer(Version, CachePlatform, EndianFormat);
             serializer.Serialize(dataContext, Header);
 
-            if (CacheVersionDetection.IsBetween(Version, CacheVersion.HaloOnlineED, CacheVersion.HaloOnline700123))
+            if(CacheVersionDetection.IsBetween(Version, CacheVersion.HaloOnlineED, CacheVersion.HaloOnline700123))
             {
-                if (MapFileBlf != null) 
-                {
+                if(MapFileBlf != null)
                     MapFileBlf.WriteData(writer);
-                }
-            }
-        }
-
-        public bool IsValidBlf(EndianReader reader) 
-        {
-            reader.Format = EndianFormat;
-            var deserializer = new TagDeserializer(Version, CachePlatform);
-
-            while (!reader.EOF) 
-            {
-                var dataContext = new DataSerializationContext(reader, useAlignment: false);
-                var header = deserializer.Deserialize<BlfDataChunkHeader>(dataContext);
-                var mapFileHeaderSize = (int)TagStructure.GetTagStructureInfo(Header.GetType(), Version, CachePlatform).TotalSize;
-
-                reader.SeekTo(mapFileHeaderSize);
-
-                if (header.Signature == "_blf" || header.Signature == "flb_")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            return false;
-        }
-
-        public bool IsLegacyBlf(EndianReader reader) 
-        {
-            reader.Format = EndianFormat;
-            var deserializer = new TagDeserializer(Version, CachePlatform);
-            var dataContext = new DataSerializationContext(reader, useAlignment: false);
-
-            var header = deserializer.Deserialize<BlfDataChunkHeader>(dataContext);
-            var mapFileHeaderSize = (int)TagStructure.GetTagStructureInfo(Header.GetType(), Version, CachePlatform).TotalSize;
-
-            reader.SeekTo(mapFileHeaderSize);
-
-            if (header.Signature == "flb_")
-            {
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
 
@@ -104,36 +61,17 @@ namespace TagTool.MtnDewIt.BlamFiles
                 new TagToolWarning($"Invalid map file header or footer detected. Verify definition");
             }
 
+            // temporary code until map file format cleanup
             if (MapVersion == CacheFileVersion.HaloOnline)
             {
                 var mapFileHeaderSize = (int)TagStructure.GetTagStructureInfo(Header.GetType(), Version, CachePlatform).TotalSize;
 
+                // Seek to the blf
                 reader.SeekTo(mapFileHeaderSize);
-
-                if (IsValidBlf(reader) && CacheVersionDetection.IsBetween(Version, CacheVersion.HaloOnlineED, CacheVersion.HaloOnline700123))
-                {
-                    MapFileBlf = new BlfData(Version, CachePlatform);
-
-                    // 0.6 and MS23 map files share the same build version, so we need to check the blf signature to distinguish between the two
-                    if (IsLegacyBlf(reader) && MapFileBlf.Version == CacheVersion.HaloOnline106708)
-                    {
-                        if (!MapFileBlf.ReadLegacyData(reader))
-                        {
-                            MapFileBlf = null;
-                        }
-                    }
-                    else
-                    {
-                        if (!MapFileBlf.ReadData(reader))
-                        {
-                            MapFileBlf = null;
-                        }
-                    }
-                }
-                else 
-                {
-                    // TODO: Figure out what the hell Halo Online is doing after the map header
-                }
+                // Read blf
+                MapFileBlf = new BlfData(Version, CachePlatform);
+                if (!MapFileBlf.ReadData(reader))
+                    MapFileBlf = null;
             }
         }
 
@@ -141,29 +79,17 @@ namespace TagTool.MtnDewIt.BlamFiles
         {
             reader.SeekTo(0);
             reader.Format = EndianFormat.LittleEndian;
-            if (reader.ReadTag() == Head) 
-            {
+            if (reader.ReadTag() == Head)
                 return EndianFormat.LittleEndian;
-            }
             else
             {
                 reader.SeekTo(0);
                 reader.Format = EndianFormat.BigEndian;
                 if (reader.ReadTag() == Head)
-                {
                     return EndianFormat.BigEndian;
-                }
                 else
-                {
                     throw new Exception("Invalid map file header tag!");
-                }
             }
-        }
-
-        private static CacheFileVersion GetMapFileVersion(EndianReader reader)
-        {
-            reader.SeekTo(MapFileVersionOffset);
-            return (CacheFileVersion)reader.ReadInt32();
         }
 
         private static bool IsHalo2Vista(EndianReader reader)
@@ -234,7 +160,7 @@ namespace TagTool.MtnDewIt.BlamFiles
                         reader.SeekTo(0x120);
                     else
                         reader.SeekTo(0x11C);
-                    break;
+                    break; 
 
                 default:
                     throw new Exception("Map file version not supported (build date)!");
@@ -242,15 +168,22 @@ namespace TagTool.MtnDewIt.BlamFiles
             return reader.ReadString(buildDataLength);
         }
 
+        private static CacheFileVersion GetMapFileVersion(EndianReader reader)
+        {
+            reader.SeekTo(MapFileVersionOffset);
+            return (CacheFileVersion)reader.ReadInt32();
+        }
+
         private static void DetectCacheVersionAndPlatform(EndianReader reader, CacheFileVersion mapVersion, ref CacheVersion cacheVersion, ref CachePlatform cachePlatform)
         {
-            var buildDate = GetBuildDate(reader, mapVersion);
+            var version = GetMapFileVersion(reader);
+            var buildDate = GetBuildDate(reader, version);
 
             if (mapVersion == CacheFileVersion.HaloMCCUniversal)
             {
                 reader.SeekTo(0xC);
                 var engineVersion = (CacheFileHeaderMCC.HaloEngineVersion)reader.ReadSByte();
-                switch (engineVersion)
+                switch(engineVersion)
                 {
                     case CacheFileHeaderMCC.HaloEngineVersion.Halo3:
                         cacheVersion = CacheVersion.Halo3Retail;
