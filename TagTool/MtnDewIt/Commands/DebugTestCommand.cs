@@ -228,6 +228,7 @@ namespace TagTool.MtnDewIt.Commands
                     var data = new MapFileData() 
                     {
                         Version = parsedMapObject.MapVersion,
+                        CachePlatform = CachePlatform.Original,
                         Header = parsedMapObject.CacheFileHeaderData,
                         MapFileBlf = parsedMapObject.BlfData,
                     };

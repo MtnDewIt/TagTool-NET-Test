@@ -9,8 +9,8 @@ namespace TagTool.MtnDewIt.JSON.Objects
         public string MapName { get; set; }
         public CacheVersion MapVersion { get; set; }
 
-        private CacheFileHeaderData InlineCacheFileHeaderData { get; set; }
-        public CacheFileHeaderData CacheFileHeaderData
+        private CacheFileHeader InlineCacheFileHeaderData { get; set; }
+        public CacheFileHeader CacheFileHeaderData
         {
             get
             {
@@ -18,7 +18,7 @@ namespace TagTool.MtnDewIt.JSON.Objects
                 {
                     if (MapVersion.GetGeneration() == CacheGeneration.HaloOnline)
                     {
-                        InlineCacheFileHeaderData = (CacheFileHeaderData)Activator.CreateInstance(typeof(CacheFileHeaderDataHaloOnline));
+                        InlineCacheFileHeaderData = (CacheFileHeader)Activator.CreateInstance(typeof(CacheFileHeaderGenHaloOnline));
                     }
                 }
 

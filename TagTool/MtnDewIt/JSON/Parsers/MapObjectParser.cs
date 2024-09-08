@@ -36,11 +36,12 @@ namespace TagTool.MtnDewIt.JSON.Parsers
                 var mapData = new MapFileData()
                 {
                     Version = mapObject.MapVersion,
+                    CachePlatform = CachePlatform.Original,
                     Header = mapObject.CacheFileHeaderData,
                     MapFileBlf = mapObject.BlfData,
                 };
 
-                var headerData = mapData.Header as CacheFileHeaderDataHaloOnline;
+                var headerData = mapData.Header as CacheFileHeaderGenHaloOnline;
                 var scnrTag = Cache.TagCache.GetTag<Scenario>(headerData.ScenarioPath);
                 var scnr = CacheContext.Deserialize<Scenario>(CacheStream, scnrTag);
 

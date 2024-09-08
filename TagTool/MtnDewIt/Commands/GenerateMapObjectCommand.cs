@@ -50,17 +50,17 @@ namespace TagTool.MtnDewIt.Commands
 
                 mapData.ReadData(reader);
 
+                var headerData = mapData.Header as CacheFileHeaderGenHaloOnline;
+
+                headerData.ScenarioTagIndex = 0;
+
                 var mapObject = new MapObject() 
                 {
                     MapName = mapName,
                     MapVersion = mapData.Version,
-                    CacheFileHeaderData = mapData.Header,
+                    CacheFileHeaderData = headerData,
                     BlfData = mapData.MapFileBlf,
                 };
-
-                var headerData = mapData.Header as CacheFileHeaderDataHaloOnline;
-
-                headerData.ScenarioTagIndex = 0;
 
                 var jsonData = handler.Serialize(mapObject);
 
