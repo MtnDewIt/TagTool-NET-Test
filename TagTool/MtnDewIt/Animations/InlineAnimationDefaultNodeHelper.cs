@@ -96,11 +96,13 @@ namespace TagTool.MtnDewIt.Animations
                         CalculateNodeListChecksum(CacheContext, modetag.Nodes, 0) == nodelistchecksum &&
                         modetag.Nodes.Count == jmadnodes.Count)
                     {
+                        Console.WriteLine($"Animation nodes matched render model {matchedTagName}");
                         return Nodes;
                     }
                 }
             }
-
+            if(matchedTagName != "")
+                Console.WriteLine($"Animation Nodes matched render model {matchedTagName}");
             return Nodes;
         }
 

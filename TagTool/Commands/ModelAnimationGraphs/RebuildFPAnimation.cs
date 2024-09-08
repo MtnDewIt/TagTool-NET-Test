@@ -120,157 +120,157 @@ namespace TagTool.Commands.ModelAnimationGraphs
             AdjustjmadNodes(ModelList[0], ModelList[1]);
 
             Console.WriteLine($"###Replacing {fileList.Count} animation(s)...");
-
-            foreach(var filepath in fileList)
-            {
-                string file_extension = filepath.Extension;
-
-                AnimationType = ModelAnimationGraph.FrameType.Base;
-                isWorldRelative = false;
-                FrameInfoType = ModelAnimationTagResource.GroupMemberMovementDataType.None;
-
-                switch (file_extension.ToUpper())
-                {
-                    case ".JMM":
-                        break;
-                    case ".JMW":
-                        isWorldRelative = true;
-                        break;
-                    case ".JMO":
-                        AnimationType = ModelAnimationGraph.FrameType.Overlay;
-                        break;
-                    case ".JMR":
-                        AnimationType = ModelAnimationGraph.FrameType.Replacement;
-                        break;
-                    case ".JMA":
-                        FrameInfoType = ModelAnimationTagResource.GroupMemberMovementDataType.dx_dy;
-                        break;
-                    case ".JMT":
-                        FrameInfoType = ModelAnimationTagResource.GroupMemberMovementDataType.dx_dy_dyaw;
-                        new TagToolWarning("Advanced Movement data not currently supported, animation may not display properly!");
-                        break;
-                    case ".JMZ":
-                        FrameInfoType = ModelAnimationTagResource.GroupMemberMovementDataType.dx_dy_dz_dyaw;
-                        new TagToolWarning("Advanced Movement data not currently supported, animation may not display properly!");
-                        break;
-                    default:
-                        new TagToolError(CommandError.CustomError, $"Filetype {file_extension.ToUpper()} not recognized!");
-                        return false;
-                }
-
-                //get or create stringid for animation block name
-                string file_name = Path.GetFileNameWithoutExtension(filepath.FullName).Replace(' ', ':');
-                StringId animation_name = CacheContext.StringTable.GetStringId(file_name);
-                if (animation_name == StringId.Invalid)
-                    animation_name = CacheContext.StringTable.AddString(file_name);
-
-                //find existing animation block that matches animation filename
-                int matchingindex = -1;
-                foreach(var animationblock in Animation.Animations)
-                {
-                    if(animationblock.Name == animation_name)
-                    {
-                        matchingindex = Animation.Animations.IndexOf(animationblock);
-                        break;
-                    }
-                }
-                if(matchingindex == -1)
-                {
-                    new TagToolWarning($"No existing animation found for animation {file_name}!");
-                    continue;
-                }
-
-                //create new importer class and import the source file
-                var importer = new AnimationImporter();
-                importer.ScaleFix = ScaleFix;
-                if (!importer.Import(filepath.FullName))
-                    continue;
-
-                if (importer.Version >= 16394)
-                {
-                    string errormessage = "Only Halo:CE animation files are currently supported because newer versions offer no benefits but add node-space complications. " +
-                        "Please export your animations to Halo:CE format (JMA Version < 16394) and try importing again.";
-                    return new TagToolError(CommandError.CustomError, errormessage);
-                }
-
-                //fixup Reach FP animations
-                if (ReachFixup)
-                    FixupReachFP(importer);
-
-                //remove excess nodes and reorder to match the tag
-                AdjustImportedNodes(importer);
-
-                //set up node flags for serialization
-                importer.ProcessNodeFrames((GameCacheHaloOnlineBase)CacheContext, Animation, AnimationType, FrameInfoType);
-
-                //Check the nodes to verify that this animation can be imported to this jmad
-                //if (!importer.CompareNodes(Animation.SkeletonNodes, (GameCacheHaloOnlineBase)CacheContext))
-                //    return false;
-
-                int ResourceGroupIndex = Animation.Animations[matchingindex].AnimationData.ResourceGroupIndex;
-                int ResourceGroupMemberIndex = Animation.Animations[matchingindex].AnimationData.ResourceGroupMemberIndex;
-
-                //ModelAnimationTagResource resource = CacheContext.ResourceCache.GetModelAnimationTagResource(Animation.ResourceGroups[ResourceGroupIndex].ResourceReference);
-                //ModelAnimationTagResource.GroupMember membercopy = resource.GroupMembers[ResourceGroupMemberIndex].DeepClone();
-
-                //build a new resource 
-                ModelAnimationTagResource newResource = new ModelAnimationTagResource
-                {
-                    GroupMembers = new TagTool.Tags.TagBlock<ModelAnimationTagResource.GroupMember>()
-                };
-                newResource.GroupMembers.Add(importer.SerializeAnimationData((GameCacheHaloOnlineBase)CacheContext));
-                newResource.GroupMembers.AddressType = CacheAddressType.Definition;
-                //serialize the new resource into the cache
-                TagResourceReference resourceref = CacheContext.ResourceCache.CreateModelAnimationGraphResource(newResource);
-
-                //add resource reference to the animation tag
-                Animation.ResourceGroups.Add(new ModelAnimationGraph.ResourceGroup
-                {
-                    ResourceReference = resourceref,
-                    MemberCount = 1
-                });
-
-                //serialize animation block values
-                Animation.Animations[matchingindex].AnimationData.NodeListChecksum = 0;
-                Animation.Animations[matchingindex].AnimationData.FrameCount = (short)importer.frameCount;
-                Animation.Animations[matchingindex].AnimationData.NodeCount = (sbyte)importer.AnimationNodes.Count;
-                Animation.Animations[matchingindex].AnimationData.ResourceGroupIndex = (short)(Animation.ResourceGroups.Count - 1);
-                Animation.Animations[matchingindex].AnimationData.ResourceGroupMemberIndex = 0;
-
-                Console.WriteLine($"Replaced {file_name} successfully!");
-
-                /*
-                //write the resource data to a stream and then replace the existing resource in the cache
-                using (var definitionStream = new MemoryStream())
-                using (var dataStream = new MemoryStream())
-                using (var definitionWriter = new EndianWriter(definitionStream, EndianFormat.LittleEndian))
-                using (var dataWriter = new EndianWriter(dataStream, EndianFormat.LittleEndian))
-                {
-                    var pageableResource = Animation.ResourceGroups[ResourceGroupIndex].ResourceReference.HaloOnlinePageableResource;
-
-                    var context = new ResourceDefinitionSerializationContext(dataWriter, definitionWriter, CacheAddressType.Definition);
-                    var serializer = new ResourceSerializer(CacheContext.Version);
-                    serializer.Serialize(context, resource);
-                    //reset stream position to beginning so it can be read
-                    dataStream.Position = 0;
-                    CacheContext.ResourceCaches.ReplaceResource(pageableResource, dataStream);
-
-                    var definitionData = definitionStream.ToArray();
-
-                    // add resource definition and fixups
-                    pageableResource.Resource.DefinitionData = definitionData;
-                    pageableResource.Resource.FixupLocations = context.FixupLocations;
-                    pageableResource.Resource.DefinitionAddress = context.MainStructOffset;
-                    pageableResource.Resource.InteropLocations = context.InteropLocations;
-                    Animation.ResourceGroups[ResourceGroupIndex].ResourceReference.HaloOnlinePageableResource = pageableResource;
-                }
-                */
-            }
            
-            //save changes to the current tag
-            CacheContext.SaveStrings();
             using (Stream cachestream = CacheContext.OpenCacheReadWrite())
             {
+                foreach (var filepath in fileList)
+                {
+                    string file_extension = filepath.Extension;
+
+                    AnimationType = ModelAnimationGraph.FrameType.Base;
+                    isWorldRelative = false;
+                    FrameInfoType = ModelAnimationTagResource.GroupMemberMovementDataType.None;
+
+                    switch (file_extension.ToUpper())
+                    {
+                        case ".JMM":
+                            break;
+                        case ".JMW":
+                            isWorldRelative = true;
+                            break;
+                        case ".JMO":
+                            AnimationType = ModelAnimationGraph.FrameType.Overlay;
+                            break;
+                        case ".JMR":
+                            AnimationType = ModelAnimationGraph.FrameType.Replacement;
+                            break;
+                        case ".JMA":
+                            FrameInfoType = ModelAnimationTagResource.GroupMemberMovementDataType.dx_dy;
+                            break;
+                        case ".JMT":
+                            FrameInfoType = ModelAnimationTagResource.GroupMemberMovementDataType.dx_dy_dyaw;
+                            new TagToolWarning("Advanced Movement data not currently supported, animation may not display properly!");
+                            break;
+                        case ".JMZ":
+                            FrameInfoType = ModelAnimationTagResource.GroupMemberMovementDataType.dx_dy_dz_dyaw;
+                            new TagToolWarning("Advanced Movement data not currently supported, animation may not display properly!");
+                            break;
+                        default:
+                            new TagToolError(CommandError.CustomError, $"Filetype {file_extension.ToUpper()} not recognized!");
+                            return false;
+                    }
+
+                    //get or create stringid for animation block name
+                    string file_name = Path.GetFileNameWithoutExtension(filepath.FullName).Replace(' ', ':');
+                    StringId animation_name = CacheContext.StringTable.GetStringId(file_name);
+                    if (animation_name == StringId.Invalid)
+                        animation_name = CacheContext.StringTable.AddString(file_name);
+
+                    //find existing animation block that matches animation filename
+                    int matchingindex = -1;
+                    foreach(var animationblock in Animation.Animations)
+                    {
+                        if(animationblock.Name == animation_name)
+                        {
+                            matchingindex = Animation.Animations.IndexOf(animationblock);
+                            break;
+                        }
+                    }
+                    if(matchingindex == -1)
+                    {
+                        new TagToolWarning($"No existing animation found for animation {file_name}!");
+                        continue;
+                    }
+
+                    //create new importer class and import the source file
+                    var importer = new AnimationImporter(cachestream);
+                    importer.ScaleFix = ScaleFix;
+                    if (!importer.Import(filepath.FullName))
+                        continue;
+
+                    if (importer.Version >= 16394)
+                    {
+                        string errormessage = "Only Halo:CE animation files are currently supported because newer versions offer no benefits but add node-space complications. " +
+                            "Please export your animations to Halo:CE format (JMA Version < 16394) and try importing again.";
+                        return new TagToolError(CommandError.CustomError, errormessage);
+                    }
+
+                    //fixup Reach FP animations
+                    if (ReachFixup)
+                        FixupReachFP(importer);
+
+                    //remove excess nodes and reorder to match the tag
+                    AdjustImportedNodes(importer);
+
+                    //set up node flags for serialization
+                    importer.ProcessNodeFrames((GameCacheHaloOnlineBase)CacheContext, Animation, AnimationType, FrameInfoType);
+
+                    //Check the nodes to verify that this animation can be imported to this jmad
+                    //if (!importer.CompareNodes(Animation.SkeletonNodes, (GameCacheHaloOnlineBase)CacheContext))
+                    //    return false;
+
+                    int ResourceGroupIndex = Animation.Animations[matchingindex].AnimationData.ResourceGroupIndex;
+                    int ResourceGroupMemberIndex = Animation.Animations[matchingindex].AnimationData.ResourceGroupMemberIndex;
+
+                    //ModelAnimationTagResource resource = CacheContext.ResourceCache.GetModelAnimationTagResource(Animation.ResourceGroups[ResourceGroupIndex].ResourceReference);
+                    //ModelAnimationTagResource.GroupMember membercopy = resource.GroupMembers[ResourceGroupMemberIndex].DeepClone();
+
+                    //build a new resource 
+                    ModelAnimationTagResource newResource = new ModelAnimationTagResource
+                    {
+                        GroupMembers = new TagTool.Tags.TagBlock<ModelAnimationTagResource.GroupMember>()
+                    };
+                    newResource.GroupMembers.Add(importer.SerializeAnimationData((GameCacheHaloOnlineBase)CacheContext));
+                    newResource.GroupMembers.AddressType = CacheAddressType.Definition;
+                    //serialize the new resource into the cache
+                    TagResourceReference resourceref = CacheContext.ResourceCache.CreateModelAnimationGraphResource(newResource);
+
+                    //add resource reference to the animation tag
+                    Animation.ResourceGroups.Add(new ModelAnimationGraph.ResourceGroup
+                    {
+                        ResourceReference = resourceref,
+                        MemberCount = 1
+                    });
+
+                    //serialize animation block values
+                    Animation.Animations[matchingindex].AnimationData.NodeListChecksum = 0;
+                    Animation.Animations[matchingindex].AnimationData.FrameCount = (short)importer.frameCount;
+                    Animation.Animations[matchingindex].AnimationData.NodeCount = (sbyte)importer.AnimationNodes.Count;
+                    Animation.Animations[matchingindex].AnimationData.ResourceGroupIndex = (short)(Animation.ResourceGroups.Count - 1);
+                    Animation.Animations[matchingindex].AnimationData.ResourceGroupMemberIndex = 0;
+
+                    Console.WriteLine($"Replaced {file_name} successfully!");
+
+                    /*
+                    //write the resource data to a stream and then replace the existing resource in the cache
+                    using (var definitionStream = new MemoryStream())
+                    using (var dataStream = new MemoryStream())
+                    using (var definitionWriter = new EndianWriter(definitionStream, EndianFormat.LittleEndian))
+                    using (var dataWriter = new EndianWriter(dataStream, EndianFormat.LittleEndian))
+                    {
+                        var pageableResource = Animation.ResourceGroups[ResourceGroupIndex].ResourceReference.HaloOnlinePageableResource;
+
+                        var context = new ResourceDefinitionSerializationContext(dataWriter, definitionWriter, CacheAddressType.Definition);
+                        var serializer = new ResourceSerializer(CacheContext.Version);
+                        serializer.Serialize(context, resource);
+                        //reset stream position to beginning so it can be read
+                        dataStream.Position = 0;
+                        CacheContext.ResourceCaches.ReplaceResource(pageableResource, dataStream);
+
+                        var definitionData = definitionStream.ToArray();
+
+                        // add resource definition and fixups
+                        pageableResource.Resource.DefinitionData = definitionData;
+                        pageableResource.Resource.FixupLocations = context.FixupLocations;
+                        pageableResource.Resource.DefinitionAddress = context.MainStructOffset;
+                        pageableResource.Resource.InteropLocations = context.InteropLocations;
+                        Animation.ResourceGroups[ResourceGroupIndex].ResourceReference.HaloOnlinePageableResource = pageableResource;
+                    }
+                    */
+                }
+
+                //save changes to the current tag
+                CacheContext.SaveStrings();
                 CacheContext.Serialize(cachestream, Jmad, Animation);
             }
 

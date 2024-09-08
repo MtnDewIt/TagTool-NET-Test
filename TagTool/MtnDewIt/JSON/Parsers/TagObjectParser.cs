@@ -16,7 +16,6 @@ using TagTool.Scripting.Compiler;
 using System.Collections.Generic;
 using TagTool.Commands.Common;
 using TagTool.Animations;
-using TagTool.MtnDewIt.Animations;
 using TagTool.Tags.Resources;
 using TagTool.Commands;
 using TagTool.MtnDewIt.JSON.Objects;
@@ -334,7 +333,7 @@ namespace TagTool.MtnDewIt.JSON.Parsers
                     replacing = true;
             }
 
-            var importer = new InlineAnimationImporter(CacheStream);
+            var importer = new AnimationImporter(CacheStream);
 
             if (!importer.Import(filepath.FullName))
             {
@@ -346,7 +345,7 @@ namespace TagTool.MtnDewIt.JSON.Parsers
                 new TagToolError(CommandError.CustomError, $@"Invalid Animation Format");
             }
 
-            List<InlineAnimationImporter.AnimationNode> newAnimationNodes = new List<InlineAnimationImporter.AnimationNode>();
+            List<AnimationImporter.AnimationNode> newAnimationNodes = new List<AnimationImporter.AnimationNode>();
             foreach (var skellynode in jmad.SkeletonNodes)
             {
                 string nodeName = Cache.StringTable.GetString(skellynode.Name);
@@ -354,7 +353,7 @@ namespace TagTool.MtnDewIt.JSON.Parsers
                 if (matching_index == -1)
                 {
                     new TagToolWarning($"No node matching '{nodeName}' found in imported file! Will proceed with blank data for missing node");
-                    newAnimationNodes.Add(new InlineAnimationImporter.AnimationNode()
+                    newAnimationNodes.Add(new AnimationImporter.AnimationNode()
                     {
                         Name = nodeName,
                         FirstChildNode = skellynode.FirstChildNodeIndex,
@@ -364,7 +363,7 @@ namespace TagTool.MtnDewIt.JSON.Parsers
                 }
                 else
                 {
-                    InlineAnimationImporter.AnimationNode matching_node = importer.AnimationNodes[matching_index];
+                    AnimationImporter.AnimationNode matching_node = importer.AnimationNodes[matching_index];
                     matching_node.FirstChildNode = skellynode.FirstChildNodeIndex;
                     matching_node.NextSiblingNode = skellynode.NextSiblingNodeIndex;
                     matching_node.ParentNode = skellynode.ParentNodeIndex;

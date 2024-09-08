@@ -84,70 +84,73 @@ namespace TagTool.Commands.ModelAnimationGraphs
 
             Console.WriteLine($"###Extracting {AnimationIndices.Count} animation(s)...");
 
-            List<Node> renderModelNodes = GetNodeDefaultValues(CacheContext, Animation);
-
-            //shift reach data into h3 fields
-            if (CacheContext.Version >= CacheVersion.HaloReach)
+            using (var stream = CacheContext.OpenCacheRead()) 
             {
-                foreach(var animation in Animation.Animations)
+                List<Node> renderModelNodes = GetNodeDefaultValues(CacheContext, stream, Animation);
+
+                //shift reach data into h3 fields
+                if (CacheContext.Version >= CacheVersion.HaloReach)
                 {
-                    if (animation.AnimationDataBlock == null || animation.AnimationDataBlock.Count <= 0)
+                    foreach (var animation in Animation.Animations)
+                    {
+                        if (animation.AnimationDataBlock == null || animation.AnimationDataBlock.Count <= 0)
+                            continue;
+                        animation.AnimationData = animation.AnimationDataBlock[0];
+                        var animationtypereach = animation.AnimationData.AnimationTypeReach;
+                        animation.AnimationData.AnimationType = animationtypereach == ModelAnimationGraph.FrameTypeReach.None ?
+                            ModelAnimationGraph.FrameType.Base : (ModelAnimationGraph.FrameType)(animationtypereach - 1);
+                    }
+                }
+
+                foreach (var animationindex in AnimationIndices)
+                {
+                    ModelAnimationGraph.Animation animationblock = Animation.Animations[animationindex];
+
+                    if (animationblock.AnimationData == null)
+                    {
+                        new TagToolWarning($"Animation {CacheContext.StringTable.GetString(animationblock.Name)} inherits from another jmad...skipping...");
                         continue;
-                    animation.AnimationData = animation.AnimationDataBlock[0];
-                    var animationtypereach = animation.AnimationData.AnimationTypeReach;
-                    animation.AnimationData.AnimationType = animationtypereach == ModelAnimationGraph.FrameTypeReach.None ?
-                        ModelAnimationGraph.FrameType.Base : (ModelAnimationGraph.FrameType)(animationtypereach - 1);
-                }
-            }
+                    }
 
-            foreach (var animationindex in AnimationIndices)
-            {                  
-                ModelAnimationGraph.Animation animationblock = Animation.Animations[animationindex];
+                    AnimationResourceData animationData1 = BuildAnimationResourceData(animationblock);
 
-                if(animationblock.AnimationData == null)
-                {
-                    new TagToolWarning($"Animation {CacheContext.StringTable.GetString(animationblock.Name)} inherits from another jmad...skipping...");
-                    continue;
-                }
+                    string str = CacheContext.StringTable.GetString(animationblock.Name).Replace(':', ' ');
 
-                AnimationResourceData animationData1 = BuildAnimationResourceData(animationblock);
-
-                string str = CacheContext.StringTable.GetString(animationblock.Name).Replace(':', ' ');
-
-                if (animationData1 == null)
-                {
-                    new TagToolWarning($"Failed to export {str} (invalid resource?)");
-                    continue;
-                }
-                Animation animation = new Animation(renderModelNodes, animationData1);
-                bool worldRelative = animationblock.AnimationData.InternalFlags.HasFlag(ModelAnimationGraph.Animation.InternalFlagsValue.WorldRelative);
-                string animationExtension = animation.GetAnimationExtension((int)animationblock.AnimationData.AnimationType, (int)animationblock.AnimationData.FrameInfoType, worldRelative);
-                string fileName = directoryarg + "\\" + str + "." + animationExtension;
-                if (animationblock.AnimationData.AnimationType == ModelAnimationGraph.FrameType.Overlay || animationblock.AnimationData.AnimationType == ModelAnimationGraph.FrameType.Replacement)
-                {
-                    ModelAnimationGraph.Animation baseAnimation1 = GetBaseAnimation(CacheContext.StringTable.GetString(animationblock.Name));
-                    if (baseAnimation1 != null)
+                    if (animationData1 == null)
                     {
-                        AnimationResourceData animationData2 = BuildAnimationResourceData(baseAnimation1);
-                        Animation baseAnimation2 = new Animation(renderModelNodes, animationData2);
-                        if (animationblock.AnimationData.AnimationType == ModelAnimationGraph.FrameType.Overlay)
+                        new TagToolWarning($"Failed to export {str} (invalid resource?)");
+                        continue;
+                    }
+                    Animation animation = new Animation(renderModelNodes, animationData1);
+                    bool worldRelative = animationblock.AnimationData.InternalFlags.HasFlag(ModelAnimationGraph.Animation.InternalFlagsValue.WorldRelative);
+                    string animationExtension = animation.GetAnimationExtension((int)animationblock.AnimationData.AnimationType, (int)animationblock.AnimationData.FrameInfoType, worldRelative);
+                    string fileName = directoryarg + "\\" + str + "." + animationExtension;
+                    if (animationblock.AnimationData.AnimationType == ModelAnimationGraph.FrameType.Overlay || animationblock.AnimationData.AnimationType == ModelAnimationGraph.FrameType.Replacement)
+                    {
+                        ModelAnimationGraph.Animation baseAnimation1 = GetBaseAnimation(CacheContext.StringTable.GetString(animationblock.Name));
+                        if (baseAnimation1 != null)
                         {
-                            animation.Overlay(baseAnimation2);
-                            animation.InsertBaseFrame(baseAnimation2);
+                            AnimationResourceData animationData2 = BuildAnimationResourceData(baseAnimation1);
+                            Animation baseAnimation2 = new Animation(renderModelNodes, animationData2);
+                            if (animationblock.AnimationData.AnimationType == ModelAnimationGraph.FrameType.Overlay)
+                            {
+                                animation.Overlay(baseAnimation2);
+                                animation.InsertBaseFrame(baseAnimation2);
+                            }
+                            else if (animationblock.AnimationData.AnimationType == ModelAnimationGraph.FrameType.Replacement)
+                                animation.Replace(baseAnimation2);
                         }
-                        else if (animationblock.AnimationData.AnimationType == ModelAnimationGraph.FrameType.Replacement)
-                            animation.Replace(baseAnimation2);
+                        else if (animationblock.AnimationData.AnimationType == ModelAnimationGraph.FrameType.Overlay)
+                        {
+                            animation.Overlay();
+                            animation.InsertBaseFrame();
+                        }
                     }
-                    else if (animationblock.AnimationData.AnimationType == ModelAnimationGraph.FrameType.Overlay)
-                    {
-                        animation.Overlay();
-                        animation.InsertBaseFrame();
-                    }
+                    Console.WriteLine($"Exporting \"{str}\"");
+                    animation.Export(fileName);
                 }
-                Console.WriteLine($"Exporting \"{str}\"");
-                animation.Export(fileName);
+                Console.WriteLine("Done!");
             }
-            Console.WriteLine("Done!");
             return true;
         }
         public AnimationResourceData BuildAnimationResourceData(ModelAnimationGraph.Animation animationblock)

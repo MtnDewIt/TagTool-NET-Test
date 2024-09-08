@@ -8,12 +8,13 @@ using TagTool.Commands.Common;
 using TagTool.Cache;
 using System.Numerics;
 using TagTool.Common;
+using System.IO;
 
 namespace TagTool.Animations
 {
     public static class AnimationDefaultNodeHelper
     {
-        public static List<Node> GetNodeDefaultValues(GameCache CacheContext, ModelAnimationGraph Animation)
+        public static List<Node> GetNodeDefaultValues(GameCache CacheContext, Stream stream, ModelAnimationGraph Animation)
         {
             List<Node> NodeList = new List<Node>();
             List<RenderModel.Node> PrimaryRenderModelNodes = new List<RenderModel.Node>();
@@ -21,7 +22,7 @@ namespace TagTool.Animations
             if (Animation.SkeletonNodes.Any(n => n.ModelFlags.HasFlag(ModelAnimationGraph.SkeletonNode.SkeletonModelFlags.PrimaryModel)))
             {
                 var primarynodes = Animation.SkeletonNodes.Where(n => n.ModelFlags.HasFlag(ModelAnimationGraph.SkeletonNode.SkeletonModelFlags.PrimaryModel)).ToList();
-                PrimaryRenderModelNodes = GetRenderModelNodes(CacheContext, primarynodes,
+                PrimaryRenderModelNodes = GetRenderModelNodes(CacheContext, stream, primarynodes,
                     CalculateNodeListChecksum(CacheContext, Animation.SkeletonNodes, 0, true));
                 if (PrimaryRenderModelNodes.Count < primarynodes.Count)
                     new TagToolWarning($"Matching primary model not found! Animation may not appear properly.");
@@ -29,7 +30,7 @@ namespace TagTool.Animations
             if (Animation.SkeletonNodes.Any(n => n.ModelFlags.HasFlag(ModelAnimationGraph.SkeletonNode.SkeletonModelFlags.SecondaryModel)))
             {
                 var secondarynodes = Animation.SkeletonNodes.Where(n => n.ModelFlags.HasFlag(ModelAnimationGraph.SkeletonNode.SkeletonModelFlags.SecondaryModel)).ToList();
-                SecondaryRenderModelNodes = GetRenderModelNodes(CacheContext, secondarynodes,
+                SecondaryRenderModelNodes = GetRenderModelNodes(CacheContext, stream, secondarynodes,
                     CalculateNodeListChecksum(CacheContext, Animation.SkeletonNodes, 0, false));
                 if (SecondaryRenderModelNodes.Count < secondarynodes.Count)
                     new TagToolWarning($"Matching secondary model not found! Animation may not appear properly.");
@@ -68,36 +69,34 @@ namespace TagTool.Animations
             return NodeList;
         }
 
-        public static List<RenderModel.Node> GetRenderModelNodes(GameCache CacheContext, List<ModelAnimationGraph.SkeletonNode> jmadnodes, int nodelistchecksum)
+        public static List<RenderModel.Node> GetRenderModelNodes(GameCache CacheContext, Stream stream, List<ModelAnimationGraph.SkeletonNode> jmadnodes, int nodelistchecksum)
         {
             List<RenderModel.Node> Nodes = new List<RenderModel.Node>();
             string matchedTagName = "";
-            using (var stream = CacheContext.OpenCacheRead())
+
+            List<StringId> jmadnodenames = jmadnodes.Select(n => n.Name).ToList();
+            int bestmatchcount = 0;
+            foreach (CachedTag tag in CacheContext.TagCache.NonNull())
             {
-                List<StringId> jmadnodenames = jmadnodes.Select(n => n.Name).ToList();
-                int bestmatchcount = 0;             
-                foreach (CachedTag tag in CacheContext.TagCache.NonNull())
+                if (!tag.IsInGroup(new Tag("mode")))
+                    continue;
+
+                RenderModel modetag = CacheContext.Deserialize<RenderModel>(stream, tag);
+
+                int currentmatchcount = 0;
+                var currentNodes = modetag.Nodes.Where(n => jmadnodenames.Contains(n.Name)).ToList();
+                currentmatchcount = currentNodes.Count;
+                if (currentmatchcount >= bestmatchcount)
                 {
-                    if (!tag.IsInGroup(new Tag("mode")))
-                        continue;
-
-                    RenderModel modetag = CacheContext.Deserialize<RenderModel>(stream, tag);
-
-                    int currentmatchcount = 0;
-                    var currentNodes = modetag.Nodes.Where(n => jmadnodenames.Contains(n.Name)).ToList();
-                    currentmatchcount = currentNodes.Count;
-                    if (currentmatchcount >= bestmatchcount)
+                    matchedTagName = tag.Name;
+                    bestmatchcount = currentmatchcount;
+                    Nodes = currentNodes.DeepClone();
+                    if (currentmatchcount == jmadnodes.Count &&
+                        CalculateNodeListChecksum(CacheContext, modetag.Nodes, 0) == nodelistchecksum &&
+                        modetag.Nodes.Count == jmadnodes.Count)
                     {
-                        matchedTagName = tag.Name;
-                        bestmatchcount = currentmatchcount;
-                        Nodes = currentNodes.DeepClone();
-                        if (currentmatchcount == jmadnodes.Count &&
-                            CalculateNodeListChecksum(CacheContext, modetag.Nodes, 0) == nodelistchecksum &&
-                            modetag.Nodes.Count == jmadnodes.Count)
-                        {
-                            Console.WriteLine($"Animation nodes matched render model {matchedTagName}");
-                            return Nodes;
-                        }
+                        Console.WriteLine($"Animation nodes matched render model {matchedTagName}");
+                        return Nodes;
                     }
                 }
             }

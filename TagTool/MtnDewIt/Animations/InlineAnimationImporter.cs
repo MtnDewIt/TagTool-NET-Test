@@ -36,7 +36,7 @@ namespace TagTool.MtnDewIt.Animations
 
         public Stream CacheStream;
 
-        public InlineAnimationImporter(Stream stream) 
+        public InlineAnimationImporter(Stream stream)
         {
             CacheStream = stream;
         }
@@ -597,7 +597,7 @@ namespace TagTool.MtnDewIt.Animations
                     };
 
                 //set 'nextframe' data to be equivalent to that of the first frame
-                if (MovementDataType != ModelAnimationTagResource.GroupMemberMovementDataType.None)
+                if(MovementDataType != ModelAnimationTagResource.GroupMemberMovementDataType.None)
                 {
                     AnimationNodes[0].Frames[frame_index].Translation.X = FirstFrame.Translation.X;
                     AnimationNodes[0].Frames[frame_index].Translation.Y = FirstFrame.Translation.Y;
