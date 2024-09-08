@@ -16,9 +16,6 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.MtnDewIt.Shaders.ShaderMatching
 {
-    // I had to write a custom shader matcher as the new implementation takes the porttag command context as an input,
-    // which obviously won't work as I have a custom porting context to handle porting data from target caches.
-
     public class InlineShaderMatcher
     {
         private GameCache BaseCache;
@@ -151,7 +148,7 @@ namespace TagTool.MtnDewIt.Shaders.ShaderMatching
         public CachedTag FindClosestTemplate(CachedTag sourceRmt2Tag, RenderMethodTemplate sourceRmt2, bool canGenerate)
         {
             Debug.Assert(IsInitialized);
-
+    
             Rmt2Descriptor sourceRmt2Desc;
             if (!Rmt2Descriptor.TryParse(sourceRmt2Tag.Name, out sourceRmt2Desc))
             {
@@ -219,7 +216,7 @@ namespace TagTool.MtnDewIt.Shaders.ShaderMatching
                     //Console.WriteLine(rmt2Tag.Name);
                     return rmt2Tag;
                 }
-
+                    
 
                 // add it to the list to be considered
                 relevantRmt2s.Add(new Rmt2Pairing()
@@ -293,20 +290,20 @@ namespace TagTool.MtnDewIt.Shaders.ShaderMatching
 
             switch (sourceRmt2Desc.Type)
             {
-                case "beam": return GetBestTag(beamTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "black": return null;
-                case "custom": return null;
-                case "contrail": return GetBestTag(contrailTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "decal": return GetBestTag(decalTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "foliage": return GetBestTag(foliageTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "halogram": return GetBestTag(halogramTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "light_volume": return GetBestTag(lightvolumeTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "particle": return GetBestTag(particleTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "screen": return GetBestTag(screenTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "shader": return GetBestTag(shaderTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "terrain": return GetBestTag(terrainTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "water": return GetBestTag(waterTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                default: return null;
+                case "beam":            return GetBestTag(beamTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
+                case "black":           return null;
+                case "custom":          return null;
+                case "contrail":        return GetBestTag(contrailTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
+                case "decal":           return GetBestTag(decalTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
+                case "foliage":         return GetBestTag(foliageTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
+                case "halogram":        return GetBestTag(halogramTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
+                case "light_volume":    return GetBestTag(lightvolumeTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
+                case "particle":        return GetBestTag(particleTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
+                case "screen":          return GetBestTag(screenTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
+                case "shader":          return GetBestTag(shaderTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
+                case "terrain":         return GetBestTag(terrainTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
+                case "water":           return GetBestTag(waterTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
+                default:                return null;
             }
         }
 
@@ -635,7 +632,7 @@ namespace TagTool.MtnDewIt.Shaders.ShaderMatching
             public enum DescriptorFlags
             {
                 None = 0,
-                Ms30 = 1 << 0
+                Ms30 = (1 << 0)
             }
 
             public Rmt2Descriptor(string type, byte[] options)
@@ -673,7 +670,7 @@ namespace TagTool.MtnDewIt.Shaders.ShaderMatching
                 if (nameParts.Length < 2)
                     return false;
 
-                descriptor.Type = nameParts[0].Substring(0, nameParts[0].Length - 10);
+                descriptor.Type = nameParts[0].Substring(0, nameParts[0].Length-10);
                 descriptor.Options = nameParts[1].Split('_').Skip(1).Select(x => byte.Parse(x)).ToArray();
                 descriptor.HasParsed = true;
 
@@ -686,22 +683,22 @@ namespace TagTool.MtnDewIt.Shaders.ShaderMatching
                 {
                     switch (Type)
                     {
-                        case "beam": return new HaloShaderGenerator.Beam.BeamGenerator(Options, applyFixes);
-                        case "black": return new HaloShaderGenerator.Black.ShaderBlackGenerator();
-                        case "contrail": return new HaloShaderGenerator.Contrail.ContrailGenerator(Options, applyFixes);
-                        case "cortana": return new HaloShaderGenerator.Cortana.CortanaGenerator(Options, applyFixes);
-                        case "custom": return new HaloShaderGenerator.Custom.CustomGenerator(Options, applyFixes);
-                        case "decal": return new HaloShaderGenerator.Decal.DecalGenerator(Options, applyFixes);
-                        case "foliage": return new HaloShaderGenerator.Foliage.FoliageGenerator(Options, applyFixes);
+                        case "beam":            return new HaloShaderGenerator.Beam.BeamGenerator(Options, applyFixes);
+                        case "black":           return new HaloShaderGenerator.Black.ShaderBlackGenerator();
+                        case "contrail":        return new HaloShaderGenerator.Contrail.ContrailGenerator(Options, applyFixes);
+                        case "cortana":         return new HaloShaderGenerator.Cortana.CortanaGenerator(Options, applyFixes);
+                        case "custom":          return new HaloShaderGenerator.Custom.CustomGenerator(Options, applyFixes);
+                        case "decal":           return new HaloShaderGenerator.Decal.DecalGenerator(Options, applyFixes);
+                        case "foliage":         return new HaloShaderGenerator.Foliage.FoliageGenerator(Options, applyFixes);
                         //case "glass":           return new HaloShaderGenerator.Glass.GlassGenerator(Options, applyFixes);
-                        case "halogram": return new HaloShaderGenerator.Halogram.HalogramGenerator(Options, applyFixes);
-                        case "light_volume": return new HaloShaderGenerator.LightVolume.LightVolumeGenerator(Options, applyFixes);
-                        case "particle": return new HaloShaderGenerator.Particle.ParticleGenerator(Options, applyFixes);
-                        case "screen": return new HaloShaderGenerator.Screen.ScreenGenerator(Options, applyFixes);
-                        case "shader": return new HaloShaderGenerator.Shader.ShaderGenerator(Options, applyFixes);
-                        case "terrain": return new HaloShaderGenerator.Terrain.TerrainGenerator(Options, applyFixes);
-                        case "water": return new HaloShaderGenerator.Water.WaterGenerator(Options, applyFixes);
-                        case "zonly": return new HaloShaderGenerator.ZOnly.ZOnlyGenerator(Options, applyFixes);
+                        case "halogram":        return new HaloShaderGenerator.Halogram.HalogramGenerator(Options, applyFixes);
+                        case "light_volume":    return new HaloShaderGenerator.LightVolume.LightVolumeGenerator(Options, applyFixes);
+                        case "particle":        return new HaloShaderGenerator.Particle.ParticleGenerator(Options, applyFixes);
+                        case "screen":          return new HaloShaderGenerator.Screen.ScreenGenerator(Options, applyFixes);
+                        case "shader":          return new HaloShaderGenerator.Shader.ShaderGenerator(Options, applyFixes);
+                        case "terrain":         return new HaloShaderGenerator.Terrain.TerrainGenerator(Options, applyFixes);
+                        case "water":           return new HaloShaderGenerator.Water.WaterGenerator(Options, applyFixes);
+                        case "zonly":           return new HaloShaderGenerator.ZOnly.ZOnlyGenerator(Options, applyFixes);
                     }
 
                     Console.WriteLine($"\"{Type}\" shader generation is currently unsupported.");

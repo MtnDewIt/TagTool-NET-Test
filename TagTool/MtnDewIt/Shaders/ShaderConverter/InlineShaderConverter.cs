@@ -18,9 +18,6 @@ using TagTool.Shaders;
 
 namespace TagTool.MtnDewIt.Shaders.ShaderConverter
 {
-    // I had to write a custom shader converter as by default, it takes the regular shader matcher as an input,
-    // which causes issues for some of the functions which get called on in the porting context functions.
-
     public class InlineShaderConverter 
     {
         private GameCache Cache;
@@ -252,7 +249,7 @@ namespace TagTool.MtnDewIt.Shaders.ShaderConverter
             //    !finalRm.CategoryOptionSelected(CacheContext, rmdf, "material_model", "organism"))
             //    newShaderProperty.Flags |= RenderMethodPostprocessFlags.EnableAlphaTest;
             //else
-            newRm.ShaderProperties[0].Flags &= ~RenderMethodPostprocessFlags.EnableAlphaTest;
+                newRm.ShaderProperties[0].Flags &= ~RenderMethodPostprocessFlags.EnableAlphaTest;
 
             return newRm;
         }
@@ -331,7 +328,7 @@ namespace TagTool.MtnDewIt.Shaders.ShaderConverter
 
                 if (parameterMappingIndex != -1)
                 {
-                    if (ParameterMappings[parameterMappingIndex].Type == ShaderParameter.RType.Sampler &&
+                    if (ParameterMappings[parameterMappingIndex].Type == ShaderParameter.RType.Sampler && 
                         ParameterMappings[parameterMappingIndex].RealIndex == -1) // sampler with no xform
                     {
                         realConstants.Add(new RealConstant
@@ -520,7 +517,7 @@ namespace TagTool.MtnDewIt.Shaders.ShaderConverter
         private short[] ConvertQueryableProperties()
         {
             short[] queryableProperties = new short[8];
-            short[] blamQueryableProperties = BlamCache.Version >= CacheVersion.HaloReach ?
+            short[] blamQueryableProperties = BlamCache.Version >= CacheVersion.HaloReach ? 
                 RenderMethod.ShaderProperties[0].QueryablePropertiesReach : RenderMethod.ShaderProperties[0].QueryableProperties;
 
             for (int i = 0; i < queryableProperties.Length; i++)
