@@ -88,7 +88,8 @@ namespace TagTool.BlamFile
                 Length = (int)TagStructure.GetStructureSize(typeof(BlfContentHeader), _cache.Version, _cache.Platform),
                 MajorVersion = 9,
                 MinorVersion = 3,
-                BuildVersion = 0xffffa0d4,
+                BuildVersion = 0xa0d4,
+                MapMinorVersion = 0xffff,
                 Metadata = metadata
             };
 

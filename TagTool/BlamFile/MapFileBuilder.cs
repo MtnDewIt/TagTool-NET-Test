@@ -182,10 +182,10 @@ namespace TagTool.BlamFile
             for (int i = 0; i < scnrBlf.Descriptions.Length; i++)
                 scnrBlf.Descriptions[i] = new NameUnicode128() { Name = MapDescription ?? "" };
 
-            scnrBlf.MapName = scenarioName;
-            scnrBlf.ImageName = $"m_{scenarioName}";
-            scnrBlf.Unknown1 = 2;
-            scnrBlf.Unknown2 = 6;
+            scnrBlf.ScenarioPath = scenarioName;
+            scnrBlf.ImageFileBase = $"m_{scenarioName}";
+            scnrBlf.MinimumDesiredPlayers = 2;
+            scnrBlf.MaximumDesiredPlayers = 6;
             scnrBlf.GameEngineTeamCounts = new byte[11] { 00, 02, 08, 08, 08, 08, 08, 08, 04, 02, 08 };
 
             scnrBlf.MapFlags = BlfScenarioFlags.GeneratesFilm;

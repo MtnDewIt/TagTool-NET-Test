@@ -439,7 +439,7 @@ namespace TagTool.MtnDewIt.BlamFiles
         AuthenticationTypeNone,
         AuthenticationTypeCRC,
         AuthenticationTypeSHA1,
-        AuthenticationTypeRSA,
+        AuthenticationTypeRSA
     }
 
     [TagStructure(Size = 0xC, Align = 0x1)]
@@ -468,7 +468,6 @@ namespace TagTool.MtnDewIt.BlamFiles
     public class BlfDataChunkEndOfFile : BlfDataChunkHeader 
     {
         public int AuthenticationDataSize;
-
         public BlfDataAuthenticationType AuthenticationType;
     }
 
@@ -724,7 +723,7 @@ namespace TagTool.MtnDewIt.BlamFiles
     }
 
     [TagStructure(Size = 0x44, Align = 0x1)]
-    public class BlfDataAuthor : BlfDataChunkHeader 
+    public class BlfDataAuthor : BlfDataChunkHeader
     {
         [TagField(Length = 16)]
         public string BuildName;

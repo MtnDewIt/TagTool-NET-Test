@@ -58,11 +58,10 @@ namespace TagTool.Commands.Files
                     MajorVersion = 1,
                     MinorVersion = 2,
                     ByteOrderMarker = -2,
-                    Unknown = 0,
                     InternalName = "",
                 },
                 ContentFlags = BlfFileContentFlags.StartOfFile | BlfFileContentFlags.MapImage | BlfFileContentFlags.EndOfFile,
-                JpegImage = jpgImage,
+                Buffer = jpgImage,
                 EndOfFile = new BlfChunkEndOfFile
                 {
                     Signature = "_eof",
@@ -77,11 +76,11 @@ namespace TagTool.Commands.Files
             blf.MapImage = new BlfMapImage
             {
                 Signature = "mapi",
-                Length = 0x14 + blf.JpegImage.Length,
+                Length = 0x14 + blf.Buffer.Length,
                 MajorVersion = 1,
                 MinorVersion = 1,
-                Unknown = 0,
-                JpegSize = blf.JpegImage.Length,
+                Type = BlfMapImage.BlfImageType.JPG,
+                BufferSize = blf.Buffer.Length,
             };
 
             using (var stream = output.Create())
