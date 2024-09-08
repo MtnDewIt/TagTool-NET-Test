@@ -5,7 +5,6 @@ using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands;
 using TagTool.IO;
-using TagTool.MtnDewIt.BlamFiles;
 using TagTool.MtnDewIt.JSON.Objects;
 using TagTool.MtnDewIt.JSON.Handlers;
 
