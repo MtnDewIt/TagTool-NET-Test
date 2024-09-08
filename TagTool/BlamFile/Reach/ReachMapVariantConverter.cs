@@ -64,12 +64,12 @@ namespace TagTool.BlamFile.Reach
         private MapVariant ConvertMapVariant(ReachMapVariant sourceMapVariant, Scenario sourceScenario, out List<string> destTagNames)
         {
             var result = new MapVariant();
-            result.Version = 12;
+            result.VariantVersion = 12;
             result.MapId = sourceMapVariant.MapId;
             result.WorldBounds = sourceMapVariant.WorldBounds;
             result.MaximumBudget = sourceMapVariant.MaxBudget;
             result.SpentBudget = sourceMapVariant.SpentBudget;
-            result.MapChecksum = sourceMapVariant.CacheCRC;
+            result.MapVariantChecksum = sourceMapVariant.CacheCRC;
 
             var objectTypeMap = new ObjectTypeMap(sourceScenario);
             result.ObjectTypeStartIndex = objectTypeMap.CalculateObjetTypeStartIndices();

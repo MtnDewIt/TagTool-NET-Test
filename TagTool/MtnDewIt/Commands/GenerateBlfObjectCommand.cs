@@ -36,7 +36,7 @@ namespace TagTool.MtnDewIt.Commands
             var handler = new BlfObjectHandler(Cache, CacheContext);
 
             var file = new FileInfo(args[0]);
-            var blfData = new BlfData(Cache.Version, Cache.Platform);
+            var blfData = new Blf(Cache.Version, Cache.Platform);
 
             var fileName = Path.GetFileNameWithoutExtension(file.Name);
             var fileExtension = file.Extension.TrimStart('.');
@@ -50,12 +50,12 @@ namespace TagTool.MtnDewIt.Commands
                 {
                     if (reader.Length == 20113)
                     {
-                        blfData = new BlfData(CacheVersion.Halo3Retail, Cache.Platform);
+                        blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
                     }
 
                     if (reader.Length == 39425)
                     {
-                        blfData = new BlfData(CacheVersion.Halo3ODST, Cache.Platform);
+                        blfData = new Blf(CacheVersion.Halo3ODST, Cache.Platform);
                     }
                 }
 
@@ -64,13 +64,13 @@ namespace TagTool.MtnDewIt.Commands
                     ExportPath = $@"data\levels";
                 }
 
-                blfData.ReadData(reader);
+                blfData.Read(reader);
 
                 var blfObject = new BlfObject() 
                 {
                     FileName = fileName,
                     FileType = fileExtension,
-                    BlfData = blfData,
+                    Blf = blfData,
                 };
 
                 var jsonData = handler.Serialize(blfObject);

@@ -656,7 +656,7 @@ namespace TagTool.MtnDewIt.BlamFiles
     public class BlfDataMapVariant : BlfDataChunkHeader
     {
         public uint VariantVersion;
-        public MapVariantData MapVariant;
+        public MapVariant MapVariant;
     }
 
     [TagStructure(Size = 0x10000, Align = 0x1)]

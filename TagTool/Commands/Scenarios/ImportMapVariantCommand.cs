@@ -331,7 +331,7 @@ namespace TagTool.Commands.Scenarios
                 {
                     case MultiplayerObjectType.Weapon:
                         break;
-                    case MultiplayerObjectType.Teleporter2way:
+                    case MultiplayerObjectType.TeleporterTwoWay:
                     case MultiplayerObjectType.TeleporterReceiver:
                     case MultiplayerObjectType.TeleporterSender:
                         multiplayer.TeleporterChannel = (sbyte)placement.Properties.SharedStorage;

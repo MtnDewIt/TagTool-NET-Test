@@ -10,7 +10,7 @@ namespace TagTool.BlamFile
     public class MapVariant : TagStructure
     {
         public ContentItemMetadata Metadata;
-        public short Version;
+        public short VariantVersion;
         public short ScenarioObjectCount;
         public short VariantObjectCount;
         public short PlaceableQuotaCount;
@@ -21,9 +21,9 @@ namespace TagTool.BlamFile
         public float SpentBudget;
         public bool RuntimeShowHelpers;
         public bool BuiltIn;
-        [TagField(Length = 2, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding;
-        public uint MapChecksum;
+        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding1;
+        public uint MapVariantChecksum;
 
         [TagField(Length = 640)]
         public VariantObjectDatum[] Objects;
@@ -35,8 +35,11 @@ namespace TagTool.BlamFile
         [TagField(Length = 0x100)]
         public VariantObjectQuota[] Quotas;
 
-        [TagField(Length = 80)]
+        [TagField(Length = 31)]
         public int[] SimulationEntities;
+
+        [TagField(Length = 0xC4, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding2;
     }
 
     [TagStructure(Size = 0x54)]
@@ -60,7 +63,7 @@ namespace TagTool.BlamFile
         public GameEngineSubTypeFlags EngineFlags = GameEngineSubTypeFlags.All;
         public VariantPlacementFlags Flags;
         public MultiplayerTeamDesignator Team = MultiplayerTeamDesignator.Neutral;
-        public byte SharedStorage; // spare clips, teleporter channel, spawn order
+        public byte SharedStorage; // spare clips, teleporter channel, spawn order, reforge material
         public byte SpawnTime;
         public MultiplayerObjectType Type;
         public MultiplayerObjectBoundary Boundary = new MultiplayerObjectBoundary();
@@ -113,8 +116,10 @@ namespace TagTool.BlamFile
         SpawnsAttached = 1 << 9           // object will be attached to the parent (node 0)
     }
 
+    [Flags]
     public enum VariantPlacementFlags : byte
     {
+        None = 0,
         UniqueSpawn = 1 << 0,
         NotInitiallyPlaced = 1 << 1,
         Symmetric = 1 << 2,

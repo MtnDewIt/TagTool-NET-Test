@@ -27,7 +27,7 @@ namespace TagTool.MtnDewIt.BlamFiles
         public uint MapVariantChecksum;
 
         [TagField(Length = 640)]
-        public VariantDataObjectDatum[] Objects;
+        public VariantObjectDatum[] Objects;
 
         [TagField(Length = 14, MaxVersion = CacheVersion.Halo3Retail)]
         [TagField(Length = 16, MinVersion = CacheVersion.Halo3ODST)]
@@ -46,7 +46,7 @@ namespace TagTool.MtnDewIt.BlamFiles
     [TagStructure(Size = 0x54)]
     public class VariantDataObjectDatum : TagStructure
     {
-        public VariantDataObjectPlacementFlags Flags;
+        public VariantObjectPlacementFlags Flags;
         public short RuntimeRemovalTimer;
         public int RuntimeObjectIndex = -1;
         public int RuntimeEditorObjectIndex = -1;
@@ -62,7 +62,7 @@ namespace TagTool.MtnDewIt.BlamFiles
     public class VariantMultiplayerProperties : TagStructure
     {
         public GameEngineSubTypeFlags EngineFlags = GameEngineSubTypeFlags.All;
-        public VariantDataPlacementFlags Flags;
+        public VariantPlacementFlags Flags;
         public MultiplayerTeamDesignator Team = MultiplayerTeamDesignator.Neutral;
         public byte SharedStorage; // spare clips, teleporter channel, spawn order, reforge material
         public byte SpawnTime;

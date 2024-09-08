@@ -255,7 +255,7 @@ namespace TagTool.BlamFile
                 case GameObjectTypeHalo3ODST.Equipment:
                 case GameObjectTypeHalo3ODST.Weapon:
                 case GameObjectTypeHalo3ODST.Vehicle:
-                    if (obje.MultiplayerObject[0].Type < MultiplayerObjectType.Teleporter2way)
+                    if (obje.MultiplayerObject[0].Type < MultiplayerObjectType.TeleporterTwoWay)
                         mapvPlacement.Flags |= VariantObjectPlacementFlags.RuntimeCandyMonitored;
                     break;
             }
@@ -414,7 +414,7 @@ namespace TagTool.BlamFile
 
             var mapVariant = new MapVariant();
             mapVariant.Metadata = metadata;
-            mapVariant.Version = 12;
+            mapVariant.VariantVersion = 12;
             mapVariant.ScenarioObjectCount = 0;
             mapVariant.VariantObjectCount = 0;
             mapVariant.PlaceableQuotaCount = 0;
