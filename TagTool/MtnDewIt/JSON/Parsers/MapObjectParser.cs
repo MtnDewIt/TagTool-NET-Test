@@ -3,8 +3,8 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 using TagTool.MtnDewIt.JSON.Handlers;
 using TagTool.IO;
-using TagTool.MtnDewIt.BlamFiles;
 using TagTool.Tags.Definitions;
+using TagTool.BlamFile;
 
 namespace TagTool.MtnDewIt.JSON.Parsers
 {
@@ -33,12 +33,12 @@ namespace TagTool.MtnDewIt.JSON.Parsers
             using (var stream = mapFile.Create())
             using (var writer = new EndianWriter(stream))
             {
-                var mapData = new MapFileData()
+                var mapData = new MapFile()
                 {
                     Version = mapObject.MapVersion,
                     CachePlatform = CachePlatform.Original,
-                    Header = mapObject.CacheFileHeaderData,
-                    MapFileBlf = mapObject.BlfData,
+                    Header = mapObject.Header,
+                    MapFileBlf = mapObject.MapFileBlf,
                 };
 
                 var headerData = mapData.Header as CacheFileHeaderGenHaloOnline;
@@ -68,11 +68,11 @@ namespace TagTool.MtnDewIt.JSON.Parsers
                     }
                 }
 
-                mapData.WriteData(writer);
+                mapData.Write(writer);
             }
         }
 
-        public void UpdateQuotaIndexes(BlfTagName[] tagNames, VariantDataObjectQuota[] quotaList) 
+        public void UpdateQuotaIndexes(TagName[] tagNames, VariantObjectQuota[] quotaList) 
         {
             for (int i = 0; i < tagNames.Length; i++) 
             {

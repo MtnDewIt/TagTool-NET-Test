@@ -11,7 +11,7 @@ using TagTool.Commands.Common;
 using System;
 using System.IO;
 using TagTool.IO;
-using TagTool.MtnDewIt.BlamFiles;
+using TagTool.BlamFile;
 
 namespace TagTool.MtnDewIt.Commands
 {
@@ -194,8 +194,8 @@ namespace TagTool.MtnDewIt.Commands
             {
                 MapName = $@"guardian_test",
                 MapVersion = mapData.Version,
-                CacheFileHeaderData = mapData.Header,
-                BlfData = mapData.MapFileBlf,
+                Header = mapData.Header,
+                MapFileBlf = mapData.MapFileBlf,
             };
 
             using (var cacheStream = Cache.OpenCacheReadWrite())
@@ -225,15 +225,15 @@ namespace TagTool.MtnDewIt.Commands
                 using (var fileStream = mapFile.Create())
                 using (var writer = new EndianWriter(fileStream))
                 {
-                    var data = new MapFileData() 
+                    var data = new MapFile() 
                     {
                         Version = parsedMapObject.MapVersion,
                         CachePlatform = CachePlatform.Original,
-                        Header = parsedMapObject.CacheFileHeaderData,
-                        MapFileBlf = parsedMapObject.BlfData,
+                        Header = parsedMapObject.Header,
+                        MapFileBlf = parsedMapObject.MapFileBlf,
                     };
     
-                    data.WriteData(writer);
+                    data.Write(writer);
                 }
             }
 
@@ -264,17 +264,17 @@ namespace TagTool.MtnDewIt.Commands
             CacheContext.SaveTagNames();
         }
 
-        public MapFileData GetMapData(string input) 
+        public MapFile GetMapData(string input) 
         {
             var file = new FileInfo(input);
 
-            var mapFileData = new MapFileData();
+            var mapFileData = new MapFile();
 
             using (var stream = file.OpenRead()) 
             {
                 var reader = new EndianReader(stream);
 
-                mapFileData.ReadData(reader);
+                mapFileData.Read(reader);
             }
 
             return mapFileData;

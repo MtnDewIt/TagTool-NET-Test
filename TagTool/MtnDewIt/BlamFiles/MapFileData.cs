@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Cache.MCC;
 using TagTool.Commands.Common;
@@ -25,7 +26,7 @@ namespace TagTool.MtnDewIt.BlamFiles
 
         public CacheFileHeader Header;
 
-        public BlfData MapFileBlf;
+        public Blf MapFileBlf;
 
         public MapFileData()
         {
@@ -40,7 +41,7 @@ namespace TagTool.MtnDewIt.BlamFiles
             if(CacheVersionDetection.IsBetween(Version, CacheVersion.HaloOnlineED, CacheVersion.HaloOnline700123))
             {
                 if(MapFileBlf != null)
-                    MapFileBlf.WriteData(writer);
+                    MapFileBlf.Write(writer);
             }
         }
 
@@ -69,8 +70,8 @@ namespace TagTool.MtnDewIt.BlamFiles
                 // Seek to the blf
                 reader.SeekTo(mapFileHeaderSize);
                 // Read blf
-                MapFileBlf = new BlfData(Version, CachePlatform);
-                if (!MapFileBlf.ReadData(reader))
+                MapFileBlf = new Blf(Version, CachePlatform);
+                if (!MapFileBlf.Read(reader))
                     MapFileBlf = null;
             }
         }

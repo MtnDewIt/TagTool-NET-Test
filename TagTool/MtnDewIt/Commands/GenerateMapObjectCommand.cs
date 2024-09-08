@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.IO;
+using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands;
 using TagTool.IO;
-using TagTool.MtnDewIt.BlamFiles;
 using TagTool.MtnDewIt.JSON.Objects;
 using TagTool.MtnDewIt.JSON.Handlers;
-using TagTool.Tags.Definitions;
 
 namespace TagTool.MtnDewIt.Commands 
 {
@@ -37,7 +36,7 @@ namespace TagTool.MtnDewIt.Commands
 
             var file = new FileInfo(args[0]);
             var suffix = args.Count > 1 ? args[1] : null;
-            var mapData = new MapFileData();
+            var mapData = new MapFile();
 
             var mapName = Path.GetFileNameWithoutExtension(file.Name);
 
@@ -48,7 +47,7 @@ namespace TagTool.MtnDewIt.Commands
             {
                 var reader = new EndianReader(stream);
 
-                mapData.ReadData(reader);
+                mapData.Read(reader);
 
                 var headerData = mapData.Header as CacheFileHeaderGenHaloOnline;
 
@@ -58,8 +57,8 @@ namespace TagTool.MtnDewIt.Commands
                 {
                     MapName = mapName,
                     MapVersion = mapData.Version,
-                    CacheFileHeaderData = headerData,
-                    BlfData = mapData.MapFileBlf,
+                    Header = headerData,
+                    MapFileBlf = mapData.MapFileBlf,
                 };
 
                 var jsonData = handler.Serialize(mapObject);

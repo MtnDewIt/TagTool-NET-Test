@@ -1,6 +1,6 @@
 ﻿using System;
 using TagTool.Cache;
-using TagTool.MtnDewIt.BlamFiles;
+using TagTool.BlamFile;
 
 namespace TagTool.MtnDewIt.JSON.Objects
 {
@@ -9,26 +9,26 @@ namespace TagTool.MtnDewIt.JSON.Objects
         public string MapName { get; set; }
         public CacheVersion MapVersion { get; set; }
 
-        private CacheFileHeader InlineCacheFileHeaderData { get; set; }
-        public CacheFileHeader CacheFileHeaderData
+        private CacheFileHeader InlineHeader { get; set; }
+        public CacheFileHeader Header
         {
             get
             {
-                if (InlineCacheFileHeaderData == null)
+                if (InlineHeader == null)
                 {
                     if (MapVersion.GetGeneration() == CacheGeneration.HaloOnline)
                     {
-                        InlineCacheFileHeaderData = (CacheFileHeader)Activator.CreateInstance(typeof(CacheFileHeaderGenHaloOnline));
+                        InlineHeader = (CacheFileHeader)Activator.CreateInstance(typeof(CacheFileHeaderGenHaloOnline));
                     }
                 }
 
-                return InlineCacheFileHeaderData;
+                return InlineHeader;
             }
             set
             {
-                InlineCacheFileHeaderData = value;
+                InlineHeader = value;
             }
         }
-        public BlfData BlfData { get; set; }
+        public Blf MapFileBlf { get; set; }
     }
 }
