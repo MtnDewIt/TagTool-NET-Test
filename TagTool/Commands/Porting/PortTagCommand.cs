@@ -702,7 +702,7 @@ namespace TagTool.Commands.Porting
                     continue;
                 }
 
-                if (ReplacedTags.TryGetValue(groupTag, out var li) && li.Contains(blamTag.Name))
+                if (ReplacedTags.ContainsKey(groupTag) && ReplacedTags[groupTag].Contains(blamTag.Name))
                 {
                     if (instance.Group.Tag == groupTag)
                         return instance;

@@ -29,12 +29,6 @@ namespace TagTool.Shaders.ShaderMatching
         public bool UseMs30 { get; set; } = false;
         public bool PerfectMatchesOnly { get; set; } = false;
 
-        static Dictionary<string, int[]> MethodWeights = new Dictionary<string, int[]>()
-        {
-           ["default"] = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-           ["shader"] = new int[] { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 }
-        };
-
         public ShaderMatcherNew()
         {
         }
@@ -192,9 +186,7 @@ namespace TagTool.Shaders.ShaderMatching
                 if (destRmt2Desc.Type != sourceRmt2Desc.Type)
                     continue;
 
-                int[] weights;
-                if (!MethodWeights.TryGetValue(sourceRmt2Desc.Type, out weights))
-                    weights = MethodWeights["default"];
+                int[] weights = GetMethodWeights(sourceRmt2Desc);
 
                 // match the options from the rmt2 tag names
                 int commonOptions = 0;
@@ -724,6 +716,29 @@ namespace TagTool.Shaders.ShaderMatching
             string rmdfName = $"{prefix}shaders\\{type}";
 
             return BaseCache.TagCache.GetTag(rmdfName, "rmdf");
+        }
+
+        public int[] GetMethodWeights(Rmt2Descriptor descriptor)
+        {
+            var rmdfTag = BaseCache.TagCache.GetTag(descriptor.GetRmdfName(), "rmdf");
+            var rmdf = BaseCache.Deserialize<RenderMethodDefinition>(BaseCacheStream, rmdfTag);
+
+            if (descriptor.Type == "shader")
+            {
+                int[] weights = new int[rmdf.Categories.Count];
+
+                //if (rmdf.Categories[0].Name == BaseCache.StringTable.GetStringId("albedo"))
+                    weights[0] = 1;
+                //if (rmdf.Categories[6].Name == BaseCache.StringTable.GetStringId("self_illumination"))
+                    weights[6] = 1;
+
+                return weights;
+            }
+            else 
+            {
+                int[] weights = new int[rmdf.Categories.Count];
+                return weights;
+            }
         }
     }
 }

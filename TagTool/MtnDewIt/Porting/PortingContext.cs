@@ -1253,7 +1253,7 @@ namespace TagTool.MtnDewIt.Porting
                     }
                     isDeferred = true;
                     blamDefinition = ConvertSound(cacheStream, blamCacheStream, sound, edTag, blamTag.Name);
-                    break;
+					break;
                 case SoundClasses sncl:
                     blamDefinition = ConvertSoundClasses(sncl, BlamCache.Version);
                     break;
