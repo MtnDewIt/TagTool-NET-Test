@@ -3,12 +3,11 @@ using System.IO;
 using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
-using TagTool.Commands;
 using TagTool.IO;
 using TagTool.MtnDewIt.JSON.Objects;
 using TagTool.MtnDewIt.JSON.Handlers;
 
-namespace TagTool.MtnDewIt.Commands 
+namespace TagTool.Commands.JSON
 {
     public class GenerateMapObjectCommand : Command
     {
@@ -43,7 +42,7 @@ namespace TagTool.MtnDewIt.Commands
             var fileName = suffix != null ? $"{mapName}_{suffix}" : mapName;
 
             // Wrapping the whole thing in a using statement probably isn't the best idea
-            using (var stream = file.OpenRead()) 
+            using (var stream = file.OpenRead())
             {
                 var reader = new EndianReader(stream);
 
@@ -53,7 +52,7 @@ namespace TagTool.MtnDewIt.Commands
 
                 headerData.ScenarioTagIndex = 0;
 
-                var mapObject = new MapObject() 
+                var mapObject = new MapObject()
                 {
                     MapName = mapName,
                     MapVersion = mapData.Version,

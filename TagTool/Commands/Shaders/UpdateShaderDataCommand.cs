@@ -5,12 +5,11 @@ using System.Collections.Generic;
 using System.IO;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
-using TagTool.Commands;
 using TagTool.MtnDewIt.JSON.Parsers;
 using TagTool.Shaders.ShaderGenerator;
 using TagTool.Tags.Definitions;
 
-namespace TagTool.MtnDewIt.Commands
+namespace TagTool.Commands.Shaders
 {
     class UpdateShaderDataCommand : Command
     {
@@ -19,7 +18,7 @@ namespace TagTool.MtnDewIt.Commands
 
         public static List<string> TagObjectList;
 
-        public static HashSet<ShaderType> noFixesGlobalShaders = new HashSet<ShaderType> 
+        public static HashSet<ShaderType> noFixesGlobalShaders = new HashSet<ShaderType>
         {
             ShaderType.Water,
             ShaderType.Foliage,
@@ -66,21 +65,21 @@ namespace TagTool.MtnDewIt.Commands
         }
 
         public void UpdateShaderData()
-        {            
+        {
             using (var stream = Cache.OpenCacheReadWrite())
             {
                 var tagParser = new TagObjectParser(Cache, CacheContext, stream);
-                
+
                 var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\updateshaderdata\tags.json");
                 TagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
-                
+
                 foreach (var file in TagObjectList)
                     tagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\{file}");
 
                 // Don't really know if I should use a cast when retrieving values, as while it does
                 // improve type safety, I have no clue what impact it may have on performance
 
-                foreach (ShaderType shaderType in Enum.GetValues(typeof(ShaderType))) 
+                foreach (ShaderType shaderType in Enum.GetValues(typeof(ShaderType)))
                 {
                     if (shaderType == ShaderType.Glass)
                         continue;
@@ -89,13 +88,13 @@ namespace TagTool.MtnDewIt.Commands
                     GenerateGlobalShader(stream, shaderType, applyFixes);
                 }
 
-                foreach (ChudShader chudShader in Enum.GetValues(typeof(ChudShader))) 
+                foreach (ChudShader chudShader in Enum.GetValues(typeof(ChudShader)))
                 {
                     bool applyFixes = !noFixesChudShaders.Contains(chudShader);
-                    GenerateChudShader(stream, chudShader, applyFixes); 
+                    GenerateChudShader(stream, chudShader, applyFixes);
                 }
 
-                foreach (ExplicitShader explicitShader in Enum.GetValues(typeof(ExplicitShader))) 
+                foreach (ExplicitShader explicitShader in Enum.GetValues(typeof(ExplicitShader)))
                 {
                     if (explicitShader == ExplicitShader.shadow_apply2)
                         continue;

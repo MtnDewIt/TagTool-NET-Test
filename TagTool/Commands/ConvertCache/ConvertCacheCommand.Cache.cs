@@ -14,9 +14,8 @@ using TagTool.Commands.Common;
 using TagTool.Commands.Tags;
 using TagTool.Tags.Resources;
 using System.Linq;
-using TagTool.Commands;
 
-namespace TagTool.MtnDewIt.Commands.ConvertCache
+namespace TagTool.Commands.ConvertCache
 {
     partial class ConvertCacheCommand : Command
     {

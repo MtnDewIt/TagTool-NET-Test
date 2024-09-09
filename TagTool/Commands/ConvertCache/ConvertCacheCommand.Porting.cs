@@ -3,10 +3,9 @@ using TagTool.Audio;
 using TagTool.Cache;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
-using TagTool.Commands;
 using TagTool.Commands.Porting;
 
-namespace TagTool.MtnDewIt.Commands.ConvertCache
+namespace TagTool.Commands.ConvertCache
 {
     partial class ConvertCacheCommand : Command
     {

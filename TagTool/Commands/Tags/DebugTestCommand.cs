@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
-using TagTool.Commands;
 using TagTool.MtnDewIt.JSON.Objects;
 using TagTool.MtnDewIt.JSON.Handlers;
 using TagTool.Tags.Definitions;
@@ -13,7 +12,7 @@ using System.IO;
 using TagTool.IO;
 using TagTool.BlamFile;
 
-namespace TagTool.MtnDewIt.Commands
+namespace TagTool.Commands.Tags
 {
     class DebugTestCommand : Command
     {
@@ -26,7 +25,7 @@ namespace TagTool.MtnDewIt.Commands
             false,
             "DebugTest",
             "Self Explanatory",
-            
+
             "DebugTest",
             "Self Explanatory"
         )
@@ -38,9 +37,9 @@ namespace TagTool.MtnDewIt.Commands
 
         public override object Execute(List<string> args)
         {
-            var test = new TestDefinition 
+            var test = new TestDefinition
             {
-                TestBlockField = new List<TestDefinition.TestBlockDefinition> 
+                TestBlockField = new List<TestDefinition.TestBlockDefinition>
                 {
                     new TestDefinition.TestBlockDefinition
                     {
@@ -132,8 +131,8 @@ namespace TagTool.MtnDewIt.Commands
                         Tag = new Tag("lgma"),
 
                         BoundsAngle = new Bounds<Angle>(Angle.FromDegrees(420.69f), Angle.FromDegrees(69.420f)),
-                        BoundsByte = new Bounds<Byte>(0, 1),
-                        BoundsSByte = new Bounds<SByte>(-1, 1),
+                        BoundsByte = new Bounds<byte>(0, 1),
+                        BoundsSByte = new Bounds<sbyte>(-1, 1),
                         BoundsUShort = new Bounds<ushort>(0, 420),
                         BoundsShort = new Bounds<short>(-420, 420),
                         BoundsUInt = new Bounds<uint>(0, 69420),
@@ -144,8 +143,8 @@ namespace TagTool.MtnDewIt.Commands
                     },
                 }
             };
-            
-            var tagObject = new TagObject() 
+
+            var tagObject = new TagObject()
             {
                 TagName = $@"json_data\json_test_tag",
                 TagType = $@"test_blah",
@@ -160,13 +159,13 @@ namespace TagTool.MtnDewIt.Commands
 
                 // Easy Serializer Breakpoint
                 Console.WriteLine($@"Serializing Tag JSON Data...");
-    
+
                 // Serialize the tag object into a JSON string
                 var tagJson = tagHandler.Serialize(tagObject);
 
                 // Write the JSON string to a file
                 File.WriteAllText("json_serializer_tag_test.json", tagJson);
-    
+
                 // Easy Deserializer Breakpoint
                 Console.WriteLine($@"Deserializing Tag JSON Data...");
 
@@ -190,7 +189,7 @@ namespace TagTool.MtnDewIt.Commands
 
             var mapData = GetMapData($@"{CacheContext.Directory.FullName}\guardian.map");
 
-            var mapObject = new MapObject() 
+            var mapObject = new MapObject()
             {
                 MapName = $@"guardian_test",
                 MapVersion = mapData.Version,
@@ -202,37 +201,37 @@ namespace TagTool.MtnDewIt.Commands
             {
                 // Create a new instance of the JSON handler
                 var mapHandler = new MapObjectHandler(Cache, CacheContext);
-    
+
                 // Easy Serializer Breakpoint
                 Console.WriteLine($@"Serializing Map JSON Data...");
-    
+
                 // Serialize the tag object into a JSON string
                 var mapJson = mapHandler.Serialize(mapObject);
-    
+
                 // Write the JSON string to a file
                 File.WriteAllText("json_serializer_map_test.json", mapJson);
-    
+
                 // Easy Deserializer Breakpoint
                 Console.WriteLine($@"Deserializing Map JSON Data...");
-    
+
                 // Deserialize the data from the JSON file
                 var parsedMapObject = mapHandler.Deserialize(File.ReadAllText("json_serializer_map_test.json"));
-    
+
                 // Creates a new file info for the map file based on the map name
                 var mapFile = new FileInfo($@"{CacheContext.Directory.FullName}\{parsedMapObject.MapName}.map");
-    
+
                 // Creates a new file, opens a stream to said file and writes the deserialized data to the map file
                 using (var fileStream = mapFile.Create())
                 using (var writer = new EndianWriter(fileStream))
                 {
-                    var data = new MapFile() 
+                    var data = new MapFile()
                     {
                         Version = parsedMapObject.MapVersion,
                         CachePlatform = CachePlatform.Original,
                         Header = parsedMapObject.Header,
                         MapFileBlf = parsedMapObject.MapFileBlf,
                     };
-    
+
                     data.Write(writer);
                 }
             }
@@ -264,13 +263,13 @@ namespace TagTool.MtnDewIt.Commands
             CacheContext.SaveTagNames();
         }
 
-        public MapFile GetMapData(string input) 
+        public MapFile GetMapData(string input)
         {
             var file = new FileInfo(input);
 
             var mapFileData = new MapFile();
 
-            using (var stream = file.OpenRead()) 
+            using (var stream = file.OpenRead())
             {
                 var reader = new EndianReader(stream);
 

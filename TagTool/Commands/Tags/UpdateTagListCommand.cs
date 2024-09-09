@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
-using TagTool.Commands;
 using TagTool.Commands.Common;
 
-namespace TagTool.MtnDewIt.Commands
+namespace TagTool.Commands.Tags
 {
     class UpdateTagListCommand : Command
     {
@@ -22,7 +21,7 @@ namespace TagTool.MtnDewIt.Commands
             MS23,
         }
 
-        public UpdateTagListCommand(GameCache cache): base
+        public UpdateTagListCommand(GameCache cache) : base
         (
             false,
             "UpdateTagList",
@@ -40,7 +39,7 @@ namespace TagTool.MtnDewIt.Commands
 
             if (args.Count != 1)
                 return new TagToolError(CommandError.ArgCount);
-            
+
             if (!Enum.TryParse(args[0], true, out TagListVersion tagListVersion))
                 return new TagToolError(CommandError.ArgInvalid);
 
@@ -75,7 +74,7 @@ namespace TagTool.MtnDewIt.Commands
                 cache.SaveTagNames();
             }
 
-            if (Cache is GameCacheModPackage) 
+            if (Cache is GameCacheModPackage)
             {
                 var cache = Cache as GameCacheModPackage;
 

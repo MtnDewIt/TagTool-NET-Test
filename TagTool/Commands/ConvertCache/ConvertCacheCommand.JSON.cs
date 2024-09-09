@@ -1,10 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
-using TagTool.Commands;
 using TagTool.MtnDewIt.JSON.Parsers;
 
-namespace TagTool.MtnDewIt.Commands.ConvertCache
+namespace TagTool.Commands.ConvertCache
 {
     partial class ConvertCacheCommand : Command 
     {

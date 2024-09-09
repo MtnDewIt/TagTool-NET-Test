@@ -5,12 +5,11 @@ using System.IO;
 using System;
 using TagTool.Cache;
 using TagTool.Commands.Shaders;
-using TagTool.Commands;
 using TagTool.MtnDewIt.JSON.Parsers;
 using TagTool.Shaders.ShaderGenerator;
 using TagTool.Tags.Definitions;
 
-namespace TagTool.MtnDewIt.Commands.GenerateCache
+namespace TagTool.Commands.GenerateCache
 {
     partial class GenerateCacheCommand : Command
     {

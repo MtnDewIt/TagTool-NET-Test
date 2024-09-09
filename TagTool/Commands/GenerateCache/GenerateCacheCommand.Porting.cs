@@ -2,12 +2,11 @@ using System;
 using TagTool.Cache;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
-using TagTool.Commands;
 using TagTool.Audio;
 using TagTool.MtnDewIt.JSON.Parsers;
 using TagTool.Commands.Porting;
 
-namespace TagTool.MtnDewIt.Commands.GenerateCache
+namespace TagTool.Commands.GenerateCache
 {
     partial class GenerateCacheCommand : Command
     {

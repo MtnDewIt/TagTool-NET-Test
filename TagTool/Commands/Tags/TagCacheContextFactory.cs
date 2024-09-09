@@ -18,9 +18,9 @@ using TagTool.Commands.Forge;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Scenarios;
 using TagTool.Cache.Monolithic;
-using TagTool.MtnDewIt.Commands;
-using TagTool.MtnDewIt.Commands.ConvertCache;
-using TagTool.MtnDewIt.Commands.GenerateCache;
+using TagTool.Commands.ConvertCache;
+using TagTool.Commands.GenerateCache;
+using TagTool.Commands.JSON;
 
 namespace TagTool.Commands.Tags
 {

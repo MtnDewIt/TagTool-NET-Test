@@ -3,12 +3,11 @@ using System.IO;
 using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
-using TagTool.Commands;
 using TagTool.IO;
 using TagTool.MtnDewIt.JSON.Objects;
 using TagTool.MtnDewIt.JSON.Handlers;
 
-namespace TagTool.MtnDewIt.Commands 
+namespace TagTool.Commands.JSON
 {
     public class GenerateBlfObjectCommand : Command
     {
@@ -58,14 +57,14 @@ namespace TagTool.MtnDewIt.Commands
                     }
                 }
 
-                if (file.Name.EndsWith(".campaign")) 
+                if (file.Name.EndsWith(".campaign"))
                 {
                     ExportPath = $@"data\levels";
                 }
 
                 blfData.Read(reader);
 
-                var blfObject = new BlfObject() 
+                var blfObject = new BlfObject()
                 {
                     FileName = fileName,
                     FileType = fileExtension,

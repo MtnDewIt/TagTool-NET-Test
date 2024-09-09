@@ -12,10 +12,9 @@ using TagTool.Commands.Tags;
 using TagTool.Serialization;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
-using TagTool.Commands;
 using Newtonsoft.Json;
 
-namespace TagTool.MtnDewIt.Commands.GenerateCache
+namespace TagTool.Commands.GenerateCache
 {
     partial class GenerateCacheCommand : Command
     {
