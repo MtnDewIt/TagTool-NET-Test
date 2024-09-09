@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TagTool.Audio;
@@ -24,7 +25,9 @@ namespace TagTool.Commands.Porting
 
         public void PortTag(string portingOptions, string tag)
         {
-            PortTagContext.ParsePortingOptions(portingOptions.Split(' ').ToList());
+            var portingFlags = portingOptions != "" ? portingOptions.Split(' ').ToList() : new List<string>();
+
+            PortTagContext.ParsePortingOptions(portingFlags);
 
             var initialStringIdCount = PortTagContext.CacheContext.StringTableHaloOnline.Count;
 

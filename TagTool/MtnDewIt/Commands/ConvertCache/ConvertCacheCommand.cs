@@ -6,11 +6,9 @@ using System.Text;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
-using TagTool.Commands.Tags;
 using TagTool.Commands;
-using TagTool.Common;
-using TagTool.MtnDewIt.Porting;
 using Newtonsoft.Json;
+using TagTool.Commands.Porting;
 
 namespace TagTool.MtnDewIt.Commands.ConvertCache
 {

@@ -31,8 +31,8 @@ namespace TagTool.Shaders.ShaderMatching
 
         static Dictionary<string, int[]> MethodWeights = new Dictionary<string, int[]>()
         {
-           ["default"] = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-           ["shader"] = new int[] { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 }
+           ["default"] = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+           ["shader"] = new int[] { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 }
         };
 
         public ShaderMatcherNew()

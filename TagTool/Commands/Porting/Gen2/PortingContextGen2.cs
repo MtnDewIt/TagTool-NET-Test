@@ -24,7 +24,9 @@ namespace TagTool.Commands.Porting.Gen2
         {
             var resourceStreams = new Dictionary<ResourceLocation, Stream>();
 
-            PortTagContext.argParameters = PortTagContext.ParsePortingOptions(portingOptions.Split(' ').ToList());
+            var portingFlags = portingOptions != "" ? portingOptions.Split(' ').ToList() : new List<string>();
+
+            PortTagContext.argParameters = PortTagContext.ParsePortingOptions(portingFlags);
 
             using (var gen2CacheStream = PortTagContext.Gen2Cache.OpenCacheRead())
             {

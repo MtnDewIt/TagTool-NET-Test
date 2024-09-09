@@ -7,8 +7,8 @@ using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
 using TagTool.Commands;
-using TagTool.MtnDewIt.Porting;
 using Newtonsoft.Json;
+using TagTool.Commands.Porting;
 
 namespace TagTool.MtnDewIt.Commands.GenerateCache
 {
