@@ -442,7 +442,7 @@ namespace TagTool.BlamFile
     }
 
     [TagStructure(Size = 0xC, Align = 0x1)]
-    public class BlfChunkHeader
+    public class BlfChunkHeader : TagStructure
     {
         public Tag Signature;
         public int Length;
@@ -551,7 +551,7 @@ namespace TagTool.BlamFile
     [TagStructure(Size = 0xF08, Align = 0x1, MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Size = 0xF10, Align = 0x1, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0xF88, Align = 0x1, MinVersion = CacheVersion.HaloReach)]
-    public class BlfScenarioInsertion
+    public class BlfScenarioInsertion : TagStructure
     {
         public bool Visible;
         public BlfScenarioInsertionFlags Flags;
