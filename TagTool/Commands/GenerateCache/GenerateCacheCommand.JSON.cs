@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
-using TagTool.MtnDewIt.JSON.Parsers;
+using TagTool.JSON.Parsers;
 
 namespace TagTool.Commands.GenerateCache
 {

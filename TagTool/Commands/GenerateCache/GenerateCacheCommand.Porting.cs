@@ -3,7 +3,7 @@ using TagTool.Cache;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Audio;
-using TagTool.MtnDewIt.JSON.Parsers;
+using TagTool.JSON.Parsers;
 using TagTool.Commands.Porting;
 
 namespace TagTool.Commands.GenerateCache

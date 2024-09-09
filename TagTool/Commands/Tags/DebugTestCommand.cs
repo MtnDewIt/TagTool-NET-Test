@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
-using TagTool.MtnDewIt.JSON.Objects;
-using TagTool.MtnDewIt.JSON.Handlers;
+using TagTool.JSON.Objects;
+using TagTool.JSON.Handlers;
 using TagTool.Tags.Definitions;
 using TagTool.Common;
 using TagTool.Tags;

@@ -4,8 +4,8 @@ using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.IO;
-using TagTool.MtnDewIt.JSON.Objects;
-using TagTool.MtnDewIt.JSON.Handlers;
+using TagTool.JSON.Objects;
+using TagTool.JSON.Handlers;
 
 namespace TagTool.Commands.JSON
 {
