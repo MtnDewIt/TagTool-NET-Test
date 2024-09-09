@@ -18,13 +18,13 @@ namespace TagTool.Commands.Porting.Gen2
 {
     partial class PortTagGen2Command : Command
     {
-        private readonly GameCacheHaloOnlineBase Cache;
-        private readonly GameCacheGen2 Gen2Cache;
-        string[] argParameters = new string[0];
-        PortingFlags PortFlags;
-        private Dictionary<int, CachedTag> PortedTags = new Dictionary<int, CachedTag>();
-        private List<int> InProgressTags = new List<int>();
-        private StructureAutoConverter AutoConverter;
+        public readonly GameCacheHaloOnlineBase Cache;
+        public readonly GameCacheGen2 Gen2Cache;
+        public string[] argParameters = new string[0];
+        public PortingFlags PortFlags;
+        public Dictionary<int, CachedTag> PortedTags = new Dictionary<int, CachedTag>();
+        public List<int> InProgressTags = new List<int>();
+        public StructureAutoConverter AutoConverter;
 
         public PortTagGen2Command(GameCacheHaloOnlineBase cache, GameCacheGen2 gen2Cache) : base(false, "PortTag", "", "", "")
         {
@@ -486,7 +486,7 @@ namespace TagTool.Commands.Porting.Gen2
                 return newIndex;
         }
 
-        private List<CachedTag> ParseLegacyTag(string tagSpecifier)
+        public List<CachedTag> ParseLegacyTag(string tagSpecifier)
         {
             List<CachedTag> result = new List<CachedTag>();
 
@@ -521,7 +521,7 @@ namespace TagTool.Commands.Porting.Gen2
             return result;
         }
 
-        private string[] ParsePortingOptions(List<string> args)
+        public string[] ParsePortingOptions(List<string> args)
         {
             PortFlags = PortingFlags.Default;
 

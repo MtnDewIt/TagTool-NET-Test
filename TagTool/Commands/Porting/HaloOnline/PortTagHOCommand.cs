@@ -27,14 +27,14 @@ namespace TagTool.Commands.Porting
             Default = Recursive
         }
 
-        private readonly GameCacheHaloOnlineBase SrcCache;
-        private Stream SrcStream;
-        private GameCacheHaloOnlineBase DestCache;
-        private Stream DestStream;
-        private PortingFlags Flags = PortingFlags.Default;
+        public readonly GameCacheHaloOnlineBase SrcCache;
+        public Stream SrcStream;
+        public GameCacheHaloOnlineBase DestCache;
+        public Stream DestStream;
+        public PortingFlags Flags = PortingFlags.Default;
 
-        private Dictionary<int, CachedTag> ConvertedTags = new Dictionary<int, CachedTag>();
-        private Dictionary<ResourceLocation, Dictionary<int, PageableResource>> ConvertedResources = new Dictionary<ResourceLocation, Dictionary<int, PageableResource>>();
+        public Dictionary<int, CachedTag> ConvertedTags = new Dictionary<int, CachedTag>();
+        public Dictionary<ResourceLocation, Dictionary<int, PageableResource>> ConvertedResources = new Dictionary<ResourceLocation, Dictionary<int, PageableResource>>();
 
         public PortTagHOCommand(GameCacheHaloOnlineBase destCache, GameCacheHaloOnlineBase srcCache) : base(false, "PortTag", "", "", "")
         {
@@ -71,7 +71,7 @@ namespace TagTool.Commands.Porting
             return true;
         }
 
-        private bool ParsePortingFlags(List<string> args, out PortingFlags outFlags)
+        public bool ParsePortingFlags(List<string> args, out PortingFlags outFlags)
         {
             outFlags = PortingFlags.Default;
 
@@ -221,7 +221,7 @@ namespace TagTool.Commands.Porting
 
         private void LogInfo(string message) => Console.WriteLine(message);
 
-        private List<CachedTag> ParseLegacyTag(string tagSpecifier)
+        public List<CachedTag> ParseLegacyTag(string tagSpecifier)
         {
             List<CachedTag> result = new List<CachedTag>();
 

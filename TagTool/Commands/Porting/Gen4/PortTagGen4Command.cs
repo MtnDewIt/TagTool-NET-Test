@@ -14,8 +14,8 @@ namespace TagTool.Commands.Porting.Gen4
 {
     partial class PortTagGen4Command : Command
     {
-        private readonly GameCacheHaloOnlineBase Cache;
-        private readonly GameCacheGen4 Gen4Cache;
+        public readonly GameCacheHaloOnlineBase Cache;
+        public readonly GameCacheGen4 Gen4Cache;
 
         public PortTagGen4Command(GameCacheHaloOnlineBase cache, GameCacheGen4 gen4Cache) : base(false, "PortTag", "", "", "")
         {
@@ -188,7 +188,7 @@ namespace TagTool.Commands.Porting.Gen4
             return stringId;
         }
 
-        private List<CachedTag> ParseLegacyTag(string tagSpecifier)
+        public List<CachedTag> ParseLegacyTag(string tagSpecifier)
         {
             List<CachedTag> result = new List<CachedTag>();
 
