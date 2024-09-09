@@ -13,6 +13,7 @@ namespace TagTool.Commands.Porting
 			new Tag("rmd "),
 			new Tag("rmfl"),
 			new Tag("rmhg"),
+			new Tag("rmgl"),
 			new Tag("rmrd"),
 			new Tag("rmsh"),
 			new Tag("rmss"),
@@ -80,5 +81,13 @@ namespace TagTool.Commands.Porting
 			{ new Tag("sncl"), @"sound\sound_classes" },
 			{ new Tag("snd!"), @"sound\default_silent" },
 		};
+
+        // for null tag detection
+        public static readonly List<Tag> ResourceTagGroups = new List<Tag> 
+        { 
+        	new Tag("snd!"), 
+        	new Tag("bitm"), 
+        	new Tag("Lbsp") 
+        };
 	}
 }

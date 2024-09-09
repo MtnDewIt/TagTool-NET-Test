@@ -38,25 +38,10 @@ namespace TagTool.Commands.Porting
         private Dictionary<int, CachedTag> PortedTags = new Dictionary<int, CachedTag>();
         private Dictionary<uint, StringId> PortedStringIds = new Dictionary<uint, StringId>();
 
-		private List<Tag> RenderMethodTagGroups = new List<Tag> { new Tag("rmbk"), new Tag("rmcs"), new Tag("rmd "), new Tag("rmfl"), new Tag("rmhg"), new Tag("rmsh"), new Tag("rmss"), new Tag("rmtr"), new Tag("rmw "), new Tag("rmrd"), new Tag("rmct"), new Tag("rmgl") };
-		private List<Tag> EffectTagGroups = new List<Tag> { new Tag("beam"), new Tag("cntl"), new Tag("ltvl"), new Tag("decs"), new Tag("prt3") };
-        private readonly List<Tag> ResourceTagGroups = new List<Tag> { new Tag("snd!"), new Tag("bitm"), new Tag("Lbsp") }; // for null tag detection
-
         private DirectoryInfo TempDirectory { get; } = new DirectoryInfo(Path.GetTempPath());
         internal BlockingCollection<Action> _deferredActions = new BlockingCollection<Action>();
 
-
         string[] argParameters = new string[0];
-
-		private static readonly string[] DoNotReplaceGroups = new[]
-		{
-			"glps",
-			"glvs",
-			"vtsh",
-			"pixl",
-			"rmdf",
-			"rmt2"
-		};
 
 		private readonly Dictionary<Tag, CachedTag> DefaultTags = new Dictionary<Tag, CachedTag> { };
 		private bool ScenarioPort = false;
@@ -146,7 +131,7 @@ namespace TagTool.Commands.Porting
         {
             resultTag = null;
 
-            if (ResourceTagGroups.Contains(blamTag.Group.Tag))
+            if (PortingConstants.ResourceTagGroups.Contains(blamTag.Group.Tag))
             {
                 // there is only a few cases here -- if geometry\animation references a null resource its tag is still valid
 
@@ -214,7 +199,7 @@ namespace TagTool.Commands.Porting
                         return false;
                 }
             }
-            else if (RenderMethodTagGroups.Contains(blamTag.Group.Tag))
+            else if (PortingConstants.RenderMethodGroups.Contains(blamTag.Group.Tag))
             {
                 RenderMethod renderMethod = BlamCache.Deserialize<RenderMethod>(blamCacheStream, blamTag);
 
@@ -724,7 +709,7 @@ namespace TagTool.Commands.Porting
                 }
                 else if (!FlagIsSet(PortingFlags.New))
                 {
-                    if (FlagIsSet(PortingFlags.Replace) && !DoNotReplaceGroups.Contains(instance.Group.Tag.ToString()) 
+                    if (FlagIsSet(PortingFlags.Replace) && !PortingConstants.DoNotReplaceGroups.Contains(instance.Group.Tag.ToString()) 
                         && !DoNotReplaceGroupsCommand.UserDefinedDoNotReplaceGroups.Contains(instance.Group.Tag.ToString()))
                     {
                         if (!FlagIsSet(PortingFlags.Recursive))
