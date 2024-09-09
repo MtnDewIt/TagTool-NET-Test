@@ -168,7 +168,7 @@ namespace TagTool.Bitmaps
             switch (format)
             {
                 case BitmapFormat.Ctx1:
-                    return Commands.Porting.PortingOptions.Current.HqNormalMapConversion || MtnDewIt.Porting.PortingProperties.CurrentInstance.HqNormalMapConversion ? 
+                    return Commands.Porting.PortingOptions.Current.HqNormalMapConversion ? 
                         BitmapFormat.Dxn : BitmapFormat.Dxt1;
 
                 case BitmapFormat.AY8:
