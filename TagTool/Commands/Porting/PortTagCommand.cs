@@ -28,23 +28,23 @@ namespace TagTool.Commands.Porting
 {
     public partial class PortTagCommand : Command
 	{
-		private GameCacheHaloOnlineBase CacheContext { get; }
-		private GameCache BlamCache;
-		private RenderGeometryConverter GeometryConverter { get; }
+		public GameCacheHaloOnlineBase CacheContext { get; }
+		public GameCache BlamCache;
+		public RenderGeometryConverter GeometryConverter { get; }
 
-		private Dictionary<Tag, List<string>> ReplacedTags = new Dictionary<Tag, List<string>>();
-        private Dictionary<CachedTag, object> CachedTagData = new Dictionary<CachedTag, object>();
+		public Dictionary<Tag, List<string>> ReplacedTags = new Dictionary<Tag, List<string>>();
+        public Dictionary<CachedTag, object> CachedTagData = new Dictionary<CachedTag, object>();
 
-        private Dictionary<int, CachedTag> PortedTags = new Dictionary<int, CachedTag>();
-        private Dictionary<uint, StringId> PortedStringIds = new Dictionary<uint, StringId>();
+        public Dictionary<int, CachedTag> PortedTags = new Dictionary<int, CachedTag>();
+        public Dictionary<uint, StringId> PortedStringIds = new Dictionary<uint, StringId>();
 
-        private DirectoryInfo TempDirectory { get; } = new DirectoryInfo(Path.GetTempPath());
+        public DirectoryInfo TempDirectory { get; } = new DirectoryInfo(Path.GetTempPath());
         internal BlockingCollection<Action> _deferredActions = new BlockingCollection<Action>();
 
-        string[] argParameters = new string[0];
+        public string[] argParameters = new string[0];
 
-		private readonly Dictionary<Tag, CachedTag> DefaultTags = new Dictionary<Tag, CachedTag> { };
-		private bool ScenarioPort = false;
+		public readonly Dictionary<Tag, CachedTag> DefaultTags = new Dictionary<Tag, CachedTag> { };
+		public bool ScenarioPort = false;
 
 		public PortTagCommand(GameCacheHaloOnlineBase cacheContext, GameCache blamCache) :
 			base(true,
@@ -1349,7 +1349,7 @@ namespace TagTool.Commands.Porting
 			return edTag;
 		}
 
-        private void TestForgePaletteCompatible(Stream cacheStream, CachedTag blamTag, string[] argParameters)
+        public void TestForgePaletteCompatible(Stream cacheStream, CachedTag blamTag, string[] argParameters)
         {
             if (!blamTag.IsInGroup("obje") || !CacheContext.TagCache.TryGetCachedTag(blamTag.ToString(), out CachedTag edTag))
                 return;
@@ -2213,7 +2213,7 @@ namespace TagTool.Commands.Porting
 			return null;
 		}
 
-        private List<CachedTag> ParseLegacyTag(string tagSpecifier)
+        public List<CachedTag> ParseLegacyTag(string tagSpecifier)
         {
             List<CachedTag> result = new List<CachedTag>();
 

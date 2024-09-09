@@ -37,7 +37,7 @@ namespace TagTool.Commands.Porting
             return rasg;
         }
 
-        private void FinalizeRenderMethods(Stream cacheStream, Stream blamCacheStream)
+        public void FinalizeRenderMethods(Stream cacheStream, Stream blamCacheStream)
         {
             foreach (var deferredRm in DeferredRenderMethods)
             {

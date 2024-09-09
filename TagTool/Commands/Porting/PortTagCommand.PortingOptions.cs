@@ -11,7 +11,7 @@ namespace TagTool.Commands.Porting
 		/// <summary>
 		/// Current set of <see cref="PortingFlags"/> which will affect the behavior of <see cref="PortTagCommand"/>.
 		/// </summary>
-		private PortingFlags Flags { get; set; }
+		public PortingFlags Flags { get; set; }
 
 		/// <summary>
 		/// Flags which can be used to affect the behavior of <see cref="PortTagCommand"/>.
@@ -191,7 +191,7 @@ namespace TagTool.Commands.Porting
 		/// Parses porting flag options from a <see cref="List{T}"/> of <see cref="string"/>.
 		/// </summary>
 		/// <param name="args"></param>
-		private string[] ParsePortingOptions(List<string> args)
+		public string[] ParsePortingOptions(List<string> args)
 		{
 			Flags = PortingFlags.Default;
 
