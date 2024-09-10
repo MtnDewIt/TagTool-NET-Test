@@ -70,11 +70,11 @@ namespace TagTool.Commands.Shaders
             {
                 var tagParser = new TagObjectParser(Cache, CacheContext, stream);
 
-                var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\updateshaderdata\tags.json");
+                var jsonData = File.ReadAllText($@"{JSONFileTree.JSONCommandPath}updateshaderdata\tags.json");
                 TagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
                 foreach (var file in TagObjectList)
-                    tagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\{file}");
+                    tagParser.ParseFile(file);
 
                 // Don't really know if I should use a cast when retrieving values, as while it does
                 // improve type safety, I have no clue what impact it may have on performance

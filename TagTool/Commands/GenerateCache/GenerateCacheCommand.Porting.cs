@@ -22,7 +22,7 @@ namespace TagTool.Commands.GenerateCache
 
             sandbox.SetPortingOptions(audioCodec: Compression.OGG);
             GenerateTag<AiDialogueGlobals>($@"ai\ai_dialogue_globals");
-            TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\ai\ai_dialogue_globals.ai_dialogue_globals");
+            TagParser.ParseFile($@"ai\ai_dialogue_globals.ai_dialogue_globals");
             sandbox.PortTag($@"", $@"ai\assaulting.style");
             sandbox.PortTag($@"", $@"ai\bunkering.style");
             sandbox.PortTag($@"", $@"ai\normal.style");

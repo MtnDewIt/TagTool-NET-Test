@@ -24,7 +24,7 @@ namespace TagTool.JSON.Parsers
 
         public void ParseFile(string filePath)
         {
-            var jsonData = File.ReadAllText($@"{filePath}.json");
+            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONBasePath}{filePath}.json");
             var blfObject = Handler.Deserialize(jsonData);
 
             var blfFile = new FileInfo($@"{Cache.Directory.FullName}\{blfObject.FileName}.{blfObject.FileType}");

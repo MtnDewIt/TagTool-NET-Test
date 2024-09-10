@@ -17,11 +17,11 @@ namespace TagTool.Commands.GenerateCache
 
         private Dictionary<GeneratedCacheType, string> CacheTypePath = new Dictionary<GeneratedCacheType, string>
         {
-            { GeneratedCacheType.Halo3, $@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags_h3.json" },
-            { GeneratedCacheType.Halo3Mythic, $@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags_mythic.json" },
-            { GeneratedCacheType.Halo3ODST, $@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags_odst.json" },
-            { GeneratedCacheType.ElDewrito, $@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags_eldewrito.json" },
-            { GeneratedCacheType.HaloOnline, $@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags_halo_online.json" },
+            { GeneratedCacheType.Halo3, $@"{JSONFileTree.JSONCommandPath}generatecache\tags_h3.json" },
+            { GeneratedCacheType.Halo3Mythic, $@"{JSONFileTree.JSONCommandPath}generatecache\tags_mythic.json" },
+            { GeneratedCacheType.Halo3ODST, $@"{JSONFileTree.JSONCommandPath}generatecache\tags_odst.json" },
+            { GeneratedCacheType.ElDewrito, $@"{JSONFileTree.JSONCommandPath}generatecache\tags_eldewrito.json" },
+            { GeneratedCacheType.HaloOnline, $@"{JSONFileTree.JSONCommandPath}generatecache\tags_halo_online.json" },
         };
 
         public void ParseTagList(string jsonPath)
@@ -30,12 +30,12 @@ namespace TagTool.Commands.GenerateCache
             TagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
             foreach (var file in TagObjectList)
-                TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\{file}");
+                TagParser.ParseFile(file);
         }
 
         public void UpdateTagData()
         {
-            ParseTagList($@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\tags.json");
+            ParseTagList($@"{JSONFileTree.JSONCommandPath}generatecache\tags.json");
 
             if (CacheTypePath.TryGetValue(CacheType, out var jsonPath))
                 ParseTagList(jsonPath);
@@ -43,20 +43,20 @@ namespace TagTool.Commands.GenerateCache
 
         public void UpdateMapData()
         {
-            var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\maps.json");
+            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONCommandPath}commands\generatecache\maps.json");
             MapObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
             foreach (var file in MapObjectList)
-                MapParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\maps\{file}");
+                MapParser.ParseFile(file);
         }
 
         public void UpdateBlfData()
         {
-            var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\generatecache\blf.json");
+            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONCommandPath}commands\generatecache\blf.json");
             BlfObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
             foreach (var file in BlfObjectList)
-                BlfParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\{file}");
+                BlfParser.ParseFile(file);
         }
     }
 }

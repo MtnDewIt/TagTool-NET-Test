@@ -25,11 +25,11 @@ namespace TagTool.Commands.ConvertCache
             // Right now, we just need to replace the existing system with JSON, ensuring 1:1 functionality, or as close as we can get
             var tagParser = new TagObjectParser(Cache, CacheContext, CacheStream);
 
-            var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\updateshaderdata\tags.json");
+            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONCommandPath}updateshaderdata\tags.json");
             var tagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
             foreach (var file in tagObjectList)
-                tagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\{file}");
+                tagParser.ParseFile(file);
 
             foreach (ShaderType shaderType in Enum.GetValues(typeof(ShaderType))) 
             {

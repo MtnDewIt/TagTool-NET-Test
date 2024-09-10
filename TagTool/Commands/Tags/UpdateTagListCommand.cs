@@ -47,13 +47,13 @@ namespace TagTool.Commands.Tags
             switch (tagListVersion)
             {
                 case TagListVersion.ElDewrito:
-                    jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\bin\eldewrito_tags.json");
+                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}eldewrito_tags.json");
                     break;
                 case TagListVersion.ElDewritoLegacy:
-                    jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\bin\eldewrito_legacy_tags.json");
+                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}eldewrito_legacy_tags.json");
                     break;
                 case TagListVersion.MS23:
-                    jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\bin\ms23_tags.json");
+                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}ms23_tags.json");
                     break;
             }
 

@@ -17,22 +17,22 @@ namespace TagTool.Commands.ConvertCache
         {
             TagParser = new TagObjectParser(Cache, CacheContext, CacheStream);
         
-            var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\convertcache\tags.json");
+            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONCommandPath}convertcache\tags.json");
             TagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
         
             foreach (var file in TagObjectList)
-                TagParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\tags\{file}");
+                TagParser.ParseFile(file);
         }
 
         public void UpdateMapData()
         {
             MapParser = new MapObjectParser(Cache, CacheContext, CacheStream);
 
-            var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\JSON\commands\convertcache\maps.json");
+            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONCommandPath}convertcache\maps.json");
             MapObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
             foreach (var file in MapObjectList)
-                MapParser.ParseFile($@"{Program.TagToolDirectory}\Tools\JSON\maps\{file}");
+                MapParser.ParseFile(file);
         }
     }
 }
