@@ -43,6 +43,8 @@ namespace TagTool.Commands.GenerateCache
 
         public void UpdateMapData()
         {
+            MapParser = new MapObjectParser(Cache, CacheContext, CacheStream);
+
             var jsonData = File.ReadAllText($@"{JSONFileTree.JSONCommandPath}commands\generatecache\maps.json");
             MapObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
@@ -52,6 +54,8 @@ namespace TagTool.Commands.GenerateCache
 
         public void UpdateBlfData()
         {
+            BlfParser = new BlfObjectParser(Cache, CacheContext, CacheStream);
+
             var jsonData = File.ReadAllText($@"{JSONFileTree.JSONCommandPath}commands\generatecache\blf.json");
             BlfObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 

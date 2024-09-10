@@ -13,8 +13,6 @@ namespace TagTool.Commands.GenerateCache
         public void PortTagData()
         {
             TagParser = new TagObjectParser(Cache, CacheContext, CacheStream);
-            MapParser = new MapObjectParser(Cache, CacheContext, CacheStream);
-            BlfParser = new BlfObjectParser(Cache, CacheContext, CacheStream);
 
             InitializePortingContext();
 
