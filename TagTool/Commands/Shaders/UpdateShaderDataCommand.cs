@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
+using TagTool.Commands.Common;
 using TagTool.JSON.Parsers;
 using TagTool.Shaders.ShaderGenerator;
 using TagTool.Tags.Definitions;
@@ -49,7 +50,7 @@ namespace TagTool.Commands.Shaders
             true,
             "UpdateShaderData",
             "Updates Render Method Definitions To Include ElDewrito, and MCC Options",
-            "UpdateShaderData",
+            "UpdateShaderData [RecompileShaders]",
             "Updates Render Method Definitions To Include ElDewrito, and MCC Options. Recompiles Global Pixel and Vertex Shaders"
         )
         {
@@ -59,12 +60,20 @@ namespace TagTool.Commands.Shaders
 
         public override object Execute(List<string> args)
         {
-            UpdateShaderData();
+            var recompileShaders = false;
+
+            if (args.Count > 1)
+                return new TagToolError(CommandError.ArgCount);
+
+            if (args.Count == 1)
+                recompileShaders = true;
+
+            UpdateShaderData(recompileShaders);
 
             return true;
         }
 
-        public void UpdateShaderData()
+        public void UpdateShaderData(bool recompileShaders)
         {
             using (var stream = Cache.OpenCacheReadWrite())
             {
@@ -79,28 +88,31 @@ namespace TagTool.Commands.Shaders
                 // Don't really know if I should use a cast when retrieving values, as while it does
                 // improve type safety, I have no clue what impact it may have on performance
 
-                foreach (ShaderType shaderType in Enum.GetValues(typeof(ShaderType)))
+                if (recompileShaders) 
                 {
-                    if (shaderType == ShaderType.Glass)
-                        continue;
+                    foreach (ShaderType shaderType in Enum.GetValues(typeof(ShaderType)))
+                    {
+                        if (shaderType == ShaderType.Glass)
+                            continue;
 
-                    bool applyFixes = !noFixesGlobalShaders.Contains(shaderType);
-                    GenerateGlobalShader(stream, shaderType, applyFixes);
-                }
+                        bool applyFixes = !noFixesGlobalShaders.Contains(shaderType);
+                        GenerateGlobalShader(stream, shaderType, applyFixes);
+                    }
 
-                foreach (ChudShader chudShader in Enum.GetValues(typeof(ChudShader)))
-                {
-                    bool applyFixes = !noFixesChudShaders.Contains(chudShader);
-                    GenerateChudShader(stream, chudShader, applyFixes);
-                }
+                    foreach (ChudShader chudShader in Enum.GetValues(typeof(ChudShader)))
+                    {
+                        bool applyFixes = !noFixesChudShaders.Contains(chudShader);
+                        GenerateChudShader(stream, chudShader, applyFixes);
+                    }
 
-                foreach (ExplicitShader explicitShader in Enum.GetValues(typeof(ExplicitShader)))
-                {
-                    if (explicitShader == ExplicitShader.shadow_apply2)
-                        continue;
+                    foreach (ExplicitShader explicitShader in Enum.GetValues(typeof(ExplicitShader)))
+                    {
+                        if (explicitShader == ExplicitShader.shadow_apply2)
+                            continue;
 
-                    bool applyFixes = !noFixesExplicitShaders.Contains(explicitShader);
-                    GenerateExplicitShader(stream, explicitShader, applyFixes);
+                        bool applyFixes = !noFixesExplicitShaders.Contains(explicitShader);
+                        GenerateExplicitShader(stream, explicitShader, applyFixes);
+                    }
                 }
             }
         }
