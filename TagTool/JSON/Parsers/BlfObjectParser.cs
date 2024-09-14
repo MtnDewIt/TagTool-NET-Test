@@ -10,16 +10,16 @@ namespace TagTool.JSON.Parsers
     public class BlfObjectParser
     {
         private GameCache Cache;
-        private GameCacheHaloOnline CacheContext;
+        private GameCacheHaloOnlineBase CacheContext;
         private Stream CacheStream;
         private BlfObjectHandler Handler;
 
-        public BlfObjectParser(GameCache cache, GameCacheHaloOnline cacheContext, Stream cacheStream)
+        public BlfObjectParser(GameCache cache, GameCacheHaloOnlineBase cacheContext, Stream cacheStream)
         {
             Cache = cache;
             CacheContext = cacheContext;
             CacheStream = cacheStream;
-            Handler = new BlfObjectHandler(Cache, CacheContext);
+            Handler = new BlfObjectHandler(Cache);
         }
 
         public void ParseFile(string filePath)

@@ -13,7 +13,6 @@ namespace TagTool.JSON.Handlers
     public class TagStructureHandler : JsonConverter<TagStructure>
     {
         private GameCache Cache;
-        private GameCacheHaloOnline CacheContext;
 
         private HashSet<Type> ExludedTypes = new HashSet<Type>
         {
@@ -32,10 +31,9 @@ namespace TagTool.JSON.Handlers
             $@"ScriptSourceFileReferences",
         };
 
-        public TagStructureHandler(GameCache cache, GameCacheHaloOnline cacheContext)
+        public TagStructureHandler(GameCache cache)
         {
             Cache = cache;
-            CacheContext = cacheContext;
         }
 
         public override void WriteJson(JsonWriter writer, TagStructure value, JsonSerializer serializer)

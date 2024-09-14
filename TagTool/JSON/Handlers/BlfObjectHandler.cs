@@ -10,18 +10,16 @@ namespace TagTool.JSON.Handlers
     public class BlfObjectHandler
     {
         private GameCache Cache;
-        private GameCacheHaloOnline CacheContext;
 
         private static List<JsonConverter> Converters;
 
-        public BlfObjectHandler(GameCache cache, GameCacheHaloOnline cacheContext)
+        public BlfObjectHandler(GameCache cache)
         {
             Cache = cache;
-            CacheContext = cacheContext;
 
             Converters = new List<JsonConverter>
             {
-                new TagStructureHandler(Cache, CacheContext),
+                new TagStructureHandler(Cache),
 
                 // I really need to merge all these into a single handler which just takes a generic type as an input :/
                 new AngleHandler(),

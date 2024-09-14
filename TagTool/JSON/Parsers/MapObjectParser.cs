@@ -11,11 +11,11 @@ namespace TagTool.JSON.Parsers
     public class MapObjectParser
     {
         private GameCache Cache;
-        private GameCacheHaloOnline CacheContext;
+        private GameCacheHaloOnlineBase CacheContext;
         private Stream CacheStream;
         private MapObjectHandler Handler;
 
-        public MapObjectParser(GameCache cache, GameCacheHaloOnline cacheContext, Stream cacheStream)
+        public MapObjectParser(GameCache cache, GameCacheHaloOnlineBase cacheContext, Stream cacheStream)
         {
             Cache = cache;
             CacheContext = cacheContext;

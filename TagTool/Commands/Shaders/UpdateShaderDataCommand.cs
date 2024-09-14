@@ -15,7 +15,7 @@ namespace TagTool.Commands.Shaders
     class UpdateShaderDataCommand : Command
     {
         public GameCache Cache { get; set; }
-        public GameCacheHaloOnline CacheContext { get; set; }
+        public GameCacheHaloOnlineBase CacheContext { get; set; }
 
         public static List<string> TagObjectList;
 
@@ -45,7 +45,7 @@ namespace TagTool.Commands.Shaders
             ExplicitShader.double_gradient,
         };
 
-        public UpdateShaderDataCommand(GameCache cache, GameCacheHaloOnline cacheContext) : base
+        public UpdateShaderDataCommand(GameCache cache, GameCacheHaloOnlineBase cacheContext) : base
         (
             true,
             "UpdateShaderData",

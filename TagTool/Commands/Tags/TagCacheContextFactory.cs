@@ -157,6 +157,8 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new MapFileCommand(modCache));
                 context.AddCommand(new AddForgeCategoryCommand(cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new AddForgeItemCommand(cache as GameCacheHaloOnlineBase));
+
+                context.AddCommand(new UpdateShaderDataCommand(modCache, cache as GameCacheHaloOnlineBase));
             }
 
             if(cache is GameCacheMonolithic)

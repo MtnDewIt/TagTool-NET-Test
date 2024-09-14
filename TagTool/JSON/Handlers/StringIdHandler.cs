@@ -9,9 +9,9 @@ namespace TagTool.JSON.Handlers
     public class StringIdHandler : JsonConverter<StringId>
     {
         private GameCache Cache;
-        private GameCacheHaloOnline CacheContext;
+        private GameCacheHaloOnlineBase CacheContext;
 
-        public StringIdHandler(GameCache cache, GameCacheHaloOnline cacheContext)
+        public StringIdHandler(GameCache cache, GameCacheHaloOnlineBase cacheContext)
         {
             Cache = cache;
             CacheContext = cacheContext;

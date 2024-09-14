@@ -10,11 +10,11 @@ namespace TagTool.JSON.Handlers
     public class MapObjectHandler
     {
         private GameCache Cache;
-        private GameCacheHaloOnline CacheContext;
+        private GameCacheHaloOnlineBase CacheContext;
 
         private static List<JsonConverter> Converters;
 
-        public MapObjectHandler(GameCache cache, GameCacheHaloOnline cacheContext)
+        public MapObjectHandler(GameCache cache, GameCacheHaloOnlineBase cacheContext)
         {
             Cache = cache;
             CacheContext = cacheContext;
@@ -22,7 +22,7 @@ namespace TagTool.JSON.Handlers
             Converters = new List<JsonConverter>
             {
                 new StringIdHandler(Cache, CacheContext),
-                new TagStructureHandler(Cache, CacheContext),
+                new TagStructureHandler(Cache),
 
                 // I really need to merge all these into a single handler which just takes a generic type as an input :/
                 new AngleHandler(),
