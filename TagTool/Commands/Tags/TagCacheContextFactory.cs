@@ -122,6 +122,9 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new NameShaderTagsCommand(hoCache));
 
                 context.AddCommand(new TagResourceReportCommand(hoCache));
+
+                context.AddCommand(new EditMapCommand(contextStack, hoCache, cache));
+                context.AddCommand(new ListMapsCommand(hoCache));
             }
 
             if(cache is GameCacheHaloOnline)
