@@ -1,4 +1,5 @@
 ﻿using TagTool.BlamFile;
+using TagTool.BlamFile.HaloOnline;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Tags;
@@ -13,10 +14,12 @@ namespace TagTool.Commands.Editing
 
             commandContext.AddCommand(new ExecuteCSharpCommand(contextStack));
 
-            var structure = TagStructure.GetTagStructureInfo(mapFile.Header.GetType(), cache.Version, cache.Platform);
+            var mapDefinition = new HaloOnlineMapFile(mapFile);
 
-            commandContext.AddCommand(new ListFieldsCommand(cache, structure, mapFile.Header));
-            commandContext.AddCommand(new ExportCommandsCommand(cache, mapFile.Header));
+            var structure = TagStructure.GetTagStructureInfo(mapDefinition.GetType(), cache.Version, cache.Platform);
+
+            commandContext.AddCommand(new ListFieldsCommand(cache, structure, mapDefinition));
+            commandContext.AddCommand(new ExportCommandsCommand(cache, mapDefinition));
             commandContext.AddCommand(new SaveMapChangesCommand(cache, mapFile));
 
             commandContext.AddCommand(new ExitToCommand(contextStack));
