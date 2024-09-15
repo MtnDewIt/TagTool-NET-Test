@@ -19,8 +19,18 @@ namespace TagTool.Commands.Editing
             var structure = TagStructure.GetTagStructureInfo(mapDefinition.GetType(), cache.Version, cache.Platform);
 
             commandContext.AddCommand(new ListFieldsCommand(cache, structure, mapDefinition));
+            commandContext.AddCommand(new SetFieldCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
+            commandContext.AddCommand(new EditBlockCommand(contextStack, cache, mapDefinition, mapDefinition));
+            //commandContext.AddCommand(new AddBlockElementsCommand(contextStack, cache, tag, structure, mapDefinition));
+            //commandContext.AddCommand(new RemoveBlockElementsCommand(contextStack, cache, tag, structure, mapDefinition));
+            //commandContext.AddCommand(new CopyBlockElementsCommand(contextStack, cache, tag, structure, mapDefinition));
+            //commandContext.AddCommand(new PasteBlockElementsCommand(contextStack, cache, tag, structure, mapDefinition));
+            //commandContext.AddCommand(new MoveBlockElementCommand(contextStack, cache, tag, structure, mapDefinition));
+            //commandContext.AddCommand(new SwapBlockElementsCommand(contextStack, cache, tag, structure, mapDefinition));
+            //commandContext.AddCommand(new ForEachCommand(contextStack, cache, tag, structure, mapDefinition));
             commandContext.AddCommand(new ExportCommandsCommand(cache, mapDefinition));
-            commandContext.AddCommand(new SaveMapChangesCommand(cache, mapFile));
+            commandContext.AddCommand(new SaveMapChangesCommand(cache, mapDefinition));
+            //commandContext.AddCommand(new FindValueCommand(cache, tag));
 
             commandContext.AddCommand(new ExitToCommand(contextStack));
 

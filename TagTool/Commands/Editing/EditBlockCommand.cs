@@ -12,12 +12,12 @@ namespace TagTool.Commands.Editing
     {
         private CommandContextStack ContextStack { get; }
         private GameCache Cache { get; }
-        private CachedTag Tag { get; }
+        private object ObjectFile { get; }
 
         public TagStructureInfo Structure { get; set; }
         public object Owner { get; set; }
-        
-        public EditBlockCommand(CommandContextStack contextStack, GameCache cache, CachedTag tag, object value)
+
+        public EditBlockCommand(CommandContextStack contextStack, GameCache cache, object objectFile, object value)
             : base(true,
 
                   "EditBlock",
@@ -29,7 +29,7 @@ namespace TagTool.Commands.Editing
         {
             Cache = cache;
             ContextStack = contextStack;
-            Tag = tag;
+            ObjectFile = objectFile;
             Structure = TagStructure.GetTagStructureInfo(value.GetType(), Cache.Version, Cache.Platform);
             Owner = value;
         }
@@ -120,16 +120,16 @@ namespace TagTool.Commands.Editing
             blockContext.ScriptGlobals.Add(ExecuteCSharpCommand.GlobalElementKey, blockValue);
 
             blockContext.AddCommand(new ListFieldsCommand(Cache, blockStructure, blockValue));
-            blockContext.AddCommand(new SetFieldCommand(ContextStack, Cache, Tag, blockStructure, blockValue));
+            blockContext.AddCommand(new SetFieldCommand(ContextStack, Cache, ObjectFile, blockStructure, blockValue));
             //blockContext.AddCommand(new ExtractResourceCommand(ContextStack, CacheContext, Tag, blockStructure, blockValue));
-            blockContext.AddCommand(new EditBlockCommand(ContextStack, Cache, Tag, blockValue));
-            blockContext.AddCommand(new AddBlockElementsCommand(ContextStack, Cache, Tag, blockStructure, blockValue));
-            blockContext.AddCommand(new RemoveBlockElementsCommand(ContextStack, Cache, Tag, blockStructure, blockValue));
-            blockContext.AddCommand(new CopyBlockElementsCommand(ContextStack, Cache, Tag, blockStructure, blockValue));
-            blockContext.AddCommand(new PasteBlockElementsCommand(ContextStack, Cache, Tag, blockStructure, blockValue));
-            blockContext.AddCommand(new MoveBlockElementCommand(ContextStack, Cache, Tag, blockStructure, blockValue));
-            blockContext.AddCommand(new SwapBlockElementsCommand(ContextStack, Cache, Tag, blockStructure, blockValue));
-            blockContext.AddCommand(new ForEachCommand(ContextStack, Cache, Tag, blockStructure, blockValue));
+            blockContext.AddCommand(new EditBlockCommand(ContextStack, Cache, ObjectFile, blockValue));
+            //blockContext.AddCommand(new AddBlockElementsCommand(ContextStack, Cache, Tag, blockStructure, blockValue));
+            //blockContext.AddCommand(new RemoveBlockElementsCommand(ContextStack, Cache, Tag, blockStructure, blockValue));
+            //blockContext.AddCommand(new CopyBlockElementsCommand(ContextStack, Cache, Tag, blockStructure, blockValue));
+            //blockContext.AddCommand(new PasteBlockElementsCommand(ContextStack, Cache, Tag, blockStructure, blockValue));
+            //blockContext.AddCommand(new MoveBlockElementCommand(ContextStack, Cache, Tag, blockStructure, blockValue));
+            //blockContext.AddCommand(new SwapBlockElementsCommand(ContextStack, Cache, Tag, blockStructure, blockValue));
+            //blockContext.AddCommand(new ForEachCommand(ContextStack, Cache, Tag, blockStructure, blockValue));
             blockContext.AddCommand(new ExportCommandsCommand(Cache, blockValue as TagStructure));
             blockContext.AddCommand(new ExitToCommand(ContextStack));
             blockContext.AddCommand(new ExecuteCSharpCommand(ContextStack));
@@ -146,7 +146,7 @@ namespace TagTool.Commands.Editing
                 args = new List<string> { name };
                 args.AddRange(deferredArgs);
 
-                var command = new EditBlockCommand(ContextStack, Cache, Tag, blockValue);
+                var command = new EditBlockCommand(ContextStack, Cache, ObjectFile, blockValue);
                 return command.Execute(args);
             }
             

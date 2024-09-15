@@ -16,12 +16,12 @@ namespace TagTool.Commands.Editing
     {
         private CommandContextStack ContextStack { get; }
         private GameCache Cache { get; }
-        private CachedTag Tag { get; }
+        private object ObjectFile { get; }
 
         public TagStructureInfo Structure { get; set; }
         public object Owner { get; set; }
 
-        public SetFieldCommand(CommandContextStack contextStack, GameCache cache, CachedTag tag, TagStructureInfo structure, object owner)
+        public SetFieldCommand(CommandContextStack contextStack, GameCache cache, object objectFile, TagStructureInfo structure, object owner)
             : base(true,
 
                   "SetField",
@@ -33,7 +33,7 @@ namespace TagTool.Commands.Editing
         {
             ContextStack = contextStack;
             Cache = cache;
-            Tag = tag;
+            ObjectFile = objectFile;
             Structure = structure;
             Owner = owner;
         }
@@ -59,7 +59,7 @@ namespace TagTool.Commands.Editing
                 fieldNameLow = fieldName.ToLower();
                 fieldNameSnake = fieldName.ToSnakeCase();
 
-                var command = new EditBlockCommand(ContextStack, Cache, Tag, Owner);
+                var command = new EditBlockCommand(ContextStack, Cache, ObjectFile, Owner);
 
                 if (command.Execute(new List<string> { blockName }).Equals(false))
                 {
