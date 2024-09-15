@@ -164,35 +164,35 @@ namespace TagTool.Cache
     }
 
     [TagStructure(Size = 0x8)]
-    public class SectionFileBounds
+    public class SectionFileBounds : TagStructure
     {
         public int Offset;
         public int Size;
     }
 
     [TagStructure(Size = 0x14)]
-    public class NetworkRequestHash
+    public class NetworkRequestHash : TagStructure
     {
         [TagField(Length = 5)]
         public uint[] Data;
     }
 
     [TagStructure(Size = 0x100)]
-    public class RSASignature
+    public class RSASignature : TagStructure
     {
         [TagField(Length = 32)]
         public ulong[] Data;
     }
 
     [TagStructure(Size = 0x2328)]
-    public class SharedResourceUsage
+    public class SharedResourceUsage : TagStructure
     {
         [TagField(Length = 0x2328)]
         public byte[] Data;
     }
 
     [TagStructure(Size = 0xB4)]
-    public class InsertionPointResourceUsage
+    public class InsertionPointResourceUsage : TagStructure
     {
         [TagField(Length = 0xB4)]
         public byte[] Data;

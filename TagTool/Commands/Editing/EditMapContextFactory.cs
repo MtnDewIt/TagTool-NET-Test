@@ -5,7 +5,7 @@ using TagTool.Tags;
 
 namespace TagTool.Commands.Editing
 {
-    static class EditMapContextFactory 
+    public static class EditMapContextFactory 
     {
         public static CommandContext Create(CommandContextStack contextStack, GameCache cache, MapFile mapFile) 
         {

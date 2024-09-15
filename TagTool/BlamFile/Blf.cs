@@ -484,7 +484,7 @@ namespace TagTool.BlamFile
     }
 
     [TagStructure(Size = 0x100)]
-    public class BlfRSASignature
+    public class BlfRSASignature : TagStructure
     {
         [TagField(Length = 0x100)]
         public byte[] Data;
@@ -580,6 +580,7 @@ namespace TagTool.BlamFile
 
         public enum BlfScenarioInsertionFlags : byte
         {
+            None = 0,
             SurvivalBit = 1 << 0,
             SurvivalAlwaysUnlockedBit = 1 << 1,
             Bit2 = 1 << 2,
@@ -686,7 +687,7 @@ namespace TagTool.BlamFile
     }
 
     [TagStructure(Size = 0x100, Align = 0x1)]
-    public class TagName
+    public class TagName : TagStructure
     {
         [TagField(Length = 0x100)]
         public string Name;
@@ -701,21 +702,21 @@ namespace TagTool.BlamFile
     }
 
     [TagStructure(Size = 0x40, Align = 0x1)]
-    public class NameUnicode32
+    public class NameUnicode32 : TagStructure
     {
         [TagField(CharSet = System.Runtime.InteropServices.CharSet.Unicode, Length = 0x20, DataAlign = 0x1)]
         public string Name;
     }
 
     [TagStructure(Size = 0x100, Align = 0x1)]
-    public class NameUnicode128
+    public class NameUnicode128 : TagStructure
     {
         [TagField(CharSet = System.Runtime.InteropServices.CharSet.Unicode, Length = 0x80, DataAlign = 0x1)]
         public string Name;
     }
 
     [TagStructure(Size = 0x80, Align = 0x1)]
-    public class CampaignNameUnicode32
+    public class CampaignNameUnicode32 : TagStructure
     {
         [TagField(CharSet = System.Runtime.InteropServices.CharSet.Unicode, Length = 0x40, DataAlign = 0x1)]
         public string Name;
