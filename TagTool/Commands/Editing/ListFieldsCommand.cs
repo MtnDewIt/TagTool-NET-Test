@@ -122,10 +122,17 @@ namespace TagTool.Commands.Editing
 
                     if (fieldValue != null)
                     {
-                        for (var i = 0; i < tagFieldInfo.Attribute.Length; i++)
-                            valueString += $"{valueArray.GetValue(i)}{((i + 1) < tagFieldInfo.Attribute.Length ? "," : "")} ";
+                        if (!valueArray.GetValue(0).GetType().IsPrimitive)
+                        {
+                            valueString += $"{valueArray.GetValue(0)} }}";
+                        }
+                        else 
+                        {
+                            for (var i = 0; i < tagFieldInfo.Attribute.Length; i++)
+                                valueString += $"{valueArray.GetValue(i)}{((i + 1) < tagFieldInfo.Attribute.Length ? "," : "")} ";
 
-                        valueString += "}";
+                            valueString += "}";
+                        }
                     }
                 }
                 else if (fieldType.GetInterface(typeof(IList).Name) != null)
