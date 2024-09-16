@@ -11,11 +11,11 @@ namespace TagTool.Commands.Editing
     {
         private CommandContextStack ContextStack { get; }
         private GameCache Cache { get; }
-        private CachedTag Tag { get; }
+        private object ObjectFile { get; }
         private TagStructureInfo Structure { get; set; }
         private object Owner { get; set; }
 
-        public SwapBlockElementsCommand(CommandContextStack contextStack, GameCache cache, CachedTag tag, TagStructureInfo structure, object owner)
+        public SwapBlockElementsCommand(CommandContextStack contextStack, GameCache cache, object objectFile, TagStructureInfo structure, object owner)
             : base(true,
 
                   "SwapBlockElements",
@@ -26,7 +26,7 @@ namespace TagTool.Commands.Editing
         {
             ContextStack = contextStack;
             Cache = cache;
-            Tag = tag;
+            ObjectFile = objectFile;
             Structure = structure;
             Owner = owner;
         }
@@ -50,7 +50,7 @@ namespace TagTool.Commands.Editing
                 fieldName = fieldName.Substring(lastIndex + 1, (fieldName.Length - lastIndex) - 1);
                 fieldNameLow = fieldName.ToLower();
 
-                var command = new EditBlockCommand(ContextStack, Cache, Tag, Owner);
+                var command = new EditBlockCommand(ContextStack, Cache, ObjectFile, Owner);
 
                 if (command.Execute(new List<string> { blockName }).Equals(false))
                 {
