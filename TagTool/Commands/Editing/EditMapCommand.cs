@@ -34,10 +34,27 @@ namespace TagTool.Commands.Editing
         {
             if (args.Count != 1)
                 return new TagToolError(CommandError.ArgCount);
-            if (!TryGetMapFile(args[0], out var mapFile))
-                return new TagToolError(CommandError.FileNotFound, $"\"{args[0]}\"");
 
-            ContextStack.Push(EditMapContextFactory.Create(ContextStack, Cache, mapFile));
+            if (Cache is GameCacheModPackage)
+            {
+                var mapName = args[0].Replace(".map", "");
+
+                if (!TryGetModPackageMapFile(mapName, out var mapFile)) 
+                {
+                    return new TagToolError(CommandError.FileNotFound, $"\"{args[0]}\"");
+                }
+
+                ContextStack.Push(EditMapContextFactory.Create(ContextStack, Cache, mapFile));
+            }
+            else 
+            {
+                if (!TryGetMapFile(args[0], out var mapFile)) 
+                {
+                    return new TagToolError(CommandError.FileNotFound, $"\"{args[0]}\"");
+                }
+
+                ContextStack.Push(EditMapContextFactory.Create(ContextStack, Cache, mapFile));
+            }
 
             return true;
         }
@@ -60,6 +77,44 @@ namespace TagTool.Commands.Editing
                 result = mapFileData;
 
                 return true;
+            }
+            catch 
+            {
+                result = null;
+
+                return false;
+            }
+        }
+
+        public bool TryGetModPackageMapFile(string mapName, out MapFile result) 
+        {
+            var modCache = Cache as GameCacheModPackage;
+
+            try
+            {
+                for (int i = 0; i < modCache.BaseModPackage.MapFileStreams.Count; i++) 
+                {
+                    var mapFileData = new MapFile();
+
+                    var stream = modCache.BaseModPackage.MapFileStreams[i];
+                    stream.Position = 0;
+                    var reader = new EndianReader(stream);
+                    mapFileData.Read(reader);
+                    stream.Position = 0;
+
+                    var header = mapFileData.Header as CacheFileHeaderGenHaloOnline;
+
+                    if (header.Name == mapName) 
+                    {
+                        result = mapFileData;
+
+                        return true;
+                    }
+                }
+
+                result = null;
+
+                return false;
             }
             catch 
             {
