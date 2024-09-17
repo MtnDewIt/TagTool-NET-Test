@@ -201,6 +201,10 @@ namespace TagTool.Commands.Editing
                     return $"{datumHandle.Salt} {datumHandle.Index}";
                 case StringId stringId:
                     return Cache.StringTable.GetString(stringId);
+                case LastModificationDate lastModificationDate:
+                    return lastModificationDate == null || lastModificationDate.Low == 0 && lastModificationDate.High == 0 ? $@"null" : $@"{lastModificationDate.GetModificationDate():yyyy-MM-dd HH:mm:ss.FFFFFFF}";
+                case FileAuthor fileAuthor:
+                    return fileAuthor == null || Array.TrueForAll(fileAuthor.Data, b => b == 0) ? $@"null" : $@"{FileAuthor.GetAuthor(fileAuthor.Data)}";
                 default:
                     return $"{value}";
             }

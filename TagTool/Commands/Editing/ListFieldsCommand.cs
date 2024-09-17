@@ -90,31 +90,41 @@ namespace TagTool.Commands.Editing
                 try
                 {
 #endif
-				if (fieldValue == null)
-					valueString = "null";
-				else if (fieldType == typeof(StringId))
-					valueString = Cache.StringTable.GetString((StringId)fieldValue);
-				else if (fieldType == typeof(CachedTag))
-				{
-					var instance = (CachedTag)fieldValue;
+                if (fieldValue == null)
+                    valueString = "null";
+                else if (fieldType == typeof(StringId))
+                    valueString = Cache.StringTable.GetString((StringId)fieldValue);
+                else if (fieldType == typeof(CachedTag))
+                {
+                    var instance = (CachedTag)fieldValue;
 
-					var tagName = instance?.Name ?? $"0x{instance.Index:X4}";
+                    var tagName = instance?.Name ?? $"0x{instance.Index:X4}";
 
-					valueString = $"[0x{instance.Index:X4}] {tagName}.{instance.Group}";
-				}
-				else if (fieldType == typeof(TagFunction))
-				{
-					var function = (TagFunction)fieldValue;
-					valueString = "";
-					foreach (var datum in function.Data)
-						valueString += datum.ToString("X2");
-				}
-				else if (fieldType == typeof(PageableResource))
-				{
-					var pageable = (PageableResource)fieldValue;
-					pageable.GetLocation(out var location);
-					valueString = pageable == null ? "null" : $"{{ Location: {location}, Index: 0x{pageable.Page.Index:X4}, CompressedSize: 0x{pageable.Page.CompressedBlockSize:X8} }}";
-				}
+                    valueString = $"[0x{instance.Index:X4}] {tagName}.{instance.Group}";
+                }
+                else if (fieldType == typeof(TagFunction))
+                {
+                    var function = (TagFunction)fieldValue;
+                    valueString = "";
+                    foreach (var datum in function.Data)
+                        valueString += datum.ToString("X2");
+                }
+                else if (fieldType == typeof(PageableResource))
+                {
+                    var pageable = (PageableResource)fieldValue;
+                    pageable.GetLocation(out var location);
+                    valueString = pageable == null ? "null" : $"{{ Location: {location}, Index: 0x{pageable.Page.Index:X4}, CompressedSize: 0x{pageable.Page.CompressedBlockSize:X8} }}";
+                }
+                else if (fieldType == typeof(LastModificationDate))
+                {
+                    var modificationDate = (LastModificationDate)fieldValue;
+                    valueString = modificationDate == null || modificationDate.Low == 0 && modificationDate.High == 0 ? "null" : $@"{modificationDate.GetModificationDate():yyyy-MM-dd HH:mm:ss.FFFFFFF}";
+                }
+                else if (fieldType == typeof(FileAuthor)) 
+                {
+                    var author = (FileAuthor)fieldValue;
+                    valueString = author == null || Array.TrueForAll(author.Data, b => b == 0) ? "null" : $@"{FileAuthor.GetAuthor(author.Data)}";
+                }
                 else if (tagFieldInfo.FieldType.IsArray && tagFieldInfo.Attribute.Length != 0)
                 {
                     valueString = fieldValue == null ? "null" : $"[{tagFieldInfo.Attribute.Length}] {{ ";
@@ -126,7 +136,7 @@ namespace TagTool.Commands.Editing
                         {
                             valueString += $"{valueArray.GetValue(0)} }}";
                         }
-                        else 
+                        else
                         {
                             for (var i = 0; i < tagFieldInfo.Attribute.Length; i++)
                                 valueString += $"{valueArray.GetValue(i)}{((i + 1) < tagFieldInfo.Attribute.Length ? "," : "")} ";
@@ -141,7 +151,7 @@ namespace TagTool.Commands.Editing
                             $"{{...}}[{((IList)fieldValue).Count}]" :
                         "null";
                 else
-					valueString = fieldValue.ToString();
+                    valueString = fieldValue.ToString();
 #if !DEBUG
                 }
                 catch (Exception e)
