@@ -37,20 +37,20 @@ namespace TagTool.Commands.Editing
 
             if (Cache is GameCacheModPackage)
             {
-                var mapName = args[0].Replace(".map", "");
+                var mapName = args[0].ToLower().Replace(".map", "");
 
                 if (!TryGetModPackageMapFile(mapName, out var mapFile)) 
                 {
-                    return new TagToolError(CommandError.FileNotFound, $"\"{args[0]}\"");
+                    return new TagToolError(CommandError.FileNotFound, $"\"{args[0].ToLower()}\"");
                 }
 
                 ContextStack.Push(EditMapContextFactory.Create(ContextStack, Cache, mapFile));
             }
             else 
             {
-                if (!TryGetMapFile(args[0], out var mapFile)) 
+                if (!TryGetMapFile(args[0].ToLower(), out var mapFile)) 
                 {
-                    return new TagToolError(CommandError.FileNotFound, $"\"{args[0]}\"");
+                    return new TagToolError(CommandError.FileNotFound, $"\"{args[0].ToLower()}\"");
                 }
 
                 ContextStack.Push(EditMapContextFactory.Create(ContextStack, Cache, mapFile));
