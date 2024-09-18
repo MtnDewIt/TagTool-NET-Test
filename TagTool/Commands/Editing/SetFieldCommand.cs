@@ -597,6 +597,20 @@ namespace TagTool.Commands.Editing
                     Console.WriteLine(error);
                 return boundsType;
             }
+            else if (!type.IsGenericType && !type.IsArray)
+            {
+                if (args.Count != 1)
+                    return false;
+
+                if (args[0] == "null")
+                {
+                    output = null;
+                }
+                else
+                {
+                    return false;
+                }
+            }
             else
             {
                 throw new NotImplementedException();

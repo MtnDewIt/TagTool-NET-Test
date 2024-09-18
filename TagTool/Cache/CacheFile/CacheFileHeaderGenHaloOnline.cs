@@ -45,7 +45,7 @@ namespace TagTool.Cache
 
         [TagField(Length = 6, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
         [TagField(Length = 8, MinVersion = CacheVersion.HaloOnline235640)]
-        public LastModificationDate[] SharedFileTimes;
+        public SharedModificationDate[] SharedFileTimes;
 
         [TagField(Length = 32)]
         public string Name;
@@ -161,6 +161,12 @@ namespace TagTool.Cache
             Low = (uint)(ldap & uint.MaxValue);
             High = (uint)(ldap >> 32);
         }
+    }
+
+    [TagStructure(Size = 0x8)]
+    public class SharedModificationDate : TagStructure
+    {
+        public LastModificationDate LastModificationDate;
     }
 
     [TagStructure(Size = 0x8)]

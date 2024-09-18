@@ -196,7 +196,7 @@ namespace TagTool.Commands
                 header.CreationTime = new LastModificationDate(CacheVersionDetection.GetTimestamp(mapFile.Version));
                 header.Build = CacheVersionDetection.GetBuildName(mapFile.Version, mapFile.CachePlatform);
                 for (int i = 0; i < header.SharedFileTimes.Length; i++)
-                    header.SharedFileTimes[i] = header.CreationTime;
+                    header.SharedFileTimes[i].LastModificationDate = header.CreationTime;
 
                 using (var stream = file.Open(FileMode.Create, FileAccess.ReadWrite))
                 {

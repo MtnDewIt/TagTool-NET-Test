@@ -73,59 +73,114 @@ namespace TagTool.Commands.Editing
 			var field = TagStructure.GetTagFieldEnumerable(Structure)
 				.Find(f => f.Name == fieldName || f.Name.ToLower() == fieldNameLow);
 
-            if ((field == null) || (!field.FieldType.IsGenericType) || (field.FieldType.GetInterface("IList") == null))
+            if (field == null)
             {
                 ContextReturn(previousContext, previousOwner, previousStructure);
                 return new TagToolError(CommandError.ArgInvalid, $"\"{Structure.Types[0].Name}\" does not contain a tag block named \"{args[0]}\".");
             }
 
-            var fieldType = field.FieldType;
-
-            var blockValue = field.GetValue(Owner) as IList;
-
-            if (blockValue == null)
+            if (!field.FieldType.IsGenericType && field.FieldType.IsArray) 
             {
-                blockValue = Activator.CreateInstance(field.FieldType) as IList;
+                var fieldType = field.FieldType;
+
+                var blockValue = field.GetValue(Owner) as Array;
+
+                if (blockValue == null)
+                {
+                    blockValue = Activator.CreateInstance(field.FieldType) as Array;
+                    field.SetValue(Owner, blockValue);
+                }
+
+                var elementType = field.FieldType.GetElementType();
+
+                var index = -1;
+                var newIndex = -1;
+
+                if (blockValue.Length - 1 < 0)
+                {
+                    new TagToolError(CommandError.OperationFailed, "TagBlock is null!");
+                    ContextReturn(previousContext, previousOwner, previousStructure);
+                    return true;
+                }
+
+                if (!int.TryParse(args[1], out index) || index < 0 || index >= blockValue.Length)
+                    return new TagToolError(CommandError.ArgInvalid, $"Invalid index specified: {args[1]}");
+
+                if (!int.TryParse(args[2], out newIndex) || newIndex < 0 || newIndex >= blockValue.Length)
+                    return new TagToolError(CommandError.ArgInvalid, $"Invalid index specified: {args[2]}");
+
+                if (index == newIndex)
+                    return new TagToolError(CommandError.OperationFailed, "Cannot move to the same index.");
+
+                if (index == -1 || newIndex == -1)
+                    return new TagToolError(CommandError.OperationFailed);
+
+                var cachedElement = blockValue.GetValue(index);
+
+                //blockValue.RemoveAt(index);
+                //blockValue.Insert(newIndex, cachedElement);
+
                 field.SetValue(Owner, blockValue);
+
+                var valueString =
+                    ((Array)blockValue).Length != 0 ?
+                        $"{{...}}[{((Array)blockValue).Length}]" :
+                    "null";
+
+                Console.WriteLine($"Successfully moved index {index} from {field.Name} to index {newIndex}");
+                Console.WriteLine(valueString);
             }
 
-            var elementType = field.FieldType.GenericTypeArguments[0];
-
-            var index = -1;
-            var newIndex = -1;
-
-            if (blockValue.Count - 1 < 0)
+            if (field.FieldType.GetInterface("IList") != null && !field.FieldType.IsArray) 
             {
-                new TagToolError(CommandError.OperationFailed, "TagBlock is null!");
-                ContextReturn(previousContext, previousOwner, previousStructure);
-                return true;
+                var fieldType = field.FieldType;
+
+                var blockValue = field.GetValue(Owner) as IList;
+
+                if (blockValue == null)
+                {
+                    blockValue = Activator.CreateInstance(field.FieldType) as IList;
+                    field.SetValue(Owner, blockValue);
+                }
+
+                var elementType = field.FieldType.GenericTypeArguments[0];
+
+                var index = -1;
+                var newIndex = -1;
+
+                if (blockValue.Count - 1 < 0)
+                {
+                    new TagToolError(CommandError.OperationFailed, "TagBlock is null!");
+                    ContextReturn(previousContext, previousOwner, previousStructure);
+                    return true;
+                }
+
+                if (!int.TryParse(args[1], out index) || index < 0 || index >= blockValue.Count)
+                    return new TagToolError(CommandError.ArgInvalid, $"Invalid index specified: {args[1]}");
+
+                if (!int.TryParse(args[2], out newIndex) || newIndex < 0 || newIndex >= blockValue.Count)
+                    return new TagToolError(CommandError.ArgInvalid, $"Invalid index specified: {args[2]}");
+
+                if (index == newIndex)
+                    return new TagToolError(CommandError.OperationFailed, "Cannot move to the same index.");
+
+                if (index == -1 || newIndex == -1)
+                    return new TagToolError(CommandError.OperationFailed);
+
+                var cachedElement = blockValue[index];
+                blockValue.RemoveAt(index);
+                blockValue.Insert(newIndex, cachedElement);
+
+                field.SetValue(Owner, blockValue);
+
+                var valueString =
+                    ((IList)blockValue).Count != 0 ?
+                        $"{{...}}[{((IList)blockValue).Count}]" :
+                    "null";
+
+                Console.WriteLine($"Successfully moved index {index} from {field.Name} to index {newIndex}");
+                Console.WriteLine(valueString);
             }
-
-            if (!int.TryParse(args[1], out index) || index < 0 || index >= blockValue.Count)
-                return new TagToolError(CommandError.ArgInvalid, $"Invalid index specified: {args[1]}");
-
-            if (!int.TryParse(args[2], out newIndex) || newIndex < 0 || newIndex >= blockValue.Count)
-                return new TagToolError(CommandError.ArgInvalid, $"Invalid index specified: {args[2]}");
-
-            if (index == newIndex)
-                return new TagToolError(CommandError.OperationFailed, "Cannot move to the same index.");
-
-            if (index == -1 || newIndex == -1)
-                return new TagToolError(CommandError.OperationFailed);
-
-            var cachedElement = blockValue[index];
-            blockValue.RemoveAt(index);
-            blockValue.Insert(newIndex, cachedElement);
-
-            field.SetValue(Owner, blockValue);
-
-            var valueString =
-                ((IList)blockValue).Count != 0 ?
-                    $"{{...}}[{((IList)blockValue).Count}]" :
-                "null";
-
-            Console.WriteLine($"Successfully moved index {index} from {field.Name} to index {newIndex}");
-            Console.WriteLine(valueString);
 
             ContextReturn(previousContext, previousOwner, previousStructure);
 

@@ -21,11 +21,11 @@ namespace TagTool.Commands.Editing
             commandContext.AddCommand(new ListFieldsCommand(cache, structure, mapDefinition));
             commandContext.AddCommand(new SetFieldCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
             commandContext.AddCommand(new EditBlockCommand(contextStack, cache, mapDefinition, mapDefinition));
-            commandContext.AddCommand(new AddBlockElementsCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
-            commandContext.AddCommand(new RemoveBlockElementsCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
+            //commandContext.AddCommand(new AddBlockElementsCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
+            //commandContext.AddCommand(new RemoveBlockElementsCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
             commandContext.AddCommand(new CopyBlockElementsCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
             commandContext.AddCommand(new PasteBlockElementsCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
-            commandContext.AddCommand(new MoveBlockElementCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
+            //commandContext.AddCommand(new MoveBlockElementCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
             commandContext.AddCommand(new SwapBlockElementsCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
             commandContext.AddCommand(new ForEachCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
             commandContext.AddCommand(new ExportCommandsCommand(cache, mapDefinition));

@@ -93,60 +93,115 @@ namespace TagTool.Commands.Editing
 
 			var fieldType = field?.FieldType;
 
-            if (field == null || !fieldType.IsGenericType || fieldType.GetInterface("IList") == null)
+            if (field == null)
             {
                 ContextReturn(previousContext, previousOwner, previousStructure);
                 return new TagToolError(CommandError.ArgInvalid, $"\"{Structure.Types[0].Name}\" does not contain a tag block named \"{args[0]}\".");
             }
 
-            var elementType = field.FieldType.GenericTypeArguments[0];
-
-            if (elementType != CopyBlockElementsCommand.ElementType)
+            if (!fieldType.IsGenericType && field.FieldType.IsArray) 
             {
-                ContextReturn(previousContext, previousOwner, previousStructure);
-                return new TagToolError(CommandError.CustomError, "Invalid block element type");
-            }
+                var elementType = field.FieldType.GetElementType();
 
-            var blockValue = field.GetValue(Owner) as IList;
+                if (elementType != CopyBlockElementsCommand.ElementType)
+                {
+                    ContextReturn(previousContext, previousOwner, previousStructure);
+                    return new TagToolError(CommandError.CustomError, "Invalid block element type");
+                }
 
-            if (blockValue == null)
-            {
-                blockValue = Activator.CreateInstance(field.FieldType) as IList;
+                var blockValue = field.GetValue(Owner) as Array;
+
+                if (blockValue == null)
+                {
+                    blockValue = Activator.CreateInstance(field.FieldType) as Array;
+                    field.SetValue(Owner, blockValue);
+                }
+
+                if (index > blockValue.Length - 1)
+                {
+                    ContextReturn(previousContext, previousOwner, previousStructure);
+                    return new TagToolError(CommandError.ArgInvalid, $"Invalid index \"{index}\"");
+                }
+
+                for (var i = 0; i < CopyBlockElementsCommand.Elements.Count; i++)
+                {
+                    var element = CopyBlockElementsCommand.Elements[i].DeepCloneV2();
+
+                    if (i < blockValue.Length - 1) 
+                    {
+                        blockValue.SetValue(element, i);
+                    }
+                }
+
                 field.SetValue(Owner, blockValue);
+
+                var typeString =
+                    fieldType.IsGenericType ?
+                        $"{fieldType.Name}<{fieldType.GenericTypeArguments[0].Name}>" :
+                    fieldType.Name;
+
+                var itemString = CopyBlockElementsCommand.Elements.Count < 2 ? "element" : "elements";
+
+                var valueString =
+                    ((Array)blockValue).Length != 0 ?
+                        $"{{...}}[{((Array)blockValue).Length}]" :
+                    "null";
+
+                Console.WriteLine($"Successfully pasted {CopyBlockElementsCommand.Elements.Count} {itemString} to {field.Name}: {typeString}");
+                Console.WriteLine(valueString);
             }
 
-            if (index > blockValue.Count)
+            if (fieldType.GetInterface("IList") != null && !field.FieldType.IsArray) 
             {
-                ContextReturn(previousContext, previousOwner, previousStructure);
-                return new TagToolError(CommandError.ArgInvalid, $"Invalid index \"{index}\"");
+                var elementType = field.FieldType.GenericTypeArguments[0];
+
+                if (elementType != CopyBlockElementsCommand.ElementType)
+                {
+                    ContextReturn(previousContext, previousOwner, previousStructure);
+                    return new TagToolError(CommandError.CustomError, "Invalid block element type");
+                }
+
+                var blockValue = field.GetValue(Owner) as IList;
+
+                if (blockValue == null)
+                {
+                    blockValue = Activator.CreateInstance(field.FieldType) as IList;
+                    field.SetValue(Owner, blockValue);
+                }
+
+                if (index > blockValue.Count)
+                {
+                    ContextReturn(previousContext, previousOwner, previousStructure);
+                    return new TagToolError(CommandError.ArgInvalid, $"Invalid index \"{index}\"");
+                }
+
+                for (var i = 0; i < CopyBlockElementsCommand.Elements.Count; i++)
+                {
+                    var element = CopyBlockElementsCommand.Elements[i].DeepCloneV2();
+
+                    if (index == -1)
+                        blockValue.Add(element);
+                    else
+                        blockValue.Insert(index + i, element);
+                }
+
+                field.SetValue(Owner, blockValue);
+
+                var typeString =
+                    fieldType.IsGenericType ?
+                        $"{fieldType.Name}<{fieldType.GenericTypeArguments[0].Name}>" :
+                    fieldType.Name;
+
+                var itemString = CopyBlockElementsCommand.Elements.Count < 2 ? "element" : "elements";
+
+                var valueString =
+                    ((IList)blockValue).Count != 0 ?
+                        $"{{...}}[{((IList)blockValue).Count}]" :
+                    "null";
+
+                Console.WriteLine($"Successfully pasted {CopyBlockElementsCommand.Elements.Count} {itemString} to {field.Name}: {typeString}");
+                Console.WriteLine(valueString);
             }
-
-            for (var i = 0; i < CopyBlockElementsCommand.Elements.Count; i++)
-            {
-                var element = CopyBlockElementsCommand.Elements[i].DeepCloneV2();
-
-                if (index == -1)
-                    blockValue.Add(element);
-                else
-                    blockValue.Insert(index + i, element);
-            }
-
-            field.SetValue(Owner, blockValue);
-
-            var typeString =
-                fieldType.IsGenericType ?
-                    $"{fieldType.Name}<{fieldType.GenericTypeArguments[0].Name}>" :
-                fieldType.Name;
-
-            var itemString = CopyBlockElementsCommand.Elements.Count < 2 ? "element" : "elements";
-
-            var valueString =
-                ((IList)blockValue).Count != 0 ?
-                    $"{{...}}[{((IList)blockValue).Count}]" :
-                "null";
-
-            Console.WriteLine($"Successfully pasted {CopyBlockElementsCommand.Elements.Count} {itemString} to {field.Name}: {typeString}");
-            Console.WriteLine(valueString);
 
             ContextReturn(previousContext, previousOwner, previousStructure);
 

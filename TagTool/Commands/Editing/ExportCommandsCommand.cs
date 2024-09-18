@@ -128,7 +128,8 @@ namespace TagTool.Commands.Editing
                             }
                             else
                             {
-                                commands.Add($"AddBlockElements {fieldName} {collection.Count}");
+                                if (!collection.GetType().IsArray)
+                                    commands.Add($"AddBlockElements {fieldName} {collection.Count}");
                                 for (int i = 0; i < collection.Count; i++)
                                     DumpCommands(strings, commands, cache, collection[i], $"{fieldName}[{i}]");
                             }
@@ -202,9 +203,9 @@ namespace TagTool.Commands.Editing
                 case StringId stringId:
                     return Cache.StringTable.GetString(stringId);
                 case LastModificationDate lastModificationDate:
-                    return lastModificationDate == null || lastModificationDate.Low == 0 && lastModificationDate.High == 0 ? $@"null" : $@"{lastModificationDate.GetModificationDate():yyyy-MM-dd HH:mm:ss.FFFFFFF}";
+                    return lastModificationDate == null || lastModificationDate.Low == 0 && lastModificationDate.High == 0 ? $@"null" : $"\"{lastModificationDate.GetModificationDate():yyyy-MM-dd HH:mm:ss.FFFFFFF}\"";
                 case FileAuthor fileAuthor:
-                    return fileAuthor == null || Array.TrueForAll(fileAuthor.Data, b => b == 0) ? $@"null" : $@"{FileAuthor.GetAuthor(fileAuthor.Data)}";
+                    return fileAuthor == null || Array.TrueForAll(fileAuthor.Data, b => b == 0) ? $@"null" : $"\"{FileAuthor.GetAuthor(fileAuthor.Data)}\"";
                 default:
                     return $"{value}";
             }
