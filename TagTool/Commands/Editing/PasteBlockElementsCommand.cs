@@ -127,6 +127,14 @@ namespace TagTool.Commands.Editing
                 {
                     var element = CopyBlockElementsCommand.Elements[i].DeepCloneV2();
 
+                    var arrayLength = blockValue.Length - 1;
+
+                    if (arrayLength - CopyBlockElementsCommand.Elements.Count < index)
+                    {
+                        ContextReturn(previousContext, previousOwner, previousStructure);
+                        return new TagToolError(CommandError.ArgInvalid, $"Element count is too large: \"{index}\" > \"{arrayLength}\" - \"{CopyBlockElementsCommand.Elements.Count}\"");
+                    }
+
                     if (i < blockValue.Length - 1) 
                     {
                         blockValue.SetValue(element, i);
