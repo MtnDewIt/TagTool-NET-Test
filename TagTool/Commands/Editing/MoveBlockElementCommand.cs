@@ -117,8 +117,22 @@ namespace TagTool.Commands.Editing
 
                 var cachedElement = blockValue.GetValue(index);
 
-                //blockValue.RemoveAt(index);
-                //blockValue.Insert(newIndex, cachedElement);
+                if (newIndex > index)
+                {
+                    for (int i = index; i < newIndex; i++)
+                    {
+                        blockValue.SetValue(blockValue.GetValue(i + 1), i);
+                    }
+                }
+                else if (newIndex < index) 
+                {
+                    for (int i = index; i > newIndex; i--) 
+                    {
+                        blockValue.SetValue(blockValue.GetValue(i - 1), i);
+                    }
+                }
+
+                blockValue.SetValue(cachedElement, newIndex);
 
                 field.SetValue(Owner, blockValue);
 
