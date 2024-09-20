@@ -8,8 +8,8 @@ namespace TagTool.BlamFile.MCC
         public string ZoneSetName;
         public int ZoneSetIndex;
         public bool Valid;
-        public string Title;
-        public string Description;
+        public LocalizedString Title;
+        public LocalizedString Description;
         public ODSTInfo ODST;
         public string Thumbnail;
     }

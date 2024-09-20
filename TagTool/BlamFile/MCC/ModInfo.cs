@@ -11,8 +11,8 @@ namespace TagTool.BlamFile.MCC
         public VersionInfo MinAppVersion;
         public VersionInfo MaxAppVersion;
         public GameEngine Engine;
-        public string Title; // May need to wrap in an object
-        public string Description; // May need to wrap in an object
+        public LocalizedString Title;
+        public LocalizedString Description;
         public InheritanceSource InheritSharedFiles;
         public ModContentInfo ModContents;
         public GameModContentInfo GameModContents;

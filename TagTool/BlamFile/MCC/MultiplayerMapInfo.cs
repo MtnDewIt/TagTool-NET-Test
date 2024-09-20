@@ -8,12 +8,12 @@ namespace TagTool.BlamFile.MCC
     {
         public Guid MapGuid;
         public string ScenarioFile;
-        public string Title;
-        public string Description;
+        public LocalizedString Title;
+        public LocalizedString Description;
         public MapImageInfo Images;
-        public MapFlags Flags;
+        public List<MapFlags> Flags;
         public List<InsertionPointInfo> InsertionPoints;
-        public GameCategoryIndex MaximumTeamsByGameCategory;
+        public Dictionary<GameCategoryIndex, byte> MaximumTeamsByGameCategory;
         public DamageReportingType MapDefaultPrimaryWeapon;
         public DamageReportingType MapDefaultPrimaryWeaponForge;
     }
@@ -24,21 +24,5 @@ namespace TagTool.BlamFile.MCC
         HasNoRealGameplay = 1,
         ForgeMap = 2,
         Count = 3,
-    }
-
-    // TODO: Add Function For Handling MaxTeamOverride value
-    public class GameCategoryIndex
-    {
-        public byte GameCategory_CTF;
-        public byte GameCategory_Slayer;
-        public byte GameCategory_Oddball;
-        public byte GameCategory_KOTH;
-        public byte GameCategory_Juggernaut;
-        public byte GameCategory_Infection;
-        public byte GameCategory_Sandbox;
-        public byte GameCategory_VIP;
-        public byte GameCategory_Territories;
-        public byte GameCategory_Assault;
-        public byte GameCategory_GunGame;
     }
 }

@@ -7,8 +7,8 @@ namespace TagTool.BlamFile.MCC
     public class CampaignInfo : TagStructure
     {
         public Guid CampaignGuid;
-        public string Title; // May need to wrap in an object
-        public string Description; // May need to wrap in an object
+        public LocalizedString Title;
+        public LocalizedString Description;
         public List<string> CampaignMaps;
     }
 }
