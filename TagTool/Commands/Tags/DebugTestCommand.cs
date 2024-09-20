@@ -41,7 +41,11 @@ namespace TagTool.Commands.Tags
         {
             var jsonData = File.ReadAllText(args[0]);
 
-            var mapInfo = JsonConvert.DeserializeObject<MultiplayerMapInfo>(jsonData);
+            var multiplayerMapInfo = JsonConvert.DeserializeObject<MultiplayerMapInfo>(jsonData);
+            //var campaignMapInfo = JsonConvert.DeserializeObject<CampaignMapInfo>(jsonData);
+            //var firefightMapInfo = JsonConvert.DeserializeObject<FirefightMapInfo>(jsonData);
+            //var modInfo = JsonConvert.DeserializeObject<ModInfo>(jsonData);
+            //var campaignInfo = JsonConvert.DeserializeObject<CampaignInfo>(jsonData);
 
             return true;
         }
