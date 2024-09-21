@@ -39,13 +39,55 @@ namespace TagTool.Commands.Tags
 
         public override object Execute(List<string> args)
         {
-            var jsonData = File.ReadAllText(args[0]);
+            var parentFiles = Directory.GetFiles(args[0], $@"*.json");
 
-            var multiplayerMapInfo = JsonConvert.DeserializeObject<MultiplayerMapInfo>(jsonData);
-            //var campaignMapInfo = JsonConvert.DeserializeObject<CampaignMapInfo>(jsonData);
-            //var firefightMapInfo = JsonConvert.DeserializeObject<FirefightMapInfo>(jsonData);
-            //var modInfo = JsonConvert.DeserializeObject<ModInfo>(jsonData);
-            //var campaignInfo = JsonConvert.DeserializeObject<CampaignInfo>(jsonData);
+            foreach (var file in parentFiles) 
+            {
+                var jsonData = File.ReadAllText(file);
+
+                if (file.EndsWith($@"CampaignInfo.json"))
+                {
+                    var campaignInfo = JsonConvert.DeserializeObject<CampaignInfo>(jsonData);
+
+                    if (campaignInfo.CampaignMaps != null) 
+                    {
+                        foreach (var map in campaignInfo.CampaignMaps)
+                        {
+                            var path = Path.Combine(args[0], map);
+                            var mapInfo = File.ReadAllText(path);
+
+                            var campaignMapInfo = JsonConvert.DeserializeObject<CampaignMapInfo>(mapInfo);
+                        }
+                    }
+                }
+
+                if (file.EndsWith($@"ModInfo.json"))
+                {
+                    var modInfo = JsonConvert.DeserializeObject<ModInfo>(jsonData);
+
+                    if (modInfo.GameModContents.MultiplayerMaps != null) 
+                    {
+                        foreach (var map in modInfo.GameModContents.MultiplayerMaps)
+                        {
+                            var path = Path.Combine(args[0], map);
+                            var mapInfo = File.ReadAllText(path);
+
+                            var multiplayerMapInfo = JsonConvert.DeserializeObject<MultiplayerMapInfo>(mapInfo);
+                        }
+                    }
+
+                    if (modInfo.GameModContents.FirefightMaps != null) 
+                    {
+                        foreach (var map in modInfo.GameModContents.FirefightMaps)
+                        {
+                            var path = Path.Combine(args[0], map);
+                            var mapInfo = File.ReadAllText(path);
+
+                            var firefightMapInfo = JsonConvert.DeserializeObject<FirefightMapInfo>(mapInfo);
+                        }
+                    }
+                }
+            }
 
             return true;
         }
