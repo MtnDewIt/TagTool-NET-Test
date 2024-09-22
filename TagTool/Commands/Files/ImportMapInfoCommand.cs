@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TagTool.BlamFile;
 using TagTool.BlamFile.HaloOnline;
 using TagTool.BlamFile.MCC;
@@ -48,18 +50,19 @@ namespace TagTool.Commands.Files
                     var multiplayerMapInfo = JsonConvert.DeserializeObject<MultiplayerMapInfo>(jsonData);
 
                     MapFile.Blf.Scenario.ScenarioPath = multiplayerMapInfo.ScenarioFile;
-                    MapFile.Blf.Scenario.ImageFileBase = $"m_{multiplayerMapInfo.ScenarioFile}";
+                    MapFile.Blf.Scenario.ImageFileBase = $"m_{multiplayerMapInfo.ScenarioFile.Split('\\').Last()}";
 
                     if (multiplayerMapInfo.Flags.Contains(BlamFile.MCC.MapFlags.ForgeMap))
                         MapFile.Blf.Scenario.MapFlags |= BlfScenarioFlags.IsForgeOnly;
 
-                    // TODO: Add checks to make sure that the map name and description do not exceed the max character length
-                    // Maybe add a warning when this does occur, and just cull the extra characters from the string
-                    for (int i = 0; i < MapFile.Blf.Scenario.Names.Length; i++)
-                        MapFile.Blf.Scenario.Names[i].Name = multiplayerMapInfo.Title.Neutral;
+                    var parsedTitle = ValidateUnicodeString(multiplayerMapInfo.Title, 32, $@"Title");
+                    var parsedDescription = ValidateUnicodeString(multiplayerMapInfo.Description, 128, $@"Description");
 
-                    for (int i = 0; i < MapFile.Blf.Scenario.Descriptions.Length; i++)
-                        MapFile.Blf.Scenario.Descriptions[i].Name = multiplayerMapInfo.Description.Neutral;
+                    for (int i = 0; i < MapFile.Blf.Scenario.Names.Length; i++) 
+                        MapFile.Blf.Scenario.Names[i].Name = parsedTitle;
+
+                    for (int i = 0; i < MapFile.Blf.Scenario.Descriptions.Length; i++) 
+                        MapFile.Blf.Scenario.Descriptions[i].Name = parsedDescription;
 
                     MapFile.Blf.Scenario.GameEngineTeamCounts[0] = 0;
                     MapFile.Blf.Scenario.GameEngineTeamCounts[1] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_CTF];
@@ -74,30 +77,40 @@ namespace TagTool.Commands.Files
                     MapFile.Blf.Scenario.GameEngineTeamCounts[10] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Assault];
                 }
                 else if (jsonObject.ContainsKey("CampaignMapKind") && jsonObject.ContainsKey("CampaignMetagame"))
-                (
+                {
                     var campaignMapInfo = JsonConvert.DeserializeObject<CampaignMapInfo>(jsonData);
 
                     MapFile.Blf.Scenario.ScenarioPath = campaignMapInfo.ScenarioFile;
-                    MapFile.Blf.Scenario.ImageFileBase = $"m_{campaignMapInfo.ScenarioFile}";
+                    MapFile.Blf.Scenario.ImageFileBase = $"m_{campaignMapInfo.ScenarioFile.Split('\\').Last()}";
+
+                    var parsedTitle = ValidateUnicodeString(campaignMapInfo.Title, 32, $@"Title");
+                    var parsedDescription = ValidateUnicodeString(campaignMapInfo.Description, 128, $@"Description");
 
                     for (int i = 0; i < MapFile.Blf.Scenario.Names.Length; i++)
-                        MapFile.Blf.Scenario.Names[i].Name = campaignMapInfo.Title.Neutral;
+                        MapFile.Blf.Scenario.Names[i].Name = parsedTitle;
 
                     for (int i = 0; i < MapFile.Blf.Scenario.Descriptions.Length; i++)
-                        MapFile.Blf.Scenario.Descriptions[i].Name = campaignMapInfo.Description.Neutral;
-                )
+                        MapFile.Blf.Scenario.Descriptions[i].Name = parsedDescription;
+
+                    ParseInsertionPoints(campaignMapInfo.InsertionPoints);
+                }
                 else if (jsonObject.ContainsKey("MapDefaultPrimaryWeapon") && !jsonObject.ContainsKey("MapDefaultPrimaryWeaponForge"))
                 {
                     var firefightMapInfo = JsonConvert.DeserializeObject<FirefightMapInfo>(jsonData);
 
                     MapFile.Blf.Scenario.ScenarioPath = firefightMapInfo.ScenarioFile;
-                    MapFile.Blf.Scenario.ImageFileBase = $"m_{firefightMapInfo.ScenarioFile}";
+                    MapFile.Blf.Scenario.ImageFileBase = $"m_{firefightMapInfo.ScenarioFile.Split('\\').Last()}";
+
+                    var parsedTitle = ValidateUnicodeString(firefightMapInfo.Title, 32, $@"Title");
+                    var parsedDescription = ValidateUnicodeString(firefightMapInfo.Description, 128, $@"Description");
 
                     for (int i = 0; i < MapFile.Blf.Scenario.Names.Length; i++)
-                        MapFile.Blf.Scenario.Names[i].Name = firefightMapInfo.Title.Neutral;
+                        MapFile.Blf.Scenario.Names[i].Name = parsedTitle;
 
                     for (int i = 0; i < MapFile.Blf.Scenario.Descriptions.Length; i++)
-                        MapFile.Blf.Scenario.Descriptions[i].Name = firefightMapInfo.Description.Neutral;
+                        MapFile.Blf.Scenario.Descriptions[i].Name = parsedDescription;
+
+                    ParseInsertionPoints(firefightMapInfo.InsertionPoints);
                 }
                 else
                 {
@@ -136,6 +149,49 @@ namespace TagTool.Commands.Files
             }
 
             return true;
+        }
+
+        public string ValidateUnicodeString(LocalizedString input, int length, string errorMessage) 
+        {
+            var terminatedLength = length - 1;
+
+            if (input.Neutral.Length > terminatedLength)
+            {
+                var output = $@"string length exceeded supported value [{input.Neutral.Length} > {terminatedLength}]. Extra characters have been removed";
+                new TagToolWarning(errorMessage != null ? $@"{errorMessage} {output}" : output);
+
+                return input.Neutral.Remove(terminatedLength);
+            }
+            else 
+            {
+                return input.Neutral;
+            }
+        }
+
+        public void ParseInsertionPoints(List<InsertionPointInfo> insertionPoints) 
+        {
+            for (int i = 0; i < insertionPoints.Count; i++)
+            {
+                MapFile.Blf.Scenario.Insertions[i].ZoneSetIndex = (short)insertionPoints[i].ZoneSetIndex;
+                MapFile.Blf.Scenario.Insertions[i].Visible = insertionPoints[i].Valid;
+
+                if (insertionPoints[i].ODST != null) 
+                {
+                    if (insertionPoints[i].ODST.IsFirefight)
+                        MapFile.Blf.Scenario.Insertions[i].Flags |= BlfScenarioInsertion.BlfScenarioInsertionFlags.SurvivalBit;
+
+                    //MapFile.Blf.Scenario.Insertions[i].ReturnFromMapId = GetMapIdFromGuid(insertionPoints[i].ODST.ReturnFromMapGuid);
+                }
+
+                var parsedInsertionTitle = ValidateUnicodeString(insertionPoints[i].Title, 32, $@"Insertion Point {i} Title");
+                var parsedInsertionDescription = ValidateUnicodeString(insertionPoints[i].Description, 128, $@"Insertion Point {i} Description");
+
+                for (int j = 0; j < MapFile.Blf.Scenario.Names.Length; j++)
+                    MapFile.Blf.Scenario.Insertions[i].Names[j].Name = parsedInsertionTitle;
+
+                for (int j = 0; j < MapFile.Blf.Scenario.Descriptions.Length; j++)
+                    MapFile.Blf.Scenario.Insertions[i].Descriptions[j].Name = parsedInsertionDescription;
+            }
         }
     }
 }
