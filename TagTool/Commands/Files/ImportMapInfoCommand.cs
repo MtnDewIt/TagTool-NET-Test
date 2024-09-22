@@ -41,39 +41,68 @@ namespace TagTool.Commands.Files
             {
                 var jsonData = File.ReadAllText(file.FullName);
 
-                // TODO: Add support for other Excession map info types
-                // There is no easy way fo telling which format a given excession file is
-                // One way would be to attempt to deserialize each type, but that has its own issues
+                var jsonObject = JObject.Parse(jsonData);
 
-                //var campaignMapInfo = JsonConvert.DeserializeObject<CampaignMapInfo>(jsonData);
-                var multiplayerMapInfo = JsonConvert.DeserializeObject<MultiplayerMapInfo>(jsonData);
-                //var firefightMapInfo = JsonConvert.DeserializeObject<FirefightMapInfo>(jsonData);
+                if (jsonObject.ContainsKey("Flags") && jsonObject.ContainsKey("MaximumTeamsByGameCategory"))
+                {
+                    var multiplayerMapInfo = JsonConvert.DeserializeObject<MultiplayerMapInfo>(jsonData);
 
-                MapFile.Blf.Scenario.ScenarioPath = multiplayerMapInfo.ScenarioFile;
-                MapFile.Blf.Scenario.ImageFileBase = $"m_{multiplayerMapInfo.ScenarioFile}";
+                    MapFile.Blf.Scenario.ScenarioPath = multiplayerMapInfo.ScenarioFile;
+                    MapFile.Blf.Scenario.ImageFileBase = $"m_{multiplayerMapInfo.ScenarioFile}";
 
-                if (multiplayerMapInfo.Flags.Contains(BlamFile.MCC.MapFlags.ForgeMap))
-                    MapFile.Blf.Scenario.MapFlags |= BlfScenarioFlags.IsForgeOnly;
+                    if (multiplayerMapInfo.Flags.Contains(BlamFile.MCC.MapFlags.ForgeMap))
+                        MapFile.Blf.Scenario.MapFlags |= BlfScenarioFlags.IsForgeOnly;
 
-                // TODO: Add checks to make sure that the map name and description do not exceed the max character length
-                // Maybe add a warning when this does occur, and just cull the extra characters from the string
-                for (int i = 0; i < MapFile.Blf.Scenario.Names.Length; i++)
-                    MapFile.Blf.Scenario.Names[i].Name = multiplayerMapInfo.Title.Neutral;
+                    // TODO: Add checks to make sure that the map name and description do not exceed the max character length
+                    // Maybe add a warning when this does occur, and just cull the extra characters from the string
+                    for (int i = 0; i < MapFile.Blf.Scenario.Names.Length; i++)
+                        MapFile.Blf.Scenario.Names[i].Name = multiplayerMapInfo.Title.Neutral;
 
-                for (int i = 0; i < MapFile.Blf.Scenario.Descriptions.Length; i++)
-                    MapFile.Blf.Scenario.Descriptions[i].Name = multiplayerMapInfo.Description.Neutral;
+                    for (int i = 0; i < MapFile.Blf.Scenario.Descriptions.Length; i++)
+                        MapFile.Blf.Scenario.Descriptions[i].Name = multiplayerMapInfo.Description.Neutral;
 
-                MapFile.Blf.Scenario.GameEngineTeamCounts[0] = 0;
-                MapFile.Blf.Scenario.GameEngineTeamCounts[1] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_CTF];
-                MapFile.Blf.Scenario.GameEngineTeamCounts[2] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Slayer];
-                MapFile.Blf.Scenario.GameEngineTeamCounts[3] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Oddball];
-                MapFile.Blf.Scenario.GameEngineTeamCounts[4] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_KOTH];
-                MapFile.Blf.Scenario.GameEngineTeamCounts[5] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Juggernaut];
-                MapFile.Blf.Scenario.GameEngineTeamCounts[6] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Infection];
-                MapFile.Blf.Scenario.GameEngineTeamCounts[7] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Sandbox];
-                MapFile.Blf.Scenario.GameEngineTeamCounts[8] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_VIP];
-                MapFile.Blf.Scenario.GameEngineTeamCounts[9] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Territories];
-                MapFile.Blf.Scenario.GameEngineTeamCounts[10] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Assault];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts[0] = 0;
+                    MapFile.Blf.Scenario.GameEngineTeamCounts[1] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_CTF];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts[2] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Slayer];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts[3] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Oddball];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts[4] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_KOTH];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts[5] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Juggernaut];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts[6] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Infection];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts[7] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Sandbox];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts[8] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_VIP];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts[9] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Territories];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts[10] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Assault];
+                }
+                else if (jsonObject.ContainsKey("CampaignMapKind") && jsonObject.ContainsKey("CampaignMetagame"))
+                (
+                    var campaignMapInfo = JsonConvert.DeserializeObject<CampaignMapInfo>(jsonData);
+
+                    MapFile.Blf.Scenario.ScenarioPath = campaignMapInfo.ScenarioFile;
+                    MapFile.Blf.Scenario.ImageFileBase = $"m_{campaignMapInfo.ScenarioFile}";
+
+                    for (int i = 0; i < MapFile.Blf.Scenario.Names.Length; i++)
+                        MapFile.Blf.Scenario.Names[i].Name = campaignMapInfo.Title.Neutral;
+
+                    for (int i = 0; i < MapFile.Blf.Scenario.Descriptions.Length; i++)
+                        MapFile.Blf.Scenario.Descriptions[i].Name = campaignMapInfo.Description.Neutral;
+                )
+                else if (jsonObject.ContainsKey("MapDefaultPrimaryWeapon") && !jsonObject.ContainsKey("MapDefaultPrimaryWeaponForge"))
+                {
+                    var firefightMapInfo = JsonConvert.DeserializeObject<FirefightMapInfo>(jsonData);
+
+                    MapFile.Blf.Scenario.ScenarioPath = firefightMapInfo.ScenarioFile;
+                    MapFile.Blf.Scenario.ImageFileBase = $"m_{firefightMapInfo.ScenarioFile}";
+
+                    for (int i = 0; i < MapFile.Blf.Scenario.Names.Length; i++)
+                        MapFile.Blf.Scenario.Names[i].Name = firefightMapInfo.Title.Neutral;
+
+                    for (int i = 0; i < MapFile.Blf.Scenario.Descriptions.Length; i++)
+                        MapFile.Blf.Scenario.Descriptions[i].Name = firefightMapInfo.Description.Neutral;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Invalid JSON structure");
+                }
             }
 
             if (file.Name.EndsWith(".mapinfo")) 
