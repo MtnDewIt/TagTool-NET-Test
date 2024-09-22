@@ -2,6 +2,7 @@
 using TagTool.BlamFile.HaloOnline;
 using TagTool.Cache;
 using TagTool.Commands.Common;
+using TagTool.Commands.Files;
 using TagTool.Tags;
 
 namespace TagTool.Commands.Editing
@@ -25,12 +26,14 @@ namespace TagTool.Commands.Editing
             //commandContext.AddCommand(new RemoveBlockElementsCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
             commandContext.AddCommand(new CopyBlockElementsCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
             commandContext.AddCommand(new PasteBlockElementsCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
-            //commandContext.AddCommand(new MoveBlockElementCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
+            commandContext.AddCommand(new MoveBlockElementCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
             commandContext.AddCommand(new SwapBlockElementsCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
             commandContext.AddCommand(new ForEachCommand(contextStack, cache, mapDefinition, structure, mapDefinition));
             commandContext.AddCommand(new ExportCommandsCommand(cache, mapDefinition));
             commandContext.AddCommand(new SaveMapChangesCommand(cache, mapDefinition));
             //commandContext.AddCommand(new FindValueCommand(cache, tag));
+
+            commandContext.AddCommand(new ImportMapInfoCommand(cache, mapDefinition));
 
             commandContext.AddCommand(new ExitToCommand(contextStack));
 
