@@ -387,8 +387,20 @@ namespace TagTool.BlamFile
 
             if(Scenario.MapFlags.HasFlag(BlfScenarioFlags.IsMultiplayer))
             {
-                for (int i = 0; i < 11; i++)
-                    Scenario.GameEngineTeamCounts[i] = 8;
+                Scenario.GameEngineTeamCounts = new GameEngineTeams
+                {
+                    NoGametypeTeamCount = 8,
+                    CtfTeamCount = 8,
+                    SlayerTeamCount = 8,
+                    OddballTeamCount = 8,
+                    KingTeamCount = 8,
+                    SandboxTeamCount = 8,
+                    VipTeamCount = 8,
+                    JuggernautTeamCount = 8,
+                    TerritoriesTeamCount = 8,
+                    AssaultTeamCount = 8,
+                    InfectionTeamCount = 8,
+                };
             }
 
             Scenario.Insertions = insertions;
@@ -525,8 +537,7 @@ namespace TagTool.BlamFile
         [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public byte MaximumDesiredPlayers;
 
-        [TagField(Length = 0xB)]
-        public byte[] GameEngineTeamCounts;
+        public GameEngineTeams GameEngineTeamCounts;
 
         public bool AllowSavedFilms;
 
@@ -546,6 +557,22 @@ namespace TagTool.BlamFile
 
         [TagField(Length = 0x10, MinVersion = CacheVersion.HaloReach)]
         public string DefaultAuthor;
+    }
+
+    [TagStructure(Size = 0xB)]
+    public class GameEngineTeams : TagStructure 
+    {
+        public byte NoGametypeTeamCount;
+        public byte CtfTeamCount;
+        public byte SlayerTeamCount;
+        public byte OddballTeamCount;
+        public byte KingTeamCount;
+        public byte SandboxTeamCount;
+        public byte VipTeamCount;
+        public byte JuggernautTeamCount;
+        public byte TerritoriesTeamCount;
+        public byte AssaultTeamCount;
+        public byte InfectionTeamCount;
     }
 
     [TagStructure(Size = 0xF08, Align = 0x1, MaxVersion = CacheVersion.Halo3Retail)]

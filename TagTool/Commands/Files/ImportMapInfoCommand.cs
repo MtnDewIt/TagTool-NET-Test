@@ -64,17 +64,17 @@ namespace TagTool.Commands.Files
                     for (int i = 0; i < MapFile.Blf.Scenario.Descriptions.Length; i++) 
                         MapFile.Blf.Scenario.Descriptions[i].Name = parsedDescription;
 
-                    MapFile.Blf.Scenario.GameEngineTeamCounts[0] = 0;
-                    MapFile.Blf.Scenario.GameEngineTeamCounts[1] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_CTF];
-                    MapFile.Blf.Scenario.GameEngineTeamCounts[2] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Slayer];
-                    MapFile.Blf.Scenario.GameEngineTeamCounts[3] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Oddball];
-                    MapFile.Blf.Scenario.GameEngineTeamCounts[4] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_KOTH];
-                    MapFile.Blf.Scenario.GameEngineTeamCounts[5] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Juggernaut];
-                    MapFile.Blf.Scenario.GameEngineTeamCounts[6] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Infection];
-                    MapFile.Blf.Scenario.GameEngineTeamCounts[7] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Sandbox];
-                    MapFile.Blf.Scenario.GameEngineTeamCounts[8] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_VIP];
-                    MapFile.Blf.Scenario.GameEngineTeamCounts[9] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Territories];
-                    MapFile.Blf.Scenario.GameEngineTeamCounts[10] = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Assault];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts.NoGametypeTeamCount = 0;
+                    MapFile.Blf.Scenario.GameEngineTeamCounts.CtfTeamCount = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_CTF];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts.SlayerTeamCount = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Slayer];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts.OddballTeamCount = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Oddball];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts.KingTeamCount = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_KOTH];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts.SandboxTeamCount = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Sandbox];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts.VipTeamCount = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_VIP];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts.JuggernautTeamCount = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Juggernaut];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts.TerritoriesTeamCount = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Territories];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts.AssaultTeamCount = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Assault];
+                    MapFile.Blf.Scenario.GameEngineTeamCounts.InfectionTeamCount = multiplayerMapInfo.MaximumTeamsByGameCategory[GameCategoryIndex.GameCategory_Infection];
                 }
                 else if (jsonObject.ContainsKey("CampaignMapKind") && jsonObject.ContainsKey("CampaignMetagame"))
                 {
