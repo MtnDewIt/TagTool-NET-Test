@@ -14,7 +14,9 @@ namespace TagTool.Commands.Common
 
                   "DumpLog [name = hott_*_crash.log]",
 
-                  "Dumps the current log into the logs directory.")
+                  "Dumps the current log into the logs directory.\n" +
+                  "If a path is specified, the current log will be dumped into the file hott_*_crash.log\n" +
+                  "If a path is specified with a file, the current log will be dumped into the file specified")
         {
         }
 

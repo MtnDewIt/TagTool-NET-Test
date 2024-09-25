@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Remoting;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace TagTool.IO
@@ -26,20 +27,46 @@ namespace TagTool.IO
         public static string Dump(string name)
         {
             var time = DateTime.Now;
+            var shortDateTime = $@"{time.ToShortDateString()}-{time.ToShortTimeString()}";
 
-            if (name == null)
-                name = "hott_*_crash.log";
+            var fileName = Path.GetFileName(name);
+            var filePath = Path.GetDirectoryName(name);
+            var fileExtension = Path.GetExtension(name);
 
-            name = name.Replace("*", $"{time.ToShortDateString()}-{time.ToShortTimeString()}")
-                    .Replace(' ', '_')
-                    .Replace('\\', '_')
-                    .Replace('/', '_')
-                    .Replace(':', '_');
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                if (string.IsNullOrEmpty(fileExtension))
+                {
+                    fileName = Regex.Replace($@"hott_{shortDateTime}_crash.log", @"[*\\ /:]", "_");
+                    filePath = name;
+                }
+                else
+                {
+                    fileName = Regex.Replace(fileName, @"[*\\ /:]", "_");
+                }
+            }
+            else
+            {
+                fileName = name;
 
-            if (!Directory.Exists("logs"))
-                Directory.CreateDirectory("logs");
+                if (fileName == null)
+                    fileName = $@"hott_{shortDateTime}_crash.log";
+                else if (string.IsNullOrEmpty(fileExtension))
+                    fileName += ".log";
 
-            using (var writer = new StreamWriter(File.Create($"logs/{name}")))
+                fileName.Replace("*", shortDateTime);
+
+                fileName = Regex.Replace(fileName, @"[\\ /:]", "_");
+
+                filePath = "logs";
+            }
+
+            if (!Directory.Exists(filePath))
+                Directory.CreateDirectory(filePath);
+
+            var fullPath = Path.Combine(filePath, fileName);
+
+            using (var writer = new StreamWriter(File.Create(fullPath)))
             {
                 foreach (var line in Lines)
                     writer.WriteLine(line);
@@ -47,7 +74,7 @@ namespace TagTool.IO
                     writer.Write(CurrentLine);
             }
 
-            return name;
+            return fullPath;
         }
 
         public class Writer : TextWriter
