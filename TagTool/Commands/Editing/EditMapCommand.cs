@@ -7,7 +7,7 @@ using TagTool.IO;
 
 namespace TagTool.Commands.Editing 
 {
-    class EditMapCommand : Command 
+    public class EditMapCommand : Command 
     {
         private CommandContextStack ContextStack { get; }
         private GameCacheHaloOnlineBase CacheContext { get; }
@@ -19,7 +19,7 @@ namespace TagTool.Commands.Editing
             "EditMap",
             "Edit map-specific data",
 
-            "EditTag <Map File>",
+            "EditMap <Map File>",
 
             "If the map file contains data which is supported by this program,\n" +
             "this command will make special map-specific commands available\n" +

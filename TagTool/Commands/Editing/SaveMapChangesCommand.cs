@@ -7,7 +7,7 @@ using TagTool.IO;
 
 namespace TagTool.Commands.Editing
 {
-    class SaveMapChangesCommand : Command 
+    public class SaveMapChangesCommand : Command 
     {
         private GameCache Cache { get; }
         private HaloOnlineMapFile MapFile { get; }
