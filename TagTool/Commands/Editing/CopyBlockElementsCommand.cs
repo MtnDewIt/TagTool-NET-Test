@@ -160,6 +160,43 @@ namespace TagTool.Commands.Editing
                 Console.WriteLine($"Successfully copied {count} {itemString}.");
             }
 
+            if (!field.FieldType.IsGenericType && !field.FieldType.IsArray && field.FieldType.GetInterface("IList") == null)
+            {
+                var blockValue = field.GetValue(Owner);
+
+                if (blockValue == null)
+                {
+                    ContextReturn(previousContext, previousOwner, previousStructure);
+                    return new TagToolError(CommandError.ArgInvalid, $"Invalid index specified \"{args[0]}\"");
+                }
+
+                if (count < 0)
+                {
+                    count = 1;
+                }
+
+                if ((index + count) < 0 || (index + count) > 1)
+                {
+                    ContextReturn(previousContext, previousOwner, previousStructure);
+                    return new TagToolError(CommandError.ArgInvalid, $"Invalid index: \"{index}\", and count: \"{count}\"");
+                }
+
+                ElementType = field.FieldType.GetElementType();
+                Elements = new List<object>();
+
+                try
+                {
+                    Elements.Add(blockValue.DeepCloneV2());
+                }
+                catch (Exception e)
+                {
+                    ContextReturn(previousContext, previousOwner, previousStructure);
+                    return new TagToolError(CommandError.OperationFailed, $"Failed to clone block element {index}\nSTACKTRACE: {e}");
+                }
+
+                Console.WriteLine($"Successfully copied {count} element.");
+            }
+
             ContextReturn(previousContext, previousOwner, previousStructure);
 
             return true;
