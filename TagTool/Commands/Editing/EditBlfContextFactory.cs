@@ -20,17 +20,17 @@ namespace TagTool.Commands.Editing
             var structure = TagStructure.GetTagStructureInfo(blfDefinition.GetType(), blf.Version, blf.CachePlatform);
 
             commandContext.AddCommand(new ListFieldsCommand(cache, structure, blfDefinition));
-            commandContext.AddCommand(new SetFieldCommand(contextStack, cache, blfDefinition, structure, blfDefinition));
-            commandContext.AddCommand(new EditBlockCommand(contextStack, cache, blfDefinition, blfDefinition));
-            //commandContext.AddCommand(new AddBlockElementsCommand(contextStack, cache, blfDefinition, structure, blfDefinition));
-            //commandContext.AddCommand(new RemoveBlockElementsCommand(contextStack, cache, blfDefinition, structure, blfDefinition));
-            commandContext.AddCommand(new CopyBlockElementsCommand(contextStack, cache, blfDefinition, structure, blfDefinition));
-            commandContext.AddCommand(new PasteBlockElementsCommand(contextStack, cache, blfDefinition, structure, blfDefinition));
-            commandContext.AddCommand(new MoveBlockElementCommand(contextStack, cache, blfDefinition, structure, blfDefinition));
-            commandContext.AddCommand(new SwapBlockElementsCommand(contextStack, cache, blfDefinition, structure, blfDefinition));
-            commandContext.AddCommand(new ForEachCommand(contextStack, cache, blfDefinition, structure, blfDefinition));
-            commandContext.AddCommand(new ExportCommandsCommand(cache, blfDefinition));
-            commandContext.AddCommand(new SaveBlfChangesCommand(cache, blfDefinition, filePath));
+            commandContext.AddCommand(new SetFieldCommand(contextStack, cache, blf.Version, blf.CachePlatform, blfDefinition, structure, blfDefinition));
+            commandContext.AddCommand(new EditBlockCommand(contextStack, cache, blf.Version, blf.CachePlatform, blfDefinition, blfDefinition));
+            //commandContext.AddCommand(new AddBlockElementsCommand(contextStack, cache, blf.Version, blf.CachePlatform, blfDefinition, structure, blfDefinition));
+            //commandContext.AddCommand(new RemoveBlockElementsCommand(contextStack, cache, blf.Version, blf.CachePlatform, blfDefinition, structure, blfDefinition));
+            commandContext.AddCommand(new CopyBlockElementsCommand(contextStack, cache, blf.Version, blf.CachePlatform, blfDefinition, structure, blfDefinition));
+            commandContext.AddCommand(new PasteBlockElementsCommand(contextStack, cache, blf.Version, blf.CachePlatform, blfDefinition, structure, blfDefinition));
+            commandContext.AddCommand(new MoveBlockElementCommand(contextStack, cache, blf.Version, blf.CachePlatform, blfDefinition, structure, blfDefinition));
+            commandContext.AddCommand(new SwapBlockElementsCommand(contextStack, cache, blf.Version, blf.CachePlatform, blfDefinition, structure, blfDefinition));
+            commandContext.AddCommand(new ForEachCommand(contextStack, cache, blf.Version, blf.CachePlatform, blfDefinition, structure, blfDefinition));
+            commandContext.AddCommand(new ExportCommandsCommand(cache, blf.Version, blf.CachePlatform, blfDefinition));
+            commandContext.AddCommand(new SaveBlfChangesCommand(blf.Version, blf.CachePlatform, blfDefinition, filePath));
             //commandContext.AddCommand(new FindValueCommand(cache, tag));
 
             commandContext.AddCommand(new ExitToCommand(contextStack));

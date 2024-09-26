@@ -11,6 +11,8 @@ namespace TagTool.Commands.Editing
     {
         private CommandContextStack ContextStack { get; }
         private GameCache Cache { get; }
+        private CacheVersion Version { get; }
+        private CachePlatform Platform { get; }
         private object ObjectFile { get; }
         private TagStructureInfo Structure { get; set; }
         private object Owner { get; set; }
@@ -18,7 +20,7 @@ namespace TagTool.Commands.Editing
         public static Type ElementType { get; set; } = null;
         public static List<object> Elements { get; set; } = null;
 
-        public CopyBlockElementsCommand(CommandContextStack contextStack, GameCache cache, object objectFile, TagStructureInfo structure, object owner)
+        public CopyBlockElementsCommand(CommandContextStack contextStack, GameCache cache, CacheVersion version, CachePlatform platform, object objectFile, TagStructureInfo structure, object owner)
             : base(false,
 
                   "CopyBlockElements",
@@ -33,6 +35,8 @@ namespace TagTool.Commands.Editing
         {
             ContextStack = contextStack;
             Cache = cache;
+            Version = version;
+            Platform = platform;
             ObjectFile = objectFile;
             Structure = structure;
             Owner = owner;
@@ -57,7 +61,7 @@ namespace TagTool.Commands.Editing
                 fieldName = fieldName.Substring(lastIndex + 1, (fieldName.Length - lastIndex) - 1);
                 fieldNameLow = fieldName.ToLower();
 
-                var command = new EditBlockCommand(ContextStack, Cache, ObjectFile, Owner);
+                var command = new EditBlockCommand(ContextStack, Cache, Version, Platform, ObjectFile, Owner);
 
                 if (command.Execute(new List<string> { blockName }).Equals(false))
                 {

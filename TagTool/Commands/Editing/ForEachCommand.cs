@@ -15,12 +15,14 @@ namespace TagTool.Commands.Editing
     {
         private CommandContextStack ContextStack { get; }
         private GameCache Cache { get; }
+        private CacheVersion Version { get; }
+        private CachePlatform Platform { get; }
         private object ObjectFile { get; }
 
         public TagStructureInfo Structure { get; set; }
         public object Owner { get; set; }
 
-        public ForEachCommand(CommandContextStack contextStack, GameCache cache, object objectFile, TagStructureInfo structure, object owner)
+        public ForEachCommand(CommandContextStack contextStack, GameCache cache, CacheVersion version, CachePlatform platform, object objectFile, TagStructureInfo structure, object owner)
             : base(true,
 
                   "ForEach",
@@ -32,6 +34,8 @@ namespace TagTool.Commands.Editing
         {
             ContextStack = contextStack;
             Cache = cache;
+            Version = version;
+            Platform = platform;
             ObjectFile = objectFile;
             Structure = structure;
             Owner = owner;
@@ -60,7 +64,7 @@ namespace TagTool.Commands.Editing
                 fieldNameLow = fieldName.ToLower();
                 fieldNameSnake = fieldName.ToSnakeCase();
 
-                var command = new EditBlockCommand(ContextStack, Cache, ObjectFile, Owner);
+                var command = new EditBlockCommand(ContextStack, Cache, Version, Platform, ObjectFile, Owner);
 
                 if (command.Execute(new List<string> { blockName }).Equals(false))
                 {
@@ -170,7 +174,7 @@ namespace TagTool.Commands.Editing
                 {
                     ContextReturn(previousContext, previousOwner, previousStructure);
 
-                    if (blockName != "" && new EditBlockCommand(ContextStack, Cache, ObjectFile, Owner)
+                    if (blockName != "" && new EditBlockCommand(ContextStack, Cache, Version, Platform, ObjectFile, Owner)
                             .Execute(new List<string> { $"{blockName}[{i}]" })
                             .Equals(false))
                         return new TagToolError(CommandError.ArgInvalid, $"Invalid tag block name: {blockName}");
@@ -195,7 +199,7 @@ namespace TagTool.Commands.Editing
             {
                 ContextReturn(previousContext, previousOwner, previousStructure);
 
-                if (blockName != "" && new EditBlockCommand(ContextStack, Cache, ObjectFile, Owner)
+                if (blockName != "" && new EditBlockCommand(ContextStack, Cache, Version, Platform, ObjectFile, Owner)
                     .Execute(new List<string> { $"{blockName}" })
                     .Equals(false))
                     return new TagToolError(CommandError.ArgInvalid, $"Invalid tag structure name: {blockName}");
@@ -214,7 +218,7 @@ namespace TagTool.Commands.Editing
             if (index < 0 || index >= elements.Count || elements.GetType().GetGenericArguments().Count() == 0)
                 return null;
 
-            foreach (var info in TagStructure.GetTagFieldEnumerable(elements.GetType().GetGenericArguments()[0], Cache.Version, Cache.Platform))
+            foreach (var info in TagStructure.GetTagFieldEnumerable(elements.GetType().GetGenericArguments()[0], Version, Platform))
             {
                 if (info.Attribute == null || !info.Attribute.Flags.HasFlag(Label))
                     continue;

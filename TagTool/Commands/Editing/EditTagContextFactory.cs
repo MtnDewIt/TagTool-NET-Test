@@ -199,17 +199,17 @@ namespace TagTool.Commands.Editing
             var structure = TagStructure.GetTagStructureInfo(cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group), cache.Version, cache.Platform);
 
             commandContext.AddCommand(new ListFieldsCommand(cache, structure, definition));
-            commandContext.AddCommand(new SetFieldCommand(contextStack, cache, tag, structure, definition));
-            commandContext.AddCommand(new EditBlockCommand(contextStack, cache, tag, definition));
-            commandContext.AddCommand(new AddBlockElementsCommand(contextStack, cache, tag, structure, definition));
-            commandContext.AddCommand(new RemoveBlockElementsCommand(contextStack, cache, tag, structure, definition));
-            commandContext.AddCommand(new CopyBlockElementsCommand(contextStack, cache, tag, structure, definition));
-            commandContext.AddCommand(new PasteBlockElementsCommand(contextStack, cache, tag, structure, definition));
-            commandContext.AddCommand(new MoveBlockElementCommand(contextStack, cache, tag, structure, definition));
-            commandContext.AddCommand(new SwapBlockElementsCommand(contextStack, cache, tag, structure, definition));
-            commandContext.AddCommand(new ForEachCommand(contextStack, cache, tag, structure, definition));
+            commandContext.AddCommand(new SetFieldCommand(contextStack, cache, cache.Version, cache.Platform, tag, structure, definition));
+            commandContext.AddCommand(new EditBlockCommand(contextStack, cache, cache.Version, cache.Platform, tag, definition));
+            commandContext.AddCommand(new AddBlockElementsCommand(contextStack, cache, cache.Version, cache.Platform, tag, structure, definition));
+            commandContext.AddCommand(new RemoveBlockElementsCommand(contextStack, cache, cache.Version, cache.Platform, tag, structure, definition));
+            commandContext.AddCommand(new CopyBlockElementsCommand(contextStack, cache, cache.Version, cache.Platform, tag, structure, definition));
+            commandContext.AddCommand(new PasteBlockElementsCommand(contextStack, cache, cache.Version, cache.Platform, tag, structure, definition));
+            commandContext.AddCommand(new MoveBlockElementCommand(contextStack, cache, cache.Version, cache.Platform, tag, structure, definition));
+            commandContext.AddCommand(new SwapBlockElementsCommand(contextStack, cache, cache.Version, cache.Platform, tag, structure, definition));
+            commandContext.AddCommand(new ForEachCommand(contextStack, cache, cache.Version, cache.Platform, tag, structure, definition));
             commandContext.AddCommand(new SaveTagChangesCommand(cache, tag, definition));
-            commandContext.AddCommand(new ExportCommandsCommand(cache, definition as TagStructure));
+            commandContext.AddCommand(new ExportCommandsCommand(cache, cache.Version, cache.Platform, definition as TagStructure));
             commandContext.AddCommand(new FindValueCommand(cache, tag));
 
             commandContext.AddCommand(new ExitToCommand(contextStack));

@@ -20,11 +20,14 @@ namespace TagTool.Commands.Editing
             NoDefault = (1 << 0),
         }
 
+        private CacheVersion Version;
+        private CachePlatform Platform;
+
         private GameCache Cache;
         private TagStructure Structure;
         private ExportFlags Flags;
 
-        public ExportCommandsCommand(GameCache cache, TagStructure structure)
+        public ExportCommandsCommand(GameCache cache, CacheVersion version, CachePlatform platform, TagStructure structure)
             : base(false,
 
                   "ExportCommands",
@@ -33,6 +36,8 @@ namespace TagTool.Commands.Editing
                   "ExportCommands [NoDefault]",
                   "Exports the commands needed to generate the tag structure. Specify option 'nodefault' to omit default values.")
         {
+            Version = version;
+            Platform = platform;
             Cache = cache;
             Structure = structure;
         }
@@ -67,7 +72,7 @@ namespace TagTool.Commands.Editing
             {
                 case TagStructure tagStruct:
                     {
-                        foreach (var field in tagStruct.GetTagFieldEnumerable(cache.Version, cache.Platform))
+                        foreach (var field in tagStruct.GetTagFieldEnumerable(Version, Platform))
                             DumpCommands(strings, commands, cache, field.GetValue(data), fieldName != null ? $"{fieldName}.{field.Name}" : field.Name);
                     }
                     break;

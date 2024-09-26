@@ -12,12 +12,14 @@ namespace TagTool.Commands.Editing
     {
         private CommandContextStack ContextStack { get; }
         private GameCache Cache { get; }
+        private CacheVersion Version { get; }
+        private CachePlatform Platform { get; }
         private object ObjectFile { get; }
 
         public TagStructureInfo Structure { get; set; }
         public object Owner { get; set; }
 
-        public EditBlockCommand(CommandContextStack contextStack, GameCache cache, object objectFile, object value)
+        public EditBlockCommand(CommandContextStack contextStack, GameCache cache, CacheVersion version, CachePlatform platform, object objectFile, object value)
             : base(true,
 
                   "EditBlock",
@@ -29,8 +31,10 @@ namespace TagTool.Commands.Editing
         {
             Cache = cache;
             ContextStack = contextStack;
+            Version = version;
+            Platform = platform;
             ObjectFile = objectFile;
-            Structure = TagStructure.GetTagStructureInfo(value.GetType(), Cache.Version, Cache.Platform);
+            Structure = TagStructure.GetTagStructureInfo(value.GetType(), Version, Platform);
             Owner = value;
         }
 
@@ -114,23 +118,23 @@ namespace TagTool.Commands.Editing
                 contextName = $"{blockName}[{blockIndex}]";
             }
 
-            var blockStructure = TagStructure.GetTagStructureInfo(blockValue.GetType(), Cache.Version, Cache.Platform);
+            var blockStructure = TagStructure.GetTagStructureInfo(blockValue.GetType(), Version, Platform);
 
             var blockContext = new CommandContext(ContextStack.Context, contextName);
             blockContext.ScriptGlobals.Add(ExecuteCSharpCommand.GlobalElementKey, blockValue);
 
             blockContext.AddCommand(new ListFieldsCommand(Cache, blockStructure, blockValue));
-            blockContext.AddCommand(new SetFieldCommand(ContextStack, Cache, ObjectFile, blockStructure, blockValue));
+            blockContext.AddCommand(new SetFieldCommand(ContextStack, Cache, Version, Platform, ObjectFile, blockStructure, blockValue));
             //blockContext.AddCommand(new ExtractResourceCommand(ContextStack, CacheContext, Tag, blockStructure, blockValue));
-            blockContext.AddCommand(new EditBlockCommand(ContextStack, Cache, ObjectFile, blockValue));
-            blockContext.AddCommand(new AddBlockElementsCommand(ContextStack, Cache, ObjectFile, blockStructure, blockValue));
-            blockContext.AddCommand(new RemoveBlockElementsCommand(ContextStack, Cache, ObjectFile, blockStructure, blockValue));
-            blockContext.AddCommand(new CopyBlockElementsCommand(ContextStack, Cache, ObjectFile, blockStructure, blockValue));
-            blockContext.AddCommand(new PasteBlockElementsCommand(ContextStack, Cache, ObjectFile, blockStructure, blockValue));
-            blockContext.AddCommand(new MoveBlockElementCommand(ContextStack, Cache, ObjectFile, blockStructure, blockValue));
-            blockContext.AddCommand(new SwapBlockElementsCommand(ContextStack, Cache, ObjectFile, blockStructure, blockValue));
-            blockContext.AddCommand(new ForEachCommand(ContextStack, Cache, ObjectFile, blockStructure, blockValue));
-            blockContext.AddCommand(new ExportCommandsCommand(Cache, blockValue as TagStructure));
+            blockContext.AddCommand(new EditBlockCommand(ContextStack, Cache, Version, Platform, ObjectFile, blockValue));
+            blockContext.AddCommand(new AddBlockElementsCommand(ContextStack, Cache, Version, Platform, ObjectFile, blockStructure, blockValue));
+            blockContext.AddCommand(new RemoveBlockElementsCommand(ContextStack, Cache, Version, Platform, ObjectFile, blockStructure, blockValue));
+            blockContext.AddCommand(new CopyBlockElementsCommand(ContextStack, Cache, Version, Platform, ObjectFile, blockStructure, blockValue));
+            blockContext.AddCommand(new PasteBlockElementsCommand(ContextStack, Cache, Version, Platform, ObjectFile, blockStructure, blockValue));
+            blockContext.AddCommand(new MoveBlockElementCommand(ContextStack, Cache, Version, Platform, ObjectFile, blockStructure, blockValue));
+            blockContext.AddCommand(new SwapBlockElementsCommand(ContextStack, Cache, Version, Platform, ObjectFile, blockStructure, blockValue));
+            blockContext.AddCommand(new ForEachCommand(ContextStack, Cache, Version, Platform, ObjectFile, blockStructure, blockValue));
+            blockContext.AddCommand(new ExportCommandsCommand(Cache, Version, Platform, blockValue as TagStructure));
             blockContext.AddCommand(new ExitToCommand(ContextStack));
             blockContext.AddCommand(new ExecuteCSharpCommand(ContextStack));
             ContextStack.Push(blockContext);
@@ -146,7 +150,7 @@ namespace TagTool.Commands.Editing
                 args = new List<string> { name };
                 args.AddRange(deferredArgs);
 
-                var command = new EditBlockCommand(ContextStack, Cache, ObjectFile, blockValue);
+                var command = new EditBlockCommand(ContextStack, Cache, Version, Platform, ObjectFile, blockValue);
                 return command.Execute(args);
             }
             

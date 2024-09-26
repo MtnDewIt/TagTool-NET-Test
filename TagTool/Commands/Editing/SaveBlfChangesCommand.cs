@@ -9,25 +9,28 @@ namespace TagTool.Commands.Editing
 {
     public class SaveBlfChangesCommand : Command
     {
-        private GameCache Cache { get; }
-        private HaloOnlineBlf Blf { get; }
-        private string FilePath;
+        private CacheVersion Version { get; }
+        private CachePlatform Platform { get; }
 
-        public SaveBlfChangesCommand(GameCache cache, HaloOnlineBlf blf, string filePath)
+        private HaloOnlineBlf Blf { get; }
+        private string FilePath { get; }
+
+        public SaveBlfChangesCommand(CacheVersion version, CachePlatform platform, HaloOnlineBlf blf, string filePath)
             : base(true,
                   "SaveBlfChanges",
                   $"Saves changes made to the current {Path.GetFileName(filePath)} file instance.",
                   "SaveBlfChanges",                   
                   $"Saves changes made to the current {Path.GetFileName(filePath)} file instance.")
         {
-            Cache = cache;
+            Version = version;
+            Platform = platform;
             Blf = blf;
             FilePath = filePath;
         }
 
         public override object Execute(List<string> args) 
         {
-            var blfData = new Blf(Cache.Version, Cache.Platform)
+            var blfData = new Blf(Version, Platform)
             {
                 Format = Blf.Format,
                 ContentFlags = Blf.ContentFlags,
