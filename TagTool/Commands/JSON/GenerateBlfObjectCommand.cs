@@ -46,14 +46,19 @@ namespace TagTool.Commands.JSON
 
                 if (file.Name.EndsWith(".mapinfo"))
                 {
-                    if (reader.Length == 20113)
+                    if (reader.Length == 0x4E91)
                     {
                         blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
                     }
 
-                    if (reader.Length == 39425)
+                    if (reader.Length == 0x9A01)
                     {
                         blfData = new Blf(CacheVersion.Halo3ODST, Cache.Platform);
+                    }
+
+                    if (reader.Length == 0xCDD9)
+                    {
+                        blfData = new Blf(CacheVersion.HaloReach, Cache.Platform);
                     }
                 }
 

@@ -605,6 +605,7 @@ namespace TagTool.BlamFile
         [TagField(Length = 0xC)]
         public NameUnicode128[] Descriptions;
 
+        [Flags]
         public enum BlfScenarioInsertionFlags : byte
         {
             None = 0,

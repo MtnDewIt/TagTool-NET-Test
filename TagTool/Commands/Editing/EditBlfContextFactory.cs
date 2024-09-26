@@ -17,7 +17,7 @@ namespace TagTool.Commands.Editing
 
             var blfDefinition = new HaloOnlineBlf(blf);
 
-            var structure = TagStructure.GetTagStructureInfo(blfDefinition.GetType(), cache.Version, cache.Platform);
+            var structure = TagStructure.GetTagStructureInfo(blfDefinition.GetType(), blf.Version, blf.CachePlatform);
 
             commandContext.AddCommand(new ListFieldsCommand(cache, structure, blfDefinition));
             commandContext.AddCommand(new SetFieldCommand(contextStack, cache, blfDefinition, structure, blfDefinition));
