@@ -88,6 +88,8 @@ namespace TagTool.Commands.Editing
                                 case EndianFormat.BigEndian:
                                     switch (reader.Length) 
                                     {
+                                        // May need to add extra cases as the EOF chunk size differs slightly for some reason
+                                        case 0xE1E9:
                                         case 0xE1F0:
                                             blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
                                             break;

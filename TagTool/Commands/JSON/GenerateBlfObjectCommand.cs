@@ -6,6 +6,7 @@ using TagTool.Cache.HaloOnline;
 using TagTool.IO;
 using TagTool.JSON.Objects;
 using TagTool.JSON.Handlers;
+using System;
 
 namespace TagTool.Commands.JSON
 {
@@ -42,27 +43,68 @@ namespace TagTool.Commands.JSON
             {
                 var reader = new EndianReader(stream);
 
-                if (file.Name.EndsWith(".mapinfo"))
+                var format = GetEndianFormat(reader);
+
+                switch (file.Extension) 
                 {
-                    if (reader.Length == 0x4E91)
-                    {
-                        blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
-                    }
-
-                    if (reader.Length == 0x9A01)
-                    {
-                        blfData = new Blf(CacheVersion.Halo3ODST, Cache.Platform);
-                    }
-
-                    if (reader.Length == 0xCDD9)
-                    {
-                        blfData = new Blf(CacheVersion.HaloReach, Cache.Platform);
-                    }
-                }
-
-                if (file.Name.EndsWith(".campaign"))
-                {
-                    ExportPath = $@"data\levels";
+                    case ".mapinfo":
+                        switch (reader.Length)
+                        {
+                            case 0x4E91:
+                                blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
+                                break;
+                            case 0x9A01:
+                                blfData = new Blf(CacheVersion.Halo3ODST, Cache.Platform);
+                                break;
+                            case 0xCDD9:
+                                blfData = new Blf(CacheVersion.HaloReach, Cache.Platform);
+                                break;
+                            default:
+                                blfData = new Blf(Cache.Version, Cache.Platform);
+                                break;
+                        }
+                        break;
+                    case ".map":
+                        switch (format)
+                        {
+                            case EndianFormat.BigEndian:
+                                switch (reader.Length)
+                                {
+                                    // May need to add extra cases as the EOF chunk size differs slightly for some reason
+                                    case 0xE1E9:
+                                    case 0xE1F0:
+                                        blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
+                                        break;
+                                    default:
+                                        blfData = new Blf(Cache.Version, Cache.Platform);
+                                        break;
+                                }
+                                break;
+                            case EndianFormat.LittleEndian:
+                                blfData = new Blf(CacheVersion.HaloOnlineED, Cache.Platform);
+                                break;
+                            default:
+                                blfData = new Blf(Cache.Version, Cache.Platform);
+                                break;
+                        }
+                        break;
+                    case ".campaign":
+                        ExportPath = $@"data\levels";
+                        break;
+                    default:
+                        switch (format)
+                        {
+                            case EndianFormat.BigEndian:
+                                blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
+                                break;
+                            case EndianFormat.LittleEndian:
+                                blfData = new Blf(CacheVersion.HaloOnlineED, Cache.Platform);
+                                break;
+                            default:
+                                blfData = new Blf(Cache.Version, Cache.Platform);
+                                break;
+                        }
+                        break;
                 }
 
                 blfData.Read(reader);
@@ -89,6 +131,33 @@ namespace TagTool.Commands.JSON
             }
 
             return true;
+        }
+
+        public EndianFormat GetEndianFormat(EndianReader reader)
+        {
+            reader.Format = EndianFormat.LittleEndian;
+            var startOfFile = reader.Position;
+            reader.SeekTo(startOfFile + 0xC);
+            if (reader.ReadInt16() == -2)
+            {
+                reader.SeekTo(startOfFile);
+                return EndianFormat.LittleEndian;
+            }
+            else
+            {
+                reader.SeekTo(startOfFile + 0xC);
+                reader.Format = EndianFormat.BigEndian;
+                if (reader.ReadInt16() == -2)
+                {
+                    reader.SeekTo(startOfFile);
+                    return EndianFormat.BigEndian;
+                }
+                else
+                {
+                    reader.SeekTo(startOfFile);
+                    throw new Exception("Invalid BOM found in BLF start of file chunk");
+                }
+            }
         }
     }
 }

@@ -37,6 +37,9 @@ namespace TagTool.BlamFile
 
         [TagField(Length = 80)]
         public int[] SimulationEntities;
+
+        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Halo3Retail)]
+        public byte[] Padding2;
     }
 
     [TagStructure(Size = 0x54)]
