@@ -31,8 +31,6 @@ namespace TagTool.Commands.JSON
 
         public override object Execute(List<string> args)
         {
-            var handler = new BlfObjectHandler(Cache);
-
             var file = new FileInfo(args[0]);
             var blfData = new Blf(Cache.Version, Cache.Platform);
 
@@ -75,6 +73,8 @@ namespace TagTool.Commands.JSON
                     FileType = fileExtension,
                     Blf = blfData,
                 };
+
+                var handler = new BlfObjectHandler(blfData.Version, blfData.CachePlatform);
 
                 var jsonData = handler.Serialize(blfObject);
 

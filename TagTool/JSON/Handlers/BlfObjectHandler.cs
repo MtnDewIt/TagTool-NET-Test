@@ -1,25 +1,25 @@
-﻿using TagTool.Cache.HaloOnline;
-using TagTool.Cache;
+﻿using TagTool.Cache;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using TagTool.JSON.Handlers;
 using TagTool.JSON.Objects;
 
 namespace TagTool.JSON.Handlers
 {
     public class BlfObjectHandler
     {
-        private GameCache Cache;
+        private CacheVersion Version;
+        private CachePlatform Platform;
 
         private static List<JsonConverter> Converters;
 
-        public BlfObjectHandler(GameCache cache)
+        public BlfObjectHandler(CacheVersion version, CachePlatform platform)
         {
-            Cache = cache;
+            Version = version;
+            Platform = platform;
 
             Converters = new List<JsonConverter>
             {
-                new TagStructureHandler(Cache),
+                new TagStructureHandler(Version, Platform),
 
                 // I really need to merge all these into a single handler which just takes a generic type as an input :/
                 new AngleHandler(),

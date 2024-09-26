@@ -1,4 +1,3 @@
-using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 using TagTool.Tags;
 using Newtonsoft.Json;
@@ -12,7 +11,8 @@ namespace TagTool.JSON.Handlers
 {
     public class TagStructureHandler : JsonConverter<TagStructure>
     {
-        private GameCache Cache;
+        private CacheVersion Version;
+        private CachePlatform Platform;
 
         private HashSet<Type> ExludedTypes = new HashSet<Type>
         {
@@ -31,14 +31,15 @@ namespace TagTool.JSON.Handlers
             $@"ScriptSourceFileReferences",
         };
 
-        public TagStructureHandler(GameCache cache)
+        public TagStructureHandler(CacheVersion version, CachePlatform platform)
         {
-            Cache = cache;
+            Version = version;
+            Platform = platform;
         }
 
         public override void WriteJson(JsonWriter writer, TagStructure value, JsonSerializer serializer)
         {
-            var structureInfo = TagStructure.GetTagStructureInfo(value.GetType(), Cache.Version, Cache.Platform);
+            var structureInfo = TagStructure.GetTagStructureInfo(value.GetType(), Version, Platform);
 
             writer.WriteStartObject();
 

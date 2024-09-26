@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
-using TagTool.JSON.Handlers;
 using TagTool.JSON.Objects;
 
 namespace TagTool.JSON.Handlers
@@ -22,7 +20,7 @@ namespace TagTool.JSON.Handlers
             Converters = new List<JsonConverter>
             {
                 new StringIdHandler(Cache, CacheContext),
-                new TagStructureHandler(Cache),
+                new TagStructureHandler(Cache.Version, Cache.Platform),
 
                 // I really need to merge all these into a single handler which just takes a generic type as an input :/
                 new AngleHandler(),

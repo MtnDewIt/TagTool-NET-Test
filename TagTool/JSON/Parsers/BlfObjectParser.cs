@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 using TagTool.IO;
 using TagTool.BlamFile;
@@ -19,7 +18,7 @@ namespace TagTool.JSON.Parsers
             Cache = cache;
             CacheContext = cacheContext;
             CacheStream = cacheStream;
-            Handler = new BlfObjectHandler(Cache);
+            Handler = new BlfObjectHandler(Cache.Version, Cache.Platform);
         }
 
         public void ParseFile(string filePath)
