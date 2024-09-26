@@ -35,11 +35,8 @@ namespace TagTool.BlamFile
         [TagField(Length = 0x100)]
         public VariantObjectQuota[] Quotas;
 
-        [TagField(Length = 31)]
+        [TagField(Length = 80)]
         public int[] SimulationEntities;
-
-        [TagField(Length = 0xC4, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding2;
     }
 
     [TagStructure(Size = 0x54)]
