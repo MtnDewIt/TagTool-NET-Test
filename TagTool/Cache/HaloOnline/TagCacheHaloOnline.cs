@@ -306,8 +306,9 @@ namespace TagTool.Cache.HaloOnline
             }
 
             data.ResourcePointerOffsets.AddRange(tag.ResourcePointerOffsets.Select(offset => offset - startOffset));
-
+#if !DONKEY
             data.TagReferenceOffsets.AddRange(tag.TagReferenceOffsets.Select(offset => offset - startOffset));
+#endif
 
             data.MainStructOffset -= startOffset;
             dataOffset = startOffset;
