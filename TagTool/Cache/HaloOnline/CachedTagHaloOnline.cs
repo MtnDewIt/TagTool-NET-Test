@@ -99,11 +99,7 @@ namespace TagTool.Cache.HaloOnline
             var numDependencies = reader.ReadUInt16();              // 0x08 int16  dependencies count
             var numDataFixups = reader.ReadUInt16();                // 0x0A int16  data fixup count
             var numResourceFixups = reader.ReadUInt16();            // 0x0C int16  resource fixup count
-#if DONKEY
-            reader.BaseStream.Position += 2;                       // 0x0E int16  (padding)
-#else
             var numTagReferenceFixups = reader.ReadUInt16();        // 0x0E int16  tag reference fixup count(was padding)
-#endif
             Offset = reader.ReadUInt32();                // 0x10 uint32 main struct offset
             var groupTag = new Tag(reader.ReadInt32());            // 0x14 int32  group tag
             var parentGroupTag = new Tag(reader.ReadInt32());      // 0x18 int32  parent group tag
@@ -128,11 +124,9 @@ namespace TagTool.Cache.HaloOnline
             _resourceOffsets = new List<uint>(numResourceFixups);
             for (var j = 0; j < numResourceFixups; j++)
                 _resourceOffsets.Add(PointerToOffset(reader.ReadUInt32()));
-#if !DONKEY
             _tagReferenceOffsets = new List<uint>(numTagReferenceFixups);
             for (var i = 0; i < numTagReferenceFixups; i++)
                 _tagReferenceOffsets.Add(PointerToOffset(reader.ReadUInt32()));
-#endif
         }
 
         /// <summary>
@@ -147,11 +141,7 @@ namespace TagTool.Cache.HaloOnline
             writer.Write((ushort)Dependencies.Count);
             writer.Write((ushort)PointerOffsets.Count);
             writer.Write((ushort)ResourcePointerOffsets.Count);
-#if DONKEY
-            writer.Write((ushort)0);
-#else
             writer.Write((ushort)TagReferenceOffsets.Count);
-#endif
             writer.Write(DefinitionOffset);
             writer.Write(Group.Tag.Value);
             writer.Write(Group.ParentTag.Value);
@@ -163,11 +153,7 @@ namespace TagTool.Cache.HaloOnline
                 writer.Write(dependency);
 
             // Write offsets
-#if DONKEY
-            foreach (var offset in _pointerOffsets.Concat(_resourceOffsets))      
-#else
             foreach (var offset in _pointerOffsets.Concat(_resourceOffsets).Concat(_tagReferenceOffsets))
-#endif
                 writer.Write(OffsetToPointer(offset));
         }
 
@@ -177,26 +163,15 @@ namespace TagTool.Cache.HaloOnline
         /// <param name="data">The descriptor to use.</param>
         /// <returns>The size of the tag's header.</returns>
         internal static uint CalculateHeaderSize(CachedTagData data) =>
-#if DONKEY
-        (uint)(TagHeaderSize + 
-            data.Dependencies.Count * 4 + 
-            data.PointerFixups.Count * 4 + 
-            data.ResourcePointerOffsets.Count * 4);
-#else
-        (uint)(TagHeaderSize +
-            data.Dependencies.Count * 4 +
-            data.PointerFixups.Count * 4 +
-            data.ResourcePointerOffsets.Count * 4 +
-            data.TagReferenceOffsets.Count * 4);
-#endif
+            (uint)(TagHeaderSize +
+                data.Dependencies.Count * 4 +
+                data.PointerFixups.Count * 4 +
+                data.ResourcePointerOffsets.Count * 4 +
+                data.TagReferenceOffsets.Count * 4);
 
         public uint CalculateHeaderSize()
         {
-#if DONKEY
-            var size = (uint)(TagHeaderSize + Dependencies.Count * 4 + _pointerOffsets.Count * 4 + _resourceOffsets.Count * 4);
-#else
             var size = (uint)(TagHeaderSize + Dependencies.Count * 4 + _pointerOffsets.Count * 4 + _resourceOffsets.Count * 4 + _tagReferenceOffsets.Count * 4);
-#endif
             return (uint)((size + 0xF) & ~0xF);  // align to 0x10
         }
 
@@ -212,9 +187,7 @@ namespace TagTool.Cache.HaloOnline
             Dependencies = new ReadOnlySet<int>(new HashSet<int>(data.Dependencies));
             _pointerOffsets = data.PointerFixups.Select(fixup => fixup.WriteOffset + dataOffset).ToList();
             _resourceOffsets = data.ResourcePointerOffsets.Select(offset => offset + dataOffset).ToList();
-#if !DONKEY
             _tagReferenceOffsets = data.TagReferenceOffsets.Select(offset => offset + dataOffset).ToList();
-#endif
         }
 
         public void AddResourceOffset(uint offset)

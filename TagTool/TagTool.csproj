@@ -17,7 +17,6 @@
     <DocumentationFile>obj\$(Platform)\$(ConfigurationName)\$(TargetFramework)\Documentation.xml</DocumentationFile>
     <Deterministic>false</Deterministic>
     <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
-    <Configurations>Debug;Release;Donkey</Configurations>
     <Platforms>x86;x64</Platforms>
     <Configuration>Release</Configuration> <!--Default value-->
     <Platform>x64</Platform> <!--Default value-->

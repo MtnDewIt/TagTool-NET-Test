@@ -174,9 +174,7 @@ namespace TagTool.Serialization
                 // Adjust fixups and add them to the tag
                 _context.Data.PointerFixups.AddRange(_fixups.Select(f => FinalizeFixup(f, dataOffset)));
                 _context.Data.ResourcePointerOffsets.AddRange(_resourceOffsets.Select(o => o + dataOffset));
-#if !DONKEY
                 _context.Data.TagReferenceOffsets.AddRange(_tagReferenceOffsets.Select(o => o + dataOffset));
-#endif
 
                 // Free the block data
                 Writer.Close();
