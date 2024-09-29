@@ -23,6 +23,12 @@ namespace TagTool.BlamFile.MCC
         public class ModIdentifierInfo
         {
             public Guid ModGuid;
+            public HostedModInfo HostedModIds;
+        }
+
+        public class HostedModInfo 
+        {
+            public long SteamWorkshopId;
         }
 
         public class VersionInfo
