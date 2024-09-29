@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TagTool.Tags;
+using TagTool.Tags.Definitions;
 
 namespace TagTool.BlamFile.MCC
 {
@@ -26,9 +27,9 @@ namespace TagTool.BlamFile.MCC
             Count = 3,
         }
 
-        public void ConvertMultiplayerMapInfo(BlfScenario scenario) 
+        public void ConvertMultiplayerMapInfo(BlfScenario scenario, Scenario scnr) 
         {
-            //scenario.MapId = GetMapId(ScenarioFile);
+            scenario.MapId = scnr.MapId;
 
             var parsedTitle = Title.ParseLocalizedString(31, "Title");
             var parsedDescription = Description.ParseLocalizedString(127, "Description");
@@ -50,19 +51,20 @@ namespace TagTool.BlamFile.MCC
 
             GameCategory.ConvertGameCategoryIndexes(MaximumTeamsByGameCategory, scenario.GameEngineTeamCounts);
 
-            //scenario.MapFlags = BlfScenarioFlags.GeneratesFilm;
-            //switch (scnr.MapType)
-            //{
-            //    case ScenarioMapType.MainMenu:
-            //        scenario.MapFlags |= BlfScenarioFlags.IsMainmenu;
-            //        break;
-            //    case ScenarioMapType.Multiplayer:
-            //        scenario.MapFlags |= BlfScenarioFlags.IsMultiplayer;
-            //        break;
-            //    case ScenarioMapType.SinglePlayer:
-            //        scenario.MapFlags |= BlfScenarioFlags.IsCampaign;
-            //        break;
-            //}
+            scenario.MapFlags = BlfScenarioFlags.GeneratesFilm;
+
+            switch (scnr.MapType)
+            {
+                case ScenarioMapType.MainMenu:
+                    scenario.MapFlags |= BlfScenarioFlags.IsMainmenu;
+                    break;
+                case ScenarioMapType.Multiplayer:
+                    scenario.MapFlags |= BlfScenarioFlags.IsMultiplayer;
+                    break;
+                case ScenarioMapType.SinglePlayer:
+                    scenario.MapFlags |= BlfScenarioFlags.IsCampaign;
+                    break;
+            }
 
             if (Flags.Contains(MapFlags.ForgeMap))
                 scenario.MapFlags |= BlfScenarioFlags.IsForgeOnly;

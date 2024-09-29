@@ -3,13 +3,13 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using TagTool.BlamFile;
 using TagTool.BlamFile.HaloOnline;
 using TagTool.BlamFile.MCC;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.IO;
+using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Files
 {
@@ -23,7 +23,8 @@ namespace TagTool.Commands.Files
                   $"ImportMapInfo",
                   $"Import's the specified map info data into the current {mapFile.Header.GetName()}.map file instance",
                   $"ImportMapInfo <map info path>",
-                  $"Import's the specified map info data into the current {mapFile.Header.GetName()}.map file instance")
+                  $"Import's the specified map info data into the current {mapFile.Header.GetName()}.map file instance\n" +
+                  $"Assumes that the scenario associated with the map info data exists in the cache before importing")
         {
             Cache = cache;
             MapFile = mapFile;
@@ -49,23 +50,32 @@ namespace TagTool.Commands.Files
                 {
                     var multiplayerMapInfo = JsonConvert.DeserializeObject<MultiplayerMapInfo>(jsonData);
 
-                    multiplayerMapInfo.ConvertMultiplayerMapInfo(MapFile.Blf.Scenario);
+                    if (!GetScenarioDefinition(multiplayerMapInfo.ScenarioFile, out var scnr))
+                        return new TagToolError(CommandError.TagInvalid, $"Could not find \"{multiplayerMapInfo.ScenarioFile}.scnr\"");
+
+                    multiplayerMapInfo.ConvertMultiplayerMapInfo(MapFile.Blf.Scenario, scnr);
                 }
                 else if (jsonObject.ContainsKey("CampaignMapKind") && jsonObject.ContainsKey("CampaignMetagame"))
                 {
                     var campaignMapInfo = JsonConvert.DeserializeObject<CampaignMapInfo>(jsonData);
 
-                    campaignMapInfo.ConvertCampaignMapInfo(MapFile.Blf.Scenario);
+                    if (!GetScenarioDefinition(campaignMapInfo.ScenarioFile, out var scnr))
+                        return new TagToolError(CommandError.TagInvalid, $"Could not find \"{campaignMapInfo.ScenarioFile}.scnr\"");
+
+                    campaignMapInfo.ConvertCampaignMapInfo(MapFile.Blf.Scenario, scnr);
                 }
                 else if (jsonObject.ContainsKey("MapDefaultPrimaryWeapon") && !jsonObject.ContainsKey("MapDefaultPrimaryWeaponForge"))
                 {
                     var firefightMapInfo = JsonConvert.DeserializeObject<FirefightMapInfo>(jsonData);
 
-                    firefightMapInfo.ConvertFirefightMapInfo(MapFile.Blf.Scenario);
+                    if (!GetScenarioDefinition(firefightMapInfo.ScenarioFile, out var scnr))
+                        return new TagToolError(CommandError.TagInvalid, $"Could not find \"{firefightMapInfo.ScenarioFile}.scnr\"");
+
+                    firefightMapInfo.ConvertFirefightMapInfo(MapFile.Blf.Scenario, scnr);
                 }
                 else
                 {
-                    throw new InvalidOperationException("Invalid JSON structure");
+                    return new InvalidOperationException("Invalid JSON structure");
                 }
             }
 
@@ -88,7 +98,7 @@ namespace TagTool.Commands.Files
                             version = CacheVersion.HaloReach;
                             break;
                         default:
-                            throw new Exception("Unexpected map info file size");
+                            return new Exception("Unexpected map info file size");
                     }
                     
                     var mapInfo = new Blf(version, CachePlatform.Original);
@@ -100,6 +110,22 @@ namespace TagTool.Commands.Files
             }
 
             return true;
+        }
+
+        public bool GetScenarioDefinition(string scenarioPath, out Scenario scnr)
+        {
+            var stream = Cache.OpenCacheRead();
+
+            if (Cache.TagCache.TryGetTag<Scenario>(scenarioPath, out var tag))
+            {
+                scnr = Cache.Deserialize<Scenario>(stream, tag);
+                return true;
+            }
+            else 
+            {
+                scnr = null;
+                return false;
+            }
         }
     }
 }
