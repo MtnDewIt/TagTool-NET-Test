@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TagTool.BlamFile;
 using TagTool.BlamFile.HaloOnline;
 using TagTool.BlamFile.MCC;
@@ -51,7 +52,7 @@ namespace TagTool.Commands.Files
                     var multiplayerMapInfo = JsonConvert.DeserializeObject<MultiplayerMapInfo>(jsonData);
 
                     if (!GetScenarioDefinition(multiplayerMapInfo.ScenarioFile, out var scnr))
-                        return new TagToolError(CommandError.TagInvalid, $"Could not find \"{multiplayerMapInfo.ScenarioFile}.scnr\"");
+                        return new TagToolError(CommandError.TagInvalid, $"Could not find scenario associated with \"{file.Name}\"");
 
                     multiplayerMapInfo.ConvertMultiplayerMapInfo(MapFile.Blf.Scenario, scnr);
                 }
@@ -60,7 +61,7 @@ namespace TagTool.Commands.Files
                     var campaignMapInfo = JsonConvert.DeserializeObject<CampaignMapInfo>(jsonData);
 
                     if (!GetScenarioDefinition(campaignMapInfo.ScenarioFile, out var scnr))
-                        return new TagToolError(CommandError.TagInvalid, $"Could not find \"{campaignMapInfo.ScenarioFile}.scnr\"");
+                        return new TagToolError(CommandError.TagInvalid, $"Could not find scenario associated with \"{file.Name}\"");
 
                     campaignMapInfo.ConvertCampaignMapInfo(MapFile.Blf.Scenario, scnr);
                 }
@@ -69,7 +70,7 @@ namespace TagTool.Commands.Files
                     var firefightMapInfo = JsonConvert.DeserializeObject<FirefightMapInfo>(jsonData);
 
                     if (!GetScenarioDefinition(firefightMapInfo.ScenarioFile, out var scnr))
-                        return new TagToolError(CommandError.TagInvalid, $"Could not find \"{firefightMapInfo.ScenarioFile}.scnr\"");
+                        return new TagToolError(CommandError.TagInvalid, $"Could not find scenario associated with \"{file.Name}\"");
 
                     firefightMapInfo.ConvertFirefightMapInfo(MapFile.Blf.Scenario, scnr);
                 }
@@ -116,16 +117,19 @@ namespace TagTool.Commands.Files
         {
             var stream = Cache.OpenCacheRead();
 
-            if (Cache.TagCache.TryGetTag<Scenario>(scenarioPath, out var tag))
+            var scnrName = scenarioPath.Split("/").Last();
+
+            foreach (var scenario in Cache.TagCache.FindAllInGroup("scnr")) 
             {
-                scnr = Cache.Deserialize<Scenario>(stream, tag);
-                return true;
+                if (scenario.Name.EndsWith(scnrName)) 
+                {
+                    scnr = Cache.Deserialize<Scenario>(stream, scenario);
+                    return true;
+                }
             }
-            else 
-            {
-                scnr = null;
-                return false;
-            }
+
+            scnr = null;
+            return false;
         }
     }
 }

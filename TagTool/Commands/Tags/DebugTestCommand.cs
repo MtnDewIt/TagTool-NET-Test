@@ -13,6 +13,7 @@ using TagTool.IO;
 using TagTool.BlamFile;
 using Newtonsoft.Json;
 using TagTool.BlamFile.MCC;
+using System.Linq;
 
 namespace TagTool.Commands.Tags
 {
@@ -39,57 +40,57 @@ namespace TagTool.Commands.Tags
 
         public override object Execute(List<string> args)
         {
-            var parentFiles = Directory.GetFiles(args[0], $@"*.json");
+            var stream = Cache.OpenCacheRead();
 
-            foreach (var file in parentFiles) 
+            var jsonData = File.ReadAllText(Path.Combine(args[0], "ModInfo.json"));
+            var modInfo = JsonConvert.DeserializeObject<ModInfo>(jsonData);
+            var mapInfoList = modInfo.GetMapInfoList(args[0]);
+
+            foreach (var scenario in Cache.TagCache.FindAllInGroup("scnr"))
             {
-                var jsonData = File.ReadAllText(file);
-
-                if (file.EndsWith($@"CampaignInfo.json"))
+                foreach (var mapInfo in mapInfoList)
                 {
-                    var campaignInfo = JsonConvert.DeserializeObject<CampaignInfo>(jsonData);
-
-                    if (campaignInfo.CampaignMaps != null) 
+                    if (scenario.Name.EndsWith(mapInfo.Key))
                     {
-                        foreach (var map in campaignInfo.CampaignMaps)
-                        {
-                            var path = Path.Combine(args[0], map);
-                            var mapInfo = File.ReadAllText(path);
+                        var scnr = Cache.Deserialize<Scenario>(stream, scenario);
+                        var blfScenario = GenerateMapInfo(mapInfo.Value, scnr);
 
-                            var campaignMapInfo = JsonConvert.DeserializeObject<CampaignMapInfo>(mapInfo);
-                        }
-                    }
-                }
-
-                if (file.EndsWith($@"ModInfo.json"))
-                {
-                    var modInfo = JsonConvert.DeserializeObject<ModInfo>(jsonData);
-
-                    if (modInfo.GameModContents.MultiplayerMaps != null) 
-                    {
-                        foreach (var map in modInfo.GameModContents.MultiplayerMaps)
-                        {
-                            var path = Path.Combine(args[0], map);
-                            var mapInfo = File.ReadAllText(path);
-
-                            var multiplayerMapInfo = JsonConvert.DeserializeObject<MultiplayerMapInfo>(mapInfo);
-                        }
-                    }
-
-                    if (modInfo.GameModContents.FirefightMaps != null) 
-                    {
-                        foreach (var map in modInfo.GameModContents.FirefightMaps)
-                        {
-                            var path = Path.Combine(args[0], map);
-                            var mapInfo = File.ReadAllText(path);
-
-                            var firefightMapInfo = JsonConvert.DeserializeObject<FirefightMapInfo>(mapInfo);
-                        }
+                        Console.WriteLine(blfScenario.Names[0].Name);
                     }
                 }
             }
 
             return true;
+        }
+
+        public BlfScenario GenerateMapInfo(object mapInfo, Scenario scnr)
+        {
+            var scenario = new BlfScenario()
+            {
+                Signature = "levl",
+                Length = (int)TagStructure.GetStructureSize(typeof(BlfScenario), Cache.Version, Cache.Platform),
+                MajorVersion = 3,
+                MinorVersion = 1,
+                Names = Enumerable.Range(0, 12).Select(x => new NameUnicode32 { Name = "" }).ToArray(),
+                Descriptions = Enumerable.Range(0, 12).Select(x => new NameUnicode128 { Name = "" }).ToArray(),
+            };
+
+            switch (mapInfo)
+            {
+                case CampaignMapInfo campaignMapInfo:
+                    campaignMapInfo.ConvertCampaignMapInfo(scenario, scnr);
+                    break;
+
+                case MultiplayerMapInfo multiplayerMapInfo:
+                    multiplayerMapInfo.ConvertMultiplayerMapInfo(scenario, scnr);
+                    break;
+
+                case FirefightMapInfo firefightMapInfo:
+                    firefightMapInfo.ConvertFirefightMapInfo(scenario, scnr);
+                    break;
+            }
+
+            return scenario;
         }
     }
 }
