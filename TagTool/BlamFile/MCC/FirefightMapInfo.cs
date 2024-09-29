@@ -29,24 +29,13 @@ namespace TagTool.BlamFile.MCC
                 scenario.Descriptions[i].Name = parsedDescription;
 
             scenario.ScenarioPath = ScenarioFile;
-            scenario.ImageFileBase = $"m_{ScenarioFile.Split('\\').Last()}";
 
-            //scenario.MinimumDesiredPlayers = 2;
-            //scenario.MaximumDesiredPlayers = 6;
-            //scenario.GameEngineTeamCounts = new GameEngineTeams
-            //{
-            //    NoGametypeTeamCount = 0,
-            //    CtfTeamCount = 2,
-            //    SlayerTeamCount = 8,
-            //    OddballTeamCount = 8,
-            //    KingTeamCount = 8,
-            //    SandboxTeamCount = 8,
-            //    VipTeamCount = 8,
-            //    JuggernautTeamCount = 8,
-            //    TerritoriesTeamCount = 4,
-            //    AssaultTeamCount = 2,
-            //    InfectionTeamCount = 8,
-            //};
+            var fileName = ScenarioFile.Split('\\').Last();
+            scenario.ImageFileBase = $"m_{fileName}";
+
+            scenario.MinimumDesiredPlayers = 2;
+            scenario.MaximumDesiredPlayers = 6;
+            scenario.GameEngineTeamCounts = GameCategory.DefaultTeamCounts;
 
             //scenario.MapFlags = BlfScenarioFlags.GeneratesFilm;
             //switch (scnr.MapType)

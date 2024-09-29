@@ -38,6 +38,21 @@ namespace TagTool.BlamFile.MCC
             GameCategory_Count = 28,
         }
 
+        public static GameEngineTeams DefaultTeamCounts = new GameEngineTeams 
+        {
+            NoGametypeTeamCount = 0,
+            CtfTeamCount = 2,
+            SlayerTeamCount = 8,
+            OddballTeamCount = 8,
+            KingTeamCount = 8,
+            SandboxTeamCount = 8,
+            VipTeamCount = 8,
+            JuggernautTeamCount = 8,
+            TerritoriesTeamCount = 4,
+            AssaultTeamCount = 2,
+            InfectionTeamCount = 8,
+        };
+
         public static void ConvertGameCategoryIndexes(Dictionary<GameCategoryIndex, byte> gameCategories, GameEngineTeams gameEngineTeams)
         {
             gameEngineTeams = new GameEngineTeams
