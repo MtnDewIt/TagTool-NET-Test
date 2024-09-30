@@ -21,9 +21,12 @@ namespace TagTool.Commands.Files
 
         public ImportMapInfoCommand(GameCache cache, HaloOnlineMapFile mapFile)
             : base(true,
+
                   $"ImportMapInfo",
                   $"Import's the specified map info data into the current {mapFile.Header.GetName()}.map file instance",
+
                   $"ImportMapInfo <map info path>",
+
                   $"Import's the specified map info data into the current {mapFile.Header.GetName()}.map file instance\n" +
                   $"Assumes that the scenario associated with the map info data exists in the cache before importing")
         {
