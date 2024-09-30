@@ -77,13 +77,17 @@ namespace TagTool.Commands.Files
                     MapFile map;
                     Blf mapInfo = null;
 
-                    if (pathProvided && !isExcessionData)
+                    if (pathProvided)
                     {
-                        mapInfo = GetMapInfo(mapInfoPath, mapInfoName);
-                    }
-                    else if (pathProvided)
-                    {
-                        mapInfo = GenerateMapInfo(cacheStream, scenario, mapInfoPath, modInfoPath);
+                        if (isExcessionData)
+                        {
+                            var mapInfoBuilder = new MapInfoBuilder(Cache);
+                            mapInfo = mapInfoBuilder.GenerateMapInfo(cacheStream, scenario, mapInfoPath, modInfoPath);
+                        }
+                        else 
+                        {
+                            mapInfo = GetMapInfo(mapInfoPath, mapInfoName);
+                        }
                     }
 
                     try
@@ -147,13 +151,17 @@ namespace TagTool.Commands.Files
                     MapFile map;
                     Blf mapInfo = null;
 
-                    if (pathProvided && !isExcessionData)
+                    if (pathProvided)
                     {
-                        mapInfo = GetMapInfo(mapInfoPath, mapInfoName);
-                    }
-                    else if (pathProvided) 
-                    {
-                        mapInfo = GenerateMapInfo(cacheStream, scenario, mapInfoPath, modInfoPath);
+                        if (isExcessionData)
+                        {
+                            var mapInfoBuilder = new MapInfoBuilder(Cache);
+                            mapInfo = mapInfoBuilder.GenerateMapInfo(cacheStream, scenario, mapInfoPath, modInfoPath);
+                        }
+                        else
+                        {
+                            mapInfo = GetMapInfo(mapInfoPath, mapInfoName);
+                        }
                     }
 
                     var tagStream = Cache.OpenCacheRead();
@@ -216,80 +224,6 @@ namespace TagTool.Commands.Files
                     mapInfo.ConvertBlf(Cache.Version);
 
                     return mapInfo;
-                }
-            }
-
-            return null;
-        }
-
-        public BlfScenario GenerateScenario(object mapInfo, Scenario scnr)
-        {
-            var scenario = new BlfScenario()
-            {
-                Signature = "levl",
-                Length = (int)TagStructure.GetStructureSize(typeof(BlfScenario), Cache.Version, Cache.Platform),
-                MajorVersion = 3,
-                MinorVersion = 1,
-                Names = Enumerable.Range(0, 12).Select(x => new NameUnicode32 { Name = "" }).ToArray(),
-                Descriptions = Enumerable.Range(0, 12).Select(x => new NameUnicode128 { Name = "" }).ToArray(),
-            };
-
-            switch (mapInfo)
-            {
-                case CampaignMapInfo campaignMapInfo:
-                    campaignMapInfo.ConvertCampaignMapInfo(scenario, scnr);
-                    break;
-
-                case MultiplayerMapInfo multiplayerMapInfo:
-                    multiplayerMapInfo.ConvertMultiplayerMapInfo(scenario, scnr);
-                    break;
-
-                case FirefightMapInfo firefightMapInfo:
-                    firefightMapInfo.ConvertFirefightMapInfo(scenario, scnr);
-                    break;
-            }
-
-            return scenario;
-        }
-
-        public Blf GenerateMapInfo(Stream stream, CachedTag scenario, string mapInfoPath, string modInfoPath) 
-        {
-            var jsonData = File.ReadAllText(modInfoPath);
-            var modInfo = JsonConvert.DeserializeObject<ModInfo>(jsonData);
-            var mapInfoList = modInfo.GetMapInfoList(mapInfoPath);
-
-            foreach (var mapInfo in mapInfoList)
-            {
-                if (scenario.Name.EndsWith(mapInfo.Key))
-                {
-                    var scnr = Cache.Deserialize<Scenario>(stream, scenario);
-                    var blfScenario = GenerateScenario(mapInfo.Value, scnr);
-
-                    var mapBlf = new Blf(Cache.Version, Cache.Platform)
-                    {
-                        ContentFlags = BlfFileContentFlags.StartOfFile | BlfFileContentFlags.EndOfFile | BlfFileContentFlags.Scenario,
-
-                        StartOfFile = new BlfChunkStartOfFile 
-                        {
-                            Signature = "_blf",
-                            Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkStartOfFile), Cache.Version, Cache.Platform),
-                            MajorVersion = 1,
-                            MinorVersion = 2,
-                            ByteOrderMarker = -2,
-                        },
-
-                        EndOfFile = new BlfChunkEndOfFile 
-                        {
-                            Signature = "_eof",
-                            Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkEndOfFile), Cache.Version, Cache.Platform),
-                            MajorVersion = 1,
-                            MinorVersion = 2
-                        },
-
-                        Scenario = blfScenario,
-                    };
-
-                    return mapBlf;
                 }
             }
 
