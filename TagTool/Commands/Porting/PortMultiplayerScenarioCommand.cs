@@ -439,7 +439,6 @@ namespace TagTool.Commands.Porting
             {
                 var porttag = new PortTagCommand(destCache, srcCache);
                 porttag.SetFlags(portingFlags);
-                porttag.InitAsync();
 
                 var sldtTag = scnr.Lightmap;
                 tagRenamer.Rename(sldtTag, $"{scenarioPath}_faux_lightmap");

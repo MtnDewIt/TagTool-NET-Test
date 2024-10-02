@@ -60,7 +60,9 @@ namespace TagTool.Commands.Porting
 
             foreach (var tagType in CacheContext.TagCache.TagDefinitions.Types.Keys)
                 DefaultTags[tagType.Tag] = CacheContext.TagCache.FindFirstInGroup(tagType.Tag);
-		}
+
+            InitAsync();
+        }
 
 		public override object Execute(List<string> args)
 		{
@@ -72,8 +74,6 @@ namespace TagTool.Commands.Porting
 			argParameters = ParsePortingOptions(portingOptions);
 
 			var initialStringIdCount = CacheContext.StringTableHaloOnline.Count;
-
-            InitAsync();
 
             CachedTagData.Clear();
 
@@ -119,10 +119,13 @@ namespace TagTool.Commands.Porting
 
             FinishAsync();
             ProcessDeferredActions();
-         
+
 
 			if (ScenarioPort && FlagIsSet(PortingFlags.UpdateMapFiles))
 				new UpdateMapFilesCommand(CacheContext).Execute(new List<string> { });
+
+            // Don't know if this is the only variable that should be reset upon completion
+            ScenarioPort = false;
 
             return true;
 		}

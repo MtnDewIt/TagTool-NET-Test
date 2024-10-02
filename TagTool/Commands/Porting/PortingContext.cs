@@ -18,7 +18,6 @@ namespace TagTool.Commands.Porting
         public PortingContext(GameCacheHaloOnlineBase cacheContext, GameCache blamCache, Stream cacheStream)
         {
             PortTagContext = new PortTagCommand(cacheContext, blamCache);
-            PortTagContext.InitAsync();
 
             CacheStream = cacheStream;
         }
