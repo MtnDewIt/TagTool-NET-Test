@@ -56,8 +56,16 @@ namespace TagTool.Cache.Resources
 
         public List<ZoneResourceUsage> GlobalResourceUsage;
 
-        [TagField(Flags = TagFieldFlags.Padding, Length = 96)]
-        public byte[] Unused = new byte[96];
+        public ResourceBlock BSPGameAttachmentsBlock;
+        public ResourceBlock ModelVariantZonesBlock;
+
+        public List<ZoneManifestDialogue> CombatDialogueZoneManifests;
+
+        public ResourceBlock TagZonesBlock;
+        public ResourceBlock DebugResourceDefinitionsBlock;
+        public ResourceBlock ResourceLayoutsBlock;
+        public ResourceBlock ResourcePropertiesBlock;
+        public ResourceBlock ParentagesBlock;
 
         public List<PredictionQuantum> PredictionQuanta;
         public List<PredictionAtom> PredictionAtoms;
