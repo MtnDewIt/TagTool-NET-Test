@@ -9,22 +9,26 @@ using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
 using System;
+using System.Linq;
 
 namespace TagTool.Commands.Files
 {
     class ConvertVariantCommand : Command
     {
         private GameCache Cache;
-        private string OutputPath;
+
+        private string OutputPath = "";
+
+        private Dictionary<int, string> TagMap;
 
         public ConvertVariantCommand(GameCache cache) : base
         (
-            false,
+            true,
             "ConvertVariant",
-            "Converts all ElDewrito 0.6 map variants in the specified path",
+            "Converts all ElDewrito 0.6 variants in the specified path",
             
             "ConvertVariant <input directory> [output directory]",
-            "Converts all ElDewrito 0.6 map variants in the specified path"
+            "Converts all ElDewrito 0.6 variants in the specified path"
         )
         {
             Cache = cache;
@@ -34,9 +38,20 @@ namespace TagTool.Commands.Files
         {
             if (Cache.Version == CacheVersion.HaloOnlineED)
             {
-                // TODO: Parse Input Data
+                if (args.Count == 2)
+                {
+                    OutputPath = args[1];
+                }
+                else if (args.Count == 1)
+                {
+                    OutputPath = "";
+                }
+                else
+                {
+                    new TagToolError(CommandError.ArgCount);
+                }
 
-                ConvertMaps(args[1]);
+                ConvertMaps(args[0]);
             }
             else 
             {
@@ -48,7 +63,57 @@ namespace TagTool.Commands.Files
 
         private void ConvertMaps(string targetDirectory) 
         {
-            // TODO: Add logic to handle BLF conversion
+            // TODO: Get files based on file type
+            // TODO: Create a map of valid file extensions
+            foreach (string filePath in Directory.GetFiles(targetDirectory)) 
+            {
+                FileInfo input = new FileInfo(filePath);
+
+                var blf = new Blf(Cache.Version, Cache.Platform);
+
+                using (var stream = input.OpenRead()) 
+                {
+                    var reader = new EndianReader(stream);
+
+                    FixBlfEndianness(stream);
+
+                    blf.Read(reader);
+
+                    if (blf.MapVariant == null)
+                        return;
+
+                    if (blf.MapVariantTagNames == null) 
+                    {
+                        ConvertBlf(blf);
+                    }
+
+                    if (blf.EndOfFile == null)
+                    {
+                        blf.EndOfFile = new BlfChunkEndOfFile()
+                        {
+                            Signature = new Tag("_eof"),
+                            Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkEndOfFile), blf.Version, Cache.Platform),
+                            MajorVersion = 1,
+                            MinorVersion = 1,
+                        };
+                        blf.ContentFlags |= BlfFileContentFlags.EndOfFile;
+                    }
+                }
+
+                var output = new FileInfo(Path.Combine(OutputPath, $@"maps", $@"{blf.MapVariant.MapVariant.Metadata.Name}\sandbox.map"));
+
+                if (!output.Directory.Exists)
+                {
+                    output.Directory.Create();
+                }
+
+                using (var stream = output.Create())
+                {
+                    var writer = new EndianWriter(stream);
+
+                    blf.Write(writer);
+                }
+            }
 
             foreach (string subdirectory in Directory.GetDirectories(targetDirectory))
             {
@@ -91,6 +156,29 @@ namespace TagTool.Commands.Files
             writer.Format = EndianFormat.LittleEndian;
             writer.Write((short)-2);
             stream.Position = 0;
+        }
+
+        private void ConvertBlf(Blf blf) 
+        {
+            blf.MapVariantTagNames = new BlfMapVariantTagNames()
+            {
+                Signature = new Tag("tagn"),
+                Length = (int)TagStructure.GetStructureSize(typeof(BlfMapVariantTagNames), blf.Version, CachePlatform.Original),
+                MajorVersion = 1,
+                MinorVersion = 0,
+                Names = Enumerable.Range(0, 256).Select(x => new TagName()).ToArray(),
+            };
+            blf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
+
+            for (int i = 0; i < blf.MapVariant.MapVariant.Quotas.Length; i++) 
+            {
+                var objectIndex = blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex;
+
+                if (objectIndex == -1)
+                    continue;
+
+                // TODO: Add parser to convert 0.6 object indexes to 0.7 object indexes
+            }
         }
     }
 }
