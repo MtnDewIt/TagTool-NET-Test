@@ -74,6 +74,7 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new GenerateBlfObjectCommand(cache, cache as GameCacheHaloOnline));
             context.AddCommand(new GenerateMapObjectCommand(cache, cache as GameCacheHaloOnline));
             context.AddCommand(new GenerateTagObjectCommand(cache, cache as GameCacheHaloOnline));
+            context.AddCommand(new ConvertVariantCommand(cache));
 
             context.AddCommand(new EditBlfCommand(contextStack, cache as GameCacheHaloOnline, cache));
 
