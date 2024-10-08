@@ -10,6 +10,7 @@ using TagTool.Serialization;
 using TagTool.Tags;
 using System;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace TagTool.Commands.Files
 {
@@ -20,6 +21,20 @@ namespace TagTool.Commands.Files
         private string OutputPath = "";
 
         private Dictionary<int, string> TagMap;
+
+        private static string[] ValidExtensions = new string[]
+        {
+            ".assault",
+            ".ctf",
+            ".jugg",
+            ".koth",
+            ".oddball",
+            ".slayer",
+            ".terries",
+            ".vip",
+            ".zombiez",
+            ".map"
+        };
 
         public ConvertVariantCommand(GameCache cache) : base
         (
@@ -63,11 +78,11 @@ namespace TagTool.Commands.Files
 
         private void ConvertMaps(string targetDirectory) 
         {
-            // TODO: Get files based on file type
-            // TODO: Create a map of valid file extensions
-            foreach (string filePath in Directory.GetFiles(targetDirectory)) 
+            foreach (string filePath in Directory.GetFiles(targetDirectory).Where(file => ValidExtensions.Contains(Path.GetExtension(file).ToLower()))) 
             {
                 FileInfo input = new FileInfo(filePath);
+
+                FileInfo output = null;
 
                 var blf = new Blf(Cache.Version, Cache.Platform);
 
@@ -100,7 +115,10 @@ namespace TagTool.Commands.Files
                     }
                 }
 
-                var output = new FileInfo(Path.Combine(OutputPath, $@"maps", $@"{blf.MapVariant.MapVariant.Metadata.Name}\sandbox.map"));
+                if (!input.Name.EndsWith(".map"))
+                    output = new FileInfo(Path.Combine(OutputPath, $@"game_variants", $@"{blf.ContentHeader.Metadata.Name}", $@"{input.Name}"));
+                else 
+                    output = new FileInfo(Path.Combine(OutputPath, $@"map_variants", $@"{blf.ContentHeader.Metadata.Name}", $@"{input.Name}"));
 
                 if (!output.Directory.Exists)
                 {
@@ -160,6 +178,10 @@ namespace TagTool.Commands.Files
 
         private void ConvertBlf(Blf blf) 
         {
+            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}061_mapping.json");
+
+            TagMap = JsonConvert.DeserializeObject<Dictionary<int, string>>(jsonData);
+
             blf.MapVariantTagNames = new BlfMapVariantTagNames()
             {
                 Signature = new Tag("tagn"),
@@ -177,7 +199,10 @@ namespace TagTool.Commands.Files
                 if (objectIndex == -1)
                     continue;
 
-                // TODO: Add parser to convert 0.6 object indexes to 0.7 object indexes
+                if (TagMap.TryGetValue(objectIndex, out string name)) 
+                {
+                    blf.MapVariantTagNames.Names[i] = new TagName() { Name = name };
+                }
             }
         }
     }
