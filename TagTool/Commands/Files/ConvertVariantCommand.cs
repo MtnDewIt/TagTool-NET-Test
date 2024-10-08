@@ -66,7 +66,7 @@ namespace TagTool.Commands.Files
                     new TagToolError(CommandError.ArgCount);
                 }
 
-                ConvertMaps(args[0]);
+                ProcessDirectory(args[0]);
             }
             else 
             {
@@ -76,66 +76,82 @@ namespace TagTool.Commands.Files
             return true;
         }
 
-        private void ConvertMaps(string targetDirectory) 
+        public void ProcessDirectory(string targetDirectory)
         {
             foreach (string filePath in Directory.GetFiles(targetDirectory).Where(file => ValidExtensions.Contains(Path.GetExtension(file).ToLower()))) 
             {
-                FileInfo input = new FileInfo(filePath);
-
-                FileInfo output = null;
-
-                var blf = new Blf(Cache.Version, Cache.Platform);
-
-                using (var stream = input.OpenRead()) 
+                try
                 {
-                    var reader = new EndianReader(stream);
-
-                    FixBlfEndianness(stream);
-
-                    blf.Read(reader);
-
-                    if (blf.MapVariant == null)
-                        return;
-
-                    if (blf.MapVariantTagNames == null) 
-                    {
-                        ConvertBlf(blf);
-                    }
-
-                    if (blf.EndOfFile == null)
-                    {
-                        blf.EndOfFile = new BlfChunkEndOfFile()
-                        {
-                            Signature = new Tag("_eof"),
-                            Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkEndOfFile), blf.Version, Cache.Platform),
-                            MajorVersion = 1,
-                            MinorVersion = 1,
-                        };
-                        blf.ContentFlags |= BlfFileContentFlags.EndOfFile;
-                    }
+                    ConvertFile(filePath);
                 }
-
-                if (!input.Name.EndsWith(".map"))
-                    output = new FileInfo(Path.Combine(OutputPath, $@"game_variants", $@"{blf.ContentHeader.Metadata.Name}", $@"{input.Name}"));
-                else 
-                    output = new FileInfo(Path.Combine(OutputPath, $@"map_variants", $@"{blf.ContentHeader.Metadata.Name}", $@"{input.Name}"));
-
-                if (!output.Directory.Exists)
+                catch
                 {
-                    output.Directory.Create();
-                }
-
-                using (var stream = output.Create())
-                {
-                    var writer = new EndianWriter(stream);
-
-                    blf.Write(writer);
+                    new TagToolError(CommandError.OperationFailed, $"An error occured when trying to convert \"{filePath}\"\n");
                 }
             }
 
             foreach (string subdirectory in Directory.GetDirectories(targetDirectory))
             {
-                ConvertMaps(subdirectory);
+                ProcessDirectory(subdirectory);
+            }
+        }
+
+        private void ConvertFile(string filePath) 
+        {
+            FileInfo input = new FileInfo(filePath);
+
+            FileInfo output = null;
+
+            var blf = new Blf(Cache.Version, Cache.Platform);
+
+            var variantName = "";
+
+            using (var stream = input.Open(FileMode.Open, FileAccess.ReadWrite))
+            {
+                var reader = new EndianReader(stream);
+
+                FixBlfEndianness(stream);
+
+                blf.Read(reader);
+
+                if (blf.MapVariantTagNames == null && blf.MapVariant != null)
+                {
+                    ConvertBlf(blf);
+                }
+
+                if (blf.EndOfFile == null)
+                {
+                    blf.EndOfFile = new BlfChunkEndOfFile()
+                    {
+                        Signature = new Tag("_eof"),
+                        Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkEndOfFile), blf.Version, Cache.Platform),
+                        MajorVersion = 1,
+                        MinorVersion = 1,
+                    };
+                    blf.ContentFlags |= BlfFileContentFlags.EndOfFile;
+                }
+
+                if (blf.ContentHeader != null) 
+                {
+                    variantName = blf.ContentHeader.Metadata.Name;
+                }
+            }
+
+            if (!input.Name.EndsWith(".map"))
+                output = new FileInfo(Path.Combine(OutputPath, $@"game_variants", $@"{variantName}", $@"variant{input.Extension}"));
+            else
+                output = new FileInfo(Path.Combine(OutputPath, $@"map_variants", $@"{variantName}", "sandbox.map"));
+
+            if (!output.Directory.Exists)
+            {
+                output.Directory.Create();
+            }
+
+            using (var stream = output.Create())
+            {
+                var writer = new EndianWriter(stream);
+
+                blf.Write(writer);
             }
         }
 
