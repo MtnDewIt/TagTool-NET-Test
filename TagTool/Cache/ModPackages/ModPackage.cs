@@ -57,7 +57,11 @@ namespace TagTool.Cache
 
         public void Dispose()
         {
-            Marshal.FreeHGlobal(Data);
+            if (Data != default) 
+            {
+                Marshal.FreeHGlobal(Data);
+                Data = default;
+            }
 
             foreach(ExtantStream stream in TagCachesStreams)
             {
@@ -66,6 +70,17 @@ namespace TagTool.Cache
             }
             ResourcesStream.SetDisposable(true);
             ResourcesStream.Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
+        ~ModPackage()
+        {
+            if (Data != default)
+            {
+                Marshal.FreeHGlobal(Data);
+                Data = default;
+            }
         }
 
         public ModPackage(FileInfo file = null, bool unmanagedResourceStream=false)
