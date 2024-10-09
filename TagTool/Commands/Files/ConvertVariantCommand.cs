@@ -11,18 +11,17 @@ using TagTool.Tags;
 using System;
 using System.Linq;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace TagTool.Commands.Files
 {
     class ConvertVariantCommand : Command
     {
         private GameCache Cache;
-
         private string OutputPath = "";
-
         private Dictionary<int, string> TagMap;
 
-        private static string[] ValidExtensions = new string[]
+        private static readonly string[] ValidExtensions =
         {
             ".assault",
             ".ctf",
@@ -51,107 +50,76 @@ namespace TagTool.Commands.Files
 
         public override object Execute(List<string> args)
         {
-            if (Cache.Version == CacheVersion.HaloOnlineED)
-            {
-                if (args.Count == 2)
-                {
-                    OutputPath = args[1];
-                }
-                else if (args.Count == 1)
-                {
-                    OutputPath = "";
-                }
-                else
-                {
-                    new TagToolError(CommandError.ArgCount);
-                }
-
-                ProcessDirectory(args[0]);
-            }
-            else 
+            if (Cache.Version != CacheVersion.HaloOnlineED) 
             {
                 new TagToolError(CommandError.CacheUnsupported, $"Unsupported Cache Version: {Cache.Version}");
             }
 
+            OutputPath = args.Count > 1 ? args[1] : "";
+            ProcessDirectoryAsync(args[0]).GetAwaiter().GetResult();
+
             return true;
         }
 
-        public void ProcessDirectory(string targetDirectory)
+        public async Task ProcessDirectoryAsync(string targetDirectory)
         {
-            foreach (string filePath in Directory.GetFiles(targetDirectory).Where(file => ValidExtensions.Contains(Path.GetExtension(file).ToLower()))) 
-            {
-                try
-                {
-                    ConvertFile(filePath);
-                }
-                catch
-                {
-                    new TagToolError(CommandError.OperationFailed, $"An error occured when trying to convert \"{filePath}\"\n");
-                }
-            }
+            var files = Directory.EnumerateFiles(targetDirectory, "*.*", SearchOption.AllDirectories).Where(file => ValidExtensions.Contains(Path.GetExtension(file).ToLower()));
 
-            foreach (string subdirectory in Directory.GetDirectories(targetDirectory))
-            {
-                ProcessDirectory(subdirectory);
-            }
+            var tasks = files.Select(filePath => ConvertFileAsync(filePath));
+            await Task.WhenAll(tasks);
         }
 
-        private void ConvertFile(string filePath) 
+        private async Task ConvertFileAsync(string filePath)
         {
-            FileInfo input = new FileInfo(filePath);
-
-            FileInfo output = null;
-
+            var input = new FileInfo(filePath);
             var blf = new Blf(Cache.Version, Cache.Platform);
 
             var variantName = "";
 
-            using (var stream = input.Open(FileMode.Open, FileAccess.ReadWrite))
+            try
             {
-                var reader = new EndianReader(stream);
-
-                FixBlfEndianness(stream);
-
-                blf.Read(reader);
-
-                if (blf.MapVariantTagNames == null && blf.MapVariant != null)
+                using (var stream = input.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.Read))
                 {
-                    ConvertBlf(blf);
-                }
+                    var reader = new EndianReader(stream);
 
-                if (blf.EndOfFile == null)
-                {
-                    blf.EndOfFile = new BlfChunkEndOfFile()
+                    FixBlfEndianness(stream);
+
+                    if (!blf.Read(reader))
+                        throw new Exception("Unable to parse BLF variant");
+
+                    if (blf.MapVariantTagNames == null && blf.MapVariant != null)
                     {
-                        Signature = new Tag("_eof"),
-                        Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkEndOfFile), blf.Version, Cache.Platform),
-                        MajorVersion = 1,
-                        MinorVersion = 1,
-                    };
-                    blf.ContentFlags |= BlfFileContentFlags.EndOfFile;
+                        ConvertBlf(blf);
+                    }
+
+                    if (blf.EndOfFile == null)
+                    {
+                        blf.EndOfFile = new BlfChunkEndOfFile()
+                        {
+                            Signature = new Tag("_eof"),
+                            Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkEndOfFile), blf.Version, Cache.Platform),
+                            MajorVersion = 1,
+                            MinorVersion = 1,
+                        };
+                        blf.ContentFlags |= BlfFileContentFlags.EndOfFile;
+                    }
+
+                    variantName = blf.ContentHeader?.Metadata?.Name ?? "";
                 }
 
-                if (blf.ContentHeader != null) 
+                var output = GetOutputPath(input, variantName);
+
+                Directory.CreateDirectory(Path.GetDirectoryName(output));
+
+                using (var stream = new FileInfo(output).Create())
                 {
-                    variantName = blf.ContentHeader.Metadata.Name;
+                    var writer = new EndianWriter(stream);
+                    blf.Write(writer);
                 }
             }
-
-            if (!input.Name.EndsWith(".map"))
-                output = new FileInfo(Path.Combine(OutputPath, $@"game_variants", $@"{variantName}", $@"variant{input.Extension}"));
-            else
-                output = new FileInfo(Path.Combine(OutputPath, $@"map_variants", $@"{variantName}", "sandbox.map"));
-
-            if (!output.Directory.Exists)
+            catch (Exception e)
             {
-                output.Directory.Create();
-            }
-
-            using (var stream = output.Create())
-            {
-                var writer = new EndianWriter(stream);
-
-                blf.Write(writer);
+                new TagToolError(CommandError.OperationFailed, $"Error converting \"{filePath}\": {e.Message}\n");
             }
         }
 
@@ -183,7 +151,7 @@ namespace TagTool.Commands.Files
                 if (header.Signature == "_eof")
                     break;
 
-                reader.BaseStream.Position += header.Length - typeof(BlfChunkHeader).GetSize();
+                reader.BaseStream.Position += header.Length - (int)TagStructure.GetStructureSize(typeof(BlfChunkHeader), Cache.Version, Cache.Platform);
             }
 
             stream.Position = 0xC;
@@ -194,9 +162,11 @@ namespace TagTool.Commands.Files
 
         private void ConvertBlf(Blf blf) 
         {
-            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}061_mapping.json");
-
-            TagMap = JsonConvert.DeserializeObject<Dictionary<int, string>>(jsonData);
+            if (TagMap == null) 
+            {
+                var jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}061_mapping.json");
+                TagMap = JsonConvert.DeserializeObject<Dictionary<int, string>>(jsonData);
+            }
 
             blf.MapVariantTagNames = new BlfMapVariantTagNames()
             {
@@ -212,14 +182,18 @@ namespace TagTool.Commands.Files
             {
                 var objectIndex = blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex;
 
-                if (objectIndex == -1)
-                    continue;
-
-                if (TagMap.TryGetValue(objectIndex, out string name)) 
+                if (objectIndex != -1 && TagMap.TryGetValue(objectIndex, out string name)) 
                 {
                     blf.MapVariantTagNames.Names[i] = new TagName() { Name = name };
                 }
             }
+        }
+
+        private string GetOutputPath(FileInfo input, string variantName)
+        {
+            string outputPath = input.Name.EndsWith(".map") ? Path.Combine(OutputPath, $@"map_variants", $@"{variantName}", "sandbox.map") : Path.Combine(OutputPath, $@"game_variants", $@"{variantName}", $@"variant{input.Extension}");
+
+            return outputPath;
         }
     }
 }
