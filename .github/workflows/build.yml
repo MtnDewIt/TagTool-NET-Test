@@ -7,6 +7,7 @@ on:
 jobs:
   build-win:
     env:
+      TARGET_FRAMEWORK: net8.0-windows
       PLATFORM: x64
 
     strategy:
@@ -44,11 +45,11 @@ jobs:
 
     - name: Build solution
       working-directory: ${{ env.GITHUB_WORKSPACE }}
-      run: msbuild TagTool.sln /t:rebuild /p:Platform=${{ env.PLATFORM }} /p:Configuration=${{ matrix.BUILD_CONFIGURATION }}
+      run: msbuild TagTool.sln /t:rebuild /p:Platform=${{ env.PLATFORM }} /p:Configuration=${{ matrix.BUILD_CONFIGURATION }} /p:TargetFramework=${{ env.TARGET_FRAMEWORK }}
 
     - name: Zip Release
       run: |
-        & "C:\Program Files\7-Zip\7z.exe" a ${{ matrix.BUILD_CONFIGURATION }}_${{ env.PLATFORM }}.7z ./TagTool/bin/${{ env.PLATFORM }}/${{ matrix.BUILD_CONFIGURATION }}/*
+        & "C:\Program Files\7-Zip\7z.exe" a ${{ matrix.BUILD_CONFIGURATION }}_${{ env.PLATFORM }}.7z ./TagTool/bin/${{ env.PLATFORM }}/${{ matrix.BUILD_CONFIGURATION }}/${{ env.TARGET_FRAMEWORK }}*
         
     - name: Create Release
       uses: softprops/action-gh-release@v1
