@@ -49,7 +49,7 @@ jobs:
 
     - name: Zip Release
       run: |
-        & "C:\Program Files\7-Zip\7z.exe" a release_x64.7z ./TagTool/bin/x64/Release/*
+        & "C:\Program Files\7-Zip\7z.exe" a ${{ matrix.BUILD_CONFIGURATION }}_${{ env.PLATFORM }}.7z ./bin/${{ matrix.BUILD_CONFIGURATION }}/*
         
     - name: Create Release
       uses: softprops/action-gh-release@v1
