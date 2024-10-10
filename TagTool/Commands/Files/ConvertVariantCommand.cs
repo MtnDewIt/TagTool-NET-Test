@@ -142,6 +142,7 @@ namespace TagTool.Commands.Files
             }
         }
 
+        // TODO: Enure that no data is written back to the original file, and that only the contents of the file stream are modified
         private void FixBlfEndianness(Stream stream)
         {
             var deserializer = new TagDeserializer(CacheVersion.HaloOnlineED, CachePlatform.Original);
