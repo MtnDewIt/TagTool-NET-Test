@@ -40,9 +40,6 @@ jobs:
     - name: Setup NuGet
       uses: NuGet/setup-nuget@v1.0.5
 
-    - name: Restore Packages
-      run: nuget restore TagTool.sln
-
     - name: Build solution
       working-directory: ${{ env.GITHUB_WORKSPACE }}
       run: msbuild TagTool.sln /t:rebuild /p:Platform=${{ env.PLATFORM }} /p:Configuration=${{ matrix.BUILD_CONFIGURATION }} /p:TargetFramework=${{ env.TARGET_FRAMEWORK }}
