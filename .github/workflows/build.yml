@@ -5,14 +5,22 @@ on:
     branches: [ "dev" ]
 
 jobs:
-  build:
+  build-win:
+    env:
+      SOLUTION_FILE_PATH: .
+      PLATFORM: x64
 
-    runs-on: windows-2022
+    strategy:
+      matrix:
+        BUILD_CONFIGURATION: [ Debug, Release ]
+
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: 'true'
+
+    - name: Initialize Submodules 
+      uses: snickerbockers/submodules-init@v4
 
     - name: Determine Version
       id: determine_version
@@ -20,24 +28,24 @@ jobs:
         $version = (git rev-parse --short=7 HEAD).Trim()
         Write-Output "Version determined: $version"
         Write-Host "::set-output name=version::$version"
+          
+    - name: Install 7Zip
+      run: |
+        Invoke-WebRequest -Uri "https://www.7-zip.org/a/7z1900-x64.msi" -OutFile "$env:TEMP\7z.msi"
+        Start-Process -Wait -FilePath msiexec -ArgumentList "/i", "$env:TEMP\7z.msi", "/quiet" 
 
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
 
     - name: Setup NuGet
       uses: NuGet/setup-nuget@v1.0.5
-      
-    - name: Install 7Zip
-      run: |
-        Invoke-WebRequest -Uri "https://www.7-zip.org/a/7z1900-x64.msi" -OutFile "$env:TEMP\7z.msi"
-        Start-Process -Wait -FilePath msiexec -ArgumentList "/i", "$env:TEMP\7z.msi", "/quiet" 
 
     - name: Restore Packages
       run: nuget restore TagTool.sln
 
-
     - name: Build solution
-      run: msbuild TagTool.sln -t:rebuild -property:Platform=x64 -property:Configuration=Release
+      working-directory: ${{ env.GITHUB_WORKSPACE }}
+      run: msbuild TagTool.sln /t:rebuild /p:Platform=${{ env.PLATFORM }} /p:Configuration=${{ matrix.BUILD_CONFIGURATION }} ${{ matrix.SOLUTION_FILE_PATH }}
 
     - name: Zip Release
       run: |
@@ -46,7 +54,7 @@ jobs:
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
-        files: release_x64.7z
+        files: ${{ matrix.BUILD_CONFIGURATION }}_${{ env.PLATFORM }}.7z
         tag_name: ${{ steps.determine_version.outputs.version }}
         draft: false
         prerelease: false
