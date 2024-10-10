@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace TagTool.Commands.Files
 {
@@ -20,6 +21,10 @@ namespace TagTool.Commands.Files
         private GameCache Cache;
         private string OutputPath = "";
         private Dictionary<int, string> TagMap;
+
+        private Stopwatch StopWatch = new Stopwatch();
+        private int FileCount = 0;
+        private List<string> ErrorLog = new List<string>();
 
         private static readonly string[] ValidExtensions =
         {
@@ -58,15 +63,29 @@ namespace TagTool.Commands.Files
             OutputPath = args.Count > 1 ? args[1] : "";
             ProcessDirectoryAsync(args[0]).GetAwaiter().GetResult();
 
+            Console.WriteLine($"{FileCount - ErrorLog.Count}/{FileCount} Variants Converted Successfully in {StopWatch.ElapsedMilliseconds.FormatMilliseconds()}\n");
+            Console.WriteLine($"ERROR LOG:");
+
+            foreach (var error in ErrorLog) 
+            {
+                Console.WriteLine(error);
+            }
+
             return true;
         }
 
         public async Task ProcessDirectoryAsync(string targetDirectory)
         {
+            StopWatch.Start();
+
             var files = Directory.EnumerateFiles(targetDirectory, "*.*", SearchOption.AllDirectories).Where(file => ValidExtensions.Contains(Path.GetExtension(file).ToLower()));
 
-            var tasks = files.Select(filePath => ConvertFileAsync(filePath));
+            FileCount = files.Count();
+
+            var tasks = files.Select(ConvertFileAsync);
             await Task.WhenAll(tasks);
+
+            StopWatch.Stop();
         }
 
         private async Task ConvertFileAsync(string filePath)
@@ -119,7 +138,7 @@ namespace TagTool.Commands.Files
             }
             catch (Exception e)
             {
-                new TagToolError(CommandError.OperationFailed, $"Error converting \"{filePath}\": {e.Message}\n");
+                ErrorLog.Add($"Error converting \"{filePath}\": {e.Message}");
             }
         }
 
@@ -193,7 +212,14 @@ namespace TagTool.Commands.Files
         {
             string outputPath = input.Name.EndsWith(".map") ? Path.Combine(OutputPath, $@"map_variants", $@"{variantName}", "sandbox.map") : Path.Combine(OutputPath, $@"game_variants", $@"{variantName}", $@"variant{input.Extension}");
 
-            return outputPath;
+            if (Path.Exists(outputPath))
+            {
+                throw new Exception("Duplicate Variant");
+            }
+            else 
+            {
+                return outputPath;
+            }
         }
     }
 }
