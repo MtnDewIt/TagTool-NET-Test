@@ -118,6 +118,9 @@ namespace TagTool.Commands.Editing
                 contextName = $"{blockName}[{blockIndex}]";
             }
 
+            if (blockValue == null)
+                return new TagToolError(CommandError.OperationFailed, $"Block \"{blockName}\" is null");
+
             var blockStructure = TagStructure.GetTagStructureInfo(blockValue.GetType(), Version, Platform);
 
             var blockContext = new CommandContext(ContextStack.Context, contextName);
