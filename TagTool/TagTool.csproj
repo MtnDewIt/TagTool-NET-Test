@@ -47,9 +47,9 @@
     <None Include="VideoUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Physics\**\*" Link="%(ProjectDir)%(OutDir)\Physics\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
-    <None Include="..\Tools\**\*" Link="%(ProjectDir)%(OutDir)\Tools\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
-    <None Include="..\ShaderGenerator\HaloShaderGenerator\bin\$(Platform)\$(ConfigurationName)\$(TargetFramework)\**\*" Link="%(ProjectDir)%(OutDir)\Tools\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+    <None Include="..\Physics\**\*" Link="Physics\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+    <None Include="..\Tools\**\*" Link="Tools\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+    <None Include="..\ShaderGenerator\HaloShaderGenerator\bin\$(Platform)\$(ConfigurationName)\$(TargetFramework)\**\*" Link="Tools\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
     <None Remove="..\Tools\meshoptimizer32.dll" />
     <None Remove="..\Tools\meshoptimizer64.dll" />
     <None Remove="..\Tools\fmod.dll" />
