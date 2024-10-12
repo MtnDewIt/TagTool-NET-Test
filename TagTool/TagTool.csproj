@@ -47,16 +47,13 @@
     <None Include="VideoUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Physics\**\*" Link="Physics\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
-    <None Include="..\Tools\**\*" Link="Tools\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
-    <None Include="..\ShaderGenerator\HaloShaderGenerator\bin\$(Platform)\$(ConfigurationName)\$(TargetFramework)\**\*" Link="Tools\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
     <None Remove="..\Tools\meshoptimizer32.dll" />
-    <None Remove="..\Tools\meshoptimizer64.dll" />
-    <None Remove="..\Tools\fmod.dll" />
-    <None Remove="..\Tools\fmod64.dll" />
     <None Include="..\Tools\meshoptimizer32.dll" Condition=" '$(Platform)' != 'x64' " Link="Tools\meshoptimizer.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+    <None Remove="..\Tools\meshoptimizer64.dll" />
     <None Include="..\Tools\meshoptimizer64.dll" Condition=" '$(Platform)' == 'x64' " Link="Tools\meshoptimizer.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+    <None Remove="..\Tools\fmod.dll" />
     <None Include="..\Tools\fmod.dll" Condition=" '$(Platform)' != 'x64' " Link="Tools\fmod.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+    <None Remove="..\Tools\fmod64.dll" />
     <None Include="..\Tools\fmod64.dll" Condition=" '$(Platform)' == 'x64' " Link="Tools\fmod.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
   </ItemGroup>
   <ItemGroup>
@@ -92,5 +89,15 @@
     <ItemGroup>
       <ReferenceCopyLocalPaths Remove="@(ReferenceSatellitePaths)" />
     </ItemGroup>
+  </Target>
+  <Target Name="PostBuild" AfterTargets="Build">
+    <ItemGroup>
+      <PhysicsFiles Include="..\Physics\**\*" />
+      <ToolsFiles Include="..\Tools\**\*" />
+      <ShaderFiles Include="..\ShaderGenerator\HaloShaderGenerator\bin\$(Platform)\$(ConfigurationName)\$(TargetFramework)\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PhysicsFiles)" DestinationFolder="$(OutDir)Physics\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(ToolsFiles)" DestinationFolder="$(OutDir)Tools\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(ShaderFiles)" DestinationFolder="$(OutDir)Tools\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
 </Project>
