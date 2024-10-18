@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
@@ -133,6 +135,8 @@ namespace TagTool.Commands.Porting.Gen2
                     break;
             }
 
+            if (newScenario.MapId < 0)
+                newScenario.MapId = CreateMapID(scenarioPath);
 
             // Starting Profiles
             AutoConverter.TranslateList(gen2Tag.PlayerStartingProfile, newScenario.PlayerStartingProfile);
@@ -279,6 +283,16 @@ namespace TagTool.Commands.Porting.Gen2
             newScenario.Lightmap = ConvertLightmap(rawgen2Tag, newScenario, scenarioPath, cacheStream, gen2CacheStream);
 
             return newScenario;
+        }
+
+        private int CreateMapID(string scenarioPath)
+        {
+            byte[] encoded = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(scenarioPath));
+            int output = BitConverter.ToInt32(encoded, 0) % 1000000;
+            if (output < 0)
+                output *= -1;
+
+            return output;
         }
 
         private void ConfigurePlayerStartingProfile(Scenario scnr, Gen2Scenario gen2scnr)
