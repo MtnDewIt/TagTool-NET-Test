@@ -253,5 +253,27 @@ namespace TagTool.Bitmaps
             }
             return count;
         }
+
+        public static void TrimLowestMipmaps(BaseBitmap resultBitmap)
+        {
+            int dataSize = 0;
+            int mipMapCount;
+            int width = resultBitmap.Width;
+            int height = resultBitmap.Height;
+            for (mipMapCount = 0; mipMapCount < resultBitmap.MipMapCount; mipMapCount++)
+            {
+                if (width < 4 || height < 4)
+                    break;
+
+                dataSize += RoundSize(width, 4) * RoundSize(height, 4);
+                width /= 2;
+                height /= 2;
+            }
+
+            resultBitmap.MipMapCount = mipMapCount;
+            byte[] raw = new byte[dataSize];
+            Array.Copy(resultBitmap.Data, raw, dataSize);
+            resultBitmap.Data = raw;
+        }
     }
 }

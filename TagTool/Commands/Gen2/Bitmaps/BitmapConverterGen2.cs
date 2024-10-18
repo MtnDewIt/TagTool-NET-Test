@@ -125,6 +125,9 @@ namespace TagTool.Commands.Gen2.Bitmaps
                     rawData[i + 3] = 0xFF;
                 }
 
+                // Prevent memory allocation crash
+                BitmapUtils.TrimLowestMipmaps(baseBitmap);
+
                 baseBitmap.Data = BitmapDecoder.EncodeBitmap(rawData, BitmapFormat.Dxn, image.Width, image.Height);
 
                 image.MipmapCount = (sbyte)(baseBitmap.MipMapCount - 1);
