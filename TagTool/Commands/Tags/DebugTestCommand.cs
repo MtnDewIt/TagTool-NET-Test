@@ -40,17 +40,16 @@ namespace TagTool.Commands.Tags
 
         public override object Execute(List<string> args)
         {
+            var sceneryInstances = new Dictionary<int, Scenario.SceneryInstance>();
+            var machineInstances = new Dictionary<int, Scenario.MachineInstance>();
+
             using (var stream = Cache.OpenCacheReadWrite())
             {
                 var tag = CacheContext.TagCache.GetTag(args[0]);
                 var scnr = CacheContext.Deserialize<Scenario>(stream, tag);
 
                 var sLdT = CacheContext.Deserialize<ScenarioLightmap>(stream, scnr.Lightmap);
-                sLdT.Airprobes = new List<Airprobe>();
-
-                // TODO: Maybe loop through each lbsp in a given lightmap?
-                var lbsp = CacheContext.Deserialize<ScenarioLightmapBspData>(stream, sLdT.PerPixelLightmapDataReferences[0].LightmapBspData);
-                lbsp.Airprobes = new List<Airprobe>();
+                sLdT.Airprobes = new List<Airprobe>();                
                 
                 for (int i = 0; i < sLdT.SceneryLightProbes.Count; i++)
                 {
@@ -69,47 +68,12 @@ namespace TagTool.Commands.Tags
                         if (sceneryLightProbe.ObjectId.UniqueHandle == sceneryPlacement.UniqueHandle)
                         {
                             sLdT.Airprobes[i].Position = sceneryPlacement.Position;
-                            sceneryPlacement.UniqueHandle = DatumHandle.None;
 
-                            var sceneryObject = CacheContext.Deserialize<Scenery>(stream, scnr.SceneryPalette[sceneryPlacement.PaletteIndex].Object);
-                            var sceneryModel = CacheContext.Deserialize<Model>(stream, sceneryObject.Model);
-
-                            sceneryModel.Flags |= Model.FlagsValue.ModelUseAirprobeLighting;
-
-                            CacheContext.Serialize(stream, sceneryObject.Model, sceneryModel);
+                            sceneryInstances.TryAdd(j, sceneryPlacement);
                         }
                     }
                 }
-    
-                for (int i = 0; i < lbsp.SceneryLightProbes.Count; i++)
-                {
-                    var sceneryLightProbe = lbsp.SceneryLightProbes[i];
 
-                    lbsp.Airprobes.Add(new Airprobe
-                    {
-                        Name = CacheContext.StringTable.GetOrAddString($"scenery_airprobe_{i}"),
-                        LightProbe = sceneryLightProbe.LightProbe,
-                    });
-
-                    for (int j = 0; j < scnr.Scenery.Count; j++)
-                    {
-                        var sceneryPlacement = scnr.Scenery[j];
-
-                        if (sceneryLightProbe.ObjectId.UniqueHandle == sceneryPlacement.UniqueHandle)
-                        {
-                            lbsp.Airprobes[i].Position = sceneryPlacement.Position;
-                            sceneryPlacement.UniqueHandle = DatumHandle.None;
-
-                            var sceneryObject = CacheContext.Deserialize<Scenery>(stream, scnr.SceneryPalette[sceneryPlacement.PaletteIndex].Object);
-                            var sceneryModel = CacheContext.Deserialize<Model>(stream, sceneryObject.Model);
-
-                            sceneryModel.Flags |= Model.FlagsValue.ModelUseAirprobeLighting;
-
-                            CacheContext.Serialize(stream, sceneryObject.Model, sceneryModel);
-                        }
-                    }
-                }
-    
                 for (int i = 0; i < sLdT.MachineLightProbes.Count; i++)
                 {
                     var machineLightProbes = sLdT.MachineLightProbes[i];
@@ -131,60 +95,109 @@ namespace TagTool.Commands.Tags
                             if (machineLightProbes.ObjectId.UniqueHandle == machinePlacement.UniqueHandle)
                             {
                                 sLdT.Airprobes[sLdT.Airprobes.Count + j - 1].Position = machinePlacement.Position;
-                                machinePlacement.UniqueHandle = DatumHandle.None;
 
-                                var machineObject = CacheContext.Deserialize<DeviceMachine>(stream, scnr.MachinePalette[machinePlacement.PaletteIndex].Object);
-                                var machineModel = CacheContext.Deserialize<Model>(stream, machineObject.Model);
-
-                                machineModel.Flags |= Model.FlagsValue.ModelUseAirprobeLighting;
-
-                                CacheContext.Serialize(stream, machineObject.Model, machineModel);
+                                machineInstances.TryAdd(k, machinePlacement);
                             }
                         }
                     }
                 }
-    
-                for (int i = 0; i < lbsp.MachineLightProbes.Count; i++)
-                {
-                    var machineLightProbes = lbsp.MachineLightProbes[i];
 
-                    for (int j = 0; j < machineLightProbes.LightProbes.Count; j++)
+                for (int i = 0; i < sLdT.PerPixelLightmapDataReferences.Count; i++) 
+                {
+                    var lbsp = CacheContext.Deserialize<ScenarioLightmapBspData>(stream, sLdT.PerPixelLightmapDataReferences[i].LightmapBspData);
+                    lbsp.Airprobes = new List<Airprobe>();
+
+                    for (int j = 0; j < lbsp.SceneryLightProbes.Count; j++) 
                     {
-                        var machineLightProbe = machineLightProbes.LightProbes[j];
+                        var sceneryLightProbe = lbsp.SceneryLightProbes[j];
 
                         lbsp.Airprobes.Add(new Airprobe
                         {
-                            Name = CacheContext.StringTable.GetOrAddString($"machine_airprobe_{i}"),
-                            LightProbe = machineLightProbe.LightProbe,
+                            Name = CacheContext.StringTable.GetOrAddString($"scenery_airprobe_{j}"),
+                            LightProbe = sceneryLightProbe.LightProbe,
                         });
 
-                        for (int k = 0; k < scnr.Machines.Count; k++)
+                        for (int k = 0; k < scnr.Scenery.Count; k++) 
                         {
-                            var machinePlacement = scnr.Machines[k];
+                            var sceneryPlacement = scnr.Scenery[k];
 
-                            if (machineLightProbes.ObjectId.UniqueHandle == machinePlacement.UniqueHandle)
+                            if (sceneryLightProbe.ObjectId.UniqueHandle == sceneryPlacement.UniqueHandle)
                             {
-                                lbsp.Airprobes[lbsp.Airprobes.Count + j - 1].Position = machinePlacement.Position;
-                                machinePlacement.UniqueHandle = DatumHandle.None;
+                                lbsp.Airprobes[j].Position = sceneryPlacement.Position;
 
-                                var machineObject = CacheContext.Deserialize<DeviceMachine>(stream, scnr.MachinePalette[machinePlacement.PaletteIndex].Object);
-                                var machineModel = CacheContext.Deserialize<Model>(stream, machineObject.Model);
-
-                                machineModel.Flags |= Model.FlagsValue.ModelUseAirprobeLighting;
-
-                                CacheContext.Serialize(stream, machineObject.Model, machineModel);
+                                sceneryInstances.TryAdd(k, sceneryPlacement);
                             }
                         }
                     }
+
+                    for (int j = 0; j < lbsp.MachineLightProbes.Count; j++) 
+                    {
+                        var machineLightProbes = lbsp.MachineLightProbes[j];
+
+                        for (int k = 0; k < machineLightProbes.LightProbes.Count; k++) 
+                        {
+                            var machineLightProbe = machineLightProbes.LightProbes[k];
+
+                            lbsp.Airprobes.Add(new Airprobe
+                            {
+                                Name = CacheContext.StringTable.GetOrAddString($"machine_airprobe_{j}"),
+                                LightProbe = machineLightProbe.LightProbe,
+                            });
+
+                            for (int l = 0; l < scnr.Machines.Count; l++) 
+                            {
+                                var machinePlacement = scnr.Machines[l];
+
+                                if (machineLightProbes.ObjectId.UniqueHandle == machinePlacement.UniqueHandle)
+                                {
+                                    lbsp.Airprobes[lbsp.Airprobes.Count + k - 1].Position = machinePlacement.Position;
+
+                                    machineInstances.TryAdd(l, machinePlacement);
+                                }
+                            }
+                        }
+                    }
+
+                    lbsp.SceneryLightProbes = null;
+                    lbsp.MachineLightProbes = null;
+
+                    CacheContext.Serialize(stream, sLdT.PerPixelLightmapDataReferences[i].LightmapBspData, lbsp);
+                }
+
+                foreach (var placement in sceneryInstances)
+                {
+                    var placementIndex = placement.Key;
+                    var placementInstance = placement.Value;
+
+                    scnr.Scenery[placementIndex].UniqueHandle = DatumHandle.None;
+
+                    var sceneryObject = CacheContext.Deserialize<Scenery>(stream, scnr.SceneryPalette[placementInstance.PaletteIndex].Object);
+                    var sceneryModel = CacheContext.Deserialize<Model>(stream, sceneryObject.Model);
+
+                    sceneryModel.Flags |= Model.FlagsValue.ModelUseAirprobeLighting;
+
+                    CacheContext.Serialize(stream, sceneryObject.Model, sceneryModel);
+                }
+
+                foreach (var placement in machineInstances)
+                {
+                    var placementIndex = placement.Key;
+                    var placementInstance = placement.Value;
+
+                    scnr.Machines[placementIndex].UniqueHandle = DatumHandle.None;
+
+                    var machineObject = CacheContext.Deserialize<DeviceMachine>(stream, scnr.MachinePalette[placementInstance.PaletteIndex].Object);
+                    var machineModel = CacheContext.Deserialize<Model>(stream, machineObject.Model);
+
+                    machineModel.Flags |= Model.FlagsValue.ModelUseAirprobeLighting;
+
+                    CacheContext.Serialize(stream, machineObject.Model, machineModel);
                 }
 
                 sLdT.SceneryLightProbes = null;
                 sLdT.MachineLightProbes = null;
-                lbsp.SceneryLightProbes = null;
-                lbsp.MachineLightProbes = null;
 
                 CacheContext.Serialize(stream, scnr.Lightmap, sLdT);
-                CacheContext.Serialize(stream, sLdT.PerPixelLightmapDataReferences[0].LightmapBspData, lbsp);
                 CacheContext.Serialize(stream, tag, scnr);
             }
 
