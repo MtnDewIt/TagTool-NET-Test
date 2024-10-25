@@ -73,26 +73,9 @@ namespace TagTool.BlamFile.MCC
                             Length = (int)TagStructure.GetStructureSize(typeof(BlfScenario), Cache.Version, Cache.Platform),
                             MajorVersion = 3,
                             MinorVersion = 1,
-                            Names = Enumerable.Range(0, 12)
-                            .Select(x => new NameUnicode32 { Name = "" })
-                            .ToArray(),
-
-                            Descriptions = Enumerable.Range(0, 12)
-                            .Select(x => new NameUnicode128 { Name = "" })
-                            .ToArray(),
-
-                            Insertions = Enumerable.Range(0, 9)
-                            .Select(X => new BlfScenarioInsertion 
-                            { 
-                                Names = Enumerable.Range(0, 12)
-                                .Select(x => new NameUnicode32 { Name = "" })
-                                .ToArray(), 
-
-                                Descriptions = Enumerable.Range(0, 12)
-                                .Select(x => new NameUnicode128 { Name = "" })
-                                .ToArray() 
-                            })
-                            .ToArray(),
+                            Names = Enumerable.Repeat(new NameUnicode32 { Name = "" }, 12).ToArray(),
+                            Descriptions = Enumerable.Repeat(new NameUnicode128 { Name = "" }, 12).ToArray(),
+                            Insertions = Enumerable.Repeat(new BlfScenarioInsertion { Names = Enumerable.Repeat(new NameUnicode32 { Name = "" }, 12).ToArray(), Descriptions = Enumerable.Repeat(new NameUnicode128 { Name = "" }, 12).ToArray() }, 9).ToArray(),
                         },
                     };
 

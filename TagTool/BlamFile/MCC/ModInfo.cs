@@ -84,41 +84,58 @@ namespace TagTool.BlamFile.MCC
                 var jsonData = File.ReadAllText(Path.Combine(path, "CampaignInfo.json"));
                 var campaignInfo = JsonConvert.DeserializeObject<CampaignInfo>(jsonData);
 
-                if (campaignInfo.CampaignMaps != null) 
-                {
-                    foreach (var map in campaignInfo.CampaignMaps)
-                    {
-                        var mapInfo = File.ReadAllText(Path.Combine(path, map));
-                        var campaignMapInfo = JsonConvert.DeserializeObject<CampaignMapInfo>(mapInfo);
-                        var campaignMapName = campaignMapInfo.ScenarioFile.Split("/").Last();
+                var campaignInfoTable = campaignInfo.GetCampaignMapInfo(path);
 
-                        mapInfoTable.Add(campaignMapName, campaignMapInfo);
-                    }
-                }
+                foreach (var campaignMapInfo in campaignInfoTable)
+                    mapInfoTable.Add(campaignMapInfo.Key, campaignMapInfo.Value);
             }
 
             if (GameModContents.MultiplayerMaps != null) 
             {
-                foreach (var map in GameModContents.MultiplayerMaps)
-                {
-                    var mapInfo = File.ReadAllText(Path.Combine(path, map));
-                    var multiplayerMapInfo = JsonConvert.DeserializeObject<MultiplayerMapInfo>(mapInfo);
-                    var multiplayerMapName = multiplayerMapInfo.ScenarioFile.Split("/").Last();
+                var multiplayerInfoTable = GetMultiplayerMapInfo(path);
 
-                    mapInfoTable.Add(multiplayerMapName, multiplayerMapInfo);
-                }
+                foreach (var multiplayerMapInfo in multiplayerInfoTable)
+                    mapInfoTable.Add(multiplayerMapInfo.Key, multiplayerMapInfo.Value);
             }
 
             if (GameModContents.FirefightMaps != null) 
             {
-                foreach (var map in GameModContents.FirefightMaps)
-                {
-                    var mapInfo = File.ReadAllText(Path.Combine(path, map));
-                    var firefightMapInfo = JsonConvert.DeserializeObject<FirefightMapInfo>(mapInfo);
-                    var firefightMapName = firefightMapInfo.ScenarioFile.Split("/").Last();
+                var firefightInfoTable = GetFirefightMapInfo(path);
 
-                    mapInfoTable.Add(firefightMapName, firefightMapInfo);
-                }
+                foreach (var firefightMapInfo in firefightInfoTable)
+                    mapInfoTable.Add(firefightMapInfo.Key, firefightMapInfo.Value);
+            }
+
+            return mapInfoTable;
+        }
+
+        public Dictionary<string, object> GetMultiplayerMapInfo(string path) 
+        {
+            var mapInfoTable = new Dictionary<string, object>();
+
+            foreach (var map in GameModContents.MultiplayerMaps)
+            {
+                var mapInfo = File.ReadAllText(Path.Combine(path, map));
+                var multiplayerMapInfo = JsonConvert.DeserializeObject<MultiplayerMapInfo>(mapInfo);
+                var multiplayerMapName = multiplayerMapInfo.ScenarioFile.Split("/").Last();
+
+                mapInfoTable.Add(multiplayerMapName, multiplayerMapInfo);
+            }
+
+            return mapInfoTable;
+        }
+
+        public Dictionary<string, object> GetFirefightMapInfo(string path) 
+        {
+            var mapInfoTable = new Dictionary<string, object>();
+
+            foreach (var map in GameModContents.FirefightMaps)
+            {
+                var mapInfo = File.ReadAllText(Path.Combine(path, map));
+                var firefightMapInfo = JsonConvert.DeserializeObject<FirefightMapInfo>(mapInfo);
+                var firefightMapName = firefightMapInfo.ScenarioFile.Split("/").Last();
+
+                mapInfoTable.Add(firefightMapName, firefightMapInfo);
             }
 
             return mapInfoTable;
