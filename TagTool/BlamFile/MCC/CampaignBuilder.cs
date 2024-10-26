@@ -42,10 +42,8 @@ namespace TagTool.BlamFile.MCC
                         }
                     }
                 }
-                else if (Cache is GameCacheModPackage)
+                else if (Cache is GameCacheModPackage modCache)
                 {
-                    var modCache = Cache as GameCacheModPackage;
-
                     for (int i = 0; i < modCache.BaseModPackage.GetTagCacheCount(); i++)
                     {
                         modCache.SetActiveTagCache(i);
@@ -79,9 +77,11 @@ namespace TagTool.BlamFile.MCC
                 var campaignJsonData = File.ReadAllText(Path.Combine(modInfoFile.DirectoryName, "CampaignInfo.json"));
                 var campaignInfo = JsonConvert.DeserializeObject<CampaignInfo>(campaignJsonData);
 
-                var campaignFileBuilder = new CampaignFileBuilder(Cache);
-                campaignFileBuilder.Name = campaignInfo.Title.Neutral;
-                campaignFileBuilder.Description = campaignInfo.Description.Neutral;
+                var campaignFileBuilder = new CampaignFileBuilder(Cache) 
+                {
+                    Name = campaignInfo.Title.Neutral,
+                    Description = campaignInfo.Description.Neutral,
+                };
 
                 var campaignBlf = campaignFileBuilder.GenerateCampaignBlf(false);
 

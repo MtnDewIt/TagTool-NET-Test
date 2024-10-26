@@ -77,10 +77,8 @@ namespace TagTool.BlamFile
                     }
                 }
             }
-            else if (Cache is GameCacheModPackage)
+            else if (Cache is GameCacheModPackage modCache)
             {
-                var modCache = Cache as GameCacheModPackage;
-
                 for (int i = 0; i < modCache.BaseModPackage.GetTagCacheCount(); i++)
                 {
                     modCache.SetActiveTagCache(i);

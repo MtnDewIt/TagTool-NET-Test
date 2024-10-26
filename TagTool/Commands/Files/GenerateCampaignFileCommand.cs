@@ -34,31 +34,17 @@ namespace TagTool.Commands.Files
                 return new TagToolError(CommandError.ArgCount);
 
             string fileName = $"halo3.campaign";
-            DirectoryInfo mapInfoDir = null;
-            FileInfo srcFile = null;
-            FileInfo modInfoFile = null;
 
-            if (args.Count > 0)
-            {
-                mapInfoDir = new DirectoryInfo(args[0]);
+            DirectoryInfo mapInfoDir = args.Count > 0 ? new DirectoryInfo(args[0]) : null;
+            FileInfo modInfoFile = mapInfoDir != null ? new FileInfo(Path.Combine(args[0], "ModInfo.json")) : null;
+            FileInfo srcFile = mapInfoDir != null ? new FileInfo(Path.Combine(mapInfoDir.FullName, fileName)) : null;
 
-                modInfoFile = new FileInfo(Path.Combine(args[0], "ModInfo.json"));
-                srcFile = new FileInfo(Path.Combine(mapInfoDir.FullName, fileName));
-
-                if (!srcFile.Exists && !modInfoFile.Exists)
-                    return new TagToolError(CommandError.FileNotFound);
-            }
+            if (!srcFile.Exists && !modInfoFile.Exists)
+                return new TagToolError(CommandError.FileNotFound);
 
             if (mapInfoDir != null && !modInfoFile.Exists)
             {
-                CampaignBlf = new Blf(CacheVersion.Halo3Retail, CachePlatform.Original);
-
-                using (var stream = srcFile.Open(FileMode.Open, FileAccess.Read))
-                using (var reader = new EndianReader(stream))
-                {
-                    CampaignBlf.Read(reader);
-                    CampaignBlf.ConvertBlf(Cache.Version);
-                }
+                ReadBlf(srcFile);
             }
             else if (modInfoFile.Exists && mapInfoDir != null) 
             {
@@ -68,32 +54,18 @@ namespace TagTool.Commands.Files
             else
             {
                 CampaignBlf = GenerateCampaignBlf();
-
-                if (CampaignBlf == null)
-                    return new TagToolError(CommandError.OperationFailed);
             }
+
+            if (CampaignBlf == null)
+                return new TagToolError(CommandError.OperationFailed);
 
             if (Cache is GameCacheHaloOnline)
             {
-                var destFile = new FileInfo(Path.Combine(Cache.Directory.FullName, fileName));
-
-                using (var destStream = destFile.Create())
-                using (var writer = new EndianWriter(destStream))
-                {
-                    CampaignBlf.Write(writer);
-                }
+                WriteBlf(fileName);
             }
-            else if (Cache is GameCacheModPackage)
+            else if (Cache is GameCacheModPackage modCache)
             {
-                var campaignFileStream = new MemoryStream();
-
-                using (var writer = new EndianWriter(campaignFileStream, leaveOpen: true))
-                {
-                    CampaignBlf.Write(writer);
-                }
-                var modCache = Cache as GameCacheModPackage;
-
-                modCache.SetCampaignFile(campaignFileStream);
+                WriteModBlf(modCache);
             }
             else
             {
@@ -106,13 +78,50 @@ namespace TagTool.Commands.Files
 
         public Blf GenerateCampaignBlf()
         {
-            var campaignFileBuilder = new CampaignFileBuilder(Cache);
-            campaignFileBuilder.Name = "Halo 3";
-            campaignFileBuilder.Description = "Finish the Fight!";
+            var campaignFileBuilder = new CampaignFileBuilder(Cache) 
+            {
+                Name = "Halo 3",
+                Description = "Finish the Fight!",
+            };
 
             var campaignBlf = campaignFileBuilder.GenerateCampaignBlf(true);
 
             return campaignBlf;
+        }
+
+        public void ReadBlf(FileInfo srcFile) 
+        {
+            CampaignBlf = new Blf(CacheVersion.Halo3Retail, CachePlatform.Original);
+
+            using (var stream = srcFile.Open(FileMode.Open, FileAccess.Read))
+            using (var reader = new EndianReader(stream))
+            {
+                CampaignBlf.Read(reader);
+                CampaignBlf.ConvertBlf(Cache.Version);
+            }
+        }
+
+        public void WriteBlf(string fileName) 
+        {
+            var destFile = new FileInfo(Path.Combine(Cache.Directory.FullName, fileName));
+
+            using (var destStream = destFile.Create())
+            using (var writer = new EndianWriter(destStream))
+            {
+                CampaignBlf.Write(writer);
+            }
+        }
+
+        public void WriteModBlf(GameCacheModPackage modCache) 
+        {
+            var campaignFileStream = new MemoryStream();
+
+            using (var writer = new EndianWriter(campaignFileStream, leaveOpen: true))
+            {
+                CampaignBlf.Write(writer);
+            }
+
+            modCache.SetCampaignFile(campaignFileStream);
         }
     }
 }
