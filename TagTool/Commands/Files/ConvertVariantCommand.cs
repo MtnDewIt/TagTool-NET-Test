@@ -25,6 +25,7 @@ namespace TagTool.Commands.Files
         private Stopwatch StopWatch = new Stopwatch();
         private int FileCount = 0;
         private List<string> ErrorLog = new List<string>();
+        private List<ulong> UniqueIdTable = new List<ulong>();
 
         private static readonly string[] ValidExtensions =
         {
@@ -104,7 +105,7 @@ namespace TagTool.Commands.Files
                     FixBlfEndianness(stream);
 
                     if (!blf.Read(reader))
-                        throw new Exception("Unable to parse BLF variant");
+                        throw new Exception("Unable to parse BLF data");
 
                     if (blf.MapVariantTagNames == null && blf.MapVariant != null)
                     {
@@ -126,7 +127,7 @@ namespace TagTool.Commands.Files
                     variantName = blf.ContentHeader?.Metadata?.Name ?? "";
                 }
 
-                var output = GetOutputPath(input, variantName);
+                var output = GetOutputPath(input, variantName, blf.ContentHeader.Metadata.UniqueId);
 
                 Directory.CreateDirectory(Path.GetDirectoryName(output));
 
@@ -135,6 +136,8 @@ namespace TagTool.Commands.Files
                     var writer = new EndianWriter(stream);
                     blf.Write(writer);
                 }
+
+                UniqueIdTable.Add(blf.ContentHeader.Metadata.UniqueId);
             }
             catch (Exception e)
             {
@@ -209,11 +212,11 @@ namespace TagTool.Commands.Files
             }
         }
 
-        private string GetOutputPath(FileInfo input, string variantName)
+        private string GetOutputPath(FileInfo input, string variantName, ulong uniqueId)
         {
             string outputPath = input.Name.EndsWith(".map") ? Path.Combine(OutputPath, $@"map_variants", $@"{variantName}", "sandbox.map") : Path.Combine(OutputPath, $@"game_variants", $@"{variantName}", $@"variant{input.Extension}");
 
-            if (Path.Exists(outputPath))
+            if (Path.Exists(outputPath) && UniqueIdTable.Contains(uniqueId))
             {
                 throw new Exception("Duplicate Variant");
             }
