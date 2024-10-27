@@ -98,14 +98,9 @@ namespace TagTool.Commands.Files
 
             try
             {
-                using (var stream = input.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.Read))
+                using (var stream = input.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    var reader = new EndianReader(stream);
-
-                    FixBlfEndianness(stream);
-
-                    if (!blf.Read(reader))
-                        throw new Exception("Unable to parse BLF data");
+                    FixBlfEndianness(stream, blf);
 
                     if (blf.MapVariantTagNames == null && blf.MapVariant != null)
                     {
@@ -145,42 +140,58 @@ namespace TagTool.Commands.Files
             }
         }
 
-        // TODO: Enure that no data is written back to the original file, and that only the contents of the file stream are modified
-        private void FixBlfEndianness(Stream stream)
+        private void FixBlfEndianness(FileStream stream, Blf blf)
         {
-            var deserializer = new TagDeserializer(CacheVersion.HaloOnlineED, CachePlatform.Original);
-            var serializer = new TagSerializer(CacheVersion.HaloOnlineED, CachePlatform.Original);
+            var buffer = new byte[stream.Length];
+            stream.Read(buffer, 0, buffer.Length);
 
-            var reader = new EndianReader(stream, EndianFormat.BigEndian);
-            var writer = new EndianWriter(stream, EndianFormat.LittleEndian);
-            var readerContext = new DataSerializationContext(reader);
-            var writerContext = new DataSerializationContext(writer);
-
-            if(reader.ReadTag() != "_blf")
+            using (var memoryStream = new MemoryStream(buffer)) 
             {
-                stream.Position = 0;
-                return;
+                var deserializer = new TagDeserializer(CacheVersion.HaloOnlineED, CachePlatform.Original);
+                var serializer = new TagSerializer(CacheVersion.HaloOnlineED, CachePlatform.Original);
+
+                var reader = new EndianReader(memoryStream, EndianFormat.BigEndian);
+                var writer = new EndianWriter(memoryStream, EndianFormat.LittleEndian);
+                var readerContext = new DataSerializationContext(reader);
+                var writerContext = new DataSerializationContext(writer);
+
+                if (reader.ReadTag() != "_blf")
+                {
+                    memoryStream.Position = 0;
+
+                    ReadBlf(memoryStream, blf);
+                }
+
+                reader.BaseStream.Position = 0;
+
+                while (true)
+                {
+                    var pos = reader.BaseStream.Position;
+                    var header = (BlfChunkHeader)deserializer.Deserialize(readerContext, typeof(BlfChunkHeader));
+
+                    writer.BaseStream.Position = pos;
+                    serializer.Serialize(writerContext, header);
+                    if (header.Signature == "_eof")
+                        break;
+
+                    reader.BaseStream.Position += header.Length - (int)TagStructure.GetStructureSize(typeof(BlfChunkHeader), Cache.Version, Cache.Platform);
+                }
+
+                memoryStream.Position = 0xC;
+                writer.Format = EndianFormat.LittleEndian;
+                writer.Write((short)-2);
+                memoryStream.Position = 0;
+
+                ReadBlf(memoryStream, blf);
             }
+        }
 
-            reader.BaseStream.Position = 0;
+        private void ReadBlf(Stream stream, Blf blf) 
+        {
+            var memoryReader = new EndianReader(stream);
 
-            while (true)
-            {
-                var pos = reader.BaseStream.Position;
-                var header = (BlfChunkHeader)deserializer.Deserialize(readerContext, typeof(BlfChunkHeader));
-               
-                writer.BaseStream.Position = pos;
-                serializer.Serialize(writerContext, header);
-                if (header.Signature == "_eof")
-                    break;
-
-                reader.BaseStream.Position += header.Length - (int)TagStructure.GetStructureSize(typeof(BlfChunkHeader), Cache.Version, Cache.Platform);
-            }
-
-            stream.Position = 0xC;
-            writer.Format = EndianFormat.LittleEndian;
-            writer.Write((short)-2);
-            stream.Position = 0;
+            if (!blf.Read(memoryReader))
+                throw new Exception("Unable to parse BLF data");
         }
 
         private void ConvertBlf(Blf blf) 
