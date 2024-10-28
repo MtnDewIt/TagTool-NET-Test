@@ -311,10 +311,10 @@ namespace TagTool.Commands.Porting.Gen2
                         emitter.ParticleEmissionRate = CreatePropertyAlwaysZero();
                         emitter.ParticleLifespan = ConvertEditableProperty(oldEm.ParticleLifespan);
                         emitter.ParticleInitialVelocity = ConvertEditableProperty(oldEm.ParticleVelocity);
-                        emitter.ParticleRotation = ConvertEditableProperty(oldPrt3.Rotation);
+                        emitter.ParticleRotation = oldPrt3 == null ? CreatePropertyAlwaysZero() : ConvertEditableProperty(oldPrt3.Rotation);
                         emitter.ParticleInitialRotationRate = CreatePropertyAlwaysZero();
                         emitter.ParticleSize = ConvertEditableProperty(oldEm.ParticleSize);
-                        emitter.ParticleScale = ConvertEditableProperty(oldPrt3.Scale);
+                        emitter.ParticleScale = oldPrt3 == null ? CreatePropertyConstant(1.0f) : ConvertEditableProperty(oldPrt3.Scale);
                         emitter.ParticleTint = ConvertEditableProperty(oldEm.ParticleTint);
                         emitter.ParticleAlpha = ConvertEditableProperty(oldEm.ParticleAlpha);
                         emitter.ParticleAlphaBlackPoint = CreatePropertyAlwaysZero();
@@ -785,14 +785,19 @@ namespace TagTool.Commands.Porting.Gen2
                     property.MInnardsZ.ModifierIndex = propertyRef.Key.OutputModifier;
                     property.MInnardsZ.InputIndexModifier = propertyRef.Key.OutputModifierInput;
                     property.MInnardsW.InputIndexGreen = propertyRef.Key.InputVariable;
-
-                    runtimeGpu.Functions.AddRange(PropertyFunctionGetGpuFunctions(propertyRef.Key.Function, 0));
-
-                    if ((propertyRef.Key.Function.Data[1] & 1) == 1) // ranged
+                    try
                     {
-                        property.MInnardsY.FunctionIndexRed = (byte)runtimeGpu.Functions.Count;
-                        property.MInnardsY.InputIndexRed = propertyRef.Key.RangeVariable;
-                        runtimeGpu.Functions.AddRange(PropertyFunctionGetGpuFunctions(propertyRef.Key.Function, 1));
+                        runtimeGpu.Functions.AddRange(PropertyFunctionGetGpuFunctions(propertyRef.Key.Function, 0));
+
+                        if ((propertyRef.Key.Function.Data[1] & 1) == 1) // ranged
+                        {
+                            property.MInnardsY.FunctionIndexRed = (byte)runtimeGpu.Functions.Count;
+                            property.MInnardsY.InputIndexRed = propertyRef.Key.RangeVariable;
+                            runtimeGpu.Functions.AddRange(PropertyFunctionGetGpuFunctions(propertyRef.Key.Function, 1));
+                        }
+                    }
+                    catch (Exception ex) {
+                        new TagToolWarning($"Failed to add gpu functions");
                     }
 
                     property.MInnardsY.IsConstant = 0;
