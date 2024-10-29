@@ -1,378 +1,244 @@
-using System;
+﻿using HaloShaderGenerator.Globals;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
-using TagTool.Commands.Common;
-using Newtonsoft.Json;
-using TagTool.Commands.Porting;
+using TagTool.Cache;
+using TagTool.Commands.ConvertCache.Definitions;
+using TagTool.Shaders.ShaderGenerator;
+using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.ConvertCache
 {
-    partial class ConvertCacheCommand : Command
+    public class ConvertCacheCommand : Command 
     {
         public GameCache Cache { get; set; }
         public GameCacheHaloOnline CacheContext { get; set; }
-        public CommandContextStack ContextStack { get; set; }
-        public Stream CacheStream { get; set; }
 
-        public static DirectoryInfo eldewritoDirectoryInfo { get; set; }
-        public static DirectoryInfo haloOnlineDirectoryInfo { get; set; }
-        public static DirectoryInfo halo3DirectoryInfo { get; set; }
-        public static DirectoryInfo halo3MythicDirectoryInfo { get; set; }
-        public static DirectoryInfo halo3ODSTDirectoryInfo { get; set; }
-        public static DirectoryInfo outputDirectoryInfo { get; set; }
-
-        public GameCache eldewritoCache { get; set; }
-        public GameCache haloOnlineCache { get; set; }
-        public PortingContext haloOnline { get; set; }
-
-        public GameCache h3MainMenuCache { get; set; }
-        public PortingContext h3MainMenu { get; set; }
-        public GameCache introCache { get; set; }
-        public PortingContext intro { get; set; }
-        public GameCache jungleCache { get; set; }
-        public PortingContext jungle { get; set; }
-        public GameCache crowsCache { get; set; }
-        public PortingContext crows { get; set; }
-        public GameCache outskirtsCache { get; set; }
-        public PortingContext outskirts { get; set; }
-        public GameCache voiCache { get; set; }
-        public PortingContext voi { get; set; }
-        public GameCache floodvoiCache { get; set; }
-        public PortingContext floodvoi { get; set; }
-        public GameCache wasteCache { get; set; }
-        public PortingContext waste { get; set; }
-        public GameCache citadelCache { get; set; }
-        public PortingContext citadel { get; set; }
-        public GameCache highCharityCache { get; set; }
-        public PortingContext highCharity { get; set; }
-        public GameCache haloCache { get; set; }
-        public PortingContext halo { get; set; }
-        public GameCache epilogueCache { get; set; }
-        public PortingContext epilogue { get; set; }
-
-        public GameCache mythicMainMenuCache { get; set; }
-        public PortingContext mythicMainMenu { get; set; }
-        public GameCache armoryCache { get; set; }
-        public PortingContext armory { get; set; }
-        public GameCache bunkerworldCache { get; set; }
-        public PortingContext bunkerworld { get; set; }
-        public GameCache chillCache { get; set; }
-        public PortingContext chill { get; set; }
-        public GameCache chilloutCache { get; set; }
-        public PortingContext chillout { get; set; }
-        public GameCache constructCache { get; set; }
-        public PortingContext construct { get; set; }
-        public GameCache cyberdyneCache { get; set; }
-        public PortingContext cyberdyne { get; set; }
-        public GameCache deadlockCache { get; set; }
-        public PortingContext deadlock { get; set; }
-        public GameCache descentCache { get; set; }
-        public PortingContext descent { get; set; }
-        public GameCache docksCache { get; set; }
-        public PortingContext docks { get; set; }
-        public GameCache fortressCache { get; set; }
-        public PortingContext fortress { get; set; }
-        public GameCache ghosttownCache { get; set; }
-        public PortingContext ghosttown { get; set; }
-        public GameCache guardianCache { get; set; }
-        public PortingContext guardian { get; set; }
-        public GameCache isolationCache { get; set; }
-        public PortingContext isolation { get; set; }
-        public GameCache lockoutCache { get; set; }
-        public PortingContext lockout { get; set; }
-        public GameCache midshipCache { get; set; }
-        public PortingContext midship { get; set; }
-        public GameCache riverworldCache { get; set; }
-        public PortingContext riverworld { get; set; }
-        public GameCache salvationCache { get; set; }
-        public PortingContext salvation { get; set; }
-        public GameCache sandboxCache { get; set; }
-        public PortingContext sandbox { get; set; }
-        public GameCache shrineCache { get; set; }
-        public PortingContext shrine { get; set; }
-        public GameCache sidewinderCache { get; set; }
-        public PortingContext sidewinder { get; set; }
-        public GameCache snowboundCache { get; set; }
-        public PortingContext snowbound { get; set; }
-        public GameCache spacecampCache { get; set; }
-        public PortingContext spacecamp { get; set; }
-        public GameCache warehouseCache { get; set; }
-        public PortingContext warehouse { get; set; }
-        public GameCache zanzibarCache { get; set; }
-        public PortingContext zanzibar { get; set; }
-
-        public GameCache odstMainMenuCache { get; set; }
-        public PortingContext odstMainMenu { get; set; }
-        public GameCache h100Cache { get; set; }
-        public PortingContext h100 { get; set; }
-        public GameCache c100Cache { get; set; }
-        public PortingContext c100 { get; set; }
-        public GameCache c200Cache { get; set; }
-        public PortingContext c200 { get; set; }
-        public GameCache l200Cache { get; set; }
-        public PortingContext l200 { get; set; }
-        public GameCache l300Cache { get; set; }
-        public PortingContext l300 { get; set; }
-        public GameCache sc100Cache { get; set; }
-        public PortingContext sc100 { get; set; }
-        public GameCache sc110Cache { get; set; }
-        public PortingContext sc110 { get; set; }
-        public GameCache sc120Cache { get; set; }
-        public PortingContext sc120 { get; set; }
-        public GameCache sc130Cache { get; set; }
-        public PortingContext sc130 { get; set; }
-        public GameCache sc140Cache { get; set; }
-        public PortingContext sc140 { get; set; }
-        public GameCache sc150Cache { get; set; }
-        public PortingContext sc150 { get; set; }
-
-        public ConvertCacheCommand(GameCache cache, CommandContextStack contextStack) : base
+        public ConvertCacheCommand(GameCache cache, GameCacheHaloOnline cacheContext) : base
         (
             true,
             "ConvertCache",
-            "Converts an ElDewrito 0.6 Cache to work with ElDewrito 0.7",
+            "[REDACTED]",
             "ConvertCache",
-            GenerateHelpText()
+            "[REDACTED]"
         )
         {
             Cache = cache;
-            ContextStack = contextStack;
+            CacheContext = cacheContext;
         }
 
-        private static string GenerateHelpText()
+        public override object Execute(List<string> args) 
         {
-            var buffer = new StringBuilder();
-
-            buffer.AppendLine("More specifically this command is designed to take the existing cache used with ElDewito 0.6.1 and convert");
-            buffer.AppendLine("the data within it so that it functions correctly within ElDewrito 0.7 (Or any newer versions of ElDewrito)");
-            buffer.AppendLine();
-            buffer.AppendLine("When the command is executed, it will request the input of multiple cache file directories.");
-            buffer.AppendLine("These directories will contain the cache files for various different Halo builds, with these being: ");
-            buffer.AppendLine();
-            buffer.AppendLine(" - ElDewrito 0.6.1");
-            buffer.AppendLine(" - Halo Online MS23 (1.106708 cert_ms23)");
-            buffer.AppendLine(" - Halo 3 Retail (11855.07.08.20.2317.halo3_ship)");
-            buffer.AppendLine(" - Halo 3 Mythic Retail (12065.08.08.26.0819.halo3_ship)");
-            buffer.AppendLine(" - Halo 3 ODST Retail (13895.09.04.27.2201.atlas_relea)");
-            buffer.AppendLine();
-            buffer.AppendLine("For each build input, ensure that ALL the cache files are present in the specified ");
-            buffer.AppendLine("directory as the command will open new cache instances for every map");
-            buffer.AppendLine("in that specified build, so if any are missing it will cause it to fail.");
-            buffer.AppendLine();
-            buffer.AppendLine("For ElDewrito 0.6.1 and Halo Online MS23, ensure that all .dat files are present in the specified directory ");
-            buffer.AppendLine("The tag lists for each cache will be updated by tagtool at runtime after the directories are input. ");
-            buffer.AppendLine("These tag lists are built into tagtool, as the tag names referenced internally by the command are hardcoded.");
-            buffer.AppendLine();
-            buffer.AppendLine("Any other data required such as map info files, font packages or external resource data are stored within ");
-            buffer.AppendLine("tagtool itself. This data has been modified externally which is the only reason why this data is not ");
-            buffer.AppendLine("being pulled from any of the specified caches, or modified using data from any of the specified caches");
-            buffer.AppendLine();
-            buffer.AppendLine("Assuming that no .map files are missing and each directory input contains valid cache files, ");
-            buffer.AppendLine("the resulting output after each directory has been input should look like: ");
-            buffer.AppendLine();
-            buffer.AppendLine();
-            buffer.AppendLine("Enter the directory for your Halo Online MS23 cache files: ");
-            buffer.AppendLine("<insert_directory_here>");
-            buffer.AppendLine();
-            buffer.AppendLine("Enter the directory for your Halo 3 cache files: ");
-            buffer.AppendLine("<insert_directory_here>");
-            buffer.AppendLine();
-            buffer.AppendLine("Enter the directory for your Halo 3 Mythic cache files: ");
-            buffer.AppendLine("<insert_directory_here>");
-            buffer.AppendLine();
-            buffer.AppendLine("Enter the directory for your Halo 3 ODST cache files: ");
-            buffer.AppendLine("<insert_directory_here>");
-            buffer.AppendLine();
-            buffer.AppendLine("Enter the ouput directory for the generated cache: ");
-            buffer.AppendLine("<insert_directory_here>");
-            buffer.AppendLine();
-            buffer.AppendLine();
-            buffer.AppendLine("The last input will be for the output directory. ");
-            buffer.AppendLine("This is where the converted data will be saved during execution.");
-            buffer.AppendLine();
-            buffer.AppendLine("DISCLAIMER: ");
-            buffer.AppendLine("This command is highly, HIGHLY experimental. The resulting cache may exhibit behaviour anywhere from ");
-            buffer.AppendLine("minor bugs or graphical issues, crashes and general instability, to being completely non-functional");
-            buffer.AppendLine();
-            buffer.AppendLine("YOU HAVE BEEN WARNED!");
-            buffer.AppendLine();
-            buffer.AppendLine("Regards");
-            buffer.AppendLine();
-            buffer.AppendLine("MtnDewIt.");
-
-            return buffer.ToString();
-        }
-
-        public override object Execute(List<string> args)
-        {
-            GetCacheFiles();
-
-            Program._stopWatch.Start();
-            
-            RebuildCache(outputDirectoryInfo.FullName);
-            RetargetCache(outputDirectoryInfo.FullName);
-
-            using (CacheStream = Cache.OpenCacheReadWrite()) 
+            using (Stream stream = CacheContext.OpenCacheReadWrite()) 
             {
-                UpdateShaderData();
-                PortTagData();
-                UpdateTagData();
-                UpdateMapData();
-            }
-
-            ContextStack.Pop();
-
-            Program._stopWatch.Stop();
-
-            var output = Program._stopWatch.ElapsedMilliseconds.FormatMilliseconds();
-            var startColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Cache Generated Sucessfully. Time Taken: " + output);
-            Console.ForegroundColor = startColor;
-
-            return true;
-        }
-
-        public void GetCacheFiles()
-        {
-            eldewritoDirectoryInfo = GetDirectoryInfo(eldewritoDirectoryInfo, "ElDewrito 0.6.1");
-
-            var edData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}eldewrito_legacy_tags.json");
-            var edTagTable = JsonConvert.DeserializeObject<Dictionary<int, string>>(edData);
-
-            eldewritoCache = GameCache.Open($@"{eldewritoDirectoryInfo.FullName}\tags.dat");
-            UpdateTagNames(eldewritoCache, edTagTable);
-
-            haloOnlineDirectoryInfo = GetDirectoryInfo(haloOnlineDirectoryInfo, "Halo Online MS23");
-
-            var ms23Data = File.ReadAllText($@"{JSONFileTree.JSONBinPath}ms23_tags.json");
-            var ms23TagTable = JsonConvert.DeserializeObject<Dictionary<int, string>>(ms23Data);
-
-            haloOnlineCache = GameCache.Open($@"{haloOnlineDirectoryInfo.FullName}\tags.dat");
-            UpdateTagNames(haloOnlineCache, ms23TagTable);
-
-            halo3DirectoryInfo = GetDirectoryInfo(halo3DirectoryInfo, "Halo 3");
-
-            h3MainMenuCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\mainmenu.map");
-            introCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\005_intro.map");
-            jungleCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\010_jungle.map");
-            crowsCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\020_base.map");
-            outskirtsCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\030_outskirts.map");
-            voiCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\040_voi.map");
-            floodvoiCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\050_floodvoi.map");
-            wasteCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\070_waste.map");
-            citadelCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\100_citadel.map");
-            highCharityCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\110_hc.map");
-            haloCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\120_halo.map");
-            epilogueCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\130_epilogue.map");
-
-            halo3MythicDirectoryInfo = GetDirectoryInfo(halo3MythicDirectoryInfo, "Halo 3 Mythic");
-
-            mythicMainMenuCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\mainmenu.map");
-            armoryCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\armory.map");
-            bunkerworldCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\bunkerworld.map");
-            chillCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\chill.map");
-            chilloutCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\chillout.map");
-            constructCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\construct.map");
-            cyberdyneCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\cyberdyne.map");
-            deadlockCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\deadlock.map");
-            descentCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\descent.map");
-            docksCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\docks.map");
-            fortressCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\fortress.map");
-            ghosttownCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\ghosttown.map");
-            guardianCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\guardian.map");
-            isolationCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\isolation.map");
-            lockoutCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\lockout.map");
-            midshipCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\midship.map");
-            riverworldCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\riverworld.map");
-            salvationCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\salvation.map");
-            sandboxCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\sandbox.map");
-            shrineCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\shrine.map");
-            sidewinderCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\sidewinder.map");
-            snowboundCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\snowbound.map");
-            spacecampCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\spacecamp.map");
-            warehouseCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\warehouse.map");
-            zanzibarCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\zanzibar.map");
-
-            halo3ODSTDirectoryInfo = GetDirectoryInfo(halo3ODSTDirectoryInfo, "Halo 3 ODST");
-
-            odstMainMenuCache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\mainmenu.map");
-            h100Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\h100.map");
-            c100Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\c100.map");
-            c200Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\c200.map");
-            l200Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\l200.map");
-            l300Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\l300.map");
-            sc100Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc100.map");
-            sc110Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc110.map");
-            sc120Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc120.map");
-            sc130Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc130.map");
-            sc140Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc140.map");
-            sc150Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc150.map");
-
-            outputDirectoryInfo = GetOutputDirectory(outputDirectoryInfo);
-        }
-
-        public DirectoryInfo GetDirectoryInfo(DirectoryInfo directoryInfo, String build)
-        {
-            Console.WriteLine("\nEnter the directory for your " + build + " cache files: ");
-            var inputDirectory = Console.ReadLine().Replace("\"", "");
-            directoryInfo = new DirectoryInfo(inputDirectory);
-
-            if (!directoryInfo.Exists)
-            {
-                new TagToolError(CommandError.CustomError, $"Directory not found: '{directoryInfo.FullName}'");
-                throw new ArgumentException();
-            }
-
-            if (directoryInfo.Exists && !directoryInfo.GetFiles().Any(x => x.FullName.EndsWith(".map")))
-            {
-                new TagToolError(CommandError.CustomError, $"No .map files found in '{directoryInfo.FullName}'");
-                throw new ArgumentException();
-            }
-
-            return directoryInfo;
-        }
-
-        public DirectoryInfo GetOutputDirectory(DirectoryInfo directoryInfo)
-        {
-            Console.WriteLine("\nEnter the ouput directory for the generated cache: ");
-            var inputDirectory = Console.ReadLine().Replace("\"", "");
-            directoryInfo = new DirectoryInfo(inputDirectory);
-
-            if (!directoryInfo.Exists)
-            {
-                new TagToolWarning("This directory does not exist, or could not be found. Creating a new one...");
-                directoryInfo.Create();
-            }
-
-            if (directoryInfo.FullName == eldewritoDirectoryInfo.FullName || directoryInfo.FullName == haloOnlineDirectoryInfo.FullName || directoryInfo.FullName == halo3DirectoryInfo.FullName || directoryInfo.FullName == halo3MythicDirectoryInfo.FullName || directoryInfo.FullName == halo3ODSTDirectoryInfo.FullName || directoryInfo.FullName == Cache.Directory.FullName)
-            {
-                new TagToolError(CommandError.CustomError, "Output directory cannot be the same as an input directory");
-                throw new ArgumentException();
-            }
-
-            return directoryInfo;
-        }
-
-        public void UpdateTagNames(GameCache cache, Dictionary<int, string> tagTable)
-        {
-            CacheContext = cache as GameCacheHaloOnline;
-
-            foreach (var tag in CacheContext.TagCache.NonNull())
-            {
-                if (tagTable.TryGetValue(tag.Index, out string name))
+                foreach (CachedTag tag in CacheContext.TagCache.NonNull())
                 {
-                    tag.Name = name;
+                    if (tag.IsInGroup("sefc"))
+                        UpdateAreaScreenEffect(stream, tag);
+
+                    if (tag.IsInGroup("forg"))
+                        UpdateForgeGlobalsDefintion(stream, tag);
+
+                    if (tag.IsInGroup("modg"))
+                        UpdateModGlobalsDefinition(stream, tag);
+
+                    if (tag.IsInGroup("pact"))
+                        UpdatePlayerActionSet(stream, tag);
                 }
+
+                GenerateExplicitShader(stream, ExplicitShader.final_composite, false);
+                GenerateExplicitShader(stream, ExplicitShader.final_composite_debug, false);
+                GenerateExplicitShader(stream, ExplicitShader.final_composite_dof, false);
+                GenerateExplicitShader(stream, ExplicitShader.final_composite_zoom, false);
             }
 
-            CacheContext.SaveTagNames();
+            return false;
+        }
 
-            CacheContext = null;
+        public void UpdateAreaScreenEffect(Stream stream, CachedTag tag) 
+        {
+            AreaScreenEffect definition = CacheContext.Deserialize<AreaScreenEffect>(stream, tag);
+
+            DebugAreaScreenEffect adapter = new DebugAreaScreenEffect 
+            {
+                ScreenEffects = new List<DebugAreaScreenEffect.ScreenEffectBlock>(),
+            };
+
+            for (int i = 0; i < definition.ScreenEffects.Count; i++) 
+            {
+                AreaScreenEffect.ScreenEffectBlock screenEffect = definition.ScreenEffects[i];
+
+                adapter.ScreenEffects.Add(new DebugAreaScreenEffect.ScreenEffectBlock 
+                {
+                    Name = screenEffect.Name,
+                    Flags = screenEffect.Flags,
+                    HiddenFlags = screenEffect.HiddenFlags,
+                    MaximumDistance = screenEffect.MaximumDistance,
+                    DistanceFalloffFunction = screenEffect.DistanceFalloffFunction,
+                    Lifetime = screenEffect.Lifetime,
+                    TimeEvolutionFunction = screenEffect.TimeEvolutionFunction,
+                    AngleFalloffFunction = screenEffect.AngleFalloffFunction,
+                    ExposureBoost = screenEffect.ExposureBoost,
+                    HueLeft = screenEffect.HueLeft,
+                    HueRight = screenEffect.HueRight,
+                    Saturation = screenEffect.Saturation,
+                    Desaturation = screenEffect.Desaturation,
+                    ContrastEnhance = screenEffect.ContrastEnhance,
+                    GammaEnhance = screenEffect.GammaEnhance,
+                    GammaReduce = screenEffect.GammaReduce,
+                    ColorFilter = screenEffect.ColorFilter,
+                    ColorFloor = screenEffect.ColorFloor,
+                    VisionMode = screenEffect.VisionMode,
+                    VisionNoise = screenEffect.VisionNoise,
+                    ScreenShader = screenEffect.ScreenShader,
+                });
+            }
+
+            CacheContext.Serialize(stream, tag, adapter);
+        }
+
+        public void UpdateForgeGlobalsDefintion(Stream stream, CachedTag tag) 
+        {
+            ForgeGlobalsDefinition definition = CacheContext.Deserialize<ForgeGlobalsDefinition>(stream, tag);
+
+            DebugForgeGlobalsDefinition adapter = new DebugForgeGlobalsDefinition 
+            {
+                InvisibleRenderMethod = definition.InvisibleRenderMethod,
+                DefaultRenderMethod = definition.DefaultRenderMethod,
+                ReForgeMaterials = definition.ReForgeMaterials,
+                ReForgeMaterialTypes = definition.ReForgeMaterialTypes,
+                ReForgeObjects = definition.ReForgeObjects,
+                PrematchCameraObject = definition.PrematchCameraObject,
+                ModifierObject = definition.ModifierObject,
+                KillVolumeObject = definition.KillVolumeObject,
+                GarbageVolumeObject = definition.GarbageVolumeObject,
+                Descriptions = definition.Descriptions,
+                PaletteCategories = definition.PaletteCategories,
+                Palette = definition.Palette,
+                WeatherEffects = definition.WeatherEffects,
+                Skies = definition.Skies,
+                FxObject = definition.FxObject,
+                FxLight = definition.FxLight,
+            };
+
+            CacheContext.Serialize(stream, tag, adapter);
+        }
+
+        public void UpdateModGlobalsDefinition(Stream stream, CachedTag tag) 
+        {
+            ModGlobalsDefinition definition = CacheContext.Deserialize<ModGlobalsDefinition>(stream, tag);
+
+            DebugModGlobalsDefinition adapter = new DebugModGlobalsDefinition 
+            {
+                PlayerCharacterSets = new List<DebugModGlobalsDefinition.PlayerCharacterSet>(),
+                PlayerCharacterCustomizations = new List<DebugModGlobalsDefinition.PlayerCharacterCustomization>(),
+            };
+
+            for (int i = 0; i < definition.PlayerCharacterSets.Count; i++) 
+            {
+                ModGlobalsDefinition.PlayerCharacterSet characterSet = definition.PlayerCharacterSets[i];
+
+                adapter.PlayerCharacterSets.Add(new DebugModGlobalsDefinition.PlayerCharacterSet 
+                {
+                    DisplayName = characterSet.DisplayName,
+                    Name = characterSet.Name,
+                    RandomChance = characterSet.RandomChance,
+                    Characters = characterSet.Characters,
+                });
+            }
+
+            for (int i = 0; i < definition.PlayerCharacterCustomizations.Count; i++) 
+            {
+                ModGlobalsDefinition.PlayerCharacterCustomization customization = definition.PlayerCharacterCustomizations[i];
+
+                adapter.PlayerCharacterCustomizations.Add(new DebugModGlobalsDefinition.PlayerCharacterCustomization());
+
+                adapter.PlayerCharacterCustomizations[i].GlobalPlayerCharacterTypeIndex = customization.GlobalPlayerCharacterTypeIndex;
+                adapter.PlayerCharacterCustomizations[i].CharacterName = customization.CharacterName;
+                adapter.PlayerCharacterCustomizations[i].CharacterDescription = customization.CharacterDescription;
+                adapter.PlayerCharacterCustomizations[i].HudGlobals = customization.HudGlobals;
+                adapter.PlayerCharacterCustomizations[i].VisionGlobals = customization.VisionGlobals;
+                adapter.PlayerCharacterCustomizations[i].ActionSet = customization.ActionSet;
+
+                adapter.PlayerCharacterCustomizations[i].RegionCameraScripts = new List<DebugModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript>();
+
+                for (int j = 0; j < customization.RegionCameraScripts.Count; j++) 
+                {
+                    ModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript cameraRegion = customization.RegionCameraScripts[j];
+
+                    adapter.PlayerCharacterCustomizations[i].RegionCameraScripts.Add(new DebugModGlobalsDefinition.PlayerCharacterCustomization.PlayerCharacterRegionScript 
+                    {
+                        RegionName = cameraRegion.RegionName,
+                        ScriptNameWidescreen = cameraRegion.ScriptNameWidescreen,
+                        ScriptNameStandard = cameraRegion.ScriptNameStandard,
+                        BipedRotation = cameraRegion.BipedRotation,
+                        RotationDuration = cameraRegion.RotationDuration,
+                    });
+                }
+
+                adapter.PlayerCharacterCustomizations[i].CharacterPositionData = new DebugModGlobalsDefinition.PlayerCharacterCustomization.CharacterPositionInfo 
+                {
+                    Flags = customization.CharacterPositionData.Flags,
+                    BipedNameIndex = customization.CharacterPositionData.BipedNameIndex,
+                    SettingsCameraIndex = customization.CharacterPositionData.SettingsCameraIndex,
+                    PlatformNameIndex = customization.CharacterPositionData.PlatformNameIndex,
+                    RelativeBipedPosition = customization.CharacterPositionData.RelativeBipedPosition,
+                    RelativeBipedRotation = customization.CharacterPositionData.RelativeBipedRotation,
+                    BipedPositionWidescreen = customization.CharacterPositionData.BipedPositionWidescreen,
+                    BipedPositionStandard = customization.CharacterPositionData.BipedPositionStandard,
+                    BipedRotation = customization.CharacterPositionData.BipedRotation,
+                };
+
+                adapter.PlayerCharacterCustomizations[i].CharacterColors = customization.CharacterColors;
+            }
+
+            CacheContext.Serialize(stream, tag, adapter);
+        }
+
+        public void UpdatePlayerActionSet(Stream stream, CachedTag tag) 
+        {
+            PlayerActionSet definition = CacheContext.Deserialize<PlayerActionSet>(stream, tag);
+
+            DebugPlayerActionSet adapter = new DebugPlayerActionSet 
+            {
+                Widget = new DebugPlayerActionSet.WidgetData
+                {
+                    // Don't really know what to do if the definition contains more than 1 widget :/
+                    Title = definition.Widget[0].Title,
+                    Type = definition.Widget[0].Type,
+                    Flags = definition.Widget[0].Flags,
+                },
+                Actions = new List<DebugPlayerActionSet.Action>(),
+            };
+
+            for (int i = 0; i < definition.Actions.Count; i++) 
+            {
+                PlayerActionSet.Action action = definition.Actions[i];
+
+                adapter.Actions.Add(new DebugPlayerActionSet.Action 
+                {
+                    Title = action.Title,
+                    IconName = action.IconName,
+                    AnimationEnter = action.AnimationEnter,
+                    AnimationIdle = action.AnimationIdle,
+                    AnimationExit = action.AnimationExit,
+                    Flags = action.Flags,
+                    OverrideCamera = action.OverrideCamera,
+                });
+            }
+
+            CacheContext.Serialize(stream, tag, adapter);
+        }
+
+        public void GenerateExplicitShader(Stream stream, ExplicitShader shader, bool applyFixes = false)
+        {
+            CachedTag pixlTag = Cache.TagCache.GetTag<PixelShader>($"rasterizer\\shaders\\{shader}") ?? Cache.TagCache.AllocateTag<PixelShader>($"rasterizer\\shaders\\{shader}");
+            CachedTag vtshTag = Cache.TagCache.GetTag<VertexShader>($"rasterizer\\shaders\\{shader}") ?? Cache.TagCache.AllocateTag<VertexShader>($"rasterizer\\shaders\\{shader}");
+
+            ShaderGeneratorNew.GenerateExplicitShader(Cache, stream, shader.ToString(), applyFixes, out PixelShader pixl, out VertexShader vtsh);
+
+            Cache.Serialize(stream, vtshTag, vtsh);
+            Cache.Serialize(stream, pixlTag, pixl);
         }
     }
 }
