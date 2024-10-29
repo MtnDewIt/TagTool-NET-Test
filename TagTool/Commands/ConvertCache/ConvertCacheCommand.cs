@@ -12,9 +12,9 @@ namespace TagTool.Commands.ConvertCache
     public class ConvertCacheCommand : Command 
     {
         public GameCache Cache { get; set; }
-        public GameCacheHaloOnline CacheContext { get; set; }
+        public GameCacheHaloOnlineBase CacheContext { get; set; }
 
-        public ConvertCacheCommand(GameCache cache, GameCacheHaloOnline cacheContext) : base
+        public ConvertCacheCommand(GameCache cache, GameCacheHaloOnlineBase cacheContext) : base
         (
             true,
             "ConvertCache",
@@ -29,30 +29,55 @@ namespace TagTool.Commands.ConvertCache
 
         public override object Execute(List<string> args) 
         {
-            using (Stream stream = CacheContext.OpenCacheReadWrite()) 
+            if (Cache is GameCacheHaloOnline)
             {
-                foreach (CachedTag tag in CacheContext.TagCache.NonNull())
+                using (Stream stream = CacheContext.OpenCacheReadWrite())
                 {
-                    if (tag.IsInGroup("sefc"))
-                        UpdateAreaScreenEffect(stream, tag);
-
-                    if (tag.IsInGroup("forg"))
-                        UpdateForgeGlobalsDefintion(stream, tag);
-
-                    if (tag.IsInGroup("modg"))
-                        UpdateModGlobalsDefinition(stream, tag);
-
-                    if (tag.IsInGroup("pact"))
-                        UpdatePlayerActionSet(stream, tag);
+                    UpdateTagData(Cache, stream);
                 }
+            }
+            else if (Cache is GameCacheModPackage modCache) 
+            {
+                for (int i = 0; i < modCache.BaseModPackage.GetTagCacheCount(); i++)
+                {
+                    modCache.SetActiveTagCache(i);
 
-                GenerateExplicitShader(stream, ExplicitShader.final_composite, false);
-                GenerateExplicitShader(stream, ExplicitShader.final_composite_debug, false);
-                GenerateExplicitShader(stream, ExplicitShader.final_composite_dof, false);
-                GenerateExplicitShader(stream, ExplicitShader.final_composite_zoom, false);
+                    using (Stream tagCacheStream = modCache.OpenCacheReadWrite()) 
+                    {
+                        UpdateTagData(modCache, tagCacheStream);
+                    }
+                }
             }
 
             return false;
+        }
+
+        public void UpdateTagData(GameCache cache, Stream stream) 
+        {
+            foreach (CachedTag tag in cache.TagCache.NonNull())
+            {
+                if (tag.IsInGroup("sefc"))
+                    UpdateAreaScreenEffect(stream, tag);
+
+                if (tag.IsInGroup("forg"))
+                    UpdateForgeGlobalsDefintion(stream, tag);
+
+                if (tag.IsInGroup("modg"))
+                    UpdateModGlobalsDefinition(stream, tag);
+
+                if (tag.IsInGroup("pact"))
+                    UpdatePlayerActionSet(stream, tag);
+            }
+
+            GenerateExplicitShader(stream, ExplicitShader.final_composite, false);
+            GenerateExplicitShader(stream, ExplicitShader.final_composite_debug, false);
+            GenerateExplicitShader(stream, ExplicitShader.final_composite_dof, false);
+            GenerateExplicitShader(stream, ExplicitShader.final_composite_zoom, false);
+            GenerateExplicitShader(stream, ExplicitShader.shadow_apply_point, false);
+            GenerateExplicitShader(stream, ExplicitShader.shadow_apply_bilinear, false);
+            GenerateExplicitShader(stream, ExplicitShader.shadow_apply_fancy, false);
+            GenerateExplicitShader(stream, ExplicitShader.shadow_apply_faster, false);
+            GenerateExplicitShader(stream, ExplicitShader.shadow_apply, false);
         }
 
         public void UpdateAreaScreenEffect(Stream stream, CachedTag tag) 

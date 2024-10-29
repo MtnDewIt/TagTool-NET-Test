@@ -70,7 +70,6 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new GuessTagDefCommand(cache));
 
             context.AddCommand(new GenerateCacheCommand(cache, contextStack));
-            context.AddCommand(new ConvertCacheCommand(cache, cache as GameCacheHaloOnline));
             context.AddCommand(new GenerateBlfObjectCommand(cache, cache as GameCacheHaloOnline));
             context.AddCommand(new GenerateMapObjectCommand(cache, cache as GameCacheHaloOnline));
             context.AddCommand(new GenerateTagObjectCommand(cache, cache as GameCacheHaloOnline));
@@ -126,6 +125,7 @@ namespace TagTool.Commands.Tags
 
                 context.AddCommand(new TagResourceReportCommand(hoCache));
 
+                context.AddCommand(new ConvertCacheCommand(cache, hoCache));
                 context.AddCommand(new EditMapCommand(contextStack, hoCache, cache));
                 context.AddCommand(new ListMapsCommand(hoCache));
             }
@@ -164,6 +164,7 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new AddForgeCategoryCommand(cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new AddForgeItemCommand(cache as GameCacheHaloOnlineBase));
 
+                context.AddCommand(new ConvertCacheCommand(modCache, cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new UpdateShaderDataCommand(modCache, cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new EditMapCommand(contextStack, cache as GameCacheHaloOnlineBase, modCache));
                 context.AddCommand(new ExitModPackageCommand(contextStack, modCache));
