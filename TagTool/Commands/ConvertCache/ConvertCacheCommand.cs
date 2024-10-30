@@ -9,7 +9,7 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.ConvertCache
 {
-    public class ConvertCacheCommand : Command 
+    public class ConvertCacheCommand : Command
     {
         public GameCache Cache { get; set; }
         public GameCacheHaloOnlineBase CacheContext { get; set; }
@@ -33,40 +33,40 @@ namespace TagTool.Commands.ConvertCache
             {
                 using (Stream stream = CacheContext.OpenCacheReadWrite())
                 {
-                    UpdateTagData(Cache, stream);
+                    ConvertTagData(Cache, stream);
                 }
             }
-            else if (Cache is GameCacheModPackage modCache) 
+            else if (Cache is GameCacheModPackage modCache)
             {
                 for (int i = 0; i < modCache.BaseModPackage.GetTagCacheCount(); i++)
                 {
                     modCache.SetActiveTagCache(i);
 
-                    using (Stream tagCacheStream = modCache.OpenCacheReadWrite()) 
+                    using (Stream tagCacheStream = modCache.OpenCacheReadWrite())
                     {
-                        UpdateTagData(modCache, tagCacheStream);
+                        ConvertTagData(modCache, tagCacheStream);
                     }
                 }
             }
 
-            return false;
+            return true;
         }
 
-        public void UpdateTagData(GameCache cache, Stream stream) 
+        public void ConvertTagData(GameCache cache, Stream stream) 
         {
             foreach (CachedTag tag in cache.TagCache.NonNull())
             {
                 if (tag.IsInGroup("sefc"))
-                    UpdateAreaScreenEffect(stream, tag);
+                    ConvertAreaScreenEffect(stream, tag);
 
                 if (tag.IsInGroup("forg"))
-                    UpdateForgeGlobalsDefintion(stream, tag);
+                    ConvertForgeGlobalsDefintion(stream, tag);
 
                 if (tag.IsInGroup("modg"))
-                    UpdateModGlobalsDefinition(stream, tag);
+                    ConvertModGlobalsDefinition(stream, tag);
 
                 if (tag.IsInGroup("pact"))
-                    UpdatePlayerActionSet(stream, tag);
+                    ConvertPlayerActionSet(stream, tag);
             }
 
             GenerateExplicitShader(stream, ExplicitShader.final_composite, false);
@@ -80,7 +80,7 @@ namespace TagTool.Commands.ConvertCache
             GenerateExplicitShader(stream, ExplicitShader.shadow_apply, false);
         }
 
-        public void UpdateAreaScreenEffect(Stream stream, CachedTag tag) 
+        public void ConvertAreaScreenEffect(Stream stream, CachedTag tag) 
         {
             AreaScreenEffect definition = CacheContext.Deserialize<AreaScreenEffect>(stream, tag);
 
@@ -122,7 +122,7 @@ namespace TagTool.Commands.ConvertCache
             CacheContext.Serialize(stream, tag, adapter);
         }
 
-        public void UpdateForgeGlobalsDefintion(Stream stream, CachedTag tag) 
+        public void ConvertForgeGlobalsDefintion(Stream stream, CachedTag tag) 
         {
             ForgeGlobalsDefinition definition = CacheContext.Deserialize<ForgeGlobalsDefinition>(stream, tag);
 
@@ -149,7 +149,7 @@ namespace TagTool.Commands.ConvertCache
             CacheContext.Serialize(stream, tag, adapter);
         }
 
-        public void UpdateModGlobalsDefinition(Stream stream, CachedTag tag) 
+        public void ConvertModGlobalsDefinition(Stream stream, CachedTag tag) 
         {
             ModGlobalsDefinition definition = CacheContext.Deserialize<ModGlobalsDefinition>(stream, tag);
 
@@ -220,7 +220,7 @@ namespace TagTool.Commands.ConvertCache
             CacheContext.Serialize(stream, tag, adapter);
         }
 
-        public void UpdatePlayerActionSet(Stream stream, CachedTag tag) 
+        public void ConvertPlayerActionSet(Stream stream, CachedTag tag) 
         {
             PlayerActionSet definition = CacheContext.Deserialize<PlayerActionSet>(stream, tag);
 
