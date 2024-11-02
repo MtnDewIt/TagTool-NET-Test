@@ -1,4 +1,5 @@
 ﻿using System;
+using TagTool.BlamFile.GameVariants;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
@@ -125,6 +126,45 @@ namespace TagTool.BlamFile
                     case "mpvr":
                         ContentFlags |= BlfFileContentFlags.GameVariant;
                         GameVariant = (BlfGameVariant)deserializer.Deserialize(dataContext, typeof(BlfGameVariant));
+                        position = reader.Position;
+                        reader.SeekTo(chunkHeaderPosition + (int)TagStructure.GetStructureSize(typeof(BlfChunkHeader), Version, CachePlatform) + 0x4);
+                        switch (GameVariant.GameVariantType)
+                        {
+                            case GameEngineType.None:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantBase>(dataContext);
+                                break;
+                            case GameEngineType.CaptureTheFlag:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantCtf>(dataContext);
+                                break;
+                            case GameEngineType.Slayer:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantSlayer>(dataContext);
+                                break;
+                            case GameEngineType.Oddball:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantOddball>(dataContext);
+                                break;
+                            case GameEngineType.KingOfTheHill:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantKing>(dataContext);
+                                break;
+                            case GameEngineType.Sandbox:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantSandbox>(dataContext);
+                                break;
+                            case GameEngineType.Vip:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantVip>(dataContext);
+                                break;
+                            case GameEngineType.Juggernaut:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantJuggernaut>(dataContext);
+                                break;
+                            case GameEngineType.Territories:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantTerritories>(dataContext);
+                                break;
+                            case GameEngineType.Assault:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantAssault>(dataContext);
+                                break;
+                            case GameEngineType.Infection:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantInfection>(dataContext);
+                                break;
+                        }
+                        reader.SeekTo(position);
                         break;
 
                     case "chdr":
@@ -725,8 +765,7 @@ namespace TagTool.BlamFile
     public class BlfGameVariant : BlfChunkHeader
     {
         public GameEngineType GameVariantType;
-        [TagField(Length = 0x260)]
-        public byte[] Data; // TODO implement all the structures for each variant and take the union
+        public GameVariantBase Variant;
     }
 
     [TagStructure(Size = 0x40, Align = 0x1)]
