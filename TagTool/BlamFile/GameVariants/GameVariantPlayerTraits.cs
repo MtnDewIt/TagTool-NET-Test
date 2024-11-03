@@ -9,8 +9,8 @@ namespace TagTool.BlamFile.GameVariants
     {
         public PlayerShieldVitalityTraits ShieldVitalityTraits;
 
-        [TagField(Version = CacheVersion.HaloOnlineED)]
-        public PlayerExtendedTraits ExtendedTraits;
+        //[TagField(Version = CacheVersion.HaloOnlineED)]
+        //public PlayerExtendedTraits ExtendedTraits;
 
         public PlayerWeaponTraits WeaponTraits;
         public PlayerMovementTraits MovementTraits;
@@ -18,8 +18,8 @@ namespace TagTool.BlamFile.GameVariants
         public PlayerSensorTraits SensorTraits;
 
         [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo3Retail)]
-        [TagStructure(Size = 0x5, Version = CacheVersion.HaloOnlineED)]
-        public class PlayerShieldVitalityTraits
+        //[TagStructure(Size = 0x5, Version = CacheVersion.HaloOnlineED)]
+        public class PlayerShieldVitalityTraits : TagStructure
         {
             public DamageResistancePercentage DamageResistance;
             public ShieldRechargeRatePercentage ShieldRechargeRate;
@@ -27,7 +27,7 @@ namespace TagTool.BlamFile.GameVariants
             public HeadshotImmunitySettings HeadshotImmunity;
             public ShieldMultiplierSettings ShieldMultiplier;
 
-            [TagField(Flags = TagFieldFlags.Padding, Length = 3, MinVersion = CacheVersion.HaloOnline106708)]
+            [TagField(Flags = TagFieldFlags.Padding, Length = 3)]
             public byte[] Padding1 = new byte[3];
 
             public enum DamageResistancePercentage : byte
@@ -93,7 +93,7 @@ namespace TagTool.BlamFile.GameVariants
         }
 
         [TagStructure(Size = 0x3)]
-        public class PlayerExtendedTraits
+        public class PlayerExtendedTraits : TagStructure
         {
             public byte PlayerCharacterValue;
             public ExtendedTraitSettings ExtendedTraits;
@@ -111,7 +111,7 @@ namespace TagTool.BlamFile.GameVariants
         }
 
         [TagStructure(Size = 0x8)]
-        public class PlayerWeaponTraits
+        public class PlayerWeaponTraits : TagStructure
         {
             public WeaponGrenadeCount InitialGrenadeCount;
             public byte PrimaryWeaponIndex;
@@ -169,7 +169,7 @@ namespace TagTool.BlamFile.GameVariants
         }
 
         [TagStructure(Size = 0x4)]
-        public class PlayerMovementTraits
+        public class PlayerMovementTraits : TagStructure
         {
             public PlayerSpeedSettings PlayerSpeed;
             public PlayerGravitySettings PlayerGravity;
@@ -218,7 +218,7 @@ namespace TagTool.BlamFile.GameVariants
         }
 
         [TagStructure(Size = 0x4)]
-        public class PlayerAppearanceTraits
+        public class PlayerAppearanceTraits : TagStructure
         {
             public ActiveCamoSettings ActiveCamo;
             public WaypointSettings Waypoint;
@@ -301,7 +301,7 @@ namespace TagTool.BlamFile.GameVariants
         }
 
         [TagStructure(Size = 0x4)]
-        public class PlayerSensorTraits
+        public class PlayerSensorTraits : TagStructure
         {
             public MotionTrackerSettings MotionTracker;
             public MotionTrackerRangeSettings MotionTrackerRange;

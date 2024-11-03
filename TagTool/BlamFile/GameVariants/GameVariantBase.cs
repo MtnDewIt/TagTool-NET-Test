@@ -20,7 +20,7 @@ namespace TagTool.BlamFile.GameVariants
         public TeamScoring TeamScoringMethod;
 
         [TagStructure(Size = 0x4)]
-        public class VariantMiscellaneousOptions 
+        public class VariantMiscellaneousOptions : TagStructure
         {
             public MiscellaneousOptionsFlags Flags;
             public sbyte TimeLimit;
@@ -39,7 +39,7 @@ namespace TagTool.BlamFile.GameVariants
         }
 
         [TagStructure(Size = 0x28)]
-        public class VariantRespawnOptions 
+        public class VariantRespawnOptions : TagStructure
         {
             public RespawnFlags Flags;
             public byte LivesPerRound;
@@ -50,8 +50,10 @@ namespace TagTool.BlamFile.GameVariants
             public byte UnknownPenalty;
             public byte RespawnGrowth;
             public byte RespawnPlayerTraitsDuration;
+
             [TagField(Flags = TagFieldFlags.Padding, Length = 3)]
             public byte[] Padding1 = new byte[3];
+
             public GameVariantPlayerTraits RespawnPlayerTraits;
 
             [Flags]
@@ -67,7 +69,7 @@ namespace TagTool.BlamFile.GameVariants
         }
 
         [TagStructure(Size = 0x4)]
-        public class VariantSocialOptions 
+        public class VariantSocialOptions : TagStructure
         {
             public SocialFlags Flags;
 
@@ -89,7 +91,7 @@ namespace TagTool.BlamFile.GameVariants
         }
 
         [TagStructure(Size = 0x7C)]
-        public class VariantMapOverrideOptions 
+        public class VariantMapOverrideOptions : TagStructure
         {
             public MapOverrideFlags Flags;
             public GameVariantPlayerTraits BasePlayerTraits;
@@ -101,6 +103,7 @@ namespace TagTool.BlamFile.GameVariants
             public byte RedPowerupDuration;
             public byte BluePowerupDuration;
             public byte YellowPowerupDuration;
+
             [TagField(Flags = TagFieldFlags.Padding, Length = 1)]
             public byte[] Padding1 = new byte[1];
 
@@ -124,7 +127,7 @@ namespace TagTool.BlamFile.GameVariants
             SumOfTeam,
             MinimumScore,
             MaximumScore,
-            Default // TeamControl
+            Default,
         }
     }
 }
