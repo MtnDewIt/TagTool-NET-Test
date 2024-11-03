@@ -21,7 +21,7 @@ namespace TagTool.Pathfinding.Utils
             {
                 Sectors = tagPathfinding.Sectors,
                 Links = tagPathfinding.Links,
-                References = tagPathfinding.References,
+                Bsp2dRef = tagPathfinding.Bsp2dRef,
                 Bsp2dNodes = tagPathfinding.Bsp2dNodes,
                 Vertices = tagPathfinding.Vertices,
                 PathfindingHints = tagPathfinding.PathfindingHints,
@@ -38,7 +38,7 @@ namespace TagTool.Pathfinding.Utils
             // set address type to data or definition
             result.Sectors.AddressType = CacheAddressType.Data;
             result.Links.AddressType = CacheAddressType.Data;
-            result.References.AddressType = CacheAddressType.Data;
+            result.Bsp2dRef.AddressType = CacheAddressType.Data;
             result.Bsp2dNodes.AddressType = CacheAddressType.Data;
             result.Vertices.AddressType = CacheAddressType.Data;
             result.PathfindingHints.AddressType = CacheAddressType.Data;
