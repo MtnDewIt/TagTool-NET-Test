@@ -18,6 +18,7 @@ namespace TagTool.Commands.Tags
         {
             ElDewrito,
             ElDewritoLegacy,
+            ElDewritoLegacyLegacy,
             MS23,
         }
 
@@ -51,6 +52,9 @@ namespace TagTool.Commands.Tags
                     break;
                 case TagListVersion.ElDewritoLegacy:
                     jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}eldewrito_legacy_tags.json");
+                    break;
+                case TagListVersion.ElDewritoLegacyLegacy:
+                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}eldewrito_legacy_legacy_tags.json");
                     break;
                 case TagListVersion.MS23:
                     jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}ms23_tags.json");
