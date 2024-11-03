@@ -16,7 +16,7 @@ namespace TagTool.Pathfinding
     {
         public TagBlock<Sector> Sectors;
         public TagBlock<Link> Links;
-        public TagBlock<Reference> References;
+        public TagBlock<Bsp2dRef> Bsp2dRef;
         public TagBlock<Bsp2dNode> Bsp2dNodes;
         public TagBlock<Vertex> Vertices;
         public TagBlock<ObjectReference> ObjectReferences;
@@ -34,7 +34,7 @@ namespace TagTool.Pathfinding
     {
         public TagBlock<Sector> Sectors;
         public TagBlock<Link> Links;
-        public TagBlock<Reference> References;
+        public TagBlock<Bsp2dRef> Bsp2dRef;
         public TagBlock<Bsp2dNode> Bsp2dNodes;
         public TagBlock<Vertex> Vertices;
         public TagBlock<ObjectReference> ObjectReferences;
@@ -91,8 +91,8 @@ namespace TagTool.Pathfinding
         public short Vertex2;
         public FlagsValue LinkFlags;
         public short HintIndex;
-        public ushort ForwardLink;
-        public ushort ReverseLink;
+        public short ForwardLink; // THESE SHOULD NOT BE UNSIGNED, -1 is used for when it DOES NOT have a corresponding link, and the engine most likely has a 32000 something limit
+        public short ReverseLink;
         public short LeftSector;
         public short RightSector;
 
@@ -120,7 +120,7 @@ namespace TagTool.Pathfinding
     }
 
     [TagStructure(Size = 0x4)]
-    public class Reference : TagStructure
+    public class Bsp2dRef : TagStructure
     {
         public int NodeOrSectorIndex;
     }
@@ -142,17 +142,17 @@ namespace TagTool.Pathfinding
     [TagStructure(Size = 0x18)]
     public class ObjectReference : TagStructure
     {
-        public ushort Flags;
+        public Flags ObjectReferenceFlags; // Mobile flag
 
         [TagField(Flags = Padding, Length = 2)]
         public byte[] Unused = new byte[2];
 
         public TagBlock<BspReference> Bsps;
 
-        public int ObjectUniqueID;
+        public DatumHandle ObjectUniqueID; // DATUM, not just a short, c'mon guys
         public short OriginBspIndex;
-        public GameObjectType8 ObjectType;
-        public Scenario.ScenarioInstance.SourceValue Source;
+        public ObjectTypeEnumDefinition ObjectType;
+        public ObjectSourceEnumDefinition Source;
 
         [TagStructure(Size = 0x18)]
         public class BspReference : TagStructure
@@ -170,8 +170,44 @@ namespace TagTool.Pathfinding
             [TagStructure(Size = 0x4)]
             public class Bsp2dRef : TagStructure
             {
-                public DatumHandle Index;
+                public int NodeOrSectorIndex; // not a datum, just an index
             }
+        }
+        public enum ObjectTypeEnumDefinition : sbyte // -1 means no object type
+        {
+            None = -1,
+            Biped,
+            Vehicle,
+            Weapon,
+            Equipment,
+            ArgDevice,
+            Terminal,
+            Projectile,
+            Scenery,
+            Machine,
+            Control,
+            SoundScenery,
+            Crate,
+            Creature,
+            Giant,
+            EffectScenery,
+        }
+        public enum ObjectSourceEnumDefinition : sbyte // -1 means no object source
+        {
+            None = -1,
+            Structure,
+            Editor,
+            Dynamic,
+            Legacy,
+            Sky,
+            Parent
+        }
+
+        [Flags]
+        public enum Flags : ushort
+        {
+            None = 0,
+            Mobile = 1 << 0,
         }
     }
 
