@@ -2038,6 +2038,9 @@ namespace TagTool.Scripting.Compiler
                             if (squadIndex != -1)
                             {
                                 value = (1 << 29) | (squadIndex & 0xFFFF);
+                                var expr = ScriptExpressions[handle.Index];
+                                expr.StringAddress = CompileStringAddress(aiString.Value);
+                                Array.Copy(BitConverter.GetBytes(value), expr.Data, 4);
                                 break;
                             }
 
@@ -2090,6 +2093,9 @@ namespace TagTool.Scripting.Compiler
                                 if (spawnPointIndex != -1)
                                 {
                                     value = (4 << 29) | ((squadIndex & 0x1FFF) << 16) | (spawnPointIndex & 0xFF);
+                                    var expr = ScriptExpressions[handle.Index];
+                                    expr.StringAddress = CompileStringAddress(aiString.Value);
+                                    Array.Copy(BitConverter.GetBytes(value), expr.Data, 4);
                                     break;
                                 }
 
