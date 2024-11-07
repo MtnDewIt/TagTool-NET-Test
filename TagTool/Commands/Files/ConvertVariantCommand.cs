@@ -103,11 +103,13 @@ namespace TagTool.Commands.Files
                 using (var stream = input.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     FixBlfEndianness(stream, blf);
-
+                    
                     if (blf.MapVariantTagNames == null && blf.MapVariant != null)
                     {
                         Convert06Blf(blf);
                     }
+
+                    //Convert05Blf(blf);
 
                     if (blf.EndOfFile == null)
                     {
