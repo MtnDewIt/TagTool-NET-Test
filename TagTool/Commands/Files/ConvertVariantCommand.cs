@@ -8,11 +8,13 @@ using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
+using TagTool.Tags.Definitions.Common;
 using System;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using TagTool.BlamFile.GameVariants;
 
 namespace TagTool.Commands.Files
 {
@@ -104,7 +106,7 @@ namespace TagTool.Commands.Files
 
                     if (blf.MapVariantTagNames == null && blf.MapVariant != null)
                     {
-                        ConvertBlf(blf);
+                        Convert06Blf(blf);
                     }
 
                     if (blf.EndOfFile == null)
@@ -194,7 +196,7 @@ namespace TagTool.Commands.Files
                 throw new Exception("Unable to parse BLF data");
         }
 
-        private void ConvertBlf(Blf blf) 
+        private void Convert06Blf(Blf blf) 
         {
             if (TagMap == null) 
             {
@@ -221,6 +223,112 @@ namespace TagTool.Commands.Files
                     blf.MapVariantTagNames.Names[i] = new TagName() { Name = name };
                 }
             }
+        }
+
+        private void Convert05Blf(Blf blf) 
+        {
+            if (TagMap == null)
+            {
+                var jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}051_mapping.json");
+                TagMap = JsonConvert.DeserializeObject<Dictionary<int, string>>(jsonData);
+            }
+
+            if (blf.MapVariantTagNames == null && blf.MapVariant != null) 
+            {
+                // TODO: Add functions to convert object flags and parse legacy object data
+                // Really gonna have to dig through unk's old converter to figure out how that's being handled
+
+                blf.MapVariantTagNames = new BlfMapVariantTagNames()
+                {
+                    Signature = new Tag("tagn"),
+                    Length = (int)TagStructure.GetStructureSize(typeof(BlfMapVariantTagNames), blf.Version, CachePlatform.Original),
+                    MajorVersion = 1,
+                    MinorVersion = 0,
+                    Names = Enumerable.Range(0, 256).Select(x => new TagName()).ToArray(),
+                };
+                blf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
+
+                for (int i = 0; i < blf.MapVariant.MapVariant.Quotas.Length; i++)
+                {
+                    var objectIndex = blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex;
+
+                    if (objectIndex != -1 && TagMap.TryGetValue(objectIndex, out string name))
+                    {
+                        blf.MapVariantTagNames.Names[i] = new TagName() { Name = name };
+                    }
+                }
+            }
+
+            if (blf.GameVariant != null) 
+            {
+                var baseVariant = blf.GameVariant.Variant;
+
+                UpdateStartingWeaponData(baseVariant.RespawnOptions.RespawnPlayerTraits.WeaponTraits);
+                UpdateStartingWeaponData(baseVariant.MapOverrideOptions.BasePlayerTraits.WeaponTraits);
+                UpdateStartingWeaponData(baseVariant.MapOverrideOptions.RedPowerupTraits.WeaponTraits);
+                UpdateStartingWeaponData(baseVariant.MapOverrideOptions.BluePowerupTraits.WeaponTraits);
+                UpdateStartingWeaponData(baseVariant.MapOverrideOptions.YellowPowerupTraits.WeaponTraits);
+
+                switch (blf.GameVariant.GameVariantType)
+                {
+                    case GameEngineType.CaptureTheFlag:
+                        var ctfVariant = blf.GameVariant.Variant as GameVariantCtf;
+                        UpdateStartingWeaponData(ctfVariant.CarrierTraits.WeaponTraits);
+                        break;
+                    case GameEngineType.Slayer:
+                        var slayerVariant = blf.GameVariant.Variant as GameVariantSlayer;
+                        UpdateStartingWeaponData(slayerVariant.LeaderTraits.WeaponTraits);
+                        break;
+                    case GameEngineType.Oddball:
+                        var oddballVariant = blf.GameVariant.Variant as GameVariantOddball;
+                        UpdateStartingWeaponData(oddballVariant.CarrierTraits.WeaponTraits);
+                        break;
+                    case GameEngineType.KingOfTheHill:
+                        var kothVariant = blf.GameVariant.Variant as GameVariantKing;
+                        UpdateStartingWeaponData(kothVariant.InsideHillTraits.WeaponTraits);
+                        break;
+                    case GameEngineType.Sandbox:
+                        var sandboxVariant = blf.GameVariant.Variant as GameVariantSandbox;
+                        UpdateStartingWeaponData(sandboxVariant.PlayerTraits.WeaponTraits);
+                        break;
+                    case GameEngineType.Vip:
+                        var vipVariant = blf.GameVariant.Variant as GameVariantVip;
+                        UpdateStartingWeaponData(vipVariant.VipTeamTraits.WeaponTraits);
+                        UpdateStartingWeaponData(vipVariant.VipInfluenceTraits.WeaponTraits);
+                        UpdateStartingWeaponData(vipVariant.VipTraits.WeaponTraits);
+                        break;
+                    case GameEngineType.Juggernaut:
+                        var juggernautVariant = blf.GameVariant.Variant as GameVariantJuggernaut;
+                        UpdateStartingWeaponData(juggernautVariant.JuggernautTraits.WeaponTraits);
+                        break;
+                    case GameEngineType.Territories:
+                        var territoriesVariant = blf.GameVariant.Variant as GameVariantTerritories;
+                        UpdateStartingWeaponData(territoriesVariant.DefenderTraits.WeaponTraits);
+                        UpdateStartingWeaponData(territoriesVariant.AttackerTraits.WeaponTraits);
+                        break;
+                    case GameEngineType.Assault:
+                        var assaultVariant = blf.GameVariant.Variant as GameVariantAssault;
+                        UpdateStartingWeaponData(assaultVariant.CarrierTraits.WeaponTraits);
+                        UpdateStartingWeaponData(assaultVariant.ArmingTraits.WeaponTraits);
+                        break;
+                    case GameEngineType.Infection:
+                        var infectionVariant = blf.GameVariant.Variant as GameVariantInfection;
+                        UpdateStartingWeaponData(infectionVariant.ZombieTraits.WeaponTraits);
+                        UpdateStartingWeaponData(infectionVariant.FirstZombieTraits.WeaponTraits);
+                        UpdateStartingWeaponData(infectionVariant.SafeHavenDefenderTraits.WeaponTraits);
+                        UpdateStartingWeaponData(infectionVariant.LastHumanTraits.WeaponTraits);
+                        break;
+                }
+            }
+        }
+
+        private void UpdateStartingWeaponData(GameVariantPlayerTraits.PlayerWeaponTraits weaponTraits) 
+        {
+            if (weaponTraits.PrimaryWeaponIndex == 67)
+                weaponTraits.PrimaryWeaponIndex = 17;
+
+            if (weaponTraits.SecondaryWeaponIndex == 67)
+                weaponTraits.SecondaryWeaponIndex = 17;
         }
 
         private string GetOutputPath(FileInfo input, string variantName, ulong uniqueId)
