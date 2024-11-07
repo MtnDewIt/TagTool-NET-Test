@@ -16,9 +16,9 @@ namespace TagTool.Commands.Tags
 
         public enum TagListVersion : int
         {
-            ElDewrito,
-            ElDewritoLegacy,
-            ElDewritoLegacyLegacy,
+            ElDewrito071,
+            ElDewrito061,
+            ElDewrito051,
             MS23,
         }
 
@@ -47,14 +47,14 @@ namespace TagTool.Commands.Tags
             // TODO: Figure out how to route the file path through a handler (the folder tree is static)
             switch (tagListVersion)
             {
-                case TagListVersion.ElDewrito:
-                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}eldewrito_tags.json");
+                case TagListVersion.ElDewrito071:
+                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}071_tags.json");
                     break;
-                case TagListVersion.ElDewritoLegacy:
-                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}eldewrito_legacy_tags.json");
+                case TagListVersion.ElDewrito061:
+                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}061_tags.json");
                     break;
-                case TagListVersion.ElDewritoLegacyLegacy:
-                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}eldewrito_legacy_legacy_tags.json");
+                case TagListVersion.ElDewrito051:
+                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}051_tags.json");
                     break;
                 case TagListVersion.MS23:
                     jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}ms23_tags.json");
