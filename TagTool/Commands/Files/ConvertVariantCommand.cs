@@ -254,6 +254,24 @@ namespace TagTool.Commands.Files
                 {
                     var objectIndex = blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex;
 
+                    for (int j = 0; j < blf.MapVariant.MapVariant.Objects.Length; j++)
+                    {
+                        var placement = blf.MapVariant.MapVariant.Objects[i];
+
+                        if (objectIndex == 0x444C || objectIndex == 0x4221)
+                        {
+                            if (placement.QuotaIndex == i)
+                            {
+                                placement.Properties.Boundary.Type = MultiplayerObjectBoundaryShape.Count;
+                            }
+                        }
+
+                        if (objectIndex == 0x1A6C) 
+                        {
+                            // Apparently we're supposed to add the data for the map options object here :/
+                        }
+                    }
+
                     if (objectIndex != -1 && TagMap.TryGetValue(objectIndex, out string name))
                     {
                         blf.MapVariantTagNames.Names[i] = new TagName() { Name = name };
@@ -335,7 +353,7 @@ namespace TagTool.Commands.Files
 
         private string GetOutputPath(FileInfo input, string variantName, ulong uniqueId)
         {
-            string outputPath = input.Name.EndsWith(".map") ? Path.Combine(OutputPath, $@"map_variants", $@"{variantName}", "sandbox.map") : Path.Combine(OutputPath, $@"game_variants", $@"{variantName}", $@"variant{input.Extension}");
+            string outputPath = input.Name.EndsWith(".map") ? Path.Combine(OutputPath, $@"map_variants", $@"{variantName.TrimEnd()}", "sandbox.map") : Path.Combine(OutputPath, $@"game_variants", $@"{variantName.TrimEnd()}", $@"variant{input.Extension}");
 
             if (Path.Exists(outputPath) && UniqueIdTable.Contains(uniqueId))
             {
