@@ -7,6 +7,8 @@ using TagTool.IO;
 using TagTool.JSON.Objects;
 using TagTool.JSON.Handlers;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace TagTool.Commands.JSON
 {
@@ -14,7 +16,23 @@ namespace TagTool.Commands.JSON
     {
         private GameCache Cache;
         private GameCacheHaloOnline CacheContext;
-        private string ExportPath = $@"maps\info";
+
+        private static readonly string[] ValidExtensions =
+        {
+            ".assault",
+            ".ctf",
+            ".jugg",
+            ".koth",
+            ".oddball",
+            ".slayer",
+            ".terries",
+            ".vip",
+            ".zombiez",
+            ".map",
+            ".mapinfo",
+            ".campaign",
+            ".blf"
+        };
 
         public GenerateBlfObjectCommand(GameCache cache, GameCacheHaloOnline cacheContext) : base
         (
@@ -32,19 +50,37 @@ namespace TagTool.Commands.JSON
 
         public override object Execute(List<string> args)
         {
-            var file = new FileInfo(args[0]);
-            var blfData = new Blf(Cache.Version, Cache.Platform);
+            ProcessDirectoryAsync(args[0]).GetAwaiter().GetResult();
+
+            return true;
+        }
+
+        public async Task ProcessDirectoryAsync(string targetDirectory)
+        {
+            var files = Directory.EnumerateFiles(targetDirectory, "*.*", SearchOption.AllDirectories).Where(file => ValidExtensions.Contains(Path.GetExtension(file).ToLower()));
+
+            var tasks = files.Select(ConvertFileAsync);
+            await Task.WhenAll(tasks);
+        }
+
+        private async Task ConvertFileAsync(string filePath)
+        {
+            var file = new FileInfo(filePath);
 
             var fileName = Path.GetFileNameWithoutExtension(file.Name);
             var fileExtension = file.Extension.TrimStart('.');
 
-            // Wrapping the whole thing in a using statement probably isn't the best idea
+            var blfData = new Blf(Cache.Version, Cache.Platform);
+
+            var exportPath = $@"maps\info";
+
             using (var stream = file.OpenRead())
             {
                 var reader = new EndianReader(stream);
 
                 var format = GetEndianFormat(reader);
 
+                // TODO: Redo parser
                 switch (file.Extension) 
                 {
                     case ".mapinfo":
@@ -89,7 +125,7 @@ namespace TagTool.Commands.JSON
                         }
                         break;
                     case ".campaign":
-                        ExportPath = $@"data\levels";
+                        exportPath = $@"data\levels";
                         break;
                     default:
                         switch (format)
@@ -120,17 +156,15 @@ namespace TagTool.Commands.JSON
 
                 var jsonData = handler.Serialize(blfObject);
 
-                var fileInfo = new FileInfo(Path.Combine(ExportPath, $"{fileName}.json"));
+                var fileInfo = new FileInfo(Path.Combine(exportPath, $"{fileName}.json"));
 
                 if (!fileInfo.Directory.Exists)
                 {
                     fileInfo.Directory.Create();
                 }
 
-                File.WriteAllText(Path.Combine(ExportPath, $"{fileName}.json"), jsonData);
+                File.WriteAllText(Path.Combine(exportPath, $"{fileName}.json"), jsonData);
             }
-
-            return true;
         }
 
         public EndianFormat GetEndianFormat(EndianReader reader)
