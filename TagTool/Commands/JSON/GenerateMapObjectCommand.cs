@@ -47,7 +47,7 @@ namespace TagTool.Commands.JSON
 
             ProcessDirectoryAsync(args[0]).GetAwaiter().GetResult();
 
-            Console.WriteLine($"{MapCount - ErrorLog.Count}/{MapCount} Variants Converted Successfully in {StopWatch.ElapsedMilliseconds.FormatMilliseconds()} with {ErrorLog.Count} errors\n");
+            Console.WriteLine($"{MapCount - ErrorLog.Count}/{MapCount} Variants Converted Successfully in {StopWatch.ElapsedMilliseconds.FormatMilliseconds()} with {ErrorLog.Count} {(ErrorLog.Count == 1 ? "error" : "errors")}\n");
 
             if (ErrorLog.Count > 0)
             {

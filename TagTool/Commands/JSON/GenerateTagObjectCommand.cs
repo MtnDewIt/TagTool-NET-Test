@@ -47,7 +47,7 @@ namespace TagTool.Commands.JSON
 
             ProcessInputAsync(args[0]).GetAwaiter().GetResult();
 
-            Console.WriteLine($"{TagCount - ErrorLog.Count}/{TagCount} Tags Converted Successfully in {StopWatch.ElapsedMilliseconds.FormatMilliseconds()} with {ErrorLog.Count} errors\n");
+            Console.WriteLine($"{TagCount - ErrorLog.Count}/{TagCount} Tags Converted Successfully in {StopWatch.ElapsedMilliseconds.FormatMilliseconds()} with {ErrorLog.Count} {(ErrorLog.Count == 1 ? "error" : "errors")}\n");
 
             if (ErrorLog.Count > 0)
             {

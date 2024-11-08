@@ -67,7 +67,7 @@ namespace TagTool.Commands.Files
             OutputPath = args.Count > 1 ? args[1] : "";
             ProcessDirectoryAsync(args[0]).GetAwaiter().GetResult();
 
-            Console.WriteLine($"{FileCount - ErrorLog.Count}/{FileCount} Variants Converted Successfully in {StopWatch.ElapsedMilliseconds.FormatMilliseconds()} with {ErrorLog.Count} errors\n");
+            Console.WriteLine($"{FileCount - ErrorLog.Count}/{FileCount} Variants Converted Successfully in {StopWatch.ElapsedMilliseconds.FormatMilliseconds()} with {ErrorLog.Count} {(ErrorLog.Count == 1 ? "error" : "errors")}\n");
 
             if (ErrorLog.Count > 0) 
             {
