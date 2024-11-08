@@ -34,7 +34,10 @@ namespace TagTool.Commands.JSON
 
             "GenerateTagObject <Tag_Name> [Suffix]",
             "Generates a JSON tag object file based on the specified tag. Flags within\n" +
-            "the generated JSON data may change depending on the tag's definition and type"
+            "the generated JSON data may change depending on the tag's definition and type\n\n" +
+
+            "Optionally, instead of specifying a tag to convert you can use\n" + 
+            "\"all\", which will convert all tags in the current cache context."
         )
         {
             Cache = cache;

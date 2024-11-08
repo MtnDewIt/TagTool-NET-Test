@@ -34,7 +34,11 @@ namespace TagTool.Commands.JSON
             "Generates a JSON map object file based on the specified map file",
 
             "GenerateMapObject <Map_Path> [Suffix]",
-            "Generates a JSON map object file based on the specified map file"
+            "Generates a JSON map object file based on the specified map file\n\n" + 
+
+            "Optionally, instead of specifying a map file to convert you can\n" + 
+            "use \"all\", which will convert all map files associated with\n" +
+            "the current cache context"
         )
         {
             Cache = cache;
