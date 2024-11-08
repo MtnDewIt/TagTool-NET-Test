@@ -237,9 +237,6 @@ namespace TagTool.Commands.Files
 
             if (blf.MapVariantTagNames == null && blf.MapVariant != null) 
             {
-                // TODO: Add functions to convert object flags and parse legacy object data
-                // Really gonna have to dig through unk's old converter to figure out how that's being handled
-
                 blf.MapVariantTagNames = new BlfMapVariantTagNames()
                 {
                     Signature = new Tag("tagn"),
@@ -254,90 +251,10 @@ namespace TagTool.Commands.Files
                 {
                     var objectIndex = blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex;
 
-                    for (int j = 0; j < blf.MapVariant.MapVariant.Objects.Length; j++)
-                    {
-                        var placement = blf.MapVariant.MapVariant.Objects[i];
-
-                        if (objectIndex == 0x444C || objectIndex == 0x4221)
-                        {
-                            if (placement.QuotaIndex == i)
-                            {
-                                placement.Properties.Boundary.Type = MultiplayerObjectBoundaryShape.Count;
-                            }
-                        }
-
-                        if (objectIndex == 0x1A6C) 
-                        {
-                            // Apparently we're supposed to add the data for the map options object here :/
-                        }
-                    }
-
                     if (objectIndex != -1 && TagMap.TryGetValue(objectIndex, out string name))
                     {
                         blf.MapVariantTagNames.Names[i] = new TagName() { Name = name };
                     }
-                }
-            }
-
-            if (blf.GameVariant != null) 
-            {
-                var baseVariant = blf.GameVariant.Variant;
-
-                UpdateStartingWeaponData(baseVariant.RespawnOptions.RespawnPlayerTraits.WeaponTraits);
-                UpdateStartingWeaponData(baseVariant.MapOverrideOptions.BasePlayerTraits.WeaponTraits);
-                UpdateStartingWeaponData(baseVariant.MapOverrideOptions.RedPowerupTraits.WeaponTraits);
-                UpdateStartingWeaponData(baseVariant.MapOverrideOptions.BluePowerupTraits.WeaponTraits);
-                UpdateStartingWeaponData(baseVariant.MapOverrideOptions.YellowPowerupTraits.WeaponTraits);
-
-                switch (blf.GameVariant.GameVariantType)
-                {
-                    case GameEngineType.CaptureTheFlag:
-                        var ctfVariant = blf.GameVariant.Variant as GameVariantCtf;
-                        UpdateStartingWeaponData(ctfVariant.CarrierTraits.WeaponTraits);
-                        break;
-                    case GameEngineType.Slayer:
-                        var slayerVariant = blf.GameVariant.Variant as GameVariantSlayer;
-                        UpdateStartingWeaponData(slayerVariant.LeaderTraits.WeaponTraits);
-                        break;
-                    case GameEngineType.Oddball:
-                        var oddballVariant = blf.GameVariant.Variant as GameVariantOddball;
-                        UpdateStartingWeaponData(oddballVariant.CarrierTraits.WeaponTraits);
-                        break;
-                    case GameEngineType.KingOfTheHill:
-                        var kothVariant = blf.GameVariant.Variant as GameVariantKing;
-                        UpdateStartingWeaponData(kothVariant.InsideHillTraits.WeaponTraits);
-                        break;
-                    case GameEngineType.Sandbox:
-                        var sandboxVariant = blf.GameVariant.Variant as GameVariantSandbox;
-                        UpdateStartingWeaponData(sandboxVariant.PlayerTraits.WeaponTraits);
-                        break;
-                    case GameEngineType.Vip:
-                        var vipVariant = blf.GameVariant.Variant as GameVariantVip;
-                        UpdateStartingWeaponData(vipVariant.VipTeamTraits.WeaponTraits);
-                        UpdateStartingWeaponData(vipVariant.VipInfluenceTraits.WeaponTraits);
-                        UpdateStartingWeaponData(vipVariant.VipTraits.WeaponTraits);
-                        break;
-                    case GameEngineType.Juggernaut:
-                        var juggernautVariant = blf.GameVariant.Variant as GameVariantJuggernaut;
-                        UpdateStartingWeaponData(juggernautVariant.JuggernautTraits.WeaponTraits);
-                        break;
-                    case GameEngineType.Territories:
-                        var territoriesVariant = blf.GameVariant.Variant as GameVariantTerritories;
-                        UpdateStartingWeaponData(territoriesVariant.DefenderTraits.WeaponTraits);
-                        UpdateStartingWeaponData(territoriesVariant.AttackerTraits.WeaponTraits);
-                        break;
-                    case GameEngineType.Assault:
-                        var assaultVariant = blf.GameVariant.Variant as GameVariantAssault;
-                        UpdateStartingWeaponData(assaultVariant.CarrierTraits.WeaponTraits);
-                        UpdateStartingWeaponData(assaultVariant.ArmingTraits.WeaponTraits);
-                        break;
-                    case GameEngineType.Infection:
-                        var infectionVariant = blf.GameVariant.Variant as GameVariantInfection;
-                        UpdateStartingWeaponData(infectionVariant.ZombieTraits.WeaponTraits);
-                        UpdateStartingWeaponData(infectionVariant.FirstZombieTraits.WeaponTraits);
-                        UpdateStartingWeaponData(infectionVariant.SafeHavenDefenderTraits.WeaponTraits);
-                        UpdateStartingWeaponData(infectionVariant.LastHumanTraits.WeaponTraits);
-                        break;
                 }
             }
         }
