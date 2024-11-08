@@ -8,6 +8,10 @@ using TagTool.JSON.Objects;
 using TagTool.JSON.Handlers;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
+using System.Threading.Tasks;
+using TagTool.Commands.Common;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace TagTool.Commands.JSON
 {
@@ -16,6 +20,11 @@ namespace TagTool.Commands.JSON
         private GameCache Cache;
         private GameCacheHaloOnline CacheContext;
         private string ExportPath = $@"tags";
+        private string Suffix = null;
+
+        private int TagCount = 0;
+        private Stopwatch StopWatch = new Stopwatch();
+        private List<string> ErrorLog = new List<string>();
 
         public GenerateTagObjectCommand(GameCache cache, GameCacheHaloOnline cacheContext) : base
         (
@@ -34,18 +43,52 @@ namespace TagTool.Commands.JSON
 
         public override object Execute(List<string> args)
         {
-            // Wrapping the whole thing in a using statement probably isn't the best idea
-            using (var cacheStream = Cache.OpenCacheRead())
+            Suffix = args.Count > 1 ? args[1] : null;
+
+            ProcessInputAsync(args[0]).GetAwaiter().GetResult();
+
+            Console.WriteLine($"{TagCount - ErrorLog.Count}/{TagCount} Tags Converted Successfully in {StopWatch.ElapsedMilliseconds.FormatMilliseconds()} with {ErrorLog.Count} errors\n");
+
+            if (ErrorLog.Count > 0)
             {
-                var handler = new TagObjectHandler(Cache, CacheContext, cacheStream);
+                ParseErrorLog();
+            }
 
-                var tag = Cache.TagCache.GetTag(args[0]);
-                var suffix = args.Count > 1 ? args[1] : null;
+            return true;
+        }
 
+        public async Task ProcessInputAsync(string input) 
+        {
+            var tagTable = new List<CachedTag>();
+
+            if (Cache.TagCache.TryGetCachedTag(input, out var tag))
+                tagTable.Add(tag);
+            else if (input.Equals("all", StringComparison.OrdinalIgnoreCase))
+                tagTable = Cache.TagCache.NonNull().ToList();
+            else 
+                new TagToolError(CommandError.TagInvalid);
+
+            TagCount = tagTable.Count;
+
+            using (var cacheStream = Cache.OpenCacheRead()) 
+            {
+                StopWatch.Start();
+
+                var tasks = tagTable.Select(tag => ConvertTagAsync(tag, cacheStream));
+                await Task.WhenAll(tasks);
+
+                StopWatch.Stop();
+            }
+        }
+
+        private async Task ConvertTagAsync(CachedTag tag, Stream cacheStream) 
+        {
+            try 
+            {
                 var definition = (TagStructure)Cache.Deserialize(cacheStream, tag);
                 var definitionName = TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group), Cache.Version, Cache.Platform).Structure.Name;
 
-                var fileName = suffix != null ? $"{tag.Name}_{suffix}" : tag.Name;
+                var fileName = Suffix != null ? $"{tag.Name}_{Suffix}" : tag.Name;
 
                 var tagObject = new TagObject()
                 {
@@ -61,6 +104,8 @@ namespace TagTool.Commands.JSON
                     tagObject.Generate = true;
                 }
 
+                var handler = new TagObjectHandler(Cache, CacheContext, cacheStream);
+
                 var jsonData = handler.Serialize(tagObject);
 
                 var fileInfo = new FileInfo(Path.Combine(ExportPath, $"{fileName}.{definitionName}.json"));
@@ -72,8 +117,33 @@ namespace TagTool.Commands.JSON
 
                 File.WriteAllText(Path.Combine(ExportPath, $"{fileName}.{definitionName}.json"), jsonData);
             }
+            catch (Exception e)
+            {
+                ErrorLog.Add($"Error converting \"{tag.Name}.{tag.Group}\" : {e.Message}");
+            }
+        }
 
-            return true;
+        public void ParseErrorLog()
+        {
+            var time = DateTime.Now;
+            var shortDateTime = $@"{time.ToShortDateString()}-{time.ToShortTimeString()}";
+
+            var fileName = Regex.Replace($"hott_{shortDateTime}_tag_errors.log", @"[*\\ /:]", "_");
+            var filePath = "logs";
+            var fullPath = Path.Combine(Program.TagToolDirectory, filePath, fileName);
+
+            if (!Directory.Exists(filePath))
+                Directory.CreateDirectory(filePath);
+
+            using (StreamWriter writer = new StreamWriter(File.Create(fullPath)))
+            {
+                foreach (var error in ErrorLog)
+                {
+                    writer.WriteLine(error);
+                }
+            }
+
+            Console.WriteLine($"Check \"{fullPath}\" for details on errors");
         }
     }
 }

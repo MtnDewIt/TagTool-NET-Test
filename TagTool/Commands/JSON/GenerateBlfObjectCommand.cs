@@ -9,6 +9,9 @@ using TagTool.JSON.Handlers;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using TagTool.Commands.Common;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace TagTool.Commands.JSON
 {
@@ -16,6 +19,10 @@ namespace TagTool.Commands.JSON
     {
         private GameCache Cache;
         private GameCacheHaloOnline CacheContext;
+
+        private int FileCount = 0;
+        private Stopwatch StopWatch = new Stopwatch();
+        private List<string> ErrorLog = new List<string>();
 
         private static readonly string[] ValidExtensions =
         {
@@ -52,146 +59,148 @@ namespace TagTool.Commands.JSON
         {
             ProcessDirectoryAsync(args[0]).GetAwaiter().GetResult();
 
+            Console.WriteLine($"{FileCount - ErrorLog.Count}/{FileCount} Variants Converted Successfully in {StopWatch.ElapsedMilliseconds.FormatMilliseconds()} with {ErrorLog.Count} errors\n");
+
+            if (ErrorLog.Count > 0)
+            {
+                ParseErrorLog();
+            }
+
             return true;
         }
 
-        public async Task ProcessDirectoryAsync(string targetDirectory)
+        public async Task ProcessDirectoryAsync(string inputPath)
         {
-            var files = Directory.EnumerateFiles(targetDirectory, "*.*", SearchOption.AllDirectories).Where(file => ValidExtensions.Contains(Path.GetExtension(file).ToLower()));
+            var files = new List<string>();
+
+            if (File.Exists(inputPath))
+                files.Add(inputPath);
+            else if (Directory.Exists(inputPath))
+                files = Directory.EnumerateFiles(inputPath, "*.*", SearchOption.AllDirectories).Where(file => ValidExtensions.Contains(Path.GetExtension(file).ToLower())).ToList();
+            else
+                new TagToolError(CommandError.DirectoryNotFound);
+
+            FileCount = files.Count;
+
+            StopWatch.Start();
 
             var tasks = files.Select(ConvertFileAsync);
             await Task.WhenAll(tasks);
+
+            StopWatch.Start();
         }
 
         private async Task ConvertFileAsync(string filePath)
         {
-            var file = new FileInfo(filePath);
-
-            var fileName = Path.GetFileNameWithoutExtension(file.Name);
-            var fileExtension = file.Extension.TrimStart('.');
-
-            var blfData = new Blf(Cache.Version, Cache.Platform);
-
-            var exportPath = $@"maps\info";
-
-            using (var stream = file.OpenRead())
+            try 
             {
-                var reader = new EndianReader(stream);
+                var file = new FileInfo(filePath);
 
-                var format = GetEndianFormat(reader);
+                var fileName = Path.GetFileNameWithoutExtension(file.Name);
+                var fileExtension = file.Extension.TrimStart('.');
 
-                // TODO: Redo parser
-                switch (file.Extension) 
+                var blfData = new Blf(Cache.Version, Cache.Platform);
+
+                var exportPath = $@"maps\info";
+
+                using (var stream = file.OpenRead())
                 {
-                    case ".mapinfo":
-                        switch (reader.Length)
-                        {
-                            case 0x4E91:
-                                blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
-                                break;
-                            case 0x9A01:
-                                blfData = new Blf(CacheVersion.Halo3ODST, Cache.Platform);
-                                break;
-                            case 0xCDD9:
-                                blfData = new Blf(CacheVersion.HaloReach, Cache.Platform);
-                                break;
-                            default:
-                                blfData = new Blf(Cache.Version, Cache.Platform);
-                                break;
-                        }
-                        break;
-                    case ".map":
-                        switch (format)
-                        {
-                            case EndianFormat.BigEndian:
-                                switch (reader.Length)
-                                {
-                                    // May need to add extra cases as the EOF chunk size differs slightly for some reason
-                                    case 0xE1E9:
-                                    case 0xE1F0:
-                                        blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
-                                        break;
-                                    default:
-                                        blfData = new Blf(Cache.Version, Cache.Platform);
-                                        break;
-                                }
-                                break;
-                            case EndianFormat.LittleEndian:
-                                blfData = new Blf(CacheVersion.HaloOnlineED, Cache.Platform);
-                                break;
-                            default:
-                                blfData = new Blf(Cache.Version, Cache.Platform);
-                                break;
-                        }
-                        break;
-                    case ".campaign":
-                        exportPath = $@"data\levels";
-                        break;
-                    default:
-                        switch (format)
-                        {
-                            case EndianFormat.BigEndian:
-                                blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
-                                break;
-                            case EndianFormat.LittleEndian:
-                                blfData = new Blf(CacheVersion.HaloOnlineED, Cache.Platform);
-                                break;
-                            default:
-                                blfData = new Blf(Cache.Version, Cache.Platform);
-                                break;
-                        }
-                        break;
+                    var reader = new EndianReader(stream);
+
+                    switch (file.Extension)
+                    {
+                        case ".assault":
+                        case ".ctf":
+                        case ".jugg":
+                        case ".koth":
+                        case ".oddball":
+                        case ".slayer":
+                        case ".terries":
+                        case ".vip":
+                        case ".zombiez":
+                        case ".map":
+                            // I might add support for halo 3 variants at some point, but I'm not all that familiar
+                            // with the formatting for variants outside of ED, so for now we'll only support ED variants.
+                            blfData = new Blf(CacheVersion.HaloOnlineED, Cache.Platform);
+                            break;
+                        case ".blf":
+                            blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
+                            break;
+                        case ".campaign":
+                            blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
+                            exportPath = $@"data\levels";
+                            break;
+                        case ".mapinfo":
+                            switch (reader.Length)
+                            {
+                                case 0x4E91:
+                                    blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
+                                    break;
+                                case 0x9A01:
+                                    blfData = new Blf(CacheVersion.Halo3ODST, Cache.Platform);
+                                    break;
+                                case 0xCDD9:
+                                    blfData = new Blf(CacheVersion.HaloReach, Cache.Platform);
+                                    break;
+                            }
+                            break;
+                    }
+
+                    blfData.Read(reader);
+
+                    var blfObject = new BlfObject()
+                    {
+                        FileName = fileName,
+                        FileType = fileExtension,
+                        Blf = blfData,
+                    };
+
+                    if (blfData.ContentHeader != null)
+                    {
+                        fileName = blfData.ContentHeader.Metadata.Name.TrimEnd();
+                    }
+
+                    var handler = new BlfObjectHandler(blfData.Version, blfData.CachePlatform);
+
+                    var jsonData = handler.Serialize(blfObject);
+
+                    var fileInfo = new FileInfo(Path.Combine(exportPath, $"{fileName}.json"));
+
+                    if (!fileInfo.Directory.Exists)
+                    {
+                        fileInfo.Directory.Create();
+                    }
+
+                    File.WriteAllText(Path.Combine(exportPath, $"{fileName}.json"), jsonData);
                 }
-
-                blfData.Read(reader);
-
-                var blfObject = new BlfObject()
-                {
-                    FileName = fileName,
-                    FileType = fileExtension,
-                    Blf = blfData,
-                };
-
-                var handler = new BlfObjectHandler(blfData.Version, blfData.CachePlatform);
-
-                var jsonData = handler.Serialize(blfObject);
-
-                var fileInfo = new FileInfo(Path.Combine(exportPath, $"{fileName}.json"));
-
-                if (!fileInfo.Directory.Exists)
-                {
-                    fileInfo.Directory.Create();
-                }
-
-                File.WriteAllText(Path.Combine(exportPath, $"{fileName}.json"), jsonData);
+            }
+            catch (Exception e)
+            {
+                ErrorLog.Add($"Error converting \"{filePath}\" : {e.Message}");
             }
         }
 
-        public EndianFormat GetEndianFormat(EndianReader reader)
+        public void ParseErrorLog()
         {
-            reader.Format = EndianFormat.LittleEndian;
-            var startOfFile = reader.Position;
-            reader.SeekTo(startOfFile + 0xC);
-            if (reader.ReadInt16() == -2)
+            var time = DateTime.Now;
+            var shortDateTime = $@"{time.ToShortDateString()}-{time.ToShortTimeString()}";
+
+            var fileName = Regex.Replace($"hott_{shortDateTime}_blf_errors.log", @"[*\\ /:]", "_");
+            var filePath = "logs";
+            var fullPath = Path.Combine(Program.TagToolDirectory, filePath, fileName);
+
+            if (!Directory.Exists(filePath))
+                Directory.CreateDirectory(filePath);
+
+            using (StreamWriter writer = new StreamWriter(File.Create(fullPath)))
             {
-                reader.SeekTo(startOfFile);
-                return EndianFormat.LittleEndian;
-            }
-            else
-            {
-                reader.SeekTo(startOfFile + 0xC);
-                reader.Format = EndianFormat.BigEndian;
-                if (reader.ReadInt16() == -2)
+                foreach (var error in ErrorLog)
                 {
-                    reader.SeekTo(startOfFile);
-                    return EndianFormat.BigEndian;
-                }
-                else
-                {
-                    reader.SeekTo(startOfFile);
-                    throw new Exception("Invalid BOM found in BLF start of file chunk");
+                    writer.WriteLine(error);
                 }
             }
+
+            Console.WriteLine($"Check \"{fullPath}\" for details on errors");
         }
     }
 }

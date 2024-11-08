@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using TagTool.BlamFile.GameVariants;
+using System.Text.RegularExpressions;
 
 namespace TagTool.Commands.Files
 {
@@ -66,24 +67,30 @@ namespace TagTool.Commands.Files
             OutputPath = args.Count > 1 ? args[1] : "";
             ProcessDirectoryAsync(args[0]).GetAwaiter().GetResult();
 
-            Console.WriteLine($"{FileCount - ErrorLog.Count}/{FileCount} Variants Converted Successfully in {StopWatch.ElapsedMilliseconds.FormatMilliseconds()}\n");
-            Console.WriteLine($"ERROR LOG:");
+            Console.WriteLine($"{FileCount - ErrorLog.Count}/{FileCount} Variants Converted Successfully in {StopWatch.ElapsedMilliseconds.FormatMilliseconds()} with {ErrorLog.Count} errors\n");
 
-            foreach (var error in ErrorLog) 
+            if (ErrorLog.Count > 0) 
             {
-                Console.WriteLine(error);
+                ParseErrorLog();
             }
 
             return true;
         }
 
-        public async Task ProcessDirectoryAsync(string targetDirectory)
+        public async Task ProcessDirectoryAsync(string inputPath)
         {
+            var files = new List<string>();
+
+            if (File.Exists(inputPath))
+                files.Add(inputPath);
+            else if (Directory.Exists(inputPath))
+                files = Directory.EnumerateFiles(inputPath, "*.*", SearchOption.AllDirectories).Where(file => ValidExtensions.Contains(Path.GetExtension(file).ToLower())).ToList();
+            else
+                new TagToolError(CommandError.DirectoryNotFound);
+
+            FileCount = files.Count;
+
             StopWatch.Start();
-
-            var files = Directory.EnumerateFiles(targetDirectory, "*.*", SearchOption.AllDirectories).Where(file => ValidExtensions.Contains(Path.GetExtension(file).ToLower()));
-
-            FileCount = files.Count();
 
             var tasks = files.Select(ConvertFileAsync);
             await Task.WhenAll(tasks);
@@ -140,7 +147,7 @@ namespace TagTool.Commands.Files
             }
             catch (Exception e)
             {
-                ErrorLog.Add($"Error converting \"{filePath}\": {e.Message}");
+                ErrorLog.Add($"Error converting \"{filePath}\" : {e.Message}");
             }
         }
 
@@ -280,6 +287,29 @@ namespace TagTool.Commands.Files
             {
                 return outputPath;
             }
+        }
+
+        public void ParseErrorLog()
+        {
+            var time = DateTime.Now;
+            var shortDateTime = $@"{time.ToShortDateString()}-{time.ToShortTimeString()}";
+
+            var fileName = Regex.Replace($"hott_{shortDateTime}_variant_errors.log", @"[*\\ /:]", "_");
+            var filePath = "logs";
+            var fullPath = Path.Combine(Program.TagToolDirectory, filePath, fileName);
+
+            if (!Directory.Exists(filePath))
+                Directory.CreateDirectory(filePath);
+
+            using (StreamWriter writer = new StreamWriter(File.Create(fullPath)))
+            {
+                foreach (var error in ErrorLog)
+                {
+                    writer.WriteLine(error);
+                }
+            }
+
+            Console.WriteLine($"Check \"{fullPath}\" for details on errors");
         }
     }
 }
