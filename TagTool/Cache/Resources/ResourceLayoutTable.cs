@@ -14,15 +14,15 @@ namespace TagTool.Cache.Resources
         public List<ResourcePage> Pages;
         public List<ResourceSubpageTable> SubpageTables;
         [TagField(MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-        public List<UnknownBlockMCC> UnknownMCC;
+        public List<ResourcePageLookup> PagesPatchLookup;
         public List<ResourceSection> Sections;
 
         [TagStructure(Size=  0xC)]
-        public class UnknownBlockMCC : TagStructure
+        public class ResourcePageLookup : TagStructure
         {
-            public uint Unknown0;
-            public uint Unknown4;
-            public uint Unknown8;
+            public int PatchIndex;
+            public int PageableFileLocationIndex;
+            public int ResourceIndex;
         }
     }
 }
