@@ -11,12 +11,7 @@ namespace TagTool.Cache.Resources
         public ZoneManifest ZoneManifest;
 
         public int DiskSize;
-
-        // If its always zero, then it might be padding
-        // [TagField(Length = 0x4)]
-        // publyc byte[] Padding = new byte[4]
         public int UnusedSize;
-
         public CachedTag OwnerTag;
     }
 }

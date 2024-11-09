@@ -13,7 +13,7 @@ namespace TagTool.Cache.Resources
 	{
         public ScenarioTypeEnum MapType;
 
-        public ScenarioFlags Flags;
+        public ScenarioFlags MapFlags;
 
         public List<ResourceDefinition> ResourceDefinitions;
         public List<InteropDefinition> InteropDefinitions;
@@ -67,19 +67,15 @@ namespace TagTool.Cache.Resources
         public ResourceBlock ResourcePropertiesBlock;
         public ResourceBlock ParentagesBlock;
 
-        public List<PredictionQuantum> PredictionQuanta;
-        public List<PredictionAtom> PredictionAtoms;
-        public List<PredictionMoleculeAtom> PredictionMoleculeAtoms;
-        public List<PredictionMolecule> PredictionMolecules;
-        public List<PredictionMoleculeKey> PredictionMoleculeKeys;
+        public ResourcePredictionTable PredictionTable;
 
         public int CampaignId;
         public int MapId;
 
         [TagField(Platform = CachePlatform.MCC)]
-        public int Unknown0;
+        public int Unknown0; // Mat is in a really bad mood campaign id
         [TagField(Platform = CachePlatform.MCC)]
-        public int Unknown1;
+        public int Unknown1; // Next time we don't put things that the game depends on outside of tool, guerilla, or sapien map id
 
         public enum ScenarioTypeEnum : short
         {
