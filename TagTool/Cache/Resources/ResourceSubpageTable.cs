@@ -8,5 +8,12 @@ namespace TagTool.Cache.Resources
     {
         public int TotalSize;
         public List<ResourceSubpage> Subpages;
+
+        [TagStructure(Size = 0x8)]
+        public class ResourceSubpage : TagStructure
+        {
+            public int Offset;
+            public int Size;
+        }
     }
 }
