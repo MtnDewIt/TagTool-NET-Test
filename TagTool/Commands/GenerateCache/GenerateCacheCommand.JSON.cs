@@ -45,7 +45,7 @@ namespace TagTool.Commands.GenerateCache
         {
             MapParser = new MapObjectParser(Cache, CacheContext, CacheStream);
 
-            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONCommandPath}commands\generatecache\maps.json");
+            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONCommandPath}generatecache\maps.json");
             MapObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
             foreach (var file in MapObjectList)
@@ -56,7 +56,7 @@ namespace TagTool.Commands.GenerateCache
         {
             BlfParser = new BlfObjectParser(Cache, CacheContext, CacheStream);
 
-            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONCommandPath}commands\generatecache\blf.json");
+            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONCommandPath}generatecache\blf.json");
             BlfObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
             foreach (var file in BlfObjectList)
