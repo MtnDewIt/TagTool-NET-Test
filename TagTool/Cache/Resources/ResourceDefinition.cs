@@ -7,12 +7,11 @@ namespace TagTool.Cache.Resources
     public class ResourceDefinition : TagStructure
     {
         [TagField(Length = 16)]
-        public byte[] Guid;
+        public byte[] GUID;
 
-        public short Unknown;
-        public short Unknown2;
-        public short Unknown3;
-        public short Unknown4;
+        public int DefinitionFlags;
+        public short PageableAlignmentBits;
+        public short OptionalAlignmentBits;
 
         [TagField(Flags = TagFieldFlags.Label)]
         public StringId Name;
