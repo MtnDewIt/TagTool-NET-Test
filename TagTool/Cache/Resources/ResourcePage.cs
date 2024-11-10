@@ -37,9 +37,6 @@ namespace TagTool.Cache.Resources
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public int Index;
 
-        [TagField(MinVersion = CacheVersion.HaloOnline235640, MaxVersion = CacheVersion.HaloOnline700123)]
-        public int NewIndex;
-
         [TagField(Gen = CacheGeneration.Third)]
         public uint BlockAddress; // should be signed (BlockIndex)
 
