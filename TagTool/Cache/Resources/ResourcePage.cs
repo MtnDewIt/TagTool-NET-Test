@@ -12,7 +12,7 @@ namespace TagTool.Cache.Resources
         public short Salt;
 
         [TagField(Gen = CacheGeneration.Third)]
-        public byte XboxFlags;
+        public XboxPageFlags XboxFlags;
 
         /// <summary>
         /// Gets or sets flags containing information about where the resource is located.
@@ -32,16 +32,16 @@ namespace TagTool.Cache.Resources
         public short SharedCacheIndex;
 
         [TagField(Gen = CacheGeneration.Third)]
-        public short Unknown0;
-
-        [TagField(MinVersion = CacheVersion.HaloOnline235640, MaxVersion = CacheVersion.HaloOnline700123)]
-        public int Unknown1;
+        public short SharedCacheLocationIndex;
 
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public int Index;
 
+        [TagField(MinVersion = CacheVersion.HaloOnline235640, MaxVersion = CacheVersion.HaloOnline700123)]
+        public int NewIndex;
+
         [TagField(Gen = CacheGeneration.Third)]
-        public uint BlockAddress;
+        public uint BlockAddress; // should be signed (BlockIndex)
 
         public uint CompressedBlockSize;
         public uint UncompressedBlockSize;
@@ -56,7 +56,8 @@ namespace TagTool.Cache.Resources
         [TagField(Length = 20, Gen = CacheGeneration.Third)]
         public byte[] LastChunkHash;
 
-        public uint UnknownSize;
+        public short ResourceReferenceCount;
+        public short SubpageTableIndex;
 
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public uint Unknown4;
@@ -66,6 +67,19 @@ namespace TagTool.Cache.Resources
 
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public uint Unknown6;
+
+        [Flags]
+        public enum XboxPageFlags : byte 
+        {
+            None = 0,
+            ValidChecksum = 1 << 0,
+            SharedAndRequired = 1 << 1,
+            DVDOnlySharedAndRequired = 1 << 2,
+            DVDOnlyAndRequired = 1 << 3,
+            ReferencedByCacheFileHeader = 1 << 4,
+            OnlyFullValidChecksum = 1 << 5,
+            SharedAndPreOptimized = 1 << 6,
+        }
     }
 
     /// <summary>
