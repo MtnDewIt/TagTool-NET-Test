@@ -55,7 +55,7 @@ namespace TagTool.Cache.Resources
 
         public List<ZoneResourceUsage> GlobalResourceUsage;
 
-        public List<BspGameAttachment> BSPGameAttachments;
+        public List<BspGameAttachment> BspGameAttachments;
 
         public List<DebugZoneManifest> ModelVariantZoneManifests;
         public List<DebugZoneManifest> CombatDialogueZoneManifests;
@@ -104,7 +104,7 @@ namespace TagTool.Cache.Resources
         public class InteropDefinition : TagStructure
         {
             [TagField(Length = 16)]
-            public byte[] Guid;
+            public byte[] GUID;
 
             [TagField(Flags = TagFieldFlags.Label)]
             public StringId Name;
@@ -114,10 +114,10 @@ namespace TagTool.Cache.Resources
         [TagStructure(Size = 0xA0, MinVersion = CacheVersion.HaloReach)]
         public class ZoneManifest : TagStructure
         {
-            public TagBlockBitVector RequiredResourceBitVector;
-            public TagBlockBitVector DeferredResourceBitVector;
-            public TagBlockBitVector OptionalResourceBitVector;
-            public TagBlockBitVector StreamedResourceBitVector;
+            public TagBlockBitVector RequiredResourceBits;
+            public TagBlockBitVector DeferredResourceBits;
+            public TagBlockBitVector OptionalResourceBits;
+            public TagBlockBitVector StreamedResourceBits;
 
             public ZoneResourceUsage OverallUsage;
 
@@ -175,12 +175,12 @@ namespace TagTool.Cache.Resources
 
             public ScenarioZoneSetFlags Flags;
 
-            public ZoneSetBitVector RequiredBspZones;
-            public ZoneSetBitVector ExpectedTouchedBspZones;
-            public ZoneSetBitVector RequiredDesignerZones;
-            public ZoneSetBitVector ExpectedDesignerZones;
-            public ZoneSetBitVector ForbiddenDesignerZones;
-            public ZoneSetBitVector RequiredCinematicZones;
+            public ZoneSetBitField RequiredBspZones;
+            public ZoneSetBitField ExpectedTouchedBspZones;
+            public ZoneSetBitField RequiredDesignerZones;
+            public ZoneSetBitField ExpectedDesignerZones;
+            public ZoneSetBitField ForbiddenDesignerZones;
+            public ZoneSetBitField RequiredCinematicZones;
 
             public int PreviousZoneSetIndex;
 
@@ -193,9 +193,8 @@ namespace TagTool.Cache.Resources
                 InteralZoneSet = 1 << 2,
             }
 
-            // This should be moved into TagBlockBitVector
             [Flags]
-            public enum ZoneSetBitVector : int
+            public enum ZoneSetBitField : int
             {
                 None = 0,
                 Index0 = 1 << 0,
@@ -246,10 +245,10 @@ namespace TagTool.Cache.Resources
             public List<ModelVariantUsageReference> UsedMaterials;
 
             [TagStructure(Size = 0x2)]
-            public class ModelVariantUsageReference : TagStructure 
+            public class ModelVariantUsageReference : TagStructure
             {
                 public short TagIndex;
-            }         
+            }
         }
 
         [TagStructure(Size = 0x10)]
@@ -290,7 +289,8 @@ namespace TagTool.Cache.Resources
             public List<BspAttachment> Persistent;
             public List<BspAttachment> Dynamic;
 
-            public class BspAttachment : TagStructure 
+            [TagStructure(Size = 0x10)]
+            public class BspAttachment : TagStructure
             {
                 public CachedTag Attachment;
             }
@@ -320,7 +320,7 @@ namespace TagTool.Cache.Resources
         }
 
         [TagStructure(Size = 0x24)]
-        public class ResourceLayout : TagStructure 
+        public class ResourceLayout : TagStructure
         {
             public int ImmediatelyRequiredResourceSize;
             public int DeferredRequiredResourceSize;
@@ -329,12 +329,12 @@ namespace TagTool.Cache.Resources
             public int PageableCompressedSize;
             public int OptionalCompressedSize;
             public GlobalZoneAttachmentFlags GlobalZoneAttachment;
-            public short BspZoneAttachment; // Might be a BitVector
-            public int DesignerZoneAttachment; // Might be a BitVector
-            public int CinematicZoneAttachment; // Might be a BitVector
+            public ushort BspZoneAttachment;
+            public int DesignerZoneAttachment;
+            public int CinematicZoneAttachment;
 
             [Flags]
-            public enum GlobalZoneAttachmentFlags : short 
+            public enum GlobalZoneAttachmentFlags : short
             {
                 None = 0,
                 Global = 1 << 0,
@@ -346,12 +346,12 @@ namespace TagTool.Cache.Resources
         }
 
         [TagStructure(Size = 0xC)]
-        public class ResourceProperty : TagStructure 
+        public class ResourceProperty : TagStructure
         {
             public List<ResourceNamedValue> NamedValues;
 
             [TagStructure(Size = 0x14)]
-            public class ResourceNamedValue : TagStructure 
+            public class ResourceNamedValue : TagStructure
             {
                 public StringId Name;
                 public NamedValueType Type;
@@ -359,7 +359,7 @@ namespace TagTool.Cache.Resources
                 public float RealValue;
                 public int IntValue;
 
-                public enum NamedValueType : int 
+                public enum NamedValueType : int
                 {
                     Unknown,
                     String,
@@ -370,7 +370,7 @@ namespace TagTool.Cache.Resources
         }
 
         [TagStructure(Size = 0x2C)]
-        public class Parentage : TagStructure 
+        public class Parentage : TagStructure
         {
             public CachedTag Tag;
             public ParentageFlags Flags;
@@ -380,7 +380,7 @@ namespace TagTool.Cache.Resources
             public List<ParentageReference> Children;
 
             [Flags]
-            public enum ParentageFlags : short 
+            public enum ParentageFlags : short
             {
                 None = 0,
                 LoadedByGame = 1 << 0,
@@ -388,7 +388,7 @@ namespace TagTool.Cache.Resources
             }
 
             [TagStructure(Size = 0x4)]
-            public class ParentageReference : TagStructure 
+            public class ParentageReference : TagStructure
             {
                 public int Link;
             }
