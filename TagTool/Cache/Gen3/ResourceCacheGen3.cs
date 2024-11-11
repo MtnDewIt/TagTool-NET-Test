@@ -431,14 +431,14 @@ namespace TagTool.Cache.Gen3
             using (var reader = new EndianReader(cacheStream, Cache.Endianness))
             {
                 uint blockOffset = 0;
-                if (page.SharedCacheIndex < 0 || (ResourceLayoutTable.SharedFiles[page.SharedCacheIndex].Flags & 1) != 0)
+                if (page.SharedCacheIndex < 0 || (ResourceLayoutTable.SharedFiles[page.SharedCacheIndex].Flags & ResourceLayoutTable.ResourceSharedFile.SharedFileFlags.UseHeaderBlockOffset) != 0)
                 {
                     var sectionTable = ((CacheFileHeaderGen3)cache.BaseMapFile.Header).SectionTable;
-                    blockOffset = sectionTable.GetOffset(CacheFileSectionType.ResourceSection, page.BlockAddress);
+                    blockOffset = sectionTable.GetOffset(CacheFileSectionType.ResourceSection, (uint)page.BlockIndex);
                 }
                 else
                 {
-                    blockOffset = ResourceLayoutTable.SharedFiles[page.SharedCacheIndex].BlockOffset + page.BlockAddress;
+                    blockOffset = ResourceLayoutTable.SharedFiles[page.SharedCacheIndex].BlockOffset + (uint)page.BlockIndex;
                 }
 
                 reader.SeekTo(blockOffset);

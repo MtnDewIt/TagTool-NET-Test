@@ -38,7 +38,7 @@ namespace TagTool.Cache.Resources
         public int Index;
 
         [TagField(Gen = CacheGeneration.Third)]
-        public uint BlockAddress; // should be signed (BlockIndex)
+        public int BlockIndex;
 
         public uint CompressedBlockSize;
         public uint UncompressedBlockSize;

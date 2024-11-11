@@ -29,9 +29,7 @@ namespace TagTool.Cache.Resources
             [TagField(Length = 256)]
             public string MapPath;
 
-            // We'll switch to using the enum once the page read 
-            // and write functions have been updated accordingly
-            public ushort Flags;
+            public SharedFileFlags Flags;
             public short GlobalSharedSegmentOffset;
 
             public uint BlockOffset;
