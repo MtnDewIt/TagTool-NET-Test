@@ -31,7 +31,9 @@ namespace TagTool.Commands
                     AssemblyName an;
                     try
                     {
-                        an = AssemblyName.GetAssemblyName(file);
+                        Assembly assembly = Assembly.LoadFile(file);
+
+                        an = new AssemblyName(assembly.GetName().Name);
                     }
                     catch (ArgumentException)
                     {
