@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 using TagTool.Cache;
 using TagTool.Commands.Common;
@@ -31,15 +32,27 @@ namespace TagTool.Commands
                     AssemblyName an;
                     try
                     {
-                        // TODO: Add functionality to resolve unmanaged DLLs
-
                         Assembly assembly = Assembly.LoadFile(file);
 
                         an = new AssemblyName(assembly.GetName().Name);
                     }
                     catch (Exception e) 
                     {
-                        Console.WriteLine($"Failed to load \"{file}\" : {e.Message}");
+                        AssemblyLoadContext.Default.ResolvingUnmanagedDll += (Assembly assembly, string dllName) =>
+                        {
+                            try
+                            {
+                                IntPtr handle = NativeLibrary.Load(file);
+
+                                return handle;
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine($"Failed to load \"{file}\" : {e.Message}");
+
+                                return IntPtr.Zero;
+                            }
+                        };
 
                         continue;
                     }

@@ -422,7 +422,7 @@ namespace TagTool.Audio
 
         #region Imports
 
-        public const string DllPath = "Tools\\fmod.dll";
+        public const string DllPath = "fmod.dll";
 
         [DllImport(DllPath)]
         private static extern FMOD_RESULT FMOD_System_Create(out IntPtr system);
