@@ -26,28 +26,21 @@ namespace TagTool.Commands
             //allow dll resolution from Tools directory
             AssemblyLoadContext.Default.Resolving += static (AssemblyLoadContext ctx, AssemblyName name) =>
             {
-                foreach (var file in Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Tools")))
+                foreach (var file in Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Tools"), "*.dll"))
                 {
                     AssemblyName an;
                     try
                     {
+                        // TODO: Add functionality to resolve unmanaged DLLs
+
                         Assembly assembly = Assembly.LoadFile(file);
 
                         an = new AssemblyName(assembly.GetName().Name);
                     }
-                    catch (ArgumentException)
+                    catch (Exception e) 
                     {
-                        //invalid assembly
-                        continue;
-                    }
-                    catch (BadImageFormatException)
-                    {
-                        //not a managed assembly, or other invalid
-                        continue;
-                    }
-                    catch (FileLoadException)
-                    {
-                        //invalid file miscellaneous
+                        Console.WriteLine($"Failed to load \"{file}\" : {e.Message}");
+
                         continue;
                     }
                     if (AssemblyName.ReferenceMatchesDefinition(name, an)) return ctx.LoadFromAssemblyPath(file);
