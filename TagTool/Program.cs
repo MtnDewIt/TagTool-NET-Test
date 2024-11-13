@@ -36,7 +36,7 @@ namespace TagTool.Commands
 
                         an = new AssemblyName(assembly.GetName().Name);
                     }
-                    catch (Exception e) 
+                    catch (BadImageFormatException)
                     {
                         AssemblyLoadContext.Default.ResolvingUnmanagedDll += (Assembly assembly, string dllName) =>
                         {
