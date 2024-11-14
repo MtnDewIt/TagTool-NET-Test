@@ -116,8 +116,6 @@ namespace TagTool.Commands.Files
                         Convert06Blf(blf);
                     }
 
-                    //Convert05Blf(blf);
-
                     if (blf.EndOfFile == null)
                     {
                         blf.EndOfFile = new BlfChunkEndOfFile()
@@ -232,47 +230,6 @@ namespace TagTool.Commands.Files
                     blf.MapVariantTagNames.Names[i] = new TagName() { Name = name };
                 }
             }
-        }
-
-        private void Convert05Blf(Blf blf) 
-        {
-            if (TagMap == null)
-            {
-                var jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}051_mapping.json");
-                TagMap = JsonConvert.DeserializeObject<Dictionary<int, string>>(jsonData);
-            }
-
-            if (blf.MapVariantTagNames == null && blf.MapVariant != null) 
-            {
-                blf.MapVariantTagNames = new BlfMapVariantTagNames()
-                {
-                    Signature = new Tag("tagn"),
-                    Length = (int)TagStructure.GetStructureSize(typeof(BlfMapVariantTagNames), blf.Version, CachePlatform.Original),
-                    MajorVersion = 1,
-                    MinorVersion = 0,
-                    Names = Enumerable.Range(0, 256).Select(x => new TagName()).ToArray(),
-                };
-                blf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
-
-                for (int i = 0; i < blf.MapVariant.MapVariant.Quotas.Length; i++)
-                {
-                    var objectIndex = blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex;
-
-                    if (objectIndex != -1 && TagMap.TryGetValue(objectIndex, out string name))
-                    {
-                        blf.MapVariantTagNames.Names[i] = new TagName() { Name = name };
-                    }
-                }
-            }
-        }
-
-        private void UpdateStartingWeaponData(GameVariantPlayerTraits.PlayerWeaponTraits weaponTraits) 
-        {
-            if (weaponTraits.PrimaryWeaponIndex == 67)
-                weaponTraits.PrimaryWeaponIndex = 17;
-
-            if (weaponTraits.SecondaryWeaponIndex == 67)
-                weaponTraits.SecondaryWeaponIndex = 17;
         }
 
         private string GetOutputPath(FileInfo input, string variantName, ulong uniqueId)
