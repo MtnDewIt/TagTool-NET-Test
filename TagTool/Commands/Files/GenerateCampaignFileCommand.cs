@@ -36,17 +36,17 @@ namespace TagTool.Commands.Files
             string fileName = $"halo3.campaign";
 
             DirectoryInfo mapInfoDir = args.Count > 0 ? new DirectoryInfo(args[0]) : null;
-            FileInfo modInfoFile = mapInfoDir != null ? new FileInfo(Path.Combine(args[0], "ModInfo.json")) : null;
+            FileInfo modInfoFile = mapInfoDir != null ? new FileInfo(Path.Combine(mapInfoDir.FullName, "ModInfo.json")) : null;
             FileInfo srcFile = mapInfoDir != null ? new FileInfo(Path.Combine(mapInfoDir.FullName, fileName)) : null;
 
-            if (!srcFile.Exists && !modInfoFile.Exists)
+            if (mapInfoDir != null && !srcFile.Exists && !modInfoFile.Exists)
                 return new TagToolError(CommandError.FileNotFound);
 
-            if (mapInfoDir != null && !modInfoFile.Exists)
+            if (mapInfoDir != null && srcFile.Exists)
             {
                 ReadBlf(srcFile);
             }
-            else if (modInfoFile.Exists && mapInfoDir != null) 
+            else if (mapInfoDir != null && modInfoFile.Exists)
             {
                 var campaignBuilder = new CampaignBuilder(Cache);
                 CampaignBlf = campaignBuilder.GenerateCampaign(modInfoFile);
