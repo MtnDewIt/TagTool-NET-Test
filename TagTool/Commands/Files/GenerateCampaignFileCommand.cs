@@ -7,6 +7,8 @@ using TagTool.BlamFile;
 using TagTool.BlamFile.MCC;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
+using Newtonsoft.Json;
+using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Files
 {
@@ -48,8 +50,7 @@ namespace TagTool.Commands.Files
             }
             else if (mapInfoDir != null && modInfoFile.Exists)
             {
-                var campaignBuilder = new CampaignBuilder(Cache);
-                CampaignBlf = campaignBuilder.GenerateCampaign(modInfoFile);
+                CampaignBlf = GenerateCampaignBlf(modInfoFile);
             }
             else
             {
@@ -87,6 +88,76 @@ namespace TagTool.Commands.Files
             var campaignBlf = campaignFileBuilder.GenerateCampaignBlf(true);
 
             return campaignBlf;
+        }
+
+        public Blf GenerateCampaignBlf(FileInfo modInfoFile) 
+        {
+            var jsonData = File.ReadAllText(Path.Combine(modInfoFile.FullName));
+            var modInfo = JsonConvert.DeserializeObject<ModInfo>(jsonData);
+
+            if (modInfo.GameModContents.HasCampaign)
+            {
+                var campaignJsonData = File.ReadAllText(Path.Combine(modInfoFile.DirectoryName, "CampaignInfo.json"));
+                var campaignInfo = JsonConvert.DeserializeObject<CampaignInfo>(campaignJsonData);
+
+                var campaignFileBuilder = new CampaignFileBuilder(Cache)
+                {
+                    Name = campaignInfo.Title.ParseLocalizedString(63, "Title"),
+                    Description = campaignInfo.Description.ParseLocalizedString(127, "Description"),
+                };
+
+                var campaignBlf = campaignFileBuilder.GenerateCampaignBlf(false);
+
+                var mapInfoList = campaignInfo.GetCampaignMapInfo(modInfoFile.DirectoryName);
+
+                var singlePlayerMapIds = new List<int>();
+
+                foreach (var mapInfo in mapInfoList)
+                {
+                    if (Cache is GameCacheHaloOnline)
+                    {
+                        foreach (var scenario in Cache.TagCache.FindAllInGroup("scnr"))
+                        {
+                            if (scenario.Name.EndsWith(mapInfo.Key))
+                            {
+                                using (var stream = Cache.OpenCacheRead())
+                                {
+                                    var scnr = Cache.Deserialize<Scenario>(stream, scenario);
+
+                                    if (scnr.MapType == ScenarioMapType.SinglePlayer)
+                                        singlePlayerMapIds.Add(scnr.MapId);
+                                }
+                            }
+                        }
+                    }
+                    else if (Cache is GameCacheModPackage modCache)
+                    {
+                        for (int i = 0; i < modCache.BaseModPackage.GetTagCacheCount(); i++)
+                        {
+                            modCache.SetActiveTagCache(i);
+
+                            var tagCacheStream = modCache.OpenCacheRead();
+
+                            foreach (var scenario in modCache.TagCache.FindAllInGroup("scnr"))
+                            {
+                                if (scenario.Name.EndsWith(mapInfo.Key))
+                                {
+                                    var scnr = Cache.Deserialize<Scenario>(tagCacheStream, scenario);
+
+                                    if (scnr.MapType == ScenarioMapType.SinglePlayer)
+                                        singlePlayerMapIds.Add(scnr.MapId);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                singlePlayerMapIds.CopyTo(campaignBlf.Campaign.MapIds);
+
+                return campaignBlf;
+            }
+
+            return null;
         }
 
         public void ReadBlf(FileInfo srcFile) 

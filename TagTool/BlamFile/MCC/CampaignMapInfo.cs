@@ -37,7 +37,7 @@ namespace TagTool.BlamFile.MCC
             public float MaxTimeInSeconds;
         }
 
-        public void ConvertCampaignMapInfo(BlfScenario scenario, Scenario scnr)
+        public void ConvertCampaignMapInfo(Dictionary<string, Scenario> scenarioTable, Dictionary<string, CampaignMapInfo> campaignInfoList, BlfScenario scenario, Scenario scnr)
         {
             scenario.MapId = scnr.MapId;
 
@@ -75,7 +75,7 @@ namespace TagTool.BlamFile.MCC
             }
 
             for (int i = 0; i < InsertionPoints.Count; i++)
-                InsertionPoints[i].ConvertInsertionPointInfo(scenario.Insertions[i], i);
+                InsertionPoints[i].ConvertInsertionPointInfo(scenarioTable, campaignInfoList, scenario.Insertions[i], i);
         }
     }
 }

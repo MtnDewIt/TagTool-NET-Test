@@ -50,36 +50,45 @@ namespace TagTool.Commands.Files
 
                 var jsonObject = JObject.Parse(jsonData);
 
-                if (jsonObject.ContainsKey("Flags") && jsonObject.ContainsKey("MaximumTeamsByGameCategory"))
+                var modInfoPath = new DirectoryInfo(file.DirectoryName).Parent;
+
+                var campaignInfoTable = ModInfo.GetCampaignInfoTable(modInfoPath.FullName);
+
+                using (var stream = Cache.OpenCacheRead())
                 {
-                    var multiplayerMapInfo = JsonConvert.DeserializeObject<MultiplayerMapInfo>(jsonData);
+                    var scenarioTable = CampaignInfo.GetScenarioTable(Cache, stream);
 
-                    if (!GetScenarioDefinition(multiplayerMapInfo.ScenarioFile, out var scnr))
-                        return new TagToolError(CommandError.TagInvalid, $"Could not find scenario associated with \"{file.Name}\"");
+                    if (jsonObject.ContainsKey("Flags") && jsonObject.ContainsKey("MaximumTeamsByGameCategory"))
+                    {
+                        var multiplayerMapInfo = JsonConvert.DeserializeObject<MultiplayerMapInfo>(jsonData);
 
-                    multiplayerMapInfo.ConvertMultiplayerMapInfo(MapFile.Blf.Scenario, scnr);
-                }
-                else if (jsonObject.ContainsKey("CampaignMapKind") && jsonObject.ContainsKey("CampaignMetagame"))
-                {
-                    var campaignMapInfo = JsonConvert.DeserializeObject<CampaignMapInfo>(jsonData);
+                        if (!GetScenarioDefinition(stream, multiplayerMapInfo.ScenarioFile, out var scnr))
+                            return new TagToolError(CommandError.TagInvalid, $"Could not find scenario associated with \"{file.Name}\"");
 
-                    if (!GetScenarioDefinition(campaignMapInfo.ScenarioFile, out var scnr))
-                        return new TagToolError(CommandError.TagInvalid, $"Could not find scenario associated with \"{file.Name}\"");
+                        multiplayerMapInfo.ConvertMultiplayerMapInfo(MapFile.Blf.Scenario, scnr);
+                    }
+                    else if (jsonObject.ContainsKey("CampaignMapKind") && jsonObject.ContainsKey("CampaignMetagame"))
+                    {
+                        var campaignMapInfo = JsonConvert.DeserializeObject<CampaignMapInfo>(jsonData);
 
-                    campaignMapInfo.ConvertCampaignMapInfo(MapFile.Blf.Scenario, scnr);
-                }
-                else if (jsonObject.ContainsKey("MapDefaultPrimaryWeapon") && !jsonObject.ContainsKey("MapDefaultPrimaryWeaponForge"))
-                {
-                    var firefightMapInfo = JsonConvert.DeserializeObject<FirefightMapInfo>(jsonData);
+                        if (!GetScenarioDefinition(stream, campaignMapInfo.ScenarioFile, out var scnr))
+                            return new TagToolError(CommandError.TagInvalid, $"Could not find scenario associated with \"{file.Name}\"");
 
-                    if (!GetScenarioDefinition(firefightMapInfo.ScenarioFile, out var scnr))
-                        return new TagToolError(CommandError.TagInvalid, $"Could not find scenario associated with \"{file.Name}\"");
+                        campaignMapInfo.ConvertCampaignMapInfo(scenarioTable, campaignInfoTable, MapFile.Blf.Scenario, scnr);
+                    }
+                    else if (jsonObject.ContainsKey("MapDefaultPrimaryWeapon") && !jsonObject.ContainsKey("MapDefaultPrimaryWeaponForge"))
+                    {
+                        var firefightMapInfo = JsonConvert.DeserializeObject<FirefightMapInfo>(jsonData);
 
-                    firefightMapInfo.ConvertFirefightMapInfo(MapFile.Blf.Scenario, scnr);
-                }
-                else
-                {
-                    return new InvalidOperationException("Invalid JSON structure");
+                        if (!GetScenarioDefinition(stream, firefightMapInfo.ScenarioFile, out var scnr))
+                            return new TagToolError(CommandError.TagInvalid, $"Could not find scenario associated with \"{file.Name}\"");
+
+                        firefightMapInfo.ConvertFirefightMapInfo(scenarioTable, campaignInfoTable, MapFile.Blf.Scenario, scnr);
+                    }
+                    else
+                    {
+                        return new InvalidOperationException("Invalid JSON structure");
+                    }
                 }
             }
 
@@ -116,10 +125,8 @@ namespace TagTool.Commands.Files
             return true;
         }
 
-        public bool GetScenarioDefinition(string scenarioPath, out Scenario scnr)
+        public bool GetScenarioDefinition(Stream stream, string scenarioPath, out Scenario scnr)
         {
-            var stream = Cache.OpenCacheRead();
-
             var scnrName = scenarioPath.Split("/").Last();
 
             foreach (var scenario in Cache.TagCache.FindAllInGroup("scnr")) 

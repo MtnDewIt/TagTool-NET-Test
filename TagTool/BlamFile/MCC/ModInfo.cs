@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TagTool.Tags;
+using TagTool.Tags.Definitions;
 
 namespace TagTool.BlamFile.MCC
 {
@@ -24,11 +25,11 @@ namespace TagTool.BlamFile.MCC
         {
             public Guid ModGuid;
             public HostedModInfo HostedModIds;
-        }
 
-        public class HostedModInfo 
-        {
-            public long SteamWorkshopId;
+            public class HostedModInfo
+            {
+                public long SteamWorkshopId;
+            }
         }
 
         public class VersionInfo
@@ -75,32 +76,47 @@ namespace TagTool.BlamFile.MCC
             public List<string> FirefightMaps;
         }
 
-        public Dictionary<string, object> GetMapInfoList(string path) 
+        public static void ConvertMapInfo(Dictionary<string, Scenario> scenarioTable, Dictionary<string, CampaignMapInfo> campaignInfoTable, object mapInfo, BlfScenario scenario, Scenario scnr)
+        {
+            switch (mapInfo)
+            {
+                case CampaignMapInfo campaignMapInfo:
+                    campaignMapInfo.ConvertCampaignMapInfo(scenarioTable, campaignInfoTable, scenario, scnr);
+                    break;
+
+                case MultiplayerMapInfo multiplayerMapInfo:
+                    multiplayerMapInfo.ConvertMultiplayerMapInfo(scenario, scnr);
+                    break;
+
+                case FirefightMapInfo firefightMapInfo:
+                    firefightMapInfo.ConvertFirefightMapInfo(scenarioTable, campaignInfoTable, scenario, scnr);
+                    break;
+            }
+        }
+
+        public Dictionary<string, object> GetMapInfoList(string path)
         {
             var mapInfoTable = new Dictionary<string, object>();
 
-            if (GameModContents.HasCampaign) 
+            if (GameModContents.HasCampaign)
             {
-                var jsonData = File.ReadAllText(Path.Combine(path, "CampaignInfo.json"));
-                var campaignInfo = JsonConvert.DeserializeObject<CampaignInfo>(jsonData);
-
-                var campaignInfoTable = campaignInfo.GetCampaignMapInfo(path);
+                var campaignInfoTable = GetCampaignInfoTable(path);
 
                 foreach (var campaignMapInfo in campaignInfoTable)
                     mapInfoTable.Add(campaignMapInfo.Key, campaignMapInfo.Value);
             }
 
-            if (GameModContents.MultiplayerMaps != null) 
+            if (GameModContents.MultiplayerMaps != null)
             {
-                var multiplayerInfoTable = GetMultiplayerMapInfo(path);
+                var multiplayerInfoTable = GetMultiplayerInfoTable(path);
 
                 foreach (var multiplayerMapInfo in multiplayerInfoTable)
                     mapInfoTable.Add(multiplayerMapInfo.Key, multiplayerMapInfo.Value);
             }
 
-            if (GameModContents.FirefightMaps != null) 
+            if (GameModContents.FirefightMaps != null)
             {
-                var firefightInfoTable = GetFirefightMapInfo(path);
+                var firefightInfoTable = GetFirefightInfoTable(path);
 
                 foreach (var firefightMapInfo in firefightInfoTable)
                     mapInfoTable.Add(firefightMapInfo.Key, firefightMapInfo.Value);
@@ -109,9 +125,26 @@ namespace TagTool.BlamFile.MCC
             return mapInfoTable;
         }
 
-        public Dictionary<string, object> GetMultiplayerMapInfo(string path) 
+        public static Dictionary<string, CampaignMapInfo> GetCampaignInfoTable(string path)
         {
-            var mapInfoTable = new Dictionary<string, object>();
+            var file = new FileInfo(Path.Combine(path, "CampaignInfo.json"));
+
+            if (file.Exists)
+            {
+                var jsonData = File.ReadAllText(file.FullName);
+                var campaignInfo = JsonConvert.DeserializeObject<CampaignInfo>(jsonData);
+
+                var campaignInfoTable = campaignInfo.GetCampaignMapInfo(path);
+
+                return campaignInfoTable;
+            }
+
+            return null;
+        }
+
+        public Dictionary<string, MultiplayerMapInfo> GetMultiplayerInfoTable(string path)
+        {
+            var mapInfoTable = new Dictionary<string, MultiplayerMapInfo>();
 
             foreach (var map in GameModContents.MultiplayerMaps)
             {
@@ -125,9 +158,9 @@ namespace TagTool.BlamFile.MCC
             return mapInfoTable;
         }
 
-        public Dictionary<string, object> GetFirefightMapInfo(string path) 
+        public Dictionary<string, FirefightMapInfo> GetFirefightInfoTable(string path)
         {
-            var mapInfoTable = new Dictionary<string, object>();
+            var mapInfoTable = new Dictionary<string, FirefightMapInfo>();
 
             foreach (var map in GameModContents.FirefightMaps)
             {

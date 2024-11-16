@@ -16,7 +16,7 @@ namespace TagTool.BlamFile.MCC
         public List<InsertionPointInfo> InsertionPoints;
         public DamageReportingType MapDefaultPrimaryWeapon;
 
-        public void ConvertFirefightMapInfo(BlfScenario scenario, Scenario scnr) 
+        public void ConvertFirefightMapInfo(Dictionary<string, Scenario> scenarioTable, Dictionary<string, CampaignMapInfo> campaignInfoList, BlfScenario scenario, Scenario scnr) 
         {
             scenario.MapId = scnr.MapId;
 
@@ -54,7 +54,7 @@ namespace TagTool.BlamFile.MCC
             }
 
             for (int i = 0; i < InsertionPoints.Count; i++)
-                InsertionPoints[i].ConvertInsertionPointInfo(scenario.Insertions[i], i);
+                InsertionPoints[i].ConvertInsertionPointInfo(scenarioTable, campaignInfoList, scenario.Insertions[i], i);
         }
     }
 }
