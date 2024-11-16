@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TagTool.Commands.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
@@ -34,6 +35,8 @@ namespace TagTool.BlamFile.MCC
 
                     return mapId;
                 }
+
+                new TagToolWarning("Failed to resolve ReturnFromMapId - Campaign Map Info List Was Empty");
 
                 return 0;
             }

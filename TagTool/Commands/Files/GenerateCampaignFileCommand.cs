@@ -110,49 +110,56 @@ namespace TagTool.Commands.Files
 
                 var mapInfoList = campaignInfo.GetCampaignMapInfo(modInfoFile.DirectoryName);
 
-                var singlePlayerMapIds = new List<int>();
-
-                foreach (var mapInfo in mapInfoList)
+                if (mapInfoList != null)
                 {
-                    if (Cache is GameCacheHaloOnline)
+                    var singlePlayerMapIds = new List<int>();
+
+                    foreach (var mapInfo in mapInfoList)
                     {
-                        foreach (var scenario in Cache.TagCache.FindAllInGroup("scnr"))
+                        if (Cache is GameCacheHaloOnline)
                         {
-                            if (scenario.Name.EndsWith(mapInfo.Key))
-                            {
-                                using (var stream = Cache.OpenCacheRead())
-                                {
-                                    var scnr = Cache.Deserialize<Scenario>(stream, scenario);
-
-                                    if (scnr.MapType == ScenarioMapType.SinglePlayer)
-                                        singlePlayerMapIds.Add(scnr.MapId);
-                                }
-                            }
-                        }
-                    }
-                    else if (Cache is GameCacheModPackage modCache)
-                    {
-                        for (int i = 0; i < modCache.BaseModPackage.GetTagCacheCount(); i++)
-                        {
-                            modCache.SetActiveTagCache(i);
-
-                            var tagCacheStream = modCache.OpenCacheRead();
-
-                            foreach (var scenario in modCache.TagCache.FindAllInGroup("scnr"))
+                            foreach (var scenario in Cache.TagCache.FindAllInGroup("scnr"))
                             {
                                 if (scenario.Name.EndsWith(mapInfo.Key))
                                 {
-                                    var scnr = Cache.Deserialize<Scenario>(tagCacheStream, scenario);
+                                    using (var stream = Cache.OpenCacheRead())
+                                    {
+                                        var scnr = Cache.Deserialize<Scenario>(stream, scenario);
 
-                                    if (scnr.MapType == ScenarioMapType.SinglePlayer)
-                                        singlePlayerMapIds.Add(scnr.MapId);
+                                        if (scnr.MapType == ScenarioMapType.SinglePlayer)
+                                            singlePlayerMapIds.Add(scnr.MapId);
+                                    }
+                                }
+                            }
+                        }
+                        else if (Cache is GameCacheModPackage modCache)
+                        {
+                            for (int i = 0; i < modCache.BaseModPackage.GetTagCacheCount(); i++)
+                            {
+                                modCache.SetActiveTagCache(i);
+
+                                var tagCacheStream = modCache.OpenCacheRead();
+
+                                foreach (var scenario in modCache.TagCache.FindAllInGroup("scnr"))
+                                {
+                                    if (scenario.Name.EndsWith(mapInfo.Key))
+                                    {
+                                        var scnr = Cache.Deserialize<Scenario>(tagCacheStream, scenario);
+
+                                        if (scnr.MapType == ScenarioMapType.SinglePlayer)
+                                            singlePlayerMapIds.Add(scnr.MapId);
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                singlePlayerMapIds.CopyTo(campaignBlf.Campaign.MapIds);
+                    singlePlayerMapIds.CopyTo(campaignBlf.Campaign.MapIds);
+                }
+                else 
+                {
+                    new TagToolWarning("Failed to resolve MapIds - Campaign Map Info List Was Empty");
+                }
 
                 return campaignBlf;
             }

@@ -136,7 +136,8 @@ namespace TagTool.BlamFile.MCC
 
                 var campaignInfoTable = campaignInfo.GetCampaignMapInfo(path);
 
-                return campaignInfoTable;
+                if (campaignInfoTable != null)
+                    return campaignInfoTable;
             }
 
             return null;
@@ -148,8 +149,8 @@ namespace TagTool.BlamFile.MCC
 
             foreach (var map in GameModContents.MultiplayerMaps)
             {
-                var mapInfo = File.ReadAllText(Path.Combine(path, map));
-                var multiplayerMapInfo = JsonConvert.DeserializeObject<MultiplayerMapInfo>(mapInfo);
+                var jsonData = File.ReadAllText(Path.Combine(path, map));
+                var multiplayerMapInfo = JsonConvert.DeserializeObject<MultiplayerMapInfo>(jsonData);
                 var multiplayerMapName = multiplayerMapInfo.ScenarioFile.Split("/").Last();
 
                 mapInfoTable.Add(multiplayerMapName, multiplayerMapInfo);
@@ -164,8 +165,8 @@ namespace TagTool.BlamFile.MCC
 
             foreach (var map in GameModContents.FirefightMaps)
             {
-                var mapInfo = File.ReadAllText(Path.Combine(path, map));
-                var firefightMapInfo = JsonConvert.DeserializeObject<FirefightMapInfo>(mapInfo);
+                var jsonData = File.ReadAllText(Path.Combine(path, map));
+                var firefightMapInfo = JsonConvert.DeserializeObject<FirefightMapInfo>(jsonData);
                 var firefightMapName = firefightMapInfo.ScenarioFile.Split("/").Last();
 
                 mapInfoTable.Add(firefightMapName, firefightMapInfo);

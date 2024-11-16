@@ -19,21 +19,23 @@ namespace TagTool.BlamFile.MCC
 
         public Dictionary<string, CampaignMapInfo> GetCampaignMapInfo(string path)
         {
-            var mapInfoTable = new Dictionary<string, CampaignMapInfo>();
-
             if (CampaignMaps != null)
             {
+                var mapInfoTable = new Dictionary<string, CampaignMapInfo>();
+
                 foreach (var map in CampaignMaps)
                 {
-                    var mapInfo = File.ReadAllText(Path.Combine(path, map));
-                    var campaignMapInfo = JsonConvert.DeserializeObject<CampaignMapInfo>(mapInfo);
+                    var jsonData = File.ReadAllText(Path.Combine(path, map));
+                    var campaignMapInfo = JsonConvert.DeserializeObject<CampaignMapInfo>(jsonData);
                     var campaignMapName = campaignMapInfo.ScenarioFile.Split("/").Last();
 
                     mapInfoTable.Add(campaignMapName, campaignMapInfo);
                 }
+
+                return mapInfoTable;
             }
 
-            return mapInfoTable;
+            return null;
         }
 
         public static Dictionary<string, Scenario> GetScenarioTable(GameCache cache, Stream cacheStream)
@@ -46,7 +48,8 @@ namespace TagTool.BlamFile.MCC
                 {
                     var scnr = cache.Deserialize<Scenario>(cacheStream, scenario);
 
-                    scenarioTable.Add(scenario.Name, scnr);
+                    if (scnr.MapType == ScenarioMapType.SinglePlayer)
+                        scenarioTable.Add(scenario.Name, scnr);
                 }
             }
             else if (cache is GameCacheModPackage modCache)
@@ -61,7 +64,8 @@ namespace TagTool.BlamFile.MCC
                     {
                         var scnr = cache.Deserialize<Scenario>(tagCacheStream, scenario);
 
-                        scenarioTable.Add(scenario.Name, scnr);
+                        if (scnr.MapType == ScenarioMapType.SinglePlayer)
+                            scenarioTable.Add(scenario.Name, scnr);
                     }
                 }
             }
