@@ -3,7 +3,7 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0x2, Align = 0x138)]
+    [TagStructure(Size = 0x238, Align = 0x1)]
     public class GameVariantVip : GameVariantBase
     {
         public short ScoreToWinRound;
