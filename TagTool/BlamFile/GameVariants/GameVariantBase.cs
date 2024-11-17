@@ -3,7 +3,7 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0x1D0)]
+    [TagStructure(Size = 0x1D0, Align = 0x1)]
     public class GameVariantBase : TagStructure
     {
         public long VariantChecksum;
@@ -19,7 +19,7 @@ namespace TagTool.BlamFile.GameVariants
         public BaseVariantFlags BaseFlags;
         public TeamScoring TeamScoringMethod;
 
-        [TagStructure(Size = 0x4)]
+        [TagStructure(Size = 0x4, Align = 0x1)]
         public class VariantMiscellaneousOptions : TagStructure
         {
             public MiscellaneousOptionsFlags Flags;
@@ -38,7 +38,7 @@ namespace TagTool.BlamFile.GameVariants
             }
         }
 
-        [TagStructure(Size = 0x28)]
+        [TagStructure(Size = 0x28, Align = 0x1)]
         public class VariantRespawnOptions : TagStructure
         {
             public RespawnFlags Flags;
@@ -68,7 +68,7 @@ namespace TagTool.BlamFile.GameVariants
             }
         }
 
-        [TagStructure(Size = 0x4)]
+        [TagStructure(Size = 0x4, Align = 0x1)]
         public class VariantSocialOptions : TagStructure
         {
             public SocialFlags Flags;
@@ -90,7 +90,7 @@ namespace TagTool.BlamFile.GameVariants
             }
         }
 
-        [TagStructure(Size = 0x7C)]
+        [TagStructure(Size = 0x7C, Align = 0x1)]
         public class VariantMapOverrideOptions : TagStructure
         {
             public MapOverrideFlags Flags;

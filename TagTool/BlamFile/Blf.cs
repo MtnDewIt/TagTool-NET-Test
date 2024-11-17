@@ -535,7 +535,7 @@ namespace TagTool.BlamFile
         public byte[] Hash;
     }
 
-    [TagStructure(Size = 0x100)]
+    [TagStructure(Size = 0x100, Align = 0x1)]
     public class BlfRSASignature : TagStructure
     {
         [TagField(Length = 0x100)]
@@ -599,7 +599,7 @@ namespace TagTool.BlamFile
         public string DefaultAuthor;
     }
 
-    [TagStructure(Size = 0xB)]
+    [TagStructure(Size = 0xB, Align = 0x1)]
     public class GameEngineTeams : TagStructure 
     {
         public byte NoGametypeTeamCount;
@@ -632,9 +632,9 @@ namespace TagTool.BlamFile
         public string ZoneSetName;
 
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-        public int ReturnFromMapId; // mombasa streets
+        public int ReturnFromMapId;
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-        public int SurvivalPresenceContextId; // not entirely sure what this is, but it's used in rich presence
+        public int SurvivalPresenceContextId;
 
         [TagField(Length = 4, Flags = TagFieldFlags.Padding)]
         public byte[] Padding2;
@@ -673,7 +673,7 @@ namespace TagTool.BlamFile
         public byte[] Hash;
     }
 
-    [TagStructure(Size = 0x484)]
+    [TagStructure(Size = 0x484, Align = 0x1)]
     public class BlfModPackageReference : BlfChunkHeader
     {
         [TagField(Length = 0x14)]

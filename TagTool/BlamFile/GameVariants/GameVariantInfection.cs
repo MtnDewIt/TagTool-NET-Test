@@ -3,7 +3,7 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0x250)]
+    [TagStructure(Size = 0x250, Align = 0x1)]
     public class GameVariantInfection : GameVariantBase
     {
         public InfectionFlags VariantFlags;
