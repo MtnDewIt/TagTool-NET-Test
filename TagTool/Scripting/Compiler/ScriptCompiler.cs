@@ -1900,13 +1900,81 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                ScriptExpressions[handle.Index].StringAddress = CompileStringAddress(unitSeatMappingString.Value);
+                using (var stream = Cache.OpenCacheRead()) 
+                {
+                    var seatsStack = new List<Scenario.UnitSeatsMappingBlock>();
 
-                //
-                // TODO: Compile unit_seat_mapping data here
-                //
+                    // There is probably a better way to get the actual unit tag
+                    foreach (var unitTag in Cache.TagCache.FindAllInGroup("unit"))
+                    {
+                        bool isUnitMapping = false;
 
-                throw new NotImplementedException(HsType.HaloOnlineValue.UnitSeatMapping.ToString());
+                        var unitSeatMapping = new Scenario.UnitSeatsMappingBlock
+                        {
+                            Unit = unitTag,
+                        };
+
+                        var unitDefinition = Cache.Deserialize<Unit>(stream, unitTag);
+
+                        for (int seatIndex = 0; seatIndex < unitDefinition.Seats.Count; seatIndex++)
+                        {
+                            var seat = unitDefinition.Seats[seatIndex];
+                            var seatName = Cache.StringTable.GetString(seat.Label);
+
+                            // I assume that the seat mapping string from the script string is what we are checking exists in the seat name?
+                            if (seatName.Contains(unitSeatMappingString.Value))
+                            {
+                                if (seatIndex < 32)
+                                {
+                                    unitSeatMapping.Seats1 = (Scenario.UnitSeatFlags)(1 << seatIndex);
+                                }
+                                else
+                                {
+                                    unitSeatMapping.Seats2 = (Scenario.UnitSeatFlags)(1 << (seatIndex - 32));
+                                }
+
+                                isUnitMapping = true;
+
+                                break;
+                            }
+                        }
+
+                        if (isUnitMapping) 
+                        {
+                            // if we did find a match for the the seat substring, we can add the mapping to out seats stack
+                            seatsStack.Add(unitSeatMapping);
+                        }
+                    }
+
+                    var unitSeatStartIndex = 0;
+                    var unitSeatMappingCount = seatsStack.Count;
+
+                    // Loop through each unit seat mapping in the scenario
+                    for (var unitSeatMappingIndex = 0; unitSeatMappingIndex < Definition.UnitSeatsMapping.Count; unitSeatMappingIndex++) 
+                    {
+                        var currentMapping = Definition.UnitSeatsMapping[unitSeatMappingIndex];
+
+                        // Loop through each unit seat mapping in the seats stack
+                        for (var stackIndex = 0; stackIndex < seatsStack.Count; stackIndex++) 
+                        {
+                            var stackMapping = seatsStack[stackIndex];
+
+                            // Check if the current stack unit seat mapping equals the current scenario unit seat mapping
+                            if (stackMapping.Unit == currentMapping.Unit && stackMapping.Seats1 == currentMapping.Seats1 && stackMapping.Seats2 == currentMapping.Seats2) 
+                            {
+                                // Set the starting index to equal the index of the current scenario unit seat mapping
+                                unitSeatStartIndex = unitSeatMappingIndex;
+                                break;
+                            }
+                        }
+                    }
+
+                    var data = (unitSeatMappingCount << 16) | unitSeatStartIndex;
+
+                    var expr = ScriptExpressions[handle.Index];
+                    expr.StringAddress = CompileStringAddress(unitSeatMappingString.Value);
+                    Array.Copy(BitConverter.GetBytes(data), expr.Data, 4);
+                }
             }
 
             return handle;
