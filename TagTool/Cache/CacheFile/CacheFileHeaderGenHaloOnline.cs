@@ -19,7 +19,7 @@ namespace TagTool.Cache
         public TagMemoryHeader TagMemoryHeader;
 
         [TagField(Length = 256)]
-        public string SourceFile;
+        public string Path;
 
         [TagField(Length = 32)]
         public string Build;
@@ -27,30 +27,31 @@ namespace TagTool.Cache
         public CacheFileType CacheType;
         public CacheFileSharedType SharedCacheType;
 
-        public bool Unknown1;
+        public bool Uncompressed;
         public bool TrackedBuild;
-        public bool SharedResourceUsageAvailable;
+        public bool ValidSharedResourceUsage;
         public byte HeaderFlags;
 
-        public LastModificationDate ModificationDate;
+        public LastModificationDate SlotModificationDate;
 
-        [TagField(Length = 0xC, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding1;
+        public int LowDetailTextureCount;
+        public int LowDetailTextureOffset;
+        public int LowDetailTextureByteCount;
 
         public StringIDHeader StringIdsHeader;
 
         public uint SharedFileFlags;
 
-        public LastModificationDate CreationTime;
+        public LastModificationDate CreationDate;
 
         [TagField(Length = 6, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
         [TagField(Length = 8, MinVersion = CacheVersion.HaloOnline235640)]
-        public SharedModificationDate[] SharedFileTimes;
+        public SharedModificationDate[] SharedCreationDate;
 
         [TagField(Length = 32)]
         public string Name;
 
-        public GameLanguage GameLanguage;
+        public GameLanguage Language;
 
         [TagField(Length = 256)]
         public string ScenarioPath;
@@ -62,19 +63,19 @@ namespace TagTool.Cache
         public SectionFileBounds Reports;
 
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding2;
+        public byte[] Padding1;
 
-        public FileAuthor Author;
+        public FileCreator CreatorName;
 
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding3;
+        public byte[] Padding2;
 
-        public short Unknown2;
+        public short Unknown1;
 
         [TagField(Length = 0xA, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding4;
+        public byte[] Padding3;
 
-        public ulong Unknown3;
+        public ulong SignatureMarker;
 
         public NetworkRequestHash Hash;
 
@@ -88,11 +89,6 @@ namespace TagTool.Cache
 
         public SharedResourceUsage SharedResourceUsage;
 
-        public int InsertionPointResourceUsageCount;
-
-        [TagField(Length = 9)]
-        public InsertionPointResourceUsage[] InsertionPointResourceUsage;
-
         public int TagCacheOffsets;
 
         public int TagCount;
@@ -105,7 +101,7 @@ namespace TagTool.Cache
 
         [TagField(Length = 0x594, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708, Flags = TagFieldFlags.Padding)]
         [TagField(Length = 0x584, MinVersion = CacheVersion.HaloOnline235640, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding5;
+        public byte[] Padding4;
 
         public Tag FooterSignature;
 
@@ -190,22 +186,27 @@ namespace TagTool.Cache
         public ulong[] Data;
     }
 
-    [TagStructure(Size = 0x2328)]
+    [TagStructure(Size = 0x2980)]
     public class SharedResourceUsage : TagStructure
     {
         [TagField(Length = 0x2328)]
         public byte[] Data;
-    }
 
-    [TagStructure(Size = 0xB4)]
-    public class InsertionPointResourceUsage : TagStructure
-    {
-        [TagField(Length = 0xB4)]
-        public byte[] Data;
+        public int InsertionPointUsageCount;
+
+        [TagField(Length = 9)]
+        public InsertionPointResourceUsage[] InsertionPointUsages;
+
+        [TagStructure(Size = 0xB4)]
+        public class InsertionPointResourceUsage : TagStructure
+        {
+            [TagField(Length = 0xB4)]
+            public byte[] Data;
+        }
     }
 
     [TagStructure(Size = 0x20)]
-    public class FileAuthor
+    public class FileCreator
     {
         [TagField(Length = 0x20)]
         public byte[] Data;
@@ -221,7 +222,7 @@ namespace TagTool.Cache
             0x77, 0x24, 0x74, 0x66
         };
 
-        public static string GetAuthor(byte[] author)
+        public static string GetCreator(byte[] author)
         {
             char[] creatorString = new char[32];
 
@@ -235,7 +236,7 @@ namespace TagTool.Cache
             return new string(creatorString.Where(c => c != 0).ToArray());
         }
 
-        public static byte[] SetAuthor(string author)
+        public static byte[] SetCreator(string author)
         {
             char[] creatorArray = new char[32];
 

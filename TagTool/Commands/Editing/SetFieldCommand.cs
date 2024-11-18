@@ -224,10 +224,10 @@ namespace TagTool.Commands.Editing
                 var modificationDate = (LastModificationDate)fieldValue;
                 valueString = modificationDate == null || modificationDate.Low == 0 && modificationDate.High == 0 ? "null" : $@"{modificationDate.GetModificationDate():yyyy-MM-dd HH:mm:ss.FFFFFFF}";
             }
-            else if (fieldType == typeof(FileAuthor)) 
+            else if (fieldType == typeof(FileCreator)) 
             {
-                var author = (FileAuthor)fieldValue;
-                valueString = author == null || Array.TrueForAll(author.Data, b => b == 0) ? "null" : $@"{FileAuthor.GetAuthor(author.Data)}";
+                var creator = (FileCreator)fieldValue;
+                valueString = creator == null || Array.TrueForAll(creator.Data, b => b == 0) ? "null" : $@"{FileCreator.GetCreator(creator.Data)}";
             }
             else if (fieldInfo.FieldType.IsArray && fieldInfo.Attribute.Length != 0)
             {
@@ -576,16 +576,16 @@ namespace TagTool.Commands.Editing
                     output = modificationDate;
                 }
             }
-            else if (type == typeof(FileAuthor)) 
+            else if (type == typeof(FileCreator)) 
             {
                 if (args.Count != 1 || args[0].Length > 32)
                     return false;
 
-                var fileAuthor = new FileAuthor();
+                var fileCreator = new FileCreator();
 
-                fileAuthor.Data = FileAuthor.SetAuthor(args[0]);    
+                fileCreator.Data = FileCreator.SetCreator(args[0]);    
 
-                output = args[0] == "null" ? null : fileAuthor;
+                output = args[0] == "null" ? null : fileCreator;
             }
             else if (typeof(IBounds).IsAssignableFrom(type))
             {

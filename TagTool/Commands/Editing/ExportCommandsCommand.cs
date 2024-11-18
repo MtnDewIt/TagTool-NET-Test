@@ -209,8 +209,8 @@ namespace TagTool.Commands.Editing
                     return Cache.StringTable.GetString(stringId);
                 case LastModificationDate lastModificationDate:
                     return lastModificationDate == null || lastModificationDate.Low == 0 && lastModificationDate.High == 0 ? $@"null" : $"\"{lastModificationDate.GetModificationDate():yyyy-MM-dd HH:mm:ss.FFFFFFF}\"";
-                case FileAuthor fileAuthor:
-                    return fileAuthor == null || Array.TrueForAll(fileAuthor.Data, b => b == 0) ? $@"null" : $"\"{FileAuthor.GetAuthor(fileAuthor.Data)}\"";
+                case FileCreator fileCreator:
+                    return fileCreator == null || Array.TrueForAll(fileCreator.Data, b => b == 0) ? $@"null" : $"\"{FileCreator.GetCreator(fileCreator.Data)}\"";
                 default:
                     return $"{value}";
             }

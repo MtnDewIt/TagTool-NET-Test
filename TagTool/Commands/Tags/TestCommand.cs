@@ -193,10 +193,10 @@ namespace TagTool.Commands
 
                 var header = mapFile.Header as CacheFileHeaderGenHaloOnline;
                 mapFile.Version = targetVersion;
-                header.CreationTime = new LastModificationDate(CacheVersionDetection.GetTimestamp(mapFile.Version));
+                header.CreationDate = new LastModificationDate(CacheVersionDetection.GetTimestamp(mapFile.Version));
                 header.Build = CacheVersionDetection.GetBuildName(mapFile.Version, mapFile.CachePlatform);
-                for (int i = 0; i < header.SharedFileTimes.Length; i++)
-                    header.SharedFileTimes[i].LastModificationDate = header.CreationTime;
+                for (int i = 0; i < header.SharedCreationDate.Length; i++)
+                    header.SharedCreationDate[i].LastModificationDate = header.CreationDate;
 
                 using (var stream = file.Open(FileMode.Create, FileAccess.ReadWrite))
                 {
