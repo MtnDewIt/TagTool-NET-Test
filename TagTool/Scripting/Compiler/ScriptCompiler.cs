@@ -1942,8 +1942,16 @@ namespace TagTool.Scripting.Compiler
 
                         if (isUnitMapping)
                         {
-                            // if we did find a match for the the seat substring, we can add the mapping to out seats stack
-                            seatsStack.Add(unitSeatMapping);
+                            if (seatsStack.Count <= 256)
+                            {
+                                // if we did find a match for the the seat substring, we can add the mapping to out seats stack
+                                seatsStack.Add(unitSeatMapping);
+                            }
+                            else 
+                            {
+                                new TagToolWarning("Too many units match this seat substring");
+                                break;
+                            }
                         }
                     }
 
