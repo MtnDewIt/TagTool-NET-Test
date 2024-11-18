@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using TagTool.Ai;
 using TagTool.Cache;
+using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Definitions.Common;
@@ -1900,7 +1901,7 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                using (var stream = Cache.OpenCacheRead()) 
+                using (var stream = Cache.OpenCacheRead())
                 {
                     var seatsStack = new List<Scenario.UnitSeatsMappingBlock>();
 
@@ -1939,34 +1940,44 @@ namespace TagTool.Scripting.Compiler
                             }
                         }
 
-                        if (isUnitMapping) 
+                        if (isUnitMapping)
                         {
                             // if we did find a match for the the seat substring, we can add the mapping to out seats stack
                             seatsStack.Add(unitSeatMapping);
                         }
                     }
 
-                    var unitSeatStartIndex = 0;
+                    var unitSeatStartIndex = -1;
                     var unitSeatMappingCount = seatsStack.Count;
 
                     // Loop through each unit seat mapping in the scenario
-                    for (var unitSeatMappingIndex = 0; unitSeatMappingIndex < Definition.UnitSeatsMapping.Count; unitSeatMappingIndex++) 
+                    for (var unitSeatMappingIndex = 0; unitSeatMappingIndex < Definition.UnitSeatsMapping.Count; unitSeatMappingIndex++)
                     {
                         var currentMapping = Definition.UnitSeatsMapping[unitSeatMappingIndex];
 
                         // Loop through each unit seat mapping in the seats stack
-                        for (var stackIndex = 0; stackIndex < seatsStack.Count; stackIndex++) 
+                        for (var stackIndex = 0; stackIndex < seatsStack.Count; stackIndex++)
                         {
                             var stackMapping = seatsStack[stackIndex];
 
                             // Check if the current stack unit seat mapping equals the current scenario unit seat mapping
-                            if (stackMapping.Unit == currentMapping.Unit && stackMapping.Seats1 == currentMapping.Seats1 && stackMapping.Seats2 == currentMapping.Seats2) 
+                            if (stackMapping.Unit == currentMapping.Unit && stackMapping.Seats1 == currentMapping.Seats1 && stackMapping.Seats2 == currentMapping.Seats2)
                             {
                                 // Set the starting index to equal the index of the current scenario unit seat mapping
                                 unitSeatStartIndex = unitSeatMappingIndex;
                                 break;
                             }
                         }
+                    }
+
+                    if (unitSeatStartIndex == -1)
+                    {
+                        // Ideally we would get the data for the correct unit mapping, however if the start index is equal to -1,
+                        // that means that no corresponding mapping was found in the scenario, which means there is no way to add the correct data to the scenario
+                        // What we would need to do is figure out some means of getting the unit index from the script expression itself
+
+                        // For now we will just warn the user when no mapping can be found
+                        new TagToolWarning("Unable to find corresponding unit seat mapping in scenario");
                     }
 
                     var data = (unitSeatMappingCount << 16) | unitSeatStartIndex;
@@ -3001,7 +3012,7 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                
+
                 var vehicleIndex = vehicleString.Value == "none" ? -1 :
                     Definition.ObjectNames.FindIndex(on => on.Name == vehicleString.Value);
 
