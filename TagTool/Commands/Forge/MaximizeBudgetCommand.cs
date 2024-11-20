@@ -237,6 +237,14 @@ namespace TagTool.Commands.Forge
                         newPalette.Add(paletteEntry);
                     }
 
+                    // if the instance contains a valid name index, update the placement index for the corresponding object name block
+                    if (instance.NameIndex != -1) 
+                    {
+                        var objectNameEntry = scenario.ObjectNames[instance.NameIndex];
+
+                        objectNameEntry.PlacementIndex = (short)newInstances.Count;
+                    }
+
                     instance.PaletteIndex = (short)paletteIndex;
 
                     oldToNewInstanceMapping[i] = newInstances.Count;
