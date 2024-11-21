@@ -220,14 +220,22 @@ namespace TagTool.Commands.Forge
                 for (int i = 0; i < objectTypeDef.Instances.Count; i++)
                 {
                     var instance = objectTypeDef.Instances[i] as ScenarioInstance;
-                    if (instance.PaletteIndex == -1)
+
+                    // We can ignore objects that don't have any palette object associated with them. We also only want to leave objects that are not in the forge palette left in the scenario
+                    if (instance.PaletteIndex == -1 || ForgePalette.Contains((objectTypeDef.Palette[instance.PaletteIndex] as ScenarioPaletteEntry).Object))
+                    {
+                        // If the ignored placement has a valid object name index, update the corresponding object name block accordingly
+                        if (instance.NameIndex != -1)
+                        {
+                            // We set the data to use default values as the corresponding placement no longer exists
+                            scenario.ObjectNames[instance.NameIndex].ObjectType.Halo3ODST = GameObjectTypeHalo3ODST.None;
+                            scenario.ObjectNames[instance.NameIndex].PlacementIndex = -1;
+                        }
+
                         continue;
+                    }  
 
                     var paletteEntry = objectTypeDef.Palette[instance.PaletteIndex] as ScenarioPaletteEntry;
-
-                    // we only want to leave objects that are not in the forge palette left in the scenario
-                    if (ForgePalette.Contains(paletteEntry.Object))
-                        continue;
 
                     // try to find an existing palette entry, if not add one to the new palette block and use that index
                     var paletteIndex = newPalette.IndexOf(paletteEntry);
@@ -240,9 +248,7 @@ namespace TagTool.Commands.Forge
                     // if the instance contains a valid name index, update the placement index for the corresponding object name block
                     if (instance.NameIndex != -1) 
                     {
-                        var objectNameEntry = scenario.ObjectNames[instance.NameIndex];
-
-                        objectNameEntry.PlacementIndex = (short)newInstances.Count;
+                        scenario.ObjectNames[instance.NameIndex].PlacementIndex = (short)newInstances.Count;
                     }
 
                     instance.PaletteIndex = (short)paletteIndex;
