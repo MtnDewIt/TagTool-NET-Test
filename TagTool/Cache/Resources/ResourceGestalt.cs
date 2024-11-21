@@ -135,7 +135,7 @@ namespace TagTool.Cache.Resources
             public TagBlockBitVector ActiveResourceOwners;
             public TagBlockBitVector TopLevelResourceOwners;
 
-            public TagBlock<ZoneResourceVisitNode> AttachmentHeirarchy;
+            public List<ZoneResourceVisitNode> AttachmentHeirarchy;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public uint ActiveBspMask;
