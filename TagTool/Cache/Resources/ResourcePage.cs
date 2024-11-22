@@ -34,6 +34,9 @@ namespace TagTool.Cache.Resources
         [TagField(Gen = CacheGeneration.Third)]
         public short SharedCacheLocationIndex;
 
+        [TagField(MinVersion = CacheVersion.HaloOnline235640, MaxVersion = CacheVersion.HaloOnline700123)]
+        public int Unknown1;
+
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public int Index;
 
@@ -57,13 +60,13 @@ namespace TagTool.Cache.Resources
         public short SubpageTableIndex;
 
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public uint Unknown2;
+
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public uint Unknown3;
+
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public uint Unknown4;
-
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public uint Unknown5;
-
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public uint Unknown6;
 
         [Flags]
         public enum XboxPageFlags : byte 
