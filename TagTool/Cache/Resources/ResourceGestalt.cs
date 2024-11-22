@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TagTool.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
+using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.Cache.Resources
 {
@@ -135,6 +136,12 @@ namespace TagTool.Cache.Resources
             public TagBlockBitVector ActiveResourceOwners;
             public TagBlockBitVector TopLevelResourceOwners;
 
+            // TODO: Figure out why H3 360 doesn't like List<T> where the size of T is greater than zero
+            [TagField(Version = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
+            public List<NullBlock> AttachmentHeirarchyH3;
+
+            [TagField(MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+            [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
             public List<ZoneResourceVisitNode> AttachmentHeirarchy;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
