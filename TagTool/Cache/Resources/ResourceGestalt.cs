@@ -136,12 +136,6 @@ namespace TagTool.Cache.Resources
             public TagBlockBitVector ActiveResourceOwners;
             public TagBlockBitVector TopLevelResourceOwners;
 
-            // TODO: Figure out why H3 360 doesn't like List<T> where the size of T is greater than zero
-            [TagField(Version = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
-            public List<NullBlock> AttachmentHeirarchyH3;
-
-            [TagField(MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-            [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
             public List<ZoneResourceVisitNode> AttachmentHeirarchy;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -156,14 +150,22 @@ namespace TagTool.Cache.Resources
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public uint CinematicZoneMask;
 
-            [TagStructure(Size = 0x10)]
+            // TODO: Figure out why H3 360 doesn't like it when the size of this is greater than zero (could be a null sub???)
+            [TagStructure(Size = 0x0, Version = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
+            [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+            [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
             public class ZoneResourceVisitNode : TagStructure
             {
+                [TagField(MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+                [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
                 public short ParentTagIndex;
 
-                [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
+                [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+                [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
                 public byte[] Padding;
 
+                [TagField(MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+                [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
                 public List<ZoneResourceVistNodeLink> Children;
 
                 [TagStructure(Size = 0x2)]
