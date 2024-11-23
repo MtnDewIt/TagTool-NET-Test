@@ -6,9 +6,9 @@ using TagTool.Cache;
 
 namespace TagTool.JSON.Handlers
 {
-    public class BlfSHA1HashHandler : JsonConverter<BlfSHA1Hash>
+    public class BlfSHA1HashHandler : JsonConverter<BlfEndOfFileSHA1.BlfSHA1Hash>
     {
-        public override void WriteJson(JsonWriter writer, BlfSHA1Hash value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, BlfEndOfFileSHA1.BlfSHA1Hash value, JsonSerializer serializer)
         {
             var hashString = "";
 
@@ -20,7 +20,7 @@ namespace TagTool.JSON.Handlers
             writer.WriteValue(hashString);
         }
 
-        public override BlfSHA1Hash ReadJson(JsonReader reader, Type objectType, BlfSHA1Hash existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override BlfEndOfFileSHA1.BlfSHA1Hash ReadJson(JsonReader reader, Type objectType, BlfEndOfFileSHA1.BlfSHA1Hash existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             var hashString = reader.Value.ToString();
 
@@ -38,7 +38,7 @@ namespace TagTool.JSON.Handlers
                 }
             }
 
-            return new BlfSHA1Hash
+            return new BlfEndOfFileSHA1.BlfSHA1Hash
             {
                 Hash = result,
             };

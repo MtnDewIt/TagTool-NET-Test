@@ -7,9 +7,9 @@ using TagTool.Cache;
 
 namespace TagTool.JSON.Handlers
 {
-    public class BlfRSASignatureHandler : JsonConverter<BlfRSASignature>
+    public class BlfRSASignatureHandler : JsonConverter<BlfEndOfFileRSA.BlfRSASignature>
     {
-        public override void WriteJson(JsonWriter writer, BlfRSASignature value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, BlfEndOfFileRSA.BlfRSASignature value, JsonSerializer serializer)
         {
             var signatureString = "";
 
@@ -21,7 +21,7 @@ namespace TagTool.JSON.Handlers
             writer.WriteValue(signatureString);
         }
 
-        public override BlfRSASignature ReadJson(JsonReader reader, Type objectType, BlfRSASignature existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override BlfEndOfFileRSA.BlfRSASignature ReadJson(JsonReader reader, Type objectType, BlfEndOfFileRSA.BlfRSASignature existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             var signatureString = reader.Value.ToString();
 
@@ -39,7 +39,7 @@ namespace TagTool.JSON.Handlers
                 }
             }
 
-            return new BlfRSASignature
+            return new BlfEndOfFileRSA.BlfRSASignature
             {
                 Data = result,
             };

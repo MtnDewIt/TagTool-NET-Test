@@ -6,9 +6,9 @@ using TagTool.Cache;
 
 namespace TagTool.JSON.Handlers
 {
-    public class BlfCRCChecksumHandler : JsonConverter<BlfCRCChecksum>
+    public class BlfCRCChecksumHandler : JsonConverter<BlfEndOfFileCRC.BlfCRCChecksum>
     {
-        public override void WriteJson(JsonWriter writer, BlfCRCChecksum value, JsonSerializer serializer) 
+        public override void WriteJson(JsonWriter writer, BlfEndOfFileCRC.BlfCRCChecksum value, JsonSerializer serializer) 
         {
             var checksumString = "";
 
@@ -20,7 +20,7 @@ namespace TagTool.JSON.Handlers
             writer.WriteValue(checksumString);
         }
 
-        public override BlfCRCChecksum ReadJson(JsonReader reader, Type objectType, BlfCRCChecksum existingValue, bool hasExistingValue, JsonSerializer serializer) 
+        public override BlfEndOfFileCRC.BlfCRCChecksum ReadJson(JsonReader reader, Type objectType, BlfEndOfFileCRC.BlfCRCChecksum existingValue, bool hasExistingValue, JsonSerializer serializer) 
         {
             var checksumString = reader.Value.ToString();
 
@@ -31,7 +31,7 @@ namespace TagTool.JSON.Handlers
                 result = uint.Parse(checksumString, NumberStyles.HexNumber);
             }
 
-            return new BlfCRCChecksum 
+            return new BlfEndOfFileCRC.BlfCRCChecksum 
             {
                 Checksum = result,
             };
