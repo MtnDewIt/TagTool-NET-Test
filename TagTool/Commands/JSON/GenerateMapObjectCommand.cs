@@ -123,7 +123,7 @@ namespace TagTool.Commands.JSON
                         fileInfo.Directory.Create();
                     }
 
-                    File.WriteAllText(Path.Combine(ExportPath, $"{fileName}.json"), jsonData);
+                    File.WriteAllText(fileInfo.FullName, jsonData);
                 }
             }
             catch (Exception e)
