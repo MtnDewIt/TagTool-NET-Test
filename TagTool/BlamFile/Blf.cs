@@ -484,20 +484,32 @@ namespace TagTool.BlamFile
     }
 
     [TagStructure(Size = 0x4, Align = 0x1)]
-    public class BlfEndOfFileCRC : BlfChunkEndOfFile
+    public class BlfCRCChecksum
     {
         public uint Checksum;
     }
 
+    [TagStructure(Size = 0x4, Align = 0x1)]
+    public class BlfEndOfFileCRC : BlfChunkEndOfFile
+    {
+        public BlfCRCChecksum Checksum;
+    }
+
     [TagStructure(Size = 0x100, Align = 0x1)]
-    public class BlfEndOfFileSHA1 : BlfChunkEndOfFile
+    public class BlfSHA1Hash
     {
         [TagField(Length = 0x100)]
         public byte[] Hash;
     }
 
     [TagStructure(Size = 0x100, Align = 0x1)]
-    public class BlfRSASignature : TagStructure
+    public class BlfEndOfFileSHA1 : BlfChunkEndOfFile
+    {
+        public BlfSHA1Hash Hash;
+    }
+
+    [TagStructure(Size = 0x100, Align = 0x1)]
+    public class BlfRSASignature
     {
         [TagField(Length = 0x100)]
         public byte[] Data;

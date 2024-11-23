@@ -173,14 +173,14 @@ namespace TagTool.Cache
     }
 
     [TagStructure(Size = 0x14)]
-    public class NetworkRequestHash : TagStructure
+    public class NetworkRequestHash
     {
         [TagField(Length = 5)]
         public uint[] Data;
     }
 
     [TagStructure(Size = 0x100)]
-    public class RSASignature : TagStructure
+    public class RSASignature
     {
         [TagField(Length = 32)]
         public ulong[] Data;

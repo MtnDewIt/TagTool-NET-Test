@@ -40,6 +40,7 @@ namespace TagTool.JSON.Handlers
                 new EnumHandler(),
                 new FileCreatorHandler(),
                 new LastModificationDateHandler(),
+                new NetworkRequestHashHandler(),
                 new Point2dHandler(),
                 new RealArgbColorHandler(),
                 new RealBoundingBoxHandler(),
@@ -56,6 +57,7 @@ namespace TagTool.JSON.Handlers
                 new RealVector2dHandler(),
                 new RealVector3dHandler(),
                 new Rectangle2dHandler(),
+                new RSASignatureHandler(),
                 new TagHandler(),
             };
         }
@@ -95,6 +97,7 @@ namespace TagTool.JSON.Handlers
                 new EnumHandler(),
                 new FileCreatorHandler(),
                 new LastModificationDateHandler(),
+                new NetworkRequestHashHandler(),
                 new Point2dHandler(),
                 new RealArgbColorHandler(),
                 new RealBoundingBoxHandler(),
@@ -111,6 +114,7 @@ namespace TagTool.JSON.Handlers
                 new RealVector2dHandler(),
                 new RealVector3dHandler(),
                 new Rectangle2dHandler(),
+                new RSASignatureHandler(),
                 new TagHandler(),
             };
 

@@ -24,6 +24,9 @@ namespace TagTool.JSON.Handlers
                 // I really need to merge all these into a single handler which just takes a generic type as an input :/
                 new AngleHandler(),
                 new ArgbColorHandler(),
+                new BlfCRCChecksumHandler(),
+                new BlfRSASignatureHandler(),
+                new BlfSHA1HashHandler(),
                 new BoundsAngleHandler(),
                 new BoundsByteHandler(),
                 new BoundsFloatHandler(),
@@ -75,6 +78,9 @@ namespace TagTool.JSON.Handlers
                 // I really need to merge all these into a single handler which just takes a generic type as an input :/
                 new AngleHandler(),
                 new ArgbColorHandler(),
+                new BlfCRCChecksumHandler(),
+                new BlfRSASignatureHandler(),
+                new BlfSHA1HashHandler(),
                 new BoundsAngleHandler(),
                 new BoundsByteHandler(),
                 new BoundsFloatHandler(),
