@@ -511,14 +511,7 @@ namespace TagTool.BlamFile
     [TagStructure(Size = 0x100, Align = 0x1)]
     public class BlfEndOfFileRSA : BlfChunkEndOfFile
     {
-        public BlfRSASignature RSASignature;
-
-        [TagStructure(Size = 0x100, Align = 0x1)]
-        public class BlfRSASignature
-        {
-            [TagField(Length = 0x100)]
-            public byte[] Data;
-        }
+        public RSASignature RSASignature;
     }
 
     [TagStructure(Size = 0x4D44, Align = 0x1, MaxVersion = CacheVersion.Halo3Retail)]

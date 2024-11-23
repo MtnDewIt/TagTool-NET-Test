@@ -1733,7 +1733,7 @@ namespace TagTool.Scripting.Compiler
             var builtin = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].First(x => x.Value.Name == "dew_method_stub");
             var scriptIndex = (short)Scripts.IndexOf(script);
 
-            var handle = AllocateExpression(script.ReturnType.HaloOnline, HsSyntaxNodeFlags.Group |  HsSyntaxNodeFlags.Extern, (ushort)builtin.Key, scriptIndex);
+            var handle = AllocateExpression(script.ReturnType.HaloOnline, HsSyntaxNodeFlags.Group | HsSyntaxNodeFlags.Extern, (ushort)builtin.Key, scriptIndex);
             var expr = ScriptExpressions[handle.Index];
 
             var functionNameHandle = AllocateExpression(HsType.HaloOnlineValue.FunctionName, HsSyntaxNodeFlags.Expression | HsSyntaxNodeFlags.Extern, (ushort)builtin.Key, scriptIndex);
@@ -1942,16 +1942,14 @@ namespace TagTool.Scripting.Compiler
 
                         if (isUnitMapping)
                         {
-                            if (seatsStack.Count <= 256)
-                            {
-                                // if we did find a match for the the seat substring, we can add the mapping to out seats stack
-                                seatsStack.Add(unitSeatMapping);
-                            }
-                            else 
+                            if (seatsStack.Count > 256)
                             {
                                 new TagToolWarning("Too many units match this seat substring");
                                 break;
                             }
+
+                            // if we did find a match for the the seat substring, we can add the mapping to out seats stack
+                            seatsStack.Add(unitSeatMapping);
                         }
                     }
 
@@ -3314,9 +3312,9 @@ namespace TagTool.Scripting.Compiler
                 };
 
                 bool hasReference = false;
-                foreach(var tagEntry in ScriptSourceFileReferences)
+                foreach (var tagEntry in ScriptSourceFileReferences)
                 {
-                    if(tagEntry.Instance.Index == tagReference.Instance.Index)
+                    if (tagEntry.Instance.Index == tagReference.Instance.Index)
                     {
                         hasReference = true;
                         break;

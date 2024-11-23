@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using TagTool.Common;
 using TagTool.Tags;
@@ -177,13 +180,60 @@ namespace TagTool.Cache
     {
         [TagField(Length = 5)]
         public uint[] Data;
+
+        public string GetHash() 
+        {
+            List<string> signatureList = new List<string>();
+
+            foreach (var dataPoint in Data)
+            {
+                var hex = uint.Parse(dataPoint.ToString().PadLeft(10, '0')).ToString("X").PadLeft(8, '0');
+
+                signatureList.Add(hex);
+            }
+
+            return string.Join("", signatureList.ToArray());
+        }
+
+        public void SetHash(string hashString) 
+        {
+            Data = new uint[5];
+
+            var chunkSize = 8;
+
+            for (int i = 0; i < 5; i++)
+            {
+                int start = i * chunkSize;
+                int length = Math.Min(chunkSize, hashString.Length - start);
+                Data[i] = uint.Parse(hashString.Substring(start, length), NumberStyles.HexNumber);
+            }
+        }
     }
 
     [TagStructure(Size = 0x100)]
     public class RSASignature
     {
-        [TagField(Length = 32)]
-        public ulong[] Data;
+        [TagField(Length = 256)]
+        public byte[] Data;
+
+        public string GetSignature()
+        {
+            return BitConverter.ToString(Data).Replace("-", "");
+        }
+
+        public void SetSignature(string signatureString) 
+        {
+            Data = new byte[256];
+
+            var chunkSize = 2;
+
+            for (int i = 0; i < 256; i++)
+            {
+                int start = i * chunkSize;
+                int length = Math.Min(chunkSize, signatureString.Length - start);
+                Data[i] = byte.Parse(signatureString.Substring(start, length), NumberStyles.HexNumber);
+            }
+        }
     }
 
     [TagStructure(Size = 0x2980)]

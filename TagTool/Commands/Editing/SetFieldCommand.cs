@@ -229,6 +229,16 @@ namespace TagTool.Commands.Editing
                 var creator = (FileCreator)fieldValue;
                 valueString = creator == null || Array.TrueForAll(creator.Data, b => b == 0) ? "null" : $@"{FileCreator.GetCreator(creator.Data)}";
             }
+            else if (fieldType == typeof(NetworkRequestHash))
+            {
+                var networkRequestHash = (NetworkRequestHash)fieldValue;
+                valueString = networkRequestHash == null || Array.TrueForAll(networkRequestHash.Data, b => b == 0) ? "null" : $@"{networkRequestHash.GetHash()}";
+            }
+            else if (fieldType == typeof(RSASignature))
+            {
+                var rsaSignature = (RSASignature)fieldValue;
+                valueString = rsaSignature == null || Array.TrueForAll(rsaSignature.Data, b => b == 0) ? "null" : $@"{rsaSignature.GetSignature()}";
+            }
             else if (fieldInfo.FieldType.IsArray && fieldInfo.Attribute.Length != 0)
             {
                 valueString = fieldValue == null ? "null" : $"[{fieldInfo.Attribute.Length}] {{ ";
@@ -567,7 +577,7 @@ namespace TagTool.Commands.Editing
                 {
                     return false;
                 }
-                else 
+                else
                 {
                     var modificationDate = new LastModificationDate();
 
@@ -576,16 +586,41 @@ namespace TagTool.Commands.Editing
                     output = modificationDate;
                 }
             }
-            else if (type == typeof(FileCreator)) 
+            else if (type == typeof(FileCreator))
             {
                 if (args.Count != 1 || args[0].Length > 32)
                     return false;
 
-                var fileCreator = new FileCreator();
-
-                fileCreator.Data = FileCreator.SetCreator(args[0]);    
+                var fileCreator = new FileCreator 
+                {
+                    Data = FileCreator.SetCreator(args[0]),
+                };
 
                 output = args[0] == "null" ? null : fileCreator;
+            }
+            else if (type == typeof(NetworkRequestHash))
+            {
+                // TODO: Make better
+                if (args.Count != 1 || args[0].Length != 40)
+                    return false;
+
+                var networkRequestHash = new NetworkRequestHash();
+
+                networkRequestHash.SetHash(args[0]);
+
+                output = args[0] == "null" ? null : networkRequestHash;
+            }
+            else if (type == typeof(RSASignature)) 
+            {
+                // TODO: Make better
+                if (args.Count != 1 || args[0].Length != 512)
+                    return false;
+
+                var rsaSignature = new RSASignature();
+
+                rsaSignature.SetSignature(args[0]);
+
+                output = args[0] == "null" ? null : rsaSignature;
             }
             else if (typeof(IBounds).IsAssignableFrom(type))
             {

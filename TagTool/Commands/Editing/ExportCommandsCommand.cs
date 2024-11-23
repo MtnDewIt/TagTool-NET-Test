@@ -211,6 +211,10 @@ namespace TagTool.Commands.Editing
                     return lastModificationDate == null || lastModificationDate.Low == 0 && lastModificationDate.High == 0 ? $@"null" : $"\"{lastModificationDate.GetModificationDate():yyyy-MM-dd HH:mm:ss.FFFFFFF}\"";
                 case FileCreator fileCreator:
                     return fileCreator == null || Array.TrueForAll(fileCreator.Data, b => b == 0) ? $@"null" : $"\"{FileCreator.GetCreator(fileCreator.Data)}\"";
+                case NetworkRequestHash networkRequestHash:
+                    return networkRequestHash == null || Array.TrueForAll(networkRequestHash.Data, b => b == 0) ? $@"null" : $"{networkRequestHash.GetHash()}";
+                case RSASignature rsaSignature:
+                    return rsaSignature == null || Array.TrueForAll(rsaSignature.Data, b => b == 0) ? $@"null" : $"{rsaSignature.GetSignature()}";
                 default:
                     return $"{value}";
             }

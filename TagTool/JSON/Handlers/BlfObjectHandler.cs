@@ -25,7 +25,6 @@ namespace TagTool.JSON.Handlers
                 new AngleHandler(),
                 new ArgbColorHandler(),
                 new BlfCRCChecksumHandler(),
-                new BlfRSASignatureHandler(),
                 new BlfSHA1HashHandler(),
                 new BoundsAngleHandler(),
                 new BoundsByteHandler(),
@@ -56,6 +55,7 @@ namespace TagTool.JSON.Handlers
                 new RealVector2dHandler(),
                 new RealVector3dHandler(),
                 new Rectangle2dHandler(),
+                new RSASignatureHandler(),
                 new TagHandler(),
             };
         }
@@ -79,7 +79,6 @@ namespace TagTool.JSON.Handlers
                 new AngleHandler(),
                 new ArgbColorHandler(),
                 new BlfCRCChecksumHandler(),
-                new BlfRSASignatureHandler(),
                 new BlfSHA1HashHandler(),
                 new BoundsAngleHandler(),
                 new BoundsByteHandler(),
@@ -110,6 +109,7 @@ namespace TagTool.JSON.Handlers
                 new RealVector2dHandler(),
                 new RealVector3dHandler(),
                 new Rectangle2dHandler(),
+                new RSASignatureHandler(),
                 new TagHandler(),
             };
 

@@ -14,16 +14,7 @@ namespace TagTool.JSON.Handlers
 
             if (!Array.TrueForAll(value.Data, b => b == 0)) 
             {
-                List<string> hashList = new List<string>();
-
-                foreach (var dataPoint in value.Data)
-                {
-                    var hex = ulong.Parse(dataPoint.ToString().PadLeft(10, '0')).ToString("X").PadLeft(8, '0');
-
-                    hashList.Add(hex);
-                }
-
-                hashString = string.Join("", hashList.ToArray());
+                hashString = value.GetHash();
             }
 
             writer.WriteValue(hashString);
@@ -33,24 +24,14 @@ namespace TagTool.JSON.Handlers
         {
             var hashString = reader.Value.ToString();
 
-            uint[] result = new uint[5];
+            var networkRequestHash = new NetworkRequestHash();
 
             if (hashString != "") 
             {
-                var chunkSize = 8;
-
-                for (int i = 0; i < 5; i++)
-                {
-                    int start = i * chunkSize;
-                    int length = Math.Min(chunkSize, hashString.Length - start);
-                    result[i] = uint.Parse(hashString.Substring(start, length), NumberStyles.HexNumber);
-                }
+                networkRequestHash.SetHash(hashString);
             }
 
-            return new NetworkRequestHash
-            {
-                Data = result,
-            };
+            return networkRequestHash;
         }
     }
 }
