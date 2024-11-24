@@ -8,7 +8,7 @@ using System.IO;
 
 namespace TagTool.Geometry.BspCollisionGeometry.Utils
 {
-    class ErrorGeometryBuilder
+    public class ErrorGeometryBuilder
     {
         //these are used for the error geometry output
         public List<RealPoint3d> Vertices = new List<RealPoint3d>();

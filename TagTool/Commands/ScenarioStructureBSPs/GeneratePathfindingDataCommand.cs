@@ -63,6 +63,11 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 				}
 			}
 
+			return ExecuteInternal(bspPathfinding, includeBsp);
+
+		}
+
+		public object ExecuteInternal(bool bspPathfinding, bool includeBsp, CollisionModel useModel = null) {
 			// Does this current sbsp have any tag pathfinding data, if not, create a new block for it, else, append the data
 			// There should always only be one block for this, so the array index is always going to be [0]
 			// We have to create all the types regardless if we use them or not otherwise it can't be written to resource
@@ -83,6 +88,8 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 				Bsp.PathfindingData[0].JumpSeams = new TagBlock<JumpSeam>();
 			}
 
+			if (useModel != null) { CollisionDefinition = useModel; }
+
 			using (Stream cacheStream = Cache.OpenCacheReadWrite()) {
 				if (bspPathfinding) {
 					GenerateBspPathfinding(cacheStream);
@@ -100,7 +107,9 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 		}
 
 		public void GenerateObjectPathfinding(Stream cacheStream, ScenarioStructureBsp Bsp, bool includeBsp) {
-			CollisionDefinition = Cache.Deserialize<CollisionModel>(cacheStream, CollisionTag);
+			if (CollisionDefinition == null) {
+				CollisionDefinition = Cache.Deserialize<CollisionModel>(cacheStream, CollisionTag);
+			}
 
 			//var PathData = Bsp.PathfindingData[0];
 			//var PathData = new TagPathfinding {};

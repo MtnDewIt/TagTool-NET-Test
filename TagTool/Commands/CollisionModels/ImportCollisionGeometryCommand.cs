@@ -24,6 +24,7 @@ namespace TagTool.Commands.CollisionModels
         private List<@triangle> Triangles { get; set; }
         private bool debug = false;
         private bool forceimport = false;
+        private bool overwrite = false;
         private int max_surface_edges = 8;
         private bool buildmopp = false;
         private Vector3D MaxBounds = new Vector3D(float.MinValue, float.MinValue, float.MinValue);
@@ -37,7 +38,7 @@ namespace TagTool.Commands.CollisionModels
                   "ImportCollisionGeometry",
                   "Collision geometry import command",
 
-                  "ImportCollisionGeometry [mopp] [force] [debug] <filepath> <tagname>",
+                  "ImportCollisionGeometry [mopp] [force] [debug] [overwrite] <filepath> <tagname>",
                   
                   "Import an obj file as a collision model tag. Use the mopp argument for mopp generation" +
                   ", and use the force argument to force import the collision geometry even if it has open edges")
@@ -51,7 +52,7 @@ namespace TagTool.Commands.CollisionModels
             string tagName = $"newcoll{maxindex}";
             string fileName = "";
 
-            var argStack = new Stack<string>(args.AsEnumerable().Reverse());
+			Stack<string> argStack = new Stack<string>(args.AsEnumerable().Reverse());
 
             //Arguments needed: <filepath> <tagname>
             if (args.Count < 2 || args.Count > 6)
@@ -59,7 +60,7 @@ namespace TagTool.Commands.CollisionModels
 
             while(argStack.Count > 0)
             {
-                var arg = argStack.Peek();
+				string arg = argStack.Peek();
                 switch (arg.ToLower())
                 {
                     case "mopp":
@@ -74,7 +75,11 @@ namespace TagTool.Commands.CollisionModels
                         debug = true;
                         argStack.Pop();
                         break;
-                    default:
+					case "overwrite":
+						overwrite = true;
+						argStack.Pop();
+                        break;
+					default:
                         if(argStack.Count > 2)
                             return new TagToolError(CommandError.ArgInvalid);
                         else if (argStack.Count < 2)
@@ -90,20 +95,24 @@ namespace TagTool.Commands.CollisionModels
 
             CachedTag tag;
 
-
             FileInfo filepath = new FileInfo(fileName);
 
             //check inputs
-            if(Cache.TagCache.TryGetTag(tagName + ".coll", out tag))
-                return new TagToolError(CommandError.OperationFailed, "Selected TagName already exists in the cache!");
-            //if (!Directory.Exists(filepath))
-            //    return new TagToolError(CommandError.FileNotFound);
+            if(Cache.TagCache.TryGetTag(tagName + ".coll", out tag) && !overwrite) {
+                return new TagToolError(CommandError.OperationFailed,
+                    "Selected TagName already exists in the cache!\n" +
+                    "Use the 'overwrite' flag if you want to overwrite the tag data."
+                );
+            }
+            if (!Path.Exists(filepath.FullName)){
+                return new TagToolError(CommandError.FileNotFound);
+            }
 
             //import the mesh and get the vertices and indices
             Scene model;
-            using (var importer = new AssimpContext())
+            using (AssimpContext importer = new AssimpContext())
             {
-                using (var logStream = new LogStream((msg, userData) => Console.Write(msg)))
+                using (LogStream logStream = new LogStream((msg, userData) => Console.Write(msg)))
                 {
                     logStream.Attach();
                     model = importer.ImportFile(filepath.FullName,
@@ -116,11 +125,11 @@ namespace TagTool.Commands.CollisionModels
                 }
             }
 
-            //set up collision model tag
-            var collisionModel = new CollisionModel();
+			//set up collision model tag
+			CollisionModel collisionModel = new CollisionModel();
             collisionModel.Regions = new List<CollisionModel.Region>();
 
-            var permutation = new CollisionModel.Region.Permutation()
+			CollisionModel.Region.Permutation permutation = new CollisionModel.Region.Permutation()
             {
                 Name = Cache.StringTable.GetStringId("default"),
                 Bsps = new List<CollisionModel.Region.Permutation.Bsp>()
@@ -193,7 +202,7 @@ namespace TagTool.Commands.CollisionModels
                 }
 
                 //get object bounds
-                foreach(var vert in Vertices)
+                foreach(Vector3D vert in Vertices)
                 {
                     if (vert.X < MinBounds.X)
                         MinBounds.X = vert.X;
@@ -236,11 +245,11 @@ namespace TagTool.Commands.CollisionModels
                 }
             }
 
-            //build the collision bsp
-            var largebuilder = new LargeCollisionBSPBuilder();
-            var resizer = new ResizeCollisionBSP();
+			//build the collision bsp
+			LargeCollisionBSPBuilder largebuilder = new LargeCollisionBSPBuilder();
+			ResizeCollisionBSP resizer = new ResizeCollisionBSP();
 
-            var largebsp = resizer.GrowCollisionBsp(collisionModel.Regions[0].Permutations[0].Bsps[0].Geometry);
+			LargeCollisionBspBlock largebsp = resizer.GrowCollisionBsp(collisionModel.Regions[0].Permutations[0].Bsps[0].Geometry);
 
             if (!largebuilder.generate_bsp(ref largebsp, debug) || !resizer.collision_bsp_check_counts(largebsp))
                 return false;
@@ -267,17 +276,23 @@ namespace TagTool.Commands.CollisionModels
             tag = Cache.TagCacheGenHO.AllocateTag(Cache.TagCache.TagDefinitions.GetTagDefinitionType("coll"), tagName);
 
             //write out the tag
-            using (var stream = Cache.OpenCacheReadWrite())
+            using (Stream stream = Cache.OpenCacheReadWrite())
             {
                 Cache.Serialize(stream, tag, collisionModel);
             }
             Cache.SaveStrings();
             Cache.SaveTagNames();
 
+            LastCachedTag = tag;
+            LastCollisionModel = collisionModel;
+
             Console.WriteLine($"Successfully imported collision model to: {tag.Name}.coll");
 
             return true;
         }
+
+        public static CachedTag LastCachedTag { get; private set; }
+        public static CollisionModel LastCollisionModel { get; private set; }
 
         public struct @triangle
         {
@@ -313,7 +328,7 @@ namespace TagTool.Commands.CollisionModels
 
                     //Error geometry output
                     List<int> ErrorIndices = new List<int>();
-                    foreach(var index in indices)
+                    foreach(int index in indices)
                     {
                         RealPoint3d tempvertex = new RealPoint3d((float)(Vertices[index].X * 0.01), (float)(Vertices[index].Y * 0.01), (float)(Vertices[index].Z * 0.01));
                         Errors.Vertices.Add(tempvertex);
@@ -665,7 +680,7 @@ namespace TagTool.Commands.CollisionModels
                 List<int> surface_deleted_table = new List<int>(new int[Bsp.Surfaces.Count]);
 
                 //allocate a list of edges with the length of each edge, and sort them
-                for (var edge_index = 0; edge_index < Bsp.Edges.Count; edge_index++)
+                for (int edge_index = 0; edge_index < Bsp.Edges.Count; edge_index++)
                 {
                     edge_array.Add(new edge_array_element { edge_index = edge_index, edge_length = edge_get_length(edge_index) });
                 }
@@ -673,7 +688,7 @@ namespace TagTool.Commands.CollisionModels
                 edge_array.Sort(sorter);
 
                 //loop through edge array
-                for (var edge_array_element_index = 0; edge_array_element_index < edge_array.Count; edge_array_element_index++)
+                for (int edge_array_element_index = 0; edge_array_element_index < edge_array.Count; edge_array_element_index++)
                 {
                     int edge_index = edge_array[edge_array_element_index].edge_index;
                     Edge edge_block = Bsp.Edges[edge_index];
@@ -1036,7 +1051,7 @@ namespace TagTool.Commands.CollisionModels
 
         public bool generate_surface_planes()
         {
-            for (var surface_index = 0; surface_index < Bsp.Surfaces.Count; surface_index++)
+            for (int surface_index = 0; surface_index < Bsp.Surfaces.Count; surface_index++)
             {
                 List<RealPoint3d> pointlist = new List<RealPoint3d>();
                 Surface surface_block = Bsp.Surfaces[surface_index];
@@ -1122,7 +1137,7 @@ namespace TagTool.Commands.CollisionModels
 
         public bool plane_test_points(RealPlane3d plane, List<RealPoint3d> pointlist)
         {
-            foreach (var point in pointlist)
+            foreach (RealPoint3d point in pointlist)
             {
                 double plane_fit = point.X * plane.I + point.Y * plane.J + point.Z * plane.K - plane.D;
                 if (plane_fit < -0.00024414062 || plane_fit > 0.00024414062)
