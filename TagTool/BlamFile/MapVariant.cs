@@ -104,6 +104,7 @@ namespace TagTool.BlamFile
     [Flags]
     public enum VariantObjectPlacementFlags : ushort
     {
+        None = 0,
         OccupiedSlot = 1 << 0,            // not an empty slot
         Edited = 1 << 1,                  // set whenever the object has been edited in any way
         RuntimeIgnored = 1 << 2,          // hack for globally placed scenario objects

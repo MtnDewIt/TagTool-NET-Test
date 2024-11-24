@@ -3,25 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using Assimp;
-using Assimp.Configs;
-using Microsoft.CodeAnalysis.Operations;
+using System.Reflection;
+using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Commands.CollisionModels;
 using TagTool.Commands.Common;
-using TagTool.Commands.Editing;
 using TagTool.Commands.RenderModels;
 using TagTool.Common;
 using TagTool.Geometry.BspCollisionGeometry;
-using TagTool.Geometry.BspCollisionGeometry.Utils;
+using TagTool.IO;
 using TagTool.Pathfinding;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
-using static TagTool.Commands.CollisionModels.ImportCollisionGeometryCommand;
-using static TagTool.Tags.Definitions.Gen2.ScreenEffect.RasterizerScreenEffectPassReferenceBlock;
-using static TagTool.Tags.Definitions.ScenarioStructureBsp.Cluster;
-using Vertex = TagTool.Geometry.BspCollisionGeometry.Vertex;
 
 namespace TagTool.Commands.ScenarioStructureBSPs
 {
@@ -63,6 +56,8 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 		private string IdName { get; set; }
 		private string TagName { get; set; }
 		private string ScenarioTagName { get; set; }
+
+		private short NewObjectCount { get; set; }
 
 		#region Cursed Wrappers
 
@@ -465,6 +460,9 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 					PathfindingPolicy = Scenario.PathfindingPolicyValue.Standard            // Standard : Generate pathfinding data
 				});
 
+				// When we add support for adding multiple objects, this will ideally be incremented using a loop, or some kind of iterative function.
+				NewObjectCount++;
+
 				// Add a PathfindingReferences block element to our pathfinding crate
 				Scenario.CrateInstance crate = scenario_tag.Crates.Last();                  // Get the newest one
 				if (crate.PathfindingReferences == null){
@@ -562,19 +560,98 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 					Console.WriteLine("Use 'SaveTagChanges' to save these changes, or they will be lost.");
 					Console.WriteLine("And don't forget to call 'SaveModPackage' as well.");
 
-					return true;
-
 					// Don't forget! Save the modified package
 					// -- SaveModPackage
 
 				}
 				else { return new TagToolError(CommandError.CustomError, "Failed to get ScenarioStructureBsp tag."); }
-
 			}
 			else { return new TagToolError(CommandError.CustomError, "Failed to get Scenario tag."); }
 
-		}
+			try
+			{
+				// TODO: 
+				// We still need to add checks for if the map file exists in the current cache context.
+				// We also need to check the current cache type in order to determine if it is a base cache or a mod package.
+				// If it is a mod package, and the scenario is in the base cache, we also need to add the corresponding map file to the
+				// mod package in the event that it hasn't already been added.
 
+				// This assumes that the scenario follows the standard naming convention where the name of the actual scenario file is equal to the map file
+                FileInfo mapFileInfo = new FileInfo($@"{Cache.Directory.FullName}\{ScenarioTagName.Split("/").Last()}.map");
+                MapFile mapFile = new MapFile();
+
+				// We open a stream to the specified map file. Since we are modifying its contents, we need both read and write permissions
+				using (var stream = mapFileInfo.Open(FileMode.Open, FileAccess.ReadWrite)) 
+				{
+					// Read the data from the current map file.
+                    using (var reader = new EndianReader(stream))
+                    {
+                        mapFile.Read(reader);
+                    }
+
+					// We check if the map file has a valid map variant before we try to update the placement data
+                    if (mapFile.MapFileBlf.MapVariant != null)
+                    {
+						// The lower index is equal to the current scenario object count minus one
+                        int lowerIndex = Math.Max((short)0, mapFile.MapFileBlf.MapVariant.MapVariant.ScenarioObjectCount - 1);
+                        int upperIndex = 0;
+
+						// Loop through all object placements backwards, so we can get the last placement in the variant.
+						// This represents our upper index bounds
+                        for (int i = 640; i > mapFile.MapFileBlf.MapVariant.MapVariant.Objects.Length; i--)
+                        {
+                            VariantObjectDatum currentPlacement = mapFile.MapFileBlf.MapVariant.MapVariant.Objects[i];
+
+							// If the current placements flags do not equal none (which is the defult value for this field)
+                            if (currentPlacement.Flags != VariantObjectPlacementFlags.None)
+                            {
+                                // We set the upperIndex to equal the minimum value of the current index and zero
+                                upperIndex = Math.Min(i, upperIndex);
+
+								// Once we have our upper bounds we can now break out of the loop
+								break;
+                            }
+                        }
+
+						// Loop through all placements between our upper index and our lower index
+						for (int i = upperIndex; i >= lowerIndex; i--) 
+						{
+							// Set our target index to equal the current index, plus the number of new objects we add to the scenario
+							int targetIndex = i + NewObjectCount;
+
+							// if the target index is less than the placement count, we can move the corrresponding placement into  its new index
+							if (targetIndex < mapFile.MapFileBlf.MapVariant.MapVariant.Objects.Length) 
+							{
+								mapFile.MapFileBlf.MapVariant.MapVariant.Objects[targetIndex] = mapFile.MapFileBlf.MapVariant.MapVariant.Objects[i];
+                            }
+						}
+
+						// We then loop back through the placements that were "added" to our array, and reset the data for each placement
+						for (int i = mapFile.MapFileBlf.MapVariant.MapVariant.ScenarioObjectCount; i < NewObjectCount; i++) 
+						{
+                            VariantObjectDatum currentPlacement = mapFile.MapFileBlf.MapVariant.MapVariant.Objects[i];
+
+							// In this case, we use the data for the closest scenario placement, which in our case is equal to the scenario object count
+							currentPlacement = mapFile.MapFileBlf.MapVariant.MapVariant.Objects[mapFile.MapFileBlf.MapVariant.MapVariant.ScenarioObjectCount];
+                        }
+
+						// We can now update the scenario object count for the variant itselfs
+                        mapFile.MapFileBlf.MapVariant.MapVariant.ScenarioObjectCount += NewObjectCount;
+                    }
+
+					// We can now write the modified data back to the specified map file
+					using (var writer = new EndianWriter(stream)) 
+					{
+                        mapFile.Write(writer);
+                    }
+                }
+            }
+			catch (Exception e) 
+			{
+				return new TagToolError(CommandError.CustomError, "Failed to Update Scenario Map File Data");
+			}
+
+            return true;
+        }
 	}
-
 }
