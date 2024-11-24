@@ -600,27 +600,39 @@ namespace TagTool.Commands.Editing
             }
             else if (type == typeof(NetworkRequestHash))
             {
-                // TODO: Make better
-                if (args.Count != 1 || args[0].Length != 40)
+                if (args.Count != 1 || args[0].Length > 40)
                     return false;
 
-                var networkRequestHash = new NetworkRequestHash();
+                if (args[0] == "null")
+                {
+                    output = null;
+                }
+                else
+                {
+                    var networkRequestHash = new NetworkRequestHash();
 
-                networkRequestHash.SetHash(args[0]);
+                    networkRequestHash.SetHash(args[0]);
 
-                output = args[0] == "null" ? null : networkRequestHash;
+                    output = networkRequestHash;
+                }
             }
             else if (type == typeof(RSASignature)) 
             {
-                // TODO: Make better
-                if (args.Count != 1 || args[0].Length != 512)
+                if (args.Count != 1 || args[0].Length > 512)
                     return false;
 
-                var rsaSignature = new RSASignature();
+                if (args[0] == "null")
+                {
+                    output = null;
+                }
+                else 
+                {
+                    var rsaSignature = new RSASignature();
 
-                rsaSignature.SetSignature(args[0]);
+                    rsaSignature.SetSignature(args[0]);
 
-                output = args[0] == "null" ? null : rsaSignature;
+                    output = rsaSignature;
+                }
             }
             else if (typeof(IBounds).IsAssignableFrom(type))
             {

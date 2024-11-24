@@ -183,16 +183,16 @@ namespace TagTool.Cache
 
         public string GetHash() 
         {
-            List<string> signatureList = new List<string>();
+            List<string> hashList = new List<string>();
 
             foreach (var dataPoint in Data)
             {
                 var hex = uint.Parse(dataPoint.ToString().PadLeft(10, '0')).ToString("X").PadLeft(8, '0');
 
-                signatureList.Add(hex);
+                hashList.Add(hex);
             }
 
-            return string.Join("", signatureList.ToArray());
+            return string.Join("", hashList.ToArray());
         }
 
         public void SetHash(string hashString) 
@@ -201,11 +201,13 @@ namespace TagTool.Cache
 
             var chunkSize = 8;
 
+            var parsedString = hashString.PadLeft(40, '0');
+
             for (int i = 0; i < 5; i++)
             {
                 int start = i * chunkSize;
-                int length = Math.Min(chunkSize, hashString.Length - start);
-                Data[i] = uint.Parse(hashString.Substring(start, length), NumberStyles.HexNumber);
+                int length = Math.Min(chunkSize, parsedString.Length - start);
+                Data[i] = uint.Parse(parsedString.Substring(start, length), NumberStyles.HexNumber);
             }
         }
     }
@@ -227,11 +229,13 @@ namespace TagTool.Cache
 
             var chunkSize = 2;
 
+            var parsedString = signatureString.PadLeft(512, '0');
+
             for (int i = 0; i < 256; i++)
             {
                 int start = i * chunkSize;
-                int length = Math.Min(chunkSize, signatureString.Length - start);
-                Data[i] = byte.Parse(signatureString.Substring(start, length), NumberStyles.HexNumber);
+                int length = Math.Min(chunkSize, parsedString.Length - start);
+                Data[i] = byte.Parse(parsedString.Substring(start, length), NumberStyles.HexNumber);
             }
         }
     }
