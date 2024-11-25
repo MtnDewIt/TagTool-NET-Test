@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Commands.CollisionModels;
@@ -570,88 +568,189 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
 			try
 			{
-				// TODO: 
-				// We still need to add checks for if the map file exists in the current cache context.
-				// We also need to check the current cache type in order to determine if it is a base cache or a mod package.
-				// If it is a mod package, and the scenario is in the base cache, we also need to add the corresponding map file to the
-				// mod package in the event that it hasn't already been added.
+				// Set the specified map name to equal the last string in the scenario tag name
+				var mapName = $"{ScenarioTagName.Split("/").Last()}.map";
 
-				// This assumes that the scenario follows the standard naming convention where the name of the actual scenario file is equal to the map file
-                FileInfo mapFileInfo = new FileInfo($@"{Cache.Directory.FullName}\{ScenarioTagName.Split("/").Last()}.map");
-                MapFile mapFile = new MapFile();
-
-				// We open a stream to the specified map file. Since we are modifying its contents, we need both read and write permissions
-				using (var stream = mapFileInfo.Open(FileMode.Open, FileAccess.ReadWrite)) 
+				// Check if the current cache context is a mod package context
+                if (Cache is GameCacheModPackage modCache)
 				{
-					// Read the data from the current map file.
-                    using (var reader = new EndianReader(stream))
+					// Intitially, we assume that the map file is not the mod package, so this gets set to true
+					bool isBaseCacheMap = true;
+
+					// Loop through each map file stream in the mod package
+                    for (int i = 0; i < modCache.BaseModPackage.MapFileStreams.Count; i++)
                     {
-                        mapFile.Read(reader);
-                    }
+						// Create a new empty map file object
+                        var mapFileData = new MapFile();
 
-					// We check if the map file has a valid map variant before we try to update the placement data
-                    if (mapFile.MapFileBlf.MapVariant != null)
-                    {
-						// The lower index is equal to the current scenario object count minus one
-                        int lowerIndex = Math.Max((short)0, mapFile.MapFileBlf.MapVariant.MapVariant.ScenarioObjectCount - 1);
-                        int upperIndex = 0;
+						// Get the current map file stream
+                        var stream = modCache.BaseModPackage.MapFileStreams[i];
 
-						// Loop through all object placements backwards, so we can get the last placement in the variant.
-						// This represents our upper index bounds
-                        for (int i = 640; i > mapFile.MapFileBlf.MapVariant.MapVariant.Objects.Length; i--)
-                        {
-                            VariantObjectDatum currentPlacement = mapFile.MapFileBlf.MapVariant.MapVariant.Objects[i];
+                        // Set the stream position to the beginning of the stream
+                        stream.Position = 0;
 
-							// If the current placements flags do not equal none (which is the defult value for this field)
-                            if (currentPlacement.Flags != VariantObjectPlacementFlags.None)
-                            {
-                                // We set the upperIndex to equal the minimum value of the current index and zero
-                                upperIndex = Math.Min(i, upperIndex);
+                        // Create a new reader instance using the file stream
+                        var reader = new EndianReader(stream);
 
-								// Once we have our upper bounds we can now break out of the loop
-								break;
-                            }
-                        }
+                        // Read the data from the specified map file
+                        mapFileData.Read(reader);
 
-						// Loop through all placements between our upper index and our lower index
-						for (int i = upperIndex; i >= lowerIndex; i--) 
+                        // Reset the stream position
+                        stream.Position = 0;
+
+						// Get the header from the current map file
+                        var header = mapFileData.Header as CacheFileHeaderGenHaloOnline;
+
+						// Check if the map file header name equals the specified map name
+						if (header.Name == mapName)
 						{
-							// Set our target index to equal the current index, plus the number of new objects we add to the scenario
-							int targetIndex = i + NewObjectCount;
+							// Update variant placement data
+							UpdateVariantPlacements(mapFileData.MapFileBlf);
 
-							// if the target index is less than the placement count, we can move the corrresponding placement into  its new index
-							if (targetIndex < mapFile.MapFileBlf.MapVariant.MapVariant.Objects.Length) 
-							{
-								mapFile.MapFileBlf.MapVariant.MapVariant.Objects[targetIndex] = mapFile.MapFileBlf.MapVariant.MapVariant.Objects[i];
-                            }
+							// Create a new writer instance using the file stream
+							var writer = new EndianWriter(stream);
+
+							// Write the modified data to the specified map file
+							mapFileData.Write(writer);
+
+							// Reset the stream position
+							stream.Position = 0;
+
+							// Since we have found the map file in the mod package, we can set our flag to false
+							isBaseCacheMap = false;
+
+							// Break out of the loop, since we have made our map file changes
+							break;
 						}
+					}
 
-						// We then loop back through the placements that were "added" to our array, and reset the data for each placement
-						for (int i = mapFile.MapFileBlf.MapVariant.MapVariant.ScenarioObjectCount; i < NewObjectCount; i++) 
+					// This should only run if we were unable to find the 
+					if (isBaseCacheMap)
+					{
+						// Create a new stream for our modified map data
+                        var mapStream = new MemoryStream();
+
+                        // Define a new file info for the specified map file
+                        var file = new FileInfo($@"{Cache.Directory.FullName}\{mapName}");
+
+                        // Create a new empty map file object
+                        var mapFileData = new MapFile();
+
+                        // Open a stream to the specified map 
+                        using (var fs = file.OpenRead()) 
 						{
-                            VariantObjectDatum currentPlacement = mapFile.MapFileBlf.MapVariant.MapVariant.Objects[i];
-
-							// In this case, we use the data for the closest scenario placement, which in our case is equal to the scenario object count
-							currentPlacement = mapFile.MapFileBlf.MapVariant.MapVariant.Objects[mapFile.MapFileBlf.MapVariant.MapVariant.ScenarioObjectCount];
+							// Load the map data into our memory stream
+                            fs.CopyTo(mapStream);
                         }
 
-						// We can now update the scenario object count for the variant itselfs
-                        mapFile.MapFileBlf.MapVariant.MapVariant.ScenarioObjectCount += NewObjectCount;
-                    }
+                        // Create a new reader instance using the file stream
+                        var reader = new EndianReader(mapStream);
 
-					// We can now write the modified data back to the specified map file
-					using (var writer = new EndianWriter(stream)) 
-					{
-                        mapFile.Write(writer);
+                        // Read the data from the specified map file
+                        mapFileData.Read(reader);
+
+                        // Update variant placement data
+                        UpdateVariantPlacements(mapFileData.MapFileBlf);
+
+                        // Reset the stream position
+                        mapStream.Position = 0;
+
+                        // Get the header from the current map file
+                        var header = mapFileData.Header as CacheFileHeaderGenHaloOnline;
+
+						// Add the map file stream to the mod package
+                        modCache.AddMapFile(mapStream, header.MapId);
+                    }
+				}
+
+				// Handle map files in the base cache
+				else 
+				{
+					// Define a new file info for the specified map file
+                    var file = new FileInfo($@"{Cache.Directory.FullName}\{mapName}");
+
+                    // Create a new empty map file object
+                    var mapFileData = new MapFile();
+
+					// Open a stream to the specified map 
+                    using (var stream = file.OpenRead())
+                    {
+						// Create a new reader instance using the file stream
+                        var reader = new EndianReader(stream);
+
+						// Read the data from the specified map file
+                        mapFileData.Read(reader);
+
+						// Update variant placement data
+                        UpdateVariantPlacements(mapFileData.MapFileBlf);
+
+                        // Create a new writer instance using the file stream
+                        var writer = new EndianWriter(stream);
+
+                        // Write the modified data to the specified map file
+                        mapFileData.Write(writer);
                     }
                 }
             }
-			catch (Exception e) 
+			catch (Exception) 
 			{
 				return new TagToolError(CommandError.CustomError, "Failed to Update Scenario Map File Data");
 			}
 
             return true;
         }
-	}
+
+		public void UpdateVariantPlacements(Blf blf) 
+		{
+			// Check if the map blf has a valid map variant
+            if (blf.MapVariant != null)
+            {
+                // The lower index is equal to the current scenario object count minus one
+                int lowerIndex = Math.Max((short)0, blf.MapVariant.MapVariant.ScenarioObjectCount - 1);
+                int upperIndex = 0;
+
+                // Loop through all object placements backwards, so we can get the last placement in the variant.
+                // This represents our upper index bounds
+                for (int i = 639; i > blf.MapVariant.MapVariant.Objects.Length; i--)
+                {
+                    VariantObjectDatum currentPlacement = blf.MapVariant.MapVariant.Objects[i];
+
+                    // If the current placements flags do not equal none (which is the defult value for this field)
+                    if (currentPlacement.Flags != VariantObjectPlacementFlags.None)
+                    {
+                        // We set the upperIndex to equal the minimum value of the current index and zero
+                        upperIndex = Math.Min(i, upperIndex);
+
+                        // Once we have our upper bounds we can now break out of the loop
+                        break;
+                    }
+                }
+
+                // Loop through all placements between our upper index and our lower index
+                for (int i = upperIndex; i >= lowerIndex; i--)
+                {
+                    // Set our target index to equal the current index, plus the number of new objects we add to the scenario
+                    int targetIndex = i + NewObjectCount;
+
+                    // if the target index is less than the placement count, we can move the corrresponding placement into  its new index
+                    if (targetIndex < blf.MapVariant.MapVariant.Objects.Length)
+                    {
+                        blf.MapVariant.MapVariant.Objects[targetIndex] = blf.MapVariant.MapVariant.Objects[i];
+                    }
+                }
+
+                // We then loop back through the placements that were "added" to our array, and reset the data for each placement
+                for (int i = blf.MapVariant.MapVariant.ScenarioObjectCount; i < NewObjectCount; i++)
+                {
+                    VariantObjectDatum currentPlacement = blf.MapVariant.MapVariant.Objects[i];
+
+                    // In this case, we use the data for the closest scenario placement, which in our case is equal to the scenario object count
+                    currentPlacement = blf.MapVariant.MapVariant.Objects[blf.MapVariant.MapVariant.ScenarioObjectCount];
+                }
+
+                // We can now update the scenario object count for the variant itselfs
+                blf.MapVariant.MapVariant.ScenarioObjectCount += NewObjectCount;
+            }
+        }
+    }
 }
