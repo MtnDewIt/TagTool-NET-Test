@@ -558,7 +558,6 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
 			try
 			{
-
 				string mapName = null;
 				if (ScenarioTagName.Contains("s3d_avalanche"))		{ mapName = "s3d_avalanche.map"; }		// "Diamondback", "s3d_avalanche"
 				else if (ScenarioTagName.Contains("s3d_edge"))		{ mapName = "s3d_edge.map"; }			// "Edge", "s3d_edge"
@@ -572,12 +571,10 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 				else if (ScenarioTagName.Contains("bunkerworld"))	{ mapName = "bunkerworld.map"; }		// "Standoff", "bunkerworld"
 				else if (ScenarioTagName.Contains("cyberdyne"))		{ mapName = "cyberdyne.map"; }			// "The Pit", "cyberdyne"
 				else if (ScenarioTagName.Contains("riverworld"))	{ mapName = "riverworld.map"; }			// "Valhalla", "riverworld"
+				else { mapName = $"{ScenarioTagName.Split("/").Last()}.map"; }                              // Set the specified map name to equal the last string in the scenario tag name (This is only in the event that the scenario does not exist in the base cache)
 
-				// Set the specified map name to equal the last string in the scenario tag name
-				// string mapName = $"{ScenarioTagName.Split("/").Last()}.map";
-
-				// Check if the current cache context is a mod package context
-				if (Cache is GameCacheModPackage modCache)
+                // Check if the current cache context is a mod package context
+                if (Cache is GameCacheModPackage modCache)
 				{
 					// Intitially, we assume that the map file is not the mod package, so this gets set to true
 					bool isBaseCacheMap = true;
