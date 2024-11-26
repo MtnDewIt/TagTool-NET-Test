@@ -71,7 +71,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 		private bool TryGetTag<T>(string tagName, out T tag) where T : TagStructure {
 			tag = null;
 			try {
-				CachedTag cachedTag = Cache.TagCache.GetTag(tagName);
+				CachedTag cachedTag = Cache.TagCache.GetTag<T>(tagName);
 				tag = Cache.Deserialize<T>(cacheStream, cachedTag);
 				DeserializedTags[tag] = cachedTag;
 				return true;
@@ -82,7 +82,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 		private bool TryDuplicateTag<T>(string tagName, string newName, out T tag) where T : TagStructure {
 			tag = null;
 			try {
-				CachedTag toCopy = Cache.TagCache.GetTag(tagName);
+				CachedTag toCopy = Cache.TagCache.GetTag<T>(tagName);
 				CachedTag cachedCopy = Cache.TagCache.AllocateTag(toCopy.Group, newName);
 				T definition = Cache.Deserialize<T>(cacheStream, toCopy);
 				Cache.Serialize(cacheStream, cachedCopy, definition);
@@ -177,7 +177,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
 			#region Duplicate the render_model from ‘box_m’, creating data for our custom geometry
 			// -- DuplicateTag objects\multi\box_m\box_m.render_model {tagName}, and edit newly created render_model tag
-			if (TryDuplicateTag(@"objects\multi\box_m\box_m.render_model", TagName, out RenderModel geo_rm)) {
+			if (TryDuplicateTag(@"objects\multi\box_m\box_m", TagName, out RenderModel geo_rm)) {
 
 				// Populate at least one default region and permutation with default names / values
 				geo_rm.Regions[0].Name = default_sid;                   // SetField Regions[0].Name default
@@ -207,7 +207,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 				#region Copies Materials from the ‘block_1x1x1’ render_model tag in the base cache
 				// -- EditTag objects\eldewrito\reforge\block_1x1x1.render_model
 				List<TagTool.Geometry.RenderMaterial> blockMaterials = new List<TagTool.Geometry.RenderMaterial>();
-				if (TryGetTag(@"objects\eldewrito\reforge\block_1x1x1.render_model", out RenderModel block_rm)) {
+				if (TryGetTag(@"objects\eldewrito\reforge\block_1x1x1", out RenderModel block_rm)) {
 					// Copy the materials from the RenderModel definition
 					blockMaterials = block_rm.Materials;
 				}
@@ -228,7 +228,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
 			#region Create a physics model tag for our custom model
 			// -- CreateTag phmo {tagName}, and Edit
-			if (TryDuplicateTag(@"objects\multi\box_m\box_m.phmo", TagName, out PhysicsModel phmo_tag)) {
+			if (TryDuplicateTag(@"objects\multi\box_m\box_m", TagName, out PhysicsModel phmo_tag)) {
 				// Add required dummy RigidBodies / Physics elements
 				phmo_tag.RigidBodies = new List<PhysicsModel.RigidBody>();          // -- 	AddBlockElements RigidBodies
 				phmo_tag.RigidBodies.Add(new PhysicsModel.RigidBody {
@@ -315,7 +315,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
 			#region Create a model tag for our custom geometry
 			// -- CreateTag hlmt {tagName}, and Edit the newly created tag
-			if (TryDuplicateTag(@"objects\multi\box_m\box_m.hlmt", TagName, out Model model_tag)) {
+			if (TryDuplicateTag(@"objects\multi\box_m\box_m", TagName, out Model model_tag)) {
 				// Set the render_model, collision_model, and physics_model tags we created earlier
 				model_tag.RenderModel = Cache.TagCache.GetTag($"{ TagName}.render_model");           // -- 	SetField RenderModel {tagName}.render_model
 				model_tag.CollisionModel = Cache.TagCache.GetTag($"{TagName}.collision_model");     // -- 	SetField CollisionModel {tagName}.collision_model
@@ -364,7 +364,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
 			#region Create a crate tag for our custom geometry
 			// -- CreateTag bloc {tagName}, and Edit the newly created tag
-			if (TryDuplicateTag(@"objects\multi\box_m\box_m.bloc", TagName, out Crate crate_tag)) {
+			if (TryDuplicateTag(@"objects\multi\box_m\box_m", TagName, out Crate crate_tag)) {
 				
 				// Set Crate Properties
 				crate_tag.ObjectType = new GameObjectType16() { Halo3ODST = GameObjectTypeHalo3ODST.Crate };				 // -- 	SetField ObjectType.Halo3ODST Crate
@@ -389,7 +389,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
 			#region Edit the forge_globals tag to add our new crate to the palette
 			// -- EditTag multiplayer\forge_globals.forge_globals_definition
-			if (TryGetTag("multiplayer\\forge_globals.forge_globals_definition", out ForgeGlobalsDefinition forge_globals_tag)) {
+			if (TryGetTag("multiplayer\\forge_globals", out ForgeGlobalsDefinition forge_globals_tag)) {
 				
 				// Add a new block to the ReForgeObjects block element
 				forge_globals_tag.ReForgeObjects.Add(new TagReferenceBlock());
@@ -559,19 +559,19 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 			try
 			{
 				string mapName = null;
-				if (ScenarioTagName.Contains("s3d_avalanche"))		{ mapName = "s3d_avalanche.map"; }		// "Diamondback", "s3d_avalanche"
-				else if (ScenarioTagName.Contains("s3d_edge"))		{ mapName = "s3d_edge.map"; }			// "Edge", "s3d_edge"
-				else if (ScenarioTagName.Contains("guardian"))		{ mapName = "guardian.map"; }			// "Guardian", "guardian"
-				else if (ScenarioTagName.Contains("deadlock"))		{ mapName = "deadlock.map"; }			// "High Ground", "deadlock"
-				else if (ScenarioTagName.Contains("s3d_turf"))		{ mapName = "s3d_turf.map"; }			// "Icebox", "s3d_turf"
-				else if (ScenarioTagName.Contains("zanzibar"))		{ mapName = "zanzibar.map"; }			// "Last Resort", "zanzibar"
-				else if (ScenarioTagName.Contains("chill"))			{ mapName = "chill.map"; }				// "Narrows", "chill"
-				else if (ScenarioTagName.Contains("s3d_reactor"))	{ mapName = "s3d_reactor.map"; }		// "Reactor", "s3d_reactor"
-				else if (ScenarioTagName.Contains("shrine"))		{ mapName = "shrine.map"; }				// "Sandtrap", "shrine"
-				else if (ScenarioTagName.Contains("bunkerworld"))	{ mapName = "bunkerworld.map"; }		// "Standoff", "bunkerworld"
-				else if (ScenarioTagName.Contains("cyberdyne"))		{ mapName = "cyberdyne.map"; }			// "The Pit", "cyberdyne"
-				else if (ScenarioTagName.Contains("riverworld"))	{ mapName = "riverworld.map"; }			// "Valhalla", "riverworld"
-				else { mapName = $"{ScenarioTagName.Split("/").Last()}.map"; }                              // Set the specified map name to equal the last string in the scenario tag name (This is only in the event that the scenario does not exist in the base cache)
+				if (ScenarioTagName.Contains("s3d_avalanche"))		{ mapName = "s3d_avalanche"; }		// "Diamondback", "s3d_avalanche"
+				else if (ScenarioTagName.Contains("s3d_edge"))		{ mapName = "s3d_edge"; }			// "Edge", "s3d_edge"
+				else if (ScenarioTagName.Contains("guardian"))		{ mapName = "guardian"; }			// "Guardian", "guardian"
+				else if (ScenarioTagName.Contains("deadlock"))		{ mapName = "deadlock"; }			// "High Ground", "deadlock"
+				else if (ScenarioTagName.Contains("s3d_turf"))		{ mapName = "s3d_turf"; }			// "Icebox", "s3d_turf"
+				else if (ScenarioTagName.Contains("zanzibar"))		{ mapName = "zanzibar"; }			// "Last Resort", "zanzibar"
+				else if (ScenarioTagName.Contains("chill"))			{ mapName = "chill"; }				// "Narrows", "chill"
+				else if (ScenarioTagName.Contains("s3d_reactor"))	{ mapName = "s3d_reactor"; }		// "Reactor", "s3d_reactor"
+				else if (ScenarioTagName.Contains("shrine"))		{ mapName = "shrine"; }				// "Sandtrap", "shrine"
+				else if (ScenarioTagName.Contains("bunkerworld"))	{ mapName = "bunkerworld"; }		// "Standoff", "bunkerworld"
+				else if (ScenarioTagName.Contains("cyberdyne"))		{ mapName = "cyberdyne"; }			// "The Pit", "cyberdyne"
+				else if (ScenarioTagName.Contains("riverworld"))	{ mapName = "riverworld"; }			// "Valhalla", "riverworld"
+				else { mapName = $"{ScenarioTagName.Split("/").Last()}"; }                              // Set the specified map name to equal the last string in the scenario tag name (This is only in the event that the scenario does not exist in the base cache)
 
                 // Check if the current cache context is a mod package context
                 if (Cache is GameCacheModPackage modCache)
@@ -633,7 +633,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 						MemoryStream mapStream = new MemoryStream();
 
 						// Define a new file info for the specified map file
-						FileInfo file = new FileInfo($@"{Cache.Directory.FullName}\{mapName}");
+						FileInfo file = new FileInfo($@"{modCache.BaseCacheReference.Directory.FullName}\{mapName}.map");
 
 						// Create a new empty map file object
 						MapFile mapFileData = new MapFile();
@@ -660,7 +660,16 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 						// Get the header from the current map file
 						CacheFileHeaderGenHaloOnline header = mapFileData.Header as CacheFileHeaderGenHaloOnline;
 
-						// Add the map file stream to the mod package
+                        // Create a new writer instance using the file stream
+                        EndianWriter writer = new EndianWriter(mapStream);
+
+                        // Write the modified data to the specified map file stream
+                        mapFileData.Write(writer);
+
+                        // Reset the stream position
+                        mapStream.Position = 0;
+
+                        // Add the map file stream to the mod package
                         modCache.AddMapFile(mapStream, header.MapId);
                     }
 				}
@@ -669,7 +678,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 				else 
 				{
 					// Define a new file info for the specified map file
-					FileInfo file = new FileInfo($@"{Cache.Directory.FullName}\{mapName}");
+					FileInfo file = new FileInfo($@"{Cache.Directory.FullName}\{mapName}.map");
 
 					// Create a new empty map file object
 					MapFile mapFileData = new MapFile();
@@ -708,13 +717,13 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 			// Check if the map blf has a valid map variant
             if (blf.MapVariant != null)
             {
-                // The lower index is equal to the current scenario object count minus one
-                int lowerIndex = Math.Max((short)0, blf.MapVariant.MapVariant.ScenarioObjectCount - 1);
-                int upperIndex = 0;
+				// The lower index is equal to the current scenario object count minus one
+				int lowerIndex = blf.MapVariant.MapVariant.ScenarioObjectCount - 1;
+                int upperIndex = 639;
 
                 // Loop through all object placements backwards, so we can get the last placement in the variant.
                 // This represents our upper index bounds
-                for (int i = 639; i > blf.MapVariant.MapVariant.Objects.Length; i--)
+                for (int i = 639; i > 0; i--)
                 {
                     VariantObjectDatum currentPlacement = blf.MapVariant.MapVariant.Objects[i];
 
