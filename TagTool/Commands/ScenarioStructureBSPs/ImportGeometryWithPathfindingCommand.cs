@@ -79,19 +79,6 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 			catch (Exception e) { Console.WriteLine(e); }
 			return false;
 		}
-		public bool TryCreateTag<T>(string tagName, out T tag) where T : TagStructure {
-			tag = null;
-			try {
-				CachedTag cachedTag = Cache.TagCache.AllocateTag<T>(tagName);
-				tag = Activator.CreateInstance<T>();
-				Cache.Serialize(cacheStream, cachedTag, tag);
-				( Cache as GameCacheHaloOnlineBase ).SaveTagNames();
-				DeserializedTags[tag] = cachedTag;
-				return true;
-			}
-			catch (Exception e) { Console.WriteLine(e); }
-			return false;
-		}
 		private bool TryDuplicateTag<T>(string tagName, string newName, out T tag) where T : TagStructure {
 			tag = null;
 			try {
@@ -101,7 +88,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 				Cache.Serialize(cacheStream, cachedCopy, definition);
 				( Cache as GameCacheHaloOnlineBase ).SaveTagNames();
 				//if (TryGetTag<T>(newName, out tag)) { return true; }
-				DeserializedTags[definition] = toCopy;
+				DeserializedTags[definition] = cachedCopy;
 				tag = definition;
 				return true;
 			}
@@ -241,7 +228,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
 			#region Create a physics model tag for our custom model
 			// -- CreateTag phmo {tagName}, and Edit
-			if (TryCreateTag(TagName, out PhysicsModel phmo_tag)) {
+			if (TryDuplicateTag(@"objects\multi\box_m\box_m.phmo", TagName, out PhysicsModel phmo_tag)) {
 				// Add required dummy RigidBodies / Physics elements
 				phmo_tag.RigidBodies = new List<PhysicsModel.RigidBody>();          // -- 	AddBlockElements RigidBodies
 				phmo_tag.RigidBodies.Add(new PhysicsModel.RigidBody {
@@ -303,7 +290,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 				// CollisionDefinition = collisionModel;
 				// Make the surface invisible to physics calculations (no collision)
 				// -- 	ForEach Regions[0].Permutations[0].Bsps[0].Geometry.Surfaces SetField Flags Invisible
-				foreach (var surface in collisionModel.Regions[0].Permutations[0].Bsps[0].Geometry.Surfaces) {
+				foreach (Surface surface in collisionModel.Regions[0].Permutations[0].Bsps[0].Geometry.Surfaces) {
 						surface.Flags = SurfaceFlags.Invisible;
 				}
 				// Remove all block elements for BspPhysics and BspMoppCodes
@@ -328,9 +315,9 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
 			#region Create a model tag for our custom geometry
 			// -- CreateTag hlmt {tagName}, and Edit the newly created tag
-			if (TryCreateTag(TagName, out Model model_tag)) {
+			if (TryDuplicateTag(@"objects\multi\box_m\box_m.hlmt", TagName, out Model model_tag)) {
 				// Set the render_model, collision_model, and physics_model tags we created earlier
-				model_tag.RenderModel = Cache.TagCache.GetTag($"{TagName}.render_model");           // -- 	SetField RenderModel {tagName}.render_model
+				model_tag.RenderModel = Cache.TagCache.GetTag($"{ TagName}.render_model");           // -- 	SetField RenderModel {tagName}.render_model
 				model_tag.CollisionModel = Cache.TagCache.GetTag($"{TagName}.collision_model");     // -- 	SetField CollisionModel {tagName}.collision_model
 				model_tag.PhysicsModel = Cache.TagCache.GetTag($"{TagName}.physics_model");         // -- 	SetField PhysicsModel {tagName}.physics_model
 																									// Add Materials block with no section damage multiplier and a human-metallic global material
@@ -340,6 +327,9 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 					RuntimeDamagerMaterialIndex = -1,               // -- 	SetField Materials[0].RuntimeDamagerMaterialIndex -1
 					GlobalMaterialIndex = 54                        // -- 	SetField Materials[0].GlobalMaterialIndex 54
 				});
+
+				model_tag.BeginFadeDistance = 0;                    // -- 	SetField BeginFadeDistance 0
+				model_tag.DisappearDistance = 0;                    // -- 	SetField DisappearDistance 0
 
 				// Add required CollisionRegions
 				model_tag.CollisionRegions = new List<Model.CollisionRegion>();     // -- 	AddBlockElements CollisionRegions 1
@@ -374,13 +364,13 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
 			#region Create a crate tag for our custom geometry
 			// -- CreateTag bloc {tagName}, and Edit the newly created tag
-			if (TryCreateTag(TagName, out Crate crate_tag)) {
+			if (TryDuplicateTag(@"objects\multi\box_m\box_m.bloc", TagName, out Crate crate_tag)) {
 				
 				// Set Crate Properties
 				crate_tag.ObjectType = new GameObjectType16() { Halo3ODST = GameObjectTypeHalo3ODST.Crate };				 // -- 	SetField ObjectType.Halo3ODST Crate
 				crate_tag.ObjectFlags = new ObjectDefinitionFlags() { FlagsReach = GameObjectFlagsReach.DoesNotCastShadow }; // -- 	SetField ObjectFlags.Flags DoesNotCastShadow
 				crate_tag.BoundingRadius = 10000;																			 // -- 	SetField BoundingRadius 10000
-				crate_tag.Model = Cache.TagCache.GetTag($"{TagName}.model");												 // -- 	SetField Model {tagName}.model
+				crate_tag.Model = Cache.TagCache.GetTag($"{ TagName}.model");												 // -- 	SetField Model {tagName}.model
 				
 				// Add MultiplayerObject Block with values to ensure it always exists
 				crate_tag.MultiplayerObject = new List<GameObject.MultiplayerObjectBlock>();
@@ -568,11 +558,26 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
 			try
 			{
+
+				string mapName = null;
+				if (ScenarioTagName.Contains("s3d_avalanche"))		{ mapName = "s3d_avalanche.map"; }		// "Diamondback", "s3d_avalanche"
+				else if (ScenarioTagName.Contains("s3d_edge"))		{ mapName = "s3d_edge.map"; }			// "Edge", "s3d_edge"
+				else if (ScenarioTagName.Contains("guardian"))		{ mapName = "guardian.map"; }			// "Guardian", "guardian"
+				else if (ScenarioTagName.Contains("deadlock"))		{ mapName = "deadlock.map"; }			// "High Ground", "deadlock"
+				else if (ScenarioTagName.Contains("s3d_turf"))		{ mapName = "s3d_turf.map"; }			// "Icebox", "s3d_turf"
+				else if (ScenarioTagName.Contains("zanzibar"))		{ mapName = "zanzibar.map"; }			// "Last Resort", "zanzibar"
+				else if (ScenarioTagName.Contains("chill"))			{ mapName = "chill.map"; }				// "Narrows", "chill"
+				else if (ScenarioTagName.Contains("s3d_reactor"))	{ mapName = "s3d_reactor.map"; }		// "Reactor", "s3d_reactor"
+				else if (ScenarioTagName.Contains("shrine"))		{ mapName = "shrine.map"; }				// "Sandtrap", "shrine"
+				else if (ScenarioTagName.Contains("bunkerworld"))	{ mapName = "bunkerworld.map"; }		// "Standoff", "bunkerworld"
+				else if (ScenarioTagName.Contains("cyberdyne"))		{ mapName = "cyberdyne.map"; }			// "The Pit", "cyberdyne"
+				else if (ScenarioTagName.Contains("riverworld"))	{ mapName = "riverworld.map"; }			// "Valhalla", "riverworld"
+
 				// Set the specified map name to equal the last string in the scenario tag name
-				var mapName = $"{ScenarioTagName.Split("/").Last()}.map";
+				// string mapName = $"{ScenarioTagName.Split("/").Last()}.map";
 
 				// Check if the current cache context is a mod package context
-                if (Cache is GameCacheModPackage modCache)
+				if (Cache is GameCacheModPackage modCache)
 				{
 					// Intitially, we assume that the map file is not the mod package, so this gets set to true
 					bool isBaseCacheMap = true;
@@ -581,16 +586,16 @@ namespace TagTool.Commands.ScenarioStructureBSPs
                     for (int i = 0; i < modCache.BaseModPackage.MapFileStreams.Count; i++)
                     {
 						// Create a new empty map file object
-                        var mapFileData = new MapFile();
+						MapFile mapFileData = new MapFile();
 
 						// Get the current map file stream
-                        var stream = modCache.BaseModPackage.MapFileStreams[i];
+						Stream stream = modCache.BaseModPackage.MapFileStreams[i];
 
                         // Set the stream position to the beginning of the stream
                         stream.Position = 0;
 
-                        // Create a new reader instance using the file stream
-                        var reader = new EndianReader(stream);
+						// Create a new reader instance using the file stream
+						EndianReader reader = new EndianReader(stream);
 
                         // Read the data from the specified map file
                         mapFileData.Read(reader);
@@ -599,7 +604,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
                         stream.Position = 0;
 
 						// Get the header from the current map file
-                        var header = mapFileData.Header as CacheFileHeaderGenHaloOnline;
+						CacheFileHeaderGenHaloOnline header = mapFileData.Header as CacheFileHeaderGenHaloOnline;
 
 						// Check if the map file header name equals the specified map name
 						if (header.Name == mapName)
@@ -608,7 +613,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 							UpdateVariantPlacements(mapFileData.MapFileBlf);
 
 							// Create a new writer instance using the file stream
-							var writer = new EndianWriter(stream);
+							EndianWriter writer = new EndianWriter(stream);
 
 							// Write the modified data to the specified map file
 							mapFileData.Write(writer);
@@ -628,23 +633,23 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 					if (isBaseCacheMap)
 					{
 						// Create a new stream for our modified map data
-                        var mapStream = new MemoryStream();
+						MemoryStream mapStream = new MemoryStream();
 
-                        // Define a new file info for the specified map file
-                        var file = new FileInfo($@"{Cache.Directory.FullName}\{mapName}");
+						// Define a new file info for the specified map file
+						FileInfo file = new FileInfo($@"{Cache.Directory.FullName}\{mapName}");
 
-                        // Create a new empty map file object
-                        var mapFileData = new MapFile();
+						// Create a new empty map file object
+						MapFile mapFileData = new MapFile();
 
                         // Open a stream to the specified map 
-                        using (var fs = file.OpenRead()) 
+                        using (FileStream fs = file.OpenRead()) 
 						{
 							// Load the map data into our memory stream
                             fs.CopyTo(mapStream);
                         }
 
-                        // Create a new reader instance using the file stream
-                        var reader = new EndianReader(mapStream);
+						// Create a new reader instance using the file stream
+						EndianReader reader = new EndianReader(mapStream);
 
                         // Read the data from the specified map file
                         mapFileData.Read(reader);
@@ -655,8 +660,8 @@ namespace TagTool.Commands.ScenarioStructureBSPs
                         // Reset the stream position
                         mapStream.Position = 0;
 
-                        // Get the header from the current map file
-                        var header = mapFileData.Header as CacheFileHeaderGenHaloOnline;
+						// Get the header from the current map file
+						CacheFileHeaderGenHaloOnline header = mapFileData.Header as CacheFileHeaderGenHaloOnline;
 
 						// Add the map file stream to the mod package
                         modCache.AddMapFile(mapStream, header.MapId);
@@ -667,16 +672,16 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 				else 
 				{
 					// Define a new file info for the specified map file
-                    var file = new FileInfo($@"{Cache.Directory.FullName}\{mapName}");
+					FileInfo file = new FileInfo($@"{Cache.Directory.FullName}\{mapName}");
 
-                    // Create a new empty map file object
-                    var mapFileData = new MapFile();
+					// Create a new empty map file object
+					MapFile mapFileData = new MapFile();
 
 					// Open a stream to the specified map 
-                    using (var stream = file.OpenRead())
+                    using (FileStream stream = file.OpenRead())
                     {
 						// Create a new reader instance using the file stream
-                        var reader = new EndianReader(stream);
+						EndianReader reader = new EndianReader(stream);
 
 						// Read the data from the specified map file
                         mapFileData.Read(reader);
@@ -684,16 +689,17 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 						// Update variant placement data
                         UpdateVariantPlacements(mapFileData.MapFileBlf);
 
-                        // Create a new writer instance using the file stream
-                        var writer = new EndianWriter(stream);
+						// Create a new writer instance using the file stream
+						EndianWriter writer = new EndianWriter(stream);
 
                         // Write the modified data to the specified map file
                         mapFileData.Write(writer);
                     }
                 }
             }
-			catch (Exception) 
+			catch (Exception e) 
 			{
+				Console.WriteLine(e);
 				return new TagToolError(CommandError.CustomError, "Failed to Update Scenario Map File Data");
 			}
 
