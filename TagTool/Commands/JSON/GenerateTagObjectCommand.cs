@@ -20,7 +20,7 @@ namespace TagTool.Commands.JSON
         private GameCache Cache;
         private GameCacheHaloOnline CacheContext;
         private string ExportPath = $@"tags";
-        private string Suffix = null;
+        private string PathPrefix = null;
 
         private int TagCount = 0;
         private Stopwatch StopWatch = new Stopwatch();
@@ -32,7 +32,7 @@ namespace TagTool.Commands.JSON
             "GenerateTagObject",
             "Generates a JSON tag object file based on the specified tag",
 
-            "GenerateTagObject <Tag_Name> [Suffix]",
+            "GenerateTagObject <Tag_Name> [PathPrefix]",
             "Generates a JSON tag object file based on the specified tag. Flags within\n" +
             "the generated JSON data may change depending on the tag's definition and type\n\n" +
 
@@ -46,7 +46,10 @@ namespace TagTool.Commands.JSON
 
         public override object Execute(List<string> args)
         {
-            Suffix = args.Count > 1 ? args[1] : null;
+            if (args.Count > 2)
+                return new TagToolError(CommandError.ArgCount);
+
+            PathPrefix = args.Count == 2 ? args[1] : null;
 
             ProcessInputAsync(args[0]).GetAwaiter().GetResult();
 
@@ -91,7 +94,7 @@ namespace TagTool.Commands.JSON
                 var definition = (TagStructure)Cache.Deserialize(cacheStream, tag);
                 var definitionName = TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group), Cache.Version, Cache.Platform).Structure.Name;
 
-                var fileName = Suffix != null ? $"{tag.Name}_{Suffix}" : tag.Name;
+                ExportPath = PathPrefix != null ? Path.Combine(PathPrefix, ExportPath) : ExportPath;
 
                 var tagObject = new TagObject()
                 {
@@ -111,7 +114,7 @@ namespace TagTool.Commands.JSON
 
                 var jsonData = handler.Serialize(tagObject);
 
-                var fileInfo = new FileInfo(Path.Combine(ExportPath, $"{fileName}.{definitionName}.json"));
+                var fileInfo = new FileInfo(Path.Combine(ExportPath, $"{tag.Name}.{definitionName}.json"));
 
                 if (!fileInfo.Directory.Exists)
                 {

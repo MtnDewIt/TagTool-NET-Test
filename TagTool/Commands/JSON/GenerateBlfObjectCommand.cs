@@ -19,6 +19,7 @@ namespace TagTool.Commands.JSON
     {
         private GameCache Cache;
         private GameCacheHaloOnline CacheContext;
+        private string PathPrefix = null;
 
         private int FileCount = 0;
         private Stopwatch StopWatch = new Stopwatch();
@@ -47,7 +48,7 @@ namespace TagTool.Commands.JSON
             "GenerateBlfObject",
             "Generates a JSON blf object file based on the specified blf file",
 
-            "GenerateBlfObject <File_Path>",
+            "GenerateBlfObject <File_Path> [PathPrefix]",
             "Generates a JSON blf object file based on the specified blf file"
         )
         {
@@ -57,6 +58,11 @@ namespace TagTool.Commands.JSON
 
         public override object Execute(List<string> args)
         {
+            if (args.Count > 2)
+                return new TagToolError(CommandError.ArgCount);
+
+            PathPrefix = args.Count == 2 ? args[1] : null;
+
             ProcessDirectoryAsync(args[0]).GetAwaiter().GetResult();
 
             Console.WriteLine($"{FileCount - ErrorLog.Count}/{FileCount} Variants Converted Successfully in {StopWatch.ElapsedMilliseconds.FormatMilliseconds()} with {ErrorLog.Count} {(ErrorLog.Count == 1 ? "error" : "errors")}\n");
@@ -101,7 +107,7 @@ namespace TagTool.Commands.JSON
 
                 var blfData = new Blf(Cache.Version, Cache.Platform);
 
-                var exportPath = $@"maps\info";
+                var exportPath = PathPrefix != null ? Path.Combine(PathPrefix, $@"maps\info") : $@"maps\info";
 
                 using (var stream = file.OpenRead())
                 {
@@ -128,7 +134,7 @@ namespace TagTool.Commands.JSON
                             break;
                         case ".campaign":
                             blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
-                            exportPath = $@"data\levels";
+                            exportPath = PathPrefix != null ? Path.Combine(PathPrefix, $@"data\levels") : $@"data\levels";
                             break;
                         case ".mapinfo":
                             switch (reader.Length)

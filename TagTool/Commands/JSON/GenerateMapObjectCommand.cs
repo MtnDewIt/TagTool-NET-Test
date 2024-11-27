@@ -21,7 +21,7 @@ namespace TagTool.Commands.JSON
         private GameCache Cache;
         private GameCacheHaloOnline CacheContext;
         private string ExportPath = $@"maps";
-        private string Suffix = null;
+        private string PathPrefix = null;
 
         private int MapCount = 0;
         private Stopwatch StopWatch = new Stopwatch();
@@ -33,7 +33,7 @@ namespace TagTool.Commands.JSON
             "GenerateMapObject",
             "Generates a JSON map object file based on the specified map file",
 
-            "GenerateMapObject <Map_Path> [Suffix]",
+            "GenerateMapObject <Map_Path> [PathPrefix]",
             "Generates a JSON map object file based on the specified map file\n\n" + 
 
             "Optionally, instead of specifying a map file to convert you can\n" + 
@@ -47,7 +47,10 @@ namespace TagTool.Commands.JSON
 
         public override object Execute(List<string> args)
         {
-            Suffix = args.Count > 1 ? args[1] : null;
+            if (args.Count > 2)
+                return new TagToolError(CommandError.ArgCount);
+
+            PathPrefix = args.Count == 2 ? args[1] : null;
 
             ProcessDirectoryAsync(args[0]).GetAwaiter().GetResult();
 
@@ -92,7 +95,7 @@ namespace TagTool.Commands.JSON
 
                 var mapName = Path.GetFileNameWithoutExtension(file.Name);
 
-                var fileName = Suffix != null ? $"{mapName}_{Suffix}" : mapName;
+                ExportPath = PathPrefix != null ? Path.Combine(PathPrefix, ExportPath) : ExportPath;
 
                 using (var stream = file.OpenRead())
                 {
@@ -116,7 +119,7 @@ namespace TagTool.Commands.JSON
 
                     var jsonData = handler.Serialize(mapObject);
 
-                    var fileInfo = new FileInfo(Path.Combine(ExportPath, $"{fileName}.json"));
+                    var fileInfo = new FileInfo(Path.Combine(ExportPath, $"{mapName}.json"));
 
                     if (!fileInfo.Directory.Exists)
                     {
