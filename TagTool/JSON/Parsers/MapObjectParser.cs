@@ -14,18 +14,20 @@ namespace TagTool.JSON.Parsers
         private GameCacheHaloOnlineBase CacheContext;
         private Stream CacheStream;
         private MapObjectHandler Handler;
+        private string InputPath;
 
-        public MapObjectParser(GameCache cache, GameCacheHaloOnlineBase cacheContext, Stream cacheStream)
+        public MapObjectParser(GameCache cache, GameCacheHaloOnlineBase cacheContext, Stream cacheStream, string inputPath)
         {
             Cache = cache;
             CacheContext = cacheContext;
             CacheStream = cacheStream;
             Handler = new MapObjectHandler(Cache, CacheContext);
+            InputPath = inputPath;
         }
 
         public void ParseFile(string filePath)
         {
-            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONMapPath}{filePath}.json");
+            var jsonData = File.ReadAllText($@"{InputPath}\maps\{filePath}.json");
             var mapObject = Handler.Deserialize(jsonData);
 
             var mapFile = new FileInfo($@"{Cache.Directory.FullName}\{mapObject.MapName}.map");

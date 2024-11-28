@@ -12,18 +12,20 @@ namespace TagTool.JSON.Parsers
         private GameCacheHaloOnlineBase CacheContext;
         private Stream CacheStream;
         private BlfObjectHandler Handler;
+        private string InputPath;
 
-        public BlfObjectParser(GameCache cache, GameCacheHaloOnlineBase cacheContext, Stream cacheStream)
+        public BlfObjectParser(GameCache cache, GameCacheHaloOnlineBase cacheContext, Stream cacheStream, string inputPath)
         {
             Cache = cache;
             CacheContext = cacheContext;
             CacheStream = cacheStream;
             Handler = new BlfObjectHandler(Cache.Version, Cache.Platform);
+            InputPath = inputPath;
         }
 
         public void ParseFile(string filePath)
         {
-            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONBasePath}{filePath}.json");
+            var jsonData = File.ReadAllText($@"{InputPath}\{filePath}.json");
             var blfObject = Handler.Deserialize(jsonData);
 
             var blfFile = new FileInfo($@"{Cache.Directory.FullName}\{blfObject.FileName}.{blfObject.FileType}");

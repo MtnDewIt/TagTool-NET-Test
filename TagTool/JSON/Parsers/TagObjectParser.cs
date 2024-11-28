@@ -28,18 +28,20 @@ namespace TagTool.JSON.Parsers
         private GameCacheHaloOnlineBase CacheContext;
         private Stream CacheStream;
         private TagObjectHandler Handler;
+        private string InputPath;
 
-        public TagObjectParser(GameCache cache, GameCacheHaloOnlineBase cacheContext, Stream cacheStream)
+        public TagObjectParser(GameCache cache, GameCacheHaloOnlineBase cacheContext, Stream cacheStream, string inputPath)
         {
             Cache = cache;
             CacheContext = cacheContext;
             CacheStream = cacheStream;
             Handler = new TagObjectHandler(Cache, CacheContext, CacheStream);
+            InputPath = inputPath;
         }
 
         public void ParseFile(string filePath)
         {
-            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONTagPath}{filePath}.json");
+            var jsonData = File.ReadAllText($@"{InputPath}\tags\{filePath}.json");
             var tagObject = Handler.Deserialize(jsonData);
 
             Cache.TagCache.TryGetTag($@"{tagObject.TagName}.{tagObject.TagType}", out var tag);
@@ -100,7 +102,7 @@ namespace TagTool.JSON.Parsers
             {
                 foreach (var resource in tagObject.BitmapResources)
                 {
-                    AddBitmap(tagDefinition, resource.BitmapIndex, $@"{JSONFileTree.JSONDataPath}{tagObject.TagName}\{resource.DDSFile}");
+                    AddBitmap(tagDefinition, resource.BitmapIndex, $@"{InputPath}\data\{tagObject.TagName}\{resource.DDSFile}");
                 }
 
                 Cache.Serialize(CacheStream, tagInstance, tagDefinition);
@@ -127,7 +129,7 @@ namespace TagTool.JSON.Parsers
             {
                 foreach (var resource in tagObject.AnimationData.AnimationResources)
                 {
-                    AddAnimation(tagInstance, $@"{JSONFileTree.JSONDataPath}{tagObject.TagName}\{resource.AnimationFile}");
+                    AddAnimation(tagInstance, $@"{InputPath}\data\{tagObject.TagName}\{resource.AnimationFile}");
                 }
 
                 if (tagObject.AnimationData.SortModes)
@@ -187,7 +189,7 @@ namespace TagTool.JSON.Parsers
 
             if (tagObject.BlamScriptResource != null)
             {
-                CompileScript(tagInstance, $@"{JSONFileTree.JSONDataPath}{tagObject.TagName}\scripts\{tagObject.BlamScriptResource.BlamScriptFile}");
+                CompileScript(tagInstance, $@"{InputPath}\data\{tagObject.TagName}\scripts\{tagObject.BlamScriptResource.BlamScriptFile}");
             }
         }
 

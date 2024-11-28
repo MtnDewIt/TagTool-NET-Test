@@ -6,6 +6,7 @@ using System.IO;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
+using TagTool.JSON;
 using TagTool.JSON.Parsers;
 using TagTool.Shaders.ShaderGenerator;
 using TagTool.Tags.Definitions;
@@ -77,9 +78,9 @@ namespace TagTool.Commands.Shaders
         {
             using (var stream = Cache.OpenCacheReadWrite())
             {
-                var tagParser = new TagObjectParser(Cache, CacheContext, stream);
+                var tagParser = new TagObjectParser(Cache, CacheContext, stream, JSONFileTree.JSONUpdateShaderDataPath);
 
-                var jsonData = File.ReadAllText($@"{JSONFileTree.JSONCommandPath}updateshaderdata\tags.json");
+                var jsonData = File.ReadAllText($@"{JSONFileTree.JSONUpdateShaderDataPath}\tags.json");
                 TagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
                 foreach (var file in TagObjectList)

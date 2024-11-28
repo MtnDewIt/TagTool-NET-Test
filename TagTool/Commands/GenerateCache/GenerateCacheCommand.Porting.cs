@@ -5,6 +5,7 @@ using TagTool.Tags.Definitions;
 using TagTool.Audio;
 using TagTool.JSON.Parsers;
 using TagTool.Commands.Porting;
+using TagTool.JSON;
 
 namespace TagTool.Commands.GenerateCache
 {
@@ -12,7 +13,7 @@ namespace TagTool.Commands.GenerateCache
     {
         public void PortTagData()
         {
-            TagParser = new TagObjectParser(Cache, CacheContext, CacheStream);
+            TagParser = new TagObjectParser(Cache, CacheContext, CacheStream, JSONFileTree.JSONGenerateCachePath);
 
             InitializePortingContext();
 

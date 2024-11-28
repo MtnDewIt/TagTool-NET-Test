@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using TagTool.BlamFile.GameVariants;
 using System.Text.RegularExpressions;
+using TagTool.JSON;
 
 namespace TagTool.Commands.Files
 {
@@ -207,7 +208,7 @@ namespace TagTool.Commands.Files
         {
             if (TagMap == null) 
             {
-                var jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}061_mapping.json");
+                var jsonData = File.ReadAllText($@"{JSONFileTree.JSONTagMappingPath}\061_mapping.json");
                 TagMap = JsonConvert.DeserializeObject<Dictionary<int, string>>(jsonData);
             }
 

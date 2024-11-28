@@ -5,6 +5,7 @@ using System.IO;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
+using TagTool.JSON;
 
 namespace TagTool.Commands.Tags
 {
@@ -12,7 +13,7 @@ namespace TagTool.Commands.Tags
     {
         private GameCache Cache { get; }
 
-        public static Dictionary<int, string> tagNameTable { get; set; }
+        public static Dictionary<int, string> TagNameTable { get; set; }
 
         public enum TagListVersion : int
         {
@@ -44,24 +45,23 @@ namespace TagTool.Commands.Tags
             if (!Enum.TryParse(args[0], true, out TagListVersion tagListVersion))
                 return new TagToolError(CommandError.ArgInvalid);
 
-            // TODO: Figure out how to route the file path through a handler (the folder tree is static)
             switch (tagListVersion)
             {
                 case TagListVersion.ElDewrito071:
-                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}071_tags.json");
+                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONTagTablePath}\071_tags.json");
                     break;
                 case TagListVersion.ElDewrito061:
-                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}061_tags.json");
+                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONTagTablePath}\061_tags.json");
                     break;
                 case TagListVersion.ElDewrito051:
-                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}051_tags.json");
+                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONTagTablePath}\051_tags.json");
                     break;
                 case TagListVersion.MS23:
-                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}ms23_tags.json");
+                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONTagTablePath}\ms23_tags.json");
                     break;
             }
 
-            tagNameTable = JsonConvert.DeserializeObject<Dictionary<int, string>>(jsonData);
+            TagNameTable = JsonConvert.DeserializeObject<Dictionary<int, string>>(jsonData);
 
             if (Cache is GameCacheHaloOnline)
             {
@@ -69,7 +69,7 @@ namespace TagTool.Commands.Tags
 
                 foreach (var tag in cache.TagCache.NonNull())
                 {
-                    if (tagNameTable.TryGetValue(tag.Index, out string name))
+                    if (TagNameTable.TryGetValue(tag.Index, out string name))
                     {
                         tag.Name = name;
                     }
@@ -84,7 +84,7 @@ namespace TagTool.Commands.Tags
 
                 foreach (var tag in cache.TagCache.NonNull())
                 {
-                    if (tagNameTable.TryGetValue(tag.Index, out string name))
+                    if (TagNameTable.TryGetValue(tag.Index, out string name))
                     {
                         tag.Name = name;
                     }

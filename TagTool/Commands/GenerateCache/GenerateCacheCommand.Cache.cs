@@ -13,6 +13,7 @@ using TagTool.Serialization;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using Newtonsoft.Json;
+using TagTool.JSON;
 
 namespace TagTool.Commands.GenerateCache
 {
@@ -515,12 +516,12 @@ namespace TagTool.Commands.GenerateCache
 
             if (!File.Exists($@"{path}\fonts\font_package.bin"))
             {
-                File.Copy($@"{JSONFileTree.JSONMapPath}fonts\font_package_upscaled.bin", $@"{path}\fonts\font_package.bin");
+                File.Copy($@"{JSONFileTree.JSONGenerateCachePath}\maps\fonts\font_package_upscaled.bin", $@"{path}\fonts\font_package.bin");
             }
             else
             {
                 new TagToolWarning($@"Font Package Detected in Specified Directory! Replacing Anyway.");
-                File.Copy($@"{JSONFileTree.JSONMapPath}fonts\font_package_upscaled.bin", $@"{path}\fonts\font_package.bin", true);
+                File.Copy($@"{JSONFileTree.JSONGenerateCachePath}\maps\fonts\font_package_upscaled.bin", $@"{path}\fonts\font_package.bin", true);
             }
         }
 
@@ -546,7 +547,7 @@ namespace TagTool.Commands.GenerateCache
 
         public void UpdateStringTable(StringTable stringTable) 
         {
-            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONBinPath}ms23_strings.json");
+            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONStringTablePath}\ms23_strings.json");
             var ms23Strings = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
             var startingIndex = 0x10DE;

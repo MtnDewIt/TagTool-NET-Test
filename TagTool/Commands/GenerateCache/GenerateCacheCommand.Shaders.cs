@@ -8,6 +8,7 @@ using TagTool.Commands.Shaders;
 using TagTool.JSON.Parsers;
 using TagTool.Shaders.ShaderGenerator;
 using TagTool.Tags.Definitions;
+using TagTool.JSON;
 
 namespace TagTool.Commands.GenerateCache
 {
@@ -21,11 +22,9 @@ namespace TagTool.Commands.GenerateCache
 
         public void UpdateShaderData()
         {
-            // This will eventually get defined at runtime, along with all the other JSON related objects
-            // Right now, we just need to replace the existing system with JSON, ensuring 1:1 functionality, or as close as we can get
-            var tagParser = new TagObjectParser(Cache, CacheContext, CacheStream);
+            var tagParser = new TagObjectParser(Cache, CacheContext, CacheStream, JSONFileTree.JSONUpdateShaderDataPath);
 
-            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONCommandPath}updateshaderdata\tags.json");
+            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONUpdateShaderDataPath}\tags.json");
             var tagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
             foreach (var file in tagObjectList)
