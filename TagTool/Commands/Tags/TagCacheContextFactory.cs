@@ -20,6 +20,7 @@ using TagTool.Commands.Scenarios;
 using TagTool.Cache.Monolithic;
 using TagTool.Commands.ConvertCache;
 using TagTool.Commands.GenerateCache;
+using TagTool.Commands.GenerateDonkeyCache;
 using TagTool.Commands.JSON;
 
 namespace TagTool.Commands.Tags
@@ -70,6 +71,7 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new GuessTagDefCommand(cache));
 
             context.AddCommand(new GenerateCacheCommand(cache, contextStack));
+            context.AddCommand(new GenerateDonkeyCacheCommand(cache, contextStack));
             context.AddCommand(new GenerateBlfObjectCommand(cache, cache as GameCacheHaloOnline));
             context.AddCommand(new GenerateMapObjectCommand(cache, cache as GameCacheHaloOnline));
             context.AddCommand(new GenerateTagObjectCommand(cache, cache as GameCacheHaloOnline));

@@ -1,0 +1,55 @@
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
+using TagTool.JSON;
+using TagTool.JSON.Parsers;
+
+namespace TagTool.Commands.GenerateDonkeyCache
+{
+    partial class GenerateDonkeyCacheCommand : Command
+    {
+        private TagObjectParser TagParser;
+        private MapObjectParser MapParser;
+        private BlfObjectParser BlfParser;
+
+        private List<string> TagObjectList;
+        private List<string> MapObjectList;
+        private List<string> BlfObjectList;
+
+        public void ParseTagList(string jsonPath)
+        {
+            var jsonData = File.ReadAllText(jsonPath);
+            TagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
+
+            foreach (var file in TagObjectList)
+                TagParser.ParseFile(file);
+        }
+
+        public void UpdateTagData()
+        {
+            ParseTagList($@"{JSONFileTree.JSONGenerateDonkeyCachePath}\tags.json");
+        }
+
+        public void UpdateMapData()
+        {
+            MapParser = new MapObjectParser(Cache, CacheContext, CacheStream, JSONFileTree.JSONGenerateDonkeyCachePath);
+
+            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONGenerateDonkeyCachePath}\maps.json");
+            MapObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
+
+            foreach (var file in MapObjectList)
+                MapParser.ParseFile(file);
+        }
+
+        public void UpdateBlfData()
+        {
+            BlfParser = new BlfObjectParser(Cache, CacheContext, CacheStream, JSONFileTree.JSONGenerateDonkeyCachePath);
+
+            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONGenerateDonkeyCachePath}\blf.json");
+            BlfObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
+
+            foreach (var file in BlfObjectList)
+                BlfParser.ParseFile(file);
+        }
+    }
+}
