@@ -163,10 +163,9 @@ namespace TagTool.Commands.GenerateDonkeyCache
 
             using (CacheStream = Cache.OpenCacheReadWrite())
             {
-                //UpdateShaderData();
-                //PortTagData();
-                //UpdateTagData();
-                //UpdateMapData();
+                PortTagData();
+                UpdateTagData();
+                UpdateMapData();
                 //UpdateBlfData();
             }
 

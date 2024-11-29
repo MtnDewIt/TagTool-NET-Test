@@ -22,7 +22,7 @@ namespace TagTool.Commands.GenerateDonkeyCache
 
             EmptyDirectory(destDirectory);
 
-            //MoveFontPackage(destDirectory.FullName);
+            MoveFontPackage(destDirectory.FullName);
 
             var cacheContext = new GameCacheHaloOnline(destDirectory);
 

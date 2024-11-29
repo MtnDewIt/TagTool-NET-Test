@@ -14,11 +14,6 @@ namespace TagTool.Commands.GenerateDonkeyCache
 {
     partial class GenerateDonkeyCacheCommand : Command
     {
-        public void UpdateShaderData() 
-        {
-            // TODO: Add global shader functionality
-        }
-
         public void GenerateGlobalShader(Stream stream, ShaderType shader, bool applyFixes = true)
         {
             string shaderName = shader.ToString().ToLowerInvariant();
@@ -51,6 +46,28 @@ namespace TagTool.Commands.GenerateDonkeyCache
             var rmdf = CacheContext.Deserialize<RenderMethodDefinition>(CacheStream, rmdfTag);
 
             GenerateShaderCommand.GenerateRenderMethodTemplate(Cache, CacheStream, shaderType, rawShaderOptions.ToArray(), rmdf, true);
+        }
+
+        public void GenerateExplicitShader(Stream stream, ExplicitShader shader, bool applyFixes = true)
+        {
+            CachedTag pixlTag = Cache.TagCache.AllocateTag<PixelShader>($"rasterizer\\shaders\\{shader}");
+            CachedTag vtshTag = Cache.TagCache.AllocateTag<VertexShader>($"rasterizer\\shaders\\{shader}");
+
+            ShaderGeneratorNew.GenerateExplicitShader(Cache, stream, shader.ToString(), applyFixes, out PixelShader pixl, out VertexShader vtsh);
+
+            Cache.Serialize(stream, vtshTag, vtsh);
+            Cache.Serialize(stream, pixlTag, pixl);
+        }
+
+        public void GenerateChudShader(Stream stream, ChudShader shader, bool applyFixes = true)
+        {
+            CachedTag pixlTag = Cache.TagCache.AllocateTag<PixelShader>($"rasterizer\\shaders\\{shader}");
+            CachedTag vtshTag = Cache.TagCache.AllocateTag<VertexShader>($"rasterizer\\shaders\\{shader}");
+
+            ShaderGeneratorNew.GenerateChudShader(Cache, stream, shader.ToString(), applyFixes, out PixelShader pixl, out VertexShader vtsh);
+
+            Cache.Serialize(stream, vtshTag, vtsh);
+            Cache.Serialize(stream, pixlTag, pixl);
         }
     }
 }

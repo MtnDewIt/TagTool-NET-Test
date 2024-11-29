@@ -32,8 +32,6 @@ namespace TagTool.Commands.GenerateDonkeyCache
 
         public void UpdateMapData()
         {
-            MapParser = new MapObjectParser(Cache, CacheContext, CacheStream, JSONFileTree.JSONGenerateDonkeyCachePath);
-
             var jsonData = File.ReadAllText($@"{JSONFileTree.JSONGenerateDonkeyCachePath}\maps.json");
             MapObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
@@ -43,8 +41,6 @@ namespace TagTool.Commands.GenerateDonkeyCache
 
         public void UpdateBlfData()
         {
-            BlfParser = new BlfObjectParser(Cache, CacheContext, CacheStream, JSONFileTree.JSONGenerateDonkeyCachePath);
-
             var jsonData = File.ReadAllText($@"{JSONFileTree.JSONGenerateDonkeyCachePath}\blf.json");
             BlfObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
