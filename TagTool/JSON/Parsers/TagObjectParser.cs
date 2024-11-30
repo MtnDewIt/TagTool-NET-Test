@@ -141,17 +141,22 @@ namespace TagTool.JSON.Parsers
 
         public void ParseUnicodeStringData(TagObject tagObject, CachedTag tagInstance)
         {
-            var tagDefinition = Cache.Deserialize<MultilingualUnicodeStringList>(CacheStream, tagInstance);
+            var tagDefinition = new MultilingualUnicodeStringList 
+            {
+                Strings = new List<LocalizedString>(),
+                Data = [],
+                OffsetCounts = new ushort[24],
+            };
 
             if (tagObject.UnicodeStrings != null)
             {
-                foreach (var language in tagObject.UnicodeStrings.Languages) 
+                for (int i = 0; i < tagObject.UnicodeStrings.Languages[(int)GameLanguage.English].UnicodeStrings.Count; i++)
                 {
-                    var stringLanguage = language.Language;
-
-                    foreach (var unicodeString in language.UnicodeStrings) 
+                    foreach (GameLanguage language in Enum.GetValues(typeof(GameLanguage))) 
                     {
-                        AddString(tagDefinition, stringLanguage, unicodeString.StringIdName, unicodeString.StringIdContent);
+                        var unicodeString = tagObject.UnicodeStrings.Languages[(int)language].UnicodeStrings[i];
+
+                        AddString(tagDefinition, language, unicodeString.StringIdName, unicodeString.StringIdContent);
                     }
                 }
             }
@@ -245,7 +250,7 @@ namespace TagTool.JSON.Parsers
 
             var stringId = Cache.StringTable.GetStringId(stringIdIndex);
 
-            var parsedContent = new Regex(@"\\[uU]([0-9A-F]{4})").Replace(stringIdContent, match => ((char)int.Parse(match.Value.Substring(2), NumberStyles.HexNumber)).ToString());
+            var parsedContent = stringIdContent != null ? new Regex(@"\\[uU]([0-9A-F]{4})").Replace(stringIdContent, match => ((char)int.Parse(match.Value.Substring(2), NumberStyles.HexNumber)).ToString()) : null;
 
             var localizedStr = unic.Strings.FirstOrDefault(s => s.StringID == stringId);
 
