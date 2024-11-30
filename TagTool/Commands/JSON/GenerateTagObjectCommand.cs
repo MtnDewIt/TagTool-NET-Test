@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using TagTool.Commands.Common;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using TagTool.Common;
 
 namespace TagTool.Commands.JSON
 {
@@ -108,6 +109,43 @@ namespace TagTool.Commands.JSON
                 if (definition.GetType() == typeof(RenderMethodDefinition))
                 {
                     tagObject.Generate = true;
+                }
+
+                if (definition.GetType() == typeof(MultilingualUnicodeStringList))
+                {
+                    tagObject.TagData = null;
+
+                    var unic = definition as MultilingualUnicodeStringList;
+
+                    tagObject.UnicodeStrings = new UnicodeStringList 
+                    {
+                        Languages = new List<UnicodeStringList.UnicodeLanguage>(),
+                    };
+
+                    foreach (GameLanguage language in Enum.GetValues(typeof(GameLanguage))) 
+                    {
+                        tagObject.UnicodeStrings.Languages.Add(new UnicodeStringList.UnicodeLanguage 
+                        {
+                            Language = language,
+                            UnicodeStrings = new List<UnicodeStringList.UnicodeLanguage.UnicodeStringData>(),
+                        });
+
+                        foreach (var localizedString in unic.Strings)
+                        {
+                            var stringIdContent = unic.GetString(localizedString, language);
+
+                            if (stringIdContent != null) 
+                            {
+                                stringIdContent = LocalizedStringPrinter.EncodeNonAsciiCharacters(stringIdContent);
+                            }
+
+                            tagObject.UnicodeStrings.Languages[(int)language].UnicodeStrings.Add(new UnicodeStringList.UnicodeLanguage.UnicodeStringData 
+                            {
+                                StringIdName = Cache.StringTable.GetString(localizedString.StringID),
+                                StringIdContent = stringIdContent,
+                            });
+                        }
+                    }
                 }
 
                 var handler = new TagObjectHandler(Cache, CacheContext, cacheStream);

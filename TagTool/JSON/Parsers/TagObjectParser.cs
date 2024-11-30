@@ -145,9 +145,14 @@ namespace TagTool.JSON.Parsers
 
             if (tagObject.UnicodeStrings != null)
             {
-                foreach (var unicodeString in tagObject.UnicodeStrings)
+                foreach (var language in tagObject.UnicodeStrings.Languages) 
                 {
-                    AddString(tagDefinition, unicodeString.StringIdName, unicodeString.StringIdContent);
+                    var stringLanguage = language.Language;
+
+                    foreach (var unicodeString in language.UnicodeStrings) 
+                    {
+                        AddString(tagDefinition, stringLanguage, unicodeString.StringIdName, unicodeString.StringIdContent);
+                    }
                 }
             }
 
@@ -226,7 +231,7 @@ namespace TagTool.JSON.Parsers
             Cache.Serialize(CacheStream, tagInstance, tagData);
         }
 
-        public void AddString(MultilingualUnicodeStringList unic, string stringIdName, string stringIdContent)
+        public void AddString(MultilingualUnicodeStringList unic, GameLanguage language, string stringIdName, string stringIdContent)
         {
             var stringIdIndex = Cache.StringTable.IndexOf(stringIdName);
 
@@ -255,7 +260,7 @@ namespace TagTool.JSON.Parsers
                 unic.Strings.Add(localizedStr);
             }
 
-            unic.SetString(localizedStr, GameLanguage.English, parsedContent);
+            unic.SetString(localizedStr, language, parsedContent);
         }
 
         public void AddBitmap(Bitmap bitmap, int bitmapIndex, string DDS)

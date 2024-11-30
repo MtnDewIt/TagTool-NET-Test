@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TagTool.Cache;
 using TagTool.Cache.Gen3;
+using TagTool.Common;
 using TagTool.Tags;
 
 namespace TagTool.JSON.Objects
@@ -13,7 +14,7 @@ namespace TagTool.JSON.Objects
         public bool Generate { get; set; }
         public CacheVersion TagVersion { get; set; }
 
-        public List<UnicodeStringData> UnicodeStrings { get; set; }
+        public UnicodeStringList UnicodeStrings { get; set; }
         public List<BitmapResource> BitmapResources { get; set; }
         public AnimationData AnimationData { get; set; }
         public BlamScriptResource BlamScriptResource { get; set; }
@@ -42,15 +43,21 @@ namespace TagTool.JSON.Objects
         }
     }
 
-    public class UnicodeStringData
+    public class UnicodeStringList
     {
-        public string StringIdName { get; set; }
-        public string StringIdContent { get; set; }
+        public List<UnicodeLanguage> Languages { get; set; }
 
-        public UnicodeStringData(string stringIdName, string stringIdContent)
+        public class UnicodeLanguage
         {
-            StringIdName = stringIdName;
-            StringIdContent = stringIdContent;
+            public GameLanguage Language { get; set; }
+
+            public List<UnicodeStringData> UnicodeStrings { get; set; }
+
+            public class UnicodeStringData 
+            {
+                public string StringIdName { get; set; }
+                public string StringIdContent { get; set; }
+            }
         }
     }
 
