@@ -51,6 +51,8 @@ namespace TagTool.Commands.JSON
                 return new TagToolError(CommandError.ArgCount);
 
             PathPrefix = args.Count == 2 ? args[1] : null;
+            
+            ExportPath = PathPrefix != null ? Path.Combine(PathPrefix, ExportPath) : ExportPath;
 
             ProcessDirectoryAsync(args[0]).GetAwaiter().GetResult();
 
@@ -94,8 +96,6 @@ namespace TagTool.Commands.JSON
                 var mapData = new MapFile();
 
                 var mapName = Path.GetFileNameWithoutExtension(file.Name);
-
-                ExportPath = PathPrefix != null ? Path.Combine(PathPrefix, ExportPath) : ExportPath;
 
                 using (var stream = file.OpenRead())
                 {

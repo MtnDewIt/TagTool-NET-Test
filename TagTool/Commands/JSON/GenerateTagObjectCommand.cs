@@ -52,6 +52,8 @@ namespace TagTool.Commands.JSON
 
             PathPrefix = args.Count == 2 ? args[1] : null;
 
+            ExportPath = PathPrefix != null ? Path.Combine(PathPrefix, ExportPath) : ExportPath;
+
             ProcessInputAsync(args[0]).GetAwaiter().GetResult();
 
             Console.WriteLine($"{TagCount - ErrorLog.Count}/{TagCount} Tags Converted Successfully in {StopWatch.ElapsedMilliseconds.FormatMilliseconds()} with {ErrorLog.Count} {(ErrorLog.Count == 1 ? "error" : "errors")}\n");
@@ -94,8 +96,6 @@ namespace TagTool.Commands.JSON
             {
                 var definition = (TagStructure)Cache.Deserialize(cacheStream, tag);
                 var definitionName = TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(tag.Group), Cache.Version, Cache.Platform).Structure.Name;
-
-                ExportPath = PathPrefix != null ? Path.Combine(PathPrefix, ExportPath) : ExportPath;
 
                 var tagObject = new TagObject()
                 {
