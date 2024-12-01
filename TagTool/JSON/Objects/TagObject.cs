@@ -4,6 +4,7 @@ using TagTool.Cache;
 using TagTool.Cache.Gen3;
 using TagTool.Common;
 using TagTool.Tags;
+using TagTool.Tags.Resources;
 
 namespace TagTool.JSON.Objects
 {
@@ -14,7 +15,13 @@ namespace TagTool.JSON.Objects
         public bool Generate { get; set; }
         public CacheVersion TagVersion { get; set; }
 
+        public BitmapResources Bitmaps { get; set; }
+        public AnimationResources Animations { get; set; }
+        public RenderGeometryResources RenderGeometry { get; set; }
+        public StructureBspResources StructureBsp { get; set; }
+        public SoundResources Sounds { get; set; }
         public UnicodeStringList UnicodeStrings { get; set; }
+
         public List<BitmapResource> BitmapResources { get; set; }
         public AnimationData AnimationData { get; set; }
         public BlamScriptResource BlamScriptResource { get; set; }
@@ -41,6 +48,35 @@ namespace TagTool.JSON.Objects
                 InlineTagData = value;
             }
         }
+    }
+
+    public class BitmapResources
+    {
+        List<BitmapTextureInteropResource> Textures { get; set; }
+        List<BitmapTextureInterleavedInteropResource> InterleavedTextures { get; set; }
+    }
+
+    public class AnimationResources
+    {
+        List<ModelAnimationTagResource> Animations { get; set; }
+    }
+
+    public class RenderGeometryResources
+    {
+        List<RenderGeometryApiResourceDefinition> Geometry { get; set; }
+    }
+
+    public class StructureBspResources
+    {
+        List<RenderGeometryApiResourceDefinition> DecoratorGeometry { get; set; }
+        List<RenderGeometryApiResourceDefinition> Geometry { get; set; }
+        List<StructureBspTagResources> Collision { get; set; }
+        List<StructureBspCacheFileTagResources> Pathfinding { get; set; }
+    }
+
+    public class SoundResources
+    {
+        List<SoundResourceDefinition> Sounds { get; set; }
     }
 
     public class UnicodeStringList
