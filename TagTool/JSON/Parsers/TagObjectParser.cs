@@ -19,6 +19,7 @@ using TagTool.Tags.Resources;
 using TagTool.Commands;
 using TagTool.JSON.Handlers;
 using TagTool.JSON.Objects;
+using System.Text;
 
 namespace TagTool.JSON.Parsers
 {
@@ -259,13 +260,96 @@ namespace TagTool.JSON.Parsers
                 localizedStr = new LocalizedString
                 {
                     StringID = stringId,
-                    StringIDStr = stringIdName
                 };
 
                 unic.Strings.Add(localizedStr);
             }
 
-            unic.SetString(localizedStr, language, parsedContent);
+            parsedContent = parsedContent != null ? DecodeNonAsciiCharacters(parsedContent) : null;
+
+            SetLocalizedString(unic, localizedStr, language, parsedContent);
+        }
+
+        public static string DecodeNonAsciiCharacters(string value)
+        {
+            var specialchars = new Dictionary<string, char>
+            {
+                {"\\r", '\r' },
+                {"\\n", '\n' },
+                {"\\t", '\t' }
+            };
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < value.Length; i++)
+            {
+                if (value[i] == '\\')
+                {
+                    if (i + 1 < value.Length && value[i + 1] == 'u' && i + 5 < value.Length)
+                    {
+                        string unicodeHex = value.Substring(i + 2, 4);
+                        if (int.TryParse(unicodeHex, NumberStyles.HexNumber, null, out int unicodeValue))
+                        {
+                            sb.Append((char)unicodeValue);
+                            i += 5;
+                            continue;
+                        }
+                    }
+
+                    foreach (var pair in specialchars)
+                    {
+                        if (value.Substring(i).StartsWith(pair.Key))
+                        {
+                            sb.Append(pair.Value);
+                            i += pair.Key.Length - 1;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    sb.Append(value[i]);
+                }
+            }
+            return sb.ToString();
+        }
+
+        public void SetLocalizedString(MultilingualUnicodeStringList unic, LocalizedString str, GameLanguage language, string newValue) 
+        {
+            var offset = str.Offsets[(int)language];
+
+            if (offset < 0 || offset >= unic.Data.Length)
+                offset = unic.Data.Length;
+
+            var endOffset = offset;
+
+            while (endOffset < unic.Data.Length && unic.Data[endOffset] != 0)
+                endOffset++;
+
+            var oldLength = endOffset - offset;
+
+            var bytes = (newValue != null) ? Encoding.UTF8.GetBytes(newValue) : new byte[0];
+
+            if (bytes.Length > 0 && offset == unic.Data.Length)
+            {
+                var nullTerminated = new byte[bytes.Length + 1];
+                Buffer.BlockCopy(bytes, 0, nullTerminated, 0, bytes.Length);
+                bytes = nullTerminated;
+            }
+
+            unic.Data = ArrayUtil.Replace(unic.Data, offset, oldLength, bytes);
+
+            str.Offsets[(int)language] = (bytes.Length > 0) ? offset : -1;
+
+            var sizeDelta = bytes.Length - oldLength;
+
+            foreach (var adjustStr in unic.Strings)
+            {
+                for (var i = 0; i < adjustStr.Offsets.Length; i++)
+                {
+                    if (adjustStr.Offsets[i] > offset)
+                        adjustStr.Offsets[i] += sizeDelta;
+                }
+            }
         }
 
         public void AddBitmap(Bitmap bitmap, int bitmapIndex, string DDS)
