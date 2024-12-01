@@ -313,7 +313,7 @@ namespace TagTool.JSON.Parsers
             return sb.ToString();
         }
 
-        public void SetLocalizedString(MultilingualUnicodeStringList unic, LocalizedString str, GameLanguage language, string newValue) 
+        public static void SetLocalizedString(MultilingualUnicodeStringList unic, LocalizedString str, GameLanguage language, string newValue) 
         {
             var offset = str.Offsets[(int)language];
 
@@ -329,7 +329,7 @@ namespace TagTool.JSON.Parsers
 
             var bytes = (newValue != null) ? Encoding.UTF8.GetBytes(newValue) : new byte[0];
 
-            if (bytes.Length > 0 && offset == unic.Data.Length)
+            if (bytes.Length > 0 || newValue == string.Empty && offset == unic.Data.Length)
             {
                 var nullTerminated = new byte[bytes.Length + 1];
                 Buffer.BlockCopy(bytes, 0, nullTerminated, 0, bytes.Length);
