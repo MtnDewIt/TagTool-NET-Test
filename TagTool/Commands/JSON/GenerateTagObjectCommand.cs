@@ -6,6 +6,7 @@ using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.JSON.Objects;
 using TagTool.JSON.Handlers;
+using TagTool.Tags.Resources;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using TagTool.Commands.Common;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using TagTool.Common;
+using TagTool.Scripting;
 
 namespace TagTool.Commands.JSON
 {
@@ -21,6 +23,7 @@ namespace TagTool.Commands.JSON
         private GameCache Cache;
         private GameCacheHaloOnline CacheContext;
         private string ExportPath = $@"tags";
+        private string DataPath = $@"data";
         private string PathPrefix = null;
 
         private int TagCount = 0;
@@ -53,6 +56,7 @@ namespace TagTool.Commands.JSON
             PathPrefix = args.Count == 2 ? args[1] : null;
 
             ExportPath = PathPrefix != null ? Path.Combine(PathPrefix, ExportPath) : ExportPath;
+            DataPath = PathPrefix != null ? Path.Combine(PathPrefix, DataPath) : DataPath;
 
             ProcessInputAsync(args[0]).GetAwaiter().GetResult();
 
@@ -105,10 +109,200 @@ namespace TagTool.Commands.JSON
                     TagData = definition,
                 };
 
-                // When deserialising the data for these types we want to ensure that the tag exists in the cache no matter what
+                // TODO: Add functions For Handling:
+                // - global_pixel_shader
+                // - global_vertex_shader
+
+                // TODO: Redo Scenario Script Parsing:
+                // - Currently the script compiler can't compile every script op correctly, so even if we did dump the script data from the scenario,
+                // there would be no way to import and compile the script data correctly. 
+
                 if (definition.GetType() == typeof(RenderMethodDefinition))
                 {
                     tagObject.Generate = true;
+                }
+
+                if (definition.GetType() == typeof(Bitmap)) 
+                {
+                    var bitm = definition as Bitmap;
+
+                    tagObject.Bitmaps = new BitmapResources
+                    {
+                        Textures = new List<BitmapTextureInteropResource>(),
+                        InterleavedTextures = new List<BitmapTextureInterleavedInteropResource>(),
+                    };
+
+                    if (bitm.HardwareTextures != null) 
+                    {
+                        foreach (var texture in bitm.HardwareTextures)
+                        {
+                            var resource = Cache.ResourceCache.GetBitmapTextureInteropResource(texture);
+
+                            tagObject.Bitmaps.Textures.Add(resource);
+                        }
+                    }
+
+                    if (bitm.InterleavedHardwareTextures != null) 
+                    {
+                        foreach (var interleavedTexture in bitm.InterleavedHardwareTextures)
+                        {
+                            var resource = Cache.ResourceCache.GetBitmapTextureInterleavedInteropResource(interleavedTexture);
+
+                            tagObject.Bitmaps.InterleavedTextures.Add(resource);
+                        }
+                    }
+                }
+
+                if (definition.GetType() == typeof(ModelAnimationGraph))
+                {
+                    var jmad = definition as ModelAnimationGraph;
+
+                    tagObject.Animations = new AnimationResources 
+                    {
+                        Animations = new List<ModelAnimationTagResource>(),
+                    };
+
+                    if (jmad.ResourceGroups != null) 
+                    {
+                        foreach (var resourceGroup in jmad.ResourceGroups) 
+                        {
+                            var resource = Cache.ResourceCache.GetModelAnimationTagResource(resourceGroup.ResourceReference);
+
+                            tagObject.Animations.Animations.Add(resource);
+                        }
+                    }
+                }
+
+                if (definition.GetType() == typeof(ParticleModel))
+                {
+                    var pmdf = definition as ParticleModel;
+
+                    tagObject.RenderGeometry = new RenderGeometryResources 
+                    {
+                        Geometry = new List<RenderGeometryApiResourceDefinition>(),
+                    };
+
+                    if (pmdf.Geometry != null) 
+                    {
+                        var resource = Cache.ResourceCache.GetRenderGeometryApiResourceDefinition(pmdf.Geometry.Resource);
+
+                        tagObject.RenderGeometry.Geometry.Add(resource);
+                    }
+                }
+
+                if (definition.GetType() == typeof(RenderModel))
+                {
+                    var mode = definition as RenderModel;
+
+                    tagObject.RenderGeometry = new RenderGeometryResources
+                    {
+                        Geometry = new List<RenderGeometryApiResourceDefinition>(),
+                    };
+
+                    if (mode.Geometry != null) 
+                    {
+                        var resource = Cache.ResourceCache.GetRenderGeometryApiResourceDefinition(mode.Geometry.Resource);
+
+                        tagObject.RenderGeometry.Geometry.Add(resource);
+                    }
+                }
+
+                if (definition.GetType() == typeof(Scenario))
+                {
+                    var scnr = definition as Scenario;
+
+                    var scriptName = tag.Name.Split(@"\").Last();
+
+                    tagObject.BlamScriptResource = new BlamScriptResource($@"{scriptName}.hsc");
+
+                    var scriptFileInfo = new FileInfo(Path.Combine(DataPath, $@"{tag.Name}\scripts\{scriptName}.hsc"));
+
+                    if (!scriptFileInfo.Directory.Exists)
+                    {
+                        scriptFileInfo.Directory.Create();
+                    }
+
+                    using (var scriptFileStream = scriptFileInfo.Create())
+                    using (var scriptWriter = new StreamWriter(scriptFileStream))
+                    {
+                        var decompiler = new ScriptDecompiler(Cache, scnr);
+                        decompiler.DecompileScripts(scriptWriter);
+                    }
+                }
+
+                if (definition.GetType() == typeof(ScenarioLightmapBspData))
+                {
+                    var lbsp = definition as ScenarioLightmapBspData;
+
+                    tagObject.RenderGeometry = new RenderGeometryResources
+                    {
+                        Geometry = new List<RenderGeometryApiResourceDefinition>(),
+                    };
+
+                    if (lbsp.Geometry != null) 
+                    {
+                        var resource = Cache.ResourceCache.GetRenderGeometryApiResourceDefinition(lbsp.Geometry.Resource);
+
+                        tagObject.RenderGeometry.Geometry.Add(resource);
+                    }
+                }
+
+                if (definition.GetType() == typeof(ScenarioStructureBsp))
+                {
+                    var sbsp = definition as ScenarioStructureBsp;
+
+                    tagObject.StructureBsp = new StructureBspResources 
+                    {
+                        DecoratorGeometry = new List<RenderGeometryApiResourceDefinition>(),
+                        Geometry = new List<RenderGeometryApiResourceDefinition>(),
+                        Collision = new List<StructureBspTagResources>(),
+                        Pathfinding = new List<StructureBspCacheFileTagResources>(),
+                    };
+
+                    if (sbsp.DecoratorGeometry != null) 
+                    {
+                        var resource = Cache.ResourceCache.GetRenderGeometryApiResourceDefinition(sbsp.DecoratorGeometry.Resource);
+
+                        tagObject.StructureBsp.DecoratorGeometry.Add(resource);
+                    }
+
+                    if (sbsp.Geometry != null)
+                    {
+                        var resource = Cache.ResourceCache.GetRenderGeometryApiResourceDefinition(sbsp.Geometry.Resource);
+
+                        tagObject.StructureBsp.Geometry.Add(resource);
+                    }
+
+                    if (sbsp.CollisionBspResource != null)
+                    {
+                        var resource = Cache.ResourceCache.GetStructureBspTagResources(sbsp.CollisionBspResource);
+
+                        tagObject.StructureBsp.Collision.Add(resource);
+                    }
+
+                    if (sbsp.PathfindingResource != null)
+                    {
+                        var resource = Cache.ResourceCache.GetStructureBspCacheFileTagResources(sbsp.PathfindingResource);
+
+                        tagObject.StructureBsp.Pathfinding.Add(resource);
+                    }
+                }
+
+                if (definition.GetType() == typeof(Sound))
+                {
+                    var snd = definition as Sound;
+
+                    tagObject.Sounds = new SoundResources
+                    { 
+                        Sounds = new List<SoundResourceDefinition>(),
+                    };
+
+                    if (snd.Resource != null) 
+                    {
+                        var resource = Cache.ResourceCache.GetSoundResourceDefinition(snd.Resource);
+
+                        tagObject.Sounds.Sounds.Add(resource);
+                    }
                 }
 
                 if (definition.GetType() == typeof(MultilingualUnicodeStringList))

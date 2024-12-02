@@ -52,31 +52,31 @@ namespace TagTool.JSON.Objects
 
     public class BitmapResources
     {
-        List<BitmapTextureInteropResource> Textures { get; set; }
-        List<BitmapTextureInterleavedInteropResource> InterleavedTextures { get; set; }
+        public List<BitmapTextureInteropResource> Textures { get; set; }
+        public List<BitmapTextureInterleavedInteropResource> InterleavedTextures { get; set; }
     }
 
     public class AnimationResources
     {
-        List<ModelAnimationTagResource> Animations { get; set; }
+        public List<ModelAnimationTagResource> Animations { get; set; }
     }
 
     public class RenderGeometryResources
     {
-        List<RenderGeometryApiResourceDefinition> Geometry { get; set; }
+        public List<RenderGeometryApiResourceDefinition> Geometry { get; set; }
     }
 
     public class StructureBspResources
     {
-        List<RenderGeometryApiResourceDefinition> DecoratorGeometry { get; set; }
-        List<RenderGeometryApiResourceDefinition> Geometry { get; set; }
-        List<StructureBspTagResources> Collision { get; set; }
-        List<StructureBspCacheFileTagResources> Pathfinding { get; set; }
+        public List<RenderGeometryApiResourceDefinition> DecoratorGeometry { get; set; }
+        public List<RenderGeometryApiResourceDefinition> Geometry { get; set; }
+        public List<StructureBspTagResources> Collision { get; set; }
+        public List<StructureBspCacheFileTagResources> Pathfinding { get; set; }
     }
 
     public class SoundResources
     {
-        List<SoundResourceDefinition> Sounds { get; set; }
+        public List<SoundResourceDefinition> Sounds { get; set; }
     }
 
     public class UnicodeStringList
