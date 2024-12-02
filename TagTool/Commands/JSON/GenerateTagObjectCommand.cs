@@ -257,10 +257,10 @@ namespace TagTool.Commands.JSON
 
                     tagObject.StructureBsp = new StructureBspResources 
                     {
-                        DecoratorGeometry = new RenderGeometryApiResourceDefinition(),
-                        Geometry = new RenderGeometryApiResourceDefinition(),
-                        Collision = new StructureBspTagResources(),
-                        Pathfinding = new StructureBspCacheFileTagResources(),
+                        DecoratorGeometry = null,
+                        Geometry = null,
+                        Collision = null,
+                        Pathfinding = null,
                     };
 
                     if (sbsp.DecoratorGeometry != null) 
