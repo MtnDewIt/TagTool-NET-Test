@@ -65,9 +65,6 @@ namespace TagTool.JSON.Parsers
                 case ModelAnimationGraph:
                     ParseAnimationData(tagObject, tag);
                     break;
-                case MultilingualUnicodeStringList:
-                    ParseUnicodeStringData(tagObject, tag);
-                    break;
                 case ParticleModel:
                     ParseParticleModelData(tagObject, tag);
                     break;
@@ -86,6 +83,9 @@ namespace TagTool.JSON.Parsers
                 case Sound:
                     ParseSoundData(tagObject, tag);
                     break;
+                case MultilingualUnicodeStringList:
+                    ParseUnicodeStringData(tagObject, tag);
+                    break;
                 default:
                     Cache.Serialize(CacheStream, tag, tagObject.TagData);
                     break;
@@ -99,22 +99,38 @@ namespace TagTool.JSON.Parsers
             var tagDefinition = Cache.Deserialize<Bitmap>(CacheStream, tagInstance);
             var tagData = tagObject.TagData as Bitmap;
 
-            if (tagObject.BitmapResources != null)
+            if (tagObject.Bitmaps != null) 
             {
-                foreach (var resource in tagObject.BitmapResources)
+                if (tagObject.Bitmaps.Textures != null)
                 {
-                    AddBitmap(tagDefinition, resource.BitmapIndex, $@"{InputPath}\data\{tagObject.TagName}\{resource.DDSFile}");
+                    tagData.HardwareTextures = new List<TagResourceReference>();
+
+                    for (int i = 0; i < tagObject.Bitmaps.Textures.Count; i++)
+                    {
+                        var texture = tagObject.Bitmaps.Textures[i];
+
+                        var reference = Cache.ResourceCache.CreateBitmapResource(texture);
+
+                        tagData.HardwareTextures[i] = reference;
+                    }
                 }
 
-                Cache.Serialize(CacheStream, tagInstance, tagDefinition);
-            }
-            else
-            {
-                tagData.HardwareTextures = tagDefinition.HardwareTextures;
-                tagData.InterleavedHardwareTextures = tagDefinition.InterleavedHardwareTextures;
+                if (tagObject.Bitmaps.InterleavedTextures != null)
+                {
+                    tagData.InterleavedHardwareTextures = new List<TagResourceReference>();
 
-                Cache.Serialize(CacheStream, tagInstance, tagData);
+                    for (int i = 0; i < tagObject.Bitmaps.Textures.Count; i++)
+                    {
+                        var interleavedTexture = tagObject.Bitmaps.InterleavedTextures[i];
+
+                        var reference = Cache.ResourceCache.CreateBitmapInterleavedResource(interleavedTexture);
+
+                        tagData.InterleavedHardwareTextures[i] = reference;
+                    }
+                }
             }
+
+            Cache.Serialize(CacheStream, tagInstance, tagData);
         }
 
         public void ParseAnimationData(TagObject tagObject, CachedTag tagInstance)
@@ -122,22 +138,147 @@ namespace TagTool.JSON.Parsers
             var tagDefinition = Cache.Deserialize<ModelAnimationGraph>(CacheStream, tagInstance);
             var tagData = tagObject.TagData as ModelAnimationGraph;
 
-            tagData.ResourceGroups = tagDefinition.ResourceGroups;
+            if (tagObject.Animations != null)
+            {
+                for (int i = 0; i < tagObject.Animations.Animations.Count; i++)
+                {
+                    var animation = tagObject.Animations.Animations[i];
+
+                    var reference = Cache.ResourceCache.CreateModelAnimationGraphResource(animation);
+
+                    tagData.ResourceGroups[i].ResourceReference = reference;
+                }
+            }
+
+            Cache.Serialize(CacheStream, tagInstance, tagData);
+        }
+
+        public void ParseParticleModelData(TagObject tagObject, CachedTag tagInstance)
+        {
+            var tagDefinition = Cache.Deserialize<ParticleModel>(CacheStream, tagInstance);
+            var tagData = tagObject.TagData as ParticleModel;
+
+            if (tagObject.RenderGeometry != null)
+            {
+                var geometry = tagObject.RenderGeometry.Geometry;
+
+                var reference = Cache.ResourceCache.CreateRenderGeometryApiResource(geometry);
+
+                tagData.Geometry.Resource = reference;
+            }
+
+            Cache.Serialize(CacheStream, tagInstance, tagData);
+        }
+
+        public void ParseRenderModelData(TagObject tagObject, CachedTag tagInstance)
+        {
+            var tagDefinition = Cache.Deserialize<RenderModel>(CacheStream, tagInstance);
+            var tagData = tagObject.TagData as RenderModel;
+
+            if (tagObject.RenderGeometry != null)
+            {
+                var geometry = tagObject.RenderGeometry.Geometry;
+
+                var reference = Cache.ResourceCache.CreateRenderGeometryApiResource(geometry);
+
+                tagData.Geometry.Resource = reference;
+            }
+
+            Cache.Serialize(CacheStream, tagInstance, tagData);
+        }
+
+        public void ParseScenarioData(TagObject tagObject, CachedTag tagInstance)
+        {
+            var tagDefinition = Cache.Deserialize<Scenario>(CacheStream, tagInstance);
+            var tagData = tagObject.TagData as Scenario;
 
             Cache.Serialize(CacheStream, tagInstance, tagData);
 
-            if (tagObject.AnimationData != null)
+            if (tagObject.BlamScriptResource != null)
             {
-                foreach (var resource in tagObject.AnimationData.AnimationResources)
+                CompileScript(tagInstance, $@"{InputPath}\data\{tagObject.TagName}\scripts\{tagObject.BlamScriptResource.BlamScriptFile}");
+            }
+        }
+
+        public void ParseScenarioLightmapBspData(TagObject tagObject, CachedTag tagInstance)
+        {
+            var tagDefinition = Cache.Deserialize<ScenarioLightmapBspData>(CacheStream, tagInstance);
+            var tagData = tagObject.TagData as ScenarioLightmapBspData;
+
+            if (tagObject.RenderGeometry != null)
+            {
+                var geometry = tagObject.RenderGeometry.Geometry;
+
+                var reference = Cache.ResourceCache.CreateRenderGeometryApiResource(geometry);
+
+                tagData.Geometry.Resource = reference;
+            }
+
+            Cache.Serialize(CacheStream, tagInstance, tagData);
+        }
+
+        public void ParseScenarioStructureBspData(TagObject tagObject, CachedTag tagInstance)
+        {
+            var tagDefinition = Cache.Deserialize<ScenarioStructureBsp>(CacheStream, tagInstance);
+            var tagData = tagObject.TagData as ScenarioStructureBsp;
+
+            if (tagObject.StructureBsp != null)
+            {
+                if (tagObject.StructureBsp.DecoratorGeometry != null)
                 {
-                    AddAnimation(tagInstance, $@"{InputPath}\data\{tagObject.TagName}\{resource.AnimationFile}");
+                    var decoratorGeometry = tagObject.StructureBsp.DecoratorGeometry;
+
+                    var reference = Cache.ResourceCache.CreateRenderGeometryApiResource(decoratorGeometry);
+
+                    tagData.DecoratorGeometry.Resource = reference;
                 }
 
-                if (tagObject.AnimationData.SortModes)
+                if (tagObject.StructureBsp.Geometry != null)
                 {
-                    SortModes(tagInstance);
+                    var geometry = tagObject.StructureBsp.Geometry;
+
+                    var reference = Cache.ResourceCache.CreateRenderGeometryApiResource(geometry);
+
+                    tagData.Geometry.Resource = reference;
+                }
+
+                if (tagObject.StructureBsp.Collision != null)
+                {
+                    var collision = tagObject.StructureBsp.Collision;
+
+                    var reference = Cache.ResourceCache.CreateStructureBspResource(collision);
+
+                    tagData.CollisionBspResource = reference;
+                }
+
+                if (tagObject.StructureBsp.Pathfinding != null)
+                {
+                    var pathfinding = tagObject.StructureBsp.Pathfinding;
+
+                    var reference = Cache.ResourceCache.CreateStructureBspCacheFileResource(pathfinding);
+
+                    tagData.PathfindingResource = reference;
                 }
             }
+
+            Cache.Serialize(CacheStream, tagInstance, tagData);
+        }
+
+        public void ParseSoundData(TagObject tagObject, CachedTag tagInstance)
+        {
+            var tagDefinition = Cache.Deserialize<Sound>(CacheStream, tagInstance);
+            var tagData = tagObject.TagData as Sound;
+
+            if (tagObject.Sounds != null)
+            {
+                var sound = tagObject.Sounds.Sound;
+
+                var reference = Cache.ResourceCache.CreateSoundResource(sound);
+
+                tagData.Resource = reference;
+            }
+
+            Cache.Serialize(CacheStream, tagInstance, tagData);
         }
 
         public void ParseUnicodeStringData(TagObject tagObject, CachedTag tagInstance)
@@ -163,78 +304,6 @@ namespace TagTool.JSON.Parsers
             }
 
             Cache.Serialize(CacheStream, tagInstance, tagDefinition);
-        }
-
-        public void ParseParticleModelData(TagObject tagObject, CachedTag tagInstance)
-        {
-            var tagDefinition = Cache.Deserialize<ParticleModel>(CacheStream, tagInstance);
-            var tagData = tagObject.TagData as ParticleModel;
-
-            tagData.Geometry = tagDefinition.Geometry;
-
-            Cache.Serialize(CacheStream, tagInstance, tagData);
-        }
-
-        public void ParseRenderModelData(TagObject tagObject, CachedTag tagInstance)
-        {
-            var tagDefinition = Cache.Deserialize<RenderModel>(CacheStream, tagInstance);
-            var tagData = tagObject.TagData as RenderModel;
-
-            tagData.Geometry = tagDefinition.Geometry;
-
-            Cache.Serialize(CacheStream, tagInstance, tagData);
-        }
-
-        public void ParseScenarioData(TagObject tagObject, CachedTag tagInstance)
-        {
-            var tagDefinition = Cache.Deserialize<Scenario>(CacheStream, tagInstance);
-            var tagData = tagObject.TagData as Scenario;
-
-            tagData.ScriptStrings = tagDefinition.ScriptStrings;
-            tagData.Scripts = tagDefinition.Scripts;
-            tagData.Globals = tagDefinition.Globals;
-            tagData.ScriptSourceFileReferences = tagDefinition.ScriptSourceFileReferences;
-            tagData.ScriptExpressions = tagDefinition.ScriptExpressions;
-
-            Cache.Serialize(CacheStream, tagInstance, tagData);
-
-            if (tagObject.BlamScriptResource != null)
-            {
-                CompileScript(tagInstance, $@"{InputPath}\data\{tagObject.TagName}\scripts\{tagObject.BlamScriptResource.BlamScriptFile}");
-            }
-        }
-
-        public void ParseScenarioLightmapBspData(TagObject tagObject, CachedTag tagInstance)
-        {
-            var tagDefinition = Cache.Deserialize<ScenarioLightmapBspData>(CacheStream, tagInstance);
-            var tagData = tagObject.TagData as ScenarioLightmapBspData;
-
-            tagData.Geometry = tagDefinition.Geometry;
-
-            Cache.Serialize(CacheStream, tagInstance, tagData);
-        }
-
-        public void ParseScenarioStructureBspData(TagObject tagObject, CachedTag tagInstance)
-        {
-            var tagDefinition = Cache.Deserialize<ScenarioStructureBsp>(CacheStream, tagInstance);
-            var tagData = tagObject.TagData as ScenarioStructureBsp;
-
-            tagData.DecoratorGeometry = tagDefinition.DecoratorGeometry;
-            tagData.Geometry = tagDefinition.Geometry;
-            tagData.CollisionBsp = tagDefinition.CollisionBsp;
-            tagData.PathfindingResource = tagDefinition.PathfindingResource;
-
-            Cache.Serialize(CacheStream, tagInstance, tagData);
-        }
-
-        public void ParseSoundData(TagObject tagObject, CachedTag tagInstance)
-        {
-            var tagDefinition = Cache.Deserialize<Sound>(CacheStream, tagInstance);
-            var tagData = tagObject.TagData as Sound;
-
-            tagData.Resource = tagDefinition.Resource;
-
-            Cache.Serialize(CacheStream, tagInstance, tagData);
         }
 
         public void AddString(MultilingualUnicodeStringList unic, GameLanguage language, string stringIdName, string stringIdContent)

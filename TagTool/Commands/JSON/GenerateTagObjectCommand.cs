@@ -126,14 +126,16 @@ namespace TagTool.Commands.JSON
                 {
                     var bitm = definition as Bitmap;
 
-                    tagObject.Bitmaps = new BitmapResources
+                    tagObject.Bitmaps = new BitmapResources() 
                     {
-                        Textures = new List<BitmapTextureInteropResource>(),
-                        InterleavedTextures = new List<BitmapTextureInterleavedInteropResource>(),
+                        Textures = null,
+                        InterleavedTextures = null,
                     };
 
                     if (bitm.HardwareTextures != null) 
                     {
+                        tagObject.Bitmaps.Textures = new List<BitmapTextureInteropResource>();
+
                         foreach (var texture in bitm.HardwareTextures)
                         {
                             var resource = Cache.ResourceCache.GetBitmapTextureInteropResource(texture);
@@ -144,6 +146,8 @@ namespace TagTool.Commands.JSON
 
                     if (bitm.InterleavedHardwareTextures != null) 
                     {
+                        tagObject.Bitmaps.InterleavedTextures = new List<BitmapTextureInterleavedInteropResource>();
+
                         foreach (var interleavedTexture in bitm.InterleavedHardwareTextures)
                         {
                             var resource = Cache.ResourceCache.GetBitmapTextureInterleavedInteropResource(interleavedTexture);
@@ -179,14 +183,14 @@ namespace TagTool.Commands.JSON
 
                     tagObject.RenderGeometry = new RenderGeometryResources 
                     {
-                        Geometry = new List<RenderGeometryApiResourceDefinition>(),
+                        Geometry = new RenderGeometryApiResourceDefinition(),
                     };
 
                     if (pmdf.Geometry != null) 
                     {
                         var resource = Cache.ResourceCache.GetRenderGeometryApiResourceDefinition(pmdf.Geometry.Resource);
 
-                        tagObject.RenderGeometry.Geometry.Add(resource);
+                        tagObject.RenderGeometry.Geometry = resource;
                     }
                 }
 
@@ -196,14 +200,14 @@ namespace TagTool.Commands.JSON
 
                     tagObject.RenderGeometry = new RenderGeometryResources
                     {
-                        Geometry = new List<RenderGeometryApiResourceDefinition>(),
+                        Geometry = new RenderGeometryApiResourceDefinition(),
                     };
 
                     if (mode.Geometry != null) 
                     {
                         var resource = Cache.ResourceCache.GetRenderGeometryApiResourceDefinition(mode.Geometry.Resource);
 
-                        tagObject.RenderGeometry.Geometry.Add(resource);
+                        tagObject.RenderGeometry.Geometry = resource;
                     }
                 }
 
@@ -236,14 +240,14 @@ namespace TagTool.Commands.JSON
 
                     tagObject.RenderGeometry = new RenderGeometryResources
                     {
-                        Geometry = new List<RenderGeometryApiResourceDefinition>(),
+                        Geometry = new RenderGeometryApiResourceDefinition(),
                     };
 
                     if (lbsp.Geometry != null) 
                     {
                         var resource = Cache.ResourceCache.GetRenderGeometryApiResourceDefinition(lbsp.Geometry.Resource);
 
-                        tagObject.RenderGeometry.Geometry.Add(resource);
+                        tagObject.RenderGeometry.Geometry = resource;
                     }
                 }
 
@@ -253,38 +257,38 @@ namespace TagTool.Commands.JSON
 
                     tagObject.StructureBsp = new StructureBspResources 
                     {
-                        DecoratorGeometry = new List<RenderGeometryApiResourceDefinition>(),
-                        Geometry = new List<RenderGeometryApiResourceDefinition>(),
-                        Collision = new List<StructureBspTagResources>(),
-                        Pathfinding = new List<StructureBspCacheFileTagResources>(),
+                        DecoratorGeometry = new RenderGeometryApiResourceDefinition(),
+                        Geometry = new RenderGeometryApiResourceDefinition(),
+                        Collision = new StructureBspTagResources(),
+                        Pathfinding = new StructureBspCacheFileTagResources(),
                     };
 
                     if (sbsp.DecoratorGeometry != null) 
                     {
                         var resource = Cache.ResourceCache.GetRenderGeometryApiResourceDefinition(sbsp.DecoratorGeometry.Resource);
 
-                        tagObject.StructureBsp.DecoratorGeometry.Add(resource);
+                        tagObject.StructureBsp.DecoratorGeometry = resource;
                     }
 
                     if (sbsp.Geometry != null)
                     {
                         var resource = Cache.ResourceCache.GetRenderGeometryApiResourceDefinition(sbsp.Geometry.Resource);
 
-                        tagObject.StructureBsp.Geometry.Add(resource);
+                        tagObject.StructureBsp.Geometry = resource;
                     }
 
                     if (sbsp.CollisionBspResource != null)
                     {
                         var resource = Cache.ResourceCache.GetStructureBspTagResources(sbsp.CollisionBspResource);
 
-                        tagObject.StructureBsp.Collision.Add(resource);
+                        tagObject.StructureBsp.Collision = resource;
                     }
 
                     if (sbsp.PathfindingResource != null)
                     {
                         var resource = Cache.ResourceCache.GetStructureBspCacheFileTagResources(sbsp.PathfindingResource);
 
-                        tagObject.StructureBsp.Pathfinding.Add(resource);
+                        tagObject.StructureBsp.Pathfinding = resource;
                     }
                 }
 
@@ -294,14 +298,14 @@ namespace TagTool.Commands.JSON
 
                     tagObject.Sounds = new SoundResources
                     { 
-                        Sounds = new List<SoundResourceDefinition>(),
+                        Sound = new SoundResourceDefinition(),
                     };
 
                     if (snd.Resource != null) 
                     {
                         var resource = Cache.ResourceCache.GetSoundResourceDefinition(snd.Resource);
 
-                        tagObject.Sounds.Sounds.Add(resource);
+                        tagObject.Sounds.Sound = resource;
                     }
                 }
 

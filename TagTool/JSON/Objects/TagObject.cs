@@ -63,20 +63,20 @@ namespace TagTool.JSON.Objects
 
     public class RenderGeometryResources
     {
-        public List<RenderGeometryApiResourceDefinition> Geometry { get; set; }
+        public RenderGeometryApiResourceDefinition Geometry { get; set; }
     }
 
     public class StructureBspResources
     {
-        public List<RenderGeometryApiResourceDefinition> DecoratorGeometry { get; set; }
-        public List<RenderGeometryApiResourceDefinition> Geometry { get; set; }
-        public List<StructureBspTagResources> Collision { get; set; }
-        public List<StructureBspCacheFileTagResources> Pathfinding { get; set; }
+        public RenderGeometryApiResourceDefinition DecoratorGeometry { get; set; }
+        public RenderGeometryApiResourceDefinition Geometry { get; set; }
+        public StructureBspTagResources Collision { get; set; }
+        public StructureBspCacheFileTagResources Pathfinding { get; set; }
     }
 
     public class SoundResources
     {
-        public List<SoundResourceDefinition> Sounds { get; set; }
+        public SoundResourceDefinition Sound { get; set; }
     }
 
     public class UnicodeStringList
