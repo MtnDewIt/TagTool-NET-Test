@@ -132,7 +132,7 @@ namespace TagTool.Commands.JSON
                         InterleavedTextures = null,
                     };
 
-                    if (bitm.HardwareTextures != null) 
+                    if (bitm.HardwareTextures != null && bitm.HardwareTextures.Count != 0) 
                     {
                         tagObject.Bitmaps.Textures = new List<BitmapTextureInteropResource>();
 
@@ -144,7 +144,7 @@ namespace TagTool.Commands.JSON
                         }
                     }
 
-                    if (bitm.InterleavedHardwareTextures != null) 
+                    if (bitm.InterleavedHardwareTextures != null && bitm.InterleavedHardwareTextures.Count != 0) 
                     {
                         tagObject.Bitmaps.InterleavedTextures = new List<BitmapTextureInterleavedInteropResource>();
 
@@ -166,7 +166,7 @@ namespace TagTool.Commands.JSON
                         Animations = new List<ModelAnimationTagResource>(),
                     };
 
-                    if (jmad.ResourceGroups != null) 
+                    if (jmad.ResourceGroups != null && jmad.ResourceGroups.Count != 0) 
                     {
                         foreach (var resourceGroup in jmad.ResourceGroups) 
                         {
