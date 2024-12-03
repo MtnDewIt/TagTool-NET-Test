@@ -59,6 +59,7 @@ namespace TagTool.JSON.Handlers
                 new RealVector3dHandler(),
                 new Rectangle2dHandler(),
                 new TagHandler(),
+                new TagDataHandler(),
             };
         }
 
@@ -113,6 +114,7 @@ namespace TagTool.JSON.Handlers
                 new RealVector3dHandler(),
                 new Rectangle2dHandler(),
                 new TagHandler(),
+                new TagDataHandler(),
             };
 
             var settings = new JsonSerializerSettings
