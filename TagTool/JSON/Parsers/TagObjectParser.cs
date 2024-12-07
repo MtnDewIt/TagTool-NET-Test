@@ -1,22 +1,14 @@
 ﻿using System;
 using System.IO;
-using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
-using TagTool.Bitmaps.DDS;
-using TagTool.Bitmaps;
 using TagTool.Common;
-using TagTool.IO;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using TagTool.Scripting.Compiler;
 using System.Collections.Generic;
-using TagTool.Commands.Common;
-using TagTool.Animations;
-using TagTool.Tags.Resources;
-using TagTool.Commands;
 using TagTool.JSON.Handlers;
 using TagTool.JSON.Objects;
 using System.Text;
@@ -47,7 +39,7 @@ namespace TagTool.JSON.Parsers
 
             Cache.TagCache.TryGetTag($@"{tagObject.TagName}.{tagObject.TagType}", out var tag);
 
-            if (tagObject.Generate && tag == null)
+            if (tag == null)
             {
                 Cache.TagCache.TryParseGroupTag(tagObject.TagType, out var tagGroup);
                 var type = Cache.TagCache.TagDefinitions.GetTagDefinitionType(tagGroup);
@@ -96,7 +88,6 @@ namespace TagTool.JSON.Parsers
 
         public void ParseBitmapData(TagObject tagObject, CachedTag tagInstance)
         {
-            var tagDefinition = Cache.Deserialize<Bitmap>(CacheStream, tagInstance);
             var tagData = tagObject.TagData as Bitmap;
 
             if (tagObject.Bitmaps != null) 
@@ -109,9 +100,12 @@ namespace TagTool.JSON.Parsers
                     {
                         var texture = tagObject.Bitmaps.Textures[i];
 
-                        var reference = Cache.ResourceCache.CreateBitmapResource(texture);
+                        if (texture != null) 
+                        {
+                            var reference = Cache.ResourceCache.CreateBitmapResource(texture);
 
-                        tagData.HardwareTextures.Add(reference);
+                            tagData.HardwareTextures.Add(reference);
+                        }
                     }
                 }
 
@@ -119,13 +113,16 @@ namespace TagTool.JSON.Parsers
                 {
                     tagData.InterleavedHardwareTextures = new List<TagResourceReference>();
 
-                    for (int i = 0; i < tagObject.Bitmaps.Textures.Count; i++)
+                    for (int i = 0; i < tagObject.Bitmaps.InterleavedTextures.Count; i++)
                     {
                         var interleavedTexture = tagObject.Bitmaps.InterleavedTextures[i];
 
-                        var reference = Cache.ResourceCache.CreateBitmapInterleavedResource(interleavedTexture);
+                        if (interleavedTexture != null) 
+                        {
+                            var reference = Cache.ResourceCache.CreateBitmapInterleavedResource(interleavedTexture);
 
-                        tagData.InterleavedHardwareTextures.Add(reference);
+                            tagData.InterleavedHardwareTextures.Add(reference);
+                        }
                     }
                 }
             }
@@ -135,7 +132,6 @@ namespace TagTool.JSON.Parsers
 
         public void ParseAnimationData(TagObject tagObject, CachedTag tagInstance)
         {
-            var tagDefinition = Cache.Deserialize<ModelAnimationGraph>(CacheStream, tagInstance);
             var tagData = tagObject.TagData as ModelAnimationGraph;
 
             if (tagObject.Animations != null)
@@ -143,6 +139,9 @@ namespace TagTool.JSON.Parsers
                 for (int i = 0; i < tagObject.Animations.Animations.Count; i++)
                 {
                     var animation = tagObject.Animations.Animations[i];
+
+                    if (animation.GroupMembers != null)
+                        animation.GroupMembers.AddressType = CacheAddressType.Definition;
 
                     var reference = Cache.ResourceCache.CreateModelAnimationGraphResource(animation);
 
@@ -155,16 +154,24 @@ namespace TagTool.JSON.Parsers
 
         public void ParseParticleModelData(TagObject tagObject, CachedTag tagInstance)
         {
-            var tagDefinition = Cache.Deserialize<ParticleModel>(CacheStream, tagInstance);
             var tagData = tagObject.TagData as ParticleModel;
 
             if (tagObject.RenderGeometry != null)
             {
                 var geometry = tagObject.RenderGeometry.Geometry;
 
-                var reference = Cache.ResourceCache.CreateRenderGeometryApiResource(geometry);
+                if (geometry != null) 
+                {
+                    if (geometry.VertexBuffers != null)
+                        geometry.VertexBuffers.AddressType = CacheAddressType.Definition;
 
-                tagData.Geometry.Resource = reference;
+                    if (geometry.IndexBuffers != null)
+                        geometry.IndexBuffers.AddressType = CacheAddressType.Definition;
+
+                    var reference = Cache.ResourceCache.CreateRenderGeometryApiResource(geometry);
+
+                    tagData.Geometry.Resource = reference;
+                }
             }
 
             Cache.Serialize(CacheStream, tagInstance, tagData);
@@ -172,16 +179,24 @@ namespace TagTool.JSON.Parsers
 
         public void ParseRenderModelData(TagObject tagObject, CachedTag tagInstance)
         {
-            var tagDefinition = Cache.Deserialize<RenderModel>(CacheStream, tagInstance);
             var tagData = tagObject.TagData as RenderModel;
 
             if (tagObject.RenderGeometry != null)
             {
                 var geometry = tagObject.RenderGeometry.Geometry;
 
-                var reference = Cache.ResourceCache.CreateRenderGeometryApiResource(geometry);
+                if (geometry != null) 
+                {
+                    if (geometry.VertexBuffers != null)
+                        geometry.VertexBuffers.AddressType = CacheAddressType.Definition;
 
-                tagData.Geometry.Resource = reference;
+                    if (geometry.IndexBuffers != null)
+                        geometry.IndexBuffers.AddressType = CacheAddressType.Definition;
+
+                    var reference = Cache.ResourceCache.CreateRenderGeometryApiResource(geometry);
+                    
+                    tagData.Geometry.Resource = reference;
+                }
             }
 
             Cache.Serialize(CacheStream, tagInstance, tagData);
@@ -189,7 +204,6 @@ namespace TagTool.JSON.Parsers
 
         public void ParseScenarioData(TagObject tagObject, CachedTag tagInstance)
         {
-            var tagDefinition = Cache.Deserialize<Scenario>(CacheStream, tagInstance);
             var tagData = tagObject.TagData as Scenario;
 
             Cache.Serialize(CacheStream, tagInstance, tagData);
@@ -202,12 +216,17 @@ namespace TagTool.JSON.Parsers
 
         public void ParseScenarioLightmapBspData(TagObject tagObject, CachedTag tagInstance)
         {
-            var tagDefinition = Cache.Deserialize<ScenarioLightmapBspData>(CacheStream, tagInstance);
             var tagData = tagObject.TagData as ScenarioLightmapBspData;
 
             if (tagObject.RenderGeometry != null)
             {
                 var geometry = tagObject.RenderGeometry.Geometry;
+
+                if (geometry.VertexBuffers != null)
+                    geometry.VertexBuffers.AddressType = CacheAddressType.Definition;
+
+                if (geometry.IndexBuffers != null)
+                    geometry.IndexBuffers.AddressType = CacheAddressType.Definition;
 
                 var reference = Cache.ResourceCache.CreateRenderGeometryApiResource(geometry);
 
@@ -219,7 +238,6 @@ namespace TagTool.JSON.Parsers
 
         public void ParseScenarioStructureBspData(TagObject tagObject, CachedTag tagInstance)
         {
-            var tagDefinition = Cache.Deserialize<ScenarioStructureBsp>(CacheStream, tagInstance);
             var tagData = tagObject.TagData as ScenarioStructureBsp;
 
             if (tagObject.StructureBsp != null)
@@ -227,36 +245,271 @@ namespace TagTool.JSON.Parsers
                 if (tagObject.StructureBsp.DecoratorGeometry != null)
                 {
                     var decoratorGeometry = tagObject.StructureBsp.DecoratorGeometry;
-
+            
+                    if (decoratorGeometry.VertexBuffers != null)
+                        decoratorGeometry.VertexBuffers.AddressType = CacheAddressType.Definition;
+            
+                    if (decoratorGeometry.IndexBuffers != null)
+                        decoratorGeometry.IndexBuffers.AddressType = CacheAddressType.Definition;
+            
                     var reference = Cache.ResourceCache.CreateRenderGeometryApiResource(decoratorGeometry);
-
+            
                     tagData.DecoratorGeometry.Resource = reference;
                 }
-
+            
                 if (tagObject.StructureBsp.Geometry != null)
                 {
                     var geometry = tagObject.StructureBsp.Geometry;
+            
+                    if (geometry.VertexBuffers != null)
+                        geometry.VertexBuffers.AddressType = CacheAddressType.Definition;
+            
+                    if (geometry.IndexBuffers != null)
+                        geometry.IndexBuffers.AddressType = CacheAddressType.Definition;
 
                     var reference = Cache.ResourceCache.CreateRenderGeometryApiResource(geometry);
-
+            
                     tagData.Geometry.Resource = reference;
                 }
-
+            
                 if (tagObject.StructureBsp.Collision != null)
                 {
                     var collision = tagObject.StructureBsp.Collision;
 
-                    var reference = Cache.ResourceCache.CreateStructureBspResource(collision);
+                    if (collision.CollisionBsps != null)
+                    {
+                        collision.CollisionBsps.AddressType = CacheAddressType.Definition;
 
+                        foreach (var bsp in collision.CollisionBsps) 
+                        {
+                            if (bsp.Bsp3dNodes != null)
+                                bsp.Bsp3dNodes.AddressType = CacheAddressType.Data;
+
+                            if (bsp.Bsp3dSupernodes != null)
+                                bsp.Bsp3dSupernodes.AddressType = CacheAddressType.Data;
+
+                            if (bsp.Planes != null)
+                                bsp.Planes.AddressType = CacheAddressType.Data;
+
+                            if (bsp.Leaves != null)
+                                bsp.Leaves.AddressType = CacheAddressType.Data;
+
+                            if (bsp.Bsp2dReferences != null)
+                                bsp.Bsp2dReferences.AddressType = CacheAddressType.Data;
+
+                            if (bsp.Bsp2dNodes != null)
+                                bsp.Bsp2dNodes.AddressType = CacheAddressType.Data;
+
+                            if (bsp.Surfaces != null)
+                                bsp.Surfaces.AddressType = CacheAddressType.Data;
+
+                            if (bsp.Edges != null)
+                                bsp.Edges.AddressType = CacheAddressType.Data;
+
+                            if (bsp.Vertices != null)
+                                bsp.Vertices.AddressType = CacheAddressType.Data;
+                        }
+                    }
+            
+                    if (collision.LargeCollisionBsps != null)
+                    {
+                        collision.LargeCollisionBsps.AddressType = CacheAddressType.Definition;
+
+                        foreach (var bsp in collision.LargeCollisionBsps) 
+                        {
+                            if (bsp.Bsp3dNodes != null)
+                                bsp.Bsp3dNodes.AddressType = CacheAddressType.Data;
+
+                            if (bsp.Bsp3dSupernodes != null)
+                                bsp.Bsp3dSupernodes.AddressType = CacheAddressType.Data;
+
+                            if (bsp.Planes != null)
+                                bsp.Planes.AddressType = CacheAddressType.Data;
+
+                            if (bsp.Leaves != null)
+                                bsp.Leaves.AddressType = CacheAddressType.Data;
+
+                            if (bsp.Bsp2dReferences != null)
+                                bsp.Bsp2dReferences.AddressType = CacheAddressType.Data;
+
+                            if (bsp.Bsp2dNodes != null)
+                                bsp.Bsp2dNodes.AddressType = CacheAddressType.Data;
+
+                            if (bsp.Surfaces != null)
+                                bsp.Surfaces.AddressType = CacheAddressType.Data;
+
+                            if (bsp.Edges != null)
+                                bsp.Edges.AddressType = CacheAddressType.Data;
+
+                            if (bsp.Vertices != null)
+                                bsp.Vertices.AddressType = CacheAddressType.Data;
+                        }
+                    }
+            
+                    if (collision.InstancedGeometry != null)
+                    {
+                        collision.InstancedGeometry.AddressType = CacheAddressType.Definition;
+
+                        foreach (var geo in collision.InstancedGeometry) 
+                        {
+                            if (geo.CollisionInfo.Bsp3dNodes != null)
+                                geo.CollisionInfo.Bsp3dNodes.AddressType = CacheAddressType.Data;
+
+                            if (geo.CollisionInfo.Bsp3dSupernodes != null)
+                                geo.CollisionInfo.Bsp3dSupernodes.AddressType = CacheAddressType.Data;
+
+                            if (geo.CollisionInfo.Planes != null)
+                                geo.CollisionInfo.Planes.AddressType = CacheAddressType.Data;
+
+                            if (geo.CollisionInfo.Leaves != null)
+                                geo.CollisionInfo.Leaves.AddressType = CacheAddressType.Data;
+
+                            if (geo.CollisionInfo.Bsp2dReferences != null)
+                                geo.CollisionInfo.Bsp2dReferences.AddressType = CacheAddressType.Data;
+
+                            if (geo.CollisionInfo.Bsp2dNodes != null)
+                                geo.CollisionInfo.Bsp2dNodes.AddressType = CacheAddressType.Data;
+
+                            if (geo.CollisionInfo.Surfaces != null)
+                                geo.CollisionInfo.Surfaces.AddressType = CacheAddressType.Data;
+
+                            if (geo.CollisionInfo.Edges != null)
+                                geo.CollisionInfo.Edges.AddressType = CacheAddressType.Data;
+
+                            if (geo.CollisionInfo.Vertices != null)
+                                geo.CollisionInfo.Vertices.AddressType = CacheAddressType.Data;
+
+                            if (geo.RenderBsp != null)
+                            {
+                                geo.RenderBsp.AddressType = CacheAddressType.Definition;
+
+                                foreach (var bsp in geo.RenderBsp) 
+                                {
+                                    if (bsp.Bsp3dNodes != null)
+                                        bsp.Bsp3dNodes.AddressType = CacheAddressType.Data;
+
+                                    if (bsp.Bsp3dSupernodes != null)
+                                        bsp.Bsp3dSupernodes.AddressType = CacheAddressType.Data;
+
+                                    if (bsp.Planes != null)
+                                        bsp.Planes.AddressType = CacheAddressType.Data;
+
+                                    if (bsp.Leaves != null)
+                                        bsp.Leaves.AddressType = CacheAddressType.Data;
+
+                                    if (bsp.Bsp2dReferences != null)
+                                        bsp.Bsp2dReferences.AddressType = CacheAddressType.Data;
+
+                                    if (bsp.Bsp2dNodes != null)
+                                        bsp.Bsp2dNodes.AddressType = CacheAddressType.Data;
+
+                                    if (bsp.Surfaces != null)
+                                        bsp.Surfaces.AddressType = CacheAddressType.Data;
+
+                                    if (bsp.Edges != null)
+                                        bsp.Edges.AddressType = CacheAddressType.Data;
+
+                                    if (bsp.Vertices != null)
+                                        bsp.Vertices.AddressType = CacheAddressType.Data;
+                                }
+                            }
+
+                            if (geo.CollisionMoppCodes != null) 
+                            {
+                                geo.CollisionMoppCodes.AddressType = CacheAddressType.Definition;
+
+                                foreach (var moppCode in geo.CollisionMoppCodes)
+                                {
+                                    if (moppCode.Data != null)
+                                        moppCode.Data.AddressType = CacheAddressType.Definition;
+                                }
+                            }
+
+                            if (geo.BreakableSurfaces != null)
+                                geo.BreakableSurfaces.AddressType = CacheAddressType.Definition;
+
+                            if (geo.Polyhedra != null)
+                                geo.Polyhedra.AddressType = CacheAddressType.Definition;
+
+                            if (geo.PolyhedraFourVectors != null)
+                                geo.PolyhedraFourVectors.AddressType = CacheAddressType.Definition;
+
+                            if (geo.PolyhedraPlaneEquations != null)
+                                geo.PolyhedraPlaneEquations.AddressType = CacheAddressType.Definition;
+
+                            if (geo.SmallSurfacesPlanes != null)
+                                geo.SmallSurfacesPlanes.AddressType = CacheAddressType.Definition;
+
+                            if (geo.SurfacePlanes != null)
+                                geo.SurfacePlanes.AddressType = CacheAddressType.Definition;
+
+                            if (geo.Planes != null)
+                                geo.Planes.AddressType = CacheAddressType.Definition;
+
+                            if (geo.ExtraData != null) 
+                            {
+                                geo.ExtraData.AddressType = CacheAddressType.Definition;
+
+                                foreach (var dataBlock in geo.ExtraData)
+                                {
+                                    if (dataBlock.Polyhedra != null)
+                                        dataBlock.Polyhedra.AddressType = CacheAddressType.Data;
+
+                                    if (dataBlock.PolyhedraFourVectors != null)
+                                        dataBlock.PolyhedraFourVectors.AddressType = CacheAddressType.Data;
+
+                                    if (dataBlock.PolyhedraPlaneEquations != null)
+                                        dataBlock.PolyhedraPlaneEquations.AddressType = CacheAddressType.Data;
+                                }
+                            }
+
+                            if (geo.MeshMopp != null) 
+                            {
+                                geo.MeshMopp.AddressType = CacheAddressType.Definition;
+
+                                foreach (var meshMopp in geo.MeshMopp)
+                                {
+                                    if (meshMopp.Data != null)
+                                        meshMopp.Data.AddressType = CacheAddressType.Definition;
+                                }
+                            }
+                        }
+                    }
+            
+                    if (collision.HavokData != null)
+                    {
+                        collision.HavokData.AddressType = CacheAddressType.Definition;
+
+                        foreach (var dataBlock in collision.HavokData) 
+                        {
+                            dataBlock.HavokGeometries.AddressType = CacheAddressType.Definition;
+                            dataBlock.HavokInvertedGeometries.AddressType = CacheAddressType.Definition;
+                        }
+                    }
+            
+                    var reference = Cache.ResourceCache.CreateStructureBspResource(collision);
+            
                     tagData.CollisionBspResource = reference;
                 }
-
+            
                 if (tagObject.StructureBsp.Pathfinding != null)
                 {
                     var pathfinding = tagObject.StructureBsp.Pathfinding;
 
-                    var reference = Cache.ResourceCache.CreateStructureBspCacheFileResource(pathfinding);
+                    if (pathfinding.SurfacePlanes != null)
+                        pathfinding.SurfacePlanes.AddressType = CacheAddressType.Data;
 
+                    if (pathfinding.Planes != null)
+                        pathfinding.Planes.AddressType = CacheAddressType.Data;
+
+                    if (pathfinding.EdgeToSeams != null)
+                        pathfinding.EdgeToSeams.AddressType = CacheAddressType.Data;
+
+                    if (pathfinding.PathfindingData != null)
+                        pathfinding.PathfindingData.AddressType = CacheAddressType.Definition;
+
+                    var reference = Cache.ResourceCache.CreateStructureBspCacheFileResource(pathfinding);
+                
                     tagData.PathfindingResource = reference;
                 }
             }
@@ -266,7 +519,6 @@ namespace TagTool.JSON.Parsers
 
         public void ParseSoundData(TagObject tagObject, CachedTag tagInstance)
         {
-            var tagDefinition = Cache.Deserialize<Sound>(CacheStream, tagInstance);
             var tagData = tagObject.TagData as Sound;
 
             if (tagObject.Sounds != null)

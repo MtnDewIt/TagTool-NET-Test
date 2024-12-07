@@ -12,7 +12,6 @@ namespace TagTool.JSON.Objects
     {
         public string TagName { get; set; }
         public string TagType { get; set; }
-        public bool Generate { get; set; }
         public CacheVersion TagVersion { get; set; }
 
         public BitmapResources Bitmaps { get; set; }

@@ -230,8 +230,8 @@ namespace TagTool.Commands.GenerateCache
 
             using (CacheStream = Cache.OpenCacheReadWrite()) 
             {
-                UpdateShaderData();
-                PortTagData();
+                //UpdateShaderData();
+                //PortTagData();
                 UpdateTagData();
                 UpdateMapData();
                 UpdateBlfData();

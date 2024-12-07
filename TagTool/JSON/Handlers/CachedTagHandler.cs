@@ -23,7 +23,7 @@ namespace TagTool.JSON.Handlers
 
         public override void WriteJson(JsonWriter writer, CachedTag value, JsonSerializer serializer)
         {
-            var cachedTag = new InlineCachedTag(TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(value.Group), Cache.Version, Cache.Platform).Structure.Name, value.Name, false);
+            var cachedTag = new InlineCachedTag(TagStructure.GetTagStructureInfo(Cache.TagCache.TagDefinitions.GetTagDefinitionType(value.Group), Cache.Version, Cache.Platform).Structure.Name, value.Name);
 
             serializer.Serialize(writer, cachedTag);
         }
@@ -34,30 +34,10 @@ namespace TagTool.JSON.Handlers
 
             if (inlineTag != null)
             {
-                if (inlineTag.Generate)
-                {
-                    return GenerateCachedTag(inlineTag.Name, inlineTag.Type);
-                }
-                else
-                {
-                    return GetCachedTag(inlineTag.Name, inlineTag.Type);
-                }
+                return GenerateCachedTag(inlineTag.Name, inlineTag.Type);
             }
 
             return null;
-        }
-
-        public CachedTag GetCachedTag(string tagName, string tagType)
-        {
-            if (CacheContext.TagCache.TryGetTag($@"{tagName}.{tagType}", out var result))
-            {
-                return result;
-            }
-            else
-            {
-                new TagToolWarning($@"Could not find tag: '{tagName}.{tagType}'. Assigning null tag instead");
-                return null;
-            }
         }
 
         public CachedTag GenerateCachedTag(string tagName, string tagType)
@@ -80,13 +60,11 @@ namespace TagTool.JSON.Handlers
     {
         public string Type { get; set; }
         public string Name { get; set; }
-        public bool Generate { get; set; }
 
-        public InlineCachedTag(string type, string name, bool generate)
+        public InlineCachedTag(string type, string name)
         {
             Type = type;
             Name = name;
-            Generate = generate;
         }
     }
 }

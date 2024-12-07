@@ -36,6 +36,8 @@ namespace TagTool.Commands.GenerateCache
 
         public void UpdateTagData()
         {
+            TagParser = new TagObjectParser(Cache, CacheContext, CacheStream, JSONFileTree.JSONGenerateCachePath);
+
             ParseTagList($@"{JSONFileTree.JSONGenerateCachePath}\tags.json");
 
             if (CacheTypePath.TryGetValue(CacheType, out var jsonPath))

@@ -109,19 +109,6 @@ namespace TagTool.Commands.JSON
                     TagData = definition,
                 };
 
-                // TODO: Add functions For Handling:
-                // - global_pixel_shader
-                // - global_vertex_shader
-
-                // TODO: Redo Scenario Script Parsing:
-                // - Currently the script compiler can't compile every script op correctly, so even if we did dump the script data from the scenario,
-                // there would be no way to import and compile the script data correctly. 
-
-                if (definition.GetType() == typeof(RenderMethodDefinition))
-                {
-                    tagObject.Generate = true;
-                }
-
                 if (definition.GetType() == typeof(Bitmap)) 
                 {
                     var bitm = definition as Bitmap;
