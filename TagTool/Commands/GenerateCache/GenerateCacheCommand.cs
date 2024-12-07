@@ -27,117 +27,7 @@ namespace TagTool.Commands.GenerateCache
         public GameCacheHaloOnline CacheContext { get; set; }
         public CommandContextStack ContextStack { get; set; }
         public Stream CacheStream { get; set; }
-
-        public static DirectoryInfo haloOnlineDirectoryInfo { get; set; }
-        public static DirectoryInfo halo3DirectoryInfo { get; set; }
-        public static DirectoryInfo halo3MythicDirectoryInfo { get; set; }
-        public static DirectoryInfo halo3ODSTDirectoryInfo { get; set; }
-        public static DirectoryInfo outputDirectoryInfo { get; set; }
-
-        public static GameCache haloOnlineCache { get; set; }
-        public static PortingContext haloOnline { get; set; }
-
-        public GameCache h3MainMenuCache { get; set; }
-        public PortingContext h3MainMenu { get; set; }
-        public GameCache introCache { get; set; }
-        public PortingContext intro { get; set; }
-        public GameCache jungleCache { get; set; }
-        public PortingContext jungle { get; set; }
-        public GameCache crowsCache { get; set; }
-        public PortingContext crows { get; set; }
-        public GameCache outskirtsCache { get; set; }
-        public PortingContext outskirts { get; set; }
-        public GameCache voiCache { get; set; }
-        public PortingContext voi { get; set; }
-        public GameCache floodvoiCache { get; set; }
-        public PortingContext floodvoi { get; set; }
-        public GameCache wasteCache { get; set; }
-        public PortingContext waste { get; set; }
-        public GameCache citadelCache { get; set; }
-        public PortingContext citadel { get; set; }
-        public GameCache highCharityCache { get; set; }
-        public PortingContext highCharity { get; set; }
-        public GameCache haloCache { get; set; }
-        public PortingContext halo { get; set; }
-        public GameCache epilogueCache { get; set; }
-        public PortingContext epilogue { get; set; }
-
-        public GameCache mythicMainMenuCache { get; set; }
-        public PortingContext mythicMainMenu { get; set; }
-        public GameCache armoryCache { get; set; }
-        public PortingContext armory { get; set; }
-        public GameCache bunkerworldCache { get; set; }
-        public PortingContext bunkerworld { get; set; }
-        public GameCache chillCache { get; set; }
-        public PortingContext chill { get; set; }
-        public GameCache chilloutCache { get; set; }
-        public PortingContext chillout { get; set; }
-        public GameCache constructCache { get; set; }
-        public PortingContext construct { get; set; }
-        public GameCache cyberdyneCache { get; set; }
-        public PortingContext cyberdyne { get; set; }
-        public GameCache deadlockCache { get; set; }
-        public PortingContext deadlock { get; set; }
-        public GameCache descentCache { get; set; }
-        public PortingContext descent { get; set; }
-        public GameCache docksCache { get; set; }
-        public PortingContext docks { get; set; }
-        public GameCache fortressCache { get; set; }
-        public PortingContext fortress { get; set; }
-        public GameCache ghosttownCache { get; set; }
-        public PortingContext ghosttown { get; set; }
-        public GameCache guardianCache { get; set; }
-        public PortingContext guardian { get; set; }
-        public GameCache isolationCache { get; set; }
-        public PortingContext isolation { get; set; }
-        public GameCache lockoutCache { get; set; }
-        public PortingContext lockout { get; set; }
-        public GameCache midshipCache { get; set; }
-        public PortingContext midship { get; set; }
-        public GameCache riverworldCache { get; set; }
-        public PortingContext riverworld { get; set; }
-        public GameCache salvationCache { get; set; }
-        public PortingContext salvation { get; set; }
-        public GameCache sandboxCache { get; set; }
-        public PortingContext sandbox { get; set; }
-        public GameCache shrineCache { get; set; }
-        public PortingContext shrine { get; set; }
-        public GameCache sidewinderCache { get; set; }
-        public PortingContext sidewinder { get; set; }
-        public GameCache snowboundCache { get; set; }
-        public PortingContext snowbound { get; set; }
-        public GameCache spacecampCache { get; set; }
-        public PortingContext spacecamp { get; set; }
-        public GameCache warehouseCache { get; set; }
-        public PortingContext warehouse { get; set; }
-        public GameCache zanzibarCache { get; set; }
-        public PortingContext zanzibar { get; set; }
-
-        public GameCache odstMainMenuCache { get; set; }
-        public PortingContext odstMainMenu { get; set; }
-        public GameCache h100Cache { get; set; }
-        public PortingContext h100 { get; set; }
-        public GameCache c100Cache { get; set; }
-        public PortingContext c100 { get; set; }
-        public GameCache c200Cache { get; set; }
-        public PortingContext c200 { get; set; }
-        public GameCache l200Cache { get; set; }
-        public PortingContext l200 { get; set; }
-        public GameCache l300Cache { get; set; }
-        public PortingContext l300 { get; set; }
-        public GameCache sc100Cache { get; set; }
-        public PortingContext sc100 { get; set; }
-        public GameCache sc110Cache { get; set; }
-        public PortingContext sc110 { get; set; }
-        public GameCache sc120Cache { get; set; }
-        public PortingContext sc120 { get; set; }
-        public GameCache sc130Cache { get; set; }
-        public PortingContext sc130 { get; set; }
-        public GameCache sc140Cache { get; set; }
-        public PortingContext sc140 { get; set; }
-        public GameCache sc150Cache { get; set; }
-        public PortingContext sc150 { get; set; }
-
+        public static DirectoryInfo OutputDirectoryInfo { get; set; }
         public GeneratedCacheType CacheType { get; set; }
 
         public GenerateCacheCommand(GameCache cache, CommandContextStack contextStack) : base
@@ -146,92 +36,33 @@ namespace TagTool.Commands.GenerateCache
             "GenerateCache",
             "Generates a new cache for use with ElDewrito 0.7",
             "GenerateCache",
-            GenerateHelpText()
+
+            // TODO: Redo help text :/
+            "It's similar to the MCC Tools, but don't try and use MCC loose tags" 
         )
         {
             Cache = cache;
             ContextStack = contextStack;
         }
 
-        private static string GenerateHelpText()
-        {
-            var buffer = new StringBuilder();
-
-            buffer.AppendLine("More specifically this command is designed to take existing data from within Halo Online MS23 and utilize it");
-            buffer.AppendLine("to generate a completely fresh cache for use with ElDewrito 0.7 (Or any newer versions of ElDewrito). The");
-            buffer.AppendLine("only real data used from MS23 is the explicit and chud shaders, as well as the render method definitions. All");
-            buffer.AppendLine("other data is either ported from the specified caches or serialized at runtime using tag structures defined");
-            buffer.AppendLine("in TagTool.");
-            buffer.AppendLine();
-            buffer.AppendLine("When the command is executed, it will request the input of multiple cache file directories.");
-            buffer.AppendLine("These directories will contain the cache files for various different Halo builds, with these being:");
-            buffer.AppendLine();
-            buffer.AppendLine(" - Halo Online MS23 (1.106708 cert_ms23)");
-            buffer.AppendLine(" - Halo 3 Retail (11855.07.08.20.2317.halo3_ship)");
-            buffer.AppendLine(" - Halo 3 Mythic Retail (12065.08.08.26.0819.halo3_ship)");
-            buffer.AppendLine(" - Halo 3 ODST Retail (13895.09.04.27.2201.atlas_relea)");
-            buffer.AppendLine();
-            buffer.AppendLine("For each build input, ensure that ALL the cache files are present in the specified ");
-            buffer.AppendLine("directory as the command will open new cache instances for every map");
-            buffer.AppendLine("in that specified build, so if any are missing it will cause it to fail.");
-            buffer.AppendLine();
-            buffer.AppendLine("For Halo Online MS23, ensure that all .dat files are present in the specified directory");
-            buffer.AppendLine("The tag lists for each cache will be updated by tagtool at runtime after the directories are input.");
-            buffer.AppendLine("These tag lists are built into tagtool, as the tag names referenced internally by the command are hardcoded.");
-            buffer.AppendLine();
-            buffer.AppendLine("Any other data required such as map info files, font packages or external resource data are stored within");
-            buffer.AppendLine("tagtool itself. This data has been modified externally which is the only reason why this data is not ");
-            buffer.AppendLine("being pulled from any of the specified caches, or modified using data from any of the specified caches");
-            buffer.AppendLine();
-            buffer.AppendLine("Assuming that no .map files are missing and each directory input contains valid cache files,");
-            buffer.AppendLine("the resulting output after each directory has been input should look like:");
-            buffer.AppendLine();
-            buffer.AppendLine();
-            buffer.AppendLine("Enter the directory for your ElDewrito 0.6.1 cache files:");
-            buffer.AppendLine("<insert_directory_here>");
-            buffer.AppendLine();
-            buffer.AppendLine("Enter the directory for your Halo 3 cache files:");
-            buffer.AppendLine("<insert_directory_here>");
-            buffer.AppendLine();
-            buffer.AppendLine("Enter the directory for your Halo 3 Mythic cache files:");
-            buffer.AppendLine("<insert_directory_here>");
-            buffer.AppendLine();
-            buffer.AppendLine("Enter the directory for your Halo 3 ODST cache files:");
-            buffer.AppendLine("<insert_directory_here>");
-            buffer.AppendLine();
-            buffer.AppendLine("Enter the ouput directory for the generated cache:");
-            buffer.AppendLine("<insert_directory_here>");
-            buffer.AppendLine();
-            buffer.AppendLine();
-            buffer.AppendLine("The last input will be for the output directory.");
-            buffer.AppendLine("This is where the converted data will be saved during execution.");
-            buffer.AppendLine();
-            buffer.AppendLine("DISCLAIMER:");
-            buffer.AppendLine("This command is highly, HIGHLY experimental. The resulting cache may exhibit behaviour anywhere from");
-            buffer.AppendLine("minor bugs or graphical issues, crashes and general instability, to being completely non-functional");
-            buffer.AppendLine();
-            buffer.AppendLine("YOU HAVE BEEN WARNED!");
-            buffer.AppendLine();
-            buffer.AppendLine("Regards");
-            buffer.AppendLine();
-            buffer.AppendLine("MtnDewIt.");
-
-            return buffer.ToString();
-        }
-
         public override object Execute(List<string> args) 
         {
+            // Once this eventually gets overhauled, we need to decide on what input data the command is going to require.
+            // IDEAS:
+            // - JSON Tag Object Path - I don't know if this should be in a config file, just be a static path or something that is available directly to the user
+            // - Cache Output Path - I don't know if this should be in a config file, just be a static path or something that is available directly to the user
+            // - Target Scenario - Obviously needs to be an input
+
+            // TODO: Remove need for Console.ReadLine and just parse args using standard command input system
             GetCacheFiles();
 
             Program._stopWatch.Start();
 
-            RebuildCache(outputDirectoryInfo.FullName);
-            RetargetCache(outputDirectoryInfo.FullName);
+            RebuildCache(OutputDirectoryInfo.FullName);
+            RetargetCache(OutputDirectoryInfo.FullName);
 
             using (CacheStream = Cache.OpenCacheReadWrite()) 
             {
-                //UpdateShaderData();
-                //PortTagData();
                 UpdateTagData();
                 UpdateMapData();
                 UpdateBlfData();
@@ -252,76 +83,11 @@ namespace TagTool.Commands.GenerateCache
 
         public void GetCacheFiles()
         {
+            // This will become redundant once recursion is added to the JSON parser, as the user can just specify manually which scenario to include
             CacheType = GetCacheType();
 
-            haloOnlineDirectoryInfo = GetDirectoryInfo(haloOnlineDirectoryInfo, "Halo Online MS23");
-
-            haloOnlineCache = GameCache.Open($@"{haloOnlineDirectoryInfo.FullName}\tags.dat");
-
-            var ms23Data = File.ReadAllText($@"{JSONFileTree.JSONTagTablePath}\ms23_tags.json");
-            var ms23TagTable = JsonConvert.DeserializeObject<Dictionary<int, string>>(ms23Data);
-
-            UpdateTagNames(haloOnlineCache, ms23TagTable);
-
-            halo3DirectoryInfo = GetDirectoryInfo(halo3DirectoryInfo, "Halo 3");
-
-            h3MainMenuCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\mainmenu.map");
-            introCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\005_intro.map");
-            jungleCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\010_jungle.map");
-            crowsCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\020_base.map");
-            outskirtsCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\030_outskirts.map");
-            voiCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\040_voi.map");
-            floodvoiCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\050_floodvoi.map");
-            wasteCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\070_waste.map");
-            citadelCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\100_citadel.map");
-            highCharityCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\110_hc.map");
-            haloCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\120_halo.map");
-            epilogueCache = GameCache.Open($@"{halo3DirectoryInfo.FullName}\130_epilogue.map");
-
-            halo3MythicDirectoryInfo = GetDirectoryInfo(halo3MythicDirectoryInfo, "Halo 3 Mythic");
-
-            mythicMainMenuCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\mainmenu.map");
-            armoryCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\armory.map");
-            bunkerworldCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\bunkerworld.map");
-            chillCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\chill.map");
-            chilloutCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\chillout.map");
-            constructCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\construct.map");
-            cyberdyneCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\cyberdyne.map");
-            deadlockCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\deadlock.map");
-            descentCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\descent.map");
-            docksCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\docks.map");
-            fortressCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\fortress.map");
-            ghosttownCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\ghosttown.map");
-            guardianCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\guardian.map");
-            isolationCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\isolation.map");
-            lockoutCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\lockout.map");
-            midshipCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\midship.map");
-            riverworldCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\riverworld.map");
-            salvationCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\salvation.map");
-            sandboxCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\sandbox.map");
-            shrineCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\shrine.map");
-            sidewinderCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\sidewinder.map");
-            snowboundCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\snowbound.map");
-            spacecampCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\spacecamp.map");
-            warehouseCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\warehouse.map");
-            zanzibarCache = GameCache.Open($@"{halo3MythicDirectoryInfo.FullName}\zanzibar.map");
-
-            halo3ODSTDirectoryInfo = GetDirectoryInfo(halo3ODSTDirectoryInfo, "Halo 3 ODST");
-
-            odstMainMenuCache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\mainmenu.map");
-            h100Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\h100.map");
-            c100Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\c100.map");
-            c200Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\c200.map");
-            l200Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\l200.map");
-            l300Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\l300.map");
-            sc100Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc100.map");
-            sc110Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc110.map");
-            sc120Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc120.map");
-            sc130Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc130.map");
-            sc140Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc140.map");
-            sc150Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc150.map");
-
-            outputDirectoryInfo = GetOutputDirectory(outputDirectoryInfo);
+            // Need to figure out how to handle this correctly (either have the user determine the output path, or have it be static and relative to the assembly location)
+            OutputDirectoryInfo = GetOutputDirectory(OutputDirectoryInfo);
         }
 
         public GeneratedCacheType GetCacheType() 
@@ -340,27 +106,6 @@ namespace TagTool.Commands.GenerateCache
             }
         }
 
-        public DirectoryInfo GetDirectoryInfo(DirectoryInfo directoryInfo, String build)
-        {
-            Console.WriteLine("\nEnter the directory for your " + build + " cache files: ");
-            var inputDirectory = Console.ReadLine().Replace("\"", "");
-            directoryInfo = new DirectoryInfo(inputDirectory);
-
-            if (!directoryInfo.Exists)
-            {
-                new TagToolError(CommandError.CustomError, $"Directory not found: '{directoryInfo.FullName}'");
-                throw new ArgumentException();
-            }
-
-            if (directoryInfo.Exists && !directoryInfo.GetFiles().Any(x => x.FullName.EndsWith(".map")))
-            {
-                new TagToolError(CommandError.CustomError, $"No .map files found in '{directoryInfo.FullName}'");
-                throw new ArgumentException();
-            }
-
-            return directoryInfo;
-        }
-
         public DirectoryInfo GetOutputDirectory(DirectoryInfo directoryInfo)
         {
             Console.WriteLine("\nEnter the ouput directory for the generated cache: ");
@@ -373,30 +118,13 @@ namespace TagTool.Commands.GenerateCache
                 directoryInfo.Create();
             }
 
-            if (directoryInfo.FullName == haloOnlineDirectoryInfo.FullName || directoryInfo.FullName == halo3DirectoryInfo.FullName || directoryInfo.FullName == halo3MythicDirectoryInfo.FullName || directoryInfo.FullName == halo3ODSTDirectoryInfo.FullName || directoryInfo.FullName == Cache.Directory.FullName)
+            if (directoryInfo.FullName == Cache.Directory.FullName)
             {
-                new TagToolError(CommandError.CustomError, "Output directory cannot be the same as an input directory");
+                new TagToolError(CommandError.CustomError, "Output directory cannot be the same as working directory");
                 throw new ArgumentException();
             }
 
             return directoryInfo;
-        }
-
-        public void UpdateTagNames(GameCache cache, Dictionary<int, string> tagTable)
-        {
-            CacheContext = cache as GameCacheHaloOnline;
-
-            foreach (var tag in CacheContext.TagCache.NonNull())
-            {
-                if (tagTable.TryGetValue(tag.Index, out string name))
-                {
-                    tag.Name = name;
-                }
-            }
-
-            CacheContext.SaveTagNames();
-
-            CacheContext = null;
         }
     }
 }

@@ -168,21 +168,5 @@ namespace TagTool.Commands.GenerateCache
             cache.Deserializer = new TagDeserializer(version, CachePlatform.Original);
             cache.ResourceCaches = new ResourceCachesHaloOnline(cache);
         }
-
-        public CachedTag GetCachedTag<T>(string tagName) where T : TagStructure
-        {
-            var tagAttribute = TagStructure.GetTagStructureAttribute(typeof(T), CacheContext.Version, CacheContext.Platform);
-            var typeName = tagAttribute.Tag;
-
-            if (CacheContext.TagCache.TryGetTag<T>(tagName, out var result))
-            {
-                return result;
-            }
-            else 
-            {
-                new TagToolWarning($@"Could not find tag: '{tagName}.{typeName}'. Assinging null tag instead");
-                return null;
-            }
-        }
     }
 }
