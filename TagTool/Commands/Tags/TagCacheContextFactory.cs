@@ -70,7 +70,7 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new TagDependencyCommand(cache));
             context.AddCommand(new GuessTagDefCommand(cache));
 
-            context.AddCommand(new GenerateCacheCommand(cache, contextStack));
+            context.AddCommand(new GenerateCacheCommand(cache));
             context.AddCommand(new GenerateDonkeyCacheCommand(cache, contextStack));
             context.AddCommand(new GenerateBlfObjectCommand(cache, cache as GameCacheHaloOnline));
             context.AddCommand(new GenerateMapObjectCommand(cache, cache as GameCacheHaloOnline));

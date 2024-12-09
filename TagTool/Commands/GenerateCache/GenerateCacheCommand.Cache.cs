@@ -1,16 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using TagTool.Cache;
-using TagTool.Cache.Gen3;
 using TagTool.Cache.HaloOnline;
-using TagTool.Cache.Resources;
-using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Commands.Tags;
 using TagTool.Serialization;
-using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using Newtonsoft.Json;
 using TagTool.JSON;
@@ -22,8 +17,6 @@ namespace TagTool.Commands.GenerateCache
         public object RebuildCache(string destCacheDirectory)
         {
             var destDirectory = new DirectoryInfo(destCacheDirectory);
-
-            EmptyDirectory(destDirectory);
 
             MoveFontPackage(destDirectory.FullName);
 
@@ -104,42 +97,13 @@ namespace TagTool.Commands.GenerateCache
             var newFileInfo = new FileInfo(cache + "\\tags.dat");
             Cache = GameCache.Open(newFileInfo);
             CacheContext = Cache as GameCacheHaloOnline;
-            ContextStack.Push(TagCacheContextFactory.Create(ContextStack, Cache));
         }
 
         public void MoveFontPackage(string path)
         {
             Directory.CreateDirectory($@"{path}\fonts");
 
-            if (!File.Exists($@"{path}\fonts\font_package.bin"))
-            {
-                File.Copy($@"{JSONFileTree.JSONGenerateCachePath}\maps\fonts\font_package_upscaled.bin", $@"{path}\fonts\font_package.bin");
-            }
-            else
-            {
-                new TagToolWarning($@"Font Package Detected in Specified Directory! Replacing Anyway.");
-                File.Copy($@"{JSONFileTree.JSONGenerateCachePath}\maps\fonts\font_package_upscaled.bin", $@"{path}\fonts\font_package.bin", true);
-            }
-        }
-
-        public void EmptyDirectory(DirectoryInfo directoryInfo)
-        {
-            string[] remove = { "map", "dat", "csv" };
-
-            if (directoryInfo.GetFiles().Any(x => x.FullName.EndsWith(".map") || x.FullName.EndsWith(".dat") || x.FullName.EndsWith(".csv")))
-            {
-                new TagToolWarning($@"Cache Detected in Specified Directory! Replacing Anyway.");
-
-                foreach (string fileType in remove)
-                {
-                    FileInfo[] files = directoryInfo.GetFiles("*." + fileType);
-
-                    foreach (FileInfo file in files)
-                    {
-                        file.Delete();
-                    }
-                }
-            }
+            File.Copy($@"{JSONFileTree.JSONGenerateCachePath}\maps\fonts\font_package_upscaled.bin", $@"{path}\fonts\font_package.bin", true);
         }
 
         public void UpdateStringTable(StringTable stringTable) 
@@ -149,10 +113,8 @@ namespace TagTool.Commands.GenerateCache
 
             var startingIndex = 0x10DE;
 
-            for (int i = stringTable.Count; i < startingIndex; i++) 
-            {
+            for (int i = stringTable.Count; i < startingIndex; i++)
                 stringTable.Add(null);
-            }
 
             foreach (var str in ms23Strings)
                 stringTable.Add(str);
