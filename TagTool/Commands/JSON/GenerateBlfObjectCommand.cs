@@ -58,6 +58,10 @@ namespace TagTool.Commands.JSON
 
         public override object Execute(List<string> args)
         {
+            FileCount = 0;
+            StopWatch.Reset();
+            ErrorLog.Clear();
+
             if (args.Count > 2)
                 return new TagToolError(CommandError.ArgCount);
 

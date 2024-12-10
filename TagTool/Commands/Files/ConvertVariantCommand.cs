@@ -8,7 +8,6 @@ using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
-using TagTool.Tags.Definitions.Common;
 using System;
 using System.Linq;
 using Newtonsoft.Json;
@@ -60,6 +59,11 @@ namespace TagTool.Commands.Files
 
         public override object Execute(List<string> args)
         {
+            FileCount = 0;
+            StopWatch.Reset();
+            ErrorLog.Clear();
+            UniqueIdTable.Clear();
+
             if (Cache.Version != CacheVersion.HaloOnlineED) 
             {
                 new TagToolError(CommandError.CacheUnsupported, $"Unsupported Cache Version: {Cache.Version}");

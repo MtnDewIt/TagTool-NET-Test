@@ -12,7 +12,6 @@ using System.Linq;
 using TagTool.Commands.Common;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using TagTool.Common;
 
 namespace TagTool.Commands.JSON
 {
@@ -47,6 +46,10 @@ namespace TagTool.Commands.JSON
 
         public override object Execute(List<string> args)
         {
+            MapCount = 0;
+            StopWatch.Reset();
+            ErrorLog.Clear();
+
             if (args.Count > 2)
                 return new TagToolError(CommandError.ArgCount);
 

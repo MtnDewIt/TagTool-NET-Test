@@ -25,8 +25,10 @@ namespace TagTool.Commands.JSON
         private string ExportPath = $@"tags";
         private string DataPath = $@"data";
         private string PathPrefix = null;
+        private bool Recursive = false;
+        private bool Single = false;
 
-        private int TagCount = 0;
+        private int TagCount;
         private Stopwatch StopWatch = new Stopwatch();
         private List<string> ErrorLog = new List<string>();
 
@@ -36,12 +38,15 @@ namespace TagTool.Commands.JSON
             "GenerateTagObject",
             "Generates a JSON tag object file based on the specified tag",
 
-            "GenerateTagObject <Tag_Name> [PathPrefix]",
+            "GenerateTagObject <Tag_Name> <Recursive | Single> [PathPrefix]",
             "Generates a JSON tag object file based on the specified tag. Flags within\n" +
             "the generated JSON data may change depending on the tag's definition and type\n\n" +
 
             "Optionally, instead of specifying a tag to convert you can use\n" + 
-            "\"all\", which will convert all tags in the current cache context."
+            "\"all\", which will convert all tags in the current cache context.\n\n" +
+
+            "You can also use the \"Recursive\" or \"Single\" flag to include or\n" +
+            "exclude all dependencies associated with the specified tag"
         )
         {
             Cache = cache;
@@ -50,10 +55,20 @@ namespace TagTool.Commands.JSON
 
         public override object Execute(List<string> args)
         {
-            if (args.Count > 2)
+            TagCount = 0;
+            StopWatch.Reset();
+            ErrorLog.Clear();
+
+            if (args.Count > 3)
                 return new TagToolError(CommandError.ArgCount);
 
-            PathPrefix = args.Count == 2 ? args[1] : null;
+            Recursive = args[1].Equals("Recursive", StringComparison.OrdinalIgnoreCase);
+            Single = args[1].Equals("Single", StringComparison.OrdinalIgnoreCase);
+
+            if (!Recursive && !Single)
+                return new TagToolError(CommandError.ArgInvalid);
+
+            PathPrefix = args.Count == 3 ? args[2] : null;
 
             ExportPath = PathPrefix != null ? Path.Combine(PathPrefix, ExportPath) : ExportPath;
             DataPath = PathPrefix != null ? Path.Combine(PathPrefix, DataPath) : DataPath;
@@ -75,11 +90,22 @@ namespace TagTool.Commands.JSON
             var tagTable = new List<CachedTag>();
 
             if (Cache.TagCache.TryGetCachedTag(input, out var tag))
+            {
                 tagTable.Add(tag);
+
+                if (Recursive)
+                {
+                    tagTable.AddRange(CacheContext.TagCacheGenHO.FindDependencies((CachedTagHaloOnline)tag));
+                }
+            }
             else if (input.Equals("all", StringComparison.OrdinalIgnoreCase))
+            {
                 tagTable = Cache.TagCache.NonNull().ToList();
+            }
             else 
+            {
                 new TagToolError(CommandError.TagInvalid);
+            }
 
             TagCount = tagTable.Count;
 
