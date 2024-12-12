@@ -5,6 +5,8 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Tags;
+using TagTool.JSON.Parsers;
+using System.Collections.Generic;
 
 namespace TagTool.JSON.Handlers
 {
@@ -13,12 +15,16 @@ namespace TagTool.JSON.Handlers
         private GameCache Cache;
         private GameCacheHaloOnlineBase CacheContext;
         private Stream CacheStream;
+        private TagObjectParser TagParser;
+        private List<string> ParsedTags;
 
-        public CachedTagHandler(GameCache cache, GameCacheHaloOnlineBase cacheContext, Stream cacheStream)
+        public CachedTagHandler(GameCache cache, GameCacheHaloOnlineBase cacheContext, Stream cacheStream, TagObjectParser tagParser, List<string> parsedTags)
         {
             Cache = cache;
             CacheContext = cacheContext;
             CacheStream = cacheStream;
+            TagParser = tagParser;
+            ParsedTags = parsedTags;
         }
 
         public override void WriteJson(JsonWriter writer, CachedTag value, JsonSerializer serializer)
@@ -34,25 +40,30 @@ namespace TagTool.JSON.Handlers
 
             if (inlineTag != null)
             {
-                return GenerateCachedTag(inlineTag.Name, inlineTag.Type);
+                if (!ParsedTags.Contains($@"{inlineTag.Name}.{inlineTag.Type}")) 
+                {
+                    ParsedTags.Add($@"{inlineTag.Name}.{inlineTag.Type}");
+
+                    TagParser.ParseFile($@"{inlineTag.Name}.{inlineTag.Type}");
+                }
+
+                return GetCachedTag(inlineTag.Name, inlineTag.Type);
             }
 
             return null;
         }
 
-        public CachedTag GenerateCachedTag(string tagName, string tagType)
+        public CachedTag GetCachedTag(string tagName, string tagType)
         {
-            if (!Cache.TagCache.TryGetTag($@"{tagName}.{tagType}", out var result))
+            if (CacheContext.TagCache.TryGetTag($@"{tagName}.{tagType}", out var result))
             {
-                Cache.TagCache.TryParseGroupTag(tagType, out var tagGroup);
-                var type = Cache.TagCache.TagDefinitions.GetTagDefinitionType(tagGroup);
-                result = Cache.TagCache.AllocateTag(type, tagName);
-                var definition = (TagStructure)Activator.CreateInstance(type);
-                CacheContext.Serialize(CacheStream, result, definition);
-                CacheContext.SaveTagNames();
+                return result;
             }
-
-            return result;
+            else
+            {
+                new TagToolWarning($@"Could not find tag: '{tagName}.{tagType}'. Assigning null tag instead");
+                return null;
+            }
         }
     }
 

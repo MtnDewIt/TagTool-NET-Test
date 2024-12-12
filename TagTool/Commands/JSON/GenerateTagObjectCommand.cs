@@ -359,7 +359,7 @@ namespace TagTool.Commands.JSON
                     }
                 }
 
-                var handler = new TagObjectHandler(Cache, CacheContext, cacheStream);
+                var handler = new TagObjectHandler(Cache, CacheContext, cacheStream, null);
 
                 var jsonData = handler.Serialize(tagObject);
 

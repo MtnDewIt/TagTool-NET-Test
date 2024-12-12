@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using TagTool.Cache;
 using TagTool.JSON.Objects;
+using TagTool.JSON.Parsers;
 
 namespace TagTool.JSON.Handlers
 {
@@ -11,19 +12,23 @@ namespace TagTool.JSON.Handlers
         private GameCache Cache;
         private GameCacheHaloOnlineBase CacheContext;
         private Stream CacheStream;
+        private TagObjectParser TagParser;
+        private List<string> ParsedTags;
 
         private static List<JsonConverter> Converters;
 
-        public TagObjectHandler(GameCache cache, GameCacheHaloOnlineBase cacheContext, Stream cacheStream)
+        public TagObjectHandler(GameCache cache, GameCacheHaloOnlineBase cacheContext, Stream cacheStream, TagObjectParser tagParser)
         {
             Cache = cache;
             CacheContext = cacheContext;
             CacheStream = cacheStream;
+            TagParser = tagParser;
+            ParsedTags = new List<string>();
 
             Converters = new List<JsonConverter>
             {
                 new StringIdHandler(Cache, CacheContext),
-                new CachedTagHandler(Cache, CacheContext, CacheStream),
+                new CachedTagHandler(Cache, CacheContext, CacheStream, TagParser, ParsedTags),
                 new TagStructureHandler(Cache.Version, Cache.Platform),
 
                 // I really need to merge all these into a single handler which just takes a generic type as an input :/
@@ -79,7 +84,7 @@ namespace TagTool.JSON.Handlers
             var converters = new List<JsonConverter>
             {
                 new StringIdHandler(Cache, CacheContext),
-                new CachedTagHandler(Cache, CacheContext, CacheStream),
+                new CachedTagHandler(Cache, CacheContext, CacheStream, TagParser, ParsedTags),
 
                 // I really need to merge all these into a single handler which just takes a generic type as an input :/
                 new AngleHandler(),
@@ -120,7 +125,7 @@ namespace TagTool.JSON.Handlers
             var settings = new JsonSerializerSettings
             {
                 Converters = converters,
-                Formatting = Formatting.Indented
+                Formatting = Formatting.Indented,
             };
 
             return JsonConvert.DeserializeObject<TagObject>(input, settings);
