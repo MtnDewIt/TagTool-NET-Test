@@ -4,7 +4,6 @@ using System.IO;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Common;
-using TagTool.Commands.Tags;
 using TagTool.Serialization;
 using TagTool.Tags.Definitions;
 using Newtonsoft.Json;
@@ -42,44 +41,6 @@ namespace TagTool.Commands.GenerateCache
             {
                 var cfgtTag = cacheContext.TagCache.AllocateTag<CacheFileGlobalTags>($@"global_tags");
                 var cfgt = new CacheFileGlobalTags();
-                cacheContext.Serialize(destStream, cfgtTag, cfgt);
-
-                var matgTag = cacheContext.TagCache.AllocateTag<Globals>($@"globals\globals");
-                var matg = new Globals();
-                cacheContext.Serialize(destStream, matgTag, matg);
-
-                var modgTag = cacheContext.TagCache.AllocateTag<ModGlobalsDefinition>($@"multiplayer\mod_globals");
-                var modg = new ModGlobalsDefinition();
-                cacheContext.Serialize(destStream, modgTag, modg);
-
-                var forgTag = cacheContext.TagCache.AllocateTag<ForgeGlobalsDefinition>($@"multiplayer\forge_globals");
-                var forg = new ForgeGlobalsDefinition();
-                cacheContext.Serialize(destStream, forgTag, forg);
-
-                var mlstTag = cacheContext.TagCache.AllocateTag<MapList>($@"ui\eldewrito\maps");
-                var mlst = new MapList();
-                cacheContext.Serialize(destStream, mlstTag, mlst);
-
-                cfgt = cacheContext.Deserialize<CacheFileGlobalTags>(destStream, cfgtTag);
-                cfgt.GlobalTags = new List<TagReferenceBlock>()
-                {
-                    new TagReferenceBlock()
-                    {
-                        Instance = cacheContext.TagCache.GetTag<Globals>($@"globals\globals"),
-                    },
-                    new TagReferenceBlock()
-                    {
-                        Instance = cacheContext.TagCache.GetTag<ModGlobalsDefinition>($@"multiplayer\mod_globals"),
-                    },
-                    new TagReferenceBlock()
-                    {
-                        Instance = cacheContext.TagCache.GetTag<ForgeGlobalsDefinition>($@"multiplayer\forge_globals"),
-                    },
-                    new TagReferenceBlock()
-                    {
-                        Instance = cacheContext.TagCache.GetTag<MapList>($@"ui\eldewrito\maps"),
-                    },
-                };
                 cacheContext.Serialize(destStream, cfgtTag, cfgt);
             }
 

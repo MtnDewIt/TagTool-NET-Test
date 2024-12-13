@@ -44,6 +44,9 @@ namespace TagTool.JSON.Handlers
                 {
                     ParsedTags.Add($@"{inlineTag.Name}.{inlineTag.Type}");
 
+                    // TODO: Maybe create an empty instance of the tag, then serialize the data
+                    // This fixes an issue where if a tag contains a cyclic reference, it will fail to find said reference, as the tag doesn't exist until the tag object is finished being read
+
                     TagParser.ParseFile($@"{inlineTag.Name}.{inlineTag.Type}");
                 }
 
@@ -55,7 +58,7 @@ namespace TagTool.JSON.Handlers
 
         public CachedTag GetCachedTag(string tagName, string tagType)
         {
-            if (CacheContext.TagCache.TryGetTag($@"{tagName}.{tagType}", out var result))
+            if (Cache.TagCache.TryGetTag($@"{tagName}.{tagType}", out var result))
             {
                 return result;
             }

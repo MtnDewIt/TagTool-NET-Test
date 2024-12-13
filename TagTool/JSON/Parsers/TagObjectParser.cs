@@ -20,7 +20,8 @@ namespace TagTool.JSON.Parsers
         private GameCache Cache;
         private GameCacheHaloOnlineBase CacheContext;
         private Stream CacheStream;
-        private TagObjectHandler Handler;
+        private TagObjectHandler TagHandler;
+        private MapObjectParser MapParser;
         private string InputPath;
 
         public TagObjectParser(GameCache cache, GameCacheHaloOnlineBase cacheContext, Stream cacheStream, string inputPath)
@@ -29,13 +30,14 @@ namespace TagTool.JSON.Parsers
             CacheContext = cacheContext;
             CacheStream = cacheStream;
             InputPath = inputPath;
-            Handler = new TagObjectHandler(Cache, CacheContext, CacheStream, this);
+            TagHandler = new TagObjectHandler(Cache, CacheContext, CacheStream, this);
+            MapParser = new MapObjectParser(Cache, CacheContext, CacheStream, InputPath);
         }
 
         public void ParseFile(string filePath)
         {
             var jsonData = File.ReadAllText($@"{InputPath}\tags\{filePath}.json");
-            var tagObject = Handler.Deserialize(jsonData);
+            var tagObject = TagHandler.Deserialize(jsonData);
 
             Cache.TagCache.TryGetTag($@"{tagObject.TagName}.{tagObject.TagType}", out var tag);
 
@@ -45,7 +47,7 @@ namespace TagTool.JSON.Parsers
                 var type = Cache.TagCache.TagDefinitions.GetTagDefinitionType(tagGroup);
                 tag = Cache.TagCache.AllocateTag(type, tagObject.TagName);
                 var definition = (TagStructure)Activator.CreateInstance(type);
-                CacheContext.Serialize(CacheStream, tag, definition);
+                Cache.Serialize(CacheStream, tag, definition);
                 CacheContext.SaveTagNames();
             }
 
@@ -212,6 +214,10 @@ namespace TagTool.JSON.Parsers
             {
                 CompileScript(tagInstance, $@"{InputPath}\data\{tagObject.TagName}\scripts\{tagObject.BlamScriptResource.BlamScriptFile}");
             }
+
+            var fileName = tagInstance.Name.Split('\\').Last();
+
+            MapParser.ParseFile(fileName);
         }
 
         public void ParseScenarioLightmapBspData(TagObject tagObject, CachedTag tagInstance)
