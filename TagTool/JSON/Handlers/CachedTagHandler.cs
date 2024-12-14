@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.IO;
-using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Tags;
@@ -44,8 +43,17 @@ namespace TagTool.JSON.Handlers
                 {
                     ParsedTags.Add($@"{inlineTag.Name}.{inlineTag.Type}");
 
-                    // TODO: Maybe create an empty instance of the tag, then serialize the data
-                    // This fixes an issue where if a tag contains a cyclic reference, it will fail to find said reference, as the tag doesn't exist until the tag object is finished being read
+                    Cache.TagCache.TryGetTag($@"{inlineTag.Name}.{inlineTag.Type}", out var result);
+
+                    if (result == null) 
+                    {
+                        Cache.TagCache.TryParseGroupTag(inlineTag.Type, out var tagGroup);
+                        var type = Cache.TagCache.TagDefinitions.GetTagDefinitionType(tagGroup);
+                        result = Cache.TagCache.AllocateTag(type, inlineTag.Name);
+                        var definition = (TagStructure)Activator.CreateInstance(type);
+                        Cache.Serialize(CacheStream, result, definition);
+                        CacheContext.SaveTagNames();
+                    }
 
                     TagParser.ParseFile($@"{inlineTag.Name}.{inlineTag.Type}");
                 }
