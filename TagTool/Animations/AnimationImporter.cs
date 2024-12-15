@@ -35,14 +35,6 @@ namespace TagTool.Animations
         private List<MovementDataDxDyDzDyaw> MovementData = new List<MovementDataDxDyDzDyaw>();
         public ModelAnimationTagResource.GroupMemberMovementDataType MovementDataType;
         public bool ScaleFix = false;
-
-        public Stream CacheStream;
-
-        public AnimationImporter(Stream stream)
-        {
-            CacheStream = stream;
-        }
-
         public bool Import(string fileName)
         {
             using (FileStream textStream = (FileStream)File.OpenRead(fileName))
@@ -207,7 +199,7 @@ namespace TagTool.Animations
 
         public void ProcessNodeFrames(GameCacheHaloOnlineBase CacheContext, ModelAnimationGraph Animation, ModelAnimationGraph.FrameType AnimationType, ModelAnimationTagResource.GroupMemberMovementDataType FrameInfoType)
         {
-            List<Node> defaultNodes = GetNodeDefaultValues(CacheContext, CacheStream, Animation);
+            List<Node> defaultNodes = GetNodeDefaultValues(CacheContext, Animation);
             for (var i = 0; i < defaultNodes.Count; i++)
             {
                 AnimationNodes[i].DefaultTranslation = defaultNodes[i].Translation;

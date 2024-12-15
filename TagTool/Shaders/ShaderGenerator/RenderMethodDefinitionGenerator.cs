@@ -336,15 +336,7 @@ namespace TagTool.Shaders.ShaderGenerator
             out CachedTag glpsTag, out CachedTag glvsTag, out GlobalPixelShader glps, out GlobalVertexShader glvs)
         {
             glps = ShaderGenerator.GenerateSharedPixelShader(cache, generator);
-
-            if (shaderType != "beam" && shaderType != "contrail" && shaderType != "light_volume" && shaderType != "particle" && shaderType != "screen")
-            {
-                glvs = ShaderGenerator.GenerateSharedVertexShader(cache, generator);
-            }
-            else
-            {
-                glvs = new GlobalVertexShader { VertexTypes = new List<GlobalVertexShader.VertexTypeShaders>(), Shaders = new List<VertexShaderBlock>() };
-            }
+            glvs = ShaderGenerator.GenerateSharedVertexShader(cache, generator);
 
             if (!cache.TagCache.TryGetTag<GlobalPixelShader>($"shaders\\{shaderType.ToLower()}_shared_pixel_shaders", out glpsTag))
                 glpsTag = cache.TagCache.AllocateTag<GlobalPixelShader>($"shaders\\{shaderType.ToLower()}_shared_pixel_shaders");

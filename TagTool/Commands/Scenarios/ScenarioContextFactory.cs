@@ -27,7 +27,7 @@ namespace TagTool.Commands.Scenarios
             context.AddCommand(new CompilePodiumScriptsCommand(cache, scenario));
             context.AddCommand(new ListScriptsCommand(cache, tag, scenario));
             context.AddCommand(new ExtractZonesAreasModelCommand(cache, scenario));
-
+            
             if(cache is GameCacheHaloOnlineBase hoCache)
             {
                 context.AddCommand(new ConvertInstancedGeometryCommand(cache, scenario));

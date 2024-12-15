@@ -1733,7 +1733,7 @@ namespace TagTool.Scripting.Compiler
             var builtin = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].First(x => x.Value.Name == "dew_method_stub");
             var scriptIndex = (short)Scripts.IndexOf(script);
 
-            var handle = AllocateExpression(script.ReturnType.HaloOnline, HsSyntaxNodeFlags.Group | HsSyntaxNodeFlags.Extern, (ushort)builtin.Key, scriptIndex);
+            var handle = AllocateExpression(script.ReturnType.HaloOnline, HsSyntaxNodeFlags.Group |  HsSyntaxNodeFlags.Extern, (ushort)builtin.Key, scriptIndex);
             var expr = ScriptExpressions[handle.Index];
 
             var functionNameHandle = AllocateExpression(HsType.HaloOnlineValue.FunctionName, HsSyntaxNodeFlags.Expression | HsSyntaxNodeFlags.Extern, (ushort)builtin.Key, scriptIndex);
@@ -3018,7 +3018,7 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-
+                
                 var vehicleIndex = vehicleString.Value == "none" ? -1 :
                     Definition.ObjectNames.FindIndex(on => on.Name == vehicleString.Value);
 
@@ -3312,9 +3312,9 @@ namespace TagTool.Scripting.Compiler
                 };
 
                 bool hasReference = false;
-                foreach (var tagEntry in ScriptSourceFileReferences)
+                foreach(var tagEntry in ScriptSourceFileReferences)
                 {
-                    if (tagEntry.Instance.Index == tagReference.Instance.Index)
+                    if(tagEntry.Instance.Index == tagReference.Instance.Index)
                     {
                         hasReference = true;
                         break;

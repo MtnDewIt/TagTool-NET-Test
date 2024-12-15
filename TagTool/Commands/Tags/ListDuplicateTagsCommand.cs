@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using TagTool.Cache;
+using TagTool.Common;
+using TagTool.Commands.Common;
+using TagTool.Tags;
+using TagTool.Cache.HaloOnline;
 
 namespace TagTool.Commands.Tags
 {

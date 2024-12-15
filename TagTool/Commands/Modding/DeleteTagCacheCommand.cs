@@ -46,6 +46,7 @@ namespace TagTool.Commands.Modding
                     Cache.BaseModPackage.TagCachesStreams.RemoveAt(tagCacheIndex);
                     Cache.BaseModPackage.CacheNames.RemoveAt(tagCacheIndex);
                     Cache.BaseModPackage.TagCacheNames.RemoveAt(tagCacheIndex);
+
                     Console.WriteLine($"Deleted tag cache {tagCacheIndex} ({cacheName}) from package...");
                     return true;
                 }

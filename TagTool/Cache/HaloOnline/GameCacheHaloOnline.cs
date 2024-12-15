@@ -84,11 +84,6 @@ namespace TagTool.Cache.HaloOnline
             var deserializer = new TagDeserializer(CacheVersion.HaloOnlineED, Platform);
 
             TagCacheHaloOnlineHeader header = deserializer.Deserialize<TagCacheHaloOnlineHeader>(dataContext);
-
-            reader.BaseStream.Position = header.TagTableOffset;
-
-            var headerOffset = reader.ReadUInt32();
-
             if (CacheVersion.Unknown == (Version = CacheVersionDetection.DetectFromTimestamp(header.CreationTime, out var closestVersion)))
                 Version = closestVersion;
 

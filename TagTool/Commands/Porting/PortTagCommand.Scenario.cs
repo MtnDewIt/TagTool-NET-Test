@@ -1782,6 +1782,7 @@ namespace TagTool.Commands.Porting
                     case "unit":
                         expr.Opcode = 0x019; // -> unit
                         return true;
+
                     default:
                         return false;
                 }

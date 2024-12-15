@@ -312,12 +312,10 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 }
             }
 
-            /*
-			if(index != -1)
+            if(index != -1)
             {
                 var a = false;
             }
-			*/
 
             return index;
         }

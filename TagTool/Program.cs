@@ -128,7 +128,7 @@ namespace TagTool.Commands
             {
                 Console.WriteLine("\nEnter the path to a Halo cache file (.map/.dat):");
                 Console.Write("> ");
-                var tagCacheFile = Console.ReadLine();
+				var tagCacheFile = Console.ReadLine();
 
                 switch (tagCacheFile.ToLower())
                 {

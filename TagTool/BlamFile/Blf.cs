@@ -1,5 +1,4 @@
 ﻿using System;
-using TagTool.BlamFile.GameVariants;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
