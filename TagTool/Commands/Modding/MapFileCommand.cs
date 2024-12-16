@@ -23,13 +23,13 @@ namespace TagTool.Commands.Modding
                 "MapFile",
                 "Manage map files",
 
-                "MapFile Add <path to .map> [sandbox.map]>\n" +
+                "MapFile Add <path to .map or just specify the .map file to add base cache maps> [sandbox.map]\n" +
                 "MapFile Remove <map id>\n" +
                 "MapFile List\n",
 
                 "\"MapFile Add\" adds a map file to the mod package.\n" +
                 "\"MapFile Remove\" removes a map file from the mod package.\n" +
-                "\"MapFile List lists\" the map files in the mod package.\n")
+                "\"MapFile List Lists\" the map files in the mod package.\n")
         {
             Cache = cache;
         }
@@ -45,7 +45,7 @@ namespace TagTool.Commands.Modding
             var commandMap = new Dictionary<string, Func<List<string>, object>>
             {
                 ["add"] = ExecuteAdd,
-                ["delete"] = ExecuteDelete,
+                ["remove"] = ExecuteRemove,
                 ["list"] = ExecuteList
             };
 
@@ -58,8 +58,20 @@ namespace TagTool.Commands.Modding
         private object ExecuteAdd(List<string> args)
         {
             var mapStream = new MemoryStream();
-            using (var fs = File.OpenRead(args[0]))
-                fs.CopyTo(mapStream);
+
+            var baseCacheMap = Path.Combine(Cache.BaseCacheReference.Directory.FullName, args[0]);
+
+            var filePath = File.Exists(args[0]) ? args[0] : (File.Exists(baseCacheMap) ? baseCacheMap : null);
+
+            if (filePath != null) 
+            {
+                using (var fs = File.OpenRead(filePath))
+                    fs.CopyTo(mapStream);
+            }
+            else
+            {
+                return new TagToolError(CommandError.FileNotFound, $"Could not find map file \"{args[0]}\"");
+            }
 
             var mapFile = new MapFile();
             mapFile.Read(new EndianReader(mapStream));
@@ -73,18 +85,25 @@ namespace TagTool.Commands.Modding
             // handle optional sandbox.map argument
             if (args.Count > 1)
             {
-                using (var mapVariantStream = File.OpenRead(args[1]))
+                if (File.Exists(args[1]))
                 {
-                    var mapVariantBlf = new Blf(Cache.Version, Cache.Platform);
-                    if (!mapVariantBlf.Read(new EndianReader(mapVariantStream, Cache.Endianness)))
-                        return new TagToolError(CommandError.CustomError, "Failed to read map variant");
+                    using (var mapVariantStream = File.OpenRead(args[1]))
+                    {
+                        var mapVariantBlf = new Blf(Cache.Version, Cache.Platform);
+                        if (!mapVariantBlf.Read(new EndianReader(mapVariantStream, Cache.Endianness)))
+                            return new TagToolError(CommandError.CustomError, "Failed to read map variant");
 
-                    if (mapVariantBlf.MapVariant.MapVariant.MapId != header.MapId)
-                        return new TagToolError(CommandError.CustomError, "Tried to import a map variant into a scenario with a different map id");
+                        if (mapVariantBlf.MapVariant.MapVariant.MapId != header.MapId)
+                            return new TagToolError(CommandError.CustomError, "Tried to import a map variant into a scenario with a different map id");
 
-                    InjectMapVariantIntoMapFile(mapFile, mapVariantBlf);
-                    mapFile.Write(new EndianWriter(mapStream, Cache.Endianness));
-                    mapStream.Position = 0;
+                        InjectMapVariantIntoMapFile(mapFile, mapVariantBlf);
+                        mapFile.Write(new EndianWriter(mapStream, Cache.Endianness));
+                        mapStream.Position = 0;
+                    }
+                }
+                else 
+                {
+                    return new TagToolError(CommandError.FileNotFound, $"Could not find variant file \"{args[1]}\"");
                 }
             }
 
@@ -94,7 +113,7 @@ namespace TagTool.Commands.Modding
             return true;
         }
 
-        private object ExecuteDelete(List<string> args)
+        private object ExecuteRemove(List<string> args)
         {
             if (args.Count < 1)
                 return new TagToolError(CommandError.ArgCount);

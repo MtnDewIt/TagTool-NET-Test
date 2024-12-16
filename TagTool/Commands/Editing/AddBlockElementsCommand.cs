@@ -11,11 +11,13 @@ namespace TagTool.Commands.Editing
     {
         private CommandContextStack ContextStack { get; }
         private GameCache Cache { get; }
-        private CachedTag Tag { get; }
+        private CacheVersion Version { get; }
+        private CachePlatform Platform { get; }
+        private object ObjectFile { get; }
         private TagStructureInfo Structure { get; set; }
         private object Owner { get; set; }
 
-        public AddBlockElementsCommand(CommandContextStack contextStack, GameCache cache, CachedTag tag, TagStructureInfo structure, object owner)
+        public AddBlockElementsCommand(CommandContextStack contextStack, GameCache cache, CacheVersion version, CachePlatform platform, object objectFile, TagStructureInfo structure, object owner)
             : base(true,
 
                   "AddBlockElements",
@@ -27,7 +29,9 @@ namespace TagTool.Commands.Editing
         {
             ContextStack = contextStack;
             Cache = cache;
-            Tag = tag;
+            Version = version;
+            Platform = platform;
+            ObjectFile = objectFile;
             Structure = structure;
             Owner = owner;
         }
@@ -51,7 +55,7 @@ namespace TagTool.Commands.Editing
                 fieldName = fieldName.Substring(lastIndex + 1, (fieldName.Length - lastIndex) - 1);
                 fieldNameLow = fieldName.ToLower();
 
-                var command = new EditBlockCommand(ContextStack, Cache, Tag, Owner);
+                var command = new EditBlockCommand(ContextStack, Cache, Version, Platform, ObjectFile, Owner);
 
                 if (command.Execute(new List<string> { blockName }).Equals(false))
                 {
@@ -147,7 +151,7 @@ namespace TagTool.Commands.Editing
 
             var element = (TagStructure)instance;
 
-            foreach (var tagFieldInfo in element.GetTagFieldEnumerable(Cache.Version, Cache.Platform))
+            foreach (var tagFieldInfo in element.GetTagFieldEnumerable(Version, Platform))
             {
                 var fieldType = tagFieldInfo.FieldType;
 

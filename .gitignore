@@ -198,3 +198,4 @@ FakesAssemblies/
 # Banned Uploads
 xsd.exe
 HaloShaderGenerator.dll
+launchSettings.json

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using TagTool.Ai;
 using TagTool.Cache;
+using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Definitions.Common;
@@ -1900,13 +1901,97 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                ScriptExpressions[handle.Index].StringAddress = CompileStringAddress(unitSeatMappingString.Value);
+                using (var stream = Cache.OpenCacheRead())
+                {
+                    var seatsStack = new List<Scenario.UnitSeatsMappingBlock>();
 
-                //
-                // TODO: Compile unit_seat_mapping data here
-                //
+                    // There is probably a better way to get the actual unit tag
+                    foreach (var unitTag in Cache.TagCache.FindAllInGroup("unit"))
+                    {
+                        bool isUnitMapping = false;
 
-                throw new NotImplementedException(HsType.HaloOnlineValue.UnitSeatMapping.ToString());
+                        var unitSeatMapping = new Scenario.UnitSeatsMappingBlock
+                        {
+                            Unit = unitTag,
+                        };
+
+                        var unitDefinition = Cache.Deserialize<Unit>(stream, unitTag);
+
+                        for (int seatIndex = 0; seatIndex < unitDefinition.Seats.Count; seatIndex++)
+                        {
+                            var seat = unitDefinition.Seats[seatIndex];
+                            var seatName = Cache.StringTable.GetString(seat.Label);
+
+                            // I assume that the seat mapping string from the script string is what we are checking exists in the seat name?
+                            if (seatName.Contains(unitSeatMappingString.Value))
+                            {
+                                if (seatIndex < 32)
+                                {
+                                    unitSeatMapping.Seats1 = (Scenario.UnitSeatFlags)(1 << seatIndex);
+                                }
+                                else
+                                {
+                                    unitSeatMapping.Seats2 = (Scenario.UnitSeatFlags)(1 << (seatIndex - 32));
+                                }
+
+                                isUnitMapping = true;
+
+                                break;
+                            }
+                        }
+
+                        if (isUnitMapping)
+                        {
+                            if (seatsStack.Count > 256)
+                            {
+                                new TagToolWarning("Too many units match this seat substring");
+                                break;
+                            }
+
+                            // if we did find a match for the the seat substring, we can add the mapping to out seats stack
+                            seatsStack.Add(unitSeatMapping);
+                        }
+                    }
+
+                    var unitSeatStartIndex = -1;
+                    var unitSeatMappingCount = seatsStack.Count;
+
+                    // Loop through each unit seat mapping in the scenario
+                    for (var unitSeatMappingIndex = 0; unitSeatMappingIndex < Definition.UnitSeatsMapping.Count; unitSeatMappingIndex++)
+                    {
+                        var currentMapping = Definition.UnitSeatsMapping[unitSeatMappingIndex];
+
+                        // Loop through each unit seat mapping in the seats stack
+                        for (var stackIndex = 0; stackIndex < seatsStack.Count; stackIndex++)
+                        {
+                            var stackMapping = seatsStack[stackIndex];
+
+                            // Check if the current stack unit seat mapping equals the current scenario unit seat mapping
+                            if (stackMapping.Unit == currentMapping.Unit && stackMapping.Seats1 == currentMapping.Seats1 && stackMapping.Seats2 == currentMapping.Seats2)
+                            {
+                                // Set the starting index to equal the index of the current scenario unit seat mapping
+                                unitSeatStartIndex = unitSeatMappingIndex;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (unitSeatStartIndex == -1)
+                    {
+                        // Ideally we would get the data for the correct unit mapping, however if the start index is equal to -1,
+                        // that means that no corresponding mapping was found in the scenario, which means there is no way to add the correct data to the scenario
+                        // What we would need to do is figure out some means of getting the unit index from the script expression itself
+
+                        // For now we will just warn the user when no mapping can be found
+                        new TagToolWarning("Unable to find corresponding unit seat mapping in scenario");
+                    }
+
+                    var data = (unitSeatMappingCount << 16) | unitSeatStartIndex;
+
+                    var expr = ScriptExpressions[handle.Index];
+                    expr.StringAddress = CompileStringAddress(unitSeatMappingString.Value);
+                    Array.Copy(BitConverter.GetBytes(data), expr.Data, 4);
+                }
             }
 
             return handle;
@@ -2038,6 +2123,9 @@ namespace TagTool.Scripting.Compiler
                             if (squadIndex != -1)
                             {
                                 value = (1 << 29) | (squadIndex & 0xFFFF);
+                                var expr = ScriptExpressions[handle.Index];
+                                expr.StringAddress = CompileStringAddress(aiString.Value);
+                                Array.Copy(BitConverter.GetBytes(value), expr.Data, 4);
                                 break;
                             }
 
@@ -2090,6 +2178,9 @@ namespace TagTool.Scripting.Compiler
                                 if (spawnPointIndex != -1)
                                 {
                                     value = (4 << 29) | ((squadIndex & 0x1FFF) << 16) | (spawnPointIndex & 0xFF);
+                                    var expr = ScriptExpressions[handle.Index];
+                                    expr.StringAddress = CompileStringAddress(aiString.Value);
+                                    Array.Copy(BitConverter.GetBytes(value), expr.Data, 4);
                                     break;
                                 }
 

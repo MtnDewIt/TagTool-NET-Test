@@ -182,11 +182,24 @@ namespace TagTool.BlamFile
             for (int i = 0; i < scnrBlf.Descriptions.Length; i++)
                 scnrBlf.Descriptions[i] = new NameUnicode128() { Name = MapDescription ?? "" };
 
-            scnrBlf.MapName = scenarioName;
-            scnrBlf.ImageName = $"m_{scenarioName}";
-            scnrBlf.Unknown1 = 2;
-            scnrBlf.Unknown2 = 6;
-            scnrBlf.GameEngineTeamCounts = new byte[11] { 00, 02, 08, 08, 08, 08, 08, 08, 04, 02, 08 };
+            scnrBlf.ScenarioPath = scenarioName;
+            scnrBlf.ImageFileBase = $"m_{scenarioName}";
+            scnrBlf.MinimumDesiredPlayers = 2;
+            scnrBlf.MaximumDesiredPlayers = 6;
+            scnrBlf.GameEngineTeamCounts = new GameEngineTeams
+            {
+                NoGametypeTeamCount = 0,
+                CtfTeamCount = 2,
+                SlayerTeamCount = 8,
+                OddballTeamCount = 8,
+                KingTeamCount = 8,
+                SandboxTeamCount = 8,
+                VipTeamCount = 8,
+                JuggernautTeamCount = 8,
+                TerritoriesTeamCount = 4,
+                AssaultTeamCount = 2,
+                InfectionTeamCount = 8,
+            };
 
             scnrBlf.MapFlags = BlfScenarioFlags.GeneratesFilm;
             switch (scnr.MapType)

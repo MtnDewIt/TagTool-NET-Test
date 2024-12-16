@@ -6,7 +6,7 @@ using TagTool.Tags;
 
 namespace TagTool.Cache
 {
-    public abstract class CacheFileHeader :  TagStructure
+    public abstract class CacheFileHeader : TagStructure
     {
         public virtual bool IsValid()
         {
@@ -117,7 +117,7 @@ namespace TagTool.Cache
     }
 
     [TagStructure(Size = 0x10)]
-    public class TagNameHeader
+    public class TagNameHeader : TagStructure
     {
         public int TagNamesCount;
         public uint TagNamesBufferOffset;
@@ -129,7 +129,7 @@ namespace TagTool.Cache
     [TagStructure(Size = 0xC, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Xbox)]
     [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo2Vista, MaxVersion = CacheVersion.Halo2Vista)]
     [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo3Beta)]
-    public class TagMemoryHeader
+    public class TagMemoryHeader : TagStructure
     {
         [TagField(MaxVersion = CacheVersion.HaloCustomEdition)]
         public int TagDataSize;

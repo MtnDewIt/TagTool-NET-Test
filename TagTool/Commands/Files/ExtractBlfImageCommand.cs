@@ -54,12 +54,12 @@ namespace TagTool.Commands.Files
                     return new TagToolError(CommandError.CustomMessage, "Could not parse BLF");
             }
 
-            if (!blf.ContentFlags.HasFlag(BlfFileContentFlags.MapImage) || blf.JpegImage == null || blf.JpegImage.Length == 0)
+            if (!blf.ContentFlags.HasFlag(BlfFileContentFlags.MapImage) || blf.Buffer == null || blf.Buffer.Length == 0)
                 return new TagToolError(CommandError.CustomMessage, "BLF does not contain image");
 
             using (var stream = output.Create())
             {
-                stream.Write(blf.JpegImage, 0, blf.JpegImage.Length);
+                stream.Write(blf.Buffer, 0, blf.Buffer.Length);
             }
 
             return true;

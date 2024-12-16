@@ -657,6 +657,7 @@ namespace TagTool.Cache
             130893802351772672, // HaloOnline604673
             130930071628935939, // HaloOnline700123
             -1, // HaloReach
+            -1, // HaloReach11883
             -1  // Halo 4
         };
     }

@@ -29,39 +29,25 @@ namespace TagTool.Commands.Porting
 {
     public partial class PortTagCommand : Command
 	{
-		private GameCacheHaloOnlineBase CacheContext { get; }
-		private GameCache BlamCache;
-		private RenderGeometryConverter GeometryConverter { get; }
+		public GameCacheHaloOnlineBase CacheContext { get; }
+		public GameCache BlamCache;
+		public RenderGeometryConverter GeometryConverter { get; }
 
-		private Dictionary<Tag, List<string>> ReplacedTags = new Dictionary<Tag, List<string>>();
-        private Dictionary<CachedTag, object> CachedTagData = new Dictionary<CachedTag, object>();
+		public Dictionary<Tag, List<string>> ReplacedTags = new Dictionary<Tag, List<string>>();
+        public Dictionary<CachedTag, object> CachedTagData = new Dictionary<CachedTag, object>();
 
-        private Dictionary<int, CachedTag> PortedTags = new Dictionary<int, CachedTag>();
-        private Dictionary<uint, StringId> PortedStringIds = new Dictionary<uint, StringId>();
+        public Dictionary<int, CachedTag> PortedTags = new Dictionary<int, CachedTag>();
+        public Dictionary<uint, StringId> PortedStringIds = new Dictionary<uint, StringId>();
 
-		private List<Tag> RenderMethodTagGroups = new List<Tag> { new Tag("rmbk"), new Tag("rmcs"), new Tag("rmd "), new Tag("rmfl"), new Tag("rmhg"), new Tag("rmsh"), new Tag("rmss"), new Tag("rmtr"), new Tag("rmw "), new Tag("rmrd"), new Tag("rmct"), new Tag("rmgl") };
-		private List<Tag> EffectTagGroups = new List<Tag> { new Tag("beam"), new Tag("cntl"), new Tag("ltvl"), new Tag("decs"), new Tag("prt3") };
-        private readonly List<Tag> ResourceTagGroups = new List<Tag> { new Tag("snd!"), new Tag("bitm"), new Tag("Lbsp") }; // for null tag detection
-
-        private DirectoryInfo TempDirectory { get; } = new DirectoryInfo(Path.GetTempPath());
+        public DirectoryInfo TempDirectory { get; } = new DirectoryInfo(Path.GetTempPath());
         internal BlockingCollection<Action> _deferredActions = new BlockingCollection<Action>();
 
         internal SemaphoreSlim ConcurrencyLimiter;
 
-        string[] argParameters = new string[0];
+        public string[] argParameters = new string[0];
 
-		private static readonly string[] DoNotReplaceGroups = new[]
-		{
-			"glps",
-			"glvs",
-			"vtsh",
-			"pixl",
-			"rmdf",
-			"rmt2"
-		};
-
-		private readonly Dictionary<Tag, CachedTag> DefaultTags = new Dictionary<Tag, CachedTag> { };
-		private bool ScenarioPort = false;
+		public readonly Dictionary<Tag, CachedTag> DefaultTags = new Dictionary<Tag, CachedTag> { };
+		public bool ScenarioPort = false;
 
 		public PortTagCommand(GameCacheHaloOnlineBase cacheContext, GameCache blamCache) :
 			base(true,
@@ -185,7 +171,7 @@ namespace TagTool.Commands.Porting
         {
             resultTag = null;
 
-            if (ResourceTagGroups.Contains(blamTag.Group.Tag))
+            if (PortingConstants.ResourceTagGroups.Contains(blamTag.Group.Tag))
             {
                 // there is only a few cases here -- if geometry\animation references a null resource its tag is still valid
 
@@ -253,7 +239,7 @@ namespace TagTool.Commands.Porting
                         return false;
                 }
             }
-            else if (RenderMethodTagGroups.Contains(blamTag.Group.Tag))
+            else if (PortingConstants.RenderMethodGroups.Contains(blamTag.Group.Tag))
             {
                 RenderMethod renderMethod = BlamCache.Deserialize<RenderMethod>(blamCacheStream, blamTag);
 
@@ -320,8 +306,7 @@ namespace TagTool.Commands.Porting
 
                     Flags = oldFlags;
                 }
-                else
-                if (blamTag.Name != null && blamTag.IsInGroup("bitm"))
+                else if (blamTag.Name != null && blamTag.IsInGroup("bitm"))
                 {
                     if(CacheContext.TagCache.TryGetTag($"{blamTag.Name}.{blamTag.Group}", out result))
                         new TagToolWarning($"using bitm tag reference \"{blamTag.Name}.{blamTag.Group}\" from source cache");
@@ -685,7 +670,7 @@ namespace TagTool.Commands.Porting
             if (blamTag == null)
 				return null;
 
-			var groupTag = blamTag.Group.Tag;
+			var groupTag = blamTag.Group.Tag; 
 
 			// Handle tags that are undesired or not ready to be ported
 			switch (groupTag.ToString())
@@ -764,7 +749,7 @@ namespace TagTool.Commands.Porting
                 }
                 else if (!FlagIsSet(PortingFlags.New))
                 {
-                    if (FlagIsSet(PortingFlags.Replace) && !DoNotReplaceGroups.Contains(instance.Group.Tag.ToString()) 
+                    if (FlagIsSet(PortingFlags.Replace) && !PortingConstants.DoNotReplaceGroups.Contains(instance.Group.Tag.ToString()) 
                         && !DoNotReplaceGroupsCommand.UserDefinedDoNotReplaceGroups.Contains(instance.Group.Tag.ToString()))
                     {
                         if (!FlagIsSet(PortingFlags.Recursive))
@@ -793,7 +778,7 @@ namespace TagTool.Commands.Porting
                             }
                         }
 
-                        if (!ReplacedTags.ContainsKey(groupTag))
+						if (!ReplacedTags.ContainsKey(groupTag))
                             ReplacedTags[groupTag] = new List<string>();
 
                         ReplacedTags[groupTag].Add(blamTag.Name);
@@ -1424,7 +1409,7 @@ namespace TagTool.Commands.Porting
 			return edTag;
 		}
 
-        private void TestForgePaletteCompatible(Stream cacheStream, CachedTag blamTag, string[] argParameters)
+        public void TestForgePaletteCompatible(Stream cacheStream, CachedTag blamTag, string[] argParameters)
         {
             if (!blamTag.IsInGroup("obje") || !CacheContext.TagCache.TryGetCachedTag(blamTag.ToString(), out CachedTag edTag))
                 return;
@@ -2288,7 +2273,7 @@ namespace TagTool.Commands.Porting
 			return null;
 		}
 
-        private List<CachedTag> ParseLegacyTag(string tagSpecifier)
+        public List<CachedTag> ParseLegacyTag(string tagSpecifier)
         {
             List<CachedTag> result = new List<CachedTag>();
 

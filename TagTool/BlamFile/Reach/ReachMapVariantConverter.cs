@@ -44,7 +44,7 @@ namespace TagTool.BlamFile.Reach
             metadata.ContentSize = typeof(BlfMapVariant).GetSize();
             metadata.GameEngineType = GameEngineType.None;
             metadata.MapId = sourceMapVariant.MapId;
-            metadata.Identifier = sourceMapVariant.Metadata.Uid;
+            metadata.UniqueId = sourceMapVariant.Metadata.Uid;
 
             if (sourceMapVariant.Metadata.ModificationHistory.Timestamp >= sourceMapVariant.Metadata.CreationHistory.Timestamp)
                 SetAuthorInfo(sourceMapVariant.Metadata.ModificationHistory);
@@ -54,7 +54,7 @@ namespace TagTool.BlamFile.Reach
             void SetAuthorInfo(ContentItemHistory history)
             {
                 metadata.Author = history.AuthorName;
-                metadata.UserId = history.AuthorUID;
+                metadata.AuthorId = history.AuthorUID;
                 metadata.Timestamp = (ulong)history.Timestamp.ToUnixTimeSeconds();
             }
 
@@ -64,12 +64,12 @@ namespace TagTool.BlamFile.Reach
         private MapVariant ConvertMapVariant(ReachMapVariant sourceMapVariant, Scenario sourceScenario, out List<string> destTagNames)
         {
             var result = new MapVariant();
-            result.Version = 12;
+            result.VariantVersion = 12;
             result.MapId = sourceMapVariant.MapId;
             result.WorldBounds = sourceMapVariant.WorldBounds;
             result.MaximumBudget = sourceMapVariant.MaxBudget;
             result.SpentBudget = sourceMapVariant.SpentBudget;
-            result.MapChecksum = sourceMapVariant.CacheCRC;
+            result.MapVariantChecksum = sourceMapVariant.CacheCRC;
 
             var objectTypeMap = new ObjectTypeMap(sourceScenario);
             result.ObjectTypeStartIndex = objectTypeMap.CalculateObjetTypeStartIndices();
@@ -187,7 +187,8 @@ namespace TagTool.BlamFile.Reach
                 Length = (int)TagStructure.GetStructureSize(typeof(BlfContentHeader), blf.Version, blf.CachePlatform),
                 MajorVersion = 9,
                 MinorVersion = 3,
-                BuildVersion = 0xffffa0d4,
+                BuildVersion = 0xa0d4,
+                MapMinorVersion = 0xffff,
                 Metadata = mapVariant.Metadata
             };
 

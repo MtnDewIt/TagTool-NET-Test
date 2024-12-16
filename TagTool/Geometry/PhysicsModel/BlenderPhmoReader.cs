@@ -36,7 +36,7 @@ namespace TagTool.Geometry
             };
 
             //parse the file as json
-            var json = JSON.Parse(contents);
+            var json = SimpleJSON.JSON.Parse(contents);
 
             return json;
         }
@@ -45,7 +45,7 @@ namespace TagTool.Geometry
             try
             {
                 // Parse the JSON string
-                var jsonNode = JSON.Parse(filename);
+                var jsonNode = SimpleJSON.JSON.Parse(filename);
                 return jsonNode;
             }
             catch (Exception ex)

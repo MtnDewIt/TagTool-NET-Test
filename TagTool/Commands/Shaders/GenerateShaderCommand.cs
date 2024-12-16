@@ -237,7 +237,7 @@ namespace TagTool.Commands.Shaders
                 else
                     vtshTag = Cache.TagCache.AllocateTag<VertexShader>($"rasterizer\\shaders\\{value}");
 
-                ShaderGeneratorNew.GenerateExplicitShader(Cache, stream, value.ToString(), out PixelShader pixl, out VertexShader vtsh);
+                ShaderGeneratorNew.GenerateExplicitShader(Cache, stream, value.ToString(), true, out PixelShader pixl, out VertexShader vtsh);
 
                 Cache.Serialize(stream, vtshTag, vtsh);
                 Cache.Serialize(stream, pixlTag, pixl);
@@ -279,7 +279,7 @@ namespace TagTool.Commands.Shaders
                 else
                     vtshTag = Cache.TagCache.AllocateTag<VertexShader>($"rasterizer\\shaders\\{value}");
 
-                ShaderGeneratorNew.GenerateChudShader(Cache, stream, value.ToString(), out PixelShader pixl, out VertexShader vtsh);
+                ShaderGeneratorNew.GenerateChudShader(Cache, stream, value.ToString(), false, out PixelShader pixl, out VertexShader vtsh);
 
                 Cache.Serialize(stream, vtshTag, vtsh);
                 Cache.Serialize(stream, pixlTag, pixl);
@@ -300,13 +300,13 @@ namespace TagTool.Commands.Shaders
 
                 if (pixel)
                 {
-                    GlobalPixelShader glps = TagTool.Shaders.ShaderGenerator.ShaderGeneratorNew.GenerateSharedPixelShaders(Cache, rmdf, type);
+                    GlobalPixelShader glps = TagTool.Shaders.ShaderGenerator.ShaderGeneratorNew.GenerateSharedPixelShaders(Cache, rmdf, type, true);
                     CachedTag glpsTag = Cache.TagCache.GetTag(rmdf.GlobalPixelShader.Index);
                     Cache.Serialize(stream, glpsTag, glps);
                 }
                 else
                 {
-                    GlobalVertexShader glvs = TagTool.Shaders.ShaderGenerator.ShaderGeneratorNew.GenerateSharedVertexShaders(Cache, rmdf, type);
+                    GlobalVertexShader glvs = TagTool.Shaders.ShaderGenerator.ShaderGeneratorNew.GenerateSharedVertexShaders(Cache, rmdf, type, true);
                     CachedTag glvsTag = Cache.TagCache.GetTag(rmdf.GlobalVertexShader.Index);
                     Cache.Serialize(stream, glvsTag, glvs);
                 }
@@ -949,11 +949,11 @@ namespace TagTool.Commands.Shaders
 
             if (info.IsChud)
             {
-                ShaderGeneratorNew.GenerateChudShader(cache, fakeStream, info.ExplicitName, out info.PixelShader, out info.VertexShader);
+                ShaderGeneratorNew.GenerateChudShader(cache, fakeStream, info.ExplicitName, false, out info.PixelShader, out info.VertexShader);
             }
             else
             {
-                ShaderGeneratorNew.GenerateExplicitShader(cache, fakeStream, info.ExplicitName, out info.PixelShader, out info.VertexShader);
+                ShaderGeneratorNew.GenerateExplicitShader(cache, fakeStream, info.ExplicitName, true, out info.PixelShader, out info.VertexShader);
             }
 
             return info;

@@ -20,11 +20,14 @@ namespace TagTool.Commands.Editing
             NoDefault = (1 << 0),
         }
 
+        private CacheVersion Version;
+        private CachePlatform Platform;
+
         private GameCache Cache;
         private TagStructure Structure;
         private ExportFlags Flags;
 
-        public ExportCommandsCommand(GameCache cache, TagStructure structure)
+        public ExportCommandsCommand(GameCache cache, CacheVersion version, CachePlatform platform, TagStructure structure)
             : base(false,
 
                   "ExportCommands",
@@ -33,6 +36,8 @@ namespace TagTool.Commands.Editing
                   "ExportCommands [NoDefault]",
                   "Exports the commands needed to generate the tag structure. Specify option 'nodefault' to omit default values.")
         {
+            Version = version;
+            Platform = platform;
             Cache = cache;
             Structure = structure;
         }
@@ -67,7 +72,7 @@ namespace TagTool.Commands.Editing
             {
                 case TagStructure tagStruct:
                     {
-                        foreach (var field in tagStruct.GetTagFieldEnumerable(cache.Version, cache.Platform))
+                        foreach (var field in tagStruct.GetTagFieldEnumerable(Version, Platform))
                             DumpCommands(strings, commands, cache, field.GetValue(data), fieldName != null ? $"{fieldName}.{field.Name}" : field.Name);
                     }
                     break;
@@ -128,7 +133,8 @@ namespace TagTool.Commands.Editing
                             }
                             else
                             {
-                                commands.Add($"AddBlockElements {fieldName} {collection.Count}");
+                                if (!collection.GetType().IsArray)
+                                    commands.Add($"AddBlockElements {fieldName} {collection.Count}");
                                 for (int i = 0; i < collection.Count; i++)
                                     DumpCommands(strings, commands, cache, collection[i], $"{fieldName}[{i}]");
                             }
@@ -201,6 +207,14 @@ namespace TagTool.Commands.Editing
                     return $"{datumHandle.Salt} {datumHandle.Index}";
                 case StringId stringId:
                     return Cache.StringTable.GetString(stringId);
+                case LastModificationDate lastModificationDate:
+                    return lastModificationDate == null || lastModificationDate.Low == 0 && lastModificationDate.High == 0 ? $@"null" : $"\"{lastModificationDate.GetModificationDate():yyyy-MM-dd HH:mm:ss.FFFFFFF}\"";
+                case FileCreator fileCreator:
+                    return fileCreator == null || Array.TrueForAll(fileCreator.Data, b => b == 0) ? $@"null" : $"\"{FileCreator.GetCreator(fileCreator.Data)}\"";
+                case NetworkRequestHash networkRequestHash:
+                    return networkRequestHash == null || Array.TrueForAll(networkRequestHash.Data, b => b == 0) ? $@"null" : $"{networkRequestHash.GetHash()}";
+                case RSASignature rsaSignature:
+                    return rsaSignature == null || Array.TrueForAll(rsaSignature.Data, b => b == 0) ? $@"null" : $"{rsaSignature.GetSignature()}";
                 default:
                     return $"{value}";
             }

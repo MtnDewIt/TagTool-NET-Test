@@ -16,12 +16,14 @@ namespace TagTool.Commands.Editing
     {
         private CommandContextStack ContextStack { get; }
         private GameCache Cache { get; }
-        private CachedTag Tag { get; }
+        private CacheVersion Version { get; }
+        private CachePlatform Platform { get; }
+        private object ObjectFile { get; }
 
         public TagStructureInfo Structure { get; set; }
         public object Owner { get; set; }
 
-        public SetFieldCommand(CommandContextStack contextStack, GameCache cache, CachedTag tag, TagStructureInfo structure, object owner)
+        public SetFieldCommand(CommandContextStack contextStack, GameCache cache, CacheVersion version, CachePlatform platform, object objectFile, TagStructureInfo structure, object owner)
             : base(true,
 
                   "SetField",
@@ -33,7 +35,9 @@ namespace TagTool.Commands.Editing
         {
             ContextStack = contextStack;
             Cache = cache;
-            Tag = tag;
+            Version = version;
+            Platform = platform;
+            ObjectFile = objectFile;
             Structure = structure;
             Owner = owner;
         }
@@ -59,7 +63,7 @@ namespace TagTool.Commands.Editing
                 fieldNameLow = fieldName.ToLower();
                 fieldNameSnake = fieldName.ToSnakeCase();
 
-                var command = new EditBlockCommand(ContextStack, Cache, Tag, Owner);
+                var command = new EditBlockCommand(ContextStack, Cache, Version, Platform, ObjectFile, Owner);
 
                 if (command.Execute(new List<string> { blockName }).Equals(false))
                 {
@@ -185,56 +189,76 @@ namespace TagTool.Commands.Editing
             try
             {
 #endif
-                if (fieldValue == null)
-                    valueString = "null";
-                else if (fieldType == typeof(StringId))
-                    valueString = Cache.StringTable.GetString((StringId)fieldValue);
-                else if (fieldType == typeof(CachedTag))
-                {
-                    var instance = (CachedTag)fieldValue;
+            if (fieldValue == null)
+                valueString = "null";
+            else if (fieldType == typeof(StringId))
+                valueString = Cache.StringTable.GetString((StringId)fieldValue);
+            else if (fieldType == typeof(CachedTag))
+            {
+                var instance = (CachedTag)fieldValue;
 
-                    var tagName = instance?.Name ?? $"0x{instance.Index:X4}";
+                var tagName = instance?.Name ?? $"0x{instance.Index:X4}";
 
-                    valueString = $"[0x{instance.Index:X4}] {tagName}.{instance.Group}";
-                }
-                else if (fieldType == typeof(TagFunction))
-                {
-                    var function = (TagFunction)fieldValue;
-                    valueString = "";
-                    foreach (var datum in function.Data)
-                        valueString += datum.ToString("X2");
-                }
-                else if (fieldType == typeof(PageableResource))
-                {
-                    var pageable = (PageableResource)fieldValue;
-                    pageable.GetLocation(out var location);
-                    valueString = pageable == null ? "null" : $"{{ Location: {location}, Index: 0x{pageable.Page.Index:X4}, CompressedSize: 0x{pageable.Page.CompressedBlockSize:X8} }}";
-                }
-                else if (fieldType == typeof(PackedSamplerAddressMode))
-                {
-                    var packedAddressMode = (PackedSamplerAddressMode)fieldValue;
-                    valueString = $"{{ AddressU: {packedAddressMode.AddressU}, AddressV: {packedAddressMode.AddressV} }}";
-                }
-                else if (fieldInfo.FieldType.IsArray && fieldInfo.Attribute.Length != 0)
-                {
-                    valueString = fieldValue == null ? "null" : $"[{fieldInfo.Attribute.Length}] {{ ";
-                    var valueArray = (Array)fieldValue;
+                valueString = $"[0x{instance.Index:X4}] {tagName}.{instance.Group}";
+            }
+            else if (fieldType == typeof(TagFunction))
+            {
+                var function = (TagFunction)fieldValue;
+                valueString = "";
+                foreach (var datum in function.Data)
+                    valueString += datum.ToString("X2");
+            }
+            else if (fieldType == typeof(PageableResource))
+            {
+                var pageable = (PageableResource)fieldValue;
+                pageable.GetLocation(out var location);
+                valueString = pageable == null ? "null" : $"{{ Location: {location}, Index: 0x{pageable.Page.Index:X4}, CompressedSize: 0x{pageable.Page.CompressedBlockSize:X8} }}";
+            }
+            else if (fieldType == typeof(PackedSamplerAddressMode))
+            {
+                var packedAddressMode = (PackedSamplerAddressMode)fieldValue;
+                valueString = $"{{ AddressU: {packedAddressMode.AddressU}, AddressV: {packedAddressMode.AddressV} }}";
+            }
+            else if (fieldType == typeof(LastModificationDate))
+            {
+                var modificationDate = (LastModificationDate)fieldValue;
+                valueString = modificationDate == null || modificationDate.Low == 0 && modificationDate.High == 0 ? "null" : $@"{modificationDate.GetModificationDate():yyyy-MM-dd HH:mm:ss.FFFFFFF}";
+            }
+            else if (fieldType == typeof(FileCreator)) 
+            {
+                var creator = (FileCreator)fieldValue;
+                valueString = creator == null || Array.TrueForAll(creator.Data, b => b == 0) ? "null" : $@"{FileCreator.GetCreator(creator.Data)}";
+            }
+            else if (fieldType == typeof(NetworkRequestHash))
+            {
+                var networkRequestHash = (NetworkRequestHash)fieldValue;
+                valueString = networkRequestHash == null || Array.TrueForAll(networkRequestHash.Data, b => b == 0) ? "null" : $@"{networkRequestHash.GetHash()}";
+            }
+            else if (fieldType == typeof(RSASignature))
+            {
+                var rsaSignature = (RSASignature)fieldValue;
+                valueString = rsaSignature == null || Array.TrueForAll(rsaSignature.Data, b => b == 0) ? "null" : $@"{rsaSignature.GetSignature()}";
+            }
+            else if (fieldInfo.FieldType.IsArray && fieldInfo.Attribute.Length != 0)
+            {
+                valueString = fieldValue == null ? "null" : $"[{fieldInfo.Attribute.Length}] {{ ";
+                var valueArray = (Array)fieldValue;
 
-                    if (fieldValue != null)
-                    {
-                        for (var i = 0; i < fieldInfo.Attribute.Length; i++)
-                            valueString += $"{valueArray.GetValue(i)}{((i + 1) < fieldInfo.Attribute.Length ? "," : "")} ";
+                if (fieldValue != null)
+                {
+                    for (var i = 0; i < fieldInfo.Attribute.Length; i++)
+                        valueString += $"{valueArray.GetValue(i)}{((i + 1) < fieldInfo.Attribute.Length ? "," : "")} ";
 
-                        valueString += "}";
-                    }
+                    valueString += "}";
                 }
-                else if (fieldType.GetInterface(typeof(IList).Name) != null)
-                    valueString =
-                        ((IList)fieldValue).Count != 0 ?
-                            $"{{...}}[{((IList)fieldValue).Count}]" :
-                        "null";
-                else
-                    valueString = fieldValue.ToString();
+            }
+            else if (fieldType.GetInterface(typeof(IList).Name) != null)
+                valueString =
+                    ((IList)fieldValue).Count != 0 ?
+                        $"{{...}}[{((IList)fieldValue).Count}]" :
+                    "null";
+            else
+                valueString = fieldValue.ToString();
 #if !DEBUG
             }
             catch (Exception e)
@@ -540,6 +564,76 @@ namespace TagTool.Commands.Editing
                 }
                 else throw new NotImplementedException();
             }
+            else if (type == typeof(LastModificationDate))
+            {
+                if (args.Count != 1)
+                    return false;
+
+                if (args[0] == "null")
+                {
+                    output = null;
+                }
+                else if (!DateTime.TryParse(args[0], out var dateTime))
+                {
+                    return false;
+                }
+                else
+                {
+                    var modificationDate = new LastModificationDate();
+
+                    modificationDate.SetModificationDate(dateTime);
+
+                    output = modificationDate;
+                }
+            }
+            else if (type == typeof(FileCreator))
+            {
+                if (args.Count != 1 || args[0].Length > 32)
+                    return false;
+
+                var fileCreator = new FileCreator 
+                {
+                    Data = FileCreator.SetCreator(args[0]),
+                };
+
+                output = args[0] == "null" ? null : fileCreator;
+            }
+            else if (type == typeof(NetworkRequestHash))
+            {
+                if (args.Count != 1 || args[0].Length > 40)
+                    return false;
+
+                if (args[0] == "null")
+                {
+                    output = null;
+                }
+                else
+                {
+                    var networkRequestHash = new NetworkRequestHash();
+
+                    networkRequestHash.SetHash(args[0]);
+
+                    output = networkRequestHash;
+                }
+            }
+            else if (type == typeof(RSASignature)) 
+            {
+                if (args.Count != 1 || args[0].Length > 512)
+                    return false;
+
+                if (args[0] == "null")
+                {
+                    output = null;
+                }
+                else 
+                {
+                    var rsaSignature = new RSASignature();
+
+                    rsaSignature.SetSignature(args[0]);
+
+                    output = rsaSignature;
+                }
+            }
             else if (typeof(IBounds).IsAssignableFrom(type))
             {
                 if (type.IsGenericType)
@@ -553,6 +647,20 @@ namespace TagTool.Commands.Editing
                 if (!boundsType.TryParse(cache, args, out boundsType, out string error))
                     Console.WriteLine(error);
                 return boundsType;
+            }
+            else if (!type.IsGenericType && !type.IsArray)
+            {
+                if (args.Count != 1)
+                    return false;
+
+                if (args[0] == "null")
+                {
+                    output = null;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {

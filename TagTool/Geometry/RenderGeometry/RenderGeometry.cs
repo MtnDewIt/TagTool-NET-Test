@@ -249,6 +249,7 @@ namespace TagTool.Geometry
         /// Set the runtime VertexBufferResources and IndexBufferResources fields given the resource definition
         /// </summary>
         /// <param name="resourceDefinition"></param>
+		/// <param name="allowShared"></param>
         public void SetResourceBuffers(RenderGeometryApiResourceDefinition resourceDefinition, bool allowShared)
         {
             bool[] convertedVertexBuffers = new bool[resourceDefinition.VertexBuffers.Count];

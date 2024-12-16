@@ -28,7 +28,7 @@ namespace TagTool.Commands.Tags
 
         public override object Execute(List<string> args)
         {
-            var tags = Cache.TagCacheGenHO.TagTable.GroupBy(x => $"{x.Name}.{x.Group}").Where(x => x.Count() > 1).ToList();
+            var tags = Cache.TagCacheGenHO.NonNull().GroupBy(x => $"{x.Name}.{x.Group}").Where(x => x.Count() > 1).ToList();
             foreach (var duplicates in tags)
             {
                 foreach (var duplicate in duplicates)

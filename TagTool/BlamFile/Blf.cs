@@ -5,6 +5,7 @@ using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
+using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.BlamFile
 {
@@ -34,7 +35,7 @@ namespace TagTool.BlamFile
         public BlfGameVariant GameVariant;
         public BlfContentHeader ContentHeader;
         public BlfMapImage MapImage;
-        public byte[] JpegImage;
+        public byte[] Buffer;
 
         public Blf(CacheVersion version, CachePlatform cachePlatform)
         {
@@ -134,7 +135,7 @@ namespace TagTool.BlamFile
                     case "mapi":
                         ContentFlags |= BlfFileContentFlags.MapImage;
                         MapImage = (BlfMapImage)deserializer.Deserialize(dataContext, typeof(BlfMapImage));
-                        JpegImage = reader.ReadBytes(MapImage.JpegSize);
+                        Buffer = reader.ReadBytes(MapImage.BufferSize);
                         break;
 
                     case "scnd":
@@ -189,13 +190,13 @@ namespace TagTool.BlamFile
 
             if (ContentFlags.HasFlag(BlfFileContentFlags.MapImage))
             {
-                if (JpegImage != null && JpegImage.Length > 0)
+                if (Buffer != null && Buffer.Length > 0)
                 {
-                    MapImage.JpegSize = JpegImage.Length;
+                    MapImage.BufferSize = Buffer.Length;
                     serializer.Serialize(dataContext, MapImage);
                     // image is always little endian
                     writer.Format = EndianFormat.LittleEndian;
-                    writer.WriteBlock(JpegImage);
+                    writer.WriteBlock(Buffer);
                     writer.Format = Format;
                 }
                 else
@@ -386,8 +387,20 @@ namespace TagTool.BlamFile
 
             if(Scenario.MapFlags.HasFlag(BlfScenarioFlags.IsMultiplayer))
             {
-                for (int i = 0; i < 11; i++)
-                    Scenario.GameEngineTeamCounts[i] = 8;
+                Scenario.GameEngineTeamCounts = new GameEngineTeams
+                {
+                    NoGametypeTeamCount = 8,
+                    CtfTeamCount = 8,
+                    SlayerTeamCount = 8,
+                    OddballTeamCount = 8,
+                    KingTeamCount = 8,
+                    SandboxTeamCount = 8,
+                    VipTeamCount = 8,
+                    JuggernautTeamCount = 8,
+                    TerritoriesTeamCount = 8,
+                    AssaultTeamCount = 8,
+                    InfectionTeamCount = 8,
+                };
             }
 
             Scenario.Insertions = insertions;
@@ -416,17 +429,17 @@ namespace TagTool.BlamFile
     [Flags]
     public enum BlfScenarioFlags : uint
     {
-        Unknown0 = 0,
-        Unknown1 = 1 << 0,
-        Unknown2 = 1 << 1,
+        None = 0,
+        Bit1 = 1 << 0,
+        Bit2 = 1 << 1,
         Visible = 1 << 2,
         GeneratesFilm = 1 << 3,
         IsMainmenu = 1 << 4,
         IsCampaign = 1 << 5,
         IsMultiplayer = 1 << 6,
         IsDlc = 1 << 7,
-        Unknown8 = 1 << 8,
-        Unknown9 = 1 << 9,
+        TestBit = 1 << 8,
+        TempBit = 1 << 9,
         IsFirefight = 1 << 10,
         IsCinematic = 1 << 11,
         IsForgeOnly = 1 << 12,
@@ -441,7 +454,7 @@ namespace TagTool.BlamFile
     }
 
     [TagStructure(Size = 0xC, Align = 0x1)]
-    public class BlfChunkHeader
+    public class BlfChunkHeader : TagStructure
     {
         public Tag Signature;
         public int Length;
@@ -454,10 +467,12 @@ namespace TagTool.BlamFile
     {
         // when -2, order is little endian, else order is big endian. Check byteswapepd BOM to be -2 otherwise invalid.
         public short ByteOrderMarker;
-        public short Unknown;
 
         [TagField(Length = 0x20)]
         public string InternalName;
+        
+        [TagField(Length = 2, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding;
     }
 
     [TagStructure(Size = 0x5, Align = 0x1)]
@@ -470,21 +485,32 @@ namespace TagTool.BlamFile
     [TagStructure(Size = 0x4, Align = 0x1)]
     public class BlfEndOfFileCRC : BlfChunkEndOfFile
     {
-        public uint Checksum;
+        public BlfCRCChecksum Checksum;
+
+        [TagStructure(Size = 0x4, Align = 0x1)]
+        public class BlfCRCChecksum
+        {
+            public uint Checksum;
+        }
     }
 
     [TagStructure(Size = 0x100, Align = 0x1)]
     public class BlfEndOfFileSHA1 : BlfChunkEndOfFile
     {
-        [TagField(Length = 0x100)]
-        public byte[] Hash;
+        public BlfSHA1Hash Hash;
+
+        [TagStructure(Size = 0x100, Align = 0x1)]
+        public class BlfSHA1Hash
+        {
+            [TagField(Length = 0x100)]
+            public byte[] Hash;
+        }
     }
 
     [TagStructure(Size = 0x100, Align = 0x1)]
     public class BlfEndOfFileRSA : BlfChunkEndOfFile
     {
-        [TagField(Length = 0x100)]
-        public byte[] Hash;
+        public RSASignature RSASignature;
     }
 
     [TagStructure(Size = 0x4D44, Align = 0x1, MaxVersion = CacheVersion.Halo3Retail)]
@@ -502,30 +528,29 @@ namespace TagTool.BlamFile
         public NameUnicode128[] Descriptions;
 
         [TagField(Length = 0x100)]
-        public string ImageName;
+        public string ImageFileBase;
 
         [TagField(Length = 0x100)]
-        public string MapName;
+        public string ScenarioPath;
 
-        public int MapIndex;
+        public int PresenceContextId;
         [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
-        public int GuiSelectableItemType;
+        public int SortOrder;
 
         [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
-        public byte Unknown1;
+        public byte MinimumDesiredPlayers;
         [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
-        public byte Unknown2;
+        public byte MaximumDesiredPlayers;
 
-        [TagField(Length = 0xB)]
-        public byte[] GameEngineTeamCounts;
+        public GameEngineTeams GameEngineTeamCounts;
 
-        public byte Unknown3;
+        public bool AllowSavedFilms;
 
-        [TagField(Length = 2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline700123)]
-        public byte[] Unused1;
+        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline700123)]
+        public byte[] Padding1;
 
-        [TagField(Length = 4, Flags = TagFieldFlags.Padding)]
-        public byte[] Unused2;
+        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding2;
 
         [TagField(Length = 64, MinVersion = CacheVersion.HaloReach)]
         public uint[] MultiplayerObjects; // bit vector
@@ -539,29 +564,45 @@ namespace TagTool.BlamFile
         public string DefaultAuthor;
     }
 
+    [TagStructure(Size = 0xB, Align = 0x1)]
+    public class GameEngineTeams : TagStructure 
+    {
+        public byte NoGametypeTeamCount;
+        public byte CtfTeamCount;
+        public byte SlayerTeamCount;
+        public byte OddballTeamCount;
+        public byte KingTeamCount;
+        public byte SandboxTeamCount;
+        public byte VipTeamCount;
+        public byte JuggernautTeamCount;
+        public byte TerritoriesTeamCount;
+        public byte AssaultTeamCount;
+        public byte InfectionTeamCount;
+    }
+
     [TagStructure(Size = 0xF08, Align = 0x1, MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Size = 0xF10, Align = 0x1, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0xF88, Align = 0x1, MinVersion = CacheVersion.HaloReach)]
-    public class BlfScenarioInsertion
+    public class BlfScenarioInsertion : TagStructure
     {
-        public bool Valid;
-        public FlagsValue Flags;
+        public bool Visible;
+        public BlfScenarioInsertionFlags Flags;
 
         [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public short ZoneSetIndex;
-        [TagField(Length = 2, MinVersion = CacheVersion.HaloReach)]
+        [TagField(Length = 0x2, MinVersion = CacheVersion.HaloReach)]
         public byte[] Padding1;
 
         [TagField(Length = 128, MinVersion = CacheVersion.HaloReach)]
         public string ZoneSetName;
 
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-        public int FlashbackMapId; // mombasa streets
+        public int ReturnFromMapId;
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-        public int SurvivalIndex; // not entirely sure what this is, but it's used in rich presence
+        public int SurvivalPresenceContextId;
 
         [TagField(Length = 4, Flags = TagFieldFlags.Padding)]
-        public byte[] Unused;
+        public byte[] Padding2;
 
         [TagField(Length = 0xC)]
         public NameUnicode32[] Names;
@@ -569,12 +610,14 @@ namespace TagTool.BlamFile
         [TagField(Length = 0xC)]
         public NameUnicode128[] Descriptions;
 
-        public enum FlagsValue : byte
+        [Flags]
+        public enum BlfScenarioInsertionFlags : byte
         {
+            None = 0,
             SurvivalBit = 1 << 0,
-            Bit1 = 1 << 1,
+            SurvivalAlwaysUnlockedBit = 1 << 1,
             Bit2 = 1 << 2,
-            HasFlashbackBit = 1 << 3
+            ReturnFromMapBit = 1 << 3,
         }
     }
 
@@ -595,7 +638,7 @@ namespace TagTool.BlamFile
         public byte[] Hash;
     }
 
-    [TagStructure(Size = 0x484)]
+    [TagStructure(Size = 0x484, Align = 0x1)]
     public class BlfModPackageReference : BlfChunkHeader
     {
         [TagField(Length = 0x14)]
@@ -626,7 +669,7 @@ namespace TagTool.BlamFile
     public class BlfCampaign : BlfChunkHeader
     {
         public int CampaignId;
-        public uint Type;
+        public uint TypeFlags;
 
         [TagField(Length = 0xC)]
         public CampaignNameUnicode32[] Names;
@@ -637,7 +680,8 @@ namespace TagTool.BlamFile
         [TagField(Length = 0x40)]
         public int[] MapIds;
 
-        public uint unknown;
+        [TagField(Length = 4, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding1;
     }
 
     [TagStructure(Size = 0xE094, Align = 0x1)]
@@ -657,19 +701,26 @@ namespace TagTool.BlamFile
     [TagStructure(Size = 0xFC, Align = 0x1)]
     public class BlfContentHeader : BlfChunkHeader
     {
-        public uint BuildVersion;
+        public ushort BuildVersion;
+        public ushort MapMinorVersion;
         public ContentItemMetadata Metadata;
     }
 
     [TagStructure(Size = 0x8, Align = 0x1)]
     public class BlfMapImage : BlfChunkHeader
     {
-        public uint Unknown;
-        public int JpegSize;
+        public BlfImageType Type;
+        public int BufferSize;
+
+        public enum BlfImageType : uint
+        {
+            JPG,
+            PNG,
+        }
     }
 
     [TagStructure(Size = 0x100, Align = 0x1)]
-    public class TagName
+    public class TagName : TagStructure
     {
         [TagField(Length = 0x100)]
         public string Name;
@@ -678,27 +729,28 @@ namespace TagTool.BlamFile
     [TagStructure(Size = 0x264, Align = 0x1)]
     public class BlfGameVariant : BlfChunkHeader
     {
-        public int GameVariantType;
+        public GameEngineType GameVariantType;
+
         [TagField(Length = 0x260)]
-        public byte[] Data; // TODO implement all the structures for each variant and take the union
+        public byte[] Variant;
     }
 
     [TagStructure(Size = 0x40, Align = 0x1)]
-    public class NameUnicode32
+    public class NameUnicode32 : TagStructure
     {
         [TagField(CharSet = System.Runtime.InteropServices.CharSet.Unicode, Length = 0x20, DataAlign = 0x1)]
         public string Name;
     }
 
     [TagStructure(Size = 0x100, Align = 0x1)]
-    public class NameUnicode128
+    public class NameUnicode128 : TagStructure
     {
         [TagField(CharSet = System.Runtime.InteropServices.CharSet.Unicode, Length = 0x80, DataAlign = 0x1)]
         public string Name;
     }
 
     [TagStructure(Size = 0x80, Align = 0x1)]
-    public class CampaignNameUnicode32
+    public class CampaignNameUnicode32 : TagStructure
     {
         [TagField(CharSet = System.Runtime.InteropServices.CharSet.Unicode, Length = 0x40, DataAlign = 0x1)]
         public string Name;
@@ -708,11 +760,11 @@ namespace TagTool.BlamFile
     public class BlfAuthor : BlfChunkHeader
     {
         [TagField(Length = 16)]
-        public string Name;
-        public ulong Unknown1;
+        public string BuildName;
+        public ulong BuildIdentifier;
         [TagField(Length = 28)]
-        public string Unknown2;
+        public string BuildString;
         [TagField(Length = 16)]
-        public string Unknown3;
+        public string AuthorName;
     }
 }

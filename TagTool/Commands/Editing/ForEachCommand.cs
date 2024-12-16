@@ -15,12 +15,14 @@ namespace TagTool.Commands.Editing
     {
         private CommandContextStack ContextStack { get; }
         private GameCache Cache { get; }
-        private CachedTag Tag { get; }
+        private CacheVersion Version { get; }
+        private CachePlatform Platform { get; }
+        private object ObjectFile { get; }
 
         public TagStructureInfo Structure { get; set; }
         public object Owner { get; set; }
 
-        public ForEachCommand(CommandContextStack contextStack, GameCache cache, CachedTag tag, TagStructureInfo structure, object owner)
+        public ForEachCommand(CommandContextStack contextStack, GameCache cache, CacheVersion version, CachePlatform platform, object objectFile, TagStructureInfo structure, object owner)
             : base(true,
 
                   "ForEach",
@@ -32,7 +34,9 @@ namespace TagTool.Commands.Editing
         {
             ContextStack = contextStack;
             Cache = cache;
-            Tag = tag;
+            Version = version;
+            Platform = platform;
+            ObjectFile = objectFile;
             Structure = structure;
             Owner = owner;
         }
@@ -60,7 +64,7 @@ namespace TagTool.Commands.Editing
                 fieldNameLow = fieldName.ToLower();
                 fieldNameSnake = fieldName.ToSnakeCase();
 
-                var command = new EditBlockCommand(ContextStack, Cache, Tag, Owner);
+                var command = new EditBlockCommand(ContextStack, Cache, Version, Platform, ObjectFile, Owner);
 
                 if (command.Execute(new List<string> { blockName }).Equals(false))
                 {
@@ -170,7 +174,7 @@ namespace TagTool.Commands.Editing
                 {
                     ContextReturn(previousContext, previousOwner, previousStructure);
 
-                    if (blockName != "" && new EditBlockCommand(ContextStack, Cache, Tag, Owner)
+                    if (blockName != "" && new EditBlockCommand(ContextStack, Cache, Version, Platform, ObjectFile, Owner)
                             .Execute(new List<string> { $"{blockName}[{i}]" })
                             .Equals(false))
                         return new TagToolError(CommandError.ArgInvalid, $"Invalid tag block name: {blockName}");
@@ -195,7 +199,7 @@ namespace TagTool.Commands.Editing
             {
                 ContextReturn(previousContext, previousOwner, previousStructure);
 
-                if (blockName != "" && new EditBlockCommand(ContextStack, Cache, Tag, Owner)
+                if (blockName != "" && new EditBlockCommand(ContextStack, Cache, Version, Platform, ObjectFile, Owner)
                     .Execute(new List<string> { $"{blockName}" })
                     .Equals(false))
                     return new TagToolError(CommandError.ArgInvalid, $"Invalid tag structure name: {blockName}");
@@ -214,7 +218,7 @@ namespace TagTool.Commands.Editing
             if (index < 0 || index >= elements.Count || elements.GetType().GetGenericArguments().Count() == 0)
                 return null;
 
-            foreach (var info in TagStructure.GetTagFieldEnumerable(elements.GetType().GetGenericArguments()[0], Cache.Version, Cache.Platform))
+            foreach (var info in TagStructure.GetTagFieldEnumerable(elements.GetType().GetGenericArguments()[0], Version, Platform))
             {
                 if (info.Attribute == null || !info.Attribute.Flags.HasFlag(Label))
                     continue;
@@ -225,8 +229,18 @@ namespace TagTool.Commands.Editing
                     return (string)value;
                 else if (info.FieldType == typeof(StringId))
                     return Cache.StringTable.GetString((StringId)value);
-                else if (info.FieldType.IsPrimitive && Tag.IsInGroup("scnr"))
-                    return GetLabel((IList)typeof(Scenario).GetField(nameof(Scenario.ObjectNames)).GetValue(Owner), Convert.ToInt32(value));
+                else if (info.FieldType.IsPrimitive) 
+                {
+                    if (ObjectFile.GetType() == typeof(CachedTag)) 
+                    {
+                        var tag = ObjectFile as CachedTag;
+
+                        if (tag.IsInGroup("scnr")) 
+                        {
+                            return GetLabel((IList)typeof(Scenario).GetField(nameof(Scenario.ObjectNames)).GetValue(Owner), Convert.ToInt32(value));
+                        }
+                    }
+                }
                 else if (info.FieldType == typeof(CachedTag))
                     return value != null ? value.ToString() : "Null";
                 else

@@ -90,31 +90,51 @@ namespace TagTool.Commands.Editing
                 try
                 {
 #endif
-				if (fieldValue == null)
-					valueString = "null";
-				else if (fieldType == typeof(StringId))
-					valueString = Cache.StringTable.GetString((StringId)fieldValue);
-				else if (fieldType == typeof(CachedTag))
-				{
-					var instance = (CachedTag)fieldValue;
+                if (fieldValue == null)
+                    valueString = "null";
+                else if (fieldType == typeof(StringId))
+                    valueString = Cache.StringTable.GetString((StringId)fieldValue);
+                else if (fieldType == typeof(CachedTag))
+                {
+                    var instance = (CachedTag)fieldValue;
 
-					var tagName = instance?.Name ?? $"0x{instance.Index:X4}";
+                    var tagName = instance?.Name ?? $"0x{instance.Index:X4}";
 
-					valueString = $"[0x{instance.Index:X4}] {tagName}.{instance.Group}";
-				}
-				else if (fieldType == typeof(TagFunction))
-				{
-					var function = (TagFunction)fieldValue;
-					valueString = "";
-					foreach (var datum in function.Data)
-						valueString += datum.ToString("X2");
-				}
-				else if (fieldType == typeof(PageableResource))
-				{
-					var pageable = (PageableResource)fieldValue;
-					pageable.GetLocation(out var location);
-					valueString = pageable == null ? "null" : $"{{ Location: {location}, Index: 0x{pageable.Page.Index:X4}, CompressedSize: 0x{pageable.Page.CompressedBlockSize:X8} }}";
-				}
+                    valueString = $"[0x{instance.Index:X4}] {tagName}.{instance.Group}";
+                }
+                else if (fieldType == typeof(TagFunction))
+                {
+                    var function = (TagFunction)fieldValue;
+                    valueString = "";
+                    foreach (var datum in function.Data)
+                        valueString += datum.ToString("X2");
+                }
+                else if (fieldType == typeof(PageableResource))
+                {
+                    var pageable = (PageableResource)fieldValue;
+                    pageable.GetLocation(out var location);
+                    valueString = pageable == null ? "null" : $"{{ Location: {location}, Index: 0x{pageable.Page.Index:X4}, CompressedSize: 0x{pageable.Page.CompressedBlockSize:X8} }}";
+                }
+                else if (fieldType == typeof(LastModificationDate))
+                {
+                    var modificationDate = (LastModificationDate)fieldValue;
+                    valueString = modificationDate == null || modificationDate.Low == 0 && modificationDate.High == 0 ? "null" : $@"{modificationDate.GetModificationDate():yyyy-MM-dd HH:mm:ss.FFFFFFF}";
+                }
+                else if (fieldType == typeof(FileCreator))
+                {
+                    var creator = (FileCreator)fieldValue;
+                    valueString = creator == null || Array.TrueForAll(creator.Data, b => b == 0) ? "null" : $@"{FileCreator.GetCreator(creator.Data)}";
+                }
+                else if (fieldType == typeof(NetworkRequestHash))
+                {
+                    var networkRequestHash = (NetworkRequestHash)fieldValue;
+                    valueString = networkRequestHash == null || Array.TrueForAll(networkRequestHash.Data, b => b == 0) ? "null" : $@"{networkRequestHash.GetHash()}";
+                }
+                else if (fieldType == typeof(RSASignature)) 
+                {
+                    var rsaSignature = (RSASignature)fieldValue;
+                    valueString = rsaSignature == null || Array.TrueForAll(rsaSignature.Data, b => b == 0) ? "null" : $@"{rsaSignature.GetSignature()}";
+                }
                 else if (tagFieldInfo.FieldType.IsArray && tagFieldInfo.Attribute.Length != 0)
                 {
                     valueString = fieldValue == null ? "null" : $"[{tagFieldInfo.Attribute.Length}] {{ ";
@@ -122,10 +142,17 @@ namespace TagTool.Commands.Editing
 
                     if (fieldValue != null)
                     {
-                        for (var i = 0; i < tagFieldInfo.Attribute.Length; i++)
-                            valueString += $"{valueArray.GetValue(i)}{((i + 1) < tagFieldInfo.Attribute.Length ? "," : "")} ";
+                        if (!valueArray.GetValue(0).GetType().IsPrimitive)
+                        {
+                            valueString += $"{valueArray.GetValue(0)} }}";
+                        }
+                        else
+                        {
+                            for (var i = 0; i < tagFieldInfo.Attribute.Length; i++)
+                                valueString += $"{valueArray.GetValue(i)}{((i + 1) < tagFieldInfo.Attribute.Length ? "," : "")} ";
 
-                        valueString += "}";
+                            valueString += "}";
+                        }
                     }
                 }
                 else if (fieldType.GetInterface(typeof(IList).Name) != null)
@@ -134,7 +161,7 @@ namespace TagTool.Commands.Editing
                             $"{{...}}[{((IList)fieldValue).Count}]" :
                         "null";
                 else
-					valueString = fieldValue.ToString();
+                    valueString = fieldValue.ToString();
 #if !DEBUG
                 }
                 catch (Exception e)

@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using TagTool.Extensions;
 
 namespace TagTool.IO
 {
@@ -340,20 +341,18 @@ namespace TagTool.IO
                 iv[i] = (byte)(xor[i] ^ 0x3C);
             }
 
-            var aes = new AesManaged()
-            {
-                Mode = CipherMode.CBC,
-                Key = xor,
-                IV = iv,
-                Padding = PaddingMode.Zeros
-            };
+            var aes = Aes.Create();
+            aes.Mode = CipherMode.CBC;
+            aes.Key = xor;
+            aes.IV = iv;
+            aes.Padding = PaddingMode.Zeros;
 
             return new MemoryStream(aes.CreateDecryptor(aes.Key, aes.IV).TransformFinalBlock(data, 0, data.Length));
         }
 
         public int ReadBlock(byte[] buffer, int offset, int size)
         {
-            return BaseStream.Read(buffer, offset, size);
+            return BaseStream.ReadAll(buffer, offset, size);
         }
 
         public void SeekTo(long offset)

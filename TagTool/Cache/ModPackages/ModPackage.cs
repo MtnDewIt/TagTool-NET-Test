@@ -16,8 +16,10 @@ using System.Linq;
 
 namespace TagTool.Cache
 {
-    public class ModPackage
+    public class ModPackage : IDisposable
     {
+        private IntPtr Data { get; set; }
+
         public ModPackageHeader Header { get; set; } = new ModPackageHeader();
 
         public ModPackageMetadata Metadata { get; set; } = new ModPackageMetadata();
@@ -53,15 +55,32 @@ namespace TagTool.Cache
         public CacheVersion PackageVersion = CacheVersion.HaloOnlineED;
         public CachePlatform PackagePlatform = CachePlatform.Original;
 
-        ~ModPackage()
+        public void Dispose()
         {
-            foreach(var stream in TagCachesStreams)
+            if (Data != default) 
+            {
+                Marshal.FreeHGlobal(Data);
+                Data = default;
+            }
+
+            foreach(ExtantStream stream in TagCachesStreams)
             {
                 stream.SetDisposable(true);
-                stream.Dispose();
+                stream.Dispose(true);
             }
             ResourcesStream.SetDisposable(true);
-            ResourcesStream.Dispose();
+            ResourcesStream.Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
+        ~ModPackage()
+        {
+            if (Data != default)
+            {
+                Marshal.FreeHGlobal(Data);
+                Data = default;
+            }
         }
 
         public ModPackage(FileInfo file = null, bool unmanagedResourceStream=false)
@@ -93,8 +112,8 @@ namespace TagTool.Cache
                     unsafe
                     {
                         long bufferSize = 4L * 1024 * 1024 * 1024; // 4 GB max
-                        IntPtr data = Marshal.AllocHGlobal((IntPtr)bufferSize);
-                        ResourcesStream = new ExtantStream(new UnmanagedMemoryStream((byte*)data.ToPointer(), 0, bufferSize, FileAccess.ReadWrite));
+                        Data = Marshal.AllocHGlobal((IntPtr)bufferSize);
+                        ResourcesStream = new ExtantStream(new UnmanagedMemoryStream((byte*)Data.ToPointer(), 0, bufferSize, FileAccess.ReadWrite));
                     }
                 }
                 
@@ -279,7 +298,7 @@ namespace TagTool.Cache
                 //
 
                 packageStream.Position = typeof(ModPackageHeader).GetSize();
-                Header.SHA1 = new SHA1Managed().ComputeHash(packageStream);
+                Header.SHA1 = SHA1.Create().ComputeHash(packageStream);
 
                 //
                 // Sign the package using the ED profile keys
@@ -543,8 +562,8 @@ namespace TagTool.Cache
                 unsafe
                 {
                     long bufferSize = 4L * 1024 * 1024 * 1024; // 4 GB max
-                    IntPtr data = Marshal.AllocHGlobal((IntPtr)bufferSize);
-                    newResourceStream = new UnmanagedMemoryStream((byte*)data.ToPointer(), 0, bufferSize, FileAccess.ReadWrite);
+                    Data = Marshal.AllocHGlobal((IntPtr)bufferSize);
+                    newResourceStream = new UnmanagedMemoryStream((byte*)Data.ToPointer(), 0, bufferSize, FileAccess.ReadWrite);
                     ResourcesStream = new ExtantStream(newResourceStream);
                     CopyStreamChunk(reader, ResourcesStream, section.Size);
                 }

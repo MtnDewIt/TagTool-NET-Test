@@ -4,6 +4,7 @@ namespace TagTool.Tags.Definitions.Common
 {
     public enum MultiplayerTeamDesignator : sbyte
     {
+        None = -1,
         Red,
         Blue,
         Green,
@@ -44,6 +45,7 @@ namespace TagTool.Tags.Definitions.Common
 
     public enum MultiplayerObjectType : sbyte
     {
+        None = -1,
         Ordinary,
         Weapon,
         Grenade,
@@ -53,14 +55,14 @@ namespace TagTool.Tags.Definitions.Common
         LightLandVehicle,
         HeavyLandVehicle,
         FlyingVehicle,
-        Teleporter2way,
+        TeleporterTwoWay,
         TeleporterSender,
         TeleporterReceiver,
         PlayerSpawnLocation,
         PlayerRespawnZone,
-        HoldSpawnLocation, // OddballSpawnLocation (only? or assault also)
+        OddballSpawnLocation,
         CtfFlagSpawnLocation,
-        AssaultTargetLocation, // formerly TargetSpawnLocation. assumed only for Assault
+        TargetSpawnLocation,
         CtfFlagReturnArea,
         KothHillArea,
         InfectionSafeArea,
@@ -114,6 +116,36 @@ namespace TagTool.Tags.Definitions.Common
     {
         StartsOnDeath,
         StartsOnDisturbance
+    }
+
+    public enum MultiplayerTeleporterChannel : sbyte
+    {
+        Alpha,
+        Bravo,
+        Charlie,
+        Delta,
+        Echo,
+        Foxtrot,
+        Golf,
+        Hotel,
+        India,
+        Juliet,
+        Kilo,
+        Lima,
+        Mike,
+        November,
+        Oscar,
+        Papa,
+        Quebec,
+        Romeo,
+        Sierra,
+        Tango,
+        Uniform,
+        Victor,
+        Whiskey,
+        Xray,
+        Yankee,
+        Zulu,
     }
 
     public enum GameEngineType : int

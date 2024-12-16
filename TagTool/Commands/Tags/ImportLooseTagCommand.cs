@@ -14,6 +14,8 @@ using TagTool.Common;
 using TagTool.Geometry;
 using static TagTool.Tags.Definitions.PhysicsModel;
 using TagTool.Commands.ModelAnimationGraphs;
+using TagTool.Extensions;
+using System.Collections.Frozen;
 
 namespace TagTool.Commands.Tags
 {
@@ -74,7 +76,7 @@ namespace TagTool.Commands.Tags
             using (var inStream = File.OpenRead(path))
             {
                 tagData = new byte[inStream.Length];
-                inStream.Read(tagData, 0, tagData.Length);
+                inStream.ReadAll(tagData, 0, tagData.Length);
             }
 
             var singleFileTagReader = new SingleTagFileReader(new PersistChunkReader(new MemoryStream(tagData), TagEndianness));
@@ -91,7 +93,7 @@ namespace TagTool.Commands.Tags
 
             var deserializer = new TagDeserializer(TagCache, TagPlatform);
 
-            Dictionary<TagGroup, Type> TagTypes;
+            FrozenDictionary<TagGroup, Type> TagTypes;
             if (TagCache >= CacheVersion.Halo4)
                 TagTypes = new Cache.Gen4.TagDefinitionsGen4().Gen4Types;
             else

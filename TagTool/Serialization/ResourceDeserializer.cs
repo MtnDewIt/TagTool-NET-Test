@@ -10,6 +10,7 @@ using static TagTool.Tags.TagFieldFlags;
 using BindingFlags = System.Reflection.BindingFlags;
 using System.IO;
 using System.Linq;
+using System.Buffers;
 
 namespace TagTool.Serialization
 {
@@ -92,17 +93,16 @@ namespace TagTool.Serialization
             var nextReader = resourceContext.GetReader(pointer.Type);
             nextReader.BaseStream.Position = pointer.Offset;
 
-            var methods = valueType.GetMethods();
-            // select the add method from IList<T> and not IList interfaces
-            var addMethod = methods.FirstOrDefault(method => method.Name == "Add" & method.ReturnType == typeof(void));
-
-            for (var i = 0; i < count; i++)
+			object[] pooledValuesToAdd = ArrayPool<object>.Shared.Rent(count);
+			Span<object> valuesToAdd = pooledValuesToAdd.AsSpan()[..count];
+			for (var i = 0; i < count; i++)
             {
-                var element = DeserializeValue(nextReader, resourceContext, null, elementType);
-                addMethod.Invoke(result, new[] { element });
+				valuesToAdd[i] = DeserializeValue(nextReader, resourceContext, null, elementType);
             }
+			ReflectionHelpers.GetAddRangeBoxedDelegate(valueType)(result, valuesToAdd);
+			ArrayPool<object>.Shared.Return(pooledValuesToAdd);
 
-            reader.BaseStream.Position = startOffset + (Version > CacheVersion.Halo2Vista ? 0xC : 0x8);
+			reader.BaseStream.Position = startOffset + (Version > CacheVersion.Halo2Vista ? 0xC : 0x8);
 
             return result;
         }

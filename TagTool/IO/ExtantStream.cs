@@ -92,7 +92,7 @@ namespace TagTool.IO
             BaseStream.Write(buffer, offset, count);
         }
 
-        protected override void Dispose(bool disposing)
+        public new void Dispose(bool disposing)
         {
             if (CanBeDisposed)
             {

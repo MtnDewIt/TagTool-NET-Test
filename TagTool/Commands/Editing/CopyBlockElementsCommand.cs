@@ -11,14 +11,16 @@ namespace TagTool.Commands.Editing
     {
         private CommandContextStack ContextStack { get; }
         private GameCache Cache { get; }
-        private CachedTag Tag { get; }
+        private CacheVersion Version { get; }
+        private CachePlatform Platform { get; }
+        private object ObjectFile { get; }
         private TagStructureInfo Structure { get; set; }
         private object Owner { get; set; }
         
         public static Type ElementType { get; set; } = null;
         public static List<object> Elements { get; set; } = null;
 
-        public CopyBlockElementsCommand(CommandContextStack contextStack, GameCache cache, CachedTag tag, TagStructureInfo structure, object owner)
+        public CopyBlockElementsCommand(CommandContextStack contextStack, GameCache cache, CacheVersion version, CachePlatform platform, object objectFile, TagStructureInfo structure, object owner)
             : base(false,
 
                   "CopyBlockElements",
@@ -33,7 +35,9 @@ namespace TagTool.Commands.Editing
         {
             ContextStack = contextStack;
             Cache = cache;
-            Tag = tag;
+            Version = version;
+            Platform = platform;
+            ObjectFile = objectFile;
             Structure = structure;
             Owner = owner;
         }
@@ -57,7 +61,7 @@ namespace TagTool.Commands.Editing
                 fieldName = fieldName.Substring(lastIndex + 1, (fieldName.Length - lastIndex) - 1);
                 fieldNameLow = fieldName.ToLower();
 
-                var command = new EditBlockCommand(ContextStack, Cache, Tag, Owner);
+                var command = new EditBlockCommand(ContextStack, Cache, Version, Platform, ObjectFile, Owner);
 
                 if (command.Execute(new List<string> { blockName }).Equals(false))
                 {
@@ -92,41 +96,110 @@ namespace TagTool.Commands.Editing
             var field = TagStructure.GetTagFieldEnumerable(Structure)
 				.Find(f => f.Name == fieldName || f.Name.ToLower() == fieldNameLow);
 
-            if ((field == null) ||
-                (!field.FieldType.IsGenericType) ||
-                (field.FieldType.GetInterface("IList") == null))
+            if (field == null)
             {
                 ContextReturn(previousContext, previousOwner, previousStructure);
                 return new TagToolError(CommandError.ArgInvalid, $"\"{Structure.Types[0].Name}\" does not contain a tag block named \"{args[0]}\".");
             }
 
-            var blockValue = field.GetValue(Owner) as IList;
-
-            if (blockValue == null)
+            if (!field.FieldType.IsGenericType && field.FieldType.IsArray) 
             {
-                ContextReturn(previousContext, previousOwner, previousStructure);
-                return new TagToolError(CommandError.ArgInvalid, $"Invalid index specified \"{args[0]}\"");
+                var blockValue = field.GetValue(Owner) as Array;
+
+                if (blockValue == null)
+                {
+                    ContextReturn(previousContext, previousOwner, previousStructure);
+                    return new TagToolError(CommandError.ArgInvalid, $"Invalid index specified \"{args[0]}\"");
+                }
+
+                if (count < 0)
+                {
+                    count = blockValue.Length;
+                }
+
+                if ((index + count) < 0 || (index + count) > blockValue.Length)
+                {
+                    ContextReturn(previousContext, previousOwner, previousStructure);
+                    return new TagToolError(CommandError.ArgInvalid, $"Invalid index: \"{index}\", and count: \"{count}\"");
+                }
+
+                ElementType = field.FieldType.GetElementType();
+                Elements = new List<object>();
+
+                for (var i = index; i < (index + count); i++)
+                    Elements.Add(blockValue.GetValue(i).DeepCloneV2());
+
+                var itemString = index < 2 ? "element" : "elements";
+                Console.WriteLine($"Successfully copied {count} {itemString}.");
             }
 
-            if (count < 0)
+            if (field.FieldType.GetInterface("IList") != null && !field.FieldType.IsArray) 
             {
-                count = blockValue.Count;
+                var blockValue = field.GetValue(Owner) as IList;
+
+                if (blockValue == null)
+                {
+                    ContextReturn(previousContext, previousOwner, previousStructure);
+                    return new TagToolError(CommandError.ArgInvalid, $"Invalid index specified \"{args[0]}\"");
+                }
+
+                if (count < 0)
+                {
+                    count = blockValue.Count;
+                }
+
+                if ((index + count) < 0 || (index + count) > blockValue.Count)
+                {
+                    ContextReturn(previousContext, previousOwner, previousStructure);
+                    return new TagToolError(CommandError.ArgInvalid, $"Invalid index: \"{index}\", and count: \"{count}\"");
+                }
+
+                ElementType = field.FieldType.GenericTypeArguments[0];
+                Elements = new List<object>();
+
+                for (var i = index; i < (index + count); i++)
+                    Elements.Add(blockValue[i].DeepCloneV2());
+
+                var itemString = index < 2 ? "element" : "elements";
+                Console.WriteLine($"Successfully copied {count} {itemString}.");
             }
 
-            if ((index + count) < 0 || (index + count) > blockValue.Count)
+            if (!field.FieldType.IsGenericType && !field.FieldType.IsArray && field.FieldType.GetInterface("IList") == null)
             {
-                ContextReturn(previousContext, previousOwner, previousStructure);
-                return new TagToolError(CommandError.ArgInvalid, $"Invalid index: \"{index}\", and count: \"{count}\"");
+                var blockValue = field.GetValue(Owner);
+
+                if (blockValue == null)
+                {
+                    ContextReturn(previousContext, previousOwner, previousStructure);
+                    return new TagToolError(CommandError.ArgInvalid, $"Invalid index specified \"{args[0]}\"");
+                }
+
+                if (count < 0)
+                {
+                    count = 1;
+                }
+
+                if ((index + count) < 0 || (index + count) > 1)
+                {
+                    ContextReturn(previousContext, previousOwner, previousStructure);
+                    return new TagToolError(CommandError.ArgInvalid, $"Invalid index: \"{index}\", and count: \"{count}\"");
+                }
+
+                ElementType = field.FieldType.GetElementType();
+                Elements = new List<object>();
+
+                try
+                {
+                    Elements.Add(blockValue.DeepCloneV2());
+                }
+                catch (Exception e)
+                {
+                    ContextReturn(previousContext, previousOwner, previousStructure);
+                    return new TagToolError(CommandError.OperationFailed, $"Failed to clone block element {index}\nSTACKTRACE: {e}");
+                }
+
+                Console.WriteLine($"Successfully copied {count} element.");
             }
-
-            ElementType = field.FieldType.GenericTypeArguments[0];
-            Elements = new List<object>();
-
-            for (var i = index; i < (index + count); i++)
-                Elements.Add(blockValue[i].DeepCloneV2());
-            
-            var itemString = index < 2 ? "element" : "elements";
-            Console.WriteLine($"Successfully copied {count} {itemString}.");
 
             ContextReturn(previousContext, previousOwner, previousStructure);
 

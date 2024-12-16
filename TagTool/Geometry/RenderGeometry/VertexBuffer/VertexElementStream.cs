@@ -379,22 +379,22 @@ namespace TagTool.Geometry
         
         public RealVector2d ReadFloat16_2()
         {
-            return new RealVector2d(Read(2, () => (float)Half.ToHalf(Reader.ReadUInt16())));
+            return new RealVector2d(Read(2, () => (float)BitConverter.UInt16BitsToHalf(Reader.ReadUInt16())));
         }
 
         public void WriteFloat16_2(RealVector2d v)
         {
-            Write(v.ToArray(), 2, e => Writer.Write(Half.GetBytes(new Half(e))));
+            Write(v.ToArray(), 2, e => Writer.Write(BitConverter.HalfToUInt16Bits((Half)e)));
         }
 
         public RealQuaternion ReadFloat16_4()
         {
-            return new RealQuaternion(Read(4, () => (float)Half.ToHalf(Reader.ReadUInt16())));
+            return new RealQuaternion(Read(4, () => (float)BitConverter.UInt16BitsToHalf(Reader.ReadUInt16())));
         }
 
         public void WriteFloat16_4(RealQuaternion v)
         {
-            Write(v.ToArray(), 4, e => Writer.Write(Half.GetBytes(new Half(e))));
+            Write(v.ToArray(), 4, e => Writer.Write(BitConverter.HalfToUInt16Bits((Half)e)));
         }
 
         public T[] Read<T>(int count, Func<T> readFunc)
