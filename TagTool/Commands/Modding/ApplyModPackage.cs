@@ -183,7 +183,12 @@ namespace TagTool.Commands.Modding
                             foreach (var file in ModCache.BaseModPackage.Files)
                             {
                                 Console.WriteLine("Writing: {0}", file.Key);
-                                directory.CreateSubdirectory(Path.GetDirectoryName(file.Key.ToString()));
+
+                                var directoryName = Path.GetDirectoryName(file.Key.ToString());
+
+                                if (!string.IsNullOrEmpty(directoryName)) 
+                                    directory.CreateSubdirectory(directoryName);
+
                                 BaseCache.AddModFile(Path.Combine(directory.FullName, file.Key), file.Value);
                             }
 
