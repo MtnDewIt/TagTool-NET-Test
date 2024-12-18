@@ -14,11 +14,11 @@ namespace TagTool.Commands.Modding
             base(true,
 
                 "ExtractFonts",
-                "Extract fonts from mod package to specified file.\n",
+                "Extract fonts from mod package to specified file.",
 
-                "ExtractFonts <destination>",
+                "ExtractFonts <Destination Path>",
 
-                "Extract fonts from mod package to specified file.\n")
+                "Extract fonts from mod package to specified file.")
         {
             Cache = cache;
         }
@@ -32,7 +32,13 @@ namespace TagTool.Commands.Modding
 
             if (modFonts != null && modFonts.Length > 0)
             {
-                var file = new FileInfo(args[0]);
+                var inputPath = args[0];
+                var file = new FileInfo(inputPath);
+
+                if (Directory.Exists(inputPath))
+                    file = new FileInfo(Path.Combine(inputPath, "font_package.bin"));
+                else if (file.Directory != null && !file.Directory.Exists)
+                    file.Directory.Create();
 
                 if (file.Exists)
                     file.Delete();
