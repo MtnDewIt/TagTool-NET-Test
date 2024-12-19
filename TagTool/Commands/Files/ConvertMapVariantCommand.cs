@@ -192,7 +192,7 @@ namespace TagTool.Commands.Files
             converter.SubstitutedTags.Add(@"objects\vehicles\human\turrets\machinegun\machinegun.vehi", @"objects\weapons\turret\machinegun_turret\machinegun_turret.vehi");
             converter.SubstitutedTags.Add(@"objects\vehicles\covenant\turrets\plasma_turret\plasma_turret_mounted.vehi", @"objects\weapons\turret\plasma_cannon\plasma_cannon.vehi");
             converter.SubstitutedTags.Add(@"objects\vehicles\covenant\turrets\shade\shade.vehi", @"objects\vehicles\shade\shade.vehi");
-            converter.SubstitutedTags.Add(@"objects\vehicles\covenant\revenant\revenant.vehi", @"objects\vehicles\ghost\ghost.vehi"); //ghost is better than nothing at all
+            //converter.SubstitutedTags.Add(@"objects\vehicles\covenant\revenant\revenant.vehi", @"objects\vehicles\ghost\ghost.vehi");
 
             converter.SubstitutedTags.Add(@"objects\equipment\hologram\hologram.eqip", @"objects\equipment\hologram_equipment\hologram_equipment.eqip");
             converter.SubstitutedTags.Add(@"objects\equipment\active_camouflage\active_camouflage.eqip", @"objects\equipment\invisibility_equipment\invisibility_equipment.eqip");
