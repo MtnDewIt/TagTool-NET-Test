@@ -155,7 +155,8 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new ExtractFontsCommand(modCache));
                 context.AddCommand(new ExtractModFilesCommand(modCache));
                 context.AddCommand(new ApplyModPackageCommand(modCache));
-                context.AddCommand(new AddTagCacheCommand(modCache));
+				context.AddCommand(new ApplyModPackageTagsCommand(modCache));
+				context.AddCommand(new AddTagCacheCommand(modCache));
                 context.AddCommand(new DeleteTagCacheCommand(modCache));
                 context.AddCommand(new AddModFilesCommand(modCache));
                 context.AddCommand(new ListModFilesCommand(modCache));
