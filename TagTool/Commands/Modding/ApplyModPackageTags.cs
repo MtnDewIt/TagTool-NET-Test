@@ -31,19 +31,21 @@ namespace TagTool.Commands.Modding
 		private Dictionary<StringId, StringId> StringIdMapping;
 
 		private HashSet<string> BlacklistedTags;
+		private HashSet<string> ForceAppliedTags;
 
 		public ApplyModPackageTagsCommand(GameCacheModPackage modCache) :
 			base(false,
 
 				"ApplyModPackageTags",
-				"Apply current mod package to the base cache with the option to exclude tags. \n",
+				"Apply current mod package to the base cache, optionally excluding tags / tag groups. \n",
 
 				"ApplyModPackageTags [Tag cache index (default=0)]",
 
-				"Apply current mod package to the base cache with the option to exclude tags. \n") {
+				"Apply current mod package to the base cache, optionally excluding tags / tag groups. \n") {
 			BaseCache = modCache.BaseCacheReference;
 			ModCache = modCache;
 			BlacklistedTags = new HashSet<string>();
+			ForceAppliedTags = new HashSet<string>();
 		}
 
 		public override object Execute(List<string> args)
@@ -64,17 +66,29 @@ namespace TagTool.Commands.Modding
 				}
 			}
 
-			Console.WriteLine("Please enter the list of blacklisted tags or keywords (one per line). Type 'Done' when finished.");
-			string line;
-			while (( line = Console.ReadLine() ) != "Done") {
-				if (string.IsNullOrWhiteSpace(line))
-					continue;
+			Console.WriteLine("Blacklisting Tags:\n");
 
-				if (line.Contains("\\")) {
-					BlacklistedTags.Add(line.Trim());
-				}
-				else {
-					BlacklistedTags.Add(line.Trim());
+			Console.WriteLine("1. You can blacklist a specific tag by entering its name -> vehicles/warthog");
+			Console.WriteLine("Examples:\tweapons/rocket_launcher\t\tcharacters/masterchief\n");
+
+			Console.WriteLine("2. You can blacklist an entire group by using the group name followed by a '/' -> vehicles/");
+			Console.WriteLine("Examples:\tvehicles/\t\tweapons/\t\tcharacters/\n");
+
+			Console.WriteLine("3. You can include a tag from a blacklisted group by prepending a '+' -> +vehicles/warthog");
+			Console.WriteLine("Examples:\t+weapons/rocket_launcher\t\t+characters/masterchief\n");
+
+			Console.WriteLine("Please enter the list of blacklisted tags or keywords - one per line. Type 'Done' when finished.");
+
+			string line = string.Empty;
+			while (( line = Console.ReadLine() ) != "Done") {
+				if (!string.IsNullOrWhiteSpace(line)) {
+					line = line.Trim();
+					if (line.StartsWith('+')) {
+						ForceAppliedTags.Add(line.TrimStart('+'));
+					}
+					else {
+						BlacklistedTags.Add(line);
+					}
 				}
 			}
 
@@ -211,14 +225,15 @@ namespace TagTool.Commands.Modding
 
 		private CachedTag ConvertCachedTagInstance(ModPackage modPack, CachedTag modTag, bool isTagReference = true) {
 
-			string fullTagName = $"{modTag.Name}.{modTag.Group}";
+			string fullTagName = string.Join('.', modTag.Name, modTag.Group);
 
 			// Check if the tag should be applied (i.e., has a "+" in the blacklist list)
-			var appliedTag = BlacklistedTags.FirstOrDefault(keyword => fullTagName.Contains(keyword.TrimStart('+')) && keyword.StartsWith("+"));
-			if (appliedTag != null) {
-				Console.WriteLine($"Applied: {fullTagName}"); // Tag is applied due to +, so don't blacklist it
+			bool forceApply = ForceAppliedTags.Contains(fullTagName) || ForceAppliedTags.Any(fullTagName.Contains);
+			//var appliedTag = BlacklistedTags.FirstOrDefault(keyword => fullTagName.Contains(keyword.TrimStart('+')) && keyword.StartsWith("+"));
+			if (forceApply) {
+				Console.WriteLine($"Included Tag: {fullTagName}"); // Tag is included due to +, so don't blacklist it
 			}
-			else if (BlacklistedTags.Any(keyword => fullTagName.Contains(keyword)) || BlacklistedTags.Contains(fullTagName)) {
+			else if (BlacklistedTags.Contains(fullTagName) || BlacklistedTags.Any(fullTagName.Contains)) {
 				Console.WriteLine($"Blacklisted: {fullTagName}");
 
 				// Check if the tag exists in the base cache
