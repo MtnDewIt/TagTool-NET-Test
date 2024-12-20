@@ -5,6 +5,7 @@ using System.Linq;
 using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
+using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
@@ -63,7 +64,15 @@ namespace TagTool.Commands.Forge
             if (mapFile.MapFileBlf == null || mapFile.MapFileBlf.MapVariant != null)
                 return;
 
-            MaximizeMapForgeBudget(mapFile);
+            try
+            {
+                MaximizeMapForgeBudget(mapFile);
+            }
+            catch (Exception ex) 
+            {
+                new TagToolWarning($@"Failed to maximize budget for {mapFile.Header.GetScenarioPath()}.scenario : {ex.Message}");
+                return;
+            }
 
             mapFileStream.Position = 0;
             mapFile.Write(writer);
@@ -124,7 +133,7 @@ namespace TagTool.Commands.Forge
 
                 var numCulled = oldBlf.MapVariant.MapVariant.ScenarioObjectCount - blf.MapVariant.MapVariant.ScenarioObjectCount;
                 var numAvailable = blf.MapVariant.MapVariant.Objects.Length - blf.MapVariant.MapVariant.ScenarioObjectCount;
-                Console.WriteLine($"Culled {numCulled} placements, Availabel: {numAvailable}");
+                Console.WriteLine($"Culled {numCulled} placements, Available: {numAvailable}");
             }
         }
 

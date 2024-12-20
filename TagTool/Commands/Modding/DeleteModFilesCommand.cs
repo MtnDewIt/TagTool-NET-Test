@@ -15,7 +15,9 @@ namespace TagTool.Commands.Modding
             base(true,
                 "DeleteModFiles",
                 "Deletes all the Mod files in the package",
-                "DeleteModFiles",
+
+                "DeleteModFiles [Filter]",
+
                 "Deletes all the Mod files in the package")
         {
             Cache = cache;
@@ -23,8 +25,33 @@ namespace TagTool.Commands.Modding
 
         public override object Execute(List<string> args)
         {
-            Console.WriteLine("Deleting " + Cache.BaseModPackage.Files.Count + " Files");
-            Cache.BaseModPackage.Files.Clear();
+            var filter = args.Count > 0 ? args[0] : null;
+
+            var filteredList = Cache.BaseModPackage.Files;
+
+            if (filteredList != null && filteredList.Count > 0)
+            {
+                if (filter != null)
+                {
+                    filteredList = new Dictionary<string, Stream>();
+
+                    foreach (var modfile in Cache.BaseModPackage.Files)
+                    {
+                        if (modfile.Key.Contains(filter))
+                            filteredList.Add(modfile.Key, modfile.Value);
+                    }
+                }
+
+                foreach (var modfile in filteredList)
+                {
+                    Console.WriteLine($"Deleting \"{modfile.Key}\"");
+                    Cache.BaseModPackage.Files.Remove(modfile.Key);
+                }
+
+                Console.WriteLine("Done.");
+            }
+            else
+                Console.WriteLine("Mod package does not contain any mod files.");
 
             return true;
         }

@@ -36,7 +36,15 @@ namespace TagTool.JSON.Parsers
 
         public void ParseFile(string filePath)
         {
-            var jsonData = File.ReadAllText($@"{InputPath}\tags\{filePath}.json");
+            var fullPath = $@"{InputPath}\tags\{filePath}.json";
+
+            if (!File.Exists(fullPath)) 
+            {
+                // Add error message?
+                return;
+            }
+
+            var jsonData = File.ReadAllText(fullPath);
             var tagObject = TagHandler.Deserialize(jsonData);
 
             Cache.TagCache.TryGetTag($@"{tagObject.TagName}.{tagObject.TagType}", out var tag);

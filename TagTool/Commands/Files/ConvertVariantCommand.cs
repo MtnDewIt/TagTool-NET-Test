@@ -66,7 +66,7 @@ namespace TagTool.Commands.Files
 
             if (Cache.Version != CacheVersion.HaloOnlineED) 
             {
-                new TagToolError(CommandError.CacheUnsupported, $"Unsupported Cache Version: {Cache.Version}");
+                return new TagToolError(CommandError.CacheUnsupported, $"Unsupported Cache Version: {Cache.Version}");
             }
 
             OutputPath = args.Count > 1 ? args[1] : "";
@@ -239,7 +239,7 @@ namespace TagTool.Commands.Files
 
         private string GetOutputPath(FileInfo input, string variantName, ulong uniqueId)
         {
-            string outputPath = input.Name.EndsWith(".map") ? Path.Combine(OutputPath, $@"map_variants", $@"{variantName.TrimEnd()}", "sandbox.map") : Path.Combine(OutputPath, $@"game_variants", $@"{variantName.TrimEnd()}", $@"variant{input.Extension}");
+            string outputPath = input.Name.EndsWith(".map") ? Path.Combine(OutputPath, $@"map_variants", Regex.Replace($"{variantName.TrimStart().TrimEnd()}", @"[*\\ /:""]", "_"), "sandbox.map") : Path.Combine(OutputPath, $@"game_variants", Regex.Replace($"{variantName.TrimStart().TrimEnd()}", @"[*\\ /:""]", "_"), $@"variant{input.Extension}");
 
             if (Path.Exists(outputPath) && UniqueIdTable.Contains(uniqueId))
             {
