@@ -72,7 +72,7 @@ namespace TagTool.Commands.Porting
             return style;
         }
 
-        private void MergeCharacter(Stream cacheStream, Stream blamCacheStream, Dictionary<ResourceLocation, Stream> resourceStreams, CachedTag edTag, CachedTag h3Tag)
+        private void MergeCharacter(Stream cacheStream, Stream blamCacheStream, CachedTag edTag, CachedTag h3Tag)
         {
             var edDef = CacheContext.Deserialize<Character>(cacheStream, edTag);
             var h3Def = BlamCache.Deserialize<Character>(blamCacheStream, h3Tag);
@@ -86,7 +86,7 @@ namespace TagTool.Commands.Porting
                     if (edDef.WeaponsProperties[i].Weapon != null || h3Def.WeaponsProperties[i].Weapon == null)
                         continue;
 
-                    edDef.WeaponsProperties[i].Weapon = ConvertTag(cacheStream, blamCacheStream, resourceStreams, h3Def.WeaponsProperties[i].Weapon);
+                    edDef.WeaponsProperties[i].Weapon = ConvertTag(cacheStream, blamCacheStream, h3Def.WeaponsProperties[i].Weapon);
 
                     merged = true;
                 }
@@ -99,7 +99,7 @@ namespace TagTool.Commands.Porting
                     if (edDef.VehicleProperties[i].Unit != null || h3Def.VehicleProperties[i].Unit == null)
                         continue;
 
-                    edDef.VehicleProperties[i].Unit = ConvertTag(cacheStream, blamCacheStream, resourceStreams, h3Def.VehicleProperties[i].Unit);
+                    edDef.VehicleProperties[i].Unit = ConvertTag(cacheStream, blamCacheStream, h3Def.VehicleProperties[i].Unit);
 
                     merged = true;
                 }
@@ -112,7 +112,7 @@ namespace TagTool.Commands.Porting
                     if (edDef.EquipmentProperties[i].Equipment != null || h3Def.EquipmentProperties[i].Equipment == null)
                         continue;
 
-                    edDef.EquipmentProperties[i].Equipment = ConvertTag(cacheStream, blamCacheStream, resourceStreams, h3Def.EquipmentProperties[i].Equipment);
+                    edDef.EquipmentProperties[i].Equipment = ConvertTag(cacheStream, blamCacheStream, h3Def.EquipmentProperties[i].Equipment);
 
                     merged = true;
                 }
@@ -125,7 +125,7 @@ namespace TagTool.Commands.Porting
                     if (edDef.FiringPatternProperties[i].Weapon != null || h3Def.FiringPatternProperties[i].Weapon == null)
                         continue;
 
-                    edDef.FiringPatternProperties[i].Weapon = ConvertTag(cacheStream, blamCacheStream, resourceStreams, h3Def.FiringPatternProperties[i].Weapon);
+                    edDef.FiringPatternProperties[i].Weapon = ConvertTag(cacheStream, blamCacheStream, h3Def.FiringPatternProperties[i].Weapon);
 
                     merged = true;
                 }
@@ -138,7 +138,7 @@ namespace TagTool.Commands.Porting
                     if (edDef.ActivityObjects[i].Crate != null || h3Def.ActivityObjects[i].Crate == null)
                         continue;
 
-                    edDef.ActivityObjects[i].Crate = ConvertTag(cacheStream, blamCacheStream, resourceStreams, h3Def.ActivityObjects[i].Crate);
+                    edDef.ActivityObjects[i].Crate = ConvertTag(cacheStream, blamCacheStream, h3Def.ActivityObjects[i].Crate);
 
                     merged = true;
                 }

@@ -134,7 +134,7 @@ namespace TagTool.Commands.Porting
                 var h3TagName = $"{h3Tag.Name}.{h3Tag.Group.Tag.ToString()}";
 
                 PortTag.Execute(new List<string> { h3TagName });
-                edReference.Reference = PortTag.ConvertTag(CacheStream, BlamCacheStream, ResourceStreams, h3Tag);
+                edReference.Reference = PortTag.ConvertTag(CacheStream, BlamCacheStream, h3Tag);
             }
         }
 
@@ -156,7 +156,7 @@ namespace TagTool.Commands.Porting
 
                 if (edAnimation == null || replace)
                 {
-                    var convertedAnimation = (ModelAnimationGraph.Animation)PortTag.ConvertData(CacheStream, BlamCacheStream, ResourceStreams, h3Animation.DeepClone(), h3Def, h3Tag.Name);
+                    var convertedAnimation = (ModelAnimationGraph.Animation)PortTag.ConvertData(CacheStream, BlamCacheStream, h3Animation.DeepClone(), h3Def, h3Tag.Name);
 
                     if (edAnimation == null)
                         edAnimations.Add(convertedAnimation);
@@ -192,8 +192,7 @@ namespace TagTool.Commands.Porting
 
                 if (edMode == null)
                 {
-                    edMode = (ModelAnimationGraph.Mode)PortTag.ConvertData(
-                        CacheStream, BlamCacheStream, ResourceStreams, h3Mode.DeepClone(), h3Def, h3Tag.Name);
+                    edMode = (ModelAnimationGraph.Mode)PortTag.ConvertData(CacheStream, BlamCacheStream, h3Mode.DeepClone(), h3Def, h3Tag.Name);
                     edModes.Add(edMode);
                     edModeCreated = true;
                 }
@@ -206,8 +205,7 @@ namespace TagTool.Commands.Porting
 
                     if (edWeaponClass == null)
                     {
-                        edWeaponClass = (ModelAnimationGraph.Mode.WeaponClassBlock)PortTag.ConvertData(
-                            CacheStream, BlamCacheStream, ResourceStreams, h3WeaponClass.DeepClone(), h3Def, h3Tag.Name);
+                        edWeaponClass = (ModelAnimationGraph.Mode.WeaponClassBlock)PortTag.ConvertData(CacheStream, BlamCacheStream, h3WeaponClass.DeepClone(), h3Def, h3Tag.Name);
                         edMode.WeaponClass.Add(edWeaponClass);
                         edWeaponClassCreated = true;
                     }
@@ -220,8 +218,7 @@ namespace TagTool.Commands.Porting
 
                         if (edWeaponType == null)
                         {
-                            edWeaponType = (ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock)PortTag.ConvertData(
-                                CacheStream, BlamCacheStream, ResourceStreams, h3WeaponType.DeepClone(), h3Def, h3Tag.Name);
+                            edWeaponType = (ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock)PortTag.ConvertData(CacheStream, BlamCacheStream, h3WeaponType.DeepClone(), h3Def, h3Tag.Name);
                             edWeaponClass.WeaponType.Add(edWeaponType);
                             edWeaponTypeCreated = true;
                         }
@@ -234,8 +231,7 @@ namespace TagTool.Commands.Porting
 
                             if (edAction == null)
                             {
-                                edAction = (ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry)PortTag.ConvertData(
-                                    CacheStream, BlamCacheStream, ResourceStreams, h3Action.DeepClone(), h3Def, h3Tag.Name);
+                                edAction = (ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry)PortTag.ConvertData(CacheStream, BlamCacheStream, h3Action.DeepClone(), h3Def, h3Tag.Name);
                                 edWeaponType.Set.Actions.Add(edAction);
                                 edActionCreated = true;
                             }
@@ -271,7 +267,7 @@ namespace TagTool.Commands.Porting
                             if (edOverlay == null)
                             {
                                 edOverlay = (ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry)PortTag.ConvertData(
-                                    CacheStream, BlamCacheStream, ResourceStreams, h3Overlay.DeepClone(), h3Def, h3Tag.Name);
+                                    CacheStream, BlamCacheStream, h3Overlay.DeepClone(), h3Def, h3Tag.Name);
                                 edWeaponType.Set.Overlays.Add(edOverlay);
                                 edOverlayCreated = true;
                             }
@@ -307,7 +303,7 @@ namespace TagTool.Commands.Porting
                             if (edDamage == null)
                             {
                                 edDamage = (ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.DeathAndDamageBlock)PortTag.ConvertData(
-                                    CacheStream, BlamCacheStream, ResourceStreams, h3Damage.DeepClone(), h3Def, h3Tag.Name);
+                                    CacheStream, BlamCacheStream, h3Damage.DeepClone(), h3Def, h3Tag.Name);
                                 edWeaponType.Set.DeathAndDamage.Add(edDamage);
                                 edDamageCreated = true;
                             }
@@ -346,7 +342,7 @@ namespace TagTool.Commands.Porting
                             if (edTransition == null)
                             {
                                 edTransition = (ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Transition)PortTag.ConvertData(
-                                    CacheStream, BlamCacheStream, ResourceStreams, h3Transition.DeepClone(), h3Def, h3Tag.Name);
+                                    CacheStream, BlamCacheStream, h3Transition.DeepClone(), h3Def, h3Tag.Name);
                                 edWeaponType.Set.Transitions.Add(edTransition);
                                 edTransitionCreated = true;
                             }
@@ -365,7 +361,7 @@ namespace TagTool.Commands.Porting
                                 if (edDestination == null)
                                 {
                                     edDestination = (ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Transition.Destination)PortTag.ConvertData(
-                                        CacheStream, BlamCacheStream, ResourceStreams, h3Destination.DeepClone(), h3Def, h3Tag.Name);
+                                        CacheStream, BlamCacheStream, h3Destination.DeepClone(), h3Def, h3Tag.Name);
                                     edTransition.Destinations.Add(edDestination);
                                     edDestinationCreated = true;
                                 }
@@ -469,7 +465,7 @@ namespace TagTool.Commands.Porting
                             (edDef.Animations[entry.Value.Item2].AnimationData.ResourceGroupIndex = (short)(edDef.ResourceGroups.Count + i));
             }
 
-            edDef.ResourceGroups.AddRange(PortTag.ConvertModelAnimationGraphResourceGroups(CacheStream, BlamCacheStream, ResourceStreams, resourceGroups));
+            edDef.ResourceGroups.AddRange(PortTag.ConvertModelAnimationGraphResourceGroups(CacheStream, BlamCacheStream, resourceGroups));
 
             //
             // Finalize

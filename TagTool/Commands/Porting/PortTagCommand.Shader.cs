@@ -17,7 +17,6 @@ namespace TagTool.Commands.Porting
     {
         public List<string> PendingTemplates = new List<string>();
         public Dictionary<CachedTag, (CachedTag, object, object)> DeferredRenderMethods = new Dictionary<CachedTag, (CachedTag, object, object)>(); // format: base cache tag, (blam tag, converted definition, blam cache definition)
-        public Dictionary<string, Task> TemplateConversionTasks = new Dictionary<string, Task>();
 
         public class TemplateConversionResult
         {
@@ -25,45 +24,6 @@ namespace TagTool.Commands.Porting
             public PixelShader PixelShaderDefinition;
             public VertexShader VertexShaderDefinition;
             public CachedTag Tag;
-        }
-
-        public void WaitForPendingTemplateConversion()
-        {
-            try
-            {
-                Task.WaitAll(TemplateConversionTasks.Values.ToArray());
-            }
-            catch (AggregateException ex)
-            {
-                foreach (var inner in ex.InnerExceptions)
-                    new TagToolError(CommandError.CustomError, inner.Message);
-                throw (ex);
-            }
-        }
-
-        public void FinishConvertTemplate(TemplateConversionResult result, 
-            string tagName,
-            out RenderMethodTemplate rmt2, 
-            out PixelShader pixl, 
-            out VertexShader vtsh)
-        {
-            var task = TemplateConversionTasks[tagName];
-            TemplateConversionTasks.Remove(tagName);
-
-            if (!task.IsFaulted)
-            {
-                rmt2 = result.Definition;
-                pixl = result.PixelShaderDefinition;
-                vtsh = result.VertexShaderDefinition;
-            }
-            else
-            {
-                // rethrow the exception
-                task.GetAwaiter().GetResult();
-                rmt2 = null;
-                pixl = null;
-                vtsh = null;
-            }
         }
 
         public ShaderMatcherNew Matcher = new ShaderMatcherNew();

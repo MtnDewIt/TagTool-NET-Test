@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using TagTool.Audio;
 using TagTool.Cache;
 using TagTool.Commands.Common;
-using TagTool.Common;
 
 namespace TagTool.Commands.Porting
 {
@@ -32,14 +30,11 @@ namespace TagTool.Commands.Porting
 
             var initialStringIdCount = PortTagContext.CacheContext.StringTableHaloOnline.Count;
 
-            PortTagContext.ConcurrencyLimiter = new SemaphoreSlim(PortingOptions.Current.MaxThreads); // for async conversion
             PortTagContext.CachedTagData.Clear();
 
             //
             // Convert Blam data to ElDorado data
             //
-
-            var resourceStreams = new Dictionary<ResourceLocation, Stream>();
 
             using (var blamCacheStream = PortTagContext.BlamCache is GameCacheModPackage ? ((GameCacheModPackage)PortTagContext.BlamCache).OpenCacheRead(CacheStream) : PortTagContext.BlamCache.OpenCacheRead())
             {
@@ -50,16 +45,14 @@ namespace TagTool.Commands.Porting
                     if (blamTag == null)
                         new TagToolError(CommandError.TagInvalid, tag);
 
-                    PortTagContext.ConvertTag(CacheStream, blamCacheStream, resourceStreams, blamTag);
+                    PortTagContext.ConvertTag(CacheStream, blamCacheStream, blamTag);
                     PortTagContext.Flags = oldFlags;
 
                     if (PortTagContext.FlagIsSet(PortTagCommand.PortingFlags.MPobject))
                         PortTagContext.TestForgePaletteCompatible(CacheStream, blamTag, ObjectParameters);
                 }
 
-                PortTagContext.WaitForPendingSoundConversion();
-                PortTagContext.WaitForPendingBitmapConversion();
-                PortTagContext.WaitForPendingTemplateConversion();
+                PortTagContext.FinishAsync();
                 PortTagContext.ProcessDeferredActions();
                 PortTagContext.FinalizeRenderMethods(CacheStream, blamCacheStream);
                 if (PortTagContext.BlamCache is GameCacheGen3 gen3Cache)
@@ -73,6 +66,7 @@ namespace TagTool.Commands.Porting
 
             PortTagContext.Matcher.DeInit();
 
+            PortTagContext.FinishAsync();
             PortTagContext.ProcessDeferredActions();
         }
 

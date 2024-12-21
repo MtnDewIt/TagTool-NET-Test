@@ -678,7 +678,7 @@ namespace TagTool.Geometry.Utils
             data = data.DeepClone();
 
             var resourceStreams = new Dictionary<ResourceLocation, Stream>();
-            data = (T)PortTag.ConvertData(DestStream, SourceStream, resourceStreams, data, null, "");
+            data = (T)PortTag.ConvertData(DestStream, SourceStream, data, null, "");
             foreach (var stream in resourceStreams)
                 stream.Value.Close();
 
