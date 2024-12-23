@@ -774,7 +774,6 @@ namespace TagTool.Bitmaps.Utils
 
                 // init arrays
                 Points = new Vector<float>[16];
-                Remap = new int[16];
 
                 // check the compression mode for dxt1
                 bool isDxt1 = ((flags & (uint)SquishFlags.kDxt1) != 0);
@@ -787,14 +786,14 @@ namespace TagTool.Bitmaps.Utils
                     int bit = 1 << i;
                     if ((mask & bit) == 0)
                     {
-                        Remap[i] = -1;
+                        _Remap[i] = -1;
                         continue;
                     }
 
                     // check for transparent pixels when using dxt1
                     if (isDxt1 && rgba[4 * i + 3] < 128)
                     {
-                        Remap[i] = -1;
+                        _Remap[i] = -1;
                         Transparent = true;
                         continue;
                     }
@@ -816,7 +815,7 @@ namespace TagTool.Bitmaps.Utils
                             // add the point
                             Points[Count] = VectorExtensions.InitializeVector(new float[] { x, y, z });
                             _Weights[Count] = (weightByAlpha ? w : 1.0f);
-                            Remap[i] = Count;
+                            _Remap[i] = Count;
 
                             // advance
                             ++Count;
@@ -840,7 +839,7 @@ namespace TagTool.Bitmaps.Utils
 
                             // map to this point and increase the weight
                             _Weights[index] += (weightByAlpha ? w : 1.0f);
-                            Remap[i] = index;
+                            _Remap[i] = index;
                             break;
                         }
                     }
@@ -872,7 +871,8 @@ namespace TagTool.Bitmaps.Utils
             private Vector<float>[] Points; // 3d [16]
             private unsafe fixed float _Weights[16];
             [UnscopedRef] public unsafe readonly ReadOnlySpan<float> Weights => MemoryMarshal.CreateSpan(ref Unsafe.AsRef(in _Weights[0]), 16);
-            private int[] Remap; // [16]
+            private unsafe fixed int _Remap[16];
+            [UnscopedRef] public unsafe readonly ReadOnlySpan<int> Remap => MemoryMarshal.CreateSpan(ref Unsafe.AsRef(in _Remap[0]), 16);
             private bool Transparent;
         }
 
