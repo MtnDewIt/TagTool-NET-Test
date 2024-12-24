@@ -32,6 +32,10 @@ namespace TagTool.Commands.Porting
                     var member = resourceDefinition.GroupMembers[memberIndex];
                     var animationData = member.AnimationData.Data;
 
+                    //skip if no valid resource data could be found
+                    if (animationData == null)
+                        continue;
+
                     //load the data sizes for verification of the ported data
                     int MovementDataSize = 0;
                     int StaticNodeFlagsSize = 0;
