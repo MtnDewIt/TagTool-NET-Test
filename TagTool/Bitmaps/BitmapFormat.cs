@@ -51,7 +51,11 @@ namespace TagTool.Bitmaps
         ReachDxt3aAlpha,    // 0x29, Reach Dxt3aAlpha
         ReachDxt5aMono,     // 0x2A, Reach Dxt5aAlpha
         ReachDxt5aAlpha,    // 0x2B, Reach Dxt5aMono
-        ReachDxnMonoAlpha   // 0x2C, Reach DxnMonoAlpha
+        ReachDxnMonoAlpha,  // 0x2C, Reach DxnMonoAlpha
+        Dxt5Red,            // 0x2D, Reach Dxt5Red
+        Dxt5Green,          // 0x2E, Reach Dxt5Green
+        Dxt5Blue,           // 0x2F, Reach Dxt5Blue
+        Depth24,            // 0x30, Reach Depth24
     }
 
     public static class BitmapFormatUtils
@@ -94,6 +98,9 @@ namespace TagTool.Bitmaps
                 case BitmapFormat.Dxn:
                 case BitmapFormat.DxnMonoAlpha:
                 case BitmapFormat.ReachDxnMonoAlpha:
+                case BitmapFormat.Dxt5Red:
+                case BitmapFormat.Dxt5Green:
+                case BitmapFormat.Dxt5Blue:
                     return 8;
                 case BitmapFormat.A8Y8:
                 case BitmapFormat.R5G6B5:
@@ -108,6 +115,7 @@ namespace TagTool.Bitmaps
                 case BitmapFormat.Q8W8V8U8:
                 case BitmapFormat.A2R10G10B10:
                 case BitmapFormat.V16U16:
+                case BitmapFormat.Depth24:
                     return 32;
                 case BitmapFormat.RGBFP16:
                     return 48;
@@ -205,6 +213,10 @@ namespace TagTool.Bitmaps
                 case BitmapFormat.V8U8:
                 case BitmapFormat.V16U16:
                 case BitmapFormat.R5G6B5:
+                case BitmapFormat.Dxt5Red:
+                case BitmapFormat.Dxt5Green:
+                case BitmapFormat.Dxt5Blue:
+                case BitmapFormat.Depth24:
                     blockDimension = 1;
                     break;
                 default:
@@ -234,6 +246,10 @@ namespace TagTool.Bitmaps
                 case BitmapFormat.ReachDxt3aMono:
                 case BitmapFormat.ReachDxt5aAlpha:
                 case BitmapFormat.ReachDxt5aMono:
+                case BitmapFormat.Dxt5Red:
+                case BitmapFormat.Dxt5Green:
+                case BitmapFormat.Dxt5Blue:
+                case BitmapFormat.Depth24:
                     compressionFactor = 2;
                     break;
                 case BitmapFormat.A8:
@@ -317,6 +333,10 @@ namespace TagTool.Bitmaps
                 case BitmapFormat.ReachDxt3aMono:
                 case BitmapFormat.ReachDxt5aAlpha:
                 case BitmapFormat.ReachDxt5aMono:
+                case BitmapFormat.Dxt5Red:
+                case BitmapFormat.Dxt5Green:
+                case BitmapFormat.Dxt5Blue:
+                case BitmapFormat.Depth24:
                     minimalSize = 128;
                     break;
                 default:
