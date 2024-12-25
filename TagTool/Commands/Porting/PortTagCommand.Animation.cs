@@ -499,6 +499,9 @@ namespace TagTool.Commands.Porting
                     {
                         foreach (var weaponType in weaponClass.WeaponType)
                         {
+                            if (weaponType.AnimationSetsReach == null || weaponType.AnimationSetsReach.Count == 0)
+                                continue;
+
                             if (weaponType.AnimationSetsReach.Count > 1)
                                 new TagToolWarning("Reach animation has >1 weapon type sets block, whereas HO only supports 1");
                             weaponType.Set = weaponType.AnimationSetsReach[0];
@@ -543,6 +546,9 @@ namespace TagTool.Commands.Porting
 
                     foreach (var weaponType in weaponClass.WeaponType)
                     {
+                        if (weaponType.Set == null)
+                            continue;
+
                         weaponType.Set.Actions = weaponType.Set.Actions.OrderBy(a => resolver.GetSet(a.Label)).ThenBy(a => resolver.GetIndex(a.Label)).ToList();
                         weaponType.Set.Overlays = weaponType.Set.Overlays.OrderBy(a => resolver.GetSet(a.Label)).ThenBy(a => resolver.GetIndex(a.Label)).ToList();
                         weaponType.Set.DeathAndDamage = weaponType.Set.DeathAndDamage.OrderBy(a => resolver.GetSet(a.Label)).ThenBy(a => resolver.GetIndex(a.Label)).ToList();
