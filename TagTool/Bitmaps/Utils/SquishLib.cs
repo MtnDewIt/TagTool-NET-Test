@@ -773,7 +773,7 @@ namespace TagTool.Bitmaps.Utils
                 Transparent = false;
 
                 // init arrays
-                Points = new Vector<float>[16];
+                _Points = new Vector<float>[16];
 
                 // check the compression mode for dxt1
                 bool isDxt1 = ((flags & (uint)SquishFlags.kDxt1) != 0);
@@ -813,7 +813,7 @@ namespace TagTool.Bitmaps.Utils
                             float w = (float)(rgba[4 * i + 3] + 1) / 256.0f;
 
                             // add the point
-                            Points[Count] = VectorExtensions.InitializeVector(new float[] { x, y, z });
+                            Unsafe.Add(ref Unsafe.AsRef(ref _Points[0]), Count) = VectorExtensions.InitializeVector(new float[] { x, y, z });
                             _Weights[Count] = (weightByAlpha ? w : 1.0f);
                             _Remap[i] = Count;
 
@@ -868,7 +868,8 @@ namespace TagTool.Bitmaps.Utils
             public readonly bool IsTransparent() => Transparent;
 
             private int Count;
-            private Vector<float>[] Points; // 3d [16]
+            private unsafe Vector<float>[] _Points; //Vector<float> = 3 floats
+            [UnscopedRef] public unsafe readonly ReadOnlySpan<Vector<float>> Points => MemoryMarshal.CreateSpan(ref Unsafe.AsRef(in _Points[0]), 16);
             private unsafe fixed float _Weights[16];
             [UnscopedRef] public unsafe readonly ReadOnlySpan<float> Weights => MemoryMarshal.CreateSpan(ref Unsafe.AsRef(in _Weights[0]), 16);
             private unsafe fixed int _Remap[16];
