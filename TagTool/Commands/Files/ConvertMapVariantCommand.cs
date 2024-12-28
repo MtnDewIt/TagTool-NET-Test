@@ -219,16 +219,17 @@ namespace TagTool.Commands.Files
             converter.ExcludedTags.Add(@"objects\levels\shared\screen_fx_orb\fx\gloomy.bloc");
             converter.ExcludedTags.Add(@"objects\levels\shared\screen_fx_orb\fx\olde_timey.bloc");
             converter.ExcludedTags.Add(@"objects\levels\shared\screen_fx_orb\fx\eerie.bloc");
+            converter.ExcludedTags.Add(@"objects\levels\shared\screen_fx_orb\fx\pen_and_ink.bloc");
 
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_flash_yellow\ff_light_flash_yellow.bloc");
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_flash_red\ff_light_flash_red.bloc");
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_red\ff_light_red.bloc");
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_white\ff_light_white.bloc");
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_green\ff_light_green.bloc");
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_yellow\ff_light_yellow.bloc");
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_orange\ff_light_orange.bloc");
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_purple\ff_light_purple.bloc");
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_blue\ff_light_blue.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_flash_yellow\ff_light_flash_yellow.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_flash_red\ff_light_flash_red.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_red\ff_light_red.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_white\ff_light_white.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_green\ff_light_green.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_yellow\ff_light_yellow.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_orange\ff_light_orange.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_purple\ff_light_purple.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_blue\ff_light_blue.bloc");
 
             converter.ExcludedTags.Add(@"objects\equipment\jet_pack\jet_pack.eqip");
             converter.ExcludedTags.Add(@"objects\equipment\sprint\sprint.eqip");
