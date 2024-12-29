@@ -17,8 +17,8 @@ namespace TagTool.BlamFile.GameVariants
         public PlayerAppearanceTraits AppearanceTraits;
         public PlayerSensorTraits SensorTraits;
 
-        [TagStructure(Size = 0x8, Align = 0x1, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagStructure(Size = 0x5, Align = 0x1, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+        [TagStructure(Size = 0x5, Align = 0x1, MaxVersion = CacheVersion.HaloOnlineED)]
+        [TagStructure(Size = 0x8, Align = 0x1, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
         public class PlayerShieldVitalityTraits : TagStructure
         {
             public DamageResistancePercentage DamageResistance;
@@ -27,7 +27,7 @@ namespace TagTool.BlamFile.GameVariants
             public HeadshotImmunitySettings HeadshotImmunity;
             public ShieldMultiplierSettings ShieldMultiplier;
 
-            [TagField(Flags = TagFieldFlags.Padding, Length = 3, MaxVersion = CacheVersion.Halo3ODST)]
+            [TagField(Flags = TagFieldFlags.Padding, Length = 3, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
             public byte[] Padding1 = new byte[3];
 
             public enum DamageResistancePercentage : byte
@@ -170,14 +170,15 @@ namespace TagTool.BlamFile.GameVariants
             }
         }
 
-        [TagStructure(Size = 0x4, Align = 0x1)]
+        [TagStructure(Size = 0x3, Align = 0x1, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0x4, Align = 0x1, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public class PlayerMovementTraits : TagStructure
         {
             public PlayerSpeedSettings PlayerSpeed;
             public PlayerGravitySettings PlayerGravity;
             public PlayerVehicleUsage VehicleUsage;
 
-            [TagField(Flags = TagFieldFlags.Padding, Length = 1)]
+            [TagField(Flags = TagFieldFlags.Padding, Length = 1, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
             public byte[] Padding1 = new byte[1];
 
             public enum PlayerSpeedSettings : byte

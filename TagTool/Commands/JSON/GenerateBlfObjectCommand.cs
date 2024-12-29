@@ -133,6 +133,7 @@ namespace TagTool.Commands.JSON
                             // with the formatting for variants outside of ED, so for now we'll only support ED variants.
                             blfData = new Blf(CacheVersion.HaloOnlineED, Cache.Platform);
                             break;
+                        case ".bin":
                         case ".blf":
                             blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
                             break;
