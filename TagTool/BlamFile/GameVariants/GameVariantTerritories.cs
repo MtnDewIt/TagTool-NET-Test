@@ -18,7 +18,7 @@ namespace TagTool.BlamFile.GameVariants
         {
             None = 0,
             OneSided = 1 << 0,
-            LockAfterFirstCapture = 1 << 2,
+            LockAfterFirstCapture = 1 << 1,
         }
 
         public enum TerritoriesRespawnOnCaptureSettings : short

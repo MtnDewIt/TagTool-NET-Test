@@ -1,4 +1,5 @@
 ﻿using System;
+using TagTool.Cache;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
@@ -38,10 +39,17 @@ namespace TagTool.BlamFile.GameVariants
             public RespawnFlags Flags;
             public byte LivesPerRound;
             public byte TeamLivesPerRound;
+
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+            public byte UnknownTime;
+
             public byte RespawnTime;
             public byte SuicidePenalty;
             public byte BetrayalPenalty;
+
+            [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
             public byte UnknownPenalty;
+
             public byte RespawnGrowth;
             public byte RespawnPlayerTraitsDuration;
 
@@ -66,10 +74,10 @@ namespace TagTool.BlamFile.GameVariants
         public class VariantSocialOptions : TagStructure
         {
             public SocialFlags Flags;
+            public TeamChangingFlags TeamChanging;
 
-            // Not entirely sure if this enum is correct
             [Flags]
-            public enum SocialFlags : int
+            public enum SocialFlags : short
             {
                 None = 0,
                 FriendlyFireEnabled = 1 << 0,
@@ -79,8 +87,13 @@ namespace TagTool.BlamFile.GameVariants
                 DeadPlayerVoiceEnabled = 1 << 5,
                 SpartansVsElitesEnabled = 1 << 6,
                 ObserversEnabled = 1 << 7,
-                TeamChangingEnabled = 1 << 8,
-                TeamChangingBalancingOnlyEnabled = 1 << 9,
+            }
+
+            public enum TeamChangingFlags : short
+            {
+                None = 0,
+                TeamChangingEnabled,
+                TeamChangingBalancingOnlyEnabled,
             }
         }
 

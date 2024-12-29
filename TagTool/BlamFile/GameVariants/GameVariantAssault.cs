@@ -16,6 +16,10 @@ namespace TagTool.BlamFile.GameVariants
         public short ScoreUnknown2;
         public short ScoreUnknown3;
         public AssaultSuddenDeathTime SuddenDeathTime;
+        public short BombResetTime;
+        public short BombArmingTime;
+        public short BombDisarmingTime;
+        public short BombFuseTime;
         public GameVariantPlayerTraits CarrierTraits;
         public GameVariantPlayerTraits ArmingTraits;
 
