@@ -16,7 +16,7 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Files
 {
-    public class ConvertMapVariantCommand : Command
+    public class ConvertReachMapVariantCommand : Command
     {
         private readonly GameCacheHaloOnlineBase Cache;
 
@@ -33,13 +33,13 @@ namespace TagTool.Commands.Files
             ".mvar",
         };
 
-        public ConvertMapVariantCommand(GameCacheHaloOnlineBase cache)
+        public ConvertReachMapVariantCommand(GameCacheHaloOnlineBase cache)
             : base(true,
 
-                  "ConvertMapVariant",
+                  "ConvertReachMapVariant",
                   "Converts all reach map variants in the specified path",
 
-                  "ConvertMapVariant <maps directory> <input directory> [output directory]",
+                  "ConvertReachMapVariant <maps directory> <input directory> [output directory]",
                   "Converts all reach map variants in the specified path")
         {
             Cache = cache;
@@ -339,30 +339,6 @@ namespace TagTool.Commands.Files
 
         private static readonly Dictionary<int, string> MapIdToFilename = new Dictionary<int, string>()
         {
-            [030] = "zanzibar",
-            [300] = "construct",
-            [310] = "deadlock",
-            [320] = "guardian",
-            [330] = "isolation",
-            [340] = "riverworld",
-            [350] = "salvation",
-            [360] = "snowbound",
-            [380] = "chill",
-            [390] = "cyberdyne",
-            [400] = "shrine",
-            [410] = "bunkerworld",
-            [440] = "docks",
-            [470] = "sidewinder",
-            [480] = "warehouse",
-            [490] = "descent",
-            [500] = "spacecamp",
-            [520] = "lockout",
-            [580] = "armory",
-            [590] = "ghosttown",
-            [600] = "chillout",
-            [720] = "midship",
-            [730] = "sandbox",
-            [740] = "fortress",
             [1000] = "20_sword_slayer",
             [1020] = "45_launch_station",
             [1035] = "50_panopticon",

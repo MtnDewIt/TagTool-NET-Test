@@ -1,4 +1,5 @@
 ﻿using System;
+using TagTool.BlamFile.GameVariants;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
@@ -731,7 +732,17 @@ namespace TagTool.BlamFile
     {
         public GameEngineType GameVariantType;
 
-        [TagField(Length = 0x260)]
+        public uint VTablePointer;
+
+        public uint VariantChecksum;
+
+        [TagField(Length = 32, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public string VariantName;
+
+        public ContentItemMetadata Metadata;
+
+        [TagField(Length = 0x160, MaxVersion = CacheVersion.Halo3Retail)]
+        [TagField(Length = 0x140, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Variant;
     }
 

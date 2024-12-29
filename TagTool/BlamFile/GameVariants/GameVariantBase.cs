@@ -3,15 +3,9 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0x1D0, Align = 0x1)]
+    [TagStructure(Size = 0xB4, Align = 0x1)]
     public class GameVariantBase : TagStructure
     {
-        public long VariantChecksum;
-
-        [TagField(Length = 32)]
-        public string VariantName;
-
-        public ContentItemMetadata Metadata;
         public VariantMiscellaneousOptions MiscellaneousOptions;
         public VariantRespawnOptions RespawnOptions;
         public VariantSocialOptions SocialOptions;
