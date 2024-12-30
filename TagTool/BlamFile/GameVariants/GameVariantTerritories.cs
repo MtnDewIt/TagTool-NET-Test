@@ -1,9 +1,11 @@
 ﻿using System;
+using TagTool.Cache;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0xF4, Align = 0x1)]
+    //[TagStructure(Size = 0xB0, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x90, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     public class GameVariantTerritories : GameVariantBase
     {
         public TerritoriesFlags VariantFlags;
@@ -12,6 +14,10 @@ namespace TagTool.BlamFile.GameVariants
         public TerritoriesSuddenDeathSettings SuddenDeathTime;
         public GameVariantPlayerTraits DefenderTraits;
         public GameVariantPlayerTraits AttackerTraits;
+
+        //[TagField(Flags = TagFieldFlags.Padding, Length = 0x70, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x50, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public byte[] Alignment;
 
         [Flags]
         public enum TerritoriesFlags : short

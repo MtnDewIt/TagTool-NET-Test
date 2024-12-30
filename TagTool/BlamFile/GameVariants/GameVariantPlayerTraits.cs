@@ -4,7 +4,8 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0x1C, Align = 0x1)]
+    [TagStructure(Size = 0x1B, Align = 0x1, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x1C, Align = 0x1, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     public class GameVariantPlayerTraits : TagStructure 
     {
         public PlayerShieldVitalityTraits ShieldVitalityTraits;
@@ -178,7 +179,7 @@ namespace TagTool.BlamFile.GameVariants
             public PlayerGravitySettings PlayerGravity;
             public PlayerVehicleUsage VehicleUsage;
 
-            [TagField(Flags = TagFieldFlags.Padding, Length = 1, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(Flags = TagFieldFlags.Padding, Length = 1, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             public byte[] Padding1 = new byte[1];
 
             public enum PlayerSpeedSettings : byte

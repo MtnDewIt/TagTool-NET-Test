@@ -1,13 +1,17 @@
 ﻿using System;
+using TagTool.Cache;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0xE4, Align = 0x1)]
+    //[TagStructure(Size = 0xB0, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x90, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     public class GameVariantJuggernaut : GameVariantBase
     {
         public short ScoreToWinRound;
-        public short ScoreUnknown;
+
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public short ScoreToWinEarly;
 
         [TagField(Flags = TagFieldFlags.Padding, Length = 2)]
         public byte[] Padding1 = new byte[2];
@@ -29,6 +33,10 @@ namespace TagTool.BlamFile.GameVariants
 
         [TagField(Flags = TagFieldFlags.Padding, Length = 2)]
         public byte[] Padding2 = new byte[2];
+
+        //[TagField(Flags = TagFieldFlags.Padding, Length = 0x80, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x60, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public byte[] Alignment;
 
         public enum JuggernautInitialJuggernautSettings : byte
         {

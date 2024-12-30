@@ -1,9 +1,11 @@
 ﻿using System;
+using TagTool.Cache;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0xE4, Align = 0x1)]
+    //[TagStructure(Size = 0xB0, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x90, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     public class GameVariantCtf : GameVariantBase
     {
         public CtfFlags VariantFlags;
@@ -13,12 +15,19 @@ namespace TagTool.BlamFile.GameVariants
         public CtfTouchReturnSettings TouchReturnTimeout;
         public CtfSuddenDeathTime SuddenDeathTime;
         public short ScoreToWin;
-        public short ScoreUnknown;
+
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public short ScoreToWinEarly;
+
         public short FlagResetTime;
         public GameVariantPlayerTraits CarrierTraits;
 
-        [TagField(Flags = TagFieldFlags.Padding, Length = 6)]
-        public byte[] Padding1 = new byte[6];
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x6)]
+        public byte[] Padding1 = new byte[0x6];
+
+        //[TagField(Flags = TagFieldFlags.Padding, Length = 0x80, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x60, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public byte[] Alignment;
 
         [Flags]
         public enum CtfFlags : byte

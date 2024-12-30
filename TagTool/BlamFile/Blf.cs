@@ -741,7 +741,7 @@ namespace TagTool.BlamFile
 
         public ContentItemMetadata Metadata;
 
-        [TagField(Length = 0x160, MaxVersion = CacheVersion.Halo3Retail)]
+        [TagField(Length = 0x160, MaxVersion = CacheVersion.Halo3ODST)]
         [TagField(Length = 0x140, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Variant;
     }

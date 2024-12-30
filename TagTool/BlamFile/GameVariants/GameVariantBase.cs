@@ -4,7 +4,7 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0xB4, Align = 0x1)]
+    [TagStructure(Size = 0xB0, Align = 0x1)]
     public class GameVariantBase : TagStructure
     {
         public VariantMiscellaneousOptions MiscellaneousOptions;

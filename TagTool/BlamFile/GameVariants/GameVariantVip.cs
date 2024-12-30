@@ -1,13 +1,18 @@
 ﻿using System;
+using TagTool.Cache;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0x11C, Align = 0x1)]
+    //[TagStructure(Size = 0xB0, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x90, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     public class GameVariantVip : GameVariantBase
     {
         public short ScoreToWinRound;
-        public short ScoreUnknown;
+
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public short ScoreToWinEarly;
+
         public VipFlags VariantFlags;
         public sbyte KillPoints;
         public sbyte TakedownPoints;
@@ -28,6 +33,10 @@ namespace TagTool.BlamFile.GameVariants
         public GameVariantPlayerTraits VipTeamTraits;
         public GameVariantPlayerTraits VipInfluenceTraits;
         public GameVariantPlayerTraits VipTraits;
+
+        //[TagField(Flags = TagFieldFlags.Padding, Length = 0x48, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x28, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public byte[] Alignment;
 
         [Flags]
         public enum VipFlags : short
