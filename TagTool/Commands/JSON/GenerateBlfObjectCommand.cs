@@ -109,7 +109,7 @@ namespace TagTool.Commands.JSON
                 var fileName = Path.GetFileNameWithoutExtension(file.Name);
                 var fileExtension = file.Extension.TrimStart('.');
 
-                var blfData = new Blf(Cache.Version, Cache.Platform);
+                Blf blfData = null;
 
                 var exportPath = PathPrefix != null ? Path.Combine(PathPrefix, $@"maps\info") : $@"maps\info";
 
@@ -154,6 +154,9 @@ namespace TagTool.Commands.JSON
                                     blfData = new Blf(CacheVersion.HaloReach, Cache.Platform);
                                     break;
                             }
+                            break;
+                        default:
+                            blfData = new Blf(Cache.Version, Cache.Platform);
                             break;
                     }
 

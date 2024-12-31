@@ -4,7 +4,8 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0xB0, Align = 0x1)]
+    [TagStructure(Size = 0xAF, Align = 0x1, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0xB0, Align = 0x1, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     public class GameVariantBase : TagStructure
     {
         public VariantMiscellaneousOptions MiscellaneousOptions;
@@ -33,7 +34,8 @@ namespace TagTool.BlamFile.GameVariants
             }
         }
 
-        [TagStructure(Size = 0x28, Align = 0x1)]
+        [TagStructure(Size = 0x23, Align = 0x1, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0x28, Align = 0x1, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public class VariantRespawnOptions : TagStructure
         {
             public RespawnFlags Flags;

@@ -3,7 +3,7 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    //[TagStructure(Size = 0xB0, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0xB0, MaxVersion = CacheVersion.Halo3ODST)]
     [TagStructure(Size = 0x90, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     public class GameVariantSlayer : GameVariantBase
     {
@@ -30,7 +30,7 @@ namespace TagTool.BlamFile.GameVariants
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x2)]
         public byte[] Padding1;
 
-        //[TagField(Flags = TagFieldFlags.Padding, Length = 0x80, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x80, MaxVersion = CacheVersion.Halo3ODST)]
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x60, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Alignment;
     }

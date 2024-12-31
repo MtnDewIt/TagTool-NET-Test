@@ -4,7 +4,7 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0x1B, Align = 0x1, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x18, Align = 0x1, MaxVersion = CacheVersion.Halo3ODST)]
     [TagStructure(Size = 0x1C, Align = 0x1, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     public class GameVariantPlayerTraits : TagStructure 
     {

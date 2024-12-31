@@ -59,10 +59,29 @@ namespace TagTool.Commands.Editing
                 {
                     var reader = new EndianReader(stream);
 
-                    var format = GetEndianFormat(reader);
-
                     switch (file.Extension)
                     {
+                        case ".assault":
+                        case ".ctf":
+                        case ".jugg":
+                        case ".koth":
+                        case ".oddball":
+                        case ".slayer":
+                        case ".terries":
+                        case ".vip":
+                        case ".zombiez":
+                        case ".map":
+                            // I might add support for halo 3 variants at some point, but I'm not all that familiar
+                            // with the formatting for variants outside of ED, so for now we'll only support ED variants.
+                            blfData = new Blf(CacheVersion.HaloOnlineED, Cache.Platform);
+                            break;
+                        case ".bin":
+                        case ".blf":
+                            blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
+                            break;
+                        case ".campaign":
+                            blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
+                            break;
                         case ".mapinfo":
                             switch (reader.Length)
                             {
@@ -75,50 +94,10 @@ namespace TagTool.Commands.Editing
                                 case 0xCDD9:
                                     blfData = new Blf(CacheVersion.HaloReach, Cache.Platform);
                                     break;
-                                default:
-                                    blfData = new Blf(Cache.Version, Cache.Platform);
-                                    break;
-                            }
-                            break;
-                        case ".map":
-                            switch (format) 
-                            {
-                                // TODO: Add MCC Map Variant Support (Halo 3, Reach)
-                                // TODO: Maybe add 360 Reach Map Variant Support?
-                                case EndianFormat.BigEndian:
-                                    switch (reader.Length) 
-                                    {
-                                        // May need to add extra cases as the EOF chunk size differs slightly for some reason
-                                        case 0xE1E9:
-                                        case 0xE1F0:
-                                            blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
-                                            break;
-                                        default:
-                                            blfData = new Blf(Cache.Version, Cache.Platform);
-                                            break;
-                                    }
-                                    break;
-                                case EndianFormat.LittleEndian:
-                                    blfData = new Blf(CacheVersion.HaloOnlineED, Cache.Platform);
-                                    break;
-                                default:
-                                    blfData = new Blf(Cache.Version, Cache.Platform);
-                                    break;
                             }
                             break;
                         default:
-                            switch (format)
-                            {
-                                case EndianFormat.BigEndian:
-                                    blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
-                                    break;
-                                case EndianFormat.LittleEndian:
-                                    blfData = new Blf(CacheVersion.HaloOnlineED, Cache.Platform);
-                                    break;
-                                default:
-                                    blfData = new Blf(Cache.Version, Cache.Platform);
-                                    break;
-                            }
+                            blfData = new Blf(Cache.Version, Cache.Platform);
                             break;
                     }
 
@@ -134,33 +113,6 @@ namespace TagTool.Commands.Editing
                 result = null;
 
                 return false;
-            }
-        }
-
-        public EndianFormat GetEndianFormat(EndianReader reader) 
-        {
-            reader.Format = EndianFormat.LittleEndian;
-            var startOfFile = reader.Position;
-            reader.SeekTo(startOfFile + 0xC);
-            if (reader.ReadInt16() == -2)
-            {
-                reader.SeekTo(startOfFile);
-                return EndianFormat.LittleEndian;
-            }
-            else
-            {
-                reader.SeekTo(startOfFile + 0xC);
-                reader.Format = EndianFormat.BigEndian;
-                if (reader.ReadInt16() == -2)
-                {
-                    reader.SeekTo(startOfFile);
-                    return EndianFormat.BigEndian;
-                }
-                else
-                {
-                    reader.SeekTo(startOfFile);
-                    throw new Exception("Invalid BOM found in BLF start of file chunk");
-                }
             }
         }
     }
