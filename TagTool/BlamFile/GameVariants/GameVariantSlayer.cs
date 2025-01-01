@@ -3,8 +3,7 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0xB0, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x90, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure]
     public class GameVariantSlayer : GameVariantBase
     {
         public short ScoreToWin;

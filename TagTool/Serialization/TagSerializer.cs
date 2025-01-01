@@ -121,7 +121,7 @@ namespace TagTool.Serialization
             // second condition is a hack to prevent exceptions when encountering cached tags
             if (objectValue != null)
             {
-                if (objectValue.GetType() == tagFieldInfo.FieldType || tagFieldInfo.FieldType == typeof(CachedTag))
+                if (objectValue.GetType() == tagFieldInfo.FieldType || tagFieldInfo.FieldType == typeof(CachedTag) || tagFieldInfo.FieldType.IsAssignableFrom(objectValue.GetType()))
                 {
                     SerializeValue(context, tagStream, block,
                                     objectValue, tagFieldInfo.Attribute, tagFieldInfo.FieldType);

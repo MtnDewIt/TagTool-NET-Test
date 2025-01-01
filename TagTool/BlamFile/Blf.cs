@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using TagTool.BlamFile.GameVariants;
 using TagTool.Cache;
 using TagTool.Commands.Common;
@@ -125,7 +126,54 @@ namespace TagTool.BlamFile
 
                     case "mpvr":
                         ContentFlags |= BlfFileContentFlags.GameVariant;
-                        GameVariant = (BlfGameVariant)deserializer.Deserialize(dataContext, typeof(BlfGameVariant));
+
+                        GameVariant = new BlfGameVariant
+                        {
+                            Signature = reader.ReadTag(),
+                            Length = reader.ReadInt32(),
+                            MajorVersion = reader.ReadInt16(),
+                            MinorVersion = reader.ReadInt16(),
+                            GameVariantType = (GameEngineType)reader.ReadInt32(),
+                            VTablePointer = reader.ReadUInt32(),
+                            VariantChecksum = reader.ReadUInt32(),
+                            VariantName = reader.ReadString(32),
+                            Metadata = deserializer.Deserialize<ContentItemMetadata>(dataContext),
+                        };
+
+                        switch (GameVariant.GameVariantType)
+                        {
+                            case GameEngineType.CaptureTheFlag:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantCtf>(dataContext);
+                                break;
+                            case GameEngineType.Slayer:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantSlayer>(dataContext);
+                                break;
+                            case GameEngineType.Oddball:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantOddball>(dataContext);
+                                break;
+                            case GameEngineType.KingOfTheHill:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantKing>(dataContext);
+                                break;
+                            case GameEngineType.Sandbox:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantSandbox>(dataContext);
+                                break;
+                            case GameEngineType.Vip:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantVip>(dataContext);
+                                break;
+                            case GameEngineType.Juggernaut:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantJuggernaut>(dataContext);
+                                break;
+                            case GameEngineType.Territories:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantTerritories>(dataContext);
+                                break;
+                            case GameEngineType.Assault:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantAssault>(dataContext);
+                                break;
+                            case GameEngineType.Infection:
+                                GameVariant.Variant = deserializer.Deserialize<GameVariantInfection>(dataContext);
+                                break;
+                        }
+
                         break;
 
                     case "chdr":
@@ -177,8 +225,44 @@ namespace TagTool.BlamFile
             if(ContentFlags.HasFlag(BlfFileContentFlags.MapVariant))
                 serializer.Serialize(dataContext, MapVariant);
 
-            if (ContentFlags.HasFlag(BlfFileContentFlags.GameVariant))
+            if (ContentFlags.HasFlag(BlfFileContentFlags.GameVariant)) 
+            {
+                switch (GameVariant.GameVariantType) 
+                {
+                    case GameEngineType.CaptureTheFlag:
+                        GameVariant.Variant = GameVariant.Variant as GameVariantCtf;
+                        break;
+                    case GameEngineType.Slayer:
+                        GameVariant.Variant = GameVariant.Variant as GameVariantSlayer;
+                        break;
+                    case GameEngineType.Oddball:
+                        GameVariant.Variant = GameVariant.Variant as GameVariantOddball;
+                        break;
+                    case GameEngineType.KingOfTheHill:
+                        GameVariant.Variant = GameVariant.Variant as GameVariantKing;
+                        break;
+                    case GameEngineType.Sandbox:
+                        GameVariant.Variant = GameVariant.Variant as GameVariantSandbox;
+                        break;
+                    case GameEngineType.Vip:
+                        GameVariant.Variant = GameVariant.Variant as GameVariantVip;
+                        break;
+                    case GameEngineType.Juggernaut:
+                        GameVariant.Variant = GameVariant.Variant as GameVariantJuggernaut;
+                        break;
+                    case GameEngineType.Territories:
+                        GameVariant.Variant = GameVariant.Variant as GameVariantTerritories;
+                        break;
+                    case GameEngineType.Assault:
+                        GameVariant.Variant = GameVariant.Variant as GameVariantAssault;
+                        break;
+                    case GameEngineType.Infection:
+                        GameVariant.Variant = GameVariant.Variant as GameVariantInfection;
+                        break;
+                }
+
                 serializer.Serialize(dataContext, GameVariant);
+            }
 
             if (ContentFlags.HasFlag(BlfFileContentFlags.Campaign))
                 serializer.Serialize(dataContext, Campaign);
@@ -741,9 +825,7 @@ namespace TagTool.BlamFile
 
         public ContentItemMetadata Metadata;
 
-        [TagField(Length = 0x160, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagField(Length = 0x140, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public byte[] Variant;
+        public GameVariantBase Variant;
     }
 
     [TagStructure(Size = 0x40, Align = 0x1)]

@@ -4,8 +4,8 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0xAF, Align = 0x1, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0xB0, Align = 0x1, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x160, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x140, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     public class GameVariantBase : TagStructure
     {
         public VariantMiscellaneousOptions MiscellaneousOptions;
@@ -15,7 +15,7 @@ namespace TagTool.BlamFile.GameVariants
         public BaseVariantFlags BaseFlags;
         public TeamScoring TeamScoringMethod;
 
-        [TagStructure(Size = 0x4, Align = 0x1)]
+        [TagStructure(Size = 0x4)]
         public class VariantMiscellaneousOptions : TagStructure
         {
             public MiscellaneousOptionsFlags Flags;
@@ -34,8 +34,8 @@ namespace TagTool.BlamFile.GameVariants
             }
         }
 
-        [TagStructure(Size = 0x23, Align = 0x1, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagStructure(Size = 0x28, Align = 0x1, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x23, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public class VariantRespawnOptions : TagStructure
         {
             public RespawnFlags Flags;
@@ -72,7 +72,7 @@ namespace TagTool.BlamFile.GameVariants
             }
         }
 
-        [TagStructure(Size = 0x4, Align = 0x1)]
+        [TagStructure(Size = 0x4)]
         public class VariantSocialOptions : TagStructure
         {
             public SocialFlags Flags;
@@ -99,7 +99,7 @@ namespace TagTool.BlamFile.GameVariants
             }
         }
 
-        [TagStructure(Size = 0x7C, Align = 0x1)]
+        [TagStructure(Size = 0x7C)]
         public class VariantMapOverrideOptions : TagStructure
         {
             public MapOverrideFlags Flags;
