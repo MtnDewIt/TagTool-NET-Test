@@ -16,7 +16,7 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Files
 {
-    public class ConvertMapVariantCommand : Command
+    public class ConvertReachMapVariantCommand : Command
     {
         private readonly GameCacheHaloOnlineBase Cache;
 
@@ -33,13 +33,13 @@ namespace TagTool.Commands.Files
             ".mvar",
         };
 
-        public ConvertMapVariantCommand(GameCacheHaloOnlineBase cache)
+        public ConvertReachMapVariantCommand(GameCacheHaloOnlineBase cache)
             : base(true,
 
-                  "ConvertMapVariant",
+                  "ConvertReachMapVariant",
                   "Converts all reach map variants in the specified path",
 
-                  "ConvertMapVariant <maps directory> <input directory> [output directory]",
+                  "ConvertReachMapVariant <maps directory> <input directory> [output directory]",
                   "Converts all reach map variants in the specified path")
         {
             Cache = cache;
@@ -219,16 +219,17 @@ namespace TagTool.Commands.Files
             converter.ExcludedTags.Add(@"objects\levels\shared\screen_fx_orb\fx\gloomy.bloc");
             converter.ExcludedTags.Add(@"objects\levels\shared\screen_fx_orb\fx\olde_timey.bloc");
             converter.ExcludedTags.Add(@"objects\levels\shared\screen_fx_orb\fx\eerie.bloc");
+            converter.ExcludedTags.Add(@"objects\levels\shared\screen_fx_orb\fx\pen_and_ink.bloc");
 
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_flash_yellow\ff_light_flash_yellow.bloc");
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_flash_red\ff_light_flash_red.bloc");
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_red\ff_light_red.bloc");
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_white\ff_light_white.bloc");
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_green\ff_light_green.bloc");
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_yellow\ff_light_yellow.bloc");
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_orange\ff_light_orange.bloc");
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_purple\ff_light_purple.bloc");
-            converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_blue\ff_light_blue.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_flash_yellow\ff_light_flash_yellow.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_flash_red\ff_light_flash_red.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_red\ff_light_red.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_white\ff_light_white.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_green\ff_light_green.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_yellow\ff_light_yellow.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_orange\ff_light_orange.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_purple\ff_light_purple.bloc");
+            //converter.ExcludedTags.Add(@"objects\levels\forge\ff_light_blue\ff_light_blue.bloc");
 
             converter.ExcludedTags.Add(@"objects\equipment\jet_pack\jet_pack.eqip");
             converter.ExcludedTags.Add(@"objects\equipment\sprint\sprint.eqip");
@@ -338,30 +339,6 @@ namespace TagTool.Commands.Files
 
         private static readonly Dictionary<int, string> MapIdToFilename = new Dictionary<int, string>()
         {
-            [030] = "zanzibar",
-            [300] = "construct",
-            [310] = "deadlock",
-            [320] = "guardian",
-            [330] = "isolation",
-            [340] = "riverworld",
-            [350] = "salvation",
-            [360] = "snowbound",
-            [380] = "chill",
-            [390] = "cyberdyne",
-            [400] = "shrine",
-            [410] = "bunkerworld",
-            [440] = "docks",
-            [470] = "sidewinder",
-            [480] = "warehouse",
-            [490] = "descent",
-            [500] = "spacecamp",
-            [520] = "lockout",
-            [580] = "armory",
-            [590] = "ghosttown",
-            [600] = "chillout",
-            [720] = "midship",
-            [730] = "sandbox",
-            [740] = "fortress",
             [1000] = "20_sword_slayer",
             [1020] = "45_launch_station",
             [1035] = "50_panopticon",

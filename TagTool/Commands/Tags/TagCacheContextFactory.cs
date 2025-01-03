@@ -78,6 +78,8 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new ConvertVariantCommand(cache));
 
             context.AddCommand(new EditBlfCommand(contextStack, cache as GameCacheHaloOnline, cache));
+            context.AddCommand(new ConvertReachMapVariantCommand(cache as GameCacheHaloOnline));
+            context.AddCommand(new ConvertHalo3MapVariantCommand(cache as GameCacheHaloOnline));
 
             // Halo Online Specific Commands
             if (cache is GameCacheHaloOnlineBase)
@@ -107,8 +109,6 @@ namespace TagTool.Commands.Tags
 				context.AddCommand(new OpenModPackageCommand(contextStack, hoCache));
                 context.AddCommand(new CreateCharacterType(cache));
                 context.AddCommand(new GenerateCanvasCommand(hoCache));
-
-                context.AddCommand(new ConvertMapVariantCommand(hoCache));
 
                 context.AddCommand(new UpdateMapFilesCommand(cache));
 
