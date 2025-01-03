@@ -636,22 +636,77 @@ namespace TagTool.Scripting.Compiler
 
             if (node is ScriptSymbol symbol)
             {
+                // Variables storing info used in fixing Object and ObjectList parameter compilation
+                bool fixObjectCompilation = (type == HsType.HaloOnlineValue.ObjectList || type == HsType.HaloOnlineValue.Object);
+                HsType.HaloOnlineValue originalParamType = HsType.HaloOnlineValue.Invalid;
+                bool modified = false;
+
                 //
                 // Check if the symbol is a reference to a parameter
                 //
 
                 if (CurrentScript != null)
+                {
                     foreach (var parameter in CurrentScript?.Parameters)
-                        if (parameter.Name == symbol.Value)
-                            return CompileParameterReference(symbol, parameter);
+                    {
+                        if (parameter.Name != symbol.Value) 
+                        { 
+                            continue; 
+                        }
+
+                        // Fix for incorrect Object and ObjectList reference compilation
+                        if (fixObjectCompilation && parameter.Type.IsObject)
+                        {
+                            // store a reference to the parameter we're modifying, and its initial type
+                            originalParamType = parameter.Type.HaloOnline;
+                            parameter.Type.HaloOnline = type;
+                            modified = true;
+                        }
+
+                        // Compile the parameter reference
+                        var returnValue = CompileParameterReference(symbol, parameter);
+
+                        // Ensure the parameter is reset to its original state if it was modified
+                        if (modified) 
+                        { 
+                            parameter.Type.HaloOnline = originalParamType; 
+                        }
+
+                        return returnValue;
+                    }
+                }
 
                 //
                 // Check if the symbol is a reference to a global
                 //
 
                 foreach (var global in Globals)
-                    if (global.Name == symbol.Value)
-                        return CompileGlobalReference(symbol, global);
+                {
+                    if (global.Name != symbol.Value) 
+                    { 
+                        continue; 
+                    }
+
+                    // Fix for incorrect Object and ObjectList reference compilation
+                    if (fixObjectCompilation && global.Type.IsObject)
+                    {
+                        // store a reference to the parameter we're modifying, and its initial type
+                        originalParamType = global.Type.HaloOnline;
+                        global.Type.HaloOnline = type;
+                        modified = true;
+                    }
+
+                    // Compile the global reference
+                    DatumHandle returnValue = CompileGlobalReference(symbol, global);
+
+                    // Ensure the parameter is reset to its original state if it was modified
+                    if (modified) 
+                    { 
+                        global.Type.HaloOnline = originalParamType; 
+                    }
+
+                    return returnValue;
+                }
 
                 foreach (var global in ScriptInfo.Globals[(Cache.Version, Cache.Platform)])
                     if (global.Value == symbol.Value)

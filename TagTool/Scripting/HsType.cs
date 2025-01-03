@@ -18,6 +18,27 @@ namespace TagTool.Scripting
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public HaloReachValue HaloReach;
 
+        public bool IsObject 
+        {
+            get 
+            {
+                switch (HaloOnline) 
+                {
+                    case HaloOnlineValue.Object:
+                    case HaloOnlineValue.ObjectList:
+                    case HaloOnlineValue.Device:
+                    case HaloOnlineValue.EffectScenery:
+                    case HaloOnlineValue.Scenery:
+                    case HaloOnlineValue.Weapon:
+                    case HaloOnlineValue.Unit:
+                    case HaloOnlineValue.Vehicle:
+                    	return true;
+                    default:
+                    	return false;
+                }
+            }
+        }
+
         public enum Halo3RetailValue : ushort
         {
             Invalid = 47802,
