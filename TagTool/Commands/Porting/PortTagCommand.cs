@@ -490,8 +490,15 @@ namespace TagTool.Commands.Porting
                                     break;
                             }
 
-                if (hlmt.NewDamageInfo == null || hlmt.NewDamageInfo.Count == 0)
-                    hlmt.NewDamageInfo = new List<Model.GlobalDamageInfoBlock>() { ConvertDamageInfoReach(hlmt.OmahaDamageInfo) };
+                if (hlmt.OmahaDamageInfo.MaximumVitality != 0)
+                {
+                    if (hlmt.NewDamageInfo == null || hlmt.NewDamageInfo.Count == 0)
+                        hlmt.NewDamageInfo = new List<Model.GlobalDamageInfoBlock>() { ConvertDamageInfoReach(hlmt.OmahaDamageInfo) };
+                }
+                else 
+                {
+                    hlmt.NewDamageInfo = null;
+                }
             }
 
             if (definition is GameObject obj) {
