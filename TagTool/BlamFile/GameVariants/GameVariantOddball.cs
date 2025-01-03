@@ -1,14 +1,18 @@
 ﻿using System;
+using TagTool.Cache;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0x200, Align = 0x1)]
+    [TagStructure]
     public class GameVariantOddball : GameVariantBase
     {
         public OddballFlags VariantFlags;
         public short ScoreToWin;
-        public short ScoreUnknown;
+        
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public short ScoreToWinEarly;
+        
         public short CarryingPoints;
         public sbyte KillPoints;
         public sbyte BallKillPoints;
@@ -18,8 +22,12 @@ namespace TagTool.BlamFile.GameVariants
         public short BallInactiveRespawnDelay;
         public GameVariantPlayerTraits CarrierTraits;
 
-        [TagField(Flags = TagFieldFlags.Padding, Length = 2)]
-        public byte[] Padding1 = new byte[2];
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x2)]
+        public byte[] Padding1 = new byte[0x2];
+
+        //[TagField(Flags = TagFieldFlags.Padding, Length = 0x80, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x60, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public byte[] Alignment;
 
         [Flags]
         public enum OddballFlags : int

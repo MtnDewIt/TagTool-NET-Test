@@ -1,9 +1,10 @@
 ﻿using System;
+using TagTool.Cache;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0x228, Align = 0x1)]
+    [TagStructure]
     public class GameVariantAssault : GameVariantBase
     {
         public AssaultFlags VariantFlags;
@@ -11,13 +12,27 @@ namespace TagTool.BlamFile.GameVariants
         public AssaultGametypeSettings Gametype;
         public AssaultEnemyBombWaypointSettings EnemyBombWaypoint;
         public short ScoreToWin;
+        
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public short ScoreUnknown0;
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public short ScoreUnknown1;
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public short ScoreUnknown2;
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public short ScoreUnknown3;
+        
         public AssaultSuddenDeathTime SuddenDeathTime;
+        public short BombResetTime;
+        public short BombArmingTime;
+        public short BombDisarmingTime;
+        public short BombFuseTime;
         public GameVariantPlayerTraits CarrierTraits;
         public GameVariantPlayerTraits ArmingTraits;
+
+        //[TagField(Flags = TagFieldFlags.Padding, Length = 0x5C, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x3C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public byte[] Alignment;
 
         [Flags]
         public enum AssaultFlags : short
@@ -25,7 +40,7 @@ namespace TagTool.BlamFile.GameVariants
             None = 0,
             ResetBombOnDisarm = 1 << 0,
         }
-
+        
         public enum AssaultRespawnSettings : short
         {
             Disabled = 0,
@@ -33,14 +48,14 @@ namespace TagTool.BlamFile.GameVariants
             OnEnemyDetonation,
             OnAnyDetonation,
         }
-
+        
         public enum AssaultGametypeSettings : short
         {
             MultiBomb = 0,
             OneBomb,
             NeutralBomb,
         }
-
+        
         public enum AssaultEnemyBombWaypointSettings : short
         {
             Never = 0,
@@ -48,7 +63,7 @@ namespace TagTool.BlamFile.GameVariants
             WhenArmed,
             Always,
         }
-
+        
         public enum AssaultSuddenDeathTime : short
         {
             Infinite = -1,

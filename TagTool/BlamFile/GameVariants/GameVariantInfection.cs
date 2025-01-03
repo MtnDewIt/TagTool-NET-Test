@@ -1,9 +1,10 @@
 ﻿using System;
+using TagTool.Cache;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0x250, Align = 0x1)]
+    [TagStructure]
     public class GameVariantInfection : GameVariantBase
     {
         public InfectionFlags VariantFlags;
@@ -24,6 +25,10 @@ namespace TagTool.BlamFile.GameVariants
 
         [TagField(Flags = TagFieldFlags.Padding, Length = 4)]
         public byte[] Padding1 = new byte[4];
+
+        //[TagField(Flags = TagFieldFlags.Padding, Length = 0x30, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x10, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public byte[] Alignment;
 
         [Flags]
         public enum InfectionFlags : byte

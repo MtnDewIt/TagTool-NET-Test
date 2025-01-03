@@ -1,17 +1,13 @@
 ﻿using System;
+using TagTool.Cache;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0x1D0, Align = 0x1)]
+    [TagStructure(Size = 0x160, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x140, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     public class GameVariantBase : TagStructure
     {
-        public long VariantChecksum;
-
-        [TagField(Length = 32)]
-        public string VariantName;
-
-        public ContentItemMetadata Metadata;
         public VariantMiscellaneousOptions MiscellaneousOptions;
         public VariantRespawnOptions RespawnOptions;
         public VariantSocialOptions SocialOptions;
@@ -19,7 +15,7 @@ namespace TagTool.BlamFile.GameVariants
         public BaseVariantFlags BaseFlags;
         public TeamScoring TeamScoringMethod;
 
-        [TagStructure(Size = 0x4, Align = 0x1)]
+        [TagStructure(Size = 0x4)]
         public class VariantMiscellaneousOptions : TagStructure
         {
             public MiscellaneousOptionsFlags Flags;
@@ -38,16 +34,24 @@ namespace TagTool.BlamFile.GameVariants
             }
         }
 
-        [TagStructure(Size = 0x28, Align = 0x1)]
+        [TagStructure(Size = 0x23, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public class VariantRespawnOptions : TagStructure
         {
             public RespawnFlags Flags;
             public byte LivesPerRound;
             public byte TeamLivesPerRound;
+
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+            public byte UnknownTime;
+
             public byte RespawnTime;
             public byte SuicidePenalty;
             public byte BetrayalPenalty;
+
+            [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
             public byte UnknownPenalty;
+
             public byte RespawnGrowth;
             public byte RespawnPlayerTraitsDuration;
 
@@ -68,14 +72,14 @@ namespace TagTool.BlamFile.GameVariants
             }
         }
 
-        [TagStructure(Size = 0x4, Align = 0x1)]
+        [TagStructure(Size = 0x4)]
         public class VariantSocialOptions : TagStructure
         {
             public SocialFlags Flags;
+            public TeamChangingFlags TeamChanging;
 
-            // Not entirely sure if this enum is correct
             [Flags]
-            public enum SocialFlags : int
+            public enum SocialFlags : short
             {
                 None = 0,
                 FriendlyFireEnabled = 1 << 0,
@@ -85,12 +89,17 @@ namespace TagTool.BlamFile.GameVariants
                 DeadPlayerVoiceEnabled = 1 << 5,
                 SpartansVsElitesEnabled = 1 << 6,
                 ObserversEnabled = 1 << 7,
-                TeamChangingEnabled = 1 << 8,
-                TeamChangingBalancingOnlyEnabled = 1 << 9,
+            }
+
+            public enum TeamChangingFlags : short
+            {
+                None = 0,
+                TeamChangingEnabled,
+                TeamChangingBalancingOnlyEnabled,
             }
         }
 
-        [TagStructure(Size = 0x7C, Align = 0x1)]
+        [TagStructure(Size = 0x7C)]
         public class VariantMapOverrideOptions : TagStructure
         {
             public MapOverrideFlags Flags;

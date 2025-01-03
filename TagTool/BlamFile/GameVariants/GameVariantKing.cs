@@ -1,14 +1,18 @@
 ﻿using System;
+using TagTool.Cache;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0x200, Align = 0x1)]
+    [TagStructure]
     public class GameVariantKing : GameVariantBase
     {
         public KingFlags VariantFlags;
         public short ScoreToWin;
-        public short ScoreUnknown;
+
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public short ScoreToWinEarly;
+
         public MovingHillSettings MovingHill;
         public MovingHillOrderSettings MovingHillOrder;
         public sbyte InsideHillPoints;
@@ -17,8 +21,12 @@ namespace TagTool.BlamFile.GameVariants
         public sbyte KillPoints;
         public GameVariantPlayerTraits InsideHillTraits;
 
-        [TagField(Flags = TagFieldFlags.Padding, Length = 6)]
-        public byte[] Padding1 = new byte[6];
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x6)]
+        public byte[] Padding1 = new byte[0x6];
+
+        //[TagField(Flags = TagFieldFlags.Padding, Length = 0x80, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x60, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public byte[] Alignment;
 
         [Flags]
         public enum KingFlags : int

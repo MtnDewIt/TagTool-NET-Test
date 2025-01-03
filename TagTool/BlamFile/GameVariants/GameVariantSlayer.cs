@@ -1,12 +1,16 @@
-﻿using TagTool.Tags;
+﻿using TagTool.Cache;
+using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0x200, Align = 0x1)]
+    [TagStructure]
     public class GameVariantSlayer : GameVariantBase
     {
         public short ScoreToWin;
-        public short ScoreUnknown;
+        
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public short ScoreToWinEarly;
+        
         public short KillPoints;
         public sbyte AssistPoints;
         public sbyte DeathPoints;
@@ -21,8 +25,12 @@ namespace TagTool.BlamFile.GameVariants
         public sbyte SplatterPoints;
         public sbyte KillingSpreePoints;
         public GameVariantPlayerTraits LeaderTraits;
+        
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x2)]
+        public byte[] Padding1;
 
-        [TagField(Flags = TagFieldFlags.Padding, Length = 2)]
-        public byte[] Padding1 = new byte[2];
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x80, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x60, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public byte[] Alignment;
     }
 }
