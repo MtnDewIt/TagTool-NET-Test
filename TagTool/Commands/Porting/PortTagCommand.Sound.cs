@@ -325,7 +325,7 @@ namespace TagTool.Commands.Porting
 
             if (sound.SoundReference.ExtraInfoIndex != -1)
             {
-                if (BlamCache.Version > CacheVersion.HaloReach)
+                if (BlamCache.Version < CacheVersion.HaloReach)
                 {
                     foreach (var section in BlamSoundGestalt.ExtraInfo[sound.SoundReference.ExtraInfoIndex].EncodedPermutationSections)
                     {
