@@ -457,6 +457,9 @@ namespace TagTool.Commands.Porting
                 //convert animations
                 foreach (var animation in definition.Animations)
                 {
+                    if (animation.AnimationDataBlock == null || animation.AnimationDataBlock.Count == 0)
+                        continue;
+
                     if (animation.AnimationDataBlock.Count > 1)
                         new TagToolWarning("Reach animation has >1 animation data block, whereas HO only supports 1");
                     animation.AnimationData = animation.AnimationDataBlock[0];

@@ -325,10 +325,18 @@ namespace TagTool.Commands.Porting
 
             if (sound.SoundReference.ExtraInfoIndex != -1)
             {
-                foreach (var section in BlamSoundGestalt.ExtraInfo[sound.SoundReference.ExtraInfoIndex].EncodedPermutationSections)
+                if (BlamCache.Version > CacheVersion.HaloReach)
                 {
-                    var newSection = section.DeepClone();
-                    extraInfo.EncodedPermutationSections.Add(newSection);
+                    foreach (var section in BlamSoundGestalt.ExtraInfo[sound.SoundReference.ExtraInfoIndex].EncodedPermutationSections)
+                    {
+                        var newSection = section.DeepClone();
+                        extraInfo.EncodedPermutationSections.Add(newSection);
+                    }
+                }
+                else 
+                {
+                    // TODO: figure out what to do here
+                    // This has something to do with the facial animation resource data
                 }
             }
 
