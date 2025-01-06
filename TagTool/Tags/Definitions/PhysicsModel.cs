@@ -1008,10 +1008,16 @@ namespace TagTool.Tags.Definitions
         public class Node : TagStructure
 		{
             public StringId Name;
-            public ushort Flags;
+            public NodeFlags Flags;
             public short Parent;
             public short Sibling;
             public short Child;
+
+            public enum NodeFlags : ushort 
+            {
+                None = 0,
+                DoesNotAnimate = 1 << 0,
+            }
         }
 
         [TagStructure(Size = 0x84)]

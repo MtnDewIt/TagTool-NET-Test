@@ -308,7 +308,7 @@ namespace TagTool.Commands.Porting.Gen2
                 physicsModel.Nodes.Add(new PhysicsModel.Node
                 {
                     Name = gen2node.Name,
-                    Flags = (ushort)gen2node.Flags,
+                    Flags = (PhysicsModel.Node.NodeFlags)gen2node.Flags,
                     Parent = gen2node.Parent,
                     Sibling = gen2node.Sibling,
                     Child = gen2node.Child
