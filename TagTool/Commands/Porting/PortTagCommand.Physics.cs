@@ -24,6 +24,10 @@ namespace TagTool.Commands.Porting
 
             if (BlamCache.Version >= CacheVersion.HaloReach)
             {
+                foreach (var nodeEdge in phmo.NodeEdges)
+                    foreach (var constraint in nodeEdge.Constraints)
+                        constraint.Flags = ConvertReachPhysicsConstraintFlags(constraint.FlagsReach);
+
                 foreach (var rigidbody in phmo.RigidBodies)
                 {
                     string ReachValue = rigidbody.MotionType_Reach.ToString();
@@ -52,6 +56,15 @@ namespace TagTool.Commands.Porting
                 }
             }
             return phmo;
+        }
+
+        private PhysicsModel.NodeEdge.Constraint.ConstraintFlags ConvertReachPhysicsConstraintFlags(PhysicsModel.NodeEdge.Constraint.ReachConstraintFlags constraintFlags)
+        {
+            if (constraintFlags.HasFlag(PhysicsModel.NodeEdge.Constraint.ReachConstraintFlags.IsPhysicalChild))
+                constraintFlags &= ~PhysicsModel.NodeEdge.Constraint.ReachConstraintFlags.IsPhysicalChild;
+
+            string ReachValue = constraintFlags.ToString();
+            return (PhysicsModel.NodeEdge.Constraint.ConstraintFlags)Enum.Parse(typeof(PhysicsModel.NodeEdge.Constraint.ConstraintFlags), ReachValue);
         }
     }
 }
