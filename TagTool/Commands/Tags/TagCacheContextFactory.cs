@@ -143,6 +143,7 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new UpdateModPackageCommand(contextStack, hoCache));
                 context.AddCommand(new AddForgeCategoryCommand(cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new AddForgeItemCommand(cache as GameCacheHaloOnlineBase));
+                context.AddCommand(new AddSkyBoxCommand(cache as GameCacheHaloOnlineBase));
             }
 
             if (cache is GameCacheModPackage)
@@ -167,6 +168,7 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new MapFileCommand(modCache));
                 context.AddCommand(new AddForgeCategoryCommand(cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new AddForgeItemCommand(cache as GameCacheHaloOnlineBase));
+                context.AddCommand(new AddSkyBoxCommand(cache as GameCacheHaloOnlineBase));
 
                 context.AddCommand(new ConvertCacheCommand(modCache, cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new UpdateShaderDataCommand(modCache, cache as GameCacheHaloOnlineBase));
