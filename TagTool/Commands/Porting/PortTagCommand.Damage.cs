@@ -212,7 +212,24 @@ namespace TagTool.Commands.Porting
                             new TagToolWarning("Reach damage info has >1 seat ejection block, whereas HO only supports 1");
                     }
 
+                    if (instantResponse.GenericEffectMarker != instantResponse.SpecificEffectMarker) 
+                        newInstantResponse.SecondaryTransitionEffect = null;
+                    
                     newSection.InstantResponses.Add(newInstantResponse);
+                    
+                    if (instantResponse.GenericEffectMarker != instantResponse.SpecificEffectMarker) 
+                    {
+                        var newSecondaryInstantResponse = newInstantResponse.DeepCloneV2();
+                    
+                        newSecondaryInstantResponse.PrimaryTransitionEffect = instantResponse.SpecificTransitionEffect;
+                        newSecondaryInstantResponse.TransitionDamageEffect = null;
+                        newSecondaryInstantResponse.EffectMarkerName = instantResponse.SpecificEffectMarker;
+                        newSecondaryInstantResponse.DamageEffectMarkerName = StringId.Invalid;
+                        newSecondaryInstantResponse.DelayEffect = null;
+                        newSecondaryInstantResponse.DelayEffectMarkerName = StringId.Invalid;
+                    
+                        newSection.InstantResponses.Add(newSecondaryInstantResponse);
+                    }
                 }
 
                 result.DamageSections.Add(newSection);
