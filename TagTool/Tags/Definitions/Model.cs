@@ -912,9 +912,8 @@ namespace TagTool.Tags.Definitions
                     public FlagsValue Flags;
                     public float DamageThreshold;
 
-                    //TODO: verify these fields
                     [TagField(MinVersion = CacheVersion.HaloReach)]
-                    public int BodyThresholdFlags;
+                    public BodyThresholdValue BodyThresholdFlags;
                     [TagField(MinVersion = CacheVersion.HaloReach)]
                     public float BodyDamageThreshold;
 
@@ -1032,6 +1031,13 @@ namespace TagTool.Tags.Definitions
                         SkipSoundsOnSpecialDeath = 1 << 29,
                         CauseHeadDismemberment = 1 << 30,
                         CauseLeftLegDismemberment = 1 << 31
+                    }
+
+                    [Flags]
+                    public enum BodyThresholdValue : int 
+                    {
+                        None,
+                        BodyThresholdActive = 1 << 0
                     }
 
                     public enum NewStateValue : short
