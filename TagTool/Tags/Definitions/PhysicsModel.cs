@@ -99,15 +99,15 @@ namespace TagTool.Tags.Definitions
         public enum PhysicsModelFlags : int
         {
             None = 0,
-            SerializedHavokData = 1 << 0,
-            MakePhysicalChildrenKeyframed = 1 << 1,
-            ShrinkRadiusByHavokComplexRadius = 1 << 2,
-            UsePhysicsForCollision = 1 << 3
+            MoppCodesDirty = 1 << 0,
+            ExpensivePlant = 1 << 1,
+            Is64Bit = 1 << 2
         }
 
         [Flags]
         public enum ReachPhysicsModelFlags : uint
         {
+            None = 0,
             MoppCodesDirty = 1 << 0
         }
 
@@ -461,7 +461,10 @@ namespace TagTool.Tags.Definitions
 			{
                 public ConstraintType Type;
                 public short Index;
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public ConstraintFlags Flags;
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public ReachConstraintFlags FlagsReach;
                 public float Friction;
                 public List<RagdollMotor> RagdollMotors;
                 public List<LimitedHingeMotor> LimitedHingeMotors;
@@ -473,6 +476,16 @@ namespace TagTool.Tags.Definitions
                     IsRigid = 1 << 0,
                     DisableEffects = 1 << 1,
                     NotCreatedAutomatically = 1 << 2
+                }
+
+                [Flags]
+                public enum ReachConstraintFlags : int 
+                {
+                    None = 0,
+                    IsPhysicalChild = 1 << 0,
+                    IsRigid = 1 << 1,
+                    DisableEffects = 1 << 2,
+                    NotCreatedAutomatically = 1 << 3
                 }
 
                 [TagStructure(Size = 0xC)]
@@ -995,10 +1008,16 @@ namespace TagTool.Tags.Definitions
         public class Node : TagStructure
 		{
             public StringId Name;
-            public ushort Flags;
+            public NodeFlags Flags;
             public short Parent;
             public short Sibling;
             public short Child;
+
+            public enum NodeFlags : ushort 
+            {
+                None = 0,
+                DoesNotAnimate = 1 << 0,
+            }
         }
 
         [TagStructure(Size = 0x84)]
