@@ -99,7 +99,7 @@ namespace TagTool.Tags.Definitions.Gen2
         public List<OldObjectFunctionBlock> OldFunctions;
         public List<ObjectChangeColors> ChangeColors;
         public List<PredictedResourceBlock> PredictedResources;
-        public FlagsValue1 Flags1;
+        public UnitFlagBits UnitFlags;
         public DefaultTeamValue DefaultTeam;
         public ConstantSoundVolumeValue ConstantSoundVolume;
         [TagField(ValidTags = new [] { "effe" })]
@@ -503,7 +503,7 @@ namespace TagTool.Tags.Definitions.Gen2
         }
         
         [Flags]
-        public enum FlagsValue1 : uint
+        public enum UnitFlagBits : uint
         {
             CircularAiming = 1 << 0,
             DestroyedAfterDying = 1 << 1,

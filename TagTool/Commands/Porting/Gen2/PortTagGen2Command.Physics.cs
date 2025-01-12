@@ -96,7 +96,9 @@ namespace TagTool.Commands.Porting.Gen2
                     InertiaTensorYRadius = gen2rig.IntertiaTensorYRadius,
                     InertiaTensorZ = gen2rig.IntertiaTensorZ,
                     InertiaTensorZRadius = gen2rig.IntertiaTensorZRadius,
-                    BoundingSpherePad = gen2rig.BoundingSpherePad
+                    BoundingSpherePad = gen2rig.BoundingSpherePad,
+                    CollisionQualityOverrideType = gen2rig.CollisionQualityOverrideType,
+                    RuntimeFlags = gen2rig.RuntimeFlags,
                 };
                 physicsModel.RigidBodies.Add(newRig);
             }

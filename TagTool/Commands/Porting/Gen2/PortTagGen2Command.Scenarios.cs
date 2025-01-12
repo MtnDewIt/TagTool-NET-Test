@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
@@ -13,8 +15,11 @@ using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
+using TagTool.Tags.Definitions.Common;
 using TagTool.Tags.Resources;
 using static TagTool.Commands.Porting.Gen2.Gen2BspGeometryConverter;
+using static TagTool.Tags.Definitions.Scenario;
+using static TagTool.Tags.Definitions.Scenario.SpawnDatum;
 using Gen2Scenario = TagTool.Tags.Definitions.Gen2.Scenario;
 using Gen2ScenarioStructureBsp = TagTool.Tags.Definitions.Gen2.ScenarioStructureBsp;
 
@@ -31,70 +36,227 @@ namespace TagTool.Commands.Porting.Gen2
                 // TODO make new tags that are equivalent to these but don't have a render model
                 // TODO fix teleporters
 
-                foreach (var NetgameFlags in rawgen2tag.NetgameFlags)
+                sbyte ballCount = 0;
+                var territoryIdentifiers = new List<short>();
+                var kothBorders = new Dictionary<Gen2Scenario.ScenarioNetpointsBlock.TypeValue, List<RealPoint3d>>();
+
+                foreach (var netgameFlagsBlock in rawgen2tag.NetgameFlags)
                 {
-                    Scenario.CrateInstance crate = new Scenario.CrateInstance();
+                    CrateInstance instance = new CrateInstance()
+                    {
+                        ObjectType = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Crate },
+                        NameIndex = -1,
+                        Source = ScenarioInstance.SourceValue.Editor,
+                        EditorFolder = -1,
+                        ParentId = new ScenarioObjectParentStruct() { NameIndex = -1 },
+                        UniqueHandle = new DatumHandle(0x0),
+                        OriginBspIndex = -1,
+                        CanAttachToBspFlags = (ushort)(1u << 0)
+                    };
+
+                    var mpProperties = new MultiplayerObjectProperties
+                    {
+                        Team = (MultiplayerTeamDesignator)netgameFlagsBlock.TeamDesignator
+                    };
 
                     CachedTag objectiveItem = null;
-                    switch (NetgameFlags.Type)
+                    switch (netgameFlagsBlock.Type)
                     {
                         case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.OddballSpawn:
                             Cache.TagCache.TryGetTag<Crate>(@"objects\multi\oddball\oddball_ball_spawn_point", out objectiveItem);
+                            mpProperties.SpawnOrder = ballCount;
+                            ballCount += 1;
                             break;
-                        case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.CtfFlagSpawn:
+                        case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.CtfFlagSpawn
+                        when (mpProperties.Team != MultiplayerTeamDesignator.Neutral):
                             Cache.TagCache.TryGetTag<Crate>(@"objects\multi\ctf\ctf_flag_spawn_point", out objectiveItem);
+                            netgameFlagsBlock.Position.Z -= 0.05f;
                             break;
-                        case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.CtfFlagReturn:
+                        case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.CtfFlagReturn
+                        when (mpProperties.Team != MultiplayerTeamDesignator.Neutral):
                             Cache.TagCache.TryGetTag<Crate>(@"objects\multi\ctf\ctf_flag_return_area", out objectiveItem);
+                            netgameFlagsBlock.Position.Z -= 0.03f;
                             break;
                         case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.AssaultBombSpawn:
                             Cache.TagCache.TryGetTag<Crate>(@"objects\multi\assault\assault_bomb_spawn_point", out objectiveItem);
+                            netgameFlagsBlock.Position.Z -= 0.063f;
                             break;
                         case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.AssaultBombReturn:
                             Cache.TagCache.TryGetTag<Crate>(@"objects\multi\assault\assault_bomb_goal_area", out objectiveItem);
+                            if (netgameFlagsBlock.Identifier > 0)
+                                continue;
+                            //netgameFlagsBlock.Position.Z -= 0.038f;
                             break;
                         case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.TeleporterSrc:
                             Cache.TagCache.TryGetTag<Crate>(@"objects\multi\teleporter_sender\teleporter_sender", out objectiveItem);
+                            mpProperties.TeleporterChannel = (sbyte)netgameFlagsBlock.Identifier;
+                            mpProperties.Team = MultiplayerTeamDesignator.Neutral;
+                            netgameFlagsBlock.Position.Z -= 0.35f;
                             break;
                         case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.TeleporterDest:
                             Cache.TagCache.TryGetTag<Crate>(@"objects\multi\teleporter_reciever\teleporter_reciever", out objectiveItem);
+                            mpProperties.TeleporterChannel = (sbyte)netgameFlagsBlock.Identifier;
+                            mpProperties.Team = MultiplayerTeamDesignator.Neutral;
+                            // hack: replacement (gen3) teleporters need to be offset from walls
+                            // shift an arbitrary distance along the direction teleporter is facing
+                            // preferable to adapt gen2 teleporters instead in the future
+                            float d = 0.2f;
+                            netgameFlagsBlock.Position.X = (float)(netgameFlagsBlock.Position.X + d * Math.Cos(netgameFlagsBlock.Facing.Radians));
+                            netgameFlagsBlock.Position.Y = (float)(netgameFlagsBlock.Position.Y + d * Math.Sin(netgameFlagsBlock.Facing.Radians));
+                            netgameFlagsBlock.Position.Z -= 0.35f;
+                            break;
+                        case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.TerritoriesFlag:
+                            Cache.TagCache.TryGetTag<Crate>(@"objects\multi\territories\territory_static", out objectiveItem);
+                            if (territoryIdentifiers.Contains(netgameFlagsBlock.Identifier))
+                                continue;
+                            netgameFlagsBlock.Position.Z -= 0.06f;
+                            mpProperties.Team = MultiplayerTeamDesignator.Neutral;
+                            mpProperties.Shape = MultiplayerObjectBoundaryShape.Cylinder;
+                            mpProperties.BoundaryPositiveHeight = 1.0f;
+                            mpProperties.BoundaryNegativeHeight = 0.25f;
+                            mpProperties.BoundaryWidthRadius = 2.30f;
+                            mpProperties.SpawnOrder = (sbyte)netgameFlagsBlock.Identifier;
+                            territoryIdentifiers.Add(netgameFlagsBlock.Identifier);
+                            break;
+                        case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.KingHill0:
+                        case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.KingHill1:
+                        case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.KingHill2:
+                        case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.KingHill3:
+                        case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.KingHill4:
+                        case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.KingHill5:
+                        case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.KingHill6:
+                        case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.KingHill7:
+                            {
+                                if (!kothBorders.ContainsKey(netgameFlagsBlock.Type))
+                                    kothBorders.Add(netgameFlagsBlock.Type, new List<RealPoint3d> { });
+
+                                kothBorders[netgameFlagsBlock.Type].Add(netgameFlagsBlock.Position);
+                            }
                             break;
                     }
 
                     if (objectiveItem == null)
                         continue;
 
-                    crate.PaletteIndex = (short)GetOrAddCrateItem(newScenario, objectiveItem);
-                    crate.Position = NetgameFlags.Position;
-                    crate.Rotation.YawValue = NetgameFlags.Facing.Radians;
+                    instance.PaletteIndex = GetPaletteIndexOrAdd(newScenario, objectiveItem);
+                    instance.Position = netgameFlagsBlock.Position;
+                    instance.Rotation.YawValue = netgameFlagsBlock.Facing.Radians;
+                    instance.Multiplayer = mpProperties;
 
-                    crate.Multiplayer = new Scenario.MultiplayerObjectProperties();
-                    crate.Multiplayer.Team = (TagTool.Tags.Definitions.Common.MultiplayerTeamDesignator)NetgameFlags.TeamDesignator;
-                    crate.ObjectType = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Crate };
-                    crate.Source = Scenario.ScenarioInstance.SourceValue.Editor;
-                    crate.EditorFolder = -1;
-                    crate.ParentId = new ScenarioObjectParentStruct() { NameIndex = -1 };
-                    crate.UniqueHandle = new DatumHandle(0xffffffff);
-                    crate.OriginBspIndex = -1;
-                    crate.CanAttachToBspFlags = (ushort)(1u << 0);
+                    SetSymmetryFlags(netgameFlagsBlock, instance);
 
-                    // TODO: figure out how to handle symemtric and asymmetric placements (Flags in Netgame flags)
-
-                    newScenario.Crates.Add(crate);
+                    newScenario.Crates.Add(instance);
                 }
+
+                FixupKothData(newScenario, kothBorders);
             }
         }
 
-        private int GetOrAddCrateItem(Scenario scnr, CachedTag crate)
+        private short GetPaletteIndexOrAdd(Scenario scnr, CachedTag tag)
         {
-            int findIndex = scnr.CratePalette.FindIndex(c => c.Object == crate);
-            if (findIndex != -1)
-                return findIndex;
+            List<ScenarioPaletteEntry> palette = scnr.CratePalette;
+            if (tag.Group.Tag.ToString() == "scen")
+                palette = scnr.SceneryPalette;
+
+            short index = (short)palette.FindIndex(c => c.Object == tag);
+            if (index != -1)
+                return index;
             else
             {
-                scnr.CratePalette.Add(new Scenario.ScenarioPaletteEntry { Object = crate });
-                return scnr.CratePalette.Count - 1;
+                palette.Add(new ScenarioPaletteEntry { Object = tag });
+                return (short)(palette.Count - 1);
             }
+        }
+
+        private void SetSymmetryFlags(Gen2Scenario.ScenarioNetpointsBlock netgameFlags, ScenarioInstance instance)
+        {
+            var mpInstance = instance as IMultiplayerInstance;
+            if (instance == null)
+                return;
+
+            var symmetryFlags = netgameFlags.Flags;
+            switch (netgameFlags.Type)
+            {
+                case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.AssaultBombSpawn 
+                when mpInstance.Multiplayer.Team == MultiplayerTeamDesignator.Neutral:
+                    mpInstance.Multiplayer.Symmetry |= GameEngineSymmetry.Symmetric;
+                    break;
+
+                default:
+                    {
+                        if (symmetryFlags.HasFlag(Gen2Scenario.ScenarioNetpointsBlock.FlagsValue.MultipleFlagBomb)
+                            || symmetryFlags.HasFlag(Gen2Scenario.ScenarioNetpointsBlock.FlagsValue.NeutralFlagBomb))
+                            mpInstance.Multiplayer.Symmetry |= GameEngineSymmetry.Symmetric;
+                        if (symmetryFlags.HasFlag(Gen2Scenario.ScenarioNetpointsBlock.FlagsValue.SingleFlagBomb))
+                            mpInstance.Multiplayer.Symmetry |= GameEngineSymmetry.Asymmetric;
+                        if ((int)mpInstance.Multiplayer.Symmetry > 2)
+                            mpInstance.Multiplayer.Symmetry = GameEngineSymmetry.Ignore;
+                        break;
+                    }
+            }
+        }
+
+        private void FixupKothData(Scenario newScenario, Dictionary<Gen2Scenario.ScenarioNetpointsBlock.TypeValue, List<RealPoint3d>> kothBorders)
+        {
+            short paletteIndex = -1;
+            sbyte spawnOrder = 0;
+
+            if (kothBorders.Any())
+            {
+                Cache.TagCache.TryGetTag<Crate>(@"objects\multi\koth\koth_hill_static", out var objectiveItem);
+                paletteIndex = GetPaletteIndexOrAdd(newScenario, objectiveItem);
+            }
+
+            foreach(var hillPoint in kothBorders)
+            {
+                ScenarioInstance instance = new CrateInstance
+                {
+                    ObjectType = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Crate },
+                    PaletteIndex = paletteIndex,
+                    NameIndex = -1,
+                    Source = ScenarioInstance.SourceValue.Editor,
+                    EditorFolder = -1,
+                    ParentId = new ScenarioObjectParentStruct() { NameIndex = -1 },
+                    UniqueHandle = new DatumHandle(0x0),
+                    OriginBspIndex = -1,
+                    CanAttachToBspFlags = (ushort)(1u << 0),
+                    Position = GetCenter(hillPoint.Value, out float widthRadius, out float length),
+                    Multiplayer = new MultiplayerObjectProperties()
+                    {
+                        SpawnOrder = spawnOrder,
+                        Team = MultiplayerTeamDesignator.Neutral,
+                        Shape = length > 0.0f ? MultiplayerObjectBoundaryShape.Box : MultiplayerObjectBoundaryShape.Cylinder,
+                        BoundaryPositiveHeight = 1.0f,
+                        BoundaryNegativeHeight = 0.25f,
+                        BoundaryWidthRadius = widthRadius,
+                        BoundaryBoxLength = length
+                    }
+                };
+
+                newScenario.Crates.Add(instance as CrateInstance);
+                spawnOrder++;
+            }
+        }
+
+        private RealPoint3d GetCenter(List<RealPoint3d> points, out float widthRadius, out float length)
+        {
+            RealPoint3d center = new RealPoint3d
+            {
+                X = points.Average(point => point.X),
+                Y = points.Average(point => point.Y),
+                Z = points.Average(point => point.Z)
+            };
+
+            List<float> distances = new List<float>();
+
+            foreach (RealPoint3d point in points)
+                distances.Add(RealPoint3d.Distance(point - center));
+
+            widthRadius = distances.Max();
+            // to-do: determine roundness to alternately use box-shape and length
+            length = 0.0f;
+
+            return center;
         }
 
         public TagStructure ConvertScenario(Gen2Scenario gen2Tag, Gen2Scenario rawgen2Tag, string scenarioPath
@@ -133,6 +295,8 @@ namespace TagTool.Commands.Porting.Gen2
                     break;
             }
 
+            if (newScenario.MapId < 0)
+                newScenario.MapId = CreateMapID(scenarioPath);
 
             // Starting Profiles
             AutoConverter.TranslateList(gen2Tag.PlayerStartingProfile, newScenario.PlayerStartingProfile);
@@ -279,6 +443,16 @@ namespace TagTool.Commands.Porting.Gen2
             newScenario.Lightmap = ConvertLightmap(rawgen2Tag, newScenario, scenarioPath, cacheStream, gen2CacheStream);
 
             return newScenario;
+        }
+
+        private int CreateMapID(string scenarioPath)
+        {
+            byte[] encoded = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(scenarioPath));
+            int output = BitConverter.ToInt32(encoded, 0) % 1000000;
+            if (output < 0)
+                output *= -1;
+
+            return output;
         }
 
         private void ConfigurePlayerStartingProfile(Scenario scnr, Gen2Scenario gen2scnr)
@@ -896,6 +1070,8 @@ namespace TagTool.Commands.Porting.Gen2
                     Object = scenpal.Name
                 });
             }
+            int flagBaseIndex = newScenario.SceneryPalette.FindIndex(n => n.Object?.Name == "objects\\multi\\flag_base\\flag_base");
+            gen2Tag.Scenery.RemoveAll(entry => entry.Type == (short)flagBaseIndex);
             for (var scenobjindex = 0; scenobjindex < gen2Tag.Scenery.Count; scenobjindex++)
             {
                 var scenobj = gen2Tag.Scenery[scenobjindex];
@@ -1039,17 +1215,19 @@ namespace TagTool.Commands.Porting.Gen2
                 int firstSpawnIndex = newScenario.Scenery.Count();
                 foreach (var startlocation in newScenario.PlayerStartingLocations)
                 {
+                    var position = startlocation.Position;
+                    position.Z -= 0.06f;
                     newScenario.Scenery.Add(new Scenario.SceneryInstance
                     {
                         PaletteIndex = (short)(newScenario.SceneryPalette.Count - 1),
                         NameIndex = -1,
-                        Position = startlocation.Position,
+                        Position = position,
                         Rotation = new RealEulerAngles3d(startlocation.Facing.Yaw, Angle.FromDegrees(0.0f), Angle.FromDegrees(0.0f)),
                         ObjectType = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Scenery },
                         Source = Scenario.ScenarioInstance.SourceValue.Editor,
                         EditorFolder = -1,
                         ParentId = new ScenarioObjectParentStruct() { NameIndex = -1 },
-                        UniqueHandle = new DatumHandle(0xffffffff),
+                        UniqueHandle = new DatumHandle(0x0),
                         OriginBspIndex = -1,
                         CanAttachToBspFlags = (ushort)(1u << 0),
                         Multiplayer = new Scenario.MultiplayerObjectProperties() { Team = TagTool.Tags.Definitions.Common.MultiplayerTeamDesignator.Neutral },
@@ -1227,9 +1405,8 @@ namespace TagTool.Commands.Porting.Gen2
                 uniqueid += 101;
             }
 
-
-
             ConvertNetgameFlags(rawgen2tag, newScenario);
+            ConvertSpawnData(newScenario);
 
             // Trigger Volumes
             foreach (var vol in gen2Tag.KillTriggerVolumes)
@@ -1266,6 +1443,113 @@ namespace TagTool.Commands.Porting.Gen2
                     TriggerVolume = killvol.TriggerVolume
                 });
             }
+        }
+
+        private void ConvertSpawnData(Scenario newScenario)
+        {
+            var datum = newScenario.SpawnData?.First();
+            if (datum == null)
+                return;
+
+            Cache.TagCache.TryGetTag<Scenery>(@"objects\multi\spawning\initial_spawn_point", out CachedTag initialSpawnItem);
+            Cache.TagCache.TryGetTag<Scenery>(@"objects\multi\spawning\respawn_point", out CachedTag spawnItem);
+            Cache.TagCache.TryGetTag<Scenery>(@"objects\multi\spawning\respawn_zone", out CachedTag zoneItem);
+
+            // convert initial zones to spawns
+            short initialSpawnIndex = GetPaletteIndexOrAdd(newScenario, initialSpawnItem);
+            short spawnIndex = GetPaletteIndexOrAdd(newScenario, spawnItem);
+            short zoneIndex = GetPaletteIndexOrAdd(newScenario, zoneItem);
+
+            foreach (var initialZone in datum.StaticInitialSpawnZones)
+            {
+                if (initialZone.Weight < 0)
+                    continue;
+
+                short index = GetNearestSceneryIndex(initialZone.Position, newScenario.Scenery, spawnIndex);
+                SceneryInstance initialSpawn = newScenario.Scenery[index].DeepCloneV2();
+
+                initialSpawn.PaletteIndex = initialSpawnIndex;
+                initialSpawn.OriginBspIndex = 0;
+                initialSpawn.EditorFolder = 10;
+                initialSpawn.Multiplayer.Team = GetTeamDesignator(initialZone);
+                initialSpawn.Multiplayer.EngineFlags = (GameEngineSubTypeFlags)0x1FF; // any
+                
+                newScenario.Scenery.Add(initialSpawn);
+            }
+
+            // convert respawn zones
+            if (zoneItem != null)
+            {
+                foreach (var block in datum.StaticRespawnZones)
+                {
+                    if (block.Weight < 0)
+                        continue;
+
+                    SceneryInstance instance = new SceneryInstance()
+                    {
+                        ObjectType = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Scenery },
+                        PaletteIndex = zoneIndex,
+                        NameIndex = -1,
+                        Source = ScenarioInstance.SourceValue.Editor,
+                        EditorFolder = 9,
+                        ParentId = new ScenarioObjectParentStruct() { NameIndex = -1 },
+                        UniqueHandle = new DatumHandle(0x0),
+                        OriginBspIndex = -1,
+                        CanAttachToBspFlags = (ushort)(1u << 0),
+                        Position = block.Position,
+                        Multiplayer = new MultiplayerObjectProperties()
+                        {
+                            Team = GetTeamDesignator(block),
+                            EngineFlags = (GameEngineSubTypeFlags)0x1E1, //CTF,Terries,Assault,VIP,Infection
+                            Shape = MultiplayerObjectBoundaryShape.None,
+                            BoundaryWidthRadius = block.OuterRadius,
+                            BoundaryPositiveHeight = 1.5f,
+                            BoundaryNegativeHeight = 1.5f
+                        }
+                    };
+
+                    newScenario.Scenery.Add(instance);
+                }
+
+            }
+        }
+
+        private MultiplayerTeamDesignator GetTeamDesignator(SpawnZone block)
+        {
+            switch (block.Data.RelevantTeam.ToString())
+            {
+                case "RedAlpha":
+                    return MultiplayerTeamDesignator.Red;
+                case "BlueBravo":
+                    return MultiplayerTeamDesignator.Blue;
+                case "YellowCharlie":
+                    return MultiplayerTeamDesignator.Green;
+                case "GreenDelta":
+                    return MultiplayerTeamDesignator.Orange;
+                default:
+                    return MultiplayerTeamDesignator.Neutral;
+            }
+        }
+
+        private short GetNearestSceneryIndex(RealPoint3d position, List<SceneryInstance> list, short spawnIndex = -1)
+        {
+            float lowestDistance = float.MaxValue;
+            short lowIndex = -1;
+
+            for (short i = 0; i < list.Count; i++)
+            {
+                if (spawnIndex >= 0 && list[i].PaletteIndex != spawnIndex)
+                    continue;
+
+                float d = RealPoint3d.Distance(position - list[i].Position);
+                if (d < lowestDistance)
+                {
+                    lowestDistance = d;
+                    lowIndex = i;
+                }
+            }
+
+            return lowIndex;
         }
 
         public List<TagHkpMoppCode> ConvertH2MOPP(byte[] moppdata)

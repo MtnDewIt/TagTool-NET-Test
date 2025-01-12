@@ -13,6 +13,8 @@ using TagTool.BlamFile;
 using TagTool.Commands.Porting;
 using TagTool.Commands.ScenarioStructureBSPs;
 using Gen3Globals = TagTool.Tags.Definitions.Globals;
+using static TagTool.Tags.Definitions.Gen2.Scenario.ScenarioLevelDataBlock;
+using System.Text;
 
 namespace TagTool.Commands.Porting.Gen2
 {
@@ -25,6 +27,7 @@ namespace TagTool.Commands.Porting.Gen2
         public Dictionary<int, CachedTag> PortedTags = new Dictionary<int, CachedTag>();
         public List<int> InProgressTags = new List<int>();
         public StructureAutoConverter AutoConverter;
+        public LocalizedLevelDataStruct LevelData;
 
         public PortTagGen2Command(GameCacheHaloOnlineBase cache, GameCacheGen2 gen2Cache) : base(false, "PortTag", "", "", "")
         {
@@ -246,6 +249,18 @@ namespace TagTool.Commands.Porting.Gen2
                 case Scenario scnr:
                     Scenario oldscnr = Gen2Cache.Deserialize<Scenario>(gen2CacheStream, gen2Tag);
                     definition = ConvertScenario(scnr, oldscnr, gen2Tag.Name, cacheStream, gen2CacheStream, resourceStreams);
+                    switch(oldscnr.Type)
+                    {
+                        case Scenario.TypeValue.SinglePlayer:
+                            LevelData = oldscnr.LevelData[0].CampaignLevelData[0].LocalizedLevelData;
+                            break;
+                        case Scenario.TypeValue.Multiplayer:
+                            LevelData = oldscnr.LevelData[0].Multiplayer[0].LocalizedLevelData;
+                            break;
+                        default:
+                            LevelData = null;
+                            break;
+                    }
                     break;
                 case Light light:
                     definition = ConvertLight(light);
@@ -307,8 +322,15 @@ namespace TagTool.Commands.Porting.Gen2
                             new GenerateStructureSurfacesCommand(Cache, sbspTag, sbsp, cacheStream, scnr).Execute(new List<string> { });
                             Cache.Serialize(cacheStream, sbspTag, sbsp);
                         }
+
+                        if (LevelData != null)
+                        {
+                            string mapName = Encoding.Unicode.GetString(LevelData.EnglishName).Split('\0')[0];
+                            string mapDescription = Encoding.Unicode.GetString(LevelData.EnglishDescription).Split('\0')[0];
+
+                            GenerateMapFile(cacheStream, Cache, destinationTag, mapName, mapDescription, "Bungie");
+                        }
                     }
-                    GenerateMapFile(cacheStream, Cache, destinationTag, destinationTag.Name.Split('\\').ToList().Last(), "", "Bungie");
                     break;
                 default:
                     return;
@@ -322,8 +344,8 @@ namespace TagTool.Commands.Porting.Gen2
             var scnr = cache.Deserialize<TagTool.Tags.Definitions.Scenario>(cacheStream, scenarioTag);
 
             var mapBuilder = new MapFileBuilder(cache.Version);
-            mapBuilder.MapName = mapName;
-            mapBuilder.MapDescription = mapDescription;
+            mapBuilder.MapName = string.IsNullOrEmpty(mapName) ? scenarioName : mapName;
+            mapBuilder.MapDescription = string.IsNullOrEmpty(mapDescription) ? "" : mapDescription;
             MapFile map = mapBuilder.Build(scenarioTag, scnr);
 
             if (cache is GameCacheModPackage)

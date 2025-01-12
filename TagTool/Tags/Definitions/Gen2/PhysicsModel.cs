@@ -303,8 +303,13 @@ namespace TagTool.Tags.Definitions.Gen2
             /// the bounding sphere for this rigid body will be outset by this much
             /// </summary>
             public float BoundingSpherePad;
-            [TagField(Length = 0xC, Flags = TagFieldFlags.Padding)]
+            [TagField(Length = 0x8, Flags = TagFieldFlags.Padding)]
             public byte[] Padding1;
+
+            public byte CollisionQualityOverrideType;
+            public byte Unknown;
+
+            public short RuntimeFlags;
 
             [Flags]
             public enum FlagsValue : ushort

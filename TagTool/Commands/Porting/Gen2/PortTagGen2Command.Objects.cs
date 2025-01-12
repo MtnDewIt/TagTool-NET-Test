@@ -200,7 +200,8 @@ namespace TagTool.Commands.Porting.Gen2
             vehi.FlipTimeNew = gen2Tag.TurnScale;
             vehi.FlippingAngularVelocityRangeNew = new Bounds<float>(gen2Tag.MinimumFlippingAngularVelocity, gen2Tag.MaximumFlippingAngularVelocity);
             vehi.PhysicsTypes = new Vehicle.VehiclePhysicsTypes();
-            AutoConverter.TranslateEnum(gen2Tag.Flags1, out vehi.UnitFlags, vehi.UnitFlags.GetType());
+            vehi.UnitFlags = new Unit.UnitDefinitionFlags();
+            AutoConverter.TranslateEnum(gen2Tag.UnitFlags, out vehi.UnitFlags.Flags, vehi.UnitFlags.Flags.GetType());
 
             vehi.HavokVehiclePhysics.PhantomShapes = new List<Vehicle.PhantomShape>();
             AutoConverter.TranslateList(gen2Tag.HavokVehiclePhysics.ShapePhantomShape, vehi.HavokVehiclePhysics.PhantomShapes);
@@ -443,6 +444,8 @@ namespace TagTool.Commands.Porting.Gen2
             AutoConverter.TranslateEnum(gen2Tag.LockOnData.Flags, out newbiped.LockonFlags, newbiped.LockonFlags.GetType());
             newbiped.PhysicsFlags = gen2Tag.Physics.Flags;
             AutoConverter.TranslateEnum(gen2Tag.Physics.Flags.Halo2, out newbiped.PhysicsFlags.Halo3ODST, newbiped.PhysicsFlags.Halo3ODST.GetType());
+            newbiped.UnitFlags = new Unit.UnitDefinitionFlags();
+            AutoConverter.TranslateEnum(gen2Tag.UnitFlags, out newbiped.UnitFlags.Flags, newbiped.UnitFlags.Flags.GetType());
 
             newbiped.HeightStanding = gen2Tag.Physics.HeightStanding;
             newbiped.HeightCrouching = gen2Tag.Physics.HeightCrouching;

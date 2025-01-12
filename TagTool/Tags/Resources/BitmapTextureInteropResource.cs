@@ -47,8 +47,8 @@ namespace TagTool.Tags.Resources
 
         public int D3DFormat;
 
-        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST, EnumType = typeof(sbyte))]
+        [TagField(Gen = CacheGeneration.HaloOnline, EnumType = typeof(sbyte))]
         public BitmapFormat Format;
 
         [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]

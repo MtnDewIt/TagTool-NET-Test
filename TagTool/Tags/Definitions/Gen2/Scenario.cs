@@ -4864,10 +4864,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 public int MapId;
                 [TagField(ValidTags = new [] { "bitm" })]
                 public CachedTag Bitmap;
-                [TagField(Length = 0x240)]
-                public byte[] Unknown;
-                [TagField(Length = 0x900)]
-                public byte[] Unknown1;
+                public LocalizedLevelDataStruct LocalizedLevelData;
             }
             
             [TagStructure(Size = 0xC64)]
@@ -4876,10 +4873,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 public int MapId;
                 [TagField(ValidTags = new [] { "bitm" })]
                 public CachedTag Bitmap;
-                [TagField(Length = 0x240)]
-                public byte[] Unknown;
-                [TagField(Length = 0x900)]
-                public byte[] Unknown1;
+                public LocalizedLevelDataStruct LocalizedLevelData;
                 [TagField(Length = 256)]
                 public string Path;
                 public int SortOrder;
@@ -4908,6 +4902,30 @@ namespace TagTool.Tags.Definitions.Gen2
                 {
                     Unlockable = 1 << 0
                 }
+            }
+
+            [TagStructure(Size = 0xB40)]
+            public class LocalizedLevelDataStruct : TagStructure
+            {
+                [TagField(Length = 0x40)] public byte[] EnglishName;
+                [TagField(Length = 0x40)] public byte[] JapaneseName;
+                [TagField(Length = 0x40)] public byte[] GermanName;
+                [TagField(Length = 0x40)] public byte[] FrenchName;
+                [TagField(Length = 0x40)] public byte[] SpanishName;
+                [TagField(Length = 0x40)] public byte[] ItalianName;
+                [TagField(Length = 0x40)] public byte[] KoreanName;
+                [TagField(Length = 0x40)] public byte[] ChineseName;
+                [TagField(Length = 0x40)] public byte[] PortugeseName;
+
+                [TagField(Length = 0x100)] public byte[] EnglishDescription;
+                [TagField(Length = 0x100)] public byte[] JapaneseDescription;
+                [TagField(Length = 0x100)] public byte[] GermanDescription;
+                [TagField(Length = 0x100)] public byte[] FrenchDescription;
+                [TagField(Length = 0x100)] public byte[] SpanishDescription;
+                [TagField(Length = 0x100)] public byte[] ItalianDescription;
+                [TagField(Length = 0x100)] public byte[] KoreanDescription;
+                [TagField(Length = 0x100)] public byte[] ChineseDescription;
+                [TagField(Length = 0x100)] public byte[] PortugeseDescription;
             }
         }
         
