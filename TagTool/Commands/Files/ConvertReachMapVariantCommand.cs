@@ -185,7 +185,7 @@ namespace TagTool.Commands.Files
             converter.SubstitutedTags.Add(@"objects\vehicles\human\warthog\warthog.vehi", @"objects\vehicles\warthog\warthog.vehi");
             converter.SubstitutedTags.Add(@"objects\vehicles\human\mongoose\mongoose.vehi", @"objects\vehicles\mongoose\mongoose.vehi");
             converter.SubstitutedTags.Add(@"objects\vehicles\human\scorpion\scorpion.vehi", @"objects\vehicles\scorpion\scorpion.vehi");
-            converter.SubstitutedTags.Add(@"objects\vehicles\human\falcon\falcon.vehi", @"objects\vehicles\hornet\hornet.vehi");
+            //converter.SubstitutedTags.Add(@"objects\vehicles\human\falcon\falcon.vehi", @"objects\vehicles\hornet\hornet.vehi");
             converter.SubstitutedTags.Add(@"objects\vehicles\covenant\ghost\ghost.vehi", @"objects\vehicles\ghost\ghost.vehi");
             converter.SubstitutedTags.Add(@"objects\vehicles\covenant\wraith\wraith.vehi", @"objects\vehicles\wraith\wraith.vehi");
             converter.SubstitutedTags.Add(@"objects\vehicles\covenant\banshee\banshee.vehi", @"objects\vehicles\banshee\banshee.vehi");
@@ -210,7 +210,7 @@ namespace TagTool.Commands.Files
             converter.ExcludedTags.Add(@"objects\multi\boundaries\soft_safe_volume.scen");
             converter.ExcludedTags.Add(@"objects\multi\boundaries\soft_kill_volume.scen");
             converter.ExcludedTags.Add(@"objects\multi\boundaries\kill_volume.scen");
-            converter.ExcludedTags.Add(@"objects\multi\spawning\respawn_zone.scen");
+            //converter.ExcludedTags.Add(@"objects\multi\spawning\respawn_zone.scen");
 
             converter.ExcludedTags.Add(@"objects\levels\shared\screen_fx_orb\fx\juicy.bloc");
             converter.ExcludedTags.Add(@"objects\levels\shared\screen_fx_orb\fx\colorblind.bloc");
