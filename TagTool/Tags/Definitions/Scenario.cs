@@ -4627,9 +4627,9 @@ namespace TagTool.Tags.Definitions
             public Bounds<float> ProductionFrequencyBounds;
             public Bounds<float> ScaleBounds;
             // Distance from a source at which the creature scales to full size
-            public float SourceScaleto0;
+            public float SourceScaleTo0Radius;
             // Distance from a sink at which the creature begins to scale to zero
-            public float SinkScaleto0;
+            public float SinkScaleTo0Radius;
             // The number of seconds it takes to kill all units in the flock if it gets destroyed
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public float FlockDestroyDuration; // sec
@@ -4656,25 +4656,54 @@ namespace TagTool.Tags.Definitions
                 BigBattleSquad = 1 << 7
             }
 
-            [TagStructure(Size = 0x24)]
+            [TagStructure(Size = 0x24, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloReach)]
             public class Source : TagStructure
 			{
-                public int Unknown;
+                [TagField(Flags = Label, MinVersion = CacheVersion.HaloReach)]
+                public StringId Name;
+                public FlockSourceFlags SourceFlags;
                 public RealPoint3d Position;
                 public RealEulerAngles2d Starting;
                 public float Radius;
                 public float Weight;
-                public sbyte Unknown2;
-                public sbyte Unknown3;
-                public sbyte Unknown4;
-                public sbyte Unknown5;
+                public sbyte BspIndex;
+                public sbyte ClusterIndex;
+                [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
+                public byte[] Padding;
+
+                [Flags]
+                public enum FlockSourceFlags : int 
+                {
+                    None = 0,
+                    GroundSource = 1 << 0
+                }
             }
 
-            [TagStructure(Size = 0x10)]
+            [TagStructure(Size = 0x10, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagStructure(Size = 0x20, MinVersion = CacheVersion.HaloReach)]
             public class Sink : TagStructure
 			{
+                [TagField(Flags = Label, MinVersion = CacheVersion.HaloReach)]
+                public StringId Name;
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public DestinationType Type;
                 public RealPoint3d Position;
                 public float Radius;
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public float MaxDestinationVolumePenetration;
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public short DestinationVolumeIndex;
+                [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.HaloReach)]
+                public byte[] Padding;
+
+                public enum DestinationType : int 
+                {
+                    None = 0,
+                    Sink,
+                    Front, 
+                    Circle
+                }
             }
         }
 
