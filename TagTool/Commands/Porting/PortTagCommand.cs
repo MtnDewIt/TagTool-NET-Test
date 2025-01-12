@@ -585,7 +585,10 @@ namespace TagTool.Commands.Porting
                 if (block.Object != null)
                 {
                     string name = block.Object.Name;
-                    if (replacements.TryGetValue(name, out string result))
+                    
+                    if (CacheContext.TagCache.TryGetTag($@"{block.Object.Name}.{block.Object.Group}", out CachedTag tag))
+                        block.Object.Name = tag.Name;
+                    else if (replacements.TryGetValue(name, out string result))
                         block.Object.Name = result;
                     
                     if (name.Contains("spawning\\fireteam"))
