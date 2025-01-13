@@ -19,12 +19,13 @@ namespace TagTool.Commands.GenerateDonkeyCache
         public GameCacheHaloOnline CacheContext { get; set; }
         public CommandContextStack ContextStack { get; set; }
         public Stream CacheStream { get; set; }
+        public static DirectoryInfo SourceDirectoryInfo { get; set; }
+        public static DirectoryInfo OutputDirectoryInfo { get; set; }
 
         public static DirectoryInfo haloOnlineDirectoryInfo { get; set; }
         public static DirectoryInfo halo3DirectoryInfo { get; set; }
         public static DirectoryInfo halo3MythicDirectoryInfo { get; set; }
         public static DirectoryInfo halo3ODSTDirectoryInfo { get; set; }
-        public static DirectoryInfo outputDirectoryInfo { get; set; }
 
         public static GameCache haloOnlineCache { get; set; }
         public static PortingContext haloOnline { get; set; }
@@ -135,7 +136,7 @@ namespace TagTool.Commands.GenerateDonkeyCache
             true,
             "GenerateDonkeyCache",
             "Generates a new cache for use with Managed Donkey",
-            "GenerateDonkeyCache",
+            "GenerateDonkeyCache <Source Path> <Output Path>",
             GenerateHelpText()
         )
         {
@@ -154,12 +155,27 @@ namespace TagTool.Commands.GenerateDonkeyCache
 
         public override object Execute(List<string> args)
         {
+            if (args.Count > 2)
+                return new TagToolError(CommandError.ArgCount);
+
+            SourceDirectoryInfo = new DirectoryInfo(args[0]);
+            OutputDirectoryInfo = new DirectoryInfo(args[1]);
+
+            if (!SourceDirectoryInfo.Exists)
+                return new TagToolError(CommandError.CustomError, "Source data path does not exist, or could not be found");
+
+            if (!OutputDirectoryInfo.Exists)
+                return new TagToolError(CommandError.CustomError, "Output path does not exist, or could not be found");
+
+            if (OutputDirectoryInfo.FullName == Cache.Directory.FullName)
+                return new TagToolError(CommandError.CustomError, "Output path cannot be the same as the current working directory");
+
             GetCacheFiles();
 
             Program._stopWatch.Start();
 
-            RebuildCache(outputDirectoryInfo.FullName);
-            RetargetCache(outputDirectoryInfo.FullName);
+            RebuildCache(OutputDirectoryInfo.FullName);
+            RetargetCache(OutputDirectoryInfo.FullName);
 
             using (CacheStream = Cache.OpenCacheReadWrite())
             {
@@ -186,11 +202,6 @@ namespace TagTool.Commands.GenerateDonkeyCache
             haloOnlineDirectoryInfo = GetDirectoryInfo(haloOnlineDirectoryInfo, "Halo Online MS23");
 
             haloOnlineCache = GameCache.Open($@"{haloOnlineDirectoryInfo.FullName}\tags.dat");
-
-            var ms23Data = File.ReadAllText($@"{JSONFileTree.JSONTagTablePath}\ms23_tags.json");
-            var ms23TagTable = JsonConvert.DeserializeObject<Dictionary<int, string>>(ms23Data);
-
-            UpdateTagNames(haloOnlineCache, ms23TagTable);
 
             halo3DirectoryInfo = GetDirectoryInfo(halo3DirectoryInfo, "Halo 3");
 
@@ -249,8 +260,6 @@ namespace TagTool.Commands.GenerateDonkeyCache
             sc130Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc130.map");
             sc140Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc140.map");
             sc150Cache = GameCache.Open($@"{halo3ODSTDirectoryInfo.FullName}\sc150.map");
-
-            outputDirectoryInfo = GetOutputDirectory(outputDirectoryInfo);
         }
 
         public DirectoryInfo GetDirectoryInfo(DirectoryInfo directoryInfo, String build)
@@ -272,44 +281,6 @@ namespace TagTool.Commands.GenerateDonkeyCache
             }
 
             return directoryInfo;
-        }
-
-        public DirectoryInfo GetOutputDirectory(DirectoryInfo directoryInfo)
-        {
-            Console.WriteLine("\nEnter the ouput directory for the generated cache: ");
-            var inputDirectory = Console.ReadLine().Replace("\"", "");
-            directoryInfo = new DirectoryInfo(inputDirectory);
-
-            if (!directoryInfo.Exists)
-            {
-                new TagToolWarning("This directory does not exist, or could not be found. Creating a new one...");
-                directoryInfo.Create();
-            }
-
-            if (directoryInfo.FullName == haloOnlineDirectoryInfo.FullName || directoryInfo.FullName == halo3DirectoryInfo.FullName || directoryInfo.FullName == halo3MythicDirectoryInfo.FullName || directoryInfo.FullName == halo3ODSTDirectoryInfo.FullName || directoryInfo.FullName == Cache.Directory.FullName)
-            {
-                new TagToolError(CommandError.CustomError, "Output directory cannot be the same as an input directory");
-                throw new ArgumentException();
-            }
-
-            return directoryInfo;
-        }
-
-        public void UpdateTagNames(GameCache cache, Dictionary<int, string> tagTable)
-        {
-            CacheContext = cache as GameCacheHaloOnline;
-
-            foreach (var tag in CacheContext.TagCache.NonNull())
-            {
-                if (tagTable.TryGetValue(tag.Index, out string name))
-                {
-                    tag.Name = name;
-                }
-            }
-
-            CacheContext.SaveTagNames();
-
-            CacheContext = null;
         }
     }
 }

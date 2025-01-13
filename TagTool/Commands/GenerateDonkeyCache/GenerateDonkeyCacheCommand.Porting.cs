@@ -1145,9 +1145,9 @@ namespace TagTool.Commands.GenerateDonkeyCache
         {
             // These need to be defined after the new cache has been generated, otherwise it gets given the wrong cache context
 
-            TagParser = new TagObjectParser(Cache, CacheContext, CacheStream, JSONFileTree.JSONGenerateDonkeyCachePath);
-            MapParser = new MapObjectParser(Cache, CacheContext, CacheStream, JSONFileTree.JSONGenerateDonkeyCachePath);
-            BlfParser = new BlfObjectParser(Cache, CacheContext, CacheStream, JSONFileTree.JSONGenerateDonkeyCachePath);
+            TagParser = new TagObjectParser(Cache, CacheContext, CacheStream, SourceDirectoryInfo.FullName);
+            MapParser = new MapObjectParser(Cache, CacheContext, CacheStream, SourceDirectoryInfo.FullName);
+            BlfParser = new BlfObjectParser(Cache, CacheContext, CacheStream, SourceDirectoryInfo.FullName);
 
             haloOnline = new PortingContext(CacheContext, haloOnlineCache, CacheStream);
 

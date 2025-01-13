@@ -27,12 +27,12 @@ namespace TagTool.Commands.GenerateDonkeyCache
 
         public void UpdateTagData()
         {
-            ParseTagList($@"{JSONFileTree.JSONGenerateDonkeyCachePath}\tags.json");
+            ParseTagList($@"{SourceDirectoryInfo.FullName}\tags.json");
         }
 
         public void UpdateMapData()
         {
-            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONGenerateDonkeyCachePath}\maps.json");
+            var jsonData = File.ReadAllText($@"{SourceDirectoryInfo.FullName}\maps.json");
             MapObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
             foreach (var file in MapObjectList)
@@ -41,7 +41,7 @@ namespace TagTool.Commands.GenerateDonkeyCache
 
         public void UpdateBlfData()
         {
-            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONGenerateDonkeyCachePath}\blf.json");
+            var jsonData = File.ReadAllText($@"{SourceDirectoryInfo.FullName}\blf.json");
             BlfObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
             foreach (var file in BlfObjectList)

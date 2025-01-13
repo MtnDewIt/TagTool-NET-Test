@@ -12,7 +12,7 @@ namespace TagTool.Commands.GenerateCache
         public GameCache Cache { get; set; }
         public GameCacheHaloOnline CacheContext { get; set; }
         public Stream CacheStream { get; set; }
-        public static DirectoryInfo JSONDirectoryInfo { get; set; }
+        public static DirectoryInfo SourceDirectoryInfo { get; set; }
         public static DirectoryInfo OutputDirectoryInfo { get; set; }
 
         public GenerateCacheCommand(GameCache cache) : base
@@ -20,7 +20,7 @@ namespace TagTool.Commands.GenerateCache
             true,
             "GenerateCache",
             "Generates a new cache for use with ElDewrito 0.7.1",
-            "GenerateCache <JSON Path> <Output Path> <Scenario Path>",
+            "GenerateCache <Source Path> <Output Path> <Scenario Path>",
 
             // TODO: Redo help text :/
             "It's similar to the MCC Tools, but don't try and use MCC loose tags" 
@@ -34,11 +34,11 @@ namespace TagTool.Commands.GenerateCache
             if (args.Count > 3)
                 return new TagToolError(CommandError.ArgCount);
 
-            JSONDirectoryInfo = new DirectoryInfo(args[0]);
+            SourceDirectoryInfo = new DirectoryInfo(args[0]);
             OutputDirectoryInfo = new DirectoryInfo(args[1]);
 
-            if (!JSONDirectoryInfo.Exists)
-                return new TagToolError(CommandError.CustomError, "JSON data path does not exist, or could not be found");
+            if (!SourceDirectoryInfo.Exists)
+                return new TagToolError(CommandError.CustomError, "Source data path does not exist, or could not be found");
 
             if (!OutputDirectoryInfo.Exists)
                 return new TagToolError(CommandError.CustomError, "Output path does not exist, or could not be found");
@@ -53,7 +53,7 @@ namespace TagTool.Commands.GenerateCache
 
             using (CacheStream = Cache.OpenCacheReadWrite()) 
             {
-                ParseJSONData(JSONDirectoryInfo.FullName, args[2]);
+                ParseJSONData(SourceDirectoryInfo.FullName, args[2]);
             }
 
             Program._stopWatch.Stop();
