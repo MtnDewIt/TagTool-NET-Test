@@ -212,7 +212,7 @@ namespace TagTool.Commands.Files
         {
             if (TagMap == null) 
             {
-                var jsonData = File.ReadAllText($@"{JSONFileTree.JSONTagMappingPath}\061_mapping.json");
+                var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\mappings\061_mapping.json");
                 TagMap = JsonConvert.DeserializeObject<Dictionary<int, string>>(jsonData);
             }
 

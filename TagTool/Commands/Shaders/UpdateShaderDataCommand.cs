@@ -17,6 +17,7 @@ namespace TagTool.Commands.Shaders
     {
         public GameCache Cache { get; set; }
         public GameCacheHaloOnlineBase CacheContext { get; set; }
+        public static DirectoryInfo SourceDirectoryInfo { get; set; }
 
         public static List<string> TagObjectList;
 
@@ -51,7 +52,7 @@ namespace TagTool.Commands.Shaders
             true,
             "UpdateShaderData",
             "Updates Render Method Definitions To Include ElDewrito, and MCC Options",
-            "UpdateShaderData [RecompileShaders]",
+            "UpdateShaderData <Source Path> [RecompileShaders]",
             "Updates Render Method Definitions To Include ElDewrito, and MCC Options. Recompiles Global Pixel and Vertex Shaders"
         )
         {
@@ -63,10 +64,15 @@ namespace TagTool.Commands.Shaders
         {
             var recompileShaders = false;
 
-            if (args.Count > 1)
+            if (args.Count > 2)
                 return new TagToolError(CommandError.ArgCount);
 
-            if (args.Count == 1)
+            SourceDirectoryInfo = new DirectoryInfo(args[0]);
+
+            if (!SourceDirectoryInfo.Exists)
+                return new TagToolError(CommandError.CustomError, "Source data path does not exist, or could not be found");
+
+            if (args.Count == 2)
                 recompileShaders = true;
 
             UpdateShaderData(recompileShaders);
@@ -78,9 +84,9 @@ namespace TagTool.Commands.Shaders
         {
             using (var stream = Cache.OpenCacheReadWrite())
             {
-                var tagParser = new TagObjectParser(Cache, CacheContext, stream, JSONFileTree.JSONUpdateShaderDataPath);
+                var tagParser = new TagObjectParser(Cache, CacheContext, stream, SourceDirectoryInfo.FullName);
 
-                var jsonData = File.ReadAllText($@"{JSONFileTree.JSONUpdateShaderDataPath}\tags.json");
+                var jsonData = File.ReadAllText($@"{SourceDirectoryInfo.FullName}\tags.json");
                 TagObjectList = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
                 foreach (var file in TagObjectList)

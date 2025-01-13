@@ -20,8 +20,6 @@ namespace TagTool.Commands.GenerateDonkeyCache
         {
             var destDirectory = new DirectoryInfo(destCacheDirectory);
 
-            EmptyDirectory(destDirectory);
-
             MoveFontPackage(destDirectory.FullName);
 
             var cacheContext = new GameCacheHaloOnline(destDirectory);
@@ -82,35 +80,7 @@ namespace TagTool.Commands.GenerateDonkeyCache
         {
             Directory.CreateDirectory($@"{path}\fonts");
 
-            if (!File.Exists($@"{path}\fonts\font_package.bin"))
-            {
-                File.Copy($@"{JSONFileTree.JSONGenerateDonkeyCachePath}\maps\fonts\font_package.bin", $@"{path}\fonts\font_package.bin");
-            }
-            else
-            {
-                new TagToolWarning($@"Font Package Detected in Specified Directory! Replacing Anyway.");
-                File.Copy($@"{JSONFileTree.JSONGenerateDonkeyCachePath}\maps\fonts\font_package.bin", $@"{path}\fonts\font_package.bin", true);
-            }
-        }
-
-        public void EmptyDirectory(DirectoryInfo directoryInfo)
-        {
-            string[] remove = { "map", "dat", "csv" };
-
-            if (directoryInfo.GetFiles().Any(x => x.FullName.EndsWith(".map") || x.FullName.EndsWith(".dat") || x.FullName.EndsWith(".csv")))
-            {
-                new TagToolWarning($@"Cache Detected in Specified Directory! Replacing Anyway.");
-
-                foreach (string fileType in remove)
-                {
-                    FileInfo[] files = directoryInfo.GetFiles("*." + fileType);
-
-                    foreach (FileInfo file in files)
-                    {
-                        file.Delete();
-                    }
-                }
-            }
+            File.Copy($@"{SourceDirectoryInfo.FullName}\maps\fonts\font_package.bin", $@"{path}\fonts\font_package.bin", true);
         }
 
         public void SetCacheVersion(GameCacheHaloOnline cache, CacheVersion version)

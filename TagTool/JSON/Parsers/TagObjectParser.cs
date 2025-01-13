@@ -223,7 +223,7 @@ namespace TagTool.JSON.Parsers
                 CompileScript(tagInstance, $@"{InputPath}\data\{tagObject.TagName}\scripts\{tagObject.BlamScriptResource.BlamScriptFile}");
             }
 
-            var fileName = tagInstance.Name.Split('\\').Last();
+            var fileName = $@"{tagObject.TagName}\{tagObject.TagName.Split('\\').Last()}";
 
             MapParser.ParseFile(fileName);
         }

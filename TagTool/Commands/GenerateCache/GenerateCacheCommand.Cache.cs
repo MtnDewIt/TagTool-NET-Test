@@ -64,12 +64,12 @@ namespace TagTool.Commands.GenerateCache
         {
             Directory.CreateDirectory($@"{path}\fonts");
 
-            File.Copy($@"{JSONFileTree.JSONGenerateCachePath}\maps\fonts\font_package_upscaled.bin", $@"{path}\fonts\font_package.bin", true);
+            File.Copy($@"{SourceDirectoryInfo.FullName}\maps\fonts\font_package_upscaled.bin", $@"{path}\fonts\font_package.bin", true);
         }
 
         public void UpdateStringTable(StringTable stringTable) 
         {
-            var jsonData = File.ReadAllText($@"{JSONFileTree.JSONStringTablePath}\ms23_strings.json");
+            var jsonData = File.ReadAllText($@"{SourceDirectoryInfo.FullName}\data\cache_strings.json");
             var ms23Strings = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
             var startingIndex = 0x10DE;

@@ -15,20 +15,12 @@ namespace TagTool.Commands.Tags
 
         public static Dictionary<int, string> TagNameTable { get; set; }
 
-        public enum TagListVersion : int
-        {
-            ElDewrito071,
-            ElDewrito061,
-            ElDewrito051,
-            MS23,
-        }
-
         public UpdateTagListCommand(GameCache cache) : base
         (
             false,
             "UpdateTagList",
             "Updates tag name table based on the specified tag list",
-            "UpdateTagList <TagListVersion>",
+            "UpdateTagList <Path to JSON Tag List>",
             "Updates tag name table based on the specified tag list"
         )
         {
@@ -42,24 +34,10 @@ namespace TagTool.Commands.Tags
             if (args.Count != 1)
                 return new TagToolError(CommandError.ArgCount);
 
-            if (!Enum.TryParse(args[0], true, out TagListVersion tagListVersion))
-                return new TagToolError(CommandError.ArgInvalid);
+            if (!File.Exists(args[0]))
+                return new TagToolError(CommandError.FileNotFound);
 
-            switch (tagListVersion)
-            {
-                case TagListVersion.ElDewrito071:
-                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONTagTablePath}\071_tags.json");
-                    break;
-                case TagListVersion.ElDewrito061:
-                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONTagTablePath}\061_tags.json");
-                    break;
-                case TagListVersion.ElDewrito051:
-                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONTagTablePath}\051_tags.json");
-                    break;
-                case TagListVersion.MS23:
-                    jsonData = File.ReadAllText($@"{JSONFileTree.JSONTagTablePath}\ms23_tags.json");
-                    break;
-            }
+            jsonData = File.ReadAllText(args[0]);
 
             TagNameTable = JsonConvert.DeserializeObject<Dictionary<int, string>>(jsonData);
 

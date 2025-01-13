@@ -27,7 +27,7 @@ namespace TagTool.JSON.Parsers
 
         public void ParseFile(string filePath)
         {
-            var jsonData = File.ReadAllText($@"{InputPath}\maps\{filePath}.json");
+            var jsonData = File.ReadAllText($@"{InputPath}\data\{filePath}.json");
             var mapObject = Handler.Deserialize(jsonData);
 
             var mapFile = new FileInfo($@"{Cache.Directory.FullName}\{mapObject.MapName}.map");
