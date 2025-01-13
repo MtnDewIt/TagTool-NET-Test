@@ -225,56 +225,60 @@ namespace TagTool.Commands.Forge
                 var newPalette = new List<ScenarioPaletteEntry>();
                 var oldToNewInstanceMapping = new Dictionary<int, int>();
 
-                // Generate the new instances block, keeping track of the old to new indices
-                for (int i = 0; i < objectTypeDef.Instances.Count; i++)
+                // Check to see if we have have any placements to process for each object type
+                if (objectTypeDef.Instances.Count > 0) 
                 {
-                    var instance = objectTypeDef.Instances[i] as ScenarioInstance;
-
-                    // We can ignore objects that don't have any palette object associated with them. We also only want to leave objects that are not in the forge palette left in the scenario
-                    if (instance.PaletteIndex == -1 || ForgePalette.Contains((objectTypeDef.Palette[instance.PaletteIndex] as ScenarioPaletteEntry).Object))
+                    // Generate the new instances block, keeping track of the old to new indices
+                    for (int i = 0; i < objectTypeDef.Instances.Count; i++)
                     {
-                        // If the ignored placement has a valid object name index, update the corresponding object name block accordingly
-                        if (instance.NameIndex != -1)
+                        var instance = objectTypeDef.Instances[i] as ScenarioInstance;
+
+                        // We can ignore objects that don't have any palette object associated with them. We also only want to leave objects that are not in the forge palette left in the scenario
+                        if (instance.PaletteIndex == -1 || ForgePalette.Contains((objectTypeDef.Palette[instance.PaletteIndex] as ScenarioPaletteEntry).Object))
                         {
-                            // We set the data to use default values as the corresponding placement no longer exists
-                            scenario.ObjectNames[instance.NameIndex].ObjectType.Halo3ODST = GameObjectTypeHalo3ODST.None;
-                            scenario.ObjectNames[instance.NameIndex].PlacementIndex = -1;
+                            // If the ignored placement has a valid object name index, update the corresponding object name block accordingly
+                            if (instance.NameIndex != -1)
+                            {
+                                // We set the data to use default values as the corresponding placement no longer exists
+                                scenario.ObjectNames[instance.NameIndex].ObjectType.Halo3ODST = GameObjectTypeHalo3ODST.None;
+                                scenario.ObjectNames[instance.NameIndex].PlacementIndex = -1;
+                            }
+
+                            continue;
                         }
 
-                        continue;
-                    }  
+                        var paletteEntry = objectTypeDef.Palette[instance.PaletteIndex] as ScenarioPaletteEntry;
 
-                    var paletteEntry = objectTypeDef.Palette[instance.PaletteIndex] as ScenarioPaletteEntry;
+                        // try to find an existing palette entry, if not add one to the new palette block and use that index
+                        var paletteIndex = newPalette.IndexOf(paletteEntry);
+                        if (paletteIndex == -1)
+                        {
+                            paletteIndex = newPalette.Count;
+                            newPalette.Add(paletteEntry);
+                        }
 
-                    // try to find an existing palette entry, if not add one to the new palette block and use that index
-                    var paletteIndex = newPalette.IndexOf(paletteEntry);
-                    if (paletteIndex == -1)
-                    {
-                        paletteIndex = newPalette.Count;
-                        newPalette.Add(paletteEntry);
+                        // if the instance contains a valid name index, update the placement index for the corresponding object name block
+                        if (instance.NameIndex != -1)
+                        {
+                            scenario.ObjectNames[instance.NameIndex].PlacementIndex = (short)newInstances.Count;
+                        }
+
+                        instance.PaletteIndex = (short)paletteIndex;
+
+                        oldToNewInstanceMapping[i] = newInstances.Count;
+                        newInstances.Add(instance);
                     }
 
-                    // if the instance contains a valid name index, update the placement index for the corresponding object name block
-                    if (instance.NameIndex != -1) 
-                    {
-                        scenario.ObjectNames[instance.NameIndex].PlacementIndex = (short)newInstances.Count;
-                    }
+                    // Assign the new instances block
+                    objectTypeDef.Instances.Clear();
+                    foreach (var instance in newInstances)
+                        objectTypeDef.Instances.Add(instance);
 
-                    instance.PaletteIndex = (short)paletteIndex;
-
-                    oldToNewInstanceMapping[i] = newInstances.Count;
-                    newInstances.Add(instance);
+                    // Assign the new palette block
+                    objectTypeDef.Palette.Clear();
+                    foreach (var entry in newPalette)
+                        objectTypeDef.Palette.Add(entry);
                 }
-
-                // Assign the new instances block
-                objectTypeDef.Instances.Clear();
-                foreach (var instance in newInstances)
-                    objectTypeDef.Instances.Add(instance);
-
-                // Assign the new palette block
-                objectTypeDef.Palette.Clear();
-                foreach (var entry in newPalette)
-                    objectTypeDef.Palette.Add(entry);
             }
 
             // Clear out legacy sandbox palettes
