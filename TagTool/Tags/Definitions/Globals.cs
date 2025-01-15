@@ -11,7 +11,7 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Name = "globals", Tag = "matg", Size = 0x554, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
     [TagStructure(Name = "globals", Tag = "matg", Size = 0x530, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "globals", Tag = "matg", Size = 0x5AC, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-    [TagStructure(Name = "globals", Tag = "matg", Size = 0x580, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+    [TagStructure(Name = "globals", Tag = "matg", Size = 0x568, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "globals", Tag = "matg", Size = 0x608, MaxVersion = CacheVersion.HaloOnline449175)]
     [TagStructure(Name = "globals", Tag = "matg", Size = 0x618, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline604673)]
     [TagStructure(Name = "globals", Tag = "matg", Size = 0x614, MinVersion = CacheVersion.HaloOnline700123, MaxVersion = CacheVersion.HaloOnline700123)]
@@ -1253,8 +1253,8 @@ namespace TagTool.Tags.Definitions
         }
 
         [TagStructure(Size = 0x54, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
-        [TagStructure(Size = 0x5C, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-        [TagStructure(Size = 0x6C, MinVersion = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0x5C, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+        [TagStructure(Size = 0x6C, MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public class PlayerRepresentationBlock : TagStructure
 		{
             [TagField(Flags = Label, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
@@ -1275,7 +1275,7 @@ namespace TagTool.Tags.Definitions
             public CachedTag BinocularsZoomInSound;
             public CachedTag BinocularsZoomOutSound;
 
-            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             public CachedTag CombatDialogue;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
