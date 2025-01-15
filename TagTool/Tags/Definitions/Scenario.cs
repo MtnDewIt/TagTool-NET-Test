@@ -424,9 +424,6 @@ namespace TagTool.Tags.Definitions
         [TagField(Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         public List<TagReferenceBlock> BudgetReferencesODSTMCC;
 
-        [TagField(Version = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-        public List<NullBlock> ScavengerHuntObjectsH3;
-
         [TagField(ValidTags = new[] { "effe" }, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag MissionVisionModeEffect;
         [TagField(ValidTags = new[] { "effe" }, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
@@ -454,10 +451,10 @@ namespace TagTool.Tags.Definitions
         public CachedTag VariantGlobals;
 
         [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-        public List<NullBlock> StructuredBufferInterops;
+        public List<StructuredBufferInterop> StructuredBufferInterops;
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-        public List<NullBlock> ScavengerHuntObjectsODST;
+        [TagField(MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+        public List<ScavengerHuntObject> ScavengerHuntObjects;
 
         [Flags]
         public enum BspFlags : int
@@ -1630,7 +1627,7 @@ namespace TagTool.Tags.Definitions
         }
 
         [TagStructure(Size = 0x1C, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
-        [TagStructure(Size = 0x34, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+        [TagStructure(Size = 0x34, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x34, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x38, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x8C, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
@@ -5783,5 +5780,24 @@ namespace TagTool.Tags.Definitions
         public short NameIndex = -1;
         public StringId ParentMarker;
         public StringId ConnectionMarker;
+    }
+
+    [TagStructure(Size = 0x8)]
+    public class StructuredBufferInterop : TagStructure 
+    {
+        public DatumHandle StructuredBufferInteropAssetDatum;
+
+        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding;
+    }
+
+    [TagStructure(Size = 0x24)]
+    public class ScavengerHuntObject : TagStructure 
+    {
+        [TagField(Length = 0x20)]
+        public string ExportedName;
+
+        public short NameIndex;
+        public short Unknown; // Might be padding?
     }
 }
