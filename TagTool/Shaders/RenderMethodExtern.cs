@@ -63,6 +63,7 @@ namespace TagTool.Shaders
         global_depth_constants,
         global_camera_forward,
         z_camera_pixel_size
+        material_diffuse_power, // Verify?
     }
 
     public enum RenderMethodExternReach : int
