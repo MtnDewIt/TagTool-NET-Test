@@ -17,13 +17,14 @@ namespace TagTool.Tags.Definitions
             public List<GlobalShaderEntryPointBlock> EntryPoints;
 
             [TagStructure(Size = 0x10, Platform = CachePlatform.Original)]
-            [TagStructure(Size = 0x14, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+            [TagStructure(Size = 0x14, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+            [TagStructure(Size = 0x10, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
             [TagStructure(Size = 0x10, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
             public class GlobalShaderEntryPointBlock : TagStructure
 			{
                 public List<CategoryDependencyBlock> CategoryDependency;
                 public int ShaderIndex;
-                [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+                [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
                 public int CustomCompiledShaderIndex;
 
                 [TagStructure(Size = 0x10)]

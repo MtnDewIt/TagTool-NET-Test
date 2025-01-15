@@ -1248,6 +1248,7 @@ namespace TagTool.Tags.Definitions
 
             public enum ObjectLocationPlacementFlagsMCC : uint
             {
+                None = 0,
                 NotAutomatically = 1 << 0,
                 LockTypeToEnvObject = 1 << 1,
                 LockTransformToEnvObject = 1 << 2,
