@@ -347,18 +347,18 @@ namespace TagTool.Commands.Porting
                     H3att.MotionSensorOrigin.Y *= 1.5f;
                     H3att.MotionSensorRadius *= 1.5f;
                     H3att.BlipRadius *= 1.5f;
-                    H3att.StateLeftRightOffset_HO.Y = H3att.StateLeftRightOffsetY_H3;
+                    H3att.StateMessageOffset.Y = H3att.StateMessageVerticalOffset;
                     H3att.StateMessageScale = H3att.StateMessageScaleH3;
-                    H3att.MessageOffset.X = H3att.NotificationOffsetX_H3;
-                    H3att.MessageOffset.Y = H3att.NotificationOffsetY_H3;
+                    H3att.MessageOffset.X = H3att.MessageAnchorHorizontalOffset;
+                    H3att.MessageOffset.Y = H3att.MessageAnchorVerticalOffset;
                     H3att.MessageScale *= 1.5f;
                     H3att.MessageHeight *= 1.5f;
 
                     if (BlamCache.Version == CacheVersion.Halo3ODST)
                     {
                         H3att.WarpSourceFovY = Angle.FromDegrees(4.5f);
-                        H3att.WarpAmount = 0.1f;
-                        H3att.StateLeftRightOffset_HO.Y = 0.2f; // 0.2 due to odsts 0.87 hud scale
+                        H3att.WarpSourceAspect = 0.1f;
+                        H3att.StateMessageOffset.Y = 0.2f; // 0.2 due to odsts 0.87 hud scale
                     }
                 }
 

@@ -1291,7 +1291,7 @@ namespace TagTool.Commands.Porting.Gen2
                     CachedTag hudGlobalsTag = Cache.TagCacheGenHO.GetTag("ui\\chud\\globals.chud_globals_definition");
                     ChudGlobalsDefinition hudGlobals = Cache.Deserialize<ChudGlobalsDefinition>(cacheStream, hudGlobalsTag);
                     hudGlobals.HudGlobals[0].HudAttributes[0].WarpSourceFovY = Angle.FromDegrees(1f);
-                    hudGlobals.HudGlobals[0].HudAttributes[0].WarpAmount = 1;
+                    hudGlobals.HudGlobals[0].HudAttributes[0].WarpSourceAspect = 1;
                     hudGlobals.HudGlobals[0].HudAttributes[0].MotionSensorOrigin = new RealPoint2d(58f, 976f);
                     hudGlobals.HudGlobals[0].PrimaryBackground = new ArgbColor(0, 2, 35, 120);
                     hudGlobals.HudGlobals[0].SecondaryBackground = new ArgbColor(0, 4, 60, 200);
@@ -1302,7 +1302,7 @@ namespace TagTool.Commands.Porting.Gen2
                     CachedTag hudGlobalsTagElite = Cache.TagCacheGenHO.GetTag("objects\\characters\\elite\\mp_elite\\chud\\globals.chud_globals_definition");
                     ChudGlobalsDefinition hudGlobalsElite = Cache.Deserialize<ChudGlobalsDefinition>(cacheStream, hudGlobalsTagElite);
                     hudGlobalsElite.HudGlobals[0].HudAttributes[0].WarpSourceFovY = Angle.FromDegrees(1f);
-                    hudGlobalsElite.HudGlobals[0].HudAttributes[0].WarpAmount = 1;
+                    hudGlobalsElite.HudGlobals[0].HudAttributes[0].WarpSourceAspect = 1;
                     hudGlobalsElite.HudGlobals[0].HudAttributes[0].MotionSensorOrigin = new RealPoint2d(58f, 976f);
                     Cache.Serialize(cacheStream, hudGlobalsTagElite, hudGlobalsElite);
                     break;
