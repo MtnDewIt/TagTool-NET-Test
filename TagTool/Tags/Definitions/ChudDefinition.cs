@@ -60,7 +60,8 @@ namespace TagTool.Tags.Definitions
 
             [TagStructure(Size = 0x28, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
             [TagStructure(Size = 0x2C, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-            [TagStructure(Size = 0x38, MaxVersion = CacheVersion.Halo3ODST)]
+            [TagStructure(Size = 0x38, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+            [TagStructure(Size = 0x3C, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
             [TagStructure(Size = 0x44, MaxVersion = CacheVersion.HaloOnline604673)]
             [TagStructure(Size = 0x48, Version = CacheVersion.HaloOnline700123)]
             [TagStructure(Size = 0x38, MinVersion = CacheVersion.HaloReach)]
