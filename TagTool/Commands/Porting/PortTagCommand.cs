@@ -369,6 +369,7 @@ namespace TagTool.Commands.Porting
                 scenario.AiObjectives.Clear();
                 scenario.AiUserHintData.Clear();
                 scenario.Scripts.Clear();
+                scenario.ScriptExternalFileReferences.Clear();
                 scenario.ScriptStrings = null;
 
                 scenario.CharacterPalette.Clear();

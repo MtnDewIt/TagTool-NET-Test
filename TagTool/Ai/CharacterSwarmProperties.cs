@@ -1,16 +1,18 @@
 using TagTool.Common;
 using TagTool.Tags;
-using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Ai
 {
     [TagStructure(Size = 0x38)]
     public class CharacterSwarmProperties : TagStructure
 	{
+        [TagField(Platform = Cache.CachePlatform.MCC)]
+        public CharacterSwarmFlags SwarmFlags;
+
         public short ScatterKilledCount;
 
-        [TagField(Flags = Padding, Length = 2)]
-        public byte[] Unused;
+        [TagField(Flags = TagFieldFlags.Padding, Length = 2, Platform = Cache.CachePlatform.Original)]
+        public byte[] Padding;
 
         public float ScatterRadius; // the distance from the target that the swarm scatters
         public float ScatterTime; // amount of time to remain scattered
@@ -22,5 +24,11 @@ namespace TagTool.Ai
         public float PerlinCombatMovementThreshold; // a random offset lower then given threshold is made 0. (threshold of 1 = no movement)
         public float StuckTime; // how long we have to move (stuck distance) before we get deleted
         public float StuckDistance; // how far we have to move in (stuck time) to not get deleted
+
+        public enum CharacterSwarmFlags : short 
+        {
+            None = 0,
+            IgnoreAttachmentVitalityThreshold = 1 << 0,
+        }
     }
 }

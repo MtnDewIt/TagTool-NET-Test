@@ -17,6 +17,8 @@ namespace TagTool.Tags.Definitions
         [TagField(Flags = Padding, Length = 12, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Unused1; // can prob yeet this
 
+        [TagStructure(Size = 0x208, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+        [TagStructure(Size = 0x1F4, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x208, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x238, MinVersion = CacheVersion.HaloReach)]
         public class BeamDefinitionBlock : TagStructure

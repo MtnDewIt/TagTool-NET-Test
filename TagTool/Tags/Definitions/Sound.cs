@@ -119,7 +119,14 @@ namespace TagTool.Tags.Definitions
             InstantSoundPropagation = 1 << 9,
             FakeSpatializationWithDistance = 1 << 10,
             PlayPermutationsInOrder = 1 << 11,
-            Bit12 = 1 << 12
+
+            // TODO: Investigate why ODST MCC needs these :/
+            // Potential change in the enum type :/
+            // Bitmasking???
+            Bit12 = 1 << 12,
+            Bit13 = 1 << 13,
+            Bit14 = 1 << 14,
+            Bit15 = 1 << 15,
         }
 
         [Flags]

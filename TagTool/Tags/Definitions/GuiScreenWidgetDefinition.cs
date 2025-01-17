@@ -7,6 +7,7 @@ using TagTool.Tags.Definitions.Common;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "gui_screen_widget_definition", Tag = "scn3", Size = 0xA8, Platform = CachePlatform.Original)]
+    [TagStructure(Name = "gui_screen_widget_definition", Tag = "scn3", Size = 0xA8, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "gui_screen_widget_definition", Tag = "scn3", Size = 0xB8, Platform = CachePlatform.MCC)]
     public class GuiScreenWidgetDefinition : TagStructure
 	{
@@ -19,7 +20,7 @@ namespace TagTool.Tags.Definitions
         public List<GroupWidget> GroupWidgets;
         public List<ButtonKeyLegend> ButtonKeys;
         public CachedTag SoundOverrides;
-        [TagField(Platform = CachePlatform.MCC)]
+        [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
         public CachedTag MouseCursors;
         [TagField(Length = 32)]
         public string OnLoadScriptName;
@@ -30,6 +31,7 @@ namespace TagTool.Tags.Definitions
         [Flags]
         public enum GuiScreenWidgetFlags : int
         {
+            None = 0,
             DoNotApplyOldContentUpscaling = 1 << 0,
             OverrideTemplateFlags = 1 << 1,
             EnableAnimationDebugging = 1 << 2,

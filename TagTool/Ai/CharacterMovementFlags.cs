@@ -24,6 +24,28 @@ namespace TagTool.Ai
     }
 
     [Flags]
+    public enum CharacterMovementFlagsODST : int
+    {
+        None = 0,
+        DangerCrouchAllowMovement = 1 << 0,
+        NoSideStep = 1 << 1,
+        PreferToCombatNearFriends = 1 << 2,
+        HopToCoverPathSegements = 1 << 3,
+        HopToEndOfPath = 1 << 4,
+        AllowBoostedJump = 1 << 5,
+        Perch = 1 << 6,
+        Climb = 1 << 7,
+        PreferWallMovement = 1 << 8,
+        HasFlyingMode = 1 << 9,
+        DisallowCrouch = 1 << 10,
+        DisallowAllMovement = 1 << 11,
+        AlwaysUseSearchPoints = 1 << 12,
+        KeepMoving = 1 << 13,
+        CureIsolationJump = 1 << 14,
+        OnlyUseAerialFiringPositions = 1 << 15,
+    }
+
+    [Flags]
     public enum CharacterMovementFlagsReach : int
     {
         None = 0,

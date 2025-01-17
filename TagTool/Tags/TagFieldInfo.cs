@@ -182,6 +182,7 @@ namespace TagTool.Tags
                 case TypeCode.Object when type == typeof(Point2d):
 				case TypeCode.Object when type == typeof(StringId):
 				case TypeCode.Object when type == typeof(Angle):
+				case TypeCode.Object when type == typeof(ComputeShaderReference):
 				case TypeCode.Object when type == typeof(VertexShaderReference):
 				case TypeCode.Object when type == typeof(PixelShaderReference):
 				case TypeCode.Object when type == typeof(PlatformUnsignedValue) && CacheVersionDetection.GetPlatformType(cachePlatform) == PlatformType._32Bit:
