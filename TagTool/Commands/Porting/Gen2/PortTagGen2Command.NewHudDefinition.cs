@@ -192,8 +192,8 @@ namespace TagTool.Commands.Porting.Gen2
                     };
                     StateDatum newStateData = new StateDatum
                     {
-                        UnitGeneralFlags = StateDatum.UnitGeneral.MotionTrackerEnabled,
-                        InverseFlags = StateDatum.Inverse.NotZoomedIn
+                        UnitMiscState = StateDatum.UnitMiscStateFlags.MotionSensorEnabled,
+                        HiddenState = StateDatum.HiddenStateFlags.Zoomed,
                     };
                     PlacementDatum newPlacementData = new PlacementDatum
                     {

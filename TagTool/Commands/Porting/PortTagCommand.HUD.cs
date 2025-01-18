@@ -14,29 +14,48 @@ namespace TagTool.Commands.Porting
         {
             switch (BlamCache.Version)
             {
+                // A little unsure about the GameState enums for each engine version, but this should do for now
+
                 case CacheVersion.Halo3Retail:
-                {
                     if (BlamCache.Platform == CachePlatform.Original)
                     {
-                        stateData.GameState = GetEquivalentFlags(stateData.GameState, stateData.GameStateH3);
-                    }else if (BlamCache.Platform == CachePlatform.MCC)
+                        // Technically not required
+                        //stateData.GameState = GetEquivalentFlags(stateData.GameState, stateData.GameState);
+                    }
+                    else if (BlamCache.Platform == CachePlatform.MCC)
                     {
-                        stateData.GameState = GetEquivalentFlags(stateData.GameState, stateData.GameStateH3MCC);
-                        stateData.EditorFlags = GetEquivalentFlags(stateData.EditorFlags, stateData.EditorFlagsMCC);
+                        stateData.GameState = GetEquivalentFlags(stateData.GameState, stateData.GameStateMCC);
+                        stateData.SandboxState = stateData.SandboxStateMCC;
                         stateData.HindsightState = GetEquivalentFlags(stateData.HindsightState, stateData.HindsightStateMCC);
                     }
-                    stateData.UnitBaseFlags = GetEquivalentFlags(stateData.UnitBaseFlags, stateData.UnitBaseFlags_H3);
-                    stateData.Player_SpecialFlags = GetEquivalentFlags(stateData.Player_SpecialFlags, stateData.Player_SpecialFlags_H3);
+                    stateData.MiscState = GetEquivalentFlags(stateData.MiscState, stateData.MiscStateH3);
+                    stateData.UnitImpulseStateHO = GetEquivalentFlags(stateData.UnitImpulseStateHO, stateData.UnitImpulseStateH3);
+                    stateData.WeaponCrosshairState = GetEquivalentFlags(stateData.WeaponCrosshairState, stateData.WeaponCrosshairStateH3);
                     break;
-                }
                 case CacheVersion.Halo3ODST:
-                    stateData.GameState = GetEquivalentFlags(stateData.GameState, stateData.GameStateODST);
-                    stateData.UnitBaseFlags = GetEquivalentFlags(stateData.UnitBaseFlags, stateData.UnitBaseFlags_ODST);
+                    if (BlamCache.Platform == CachePlatform.Original)
+                    {
+                        // Technically not required
+                        //stateData.GameState = GetEquivalentFlags(stateData.GameState, stateData.GameState);
+                    }
+                    else if (BlamCache.Platform == CachePlatform.MCC)
+                    {
+                        stateData.GameState = GetEquivalentFlags(stateData.GameState, stateData.GameStateMCC);
+                        stateData.MiscState = GetEquivalentFlags(stateData.MiscState, stateData.MiscStateODST);
+                        stateData.SandboxState = stateData.SandboxStateMCC;
+                        stateData.HindsightState = GetEquivalentFlags(stateData.HindsightState, stateData.HindsightStateMCC);
+                        stateData.SkullState = GetEquivalentFlags(stateData.SkullState, stateData.SkullStateMCC);
+                        stateData.SurvivalRoundState = GetEquivalentFlags(stateData.SurvivalRoundState, stateData.SurvivalRoundStateMCC);
+                        stateData.SurvivalWaveState = GetEquivalentFlags(stateData.SurvivalWaveState, stateData.SurvivalWaveStateMCC);
+                        stateData.SurvivalLivesState = GetEquivalentFlags(stateData.SurvivalLivesState, stateData.SurvivalLivesStateMCC);
+                        stateData.DifficultyState = GetEquivalentFlags(stateData.DifficultyState, stateData.DifficultyStateMCC);
+                    }
                     break;
             }
 
-            stateData.MultiplayerEvents = GetEquivalentFlags(stateData.MultiplayerEvents, stateData.MultiplayerEventsFlags_H3);
-            stateData.GeneralKudosFlags = GetEquivalentFlags(stateData.GeneralKudosFlags, stateData.GeneralKudosFlags_H3);
+            stateData.GameEngineStateHO = GetEquivalentFlags(stateData.GameEngineStateHO, stateData.GameEngineState);
+            stateData.WeaponArmedStateHO = GetEquivalentFlags(stateData.WeaponArmedStateHO, stateData.WeaponArmedState);
+            stateData.NonWeaponFlashHO = GetEquivalentFlags(stateData.NonWeaponFlashHO, stateData.NonWeaponFlash);
 
             return stateData;
         }
@@ -156,8 +175,9 @@ namespace TagTool.Commands.Porting
                     //Fix some elements not displaying in forge mode
                     if (bitmapwidgetname.Contains("who_am_i") || bitmapwidgetname.Contains("summary_sandbox_title"))
                     {
-                        chudDefinition.HudWidgets[hudWidgetIndex].BitmapWidgets[bitmapWidgetIndex].StateData[0].GameStateH3 |= ChudDefinition.HudWidget.StateDatum.ChudGameStateH3.Editor;
-                        chudDefinition.HudWidgets[hudWidgetIndex].BitmapWidgets[bitmapWidgetIndex].StateData[0].GameStateH3MCC |= ChudDefinition.HudWidget.StateDatum.ChudGameStateH3MCC.Editor;
+                        // A little unsure about this one
+                        chudDefinition.HudWidgets[hudWidgetIndex].BitmapWidgets[bitmapWidgetIndex].StateData[0].GameState |= ChudDefinition.HudWidget.StateDatum.GameStateFlags.MPSandbox;
+                        chudDefinition.HudWidgets[hudWidgetIndex].BitmapWidgets[bitmapWidgetIndex].StateData[0].GameStateMCC |= ChudDefinition.HudWidget.StateDatum.GameStateFlagsMCC.MPSandbox;
                     }
 
                     //fix elite upper corner weirdness
@@ -285,7 +305,7 @@ namespace TagTool.Commands.Porting
                 //hide odst hud lines when in vehicle/turret
                 if (BlamCache.Version == CacheVersion.Halo3ODST && (widgetname.Contains("in_helmet_bottom") || widgetname.Contains("in_helmet_top")))
                 {
-                    chudDefinition.HudWidgets[hudWidgetIndex].StateData[0].UnitGeneralFlags = ChudDefinition.HudWidget.StateDatum.UnitGeneral.ThirdPersonCamera;
+                    chudDefinition.HudWidgets[hudWidgetIndex].StateData[0].UnitMiscState = ChudDefinition.HudWidget.StateDatum.UnitMiscStateFlags.ThirdPerson;
                 }
 
                 // reposition h3 metagame widgets (anchors changed in ODST)
