@@ -12,7 +12,8 @@ namespace TagTool.Scripting
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
         public Halo3ODSTValue Halo3ODST;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
+        // I don't know if newer HO builds nedd thier own enums? (Will need to investigate)
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public HaloOnlineValue HaloOnline;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]

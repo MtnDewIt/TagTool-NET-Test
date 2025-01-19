@@ -156,6 +156,7 @@ namespace TagTool.Cache.Gen3
             { new TagGroupGen3("snd!", "sound"), typeof(Sound) },
             { new TagGroupGen3("snde", "sound_environment"), typeof(SoundEnvironment) },
             { new TagGroupGen3("snmx", "sound_mix"), typeof(SoundMix) },
+            { new TagGroupGen3("spda", "scenario_pda"), typeof(ScenarioPDA) },
             { new TagGroupGen3("spk!", "sound_dialogue_constants"), typeof(SoundDialogueConstants) },
             { new TagGroupGen3("sqtm", "squad_template"), typeof(SquadTemplate) },
             { new TagGroupGen3("ssce", "obje", "sound_scenery"), typeof(SoundScenery) },

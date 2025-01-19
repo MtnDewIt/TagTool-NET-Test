@@ -16,7 +16,6 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Name = "scenario", Tag = "scnr", Size = 0x834, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
     [TagStructure(Name = "scenario", Tag = "scnr", Size = 0x7FC, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "scenario", Tag = "scnr", Size = 0x824, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline449175)]
-    //[TagStructure(Name = "scenario", Tag = "scnr", Size = 0x834, MinVersion = CacheVersion.HaloOnline498295)]
     [TagStructure(Name = "scenario", Tag = "scnr", Size = 0x834, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "scenario", Tag = "scnr", Size = 0x86C, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
     [TagStructure(Name = "scenario", Tag = "scnr", Size = 0x890, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
@@ -81,7 +80,7 @@ namespace TagTool.Tags.Definitions
         [TagField(ValidTags = new[] { "spda" }, Version = CacheVersion.Halo3ODST)]
         public CachedTag ScenarioPDA;
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-        public List<PdaDefinitionsBlock> PdaDefinitions;
+        public List<PDADefinitionsBlock> PDADefinitions;
 
         [TagField(ValidTags = new[] { "stse" })]
         public CachedTag StructureSeams;
@@ -99,7 +98,8 @@ namespace TagTool.Tags.Definitions
         [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public List<BspAtlasBlock> BspAtlas;
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         public List<CampaignPlayer> CampaignPlayers;
 
         [TagField(Platform = CachePlatform.Original)]
@@ -112,8 +112,6 @@ namespace TagTool.Tags.Definitions
         public byte[] EditorScenarioData;
 
         public List<Comment> Comments;
-        [TagField(Platform = CachePlatform.MCC)]
-        public List<NullBlock> UnknownMCC;
         public List<UnusedScenarioEnvironmentObject> ScenarioEnvironmentObjects;
         public List<ObjectName> ObjectNames;
         public List<SceneryInstance> Scenery;
@@ -301,14 +299,12 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<WeatherPaletteBlock> WeatherPaletteReach;
 
-        //[TagField(MaxVersion = CacheVersion.HaloOnline700123)]
-        //public List<GNullBlock> Unused;
-        //[TagField(MaxVersion = CacheVersion.HaloOnline700123)]
-        //public List<GNullBlock> Unused2;
-        //[TagField(MaxVersion = CacheVersion.HaloOnline700123)]
-        //public List<GNullBlock> Unused3;
-        [TagField(Flags = Padding, Length = 36, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
-        public byte[] Padding3UnusedBlocks;
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
+        public List<GNullBlock> Unused1;
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
+        public List<GNullBlock> Unused2;
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
+        public List<GNullBlock> Unused3;
 
         [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public List<ScenarioClusterDatum> ScenarioClusterData;
@@ -415,14 +411,7 @@ namespace TagTool.Tags.Definitions
         public List<TagReferenceBlock> CortanaEffects;
 
         public List<LightmapAirprobe> LightmapAirprobes;
-
-        [TagField(Flags = Padding, Length = 12, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagField(Flags = Padding, Length = 12, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        [TagField(Flags = Padding, Length = 12, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public byte[] Unused;
-
-        [TagField(Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-        public List<TagReferenceBlock> BudgetReferencesODSTMCC;
+        public List<TagReferenceBlock> BudgetReferences;
 
         [TagField(ValidTags = new[] { "effe" }, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag MissionVisionModeEffect;
@@ -431,8 +420,11 @@ namespace TagTool.Tags.Definitions
         [TagField(ValidTags = new[] { "vmdx" }, Version = CacheVersion.Halo3ODST)]
         public CachedTag MissionVisionMode;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-        public List<TagReferenceBlock> BudgetReferences;
+        [TagField(Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+        public List<StructuredBufferInterop> StructuredBufferInterops;
+
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public List<BackgroundBitmapReference> BackgroundBitmapReferences;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<TagReferenceBlock> ModelReferences;
@@ -449,9 +441,6 @@ namespace TagTool.Tags.Definitions
         public CachedTag RequiredResources;
         [TagField(ValidTags = new[] { "vtgl" }, MinVersion = CacheVersion.HaloReach)]
         public CachedTag VariantGlobals;
-
-        [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-        public List<StructuredBufferInterop> StructuredBufferInterops;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
         public List<ScavengerHuntObject> ScavengerHuntObjects;
@@ -651,17 +640,17 @@ namespace TagTool.Tags.Definitions
         }
 
         [TagStructure(Size = 0xC0)]
-        public class PdaDefinitionsBlock : TagStructure
+        public class PDADefinitionsBlock : TagStructure
         {
             public StringId Name;
-            public List<ScenarioPdaRenderModelBlock> RenderModels;
-            public List<PdaRenderModelColorBlock> PdaRenderModelColors;
+            public List<PDARenderModelBlock> RenderModels;
+            public List<PDARenderModelColorBlock> PDARenderModelColors;
             [TagField(ValidTags = new[] { "bitm" })]
-            public CachedTag PdaValidMovementMap; // white is valid
+            public CachedTag PDAValidMovementMap; // white is valid
             [TagField(ValidTags = new[] { "bitm" })]
-            public CachedTag PdaHeightMap;
-            public float PdaHeightMapMin; // black
-            public float PdaHeightMapMax; // white
+            public CachedTag PDAHeightMap;
+            public float PDAHeightMapMin; // black
+            public float PDAHeightMapMax; // white
             public float FalloffRadius;
             public RealPoint2d InitialPosition;
             public RealPoint3d MinimumWorldPosition;
@@ -679,7 +668,7 @@ namespace TagTool.Tags.Definitions
             public float RotationSpeed; // degrees per tick
 
             [TagStructure(Size = 0x1C)]
-            public class ScenarioPdaRenderModelBlock : TagStructure
+            public class PDARenderModelBlock : TagStructure
             {
                 [TagField(ValidTags = new[] { "mode" })]
                 public CachedTag RenderModel;
@@ -691,7 +680,7 @@ namespace TagTool.Tags.Definitions
             }
 
             [TagStructure(Size = 0x10)]
-            public class PdaRenderModelColorBlock : TagStructure
+            public class PDARenderModelColorBlock : TagStructure
             {
                 public RealRgbColor Color;
                 public float Intensity;
@@ -1234,30 +1223,33 @@ namespace TagTool.Tags.Definitions
                 NotOnEasy = 1 << 1,
                 NotOnNormal = 1 << 2,
                 NotOnHard = 1 << 3,
-                LockTypeToEnvObject = 1 << 4,
-                LockTransformToEnvObject = 1 << 5,
+                LockTypeToEnvironmentObject = 1 << 4,
+                LockTransformToEnvironmentObject = 1 << 5,
                 NeverPlaced = 1 << 6,
-                LockNameToEnvObject = 1 << 7,
+                LockNameToEnvironmentObject = 1 << 7,
                 CreateAtRest = 1 << 8,
                 StoreOrientations = 1 << 9,
-                Startup = 1 << 10,
-                AttachPhysically = 1 << 11,
-                AttachWithScale = 1 << 12,
-                NoParentLighting = 1 << 13
+                PvsBound = 1 << 10,
+                Startup = 1 << 11,
+                AttachPhysically = 1 << 12,
+                AttachWithScale = 1 << 13,
+                NoParentLighting = 1 << 14,
             }
 
+            [Flags]
             public enum ObjectLocationPlacementFlagsMCC : uint
             {
                 None = 0,
                 NotAutomatically = 1 << 0,
-                LockTypeToEnvObject = 1 << 1,
-                LockTransformToEnvObject = 1 << 2,
+                LockTypeToEnvironmentObject = 1 << 1,
+                LockTransformToEnvironmentObject = 1 << 2,
                 NeverPlaced = 1 << 3,
-                LockNameToEnvObject = 1 << 4,
+                LockNameToEnvironmentObject = 1 << 4,
                 CreateAtRest = 1 << 5,
                 StoreOrientations = 1 << 6,
                 PvsBound = 1 << 7,
-                Startup = 1 << 8
+                Startup = 1 << 8,
+                RenderAsDefaultInVisionMode = 1 << 9,
             }
         }      
 
@@ -5790,6 +5782,12 @@ namespace TagTool.Tags.Definitions
 
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
         public byte[] Padding;
+    }
+
+    [TagStructure(Size = 0x10)]
+    public class BackgroundBitmapReference : TagStructure 
+    {
+        public CachedTag BackgroundBitmapGroupReference;
     }
 
     [TagStructure(Size = 0x24)]
