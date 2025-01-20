@@ -73,7 +73,12 @@ namespace TagTool.Commands.Editing
                 case TagStructure tagStruct:
                     {
                         foreach (var field in tagStruct.GetTagFieldEnumerable(Version, Platform))
+                        {
+                            if (field.Attribute != null && field.Attribute.Flags.HasFlag(TagFieldFlags.Padding))
+                                continue;
+
                             DumpCommands(strings, commands, cache, field.GetValue(data), fieldName != null ? $"{fieldName}.{field.Name}" : field.Name);
+                        }
                     }
                     break;
                 case IList collection:
@@ -134,9 +139,17 @@ namespace TagTool.Commands.Editing
                             else
                             {
                                 if (!collection.GetType().IsArray)
+                                {
                                     commands.Add($"AddBlockElements {fieldName} {collection.Count}");
-                                for (int i = 0; i < collection.Count; i++)
-                                    DumpCommands(strings, commands, cache, collection[i], $"{fieldName}[{i}]");
+
+                                    for (int i = 0; i < collection.Count; i++)
+                                        DumpCommands(strings, commands, cache, collection[i], $"{fieldName}[{i}]");
+                                }
+
+                                if (collection[0].GetType().IsPrimitive)
+                                {
+                                    commands.Add($"SetField {fieldName} {ParsePrimitveArray(collection)}");
+                                }
                             }
                         }
                     }
@@ -232,9 +245,9 @@ namespace TagTool.Commands.Editing
         {
             return
                 $"{matrix.m11} {matrix.m12} {matrix.m13}" +
-                $"{matrix.m21} {matrix.m22} {matrix.m23}" +
-                $"{matrix.m31} {matrix.m32} {matrix.m33}" +
-                $"{matrix.m41} {matrix.m42} {matrix.m43}";
+                $" {matrix.m21} {matrix.m22} {matrix.m23}" +
+                $" {matrix.m31} {matrix.m32} {matrix.m33}" +
+                $" {matrix.m41} {matrix.m42} {matrix.m43}";
         }
 
         private static object GetDefaultValue(Type type)
@@ -297,6 +310,23 @@ namespace TagTool.Commands.Editing
                     return false;
             }
             return true;
+        }
+
+        private static string ParsePrimitveArray(IList collection) 
+        {
+            var output = "";
+
+            for (int i = 0; i < collection.Count; i++) 
+            {
+                output += $"{collection[i]} ";
+
+                if (i == collection.Count) 
+                {
+                    output += $"{collection[i]}";
+                }
+            }
+            
+            return output;
         }
     }
 }
