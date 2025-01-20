@@ -866,6 +866,10 @@ namespace TagTool.Commands.Porting
 
             switch (blamDefinition)
 			{
+                case AiDialogueGlobals adlg:
+                    ConvertDialogueGlobals(adlg);
+                    break;
+
 				case AreaScreenEffect sefc:
 					if (BlamCache.Version < CacheVersion.Halo3ODST)
 					{

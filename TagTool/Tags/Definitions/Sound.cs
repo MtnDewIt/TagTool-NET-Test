@@ -6,13 +6,13 @@ using TagTool.Cache;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "sound", Tag = "snd!", Size = 0x20, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Halo3ODST)]
-	[TagStructure(Name = "sound", Tag = "snd!", Size = 0xD4, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline235640)]
-	[TagStructure(Name = "sound", Tag = "snd!", Size = 0xD8, MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline449175)]
+    [TagStructure(Name = "sound", Tag = "snd!", Size = 0xD4, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline235640)]
+    [TagStructure(Name = "sound", Tag = "snd!", Size = 0xD8, MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline449175)]
     [TagStructure(Name = "sound", Tag = "snd!", Size = 0xD4, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "sound", Tag = "snd!", Size = 0x24, MinVersion = CacheVersion.HaloReach, BuildType = CacheBuildType.ReleaseBuild)]
     [TagStructure(Name = "sound", Tag = "snd!", Size = 0xE0, MinVersion = CacheVersion.HaloReach, BuildType = CacheBuildType.TagsBuild)]
     public class Sound : TagStructure
-	{    
+    {
         [TagField(EnumType = typeof(ushort), MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Halo3ODST)]
         [TagField(EnumType = typeof(uint), MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public FlagsValue Flags;
@@ -27,7 +27,7 @@ namespace TagTool.Tags.Definitions
         [TagField(Gen = CacheGeneration.HaloOnline)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public SoundXsyncFlags XSyncFlags;
-        
+
         public SoundClass SoundClass;
 
         [TagField(Gen = CacheGeneration.HaloOnline)]
@@ -119,10 +119,6 @@ namespace TagTool.Tags.Definitions
             InstantSoundPropagation = 1 << 9,
             FakeSpatializationWithDistance = 1 << 10,
             PlayPermutationsInOrder = 1 << 11,
-
-            // TODO: Investigate why ODST MCC needs these :/
-            // Potential change in the enum type :/
-            // Bitmasking???
             Bit12 = 1 << 12,
             Bit13 = 1 << 13,
             Bit14 = 1 << 14,

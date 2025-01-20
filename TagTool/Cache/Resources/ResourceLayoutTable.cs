@@ -42,6 +42,9 @@ namespace TagTool.Cache.Resources
                 NotRequired = 1 << 1,
                 UseHeaderLocations = 1 << 2,
                 NoResources = 1 << 3,
+                Bit4 = 1 << 4,
+                Bit5 = 1 << 5,
+                Bit6 = 1 << 6,
             }
         }
 
