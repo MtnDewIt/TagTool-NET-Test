@@ -32,6 +32,9 @@ namespace TagTool.Commands.Modding
 
 		private HashSet<string> BlacklistedTags;
 		private HashSet<string> ForceAppliedTags;
+		private HashSet<string> ForceBlacklistedTags;
+		private HashSet<string> AppliedTags;
+		private Dictionary<string, List<string>> DependencyRules;
 
 		public ApplyModPackageTagsCommand(GameCacheModPackage modCache) :
 			base(false,
@@ -46,6 +49,19 @@ namespace TagTool.Commands.Modding
 			ModCache = modCache;
 			BlacklistedTags = new HashSet<string>();
 			ForceAppliedTags = new HashSet<string>();
+			ForceBlacklistedTags = new HashSet<string>();
+			AppliedTags = new HashSet<string>();
+			InitializeDependencyRules();
+		}
+
+		private void InitializeDependencyRules()
+		{
+		    DependencyRules = new Dictionary<string, List<string>>
+		    {
+		        { ".bitmap", new List<string> { ".shader" } },
+		        { ".shader", new List<string> { ".render_model" } },
+		        { ".render_model", new List<string> { ".model" } }
+		    };
 		}
 
 		public override object Execute(List<string> args)
@@ -83,8 +99,14 @@ namespace TagTool.Commands.Modding
 			while (( line = Console.ReadLine() ) != "Done") {
 				if (!string.IsNullOrWhiteSpace(line)) {
 					line = line.Trim();
-					if (line.StartsWith('+')) {
-						ForceAppliedTags.Add(line.TrimStart('+'));
+					if (line.StartsWith("+-") || line.StartsWith("-+")){
+					    AppliedTags.Add(line.Substring(2));
+					}
+					else if (line.StartsWith("+")){
+					    ForceAppliedTags.Add(line.Substring(1));
+					}
+					else if (line.StartsWith("-")){
+					    ForceBlacklistedTags.Add(line.Substring(1));
 					}
 					else {
 						BlacklistedTags.Add(line);
@@ -229,11 +251,38 @@ namespace TagTool.Commands.Modding
 
 			// Check if the tag should be applied (i.e., has a "+" in the blacklist list)
 			bool forceApply = ForceAppliedTags.Contains(fullTagName) || ForceAppliedTags.Any(fullTagName.Contains);
-			//var appliedTag = BlacklistedTags.FirstOrDefault(keyword => fullTagName.Contains(keyword.TrimStart('+')) && keyword.StartsWith("+"));
-			if (forceApply) {
-				Console.WriteLine($"Included Tag: {fullTagName}"); // Tag is included due to +, so don't blacklist it
+			bool forceBlacklist = ForceBlacklistedTags.Contains(fullTagName) || ForceBlacklistedTags.Any(fullTagName.Contains);
+			bool applyTag = AppliedTags.Contains(fullTagName) || AppliedTags.Any(fullTagName.Contains);
+
+			if (forceApply && !applyTag)
+			{
+			    Console.WriteLine($"Included Tag: {fullTagName}");
+				
+			    var dependencies = GetTagDependencies(modTag);
+			    foreach (var dependency in dependencies)
+			    {
+			        if (!ForceAppliedTags.Contains(dependency))
+			        {
+			            ForceAppliedTags.Add(dependency);
+			            Console.WriteLine($"Including dependency: {dependency}");
+			        }
+			    }
 			}
-			else if (BlacklistedTags.Contains(fullTagName) || BlacklistedTags.Any(fullTagName.Contains)) {
+			else if (applyTag)
+			{
+			    Console.WriteLine($"Applied Tag: {fullTagName}");
+
+			    var dependencies = GetTagDependencies(modTag);
+			    foreach (var dependency in dependencies)
+			    {
+			        if (!BlacklistedTags.Contains(dependency))
+			        {
+			            BlacklistedTags.Add(dependency);
+			            Console.WriteLine($"Blacklisting dependency: {dependency}");
+			        }
+			    }
+			}
+			else if (forceBlacklist || BlacklistedTags.Contains(fullTagName) || BlacklistedTags.Any(fullTagName.Contains)) {
 				Console.WriteLine($"Blacklisted: {fullTagName}");
 
 				// Check if the tag exists in the base cache
@@ -299,6 +348,58 @@ namespace TagTool.Commands.Modding
 				}
 				return newTag;
 			}
+		}
+
+		private IEnumerable<string> GetTagDependencies(CachedTag tag)
+		{
+		    var dependencies = new HashSet<string>();
+		    var tagDefinition = ModCache.Deserialize(ModCache.OpenCacheRead(CacheStream), tag);
+		    CollectDependencies(tagDefinition, dependencies);
+		    return dependencies;
+		}
+
+		private void CollectDependencies(object tagData, HashSet<string> dependencies)
+		{
+		    switch (tagData)
+		    {
+		        case TagStructure structure:
+		            foreach (var field in TagStructure.GetTagFieldEnumerable(structure.GetType(), BaseCache.Version, BaseCache.Platform))
+		            {
+		                var value = field.GetValue(structure);
+		                CollectDependencies(value, dependencies);
+		            }
+		            break;
+		        case CachedTag tag:
+		            dependencies.Add($"{tag.Name}.{tag.Group}");
+		            ApplyDependencyRules(tag, dependencies);
+		            break;
+		        case IList collection:
+		            foreach (var item in collection)
+		            {
+		                CollectDependencies(item, dependencies);
+		            }
+		            break;
+		    }
+		}
+
+		private void ApplyDependencyRules(CachedTag tag, HashSet<string> dependencies)
+		{
+		    string fullTagName = $"{tag.Name}.{tag.Group}";
+		    foreach (var rule in DependencyRules)
+		    {
+		        if (fullTagName.EndsWith(rule.Key))
+		        {
+		            foreach (var dependencyExtension in rule.Value)
+		            {
+		                var dependentTagName = $"{tag.Name}.{dependencyExtension}";
+		                if (CacheTagsByName.TryGetValue(dependentTagName, out CachedTag dependentTag))
+		                {
+		                    dependencies.Add(dependentTagName);
+		                    CollectDependencies(dependentTag, dependencies);
+		                }
+		            }
+		        }
+		    }
 		}
 
 		private object ConvertData(ModPackage modPack, object data) {
@@ -480,7 +581,20 @@ namespace TagTool.Commands.Modding
 			if (tagIndex == -1)
 				return;
 
+			if (tagIndex < 0 || tagIndex >= ModCache.TagCacheGenHO.Tags.Count)
+			{
+			    Console.Error.WriteLine($"Invalid tag index {tagIndex}");
+			    return;
+			}
+
 			var tag = ConvertCachedTagInstance(modPack, ModCache.TagCacheGenHO.Tags[tagIndex]);
+
+			if (tag == null)
+			{
+			    Console.Error.WriteLine($"Failed to convert tag reference for index {tagIndex}");
+			    return;
+			}
+
 			expr.Data = BitConverter.GetBytes(tag.Index).ToArray();
 		}
 

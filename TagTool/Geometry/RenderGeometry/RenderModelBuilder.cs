@@ -136,6 +136,20 @@ namespace TagTool.Geometry
             };
         }
 
+        public void BeginPermutationNone(StringId name)
+        {
+            if (_currentRegion == null)
+                throw new InvalidOperationException("Cannot begin a new permutation if a region is not active");
+            if (_currentPermutation != null)
+                throw new InvalidOperationException("Cannot begin a new permutation while another is active");
+
+            _currentPermutation = new RenderModel.Region.Permutation
+            {
+                Name = name,
+                MeshIndex = -1,
+            };
+        }
+
         /// <summary>
         /// Finishes building the current permutation.
         /// </summary>

@@ -370,37 +370,52 @@ namespace TagTool.Geometry
 
                             if (mesh.Type == VertexType.Rigid)
                             {
-                                var indices = vert.Indices is null ? new List<int>() { 0 }
-                                    : vert.Indices.Distinct().Where(x => x != 0).Select(v => (int)v).ToList();
-
-                                foreach (int index in indices) amfWriter.Write((byte)index);
-
-                                if (indices.Count < 4) amfWriter.Write(byte.MaxValue);
+                                int rigidNodeIndex = mesh.RigidNodeIndex;
+                                amfWriter.Write((byte)(rigidNodeIndex >= 0 && rigidNodeIndex < RenderModel.Nodes.Count ? rigidNodeIndex : 0));
+                                amfWriter.Write(byte.MaxValue);  // Padding
                             }
                             else if (mesh.Type == VertexType.Skinned)
                             {
-                                var indices = vert.Indices.AsEnumerable().ToArray();
-                                var weights = vert.Weights.AsEnumerable().ToArray();
-
-                                var count = weights.Count(w => w > 0);
-                                if (count == 0)
+                                if (RenderModel.Geometry.PerMeshNodeMaps.Count > perm.MeshIndex)
                                 {
-                                    amfWriter.Write((byte)0);
-                                    amfWriter.Write((byte)255);
-                                    amfWriter.Write(0);
-                                    continue;
+                                    // Logic for meshes with node maps
+                                    var nodeMap = RenderModel.Geometry.PerMeshNodeMaps[perm.MeshIndex];
+                                    for (int i = 0; i < 4; i++)
+                                    {
+                                        int nodeIndex = i < vert.Indices.Length ? nodeMap.NodeIndices[vert.Indices[i]].Node : 0;
+                                        amfWriter.Write((byte)(nodeIndex >= 0 && nodeIndex < RenderModel.Nodes.Count ? nodeIndex : 0));
+                                    }
+                                    if (vert.Weights.Length < 4)
+                                        amfWriter.Write(byte.MaxValue);
+                                    foreach (var weight in vert.Weights.Take(4))
+                                        amfWriter.Write(weight);
                                 }
-
-                                for (int i = 0; i < 4; i++)
+                                else
                                 {
-                                    if (weights[i] > 0)
-                                        amfWriter.Write((byte)indices[i]);
+                                    // Logic for meshes without node maps
+                                    var indices = vert.Indices.AsEnumerable().ToArray();
+                                    var weights = vert.Weights.AsEnumerable().ToArray();
+
+                                    var count = weights.Count(w => w > 0);
+                                    if (count == 0)
+                                    {
+                                        amfWriter.Write((byte)0);
+                                        amfWriter.Write((byte)255);
+                                        amfWriter.Write(0);
+                                        continue;
+                                    }
+
+                                    for (int i = 0; i < 4; i++)
+                                    {
+                                        if (weights[i] > 0)
+                                            amfWriter.Write((byte)indices[i]);
+                                    }
+
+                                    if (count != 4) amfWriter.Write(byte.MaxValue);
+
+                                    foreach (var w in weights.Where(w => w > 0))
+                                        amfWriter.Write(w);
                                 }
-
-                                if (count != 4) amfWriter.Write(byte.MaxValue);
-
-                                foreach (var w in weights.Where(w => w > 0))
-                                    amfWriter.Write(w);
                             }
                         }
                     }
@@ -430,12 +445,15 @@ namespace TagTool.Geometry
                         {
                             var indices = ReadIndices(reader, part);
 
+                            if (indices.Length < 3)
+                            {
+                                Console.WriteLine($"Skipping sub-part with insufficient indices: {indices.Length}");
+                                continue;
+                            }
+
                             foreach (var index in indices)
                             {
-                                if (reader.Mesh.ResourceVertexBuffers.Count() > ushort.MaxValue)
-                                    amfWriter.Write(index);
-                                else
-                                    amfWriter.Write(index);
+                                amfWriter.Write(index);
                             }
                         }
                     }
@@ -493,13 +511,17 @@ namespace TagTool.Geometry
                         continue;
                     }
 
-                    var shaderName = Path.GetFileNameWithoutExtension(DecoratorBitmap != null ? DecoratorBitmap : material.RenderMethod.ToString());
+                    var defaultRenderMethod = CacheContext.TagCache.GetTag(@"shaders\invalid.rmsh");
+                    var renderMethodTag = material.RenderMethod ?? defaultRenderMethod;
+
+                    var shaderName = Path.GetFileNameWithoutExtension(
+                        DecoratorBitmap ?? renderMethodTag.ToString());
                     amfWriter.Write(NullTerminate(shaderName));
 
                     RenderMethod renderMethod = new RenderMethod();
                     using (var cacheStream = CacheContext.OpenCacheRead())
                     {
-                        renderMethod = CacheContext.Deserialize<RenderMethod>(cacheStream, material.RenderMethod);
+                        renderMethod = CacheContext.Deserialize<RenderMethod>(cacheStream, renderMethodTag);
                     }
 
                     for (int i = 0; i < 8; i++)
@@ -588,7 +610,7 @@ namespace TagTool.Geometry
             Scene.RootNode.Transform = new Matrix4x4(
                 1, 0, 0, 0,
                 0, 0, 1, 0,
-                0,-1, 0, 0,
+                0, -1, 0, 0,
                 0, 0, 0, 1);
 
             // Pass 1 create bones and assimp nodes as enumerated in render model nodes
@@ -624,6 +646,10 @@ namespace TagTool.Geometry
                 }
             }
 
+            var materialNameMap = new Dictionary<string, Material>();
+
+            var defaultRenderMethod = CacheContext.TagCache.GetTag(@"shaders\invalid.rmsh");
+
             foreach (var region in RenderModel.Regions)
             {
                 var regionName = CacheContext.StringTable.GetString(region.Name);
@@ -639,7 +665,6 @@ namespace TagTool.Geometry
 
                         for (int i = 0; i < permutation.MeshCount; i++)
                         {
-                            var meshName = $"mesh_{i}";
                             var meshIndex = i + permutation.MeshIndex;
 
                             if (!(meshIndex < RenderModel.Geometry.Meshes.Count))
@@ -652,8 +677,8 @@ namespace TagTool.Geometry
 
                             for (int j = 0; j < mesh.Parts.Count; j++)
                             {
-                                var partName = $"part_{j}";
-                                int absSubMeshIndex = GetAbsoluteIndexSubMesh(meshIndex) + j;
+                                var part = mesh.Parts[j];
+                                var absSubMeshIndex = GetAbsoluteIndexSubMesh(meshIndex) + j;
                                 int sceneMeshIndex;
 
                                 if (!MeshMapping.ContainsKey(absSubMeshIndex))
@@ -665,64 +690,57 @@ namespace TagTool.Geometry
                                 {
                                     MeshMapping.TryGetValue(absSubMeshIndex, out sceneMeshIndex);
                                 }
-                                Node node = new Node
+                                var node = new Node
                                 {
-                                    Name = $"{regionName}:{permutationName}:{meshName}:{partName}"
+                                    Name = $"{regionName}:{permutationName}:mesh_{i}:part_{j}"
                                 };
                                 node.MeshIndices.Add(sceneMeshIndex);
                                 Scene.RootNode.Children.Add(node);
+
+                                // Material name stuff
+                                var material = RenderModel.Materials[part.MaterialIndex];
+                                var renderMethodTag = material?.RenderMethod ?? defaultRenderMethod;
+                                var materialName = Path.GetFileNameWithoutExtension(DecoratorBitmap ?? renderMethodTag.ToString());
+                                materialName = Path.GetFileName(materialName);
+
+                                if (!materialNameMap.ContainsKey(materialName))
+                                {
+                                    var Material = new Material
+                                    {
+                                        Name = materialName
+                                    };
+
+                                    RenderMethod renderMethod;
+                                    using (var cacheStream = CacheContext.OpenCacheRead())
+                                        renderMethod = CacheContext.Deserialize<RenderMethod>(cacheStream, renderMethodTag);
+
+                                    if (renderMethod.ShaderProperties.Count > 0)
+                                    {
+                                        var prop = renderMethod.ShaderProperties[0];
+                                        if (prop.TextureConstants.Count > 0)
+                                        {
+                                            var baseMapTexture = prop.TextureConstants[0];
+
+                                            var baseMapTS = new TextureSlot
+                                            {
+                                                FilePath = (DecoratorBitmap != null ? DecoratorBitmap : baseMapTexture.Bitmap.Name) + ".dds",
+                                                TextureType = TextureType.Diffuse,
+                                                WrapModeU = baseMapTexture.SamplerAddressMode.AddressU.ToString() == "Clamp" ? TextureWrapMode.Clamp : baseMapTexture.SamplerAddressMode.AddressU.ToString() == "Mirror" ? TextureWrapMode.Mirror : TextureWrapMode.Wrap,
+                                                WrapModeV = baseMapTexture.SamplerAddressMode.AddressV.ToString() == "Clamp" ? TextureWrapMode.Clamp : baseMapTexture.SamplerAddressMode.AddressV.ToString() == "Mirror" ? TextureWrapMode.Mirror : TextureWrapMode.Wrap
+                                            };
+                                            Material.AddMaterialTexture(ref baseMapTS);
+                                        }
+                                    }
+
+                                    materialNameMap[materialName] = Material;
+                                    Scene.Materials.Add(Material);
+                                }
+
+                                Scene.Meshes[sceneMeshIndex].MaterialIndex = Scene.Materials.IndexOf(materialNameMap[materialName]);
                             }
                         }
                     }
                 }
-            }
-
-
-            for (int i = 0; i < RenderModel.Materials.Count(); i++)
-            {
-                var rmMaterial = RenderModel.Materials[i];
-
-                var material = new Material
-                {
-                    Name = DecoratorBitmap != null ? DecoratorBitmap : rmMaterial.RenderMethod.Name
-                };
-
-                RenderMethod renderMethod;
-                using (var cacheStream = CacheContext.OpenCacheRead())
-                    renderMethod = CacheContext.Deserialize<RenderMethod>(cacheStream, rmMaterial.RenderMethod);
-
-                foreach (var prop in renderMethod.ShaderProperties)
-                {
-                    RenderMethodTemplate template;
-                    using (var cacheStream = CacheContext.OpenCacheRead())
-                        template = CacheContext.Deserialize<RenderMethodTemplate>(cacheStream, prop.Template);
-
-                    var baseMapStringId = CacheContext.StringTable.GetStringId("base_map");
-                    var baseMapIndex = template.TextureParameterNames.FindIndex(x => x.Name == baseMapStringId);
-
-                    if (baseMapIndex == -1)
-                    {
-                        Scene.Materials.Add(material);
-                        continue;
-                    }
-
-                    var baseMapTexture = prop.TextureConstants[baseMapIndex];
-
-                    var baseMapTS = new TextureSlot();
-                    baseMapTS.FilePath = (DecoratorBitmap != null ? DecoratorBitmap : baseMapTexture.Bitmap.Name) + ".dds";
-                    baseMapTS.TextureType = TextureType.Diffuse;
-                    baseMapTS.WrapModeU =
-                        baseMapTexture.SamplerAddressMode.AddressU.ToString() == "Clamp" ? TextureWrapMode.Clamp :
-                        baseMapTexture.SamplerAddressMode.AddressU.ToString() == "Mirror" ? TextureWrapMode.Mirror :
-                        TextureWrapMode.Wrap;
-                    baseMapTS.WrapModeV =
-                        baseMapTexture.SamplerAddressMode.AddressV.ToString() == "Clamp" ? TextureWrapMode.Clamp :
-                        baseMapTexture.SamplerAddressMode.AddressV.ToString() == "Mirror" ? TextureWrapMode.Mirror :
-                        TextureWrapMode.Wrap;
-                    material.AddMaterialTexture(ref baseMapTS);
-                }
-
-                Scene.Materials.Add(material);
             }
         }
 
@@ -828,6 +846,14 @@ namespace TagTool.Geometry
                 if (vertex.Binormals != null)
                     mesh.BiTangents.Add(vertex.Binormals);
 
+                // Handle rigid type meshes by assigning them to their correct bone
+                if (geometryMesh.Type == VertexType.Rigid)
+                {
+                    var rigidNodeIndex = geometryMesh.RigidNodeIndex;
+                    var bone = mesh.Bones[rigidNodeIndex];
+                    bone.VertexWeights.Add(new VertexWeight(i - vertexOffset, 1.0f));  // Assign full weight to the correct bone
+                }
+
                 if (vertex.Indices != null)
                 {
                     for (int j = 0; j < vertex.Indices.Length; j++)
@@ -837,8 +863,11 @@ namespace TagTool.Geometry
                             index = RenderModel.Geometry.PerMeshNodeMaps[meshIndex].NodeIndices[index].Node;
 
                         var bone = mesh.Bones[index];
-                        
-                        bone.VertexWeights.Add(new VertexWeight(i - vertexOffset, vertex.Weights[j]));
+
+                        if (vertex.Weights[j] > 0)
+                        {
+                            bone.VertexWeights.Add(new VertexWeight(i - vertexOffset, vertex.Weights[j]));
+                        }
                     }
                 }
                 // Add skinned mesh support and more
@@ -896,6 +925,7 @@ namespace TagTool.Geometry
             List<Face> faces = new List<Face>();
             for (int i = 0; i < indices.Length; i += 3)
             {
+                if (i + 2 >= indices.Length) break; // Ensure that we do not access out of bounds
                 var a = indices[i] - vertexOffset;
                 var b = indices[i + 1] - vertexOffset;
                 var c = indices[i + 2] - vertexOffset;

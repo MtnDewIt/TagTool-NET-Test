@@ -33,6 +33,7 @@ namespace TagTool.Commands.Porting
         public Stream DestStream;
         public PortingFlags Flags = PortingFlags.Default;
 
+        public Dictionary<int, StringId> PortedStringIds = new Dictionary<int, StringId>();
         public Dictionary<int, CachedTag> ConvertedTags = new Dictionary<int, CachedTag>();
         public Dictionary<ResourceLocation, Dictionary<int, PageableResource>> ConvertedResources = new Dictionary<ResourceLocation, Dictionary<int, PageableResource>>();
 
@@ -104,6 +105,8 @@ namespace TagTool.Commands.Porting
         {
             switch (tagData)
             {
+                case StringId stringId:
+                    return ConvertStringId(stringId);
                 case PageableResource pageable:
                     return ConvertResource(pageable);
                 case byte[] _:
@@ -211,6 +214,30 @@ namespace TagTool.Commands.Porting
             DestCache.Serialize(DestStream, destTag, tagData);
 
             return destTag;
+        }
+        
+        private StringId ConvertStringId(StringId stringId)
+        {
+            if (stringId == StringId.Invalid)
+                return stringId;
+
+            if (PortedStringIds.TryGetValue((int)stringId.Value, out StringId portedId))
+                return portedId;
+
+            var value = SrcCache.StringTable.GetString(stringId);
+
+            var destStringId = DestCache.StringTable.GetStringId(value);
+
+            if (destStringId == StringId.Invalid || !DestCache.StringTable.Contains(value))
+            {
+                portedId = DestCache.StringTable.AddString(value);
+                PortedStringIds[(int)stringId.Value] = portedId;
+                return portedId;
+            }
+
+            PortedStringIds[(int)stringId.Value] = destStringId;
+            
+            return destStringId;
         }
 
         private bool ShouldReplaceTag(CachedTag srcTag)
