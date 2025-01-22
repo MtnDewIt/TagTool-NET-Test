@@ -25,9 +25,10 @@ namespace TagTool.Commands.Forge
             "MaximizeBudget",
             "Moves placements for objects that are in the global forge palette into a map variant to maximize the number of objects that can be placed",
 
-            "MaximizeBudget",
+            "MaximizeBudget [All]",
 
-            "")
+            "Moves placements for objects that are in the global forge palette into a map variant to maximize the number of objects that can be placed\n\n" +
+            "Use the \"All\" flag to move placements for all objects in the global forge palette, even if they have an invalid category or category index")
         {
             Cache = cache;
             Definition = definition;
@@ -36,6 +37,21 @@ namespace TagTool.Commands.Forge
 
         public override object Execute(List<string> args)
         {
+            if (args.Count > 0) 
+            {
+                if (args.Count > 1)
+                    return new TagToolError(CommandError.ArgCount);
+
+                if (args[0].ToLower() == "all")
+                {
+                    ForgePalette = new HashSet<CachedTag>(Definition.Palette.Where(x => x.Object != null).Select(x => x.Object));
+                }
+                else 
+                {
+                    return new TagToolError(CommandError.ArgInvalid);
+                }
+            }
+
             if (Cache is GameCacheModPackage modCache)
             {
                 foreach (var stream in modCache.BaseModPackage.MapFileStreams)
