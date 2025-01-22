@@ -27975,7 +27975,7 @@ namespace TagTool.Scripting
                     new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
                     new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
                 },
-                [0x438] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_effect_set_max_rotation")
+                [0x436] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_effect_set_max_rotation")
                 {
                     new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
                     new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
