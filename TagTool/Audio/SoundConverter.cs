@@ -207,9 +207,20 @@ namespace TagTool.Audio
                 {
                     var gen3Cache = (GameCacheGen3)cache;
                     blamSound = GetSoundBankData(cache, soundGestalt, gen3Cache.FMODSoundCache, sound, pitchRangeIndex, permutationIndex);
-                    if(blamSound == null)
-                        throw new Exception($"Failed to find sound {tagName} permutation {permutationIndex} in FMOD sound cache!");
-                    var waveFile = new WAVFile(blamSound.Data, TagTool.Audio.Encoding.GetChannelCount(blamSound.Encoding), blamSound.SampleRate.GetSampleRateHz());
+
+                    WAVFile waveFile = null;
+
+                    if (blamSound == null)
+                    {
+                        new TagToolWarning($"Failed to find sound \"{tagName}\" permutation {permutationIndex} in FMOD sound cache!");
+
+                        return new BlamSound();
+                    }
+                    else 
+                    {
+                        waveFile = new WAVFile(blamSound.Data, TagTool.Audio.Encoding.GetChannelCount(blamSound.Encoding), blamSound.SampleRate.GetSampleRateHz());
+                    }
+
                     using (var output = new EndianWriter(File.Create(WAVFileName)))
                         waveFile.Write(output);
                 }
