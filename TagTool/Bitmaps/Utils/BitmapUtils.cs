@@ -171,6 +171,11 @@ namespace TagTool.Bitmaps
                     return Commands.Porting.PortingOptions.Current.HqNormalMapConversion ? 
                         BitmapFormat.Dxn : BitmapFormat.Dxt1;
 
+                // Dxn causes excessive heap allocation
+                case BitmapFormat.Dxn:
+                    return Commands.Porting.PortingOptions.Current.HqNormalMapConversion ?
+                       BitmapFormat.Dxn : BitmapFormat.Dxt1;
+
                 case BitmapFormat.AY8:
                     return BitmapFormat.A8Y8;
 
@@ -245,7 +250,7 @@ namespace TagTool.Bitmaps
         public static int GetMipmapCount(int width, int height, int minWidth = 1, int minHeight = 1, int maxCount = int.MaxValue)
         {
             int count = 1; // include the base level
-            while (count < maxCount && (width > minWidth || height > minHeight))
+            while (count < maxCount && (width > minWidth && height > minHeight))
             {
                 width = Math.Max(1, width / 2);
                 height = Math.Max(1, height / 2);

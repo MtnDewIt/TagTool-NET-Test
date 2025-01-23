@@ -62,7 +62,8 @@ namespace TagTool.Shaders
         //texture_global_target_ibr, // MS30
         global_depth_constants,
         global_camera_forward,
-        z_camera_pixel_size
+        z_camera_pixel_size,
+        material_diffuse_power
     }
 
     public enum RenderMethodExternReach : int
