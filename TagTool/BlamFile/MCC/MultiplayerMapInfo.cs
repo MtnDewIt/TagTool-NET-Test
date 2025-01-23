@@ -51,7 +51,7 @@ namespace TagTool.BlamFile.MCC
 
             GameCategory.ConvertGameCategoryIndexes(MaximumTeamsByGameCategory, scenario.GameEngineTeamCounts);
 
-            scenario.MapFlags = BlfScenarioFlags.GeneratesFilm;
+            scenario.MapFlags = BlfScenarioFlags.Visible | BlfScenarioFlags.GeneratesFilm;
 
             switch (scnr.MapType)
             {

@@ -38,7 +38,7 @@ namespace TagTool.BlamFile.MCC
             scenario.MaximumDesiredPlayers = 6;
             scenario.GameEngineTeamCounts = GameCategory.DefaultTeamCounts;
 
-            scenario.MapFlags = BlfScenarioFlags.GeneratesFilm;
+            scenario.MapFlags = BlfScenarioFlags.Visible | BlfScenarioFlags.GeneratesFilm;
 
             switch (scnr.MapType)
             {
