@@ -18,7 +18,7 @@ namespace TagTool.Commands.JSON
     public class GenerateMapObjectCommand : Command
     {
         private GameCache Cache;
-        private GameCacheHaloOnline CacheContext;
+        private GameCacheHaloOnlineBase CacheContext;
         private string ExportPath = $@"maps";
         private string PathPrefix = null;
 
@@ -26,7 +26,7 @@ namespace TagTool.Commands.JSON
         private Stopwatch StopWatch = new Stopwatch();
         private List<string> ErrorLog = new List<string>();
 
-        public GenerateMapObjectCommand(GameCache cache, GameCacheHaloOnline cacheContext) : base
+        public GenerateMapObjectCommand(GameCache cache, GameCacheHaloOnlineBase cacheContext) : base
         (
             false,
             "GenerateMapObject",
@@ -65,6 +65,8 @@ namespace TagTool.Commands.JSON
             {
                 ParseErrorLog();
             }
+
+            PathPrefix = null;
 
             return true;
         }

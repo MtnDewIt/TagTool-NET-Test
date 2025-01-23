@@ -175,6 +175,9 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new EditMapCommand(contextStack, cache as GameCacheHaloOnlineBase, modCache));
                 context.AddCommand(new ExitModPackageCommand(contextStack, modCache));
                 context.AddCommand(new DebugTestCommand(modCache, cache as GameCacheHaloOnlineBase, contextStack));
+                context.AddCommand(new GenerateBlfObjectCommand(modCache, cache as GameCacheHaloOnlineBase));
+                context.AddCommand(new GenerateMapObjectCommand(modCache, cache as GameCacheHaloOnlineBase));
+                context.AddCommand(new GenerateTagObjectCommand(modCache, cache as GameCacheHaloOnlineBase));
             }
 
             if(cache is GameCacheMonolithic)
