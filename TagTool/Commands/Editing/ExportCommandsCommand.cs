@@ -136,20 +136,24 @@ namespace TagTool.Commands.Editing
                             		DumpCommands(strings, commands, cache, collection[i], $"{fieldName}[{i}]");
                             	}
                             }
-                            else
+                            else if (collection.GetType().IsArray)
                             {
-                                if (!collection.GetType().IsArray)
-                                {
-                                    commands.Add($"AddBlockElements {fieldName} {collection.Count}");
-
-                                    for (int i = 0; i < collection.Count; i++)
-                                        DumpCommands(strings, commands, cache, collection[i], $"{fieldName}[{i}]");
-                                }
-
                                 if (collection[0].GetType().IsPrimitive)
                                 {
                                     commands.Add($"SetField {fieldName} {ParsePrimitveArray(collection)}");
                                 }
+                                else 
+                                {
+                                    for (int i = 0; i < collection.Count; i++)
+                                        DumpCommands(strings, commands, cache, collection[i], $"{fieldName}[{i}]");
+                                }
+                            }
+                            else
+                            {
+                                commands.Add($"AddBlockElements {fieldName} {collection.Count}");
+                            
+                                for (int i = 0; i < collection.Count; i++)
+                                    DumpCommands(strings, commands, cache, collection[i], $"{fieldName}[{i}]");
                             }
                         }
                     }
@@ -208,6 +212,8 @@ namespace TagTool.Commands.Editing
                     return $"{argb.Alpha} {argb.Red} {argb.Green} {argb.Blue}";
                 case RealRgbColor realRgb:
                     return $"{realRgb.Red} {realRgb.Green} {realRgb.Blue}";
+                case RealRgbaColor realRgba:
+                    return $"{realRgba.Red} {realRgba.Green} {realRgba.Blue} {realRgba.Alpha}";
                 case RealRectangle3d realRect3d:
                     return $"{realRect3d.X0} {realRect3d.X1} {realRect3d.Y0} {realRect3d.Y1} {realRect3d.Z0} {realRect3d.Z1}";
                 case Rectangle2d rect2d:
