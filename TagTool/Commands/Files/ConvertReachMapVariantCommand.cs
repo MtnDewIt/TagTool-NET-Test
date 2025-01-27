@@ -196,6 +196,7 @@ namespace TagTool.Commands.Files
 
             converter.SubstitutedTags.Add(@"objects\equipment\hologram\hologram.eqip", @"objects\equipment\hologram_equipment\hologram_equipment.eqip");
             converter.SubstitutedTags.Add(@"objects\equipment\active_camouflage\active_camouflage.eqip", @"objects\equipment\invisibility_equipment\invisibility_equipment.eqip");
+            converter.SubstitutedTags.Add(@"objects\levels\shared\device_controls\health_station\health_station.ctrl", @"objects\powerups\health_pack\health_pack_large.eqip");
 
             converter.SubstitutedTags.Add(@"objects\weapons\melee\energy_sword\energy_sword.weap", @"objects\weapons\melee\energy_blade\energy_blade.weap");
             converter.SubstitutedTags.Add(@"objects\levels\shared\golf_club\golf_club.weap", @"objects\weapons\melee\gravity_hammer\gravity_hammer.weap");
