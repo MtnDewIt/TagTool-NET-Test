@@ -452,16 +452,6 @@ namespace TagTool.Commands.Porting
 
                 RemoveNullPlacements(scenario.SceneryPalette, scenario.Scenery);
                 RemoveNullPlacements(scenario.CratePalette, scenario.Crates);
-
-                // remove unsupported healthpack controls
-                if (BlamCache.TagCache.TryGetCachedTag("objects\\levels\\shared\\device_controls\\health_station\\health_station.ctrl", out CachedTag healthCtrl))
-                {
-                    short index = (short)scenario.ControlPalette.FindIndex(e => e.Object == healthCtrl);
-                    if (index != -1)
-                        scenario.ControlPalette[index].Object = null;
-
-                    RemoveNullPlacements(scenario.ControlPalette, scenario.Controls);
-                }
             }
 
             //if (definition is SkyAtmParameters skya)
@@ -1222,6 +1212,58 @@ namespace TagTool.Commands.Porting
                             foreach(var block in scnr.StructureBsps)
                             {
                                 block.Flags = block.FlagsReach.ConvertLexical<Scenario.StructureBspBlock.StructureBspFlags>();
+                            }
+
+                            // remove unsupported healthpack controls
+                            if (CacheContext.TagCache.TryGetCachedTag("objects\\levels\\shared\\device_controls\\health_station\\health_station.ctrl", out CachedTag healthCtrl))
+                            {
+                                var paletteIndex = (short)scnr.ControlPalette.FindIndex(e => e.Object == healthCtrl);
+
+                                // substitute with health pack equipment
+                                if (CacheContext.TagCache.TryGetCachedTag("objects\\powerups\\health_pack\\health_pack_large.eqip", out CachedTag healthEqip)) 
+                                {
+                                    scnr.EquipmentPalette.Add(new Scenario.ScenarioPaletteEntry()
+                                    {
+                                        Object = healthEqip
+                                    });
+
+                                    var eqipPaletteIndex = (short)(scnr.EquipmentPalette.Count - 1);
+
+                                    foreach (var controlInstance in scnr.Controls)
+                                    {
+                                        if (controlInstance.PaletteIndex == paletteIndex)
+                                        {
+                                            scnr.Equipment.Add(new Scenario.EquipmentInstance()
+                                            {
+                                                PaletteIndex = eqipPaletteIndex,
+                                                NameIndex = controlInstance.NameIndex,
+                                                PlacementFlags = controlInstance.PlacementFlags,
+                                                Position = controlInstance.Position,
+                                                Rotation = controlInstance.Rotation,
+                                                Scale = controlInstance.Scale,
+                                                NodeOrientations = controlInstance.NodeOrientations,
+                                                TransformFlags = controlInstance.TransformFlags,
+                                                ManualBspFlags = controlInstance.ManualBspFlags,
+                                                LightAirprobeName = controlInstance.LightAirprobeName,
+                                                UniqueHandle = controlInstance.UniqueHandle,
+                                                OriginBspIndex = controlInstance.OriginBspIndex,
+                                                ObjectType = controlInstance.ObjectType,
+                                                Source = controlInstance.Source,
+                                                BspPolicy = controlInstance.BspPolicy,
+                                                EditingBoundToBsp = controlInstance.EditingBoundToBsp,
+                                                EditorFolder = controlInstance.EditorFolder,
+                                                ParentId = controlInstance.ParentId,
+                                                CanAttachToBspFlags = controlInstance.CanAttachToBspFlags,
+                                                Multiplayer = controlInstance.Multiplayer,
+                                            });
+                                        }
+                                    }
+                                }
+
+                                if (paletteIndex != -1)
+                                    scnr.ControlPalette[paletteIndex].Object = null;
+
+                                RemoveNullPlacements(scnr.ControlPalette, scnr.Controls);
                             }
                         }
 
