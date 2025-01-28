@@ -31,8 +31,8 @@ namespace TagTool.BlamFile.MCC
         {
             scenario.MapId = scnr.MapId;
 
-            var parsedTitle = Title.ParseLocalizedString(31, "Title");
-            var parsedDescription = Description.ParseLocalizedString(127, "Description");
+            var parsedTitle = Title?.ParseLocalizedString(31, "Title");
+            var parsedDescription = Description?.ParseLocalizedString(127, "Description");
 
             for (int i = 0; i < scenario.Names.Length; i++)
                 scenario.Names[i].Name = parsedTitle;
@@ -51,7 +51,7 @@ namespace TagTool.BlamFile.MCC
 
             GameCategory.ConvertGameCategoryIndexes(MaximumTeamsByGameCategory, scenario.GameEngineTeamCounts);
 
-            scenario.MapFlags = BlfScenarioFlags.GeneratesFilm;
+            scenario.MapFlags = BlfScenarioFlags.Visible | BlfScenarioFlags.GeneratesFilm;
 
             switch (scnr.MapType)
             {

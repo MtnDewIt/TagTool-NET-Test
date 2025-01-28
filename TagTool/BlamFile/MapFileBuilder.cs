@@ -201,7 +201,7 @@ namespace TagTool.BlamFile
                 InfectionTeamCount = 8,
             };
 
-            scnrBlf.MapFlags = BlfScenarioFlags.GeneratesFilm;
+            scnrBlf.MapFlags = BlfScenarioFlags.Visible | BlfScenarioFlags.GeneratesFilm;
             switch (scnr.MapType)
             {
                 case ScenarioMapType.MainMenu:
