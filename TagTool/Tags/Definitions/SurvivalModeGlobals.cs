@@ -1,26 +1,28 @@
 using TagTool.Cache;
 using TagTool.Common;
 using System.Collections.Generic;
-using static TagTool.Tags.TagFieldFlags;
 using System;
 
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "survival_mode_globals", Tag = "smdt", Size = 0x4C, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-    [TagStructure(Name = "survival_mode_globals", Tag = "smdt", Size = 0x58, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+    [TagStructure(Name = "survival_mode_globals", Tag = "smdt", Size = 0x64, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "survival_mode_globals", Tag = "smdt", Size = 0x48, MinVersion = CacheVersion.HaloOnlineED)]
     public class SurvivalModeGlobals : TagStructure
     {
         [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         [TagField(Version = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
-        public uint Unknown;
+        public uint RespawnTime; // Bad! use game_engine_settings for this
 
         [TagField(ValidTags = new [] { "unic" })] public CachedTag SurvivalModeStrings;
         [TagField(ValidTags = new [] { "scmb", "snd!" })] public CachedTag CountdownSound;
         [TagField(ValidTags = new [] { "scmb", "snd!" })] public CachedTag RespawnSound;
 
-        public List<SurvivalEvent> SurvivalEvents;
+        [TagField(Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+        public List<SurvivalEvent> GeneralEvents;
 
+        public List<SurvivalEvent> SurvivalEvents;
+        
         [TagField(Version = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public List<ArmorCustomization> ArmorCustomizations;
 
@@ -30,10 +32,8 @@ namespace TagTool.Tags.Definitions
         [TagField(ValidTags = new[] { "sdzg" }, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         public CachedTag RequiredResources;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-        public uint UnknownHO;
-        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-        public uint UnknownHO_1;
+        [TagField(Length = 0x8, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.HaloOnlineED)]
+        public byte[] Padding;
 
         [TagStructure(Size = 0x108, MaxVersion = CacheVersion.Halo3ODST)]
         [TagStructure(Size = 0x10C, MinVersion = CacheVersion.HaloOnlineED)]
@@ -41,7 +41,7 @@ namespace TagTool.Tags.Definitions
 		{
             public GameEngineEventFlagsDefinition Flags;
             public TypeValue Type;
-            [TagField(Flags = Label)]
+            [TagField(Flags = TagFieldFlags.Label)]
             public StringId Event;
             public AudienceValue Audience;
             public short DisplayPriority;
@@ -58,7 +58,7 @@ namespace TagTool.Tags.Definitions
             public RequiredFieldValue ExcludedAudience;
             public GameEngineEventSplitscreenSuppressionEnumDefinition SplitscreenSuppression;
 
-            [TagField(Length = 0x2, Flags = Padding)]
+            [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
             public byte[] Padding0;
 
             public StringId PrimaryString;
@@ -67,7 +67,7 @@ namespace TagTool.Tags.Definitions
             public float SoundDelayAnnouncerOnly;
             public GameEngineSoundResponseFlagsDefinition SoundFlags;
 
-            [TagField(Length = 0x2, Flags = Padding)]
+            [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
             public byte[] Padding1;
 
             [TagField(ValidTags = new [] { "snd!" })] public CachedTag EnglishSound;
@@ -155,21 +155,21 @@ namespace TagTool.Tags.Definitions
         [TagStructure(Size = 0x10)]
         public class ArmorCustomization : TagStructure
 		{
-            [TagField(Flags = Label)]
+            [TagField(Flags = TagFieldFlags.Label)]
             public StringId CharacterName;
             public List<Region> Regions;
 
             [TagStructure(Size = 0x10)]
             public class Region : TagStructure
 			{
-                [TagField(Flags = Label)]
+                [TagField(Flags = TagFieldFlags.Label)]
                 public StringId RegionName;
                 public List<Permutation> Permutations;
 
                 [TagStructure(Size = 0x1C)]
                 public class Permutation : TagStructure
 				{
-                    [TagField(Flags = Label)]
+                    [TagField(Flags = TagFieldFlags.Label)]
                     public StringId Name;
                     public StringId Description;
                     public short Flags;
@@ -180,7 +180,7 @@ namespace TagTool.Tags.Definitions
                     [TagStructure(Size = 0x8)]
                     public class Variant : TagStructure
 					{
-                        [TagField(Flags = Label)]
+                        [TagField(Flags = TagFieldFlags.Label)]
                         public StringId Region;
                         public StringId Permutation;
                     }
