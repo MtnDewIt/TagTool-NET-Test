@@ -290,6 +290,11 @@ namespace TagTool.Bitmaps
                     return Commands.Porting.PortingOptions.Current.HqNormalMapConversion ? 
                         BitmapFormat.Dxn : BitmapFormat.Dxt1;
 
+                // Dxn causes excessive heap allocation
+                case BitmapFormat.Dxn:
+                    return Commands.Porting.PortingOptions.Current.HqNormalMapConversion ?
+                       BitmapFormat.Dxn : BitmapFormat.Dxt1;
+
                 case BitmapFormat.DxnMonoAlpha:
                 case BitmapFormat.ReachDxnMonoAlpha:
                 case BitmapFormat.AY8:

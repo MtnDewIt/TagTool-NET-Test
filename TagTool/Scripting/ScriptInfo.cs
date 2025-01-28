@@ -17082,7 +17082,12 @@ namespace TagTool.Scripting
                 {
                     new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.MpTeam),
                 },
+                [0x568] = new ScriptInfo(HsType.HaloOnlineValue.Void, "deterministic_end_game"),
                 [0x569] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_game_won")
+                {
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.MpTeam),
+                },
+                [0x56A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_respawn_override_timers")
                 {
                     new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.MpTeam),
                 },
@@ -17096,6 +17101,37 @@ namespace TagTool.Scripting
                     new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.MpTeam),
                     new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.MpTeam),
                 },
+                [0x56D] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "mp_round_started"),
+                [0x56E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "give_medal")
+                {
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+                },
+                [0x56F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_scripts_reset"),
+                [0x570] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_ai_place")
+                {
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
+                },
+                [0x571] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_ai_place")
+                {
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+                },
+                [0x572] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_ai_kill")
+                {
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
+                },
+                [0x573] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_ai_kill_silent")
+                {
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
+                },
+                [0x574] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_object_create")
+                {
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.ObjectName),
+                },
+                [0x575] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_object_create_clone")
+                {
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.ObjectName),
+                },
                 [0x576] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_object_create_anew")
                 {
                     new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.ObjectName),
@@ -17103,6 +17139,25 @@ namespace TagTool.Scripting
                 [0x577] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_object_destroy")
                 {
                     new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
+                },
+                [0x579] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_object_belongs_to_team")
+                {
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.MpTeam),
+                },
+                [0x57A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_weapon_belongs_to_team")
+                {
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.MpTeam),
+                },
+                [0x57D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "set_camera_third_person")
+                {
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                },
+                [0x57E] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "get_camera_third_person")
+                {
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 },
                 [0x594] = new ScriptInfo(HsType.HaloOnlineValue.Void, "predict_bink_movie")
                 {
@@ -17587,7 +17642,10 @@ namespace TagTool.Scripting
                 [0x016] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "sleep_until"),
                 [0x017] = new ScriptInfo(HsType.HaloOnlineValue.Void, "wake"),
                 [0x018] = new ScriptInfo(HsType.HaloOnlineValue.Void, "inspect"),
-                [0x019] = new ScriptInfo(HsType.HaloOnlineValue.Unit, "unit"),
+                [0x019] = new ScriptInfo(HsType.HaloOnlineValue.Unit, "unit")
+                {
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
+                },
                 [0x01A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "evaluate")
                 {
                     new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Script),
@@ -23361,7 +23419,10 @@ namespace TagTool.Scripting
                 [0x016] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "sleep_until"),
                 [0x017] = new ScriptInfo(HsType.HaloOnlineValue.Void, "wake"),
                 [0x018] = new ScriptInfo(HsType.HaloOnlineValue.Void, "inspect"),
-                [0x019] = new ScriptInfo(HsType.HaloOnlineValue.Unit, "unit"),
+                [0x019] = new ScriptInfo(HsType.HaloOnlineValue.Unit, "unit")
+                {
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
+                },
                 [0x01A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "evaluate")
                 {
                     new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Script),

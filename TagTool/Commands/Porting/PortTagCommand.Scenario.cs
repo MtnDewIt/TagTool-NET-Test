@@ -1771,15 +1771,6 @@ namespace TagTool.Commands.Porting
                             expr.Opcode = 0x017; // -> wake
                             return true;
                         }
-                    case "mp_object_create":
-                        expr.Opcode = 0x047; // -> object_create
-                        return true;
-                    case "mp_object_create_clone":
-                        expr.Opcode = 0x048; // -> object_create_clone
-                        return true;
-                    case "unit":
-                        expr.Opcode = 0x019; // -> unit
-                        return true;
 
                     default:
                         return false;
