@@ -74,7 +74,7 @@ namespace TagTool.Commands
                 Console.WriteLine($"TagTool [{Assembly.GetExecutingAssembly().GetName().Version} (Built {GetLinkerTimestampUtc(Assembly.GetExecutingAssembly())} UTC)]");
                 Console.WriteLine();
                 Console.WriteLine("Please report any bugs and/or feature requests:");
-                Console.WriteLine("https://github.com/TheGuardians-CI/TagTool/issues");
+                Console.WriteLine("https://github.com/MtnDewIt/TagTool-NET-Test/issues");
             }
 
             // Provide user with warnings if there are missing assemblies
