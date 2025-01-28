@@ -593,5 +593,25 @@ namespace TagTool.Commands.Porting
 
             return sncl;
         }
+
+
+        // ODST MCC onwards has the DangerLevel default value as -1
+        private AiDialogueGlobals ConvertDialogueGlobals(AiDialogueGlobals adlg) 
+        {
+            if (BlamCache.Platform == CachePlatform.MCC && BlamCache.Version >= CacheVersion.Halo3ODST) 
+            {
+                foreach (var pattern in adlg.Patterns) 
+                {
+                    if (pattern.DangerLevelMCC == Ai.VocalizationPattern.DangerEnumMCC.NONE)
+                        pattern.DangerLevel = Ai.VocalizationPattern.DangerEnum.NONE;
+                    else 
+                        pattern.DangerLevel = pattern.DangerLevelMCC.ConvertLexical<Ai.VocalizationPattern.DangerEnum>();
+
+                    pattern.Conditions = pattern.ConditionsMCC.ConvertLexical<Ai.VocalizationPattern.DialogueConditionFlags>();
+                }
+            }
+
+            return adlg;
+        }
     }
 }
