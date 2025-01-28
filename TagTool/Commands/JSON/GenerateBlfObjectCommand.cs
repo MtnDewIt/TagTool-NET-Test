@@ -18,7 +18,7 @@ namespace TagTool.Commands.JSON
     public class GenerateBlfObjectCommand : Command
     {
         private GameCache Cache;
-        private GameCacheHaloOnline CacheContext;
+        private GameCacheHaloOnlineBase CacheContext;
         private string PathPrefix = null;
 
         private int FileCount = 0;
@@ -42,7 +42,7 @@ namespace TagTool.Commands.JSON
             ".blf"
         };
 
-        public GenerateBlfObjectCommand(GameCache cache, GameCacheHaloOnline cacheContext) : base
+        public GenerateBlfObjectCommand(GameCache cache, GameCacheHaloOnlineBase cacheContext) : base
         (
             false,
             "GenerateBlfObject",
@@ -75,6 +75,8 @@ namespace TagTool.Commands.JSON
             {
                 ParseErrorLog();
             }
+
+            PathPrefix = null;
 
             return true;
         }

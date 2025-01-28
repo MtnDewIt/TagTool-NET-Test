@@ -21,7 +21,7 @@ namespace TagTool.Commands.JSON
     public class GenerateTagObjectCommand : Command
     {
         private GameCache Cache;
-        private GameCacheHaloOnline CacheContext;
+        private GameCacheHaloOnlineBase CacheContext;
         private string ExportPath = $@"tags";
         private string DataPath = $@"data";
         private string PathPrefix = null;
@@ -32,7 +32,7 @@ namespace TagTool.Commands.JSON
         private Stopwatch StopWatch = new Stopwatch();
         private List<string> ErrorLog = new List<string>();
 
-        public GenerateTagObjectCommand(GameCache cache, GameCacheHaloOnline cacheContext) : base
+        public GenerateTagObjectCommand(GameCache cache, GameCacheHaloOnlineBase cacheContext) : base
         (
             false,
             "GenerateTagObject",
@@ -81,6 +81,8 @@ namespace TagTool.Commands.JSON
             {
                 ParseErrorLog();
             }
+
+            PathPrefix = null;
 
             return true;
         }

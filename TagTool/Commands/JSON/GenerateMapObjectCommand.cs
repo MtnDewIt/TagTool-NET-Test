@@ -18,7 +18,7 @@ namespace TagTool.Commands.JSON
     public class GenerateMapObjectCommand : Command
     {
         private GameCache Cache;
-        private GameCacheHaloOnline CacheContext;
+        private GameCacheHaloOnlineBase CacheContext;
         private string ExportPath = $@"maps";
         private string PathPrefix = null;
 
@@ -26,7 +26,7 @@ namespace TagTool.Commands.JSON
         private Stopwatch StopWatch = new Stopwatch();
         private List<string> ErrorLog = new List<string>();
 
-        public GenerateMapObjectCommand(GameCache cache, GameCacheHaloOnline cacheContext) : base
+        public GenerateMapObjectCommand(GameCache cache, GameCacheHaloOnlineBase cacheContext) : base
         (
             false,
             "GenerateMapObject",
@@ -66,28 +66,67 @@ namespace TagTool.Commands.JSON
                 ParseErrorLog();
             }
 
+            PathPrefix = null;
+
             return true;
         }
 
         public async Task ProcessDirectoryAsync(string inputPath)
         {
             var files = new List<string>();
+            var modFiles = new List<Stream>();
 
-            if (File.Exists(inputPath))
-                files.Add(inputPath);
-            else if (inputPath.Equals("all", StringComparison.OrdinalIgnoreCase))
-                files = Directory.EnumerateFiles(Cache.Directory.FullName, "*.map").ToList();
-            else
-                new TagToolError(CommandError.FileNotFound);
+            if (Cache is GameCacheModPackage modCache)
+            {
+                if (inputPath.Equals("all", StringComparison.OrdinalIgnoreCase))
+                {
+                    modFiles = modCache.BaseModPackage.MapFileStreams;
+                }
+                else 
+                {
+                    foreach (var stream in modCache.BaseModPackage.MapFileStreams) 
+                    {
+                        // This could probably be handled better
+                        stream.Position = 0;
+                        var mapFile = new MapFile();
+                        mapFile.Read(new EndianReader(stream));
+                        stream.Position = 0;
 
-            MapCount = files.Count;
+                        if (mapFile.Header.GetName() == inputPath) 
+                        {
+                            modFiles.Add(stream);
+                            break;
+                        }
+                    }
+                }
 
-            StopWatch.Start();
+                MapCount = modFiles.Count;
 
-            var tasks = files.Select(ConvertMapAsync);
-            await Task.WhenAll(tasks);
+                StopWatch.Start();
 
-            StopWatch.Start();
+                var tasks = modFiles.Select(ConvertModMapAsync);
+                await Task.WhenAll(tasks);
+
+                StopWatch.Start();
+            }
+            else 
+            {
+                if (File.Exists(inputPath))
+                    files.Add(inputPath);
+                else if (inputPath.Equals("all", StringComparison.OrdinalIgnoreCase))
+                    files = Directory.EnumerateFiles(Cache.Directory.FullName, "*.map").ToList();
+                else
+                    new TagToolError(CommandError.FileNotFound);
+
+                MapCount = files.Count;
+
+                StopWatch.Start();
+
+                var tasks = files.Select(ConvertMapAsync);
+                await Task.WhenAll(tasks);
+
+                StopWatch.Start();
+            }
         }
 
         private async Task ConvertMapAsync(string filePath) 
@@ -135,6 +174,50 @@ namespace TagTool.Commands.JSON
             catch (Exception e)
             {
                 ErrorLog.Add($"Error converting \"{filePath}\" : {e.Message}");
+            }
+        }
+
+        private async Task ConvertModMapAsync(Stream stream)
+        {
+            try
+            {
+                var mapData = new MapFile();
+
+                var reader = new EndianReader(stream);
+
+                mapData.Read(reader);
+
+                var headerData = mapData.Header as CacheFileHeaderGenHaloOnline;
+
+                var mapName = headerData.Name;
+
+                headerData.ScenarioTagIndex = 0;
+
+                var mapObject = new MapObject()
+                {
+                    MapName = mapName,
+                    MapVersion = mapData.Version,
+                    Header = headerData,
+                    MapFileBlf = mapData.MapFileBlf,
+                };
+
+                var handler = new MapObjectHandler(Cache, CacheContext);
+
+                var jsonData = handler.Serialize(mapObject);
+
+                var fileInfo = new FileInfo(Path.Combine(ExportPath, $"{mapName}.json"));
+
+                if (!fileInfo.Directory.Exists)
+                {
+                    fileInfo.Directory.Create();
+                }
+
+                File.WriteAllText(fileInfo.FullName, jsonData);
+            }
+            catch (Exception e)
+            {
+                // TODO: try parse map info into error message
+                ErrorLog.Add($"Error occured when converting mod package map : {e.Message}");
             }
         }
 
