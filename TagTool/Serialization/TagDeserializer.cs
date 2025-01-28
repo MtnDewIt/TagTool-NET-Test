@@ -342,6 +342,9 @@ namespace TagTool.Serialization
             if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Bounds<>))
                 return DeserializeRange(reader, context, valueType);
 
+            if (valueType == typeof(ComputeShaderReference))
+                return DeserializeComputeShaderReference(reader, context);
+
 			if (valueType == typeof(VertexShaderReference))
 				return DeserializeVertexShaderReference(reader, context);
 
@@ -770,8 +773,14 @@ namespace TagTool.Serialization
                 default:
                 case PlatformType._32Bit:
                     return new PlatformSignedValue(reader.ReadInt32());
-
             }
+        }
+
+        public ComputeShaderReference DeserializeComputeShaderReference(EndianReader reader, ISerializationContext context) 
+        {
+            // TODO: Implement
+
+            return null;
         }
 
         public PixelShaderReference DeserializePixelShaderReference(EndianReader reader, ISerializationContext context)

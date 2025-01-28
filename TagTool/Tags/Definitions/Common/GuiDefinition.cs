@@ -60,17 +60,17 @@ namespace TagTool.Tags.Definitions.Common
 
     public enum WidgetFontValue_ODSTMCC : short
     {
-        FullscreenHudMessage,
-        SplitScreenHudMessage,
-        Terminal,
-        BodyText,
-        Title,
-        SuperLarge,
-        LargeBodyText,
-        EnglishBodyText,
-        HudNumberText,
-        SubtitleFont,
-        MainMenuFont  
+        Terminal,               // Fixedsys,  9pt
+        BodyText,				// Conduit,  14pt
+        Title,					// Conduit,  32pt
+        SuperLargeFont,			// Agency,   32pt
+        LargeBodyText,			// Conduit,  23pt
+        SplitScreenHudMessage,	// Agency,   16pt
+        FullscreenHudMessage,	// Conduit,  18pt
+        EnglishBodyText,		// Agency,   18pt
+        HudNumberText,			// Conduit,  18pt
+        SubtitleFont,			// Conduit,  16pt
+        MainMenuFont  			// Agency,   23pt
     }
 
     public enum WidgetFontValue_H3Original : short

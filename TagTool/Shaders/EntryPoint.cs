@@ -41,6 +41,7 @@ namespace TagTool.Shaders
     [Flags]
     public enum EntryPointBitMask : int
     {
+        None = 0,
         Default = 1 << 0,
         Albedo = 1 << 1,
         Static_Default = 1 << 2,

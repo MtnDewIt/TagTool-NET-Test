@@ -2,6 +2,7 @@ namespace TagTool.Ai
 {
     public enum ActorTypeEnum : short
     {
+        NONE,
         Elite,
         Jackal,
         Grunt,

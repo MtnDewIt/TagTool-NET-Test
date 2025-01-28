@@ -4,8 +4,7 @@ namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "gui_widget_animation_collection_definition", Tag = "wacd", Size = 0x240, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
     [TagStructure(Name = "gui_widget_animation_collection_definition", Tag = "wacd", Size = 0x270, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-    [TagStructure(Name = "gui_widget_animation_collection_definition", Tag = "wacd", Size = 0x280, MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-    [TagStructure(Name = "gui_widget_animation_collection_definition", Tag = "wacd", Size = 0x2B0, MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+    [TagStructure(Name = "gui_widget_animation_collection_definition", Tag = "wacd", Size = 0x280, MinVersion = CacheVersion.Halo3ODST)]
     public class GuiWidgetAnimationCollectionDefinition : TagStructure
     {
         [TagField(ValidTags = new[] { "wgan" })] public CachedTag AmbientFocused;    // plays when idle and has focus
@@ -54,11 +53,11 @@ namespace TagTool.Tags.Definitions
         [TagField(ValidTags = new[] { "wgan" }, MinVersion = CacheVersion.Halo3ODST)]
         public CachedTag TransitionFromOverlaid;
 
-        [TagField(ValidTags = new[] { "wgan" }, Platform = CachePlatform.MCC)]
+        [TagField(ValidTags = new[] { "wgan" }, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
         public CachedTag MouseEnter;
-        [TagField(ValidTags = new[] { "wgan" }, Platform = CachePlatform.MCC)]
+        [TagField(ValidTags = new[] { "wgan" }, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
         public CachedTag MouseLeave;
-        [TagField(ValidTags = new[] { "wgan" }, Platform = CachePlatform.MCC)]
+        [TagField(ValidTags = new[] { "wgan" }, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
         public CachedTag MouseHoverAmbient;
     }
 }

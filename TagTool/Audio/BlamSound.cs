@@ -18,6 +18,11 @@ namespace TagTool.Audio
         public int RealPermutationIndex;
         public byte[] Data;
 
+        public BlamSound() 
+        {
+            Data = Array.Empty<byte>();
+        }
+
         public BlamSound(Sound sound, int permutationGestaltIndex, byte[] data,  CacheVersion version, SoundCacheFileGestalt soundGestalt = null)
         {
             switch (version)

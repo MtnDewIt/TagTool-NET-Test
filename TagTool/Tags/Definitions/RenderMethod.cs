@@ -33,10 +33,11 @@ namespace TagTool.Tags.Definitions
         public RenderMethodRenderFlags RenderFlags;
         public SortingLayerValue SortLayer;
 
-        [TagField(Platform = CachePlatform.MCC)]
+        [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
         public GlobalRenderMethodRuntimeFlagsDefintion RuntimeFlags;
 
         [TagField(Platform = CachePlatform.Original)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         public byte Version;
 
         public int CustomFogSettingIndex; // skya AtmosphereProperties block index
@@ -412,6 +413,7 @@ namespace TagTool.Tags.Definitions
         [Flags]
         public enum GlobalRenderMethodRuntimeFlagsDefintion : byte
         {
+            None = 0,
             UseVSWithMisc = 1 << 0 // custom compiled shader
         }
 

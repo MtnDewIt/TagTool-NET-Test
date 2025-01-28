@@ -11,6 +11,7 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Name = "unit", Tag = "unit", Size = 0x214, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
     [TagStructure(Name = "unit", Tag = "unit", Size = 0x1C4, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "unit", Tag = "unit", Size = 0x224, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+    [TagStructure(Name = "unit", Tag = "unit", Size = 0x224, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "unit", Tag = "unit", Size = 0x2C8, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "unit", Tag = "unit", Size = 0x3A0, MinVersion = CacheVersion.HaloReach)]
     public class Unit : GameObject
@@ -242,15 +243,17 @@ namespace TagTool.Tags.Definitions
         public class UnitDefinitionFlags : VersionedFlags
         {
             [TagField(Platform = CachePlatform.Original)]
+            [TagField(Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
             public UnitFlagBits Flags;
 
-            [TagField(Platform = CachePlatform.MCC)]
-            public UnitFlagBitsMCC FlagsMCC;
+            [TagField(Version = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+            public UnitFlagBitsH3MCC FlagsH3MCC;
         }
 
         [Flags]
-        public enum UnitFlagBitsMCC : uint
+        public enum UnitFlagBitsH3MCC : uint
         {
+            None = 0,
             CircularAiming = 1 << 0,
             DestroyedAfterDying = 1 << 1,
             FiresFromCamera = 1 << 2,
@@ -278,6 +281,7 @@ namespace TagTool.Tags.Definitions
         [Flags]
         public enum UnitFlagBits : uint
         {
+            None = 0,
             CircularAiming = 1 << 0,
             DestroyedAfterDying = 1 << 1,
             HalfSpeedInterpolation = 1 << 2,
@@ -297,7 +301,7 @@ namespace TagTool.Tags.Definitions
             NotInstantlyKilledByMelee = 1 << 16,
             FlashlightPowerDoesntTransferToWeapon = 1 << 17,
             RunsAroundFlaming = 1 << 18,
-            TopLevelForAoeDamage = 1 << 19,
+            TopLevelForAOEDamage = 1 << 19,
             SpecialCinematicUnit = 1 << 20,
             IgnoredByAutoaiming = 1 << 21,
             ShieldsFryInfectionForms = 1 << 22,
@@ -308,7 +312,7 @@ namespace TagTool.Tags.Definitions
             ParentsPrimaryWeapon = 1 << 27,
             UnitHasBoost = 1 << 28,
             AllowAimWhileOpeningOrClosing = 1 << 29,
-            UseAimStillXxForAirborne = 1 << 30
+            UseAimStillXxForAirborne = 1 << 30,
         }
 
         public enum DefaultTeamValue : short
