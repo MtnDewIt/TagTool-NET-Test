@@ -16,7 +16,17 @@ namespace TagTool.Geometry
         {
             if(cachePlatform == CachePlatform.MCC)
             {
-                return new VertexStreamHalo3RetailMCC(stream);
+                switch (version)
+                {
+                    case CacheVersion.Halo3Retail:
+                        return new VertexStreamHalo3RetailMCC(stream);
+                    case CacheVersion.Halo3ODST:
+                        return new VertexStreamHalo3ODSTMCC(stream);
+
+                    // Ideally we would have one for each supported build, but we'll default to halo 3's for now
+                    default:
+                        return new VertexStreamHalo3RetailMCC(stream);
+                }
             }
             else
             {
