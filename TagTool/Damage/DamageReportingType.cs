@@ -197,7 +197,10 @@ namespace TagTool.Damage
             SentinelRPG,
             Teleporter,
             Tripmine,
-            ElephantTurret
+            ElephantTurret,
+            SilencedSmg,
+            Automag,
+            BrutePlasmaRifle,
         }
 
         public enum HaloOnlineValue : short
