@@ -17642,7 +17642,10 @@ namespace TagTool.Scripting
                 [0x016] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "sleep_until"),
                 [0x017] = new ScriptInfo(HsType.HaloOnlineValue.Void, "wake"),
                 [0x018] = new ScriptInfo(HsType.HaloOnlineValue.Void, "inspect"),
-                [0x019] = new ScriptInfo(HsType.HaloOnlineValue.Unit, "unit"),
+                [0x019] = new ScriptInfo(HsType.HaloOnlineValue.Unit, "unit")
+                {
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
+                },
                 [0x01A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "evaluate")
                 {
                     new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Script),
@@ -23416,7 +23419,10 @@ namespace TagTool.Scripting
                 [0x016] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "sleep_until"),
                 [0x017] = new ScriptInfo(HsType.HaloOnlineValue.Void, "wake"),
                 [0x018] = new ScriptInfo(HsType.HaloOnlineValue.Void, "inspect"),
-                [0x019] = new ScriptInfo(HsType.HaloOnlineValue.Unit, "unit"),
+                [0x019] = new ScriptInfo(HsType.HaloOnlineValue.Unit, "unit")
+                {
+                    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
+                },
                 [0x01A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "evaluate")
                 {
                     new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Script),
