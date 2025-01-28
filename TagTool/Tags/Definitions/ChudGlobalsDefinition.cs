@@ -7,8 +7,9 @@ using static TagTool.Tags.TagFieldFlags;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "chud_globals_definition", Tag = "chgd", Size = 0xF0, MaxVersion = CacheVersion.Halo3Retail)]
-    [TagStructure(Name = "chud_globals_definition", Tag = "chgd", Size = 0x208, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "chud_globals_definition", Tag = "chgd", Size = 0x2C0, MinVersion = CacheVersion.HaloOnlineED)]
+    [TagStructure(Name = "chud_globals_definition", Tag = "chgd", Size = 0x208, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+    [TagStructure(Name = "chud_globals_definition", Tag = "chgd", Size = 0x198, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+    [TagStructure(Name = "chud_globals_definition", Tag = "chgd", Size = 0x2B8, MinVersion = CacheVersion.HaloOnlineED)]
     public class ChudGlobalsDefinition : TagStructure
     {
         public List<HudGlobal> HudGlobals;
@@ -34,6 +35,7 @@ namespace TagTool.Tags.Definitions
 
         [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public float MotionSensorLevelHeightRange = float.MaxValue; // if object outside this height range of player, up/down indicator is used respectively
+
         [TagField(MinVersion = CacheVersion.Halo3ODST)]
         [TagField(Platform = CachePlatform.MCC)]
         public float ShieldMinorThreshold;
@@ -53,25 +55,17 @@ namespace TagTool.Tags.Definitions
         [TagField(Platform = CachePlatform.MCC)]
         public float HealthCriticalThreshold;
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST)]
-        public RealRgbColor HealthMultiplyColor0 = new RealRgbColor(1.0f, 1.0f, 1.0f);
-        [TagField(MinVersion = CacheVersion.Halo3ODST)]
-        public float HealthMultiplyColor0Alpha;
-        [TagField(MinVersion = CacheVersion.Halo3ODST)]
-        public RealRgbColor HealthMultiplyColor1 = new RealRgbColor(1.0f, 1.0f, 1.0f);
-        [TagField(MinVersion = CacheVersion.Halo3ODST)]
-        public float HealthMultiplyColor1Alpha;
-        [TagField(MinVersion = CacheVersion.Halo3ODST)]
-        public RealRgbColor HealthAdditiveColor0;
-        [TagField(MinVersion = CacheVersion.Halo3ODST)]
-        public float HealthAdditiveColor0Alpha;
-        [TagField(MinVersion = CacheVersion.Halo3ODST)]
-        public RealRgbColor HealthAdditiveColor1;
-        [TagField(MinVersion = CacheVersion.Halo3ODST)]
-        public float HealthAdditiveColor1Alpha;
+        [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+        public RealRgbaColor HealthMultiplyColor0 = new RealRgbaColor(1.0f, 1.0f, 1.0f, 0.0f); 
+        [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+        public RealRgbaColor HealthMultiplyColor1 = new RealRgbaColor(1.0f, 1.0f, 1.0f, 0.0f);
+        [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+        public RealRgbaColor HealthAdditiveColor0;
+        [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+        public RealRgbaColor HealthAdditiveColor1;
 
         //DAMAGE MASK FUNCTIONS AND VARIABLES
-        [TagField(MinVersion = CacheVersion.Halo3ODST)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public TagFunction HealthEffectDamageMaskIntensity = new TagFunction
         {
             Data = new byte[]
@@ -86,22 +80,14 @@ namespace TagTool.Tags.Definitions
         };
 
         [TagField(MinVersion = CacheVersion.Halo3ODST)]
-        public RealRgbColor ShieldMultiplyColor0;
+        public RealRgbaColor ShieldMultiplyColor0;
         [TagField(MinVersion = CacheVersion.Halo3ODST)]
-        public float ShieldMultiplyColor0Alpha;
+        public RealRgbaColor ShieldMultiplyColor1;
         [TagField(MinVersion = CacheVersion.Halo3ODST)]
-        public RealRgbColor ShieldMultiplyColor1;
+        public RealRgbaColor ShieldAdditiveColor0;
         [TagField(MinVersion = CacheVersion.Halo3ODST)]
-        public float ShieldMultiplyColor1Alpha;
-        [TagField(MinVersion = CacheVersion.Halo3ODST)]
-        public RealRgbColor ShieldAdditiveColor0;
-        [TagField(MinVersion = CacheVersion.Halo3ODST)]
-        public float ShieldAdditiveColor0Alpha;
-        [TagField(MinVersion = CacheVersion.Halo3ODST)]
-        public RealRgbColor ShieldAdditiveColor1;
-        [TagField(MinVersion = CacheVersion.Halo3ODST)]
-        public float ShieldAdditiveColor1Alpha;
-
+        public RealRgbaColor ShieldAdditiveColor1;
+        
         [TagField(MinVersion = CacheVersion.Halo3ODST)]
         public TagFunction ShieldEffectDamageMaskIntensity = new TagFunction
         {
@@ -118,17 +104,17 @@ namespace TagTool.Tags.Definitions
 
         //ODST VALUES FOR PDA/BEACON
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-        public float PDABeaconTextOuterFadeAngle;
+        public float WaypointOverlapOffscreenDontFadeAngle;
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-        public float PDABeaconTextInnerFadeAngle;
+        public float WaypointOverlapBeginFadingAngle;
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-        public float PDABeaconRadiusmin;
+        public float WaypointOverlapFullyFadedAngle;
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-        public float PDABeaconRadiusmax;
+        public float BeaconWaypointRadius;
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-        public float PDAUserBeaconRadius;
+        public float UserPlacedWaypointRadius;
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-        public float WaypointDistanceMax;
+        public float WaypointDistanceMaximum;
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
         public TagFunction WaypointDistanceModifier;
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
@@ -154,18 +140,14 @@ namespace TagTool.Tags.Definitions
 
         [TagField(MinVersion = CacheVersion.Halo3ODST)]
         public CachedTag SurvivalModeMultiplayerIntro = null;  //chdt tagreference which activates in firefight
-
-        [TagField(MinVersion = CacheVersion.Halo3ODST)]
-        public float AchievementDisplayTime = 3.0f;
-
-        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-        public float Unknown73;
-        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-        public float Unknown74;
+        
+        [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+        public float AchievementDisplayTime = 3.0f;        
 
         [TagStructure(Size = 0x208, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x1C8, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x23C, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x1FC, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x2B0, MinVersion = CacheVersion.HaloOnlineED)]
         public class HudGlobal : TagStructure
         {
@@ -193,7 +175,7 @@ namespace TagTool.Tags.Definitions
             public ArgbColor NavpointAllyDead;
 
             [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-            public ArgbColor NavpointAllyBlue;
+            public ArgbColor NavpointAllyText;
 
             public ArgbColor MessageFlashSelf;          // global 20
             public ArgbColor MessageFlashFriendly;
@@ -206,22 +188,21 @@ namespace TagTool.Tags.Definitions
             public ArgbColor NavpointAllySpeaking;
 
             [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-            public ArgbColor GlobalDynamic29_HO;        // White
-
+            public ArgbColor NeutralTerritory;
             [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-            public ArgbColor DefaultItemOutline;        // global 30
+            public ArgbColor DefaultItemOutline;
             [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-            public ArgbColor MAGItemOutline;
+            public ArgbColor MagazineItemOutline;
             [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-            public ArgbColor DMGItemOutline;
+            public ArgbColor DamageItemOutline;
             [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-            public ArgbColor ACCItemOutline;
+            public ArgbColor AccuracyItemOutline;
             [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-            public ArgbColor ROFItemOutline;
+            public ArgbColor FastFireItemOutline;
             [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-            public ArgbColor RNGItemOutline;
+            public ArgbColor RangeItemOutline;
             [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-            public ArgbColor PWRItemOutline;
+            public ArgbColor PowerItemOutline;
 
             public List<HudAttribute> HudAttributes;
             public List<HudSound> HudSounds;
@@ -314,7 +295,8 @@ namespace TagTool.Tags.Definitions
             }
 
             [TagStructure(Size = 0x60, MaxVersion = CacheVersion.Halo3Retail)]
-            [TagStructure(Size = 0x130, MaxVersion = CacheVersion.Halo3ODST)]
+            [TagStructure(Size = 0x130, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+            [TagStructure(Size = 0x110, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
             [TagStructure(Size = 0xE8, MinVersion = CacheVersion.HaloOnlineED)]
             public class HudAttribute : TagStructure
             {
@@ -326,66 +308,49 @@ namespace TagTool.Tags.Definitions
                 public Angle WarpSourceFovY; // WarpAngle
                 [TagField(MaxVersion = CacheVersion.Halo3Retail)]
                 [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-                public float WarpAmount; // WarpAmount
+                public float WarpSourceAspect; // WarpAmount
                 [TagField(MaxVersion = CacheVersion.Halo3Retail)]
                 [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-                public float WarpDestinationZOffset; // the Z-axis is along the camera line of sight.
+                public float WarpDestinationOffsetZ; // the Z-axis is along the camera line of sight.
 
                 //ODST only warp fields
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public RealPoint2d CurvePointTopLeft;
+                public RealPoint2d CurvaturePointTopLeft;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public RealPoint2d CurvePointCenterLeft;
+                public RealPoint2d CurvaturePointCenterLeft;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public RealPoint2d CurvePointBottomLeft;
+                public RealPoint2d CurvaturePointBottomLeft;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public RealPoint2d CurvePointTopMiddle;
+                public RealPoint2d CurvaturePointTopMiddle;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public RealPoint2d CurvePointCenterMiddle;
+                public RealPoint2d CurvaturePointCenterMiddle;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public RealPoint2d CurvePointBottomMiddle;
+                public RealPoint2d CurvaturePointBottomMiddle;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public RealPoint2d CurvePointTopRight;
+                public RealPoint2d CurvaturePointTopRight;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public RealPoint2d CurvePointCenterRight;
+                public RealPoint2d CurvaturePointCenterRight;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public RealPoint2d CurvePointBottomRight;
+                public RealPoint2d CurvaturePointBottomRight;
 
-                //undocumented fields
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public float HorizontalRoll;
+                public RealPoint2d ScreenTransformBasisElement0;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public float VeticalBow;
+                public RealPoint2d ScreenTransformBasisElement1;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public float InverseHorizontalRoll;
+                public RealPoint2d ScreenTransformBasisElement2;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public float InverseVerticalBow;
+                public RealPoint2d ScreenTransformBasisElement3;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public float HorizontalRoll2;
+                public RealPoint2d ScreenTransformBasisElement4;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public float VericalBow2;
+                public RealPoint2d ScreenTransformBasisElement5;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public float HorizontalTwist;
+                public RealPoint2d ScreenTransformBasisElement6;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public float VerticalTwist;
+                public RealPoint2d ScreenTransformBasisElement7;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public float HorizontalTwist2;
-                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public float VerticalTwist2;
-                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public float VerticalScale2;
-                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public float VerticalTwist3;
-                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public float HorizontalSkew;
-                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public float VerticalFlip;
-                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public float InverseHorizontalSkew;
-                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public float VerticalFlip2;
-                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public RealPoint2d HUDOffset;
+                public RealPoint2d ScreenTransformBasisElement8;
 
                 public uint VirtualWidth; // resolution
                 public uint VirtualHeight; // resolution
@@ -398,9 +363,9 @@ namespace TagTool.Tags.Definitions
                 public float SafeFrameVerticalDing; // VerticalStretch
 
                 //these four tagrefs have no function in HO
-                [TagField(MinVersion = CacheVersion.Halo3ODST)]
+                [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
                 public CachedTag DamageBorderHealthEffect = null;
-                [TagField(MinVersion = CacheVersion.Halo3ODST)]
+                [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
                 public CachedTag ThirdPersonDamageBorderHealthEffect = null;
                 [TagField(MinVersion = CacheVersion.Halo3ODST)]
                 public CachedTag DamageBorderShieldEffect = null;
@@ -410,7 +375,7 @@ namespace TagTool.Tags.Definitions
                 [TagField(MinVersion = CacheVersion.HaloOnlineED)]
                 public float StateMessageScale;
                 [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-                public RealPoint2d StateLeftRightOffset_HO;
+                public RealPoint2d StateMessageOffset;
 
                 //these only exist in HO
                 [TagField(MinVersion = CacheVersion.HaloOnlineED)]
@@ -422,16 +387,17 @@ namespace TagTool.Tags.Definitions
                 [TagField(MinVersion = CacheVersion.HaloOnlineED)]
                 public float SpacingUnknown2;
 
-                //From here, fields have been moved around a bit.
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-                public float NotificationOffsetX_H3;
-                [TagField(MaxVersion = CacheVersion.Halo3ODST)]
-                public float NotificationOffsetY_H3;
-                [TagField(MaxVersion = CacheVersion.Halo3ODST)]
-                public float StateLeftRightOffsetY_H3;
+                public float MessageAnchorHorizontalOffset;
 
                 public float MessageAnchorVerticalOffset;
                 public float StateMessageVerticalOffset;
+
+                [TagField(MaxVersion = CacheVersion.Halo3ODST)]
+                public float BottomStateVerticalOffset;
+                [TagField(MaxVersion = CacheVersion.Halo3ODST)]
+                public float BottomPrimaryVerticalOffset;
+
                 public float MedalScale;
                 public float MedalWidth; // medal spacing
 
@@ -464,9 +430,9 @@ namespace TagTool.Tags.Definitions
 
                 //this is present in HO, it is still used in chud anchors
                 [TagField(MinVersion = CacheVersion.Halo3ODST)]
-                public float PromptOffsetY;
+                public float PDAMessageVerticalOffset;
                 [TagField(MinVersion = CacheVersion.Halo3ODST)]
-                public float PromptOffsetX;
+                public float PDAMessageHorizontalOffset;
 
                 [Flags]
                 public enum ResolutionFlagValue : int
@@ -572,13 +538,13 @@ namespace TagTool.Tags.Definitions
                 [TagStructure(Size = 0x14, Platform = CachePlatform.MCC)]
                 public class BipedData : TagStructure
                 {
-                    [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
+                    [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
                     public BipedTypeValue_ODST BipedType_ODST;
 
                     [TagField(MinVersion = CacheVersion.HaloOnlineED)]
                     public BipedTypeValue_HO BipedType_HO;
 
-                    [TagField(Flags = Padding, Length = 3, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
+                    [TagField(Flags = Padding, Length = 3, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
                     public byte[] Unused = new byte[3];
 
                     [TagField(Platform = CachePlatform.MCC)]
