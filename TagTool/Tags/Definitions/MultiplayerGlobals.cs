@@ -321,8 +321,9 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x27C, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-        [TagStructure(Size = 0x20C, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0x20C, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x228, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+        [TagStructure(Size = 0x288, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x2A8, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline449175)]
         [TagStructure(Size = 0x308, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x1D4, MinVersion = CacheVersion.HaloReach)]
@@ -362,6 +363,8 @@ namespace TagTool.Tags.Definitions
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public List<EventBlock> AssaultEvents;
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public List<EventBlock> InfectionEvents;
 
+            [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)] public List<EventBlock> GunGameEvents;
+
             public int MaximumFragCount;
             public int MaximumPlasmaCount;
 
@@ -371,8 +374,8 @@ namespace TagTool.Tags.Definitions
             public List<MultiplayerConstant> MultiplayerConstants;
             public List<StateResponse> StateResponses;
 
-            [TagField(ValidTags = new[] { "bitm" })] public CachedTag ScoreboardEmblemBitmap;
-            [TagField(ValidTags = new[] { "bitm" })] public CachedTag ScoreboardDeadBitmap;
+            [TagField(ValidTags = new[] { "bitm" }, Platform = CachePlatform.Original)] public CachedTag ScoreboardEmblemBitmap;
+            [TagField(ValidTags = new[] { "bitm" }, Platform = CachePlatform.Original)] public CachedTag ScoreboardDeadBitmap;
             [TagField(ValidTags = new[] { "rm  " })] public CachedTag HillShader;
 
 
@@ -413,7 +416,7 @@ namespace TagTool.Tags.Definitions
                 public CachedTag Type;
             }
 
-            [TagStructure(Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC, Size = 0xC0)]
+            [TagStructure(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC, Size = 0xE0)]
             [TagStructure(MaxVersion = CacheVersion.HaloOnline700123, Size = 0xB0)]
             public class IntroMessageStruct : TagStructure
             {
@@ -429,8 +432,12 @@ namespace TagTool.Tags.Definitions
                 [TagField(ValidTags = new[] { "chdt" })] public CachedTag Assault;
                 [TagField(ValidTags = new[] { "chdt" })] public CachedTag Infection;
 
-                [TagField(ValidTags = new[] { "chdt" }, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+                [TagField(ValidTags = new[] { "chdt" }, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
                 public CachedTag Survival;
+                [TagField(ValidTags = new[] { "chdt" }, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+                public CachedTag GunGame;
+                [TagField(ValidTags = new[] { "chdt" }, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+                public CachedTag Campaign;
             }
 
             [TagStructure(Size = 0x50)]
@@ -453,7 +460,7 @@ namespace TagTool.Tags.Definitions
                 public TypeValue RuntimeEventType;
 
                 [TagField(MaxVersion = CacheVersion.Halo3Retail)]
-                public GameEngineGeneralEventH3 Event_H3;
+                public GameEngineGeneralEvent Events;
 
                 [TagField(Flags = Label, MinVersion = CacheVersion.Halo3ODST)]
                 public StringId Event;
@@ -514,7 +521,9 @@ namespace TagTool.Tags.Definitions
                 [Flags]
                 public enum GameEngineEventFlags : ushort
                 {
-                    QuantityMessage = 1 << 0
+                    None = 0,
+                    QuantityMessage = 1 << 0,
+                    SuppressText = 1 << 1,
                 }
 
                 public enum TypeValue : short
@@ -532,70 +541,121 @@ namespace TagTool.Tags.Definitions
                     Assault,
                     Infection,
                     Survival,
-                    EarnWp, // HO
+                    GunGame,
                 }
 
-                public enum GameEngineGeneralEventH3 : short
+                public enum GameEngineGeneralEvent : short 
                 {
-                    Kill,
-                    Suicide,
-                    KillTeammate,
-                    Victory,
-                    TeamVictory,
-                    Unused1,
-                    Unused2,
-                    _1MinToWin,
-                    Team1MinToWin,
-                    _30SecsToWin,
-                    Team30SecsToWin,
-                    PlayerQuit,
-                    PlayerJoined,
-                    KilledByUnknown,
-                    _30MinutesLeft,
-                    _15MinutesLeft,
-                    _5MinutesLeft,
-                    _1MinuteLeft,
-                    TimeExpired,
-                    GameOver,
-                    RespawnTick,
-                    LastRespawnTick,
-                    TeleporterUsed,
-                    TeleporterBlocked,
-                    PlayerChangedTeam,
-                    PlayerRejoined,
-                    GainedLead,
-                    GainedTeamLead,
-                    LostLead,
-                    LostTeamLead,
-                    TiedLeader,
-                    TiedTeamLeader,
-                    RoundOver,
-                    _30SecondsLeft,
-                    _10SecondsLeft,
-                    Killfalling,
-                    Killcollision,
-                    Killmelee,
-                    SuddenDeath,
-                    PlayerBootedPlayer,
-                    KillflagCarrier,
-                    KillbombCarrier,
-                    KillstickyGrenade,
-                    Killsniper,
-                    KillstMelee,
-                    BoardedVehicle,
-                    StartTeamNoti,
-                    Telefrag,
-                    _10SecsToWin,
-                    Team10SecsToWin,
+                    Extermination,
+                    Perfection,
+                    DoubleKill,
+                    TripleKill,
+                    Overkill,
+                    Killtacular,
+                    Killtrocity,
+                    Killimanjaro,
+                    Killtastrophe,
+                    Killpocalypse,
+                    Killionaire,
+                    KillingSpree,
+                    KillingFrenzy,
+                    RunningRiot,
+                    Rampage,
+                    Untouchable,
+                    Invincible,
+                    SniperSpree,
+                    Sharpshooter,
+                    ShotgunSpree,
+                    OpenSeason,
+                    SplatterSpree,
+                    VehicularManslaughter,
+                    SwordSpree,
+                    SliceNDice,
+                    JuggernautSpree,
+                    Unstoppable,
+                    InfectionSpree,
+                    MmmmBrains,
+                    ZombieKillingSpree,
+                    HellsJanitor,
+                    IsQuisnamProteroDamno,
+                    HailToTheKing,
                     Bulltrue,
-                    DeathFromTheGrave,
-                    Hijack,
+                    Splatter,
+                    Highjack,
                     Skyjack,
-                    KillspartanLaser,
-                    Killflame,
-                    AssisttoDriver,
+                    DeathFromTheGrave,
+                    Killjoy,
+                    LaserKill,
+                    StickyKill,
+                    SniperKill,
+                    Assassin,
+                    BeatDown,
+                    Incineration,
+                    Wheelman,
+                    BombPlanted,
+                    KilledBombCarrier,
+                    KilledVIP,
+                    KilledJuggernaut,
+                    OddballKill,
+                    FlagScore,
+                    KilledFlagCarrier,
+                    FlagKill,
+                    LastManStanding,
+                    SandboxNotEnoughRoom,
+                    SandboxTooManyOnMap,
+                    TripleDouble,
+                    Steaktacular,
+                    Inconceivable,
+                    Unfrigginbelievable,
+                    BruteShotKill,
+                    FuelRodCannonKill,
+                    GrenadeKill,
+                    GravityHammerKill,
+                    PlasmaGrenadeKill,
+                    RocketLauncherKill,
+                    NeedlerKill,
+                    SentinelBeamKill,
+                    SwordKill,
+                    TurretKill,
+                    ComebackKill,
+                    Headshot,
+                    GenericKill,
+                    VehicleKill,
+                    EnvironmentalKill,
+                    FirstStrike,
+                    LastStrike,
+                    Protector,
+                    Avenger,
+                    CloseCall,
+                    ReloadThis,
+                    Revenge,
+                    Snapshot,
+                    VehicleDestroyed,
                     Assist,
-                    PreGameOver
+                    VehicleDestroyAssist,
+                    BallHold10s,
+                    BallHold20s,
+                    BallHold30s,
+                    BallHold45s,
+                    BallHold60s,
+                    BallMultikillX3,
+                    BallCarrierKill,
+                    BallFirstTouch,
+                    HillFirstPoint,
+                    HillDefense,
+                    HillOffense,
+                    HillDominance,
+                    FlagTaken,
+                    FlagReturned,
+                    FlagRunner,
+                    FlagChampion,
+                    BombDefense,
+                    BombDefused,
+                    Disarmed,
+                    Saboteur,
+                    TerritoryCaptured,
+                    Territorial,
+                    Triumvirate,
                 }
 
                 public enum AudienceValue : short
@@ -660,7 +720,8 @@ namespace TagTool.Tags.Definitions
                 }
             }
 
-            [TagStructure(Size = 0x21C, MaxVersion = CacheVersion.Halo3ODST)]
+            [TagStructure(Size = 0x21C, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+            [TagStructure(Size = 0x1EC, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
             [TagStructure(Size = 0x220, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             [TagStructure(Size = 0x150, MinVersion = CacheVersion.HaloReach)]
             public class MultiplayerConstant : TagStructure
@@ -681,17 +742,20 @@ namespace TagTool.Tags.Definitions
                 public List<ProjectileSpawnInfluence> Projectiles;
                 public List<EquipmentSpawnInfluence> Equipment;
 
+                [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+                public List<AutoTurretSpawnInfluence> AutoTurrets;
+
                 [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public GametypeSpawnConstantStruct GametypeSpawnConstants;
 
                 public float MaximumRandomSpawnBias;
                 public float TeleporterRechargeTime; // seconds
 
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform= CachePlatform.Original)]
                 public GrenadeDangerStruct GrenadeConstants;
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform= CachePlatform.Original)]
                 public VehicleConstantStruct VehicleConstants;
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform= CachePlatform.Original)]
                 public CachedTag HillBitmap;
                 [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public FlagConstantStruct FlagConstants;
@@ -702,9 +766,9 @@ namespace TagTool.Tags.Definitions
 
                 public CachedTag ForgeCursorImpactEffect;
 
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform= CachePlatform.Original)]
                 public StringId BombDefusalString;
-
+                [TagField(Platform = CachePlatform.Original)]
                 public StringId BlockedTeleporterString;
 
                 [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
@@ -788,14 +852,22 @@ namespace TagTool.Tags.Definitions
                     public float Weight;
                 }
 
+                [TagStructure(Size = 0x14)]
+                public class AutoTurretSpawnInfluence : TagStructure
+                {
+                    [TagField(Flags = Label)]
+                    public CachedTag Vehicle;
+                    public float Weight;
+                }
+
                 [TagStructure(Size = 0xA0)]
                 public class GametypeSpawnConstantStruct : TagStructure
                 {
                     public SpawnConstantStruct KingOfTheHill;
                     public SpawnConstantStruct Oddball;
                     public SpawnConstantStruct CaptureTheFlag;
-                    public SpawnConstantStruct TeraSpawnConstants;
-                    public SpawnConstantStruct Territories;
+                    public SpawnConstantStruct TerritoriesAllies;
+                    public SpawnConstantStruct TerritoriesEnemies;
                     public SpawnConstantStruct InfectionHumans;
                     public SpawnConstantStruct InfectionZombies;
                     public SpawnConstantStruct Vip;
