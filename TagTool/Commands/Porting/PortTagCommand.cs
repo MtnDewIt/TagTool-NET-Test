@@ -1247,7 +1247,7 @@ namespace TagTool.Commands.Porting
                                                 LightAirprobeName = controlInstance.LightAirprobeName,
                                                 UniqueHandle = controlInstance.UniqueHandle,
                                                 OriginBspIndex = controlInstance.OriginBspIndex,
-                                                ObjectType = controlInstance.ObjectType,
+                                                ObjectType = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Equipment },
                                                 Source = controlInstance.Source,
                                                 BspPolicy = controlInstance.BspPolicy,
                                                 EditingBoundToBsp = controlInstance.EditingBoundToBsp,
@@ -1257,6 +1257,9 @@ namespace TagTool.Commands.Porting
                                                 Multiplayer = controlInstance.Multiplayer,
                                             });
                                         }
+
+                                        if (controlInstance.NameIndex != -1) 
+                                            scnr.ObjectNames[controlInstance.NameIndex].ObjectType = new GameObjectType16() { Halo3ODST = GameObjectTypeHalo3ODST.Equipment };
                                     }
                                 }
 
