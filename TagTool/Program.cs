@@ -24,7 +24,7 @@ namespace TagTool.Commands
 
         static void Main(string[] args)
         {
-            //allow dll resolution from Tools directory
+            //allow managed dll resolution from Tools directory
             AssemblyLoadContext.Default.Resolving += static (AssemblyLoadContext ctx, AssemblyName name) =>
             {
                 foreach (var file in Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Tools"), "*.dll"))
@@ -38,27 +38,31 @@ namespace TagTool.Commands
                     }
                     catch (Exception)
                     {
-                        AssemblyLoadContext.Default.ResolvingUnmanagedDll += (Assembly assembly, string dllName) =>
-                        {
-                            try
-                            {
-                                IntPtr handle = NativeLibrary.Load(file);
-
-                                return handle;
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine($"Failed to load \"{file}\" : {e.Message}");
-
-                                return IntPtr.Zero;
-                            }
-                        };
-
                         continue;
                     }
                     if (AssemblyName.ReferenceMatchesDefinition(name, an)) return ctx.LoadFromAssemblyPath(file);
                 }
                 return null;
+            };
+
+            //allow unmanaged dll resolution from Tools directory
+            AssemblyLoadContext.Default.ResolvingUnmanagedDll += (Assembly assembly, string dllName) =>
+            {
+                foreach (var file in Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Tools"), "*.dll"))
+                {
+                    IntPtr handle;
+                    try
+                    {
+                        handle = NativeLibrary.Load(file);
+                    }
+                    catch (Exception) 
+                    {
+                        continue;
+                    }
+
+                    if (Path.GetFileName(file) == dllName) return handle;
+                }
+                return IntPtr.Zero;
             };
 
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo("en-US");
