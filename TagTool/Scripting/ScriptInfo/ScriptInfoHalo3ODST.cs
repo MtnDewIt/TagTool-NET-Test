@@ -1718,7 +1718,7 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x057] = new ScriptInfo(HsType.HaloOnlineValue.Real, "hs_object_buckling_magnitude_get")
+            [0x057] = new ScriptInfo(HsType.HaloOnlineValue.Real, "object_buckling_magnitude_get")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
             },
