@@ -88,7 +88,7 @@ namespace TagTool.Scripting
             [0x4F] = "cinematic_lightprobe",
             [0x50] = "animation_budget_reference",
             [0x51] = "looping_sound_budget_reference",
-            [0x52] = "sound_budget_reference"
+            [0x52] = "sound_budget_reference",
         };
 
         public static Dictionary<int, string> Globals = new Dictionary<int, string>

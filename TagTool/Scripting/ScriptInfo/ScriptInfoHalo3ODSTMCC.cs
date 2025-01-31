@@ -90,7 +90,7 @@ namespace TagTool.Scripting
             [0x51] = "cinematic_lightprobe",
             [0x52] = "animation_budget_reference",
             [0x53] = "looping_sound_budget_reference",
-            [0x54] = "sound_budget_reference"
+            [0x54] = "sound_budget_reference",
         };
 
         public static Dictionary<int, string> Globals = new Dictionary<int, string>
@@ -2118,7 +2118,6 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
-
             },
             [0x0BA] = new ScriptInfo(HsType.HaloOnlineValue.Void, "hud_camera_target_object")
             {
@@ -2510,7 +2509,7 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.UnitSeatMapping),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
             },
-            [0x109] = new ScriptInfo(HsType.HaloOnlineValue.Void, "vehicle_test_seat")
+            [0x109] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "vehicle_test_seat")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Vehicle),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.UnitSeatMapping),
@@ -3298,7 +3297,7 @@ namespace TagTool.Scripting
             [0x1B3] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ai_reset_objective")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
-            }, 
+            },
             [0x1B4] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ai_squad_patrol_objective_disallow")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
@@ -3426,7 +3425,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
             },
-            [0x1D0] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "flock_stop")
+            [0x1D2] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "flock_stop")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
             },
@@ -4842,7 +4841,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x2EF] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "player_action_test_reset"),
+            [0x2EF] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_action_test_reset"),
             [0x2F0] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "player_action_test_pda_active"),
             [0x2F1] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "player_action_test_grenade_trigger"),
             [0x2F2] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "player_action_test_vision_trigger"),
@@ -6024,7 +6023,7 @@ namespace TagTool.Scripting
             [0x42D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "chud_bonus_round_set_timer")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
-            },                
+            },
             [0x42E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cls"),
             [0x42F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "events_spam_suppression_enable")
             {
@@ -8014,7 +8013,7 @@ namespace TagTool.Scripting
             [0x632] = new ScriptInfo(HsType.HaloOnlineValue.Long, "survival_mode_max_lives"),
             [0x633] = new ScriptInfo(HsType.HaloOnlineValue.Void, "survival_mode_end_set"),
             [0x634] = new ScriptInfo(HsType.HaloOnlineValue.Void, "survival_mode_end_wave"),
-            [0x635] = new ScriptInfo(HsType.HaloOnlineValue.Boolean , "survival_mode_meets_set_start_requirements"),
+            [0x635] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "survival_mode_meets_set_start_requirements"),
             [0x636] = new ScriptInfo(HsType.HaloOnlineValue.Void, "survival_mode_set_pregame")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
