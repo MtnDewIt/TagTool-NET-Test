@@ -5785,36 +5785,36 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.GameDifficulty),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x40C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_primary_change_color")
-            {
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
-            },
-            [0x40D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_secondary_change_color")
-            {
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
-            },
-            [0x40E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_tertiary_change_color")
-            {
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
-            },
-            [0x40F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_primary_emblem_color")
-            {
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
-            },
-            [0x410] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_secondary_emblem_color")
-            {
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
-            },
-            [0x411] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_background_emblem_color")
-            {
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
-            },
+            //[0x40C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_primary_change_color")
+            //{
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.PlayerColor),
+            //},
+            //[0x40D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_secondary_change_color")
+            //{
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.PlayerColor),
+            //},
+            //[0x40E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_tertiary_change_color")
+            //{
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.PlayerColor),
+            //},
+            //[0x40F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_primary_emblem_color")
+            //{
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.PlayerColor),
+            //},
+            //[0x410] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_secondary_emblem_color")
+            //{
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.PlayerColor),
+            //},
+            //[0x411] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_background_emblem_color")
+            //{
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.PlayerColor),
+            //},
             [0x412] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_player_character_type")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),

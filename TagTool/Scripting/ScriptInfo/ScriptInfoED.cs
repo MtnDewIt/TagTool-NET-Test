@@ -1598,7 +1598,7 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
             },
-            [0x03F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "effect_new_on_object")
+            [0x03F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "effect_new_on_ground")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Effect),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
@@ -2542,7 +2542,7 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x111] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unit_set_dialogue")
+            [0x111] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unit_set_voice")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.AnyTag),
@@ -5904,7 +5904,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x415] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_training_activate_night_vision"),
+            [0x415] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_training_activate_flashlight"),
             [0x416] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_training_activate_crouch"),
             [0x417] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_training_activate_stealth"),
             [0x418] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_training_activate_equipment"),
@@ -8300,7 +8300,7 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
-            [0x680] = new ScriptInfo(HsType.HaloOnlineValue.Void, "biped_set_armor")
+            [0x680] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unit_set_armor")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),

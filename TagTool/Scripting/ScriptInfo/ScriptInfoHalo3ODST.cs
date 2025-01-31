@@ -2550,7 +2550,7 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x110] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unit_set_dialogue")
+            [0x110] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unit_set_voice")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.AnyTag),
@@ -4857,7 +4857,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x2EF] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "player_night_vision_on"),
+            [0x2EF] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "player_flashlight_on"),
             [0x2F0] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "player_active_camouflage_on"),
             [0x2F1] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "player_camera_control")
             {
@@ -4894,7 +4894,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
             },
-            [0x30E] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "unit_action_test_primary_trigger")
+            [0x30E] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "unit_action_test_pda_active")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
             },
@@ -5904,7 +5904,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x410] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_training_activate_night_vision"),
+            [0x410] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_training_activate_flashlight"),
             [0x411] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_training_activate_crouch"),
             [0x412] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_training_activate_stealth"),
             [0x413] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_training_activate_equipment"),
@@ -6274,36 +6274,36 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.GameDifficulty),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x46C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_primary_change_color")
-            {
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
-            },
-            [0x46D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_secondary_change_color")
-            {
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
-            },
-            [0x46E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_tertiary_change_color")
-            {
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
-            },
-            [0x46F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_primary_emblem_color")
-            {
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
-            },
-            [0x470] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_secondary_emblem_color")
-            {
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
-            },
-            [0x471] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_background_emblem_color")
-            {
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
-            },
+            //[0x46C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_primary_change_color")
+            //{
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.PlayerColor),
+            //},
+            //[0x46D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_secondary_change_color")
+            //{
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.PlayerColor),
+            //},
+            //[0x46E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_tertiary_change_color")
+            //{
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.PlayerColor),
+            //},
+            //[0x46F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_primary_emblem_color")
+            //{
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.PlayerColor),
+            //},
+            //[0x470] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_secondary_emblem_color")
+            //{
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.PlayerColor),
+            //},
+            //[0x471] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_background_emblem_color")
+            //{
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            //    new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.PlayerColor),
+            //},
             [0x472] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_player_character_type")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
