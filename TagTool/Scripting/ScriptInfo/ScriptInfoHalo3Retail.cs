@@ -88,7 +88,7 @@ namespace TagTool.Scripting
             [0x4F] = "cinematic_lightprobe",
             [0x50] = "animation_budget_reference",
             [0x51] = "looping_sound_budget_reference",
-            [0x52] = "sound_budget_reference"
+            [0x52] = "sound_budget_reference",
         };
 
         public static Dictionary<int, string> Globals = new Dictionary<int, string>
@@ -1405,7 +1405,21 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
             },
+            [0x01D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_scripting_show_thread")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x01E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_script_thread")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
             [0x01F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_scripting")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x020] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_scripting_globals")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
@@ -1512,7 +1526,7 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
             },
-            [0x03A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "effect_new_on_object")
+            [0x03A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "effect_new_on_ground")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Effect),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
@@ -1936,7 +1950,12 @@ namespace TagTool.Scripting
             },
             [0x09B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "havok_dump_world_close_movie"),
             [0x09C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "havok_profile_start"),
-            [0x09D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "havok_profile_end"),
+            [0x09D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "havok_profile_stop"),
+            [0x09E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "havok_profile_range")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
             [0x09F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "havok_reset_allocated_state"),
             [0x0A0] = new ScriptInfo(HsType.HaloOnlineValue.Void, "breakable_surfaces_enable")
             {
@@ -1970,6 +1989,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
+            [0x0A8] = new ScriptInfo(HsType.HaloOnlineValue.Void, "print_light_state"),
             [0x0A9] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_lights_enable_cinematic_shadow")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
@@ -1983,6 +2003,18 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
             },
+            [0x0AB] = new ScriptInfo(HsType.HaloOnlineValue.Void, "texture_camera_set_position")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
+            [0x0AC] = new ScriptInfo(HsType.HaloOnlineValue.Void, "texture_camera_set_target")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
             [0x0AD] = new ScriptInfo(HsType.HaloOnlineValue.Void, "texture_camera_attach_to_object")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
@@ -1993,7 +2025,14 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
             },
+            [0x0AF] = new ScriptInfo(HsType.HaloOnlineValue.Void, "texture_camera_position_world_offset")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
             [0x0B0] = new ScriptInfo(HsType.HaloOnlineValue.Void, "texture_camera_on"),
+            [0x0B1] = new ScriptInfo(HsType.HaloOnlineValue.Void, "texture_camera_bink"),
             [0x0B2] = new ScriptInfo(HsType.HaloOnlineValue.Void, "texture_camera_off"),
             [0x0B3] = new ScriptInfo(HsType.HaloOnlineValue.Void, "texture_camera_set_aspect_ratio")
             {
@@ -2004,9 +2043,50 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
+            [0x0B5] = new ScriptInfo(HsType.HaloOnlineValue.Void, "texture_camera_render_mode")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x0B6] = new ScriptInfo(HsType.HaloOnlineValue.Void, "texture_camera_set_fov")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
+            [0x0B7] = new ScriptInfo(HsType.HaloOnlineValue.Void, "texture_camera_set_fov_frame_target")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
             [0x0B8] = new ScriptInfo(HsType.HaloOnlineValue.Void, "texture_camera_enable_dynamic_lights")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x0B9] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_debug_texture_camera")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x0BA] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_structure_cluster")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x0BB] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_debug_structure_cluster_fog")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x0BC] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_debug_structure_fog_plane")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x0BD] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_debug_structure_fog_plane_infinite_extent")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x0BE] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_debug_structure_fog_zone")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x0BF] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_debug_structure_fog_zone_floodfill")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
             [0x0C0] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_debug_structure_all_fog_planes")
             {
@@ -2036,6 +2116,25 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
+            [0x0C5] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_debug_structure_non_occluded_fog_planes")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x0C6] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_debug_query_object_bitmaps")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x0C7] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_debug_query_bsp_resources")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x0C8] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_debug_query_all_object_resources"),
+            [0x0C9] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_debug_query_d3d_resources"),
+            [0x0CA] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_debug_text_using_simple_font")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
             [0x0CB] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_postprocess_color_tweaking_reset"),
             [0x0CC] = new ScriptInfo(HsType.HaloOnlineValue.Void, "scenery_animation_start")
@@ -2171,6 +2270,15 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
             },
+            [0x0E3] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "unit_custom_animation_relative_at_frame")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.AnimationGraph),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
             [0x0E4] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "unit_is_playing_custom_animation")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
@@ -2183,6 +2291,12 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
+            [0x0E7] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "preferred_animation_list_add")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+            },
+            [0x0E8] = new ScriptInfo(HsType.HaloOnlineValue.Void, "preferred_animation_list_clear"),
             [0x0E9] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unit_set_actively_controlled")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
@@ -2222,6 +2336,10 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
+            [0x0F1] = new ScriptInfo(HsType.HaloOnlineValue.Short, "object_get_turret_count")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
+            },
             [0x0F2] = new ScriptInfo(HsType.HaloOnlineValue.Vehicle, "object_get_turret")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
@@ -2232,7 +2350,7 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
             },
-            [0x0F4] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unit_set_emotion_by_?")
+            [0x0F4] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unit_set_emotion")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
@@ -2384,6 +2502,10 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
             },
+            [0x113] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unit_spew_action")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
+            },
             [0x114] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unit_animation_forced_seat")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
@@ -2467,6 +2589,11 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Device),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
+            [0x125] = new ScriptInfo(HsType.HaloOnlineValue.Void, "device_ignore_player_set")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Device),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
             [0x126] = new ScriptInfo(HsType.HaloOnlineValue.Void, "device_operates_automatically_set")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Device),
@@ -2524,6 +2651,10 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
             [0x133] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cheats_load"),
+            [0x134] = new ScriptInfo(HsType.HaloOnlineValue.Void, "drop_safe")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.AnyTag),
+            },
             [0x135] = new ScriptInfo(HsType.HaloOnlineValue.Void, "drop")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
@@ -2540,6 +2671,10 @@ namespace TagTool.Scripting
             [0x139] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ai_dialogue_enable")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x13A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ai_infection_suppress")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
             [0x13B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ai_dialogue_log_reset"),
             [0x13C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ai_dialogue_log_dump")
@@ -2768,9 +2903,14 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
             },
-            [0x16D] = new ScriptInfo(HsType.HaloOnlineValue.Short, "ai_migrate")
+            [0x16D] = new ScriptInfo(HsType.HaloOnlineValue.Short, "ai_migrate_form")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
+            [0x16E] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "ai_morph")
+            {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
             },
@@ -2866,6 +3006,19 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
             },
+            [0x185] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "ai_rotate_scenario")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
+            [0x186] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "ai_translate_scenario")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
             [0x187] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "ai_set_task")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
@@ -2944,7 +3097,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Vehicle),
             },
-            [0x19A] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "unit_in_vehicle?")
+            [0x19A] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "ai_player_needs_vehicle")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
             },
@@ -3012,6 +3165,20 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
             },
+            [0x1AA] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "flock_definition_set")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.AnyTag),
+            },
+            [0x1AB] = new ScriptInfo(HsType.HaloOnlineValue.Void, "flock_unperch")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+            },
+            [0x1AC] = new ScriptInfo(HsType.HaloOnlineValue.Void, "drop_ai")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
             [0x1AD] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ai_verify_tags"),
             [0x1AE] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "ai_wall_lean")
             {
@@ -3032,7 +3199,7 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.AiLine),
             },
-            [0x1B2] = new ScriptInfo(HsType.HaloOnlineValue.Real, "ai_play_line_on_object_allied")
+            [0x1B2] = new ScriptInfo(HsType.HaloOnlineValue.Real, "ai_play_line_on_object_for_team")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.AiLine),
@@ -3257,12 +3424,17 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.AiCommandScript),
             },
-            [0x1DF] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "cs_command_script_attached")
+            [0x1DF] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "cs_command_script_queued")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.AiCommandScript),
             },
             [0x1E0] = new ScriptInfo(HsType.HaloOnlineValue.Short, "cs_number_queued")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
+            },
+            [0x1E1] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "cs_moving"),
+            [0x1E2] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "cs_moving")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
             },
@@ -3274,7 +3446,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
             },
-            [0x1E5] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "vs_running_atom_?")
+            [0x1E5] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "vs_running_atom_action")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
             },
@@ -3448,11 +3620,11 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
             },
-            [0x203] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cs_move_towards?")
+            [0x203] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cs_move_towards")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
             },
-            [0x204] = new ScriptInfo(HsType.HaloOnlineValue.Void, "vs_move_towards?")
+            [0x204] = new ScriptInfo(HsType.HaloOnlineValue.Void, "vs_move_towards")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
@@ -3728,6 +3900,16 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.AiLine),
             },
+            [0x231] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cs_die")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
+            [0x232] = new ScriptInfo(HsType.HaloOnlineValue.Void, "vs_die")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
             [0x233] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cs_deploy_turret")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.PointReference),
@@ -3853,11 +4035,11 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x24B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cs_suppress_dialogue_global?")
+            [0x24B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cs_suppress_dialogue_global")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x24C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "vs_suppress_dialogue_global?")
+            [0x24C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "vs_suppress_dialogue_global")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
@@ -4031,12 +4213,12 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x26F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cs_turn_sharpness?")
+            [0x26F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cs_turn_sharpness")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
             },
-            [0x270] = new ScriptInfo(HsType.HaloOnlineValue.Void, "vs_turn_sharpness?")
+            [0x270] = new ScriptInfo(HsType.HaloOnlineValue.Void, "vs_turn_sharpness")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
@@ -4183,6 +4365,16 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
+            [0x293] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cs_smash_direction")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x294] = new ScriptInfo(HsType.HaloOnlineValue.Void, "vs_smash_direction")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
             [0x295] = new ScriptInfo(HsType.HaloOnlineValue.Void, "camera_control")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
@@ -4277,6 +4469,15 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
             },
+            [0x2A7] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cinematic_camera_set_easing_in")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
             [0x2A8] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cinematic_camera_set_easing_out")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
@@ -4330,12 +4531,17 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.CutsceneCameraPoint),
             },
             [0x2B7] = new ScriptInfo(HsType.HaloOnlineValue.Void, "pvs_clear"),
+            [0x2B8] = new ScriptInfo(HsType.HaloOnlineValue.Void, "pvs_reset"),
             [0x2B9] = new ScriptInfo(HsType.HaloOnlineValue.Void, "players_unzoom_all"),
             [0x2BA] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_enable_input")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
             [0x2BB] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_disable_movement")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x2BC] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_disable_weapon_pickup")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
@@ -4407,7 +4613,8 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
             [0x2E1] = new ScriptInfo(HsType.HaloOnlineValue.Void, "map_reset"),
-            [0x2E3] = new ScriptInfo(HsType.HaloOnlineValue.Void, "switch_zone_set")
+            [0x2E2] = new ScriptInfo(HsType.HaloOnlineValue.Void, "map_reset_random"),
+            [0x2E3] = new ScriptInfo(HsType.HaloOnlineValue.Void, "switch_bsp")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
@@ -4417,6 +4624,11 @@ namespace TagTool.Scripting
             },
             [0x2E5] = new ScriptInfo(HsType.HaloOnlineValue.Long, "current_zone_set"),
             [0x2E6] = new ScriptInfo(HsType.HaloOnlineValue.Long, "current_zone_set_fully_active"),
+            [0x2E7] = new ScriptInfo(HsType.HaloOnlineValue.Void, "switch_map_and_zone_set")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
             [0x2E8] = new ScriptInfo(HsType.HaloOnlineValue.Void, "crash")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
@@ -4442,18 +4654,38 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
             },
+            [0x2EE] = new ScriptInfo(HsType.HaloOnlineValue.Void, "screenshot_debug"),
             [0x2EF] = new ScriptInfo(HsType.HaloOnlineValue.Void, "screenshot_big")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
             },
-            [0x2F0] = new ScriptInfo(HsType.HaloOnlineValue.Void, "screenshot_big_jittered")
+            [0x2F0] = new ScriptInfo(HsType.HaloOnlineValue.Void, "screenshot_big_raw")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
             },
-            [0x2F5] = new ScriptInfo(HsType.HaloOnlineValue.Void, "main_menu"),
-            [0x2F6] = new ScriptInfo(HsType.HaloOnlineValue.Void, "main_halt"),
+            [0x2F1] = new ScriptInfo(HsType.HaloOnlineValue.Void, "screenshot_size")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x2F2] = new ScriptInfo(HsType.HaloOnlineValue.Void, "screenshot_simple")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x2F3] = new ScriptInfo(HsType.HaloOnlineValue.Void, "screenshot_cubemap")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x2F4] = new ScriptInfo(HsType.HaloOnlineValue.Void, "screenshot_webmap")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x2F5] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cubemap_dynamic_generate"),
+            [0x2F6] = new ScriptInfo(HsType.HaloOnlineValue.Void, "main_menu"),
+            [0x2F7] = new ScriptInfo(HsType.HaloOnlineValue.Void, "main_halt"),
             [0x2F8] = new ScriptInfo(HsType.HaloOnlineValue.Void, "map_name")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
@@ -4470,9 +4702,34 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.GameDifficulty),
             },
+            [0x2FC] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_active_primary_skulls")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x2FD] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_active_secondary_skulls")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x2FE] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_coop_players")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x2FF] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_initial_zone_set")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x300] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_tick_rate")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
             [0x301] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_start")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x302] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_start_when_ready"),
+            [0x303] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_start_when_joined")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
             [0x304] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_rate")
             {
@@ -4480,14 +4737,61 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
             },
-            [0x308] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_memory"),
-            [0x309] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_memory_by_file"),
-            [0x30A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_memory_for_file")
+            [0x305] = new ScriptInfo(HsType.HaloOnlineValue.Void, "texture_cache_flush"),
+            [0x306] = new ScriptInfo(HsType.HaloOnlineValue.Void, "geometry_cache_flush"),
+            [0x307] = new ScriptInfo(HsType.HaloOnlineValue.Void, "sound_cache_flush"),
+            [0x308] = new ScriptInfo(HsType.HaloOnlineValue.Void, "animation_cache_flush"),
+            [0x309] = new ScriptInfo(HsType.HaloOnlineValue.Void, "font_cache_flush"),
+            [0x30A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "language_set")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
             },
-            [0x30B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_tags"),
-            [0x30C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "tags_verify_all"),
+            [0x30B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "texture_cache_test_malloc"),
+            [0x30C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_memory"),
+            [0x30D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_memory_by_file"),
+            [0x30E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_memory_for_file")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x30F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_tags"),
+            [0x310] = new ScriptInfo(HsType.HaloOnlineValue.Void, "tags_verify_all"),
+            [0x311] = new ScriptInfo(HsType.HaloOnlineValue.Void, "profiler_enable")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x312] = new ScriptInfo(HsType.HaloOnlineValue.Void, "profiler_set_thread")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x313] = new ScriptInfo(HsType.HaloOnlineValue.Void, "profiler_set_sort_method")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x314] = new ScriptInfo(HsType.HaloOnlineValue.Void, "profiler_set_range")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x315] = new ScriptInfo(HsType.HaloOnlineValue.Void, "profiler_set_attribute")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x316] = new ScriptInfo(HsType.HaloOnlineValue.Void, "trace_next_frame")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x317] = new ScriptInfo(HsType.HaloOnlineValue.Void, "trace_next_frame_to_file")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x318] = new ScriptInfo(HsType.HaloOnlineValue.Void, "trace_tick")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x319] = new ScriptInfo(HsType.HaloOnlineValue.Void, "collision_log_enable")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
             [0x31A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "damage_control_get")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
@@ -4497,6 +4801,7 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
+            [0x31C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ai_lines"),
             [0x31D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ai_dialogue_break_on_vocalization")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
@@ -4554,11 +4859,16 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.CinematicSceneDefinition),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
+            [0x32C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cinematic_get_shot"),
             [0x32D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cinematic_set_early_exit")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
             [0x32E] = new ScriptInfo(HsType.HaloOnlineValue.Long, "cinematic_get_early_exit"),
+            [0x32F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cinematic_set_active_camera")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+            },
             [0x330] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cinematic_object_create")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
@@ -4611,6 +4921,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
             },
+            [0x33F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cinematic_reset"),
             [0x340] = new ScriptInfo(HsType.HaloOnlineValue.Void, "camera_set_briefing")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
@@ -4631,21 +4942,21 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
-            [0x344] = new ScriptInfo(HsType.HaloOnlineValue.Sound, "cinematic_tag_reference_get_sound")
+            [0x344] = new ScriptInfo(HsType.HaloOnlineValue.Sound, "cinematic_tag_reference_get_dialogue")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
-            [0x345] = new ScriptInfo(HsType.HaloOnlineValue.Sound, "cinematic_tag_reference_get_sound2")
+            [0x345] = new ScriptInfo(HsType.HaloOnlineValue.Sound, "cinematic_tag_reference_get_music")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
-            [0x346] = new ScriptInfo(HsType.HaloOnlineValue.LoopingSound, "cinematic_tag_reference_get_looping_sound")
+            [0x346] = new ScriptInfo(HsType.HaloOnlineValue.LoopingSound, "cinematic_tag_reference_get_music_looping")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
@@ -4658,7 +4969,7 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
-            [0x348] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "cinematic_tag_reference_get_?")
+            [0x348] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "cinematic_scripting_object_coop_flags_valid")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
@@ -4682,7 +4993,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long)
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
             [0x34C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cinematic_scripting_start_animation")
             {
@@ -4799,15 +5110,154 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
             },
-            [0x368] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "player_has_achievement")
+            [0x363] = new ScriptInfo(HsType.HaloOnlineValue.Void, "saved_games_enumerate")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            },
+            [0x364] = new ScriptInfo(HsType.HaloOnlineValue.Void, "saved_games_delete_campaign_save")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            },
+            [0x365] = new ScriptInfo(HsType.HaloOnlineValue.Void, "saved_games_save_last_film")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            },
+            [0x366] = new ScriptInfo(HsType.HaloOnlineValue.Void, "saved_games_autosave_free_up_space"),
+            [0x367] = new ScriptInfo(HsType.HaloOnlineValue.Void, "content_catalogue_display_status")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x368] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "achievement_was_earned_by_player")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
             },
-            [0x369] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_grant_achievement")
+            [0x369] = new ScriptInfo(HsType.HaloOnlineValue.Void, "achievement_grant_to_player")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+            },
+            [0x36A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "achievements_enable")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x36B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "achievements_skip_validation_checks")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x36C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_spawning_influencers")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x36D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_spawning_respawn_zones")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x36E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_spawning_proximity_forbid")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x36F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_spawning_moving_vehicle")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x370] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_spawning_weapon_influences")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x371] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_spawning_dangerous_projectiles")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x372] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_spawning_deployed_equipment")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x373] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_spawning_proximity_enemy")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x374] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_spawning_teammates")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x375] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_spawning_random_influence")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x376] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_spawning_nominal_weight")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x377] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_spawning_natural_weight")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x378] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_spawning_target")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x379] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_spawning_use_history")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x37A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_initial_spawn_point_objects")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x37B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_respawn_point_objects")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x37C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_export_variant_settings")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x37D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_engine_event_test_general")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x37E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_engine_event_test_flavor")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x37F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_engine_event_test_slayer")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x380] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_engine_event_test_ctf")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x381] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_engine_event_test_oddball")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x382] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_engine_event_test_king")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x383] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_engine_event_test_vip")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x384] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_engine_event_test_juggernaut")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x385] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_engine_event_test_territories")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x386] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_engine_event_test_assault")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x387] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_engine_event_test_infection")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
             [0x388] = new ScriptInfo(HsType.HaloOnlineValue.Void, "core_load"),
             [0x389] = new ScriptInfo(HsType.HaloOnlineValue.Void, "core_load_name")
@@ -4831,6 +5281,14 @@ namespace TagTool.Scripting
             [0x38F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "core_set_upload_option")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x390] = new ScriptInfo(HsType.HaloOnlineValue.Void, "force_debugger_not_present")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x391] = new ScriptInfo(HsType.HaloOnlineValue.Void, "force_debugger_always_present")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
             [0x392] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "game_safe_to_save"),
             [0x393] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "game_safe_to_speak"),
@@ -4918,6 +5376,12 @@ namespace TagTool.Scripting
             [0x3A7] = new ScriptInfo(HsType.HaloOnlineValue.Void, "sound_impulse_mark_as_outro")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Sound),
+            },
+            [0x3A8] = new ScriptInfo(HsType.HaloOnlineValue.Void, "sound_impulse_start_naked")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Sound),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
             },
             [0x3A9] = new ScriptInfo(HsType.HaloOnlineValue.Void, "sound_looping_predict")
             {
@@ -5016,6 +5480,10 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
             },
+            [0x3BD] = new ScriptInfo(HsType.HaloOnlineValue.Void, "water_float_reset")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
+            },
             [0x3BE] = new ScriptInfo(HsType.HaloOnlineValue.Void, "hud_show_training_text")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
@@ -5031,7 +5499,7 @@ namespace TagTool.Scripting
             [0x3C1] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_training_activate_flashlight"),
             [0x3C2] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_training_activate_crouch"),
             [0x3C3] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_training_activate_stealth"),
-            [0x3C4] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_training_activate_?"),
+            [0x3C4] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_training_activate_equipment"),
             [0x3C5] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_training_activate_jump"),
             [0x3C6] = new ScriptInfo(HsType.HaloOnlineValue.Void, "hud_activate_team_nav_point_flag")
             {
@@ -5050,15 +5518,27 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
+            [0x3C9] = new ScriptInfo(HsType.HaloOnlineValue.Void, "chud_texture_cam")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x3CA] = new ScriptInfo(HsType.HaloOnlineValue.Void, "chud_cortana_set_range_multiplier")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
             [0x3CB] = new ScriptInfo(HsType.HaloOnlineValue.Void, "play_cortana_effect")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+            },
+            [0x3CC] = new ScriptInfo(HsType.HaloOnlineValue.Void, "chud_show")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
             [0x3CD] = new ScriptInfo(HsType.HaloOnlineValue.Void, "chud_show_weapon_stats")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x3CE] = new ScriptInfo(HsType.HaloOnlineValue.Void, "chud_show_health")
+            [0x3CE] = new ScriptInfo(HsType.HaloOnlineValue.Void, "chud_show_crosshair")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
@@ -5092,7 +5572,7 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
             },
             [0x3D6] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cls"),
-            [0x3D7] = new ScriptInfo(HsType.HaloOnlineValue.Void, "error_overflow_suppression")
+            [0x3D7] = new ScriptInfo(HsType.HaloOnlineValue.Void, "events_spam_suppression_enable")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
@@ -5229,9 +5709,370 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
             [0x3FB] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "controller_get_look_invert"),
-            [0x3FC] = new ScriptInfo(HsType.HaloOnlineValue.Long, "controller_unlock_solo_levels")
+            [0x3FC] = new ScriptInfo(HsType.HaloOnlineValue.Long, "user_interface_controller_get_last_level_played")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
+            [0x3FD] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_look_inverted")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x3FE] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_vibration_enabled")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x3FF] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_flight_stick_aircraft_controls")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x400] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_auto_center_look")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x401] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_crouch_lock")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x402] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_button_preset")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.ButtonPreset),
+            },
+            [0x403] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_joystick_preset")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.JoystickPreset),
+            },
+            [0x404] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_look_sensitivity")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
+            [0x405] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_unlock_single_player_levels")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            },
+            [0x406] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_lock_single_player_levels")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            },
+            [0x407] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_unlock_skulls")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            },
+            [0x408] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_lock_skulls")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            },
+            [0x409] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_unlock_models")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            },
+            [0x40A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_lock_models")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            },
+            [0x40B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_single_player_level_completed")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.GameDifficulty),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x40C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_primary_change_color")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
+            },
+            [0x40D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_secondary_change_color")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
+            },
+            [0x40E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_tertiary_change_color")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
+            },
+            [0x40F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_primary_emblem_color")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
+            },
+            [0x410] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_secondary_emblem_color")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
+            },
+            [0x411] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_background_emblem_color")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.playercolor),
+            },
+            [0x412] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_player_character_type")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.PlayerCharacterType),
+            },
+            [0x413] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_emblem_info")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
+            [0x414] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_voice_output_setting")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.VoiceOutputSetting),
+            },
+            [0x415] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_voice_mask")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.VoiceMask),
+            },
+            [0x416] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_subtitle_setting")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.SubtitleSetting),
+            },
+            [0x417] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_unsignedin_user")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x418] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_display_storage_device_selection")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            },
+            [0x419] = new ScriptInfo(HsType.HaloOnlineValue.Void, "font_cache_bitmap_save")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x41A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ui_debug_load_main_menu"),
+            [0x41B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ui_debug_text_bounds")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x41C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ui_debug_text_font")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x41D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ui_debug_show_title_safe_bounds")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x41E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ui_debug_element_bounds")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x41F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ui_memory_dump")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x420] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ui_time_scale_step")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
+            [0x421] = new ScriptInfo(HsType.HaloOnlineValue.Void, "xoverlapped_debug_render")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x422] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_load_screen")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+            },
+            [0x423] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_reset"),
+            [0x424] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_start"),
+            [0x425] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_stop"),
+            [0x426] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_error_post")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x427] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_error_post_toast")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x428] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_error_resolve")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x429] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_error_clear")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x42A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_dialog_show")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+            },
+            [0x42B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_spartan_milestone_show")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
+            [0x42C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_spartan_rank_show")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
+            [0x42D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_print_active_screens"),
+            [0x42E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_print_active_screen_strings"),
+            [0x42F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_screen_name")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x430] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_screen_animation")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x431] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_screen_bounds")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x432] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_screen_rotation")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x433] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_group_name")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x434] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_group_animation")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x435] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_group_bounds")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x436] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_group_rotation")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x437] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_list_name")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x438] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_list_animation")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x439] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_list_bounds")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x43A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_list_rotation")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x43B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_list_item_name")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x43C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_list_item_animation")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x43D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_list_item_bounds")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x43E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_list_item_rotation")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x43F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_text_name")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x440] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_text_animation")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x441] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_text_bounds")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x442] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_text_rotation")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x443] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_bitmap_name")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x444] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_bitmap_animation")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x445] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_bitmap_bounds")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x446] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_bitmap_rotation")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x447] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_debug_music_state")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x448] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cc_enable")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x449] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cc_test")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
             [0x44A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "objectives_clear"),
             [0x44B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "objectives_show_up_to")
@@ -5246,7 +6087,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
-            [0x44E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "objectives_primary_unavailable")
+            [0x44E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "objectives_secondary_finish")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
@@ -5258,25 +6099,180 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x46C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_delegate_host")
+            [0x451] = new ScriptInfo(HsType.HaloOnlineValue.Void, "input_disable_claw_button_combos")
             {
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x46D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_delegate_leader")
-            {
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
-            },
-            [0x46E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_map_name")
+            [0x452] = new ScriptInfo(HsType.HaloOnlineValue.Void, "update_remote_camera"),
+            [0x453] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_build_network_config"),
+            [0x454] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_build_game_variant")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
             },
-            [0x470] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_campaign_difficulty")
+            [0x455] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_verify_game_variant")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x456] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_load_and_use_game_variant")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x457] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_use_hopper_directory")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x458] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_quality_dump"),
+            [0x459] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_quality_clear"),
+            [0x45A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_quality_set_connection_badness_history")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
+            [0x45B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_quality_set_squad_host_badness_history")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
+            [0x45C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_quality_set_squad_client_badness_history")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
+            [0x45D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_quality_set_group_host_badness_history")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
+            [0x45E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_quality_set_group_client_badness_history")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
+            [0x45F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_quality_set_estimated_bandwidth")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x460] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_join_friend")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x461] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_join_squad_to_friend")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x462] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_join_sessionid")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x463] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_join_squad_to_sessionid")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x464] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_enable_join_friend_loop")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x465] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_set_maximum_player_count")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x466] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_status_filter")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x467] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_sim_reset"),
+            [0x468] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_sim_spike_now"),
+            [0x469] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_sim_dropspike_now"),
+            [0x46A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_ping"),
+            [0x46B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_channel_delete"),
+            [0x46C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_delegate_host")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x46D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_delegate_leader")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x46E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_map_name")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x46F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_variant")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x470] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_campaign_difficulty")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
             },
-            [0x471] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_player_color")
+            [0x471] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_player_color")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x472] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_reset_objects"),
+            [0x473] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_fatal_error"),
+            [0x474] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_set_machine_name")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x475] = new ScriptInfo(HsType.HaloOnlineValue.Void, "events_enabled")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x476] = new ScriptInfo(HsType.HaloOnlineValue.Void, "events_disable_suppression")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x477] = new ScriptInfo(HsType.HaloOnlineValue.Void, "event_global_display_category")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Event),
+            },
+            [0x478] = new ScriptInfo(HsType.HaloOnlineValue.Void, "event_global_log_category")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Event),
+            },
+            [0x479] = new ScriptInfo(HsType.HaloOnlineValue.Void, "event_global_remote_log_category")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Event),
+            },
+            [0x47A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "event_display_category")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Event),
+            },
+            [0x47B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "event_force_display_category")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Event),
+            },
+            [0x47C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "event_log_category")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Event),
+            },
+            [0x47D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "event_remote_log_category")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Event),
+            },
+            [0x47E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "event_debugger_break_category")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Event),
+            },
+            [0x47F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "event_halt_category")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Event),
+            },
+            [0x480] = new ScriptInfo(HsType.HaloOnlineValue.Void, "event_list_categories")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x481] = new ScriptInfo(HsType.HaloOnlineValue.Void, "events_suppress_console_display")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
             [0x482] = new ScriptInfo(HsType.HaloOnlineValue.Void, "play_bink_movie")
             {
@@ -5286,7 +6282,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.BinkDefinition),
             },
-            [0x484] = new ScriptInfo(HsType.HaloOnlineValue.Void, "play_credits"),
+            [0x484] = new ScriptInfo(HsType.HaloOnlineValue.Void, "play_credits_skip_to_menu"),
             [0x485] = new ScriptInfo(HsType.HaloOnlineValue.Long, "bink_time"),
             [0x486] = new ScriptInfo(HsType.HaloOnlineValue.Void, "set_global_doppler_factor")
             {
@@ -5306,19 +6302,196 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
             },
-            [0x48A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "data_mine_display_mission_segment")
+            [0x48A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "data_mine_insert")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
             },
-            [0x48B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "data_mine_insert"),
-            [0x48D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "data_mine_upload"),
-            [0x48E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "data_mine_playback")
-            {
-                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
-            },
-            [0x490] = new ScriptInfo(HsType.HaloOnlineValue.Void, "data_mine_enable")
+            [0x48B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "data_mine_upload"),
+            [0x48C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "data_mine_enable")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x48D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "data_mine_flush"),
+            [0x48E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "data_mine_debug_menu_setting")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x48F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "data_mine_open_debug_menu"),
+            [0x490] = new ScriptInfo(HsType.HaloOnlineValue.Void, "data_mine_set_display_mission_segment")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x491] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_memory_allocators")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x492] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_memory_allocators")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x493] = new ScriptInfo(HsType.HaloOnlineValue.Void, "display_video_standard"),
+            [0x494] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_xcr_monkey_enable")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x495] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_show_guide_status"),
+            [0x496] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_show_users_xuids"),
+            [0x497] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_show_are_users_friends")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x498] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_invite_friend")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x499] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_get_squad_session_id"),
+            [0x49A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_auto_get_screens")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x49B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_auto_get_screen_widgets")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x49C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_auto_screen_get_datasources")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x49D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_auto_screen_get_data_columns")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+            },
+            [0x49E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_auto_screen_get_data")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+            },
+            [0x49F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_auto_screen_invoke_list_item_by_name")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+            },
+            [0x4A0] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_auto_screen_invoke_list_item_by_text")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x4A1] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_auto_screen_invoke_list_item_by_handle")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x4A2] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_auto_screen_send_button_press")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x4A3] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_download_storage_file")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x4A4] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_game_results_save_to_file")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x4A5] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_game_results_load_from_file")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x4A6] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_roster_save_to_file")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x4A7] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_roster_load_from_file")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x4A8] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_fragment_utility_drive")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x4A9] = new ScriptInfo(HsType.HaloOnlineValue.Void, "clear_webcache"),
+            [0x4AA] = new ScriptInfo(HsType.HaloOnlineValue.Void, "force_manifest_redownload"),
+            [0x4AB] = new ScriptInfo(HsType.HaloOnlineValue.Void, "online_files_retry"),
+            [0x4AC] = new ScriptInfo(HsType.HaloOnlineValue.Void, "online_files_upload")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x4AD] = new ScriptInfo(HsType.HaloOnlineValue.Void, "online_files_throttle_bandwidth")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x4AE] = new ScriptInfo(HsType.HaloOnlineValue.Void, "online_marketplace_refresh"),
+            [0x4AF] = new ScriptInfo(HsType.HaloOnlineValue.Void, "webstats_disable")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x4B0] = new ScriptInfo(HsType.HaloOnlineValue.Void, "webstats_test_submit")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x4B1] = new ScriptInfo(HsType.HaloOnlineValue.Void, "webstats_test_submit_multiplayer"),
+            [0x4B2] = new ScriptInfo(HsType.HaloOnlineValue.Void, "webstats_test_submit_campaign"),
+            [0x4B3] = new ScriptInfo(HsType.HaloOnlineValue.Void, "webstats_throttle_bandwidth")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x4B4] = new ScriptInfo(HsType.HaloOnlineValue.Void, "netdebug_prefer_internet")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x4B5] = new ScriptInfo(HsType.HaloOnlineValue.Void, "flag_new")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x4B6] = new ScriptInfo(HsType.HaloOnlineValue.Void, "flag_new_at_look")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x4B7] = new ScriptInfo(HsType.HaloOnlineValue.Void, "flags_clear"),
+            [0x4B8] = new ScriptInfo(HsType.HaloOnlineValue.Void, "flags_default_name")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x4B9] = new ScriptInfo(HsType.HaloOnlineValue.Void, "flags_default_comment")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x4BA] = new ScriptInfo(HsType.HaloOnlineValue.Void, "flags_set_filter")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
             },
             [0x4BB] = new ScriptInfo(HsType.HaloOnlineValue.Void, "bug_now")
             {
@@ -5346,6 +6519,26 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
+            [0x4C1] = new ScriptInfo(HsType.HaloOnlineValue.Void, "voice_set_mute")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x4C2] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_leaderboard_clear_hopper")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x4C3] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_leaderboard_clear_global_arbitrated")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x4C4] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_leaderboard_clear_global_unarbitrated")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x4C5] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_leaderboard_refresh"),
+            [0x4C6] = new ScriptInfo(HsType.HaloOnlineValue.Void, "dump_loaded_tags"),
             [0x4C7] = new ScriptInfo(HsType.HaloOnlineValue.Long, "interpolator_start")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
@@ -5437,6 +6630,10 @@ namespace TagTool.Scripting
             [0x4D9] = new ScriptInfo(HsType.HaloOnlineValue.Void, "interpolator_stop_all"),
             [0x4DA] = new ScriptInfo(HsType.HaloOnlineValue.Void, "interpolator_restart_all"),
             [0x4DB] = new ScriptInfo(HsType.HaloOnlineValue.Void, "interpolator_flip"),
+            [0x4DC] = new ScriptInfo(HsType.HaloOnlineValue.Void, "set_pc_runtime_language")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
             [0x4DD] = new ScriptInfo(HsType.HaloOnlineValue.Void, "animation_cache_stats_reset"),
             [0x4DE] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cinematic_clone_players_weapon")
             {
@@ -5521,6 +6718,23 @@ namespace TagTool.Scripting
             },
             [0x4F2] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cache_block_for_one_frame"),
             [0x4F3] = new ScriptInfo(HsType.HaloOnlineValue.Void, "sound_suppress_ambience_update_on_revert"),
+            [0x4F4] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_autoexposure_enable")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x4F5] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_exposure_full")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
+            [0x4F6] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_exposure_fade_in")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
             [0x4F7] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_exposure_fade_out")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
@@ -5534,6 +6748,10 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
+            [0x4FA] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_exposure_set_environment_darken")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
             [0x4FB] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_depth_of_field_enable")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
@@ -5545,6 +6763,16 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
             },
+            [0x4FD] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_dof_focus_depth")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
+            [0x4FE] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_dof_blur_animate")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
+            [0x4FF] = new ScriptInfo(HsType.HaloOnlineValue.Void, "render_debug_video_mode"),
             [0x500] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cinematic_lightmap_shadow_disable"),
             [0x501] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cinematic_lightmap_shadow_enable"),
             [0x502] = new ScriptInfo(HsType.HaloOnlineValue.Void, "predict_animation")
@@ -5560,7 +6788,12 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.MpTeam),
             },
+            [0x505] = new ScriptInfo(HsType.HaloOnlineValue.Void, "deterministic_end_game"),
             [0x506] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_game_won")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.MpTeam),
+            },
+            [0x507] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_respawn_override_timers")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.MpTeam),
             },
@@ -5574,6 +6807,37 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.MpTeam),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.MpTeam),
             },
+            [0x50A] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "mp_round_started"),
+            [0x50B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "give_medal")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
+            [0x50C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_scripts_reset"),
+            [0x50D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_ai_place")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
+            },
+            [0x50E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_ai_place")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
+            [0x50F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_ai_kill")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
+            },
+            [0x510] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_ai_kill_silent")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Ai),
+            },
+            [0x511] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_object_create")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.ObjectName),
+            },
+            [0x512] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_object_create_clone")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.ObjectName),
+            },
             [0x513] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_object_create_anew")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.ObjectName),
@@ -5581,6 +6845,108 @@ namespace TagTool.Scripting
             [0x514] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_object_destroy")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
+            },
+            [0x515] = new ScriptInfo(HsType.HaloOnlineValue.Void, "tag_file_set_backend")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x516] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_object_belongs_to_team")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.MpTeam),
+            },
+            [0x517] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_weapon_belongs_to_team")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.MpTeam),
+            },
+            [0x518] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_debug_goal_object_boundary_geometry")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x519] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mp_dump_candy_monitor_state"),
+            [0x51A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "set_camera_third_person")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x51B] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "get_camera_third_person")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x51C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "determinism_debug_manager_enable_logging")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x51D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "determinism_debug_manager_set_trace_flags")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x51E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "determinism_debug_manager_enable_game_state_checksum")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x51F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "determinism_debug_manager_enable_trace")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x520] = new ScriptInfo(HsType.HaloOnlineValue.Void, "determinism_debug_manager_set_consumer_sample_level")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x521] = new ScriptInfo(HsType.HaloOnlineValue.Void, "saved_film_play")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x522] = new ScriptInfo(HsType.HaloOnlineValue.Void, "saved_film_play_last"),
+            [0x523] = new ScriptInfo(HsType.HaloOnlineValue.Void, "saved_film_disable_version_checking")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x524] = new ScriptInfo(HsType.HaloOnlineValue.Void, "saved_film_toggle_debug_saving")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x525] = new ScriptInfo(HsType.HaloOnlineValue.Void, "saved_films_delete_on_level_load")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x526] = new ScriptInfo(HsType.HaloOnlineValue.Void, "saved_films_show_timestamp")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x527] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "mover_set_program")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
+            [0x528] = new ScriptInfo(HsType.HaloOnlineValue.Void, "determinism_log_compare_log_files")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x529] = new ScriptInfo(HsType.HaloOnlineValue.Void, "floating_point_exceptions_enable")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x52A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "determinism_debug_manager_enable_log_file_comparision_on_oos")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x52B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "event_logs_snapshot"),
+            [0x52C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "tag_reload_force")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x52D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "tag_unload_force")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x52E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "tag_load_force")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
             },
             [0x52F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "predict_bink_movie")
             {
@@ -5590,22 +6956,102 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.BinkDefinition),
             },
+            [0x531] = new ScriptInfo(HsType.HaloOnlineValue.Void, "profiler_dump_history"),
             [0x532] = new ScriptInfo(HsType.HaloOnlineValue.Void, "camera_set_mode")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
+            [0x533] = new ScriptInfo(HsType.HaloOnlineValue.Void, "camera_set_flying_cam_at_point")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.CutsceneCameraPoint),
+            },
             [0x534] = new ScriptInfo(HsType.HaloOnlineValue.Long, "game_coop_player_count"),
+            [0x535] = new ScriptInfo(HsType.HaloOnlineValue.Void, "player_force_mode")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+            },
+            [0x536] = new ScriptInfo(HsType.HaloOnlineValue.Void, "profiler_output_pulse"),
+            [0x537] = new ScriptInfo(HsType.HaloOnlineValue.Void, "string_id_name")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x538] = new ScriptInfo(HsType.HaloOnlineValue.Void, "find")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
             [0x539] = new ScriptInfo(HsType.HaloOnlineValue.Void, "add_recycling_volume")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.TriggerVolume),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
+            [0x53A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "tag_resources_set_per_frame_publish")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x53B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "object_recycling_clear_history"),
+            [0x53C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "dump_cinematics_script"),
+            [0x53D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "global_preferences_clear"),
+            [0x53E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "network_storage_set_storage_subdirectory")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x53F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "network_storage_set_storage_user")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x540] = new ScriptInfo(HsType.HaloOnlineValue.Void, "status_line_dump"),
             [0x541] = new ScriptInfo(HsType.HaloOnlineValue.Long, "game_tick_get"),
+            [0x542] = new ScriptInfo(HsType.HaloOnlineValue.Void, "loop_it")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x543] = new ScriptInfo(HsType.HaloOnlineValue.Void, "loop_clear"),
+            [0x544] = new ScriptInfo(HsType.HaloOnlineValue.Void, "status_lines_enable")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x545] = new ScriptInfo(HsType.HaloOnlineValue.Void, "status_lines_disable")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x546] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "on_target_platform"),
+            [0x547] = new ScriptInfo(HsType.HaloOnlineValue.Void, "profile_activate")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x548] = new ScriptInfo(HsType.HaloOnlineValue.Void, "profile_deactivate")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x549] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_game_set_player_standing")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x54A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_get_game_id"),
+            [0x54B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "generate_rsa_2048_key_pair"),
+            [0x54C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "create_secure_test_file"),
+            [0x54D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_matchmaking_hopper_list"),
+            [0x54E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_matchmaking_hopper_game_list"),
+            [0x54F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_matchmaking_hopper_set_game")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
             [0x550] = new ScriptInfo(HsType.HaloOnlineValue.Void, "saved_film_set_playback_game_speed")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
+            [0x551] = new ScriptInfo(HsType.HaloOnlineValue.Void, "noguchis_mystery_tour")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x552] = new ScriptInfo(HsType.HaloOnlineValue.Void, "designer_zone_sync"),
+            [0x553] = new ScriptInfo(HsType.HaloOnlineValue.Void, "dump_designer_zone")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.DesignerZone),
             },
             [0x554] = new ScriptInfo(HsType.HaloOnlineValue.Void, "designer_zone_activate")
             {
@@ -5620,11 +7066,142 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
+            [0x557] = new ScriptInfo(HsType.HaloOnlineValue.Void, "saved_film_seek_to_film_tick")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x558] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "tag_is_active")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.AnyTagNotResolving),
+            },
+            [0x559] = new ScriptInfo(HsType.HaloOnlineValue.Void, "tag_resources_set_incremental_publish")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x55A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "tag_resources_enable_optional_caching")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x55B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "dump_active_resources"),
             [0x55C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "object_set_persistent")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
+            [0x55D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "display_zone_size_estimates")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x55E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "report_zone_size_estimates"),
+            [0x55F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_disconnect_squad"),
+            [0x560] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_disconnect_group"),
+            [0x561] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_clear_squad_session_parameter")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x562] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_clear_group_session_parameter")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x563] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_life_cycle_pause")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x564] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_life_cycle_display_states"),
+            [0x565] = new ScriptInfo(HsType.HaloOnlineValue.Void, "overlapped_display_task_descriptions"),
+            [0x566] = new ScriptInfo(HsType.HaloOnlineValue.Void, "overlapped_task_inject_error")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x567] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_leaderboard_clear_hopper_all_users")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x568] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_leaderboard_clear_global_arbitrated_all_users")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x569] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_leaderboard_clear_global_unarbitrated_all_users")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x56A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_sapien_crash"),
+            [0x56B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "decorators_split")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
+            [0x56C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "bandwidth_profiler_enable")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x56D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "bandwidth_profiler_set_context")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x56E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "overlapped_task_pause")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x56F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_banhammer_set_controller_cheat_flags")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x570] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_banhammer_set_controller_ban_flags")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x571] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_banhammer_dump_strings"),
+            [0x572] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_banhammer_dump_repeated_play_list"),
+            [0x573] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_leaderboard_set_user_stats")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x574] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_leaderboard_set_user_game_stats")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x575] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_build_map_variant")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x576] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_verify_map_variant")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x577] = new ScriptInfo(HsType.HaloOnlineValue.Void, "async_set_work_delay_milliseconds")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x578] = new ScriptInfo(HsType.HaloOnlineValue.Void, "sound_looping_start_with_effect")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.LoopingSound),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+            },
+            [0x579] = new ScriptInfo(HsType.HaloOnlineValue.Void, "tag_resources_set_demand_throttle_to_io")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x57A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "tag_resources_flush_optional"),
             [0x57B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "set_performance_throttle")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
@@ -5636,6 +7213,10 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
+            [0x57D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "voice_set_headset_boost")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
+            },
             [0x57E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cinematic_zone_activate")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
@@ -5644,10 +7225,43 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
+            [0x580] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cinematic_zone_activate_from_editor")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.AnyTag),
+            },
+            [0x581] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cinematic_zone_deactivate_from_editor")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.AnyTag),
+            },
+            [0x582] = new ScriptInfo(HsType.HaloOnlineValue.Long, "tiling_current"),
             [0x583] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unit_limit_lipsync_to_mouth_only")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x584] = new ScriptInfo(HsType.HaloOnlineValue.Void, "dump_active_zone_tags"),
+            [0x585] = new ScriptInfo(HsType.HaloOnlineValue.Void, "calculate_tag_prediction")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.AnyTag),
+            },
+            [0x586] = new ScriptInfo(HsType.HaloOnlineValue.Void, "tag_resources_enable_fast_prediction")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x587] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "unit_start_first_person_custom_animation")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.AnimationGraph),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x588] = new ScriptInfo(HsType.HaloOnlineValue.Boolean, "unit_is_playing_custom_first_person_animation")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
+            },
+            [0x589] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unit_stop_first_person_custom_animation")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
             },
             [0x58A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "prepare_to_switch_to_zone_set")
             {
@@ -5684,8 +7298,26 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
             },
+            [0x592] = new ScriptInfo(HsType.HaloOnlineValue.Void, "run_like_dvd"),
+            [0x593] = new ScriptInfo(HsType.HaloOnlineValue.Void, "profiler_auto_core_save")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x594] = new ScriptInfo(HsType.HaloOnlineValue.Void, "run_no_hdd"),
             [0x595] = new ScriptInfo(HsType.HaloOnlineValue.BinkDefinition, "cinematic_tag_reference_get_bink")
             {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x596] = new ScriptInfo(HsType.HaloOnlineValue.Void, "voice_set_force_match_configurations")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x597] = new ScriptInfo(HsType.HaloOnlineValue.Void, "voice_set_force_hud")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
             [0x598] = new ScriptInfo(HsType.HaloOnlineValue.Void, "object_set_custom_animation_speed")
@@ -5700,7 +7332,7 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
             },
-            [0x59A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "film_manager_set_reproduction_mode")
+            [0x59A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "saved_film_set_repro_mode")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
@@ -5708,10 +7340,16 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x59C] = new ScriptInfo(HsType.HaloOnlineValue.CinematicSceneDefinition, "cortana_effect_tag_reference_get_scene")
+            [0x59C] = new ScriptInfo(HsType.HaloOnlineValue.CinematicSceneDefinition, "cortana_tag_reference_get_scene")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
+            [0x59D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_banhammer_force_download")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x59E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "font_set_emergency"),
             [0x59F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "biped_force_ground_fitting_on")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
@@ -5734,12 +7372,23 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Unit),
             },
+            [0x5A5] = new ScriptInfo(HsType.HaloOnlineValue.Void, "dump_cortana_script"),
+            [0x5A6] = new ScriptInfo(HsType.HaloOnlineValue.AnimationGraph, "budget_resource_get_animation_graph")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.AnimationBudgetReference),
+            },
             [0x5A7] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_award_level_complete_achievements"),
+            [0x5A8] = new ScriptInfo(HsType.HaloOnlineValue.LoopingSound, "budget_resource_get_looping_sound")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.LoopingSoundBudgetReference),
+            },
             [0x5A9] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_safe_to_respawn")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
             [0x5AA] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cortana_effect_kill"),
+            [0x5AB] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_create_content_item_slayer"),
+            [0x5AC] = new ScriptInfo(HsType.HaloOnlineValue.Void, "test_create_content_item_screenshot"),
             [0x5AD] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cinematic_scripting_destroy_cortana_effect_cinematic"),
             [0x5AE] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ai_migrate_infanty")
             {
@@ -5765,7 +7414,53 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
             },
             [0x5B3] = new ScriptInfo(HsType.HaloOnlineValue.Void, "stop_bink_movie"),
-            [0x5B4] = new ScriptInfo(HsType.HaloOnlineValue.Void, "play_credits_unskippable")
+            [0x5B4] = new ScriptInfo(HsType.HaloOnlineValue.Void, "play_credits_unskippable"),
+            [0x5B5] = new ScriptInfo(HsType.HaloOnlineValue.Sound, "budget_resource_get_sound")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.SoundBudgetReference),
+            },
+            [0x5B6] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_single_player_level_unlocked")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x5B7] = new ScriptInfo(HsType.HaloOnlineValue.Void, "physical_memory_dump"),
+            [0x5B8] = new ScriptInfo(HsType.HaloOnlineValue.Void, "tag_resources_validate_all_pages")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
+            [0x5B9] = new ScriptInfo(HsType.HaloOnlineValue.Void, "controller_set_popup_message_index")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x5BA] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_enter_lobby")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
+            },
+            [0x5BB] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_spartan_reset_profile")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            },
+            [0x5BC] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_achievements_display_achievement_names"),
+            [0x5BD] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_grant_achievement_to_controller_by_string")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
+            },
+            [0x5BE] = new ScriptInfo(HsType.HaloOnlineValue.Void, "game_grant_all_achievements_to_controller")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Controller),
+            },
+            [0x5BF] = new ScriptInfo(HsType.HaloOnlineValue.Void, "gui_spartan_set_achievement_day_of_month")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
+            },
+            [0x5C0] = new ScriptInfo(HsType.HaloOnlineValue.Void, "ui_set_is_blue")
+            {
+                new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
+            },
         };
     }
 }
