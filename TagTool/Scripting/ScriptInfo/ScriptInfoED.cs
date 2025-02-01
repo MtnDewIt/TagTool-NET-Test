@@ -5082,7 +5082,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
             },
-            [0x344] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null"),
+            [0x344] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null344"),
             [0x345] = new ScriptInfo(HsType.HaloOnlineValue.Void, "screenshot_capture"),
             [0x346] = new ScriptInfo(HsType.HaloOnlineValue.Void, "screenshot_set_path")
             {
@@ -6810,7 +6810,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x4F4] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null")
+            [0x4F4] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null4F4")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
             },
@@ -7533,9 +7533,9 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
-            [0x5B0] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null"),
-            [0x5B1] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null"),
-            [0x5B2] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null"),
+            [0x5B0] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null5B0"),
+            [0x5B1] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null5B1"),
+            [0x5B2] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null5B2"),
             [0x5B3] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_matchmaking_hopper_set_game")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
@@ -8219,11 +8219,11 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
             [0x668] = new ScriptInfo(HsType.HaloOnlineValue.Void, "run_like_package"),
-            [0x669] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null")
+            [0x669] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null669")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
-            [0x66A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null")
+            [0x66A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null66A")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
@@ -8263,39 +8263,39 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
-            [0x673] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null"),
-            [0x674] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null")
+            [0x673] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null673"),
+            [0x674] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null674")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x675] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null")
+            [0x675] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null675")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x676] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null"),
-            [0x677] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null")
+            [0x676] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null676"),
+            [0x677] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null677")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x678] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null"),
-            [0x679] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null"),
-            [0x67A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null")
+            [0x678] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null678"),
+            [0x679] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null679"),
+            [0x67A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null67A")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x67B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null")
+            [0x67B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null67B")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x67C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null"),
+            [0x67C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null67C"),
             [0x67D] = new ScriptInfo(HsType.HaloOnlineValue.Long, "ui_get_player_model_id"),
             [0x67E] = new ScriptInfo(HsType.HaloOnlineValue.Long, "ui_get_music_id"),
-            [0x67F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null")
+            [0x67F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null67F")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
@@ -8340,12 +8340,12 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x68A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null")
+            [0x68A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null68A")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
             },
-            [0x68B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "high_quality_postprocessing_enable")
+            [0x68B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "reflections_enable")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
@@ -8353,11 +8353,11 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x68D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "reflection_multisampler_enable")
+            [0x68D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "reflection_multisampling_enabled")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x68E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "reflection_multisampler_passes")
+            [0x68E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "reflection_multisample_passes")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
             },
@@ -8365,11 +8365,11 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x690] = new ScriptInfo(HsType.HaloOnlineValue.Void, "debug_clear_z_color_stencil")
+            [0x690] = new ScriptInfo(HsType.HaloOnlineValue.Void, "reflection_debug_enable")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x691] = new ScriptInfo(HsType.HaloOnlineValue.Void, "reflection_bilinear_color_enable")
+            [0x691] = new ScriptInfo(HsType.HaloOnlineValue.Void, "reflection_color_bilinear_filter_enable")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
@@ -8386,20 +8386,20 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
             },
-            [0x696] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown696")
+            [0x696] = new ScriptInfo(HsType.HaloOnlineValue.Void, "enable_default_screen_effect")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x697] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null")
+            [0x697] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null697")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
             },
-            [0x698] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null"),
+            [0x698] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null698"),
             [0x699] = new ScriptInfo(HsType.HaloOnlineValue.Void, "mouse_inversion_get"),
             [0x69A] = new ScriptInfo(HsType.HaloOnlineValue.Long, "mouse_inversion_set"),
-            [0x69B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null")
+            [0x69B] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null69B")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
@@ -8409,24 +8409,24 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
             },
-            [0x69C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null")
+            [0x69C] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null69C")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
-            [0x69D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null"),
-            [0x69E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null")
+            [0x69D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null69D"),
+            [0x69E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null69E")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
             },
-            [0x69F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null")
+            [0x69F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null69F")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
-            [0x6A0] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null"),
+            [0x6A0] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null6A0"),
             [0x6A1] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cinematic_scripting_start_animation_legacy")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
