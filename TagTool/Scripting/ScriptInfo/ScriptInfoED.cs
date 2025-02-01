@@ -7384,7 +7384,7 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
-            [0x584] = new ScriptInfo(HsType.HaloOnlineValue.Void, "determinism_debug_manager_enable_log_file_comparision_on_oos")
+            [0x584] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown584")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },

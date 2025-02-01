@@ -366,11 +366,16 @@ namespace TagTool.Tags.Definitions
 
         [TagField(ValidTags = new[] { "cfxs" })]
         public CachedTag DefaultCameraFx;
+
+        [TagField(ValidTags = new[] { "pdm!" }, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
+        public CachedTag PodiumDefinitionOverride;
+
         [TagField(ValidTags = new[] { "sefc" })]
         public CachedTag DefaultScreenFx;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public CachedTag UnknownHO;
+        [TagField(ValidTags = new[] { "sefc" }, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+        public CachedTag DefaultScreenFxOverride;
+
         [TagField(ValidTags = new[] { "ssao" }, MinVersion = CacheVersion.HaloReach)]
         public CachedTag GlobalSsao;
 
