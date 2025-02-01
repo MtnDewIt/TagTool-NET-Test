@@ -5082,7 +5082,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
             },
-            [0x344] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown344"),
+            [0x344] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null"),
             [0x345] = new ScriptInfo(HsType.HaloOnlineValue.Void, "screenshot_capture"),
             [0x346] = new ScriptInfo(HsType.HaloOnlineValue.Void, "screenshot_set_path")
             {
@@ -7533,9 +7533,9 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
-            [0x5B0] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown5B0"),
-            [0x5B1] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown5B1"),
-            [0x5B2] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown5B2"),
+            [0x5B0] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null"),
+            [0x5B1] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null"),
+            [0x5B2] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown_null"),
             [0x5B3] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_matchmaking_hopper_set_game")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
