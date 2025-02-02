@@ -7384,7 +7384,7 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
-            [0x584] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown584")
+            [0x584] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null584")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
