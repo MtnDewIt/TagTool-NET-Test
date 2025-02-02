@@ -2127,7 +2127,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
-            [0x0BC] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknownBC")
+            [0x0BC] = new ScriptInfo(HsType.HaloOnlineValue.Void, "texture_camera_set_unknownBC")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Object),
             },
@@ -5082,13 +5082,13 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
             },
-            [0x344] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null344"),
+            [0x344] = new ScriptInfo(HsType.HaloOnlineValue.Void, "cubemap_dynamic_generate"),
             [0x345] = new ScriptInfo(HsType.HaloOnlineValue.Void, "screenshot_capture"),
             [0x346] = new ScriptInfo(HsType.HaloOnlineValue.Void, "screenshot_set_path")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
             },
-            [0x347] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown347")
+            [0x347] = new ScriptInfo(HsType.HaloOnlineValue.Void, "screenshot_unknown347")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
@@ -7533,9 +7533,9 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.String),
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
-            [0x5B0] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null5B0"),
-            [0x5B1] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null5B1"),
-            [0x5B2] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null5B2"),
+            [0x5B0] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_get_game_id"),
+            [0x5B1] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_matchmaking_hopper_list"),
+            [0x5B2] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_matchmaking_hopper_game_list"),
             [0x5B3] = new ScriptInfo(HsType.HaloOnlineValue.Void, "net_test_matchmaking_hopper_set_game")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
@@ -8377,7 +8377,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Real),
             },
-            [0x693] = new ScriptInfo(HsType.HaloOnlineValue.Void, "unknown693"),
+            [0x693] = new ScriptInfo(HsType.HaloOnlineValue.Void, "process_memory_debug"),
             [0x694] = new ScriptInfo(HsType.HaloOnlineValue.Void, "background_set")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Short),
@@ -8386,7 +8386,7 @@ namespace TagTool.Scripting
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.StringId),
             },
-            [0x696] = new ScriptInfo(HsType.HaloOnlineValue.Void, "enable_default_screen_effect")
+            [0x696] = new ScriptInfo(HsType.HaloOnlineValue.Void, "default_screen_effect_enable")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
