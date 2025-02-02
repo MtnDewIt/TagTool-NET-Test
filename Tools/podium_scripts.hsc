@@ -65,13 +65,13 @@
 	
 	; Add additional time to podium if there are more players
 	(if (>= (lobby_size) 3)
-		(game_finished_wait_time_add 2)
+		(end_match_wait_time_increment 2)
 	)
 	(if (>= (lobby_size) 2)
-		(game_finished_wait_time_add 2)
+		(end_match_wait_time_increment 2)
 	)
 	(if (>= (lobby_size) 1)
-		(game_finished_wait_time_add 18)
+		(end_match_wait_time_increment 18)
 	)
 	(sleep 100)
 	; Fade out and prepare all the players to be ready for podium
