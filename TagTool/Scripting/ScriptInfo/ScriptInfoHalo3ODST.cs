@@ -8408,11 +8408,11 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
             [0x68D] = new ScriptInfo(HsType.HaloOnlineValue.Void, "run_like_package"),
-            [0x68E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null68E")
+            [0x68E] = new ScriptInfo(HsType.HaloOnlineValue.Void, "clear_map_slot")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
-            [0x68F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null68F")
+            [0x68F] = new ScriptInfo(HsType.HaloOnlineValue.Void, "clear_map_type")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },

@@ -8219,11 +8219,11 @@ namespace TagTool.Scripting
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Boolean),
             },
             [0x668] = new ScriptInfo(HsType.HaloOnlineValue.Void, "run_like_package"),
-            [0x669] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null669")
+            [0x669] = new ScriptInfo(HsType.HaloOnlineValue.Void, "clear_map_slot")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
-            [0x66A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "null66A")
+            [0x66A] = new ScriptInfo(HsType.HaloOnlineValue.Void, "clear_map_type")
             {
                 new ScriptInfo.ParameterInfo(HsType.HaloOnlineValue.Long),
             },
