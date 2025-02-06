@@ -191,7 +191,7 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Size = 0x2C, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach11883)]
     public class SceneryLightProbe : TagStructure
     {
-        public ScenarioObjectIdentifier ObjectId;
+        public ObjectIdentifier ObjectId;
         [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public HalfRGBLightProbe LightProbe;
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -201,7 +201,7 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Size = 0x2C)]
     public class MachineLightProbes : TagStructure
     {
-        public ScenarioObjectIdentifier ObjectId;
+        public ObjectIdentifier ObjectId;
         public RealRectangle3d Bounds;
         public List<MachineLightProbe> LightProbes;
 

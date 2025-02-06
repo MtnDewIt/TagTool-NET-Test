@@ -612,7 +612,7 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public List<CheapLightMarkerRefBlock> CheapLightMarkerRefs;
 
-            public List<PvsBoundObjectIdentifiersBlock> PvsBoundObjectIdentifiers;
+            public List<ObjectIdentifier> PvsBoundObjectIdentifiers;
             public List<PvsBoundObjectReferencesBlock> PvsBoundObjectReferences;
             public List<StructureClusterCubemap> ClusterCubemaps;
 
@@ -693,15 +693,6 @@ namespace TagTool.Tags.Definitions
                     public short Variant;
                     public short VertexBufferIndex;
                 }
-            }
-
-            [TagStructure(Size = 0x8)]
-            public class PvsBoundObjectIdentifiersBlock : TagStructure
-            {
-                public int UniqueId;
-                public short OriginBspIndex;
-                public GameObjectType8 Type;
-                public Scenario.ObjectSource Source;
             }
 
             [TagStructure(Size = 0x4)]

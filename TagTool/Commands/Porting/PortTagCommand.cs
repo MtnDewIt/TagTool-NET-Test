@@ -1245,10 +1245,13 @@ namespace TagTool.Commands.Porting
                                                 TransformFlags = controlInstance.TransformFlags,
                                                 ManualBspFlags = controlInstance.ManualBspFlags,
                                                 LightAirprobeName = controlInstance.LightAirprobeName,
-                                                UniqueHandle = controlInstance.UniqueHandle,
-                                                OriginBspIndex = controlInstance.OriginBspIndex,
-                                                ObjectType = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Equipment },
-                                                Source = controlInstance.Source,
+                                                ObjectId = new ObjectIdentifier 
+                                                {
+                                                    UniqueId = controlInstance.ObjectId.UniqueId,
+                                                    OriginBspIndex = controlInstance.ObjectId.OriginBspIndex,
+                                                    Type = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Equipment },
+                                                    Source = controlInstance.ObjectId.Source,
+                                                },
                                                 BspPolicy = controlInstance.BspPolicy,
                                                 EditingBoundToBsp = controlInstance.EditingBoundToBsp,
                                                 EditorFolder = controlInstance.EditorFolder,

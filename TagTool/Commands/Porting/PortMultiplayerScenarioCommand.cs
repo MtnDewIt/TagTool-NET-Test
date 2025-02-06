@@ -538,11 +538,14 @@ namespace TagTool.Commands.Porting
             instance.ParentId = new ScenarioObjectParentStruct() { NameIndex = -1 };
             instance.Position = position;
             instance.Rotation = rotation;
-            instance.ObjectType = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Scenery };
-            instance.Source = ScenarioInstance.SourceValue.Editor;
+            instance.ObjectId = new ObjectIdentifier
+            {
+                UniqueId = new DatumHandle(0xffffffff),
+                OriginBspIndex = -1,
+                Type = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Scenery },
+                Source = ObjectIdentifier.SourceValue.Editor,
+            };
             instance.BspPolicy = ScenarioInstance.BspPolicyValue.Default;
-            instance.UniqueHandle = new DatumHandle(0xffffffff);
-            instance.OriginBspIndex = -1;
             instance.CanAttachToBspFlags = (ushort)(1u << bspIndex);
             instance.Multiplayer = new MultiplayerObjectProperties() { Team = MultiplayerTeamDesignator.Neutral };
             scnr.Scenery.Add(instance);
@@ -861,13 +864,13 @@ namespace TagTool.Commands.Porting
                     keepPaletteIndices.Add(placement.PaletteIndex);
 
                     // fixup the origin bsp index
-                    if (placement.OriginBspIndex >= 0 && (IncludeBspMask & (1u << placement.OriginBspIndex)) != 0)
+                    if (placement.ObjectId.OriginBspIndex >= 0 && (IncludeBspMask & (1u << placement.ObjectId.OriginBspIndex)) != 0)
                     {
-                        placement.OriginBspIndex = (short)BspIndexRemapping[placement.OriginBspIndex];
+                        placement.ObjectId.OriginBspIndex = (short)BspIndexRemapping[placement.ObjectId.OriginBspIndex];
                     }
                     else
                     {
-                        placement.OriginBspIndex = -1;
+                        placement.ObjectId.OriginBspIndex = -1;
                     }
 
                     // fixup the name placement index (for children)

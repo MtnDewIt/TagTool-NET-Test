@@ -346,7 +346,7 @@ namespace TagTool.Commands.Porting
                                 {
                                     if (link.LeftSector == entry1.Item2)
                                     {
-                                        if (link.RightSector != -1)
+                                        if ((link.RightSector & 0xFFFEFFFF) != 0)
                                         {
                                             for (var areaIndex = 0; areaIndex < task.Areas.Count; areaIndex++)
                                             {
@@ -371,7 +371,7 @@ namespace TagTool.Commands.Porting
                                     }
                                     else if (link.RightSector == entry1.Item2)
                                     {
-                                        if (link.LeftSector != -1)
+                                        if ((link.LeftSector & 0xFFFEFFFF) != 0)
                                         {
                                             for (var areaIndex = 0; areaIndex < task.Areas.Count; areaIndex++)
                                             {

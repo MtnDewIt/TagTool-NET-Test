@@ -822,10 +822,7 @@ namespace TagTool.Tags.Definitions
                 [TagStructure(Size = 0xC)]
                 public class DevicePortalAssociation : TagStructure
 				{
-                    public int UniqueId;
-                    public short OriginBspIndex;
-                    public GameObjectType8 ObjectType;
-                    public ObjectSource Source;
+                    public ObjectIdentifier ObjectId;
                     public short FirstGamePortalIndex;
                     public ushort GamePortalCount;
                 }
@@ -886,16 +883,6 @@ namespace TagTool.Tags.Definitions
                     Bit31 = 1 << 31
                 }
             }
-        }
-
-        public enum ObjectSource : sbyte
-        {
-            Structure,
-            Editor,
-            Dynamic,
-            Legacy,
-            Sky,
-            Parent
         }
 
         [TagStructure(Size = 0x64)]
@@ -1311,11 +1298,7 @@ namespace TagTool.Tags.Definitions
 
             public StringId LightAirprobeName;
 
-            // object id
-            public DatumHandle UniqueHandle;
-            public short OriginBspIndex;
-            public GameObjectType8 ObjectType;
-            public SourceValue Source; // sbyte
+            public ObjectIdentifier ObjectId;
 
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public BspPolicyValue BspPolicy; // sbyte
@@ -5743,6 +5726,7 @@ namespace TagTool.Tags.Definitions
     [Flags]
     public enum ScenarioFlags : ushort
     {
+        None = 0,
         CortanaHack = 1 << 0,
         AlwaysDrawSky = 1 << 1,
         DontStripPathfinding = 1 << 2,

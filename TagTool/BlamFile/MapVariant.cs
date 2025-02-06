@@ -81,15 +81,6 @@ namespace TagTool.BlamFile
         public float Cost = -1.0f;
     }
 
-    [TagStructure(Size = 0x8)]
-    public class ObjectIdentifier : TagStructure
-    {
-        public DatumHandle UniqueID = DatumHandle.None;
-        public short BspIndex = -1;
-        public sbyte Type = -1;
-        public sbyte Source = -1;
-    }
-
     [TagStructure(Size = 0x11)]
     public class MultiplayerObjectBoundary : TagStructure
     {

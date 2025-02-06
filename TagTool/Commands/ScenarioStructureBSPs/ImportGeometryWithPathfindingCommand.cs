@@ -13,6 +13,7 @@ using TagTool.IO;
 using TagTool.Pathfinding;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
+using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.Commands.ScenarioStructureBSPs
 {
@@ -437,10 +438,13 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 				scenario_tag.Crates.Add(new Scenario.CrateInstance() {
 					PaletteIndex = (short)cratePaletteIndex,                                // -- 	SetField Crates[*].PaletteIndex 1
 					NameIndex = -1,                                                         // -- 	SetField Crates[*].NameIndex -1
-					UniqueHandle = new DatumHandle(44444, 444),                             // -- 	SetField Crates[*].UniqueHandle 44444 444
-					OriginBspIndex = -1,                                                    // -- 	SetField Crates[*].OriginBspIndex -1
-					ObjectType = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Crate }, // -- 	SetField Crates[*].ObjectType.Halo3ODST Crate
-					Source = Scenario.ScenarioInstance.SourceValue.Editor,                  // -- 	SetField Crates[*].Source Editor
+					ObjectId = new ObjectIdentifier 
+					{
+					    UniqueId = new DatumHandle(44444, 444),                                         // -- 	SetField Crates[*].UniqueHandle 44444 444
+					    OriginBspIndex = -1,                                                            // -- 	SetField Crates[*].OriginBspIndex -1
+					    Type = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Crate },     // -- 	SetField Crates[*].ObjectType.Halo3ODST Crate
+					    Source = ObjectIdentifier.SourceValue.Editor,                                   // -- 	SetField Crates[*].Source Editor
+					},
 					EditingBoundToBsp = -1,                                                 // -- 	SetField Crates[*].EditingBoundToBsp -1
 					EditorFolder = -1,                                                      // -- 	SetField Crates[*].EditorFolder -1
 					ParentId = new ScenarioObjectParentStruct() { NameIndex = -1 },         // -- 	SetField Crates[*].ParentId.NameIndex -1
@@ -516,8 +520,10 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 					TagPathfinding pathData = ssbsp_tag.PathfindingData[0]; // Get the newest one
 					pathData.ObjectReferences = new TagBlock<ObjectReference>() {
 						new ObjectReference() {
-							ObjectUniqueID = new DatumHandle(44444, 444),
-							ObjectType = ObjectReference.ObjectTypeEnumDefinition.Crate,
+							ObjectId = new ObjectIdentifier{
+								UniqueId = new DatumHandle(44444, 444),
+								Type = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Crate },
+							},
 							Bsps = new TagBlock<ObjectReference.BspReference>() { 
 								new ObjectReference.BspReference() { 
 									Bsp2dRefs = new TagBlock<ObjectReference.BspReference.Bsp2dRef>() { 

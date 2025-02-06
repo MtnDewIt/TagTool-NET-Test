@@ -282,10 +282,10 @@ namespace TagTool.BlamFile
             // Setup up the parent object identifier
             mapvPlacement.ParentObject = new ObjectIdentifier()
             {
-                BspIndex = parentScnrInstance.OriginBspIndex,
-                Source = (sbyte)parentScnrInstance.Source,
-                Type = (sbyte)parentScnrInstance.ObjectType.Halo3ODST,
-                UniqueID = parentScnrInstance.UniqueHandle
+                UniqueId = parentScnrInstance.ObjectId.UniqueId,
+                OriginBspIndex = parentScnrInstance.ObjectId.OriginBspIndex,
+                Type = parentScnrInstance.ObjectId.Type,
+                Source = parentScnrInstance.ObjectId.Source,
             };
 
             // Set the attached flags
@@ -455,10 +455,10 @@ namespace TagTool.BlamFile
                 },
                 ParentObject = new ObjectIdentifier()
                 {
-                    BspIndex = -1,
-                    Type = -1,
-                    Source = -1,
-                    UniqueID = DatumHandle.None 
+                    UniqueId = DatumHandle.None,
+                    OriginBspIndex = -1,
+                    Type = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.None },
+                    Source = ObjectIdentifier.SourceValue.None,
                 }
             };
         }

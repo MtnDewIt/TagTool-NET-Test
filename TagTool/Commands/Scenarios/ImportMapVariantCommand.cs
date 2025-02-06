@@ -274,7 +274,7 @@ namespace TagTool.Commands.Scenarios
 
                 // update position / rotation
 
-                if (placement.ParentObject.UniqueID != DatumHandle.None)
+                if (placement.ParentObject.UniqueId != DatumHandle.None)
                 {
                     throw new NotSupportedException("Attached placements are not supported currently.");
 
@@ -345,7 +345,7 @@ namespace TagTool.Commands.Scenarios
 
                 if (instance is SceneryInstance)
                 {
-                    var tag = (_objectTypes[instance.ObjectType.Halo3ODST].Palette[instance.PaletteIndex] as ScenarioPaletteEntry).Object;
+                    var tag = (_objectTypes[instance.ObjectId.Type.Halo3ODST].Palette[instance.PaletteIndex] as ScenarioPaletteEntry).Object;
                     var scenery = _cache.Deserialize(_cacheStream, tag) as Scenery;
                     var model = _cache.Deserialize(_cacheStream, scenery.Model) as Model;
                     if (model.CollisionModel != null && model.PhysicsModel == null)
@@ -412,9 +412,9 @@ namespace TagTool.Commands.Scenarios
                 var instance = Activator.CreateInstance(_objectTypes[type].Instances.GetType().GetGenericArguments()[0]) as ScenarioInstance;
                 instance.PaletteIndex = (short)GetOrAddScenarioPaletteEntry(type, tag);
                 instance.NameIndex = -1;
-                instance.UniqueHandle = DatumHandle.None;
-                instance.ObjectType = new GameObjectType8() { Halo3ODST = type };
-                instance.Source = ScenarioInstance.SourceValue.Editor;
+                instance.ObjectId.UniqueId = DatumHandle.None;
+                instance.ObjectId.Type = new GameObjectType8() { Halo3ODST = type };
+                instance.ObjectId.Source = ObjectIdentifier.SourceValue.Editor;
 
                 if (instance.ParentId != null)
                     instance.ParentId.NameIndex = -1;

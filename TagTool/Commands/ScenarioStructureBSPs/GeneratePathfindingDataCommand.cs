@@ -1,15 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using Assimp.Configs;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Pathfinding;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
-using static TagTool.Tags.Definitions.Gen2.ScreenEffect.RasterizerScreenEffectPassReferenceBlock;
-using static TagTool.Tags.Definitions.ScenarioStructureBsp.Cluster;
+using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.Commands.ScenarioStructureBSPs
 {
@@ -152,9 +148,9 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 			ObjRef.Bsps = new TagBlock<ObjectReference.BspReference>();
 
 			// Values that are always going to be the same for our purposes, object type and unique id need to be manually set (for now)
-			ObjRef.ObjectReferenceFlags = ObjectReference.Flags.Mobile;
-			ObjRef.OriginBspIndex = -1;
-			ObjRef.Source = ObjectReference.ObjectSourceEnumDefinition.Editor;
+			ObjRef.Flags = ObjectReference.ObjectReferenceFlags.Mobile;
+			ObjRef.ObjectId.OriginBspIndex = -1;
+			ObjRef.ObjectId.Source = ObjectIdentifier.SourceValue.Editor;
 
 			// Pathfinding is only generated for the base permutation, aka, if a model has damage states, these are not included
 			// So for each region, in the base permutation, how many bsps are there, so if you had 4 regions with 5 bps in each
@@ -217,14 +213,14 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 			// int CurVert = 0;
 
 			// Current block indexes for the pathfinding data
-			int CurSect = 0;
-			int CurLink = 0;
-			int CurPoint = 0;
+			ushort CurSect = 0;
+			ushort CurLink = 0;
+			ushort CurPoint = 0;
 
 			// Since we are culling surfaces, edges, and vertices, we need to keep track of what the original indexes were, and then re-map them
-			var SurfMap = new Dictionary<int, int>();
-			var EdgeMap = new Dictionary<int, int>();
-			var VertMap = new Dictionary<int, int>();
+			var SurfMap = new Dictionary<int, ushort>();
+			var EdgeMap = new Dictionary<int, ushort>();
+			var VertMap = new Dictionary<int, ushort>();
 
 			// Just seperate into two seperate versions 
 
@@ -244,7 +240,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 					foreach (var ColSurf in ColBsp.Geometry.Surfaces) {
 						if (ColSurf.Plane > ColBsp.Geometry.Planes.Count - 1) // some wack plane index values in some models
 						{
-							SurfMap.Add(CurSurf++, -1);
+							SurfMap.Add(CurSurf++, ushort.MaxValue);
 							continue;
 						}
 						if (ColBsp.Geometry.Planes[ColSurf.Plane].Value.K > SurfSlope) // 1 means flat for this axis, and 0.001 would be almost vertical relative
@@ -253,7 +249,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 							//CurSect++;
 						}
 						else {
-							SurfMap.Add(CurSurf++, -1);
+							SurfMap.Add(CurSurf++, ushort.MaxValue);
 						}
 
 						//CurSurf++;
@@ -264,21 +260,21 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
 					// See what edges we are going to keep, and create a mapping so we can re-link everything properly
 					foreach (var ColEdge in ColBsp.Geometry.Edges) {
-						if (SurfMap[ColEdge.LeftSurface] != -1 || SurfMap[ColEdge.RightSurface] != -1) {
+						if ((SurfMap[ColEdge.LeftSurface] & 0xFFFEFFFF) != 0 || (SurfMap[ColEdge.LeftSurface] + 1 & 0xFFFEFFFF) != 0) {
 							EdgeMap.Add(CurEdge++, CurLink++);
 
 							// Make sure we don't already have these vertices
-							if (!VertMap.TryGetValue(ColEdge.StartVertex, out int dummy)) {
+							if (!VertMap.TryGetValue(ColEdge.StartVertex, out ushort dummy)) {
 								VertMap.Add(ColEdge.StartVertex, CurPoint++);
 							}
-							if (!VertMap.TryGetValue(ColEdge.EndVertex, out int dummy2)) {
+							if (!VertMap.TryGetValue(ColEdge.EndVertex, out ushort dummy2)) {
 								VertMap.Add(ColEdge.EndVertex, CurPoint++);
 							}
 
 							//CurLine++;
 						}
 						else {
-							EdgeMap.Add(CurEdge++, -1);
+							EdgeMap.Add(CurEdge++, ushort.MaxValue);
 						}
 					}
 
@@ -287,7 +283,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
 					// Now that we have all our mappings, time to generate and reorder
 					for (int i = 0; i < SurfMap.Count; i++) {
-						if (SurfMap[i] != -1) {
+						if ((SurfMap[i] & 0xFFFEFFFF) != 0) {
 							PathData.Sectors.Add(new Sector());
 							PathData.Sectors[ValSectIndex].PathfindingSectorFlags = Sector.FlagsValue.SectorWalkable | Sector.FlagsValue.SectorMobile | Sector.FlagsValue.Floor;
 							PathData.Sectors[ValSectIndex].HintIndex = -1;
@@ -301,16 +297,16 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 					int ValLinkIndex = 0;
 
 					for (int i = 0; i < EdgeMap.Count; i++) {
-						if (EdgeMap[i] != -1) {
+						if ((EdgeMap[i] & 0xFFFEFFFF) != 0){
 							PathData.Links.Add(new Link());
-							PathData.Links[ValLinkIndex].Vertex1 = (short)VertMap[ColBsp.Geometry.Edges[i].StartVertex];// (short)VertMap[i]
-							PathData.Links[ValLinkIndex].Vertex2 = (short)VertMap[ColBsp.Geometry.Edges[i].EndVertex];
-							PathData.Links[ValLinkIndex].ForwardLink = (short)EdgeMap[ColBsp.Geometry.Edges[i].ForwardEdge];
-							PathData.Links[ValLinkIndex].ReverseLink = (short)EdgeMap[ColBsp.Geometry.Edges[i].ReverseEdge];
-							PathData.Links[ValLinkIndex].LeftSector = (short)SurfMap[ColBsp.Geometry.Edges[i].LeftSurface];
-							PathData.Links[ValLinkIndex].RightSector = (short)SurfMap[ColBsp.Geometry.Edges[i].RightSurface];
+							PathData.Links[ValLinkIndex].Vertex1 = VertMap[ColBsp.Geometry.Edges[i].StartVertex];
+							PathData.Links[ValLinkIndex].Vertex2 = VertMap[ColBsp.Geometry.Edges[i].EndVertex];
+							PathData.Links[ValLinkIndex].ForwardLink = EdgeMap[ColBsp.Geometry.Edges[i].ForwardEdge];
+							PathData.Links[ValLinkIndex].ReverseLink = EdgeMap[ColBsp.Geometry.Edges[i].ReverseEdge];
+							PathData.Links[ValLinkIndex].LeftSector = SurfMap[ColBsp.Geometry.Edges[i].LeftSurface];
+							PathData.Links[ValLinkIndex].RightSector = SurfMap[ColBsp.Geometry.Edges[i].RightSurface];
 							PathData.Links[ValLinkIndex].HintIndex = -1;
-							if (PathData.Links[ValLinkIndex].LeftSector != -1 && PathData.Links[ValLinkIndex].RightSector != -1) {
+							if ((PathData.Links[ValLinkIndex].LeftSector & 0xFFFEFFFF) != 0 && (PathData.Links[ValLinkIndex].RightSector & 0xFFFEFFFF) != 0) {
 								PathData.Links[ValLinkIndex++].LinkFlags = Link.FlagsValue.SectorLinkThreshold;
 							}
 							else {

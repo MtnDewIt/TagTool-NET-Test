@@ -3,19 +3,22 @@
 namespace TagTool.Tags.Definitions.Common
 {
     [TagStructure(Size = 0x8)]
-    public class ScenarioObjectIdentifier : TagStructure
+    public class ObjectIdentifier : TagStructure
     {
-        public DatumHandle UniqueHandle;
+        public DatumHandle UniqueId;
         public short OriginBspIndex;
-        public GameObjectType8 ObjectType;
+        public GameObjectType8 Type;
         public SourceValue Source;
 
         public enum SourceValue : sbyte
         {
+            None = -1,
             Structure,
             Editor,
             Dynamic,
             Legacy,
+            Sky,
+            Parent
         }
     }
 }

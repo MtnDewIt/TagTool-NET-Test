@@ -44,13 +44,16 @@ namespace TagTool.Commands.Porting.Gen2
                 {
                     CrateInstance instance = new CrateInstance()
                     {
-                        ObjectType = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Crate },
                         NameIndex = -1,
-                        Source = ScenarioInstance.SourceValue.Editor,
                         EditorFolder = -1,
+                        ObjectId = new ObjectIdentifier 
+                        {
+                            UniqueId = new DatumHandle(0x0),
+                            OriginBspIndex = -1,
+                            Type = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Crate },
+                            Source = ObjectIdentifier.SourceValue.Editor,
+                        },
                         ParentId = new ScenarioObjectParentStruct() { NameIndex = -1 },
-                        UniqueHandle = new DatumHandle(0x0),
-                        OriginBspIndex = -1,
                         CanAttachToBspFlags = (ushort)(1u << 0)
                     };
 
@@ -211,14 +214,17 @@ namespace TagTool.Commands.Porting.Gen2
             {
                 ScenarioInstance instance = new CrateInstance
                 {
-                    ObjectType = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Crate },
                     PaletteIndex = paletteIndex,
                     NameIndex = -1,
-                    Source = ScenarioInstance.SourceValue.Editor,
                     EditorFolder = -1,
+                    ObjectId = new ObjectIdentifier 
+                    {
+                        UniqueId = new DatumHandle(0x0),
+                        OriginBspIndex = -1,
+                        Type = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Crate },
+                        Source = ObjectIdentifier.SourceValue.Editor,
+                    },
                     ParentId = new ScenarioObjectParentStruct() { NameIndex = -1 },
-                    UniqueHandle = new DatumHandle(0x0),
-                    OriginBspIndex = -1,
                     CanAttachToBspFlags = (ushort)(1u << 0),
                     Position = GetCenter(hillPoint.Value, out float widthRadius, out float length),
                     Multiplayer = new MultiplayerObjectProperties()
@@ -985,13 +991,15 @@ namespace TagTool.Commands.Porting.Gen2
                     Rotation = machobj.ObjectData.Rotation,
                     Scale = machobj.ObjectData.Scale,
                     BspPolicy = (Scenario.ScenarioInstance.BspPolicyValue)machobj.ObjectData.BspPolicy,
-                    OriginBspIndex = (short)machobj.ObjectData.ManualBspFlags,
-
                     CanAttachToBspFlags = (ushort)(machobj.ObjectData.ManualBspFlags + 1),
-                    Source = (Scenario.ScenarioInstance.SourceValue)machobj.ObjectData.ObjectId.Source,
-                    UniqueHandle = new DatumHandle((uint)machobj.ObjectData.ObjectId.UniqueId),
                     EditorFolder = -1,
-                    ObjectType = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Machine },
+                    ObjectId = new ObjectIdentifier 
+                    {
+                        UniqueId = new DatumHandle((uint)machobj.ObjectData.ObjectId.UniqueId),
+                        OriginBspIndex = (short)machobj.ObjectData.ManualBspFlags,
+                        Type = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Machine },
+                        Source = (ObjectIdentifier.SourceValue)machobj.ObjectData.ObjectId.Source,
+                    },
                     //extra device/machine flags
                     DeviceFlags = (Scenario.ScenarioDeviceFlags)machobj.DeviceData.Flags,
                     MachineFlags = (Scenario.MachineInstance.ScenarioMachineFlags)machobj.MachineData.Flags,
@@ -1020,12 +1028,15 @@ namespace TagTool.Commands.Porting.Gen2
                     Rotation = ctrlobj.ObjectData.Rotation,
                     Scale = ctrlobj.ObjectData.Scale,
                     BspPolicy = (Scenario.ScenarioInstance.BspPolicyValue)ctrlobj.ObjectData.BspPolicy,
-                    OriginBspIndex = (short)ctrlobj.ObjectData.ManualBspFlags,
                     CanAttachToBspFlags = (ushort)(ctrlobj.ObjectData.ManualBspFlags + 1),
-                    Source = (Scenario.ScenarioInstance.SourceValue)ctrlobj.ObjectData.ObjectId.Source,
-                    UniqueHandle = new DatumHandle((uint)ctrlobj.ObjectData.ObjectId.UniqueId),
                     EditorFolder = -1,
-                    ObjectType = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Control },
+                    ObjectId = new ObjectIdentifier 
+                    {
+                        UniqueId = new DatumHandle((uint)ctrlobj.ObjectData.ObjectId.UniqueId),
+                        OriginBspIndex = (short)ctrlobj.ObjectData.ManualBspFlags,
+                        Type = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Control },
+                        Source = (ObjectIdentifier.SourceValue)ctrlobj.ObjectData.ObjectId.Source,
+                    },
                     ControlFlags = (Scenario.ControlInstance.ScenarioControlFlags)ctrlobj.ControlData.Flags,
                     DeviceFlags = (Scenario.ScenarioDeviceFlags)ctrlobj.DeviceData.Flags,
                     PowerGroup = ctrlobj.DeviceData.PowerGroup,
@@ -1053,12 +1064,15 @@ namespace TagTool.Commands.Porting.Gen2
                     Rotation = crateobj.ObjectData.Rotation,
                     Scale = crateobj.ObjectData.Scale,
                     BspPolicy = (Scenario.ScenarioInstance.BspPolicyValue)crateobj.ObjectData.BspPolicy,
-                    OriginBspIndex = (short)crateobj.ObjectData.ManualBspFlags,
                     CanAttachToBspFlags = (ushort)(crateobj.ObjectData.ManualBspFlags + 1),
-                    Source = (Scenario.ScenarioInstance.SourceValue)crateobj.ObjectData.ObjectId.Source,
-                    UniqueHandle = new DatumHandle((uint)crateobj.ObjectData.ObjectId.UniqueId),
                     EditorFolder = -1,
-                    ObjectType = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Crate },
+                    ObjectId = new ObjectIdentifier
+                    {
+                        UniqueId = new DatumHandle((uint)crateobj.ObjectData.ObjectId.UniqueId),
+                        OriginBspIndex = (short)crateobj.ObjectData.ManualBspFlags,
+                        Type = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Crate },
+                        Source = (ObjectIdentifier.SourceValue)crateobj.ObjectData.ObjectId.Source,
+                    },
                 });
             }
 
@@ -1084,12 +1098,15 @@ namespace TagTool.Commands.Porting.Gen2
                     Rotation = scenobj.ObjectData.Rotation,
                     Scale = scenobj.ObjectData.Scale,
                     BspPolicy = (Scenario.ScenarioInstance.BspPolicyValue)scenobj.ObjectData.BspPolicy,
-                    OriginBspIndex = (short)scenobj.ObjectData.ManualBspFlags,
                     CanAttachToBspFlags = (ushort)(scenobj.ObjectData.ManualBspFlags + 1),
-                    Source = (Scenario.ScenarioInstance.SourceValue)scenobj.ObjectData.ObjectId.Source,
-                    UniqueHandle = new DatumHandle((uint)scenobj.ObjectData.ObjectId.UniqueId),
                     EditorFolder = -1,
-                    ObjectType = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Scenery },
+                    ObjectId = new ObjectIdentifier
+                    {
+                        UniqueId = new DatumHandle((uint)scenobj.ObjectData.ObjectId.UniqueId),
+                        OriginBspIndex = (short)scenobj.ObjectData.ManualBspFlags,
+                        Type = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Scenery },
+                        Source = (ObjectIdentifier.SourceValue)scenobj.ObjectData.ObjectId.Source,
+                    },
                     Multiplayer = new Scenario.MultiplayerObjectProperties(),
                 };
                 newScenario.Scenery.Add(scenery);
@@ -1116,16 +1133,17 @@ namespace TagTool.Commands.Porting.Gen2
                     Rotation = bipdobj.ObjectData.Rotation,
                     Scale = bipdobj.ObjectData.Scale,
                     BspPolicy = (Scenario.ScenarioInstance.BspPolicyValue)bipdobj.ObjectData.BspPolicy,
-                    OriginBspIndex = (short)bipdobj.ObjectData.ManualBspFlags,
                     CanAttachToBspFlags = (ushort)(bipdobj.ObjectData.ManualBspFlags + 1),
-                    Source = (Scenario.BipedInstance.SourceValue)bipdobj.ObjectData.ObjectId.Source,
-                    
-                    UniqueHandle = new DatumHandle((uint)bipdobj.ObjectData.ObjectId.UniqueId),
                     EditorFolder = -1,
-                    ObjectType = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Biped },
+                    ObjectId = new ObjectIdentifier
+                    {
+                        UniqueId = new DatumHandle((uint)bipdobj.ObjectData.ObjectId.UniqueId),
+                        OriginBspIndex = (short)bipdobj.ObjectData.ManualBspFlags,
+                        Type = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Biped },
+                        Source = (ObjectIdentifier.SourceValue)bipdobj.ObjectData.ObjectId.Source,
+                    },
                     Variant = bipdobj.PermutationData.VariantName,
                     ActiveChangeColors = (Scenario.ActiveChangeColorFlags)bipdobj.PermutationData.ActiveChangeColors,
-
                     BodyVitalityFraction = bipdobj.UnitData.BodyVitality,
                     Flags = (Scenario.BipedInstance.ScenarioUnitDatumFlags)bipdobj.UnitData.Flags
                 };
@@ -1152,12 +1170,15 @@ namespace TagTool.Commands.Porting.Gen2
                     Rotation = weapobj.ObjectData.Rotation,
                     Scale = weapobj.ObjectData.Scale,
                     BspPolicy = (Scenario.ScenarioInstance.BspPolicyValue)weapobj.ObjectData.BspPolicy,
-                    OriginBspIndex = (short)weapobj.ObjectData.ManualBspFlags,
                     CanAttachToBspFlags = (ushort)(weapobj.ObjectData.ManualBspFlags + 1),
-                    Source = (Scenario.BipedInstance.SourceValue)weapobj.ObjectData.ObjectId.Source,
-                    UniqueHandle = new DatumHandle((uint)weapobj.ObjectData.ObjectId.UniqueId),
                     EditorFolder = -1,
-                    ObjectType = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Weapon },
+                    ObjectId = new ObjectIdentifier 
+                    {
+                        UniqueId = new DatumHandle((uint)weapobj.ObjectData.ObjectId.UniqueId),
+                        OriginBspIndex = (short)weapobj.ObjectData.ManualBspFlags,
+                        Type = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Weapon },
+                        Source = (ObjectIdentifier.SourceValue)weapobj.ObjectData.ObjectId.Source,
+                    },
                     WeaponFlags = (Scenario.WeaponInstance.ScenarioWeaponDatumFlags)weapobj.WeaponData.Flags,
                 };
                 newScenario.Weapons.Add(weapon);
@@ -1183,12 +1204,15 @@ namespace TagTool.Commands.Porting.Gen2
                     Rotation = eqipobj.ObjectData.Rotation,
                     Scale = eqipobj.ObjectData.Scale,
                     BspPolicy = (Scenario.ScenarioInstance.BspPolicyValue)eqipobj.ObjectData.BspPolicy,
-                    OriginBspIndex = (short)eqipobj.ObjectData.ManualBspFlags,
                     CanAttachToBspFlags = (ushort)(eqipobj.ObjectData.ManualBspFlags + 1),
-                    Source = (Scenario.BipedInstance.SourceValue)eqipobj.ObjectData.ObjectId.Source,
-                    UniqueHandle = new DatumHandle((uint)eqipobj.ObjectData.ObjectId.UniqueId),
                     EditorFolder = -1,
-                    ObjectType = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Equipment },
+                    ObjectId = new ObjectIdentifier
+                    {
+                        UniqueId = new DatumHandle((uint)eqipobj.ObjectData.ObjectId.UniqueId),
+                        OriginBspIndex = (short)eqipobj.ObjectData.ManualBspFlags,
+                        Type = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Equipment },
+                        Source = (ObjectIdentifier.SourceValue)eqipobj.ObjectData.ObjectId.Source,
+                    },
                 };
                 newScenario.Equipment.Add(equipment);
             }
@@ -1223,12 +1247,15 @@ namespace TagTool.Commands.Porting.Gen2
                         NameIndex = -1,
                         Position = position,
                         Rotation = new RealEulerAngles3d(startlocation.Facing.Yaw, Angle.FromDegrees(0.0f), Angle.FromDegrees(0.0f)),
-                        ObjectType = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Scenery },
-                        Source = Scenario.ScenarioInstance.SourceValue.Editor,
                         EditorFolder = -1,
+                        ObjectId = new ObjectIdentifier
+                        {
+                            UniqueId = new DatumHandle(0x0),
+                            OriginBspIndex = -1,
+                            Type = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Scenery },
+                            Source = ObjectIdentifier.SourceValue.Editor,
+                        },
                         ParentId = new ScenarioObjectParentStruct() { NameIndex = -1 },
-                        UniqueHandle = new DatumHandle(0x0),
-                        OriginBspIndex = -1,
                         CanAttachToBspFlags = (ushort)(1u << 0),
                         Multiplayer = new Scenario.MultiplayerObjectProperties() { Team = TagTool.Tags.Definitions.Common.MultiplayerTeamDesignator.Neutral },
                     });
@@ -1298,12 +1325,15 @@ namespace TagTool.Commands.Porting.Gen2
                                     Rotation = NetgameEquipment.Orientation.Orientation,
                                     Scale = 1,
                                     BspPolicy = Scenario.ScenarioInstance.BspPolicyValue.Default,
-                                    OriginBspIndex = 1,
                                     CanAttachToBspFlags = 1,
-                                    Source = Scenario.ScenarioInstance.SourceValue.Editor,
-                                    UniqueHandle = new DatumHandle(uniqueid),
                                     EditorFolder = -1,
-                                    ObjectType = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Vehicle },
+                                    ObjectId = new ObjectIdentifier
+                                    {
+                                        UniqueId = new DatumHandle(uniqueid),
+                                        OriginBspIndex = 1,
+                                        Type = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Vehicle },
+                                        Source = ObjectIdentifier.SourceValue.Editor,
+                                    },
                                     Multiplayer = new Scenario.MultiplayerObjectProperties
                                     {
                                         SpawnTime = NetgameEquipment.SpawnTimeInSeconds0Default,
@@ -1348,12 +1378,15 @@ namespace TagTool.Commands.Porting.Gen2
                                         Rotation = NetgameEquipment.Orientation.Orientation,
                                         Scale = 1,
                                         BspPolicy = Scenario.ScenarioInstance.BspPolicyValue.Default,
-                                        OriginBspIndex = 1,
                                         CanAttachToBspFlags = 1,
-                                        Source = Scenario.ScenarioInstance.SourceValue.Editor,
-                                        UniqueHandle = new DatumHandle(uniqueid),
                                         EditorFolder = -1,
-                                        ObjectType = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Weapon },
+                                        ObjectId = new ObjectIdentifier
+                                        {
+                                            UniqueId = new DatumHandle(uniqueid),
+                                            OriginBspIndex = 1,
+                                            Type = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Weapon },
+                                            Source = ObjectIdentifier.SourceValue.Editor,
+                                        },
                                         WeaponFlags = WeaponFlags,
                                         Multiplayer = new Scenario.MultiplayerObjectProperties
                                         {
@@ -1384,12 +1417,15 @@ namespace TagTool.Commands.Porting.Gen2
                                         Rotation = NetgameEquipment.Orientation.Orientation,
                                         Scale = 1,
                                         BspPolicy = Scenario.ScenarioInstance.BspPolicyValue.Default,
-                                        OriginBspIndex = 1,
                                         CanAttachToBspFlags = 1,
-                                        Source = Scenario.ScenarioInstance.SourceValue.Editor,
-                                        UniqueHandle = new DatumHandle(uniqueid),
                                         EditorFolder = -1,
-                                        ObjectType = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Equipment },
+                                        ObjectId = new ObjectIdentifier
+                                        {
+                                            UniqueId = new DatumHandle(uniqueid),
+                                            OriginBspIndex = 1,
+                                            Type = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Equipment },
+                                            Source = ObjectIdentifier.SourceValue.Editor,
+                                        },
                                         Multiplayer = new Scenario.MultiplayerObjectProperties
                                         {
                                             SpawnTime = NetgameEquipment.SpawnTimeInSeconds0Default,
@@ -1469,7 +1505,7 @@ namespace TagTool.Commands.Porting.Gen2
                 SceneryInstance initialSpawn = newScenario.Scenery[index].DeepCloneV2();
 
                 initialSpawn.PaletteIndex = initialSpawnIndex;
-                initialSpawn.OriginBspIndex = 0;
+                initialSpawn.ObjectId.OriginBspIndex = 0;
                 initialSpawn.EditorFolder = 10;
                 initialSpawn.Multiplayer.Team = GetTeamDesignator(initialZone);
                 initialSpawn.Multiplayer.EngineFlags = (GameEngineSubTypeFlags)0x1FF; // any
@@ -1487,14 +1523,17 @@ namespace TagTool.Commands.Porting.Gen2
 
                     SceneryInstance instance = new SceneryInstance()
                     {
-                        ObjectType = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Scenery },
                         PaletteIndex = zoneIndex,
                         NameIndex = -1,
-                        Source = ScenarioInstance.SourceValue.Editor,
+                        ObjectId = new ObjectIdentifier 
+                        {
+                            UniqueId = new DatumHandle(0x0),
+                            OriginBspIndex = -1,
+                            Type = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Scenery },
+                            Source = ObjectIdentifier.SourceValue.Editor,
+                        },
                         EditorFolder = 9,
                         ParentId = new ScenarioObjectParentStruct() { NameIndex = -1 },
-                        UniqueHandle = new DatumHandle(0x0),
-                        OriginBspIndex = -1,
                         CanAttachToBspFlags = (ushort)(1u << 0),
                         Position = block.Position,
                         Multiplayer = new MultiplayerObjectProperties()

@@ -50,7 +50,7 @@ namespace TagTool.Commands.Scenarios
                     {
                         var sceneryPlacement = Scnr.Scenery[j];
 
-                        if (sceneryLightProbe.ObjectId.UniqueHandle == sceneryPlacement.UniqueHandle)
+                        if (sceneryLightProbe.ObjectId.UniqueId == sceneryPlacement.ObjectId.UniqueId)
                         {
                             sLdT.Airprobes[i].Position = sceneryPlacement.Position;
 
@@ -77,7 +77,7 @@ namespace TagTool.Commands.Scenarios
                         {
                             var machinePlacement = Scnr.Machines[k];
 
-                            if (machineLightProbes.ObjectId.UniqueHandle == machinePlacement.UniqueHandle)
+                            if (machineLightProbes.ObjectId.UniqueId == machinePlacement.ObjectId.UniqueId)
                             {
                                 sLdT.Airprobes[sLdT.Airprobes.Count + j - 1].Position = machinePlacement.Position;
 
@@ -106,7 +106,7 @@ namespace TagTool.Commands.Scenarios
                         {
                             var sceneryPlacement = Scnr.Scenery[k];
 
-                            if (sceneryLightProbe.ObjectId.UniqueHandle == sceneryPlacement.UniqueHandle)
+                            if (sceneryLightProbe.ObjectId.UniqueId == sceneryPlacement.ObjectId.UniqueId)
                             {
                                 lbsp.Airprobes[j].Position = sceneryPlacement.Position;
 
@@ -133,7 +133,7 @@ namespace TagTool.Commands.Scenarios
                             {
                                 var machinePlacement = Scnr.Machines[l];
 
-                                if (machineLightProbes.ObjectId.UniqueHandle == machinePlacement.UniqueHandle)
+                                if (machineLightProbes.ObjectId.UniqueId == machinePlacement.ObjectId.UniqueId)
                                 {
                                     lbsp.Airprobes[lbsp.Airprobes.Count + k - 1].Position = machinePlacement.Position;
 
@@ -154,7 +154,7 @@ namespace TagTool.Commands.Scenarios
                     var placementIndex = placement.Key;
                     var placementInstance = placement.Value;
 
-                    Scnr.Scenery[placementIndex].UniqueHandle = DatumHandle.None;
+                    Scnr.Scenery[placementIndex].ObjectId.UniqueId = DatumHandle.None;
 
                     var sceneryObject = CacheContext.Deserialize<Scenery>(stream, Scnr.SceneryPalette[placementInstance.PaletteIndex].Object);
                     var sceneryModel = CacheContext.Deserialize<Model>(stream, sceneryObject.Model);
@@ -169,7 +169,7 @@ namespace TagTool.Commands.Scenarios
                     var placementIndex = placement.Key;
                     var placementInstance = placement.Value;
 
-                    Scnr.Machines[placementIndex].UniqueHandle = DatumHandle.None;
+                    Scnr.Machines[placementIndex].ObjectId.UniqueId = DatumHandle.None;
 
                     var machineObject = CacheContext.Deserialize<DeviceMachine>(stream, Scnr.MachinePalette[placementInstance.PaletteIndex].Object);
                     var machineModel = CacheContext.Deserialize<Model>(stream, machineObject.Model);
