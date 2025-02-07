@@ -1400,7 +1400,7 @@ namespace TagTool.Scripting
             [0x517] = "unknown517",
             [0x518] = "unknown518",
             [0x519] = "unknown519",
-            [0x51A] = "unknown51A",
+            [0x51A] = "survival_performance_mode",
             [0x51B] = "unknown51B",
             [0x51C] = "unknown51C",
             [0x51D] = "unknown51D",
