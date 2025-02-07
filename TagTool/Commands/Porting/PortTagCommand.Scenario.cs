@@ -1732,45 +1732,39 @@ namespace TagTool.Commands.Porting
                     case "cinematic_object_get_effect_scenery":
                         expr.Opcode = 0x391; // -> cinematic_object_get
                         return true;
+
                     case "cinematic_scripting_create_object":
                         expr.Opcode = 0x6A2; // -> cinematic_scripting_create_object_legacy
                         return true;
+
                     case "cinematic_scripting_start_animation":
                         expr.Opcode = 0x6A1; // -> cinematic_scripting_start_animation_legacy
                         return true;
+
                     case "cinematic_scripting_destroy_object":
                         expr.Opcode = 0x6A6; // -> cinematic_scripting_destroy_object_legacy
                         return true;
+
                     case "cinematic_scripting_create_and_animate_object":
                         expr.Opcode = 0x6A3; // -> cinematic_scripting_create_and_animate_object_legacy
                         return true;
+
                     case "cinematic_scripting_create_and_animate_cinematic_object":
                         expr.Opcode = 0x6A5; // -> cinematic_scripting_create_and_animate_cinematic_object_legacy
                         return true;
+
                     case "cinematic_scripting_create_and_animate_object_no_animation":
                         expr.Opcode = 0x6A4; // -> cinematic_scripting_create_and_animate_object_no_animation_legacy
                         return true;
-                    case "chud_show_weapon_stats":
-                        expr.Opcode = 0x423; // -> chud_show_crosshair
+
+                    case "mp_wake_script" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                        expr.Opcode = 0x6A7; // -> mp_wake_script
+                        UpdateMpWakeScript(cacheStream, scnr, expr);
                         return true;
-                    case "objectives_secondary_show":
-                        expr.Opcode = 0x4AE; // -> objectives_show
-                        return true;
-                    case "objectives_secondary_unavailable":
-                        expr.Opcode = 0x4B2; // -> objectives_secondary_finish
-                        return true;
+
                     case "mp_wake_script":
-                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
-                        {
-                            expr.Opcode = 0x6A7; // -> mp_wake_script
-                            UpdateMpWakeScript(cacheStream, scnr, expr);
-                            return true;
-                        }
-                        else
-                        {
-                            expr.Opcode = 0x017; // -> wake
-                            return true;
-                        }
+                        expr.Opcode = 0x017; // -> wake
+                        return true;
 
                     default:
                         return false;
@@ -1797,6 +1791,7 @@ namespace TagTool.Commands.Porting
                             expr2.Data = BitConverter.GetBytes(1.777f).Reverse().ToArray();
                         }
                         return true;
+
                     case "vehicle_test_seat_list":
                         expr.Opcode = 0x114; // -> vehicle_test_seat_unit_list
                         if (expr.Flags == HsSyntaxNodeFlags.Group &&
@@ -1805,6 +1800,7 @@ namespace TagTool.Commands.Porting
                             UpdateAiTestSeat(cacheStream, scnr, expr);
                         }
                         return true;
+
                     case "vehicle_test_seat":
                         expr.Opcode = 0x115; // -> vehicle_test_seat_unit
                         if (expr.Flags == HsSyntaxNodeFlags.Group &&
@@ -1813,104 +1809,66 @@ namespace TagTool.Commands.Porting
                             UpdateAiTestSeat(cacheStream, scnr, expr);
                         }
                         return true;
+
                     case "campaign_metagame_award_primary_skull":
                         expr.Opcode = 0x1E5; // -> campaign_metagame_award_primary_skull
                         return true;
+
                     case "campaign_metagame_award_secondary_skull":
                         expr.Opcode = 0x1E6; // -> campaign_metagame_award_secondary_skull
                         return true;
+
                     case "player_action_test_cinematic_skip":
                         expr.Opcode = 0x2F5; // -> player_action_test_jump
                         return true;
+
                     case "cinematic_object_get_unit":
                     case "cinematic_object_get_scenery":
                     case "cinematic_object_get_effect_scenery":
                         expr.Opcode = 0x391; // -> cinematic_object_get
                         return true;
-                    case "cinematic_scripting_create_object":
-                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
-                        {
-                            expr.Opcode = 0x6A2; // -> cinematic_scripting_create_object_legacy
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    case "cinematic_scripting_start_animation":
-                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
-                        {
-                            expr.Opcode = 0x6A1; // -> cinematic_scripting_start_animation_legacy
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    case "cinematic_scripting_destroy_object":
-                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
-                        {
-                            expr.Opcode = 0x6A6; // -> cinematic_scripting_destroy_object_legacy
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    case "cinematic_scripting_create_and_animate_object":
-                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
-                        {
-                            expr.Opcode = 0x6A3; // -> cinematic_scripting_create_and_animate_object_legacy
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
+
+                    case "cinematic_scripting_create_object" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                        expr.Opcode = 0x6A2; // -> cinematic_scripting_create_object_legacy
+                        return true;
+
+                    case "cinematic_scripting_start_animation" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                        expr.Opcode = 0x6A1; // -> cinematic_scripting_start_animation_legacy
+                        return true;
+
+                    case "cinematic_scripting_destroy_object" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                        expr.Opcode = 0x6A6; // -> cinematic_scripting_destroy_object_legacy
+                        return true;
+
+                    case "cinematic_scripting_create_and_animate_object" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                        expr.Opcode = 0x6A3; // -> cinematic_scripting_create_and_animate_object_legacy
+                        return true;
+
+                    case "cinematic_scripting_create_and_animate_cinematic_object" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                        expr.Opcode = 0x6A5; // -> cinematic_scripting_create_and_animate_cinematic_object_legacy
+                        return true;
+
                     case "cinematic_scripting_create_and_animate_cinematic_object":
-                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
+                        expr.Opcode = 0x3A6; // -> cinematic_scripting_create_and_animate_cinematic_object
+                        // Remove the additional H3 argument
+                        if (expr.Flags == HsSyntaxNodeFlags.Group &&
+                            expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Void)
                         {
-                            expr.Opcode = 0x6A5; // -> cinematic_scripting_create_and_animate_cinematic_object_legacy
-                            return false;
-                        }
-                        else
-                        {
-                            expr.Opcode = 0x3A6; // -> cinematic_scripting_create_and_animate_cinematic_object
-                            // Remove the additional H3 argument
-                            if (expr.Flags == HsSyntaxNodeFlags.Group &&
-                                expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Void)
-                            {
-                                var exprIndex = scnr.ScriptExpressions.IndexOf(expr) + 1;
-                                for (var n = 1; n < 4; n++)
-                                    exprIndex = scnr.ScriptExpressions[exprIndex].NextExpressionHandle.Index;
+                            var exprIndex = scnr.ScriptExpressions.IndexOf(expr) + 1;
+                            for (var n = 1; n < 4; n++)
+                                exprIndex = scnr.ScriptExpressions[exprIndex].NextExpressionHandle.Index;
 
-                                var expr2 = scnr.ScriptExpressions[exprIndex];
-                                var expr3 = scnr.ScriptExpressions[expr2.NextExpressionHandle.Index];
+                            var expr2 = scnr.ScriptExpressions[exprIndex];
+                            var expr3 = scnr.ScriptExpressions[expr2.NextExpressionHandle.Index];
 
-                                expr2.NextExpressionHandle = expr3.NextExpressionHandle;
-                            }
-                            return true;
+                            expr2.NextExpressionHandle = expr3.NextExpressionHandle;
                         }
-                    case "cinematic_scripting_create_and_animate_object_no_animation":
-                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
-                        {
-                            expr.Opcode = 0x6A4; // -> cinematic_scripting_create_and_animate_object_no_animation_legacy
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    case "chud_show_weapon_stats":
-                        expr.Opcode = 0x423; // -> chud_show_crosshair
                         return true;
-                    case "objectives_secondary_show":
-                        expr.Opcode = 0x4AE; // -> objectives_show
+
+                    case "cinematic_scripting_create_and_animate_object_no_animation" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                        expr.Opcode = 0x6A4; // -> cinematic_scripting_create_and_animate_object_no_animation_legacy
                         return true;
-                    case "objectives_secondary_unavailable":
-                    case "objectives_secondary_finish":
-                        expr.Opcode = 0x4B2; // -> objectives_secondary_finish
-                        return true;
+
                     case "unit_add_equipment":
                         expr.Opcode = 0x136; // -> unit_add_equipment
                         UpdateUnitAddEquipmentScript(cacheStream, scnr, expr);
@@ -1925,10 +1883,6 @@ namespace TagTool.Commands.Porting
                 var opName = blamScripts[expr.Opcode].Name;
                 switch (opName)
                 {
-                    case "cinematic_scripting_create_and_animate_cinematic_object":
-                        expr.Opcode = 0x3A6; // -> cinematic_scripting_create_and_animate_cinematic_object
-                        return true;
-
                     default:
                         return false;
                 }
