@@ -320,6 +320,9 @@ namespace TagTool.Commands.Porting
 
             if(definition is Scenario scenario)
             {
+                // Remove unused invasion placements
+                CullInvasionPlacements(scenario);
+
                 scenario.Bipeds.Clear();
                 scenario.BipedPalette.Clear();
                 //scenario.Vehicles.Clear();
@@ -451,6 +454,8 @@ namespace TagTool.Commands.Porting
                 CullNewObjects(scenario.EquipmentPalette, scenario.Equipment, reachObjectives);
 
                 RemoveNullPlacements(scenario.SceneryPalette, scenario.Scenery);
+                RemoveNullPlacements(scenario.MachinePalette, scenario.Machines);
+                RemoveNullPlacements(scenario.ControlPalette, scenario.Controls);
                 RemoveNullPlacements(scenario.CratePalette, scenario.Crates);
             }
 
@@ -620,6 +625,25 @@ namespace TagTool.Commands.Porting
                 for (int i = 0; i < indices.Count; i++)
                     instanceList.RemoveAt(indices[i]);
             }
+        }
+
+        public void CullInvasionPlacements(Scenario scenario) 
+        {
+            foreach (var scenery in scenario.Scenery)
+                if (scenery.Multiplayer.MegaloLabel.Contains("invasion") || scenery.Multiplayer.MegaloLabel.StartsWith("inv"))
+                    scenery.PaletteIndex = -1;
+
+            foreach (var machine in scenario.Machines)
+                if (machine.Multiplayer.MegaloLabel.Contains("invasion") || machine.Multiplayer.MegaloLabel.StartsWith("inv"))
+                    machine.PaletteIndex = -1;
+
+            foreach (var control in scenario.Controls)
+                if (control.Multiplayer.MegaloLabel.Contains("invasion") || control.Multiplayer.MegaloLabel.StartsWith("inv"))
+                    control.PaletteIndex = -1;
+
+            foreach (var crate in scenario.Crates)
+                if (crate.Multiplayer.MegaloLabel.Contains("invasion") || crate.Multiplayer.MegaloLabel.StartsWith("inv"))
+                    crate.PaletteIndex = -1;
         }
 
         public CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag)
