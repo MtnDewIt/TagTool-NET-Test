@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TagTool.Cache;
+using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 
@@ -33,6 +34,14 @@ namespace TagTool.Commands.Scenarios
 
             using (var stream = Cache.OpenCacheReadWrite())
             {
+                var sLdTTag = Scnr.Lightmap;
+
+                if (sLdTTag == null) 
+                {
+                    new TagToolWarning("No lightmap found for current scenario");
+                    return true;
+                }
+
                 var sLdT = CacheContext.Deserialize<ScenarioLightmap>(stream, Scnr.Lightmap);
                 sLdT.Airprobes = new List<Airprobe>();
 
@@ -89,7 +98,12 @@ namespace TagTool.Commands.Scenarios
 
                 for (int i = 0; i < sLdT.PerPixelLightmapDataReferences.Count; i++)
                 {
-                    var lbsp = CacheContext.Deserialize<ScenarioLightmapBspData>(stream, sLdT.PerPixelLightmapDataReferences[i].LightmapBspData);
+                    var lbspTag = sLdT.PerPixelLightmapDataReferences[i].LightmapBspData;
+
+                    if (lbspTag == null)
+                        continue;
+
+                    var lbsp = CacheContext.Deserialize<ScenarioLightmapBspData>(stream, lbspTag);
                     lbsp.Airprobes = new List<Airprobe>();
 
                     for (int j = 0; j < lbsp.SceneryLightProbes.Count; j++)
@@ -151,10 +165,7 @@ namespace TagTool.Commands.Scenarios
 
                 foreach (var placement in sceneryInstances)
                 {
-                    var placementIndex = placement.Key;
                     var placementInstance = placement.Value;
-
-                    Scnr.Scenery[placementIndex].ObjectId.UniqueId = DatumHandle.None;
 
                     var sceneryObject = CacheContext.Deserialize<Scenery>(stream, Scnr.SceneryPalette[placementInstance.PaletteIndex].Object);
                     var sceneryModel = CacheContext.Deserialize<Model>(stream, sceneryObject.Model);
@@ -166,10 +177,7 @@ namespace TagTool.Commands.Scenarios
 
                 foreach (var placement in machineInstances)
                 {
-                    var placementIndex = placement.Key;
                     var placementInstance = placement.Value;
-
-                    Scnr.Machines[placementIndex].ObjectId.UniqueId = DatumHandle.None;
 
                     var machineObject = CacheContext.Deserialize<DeviceMachine>(stream, Scnr.MachinePalette[placementInstance.PaletteIndex].Object);
                     var machineModel = CacheContext.Deserialize<Model>(stream, machineObject.Model);
