@@ -294,9 +294,10 @@ namespace TagTool.Tags.Definitions
                 MpBlueTeam
             }
 
-            [TagStructure(Size = 0x60, MaxVersion = CacheVersion.Halo3Retail)]
-            [TagStructure(Size = 0x130, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-            [TagStructure(Size = 0x110, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+            [TagStructure(Size = 0x60, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
+            [TagStructure(Size = 0x64, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+            [TagStructure(Size = 0x130, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+            [TagStructure(Size = 0x110, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
             [TagStructure(Size = 0xE8, MinVersion = CacheVersion.HaloOnlineED)]
             public class HudAttribute : TagStructure
             {
@@ -387,7 +388,8 @@ namespace TagTool.Tags.Definitions
                 [TagField(MinVersion = CacheVersion.HaloOnlineED)]
                 public float SpacingUnknown2;
 
-                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
+                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+                [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
                 public float MessageAnchorHorizontalOffset;
 
                 public float MessageAnchorVerticalOffset;
@@ -438,14 +440,14 @@ namespace TagTool.Tags.Definitions
                 public enum ResolutionFlagValue : int
                 {
                     None,
-                    WideFull = 1 << 0,
-                    WideHalf = 1 << 1,
-                    NativeFull = 1 << 2,
-                    StandardFull = 1 << 3,
-                    WideQuarter = 1 << 4,
-                    StandardHalf = 1 << 5,
-                    NativeQuarter = 1 << 6,
-                    StandardQuarter = 1 << 7
+                    _720pFullscreen = 1 << 0,
+                    _720pHalfscreen = 1 << 1,
+                    _480pFullscreen = 1 << 2,
+                    _480iFullscreen = 1 << 3,
+                    _720pQuarterscreen = 1 << 4,
+                    _480Halfscreen = 1 << 5,
+                    _480pQuarterscreen = 1 << 6,
+                    _480iQuarterscreen = 1 << 7,
                 }
             }
 
@@ -458,9 +460,11 @@ namespace TagTool.Tags.Definitions
                 [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
                 public CachedTag SpartanSound;
 
-                [TagField(MaxVersion = CacheVersion.Halo3Retail)]
-                public ChudSoundCueFlags_H3 LatchedTo_H3;
-                [TagField(MinVersion = CacheVersion.Halo3ODST)]
+                [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+                public ChudSoundCueFlagsMCC LatchedToMCC;
+                [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
+                public ChudSoundCueFlagsH3 LatchedToH3;
+                [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
                 public ChudSoundCueFlags LatchedTo;
 
                 [TagField(MinVersion = CacheVersion.HaloOnline498295)]
@@ -479,24 +483,24 @@ namespace TagTool.Tags.Definitions
                 {
                     None,
                     HealthRecharging = 1 << 0,
-                    HealthMinorDamage = 1 << 1,
-                    HealthMajorDamage = 1 << 2,
-                    HealthCriticalDamage = 1 << 3,
-                    HealthMinorState = 1 << 4,
-                    HealthLow = 1 << 5,
-                    HealthEmpty = 1 << 6,
+                    HealthMinorDamaged = 1 << 1,
+                    HealthMajorDamaged = 1 << 2,
+                    HealthCriticalDamaged = 1 << 3,
+                    HealthMinor = 1 << 4,
+                    HealthMajor = 1 << 5,
+                    HealthCritical = 1 << 6,
                     ShieldRecharging = 1 << 7,
-                    ShieldMinorDamage = 1 << 8,
-                    ShieldMajorDamage = 1 << 9,
-                    ShieldCriticalDamage = 1 << 10,
-                    ShieldMinorState = 1 << 11,
-                    ShieldLow = 1 << 12,
-                    ShieldEmpty = 1 << 13,
+                    ShieldMinorDamaged = 1 << 8,
+                    ShieldMajorDamaged = 1 << 9,
+                    ShieldCriticalDamaged = 1 << 10,
+                    ShieldMinor = 1 << 11,
+                    ShieldMajor = 1 << 12,
+                    ShieldCritical = 1 << 13,
                     RocketLocking = 1 << 14,
                     RocketLocked = 1 << 15,
                     TrackedTarget = 1 << 16,
                     LockedTarget = 1 << 17,
-                    Vip = 1 << 18,
+                    VIP = 1 << 18,
                     Juggernaut = 1 << 19,
                     Zombie = 1 << 20,
                     LastManStanding = 1 << 21,
@@ -513,25 +517,58 @@ namespace TagTool.Tags.Definitions
                 }
 
                 [Flags]
-                public enum ChudSoundCueFlags_H3 : int
+                public enum ChudSoundCueFlagsH3 : int
                 {
                     None,
                     ShieldRecharging = 1 << 0,
-                    ShieldMinorDamage = 1 << 1,
-                    ShieldLow = 1 << 2,
-                    ShieldEmpty = 1 << 3,
-                    HealthLow = 1 << 4,
-                    HealthEmpty = 1 << 5,
-                    HealthMinorDamage = 1 << 6,
-                    HealthMajorDamage = 1 << 7,
+                    ShieldMinorDamaged = 1 << 1,
+                    ShieldMajor = 1 << 2,
+                    ShieldCritical = 1 << 3,
+                    HealthMajor = 1 << 4,
+                    HealthCritical = 1 << 5,
+                    HealthMinorDamaged = 1 << 6,
+                    HealthMajorDamaged = 1 << 7,
                     RocketLocking = 1 << 8,
                     RocketLocked = 1 << 9,
                     TrackedTarget = 1 << 10,
                     LockedTarget = 1 << 11,
-                    Vip = 1 << 12,
+                    VIP = 1 << 12,
                     Juggernaut = 1 << 13,
                     Zombie = 1 << 14,
                     LastManStanding = 1 << 15
+                }
+
+                [Flags]
+                public enum ChudSoundCueFlagsMCC : int
+                {
+                    None,
+                    HealthRecharging = 1 << 0,
+                    HealthMinorDamaged = 1 << 1,
+                    HealthMajorDamaged = 1 << 2,
+                    HealthCriticalDamaged = 1 << 3,
+                    HealthMinor = 1 << 4,
+                    HealthMajor = 1 << 5,
+                    HealthCritical = 1 << 6,
+                    ShieldRecharging = 1 << 7,
+                    ShieldMinorDamaged = 1 << 8,
+                    ShieldMajorDamaged = 1 << 9,
+                    ShieldCriticalDamaged = 1 << 10,
+                    ShieldMinor = 1 << 11,
+                    ShieldMajor = 1 << 12,
+                    ShieldCritical = 1 << 13,
+                    ShieldDamaged = 1 << 14,
+                    ShieldLow = 1 << 15,
+                    ShieldEmpty = 1 << 16,
+                    HealthLow = 1 << 17,
+                    HealthEmpty = 1 << 18,
+                    RocketLocking = 1 << 19,
+                    RocketLocked = 1 << 20,
+                    TrackedTarget = 1 << 21,
+                    LockedTarget = 1 << 22,
+                    VIP = 1 << 23,
+                    Juggernaut = 1 << 24,
+                    Zombie = 1 << 25,
+                    LastManStanding = 1 << 26,
                 }
 
                 [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo3ODST)]

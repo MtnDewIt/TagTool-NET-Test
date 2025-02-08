@@ -45,6 +45,8 @@ namespace TagTool.Cache.Resources
                 Bit4 = 1 << 4,
                 Bit5 = 1 << 5,
                 Bit6 = 1 << 6,
+                Bit7 = 1 << 7,
+                Bit8 = 1 << 8,
             }
         }
 

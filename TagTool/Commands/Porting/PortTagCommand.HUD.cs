@@ -387,9 +387,13 @@ namespace TagTool.Commands.Porting
                 {
                     var H3snd = H3Definition.HudGlobals[hudGlobalsIndex].HudSounds[hudSoundsIndex];
 
+                    if (BlamCache.Platform == CachePlatform.MCC)
+                        H3snd.LatchedTo = GetEquivalentFlags(H3snd.LatchedTo, H3snd.LatchedToMCC);
+
                     if (BlamCache.Version == CacheVersion.Halo3Retail)
                     {
-                        H3snd.LatchedTo = GetEquivalentFlags(H3snd.LatchedTo, H3snd.LatchedTo_H3);
+                        if (BlamCache.Platform == CachePlatform.Original)
+                            H3snd.LatchedTo = GetEquivalentFlags(H3snd.LatchedTo, H3snd.LatchedToH3);
 
                         H3snd.Bipeds = new List<ChudGlobalsDefinition.HudGlobal.HudSound.BipedData>();
 
