@@ -7,6 +7,8 @@ using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.Cache.Resources
 {
+    [TagStructure(Name = "cache_file_resource_gestalt", Tag = "zone", Size = 0x17C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
+    [TagStructure(Name = "cache_file_resource_gestalt", Tag = "zone", Size = 0x170, MinVersion = CacheVersion.HaloOnline604673, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "cache_file_resource_gestalt", Tag = "zone", Size = 0x228, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "cache_file_resource_gestalt", Tag = "zone", Size = 0x220, Version = CacheVersion.HaloReach11883, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "cache_file_resource_gestalt", Tag = "zone", Size = 0x214, MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
@@ -111,6 +113,7 @@ namespace TagTool.Cache.Resources
             public StringId Name;
         }
 
+        [TagStructure(Size = 0x60, MinVersion = CacheVersion.HaloOnline604673, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x78, MaxVersion = CacheVersion.Halo3ODST)]
         [TagStructure(Size = 0xA0, MinVersion = CacheVersion.HaloReach)]
         public class ZoneManifest : TagStructure
@@ -441,12 +444,27 @@ namespace TagTool.Cache.Resources
                 public short FirstPredictionQuantumIndex;
             }
 
-            [TagStructure(Size = 0x18)]
+            [TagStructure(Size = 0x18, MaxVersion = CacheVersion.Halo3ODST)]
+            [TagStructure(Size = 0xC, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagStructure(Size = 0x18, MinVersion = CacheVersion.HaloReach)]
             public class PredictionMoleculeKey : TagStructure
             {
+                [TagField(MaxVersion = CacheVersion.Halo3ODST)]
+                [TagField(MinVersion = CacheVersion.HaloReach)]
                 public CachedTag Owner;
+                [TagField(MaxVersion = CacheVersion.Halo3ODST)]
+                [TagField(MinVersion = CacheVersion.HaloReach)]
                 public int FirstValue;
+                [TagField(MaxVersion = CacheVersion.Halo3ODST)]
+                [TagField(MinVersion = CacheVersion.HaloReach)]
                 public int SecondValue;
+            
+                [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+                public int IndexA;
+                [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+                public int IndexB;
+                [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+                public int IndexC;
             }
         }
     }
