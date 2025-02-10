@@ -720,8 +720,8 @@ namespace TagTool.Commands.ModelAnimationGraphs
             {
                 inh.NodeMapFlags = new List<Inheritance.NodeMapFlag>
                 {
-                    new Inheritance.NodeMapFlag { LocalNodeFlags = 2071986171 },
-                    new Inheritance.NodeMapFlag { LocalNodeFlags = 1275 }
+                    new Inheritance.NodeMapFlag { LocalNodeFlags = -1 },
+                    new Inheritance.NodeMapFlag { LocalNodeFlags = -1 }
                 };
             }
         }
