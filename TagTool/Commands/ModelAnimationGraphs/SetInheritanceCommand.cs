@@ -141,7 +141,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
             }
 
             // Capture original GraphIndex values.
-            CaptureOriginalGraphIndexes();
+            CaptureOriginalGraphIndices();
 
             using (Stream cacheStream = CacheContext.OpenCacheReadWrite())
             {
@@ -279,7 +279,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                     }
                 }
 
-                // Update graph indexes for all modes.
+                // Update graph indices for all modes.
                 foreach (var mode in Animation.Modes)
                 {
                     UpdateGraphIndicesForMode(mode);
@@ -575,7 +575,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
         // -----------------------------------------------------------------
         // Capture original GraphIndex values from the target.
         // -----------------------------------------------------------------
-        private void CaptureOriginalGraphIndexes()
+        private void CaptureOriginalGraphIndices()
         {
             originalGraphIndices.Clear();
             foreach (var mode in Animation.Modes)
