@@ -654,25 +654,25 @@ namespace TagTool.Commands.Porting
             foreach (var scenery in scenario.Scenery)
                 if (scenery.Multiplayer.MegaloLabel.Contains("invasion") || scenery.Multiplayer.MegaloLabel.StartsWith("inv"))
                     if (scenery.PaletteIndex != -1)
-                        if (!sceneryWhitelist.Contains($"{scenario.SceneryPalette[scenery.PaletteIndex].Object.Name}.{scenario.SceneryPalette[scenery.PaletteIndex].Object.Group}"))
+                        if (!sceneryWhitelist.Contains($"{scenario.SceneryPalette[scenery.PaletteIndex].Object.Name}"))
                             scenery.PaletteIndex = -1;
 
             foreach (var machine in scenario.Machines)
                 if (machine.Multiplayer.MegaloLabel.Contains("invasion") || machine.Multiplayer.MegaloLabel.StartsWith("inv"))
                     if (machine.PaletteIndex != -1)
-                        if (!machineWhitelist.Contains($"{scenario.MachinePalette[machine.PaletteIndex].Object.Name}.{scenario.MachinePalette[machine.PaletteIndex].Object.Group}"))
+                        if (!machineWhitelist.Contains($"{scenario.MachinePalette[machine.PaletteIndex].Object.Name}"))
                             machine.PaletteIndex = -1;
 
             foreach (var control in scenario.Controls)
                 if (control.Multiplayer.MegaloLabel.Contains("invasion") || control.Multiplayer.MegaloLabel.StartsWith("inv"))
                     if (control.PaletteIndex != -1)
-                        if (!controlWhitelist.Contains($"{scenario.ControlPalette[control.PaletteIndex].Object.Name}.{scenario.ControlPalette[control.PaletteIndex].Object.Group}"))
+                        if (!controlWhitelist.Contains($"{scenario.ControlPalette[control.PaletteIndex].Object.Name}"))
                             control.PaletteIndex = -1;
 
             foreach (var crate in scenario.Crates)
                 if (crate.Multiplayer.MegaloLabel.Contains("invasion") || crate.Multiplayer.MegaloLabel.StartsWith("inv"))
                     if (crate.PaletteIndex != -1)
-                        if (!crateWhitelist.Contains($"{scenario.CratePalette[crate.PaletteIndex].Object.Name}.{scenario.CratePalette[crate.PaletteIndex].Object.Group}"))
+                        if (!crateWhitelist.Contains($"{scenario.CratePalette[crate.PaletteIndex].Object.Name}"))
                             crate.PaletteIndex = -1;
         }
 
