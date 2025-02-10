@@ -629,21 +629,51 @@ namespace TagTool.Commands.Porting
 
         public void CullInvasionPlacements(Scenario scenario) 
         {
+            // TODO: Organize this function a little better
+
+            var sceneryWhitelist = new List<string>
+            {
+                "",
+            };
+
+            var machineWhitelist = new List<string>
+            {
+                "",
+            };
+
+            var controlWhitelist = new List<string>
+            {
+                "",
+            };
+
+            var crateWhitelist = new List<string>
+            {
+                "",
+            };
+
             foreach (var scenery in scenario.Scenery)
                 if (scenery.Multiplayer.MegaloLabel.Contains("invasion") || scenery.Multiplayer.MegaloLabel.StartsWith("inv"))
-                    scenery.PaletteIndex = -1;
+                    if (scenery.PaletteIndex != -1)
+                        if (!sceneryWhitelist.Contains($"{scenario.SceneryPalette[scenery.PaletteIndex].Object.Name}.{scenario.SceneryPalette[scenery.PaletteIndex].Object.Group}"))
+                            scenery.PaletteIndex = -1;
 
             foreach (var machine in scenario.Machines)
                 if (machine.Multiplayer.MegaloLabel.Contains("invasion") || machine.Multiplayer.MegaloLabel.StartsWith("inv"))
-                    machine.PaletteIndex = -1;
+                    if (machine.PaletteIndex != -1)
+                        if (!machineWhitelist.Contains($"{scenario.MachinePalette[machine.PaletteIndex].Object.Name}.{scenario.MachinePalette[machine.PaletteIndex].Object.Group}"))
+                            machine.PaletteIndex = -1;
 
             foreach (var control in scenario.Controls)
                 if (control.Multiplayer.MegaloLabel.Contains("invasion") || control.Multiplayer.MegaloLabel.StartsWith("inv"))
-                    control.PaletteIndex = -1;
+                    if (control.PaletteIndex != -1)
+                        if (!controlWhitelist.Contains($"{scenario.ControlPalette[control.PaletteIndex].Object.Name}.{scenario.ControlPalette[control.PaletteIndex].Object.Group}"))
+                            control.PaletteIndex = -1;
 
             foreach (var crate in scenario.Crates)
                 if (crate.Multiplayer.MegaloLabel.Contains("invasion") || crate.Multiplayer.MegaloLabel.StartsWith("inv"))
-                    crate.PaletteIndex = -1;
+                    if (crate.PaletteIndex != -1)
+                        if (!crateWhitelist.Contains($"{scenario.CratePalette[crate.PaletteIndex].Object.Name}.{scenario.CratePalette[crate.PaletteIndex].Object.Group}"))
+                            crate.PaletteIndex = -1;
         }
 
         public CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag)
