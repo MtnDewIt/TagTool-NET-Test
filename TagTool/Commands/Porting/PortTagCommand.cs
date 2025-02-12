@@ -629,50 +629,51 @@ namespace TagTool.Commands.Porting
 
         public void CullInvasionPlacements(Scenario scenario) 
         {
-            // TODO: Organize this function a little better
-
-            var sceneryWhitelist = new List<string>
+            var sceneryBlacklist = new List<string>
             {
-                "",
+                "objects\\multi\\boundaries\\kill_volume",
+                "objects\\multi\\boundaries\\soft_kill_volume",
+                "objects\\multi\\generic\\mp_cinematic_camera",
+                "objects\\multi\\named_location_area\\named_location_area",
+                "objects\\multi\\spawning\\danger_zone",
+                "objects\\multi\\spawning\\initial_spawn_point",
+                "objects\\multi\\spawning\\respawn_point",
             };
 
-            var machineWhitelist = new List<string>
+            var machineBlacklist = new List<string>
             {
-                "",
+                "levels\\multi\\dlc\\objects\\dlc_invasion_bridge\\dlc_invasion_bridge",
+                "levels\\multi\\dlc\\objects\\dlc_invasion_fence_gate\\dlc_invasion_fence_gate",
+                "objects\\multi\\package_cabinet\\package_cabinet",
+                "objects\\props\\covenant\\cov_powermodule_stand\\cov_powermodule_stand",
+                "objects\\vehicles\\covenant\\phantom\\phantom",
+                "objects\\vehicles\\human\\longsword\\longsword",
+                "objects\\vehicles\\human\\pelican\\pelican",
             };
 
-            var controlWhitelist = new List<string>
+            var crateBlacklist = new List<string>
             {
-                "",
-            };
-
-            var crateWhitelist = new List<string>
-            {
-                "",
+                "objects\\multi\\models\\mp_circle\\mp_circle",
+                "objects\\multi\\models\\mp_flag_base\\mp_flag_base",
+                "objects\\multi\\models\\mp_hill_beacon\\mp_hill_beacon",
             };
 
             foreach (var scenery in scenario.Scenery)
                 if (scenery.Multiplayer.MegaloLabel.Contains("invasion") || scenery.Multiplayer.MegaloLabel.StartsWith("inv"))
                     if (scenery.PaletteIndex != -1)
-                        if (!sceneryWhitelist.Contains($"{scenario.SceneryPalette[scenery.PaletteIndex].Object.Name}"))
+                        if (sceneryBlacklist.Contains($"{scenario.SceneryPalette[scenery.PaletteIndex].Object.Name}"))
                             scenery.PaletteIndex = -1;
 
             foreach (var machine in scenario.Machines)
                 if (machine.Multiplayer.MegaloLabel.Contains("invasion") || machine.Multiplayer.MegaloLabel.StartsWith("inv"))
                     if (machine.PaletteIndex != -1)
-                        if (!machineWhitelist.Contains($"{scenario.MachinePalette[machine.PaletteIndex].Object.Name}"))
+                        if (machineBlacklist.Contains($"{scenario.MachinePalette[machine.PaletteIndex].Object.Name}"))
                             machine.PaletteIndex = -1;
-
-            foreach (var control in scenario.Controls)
-                if (control.Multiplayer.MegaloLabel.Contains("invasion") || control.Multiplayer.MegaloLabel.StartsWith("inv"))
-                    if (control.PaletteIndex != -1)
-                        if (!controlWhitelist.Contains($"{scenario.ControlPalette[control.PaletteIndex].Object.Name}"))
-                            control.PaletteIndex = -1;
 
             foreach (var crate in scenario.Crates)
                 if (crate.Multiplayer.MegaloLabel.Contains("invasion") || crate.Multiplayer.MegaloLabel.StartsWith("inv"))
                     if (crate.PaletteIndex != -1)
-                        if (!crateWhitelist.Contains($"{scenario.CratePalette[crate.PaletteIndex].Object.Name}"))
+                        if (crateBlacklist.Contains($"{scenario.CratePalette[crate.PaletteIndex].Object.Name}"))
                             crate.PaletteIndex = -1;
         }
 
