@@ -320,9 +320,6 @@ namespace TagTool.Commands.Porting
 
             if(definition is Scenario scenario)
             {
-                // Remove unused invasion placements
-                CullInvasionPlacements(scenario);
-
                 scenario.Bipeds.Clear();
                 scenario.BipedPalette.Clear();
                 //scenario.Vehicles.Clear();
@@ -625,56 +622,6 @@ namespace TagTool.Commands.Porting
                 for (int i = 0; i < indices.Count; i++)
                     instanceList.RemoveAt(indices[i]);
             }
-        }
-
-        public void CullInvasionPlacements(Scenario scenario) 
-        {
-            var sceneryBlacklist = new List<string>
-            {
-                "objects\\multi\\boundaries\\kill_volume",
-                "objects\\multi\\boundaries\\soft_kill_volume",
-                "objects\\multi\\generic\\mp_cinematic_camera",
-                "objects\\multi\\named_location_area\\named_location_area",
-                "objects\\multi\\spawning\\danger_zone",
-                "objects\\multi\\spawning\\initial_spawn_point",
-                "objects\\multi\\spawning\\respawn_point",
-            };
-
-            var machineBlacklist = new List<string>
-            {
-                "levels\\multi\\dlc\\objects\\dlc_invasion_bridge\\dlc_invasion_bridge",
-                "levels\\multi\\dlc\\objects\\dlc_invasion_fence_gate\\dlc_invasion_fence_gate",
-                "objects\\multi\\package_cabinet\\package_cabinet",
-                "objects\\props\\covenant\\cov_powermodule_stand\\cov_powermodule_stand",
-                "objects\\vehicles\\covenant\\phantom\\phantom",
-                "objects\\vehicles\\human\\longsword\\longsword",
-                "objects\\vehicles\\human\\pelican\\pelican",
-            };
-
-            var crateBlacklist = new List<string>
-            {
-                "objects\\multi\\models\\mp_circle\\mp_circle",
-                "objects\\multi\\models\\mp_flag_base\\mp_flag_base",
-                "objects\\multi\\models\\mp_hill_beacon\\mp_hill_beacon",
-            };
-
-            foreach (var scenery in scenario.Scenery)
-                if (scenery.Multiplayer.MegaloLabel.Contains("invasion") || scenery.Multiplayer.MegaloLabel.StartsWith("inv"))
-                    if (scenery.PaletteIndex != -1)
-                        if (sceneryBlacklist.Contains($"{scenario.SceneryPalette[scenery.PaletteIndex].Object.Name}"))
-                            scenery.PaletteIndex = -1;
-
-            foreach (var machine in scenario.Machines)
-                if (machine.Multiplayer.MegaloLabel.Contains("invasion") || machine.Multiplayer.MegaloLabel.StartsWith("inv"))
-                    if (machine.PaletteIndex != -1)
-                        if (machineBlacklist.Contains($"{scenario.MachinePalette[machine.PaletteIndex].Object.Name}"))
-                            machine.PaletteIndex = -1;
-
-            foreach (var crate in scenario.Crates)
-                if (crate.Multiplayer.MegaloLabel.Contains("invasion") || crate.Multiplayer.MegaloLabel.StartsWith("inv"))
-                    if (crate.PaletteIndex != -1)
-                        if (crateBlacklist.Contains($"{scenario.CratePalette[crate.PaletteIndex].Object.Name}"))
-                            crate.PaletteIndex = -1;
         }
 
         public CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag)
