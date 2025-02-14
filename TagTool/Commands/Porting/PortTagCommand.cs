@@ -320,6 +320,43 @@ namespace TagTool.Commands.Porting
 
             if(definition is Scenario scenario)
             {
+                foreach (var entry in scenario.Machines)
+                {
+                    if (entry.Multiplayer.MegaloLabel.Contains("invasion") || entry.Multiplayer.MegaloLabel.StartsWith("inv"))
+                    {
+                        var machineWhitelist = new List<string>
+                        {
+                            "levels\\multi\\dlc\\objects\\dlc_invasion_alpha_relay\\dlc_invasion_alpha_relay",
+                            "levels\\multi\\dlc\\objects\\dlc_invasion_bravo_vent\\dlc_invasion_bravo_vent",
+                            "objects\\levels\\shared\\device_machines\\cov_spire_platform\\cov_spire_platform",
+                        };
+                
+                        if (entry.PaletteIndex != -1)
+                            if (machineWhitelist.Contains(scenario.MachinePalette[entry.PaletteIndex].Object?.Name))
+                                entry.Multiplayer.MegaloLabel = "none";
+                    }
+                }
+                
+                foreach (var entry in scenario.Crates)
+                {
+                    if (entry.Multiplayer.MegaloLabel.Contains("invasion") || entry.Multiplayer.MegaloLabel.StartsWith("inv"))
+                    {
+                        var crateWhitelist = new List<string>
+                        {
+                            "levels\\multi\\dlc\\objects\\dlc_invasion\\dlc_invasion_rock_med_a\\dlc_invasion_rock_med_a",
+                            "levels\\multi\\dlc\\objects\\dlc_invasion_heavy_shield\\dlc_invasion_heavy_shield",
+                            "objects\\levels\\forge\\ff_shield_door_medium\\ff_shield_door_medium",
+                            "objects\\levels\\multi\\35_island\\spire_base_cannon\\spire_base_cannon",
+                            "objects\\levels\\multi\\35_island\\spire_cliff_cannon\\spire_cliff_cannon",
+                            "objects\\levels\\multi\\35_island\\spire_gun_cannon\\spire_gun_cannon",
+                        };
+                
+                        if (entry.PaletteIndex != -1)
+                            if (crateWhitelist.Contains(scenario.CratePalette[entry.PaletteIndex].Object?.Name))
+                                entry.Multiplayer.MegaloLabel = "none";
+                    }
+                }
+
                 scenario.Bipeds.Clear();
                 scenario.BipedPalette.Clear();
                 //scenario.Vehicles.Clear();
