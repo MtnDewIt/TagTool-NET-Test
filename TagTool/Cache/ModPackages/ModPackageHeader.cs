@@ -283,7 +283,7 @@ namespace TagTool.Cache
         public string Path;
     }
 
-    [TagStructure]
+    [TagStructure(Size = 0x8C8)]
     public class ModPackageData : TagStructure
     {
         public ModPackageHeader Header;
