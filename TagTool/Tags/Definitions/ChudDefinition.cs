@@ -66,11 +66,12 @@ namespace TagTool.Tags.Definitions
             [TagStructure(Size = 0x38, MinVersion = CacheVersion.HaloReach)]
             public class StateDatum : TagStructure
             {
-                [TagField(Platform = CachePlatform.Original)]
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
                 public GameStateFlags GameState;
                 [TagField(Platform = CachePlatform.MCC)]
                 public GameStateFlagsMCC GameStateMCC;
 
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public SkinStateFlags SkinState;
 
                 [TagField(Version = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
@@ -79,7 +80,9 @@ namespace TagTool.Tags.Definitions
                 [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
                 public SandboxStateFlags SandboxStateMCC;
 
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public GameTeamFlags GameTeam;
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public WindowStateFlags WindowState;
 
                 [TagField(MaxVersion = CacheVersion.Halo3ODST)]
@@ -94,10 +97,10 @@ namespace TagTool.Tags.Definitions
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
                 public MiscStateFlags MiscState;
 
-                [TagField(MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
+                [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
                 public SandboxStateFlags SandboxState;
 
-                [TagField(MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
+                [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
                 public HindsightStateFlags HindsightState;
                 [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
                 public HindsightStateFlagsMCC HindsightStateMCC;
@@ -133,7 +136,7 @@ namespace TagTool.Tags.Definitions
                 [TagField(Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
                 public PDAStateFlags PDAStateMCC;
 
-                [TagField(Flags = TagFieldFlags.Padding, Length = 0x2, MinVersion = CacheVersion.Halo3ODST)]
+                [TagField(Flags = TagFieldFlags.Padding, Length = 0x2, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
                 public byte[] Padding2;
 
                 [TagField(MaxVersion = CacheVersion.Halo3Retail)]
@@ -143,7 +146,9 @@ namespace TagTool.Tags.Definitions
                 [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
                 public UnitImpulseStateFlagsHO UnitImpulseStateHO;
 
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public UnitZoomStateFlags UnitZoomState;
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public UnitArmedStateFlags UnitArmedState;
 
                 [TagField(Flags = TagFieldFlags.Padding, Length = 0x2, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline604673)]
@@ -152,11 +157,13 @@ namespace TagTool.Tags.Definitions
                 [TagField(Version = CacheVersion.HaloOnline700123)]
                 public UnknownStateFlagsMS30 UnknownStateMS30; // This might be in all HO builds, but only MS30 has non zero values
 
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public UnitMiscStateFlags UnitMiscState;
 
                 [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
                 public UnknownStateFlags UnknownState;
 
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public WeaponImpulseStateFlags WeaponImpulseState;
 
                 [TagField(MaxVersion = CacheVersion.Halo3ODST)]
@@ -169,6 +176,7 @@ namespace TagTool.Tags.Definitions
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
                 public WeaponCrosshairStateFlags WeaponCrosshairState;
 
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public WeaponMiscStateFlags WeaponMiscState;
 
                 [TagField(MaxVersion = CacheVersion.Halo3ODST)]
@@ -176,7 +184,9 @@ namespace TagTool.Tags.Definitions
                 [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
                 public NonWeaponFlashFlagsHO NonWeaponFlashHO;
 
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public WeaponFlashFlags WeaponFlash;
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public HiddenStateFlags HiddenState;
 
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
