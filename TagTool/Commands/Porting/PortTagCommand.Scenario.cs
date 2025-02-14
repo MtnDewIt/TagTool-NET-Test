@@ -859,6 +859,7 @@ namespace TagTool.Commands.Porting
         public void AddGametypeObjects(Scenario scnr)
         {
             scnr.SceneryPalette = scnr.SceneryPalette ?? new List<Scenario.ScenarioPaletteEntry>();
+            scnr.MachinePalette = scnr.MachinePalette ?? new List<Scenario.ScenarioPaletteEntry>();
             scnr.CratePalette = scnr.CratePalette ?? new List<Scenario.ScenarioPaletteEntry>();
 
             if (scnr.CratePalette.Count > 0)
@@ -906,6 +907,12 @@ namespace TagTool.Commands.Porting
                 scnr.Crates.AddRange(flagSpawns);
             }
 
+            if (scnr.MachinePalette.Count > 0) 
+            {
+                ProcessMegaloLabels(scnr.MachinePalette, scnr.Machines);
+                scnr.Machines = scnr.Machines.Where(e => e.PaletteIndex != -1).ToList();
+            }
+
             if (scnr.SceneryPalette.Count > 0)
             {
                 var invisible_spawn = scnr.SceneryPalette.FindIndex(e => e.Object?.Name == "objects\\multi\\spawning\\respawn_point_invisible");
@@ -948,7 +955,8 @@ namespace TagTool.Commands.Porting
                     return;
 
                 var permutationInstance = (instance as Scenario.PermutationInstance);
-                var newPaletteIndex = permutationInstance.PaletteIndex;
+                var scenarioInstance = (instance as Scenario.ScenarioInstance);
+                var newPaletteIndex = permutationInstance == null ? scenarioInstance.PaletteIndex : permutationInstance.PaletteIndex;
                 var ctfReturnIndex = GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_return_area");
 
                 switch (mpProperties.MegaloLabel)
@@ -1024,7 +1032,10 @@ namespace TagTool.Commands.Porting
 
                 mpProperties.SpawnFlags &= ~MultiplayerObjectPlacementSpawnFlags.HideUnlessRequired;
 
-                permutationInstance.PaletteIndex = newPaletteIndex;
+                if (permutationInstance != null)
+                    permutationInstance.PaletteIndex = newPaletteIndex;
+                else if (scenarioInstance != null)
+                    scenarioInstance.PaletteIndex = newPaletteIndex;
             }
         }
 
