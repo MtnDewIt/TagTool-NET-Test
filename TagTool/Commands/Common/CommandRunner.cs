@@ -32,7 +32,7 @@ namespace TagTool.Commands.Common
 
             // Allow inline comments beginning with "//"
 
-            if (!commandLine.Contains(':'))
+            if (!commandLine.Contains('://'))
                 commandLine = commandLine.Split(new[] { "//" }, StringSplitOptions.None)[0];
 
             return commandLine;
