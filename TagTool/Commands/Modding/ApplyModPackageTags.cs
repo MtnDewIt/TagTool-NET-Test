@@ -39,12 +39,21 @@ namespace TagTool.Commands.Modding
 		public ApplyModPackageTagsCommand(GameCacheModPackage modCache) :
 			base(false,
 
-				"ApplyModPackageTags",
-				"Apply current mod package to the base cache, optionally excluding tags / tag groups. \n",
+                "ApplyModPackageTags",
+        "Apply current mod package to the base cache, optionally excluding tags / tag groups.",
 
-				"ApplyModPackageTags [Tag cache index (default=0)]",
+        "ApplyModPackageTags [Tag cache index (default=0)]\n"
+        + "  You can exclude a specific tag from applying by entering its name -> globals\\globals.globals\n"
+        + "  You can exclude an entire tag group by entering its group -> .biped\n"
+        + "  You can exclude all tags in a path and sub paths by entering the path -> objects\\characters\n"
+        + "  You can also use prefixes with the examples above:\n"
+        + "     \"+\" forces the specified to be applied and its dependencies recursively\n"
+        + "     \"+-\" forces only the specified to be applied\n"
+        + "     \"-\" and no prefix work by excluding the tags\n"
+        + "Once finished specifying tags one per line, type 'Done' and press enter to begin applying the tags.",
 
-				"Apply current mod package to the base cache, optionally excluding tags / tag groups. \n") {
+        "Apply current mod package to the base cache, optionally excluding tags / tag groups. \n")
+        {
 			BaseCache = modCache.BaseCacheReference;
 			ModCache = modCache;
 			BlacklistedTags = new HashSet<string>();
