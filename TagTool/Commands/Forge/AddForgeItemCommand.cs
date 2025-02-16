@@ -43,7 +43,7 @@ namespace TagTool.Commands.Forge
                     return new TagToolError(CommandError.ArgCount);
 
                 if (!Cache.TagCache.TryGetCachedTag(args.Last(), out Item))
-                    return new TagToolError(CommandError.TagInvalid);
+                    return new TagToolError(CommandError.CustomError, $"Could not find tag \"{args.Last()}\"");
                 else if (!Item.IsInGroup("obje"))
                     return new TagToolError(CommandError.CustomError, "Tag is not an object.");
 
