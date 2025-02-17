@@ -1063,7 +1063,7 @@ namespace TagTool.Scripting
             [0x3C1] = "ai_render_behavior_stack_all",
             [0x3C2] = "ai_render_stimuli",
             [0x3C3] = "ai_render_stimuli_all",
-            [0x3C4] = "ai_render_combat_status"
+            [0x3C4] = "ai_render_combat_status",
             [0x3C5] = "ai_render_decisions",
             [0x3C6] = "ai_render_decisions_all",
             [0x3C7] = "ai_render_command_scripts",
