@@ -73,9 +73,9 @@
     <ProjectReference Include="..\ShaderGenerator\HaloShaderGenerator\HaloShaderGenerator.csproj" Private="false" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AssimpNet" Version="4.1.0" />
+    <PackageReference Include="AssimpNet" Version="5.0.0-beta1" />
     <PackageReference Include="lz4net" Version="1.0.15.93" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.11.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.12.0" />
     <PackageReference Include="PluralizeService.Core" Version="1.2.21147.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Poly2Tri.NetStandard" Version="1.0.2" />
