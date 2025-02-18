@@ -95,7 +95,7 @@ namespace TagTool.Geometry
         /// <summary>
         /// Export geometry to 3D model file.
         /// </summary>
-        /// <param name="exportFileFormat">AMF, DAE or OBJ</param>
+        /// <param name="exportFileFormat">AMF, DAE, FBX or OBJ</param>
         /// <param name="exportFilePath">File to write 3D model to.</param>
         /// <param name="exportBitmapsFolder">If set, used diffuse bitmaps will be exported as DDS to this folder.</param>
         /// <param name="filterVariant">If set, only this variant will be exported.</param>
@@ -131,6 +131,10 @@ namespace TagTool.Geometry
                     PopulateAssimpScene(filterVariant);
                     success = ExportCollada(modelFile);
                     break;
+                case "fbx":
+                    PopulateAssimpScene(filterVariant);
+                    success = ExportFBX(modelFile);
+                    break;
                 default:
                     new TagToolError(CommandError.ArgInvalid, $"Unsupported export format \"{exportFileFormat}\"");
                     return success;
@@ -161,6 +165,14 @@ namespace TagTool.Geometry
             
         }
 
+        public bool ExportFBX(FileInfo file)
+        {
+            using (var exporter = new AssimpContext())
+            {
+                // Export the scene as FBX using Assimp's built-in exporter.
+                return exporter.ExportFile(Scene, file.FullName, "fbx", PostProcessSteps.ValidateDataStructure);
+            }
+        }
         public bool ExportAMF(FileInfo file, string[] variantName = null, float scale = 100)
         {
             byte[] NullTerminate(string x) { return Encoding.ASCII.GetBytes(x + char.MinValue); }
