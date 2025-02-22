@@ -211,7 +211,6 @@ namespace TagTool.Commands.Porting
                     switch (blamTag.Group.Tag.ToString())
                     {
                         case "rmcs":
-                        case "rmgl":
                             resultTag = GetDefaultShader(blamTag.Group.Tag);
                             return false;
                     }

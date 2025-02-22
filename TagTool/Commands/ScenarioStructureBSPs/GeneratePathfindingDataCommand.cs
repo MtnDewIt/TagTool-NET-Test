@@ -149,8 +149,15 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
 			// Values that are always going to be the same for our purposes, object type and unique id need to be manually set (for now)
 			ObjRef.Flags = ObjectReference.ObjectReferenceFlags.Mobile;
-			ObjRef.ObjectId.OriginBspIndex = -1;
-			ObjRef.ObjectId.Source = ObjectIdentifier.SourceValue.Editor;
+			ObjRef.ObjectId = new ObjectIdentifier 
+			{
+			    OriginBspIndex = -1,
+			    Source = ObjectIdentifier.SourceValue.Editor,
+			};
+			ObjRef.ObjectId.Type = new GameObjectType8()
+			{
+			    Halo3ODST = GameObjectTypeHalo3ODST.None
+			};
 
 			// Pathfinding is only generated for the base permutation, aka, if a model has damage states, these are not included
 			// So for each region, in the base permutation, how many bsps are there, so if you had 4 regions with 5 bps in each
