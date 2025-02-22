@@ -242,6 +242,13 @@ namespace TagTool.Geometry
             _currentMesh.NodeIndices = nodeIndices;
         }
 
+        public void SetCurrentPartFlag(Part.PartFlagsNew flag)
+        {
+            if (_currentPart == null)
+                throw new InvalidOperationException("No current part is active.");
+            _currentPart.FlagsNew |= flag;
+        }
+
         /// <summary>
         /// Binds a rigid vertex buffer to the current mesh.
         /// </summary>
