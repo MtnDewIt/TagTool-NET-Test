@@ -246,6 +246,7 @@ namespace TagTool.Commands.RenderModels
                         foreach (var bone in part.Bones)
                         {
                             if (bone.VertexWeights.Any(vw => vw.Weight > 0.0f))
+                                assignedNodes.Add(FixBoneName(bone.Name));
                         }
                     }
 
