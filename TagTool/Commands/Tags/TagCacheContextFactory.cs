@@ -81,6 +81,8 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new ConvertReachMapVariantCommand(cache as GameCacheHaloOnline));
             context.AddCommand(new ConvertHalo3MapVariantCommand(cache as GameCacheHaloOnline));
 
+            context.AddCommand(new DebugTestCommand(cache, cache as GameCacheHaloOnline, contextStack));
+
             // Halo Online Specific Commands
             if (cache is GameCacheHaloOnlineBase)
             {
