@@ -1,14 +1,15 @@
-﻿using Assimp;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Assimp;
+using AssimpMesh = Assimp.Mesh;  // Alias to disambiguate from TagTool.Geometry.Mesh
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.Geometry;
 using TagTool.Tags.Definitions;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace TagTool.Commands.RenderModels
 {
@@ -154,25 +155,76 @@ namespace TagTool.Commands.RenderModels
                 nodes.Add(name, builder.AddNode(oldNode));
             }
 
-            // Track used meshes
+            // Group scene meshes by region and permutation using the "region:permutation" naming convention.
+            var sceneMeshGroups = new Dictionary<string, Dictionary<string, List<AssimpMesh>>>();
+            foreach (var mesh in scene.Meshes)
+            {
+                string cleanName = CleanMeshName(mesh.Name).ToLower();
+                string[] parts = cleanName.Split(':');
+                if (parts.Length < 2)
+                    continue; // Skip meshes not following the naming convention.
+                string regionName = parts[0];
+                string permName = parts[1];
+                if (!sceneMeshGroups.ContainsKey(regionName))
+                    sceneMeshGroups[regionName] = new Dictionary<string, List<AssimpMesh>>();
+                if (!sceneMeshGroups[regionName].ContainsKey(permName))
+                    sceneMeshGroups[regionName][permName] = new List<AssimpMesh>();
+                sceneMeshGroups[regionName][permName].Add(mesh);
+            }
+
+            // Build ordered list of region names:
+            // Preserve the existing order, then append new region names from the scene.
+            List<string> existingRegionNamesOrdered = Definition.Regions.Select(r => Cache.StringTable.GetString(r.Name).ToLower()).ToList();
+            List<string> newRegionNames = sceneMeshGroups.Keys.Where(rn => !existingRegionNamesOrdered.Contains(rn)).ToList();
+            List<string> regionNamesToProcess = existingRegionNamesOrdered.Concat(newRegionNames).Take(16).ToList();
+
             var usedMeshes = new HashSet<string>();
 
-            foreach (var region in Definition.Regions)
+            // Process each region.
+            foreach (var regionName in regionNamesToProcess)
             {
-                builder.BeginRegion(region.Name);
+                // Reuse existing region if available; otherwise, create new.
+                RenderModel.Region existingRegion = Definition.Regions.FirstOrDefault(r => Cache.StringTable.GetString(r.Name).ToLower() == regionName);
+                StringId regionId = existingRegion != null ? existingRegion.Name : Cache.StringTable.AddString(regionName);
 
-                var regionName = Cache.StringTable.GetString(region.Name).ToLower();
+                builder.BeginRegion(regionId);
 
-                foreach (var permutation in region.Permutations)
+                // Build ordered list of permutation names for this region.
+                List<string> existingPermsOrdered = new List<string>();
+                if (existingRegion != null)
+                    existingPermsOrdered = existingRegion.Permutations.Select(p => Cache.StringTable.GetString(p.Name).ToLower()).ToList();
+                List<string> scenePerms = new List<string>();
+                if (sceneMeshGroups.ContainsKey(regionName))
+                    scenePerms = sceneMeshGroups[regionName].Keys.ToList();
+                List<string> newPerms = scenePerms.Where(pn => !existingPermsOrdered.Contains(pn)).ToList();
+                List<string> permNamesToProcess = existingPermsOrdered.Concat(newPerms).Take(128).ToList();
+
+                // Process each permutation.
+                foreach (var permName in permNamesToProcess)
                 {
-                    if (permutation.MeshCount > 1)
-                        throw new NotSupportedException("multiple permutation meshes");
+                    StringId permId;
+                    bool isNewPermutation = false;
+                    if (existingRegion != null && existingRegion.Permutations.Any(p => Cache.StringTable.GetString(p.Name).ToLower() == permName))
+                    {
+                        permId = existingRegion.Permutations.First(p => Cache.StringTable.GetString(p.Name).ToLower() == permName).Name;
+                    }
+                    else
+                    {
+                        permId = Cache.StringTable.AddString(permName);
+                        isNewPermutation = true;
+                    }
 
-                    var permName = Cache.StringTable.GetString(permutation.Name).ToLower();
+                    if (isNewPermutation)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"   Added new permutation: {regionName}:{permName}");
+                        Console.ResetColor();
+                    }
 
-                    var permMeshes = scene.Meshes
-                        .Where(i => CleanMeshName(i.Name).ToLower() == $"{regionName}:{permName}")
-                        .ToList();
+                    // Get meshes for this region/permutation.
+                    List<AssimpMesh> permMeshes = new List<AssimpMesh>();
+                    if (sceneMeshGroups.ContainsKey(regionName) && sceneMeshGroups[regionName].ContainsKey(permName))
+                        permMeshes = sceneMeshGroups[regionName][permName];
 
                     if (permMeshes.Count == 0)
                     {
@@ -180,7 +232,7 @@ namespace TagTool.Commands.RenderModels
                         Console.WriteLine($"   No mesh found for [{regionName}:{permName}], we will try to prevent issues!");
                         Console.ResetColor();
                         // Set MeshIndex to -1 to prevent issues but continue with the process
-                        builder.BeginPermutationNone(permutation.Name);
+                        builder.BeginPermutationNone(permId);
                         builder.EndPermutation();
                         continue;
                     }
@@ -193,7 +245,7 @@ namespace TagTool.Commands.RenderModels
                     {
                         foreach (var bone in part.Bones)
                         {
-                            assignedNodes.Add(FixBoneName(bone.Name));
+                            if (bone.VertexWeights.Any(vw => vw.Weight > 0.0f))
                         }
                     }
 
@@ -339,11 +391,10 @@ namespace TagTool.Commands.RenderModels
                             }
                         }
                         var usedBones = combinedBoneOrder.Where(b => boneUsage.ContainsKey(b) && boneUsage[b] > 0).ToList();
-                        var unusedBones = combinedBoneOrder.Where(b => !boneUsage.ContainsKey(b) || boneUsage[b] == 0).ToList();
-                        skinnedBoneMapping = usedBones.Concat(unusedBones).ToList();
+                        skinnedBoneMapping = usedBones;
                     }
 
-                    builder.BeginPermutation(permutation.Name);
+                    builder.BeginPermutation(permId);
                     builder.BeginMesh();
 
                     var MeshIndexCountOG = 0;
@@ -405,7 +456,8 @@ namespace TagTool.Commands.RenderModels
                                 {
                                     foreach (var vertexInfo in bone.VertexWeights)
                                     {
-                                        if (vertexInfo.VertexID == i)
+                                        // Only consider influences with a nonzero weight.
+                                        if (vertexInfo.VertexID == i && vertexInfo.Weight > 0.0f)
                                         {
                                             string bonefix = FixBoneName(bone.Name);
 
