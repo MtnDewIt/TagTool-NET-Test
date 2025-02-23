@@ -96,6 +96,7 @@ namespace TagTool.Commands.Bitmaps
             string lowerName = imagePath.ToLowerInvariant();
             if (lowerName.EndsWith("_zbump.dds") ||
                 lowerName.EndsWith("_normal.dds") ||
+                lowerName.EndsWith("_microbump.dds") ||
                 lowerName.EndsWith("_n.dds"))
             {
                 useDXN = true;
@@ -117,7 +118,7 @@ namespace TagTool.Commands.Bitmaps
 
                 if (useDXN)
                 {
-                    Console.WriteLine("Detected normal map file. Converting from DXT5 to DXN...");
+                    Console.WriteLine("Detected normal map file. Converting from input DXT format to DXN...");
 
                     // Read entire file as raw bytes.
                     byte[] ddsRaw = File.ReadAllBytes(imagePath);
@@ -125,12 +126,39 @@ namespace TagTool.Commands.Bitmaps
                     if (ddsRaw.Length <= headerSize)
                         throw new Exception("Invalid DDS file: file too short.");
 
-                    // Compute expected size for the top mip level (for DXT5, 16 bytes per 4x4 block).
                     int width = file.Header.Width;
                     int height = file.Header.Height;
                     int blockWidth = (width + 3) / 4;
                     int blockHeight = (height + 3) / 4;
-                    int expectedSize = blockWidth * blockHeight * 16;
+
+                    // Define the FOURCC constants (in little-endian)
+                    const uint FOURCC_DXT1 = 0x31545844; // 'DXT1'
+                    const uint FOURCC_DXT3 = 0x33545844; // 'DXT3'
+                    const uint FOURCC_DXT5 = 0x35545844; // 'DXT5'
+
+                    BitmapFormat sourceFormat;
+                    int blockSize = 0;
+
+                    // Compare the DDS header's FourCC value with the constants.
+                    switch (file.Header.PixelFormat.FourCC)
+                    {
+                        case FOURCC_DXT1:
+                            sourceFormat = BitmapFormat.Dxt1;
+                            blockSize = 8;
+                            break;
+                        case FOURCC_DXT3:
+                            sourceFormat = BitmapFormat.Dxt3;
+                            blockSize = 16;
+                            break;
+                        case FOURCC_DXT5:
+                            sourceFormat = BitmapFormat.Dxt5;
+                            blockSize = 16;
+                            break;
+                        default:
+                            throw new Exception("Unsupported format for DXN conversion");
+                    }
+
+                    int expectedSize = blockWidth * blockHeight * blockSize;
                     if (ddsRaw.Length - headerSize < expectedSize)
                         throw new Exception("DDS file pixel data is smaller than expected.");
 
@@ -138,13 +166,13 @@ namespace TagTool.Commands.Bitmaps
                     byte[] highestResData = new byte[expectedSize];
                     Array.Copy(ddsRaw, headerSize, highestResData, 0, expectedSize);
 
-                    // Decode the compressed data (which is in DXT5 format) into an uncompressed A8R8G8B8 buffer.
-                    byte[] uncompressed = BitmapDecoder.DecodeBitmap(highestResData, BitmapFormat.Dxt5, width, height);
+                    // Decode the compressed data using the detected format.
+                    byte[] uncompressed = BitmapDecoder.DecodeBitmap(highestResData, sourceFormat, width, height);
 
-                    // Re-encode the uncompressed data as DXN (BC5).
+                    // Re-encode the data as DXN (BC5).
                     byte[] dxnData = BitmapDecoder.EncodeBitmap(uncompressed, BitmapFormat.Dxn, width, height);
 
-                    // Update the resource’s bitmap definition.
+                    // Update the resource with the new DXN data.
                     resource.Texture.Definition.PrimaryResourceData = new TagData(dxnData);
                     resource.Texture.Definition.Bitmap.Format = BitmapFormat.Dxn;
                 }
