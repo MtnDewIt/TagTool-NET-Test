@@ -254,110 +254,109 @@ namespace TagTool.Commands.Modding
 			return true;
 		}
 
-        private CachedTag ConvertCachedTagInstance(ModPackage modPack, CachedTag modTag, bool isTagReference = true)
-        {
+		private CachedTag ConvertCachedTagInstance(ModPackage modPack, CachedTag modTag, bool isTagReference = true)
+		{
 
-            string fullTagName = string.Join('.', modTag.Name, modTag.Group);
+			string fullTagName = string.Join('.', modTag.Name, modTag.Group);
 
-            // Check if the tag should be applied (i.e., has a "+" in the blacklist list)
-            bool forceApply = ForceAppliedTags.Contains(fullTagName) || ForceAppliedTags.Any(fullTagName.Contains);
-            bool forceBlacklist = ForceBlacklistedTags.Contains(fullTagName) || ForceBlacklistedTags.Any(fullTagName.Contains);
-            bool applyTag = AppliedTags.Contains(fullTagName) || AppliedTags.Any(fullTagName.Contains);
+			// Check if the tag should be applied (i.e., has a "+" in the blacklist list)
+			bool forceApply = ForceAppliedTags.Contains(fullTagName) || ForceAppliedTags.Any(fullTagName.Contains);
+			bool forceBlacklist = ForceBlacklistedTags.Contains(fullTagName) || ForceBlacklistedTags.Any(fullTagName.Contains);
+			bool applyTag = AppliedTags.Contains(fullTagName) || AppliedTags.Any(fullTagName.Contains);
 
-            if (forceApply && !applyTag)
-            {
-                Console.WriteLine($"Included Tag: {fullTagName}");
-                var dependencies = GetTagDependencies(modTag);
-                foreach (var dependency in dependencies)
-                {
-                    if (!ForceAppliedTags.Contains(dependency))
-                    {
-                        ForceAppliedTags.Add(dependency);
-                        Console.WriteLine($"Including dependency: {dependency}");
-                    }
-                }
-            }
-            else if (applyTag)
-            {
-                Console.WriteLine($"Applied Tag: {fullTagName}");
-                var dependencies = GetTagDependencies(modTag);
-                foreach (var dependency in dependencies)
-                {
-                    if (!BlacklistedTags.Contains(dependency))
-                    {
-                        BlacklistedTags.Add(dependency);
-                        Console.WriteLine($"Blacklisting dependency: {dependency}");
-                    }
-                }
-            }
-            else if (forceBlacklist || BlacklistedTags.Contains(fullTagName) || BlacklistedTags.Any(fullTagName.Contains))
-            {
-                Console.WriteLine($"Blacklisted: {fullTagName}");
+			if (forceApply && !applyTag)
+			{
+				Console.WriteLine($"Included Tag: {fullTagName}");
+				var dependencies = GetTagDependencies(modTag);
+				foreach (var dependency in dependencies)
+				{
+					if (!ForceAppliedTags.Contains(dependency))
+					{
+						ForceAppliedTags.Add(dependency);
+						Console.WriteLine($"Including dependency: {dependency}");
+					}
+				}
+			}
+			else if (applyTag)
+			{
+				Console.WriteLine($"Applied Tag: {fullTagName}");
+				var dependencies = GetTagDependencies(modTag);
+				foreach (var dependency in dependencies)
+				{
+					if (!BlacklistedTags.Contains(dependency))
+					{
+						BlacklistedTags.Add(dependency);
+						Console.WriteLine($"Blacklisting dependency: {dependency}");
+					}
+				}
+			}
+			else if (forceBlacklist || BlacklistedTags.Contains(fullTagName) || BlacklistedTags.Any(fullTagName.Contains))
+			{
+				Console.WriteLine($"Blacklisted: {fullTagName}");
 
-                // If tag exists in base cache, return the reference
-                if (CacheTagsByName.TryGetValue(fullTagName, out CachedTag baseTag))
-                {
-                    TagMapping[modTag.Index] = baseTag.Index;
-                    return baseTag;
-                }
-                // Otherwise, return null without processing
-                return null;
-            }
+				// If tag exists in base cache, return the reference
+				if (CacheTagsByName.TryGetValue(fullTagName, out CachedTag baseTag))
+				{
+					TagMapping[modTag.Index] = baseTag.Index;
+					return baseTag;
+				}
+				// Otherwise, return null without processing
+				return null;
+			}
 
-            // If we already processed this tag, return the existing reference.
-            if (TagMapping.ContainsKey(modTag.Index))
-                return BaseCache.TagCache.GetTag(TagMapping[modTag.Index]);
+			// If we already processed this tag, return the existing reference.
+			if (TagMapping.ContainsKey(modTag.Index))
+				return BaseCache.TagCache.GetTag(TagMapping[modTag.Index]);
 
-            // Proceed with normal tag conversion if it's not blacklisted or applied
-            if (((CachedTagHaloOnline)modTag).IsEmpty())
-            {
-                // Tag references a base tag. Look it up in the base cache.
-                if (CacheTagsByName.TryGetValue($"{modTag.Name}.{modTag.Group}", out CachedTag cacheTag))
-                {
-                    TagMapping[modTag.Index] = cacheTag.Index;
-                    return cacheTag;
-                }
+			// Proceed with normal tag conversion if it's not blacklisted or applied
+			if (((CachedTagHaloOnline)modTag).IsEmpty())
+			{
+				// Tag references a base tag. Look it up in the base cache.
+				if (CacheTagsByName.TryGetValue($"{modTag.Name}.{modTag.Group}", out CachedTag cacheTag))
+				{
+					TagMapping[modTag.Index] = cacheTag.Index;
+					return cacheTag;
+				}
 
-                // Modified behavior: If the tag is not found in the base cache,
-                // log the failure, mark it as blacklisted, and return null.
-                Console.Error.WriteLine($"Failed to find {fullTagName} in the base cache, marking as blacklisted tag.");
-                BlacklistedTags.Add(fullTagName);
-                return null;
-            }
-            else
-            {
-                Console.WriteLine($"Converting {fullTagName}...");
-                CachedTag newTag;
-                if (!CacheTagsByName.TryGetValue($"{fullTagName}", out newTag))
-                {
-                    newTag = BaseCache.TagCache.AllocateTag(modTag.Group);
-                    newTag.Name = modTag.Name;
-                }
+				// Modified behavior: If the tag is not found in the base cache,
+				// log the failure, mark it as blacklisted, and return null.
+				Console.Error.WriteLine($"Failed to find {fullTagName} in the base cache, marking as blacklisted tag.");
+				BlacklistedTags.Add(fullTagName);
+				return null;
+			}
+			// In ConvertCachedTagInstance, modified tag branch:
+			else
+			{
+				Console.WriteLine($"Converting {fullTagName}...");
+				CachedTag newTag;
+				if (!CacheTagsByName.TryGetValue($"{fullTagName}", out newTag))
+				{
+					newTag = BaseCache.TagCache.AllocateTag(modTag.Group);
+					newTag.Name = modTag.Name;
+					// Register the new, modified tag for future dependency lookups:
+					CacheTagsByName[$"{newTag.Name}.{newTag.Group}"] = newTag;
+				}
 
-                TagMapping.Add(modTag.Index, newTag.Index);
-                var definitionType = BaseCache.TagCache.TagDefinitions.GetTagDefinitionType(modTag.Group);
+				TagMapping.Add(modTag.Index, newTag.Index);
+				var definitionType = BaseCache.TagCache.TagDefinitions.GetTagDefinitionType(modTag.Group);
+				var tagDefinition = ModCache.Deserialize(ModCache.OpenCacheRead(CacheStream), modTag);
+				tagDefinition = ConvertData(modPack, tagDefinition);
 
-                var tagDefinition = ModCache.Deserialize(ModCache.OpenCacheRead(CacheStream), modTag);
-                tagDefinition = ConvertData(modPack, tagDefinition);
+				if (definitionType == typeof(ForgeGlobalsDefinition))
+					tagDefinition = ConvertForgeGlobals((ForgeGlobalsDefinition)tagDefinition);
+				else if (definitionType == typeof(Scenario))
+					tagDefinition = ConvertScenario(modPack, (Scenario)tagDefinition);
 
-                if (definitionType == typeof(ForgeGlobalsDefinition))
-                {
-                    tagDefinition = ConvertForgeGlobals((ForgeGlobalsDefinition)tagDefinition);
-                }
-                else if (definitionType == typeof(Scenario))
-                {
-                    tagDefinition = ConvertScenario(modPack, (Scenario)tagDefinition);
-                }
-                BaseCache.Serialize(CacheStream, newTag, tagDefinition);
+				BaseCache.Serialize(CacheStream, newTag, tagDefinition);
 
-                foreach (var resourcePointer in ((CachedTagHaloOnline)modTag).ResourcePointerOffsets)
-                {
-                    var newTagHo = newTag as CachedTagHaloOnline;
-                    newTagHo.AddResourceOffset(resourcePointer);
-                }
-                return newTag;
-            }
-        }
+				foreach (var resourcePointer in ((CachedTagHaloOnline)modTag).ResourcePointerOffsets)
+				{
+					var newTagHo = newTag as CachedTagHaloOnline;
+					newTagHo.AddResourceOffset(resourcePointer);
+				}
+				return newTag;
+			}
+		}
 
 
         private IEnumerable<string> GetTagDependencies(CachedTag tag)
@@ -401,8 +400,8 @@ namespace TagTool.Commands.Modding
 		        {
 		            foreach (var dependencyExtension in rule.Value)
 		            {
-		                var dependentTagName = $"{tag.Name}.{dependencyExtension}";
-		                if (CacheTagsByName.TryGetValue(dependentTagName, out CachedTag dependentTag))
+                        var dependentTagName = tag.Name + dependencyExtension;
+                        if (CacheTagsByName.TryGetValue(dependentTagName, out CachedTag dependentTag))
 		                {
 		                    dependencies.Add(dependentTagName);
 		                    CollectDependencies(dependentTag, dependencies);
