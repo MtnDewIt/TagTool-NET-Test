@@ -699,30 +699,57 @@ namespace TagTool.Commands.ModelAnimationGraphs
             float donorRoot = JmadHelper.GetRootNode(donorGraph).ZPosition;
             inh.RootZOffset = (targetRoot == 0.0f || donorRoot == 0.0f) ? 1.0f : targetRoot / donorRoot;
 
-            int skeletonCount = (donorGraph.SkeletonNodes != null && donorGraph.SkeletonNodes.Count > 0)
-                                ? donorGraph.SkeletonNodes.Count
-                                : Animation.SkeletonNodes.Count;
-            if (inh.NodeMap == null || inh.NodeMap.Count != skeletonCount)
+            // Check if donor graph's skeleton nodes match the base graph exactly.
+            bool sameMapping = false;
+            if (donorGraph.SkeletonNodes != null && donorGraph.SkeletonNodes.Count > 0 &&
+                Animation.SkeletonNodes != null &&
+                Animation.SkeletonNodes.Count == donorGraph.SkeletonNodes.Count)
             {
-                inh.NodeMap = new List<Inheritance.NodeMapBlock>();
-                for (int i = 0; i < skeletonCount; i++)
-                    inh.NodeMap.Add(new Inheritance.NodeMapBlock());
-            }
-            for (int i = 0; i < skeletonCount; i++)
-            {
-                StringId donorNodeName = (donorGraph.SkeletonNodes != null && donorGraph.SkeletonNodes.Count > i)
-                                           ? donorGraph.SkeletonNodes[i].Name
-                                           : Animation.SkeletonNodes[i].Name;
-                short localIndex = (short)Animation.SkeletonNodes.FindIndex(x => x.Name == donorNodeName);
-                inh.NodeMap[i].LocalNode = localIndex;
-            }
-            if (!firstperson)
-            {
-                inh.NodeMapFlags = new List<Inheritance.NodeMapFlag>
+                sameMapping = true;
+                for (int i = 0; i < donorGraph.SkeletonNodes.Count; i++)
                 {
-                    new Inheritance.NodeMapFlag { LocalNodeFlags = -1 },
-                    new Inheritance.NodeMapFlag { LocalNodeFlags = -1 }
-                };
+                    // Compare each node's name.
+                    if (donorGraph.SkeletonNodes[i].Name != Animation.SkeletonNodes[i].Name)
+                    {
+                        sameMapping = false;
+                        break;
+                    }
+                }
+            }
+
+            if (sameMapping)
+            {
+                // The node mapping is identical, so skip creating node map and flags.
+                inh.NodeMap = null;
+                inh.NodeMapFlags = null;
+            }
+            else
+            {
+                int skeletonCount = (donorGraph.SkeletonNodes != null && donorGraph.SkeletonNodes.Count > 0)
+                                    ? donorGraph.SkeletonNodes.Count
+                                    : Animation.SkeletonNodes.Count;
+                if (inh.NodeMap == null || inh.NodeMap.Count != skeletonCount)
+                {
+                    inh.NodeMap = new List<Inheritance.NodeMapBlock>();
+                    for (int i = 0; i < skeletonCount; i++)
+                        inh.NodeMap.Add(new Inheritance.NodeMapBlock());
+                }
+                for (int i = 0; i < skeletonCount; i++)
+                {
+                    StringId donorNodeName = (donorGraph.SkeletonNodes != null && donorGraph.SkeletonNodes.Count > i)
+                                               ? donorGraph.SkeletonNodes[i].Name
+                                               : Animation.SkeletonNodes[i].Name;
+                    short localIndex = (short)Animation.SkeletonNodes.FindIndex(x => x.Name == donorNodeName);
+                    inh.NodeMap[i].LocalNode = localIndex;
+                }
+                if (!firstperson)
+                {
+                    inh.NodeMapFlags = new List<Inheritance.NodeMapFlag>
+            {
+                new Inheritance.NodeMapFlag { LocalNodeFlags = -1 },
+                new Inheritance.NodeMapFlag { LocalNodeFlags = -1 }
+                    };
+                }
             }
         }
 
