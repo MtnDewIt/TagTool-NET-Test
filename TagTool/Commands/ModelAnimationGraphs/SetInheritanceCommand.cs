@@ -1075,7 +1075,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
         /// </summary>
         private short ComputeNewGraphIndexForMapping(short donorGraphIndex)
         {
-            return (short)(donorGraphIndex + 1);
+            return (short)(Index + donorGraphIndex + 1);
         }
 
         // -----------------------------------------------------------------
