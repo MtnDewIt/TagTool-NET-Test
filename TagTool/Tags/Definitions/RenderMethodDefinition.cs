@@ -84,8 +84,10 @@ namespace TagTool.Tags.Definitions
         [TagStructure(Size = 0x4, MinVersion = CacheVersion.HaloReach)]
         public class VertexBlock : TagStructure
         {
-            [TagField(Flags = TagFieldFlags.Label)]
+            [TagField(Flags = TagFieldFlags.Label, MaxVersion = CacheVersion.HaloOnline700123)]
             public VertexTypeValue VertexType;
+            [TagField(Flags = TagFieldFlags.Label, MinVersion = CacheVersion.HaloReach)]
+            public VertexTypeValueReach VertexTypeReach;
             [TagField(Flags = TagFieldFlags.Padding, Length = 0x2)]
             public byte[] Padding;
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
@@ -116,6 +118,42 @@ namespace TagTool.Tags.Definitions
                 Implicit,
                 Beam,
                 DualQuat
+            }
+
+            public enum VertexTypeValueReach : ushort 
+            {
+                World,
+                Rigid,
+                Skinned,
+                ParticleModel,
+                FlatWorld,
+                FlatRigid,
+                FlatSkinned,
+                Screen,
+                Debug,
+                Transparent,
+                Particle,
+                Contrail,
+                LightVolume,
+                SimpleChud,
+                FancyChud,
+                Decorator,
+                TinyPosition,
+                PatchyFog,
+                Water,
+                Ripple,
+                Implicit,
+                Beam,
+                WorldTessellated,
+                RigidTessellated,
+                SkinnedTessellated,
+                ShaderCache,
+                StructureInstanceImposter,
+                ObjectImposter,
+                RigidCompressed,
+                SkinnedCompressed,
+                LightVolumePrecompiled,
+                Bink
             }
 
             [TagStructure(Size = 0x10)]
