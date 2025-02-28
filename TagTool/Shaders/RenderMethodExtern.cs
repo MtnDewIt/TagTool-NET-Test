@@ -118,6 +118,8 @@ namespace TagTool.Shaders
         scene_hdr_texture,
         water_memory_export_address,
         tree_animation_timer,
+        global_depth_constants,
+        global_camera_forward,
     }
 
     public enum RenderMethodExternReach : int
