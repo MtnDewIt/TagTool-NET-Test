@@ -447,7 +447,7 @@ namespace TagTool.Commands.Porting
                 {
                     foreach (var frameevent in animation.AnimationData.FrameEvents)
                     {
-                        Enum.TryParse(frameevent.Type.ToString(), out frameevent.TypeHO);
+                        Enum.TryParse(frameevent.Type.ToString(), out frameevent.TypeED);
                     };
                 }
             }
@@ -484,7 +484,7 @@ namespace TagTool.Commands.Porting
                         effectevent.MarkerName = ConvertStringId(effectevent.MarkerName);
                     foreach(var frameevent in animation.AnimationData.FrameEvents)
                     {
-                        Enum.TryParse(frameevent.ReachType.ToString(), out frameevent.TypeHO);
+                        Enum.TryParse(frameevent.ReachType.ToString(), out frameevent.TypeED);
                     };
 
                 }

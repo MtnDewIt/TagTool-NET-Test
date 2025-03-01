@@ -23,9 +23,11 @@ namespace TagTool.Tags.Definitions
             public StringId UiNameOverride;
             public OptionDataType Type;
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             public RenderMethodExtern RenderMethodExtern;
-            [TagField(MinVersion = CacheVersion.HaloReach)]
+            [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+            public RenderMethodExternMCC RenderMethodExternMCC;
+            [TagField(MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
             public RenderMethodExternReach RenderMethodExternReach;
 
             public CachedTag DefaultSamplerBitmap;
