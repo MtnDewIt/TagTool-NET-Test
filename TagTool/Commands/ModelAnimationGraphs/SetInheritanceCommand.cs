@@ -18,10 +18,14 @@ namespace TagTool.Commands.ModelAnimationGraphs
         private ModelAnimationGraph Animation { get; set; }
         private CachedTag Jmad { get; set; }
 
+        // Global base index; will be set to the new donor entry's position.
         private short Index = -1;
+        // Captured donor inheritance entry index.
+        private short donorInheritanceIndex = 0;
         private bool UseMccMode = false;
-        // Dictionary to record original GraphIndex values for blocks already in the target.
+        // Dictionaries to record original GraphIndex values for blocks already in the target.
         private Dictionary<string, short> originalGraphIndices = new Dictionary<string, short>();
+        private Dictionary<string, short> baseGraphIndices = new Dictionary<string, short>();
 
         public SetInheritanceCommand(GameCache cachecontext, ModelAnimationGraph animation, CachedTag jmad)
             : base(false,
@@ -55,12 +59,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
         public override object Execute(List<string> args)
         {
             List<string> specifics = new List<string>();
-            bool firstperson = false;
-            bool vehicles = false;
-            bool mcc = false;
-            bool fp = false;
-            bool syncAction = false;
-            bool melee = false;
+            bool firstperson = false, vehicles = false, mcc = false, fp = false, syncAction = false, melee = false;
             InheritanceListFlags inheritanceFlags = InheritanceListFlags.None;
 
             if (args.Count == 0)
@@ -86,7 +85,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 }
             }
 
-            // Process qualifiers (the first arguments).
+            // Process qualifiers.
             var qualifiers = new List<string>(args);
             foreach (var arg in qualifiers.ToList())
             {
@@ -117,8 +116,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                     args.Remove(arg);
                 }
             }
-            if (fp)
-                firstperson = true;
+            firstperson = fp;
             UseMccMode = mcc || fp || vehicles || syncAction || melee;
 
             // The last argument is the donor tag.
@@ -140,21 +138,32 @@ namespace TagTool.Commands.ModelAnimationGraphs
                     specifics.Add(arg);
             }
 
-            // Capture original GraphIndex values.
+            // Capture original graph indices.
             CaptureOriginalGraphIndices();
+            baseGraphIndices = new Dictionary<string, short>(originalGraphIndices);
 
             using (Stream cacheStream = CacheContext.OpenCacheReadWrite())
             {
                 ModelAnimationGraph donorGraph = CacheContext.Deserialize<ModelAnimationGraph>(cacheStream, donorTag);
 
-                // Rebuild InheritanceList if a flag is specified (MCC-like behavior).
+                // --- Inheritance Handling ---
                 if (UseMccMode)
                 {
-                    Animation.InheritanceList.Clear();
-                    Inheritance donorInh = new Inheritance { InheritedGraph = donorTag, Flags = inheritanceFlags };
-                    RecalcInheritanceEntry(donorInh, donorGraph, firstperson);
-                    Animation.InheritanceList.Add(donorInh);
-                    Index = 0;
+                    int foundIndex = Animation.InheritanceList.FindIndex(x => x.InheritedGraph == donorTag);
+                    if (foundIndex == -1)
+                    {
+                        donorInheritanceIndex = (short)Animation.InheritanceList.Count;
+                        Inheritance donorInh = new Inheritance { InheritedGraph = donorTag, Flags = inheritanceFlags };
+                        RecalcInheritanceEntry(donorInh, donorGraph, firstperson);
+                        Animation.InheritanceList.Add(donorInh);
+                    }
+                    else
+                    {
+                        donorInheritanceIndex = (short)foundIndex;
+                        Inheritance donorInh = Animation.InheritanceList[donorInheritanceIndex];
+                        RecalcInheritanceEntry(donorInh, donorGraph, firstperson);
+                        donorInh.Flags = inheritanceFlags;
+                    }
                     if (donorGraph.InheritanceList != null)
                     {
                         foreach (var inh in donorGraph.InheritanceList)
@@ -169,18 +178,22 @@ namespace TagTool.Commands.ModelAnimationGraphs
                             }
                         }
                     }
+                    Index = donorInheritanceIndex;
                 }
                 else
                 {
-                    var foundIndex = Animation.InheritanceList.FindIndex(x => x.InheritedGraph == donorTag);
+                    int foundIndex = Animation.InheritanceList.FindIndex(x => x.InheritedGraph == donorTag);
                     if (foundIndex == -1)
                     {
-                        Index = (short)Animation.InheritanceList.Count;
+                        donorInheritanceIndex = (short)Animation.InheritanceList.Count;
                         Inheritance newInh = new Inheritance { InheritedGraph = donorTag, Flags = inheritanceFlags };
                         Animation.InheritanceList.Add(newInh);
                     }
                     else
-                        Index = (short)foundIndex;
+                    {
+                        donorInheritanceIndex = (short)foundIndex;
+                    }
+                    Index = donorInheritanceIndex;
                     Inheritance inhEntry = Animation.InheritanceList[Index];
                     if (inhEntry.InheritedGraph == null)
                         return new TagToolError(CommandError.TagInvalid);
@@ -188,30 +201,23 @@ namespace TagTool.Commands.ModelAnimationGraphs
                     inhEntry.Flags = inheritanceFlags;
                 }
 
-                // --- Merging strategy:
-                // If any specifics are provided, only process the specifics.
+                // --- Merging Strategy ---
                 if (specifics.Any())
                 {
                     foreach (var specific in specifics)
                     {
                         if (specific.Contains(":"))
                         {
-                            // Colon-separated specifics: split into parts.
                             string[] parts = specific.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
                             if (parts.Length == 0)
                                 continue;
-                            // Locate a donor mode whose name matches or contains parts[0].
                             var donorMode = donorGraph.Modes.FirstOrDefault(m =>
-                                CacheContext.StringTable.GetString(m.Name)
-                                    .Equals(parts[0], StringComparison.OrdinalIgnoreCase) ||
+                                CacheContext.StringTable.GetString(m.Name).Equals(parts[0], StringComparison.OrdinalIgnoreCase) ||
                                 CacheContext.StringTable.GetString(m.Name).Contains(parts[0], StringComparison.OrdinalIgnoreCase));
                             if (donorMode != null)
-                            {
                                 MergePartialFromDonorIntoTarget(donorMode, parts);
-                            }
                             else
                             {
-                                // Fallback: treat as a full label path.
                                 var labels = JmadHelper.GetLabelStringIDs(specific, CacheContext);
                                 if (labels.Count == 0 || labels.Contains(StringId.Invalid))
                                     return new TagToolError(CommandError.CustomError, $"Part of the graph path {specific} is invalid.");
@@ -223,11 +229,9 @@ namespace TagTool.Commands.ModelAnimationGraphs
                         }
                         else
                         {
-                            // No colon: treat the specific as a full mode name.
                             string modeName = specific;
                             var donorMode = donorGraph.Modes.FirstOrDefault(m =>
-                                CacheContext.StringTable.GetString(m.Name)
-                                    .Equals(modeName, StringComparison.OrdinalIgnoreCase) ||
+                                CacheContext.StringTable.GetString(m.Name).Equals(modeName, StringComparison.OrdinalIgnoreCase) ||
                                 CacheContext.StringTable.GetString(m.Name).Contains(modeName, StringComparison.OrdinalIgnoreCase));
                             if (donorMode != null)
                             {
@@ -241,7 +245,6 @@ namespace TagTool.Commands.ModelAnimationGraphs
                             }
                             else
                             {
-                                // Fallback: treat as a full label path.
                                 var labels = JmadHelper.GetLabelStringIDs(specific, CacheContext);
                                 if (labels.Count == 0 || labels.Contains(StringId.Invalid))
                                     return new TagToolError(CommandError.CustomError, $"Part of the graph path {specific} is invalid.");
@@ -255,35 +258,32 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 }
                 else
                 {
-                    // No specifics provided: merge based on flag qualifiers.
                     if (syncAction)
-                    {
                         InheritSyncActionBlocks(Animation, donorGraph);
-                    }
                     if (melee)
-                    {
                         InheritMeleeBlocks(Animation, donorGraph);
-                    }
                     if (vehicles)
-                    {
                         InheritVehicleModes(Animation, donorGraph);
-                    }
                     if (mcc)
-                    {
                         InheritAllModes(Animation, donorGraph);
-                    }
                     if (!syncAction && !melee && !vehicles && !mcc)
-                    {
-                        // Fallback if no flags are provided.
                         OverwriteInheritance(Animation, donorGraph);
+                }
+
+                // Build mapping: donor GraphIndex -1 maps to donorInheritanceIndex; for donor sub-inheritance, map each index.
+                Dictionary<short, short> donorMapping = new Dictionary<short, short> { { -1, donorInheritanceIndex } };
+                if (donorGraph.InheritanceList != null)
+                {
+                    for (short i = 0; i < donorGraph.InheritanceList.Count; i++)
+                    {
+                        int targetIndex = Animation.InheritanceList.FindIndex(x => x.InheritedGraph == donorGraph.InheritanceList[i].InheritedGraph);
+                        donorMapping[i] = (short)targetIndex;
                     }
                 }
 
-                // Update graph indices for all modes.
+                // Remap GraphIndices for all modes using the donorMapping.
                 foreach (var mode in Animation.Modes)
-                {
-                    UpdateGraphIndicesForMode(mode);
-                }
+                    UpdateGraphIndicesForMode(mode, donorMapping);
 
                 // Recalculate NodeMap, RootZOffset, and NodeMapFlags for each Inheritance entry.
                 foreach (var inh in Animation.InheritanceList)
@@ -300,9 +300,45 @@ namespace TagTool.Commands.ModelAnimationGraphs
             return true;
         }
 
-        // -----------------------------------------------------------------
-        // Helper: Merge a partial branch from donorMode into the target.
-        // -----------------------------------------------------------------
+        // --- Cloning Helpers ---
+        private Mode.ModeIkBlock CloneModeIkBlock(Mode.ModeIkBlock donorIk) =>
+            new Mode.ModeIkBlock { Marker = donorIk.Marker, AttachToMarker = donorIk.AttachToMarker };
+
+        private Mode CloneMode(Mode donorMode) =>
+            new Mode
+            {
+                Name = donorMode.Name,
+                OverlayGroup = donorMode.OverlayGroup,
+                ikGroup = donorMode.ikGroup,
+                StanceFlags = donorMode.StanceFlags,
+                WeaponClass = donorMode.WeaponClass?.Select(CloneWeaponClass).ToList() ?? new List<Mode.WeaponClassBlock>(),
+                ModeIk = donorMode.ModeIk?.Select(CloneModeIkBlock).ToList() ?? new List<Mode.ModeIkBlock>(),
+                FootDefaults = donorMode.FootDefaults != null ? new List<FootTrackingDefaultsBlock>(donorMode.FootDefaults) : new List<FootTrackingDefaultsBlock>()
+            };
+
+        private Mode.WeaponClassBlock CloneWeaponClass(Mode.WeaponClassBlock donorClass) =>
+            new Mode.WeaponClassBlock
+            {
+                Label = donorClass.Label,
+                OverlayGroup = donorClass.OverlayGroup,
+                ikGroup = donorClass.ikGroup,
+                WeaponType = donorClass.WeaponType?.Select(CloneWeaponType).ToList() ?? new List<Mode.WeaponClassBlock.WeaponTypeBlock>(),
+                WeaponIk = donorClass.WeaponIk?.Select(CloneModeIkBlock).ToList() ?? new List<Mode.ModeIkBlock>(),
+                SyncActionGroups = donorClass.SyncActionGroups != null ? new List<Mode.WeaponClassBlock.SyncActionGroup>(donorClass.SyncActionGroups) : new List<Mode.WeaponClassBlock.SyncActionGroup>(),
+                RangedActions = (byte[])donorClass.RangedActions.Clone()
+            };
+
+        private Mode.WeaponClassBlock.WeaponTypeBlock CloneWeaponType(Mode.WeaponClassBlock.WeaponTypeBlock donorType) =>
+            new Mode.WeaponClassBlock.WeaponTypeBlock
+            {
+                Label = donorType.Label,
+                OverlayGroup = donorType.OverlayGroup,
+                ikGroup = donorType.ikGroup,
+                AnimationSetsReach = donorType.AnimationSetsReach != null ? new List<Mode.WeaponClassBlock.WeaponTypeBlock.AnimationSet>(donorType.AnimationSetsReach) : new List<Mode.WeaponClassBlock.WeaponTypeBlock.AnimationSet>(),
+                Set = donorType.Set
+            };
+
+        // --- Partial Merge Helpers ---
         private void MergePartialFromDonorIntoTarget(Mode donorMode, string[] parts)
         {
             Mode partialClone = CreatePartialClone(donorMode, parts);
@@ -310,20 +346,11 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 CacheContext.StringTable.GetString(m.Name)
                     .Equals(CacheContext.StringTable.GetString(donorMode.Name), StringComparison.OrdinalIgnoreCase));
             if (targetMode == null)
-            {
                 Animation.Modes.Add(partialClone);
-            }
             else
-            {
                 MergePartialWeaponClasses(targetMode, partialClone);
-            }
         }
 
-        // -----------------------------------------------------------------
-        // Helper: Create a partial clone of donorMode containing only the branch defined by parts.
-        // For parts[1] (weapon class), parts[2] (weapon type) and parts[3] (action/overlay)
-        // exact (case‑insensitive) matching is used.
-        // -----------------------------------------------------------------
         private Mode CreatePartialClone(Mode donorMode, string[] parts)
         {
             Mode clone = new Mode
@@ -332,41 +359,28 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 OverlayGroup = donorMode.OverlayGroup,
                 ikGroup = donorMode.ikGroup,
                 StanceFlags = donorMode.StanceFlags,
-                ModeIk = donorMode.ModeIk != null ? new List<ModeIkBlock>(donorMode.ModeIk) : new List<ModeIkBlock>(),
+                ModeIk = donorMode.ModeIk?.Select(CloneModeIkBlock).ToList() ?? new List<Mode.ModeIkBlock>(),
                 FootDefaults = donorMode.FootDefaults != null ? new List<FootTrackingDefaultsBlock>(donorMode.FootDefaults) : new List<FootTrackingDefaultsBlock>()
             };
 
-            // For a WeaponClass qualifier (parts[1]).
             if (parts.Length >= 2)
-            {
                 clone.WeaponClass = donorMode.WeaponClass
-                    .Where(wc => CacheContext.StringTable.GetString(wc.Label)
-                           .Equals(parts[1], StringComparison.OrdinalIgnoreCase))
-                    .Select(CloneWeaponClass)
-                    .ToList();
-            }
+                    .Where(wc => CacheContext.StringTable.GetString(wc.Label).Equals(parts[1], StringComparison.OrdinalIgnoreCase))
+                    .Select(CloneWeaponClass).ToList();
             else
-            {
                 clone.WeaponClass = donorMode.WeaponClass?.Select(CloneWeaponClass).ToList();
-            }
 
-            // For a WeaponType qualifier (parts[2]).
             if (parts.Length >= 3)
             {
                 foreach (var wc in clone.WeaponClass)
                 {
                     if (wc.WeaponType != null)
-                    {
                         wc.WeaponType = wc.WeaponType
-                            .Where(wt => CacheContext.StringTable.GetString(wt.Label)
-                                   .Equals(parts[2], StringComparison.OrdinalIgnoreCase))
-                            .Select(CloneWeaponType)
-                            .ToList();
-                    }
+                            .Where(wt => CacheContext.StringTable.GetString(wt.Label).Equals(parts[2], StringComparison.OrdinalIgnoreCase))
+                            .Select(CloneWeaponType).ToList();
                 }
             }
 
-            // For an Action/Overlay qualifier (parts[3]).
             if (parts.Length >= 4)
             {
                 foreach (var wc in clone.WeaponClass)
@@ -378,51 +392,35 @@ namespace TagTool.Commands.ModelAnimationGraphs
                             if (wt.Set != null)
                             {
                                 if (wt.Set.Actions != null)
-                                {
                                     wt.Set.Actions = wt.Set.Actions
-                                        .Where(a => CacheContext.StringTable.GetString(a.Label)
-                                               .Equals(parts[3], StringComparison.OrdinalIgnoreCase))
-                                        .Select(CloneEntry)
-                                        .ToList();
-                                }
+                                        .Where(a => CacheContext.StringTable.GetString(a.Label).Equals(parts[3], StringComparison.OrdinalIgnoreCase))
+                                        .Select(CloneEntry).ToList();
                                 if (wt.Set.Overlays != null)
-                                {
                                     wt.Set.Overlays = wt.Set.Overlays
-                                        .Where(o => CacheContext.StringTable.GetString(o.Label)
-                                               .Equals(parts[3], StringComparison.OrdinalIgnoreCase))
-                                        .Select(CloneEntry)
-                                        .ToList();
-                                }
+                                        .Where(o => CacheContext.StringTable.GetString(o.Label).Equals(parts[3], StringComparison.OrdinalIgnoreCase))
+                                        .Select(CloneEntry).ToList();
                             }
                         }
                     }
                 }
             }
-
             return clone;
         }
 
-        // -----------------------------------------------------------------
-        // Helper: Merge the partial clone's WeaponClass blocks into the target mode.
-        // -----------------------------------------------------------------
         private void MergePartialWeaponClasses(Mode targetMode, Mode partial)
         {
             foreach (var partialWC in partial.WeaponClass)
             {
                 var targetWC = targetMode.WeaponClass.FirstOrDefault(wc => wc.Label == partialWC.Label);
                 if (targetWC == null)
-                {
                     targetMode.WeaponClass.Add(partialWC);
-                }
                 else
                 {
                     foreach (var partialWT in partialWC.WeaponType)
                     {
                         var targetWT = targetWC.WeaponType.FirstOrDefault(wt => wt.Label == partialWT.Label);
                         if (targetWT == null)
-                        {
                             targetWC.WeaponType.Add(partialWT);
-                        }
                         else
                         {
                             if (partialWT.Set != null)
@@ -450,9 +448,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
             }
         }
 
-        // -----------------------------------------------------------------
-        // Inherit only vehicle-specific modes from donor.
-        // -----------------------------------------------------------------
+        // --- Inheritance by Flag Helpers ---
         private void InheritVehicleModes(ModelAnimationGraph target, ModelAnimationGraph donor)
         {
             var vehicleChars = new string[] { "d", "g", "p", "b", "l", "f", "r" };
@@ -467,8 +463,8 @@ namespace TagTool.Commands.ModelAnimationGraphs
                         target.Modes.Add(CloneMode(donorMode));
                     else
                     {
-                        var targetMode = target.Modes.FirstOrDefault(m => CacheContext.StringTable.GetString(m.Name)
-                            .Equals(modeName, StringComparison.OrdinalIgnoreCase));
+                        var targetMode = target.Modes.FirstOrDefault(m =>
+                            CacheContext.StringTable.GetString(m.Name).Equals(modeName, StringComparison.OrdinalIgnoreCase));
                         if (targetMode != null)
                             InheritModeSubBlocks(targetMode, donorMode);
                     }
@@ -476,9 +472,6 @@ namespace TagTool.Commands.ModelAnimationGraphs
             }
         }
 
-        // -----------------------------------------------------------------
-        // Inherit SyncActionGroups from donor into target (merge only into existing modes).
-        // -----------------------------------------------------------------
         private void InheritSyncActionBlocks(ModelAnimationGraph target, ModelAnimationGraph donor)
         {
             foreach (var donorMode in donor.Modes)
@@ -506,26 +499,55 @@ namespace TagTool.Commands.ModelAnimationGraphs
             }
         }
 
-        // -----------------------------------------------------------------
-        // Inherit only "melee" blocks from donor into target.
-        // This method now checks all modes and merges any action or overlay whose label contains "melee" (case-insensitive).
-        // -----------------------------------------------------------------
+        private void InheritSyncActions(Mode.WeaponClassBlock.SyncActionGroup targetSAG, Mode.WeaponClassBlock.SyncActionGroup donorSAG)
+        {
+            if (donorSAG.SyncActions != null)
+            {
+                foreach (var donorSync in donorSAG.SyncActions)
+                {
+                    var targetSync = targetSAG.SyncActions.FirstOrDefault(sa => sa.Name == donorSync.Name);
+                    if (targetSync == null)
+                        targetSAG.SyncActions.Add(donorSync);
+                    else
+                    {
+                        if (donorSync.SameTypeParticipants != null)
+                        {
+                            int participantIndex = 0;
+                            foreach (var donorPart in donorSync.SameTypeParticipants)
+                            {
+                                var newParticipant = CloneSameTypeParticipant(donorPart);
+                                newParticipant.GraphIndex = donorPart.GraphIndex;
+                                string key = GetSameTypeParticipantKey(null, null, targetSAG, participantIndex);
+                                if (!targetSync.SameTypeParticipants.Any(tp => tp.Animation == newParticipant.Animation && tp.Flags == newParticipant.Flags))
+                                    targetSync.SameTypeParticipants.Add(newParticipant);
+                                participantIndex++;
+                            }
+                        }
+                        if (donorSync.OtherParticipants != null)
+                        {
+                            foreach (var donorOther in donorSync.OtherParticipants)
+                            {
+                                if (!targetSync.OtherParticipants.Any(to => to.ObjectType == donorOther.ObjectType))
+                                    targetSync.OtherParticipants.Add(donorOther);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         private void InheritMeleeBlocks(ModelAnimationGraph target, ModelAnimationGraph donor)
         {
             foreach (var donorMode in donor.Modes)
             {
-                // Try to find a matching target mode.
                 var donorModeStr = CacheContext.StringTable.GetString(donorMode.Name);
                 var targetMode = target.Modes.FirstOrDefault(m =>
                     CacheContext.StringTable.GetString(m.Name).Equals(donorModeStr, StringComparison.OrdinalIgnoreCase));
-                // If not present, create a partial clone that only retains "melee" actions/overlays.
                 if (targetMode == null)
                 {
                     Mode partialClone = CreatePartialClone(donorMode, new string[] { donorModeStr, "", "", "melee" });
                     if (partialClone.WeaponClass != null && partialClone.WeaponClass.Any())
-                    {
                         target.Modes.Add(partialClone);
-                    }
                 }
                 else
                 {
@@ -533,35 +555,31 @@ namespace TagTool.Commands.ModelAnimationGraphs
                     {
                         foreach (var donorWc in donorMode.WeaponClass)
                         {
-                            var targetWc = targetMode.WeaponClass.FirstOrDefault(wc => CacheContext.StringTable.GetString(wc.Label)
+                            var targetWc = targetMode.WeaponClass.FirstOrDefault(wc =>
+                                CacheContext.StringTable.GetString(wc.Label)
                                 .Equals(CacheContext.StringTable.GetString(donorWc.Label), StringComparison.OrdinalIgnoreCase));
                             if (targetWc != null && donorWc.WeaponType != null)
                             {
                                 foreach (var donorWt in donorWc.WeaponType)
                                 {
-                                    var targetWt = targetWc.WeaponType.FirstOrDefault(wt => CacheContext.StringTable.GetString(wt.Label)
+                                    var targetWt = targetWc.WeaponType.FirstOrDefault(wt =>
+                                        CacheContext.StringTable.GetString(wt.Label)
                                         .Equals(CacheContext.StringTable.GetString(donorWt.Label), StringComparison.OrdinalIgnoreCase));
                                     if (targetWt != null && donorWt.Set != null)
                                     {
-                                        // Merge any actions whose label contains "melee"
                                         foreach (var donorAction in donorWt.Set.Actions.Where(a =>
                                             CacheContext.StringTable.GetString(a.Label).IndexOf("melee", StringComparison.OrdinalIgnoreCase) >= 0))
                                         {
                                             if (!targetWt.Set.Actions.Any(a =>
                                                 CacheContext.StringTable.GetString(a.Label).IndexOf("melee", StringComparison.OrdinalIgnoreCase) >= 0))
-                                            {
                                                 targetWt.Set.Actions.Add(CloneEntry(donorAction));
-                                            }
                                         }
-                                        // Merge any overlays whose label contains "melee"
                                         foreach (var donorOverlay in donorWt.Set.Overlays.Where(o =>
                                             CacheContext.StringTable.GetString(o.Label).IndexOf("melee", StringComparison.OrdinalIgnoreCase) >= 0))
                                         {
                                             if (!targetWt.Set.Overlays.Any(o =>
                                                 CacheContext.StringTable.GetString(o.Label).IndexOf("melee", StringComparison.OrdinalIgnoreCase) >= 0))
-                                            {
                                                 targetWt.Set.Overlays.Add(CloneEntry(donorOverlay));
-                                            }
                                         }
                                     }
                                 }
@@ -572,9 +590,6 @@ namespace TagTool.Commands.ModelAnimationGraphs
             }
         }
 
-        // -----------------------------------------------------------------
-        // Capture original GraphIndex values from the target.
-        // -----------------------------------------------------------------
         private void CaptureOriginalGraphIndices()
         {
             originalGraphIndices.Clear();
@@ -660,75 +675,164 @@ namespace TagTool.Commands.ModelAnimationGraphs
             }
         }
 
-        // --- Helper key generators ---
-        private string GetActionKey(Mode mode, Mode.WeaponClassBlock wc, Mode.WeaponClassBlock.WeaponTypeBlock wt, Mode.WeaponClassBlock.WeaponTypeBlock.Entry action)
+        private void InheritAnimationSet(Mode.WeaponClassBlock.WeaponTypeBlock.AnimationSet targetSet,
+                                         Mode.WeaponClassBlock.WeaponTypeBlock.AnimationSet donorSet)
         {
-            return "A|" + mode.Name + "|" + wc.Label + "|" + wt.Label + "|" + action.Label;
+            if (donorSet.Actions != null)
+            {
+                foreach (var donorEntry in donorSet.Actions)
+                {
+                    if (!targetSet.Actions.Any(te => te.Label == donorEntry.Label))
+                        targetSet.Actions.Add(CloneEntry(donorEntry));
+                }
+            }
+            if (donorSet.Overlays != null)
+            {
+                foreach (var donorEntry in donorSet.Overlays)
+                {
+                    if (!targetSet.Overlays.Any(te => te.Label == donorEntry.Label))
+                        targetSet.Overlays.Add(CloneEntry(donorEntry));
+                }
+            }
+            if (donorSet.DeathAndDamage != null)
+            {
+                foreach (var donorDAD in donorSet.DeathAndDamage)
+                {
+                    if (!targetSet.DeathAndDamage.Any(tdad => tdad.Label == donorDAD.Label))
+                        targetSet.DeathAndDamage.Add(CloneDeathAndDamageBlock(donorDAD));
+                }
+            }
+            if (donorSet.Transitions != null)
+            {
+                foreach (var donorTrans in donorSet.Transitions)
+                {
+                    if (!targetSet.Transitions.Any(tt => tt.FullName == donorTrans.FullName))
+                        targetSet.Transitions.Add(CloneTransition(donorTrans));
+                }
+            }
         }
 
-        private string GetOverlayKey(Mode mode, Mode.WeaponClassBlock wc, Mode.WeaponClassBlock.WeaponTypeBlock wt, Mode.WeaponClassBlock.WeaponTypeBlock.Entry overlay)
-        {
-            return "O|" + mode.Name + "|" + wc.Label + "|" + wt.Label + "|" + overlay.Label;
-        }
+        private Mode.WeaponClassBlock.WeaponTypeBlock.Entry CloneEntry(Mode.WeaponClassBlock.WeaponTypeBlock.Entry donorEntry) =>
+            new Mode.WeaponClassBlock.WeaponTypeBlock.Entry
+            {
+                Label = donorEntry.Label,
+                OverlayGroup = donorEntry.OverlayGroup,
+                ikGroup = donorEntry.ikGroup,
+                Animation = donorEntry.Animation,
+                GraphIndex = donorEntry.GraphIndex
+            };
 
-        private string GetRegionKey(Mode mode, Mode.WeaponClassBlock wc, Mode.WeaponClassBlock.WeaponTypeBlock wt, int ddIndex, int dirIndex, int regIndex)
-        {
-            return "R|" + mode.Name + "|" + wc.Label + "|" + wt.Label + "|DD:" + ddIndex + ":" + dirIndex + ":" + regIndex;
-        }
+        private Mode.WeaponClassBlock.WeaponTypeBlock.Transition CloneTransition(Mode.WeaponClassBlock.WeaponTypeBlock.Transition donorTrans) =>
+            new Mode.WeaponClassBlock.WeaponTypeBlock.Transition
+            {
+                FullName = donorTrans.FullName,
+                StateName = donorTrans.StateName,
+                Padding0 = donorTrans.Padding0 != null ? (byte[])donorTrans.Padding0.Clone() : null,
+                IndexA = donorTrans.IndexA,
+                IndexB = donorTrans.IndexB,
+                Destinations = donorTrans.Destinations?.Select(CloneDestination).ToList()
+            };
 
-        private string GetTransitionKey(Mode mode, Mode.WeaponClassBlock wc, Mode.WeaponClassBlock.WeaponTypeBlock wt, Mode.WeaponClassBlock.WeaponTypeBlock.Transition trans, int destIndex)
-        {
-            return "T|" + mode.Name + "|" + wc.Label + "|" + wt.Label + "|TR:" + trans.FullName + ":" + destIndex;
-        }
+        private Mode.WeaponClassBlock.WeaponTypeBlock.Transition.Destination CloneDestination(Mode.WeaponClassBlock.WeaponTypeBlock.Transition.Destination donorDest) =>
+            new Mode.WeaponClassBlock.WeaponTypeBlock.Transition.Destination
+            {
+                FullName = donorDest.FullName,
+                ModeName = donorDest.ModeName,
+                StateName = donorDest.StateName,
+                FrameEventLink = donorDest.FrameEventLink,
+                Padding1 = donorDest.Padding1 != null ? (byte[])donorDest.Padding1.Clone() : null,
+                IndexA = donorDest.IndexA,
+                IndexB = donorDest.IndexB,
+                GraphIndex = donorDest.GraphIndex,
+                Animation = donorDest.Animation
+            };
 
-        // Modified to safely handle nulls.
-        private string GetSameTypeParticipantKey(Mode mode, Mode.WeaponClassBlock wc, Mode.WeaponClassBlock.SyncActionGroup sag, int participantIndex)
-        {
-            string modeStr = mode != null ? mode.Name.ToString() : "NoMode";
-            string wcStr = wc != null ? wc.Label.ToString() : "NoWeaponClass";
-            string sagStr = sag != null ? sag.Name.ToString() : "NoSyncActionGroup";
-            return $"S|{modeStr}|{wcStr}|{sagStr}|ST:{participantIndex}";
-        }
+        private Mode.WeaponClassBlock.SyncActionGroup.SyncAction.SameTypeParticipant CloneSameTypeParticipant(Mode.WeaponClassBlock.SyncActionGroup.SyncAction.SameTypeParticipant donorParticipant) =>
+            new Mode.WeaponClassBlock.SyncActionGroup.SyncAction.SameTypeParticipant
+            {
+                Flags = donorParticipant.Flags,
+                GraphIndex = donorParticipant.GraphIndex,
+                Animation = donorParticipant.Animation,
+                StartOffset = donorParticipant.StartOffset,
+                StartFacing = donorParticipant.StartFacing,
+                EndOffset = donorParticipant.EndOffset,
+                TimeUntilHurt = donorParticipant.TimeUntilHurt
+            };
 
-        // -----------------------------------------------------------------
-        // Recalculate NodeMap, RootZOffset, and NodeMapFlags for an Inheritance entry.
-        // -----------------------------------------------------------------
+        private Mode.WeaponClassBlock.WeaponTypeBlock.DeathAndDamageBlock CloneDeathAndDamageBlock(Mode.WeaponClassBlock.WeaponTypeBlock.DeathAndDamageBlock donorDAD) =>
+            new Mode.WeaponClassBlock.WeaponTypeBlock.DeathAndDamageBlock
+            {
+                Label = donorDAD.Label,
+                Directions = donorDAD.Directions?.Select(CloneDirection).ToList()
+            };
+
+        private Mode.WeaponClassBlock.WeaponTypeBlock.DeathAndDamageBlock.Direction CloneDirection(Mode.WeaponClassBlock.WeaponTypeBlock.DeathAndDamageBlock.Direction donorDir) =>
+            new Mode.WeaponClassBlock.WeaponTypeBlock.DeathAndDamageBlock.Direction
+            {
+                Regions = donorDir.Regions?.Select(reg => new Mode.WeaponClassBlock.WeaponTypeBlock.DeathAndDamageBlock.Direction.Region
+                {
+                    GraphIndex = reg.GraphIndex,
+                    Animation = reg.Animation
+                }).ToList()
+            };
+
         private void RecalcInheritanceEntry(Inheritance inh, ModelAnimationGraph donorGraph, bool firstperson)
         {
             float targetRoot = JmadHelper.GetRootNode(Animation).ZPosition;
             float donorRoot = JmadHelper.GetRootNode(donorGraph).ZPosition;
             inh.RootZOffset = (targetRoot == 0.0f || donorRoot == 0.0f) ? 1.0f : targetRoot / donorRoot;
 
-            int skeletonCount = (donorGraph.SkeletonNodes != null && donorGraph.SkeletonNodes.Count > 0)
-                                ? donorGraph.SkeletonNodes.Count
-                                : Animation.SkeletonNodes.Count;
-            if (inh.NodeMap == null || inh.NodeMap.Count != skeletonCount)
+            bool sameMapping = false;
+            if (donorGraph.SkeletonNodes != null && donorGraph.SkeletonNodes.Count > 0 &&
+                Animation.SkeletonNodes != null &&
+                Animation.SkeletonNodes.Count == donorGraph.SkeletonNodes.Count)
             {
-                inh.NodeMap = new List<Inheritance.NodeMapBlock>();
-                for (int i = 0; i < skeletonCount; i++)
-                    inh.NodeMap.Add(new Inheritance.NodeMapBlock());
-            }
-            for (int i = 0; i < skeletonCount; i++)
-            {
-                StringId donorNodeName = (donorGraph.SkeletonNodes != null && donorGraph.SkeletonNodes.Count > i)
-                                           ? donorGraph.SkeletonNodes[i].Name
-                                           : Animation.SkeletonNodes[i].Name;
-                short localIndex = (short)Animation.SkeletonNodes.FindIndex(x => x.Name == donorNodeName);
-                inh.NodeMap[i].LocalNode = localIndex;
-            }
-            if (!firstperson)
-            {
-                inh.NodeMapFlags = new List<Inheritance.NodeMapFlag>
+                sameMapping = true;
+                for (int i = 0; i < donorGraph.SkeletonNodes.Count; i++)
                 {
-                    new Inheritance.NodeMapFlag { LocalNodeFlags = -1 },
-                    new Inheritance.NodeMapFlag { LocalNodeFlags = -1 }
-                };
+                    if (donorGraph.SkeletonNodes[i].Name != Animation.SkeletonNodes[i].Name)
+                    {
+                        sameMapping = false;
+                        break;
+                    }
+                }
+            }
+
+            if (sameMapping)
+            {
+                inh.NodeMap = null;
+                inh.NodeMapFlags = null;
+            }
+            else
+            {
+                int skeletonCount = (donorGraph.SkeletonNodes != null && donorGraph.SkeletonNodes.Count > 0)
+                                    ? donorGraph.SkeletonNodes.Count
+                                    : Animation.SkeletonNodes.Count;
+                if (inh.NodeMap == null || inh.NodeMap.Count != skeletonCount)
+                {
+                    inh.NodeMap = new List<Inheritance.NodeMapBlock>();
+                    for (int i = 0; i < skeletonCount; i++)
+                        inh.NodeMap.Add(new Inheritance.NodeMapBlock());
+                }
+                for (int i = 0; i < skeletonCount; i++)
+                {
+                    StringId donorNodeName = (donorGraph.SkeletonNodes != null && donorGraph.SkeletonNodes.Count > i)
+                                               ? donorGraph.SkeletonNodes[i].Name
+                                               : Animation.SkeletonNodes[i].Name;
+                    short localIndex = (short)Animation.SkeletonNodes.FindIndex(x => x.Name == donorNodeName);
+                    inh.NodeMap[i].LocalNode = localIndex;
+                }
+                if (!firstperson)
+                {
+                    inh.NodeMapFlags = new List<Inheritance.NodeMapFlag>
+                    {
+                        new Inheritance.NodeMapFlag { LocalNodeFlags = -1 },
+                        new Inheritance.NodeMapFlag { LocalNodeFlags = -1 }
+                    };
+                }
             }
         }
 
-        // -----------------------------------------------------------------
-        // MCC Mode: Inherit every missing Mode and sub–block from donor's Modes.
-        // -----------------------------------------------------------------
         private void InheritAllModes(ModelAnimationGraph target, ModelAnimationGraph donor)
         {
             foreach (var donorMode in donor.Modes)
@@ -741,51 +845,6 @@ namespace TagTool.Commands.ModelAnimationGraphs
             }
         }
 
-        // Deep clone a Mode.
-        private Mode CloneMode(Mode donorMode)
-        {
-            Mode clone = new Mode
-            {
-                Name = donorMode.Name,
-                OverlayGroup = donorMode.OverlayGroup,
-                ikGroup = donorMode.ikGroup,
-                StanceFlags = donorMode.StanceFlags,
-                WeaponClass = donorMode.WeaponClass?.Select(wc => CloneWeaponClass(wc)).ToList() ?? new List<Mode.WeaponClassBlock>(),
-                ModeIk = donorMode.ModeIk != null ? new List<ModeIkBlock>(donorMode.ModeIk) : new List<ModeIkBlock>(),
-                FootDefaults = donorMode.FootDefaults != null ? new List<FootTrackingDefaultsBlock>(donorMode.FootDefaults) : new List<FootTrackingDefaultsBlock>()
-            };
-            return clone;
-        }
-
-        private Mode.WeaponClassBlock CloneWeaponClass(Mode.WeaponClassBlock donorClass)
-        {
-            Mode.WeaponClassBlock clone = new Mode.WeaponClassBlock
-            {
-                Label = donorClass.Label,
-                OverlayGroup = donorClass.OverlayGroup,
-                ikGroup = donorClass.ikGroup,
-                WeaponType = donorClass.WeaponType?.Select(wt => CloneWeaponType(wt)).ToList() ?? new List<Mode.WeaponClassBlock.WeaponTypeBlock>(),
-                WeaponIk = donorClass.WeaponIk != null ? new List<ModeIkBlock>(donorClass.WeaponIk) : new List<ModeIkBlock>(),
-                SyncActionGroups = donorClass.SyncActionGroups != null ? new List<Mode.WeaponClassBlock.SyncActionGroup>(donorClass.SyncActionGroups) : new List<Mode.WeaponClassBlock.SyncActionGroup>(),
-                RangedActions = (byte[])donorClass.RangedActions.Clone()
-            };
-            return clone;
-        }
-
-        private Mode.WeaponClassBlock.WeaponTypeBlock CloneWeaponType(Mode.WeaponClassBlock.WeaponTypeBlock donorType)
-        {
-            Mode.WeaponClassBlock.WeaponTypeBlock clone = new Mode.WeaponClassBlock.WeaponTypeBlock
-            {
-                Label = donorType.Label,
-                OverlayGroup = donorType.OverlayGroup,
-                ikGroup = donorType.ikGroup,
-                AnimationSetsReach = donorType.AnimationSetsReach != null ? new List<Mode.WeaponClassBlock.WeaponTypeBlock.AnimationSet>(donorType.AnimationSetsReach) : new List<Mode.WeaponClassBlock.WeaponTypeBlock.AnimationSet>(),
-                Set = donorType.Set
-            };
-            return clone;
-        }
-
-        // Merge missing sub–blocks from donor Mode into target Mode.
         private void InheritModeSubBlocks(Mode targetMode, Mode donorMode)
         {
             if (donorMode.WeaponClass != null)
@@ -812,8 +871,11 @@ namespace TagTool.Commands.ModelAnimationGraphs
                         {
                             foreach (var donorIk in donorClass.WeaponIk)
                             {
-                                if (!targetClass.WeaponIk.Any(tik => tik.Marker == donorIk.Marker && tik.AttachToMarker == donorIk.AttachToMarker))
-                                    targetClass.WeaponIk.Add(donorIk);
+                                if (donorIk.Marker == StringId.Invalid || donorIk.AttachToMarker == StringId.Invalid)
+                                    continue;
+                                var cloneIk = CloneModeIkBlock(donorIk);
+                                if (!targetClass.WeaponIk.Any(tik => tik.Marker == cloneIk.Marker && tik.AttachToMarker == cloneIk.AttachToMarker))
+                                    targetClass.WeaponIk.Add(cloneIk);
                             }
                         }
                         if (donorClass.SyncActionGroups != null)
@@ -833,11 +895,14 @@ namespace TagTool.Commands.ModelAnimationGraphs
             if (donorMode.ModeIk != null)
             {
                 if (targetMode.ModeIk == null)
-                    targetMode.ModeIk = new List<ModeIkBlock>();
+                    targetMode.ModeIk = new List<Mode.ModeIkBlock>();
                 foreach (var donorIk in donorMode.ModeIk)
                 {
-                    if (!targetMode.ModeIk.Any(tik => tik.Marker == donorIk.Marker && tik.AttachToMarker == donorIk.AttachToMarker))
-                        targetMode.ModeIk.Add(donorIk);
+                    if (donorIk.Marker == StringId.Invalid || donorIk.AttachToMarker == StringId.Invalid)
+                        continue;
+                    var cloneIk = CloneModeIkBlock(donorIk);
+                    if (!targetMode.ModeIk.Any(tik => tik.Marker == cloneIk.Marker && tik.AttachToMarker == cloneIk.AttachToMarker))
+                        targetMode.ModeIk.Add(cloneIk);
                 }
             }
             if (donorMode.FootDefaults != null)
@@ -852,305 +917,6 @@ namespace TagTool.Commands.ModelAnimationGraphs
             }
         }
 
-        // Inherit AnimationSet entries (Actions, Overlays, DeathAndDamage, Transitions) from donor into target.
-        private void InheritAnimationSet(Mode.WeaponClassBlock.WeaponTypeBlock.AnimationSet targetSet,
-                                         Mode.WeaponClassBlock.WeaponTypeBlock.AnimationSet donorSet)
-        {
-            if (donorSet.Actions != null)
-            {
-                foreach (var donorEntry in donorSet.Actions)
-                {
-                    if (!targetSet.Actions.Any(te => te.Label == donorEntry.Label))
-                    {
-                        var entryClone = CloneEntry(donorEntry);
-                        entryClone.GraphIndex = ComputeNewGraphIndexForMapping(donorEntry.GraphIndex);
-                        targetSet.Actions.Add(entryClone);
-                    }
-                }
-            }
-            if (donorSet.Overlays != null)
-            {
-                foreach (var donorEntry in donorSet.Overlays)
-                {
-                    if (!targetSet.Overlays.Any(te => te.Label == donorEntry.Label))
-                    {
-                        var entryClone = CloneEntry(donorEntry);
-                        entryClone.GraphIndex = ComputeNewGraphIndexForMapping(donorEntry.GraphIndex);
-                        targetSet.Overlays.Add(entryClone);
-                    }
-                }
-            }
-            if (donorSet.DeathAndDamage != null)
-            {
-                foreach (var donorDAD in donorSet.DeathAndDamage)
-                {
-                    if (!targetSet.DeathAndDamage.Any(tdad => tdad.Label == donorDAD.Label))
-                    {
-                        targetSet.DeathAndDamage.Add(CloneDeathAndDamageBlock(donorDAD));
-                    }
-                }
-            }
-            if (donorSet.Transitions != null)
-            {
-                foreach (var donorTrans in donorSet.Transitions)
-                {
-                    if (!targetSet.Transitions.Any(tt => tt.FullName == donorTrans.FullName))
-                    {
-                        targetSet.Transitions.Add(CloneTransition(donorTrans));
-                    }
-                }
-            }
-        }
-
-        // Clone an AnimationSet entry.
-        private Mode.WeaponClassBlock.WeaponTypeBlock.Entry CloneEntry(Mode.WeaponClassBlock.WeaponTypeBlock.Entry donorEntry)
-        {
-            return new Mode.WeaponClassBlock.WeaponTypeBlock.Entry
-            {
-                Label = donorEntry.Label,
-                OverlayGroup = donorEntry.OverlayGroup,
-                ikGroup = donorEntry.ikGroup,
-                Animation = donorEntry.Animation,
-                GraphIndex = donorEntry.GraphIndex
-            };
-        }
-
-        // Inherit SyncActionGroup data.
-        private void InheritSyncActions(Mode.WeaponClassBlock.SyncActionGroup targetSAG, Mode.WeaponClassBlock.SyncActionGroup donorSAG)
-        {
-            if (donorSAG.SyncActions != null)
-            {
-                foreach (var donorSync in donorSAG.SyncActions)
-                {
-                    var targetSync = targetSAG.SyncActions.FirstOrDefault(sa => sa.Name == donorSync.Name);
-                    if (targetSync == null)
-                    {
-                        targetSAG.SyncActions.Add(donorSync);
-                    }
-                    else
-                    {
-                        if (donorSync.SameTypeParticipants != null)
-                        {
-                            int participantIndex = 0;
-                            foreach (var donorPart in donorSync.SameTypeParticipants)
-                            {
-                                var newParticipant = CloneSameTypeParticipant(donorPart);
-                                newParticipant.GraphIndex = ComputeNewGraphIndexForMapping(donorPart.GraphIndex);
-                                string key = GetSameTypeParticipantKey(null, null, targetSAG, participantIndex);
-                                if (!targetSync.SameTypeParticipants.Any(tp => tp.Animation == newParticipant.Animation && tp.Flags == newParticipant.Flags))
-                                    targetSync.SameTypeParticipants.Add(newParticipant);
-                                participantIndex++;
-                            }
-                        }
-                        if (donorSync.OtherParticipants != null)
-                        {
-                            foreach (var donorOther in donorSync.OtherParticipants)
-                            {
-                                if (!targetSync.OtherParticipants.Any(to => to.ObjectType == donorOther.ObjectType))
-                                    targetSync.OtherParticipants.Add(donorOther);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // Clone a SameTypeParticipant.
-        private Mode.WeaponClassBlock.SyncActionGroup.SyncAction.SameTypeParticipant CloneSameTypeParticipant(Mode.WeaponClassBlock.SyncActionGroup.SyncAction.SameTypeParticipant donorParticipant)
-        {
-            return new Mode.WeaponClassBlock.SyncActionGroup.SyncAction.SameTypeParticipant
-            {
-                Flags = donorParticipant.Flags,
-                GraphIndex = donorParticipant.GraphIndex,
-                Animation = donorParticipant.Animation,
-                StartOffset = donorParticipant.StartOffset,
-                StartFacing = donorParticipant.StartFacing,
-                EndOffset = donorParticipant.EndOffset,
-                TimeUntilHurt = donorParticipant.TimeUntilHurt
-            };
-        }
-
-        // Update GraphIndex values in all inherited entries within a Mode.
-        private void UpdateGraphIndicesForMode(Mode mode)
-        {
-            if (mode.WeaponClass != null)
-            {
-                foreach (var wc in mode.WeaponClass)
-                {
-                    if (wc.WeaponType != null)
-                    {
-                        foreach (var wt in wc.WeaponType)
-                        {
-                            if (wt.Set != null)
-                            {
-                                if (wt.Set.Actions != null)
-                                {
-                                    foreach (var action in wt.Set.Actions)
-                                    {
-                                        string key = GetActionKey(mode, wc, wt, action);
-                                        if (originalGraphIndices.ContainsKey(key))
-                                            action.GraphIndex = originalGraphIndices[key];
-                                        else
-                                            action.GraphIndex = ComputeNewGraphIndexForMapping(action.GraphIndex);
-                                    }
-                                }
-                                if (wt.Set.Overlays != null)
-                                {
-                                    foreach (var overlay in wt.Set.Overlays)
-                                    {
-                                        string key = GetOverlayKey(mode, wc, wt, overlay);
-                                        if (originalGraphIndices.ContainsKey(key))
-                                            overlay.GraphIndex = originalGraphIndices[key];
-                                        else
-                                            overlay.GraphIndex = ComputeNewGraphIndexForMapping(overlay.GraphIndex);
-                                    }
-                                }
-                                if (wt.Set.DeathAndDamage != null)
-                                {
-                                    int ddIndex = 0;
-                                    foreach (var dad in wt.Set.DeathAndDamage)
-                                    {
-                                        int dirIndex = 0;
-                                        foreach (var dir in dad.Directions)
-                                        {
-                                            int regIndex = 0;
-                                            foreach (var reg in dir.Regions)
-                                            {
-                                                string key = GetRegionKey(mode, wc, wt, ddIndex, dirIndex, regIndex);
-                                                if (originalGraphIndices.ContainsKey(key))
-                                                    reg.GraphIndex = originalGraphIndices[key];
-                                                else
-                                                    reg.GraphIndex = ComputeNewGraphIndexForMapping(reg.GraphIndex);
-                                                regIndex++;
-                                            }
-                                            dirIndex++;
-                                        }
-                                        ddIndex++;
-                                    }
-                                }
-                                if (wt.Set.Transitions != null)
-                                {
-                                    foreach (var trans in wt.Set.Transitions)
-                                    {
-                                        int destIndex = 0;
-                                        foreach (var dest in trans.Destinations)
-                                        {
-                                            string key = GetTransitionKey(mode, wc, wt, trans, destIndex);
-                                            if (originalGraphIndices.ContainsKey(key))
-                                                dest.GraphIndex = originalGraphIndices[key];
-                                            else
-                                                dest.GraphIndex = ComputeNewGraphIndexForMapping(dest.GraphIndex);
-                                            destIndex++;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (wc.SyncActionGroups != null)
-                    {
-                        foreach (var sag in wc.SyncActionGroups)
-                        {
-                            int partIndex = 0;
-                            foreach (var sync in sag.SyncActions)
-                            {
-                                foreach (var participant in sync.SameTypeParticipants)
-                                {
-                                    string key = GetSameTypeParticipantKey(mode, wc, sag, partIndex);
-                                    if (originalGraphIndices.ContainsKey(key))
-                                        participant.GraphIndex = originalGraphIndices[key];
-                                    else
-                                        participant.GraphIndex = ComputeNewGraphIndexForMapping(participant.GraphIndex);
-                                    partIndex++;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Compute the new GraphIndex for mapping: donorGraphIndex + 1.
-        /// </summary>
-        private short ComputeNewGraphIndexForMapping(short donorGraphIndex)
-        {
-            return (short)(donorGraphIndex + 1);
-        }
-
-        // -----------------------------------------------------------------
-        // Cloning helpers for Inheritance entries, DeathAndDamage blocks, and Transitions.
-        // -----------------------------------------------------------------
-        private Inheritance CloneInheritance(Inheritance donorInh)
-        {
-            Inheritance clone = new Inheritance
-            {
-                InheritedGraph = donorInh.InheritedGraph,
-                RootZOffset = donorInh.RootZOffset,
-                Flags = donorInh.Flags,
-                NodeMap = donorInh.NodeMap != null ? donorInh.NodeMap.Select(n => new Inheritance.NodeMapBlock { LocalNode = n.LocalNode }).ToList() : new List<Inheritance.NodeMapBlock>(),
-                NodeMapFlags = donorInh.NodeMapFlags != null ? donorInh.NodeMapFlags.Select(f => new Inheritance.NodeMapFlag { LocalNodeFlags = f.LocalNodeFlags }).ToList() : new List<Inheritance.NodeMapFlag>()
-            };
-            return clone;
-        }
-
-        private Mode.WeaponClassBlock.WeaponTypeBlock.DeathAndDamageBlock CloneDeathAndDamageBlock(Mode.WeaponClassBlock.WeaponTypeBlock.DeathAndDamageBlock donorDAD)
-        {
-            var clone = new Mode.WeaponClassBlock.WeaponTypeBlock.DeathAndDamageBlock
-            {
-                Label = donorDAD.Label,
-                Directions = donorDAD.Directions?.Select(dir => CloneDirection(dir)).ToList()
-            };
-            return clone;
-        }
-
-        private Mode.WeaponClassBlock.WeaponTypeBlock.DeathAndDamageBlock.Direction CloneDirection(Mode.WeaponClassBlock.WeaponTypeBlock.DeathAndDamageBlock.Direction donorDir)
-        {
-            var clone = new Mode.WeaponClassBlock.WeaponTypeBlock.DeathAndDamageBlock.Direction
-            {
-                Regions = donorDir.Regions?.Select(reg => new Mode.WeaponClassBlock.WeaponTypeBlock.DeathAndDamageBlock.Direction.Region
-                {
-                    GraphIndex = reg.GraphIndex,
-                    Animation = reg.Animation
-                }).ToList()
-            };
-            return clone;
-        }
-
-        private Mode.WeaponClassBlock.WeaponTypeBlock.Transition CloneTransition(Mode.WeaponClassBlock.WeaponTypeBlock.Transition donorTrans)
-        {
-            var clone = new Mode.WeaponClassBlock.WeaponTypeBlock.Transition
-            {
-                FullName = donorTrans.FullName,
-                StateName = donorTrans.StateName,
-                Padding0 = (donorTrans.Padding0 != null) ? (byte[])donorTrans.Padding0.Clone() : null,
-                IndexA = donorTrans.IndexA,
-                IndexB = donorTrans.IndexB,
-                Destinations = donorTrans.Destinations?.Select(dest => CloneDestination(dest)).ToList()
-            };
-            return clone;
-        }
-
-        private Mode.WeaponClassBlock.WeaponTypeBlock.Transition.Destination CloneDestination(Mode.WeaponClassBlock.WeaponTypeBlock.Transition.Destination donorDest)
-        {
-            var clone = new Mode.WeaponClassBlock.WeaponTypeBlock.Transition.Destination
-            {
-                FullName = donorDest.FullName,
-                ModeName = donorDest.ModeName,
-                StateName = donorDest.StateName,
-                FrameEventLink = donorDest.FrameEventLink,
-                Padding1 = (donorDest.Padding1 != null) ? (byte[])donorDest.Padding1.Clone() : null,
-                IndexA = donorDest.IndexA,
-                IndexB = donorDest.IndexB,
-                GraphIndex = donorDest.GraphIndex,
-                Animation = donorDest.Animation
-            };
-            return clone;
-        }
-
-        // -----------------------------------------------------------------
-        // Fallback: Overwrite inheritance (non-MCC mode).
-        // -----------------------------------------------------------------
         private void OverwriteInheritance(ModelAnimationGraph target, ModelAnimationGraph donor)
         {
             foreach (var mode in target.Modes)
@@ -1180,7 +946,9 @@ namespace TagTool.Commands.ModelAnimationGraphs
                             }
                         }
                         foreach (var dd in wType.Set.DeathAndDamage)
+                        {
                             foreach (var dir in dd.Directions)
+                            {
                                 foreach (var region in dir.Regions)
                                 {
                                     if (region.GraphIndex == Index)
@@ -1189,7 +957,10 @@ namespace TagTool.Commands.ModelAnimationGraphs
                                         region.Animation = (short)donor.Animations.FindIndex(x => x.Name == animName);
                                     }
                                 }
+                            }
+                        }
                         foreach (var trs in wType.Set.Transitions)
+                        {
                             foreach (var dest in trs.Destinations)
                             {
                                 if (dest.GraphIndex == Index)
@@ -1198,6 +969,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                                     dest.Animation = (short)donor.Animations.FindIndex(x => x.Name == animName);
                                 }
                             }
+                        }
                     }
                 }
             }
@@ -1222,6 +994,151 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 }
             }
             return index;
+        }
+
+        private Inheritance CloneInheritance(Inheritance donorInh) =>
+            new Inheritance
+            {
+                InheritedGraph = donorInh.InheritedGraph,
+                RootZOffset = donorInh.RootZOffset,
+                Flags = donorInh.Flags,
+                NodeMap = donorInh.NodeMap != null ? donorInh.NodeMap.Select(n => new Inheritance.NodeMapBlock { LocalNode = n.LocalNode }).ToList() : new List<Inheritance.NodeMapBlock>(),
+                NodeMapFlags = donorInh.NodeMapFlags != null ? donorInh.NodeMapFlags.Select(f => new Inheritance.NodeMapFlag { LocalNodeFlags = f.LocalNodeFlags }).ToList() : new List<Inheritance.NodeMapFlag>()
+            };
+
+        private void UpdateGraphIndicesForMode(Mode mode, Dictionary<short, short> donorMapping)
+        {
+            if (mode.WeaponClass != null)
+            {
+                foreach (var wc in mode.WeaponClass)
+                {
+                    if (wc.WeaponType != null)
+                    {
+                        foreach (var wt in wc.WeaponType)
+                        {
+                            if (wt.Set != null)
+                            {
+                                if (wt.Set.Actions != null)
+                                {
+                                    foreach (var action in wt.Set.Actions)
+                                    {
+                                        string key = GetActionKey(mode, wc, wt, action);
+                                        if (baseGraphIndices.ContainsKey(key))
+                                            action.GraphIndex = baseGraphIndices[key];
+                                        else
+                                        {
+                                            short orig = action.GraphIndex;
+                                            action.GraphIndex = donorMapping.ContainsKey(orig) ? donorMapping[orig] : donorInheritanceIndex;
+                                        }
+                                    }
+                                }
+                                if (wt.Set.Overlays != null)
+                                {
+                                    foreach (var overlay in wt.Set.Overlays)
+                                    {
+                                        string key = GetOverlayKey(mode, wc, wt, overlay);
+                                        if (baseGraphIndices.ContainsKey(key))
+                                            overlay.GraphIndex = baseGraphIndices[key];
+                                        else
+                                        {
+                                            short orig = overlay.GraphIndex;
+                                            overlay.GraphIndex = donorMapping.ContainsKey(orig) ? donorMapping[orig] : donorInheritanceIndex;
+                                        }
+                                    }
+                                }
+                                if (wt.Set.DeathAndDamage != null)
+                                {
+                                    int ddIndex = 0;
+                                    foreach (var dad in wt.Set.DeathAndDamage)
+                                    {
+                                        int dirIndex = 0;
+                                        foreach (var dir in dad.Directions)
+                                        {
+                                            int regIndex = 0;
+                                            foreach (var reg in dir.Regions)
+                                            {
+                                                string key = GetRegionKey(mode, wc, wt, ddIndex, dirIndex, regIndex);
+                                                if (baseGraphIndices.ContainsKey(key))
+                                                    reg.GraphIndex = baseGraphIndices[key];
+                                                else
+                                                {
+                                                    short orig = reg.GraphIndex;
+                                                    reg.GraphIndex = donorMapping.ContainsKey(orig) ? donorMapping[orig] : donorInheritanceIndex;
+                                                }
+                                                regIndex++;
+                                            }
+                                            dirIndex++;
+                                        }
+                                        ddIndex++;
+                                    }
+                                }
+                                if (wt.Set.Transitions != null)
+                                {
+                                    foreach (var trans in wt.Set.Transitions)
+                                    {
+                                        int destIndex = 0;
+                                        foreach (var dest in trans.Destinations)
+                                        {
+                                            string key = GetTransitionKey(mode, wc, wt, trans, destIndex);
+                                            if (baseGraphIndices.ContainsKey(key))
+                                                dest.GraphIndex = baseGraphIndices[key];
+                                            else
+                                            {
+                                                short orig = dest.GraphIndex;
+                                                dest.GraphIndex = donorMapping.ContainsKey(orig) ? donorMapping[orig] : donorInheritanceIndex;
+                                            }
+                                            destIndex++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (wc.SyncActionGroups != null)
+                    {
+                        foreach (var sag in wc.SyncActionGroups)
+                        {
+                            int partIndex = 0;
+                            foreach (var sync in sag.SyncActions)
+                            {
+                                foreach (var participant in sync.SameTypeParticipants)
+                                {
+                                    string key = GetSameTypeParticipantKey(mode, wc, sag, partIndex);
+                                    if (baseGraphIndices.ContainsKey(key))
+                                        participant.GraphIndex = baseGraphIndices[key];
+                                    else
+                                    {
+                                        short orig = participant.GraphIndex;
+                                        participant.GraphIndex = donorMapping.ContainsKey(orig) ? donorMapping[orig] : donorInheritanceIndex;
+                                    }
+                                    partIndex++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // --- Key Generators ---
+        private string GetActionKey(Mode mode, Mode.WeaponClassBlock wc, Mode.WeaponClassBlock.WeaponTypeBlock wt, Mode.WeaponClassBlock.WeaponTypeBlock.Entry action) =>
+            "A|" + mode.Name + "|" + wc.Label + "|" + wt.Label + "|" + action.Label;
+
+        private string GetOverlayKey(Mode mode, Mode.WeaponClassBlock wc, Mode.WeaponClassBlock.WeaponTypeBlock wt, Mode.WeaponClassBlock.WeaponTypeBlock.Entry overlay) =>
+            "O|" + mode.Name + "|" + wc.Label + "|" + wt.Label + "|" + overlay.Label;
+
+        private string GetRegionKey(Mode mode, Mode.WeaponClassBlock wc, Mode.WeaponClassBlock.WeaponTypeBlock wt, int ddIndex, int dirIndex, int regIndex) =>
+            "R|" + mode.Name + "|" + wc.Label + "|" + wt.Label + "|DD:" + ddIndex + ":" + dirIndex + ":" + regIndex;
+
+        private string GetTransitionKey(Mode mode, Mode.WeaponClassBlock wc, Mode.WeaponClassBlock.WeaponTypeBlock wt, Mode.WeaponClassBlock.WeaponTypeBlock.Transition trans, int destIndex) =>
+            "T|" + mode.Name + "|" + wc.Label + "|" + wt.Label + "|TR:" + trans.FullName + ":" + destIndex;
+
+        private string GetSameTypeParticipantKey(Mode mode, Mode.WeaponClassBlock wc, Mode.WeaponClassBlock.SyncActionGroup sag, int participantIndex)
+        {
+            string modeStr = mode != null ? mode.Name.ToString() : "NoMode";
+            string wcStr = wc != null ? wc.Label.ToString() : "NoWeaponClass";
+            string sagStr = sag != null ? sag.Name.ToString() : "NoSyncActionGroup";
+            return $"S|{modeStr}|{wcStr}|{sagStr}|ST:{participantIndex}";
         }
     }
 }

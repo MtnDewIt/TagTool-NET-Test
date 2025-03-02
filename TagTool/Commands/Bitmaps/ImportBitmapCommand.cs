@@ -66,13 +66,10 @@ namespace TagTool.Commands.Bitmaps
                 return new TagToolError(CommandError.FileNotFound, $"\"{imagePath}\"");
 
             BitmapImageCurve curve = BitmapImageCurve.xRGB;
-            string inputCurve = null;
-            if (args.Count == 3)
-                inputCurve = args[2];
-
+            string inputCurve = args.Count == 3 ? args[2] : null;
             if (inputCurve != null)
             {
-                switch (inputCurve)
+                switch (inputCurve.ToLowerInvariant())
                 {
                     case "linear":
                         curve = BitmapImageCurve.Linear;
@@ -94,38 +91,105 @@ namespace TagTool.Commands.Bitmaps
                 }
             }
 
-            Console.WriteLine("Importing image data...");
+            // Check if the file name indicates a normal map (_zbump, _normal, or _n)
+            bool useDXN = false;
+            string lowerName = imagePath.ToLowerInvariant();
+            if (lowerName.EndsWith("_zbump.dds") ||
+                lowerName.EndsWith("_normal.dds") ||
+                lowerName.EndsWith("_microbump.dds") ||
+                lowerName.EndsWith("_n.dds"))
+            {
+                useDXN = true;
+            }
 
-#if !DEBUG
+            Console.WriteLine("Importing image data...");
             try
             {
-#endif
-            DDSFile file = new DDSFile();
-
+                // Create a DDSFile instance and read its contents.
+                DDSFile file = new DDSFile();
                 using (var imageStream = File.OpenRead(imagePath))
-                using(var reader = new EndianReader(imageStream))
+                using (var reader = new EndianReader(imageStream))
                 {
                     file.Read(reader);
                 }
 
-                var bitmapTextureInteropDefinition = BitmapInjector.CreateBitmapResourceFromDDS(Cache, file, curve);
-                var reference = Cache.ResourceCache.CreateBitmapResource(bitmapTextureInteropDefinition);
+                // Create the initial resource from the DDS file.
+                var resource = BitmapInjector.CreateBitmapResourceFromDDS(Cache, file, curve);
 
-                // set the tag data
+                if (useDXN)
+                {
+                    Console.WriteLine("Detected normal map file. Converting from input DXT format to DXN...");
 
+                    // Read entire file as raw bytes.
+                    byte[] ddsRaw = File.ReadAllBytes(imagePath);
+                    const int headerSize = 128; // 4 bytes magic + 124 bytes header
+                    if (ddsRaw.Length <= headerSize)
+                        throw new Exception("Invalid DDS file: file too short.");
+
+                    int width = file.Header.Width;
+                    int height = file.Header.Height;
+                    int blockWidth = (width + 3) / 4;
+                    int blockHeight = (height + 3) / 4;
+
+                    // Define the FOURCC constants (in little-endian)
+                    const uint FOURCC_DXT1 = 0x31545844; // 'DXT1'
+                    const uint FOURCC_DXT3 = 0x33545844; // 'DXT3'
+                    const uint FOURCC_DXT5 = 0x35545844; // 'DXT5'
+
+                    BitmapFormat sourceFormat;
+                    int blockSize = 0;
+
+                    // Compare the DDS header's FourCC value with the constants.
+                    switch (file.Header.PixelFormat.FourCC)
+                    {
+                        case FOURCC_DXT1:
+                            sourceFormat = BitmapFormat.Dxt1;
+                            blockSize = 8;
+                            break;
+                        case FOURCC_DXT3:
+                            sourceFormat = BitmapFormat.Dxt3;
+                            blockSize = 16;
+                            break;
+                        case FOURCC_DXT5:
+                            sourceFormat = BitmapFormat.Dxt5;
+                            blockSize = 16;
+                            break;
+                        default:
+                            throw new Exception("Unsupported format for DXN conversion");
+                    }
+
+                    int expectedSize = blockWidth * blockHeight * blockSize;
+                    if (ddsRaw.Length - headerSize < expectedSize)
+                        throw new Exception("DDS file pixel data is smaller than expected.");
+
+                    // Extract only the highest-resolution mip level.
+                    byte[] highestResData = new byte[expectedSize];
+                    Array.Copy(ddsRaw, headerSize, highestResData, 0, expectedSize);
+
+                    // Decode the compressed data using the detected format.
+                    byte[] uncompressed = BitmapDecoder.DecodeBitmap(highestResData, sourceFormat, width, height);
+
+                    // Re-encode the data as DXN (BC5).
+                    byte[] dxnData = BitmapDecoder.EncodeBitmap(uncompressed, BitmapFormat.Dxn, width, height);
+
+                    // Update the resource with the new DXN data.
+                    resource.Texture.Definition.PrimaryResourceData = new TagData(dxnData);
+                    resource.Texture.Definition.Bitmap.Format = BitmapFormat.Dxn;
+                }
+
+                var reference = Cache.ResourceCache.CreateBitmapResource(resource);
                 Bitmap.HardwareTextures[imageIndex] = reference;
-                Bitmap.Images[imageIndex] = BitmapUtils.CreateBitmapImageFromResourceDefinition(bitmapTextureInteropDefinition.Texture.Definition.Bitmap);
+                Bitmap.Images[imageIndex] = BitmapUtils.CreateBitmapImageFromResourceDefinition(
+                    resource.Texture.Definition.Bitmap);
 
                 using (var tagsStream = Cache.OpenCacheReadWrite())
                     Cache.Serialize(tagsStream, Tag, Bitmap);
-#if !DEBUG
             }
             catch (Exception ex)
             {
-                return new TagToolError(CommandError.OperationFailed, "Importing image data failed: " + ex.Message);
+                return new TagToolError(CommandError.OperationFailed,
+                    "Importing image data failed: " + ex.Message);
             }
-#endif
-
 
             Console.WriteLine("Done!");
 

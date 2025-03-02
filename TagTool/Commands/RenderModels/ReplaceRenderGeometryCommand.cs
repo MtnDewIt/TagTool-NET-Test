@@ -1,14 +1,15 @@
-﻿using Assimp;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Assimp;
+using AssimpMesh = Assimp.Mesh;  // Alias to disambiguate from TagTool.Geometry.Mesh
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.Geometry;
 using TagTool.Tags.Definitions;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace TagTool.Commands.RenderModels
 {
@@ -154,25 +155,76 @@ namespace TagTool.Commands.RenderModels
                 nodes.Add(name, builder.AddNode(oldNode));
             }
 
-            // Track used meshes
+            // Group scene meshes by region and permutation using the "region:permutation" naming convention.
+            var sceneMeshGroups = new Dictionary<string, Dictionary<string, List<AssimpMesh>>>();
+            foreach (var mesh in scene.Meshes)
+            {
+                string cleanName = CleanMeshName(mesh.Name).ToLower();
+                string[] parts = cleanName.Split(':');
+                if (parts.Length < 2)
+                    continue; // Skip meshes not following the naming convention.
+                string regionName = parts[0];
+                string permName = parts[1];
+                if (!sceneMeshGroups.ContainsKey(regionName))
+                    sceneMeshGroups[regionName] = new Dictionary<string, List<AssimpMesh>>();
+                if (!sceneMeshGroups[regionName].ContainsKey(permName))
+                    sceneMeshGroups[regionName][permName] = new List<AssimpMesh>();
+                sceneMeshGroups[regionName][permName].Add(mesh);
+            }
+
+            // Build ordered list of region names:
+            // Preserve the existing order, then append new region names from the scene.
+            List<string> existingRegionNamesOrdered = Definition.Regions.Select(r => Cache.StringTable.GetString(r.Name).ToLower()).ToList();
+            List<string> newRegionNames = sceneMeshGroups.Keys.Where(rn => !existingRegionNamesOrdered.Contains(rn)).ToList();
+            List<string> regionNamesToProcess = existingRegionNamesOrdered.Concat(newRegionNames).Take(16).ToList();
+
             var usedMeshes = new HashSet<string>();
 
-            foreach (var region in Definition.Regions)
+            // Process each region.
+            foreach (var regionName in regionNamesToProcess)
             {
-                builder.BeginRegion(region.Name);
+                // Reuse existing region if available; otherwise, create new.
+                RenderModel.Region existingRegion = Definition.Regions.FirstOrDefault(r => Cache.StringTable.GetString(r.Name).ToLower() == regionName);
+                StringId regionId = existingRegion != null ? existingRegion.Name : Cache.StringTable.AddString(regionName);
 
-                var regionName = Cache.StringTable.GetString(region.Name).ToLower();
+                builder.BeginRegion(regionId);
 
-                foreach (var permutation in region.Permutations)
+                // Build ordered list of permutation names for this region.
+                List<string> existingPermsOrdered = new List<string>();
+                if (existingRegion != null)
+                    existingPermsOrdered = existingRegion.Permutations.Select(p => Cache.StringTable.GetString(p.Name).ToLower()).ToList();
+                List<string> scenePerms = new List<string>();
+                if (sceneMeshGroups.ContainsKey(regionName))
+                    scenePerms = sceneMeshGroups[regionName].Keys.ToList();
+                List<string> newPerms = scenePerms.Where(pn => !existingPermsOrdered.Contains(pn)).ToList();
+                List<string> permNamesToProcess = existingPermsOrdered.Concat(newPerms).Take(128).ToList();
+
+                // Process each permutation.
+                foreach (var permName in permNamesToProcess)
                 {
-                    if (permutation.MeshCount > 1)
-                        throw new NotSupportedException("multiple permutation meshes");
+                    StringId permId;
+                    bool isNewPermutation = false;
+                    if (existingRegion != null && existingRegion.Permutations.Any(p => Cache.StringTable.GetString(p.Name).ToLower() == permName))
+                    {
+                        permId = existingRegion.Permutations.First(p => Cache.StringTable.GetString(p.Name).ToLower() == permName).Name;
+                    }
+                    else
+                    {
+                        permId = Cache.StringTable.AddString(permName);
+                        isNewPermutation = true;
+                    }
 
-                    var permName = Cache.StringTable.GetString(permutation.Name).ToLower();
+                    if (isNewPermutation)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"   Added new permutation: {regionName}:{permName}");
+                        Console.ResetColor();
+                    }
 
-                    var permMeshes = scene.Meshes
-                        .Where(i => CleanMeshName(i.Name).ToLower() == $"{regionName}:{permName}")
-                        .ToList();
+                    // Get meshes for this region/permutation.
+                    List<AssimpMesh> permMeshes = new List<AssimpMesh>();
+                    if (sceneMeshGroups.ContainsKey(regionName) && sceneMeshGroups[regionName].ContainsKey(permName))
+                        permMeshes = sceneMeshGroups[regionName][permName];
 
                     if (permMeshes.Count == 0)
                     {
@@ -180,7 +232,7 @@ namespace TagTool.Commands.RenderModels
                         Console.WriteLine($"   No mesh found for [{regionName}:{permName}], we will try to prevent issues!");
                         Console.ResetColor();
                         // Set MeshIndex to -1 to prevent issues but continue with the process
-                        builder.BeginPermutationNone(permutation.Name);
+                        builder.BeginPermutationNone(permId);
                         builder.EndPermutation();
                         continue;
                     }
@@ -193,7 +245,8 @@ namespace TagTool.Commands.RenderModels
                     {
                         foreach (var bone in part.Bones)
                         {
-                            assignedNodes.Add(FixBoneName(bone.Name));
+                            if (bone.VertexWeights.Any(vw => vw.Weight > 0.0f))
+                                assignedNodes.Add(FixBoneName(bone.Name));
                         }
                     }
 
@@ -211,23 +264,138 @@ namespace TagTool.Commands.RenderModels
                     var skinnedVertices = new List<SkinnedVertex>();
 
                     var indices = new List<ushort>();
-                    var meshNodeIndices = new List<byte>();
+                    List<byte> meshNodeIndices = new List<byte>();
 
-                    // Check if the mesh index is invalid or -1, assume it's a skinned mesh type
+                    // Determine vertex type for the permutation based on per-vertex bone influence
                     VertexType vertexType;
                     sbyte rigidNode;
-                    if (permutation.MeshIndex < 0 || permutation.MeshIndex >= Definition.Geometry.Meshes.Count)
                     {
-                        vertexType = VertexType.Skinned;
-                        rigidNode = -1;
-                    }
-                    else
-                    {
-                        vertexType = Definition.Geometry.Meshes[permutation.MeshIndex].Type;
-                        rigidNode = (sbyte)Definition.Geometry.Meshes[permutation.MeshIndex].RigidNodeIndex;
+                        bool isRigidPermutation = true;
+                        sbyte permutationRigidNode = -1;
+
+                        foreach (var part in permMeshes)
+                        {
+                            bool partIsRigid = true;
+                            sbyte partRigidBone = -1;
+                            for (int i = 0; i < part.VertexCount; i++)
+                            {
+                                int influenceCount = 0;
+                                sbyte currentBone = -1;
+                                foreach (var bone in part.Bones)
+                                {
+                                    foreach (var vw in bone.VertexWeights)
+                                    {
+                                        if (vw.VertexID == i && vw.Weight > 0.0f)
+                                        {
+                                            influenceCount++;
+                                            if (nodes.TryGetValue(FixBoneName(bone.Name), out sbyte boneNode))
+                                            {
+                                                currentBone = boneNode;
+                                            }
+                                            else
+                                            {
+                                                new TagToolWarning($"Bone {bone.Name} not found for permutation {regionName}:{permName}");
+                                                partIsRigid = false;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if (!partIsRigid)
+                                        break;
+                                }
+
+                                if (!partIsRigid)
+                                    break;
+
+                                if (influenceCount > 1)
+                                {
+                                    partIsRigid = false;
+                                    break;
+                                }
+                                else if (influenceCount == 1)
+                                {
+                                    if (partRigidBone == -1)
+                                        partRigidBone = currentBone;
+                                    else if (partRigidBone != currentBone)
+                                    {
+                                        partIsRigid = false;
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                    Console.WriteLine($"   No bone info found for vertex {i} in [{regionName}:{permName}], parenting to root bone.");
+                                    Console.ResetColor();
+                                    if (partRigidBone == -1)
+                                        partRigidBone = 0;
+                                    else if (partRigidBone != 0)
+                                    {
+                                        partIsRigid = false;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (!partIsRigid)
+                            {
+                                isRigidPermutation = false;
+                                break;
+                            }
+                            else
+                            {
+                                if (permutationRigidNode == -1)
+                                    permutationRigidNode = partRigidBone;
+                                else if (permutationRigidNode != partRigidBone)
+                                {
+                                    isRigidPermutation = false;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (isRigidPermutation)
+                        {
+                            vertexType = VertexType.Rigid;
+                            rigidNode = permutationRigidNode;
+                        }
+                        else
+                        {
+                            vertexType = VertexType.Skinned;
+                            rigidNode = -1;
+                        }
                     }
 
-                    builder.BeginPermutation(permutation.Name);
+                    // For skinned permutations, precompute an ordered bone mapping
+                    List<byte> skinnedBoneMapping = null;
+                    if (vertexType == VertexType.Skinned)
+                    {
+                        List<byte> combinedBoneOrder = new List<byte>();
+                        Dictionary<byte, int> boneUsage = new Dictionary<byte, int>();
+
+                        foreach (var part in permMeshes)
+                        {
+                            foreach (var bone in part.Bones)
+                            {
+                                string bonefix = FixBoneName(bone.Name);
+                                if (nodes.TryGetValue(bonefix, out sbyte nodeIndex))
+                                {
+                                    byte b = (byte)nodeIndex;
+                                    if (!combinedBoneOrder.Contains(b))
+                                        combinedBoneOrder.Add(b);
+                                    int count = bone.VertexWeights.Count(vw => vw.Weight > 0.0f);
+                                    if (boneUsage.ContainsKey(b))
+                                        boneUsage[b] += count;
+                                    else
+                                        boneUsage[b] = count;
+                                }
+                            }
+                        }
+                        var usedBones = combinedBoneOrder.Where(b => boneUsage.ContainsKey(b) && boneUsage[b] > 0).ToList();
+                        skinnedBoneMapping = usedBones;
+                    }
+
+                    builder.BeginPermutation(permId);
                     builder.BeginMesh();
 
                     var MeshIndexCountOG = 0;
@@ -236,6 +404,29 @@ namespace TagTool.Commands.RenderModels
                     foreach (var part in permMeshes)
                     {
                         usedMeshes.Add(part.Name.ToLower());
+
+                        // For rigid permutations, build per-mesh node mapping
+                        if (vertexType == VertexType.Rigid && usePerMeshNodeMapping)
+                        {
+                            foreach (var bone in part.Bones)
+                            {
+                                string bonefix = FixBoneName(bone.Name);
+                                if (!nodes.ContainsKey(bonefix))
+                                {
+                                    new TagToolWarning($"There is no node {bonefix} to match bone {bone.Name}");
+                                }
+                                else
+                                {
+                                    sbyte nodeIndex = nodes[bonefix];
+                                    int meshNodeIndex = meshNodeIndices.IndexOf((byte)nodeIndex);
+                                    if (meshNodeIndex == -1)
+                                    {
+                                        meshNodeIndex = meshNodeIndices.Count;
+                                        meshNodeIndices.Add((byte)nodeIndex);
+                                    }
+                                }
+                            }
+                        }
 
                         for (var i = 0; i < part.VertexCount; i++)
                         {
@@ -257,29 +448,6 @@ namespace TagTool.Commands.RenderModels
                             var tangent = part.Tangents.Count != 0 ? part.Tangents[i] : new Vector3D();
                             var bitangent = part.BiTangents.Count != 0 ? part.BiTangents[i] : new Vector3D();
 
-                            if (usePerMeshNodeMapping)
-                            {
-                                foreach (var bone in part.Bones)
-                                {
-                                    string bonefix = FixBoneName(bone.Name);
-
-                                    if (!nodes.ContainsKey(bonefix))
-                                    {
-                                        new TagToolWarning($"There is no node {bonefix} to match bone {bone.Name}");
-                                    }
-                                    else
-                                    {
-                                        sbyte nodeIndex = nodes[bonefix];
-                                        int meshNodeIndex = meshNodeIndices.IndexOf((byte)nodeIndex);  // Convert sbyte to byte for IndexOf method
-                                        if (meshNodeIndex == -1)
-                                        {
-                                            meshNodeIndex = meshNodeIndices.Count;
-                                            meshNodeIndices.Add((byte)nodeIndex);  // Convert sbyte to byte for Add method
-                                        }
-                                    }
-                                }
-                            }
-
                             if (vertexType == VertexType.Skinned)
                             {
                                 var blendIndicesList = new List<byte>();
@@ -289,7 +457,8 @@ namespace TagTool.Commands.RenderModels
                                 {
                                     foreach (var vertexInfo in bone.VertexWeights)
                                     {
-                                        if (vertexInfo.VertexID == i)
+                                        // Only consider influences with a nonzero weight.
+                                        if (vertexInfo.VertexID == i && vertexInfo.Weight > 0.0f)
                                         {
                                             string bonefix = FixBoneName(bone.Name);
 
@@ -300,12 +469,7 @@ namespace TagTool.Commands.RenderModels
                                             }
 
                                             sbyte nodeIndex = nodes[bonefix];
-
-                                            if (usePerMeshNodeMapping)
-                                                blendIndicesList.Add((byte)meshNodeIndices.IndexOf((byte)nodeIndex));
-                                            else
-                                                blendIndicesList.Add((byte)nodeIndex);
-
+                                            blendIndicesList.Add((byte)skinnedBoneMapping.IndexOf((byte)nodeIndex));
                                             blendWeightsList.Add(vertexInfo.Weight);
                                         }
                                     }
@@ -381,12 +545,12 @@ namespace TagTool.Commands.RenderModels
                         var meshMaterial = scene.Materials[part.MaterialIndex];
 
                         short materialIndex = 0;
-
-                        var shaderName = Path.GetFileNameWithoutExtension(meshMaterial.Name);
+                        string originalMatName = meshMaterial.Name;
+                        var shaderName = Path.GetFileNameWithoutExtension(originalMatName);
                         shaderName = CleanMaterialName(shaderName);
 
                         Console.WriteLine($" ");
-                        Console.WriteLine($"   Processing material: {meshMaterial.Name}, extracted shader name: {shaderName}");
+                        Console.WriteLine($"   Processing material: {originalMatName}, extracted shader name: {shaderName}");
 
                         if (originalMaterialMap.TryGetValue(shaderName, out var originalMaterial))
                         {
@@ -408,8 +572,24 @@ namespace TagTool.Commands.RenderModels
                             });
                         }
 
+                        // New feature: Check if material suffix contains '%' to enable PreventBackfaceCulling.
+                        bool preventBackfaceCulling = false;
+                        var suffixMatch = Regex.Match(originalMatName, @"([)%=]+)$");
+                        if (suffixMatch.Success)
+                        {
+                            string suffix = suffixMatch.Groups[1].Value;
+                            if (suffix.Contains("%"))
+                            {
+                                preventBackfaceCulling = true;
+                            }
+                        }
+
                         builder.BeginPart(materialIndex, partStartIndex, (ushort)meshIndices.Length, (ushort)part.VertexCount);
                         builder.DefineSubPart(partStartIndex, (ushort)meshIndices.Length, (ushort)part.VertexCount);
+                        if (preventBackfaceCulling)
+                        {
+                            builder.SetCurrentPartFlag(Part.PartFlagsNew.PreventBackfaceCulling);
+                        }
                         builder.EndPart();
 
                         partStartVertex += (ushort)part.VertexCount;
@@ -429,8 +609,14 @@ namespace TagTool.Commands.RenderModels
 
                     builder.BindIndexBuffer(indices, IndexBufferFormat);
 
-                    if (usePerMeshNodeMapping)
-                        builder.MapNodes(meshNodeIndices.Count == 0 ? new byte[] { 0 } : meshNodeIndices.ToArray());
+                    if (vertexType == VertexType.Skinned)
+                    {
+                        builder.MapNodes(skinnedBoneMapping.ToArray());
+                    }
+                    else
+                    {
+                        builder.MapNodes(new byte[] { (byte)rigidNode });
+                    }
 
                     builder.EndMesh();
                     builder.EndPermutation();
