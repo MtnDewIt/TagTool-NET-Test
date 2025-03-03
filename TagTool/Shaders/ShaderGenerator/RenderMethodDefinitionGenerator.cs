@@ -22,7 +22,7 @@ namespace TagTool.Shaders.ShaderGenerator
 
         public static RenderMethodDefinition GenerateRenderMethodDefinition(GameCache cache, Stream cacheStream, IShaderGenerator generator, string shaderType, out GlobalPixelShader glps, out GlobalVertexShader glvs)
         {
-            bool autoMacro = true;// AutoMacroShaderTypes.Contains(shaderType);
+            bool autoMacro = AutoMacroShaderTypes.Contains(shaderType);
 
             var rmdf = new RenderMethodDefinition
             {
@@ -30,7 +30,7 @@ namespace TagTool.Shaders.ShaderGenerator
                 Categories = BuildRmdfCategories(cache, cacheStream, generator, shaderType, autoMacro),
                 EntryPoints = BuildEntryPoints(generator),
                 VertexTypes = BuildVertexTypes(generator),
-                Flags = autoMacro ? RenderMethodDefinitionFlags.UseAutomaticMacros : 0,
+                Flags = autoMacro ? RenderMethodDefinitionFlags.UseAutomaticMacros : RenderMethodDefinitionFlags.None,
                 Version = 0
             };
 
@@ -148,13 +148,18 @@ namespace TagTool.Shaders.ShaderGenerator
                 result.Option = rmopTag;
             }
 
+            //generator.GetOptionFunctions(categoryName, optionIndex, out string vertexFuncion, out string pixelFunction);
+
             if (autoMacro)
             {
                 result.PixelFunction = StringId.Invalid;
                 result.VertexFunction = StringId.Invalid;
             }
             else
-            { } // TODO
+            {
+                //result.VertexFunction = cache.StringTable.GetOrAddString(vertexFuncion);
+                //result.PixelFunction = cache.StringTable.GetOrAddString(pixelFunction);
+            }
 
             return result;
         }
@@ -178,13 +183,18 @@ namespace TagTool.Shaders.ShaderGenerator
                 result.ShaderOptions.Add(optionBlock);
             }
 
+            //generator.GetCategoryFunctions(categoryName, out string vertexFuncion, out string pixelFunction);
+
             if (autoMacro)
             {
                 result.PixelFunction = StringId.Invalid;
                 result.VertexFunction = StringId.Invalid;
             }
             else
-            { } // TODO
+            {
+                //result.VertexFunction = cache.StringTable.GetOrAddString(vertexFuncion);
+                //result.PixelFunction = cache.StringTable.GetOrAddString(pixelFunction);
+            }
 
             return result;
         }
@@ -354,6 +364,12 @@ namespace TagTool.Shaders.ShaderGenerator
         {
             switch (input)
             {
+                case "diffuse_only_four_material_shaders_disable_detail_bump":
+                    return "diffuse_only_(four_material_shaders_disable_detail_bump)";
+                case "diffuse_plus_specular_four_material_shaders_disable_detail_bump":
+                    return "diffuse_plus_specular_(four_material_shaders_disable_detail_bump)";
+                case "from_flat_texture_as_cubemap":
+                    return "from_flat_exture_as_cubemap";
                 case "first_person_never_with_rotating_bitmaps":
                     return @"first_person_never_w/rotating_bitmaps";
                 case "_3_channel_self_illum":
