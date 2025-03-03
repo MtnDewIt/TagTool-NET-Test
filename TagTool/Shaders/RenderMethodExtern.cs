@@ -154,8 +154,8 @@ namespace TagTool.Shaders
         scene_ldr_texture,
         water_memory_export_address,
         tree_animation_timer,
-        depth_constants,
-        camera_forward,
+        global_depth_constants,
+        global_camera_forward,
         wrinkle_weights_a,
         wrinkle_weights_b,
     }
