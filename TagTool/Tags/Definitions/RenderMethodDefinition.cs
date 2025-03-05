@@ -46,6 +46,7 @@ namespace TagTool.Tags.Definitions
         public class EntryPointBlock : TagStructure
         {
             [TagField(MaxVersion = CacheVersion.HaloOnline235640, Platform = CachePlatform.Original)]
+            [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
             public EntryPoint_32 EntryPoint;
             [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             public EntryPointMs30_32 EntryPointHO;
@@ -164,6 +165,7 @@ namespace TagTool.Tags.Definitions
             public class EntryPointDependency : TagStructure
             {
                 [TagField(MaxVersion = CacheVersion.HaloOnline235640, Platform = CachePlatform.Original)]
+                [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
                 public EntryPoint_32 EntryPoint;
                 [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
                 public EntryPointMs30_32 EntryPointHO;
