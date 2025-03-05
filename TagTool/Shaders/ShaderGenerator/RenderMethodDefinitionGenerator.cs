@@ -148,7 +148,7 @@ namespace TagTool.Shaders.ShaderGenerator
                 result.Option = rmopTag;
             }
 
-            //generator.GetOptionFunctions(categoryName, optionIndex, out string vertexFuncion, out string pixelFunction);
+            //generator.GetOptionFunctions(categoryName, optionIndex, out string vertexFunction, out string pixelFunction);
 
             if (autoMacro)
             {
@@ -157,8 +157,8 @@ namespace TagTool.Shaders.ShaderGenerator
             }
             else
             {
-                //result.VertexFunction = cache.StringTable.GetOrAddString(vertexFuncion);
-                //result.PixelFunction = cache.StringTable.GetOrAddString(pixelFunction);
+                //result.VertexFunction = vertexFunction != "invalid" ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Invalid;
+                //result.PixelFunction = pixelFunction != "invalid" ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Invalid;
             }
 
             return result;
@@ -183,7 +183,7 @@ namespace TagTool.Shaders.ShaderGenerator
                 result.ShaderOptions.Add(optionBlock);
             }
 
-            //generator.GetCategoryFunctions(categoryName, out string vertexFuncion, out string pixelFunction);
+            //generator.GetCategoryFunctions(categoryName, out string vertexFunction, out string pixelFunction);
 
             if (autoMacro)
             {
@@ -192,8 +192,8 @@ namespace TagTool.Shaders.ShaderGenerator
             }
             else
             {
-                //result.VertexFunction = cache.StringTable.GetOrAddString(vertexFuncion);
-                //result.PixelFunction = cache.StringTable.GetOrAddString(pixelFunction);
+                //result.VertexFunction = vertexFunction != "invalid" ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Invalid;
+                //result.PixelFunction = pixelFunction != "invalid" ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Invalid;
             }
 
             return result;
