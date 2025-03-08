@@ -491,6 +491,7 @@ namespace TagTool.Commands.Porting
 
                 porttag.FinishAsync();
                 porttag.ProcessDeferredActions();
+                porttag.FinalizeRenderMethods(destStream, srcStream);
             }
     
             foreach (var pair in resourceStreams)
