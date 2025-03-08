@@ -19,8 +19,7 @@ namespace TagTool.Commands.Porting
                 case CacheVersion.Halo3Retail:
                     if (BlamCache.Platform == CachePlatform.Original)
                     {
-                        // Technically not required
-                        //stateData.GameState = GetEquivalentFlags(stateData.GameState, stateData.GameState);
+                        stateData.GameState = GetEquivalentFlags(stateData.GameState, stateData.GameStateH3);
                     }
                     else if (BlamCache.Platform == CachePlatform.MCC)
                     {
@@ -35,8 +34,7 @@ namespace TagTool.Commands.Porting
                 case CacheVersion.Halo3ODST:
                     if (BlamCache.Platform == CachePlatform.Original)
                     {
-                        // Technically not required
-                        //stateData.GameState = GetEquivalentFlags(stateData.GameState, stateData.GameState);
+                        stateData.GameState = GetEquivalentFlags(stateData.GameState, stateData.GameStateODST);
                     }
                     else if (BlamCache.Platform == CachePlatform.MCC)
                     {
@@ -50,6 +48,7 @@ namespace TagTool.Commands.Porting
                         stateData.SurvivalLivesState = GetEquivalentFlags(stateData.SurvivalLivesState, stateData.SurvivalLivesStateMCC);
                         stateData.DifficultyState = GetEquivalentFlags(stateData.DifficultyState, stateData.DifficultyStateMCC);
                     }
+                    stateData.UnitImpulseStateHO = GetEquivalentFlags(stateData.UnitImpulseStateHO, stateData.UnitImpulseStateODST);
                     break;
             }
 
@@ -379,6 +378,8 @@ namespace TagTool.Commands.Porting
                         H3att.WarpSourceFovY = Angle.FromDegrees(4.5f);
                         H3att.WarpSourceAspect = 0.1f;
                         H3att.StateMessageOffset.Y = 0.2f; // 0.2 due to odsts 0.87 hud scale
+                        H3att.MessageAnchorVerticalOffset = H3att.BottomStateVerticalOffset;
+                        H3att.StateMessageVerticalOffset = H3att.BottomPrimaryVerticalOffset;
                     }
                 }
 
