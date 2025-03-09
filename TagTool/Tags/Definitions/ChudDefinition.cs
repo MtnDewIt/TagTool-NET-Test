@@ -183,8 +183,10 @@ namespace TagTool.Tags.Definitions
                 [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public WeaponMiscStateFlags WeaponMiscState;
 
-                [TagField(MaxVersion = CacheVersion.Halo3ODST)]
+                [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
                 public NonWeaponFlashFlags NonWeaponFlash;
+                [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+                public NonWeaponFlashFlagsMCC NonWeaponFlashMCC;
                 [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
                 public NonWeaponFlashFlagsHO NonWeaponFlashHO;
 
@@ -231,20 +233,20 @@ namespace TagTool.Tags.Definitions
                     None = 0,
                     CampaignSolo = 1 << 0,
                     CampaignCoop = 1 << 1,
-                    MultiFFA = 1 << 2,
-                    MultiTeam = 1 << 3,
-                    MPCTF = 1 << 4,
-                    MPSlayer = 1 << 5,
-                    MPOddball = 1 << 6,
-                    MPKing = 1 << 7,
-                    MPJuggernaut = 1 << 8,
-                    MPTerritories = 1 << 9,
-                    MPAssault = 1 << 10,
-                    MPVIP = 1 << 11,
-                    MPInfection = 1 << 12,
-                    MPSandbox = 1 << 13,
-                    FilmPlayback = 1 << 14,
-                    CampaignSurvival = 1 << 15,
+                    CampaignSurvival = 1 << 2,
+                    MultiFFA = 1 << 3,
+                    MultiTeam = 1 << 4,
+                    MPCTF = 1 << 5,
+                    MPSlayer = 1 << 6,
+                    MPOddball = 1 << 7,
+                    MPKing = 1 << 8,
+                    MPJuggernaut = 1 << 9,
+                    MPTerritories = 1 << 10,
+                    MPAssault = 1 << 11,
+                    MPVIP = 1 << 12,
+                    MPInfection = 1 << 13,
+                    MPSandbox = 1 << 14,
+                    FilmPlayback = 1 << 15,
                 }
 
                 [Flags]
@@ -853,7 +855,23 @@ namespace TagTool.Tags.Definitions
                 }
 
                 [Flags]
-                public enum NonWeaponFlashFlags : ushort
+                public enum NonWeaponFlashFlags : ushort 
+                {
+                    None = 0,
+                    HealthMinor = 1 << 0,
+                    HealthMajor = 1 << 1,
+                    HealthCritical = 1 << 2,
+                    ShieldMinor = 1 << 3,
+                    ShieldMajor = 1 << 4,
+                    ShieldCritical = 1 << 5,
+                    FragEmpty = 1 << 6,
+                    PlasmaEmpty = 1 << 7,
+                    ClaymoreEmpty = 1 << 8,
+                    FirebombEmpty = 1 << 9,
+                }
+
+                [Flags]
+                public enum NonWeaponFlashFlagsMCC : ushort
                 {
                     None = 0,
                     ShieldLow = 1 << 0,

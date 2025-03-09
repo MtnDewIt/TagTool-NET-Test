@@ -20,12 +20,14 @@ namespace TagTool.Commands.Porting
                     if (BlamCache.Platform == CachePlatform.Original)
                     {
                         stateData.GameState = GetEquivalentFlags(stateData.GameState, stateData.GameStateH3);
+                        stateData.NonWeaponFlashHO = GetEquivalentFlags(stateData.NonWeaponFlashHO, stateData.NonWeaponFlash);
                     }
                     else if (BlamCache.Platform == CachePlatform.MCC)
                     {
                         stateData.GameState = GetEquivalentFlags(stateData.GameState, stateData.GameStateMCC);
                         stateData.SandboxState = stateData.SandboxStateMCC;
                         stateData.HindsightState = GetEquivalentFlags(stateData.HindsightState, stateData.HindsightStateMCC);
+                        stateData.NonWeaponFlashHO = GetEquivalentFlags(stateData.NonWeaponFlashHO, stateData.NonWeaponFlashMCC);
                     }
                     stateData.MiscState = GetEquivalentFlags(stateData.MiscState, stateData.MiscStateH3);
                     stateData.UnitImpulseStateHO = GetEquivalentFlags(stateData.UnitImpulseStateHO, stateData.UnitImpulseStateH3);
@@ -35,6 +37,7 @@ namespace TagTool.Commands.Porting
                     if (BlamCache.Platform == CachePlatform.Original)
                     {
                         stateData.GameState = GetEquivalentFlags(stateData.GameState, stateData.GameStateODST);
+                        stateData.NonWeaponFlashHO = GetEquivalentFlags(stateData.NonWeaponFlashHO, stateData.NonWeaponFlash);
                     }
                     else if (BlamCache.Platform == CachePlatform.MCC)
                     {
@@ -47,6 +50,7 @@ namespace TagTool.Commands.Porting
                         stateData.SurvivalWaveState = GetEquivalentFlags(stateData.SurvivalWaveState, stateData.SurvivalWaveStateMCC);
                         stateData.SurvivalLivesState = GetEquivalentFlags(stateData.SurvivalLivesState, stateData.SurvivalLivesStateMCC);
                         stateData.DifficultyState = GetEquivalentFlags(stateData.DifficultyState, stateData.DifficultyStateMCC);
+                        stateData.NonWeaponFlashHO = GetEquivalentFlags(stateData.NonWeaponFlashHO, stateData.NonWeaponFlashMCC);
                     }
                     stateData.UnitImpulseStateHO = GetEquivalentFlags(stateData.UnitImpulseStateHO, stateData.UnitImpulseStateODST);
                     break;
@@ -54,7 +58,6 @@ namespace TagTool.Commands.Porting
 
             stateData.GameEngineStateHO = GetEquivalentFlags(stateData.GameEngineStateHO, stateData.GameEngineState);
             stateData.WeaponArmedStateHO = GetEquivalentFlags(stateData.WeaponArmedStateHO, stateData.WeaponArmedState);
-            stateData.NonWeaponFlashHO = GetEquivalentFlags(stateData.NonWeaponFlashHO, stateData.NonWeaponFlash);
 
             return stateData;
         }
@@ -304,7 +307,7 @@ namespace TagTool.Commands.Porting
                 //hide odst hud lines when in vehicle/turret
                 if (BlamCache.Version == CacheVersion.Halo3ODST && (widgetname.Contains("in_helmet_bottom") || widgetname.Contains("in_helmet_top")))
                 {
-                    chudDefinition.HudWidgets[hudWidgetIndex].StateData[0].UnitMiscState = ChudDefinition.HudWidget.StateDatum.UnitMiscStateFlags.ThirdPerson;
+                    chudDefinition.HudWidgets[hudWidgetIndex].StateData[0].UnitMiscState = ChudDefinition.HudWidget.StateDatum.UnitMiscStateFlags.FirstPerson;
                 }
 
                 // reposition h3 metagame widgets (anchors changed in ODST)
