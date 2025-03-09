@@ -91,16 +91,7 @@ namespace TagTool.Commands.Bitmaps
                 }
             }
 
-            // Check if the file name indicates a normal map (_zbump, _normal, or _n)
-            bool useDXN = false;
-            string lowerName = imagePath.ToLowerInvariant();
-            if (lowerName.EndsWith("_zbump.dds") ||
-                lowerName.EndsWith("_normal.dds") ||
-                lowerName.EndsWith("_microbump.dds") ||
-                lowerName.EndsWith("_n.dds"))
-            {
-                useDXN = true;
-            }
+            bool useDXN = true;
 
             Console.WriteLine("Importing image data...");
             try
@@ -112,6 +103,11 @@ namespace TagTool.Commands.Bitmaps
                 {
                     file.Read(reader);
                 }
+
+                var format = BitmapDdsFormatDetection.DetectFormat(file.Header);
+                
+                if (format == BitmapFormat.Dxn || format == BitmapFormat.Dxt1 || format == BitmapFormat.Dxt3 || format == BitmapFormat.Dxt5)
+                    useDXN = true;
 
                 // Create the initial resource from the DDS file.
                 var resource = BitmapInjector.CreateBitmapResourceFromDDS(Cache, file, curve);
@@ -135,6 +131,7 @@ namespace TagTool.Commands.Bitmaps
                     const uint FOURCC_DXT1 = 0x31545844; // 'DXT1'
                     const uint FOURCC_DXT3 = 0x33545844; // 'DXT3'
                     const uint FOURCC_DXT5 = 0x35545844; // 'DXT5'
+                    const uint FOURCC_DXN = 0x32495441; // 'DXN'
 
                     BitmapFormat sourceFormat;
                     int blockSize = 0;
@@ -152,6 +149,10 @@ namespace TagTool.Commands.Bitmaps
                             break;
                         case FOURCC_DXT5:
                             sourceFormat = BitmapFormat.Dxt5;
+                            blockSize = 16;
+                            break;
+                        case FOURCC_DXN:
+                            sourceFormat = BitmapFormat.Dxn;
                             blockSize = 16;
                             break;
                         default:
@@ -179,16 +180,14 @@ namespace TagTool.Commands.Bitmaps
 
                 var reference = Cache.ResourceCache.CreateBitmapResource(resource);
                 Bitmap.HardwareTextures[imageIndex] = reference;
-                Bitmap.Images[imageIndex] = BitmapUtils.CreateBitmapImageFromResourceDefinition(
-                    resource.Texture.Definition.Bitmap);
+                Bitmap.Images[imageIndex] = BitmapUtils.CreateBitmapImageFromResourceDefinition(resource.Texture.Definition.Bitmap);
 
                 using (var tagsStream = Cache.OpenCacheReadWrite())
                     Cache.Serialize(tagsStream, Tag, Bitmap);
             }
             catch (Exception ex)
             {
-                return new TagToolError(CommandError.OperationFailed,
-                    "Importing image data failed: " + ex.Message);
+                return new TagToolError(CommandError.OperationFailed, "Importing image data failed: " + ex.Message);
             }
 
             Console.WriteLine("Done!");
