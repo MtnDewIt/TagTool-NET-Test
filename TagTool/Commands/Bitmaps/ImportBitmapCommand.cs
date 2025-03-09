@@ -91,7 +91,7 @@ namespace TagTool.Commands.Bitmaps
                 }
             }
 
-            bool useDXN = true;
+            bool useDXN = false;
 
             Console.WriteLine("Importing image data...");
             try
