@@ -148,7 +148,7 @@ namespace TagTool.Shaders.ShaderGenerator
                 result.Option = rmopTag;
             }
 
-            //generator.GetOptionFunctions(categoryName, optionIndex, out string vertexFunction, out string pixelFunction);
+            generator.GetOptionFunctions(categoryName, optionIndex, out string vertexFunction, out string pixelFunction);
 
             if (autoMacro)
             {
@@ -157,8 +157,8 @@ namespace TagTool.Shaders.ShaderGenerator
             }
             else
             {
-                //result.VertexFunction = vertexFunction != "invalid" ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Invalid;
-                //result.PixelFunction = pixelFunction != "invalid" ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Invalid;
+                result.VertexFunction = vertexFunction != "invalid" ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Invalid;
+                result.PixelFunction = pixelFunction != "invalid" ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Invalid;
             }
 
             return result;
@@ -183,7 +183,7 @@ namespace TagTool.Shaders.ShaderGenerator
                 result.ShaderOptions.Add(optionBlock);
             }
 
-            //generator.GetCategoryFunctions(categoryName, out string vertexFunction, out string pixelFunction);
+            generator.GetCategoryFunctions(categoryName, out string vertexFunction, out string pixelFunction);
 
             if (autoMacro)
             {
@@ -192,8 +192,8 @@ namespace TagTool.Shaders.ShaderGenerator
             }
             else
             {
-                //result.VertexFunction = vertexFunction != "invalid" ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Invalid;
-                //result.PixelFunction = pixelFunction != "invalid" ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Invalid;
+                result.VertexFunction = vertexFunction != "invalid" ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Invalid;
+                result.PixelFunction = pixelFunction != "invalid" ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Invalid;
             }
 
             return result;
@@ -345,8 +345,11 @@ namespace TagTool.Shaders.ShaderGenerator
         private static void GenerateSharedShaders(GameCache cache, Stream cacheStream, IShaderGenerator generator,string shaderType, 
             out CachedTag glpsTag, out CachedTag glvsTag, out GlobalPixelShader glps, out GlobalVertexShader glvs)
         {
-            glps = ShaderGenerator.GenerateSharedPixelShader(cache, generator);
-            glvs = ShaderGenerator.GenerateSharedVertexShader(cache, generator);
+            //glps = ShaderGenerator.GenerateSharedPixelShader(cache, generator);
+            //glvs = ShaderGenerator.GenerateSharedVertexShader(cache, generator);
+
+            glps = new GlobalPixelShader();
+            glvs = new GlobalVertexShader();
 
             if (!cache.TagCache.TryGetTag<GlobalPixelShader>($"shaders\\{shaderType.ToLower()}_shared_pixel_shaders", out glpsTag))
                 glpsTag = cache.TagCache.AllocateTag<GlobalPixelShader>($"shaders\\{shaderType.ToLower()}_shared_pixel_shaders");

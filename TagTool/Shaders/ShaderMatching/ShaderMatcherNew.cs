@@ -679,7 +679,7 @@ namespace TagTool.Shaders.ShaderMatching
                     switch (Type)
                     {
                         case "beam":            return new HaloShaderGenerator.Beam.BeamGenerator(Options, applyFixes);
-                        case "black":           return new HaloShaderGenerator.Black.ShaderBlackGenerator();
+                        case "black":           return new HaloShaderGenerator.Black.BlackGenerator();
                         case "contrail":        return new HaloShaderGenerator.Contrail.ContrailGenerator(Options, applyFixes);
                         case "cortana":         return new HaloShaderGenerator.Cortana.CortanaGenerator(Options, applyFixes);
                         case "custom":          return new HaloShaderGenerator.Custom.CustomGenerator(Options, applyFixes);

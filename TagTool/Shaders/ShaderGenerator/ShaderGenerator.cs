@@ -653,18 +653,18 @@ namespace TagTool.Shaders.ShaderGenerator
             switch (shaderType)
             {
                 case "beam":            return new HaloShaderGenerator.Beam.BeamGenerator(applyFixes);
-                case "black":           return new HaloShaderGenerator.Black.ShaderBlackGenerator();
+                case "black":           return new HaloShaderGenerator.Black.BlackGenerator();
                 case "contrail":        return new HaloShaderGenerator.Contrail.ContrailGenerator(applyFixes);
                 case "cortana":         return new HaloShaderGenerator.Cortana.CortanaGenerator(applyFixes);
                 case "custom":          return new HaloShaderGenerator.Custom.CustomGenerator(applyFixes);
                 case "decal":           return new HaloShaderGenerator.Decal.DecalGenerator(applyFixes);
                 case "foliage":         return new HaloShaderGenerator.Foliage.FoliageGenerator(applyFixes);
-                //case "fur":             return new HaloShaderGenerator.Fur.FurGenerator(applyFixes);
-                //case "fur_stencil":     return new HaloShaderGenerator.FurStencil.FurStencilGenerator(applyFixes);
-                //case "glass":           return new HaloShaderGenerator.Glass.GlassGenerator(applyFixes);
+                case "fur":             return new HaloShaderGenerator.Fur.FurGenerator(applyFixes);
+                case "fur_stencil":     return new HaloShaderGenerator.FurStencil.FurStencilGenerator(applyFixes);
+                case "glass":           return new HaloShaderGenerator.Glass.GlassGenerator(applyFixes);
                 case "halogram":        return new HaloShaderGenerator.Halogram.HalogramGenerator(applyFixes);
                 case "light_volume":    return new HaloShaderGenerator.LightVolume.LightVolumeGenerator(applyFixes);
-                //case "mux":             return new HaloShaderGenerator.Mux.MuxGenerator(applyFixes);
+                case "mux":             return new HaloShaderGenerator.Mux.MuxGenerator(applyFixes);
                 case "particle":        return new HaloShaderGenerator.Particle.ParticleGenerator(applyFixes);
                 case "screen":          return new HaloShaderGenerator.Screen.ScreenGenerator(applyFixes);
                 case "shader":          return new HaloShaderGenerator.Shader.ShaderGenerator(applyFixes);
@@ -1566,6 +1566,8 @@ namespace TagTool.Shaders.ShaderGenerator
                     if (vertexTypeBlock.Dependencies.Count > 0)
                     {
                         // TODO: support vertex option dependencies (n/a in any stock gen3 halo)
+
+                        new TagToolWarning("Vertex Option Dependencies Detected");
                     }
                     else
                     {

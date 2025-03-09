@@ -14,6 +14,8 @@ using TagTool.BlamFile;
 using Newtonsoft.Json;
 using TagTool.BlamFile.MCC;
 using System.Linq;
+using TagTool.Shaders.ShaderGenerator;
+using HaloShaderGenerator.Globals;
 
 namespace TagTool.Commands.Tags
 {
@@ -40,7 +42,87 @@ namespace TagTool.Commands.Tags
 
         public override object Execute(List<string> args)
         {
+            using (var stream = Cache.OpenCacheReadWrite())
+            {
+                GenerateRenderMethodDefinition(stream, "beam");
+                GenerateRenderMethodDefinition(stream, "black");
+                GenerateRenderMethodDefinition(stream, "contrail");
+                GenerateRenderMethodDefinition(stream, "cortana");
+                GenerateRenderMethodDefinition(stream, "custom");
+                GenerateRenderMethodDefinition(stream, "decal");
+                GenerateRenderMethodDefinition(stream, "foliage");
+                GenerateRenderMethodDefinition(stream, "fur");
+                GenerateRenderMethodDefinition(stream, "fur_stencil");
+                GenerateRenderMethodDefinition(stream, "glass");
+                GenerateRenderMethodDefinition(stream, "halogram");
+                GenerateRenderMethodDefinition(stream, "light_volume");
+                GenerateRenderMethodDefinition(stream, "mux");
+                GenerateRenderMethodDefinition(stream, "particle");
+                GenerateRenderMethodDefinition(stream, "screen");
+                GenerateRenderMethodDefinition(stream, "shader");
+                GenerateRenderMethodDefinition(stream, "terrain");
+                GenerateRenderMethodDefinition(stream, "water");
+                GenerateRenderMethodDefinition(stream, "zonly");
+
+                CacheContext.SaveStrings();
+                CacheContext.SaveTagNames();
+
+                GenerateGlobalShader(stream, ShaderType.Beam);
+                GenerateGlobalShader(stream, ShaderType.Black);
+                GenerateGlobalShader(stream, ShaderType.Contrail);
+                GenerateGlobalShader(stream, ShaderType.Cortana);
+                GenerateGlobalShader(stream, ShaderType.Custom);
+                GenerateGlobalShader(stream, ShaderType.Decal);
+                GenerateGlobalShader(stream, ShaderType.Foliage);
+                GenerateGlobalShader(stream, ShaderType.Fur);
+                GenerateGlobalShader(stream, ShaderType.FurStencil);
+                GenerateGlobalShader(stream, ShaderType.Glass);
+                GenerateGlobalShader(stream, ShaderType.Halogram);
+                GenerateGlobalShader(stream, ShaderType.LightVolume);
+                GenerateGlobalShader(stream, ShaderType.Mux);
+                GenerateGlobalShader(stream, ShaderType.Particle);
+                GenerateGlobalShader(stream, ShaderType.Screen);
+                GenerateGlobalShader(stream, ShaderType.Shader); // issues with misc_attr_animation (We ran out of output registers :/)
+                GenerateGlobalShader(stream, ShaderType.Terrain);
+                GenerateGlobalShader(stream, ShaderType.Water);
+                GenerateGlobalShader(stream, ShaderType.ZOnly);
+
+                CacheContext.SaveStrings();
+            }
+
             return true;
+
+            void GenerateRenderMethodDefinition(Stream stream, string shaderType)
+            {
+                string rmdfName = $"shaders\\{shaderType}";
+
+                var generator = ShaderGenerator.GetGlobalShaderGenerator(shaderType, true);
+
+                if (!Cache.TagCache.TryGetTag<RenderMethodDefinition>(rmdfName, out CachedTag rmdfTag))
+                {
+                    rmdfTag = Cache.TagCache.AllocateTag<RenderMethodDefinition>(rmdfName);
+                }
+
+                var rmdf = RenderMethodDefinitionGenerator.GenerateRenderMethodDefinition(Cache, stream, generator, shaderType, out _, out _);
+
+                Cache.Serialize(stream, rmdfTag, rmdf);
+            }
+
+            void GenerateGlobalShader(Stream stream, ShaderType shader, bool applyFixes = true)
+            {
+                string shaderName = shader.ToString().ToLowerInvariant();
+                string rmdfName = shaderName == "lightvolume" ? "shaders\\light_volume" : $"shaders\\{shaderName}";
+                rmdfName = shaderName == "furstencil" ? "shaders\\fur_stencil" : rmdfName;
+
+                CachedTag rmdfTag = Cache.TagCache.GetTag<RenderMethodDefinition>(rmdfName);
+                RenderMethodDefinition rmdf = Cache.Deserialize<RenderMethodDefinition>(stream, rmdfTag);
+
+                GlobalPixelShader glps = ShaderGeneratorNew.GenerateSharedPixelShaders(Cache, rmdf, shader, applyFixes);
+                GlobalVertexShader glvs = ShaderGeneratorNew.GenerateSharedVertexShaders(Cache, rmdf, shader, applyFixes);
+
+                Cache.Serialize(stream, rmdf.GlobalPixelShader, glps);
+                Cache.Serialize(stream, rmdf.GlobalVertexShader, glvs);
+            }
         }
     }
 }

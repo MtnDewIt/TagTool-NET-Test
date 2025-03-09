@@ -146,7 +146,7 @@ namespace TagTool.Commands.Shaders
             switch (shaderType)
             {
                 case "beam":            return new HaloShaderGenerator.Beam.BeamGenerator(options, applyFixes);
-                case "black":           return new HaloShaderGenerator.Black.ShaderBlackGenerator();
+                case "black":           return new HaloShaderGenerator.Black.BlackGenerator();
                 case "contrail":        return new HaloShaderGenerator.Contrail.ContrailGenerator(options, applyFixes);
                 case "cortana":         return new HaloShaderGenerator.Cortana.CortanaGenerator(options, applyFixes);
                 case "custom":          return new HaloShaderGenerator.Custom.CustomGenerator(options, applyFixes);
@@ -170,7 +170,7 @@ namespace TagTool.Commands.Shaders
             switch (shaderType)
             {
                 case "beam":            return new HaloShaderGenerator.Beam.BeamGenerator(applyFixes);
-                case "black":           return new HaloShaderGenerator.Black.ShaderBlackGenerator();
+                case "black":           return new HaloShaderGenerator.Black.BlackGenerator();
                 case "contrail":        return new HaloShaderGenerator.Contrail.ContrailGenerator(applyFixes);
                 case "cortana":         return new HaloShaderGenerator.Cortana.CortanaGenerator(applyFixes);
                 case "custom":          return new HaloShaderGenerator.Custom.CustomGenerator(applyFixes);
