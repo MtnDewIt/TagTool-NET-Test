@@ -126,7 +126,7 @@ namespace TagTool.Commands.Porting
             return effe;
         }
 
-        public Effect.Event.ParticleSystem.Emitter.RuntimeMGpuData CompileEmitterRuntimeData(Effect.Event.ParticleSystem particleSystem, int emitterIndex, Particle prt3)
+        public static Effect.Event.ParticleSystem.Emitter.RuntimeMGpuData CompileEmitterRuntimeData(Effect.Event.ParticleSystem particleSystem, int emitterIndex, Particle prt3)
         {
             var emitter = particleSystem.Emitters[emitterIndex];
 
@@ -257,7 +257,7 @@ namespace TagTool.Commands.Porting
             return runtimeGpu;
         }
 
-        private List<Effect.Event.ParticleSystem.Emitter.RuntimeMGpuData.Function> PropertyFunctionGetGpuFunctions(TagFunction function, int multiPartIndex)
+        private static List<Effect.Event.ParticleSystem.Emitter.RuntimeMGpuData.Function> PropertyFunctionGetGpuFunctions(TagFunction function, int multiPartIndex)
         {
             List<Effect.Event.ParticleSystem.Emitter.RuntimeMGpuData.Function> result = new List<Effect.Event.ParticleSystem.Emitter.RuntimeMGpuData.Function>();
 
@@ -385,7 +385,7 @@ namespace TagTool.Commands.Porting
             return result;
         }
 
-        private void MultiFunctionPartPackGpuData(TagFunction function, ref int dataOffset, ref Effect.Event.ParticleSystem.Emitter.RuntimeMGpuData.Function gpuFunction)
+        private static void MultiFunctionPartPackGpuData(TagFunction function, ref int dataOffset, ref Effect.Event.ParticleSystem.Emitter.RuntimeMGpuData.Function gpuFunction)
         {
             int nextSectionOffset = 0;
 
@@ -425,7 +425,7 @@ namespace TagTool.Commands.Porting
             dataOffset += nextSectionOffset;
         }
 
-        private List<RealRgbaColor> PropertyFunctionGetGpuColours(TagFunction function)
+        private static List<RealRgbaColor> PropertyFunctionGetGpuColours(TagFunction function)
         {
             List<RealRgbaColor> result = new List<RealRgbaColor>();
 
