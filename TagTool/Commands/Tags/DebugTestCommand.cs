@@ -88,6 +88,42 @@ namespace TagTool.Commands.Tags
                 GenerateGlobalShader(stream, ShaderType.ZOnly);
 
                 CacheContext.SaveStrings();
+
+                foreach (var tag in Cache.TagCache.FindAllInGroup("rmdf")) 
+                {
+                    var rmdf = Cache.Deserialize<RenderMethodDefinition>(stream, tag);
+
+                    for (int i = 0; i < rmdf.Categories.Count; i++) 
+                    {
+                        if (rmdf.Categories[i].ShaderOptions.Count == 0) 
+                        {
+                            var options = new byte[rmdf.Categories.Count];
+
+                            Console.WriteLine($"shaders\\{tag.Name.Replace("shaders\\", "")}_templates\\_{string.Join("_", options)}");
+
+                            //var rmt2Name = $"shaders\\{tag.Name.Replace("shaders\\", "")}_templates\\_{string.Join("_", options)}";
+                            //var rmt2 = ShaderGeneratorNew.GenerateTemplateSafe(Cache, stream, rmdf, rmt2Name, out _, out _);
+                            //var rmt2Tag = Cache.TagCache.AllocateTag<RenderMethodTemplate>(rmt2Name);
+                            //Cache.Serialize(stream, rmt2Tag, rmt2);
+                        }
+                        else
+                        {
+                            for (int j = 0; j < rmdf.Categories[i].ShaderOptions.Count; j++)
+                            {
+                                var options = new byte[rmdf.Categories.Count];
+
+                                options[i] = (byte)j;
+
+                                Console.WriteLine($"shaders\\{tag.Name.Replace("shaders\\", "")}_templates\\_{string.Join("_", options)}");
+
+                                //var rmt2Name = $"shaders\\{tag.Name.Replace("shaders\\", "")}_templates\\_{string.Join("_", options)}";
+                                //var rmt2 = ShaderGeneratorNew.GenerateTemplateSafe(Cache, stream, rmdf, rmt2Name, out _, out _);
+                                //var rmt2Tag = Cache.TagCache.AllocateTag<RenderMethodTemplate>(rmt2Name);
+                                //Cache.Serialize(stream, rmt2Tag, rmt2);
+                            }
+                        }
+                    }
+                }
             }
 
             return true;

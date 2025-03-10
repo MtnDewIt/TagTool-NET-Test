@@ -183,18 +183,18 @@ namespace TagTool.Shaders.ShaderGenerator
                     RegisterCount = (byte)register.Size
                 };
 
-                switch (register.registerType)
+                switch (register.RegisterType)
                 {
-                    case ShaderGeneratorResult.ShaderRegister.RegisterType.Boolean:
+                    case ShaderGeneratorResult.ShaderRegister.ShaderRegisterType.Boolean:
                         shaderParameter.RegisterType = ShaderParameter.RType.Boolean;
                         break;
-                    case ShaderGeneratorResult.ShaderRegister.RegisterType.Integer:
+                    case ShaderGeneratorResult.ShaderRegister.ShaderRegisterType.Integer:
                         shaderParameter.RegisterType = ShaderParameter.RType.Integer;
                         break;
-                    case ShaderGeneratorResult.ShaderRegister.RegisterType.Sampler:
+                    case ShaderGeneratorResult.ShaderRegister.ShaderRegisterType.Sampler:
                         shaderParameter.RegisterType = ShaderParameter.RType.Sampler;
                         break;
-                    case ShaderGeneratorResult.ShaderRegister.RegisterType.Vector:
+                    case ShaderGeneratorResult.ShaderRegister.ShaderRegisterType.Vector:
                         shaderParameter.RegisterType = ShaderParameter.RType.Vector;
                         break;
                 }
