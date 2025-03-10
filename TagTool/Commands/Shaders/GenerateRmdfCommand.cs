@@ -17,7 +17,7 @@ namespace TagTool.Commands.Shaders
                 "GenerateRmdf",
                 "Generates a render method definition tag according to the specified type.",
 
-                "GenerateRmdf <type> [update]",
+                "GenerateRmdf <type>",
                 "Generates a render method definition tag according to the specified type.")
         {
             Cache = cache;
@@ -27,16 +27,6 @@ namespace TagTool.Commands.Shaders
         {
             if (args.Count < 1)
                 return new TagToolError(CommandError.ArgCount);
-
-            if (args.Count > 1 && args[1] == "update")
-            {
-                using (var stream = Cache.OpenCacheReadWrite())
-                {
-                    TagTool.Shaders.ShaderGenerator.RenderMethodDefinitionGenerator.UpdateRenderMethodDefinition(Cache, stream, args[0]);
-                }
-                Console.WriteLine($"\"shaders\\{args[0]}\" updated successfully.");
-                return true;
-            }
 
             var generator = TagTool.Shaders.ShaderGenerator.ShaderGenerator.GetGlobalShaderGenerator(args[0], true);
 

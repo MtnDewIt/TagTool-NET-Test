@@ -671,38 +671,6 @@ namespace TagTool.Shaders.ShaderMatching
 
                 return true;
             }
-
-            public HaloShaderGenerator.Generator.IShaderGenerator GetGenerator(bool applyFixes = false)
-            {
-                if (HasParsed && !IsMs30)
-                {
-                    switch (Type)
-                    {
-                        case "beam":            return new HaloShaderGenerator.Beam.BeamGenerator(Options, applyFixes);
-                        case "black":           return new HaloShaderGenerator.Black.BlackGenerator();
-                        case "contrail":        return new HaloShaderGenerator.Contrail.ContrailGenerator(Options, applyFixes);
-                        case "cortana":         return new HaloShaderGenerator.Cortana.CortanaGenerator(Options, applyFixes);
-                        case "custom":          return new HaloShaderGenerator.Custom.CustomGenerator(Options, applyFixes);
-                        case "decal":           return new HaloShaderGenerator.Decal.DecalGenerator(Options, applyFixes);
-                        case "foliage":         return new HaloShaderGenerator.Foliage.FoliageGenerator(Options, applyFixes);
-                        //case "glass":           return new HaloShaderGenerator.Glass.GlassGenerator(Options, applyFixes);
-                        case "halogram":        return new HaloShaderGenerator.Halogram.HalogramGenerator(Options, applyFixes);
-                        case "light_volume":    return new HaloShaderGenerator.LightVolume.LightVolumeGenerator(Options, applyFixes);
-                        case "particle":        return new HaloShaderGenerator.Particle.ParticleGenerator(Options, applyFixes);
-                        case "screen":          return new HaloShaderGenerator.Screen.ScreenGenerator(Options, applyFixes);
-                        case "shader":          return new HaloShaderGenerator.Shader.ShaderGenerator(Options, applyFixes);
-                        case "terrain":         return new HaloShaderGenerator.Terrain.TerrainGenerator(Options, applyFixes);
-                        case "water":           return new HaloShaderGenerator.Water.WaterGenerator(Options, applyFixes);
-                        case "zonly":           return new HaloShaderGenerator.ZOnly.ZOnlyGenerator(Options, applyFixes);
-                    }
-
-                    Console.WriteLine($"\"{Type}\" shader generation is currently unsupported.");
-                    return null;
-                }
-
-                Console.WriteLine("Invalid descriptor.");
-                return null;
-            }
         }
 
         public CachedTag FindRmdf(CachedTag matchedRmt2Tag)

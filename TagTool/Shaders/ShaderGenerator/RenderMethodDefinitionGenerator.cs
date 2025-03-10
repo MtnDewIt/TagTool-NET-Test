@@ -39,92 +39,6 @@ namespace TagTool.Shaders.ShaderGenerator
             return rmdf;
         }
 
-        public static bool UpdateRenderMethodDefinition(GameCache cache, Stream stream, string shaderType)
-        {
-            var generator = ShaderGenerator.GetGlobalShaderGenerator(shaderType, true);
-            if (generator == null)
-                return false;
-
-            string rmdfName = $"shaders\\{shaderType}";
-            
-            if (!cache.TagCache.TryGetTag<RenderMethodDefinition>(rmdfName, out CachedTag rmdfTag)) // generate
-            {
-                new TagToolError(CommandError.CustomMessage, $"No rmdf tag present for {shaderType}");
-                return false;
-                //rmdfTag = cache.TagCache.AllocateTag<RenderMethodDefinition>(rmdfName);
-                //var rmdf = GenerateRenderMethodDefinition(cache, stream, generator, shaderType, out _, out _);
-                //cache.Serialize(stream, rmdfTag, rmdf);
-                //(cache as GameCacheHaloOnlineBase).SaveTagNames();
-            }
-            else // can update
-            {
-                var rmdf = cache.Deserialize<RenderMethodDefinition>(stream, rmdfTag);
-                bool autoMacro = rmdf.Flags.HasFlag(RenderMethodDefinitionFlags.UseAutomaticMacros);
-
-                // make sure all categories exist
-                int categoriesAdded = 0;
-                for (uint i = (uint)rmdf.Categories.Count; i < generator.GetMethodCount(); i++)
-                {
-                    var categoryBlock = BuildCategory(cache, stream, i, generator, shaderType, autoMacro);
-                    rmdf.Categories.Add(categoryBlock);
-                    categoriesAdded++;
-                }
-                cache.SaveStrings();
-
-                if (categoriesAdded > 0)
-                    AdjustTemplateTagNames(cache as GameCacheHaloOnlineBase, shaderType, categoriesAdded, rmdf.Categories.Count);
-
-                // update
-                for (uint i = 0; i < generator.GetMethodCount(); i++)
-                {
-                    UpdateCategory(rmdf.Categories[(int)i], cache, stream, i, generator, shaderType, autoMacro);
-                }
-                cache.SaveStrings();
-
-                // update glps category dependencies
-                var glps = cache.Deserialize<GlobalPixelShader>(stream, rmdf.GlobalPixelShader);
-
-                for (int i = 0; i < rmdf.EntryPoints.Count; i++)
-                {
-                    foreach (var pass in rmdf.EntryPoints[i].Passes)
-                    {
-                        if (!pass.Flags.HasFlag(EntryPointBlock.PassBlock.PassFlags.HasSharedPixelShader))
-                            continue;
-
-                        for (int j = 0; j < pass.CategoryDependencies.Count; j++)
-                        {
-                            var categoryOptionCount = rmdf.Categories[pass.CategoryDependencies[j].Category].ShaderOptions.Count;
-
-                            foreach (var dep in glps.EntryPoints[(int)rmdf.EntryPoints[i].EntryPoint].CategoryDependency)
-                            {
-                                if (dep.DefinitionCategoryIndex == pass.CategoryDependencies[j].Category)
-                                {
-                                    if (dep.OptionDependency.Count != categoryOptionCount)
-                                    {
-                                        glps = ShaderGenerator.GenerateSharedPixelShader(cache, generator);
-
-                                        if (!cache.TagCache.TryGetTag<GlobalPixelShader>($"shaders\\{shaderType.ToLower()}_shared_pixel_shaders", out var glpsTag))
-                                            glpsTag = cache.TagCache.AllocateTag<GlobalPixelShader>($"shaders\\{shaderType.ToLower()}_shared_pixel_shaders");
-                                        cache.Serialize(stream, glpsTag, glps);
-
-                                        // no need to keep looping
-                                        cache.Serialize(stream, rmdfTag, rmdf);
-                                        return true;
-                                    }
-
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                cache.Serialize(stream, rmdfTag, rmdf);
-            }
-
-            return true;
-        }
-
         private static CategoryBlock.ShaderOption BuildCategoryOption(GameCache cache, Stream cacheStream, string categoryName, uint categoryIndex, int optionIndex, IShaderGenerator generator, bool autoMacro)
         {
             CategoryBlock.ShaderOption result = new CategoryBlock.ShaderOption();
@@ -197,20 +111,6 @@ namespace TagTool.Shaders.ShaderGenerator
             }
 
             return result;
-        }
-
-        private static void UpdateCategory(CategoryBlock categoryBlock, GameCache cache, Stream cacheStream, uint categoryIndex, IShaderGenerator generator, string shaderType, bool autoMacro)
-        {
-            if (shaderType == "black")
-                return;
-
-            string categoryName = cache.StringTable.GetString(categoryBlock.Name);
-
-            for (int i = categoryBlock.ShaderOptions.Count; i < generator.GetMethodOptionCount((int)categoryIndex); i++)
-            {
-                var optionBlock = BuildCategoryOption(cache, cacheStream, categoryName, categoryIndex, i, generator, autoMacro);
-                categoryBlock.ShaderOptions.Add(optionBlock);
-            }
         }
 
         private static List<CategoryBlock> BuildRmdfCategories(GameCache cache, Stream cacheStream, IShaderGenerator generator, string shaderType, bool autoMacro)
@@ -382,29 +282,6 @@ namespace TagTool.Shaders.ShaderGenerator
             }
 
             return input;
-        }
-
-        private static void AdjustTemplateTagNames(GameCacheHaloOnlineBase cache, string shaderType, int categoriesAdded, int totalCategories)
-        {
-            string appendage = string.Concat(Enumerable.Repeat("_0", categoriesAdded));
-
-            foreach (var tag in cache.TagCache.NonNull())
-            {
-                if (tag.Group.Tag != "rmt2" || tag.Name.StartsWith("ms30\\"))
-                    continue;
-
-                var parts = tag.Name.Split('\\');
-
-                int nameCategories = parts[2].Remove(0, 1).Split('_').Length;
-                if (nameCategories >= totalCategories)
-                    continue;
-
-                string templateType = parts[1].Replace("_templates", "");
-                if (templateType == shaderType)
-                    tag.Name += appendage;
-            }
-
-            cache.SaveTagNames();
         }
     }
 }
