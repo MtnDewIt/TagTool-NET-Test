@@ -185,7 +185,7 @@ namespace TagTool.Commands.RenderModels
             {
                 // Reuse existing region if available; otherwise, create new.
                 RenderModel.Region existingRegion = Definition.Regions.FirstOrDefault(r => Cache.StringTable.GetString(r.Name).ToLower() == regionName);
-                StringId regionId = existingRegion != null ? existingRegion.Name : Cache.StringTable.AddString(regionName);
+                StringId regionId = existingRegion != null ? existingRegion.Name : Cache.StringTable.GetOrAddString(regionName);
 
                 builder.BeginRegion(regionId);
 
@@ -210,7 +210,7 @@ namespace TagTool.Commands.RenderModels
                     }
                     else
                     {
-                        permId = Cache.StringTable.AddString(permName);
+                        permId = Cache.StringTable.GetOrAddString(permName);
                         isNewPermutation = true;
                     }
 
