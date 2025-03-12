@@ -195,14 +195,17 @@ namespace TagTool.Shaders.ShaderGenerator
                         parameterBlock.Type = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
                         break;
                     case RegisterType.Vector:
-                        if (parameter.Flags.HasFlag(ShaderParameterFlags.IsColor))
+                        if (parameter.Flags.HasFlag(ShaderOptionParameter.ShaderParameterFlags.IsColor) && parameter.CodeType == HLSLType.Float4)
                             parameterBlock.Type = RenderMethodOption.ParameterBlock.OptionDataType.ArgbColor;
+                        else if (parameter.Flags.HasFlag(ShaderOptionParameter.ShaderParameterFlags.IsColor) && parameter.CodeType == HLSLType.Float3)
+                            parameterBlock.Type = RenderMethodOption.ParameterBlock.OptionDataType.Color;
                         else if (parameter.CodeType != HLSLType.Float4)
                             parameterBlock.Type = RenderMethodOption.ParameterBlock.OptionDataType.Real;
-                        else
-                            parameterBlock.Type = RenderMethodOption.ParameterBlock.OptionDataType.Color;
                         break;
                 }
+
+                parameterBlock.DefaultFilterMode = (RenderMethodOption.ParameterBlock.DefaultFilterModeValue)parameter.FilterMode;
+                parameterBlock.DefaultAddressMode = (RenderMethodOption.ParameterBlock.DefaultAddressModeValue)parameter.AddressMode;
 
                 rmop.Parameters.Add(parameterBlock);
             }
