@@ -659,9 +659,12 @@ namespace TagTool.Shaders.ShaderGenerator
                 case "custom":          return new HaloShaderGenerator.Custom.CustomGenerator(applyFixes);
                 case "decal":           return new HaloShaderGenerator.Decal.DecalGenerator(applyFixes);
                 case "foliage":         return new HaloShaderGenerator.Foliage.FoliageGenerator(applyFixes);
+                //case "fur":             return new HaloShaderGenerator.Fur.FurGenerator(applyFixes);
+                //case "fur_stencil":     return new HaloShaderGenerator.FurStencil.FurStencilGenerator(applyFixes);
                 //case "glass":           return new HaloShaderGenerator.Glass.GlassGenerator(applyFixes);
                 case "halogram":        return new HaloShaderGenerator.Halogram.HalogramGenerator(applyFixes);
                 case "light_volume":    return new HaloShaderGenerator.LightVolume.LightVolumeGenerator(applyFixes);
+                //case "mux":             return new HaloShaderGenerator.Mux.MuxGenerator(applyFixes);
                 case "particle":        return new HaloShaderGenerator.Particle.ParticleGenerator(applyFixes);
                 case "screen":          return new HaloShaderGenerator.Screen.ScreenGenerator(applyFixes);
                 case "shader":          return new HaloShaderGenerator.Shader.ShaderGenerator(applyFixes);

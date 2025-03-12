@@ -45,12 +45,17 @@ namespace TagTool.Tags.Definitions
         [TagStructure(Size = 0x10)]
         public class EntryPointBlock : TagStructure
         {
-            [TagField(MaxVersion = CacheVersion.HaloOnline235640)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline235640, Platform = CachePlatform.Original)]
+            [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
             public EntryPoint_32 EntryPoint;
-            [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             public EntryPointMs30_32 EntryPointHO;
-            [TagField(MinVersion = CacheVersion.HaloReach)]
+            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+            public EntryPointMCC_32 EntryPointMCC;
+            [TagField(MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
             public EntryPointReach_32 EntryPointReach;
+            [TagField(MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+            public EntryPointReachMCC_32 EntryPointReachMCC;
 
             public List<PassBlock> Passes;
 
@@ -159,12 +164,17 @@ namespace TagTool.Tags.Definitions
             [TagStructure(Size = 0x10)]
             public class EntryPointDependency : TagStructure
             {
-                [TagField(MaxVersion = CacheVersion.HaloOnline235640)]
+                [TagField(MaxVersion = CacheVersion.HaloOnline235640, Platform = CachePlatform.Original)]
+                [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
                 public EntryPoint_32 EntryPoint;
-                [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
                 public EntryPointMs30_32 EntryPointHO;
-                [TagField(MinVersion = CacheVersion.HaloReach)]
+                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+                public EntryPointMCC_32 EntryPointMCC;
+                [TagField(MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
                 public EntryPointReach_32 EntryPointReach;
+                [TagField(MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+                public EntryPointReachMCC_32 EntryPointReachMCC;
 
                 public List<CategoryDependency> CategoryDependencies;
 

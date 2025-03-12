@@ -25,8 +25,10 @@ namespace TagTool.Tags.Definitions
 
             [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             public RenderMethodExtern RenderMethodExtern;
-            [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-            public RenderMethodExternMCC RenderMethodExternMCC;
+            [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+            public RenderMethodExternH3MCC RenderMethodExternH3MCC;
+            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+            public RenderMethodExternODSTMCC RenderMethodExternODSTMCC;
             [TagField(MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
             public RenderMethodExternReach RenderMethodExternReach;
 

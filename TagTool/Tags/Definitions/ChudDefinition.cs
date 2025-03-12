@@ -66,9 +66,13 @@ namespace TagTool.Tags.Definitions
             [TagStructure(Size = 0x38, MinVersion = CacheVersion.HaloReach)]
             public class StateDatum : TagStructure
             {
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
+                [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
                 public GameStateFlags GameState;
-                [TagField(Platform = CachePlatform.MCC)]
+                [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
+                public GameStateFlagsH3 GameStateH3;
+                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+                public GameStateFlagsODST GameStateODST;
+                [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
                 public GameStateFlagsMCC GameStateMCC;
 
                 [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
@@ -179,8 +183,10 @@ namespace TagTool.Tags.Definitions
                 [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public WeaponMiscStateFlags WeaponMiscState;
 
-                [TagField(MaxVersion = CacheVersion.Halo3ODST)]
+                [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
                 public NonWeaponFlashFlags NonWeaponFlash;
+                [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+                public NonWeaponFlashFlagsMCC NonWeaponFlashMCC;
                 [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
                 public NonWeaponFlashFlagsHO NonWeaponFlashHO;
 
@@ -227,6 +233,28 @@ namespace TagTool.Tags.Definitions
                     None = 0,
                     CampaignSolo = 1 << 0,
                     CampaignCoop = 1 << 1,
+                    CampaignSurvival = 1 << 2,
+                    MultiFFA = 1 << 3,
+                    MultiTeam = 1 << 4,
+                    MPCTF = 1 << 5,
+                    MPSlayer = 1 << 6,
+                    MPOddball = 1 << 7,
+                    MPKing = 1 << 8,
+                    MPJuggernaut = 1 << 9,
+                    MPTerritories = 1 << 10,
+                    MPAssault = 1 << 11,
+                    MPVIP = 1 << 12,
+                    MPInfection = 1 << 13,
+                    MPSandbox = 1 << 14,
+                    FilmPlayback = 1 << 15,
+                }
+
+                [Flags]
+                public enum GameStateFlagsH3 : ushort
+                {
+                    None = 0,
+                    CampaignSolo = 1 << 0,
+                    CampaignCoop = 1 << 1,
                     MultiFFA = 1 << 2,
                     MultiTeam = 1 << 3,
                     MPCTF = 1 << 4,
@@ -238,9 +266,20 @@ namespace TagTool.Tags.Definitions
                     MPAssault = 1 << 10,
                     MPVIP = 1 << 11,
                     MPInfection = 1 << 12,
-                    MPSandbox = 1 << 13,
-                    FilmPlayback = 1 << 14,
-                    CampaignSurvival = 1 << 15,
+                    Unused = 1 << 13,
+                    MPSandbox = 1 << 14,
+                    FilmPlayback = 1 << 15,
+                }
+
+                [Flags]
+                public enum GameStateFlagsODST : ushort 
+                {
+                    None = 0,
+                    CampaignSolo = 1 << 0,
+                    CampaignCoop = 1 << 1,
+                    CampaignSurvival = 1 << 2,
+                    MPSandbox = 1 << 3,
+                    FilmPlayback = 1 << 4,
                 }
 
                 [Flags]
@@ -336,8 +375,8 @@ namespace TagTool.Tags.Definitions
                     TalkingPlayerAvailable = 1 << 3,
                     ArmingMeterAvailable = 1 << 4,
                     TimeLeftAvailable = 1 << 5,
-                    FriendlyPossession = 1 << 6,
-                    EnemyPossession = 1 << 7,
+                    FriendlyPosession = 1 << 6,
+                    EnemyPosession = 1 << 7,
                     VariantCustomA = 1 << 8,
                     VariantCustomB = 1 << 9,
                     VariantCustomC = 1 << 10,
@@ -816,7 +855,23 @@ namespace TagTool.Tags.Definitions
                 }
 
                 [Flags]
-                public enum NonWeaponFlashFlags : ushort
+                public enum NonWeaponFlashFlags : ushort 
+                {
+                    None = 0,
+                    HealthMinor = 1 << 0,
+                    HealthMajor = 1 << 1,
+                    HealthCritical = 1 << 2,
+                    ShieldMinor = 1 << 3,
+                    ShieldMajor = 1 << 4,
+                    ShieldCritical = 1 << 5,
+                    FragEmpty = 1 << 6,
+                    PlasmaEmpty = 1 << 7,
+                    ClaymoreEmpty = 1 << 8,
+                    FirebombEmpty = 1 << 9,
+                }
+
+                [Flags]
+                public enum NonWeaponFlashFlagsMCC : ushort
                 {
                     None = 0,
                     ShieldLow = 1 << 0,
