@@ -107,8 +107,8 @@ namespace TagTool.Commands.Models
                 if (modelRegion.Permutations == null)
                     modelRegion.Permutations = new List<Model.CollisionRegion.Permutation>();
 
-                // Remove any model permutation with an invalid name or not in render_model.
-                modelRegion.Permutations.RemoveAll(p => p.Name == StringId.Invalid || !validRmPerms.Any(rmPerm => rmPerm.Name == p.Name));
+                // Remove any model permutation with an invalid name.
+                modelRegion.Permutations.RemoveAll(p => p.Name == StringId.Invalid);
 
                 bool hasExistingPermData = modelRegion.Permutations.Count > 0;
 
@@ -188,11 +188,10 @@ namespace TagTool.Commands.Models
                     if (variant.Regions == null)
                         variant.Regions = new List<Model.Variant.Region>();
 
-                    // Ensure the variant's ModelRegionIndices array is the correct size
-                    const int fixedArraySize = 16;
-                    if (variant.ModelRegionIndices == null || variant.ModelRegionIndices.Length != fixedArraySize)
+                    // Ensure the variant's ModelRegionIndices array is the correct size (16 elements)
+                    if (variant.ModelRegionIndices == null || variant.ModelRegionIndices.Length != 16)
                     {
-                        variant.ModelRegionIndices = new sbyte[fixedArraySize];
+                        variant.ModelRegionIndices = new sbyte[16];
                     }
 
                     // Initialize ModelRegionIndices to -1
@@ -207,7 +206,7 @@ namespace TagTool.Commands.Models
                         .ToDictionary(r => r.Name, r => r);
 
                     // Process each valid render_model region.
-                    for (int rmRegionIndex = 0; rmRegionIndex < renderModel.Regions.Count; rmRegionIndex++)
+                    for (int rmRegionIndex = 0; rmRegionIndex < renderModel.Regions.Count && rmRegionIndex < 16; rmRegionIndex++)
                     {
                         var rmRegion = renderModel.Regions[rmRegionIndex];
                         if (rmRegion.Name == StringId.Invalid)
@@ -241,8 +240,8 @@ namespace TagTool.Commands.Models
                         if (variantRegion.Permutations == null)
                             variantRegion.Permutations = new List<Model.Variant.Region.Permutation>();
 
-                        // Remove any variant permutation with an invalid name or not in render_model.
-                        variantRegion.Permutations.RemoveAll(p => p.Name == StringId.Invalid || !validRmPerms.Any(rmPerm => rmPerm.Name == p.Name));
+                        // Remove any variant permutation with an invalid name.
+                        variantRegion.Permutations.RemoveAll(p => p.Name == StringId.Invalid);
 
                         // If there are fewer permutations than in render_model, add new ones.
                         while (variantRegion.Permutations.Count < targetPermCount)
@@ -271,9 +270,6 @@ namespace TagTool.Commands.Models
                                 perm.Probability = 1.0f;
                         }
                     }
-
-                    // Remove variant regions that do not exist in render_model.
-                    variant.Regions.RemoveAll(r => r.Name == StringId.Invalid || !validRenderRegions.Any(vr => vr.Name == r.Name));
                 }
             }
 
