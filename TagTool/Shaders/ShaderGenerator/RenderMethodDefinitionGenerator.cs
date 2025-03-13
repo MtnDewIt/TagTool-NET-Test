@@ -207,6 +207,30 @@ namespace TagTool.Shaders.ShaderGenerator
                 parameterBlock.DefaultFilterMode = (RenderMethodOption.ParameterBlock.DefaultFilterModeValue)parameter.FilterMode;
                 parameterBlock.DefaultAddressMode = (RenderMethodOption.ParameterBlock.DefaultAddressModeValue)parameter.AddressMode;
 
+                parameterBlock.AnisotropyAmount = parameter.AnisotropyAmount;
+                parameterBlock.DefaultBitmapScale = parameter.BitmapScale;
+
+                if (parameter.SamplerBitmap != null)
+                {
+                    if (cache.TagCache.TryGetTag<Bitmap>(parameter.SamplerBitmap, out CachedTag result))
+                    {
+                        parameterBlock.DefaultSamplerBitmap = result;
+                    }
+                    else
+                    {
+                        new TagToolWarning($"Could not retrieve sampler bitmap \"{parameter.SamplerBitmap}\"");
+                        parameterBlock.DefaultSamplerBitmap = null;
+                    }
+                }
+                else 
+                {
+                    parameterBlock.DefaultSamplerBitmap = null;
+                }
+
+                parameterBlock.DefaultFloatArgument = parameter.FloatArgument;
+                parameterBlock.DefaultIntBoolArgument = parameter.IntBoolArgument;
+                parameterBlock.DefaultColor = new ArgbColor(parameter.ColorArgument.Alpha, parameter.ColorArgument.Red, parameter.ColorArgument.Green, parameter.ColorArgument.Blue);
+
                 rmop.Parameters.Add(parameterBlock);
             }
 
