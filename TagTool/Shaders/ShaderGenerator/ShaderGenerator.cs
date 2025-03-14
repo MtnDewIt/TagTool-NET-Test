@@ -776,7 +776,7 @@ namespace TagTool.Shaders.ShaderGenerator
             TemplateGenerator generator = new TemplateGenerator();
             List<OptionInfo> optionInfo = BuildOptionInfo(cache, rmdf, options, shaderType);
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < Enum.GetValues(typeof(EntryPoint)).Length; i++)
                 pixl.EntryPointShaders.Add(new ShortOffsetCountBlock());
 
             foreach (var entry in rmdf.EntryPoints)
