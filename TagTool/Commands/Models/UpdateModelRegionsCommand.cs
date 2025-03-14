@@ -21,7 +21,7 @@ namespace TagTool.Commands.Models
                    "Updates collision regions (and variant regions, if specified) based on the linked render_model. " +
                    "Collision regions preserve existing indices; new regions get indices -1. " +
                    "Permutation lists are synchronized to match the render_model.",
-                   "UpdateModelRegions [variant_index ...]",
+                   "UpdateModelRegions [variant_index ...] [random]",
                    "Updates the collision regions and, optionally, specified variant regions and permutations to match the linked render_model.")
         {
             CacheContext = cacheContext;
@@ -31,12 +31,15 @@ namespace TagTool.Commands.Models
 
         public override object Execute(List<string> args)
         {
-            // Parse variant indices from the command arguments.
+            // Parse variant indices and random flag from the command arguments.
             List<int> variantIndices = new List<int>();
+            bool randomFlag = false;
             foreach (string arg in args)
             {
                 if (int.TryParse(arg, out int idx))
                     variantIndices.Add(idx);
+                else if (arg.Equals("random", StringComparison.OrdinalIgnoreCase))
+                    randomFlag = true;
             }
 
             // Deserialize the linked render_model.
@@ -185,8 +188,8 @@ namespace TagTool.Commands.Models
                         continue;
                     }
                     var variant = ModelTag.Variants[variantIndex];
-                    if (variant.Regions == null)
-                        variant.Regions = new List<Model.Variant.Region>();
+                    // Clear the variant regions
+                    variant.Regions.Clear();
 
                     // Ensure the variant's ModelRegionIndices array is the correct size (16 elements)
                     if (variant.ModelRegionIndices == null || variant.ModelRegionIndices.Length != 16)
@@ -252,7 +255,7 @@ namespace TagTool.Commands.Models
                             {
                                 Name = rmPerm.Name,
                                 RenderModelPermutationIndex = (sbyte)variantRegion.Permutations.Count,
-                                Probability = 0
+                                Probability = randomFlag ? 0.1f : 0
                             };
                             variantRegion.Permutations.Add(newPerm);
                         }
@@ -261,13 +264,13 @@ namespace TagTool.Commands.Models
                         {
                             variantRegion.Permutations.RemoveAt(variantRegion.Permutations.Count - 1);
                         }
-                        // Update variant permutation indices and force first probability to 1.
+                        // Update variant permutation indices and force first probability to 1 if random flag is not set.
                         for (int k = 0; k < targetPermCount; k++)
                         {
                             var perm = variantRegion.Permutations[k];
                             perm.RenderModelPermutationIndex = (sbyte)k;
-                            if (k == 0)
-                                perm.Probability = 1.0f;
+                            if (k == 0 && !randomFlag)
+                                perm.Probability = 0.1f;
                         }
                     }
                 }
