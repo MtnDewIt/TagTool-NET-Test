@@ -207,7 +207,6 @@ namespace TagTool.Shaders.ShaderGenerator
                 parameterBlock.DefaultFilterMode = (RenderMethodOption.ParameterBlock.DefaultFilterModeValue)parameter.FilterMode;
                 parameterBlock.DefaultAddressMode = (RenderMethodOption.ParameterBlock.DefaultAddressModeValue)parameter.AddressMode;
 
-                parameterBlock.AnisotropyAmount = parameter.AnisotropyAmount;
                 parameterBlock.DefaultBitmapScale = parameter.BitmapScale;
 
                 if (parameter.SamplerBitmap != null)
