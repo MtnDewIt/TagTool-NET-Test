@@ -152,6 +152,17 @@ namespace TagTool.Commands.Scenarios
             mapFile.MapFileBlf.MapVariantTagNames = mapVariantBlf.MapVariantTagNames;
             mapFile.MapFileBlf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
 
+            for (int i = 0; i < mapFile.MapFileBlf.MapVariant.MapVariant.Quotas.Length; i++) 
+            {
+                var quota = mapFile.MapFileBlf.MapVariant.MapVariant.Quotas[i];
+
+                if (quota.ObjectDefinitionIndex != -1) 
+                {
+                    quota.MaxAllowed = 255;
+                    quota.Cost = 0.0f;
+                }
+            }
+
             writer.BaseStream.Position = 0;
             mapFile.Write(writer);
         }
