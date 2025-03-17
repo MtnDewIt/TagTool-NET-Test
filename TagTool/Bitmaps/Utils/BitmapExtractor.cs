@@ -20,7 +20,13 @@ namespace TagTool.Bitmaps
                 {
                     image.Width = resourceDefinition.Texture.Definition.Bitmap.Width;
                     image.Height = resourceDefinition.Texture.Definition.Bitmap.Height;
-                    return resourceDefinition.Texture.Definition.PrimaryResourceData.Data;
+                    var data = resourceDefinition.Texture.Definition.PrimaryResourceData.Data;
+
+                    if (image.Format == BitmapFormat.Dxn)
+                    {
+                        data = BitmapDecoder.SwapXYDxn(data, image.Width, image.Height);
+                    }
+                    return data;
                 }
                 else
                 {
