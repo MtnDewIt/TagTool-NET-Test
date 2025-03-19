@@ -17,7 +17,7 @@ namespace TagTool.Commands.Shaders
                 "GenerateRmdf",
                 "Generates a render method definition tag according to the specified type.",
 
-                "GenerateRmdf <type>",
+                "GenerateRmdf <Shader Type> <Regenerate Global Shaders> [Apply Fixes]",
                 "Generates a render method definition tag according to the specified type.")
         {
             Cache = cache;
@@ -25,16 +25,38 @@ namespace TagTool.Commands.Shaders
 
         public override object Execute(List<string> args)
         {
-            if (args.Count < 1)
+            bool regenGlobals = false;
+            bool applyFixes = true;
+
+            if (args.Count > 3)
                 return new TagToolError(CommandError.ArgCount);
 
-            var generator = TagTool.Shaders.ShaderGenerator.ShaderGenerator.GetGlobalShaderGenerator(args[0], true);
-
-            if (generator == null)
+            if (!Enum.TryParse(typeof(HaloShaderGenerator.Globals.ShaderType), args[0], true, out var shaderTypeValue))
                 return new TagToolError(CommandError.ArgInvalid, $"\"{args[0]}\" is not a supported or valid shader type.");
 
-            string rmdfName = $"shaders\\{args[0]}";
-            
+            if (!bool.TryParse(args[1], out regenGlobals))
+                return new TagToolError(CommandError.ArgInvalid, $"\"{args[1]}\" is not a valid boolean value.");
+
+            if (args.Count > 2)
+                if (!bool.TryParse(args[2], out applyFixes))
+                    return new TagToolError(CommandError.ArgInvalid, $"\"{args[2]}\" is not a valid boolean value.");
+
+            var shaderType = (HaloShaderGenerator.Globals.ShaderType)shaderTypeValue;
+
+            var generator = TagTool.Shaders.ShaderGenerator.ShaderGenerator.GetGlobalShaderGenerator(shaderType);
+
+            string rmdfName = $"shaders\\{shaderType.ToString().ToLowerInvariant()}";
+
+            switch (shaderType)
+            {
+                case HaloShaderGenerator.Globals.ShaderType.LightVolume:
+                    rmdfName = "shaders\\light_volume";
+                    break;
+                case HaloShaderGenerator.Globals.ShaderType.FurStencil:
+                    rmdfName = "shaders\\fur_stencil";
+                    break;
+            }
+
             if (!Cache.TagCache.TryGetTag<RenderMethodDefinition>(rmdfName, out CachedTag rmdfTag))
             {
                 rmdfTag = Cache.TagCache.AllocateTag<RenderMethodDefinition>(rmdfName);
@@ -42,7 +64,7 @@ namespace TagTool.Commands.Shaders
 
             using (var stream = Cache.OpenCacheReadWrite())
             {
-                var rmdf = TagTool.Shaders.ShaderGenerator.RenderMethodDefinitionGenerator.GenerateRenderMethodDefinition(Cache, stream, generator, args[0], out _, out _);
+                var rmdf = TagTool.Shaders.ShaderGenerator.RenderMethodDefinitionGenerator.GenerateRenderMethodDefinition(Cache, stream, generator, shaderType, regenGlobals, applyFixes);
                 Cache.Serialize(stream, rmdfTag, rmdf);
             }
 

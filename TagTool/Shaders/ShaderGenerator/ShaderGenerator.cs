@@ -22,29 +22,29 @@ namespace TagTool.Shaders.ShaderGenerator
 {
     public partial class ShaderGenerator
     {
-        public static IShaderGenerator GetGlobalShaderGenerator(string shaderType, bool applyFixes = false)
+        public static IShaderGenerator GetGlobalShaderGenerator(HaloShaderGenerator.Globals.ShaderType shaderType)
         {
             switch (shaderType)
             {
-                case "beam":            return new HaloShaderGenerator.Beam.BeamGenerator();
-                case "black":           return new HaloShaderGenerator.Black.BlackGenerator();
-                case "contrail":        return new HaloShaderGenerator.Contrail.ContrailGenerator();
-                case "cortana":         return new HaloShaderGenerator.Cortana.CortanaGenerator();
-                case "custom":          return new HaloShaderGenerator.Custom.CustomGenerator();
-                case "decal":           return new HaloShaderGenerator.Decal.DecalGenerator();
-                case "foliage":         return new HaloShaderGenerator.Foliage.FoliageGenerator();
-                case "fur":             return new HaloShaderGenerator.Fur.FurGenerator();
-                case "fur_stencil":     return new HaloShaderGenerator.FurStencil.FurStencilGenerator();
-                case "glass":           return new HaloShaderGenerator.Glass.GlassGenerator();
-                case "halogram":        return new HaloShaderGenerator.Halogram.HalogramGenerator();
-                case "light_volume":    return new HaloShaderGenerator.LightVolume.LightVolumeGenerator();
-                case "mux":             return new HaloShaderGenerator.Mux.MuxGenerator();
-                case "particle":        return new HaloShaderGenerator.Particle.ParticleGenerator();
-                case "screen":          return new HaloShaderGenerator.Screen.ScreenGenerator();
-                case "shader":          return new HaloShaderGenerator.Shader.ShaderGenerator();
-                case "terrain":         return new HaloShaderGenerator.Terrain.TerrainGenerator();
-                case "water":           return new HaloShaderGenerator.Water.WaterGenerator();
-                case "zonly":           return new HaloShaderGenerator.ZOnly.ZOnlyGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.Beam:            return new HaloShaderGenerator.Beam.BeamGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.Black:           return new HaloShaderGenerator.Black.BlackGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.Contrail:        return new HaloShaderGenerator.Contrail.ContrailGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.Cortana:         return new HaloShaderGenerator.Cortana.CortanaGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.Custom:          return new HaloShaderGenerator.Custom.CustomGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.Decal:           return new HaloShaderGenerator.Decal.DecalGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.Foliage:         return new HaloShaderGenerator.Foliage.FoliageGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.Fur:             return new HaloShaderGenerator.Fur.FurGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.FurStencil:      return new HaloShaderGenerator.FurStencil.FurStencilGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.Glass:           return new HaloShaderGenerator.Glass.GlassGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.Halogram:        return new HaloShaderGenerator.Halogram.HalogramGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.LightVolume:     return new HaloShaderGenerator.LightVolume.LightVolumeGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.Mux:             return new HaloShaderGenerator.Mux.MuxGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.Particle:        return new HaloShaderGenerator.Particle.ParticleGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.Screen:          return new HaloShaderGenerator.Screen.ScreenGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.Shader:          return new HaloShaderGenerator.Shader.ShaderGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.Terrain:         return new HaloShaderGenerator.Terrain.TerrainGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.Water:           return new HaloShaderGenerator.Water.WaterGenerator();
+                case HaloShaderGenerator.Globals.ShaderType.ZOnly:           return new HaloShaderGenerator.ZOnly.ZOnlyGenerator();
             }
 
             Console.WriteLine($"ERROR: Could not retrieve shared shader generator for \"{shaderType}\"");
