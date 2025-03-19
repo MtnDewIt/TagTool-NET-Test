@@ -168,7 +168,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                     {
                         foreach (var inh in donorGraph.InheritanceList)
                         {
-                            if (!Animation.InheritanceList.Any(x => x.InheritedGraph == inh.InheritedGraph))
+                            if (!Animation.InheritanceList.Any(x => x.InheritedGraph != null && string.Equals(x.InheritedGraph.Name, inh.InheritedGraph.Name, StringComparison.OrdinalIgnoreCase)))
                             {
                                 ModelAnimationGraph subDonor = CacheContext.Deserialize<ModelAnimationGraph>(cacheStream, inh.InheritedGraph);
                                 Inheritance cloned = CloneInheritance(inh);
@@ -276,7 +276,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 {
                     for (short i = 0; i < donorGraph.InheritanceList.Count; i++)
                     {
-                        int targetIndex = Animation.InheritanceList.FindIndex(x => x.InheritedGraph == donorGraph.InheritanceList[i].InheritedGraph);
+                        int targetIndex = Animation.InheritanceList.FindIndex(x => x.InheritedGraph != null && string.Equals(x.InheritedGraph.Name, donorGraph.InheritanceList[i].InheritedGraph.Name, StringComparison.OrdinalIgnoreCase));
                         donorMapping[i] = (short)targetIndex;
                     }
                 }
