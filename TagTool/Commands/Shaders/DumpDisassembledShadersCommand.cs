@@ -22,8 +22,16 @@ namespace TagTool.Commands.Shaders
         List<byte> CurrentOptionIndices;
         int CurrentEntryPointIndex;
         bool IsXbox;
+        string PathPrefix;
 
-        public DumpDisassembledShadersCommand(GameCache cache) : base(false, "DumpDisassembledShaders", "Dump disassembled shaders", "DumpDisassembledShaders", "")
+        public DumpDisassembledShadersCommand(GameCache cache) : base
+        (
+            false, 
+            "DumpDisassembledShaders", 
+            "Dump disassembled shaders", 
+            "DumpDisassembledShaders <Path Prefix> [Cache Directory]",
+            "Dump disassembled shaders"
+        )
         {
             Cache = cache;
             CurrentRmt2 = null;
@@ -38,7 +46,12 @@ namespace TagTool.Commands.Shaders
             if (Cache.Platform != CachePlatform.MCC && Cache.GetType() == typeof(GameCacheGen3) && UseXSDCommand.XSDFileInfo == null)
                 return new TagToolError(CommandError.CustomError, "You must use the \"UseXSD\" command first!");
 
-            if (args.Count > 0)
+            if (args.Count > 2)
+                return new TagToolError(CommandError.ArgCount);
+
+            PathPrefix = args[0];
+
+            if (args.Count > 1)
             {
                 DirectoryInfo cacheDirectory = new DirectoryInfo(args[0]);
                 if (!cacheDirectory.Exists)
@@ -405,7 +418,7 @@ namespace TagTool.Commands.Shaders
 
         private string DisassembleShader(object definition, int shaderIndex, string filename, GameCache cache, Stream stream, GlobalCacheFilePixelShaders gpix)
         {
-            string path = $"{cache.Version}\\{filename}";
+            string path = $"{PathPrefix}\\{cache.Version}\\{filename}";
 
             if (IsXbox)
             {
