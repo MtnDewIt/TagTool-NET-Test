@@ -207,9 +207,18 @@ namespace TagTool.Shaders.ShaderGenerator
                 {
                     var passBlock = new EntryPointBlock.PassBlock
                     {
-                        Flags = generator.IsPixelShaderShared(entryPoint) ? EntryPointBlock.PassBlock.PassFlags.HasSharedPixelShader : 0,
+                        Flags = generator.IsPixelShaderShared(entryPoint) ? EntryPointBlock.PassBlock.PassFlags.HasSharedPixelShader : EntryPointBlock.PassBlock.PassFlags.None,
                         CategoryDependencies = new List<EntryPointBlock.PassBlock.CategoryDependency>()
                     };
+
+                    if (generator.IsSharedPixelShaderUsingMethods(entryPoint)) 
+                    {
+                        passBlock.CategoryDependencies.Add(new EntryPointBlock.PassBlock.CategoryDependency 
+                        {
+                            Category = (ushort)generator.GetSharedPixelShaderCategory(entryPoint)
+                        });
+                    }
+
                     result.Add(new EntryPointBlock { EntryPoint = (EntryPoint_32)entryPoint, Passes = new List<EntryPointBlock.PassBlock> { passBlock } });
                 }
             }
@@ -274,8 +283,6 @@ namespace TagTool.Shaders.ShaderGenerator
                     return "diffuse_only_(four_material_shaders_disable_detail_bump)";
                 case "diffuse_plus_specular_four_material_shaders_disable_detail_bump":
                     return "diffuse_plus_specular_(four_material_shaders_disable_detail_bump)";
-                case "from_flat_texture_as_cubemap":
-                    return "from_flat_exture_as_cubemap";
                 case "first_person_never_with_rotating_bitmaps":
                     return @"first_person_never_w/rotating_bitmaps";
                 case "_3_channel_self_illum":

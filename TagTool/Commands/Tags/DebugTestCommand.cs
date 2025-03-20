@@ -128,7 +128,7 @@ namespace TagTool.Commands.Tags
             {
                 if (tag.IsInGroup("rmdf"))
                 {
-                    new GenerateTagObjectCommand(Cache, Cache as GameCacheHaloOnline).Execute(new List<string> { $@"{tag.Name}.{tag.Group}", $@"Single", $@"MS23" });
+                    new GenerateTagObjectCommand(Cache, Cache as GameCacheHaloOnline).Execute(new List<string> { $@"{tag.Name}.{tag.Group}", $@"Single", $@"Current" });
                 }
             }
 
