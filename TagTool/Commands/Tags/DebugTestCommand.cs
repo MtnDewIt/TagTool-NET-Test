@@ -45,74 +45,206 @@ namespace TagTool.Commands.Tags
 
         public override object Execute(List<string> args)
         {
-            HashSet<ShaderType> noFixesGlobalShaders = new HashSet<ShaderType>
-            {
-                ShaderType.Water,
-                ShaderType.Foliage,
-            };
-
-            HashSet<ChudShader> noFixesChudShaders = new HashSet<ChudShader>
-            {
-                ChudShader.chud_simple,
-                ChudShader.chud_text_simple,
-                ChudShader.chud_meter_shield,
-                ChudShader.chud_cortana_composite,
-            };
-
-            HashSet<ExplicitShader> noFixesExplicitShaders = new HashSet<ExplicitShader>
-            {
-                ExplicitShader.blur_11_horizontal,
-                ExplicitShader.blur_11_vertical,
-                ExplicitShader.screenshot_combine,
-                ExplicitShader.kernel_5,
-                ExplicitShader.screenshot_combine_dof,
-                ExplicitShader.gradient,
-                ExplicitShader.patchy_fog,
-                ExplicitShader.double_gradient,
-            };
-
             using (var stream = Cache.OpenCacheReadWrite())
             {
                 //SHADER UNIT TEST
                 //1.Generate Render Method Definitions
+
+                GenerateRenderMethodDefinition(stream, ShaderType.Beam);
+                GenerateRenderMethodDefinition(stream, ShaderType.Black);
+                GenerateRenderMethodDefinition(stream, ShaderType.Contrail);
+                GenerateRenderMethodDefinition(stream, ShaderType.Cortana);
+                GenerateRenderMethodDefinition(stream, ShaderType.Custom);
+                GenerateRenderMethodDefinition(stream, ShaderType.Decal);
+                GenerateRenderMethodDefinition(stream, ShaderType.Foliage);
+                GenerateRenderMethodDefinition(stream, ShaderType.Fur);
+                GenerateRenderMethodDefinition(stream, ShaderType.FurStencil);
+                GenerateRenderMethodDefinition(stream, ShaderType.Glass);
+                GenerateRenderMethodDefinition(stream, ShaderType.Halogram);
+                GenerateRenderMethodDefinition(stream, ShaderType.LightVolume);
+                GenerateRenderMethodDefinition(stream, ShaderType.Mux);
+                GenerateRenderMethodDefinition(stream, ShaderType.Particle);
+                GenerateRenderMethodDefinition(stream, ShaderType.Screen);
+                GenerateRenderMethodDefinition(stream, ShaderType.Shader);
+                GenerateRenderMethodDefinition(stream, ShaderType.Terrain);
+                GenerateRenderMethodDefinition(stream, ShaderType.Water);
+                GenerateRenderMethodDefinition(stream, ShaderType.ZOnly);
+
                 //2.Generate Global Shaders For Each Render Method Type
 
-                foreach (ShaderType shaderType in Enum.GetValues(typeof(ShaderType)))
-                {
-                    bool applyFixes = !noFixesGlobalShaders.Contains(shaderType);
+                GenerateGlobalShader(stream, ShaderType.Beam);                  // Data doesn't change between versions, Compiled vertex data is completely different from MS23
+                GenerateGlobalShader(stream, ShaderType.Black);
+                GenerateGlobalShader(stream, ShaderType.Contrail);              // Data doesn't change between versions, Compiled vertex data is completely different from MS23
+                GenerateGlobalShader(stream, ShaderType.Cortana);
+                GenerateGlobalShader(stream, ShaderType.Custom);                // Vertex data is completely different from vertex data from updated source (use legacy generator for 1:1 data)
+                GenerateGlobalShader(stream, ShaderType.Decal);                 // Vertex data is completely different between MS23 and vertex data from updated source (use legacy generator for 1:1 data)
+                GenerateGlobalShader(stream, ShaderType.Foliage, false);        // Having APPLY_FIXES undefined generates 1:1 vertex data.
+                GenerateGlobalShader(stream, ShaderType.Fur);
+                GenerateGlobalShader(stream, ShaderType.FurStencil);
+                GenerateGlobalShader(stream, ShaderType.Glass);
+                GenerateGlobalShader(stream, ShaderType.Halogram);
+                GenerateGlobalShader(stream, ShaderType.LightVolume);           // Data doesn't change between versions, Compiled vertex data is completely different from MS23
+                GenerateGlobalShader(stream, ShaderType.Mux);
+                GenerateGlobalShader(stream, ShaderType.Particle);              // Data doesn't change between versions, Compiled vertex data is completely different from MS23
+                GenerateGlobalShader(stream, ShaderType.Screen);
+                GenerateGlobalShader(stream, ShaderType.Shader);
+                GenerateGlobalShader(stream, ShaderType.Terrain);
+                GenerateGlobalShader(stream, ShaderType.Water, false);          // Having APPLY_FIXES undefined generates 1:1 vertex data.
+                GenerateGlobalShader(stream, ShaderType.ZOnly);
 
-                    GenerateRenderMethodDefinition(stream, shaderType, applyFixes);
-                }
-
-                //3.Generate All Explicit Shaders and Chud Shaders
+                //3.Generate All Chud Shaders
 
                 var chgdTag = Cache.TagCache.AllocateTag<ChudGlobalsDefinition>($"ui\\chud\\globals");
                 var chgd = new ChudGlobalsDefinition { HudShaders = new List<ChudGlobalsDefinition.HudShader>() };
 
-                foreach (ChudShader chudShader in Enum.GetValues(typeof(ChudShader)))
-                {
-                    bool applyFixes = !noFixesChudShaders.Contains(chudShader);
-                    GenerateChudShader(stream, chgd, chudShader, applyFixes);
-                }
+                GenerateChudShader(stream, chgd, ChudShader.chud_simple);
+                GenerateChudShader(stream, chgd, ChudShader.chud_meter);
+                GenerateChudShader(stream, chgd, ChudShader.chud_text_simple);
+                GenerateChudShader(stream, chgd, ChudShader.chud_meter_shield);
+                GenerateChudShader(stream, chgd, ChudShader.chud_meter_gradient);
+                GenerateChudShader(stream, chgd, ChudShader.chud_crosshair);
+                GenerateChudShader(stream, chgd, ChudShader.chud_directional_damage);
+                GenerateChudShader(stream, chgd, ChudShader.chud_solid);
+                GenerateChudShader(stream, chgd, ChudShader.chud_sensor);
+                GenerateChudShader(stream, chgd, ChudShader.chud_meter_single_color);
+                GenerateChudShader(stream, chgd, ChudShader.chud_navpoint);
+                GenerateChudShader(stream, chgd, ChudShader.chud_medal);
+                GenerateChudShader(stream, chgd, ChudShader.chud_texture_cam);
+                GenerateChudShader(stream, chgd, ChudShader.chud_cortana_screen);
+                GenerateChudShader(stream, chgd, ChudShader.chud_cortana_camera);
+                GenerateChudShader(stream, chgd, ChudShader.chud_cortana_offscreen);
+                GenerateChudShader(stream, chgd, ChudShader.chud_cortana_screen_final);
+                GenerateChudShader(stream, chgd, ChudShader.chud_meter_chapter);
+                GenerateChudShader(stream, chgd, ChudShader.chud_meter_double_gradient);
+                GenerateChudShader(stream, chgd, ChudShader.chud_meter_radial_gradient);
+                GenerateChudShader(stream, chgd, ChudShader.chud_turbulence);
+                GenerateChudShader(stream, chgd, ChudShader.chud_emblem);
+                GenerateChudShader(stream, chgd, ChudShader.chud_cortana_composite);
+                GenerateChudShader(stream, chgd, ChudShader.chud_directional_damage_apply);
+                GenerateChudShader(stream, chgd, ChudShader.chud_really_simple);
+                GenerateChudShader(stream, chgd, ChudShader.chud_meter_gradient_inverse);
 
                 Cache.Serialize(stream, chgdTag, chgd);
+
+                //4.Generate All Explicit Shaders
 
                 var rasgTag = Cache.TagCache.AllocateTag<ChudGlobalsDefinition>($"globals\\rasterizer_globals");
                 var rasg = new RasterizerGlobals { DefaultShaders = new List<RasterizerGlobals.ExplicitShader>() };
 
-                foreach (ExplicitShader explicitShader in Enum.GetValues(typeof(ExplicitShader)))
-                {
-                    if (explicitShader == ExplicitShader.shadow_apply2)
-                        continue;
-
-                    bool applyFixes = !noFixesExplicitShaders.Contains(explicitShader);
-                    GenerateExplicitShader(stream, rasg, explicitShader, applyFixes);
-                }
+                GenerateExplicitShader(stream, rasg, ExplicitShader.debug);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.debug2d);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.copy_surface);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.spike_blur_vertical);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.spike_blur_horizontal);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.downsize_2x_to_bloom);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.downsize_2x_target);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.copy_rgbe_to_rgb);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.update_persistence);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.add_downsampled);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.add);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.blur_11_horizontal);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.blur_11_vertical);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.cubemap_phi_blur);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.cubemap_theta_blur);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.cubemap_clamp);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.cubemap_divide);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.write_depth);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.final_composite);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.sky_dome_simple);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.transparent);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.shield_meter);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.legacy_meter);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.overhead_map_geometry);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.legacy_hud_bitmap);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.blend3);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.particle_update);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.particle_spawn);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.screenshot_combine);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.downsample_2x2);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.rotate_2d);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.bspline_resample);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.downsample_4x4_bloom_dof);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.final_composite_dof);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.kernel_5);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.exposure_downsample);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.yuv_to_rgb);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.displacement);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.screenshot_display);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.downsample_4x4_block);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.crop);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.screenshot_combine_dof);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.gamma_correct);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.contrail_spawn);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.contrail_update);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.stencil_stipple);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.lens_flare);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.decorator_default);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.downsample_4x4_block_bloom);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.downsample_4x4_gaussian);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.apply_color_matrix);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.copy);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.shadow_geometry);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.shadow_apply);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.gradient);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.alpha_test_explicit);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.patchy_fog);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.light_volume_update);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.water_ripple);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.double_gradient);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.sniper_scope);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.shield_impact);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.player_emblem_world);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.player_emblem_screen);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.implicit_hill);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.chud_overlay_blend);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.bloom_add_alpha1);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.downsample_4x4_block_bloom_ldr);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.restore_ldr_hdr_depth);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.beam_update);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.decorator_no_wind);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.decorator_static);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.decorator_sun);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.decorator_wavy);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.final_composite_zoom);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.final_composite_debug);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.shadow_apply_point);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.shadow_apply_bilinear);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.shadow_apply_fancy);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.shadow_apply_faster);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.displacement_motion_blur);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.decorator_shaded);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.screenshot_memexport);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.downsample_4x4_gaussian_bloom_ldr);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.downsample_4x4_gaussian_bloom);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.downsample_4x4_block_bloom_new);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.bloom_curve);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.custom_gamma_correct);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.pixel_copy);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.decorator_edit);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.hdr_retrieve);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.smirnov);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.fxaa);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.unknown_94);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.sniper_scope_stencil_pc);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.ssao);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.ssao_blur);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.unknown_98);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.lightshafts);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.radial_blur);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.unknown_101);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.unknown_102);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.unknown_103);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.unknown_104);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.unknown_105);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.unknown_106);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.unknown_107);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.hud_camera_nightvision);
+                GenerateExplicitShader(stream, rasg, ExplicitShader.unknown_109);
 
                 Cache.Serialize(stream, rasgTag, rasg);
 
-                //4.Generate All Possible Templates For Each Category And Option
-                //5.Maybe attempt to generate a shader for each render method type to ensure that all parameters are being referenced correctly
+                //5.Generate All Possible Templates For Each Category And Option
+                //6.Maybe attempt to generate a shader for each render method type to ensure that all parameters are being referenced correctly
 
                 foreach (ShaderType shaderType in Enum.GetValues(typeof(ShaderType)))
                 {
@@ -120,7 +252,7 @@ namespace TagTool.Commands.Tags
                 }
             }
 
-            //6.Disassemble Data For Each Explicit Shader, Chud Shader and Render Method Type
+            //7.Disassemble Data For Each Explicit Shader, Chud Shader and Render Method Type
 
             new DumpDisassembledShadersCommand(Cache).Execute(new List<string> { "Current" });
 
@@ -132,7 +264,7 @@ namespace TagTool.Commands.Tags
                 }
             }
 
-            //7.Dump Diassembled Data from ED and MS23 (use as a comparision point to check if APPLY_FIXES functions correctly)
+            //8.Dump Diassembled Data from ED and MS23 (use as a comparision point to check if APPLY_FIXES functions correctly)
 
             var ms23Cache = GameCache.Open(new FileInfo(args[0]));
 
@@ -187,9 +319,33 @@ namespace TagTool.Commands.Tags
                 rmdfTag = Cache.TagCache.AllocateTag<RenderMethodDefinition>(rmdfName);
             }
 
-            var rmdf = RenderMethodDefinitionGenerator.GenerateRenderMethodDefinition(Cache, stream, generator, shaderType, true, applyFixes);
+            var rmdf = RenderMethodDefinitionGenerator.GenerateRenderMethodDefinition(Cache, stream, generator, shaderType, false, applyFixes);
 
             Cache.Serialize(stream, rmdfTag, rmdf);
+        }
+
+        public void GenerateGlobalShader(Stream stream, ShaderType shaderType, bool applyFixes = true)
+        {
+            string rmdfName = $"shaders\\{shaderType.ToString().ToLowerInvariant()}";
+
+            switch (shaderType)
+            {
+                case ShaderType.LightVolume:
+                    rmdfName = "shaders\\light_volume";
+                    break;
+                case ShaderType.FurStencil:
+                    rmdfName = "shaders\\fur_stencil";
+                    break;
+            }
+
+            CachedTag rmdfTag = Cache.TagCache.GetTag<RenderMethodDefinition>(rmdfName);
+            RenderMethodDefinition rmdf = Cache.Deserialize<RenderMethodDefinition>(stream, rmdfTag);
+
+            GlobalPixelShader glps = ShaderGeneratorNew.GenerateSharedPixelShaders(Cache, rmdf, shaderType, applyFixes);
+            GlobalVertexShader glvs = ShaderGeneratorNew.GenerateSharedVertexShaders(Cache, rmdf, shaderType, applyFixes);
+
+            Cache.Serialize(stream, rmdf.GlobalPixelShader, glps);
+            Cache.Serialize(stream, rmdf.GlobalVertexShader, glvs);
         }
 
         public void GenerateExplicitShader(Stream stream, RasterizerGlobals rasg, ExplicitShader shader, bool applyFixes = true)

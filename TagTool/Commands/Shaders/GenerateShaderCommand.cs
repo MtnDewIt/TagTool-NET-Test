@@ -69,6 +69,8 @@ namespace TagTool.Commands.Shaders
                 "Generates a shader template\n" +
                 "<shader type> - Specify shader type, EX. \"shader\" for \'rmsh\'.\n" +
                 "Use \"explicit\" for explicit shaders (ps+vs), \"chud\" for chud (ps+vs), and \"glvs\" or \"glps\" for global shaders.\n" +
+                "Use true or false after the shader type when using explicit, chud or global shaders to toggle the APPLY_FIXES macro\n" + 
+                "The default value for the APPLY_FIXES macro for each shader type supported by the generator is always set to true\n" +
                 "<options> - Specify the template\'s options as either integers or by names.\n" +
                 "For explicit shaders, you should specify the name or the rasg shader index.")
         {
@@ -77,17 +79,28 @@ namespace TagTool.Commands.Shaders
 
         public override object Execute(List<string> args)
         {
-            if (args.Count < 2)
+            if (args.Count > 3 || args.Count < 2)
                 return new TagToolError(CommandError.ArgCount);
 
             string shaderType = args[0].ToLower();
 
-            if (shaderType == "explicit")
-                return GenerateExplicitShader(args[1].ToLower(), args.Count > 2 ? args[2].ToLower() : "default", args.Count > 3 ? args[3].ToLower() : "");
-            else if (shaderType == "chud")
-                return GenerateChudShader(args[1].ToLower());
-            else if (shaderType == "glvs" || shaderType == "glps")
-                return GenerateGlobalShader(args[1].ToLower(), shaderType == "glps");
+            if (shaderType == "explicit" || shaderType == "chud" || shaderType == "glvs" || shaderType == "glps")
+            {
+                bool applyFixes = true;
+
+                if (args.Count > 2)
+                {
+                    if (!bool.TryParse(args[2], out applyFixes))
+                        return new TagToolError(CommandError.ArgInvalid, $"\"{args[1]}\" is not a valid boolean value.");
+                }
+
+                if (shaderType == "explicit")
+                    return GenerateExplicitShader(args[1].ToLower(), applyFixes);
+                else if (shaderType == "chud")
+                    return GenerateChudShader(args[1].ToLower(), applyFixes);
+                else if (shaderType == "glvs" || shaderType == "glps")
+                    return GenerateGlobalShader(args[1].ToLower(), shaderType == "glps", applyFixes);
+            }
 
             args.RemoveAt(0); // we should only have options from this point
 
@@ -141,7 +154,7 @@ namespace TagTool.Commands.Shaders
             return true;
         }
 
-        private object GenerateExplicitShader(string shader, string entry, string vertexType)
+        private object GenerateExplicitShader(string shader, bool applyFixes)
         {
             if (!Enum.TryParse(shader, out ExplicitShader value))
             {
@@ -166,7 +179,7 @@ namespace TagTool.Commands.Shaders
                 else
                     vtshTag = Cache.TagCache.AllocateTag<VertexShader>($"rasterizer\\shaders\\{value}");
 
-                ShaderGeneratorNew.GenerateExplicitShader(Cache, stream, value.ToString(), true, out PixelShader pixl, out VertexShader vtsh);
+                ShaderGeneratorNew.GenerateExplicitShader(Cache, stream, value.ToString(), applyFixes, out PixelShader pixl, out VertexShader vtsh);
 
                 Cache.Serialize(stream, vtshTag, vtsh);
                 Cache.Serialize(stream, pixlTag, pixl);
@@ -176,7 +189,7 @@ namespace TagTool.Commands.Shaders
             return true;
         }
 
-        private object GenerateChudShader(string shader)
+        private object GenerateChudShader(string shader, bool applyFixes)
         {
             if (shader == "chud_overlay_blend")
             {
@@ -208,7 +221,7 @@ namespace TagTool.Commands.Shaders
                 else
                     vtshTag = Cache.TagCache.AllocateTag<VertexShader>($"rasterizer\\shaders\\{value}");
 
-                ShaderGeneratorNew.GenerateChudShader(Cache, stream, value.ToString(), false, out PixelShader pixl, out VertexShader vtsh);
+                ShaderGeneratorNew.GenerateChudShader(Cache, stream, value.ToString(), applyFixes, out PixelShader pixl, out VertexShader vtsh);
 
                 Cache.Serialize(stream, vtshTag, vtsh);
                 Cache.Serialize(stream, pixlTag, pixl);
@@ -218,24 +231,36 @@ namespace TagTool.Commands.Shaders
             return true;
         }
 
-        private object GenerateGlobalShader(string shaderType, bool pixel)
+        private object GenerateGlobalShader(string shaderType, bool pixel, bool applyFixes)
         {
             var type = (HaloShaderGenerator.Globals.ShaderType)Enum.Parse(typeof(HaloShaderGenerator.Globals.ShaderType), shaderType, true);
 
+            string rmdfName = $"shaders\\{shaderType}.rmdf";
+
+            switch (type)
+            {
+                case HaloShaderGenerator.Globals.ShaderType.LightVolume:
+                    rmdfName = "shaders\\light_volume.rmdf";
+                    break;
+                case HaloShaderGenerator.Globals.ShaderType.FurStencil:
+                    rmdfName = "shaders\\fur_stencil.rmdf";
+                    break;
+            }
+
             using (var stream = Cache.OpenCacheReadWrite())
             {
-                CachedTag rmdfTag = Cache.TagCache.GetTag($"shaders\\{shaderType}.rmdf");
+                CachedTag rmdfTag = Cache.TagCache.GetTag(rmdfName);
                 RenderMethodDefinition rmdf = Cache.Deserialize<RenderMethodDefinition>(stream, rmdfTag);
 
                 if (pixel)
                 {
-                    GlobalPixelShader glps = TagTool.Shaders.ShaderGenerator.ShaderGeneratorNew.GenerateSharedPixelShaders(Cache, rmdf, type, true);
+                    GlobalPixelShader glps = TagTool.Shaders.ShaderGenerator.ShaderGeneratorNew.GenerateSharedPixelShaders(Cache, rmdf, type, applyFixes);
                     CachedTag glpsTag = Cache.TagCache.GetTag(rmdf.GlobalPixelShader.Index);
                     Cache.Serialize(stream, glpsTag, glps);
                 }
                 else
                 {
-                    GlobalVertexShader glvs = TagTool.Shaders.ShaderGenerator.ShaderGeneratorNew.GenerateSharedVertexShaders(Cache, rmdf, type, true);
+                    GlobalVertexShader glvs = TagTool.Shaders.ShaderGenerator.ShaderGeneratorNew.GenerateSharedVertexShaders(Cache, rmdf, type, applyFixes);
                     CachedTag glvsTag = Cache.TagCache.GetTag(rmdf.GlobalVertexShader.Index);
                     Cache.Serialize(stream, glvsTag, glvs);
                 }
