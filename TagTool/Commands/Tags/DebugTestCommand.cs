@@ -76,9 +76,9 @@ namespace TagTool.Commands.Tags
                 GenerateGlobalShader(stream, ShaderType.Black);
                 GenerateGlobalShader(stream, ShaderType.Contrail);              // Data doesn't change between versions, Compiled vertex data is completely different from MS23
                 GenerateGlobalShader(stream, ShaderType.Cortana);
-                GenerateGlobalShader(stream, ShaderType.Custom);                // Vertex data is completely different from vertex data from updated source (use legacy generator for 1:1 data)
-                GenerateGlobalShader(stream, ShaderType.Decal);                 // Vertex data is completely different between MS23 and vertex data from updated source (use legacy generator for 1:1 data)
-                GenerateGlobalShader(stream, ShaderType.Foliage, false);        // Having APPLY_FIXES undefined generates 1:1 vertex data.
+                GenerateGlobalShader(stream, ShaderType.Custom);                
+                GenerateGlobalShader(stream, ShaderType.Decal);                 
+                GenerateGlobalShader(stream, ShaderType.Foliage, false);        
                 GenerateGlobalShader(stream, ShaderType.Fur);
                 GenerateGlobalShader(stream, ShaderType.FurStencil);
                 GenerateGlobalShader(stream, ShaderType.Glass);
@@ -89,7 +89,7 @@ namespace TagTool.Commands.Tags
                 GenerateGlobalShader(stream, ShaderType.Screen);
                 GenerateGlobalShader(stream, ShaderType.Shader);
                 GenerateGlobalShader(stream, ShaderType.Terrain);
-                GenerateGlobalShader(stream, ShaderType.Water, false);          // Having APPLY_FIXES undefined generates 1:1 vertex data.
+                GenerateGlobalShader(stream, ShaderType.Water, false);          
                 GenerateGlobalShader(stream, ShaderType.ZOnly);
 
                 //3.Generate All Chud Shaders
