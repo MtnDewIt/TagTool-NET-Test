@@ -75,34 +75,6 @@ namespace TagTool.Shaders.ShaderGenerator
             return stringId;
         }
 
-        public static bool AutoMacroIsParameter(string categoryName, HaloShaderGenerator.Globals.ShaderType shaderType)
-        {
-            switch (shaderType)
-            {
-                case HaloShaderGenerator.Globals.ShaderType.Water:
-                    if (categoryName == "waveshape" || categoryName == "global_shape" || categoryName == "reach_compatibility")
-                        return true;
-                    break;
-                case HaloShaderGenerator.Globals.ShaderType.Particle:
-                    switch (categoryName)
-                    {
-                        case "albedo":
-                        case "blend_mode":
-                        case "depth_fade":
-                        case "lighting":
-                        case "fog":
-                        case "specialized_rendering":
-                        case "frame_blend":
-                        case "self_illumination":
-                            return true;
-                    }
-                    break;
-                // todo
-            }
-
-            return false;
-        }
-
         private static List<OptionInfo> BuildOptionInfo(GameCache cache, RenderMethodDefinition rmdf, 
             byte[] options, HaloShaderGenerator.Globals.ShaderType shaderType, bool ps = true)
         {
@@ -118,7 +90,7 @@ namespace TagTool.Shaders.ShaderGenerator
                     string category = cache.StringTable.GetString(rmdf.Categories[i].Name);
                     string option = cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[options[i]].Name);
 
-                    if (!AutoMacroIsParameter(category, shaderType) || ps)
+                    if (ps)
                     {
                         optionInfo.Add(new OptionInfo
                         {
