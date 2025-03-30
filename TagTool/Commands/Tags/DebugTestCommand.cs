@@ -72,9 +72,9 @@ namespace TagTool.Commands.Tags
 
                 //2.Generate Global Shaders For Each Render Method Type
 
-                GenerateGlobalShader(stream, ShaderType.Beam);                  // Data doesn't change between versions, Compiled vertex data is completely different from MS23
+                GenerateGlobalShader(stream, ShaderType.Beam);
                 GenerateGlobalShader(stream, ShaderType.Black);
-                GenerateGlobalShader(stream, ShaderType.Contrail);              // Data doesn't change between versions, Compiled vertex data is completely different from MS23
+                GenerateGlobalShader(stream, ShaderType.Contrail);
                 GenerateGlobalShader(stream, ShaderType.Cortana);
                 GenerateGlobalShader(stream, ShaderType.Custom);                
                 GenerateGlobalShader(stream, ShaderType.Decal);                 
@@ -83,13 +83,13 @@ namespace TagTool.Commands.Tags
                 GenerateGlobalShader(stream, ShaderType.FurStencil);
                 GenerateGlobalShader(stream, ShaderType.Glass);
                 GenerateGlobalShader(stream, ShaderType.Halogram);
-                GenerateGlobalShader(stream, ShaderType.LightVolume);           // Data doesn't change between versions, Compiled vertex data is completely different from MS23
+                GenerateGlobalShader(stream, ShaderType.LightVolume);
                 GenerateGlobalShader(stream, ShaderType.Mux);
-                GenerateGlobalShader(stream, ShaderType.Particle);              // Data doesn't change between versions, Compiled vertex data is completely different from MS23
+                GenerateGlobalShader(stream, ShaderType.Particle);
                 GenerateGlobalShader(stream, ShaderType.Screen);
                 GenerateGlobalShader(stream, ShaderType.Shader);
                 GenerateGlobalShader(stream, ShaderType.Terrain);
-                GenerateGlobalShader(stream, ShaderType.Water, false);          
+                GenerateGlobalShader(stream, ShaderType.Water);          
                 GenerateGlobalShader(stream, ShaderType.ZOnly);
 
                 //3.Generate All Chud Shaders
@@ -495,7 +495,6 @@ namespace TagTool.Commands.Tags
             {
                 if (rmdf.GlobalOptions != null)
                     renderMethodOptions.Add(cache.Deserialize<RenderMethodOption>(stream, rmdf.GlobalOptions));
-
 
                 if (rmdf.Categories[i].ShaderOptions.Count == 0)
                     continue;
