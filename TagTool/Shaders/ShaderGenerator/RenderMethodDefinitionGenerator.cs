@@ -201,26 +201,25 @@ namespace TagTool.Shaders.ShaderGenerator
         {
             List<EntryPointBlock> result = new List<EntryPointBlock>();
 
-            foreach (ShaderStage entryPoint in Enum.GetValues(typeof(ShaderStage)))
+            for (int i = 0; i < generator.GetEntryPointOrder().Length; i++)
             {
-                if (generator.IsEntryPointSupported(entryPoint))
+                ShaderStage entryPoint = (ShaderStage)generator.GetEntryPointOrder().GetValue(i);
+
+                var passBlock = new EntryPointBlock.PassBlock
                 {
-                    var passBlock = new EntryPointBlock.PassBlock
-                    {
-                        Flags = generator.IsPixelShaderShared(entryPoint) ? EntryPointBlock.PassBlock.PassFlags.HasSharedPixelShader : EntryPointBlock.PassBlock.PassFlags.None,
-                        CategoryDependencies = new List<EntryPointBlock.PassBlock.CategoryDependency>()
-                    };
+                    Flags = generator.IsPixelShaderShared(entryPoint) ? EntryPointBlock.PassBlock.PassFlags.HasSharedPixelShader : EntryPointBlock.PassBlock.PassFlags.None,
+                    CategoryDependencies = new List<EntryPointBlock.PassBlock.CategoryDependency>()
+                };
 
-                    if (generator.IsSharedPixelShaderUsingMethods(entryPoint)) 
+                if (generator.IsSharedPixelShaderUsingMethods(entryPoint))
+                {
+                    passBlock.CategoryDependencies.Add(new EntryPointBlock.PassBlock.CategoryDependency
                     {
-                        passBlock.CategoryDependencies.Add(new EntryPointBlock.PassBlock.CategoryDependency 
-                        {
-                            Category = (ushort)generator.GetSharedPixelShaderCategory(entryPoint)
-                        });
-                    }
-
-                    result.Add(new EntryPointBlock { EntryPoint = (EntryPoint_32)entryPoint, Passes = new List<EntryPointBlock.PassBlock> { passBlock } });
+                        Category = (ushort)generator.GetSharedPixelShaderCategory(entryPoint)
+                    });
                 }
+
+                result.Add(new EntryPointBlock { EntryPoint = (EntryPoint_32)entryPoint, Passes = new List<EntryPointBlock.PassBlock> { passBlock } });
             }
 
             return result;
@@ -230,9 +229,12 @@ namespace TagTool.Shaders.ShaderGenerator
         {
             List<VertexBlock> result = new List<VertexBlock>();
 
-            foreach (VertexType vertexType in Enum.GetValues(typeof(VertexType)))
-                if (generator.IsVertexFormatSupported(vertexType))
-                    result.Add(new VertexBlock { VertexType = (VertexBlock.VertexTypeValue)vertexType, Dependencies = new List<VertexBlock.EntryPointDependency>() });
+            for (int i = 0; i < generator.GetVertexTypeOrder().Length; i++) 
+            {
+                VertexType vertexType = (VertexType)generator.GetVertexTypeOrder().GetValue(i);
+
+                result.Add(new VertexBlock { VertexType = (VertexBlock.VertexTypeValue)vertexType, Dependencies = new List<VertexBlock.EntryPointDependency>() });
+            }
 
             return result;
         }

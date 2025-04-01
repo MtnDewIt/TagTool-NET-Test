@@ -260,7 +260,7 @@ namespace TagTool.Commands.Tags
             {
                 if (tag.IsInGroup("rmdf"))
                 {
-                    new GenerateTagObjectCommand(Cache, Cache as GameCacheHaloOnline).Execute(new List<string> { $@"{tag.Name}.{tag.Group}", $@"Single", $@"Current" });
+                    new GenerateTagObjectCommand(Cache, Cache as GameCacheHaloOnline).Execute(new List<string> { $@"{tag.Name}.{tag.Group}", $@"Recursive", $@"Current" });
                 }
             }
 
@@ -274,7 +274,7 @@ namespace TagTool.Commands.Tags
             {
                 if (tag.IsInGroup("rmdf"))
                 {
-                    new GenerateTagObjectCommand(ms23Cache, ms23Cache as GameCacheHaloOnline).Execute(new List<string> { $@"{tag.Name}.{tag.Group}", $@"Single", $@"MS23" });
+                    new GenerateTagObjectCommand(ms23Cache, ms23Cache as GameCacheHaloOnline).Execute(new List<string> { $@"{tag.Name}.{tag.Group}", $@"Recursive", $@"MS23" });
                 }
             }
 
@@ -286,7 +286,7 @@ namespace TagTool.Commands.Tags
             {
                 if (tag.IsInGroup("rmdf"))
                 {
-                    new GenerateTagObjectCommand(edCache, edCache as GameCacheHaloOnline).Execute(new List<string> { $@"{tag.Name}.{tag.Group}", $@"Single", $@"ElDewrito" });
+                    new GenerateTagObjectCommand(edCache, edCache as GameCacheHaloOnline).Execute(new List<string> { $@"{tag.Name}.{tag.Group}", $@"Recursive", $@"ElDewrito" });
                 }
             }
 
