@@ -473,11 +473,13 @@ namespace TagTool.Animations
                     //remove basis of overlay to just leave the actual overlay data
                     foreach (var frame in node.Frames)
                     {
-                        //using system.numerics.quaternion here because it has a division operator
                         var temprotation = new System.Numerics.Quaternion(frame.Rotation.I, frame.Rotation.J, frame.Rotation.K, frame.Rotation.W);
                         var tempbase = new System.Numerics.Quaternion(BaseFrame.Rotation.I, BaseFrame.Rotation.J, BaseFrame.Rotation.K, BaseFrame.Rotation.W);
-                        var dividend = temprotation / tempbase;
-                        frame.Rotation = new RealQuaternion(dividend.X, dividend.Y, dividend.Z, dividend.W);
+                        // Compute the relative rotation correctly:
+                        var relativeRotation = System.Numerics.Quaternion.Multiply(
+                            System.Numerics.Quaternion.Inverse(tempbase),
+                            temprotation);
+                        frame.Rotation = new RealQuaternion(relativeRotation.X, relativeRotation.Y, relativeRotation.Z, relativeRotation.W);
 
                         frame.Translation -= BaseFrame.Translation;
 
