@@ -26,6 +26,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
             context.AddCommand(new ListInheritanceCommand(cache, animation, tag));
             context.AddCommand(new SetInheritanceCommand(cache, animation, tag));
             context.AddCommand(new FixGraphForInheritanceCommand(cache, animation, tag));
+            context.AddCommand(new RemoveInheritanceCommand(cache, animation, tag));
             context.AddCommand(new ExtractAnimationCommand(cache, animation));
             if (cache is GameCacheHaloOnlineBase)
                 context.AddCommand(new RebuildFPAnimationCommand(cache, animation, tag));

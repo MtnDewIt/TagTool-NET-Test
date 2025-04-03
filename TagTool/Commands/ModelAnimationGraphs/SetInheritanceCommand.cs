@@ -161,7 +161,6 @@ namespace TagTool.Commands.ModelAnimationGraphs
                     {
                         donorInheritanceIndex = (short)foundIndex;
                         Inheritance donorInh = Animation.InheritanceList[donorInheritanceIndex];
-                        RecalcInheritanceEntry(donorInh, donorGraph, firstperson);
                         donorInh.Flags = inheritanceFlags;
                     }
                     if (donorGraph.InheritanceList != null)
@@ -187,6 +186,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                     {
                         donorInheritanceIndex = (short)Animation.InheritanceList.Count;
                         Inheritance newInh = new Inheritance { InheritedGraph = donorTag, Flags = inheritanceFlags };
+                        RecalcInheritanceEntry(newInh, donorGraph, firstperson);
                         Animation.InheritanceList.Add(newInh);
                     }
                     else
@@ -197,7 +197,6 @@ namespace TagTool.Commands.ModelAnimationGraphs
                     Inheritance inhEntry = Animation.InheritanceList[Index];
                     if (inhEntry.InheritedGraph == null)
                         return new TagToolError(CommandError.TagInvalid);
-                    RecalcInheritanceEntry(inhEntry, donorGraph, firstperson);
                     inhEntry.Flags = inheritanceFlags;
                 }
 
@@ -289,7 +288,10 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 foreach (var inh in Animation.InheritanceList)
                 {
                     ModelAnimationGraph inhGraph = CacheContext.Deserialize<ModelAnimationGraph>(cacheStream, inh.InheritedGraph);
-                    RecalcInheritanceEntry(inh, inhGraph, firstperson);
+                    if (inh.NodeMap == null || inh.NodeMap.Count == 0)
+                    {
+                        RecalcInheritanceEntry(inh, inhGraph, firstperson);
+                    }
                     inh.Flags = inheritanceFlags;
                 }
 
@@ -778,6 +780,9 @@ namespace TagTool.Commands.ModelAnimationGraphs
 
         private void RecalcInheritanceEntry(Inheritance inh, ModelAnimationGraph donorGraph, bool firstperson)
         {
+            if (inh.NodeMap != null && inh.NodeMap.Count > 0)
+                return;
+
             float targetRoot = JmadHelper.GetRootNode(Animation).ZPosition;
             float donorRoot = JmadHelper.GetRootNode(donorGraph).ZPosition;
             inh.RootZOffset = (targetRoot == 0.0f || donorRoot == 0.0f) ? 1.0f : targetRoot / donorRoot;
@@ -808,12 +813,9 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 int skeletonCount = (donorGraph.SkeletonNodes != null && donorGraph.SkeletonNodes.Count > 0)
                                     ? donorGraph.SkeletonNodes.Count
                                     : Animation.SkeletonNodes.Count;
-                if (inh.NodeMap == null || inh.NodeMap.Count != skeletonCount)
-                {
-                    inh.NodeMap = new List<Inheritance.NodeMapBlock>();
-                    for (int i = 0; i < skeletonCount; i++)
-                        inh.NodeMap.Add(new Inheritance.NodeMapBlock());
-                }
+                inh.NodeMap = new List<Inheritance.NodeMapBlock>();
+                for (int i = 0; i < skeletonCount; i++)
+                    inh.NodeMap.Add(new Inheritance.NodeMapBlock());
                 for (int i = 0; i < skeletonCount; i++)
                 {
                     StringId donorNodeName = (donorGraph.SkeletonNodes != null && donorGraph.SkeletonNodes.Count > i)
