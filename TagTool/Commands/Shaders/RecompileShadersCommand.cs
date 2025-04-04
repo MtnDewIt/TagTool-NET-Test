@@ -187,6 +187,8 @@ namespace TagTool.Commands.Shaders
                     options.Add(0);
                 var aOptions = options.ToArray();
 
+                var rmt2 = Cache.Deserialize<RenderMethodTemplate>(stream, tag);
+
                 STemplateRecompileInfo info = new STemplateRecompileInfo
                 {
                     Name = $"shaders\\{shaderType}_templates\\_{string.Join("_", aOptions)}",
@@ -194,7 +196,9 @@ namespace TagTool.Commands.Shaders
                     Options = aOptions,
                     Tag = tag,
                     Dependants = GetDependantsAsync(Cache, stream, shaderType, aOptions),
-                    AllRmopParameters = ShaderGeneratorNew.GatherParameters(Cache, stream, rmdf, options)
+                    AllRmopParameters = ShaderGeneratorNew.GatherParameters(Cache, stream, rmdf, options),
+                    PixelShaderName = rmt2.PixelShader.Name,
+                    VertexShaderName = rmt2.VertexShader.Name,
                 };
 
                 recompileInfo.Add(info);
@@ -232,14 +236,18 @@ namespace TagTool.Commands.Shaders
             // serialize
             foreach (var task in tasks)
             {
-                if (!Cache.TagCache.TryGetTag(task.Result.Name + ".pixl", out task.Result.Template.PixelShader))
+                if (!Cache.TagCache.TryGetTag(task.Result.PixelShaderName + ".pixl", out task.Result.Template.PixelShader))
                     task.Result.Template.PixelShader = Cache.TagCache.AllocateTag<PixelShader>(task.Result.Name);
-                if (!Cache.TagCache.TryGetTag(task.Result.Name + ".vtsh", out task.Result.Template.VertexShader))
+                if (!Cache.TagCache.TryGetTag(task.Result.VertexShaderName + ".vtsh", out task.Result.Template.VertexShader))
                     task.Result.Template.VertexShader = Cache.TagCache.AllocateTag<VertexShader>(task.Result.Name);
 
                 Cache.Serialize(stream, task.Result.Template.PixelShader, task.Result.PixelShader);
                 Cache.Serialize(stream, task.Result.Template.VertexShader, task.Result.VertexShader);
                 Cache.Serialize(stream, task.Result.Tag, task.Result.Template);
+
+                task.Result.Template.PixelShader.Name = task.Result.Name;
+                task.Result.Template.VertexShader.Name = task.Result.Name;
+                task.Result.Tag.Name = task.Result.Name;
 
                 (Cache as GameCacheHaloOnlineBase).SaveTagNames();
 

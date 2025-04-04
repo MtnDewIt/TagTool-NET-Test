@@ -183,6 +183,9 @@ namespace TagTool.Commands.Shaders
 
                 Cache.Serialize(stream, vtshTag, vtsh);
                 Cache.Serialize(stream, pixlTag, pixl);
+
+                Cache.SaveStrings();
+                (Cache as GameCacheHaloOnlineBase).SaveTagNames();
             }
 
             Console.WriteLine($"Generated explicit shaders for \"{value}\"");
@@ -225,6 +228,9 @@ namespace TagTool.Commands.Shaders
 
                 Cache.Serialize(stream, vtshTag, vtsh);
                 Cache.Serialize(stream, pixlTag, pixl);
+
+                Cache.SaveStrings();
+                (Cache as GameCacheHaloOnlineBase).SaveTagNames();
             }
 
             Console.WriteLine($"Generated chud shader for {value}");
@@ -574,6 +580,8 @@ namespace TagTool.Commands.Shaders
             public CachedTag Tag;
             public List<SDependentRenderMethodData> Dependants;
             public List<RenderMethodOption.ParameterBlock> AllRmopParameters;
+            public string PixelShaderName;
+            public string VertexShaderName;
             // post
             public PixelShader PixelShader;
             public VertexShader VertexShader;
