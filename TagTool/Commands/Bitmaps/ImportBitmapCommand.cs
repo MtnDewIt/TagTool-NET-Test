@@ -96,6 +96,7 @@ namespace TagTool.Commands.Bitmaps
             string lowerName = imagePath.ToLowerInvariant();
             if (lowerName.EndsWith("_zbump.dds") ||
                 lowerName.EndsWith("_normal.dds") ||
+                lowerName.EndsWith("_bump.dds") ||
                 lowerName.EndsWith("_microbump.dds") ||
                 lowerName.EndsWith("_n.dds"))
             {
