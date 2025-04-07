@@ -236,6 +236,8 @@ namespace TagTool.Commands.ModelAnimationGraphs
                         AnimationBlock.AnimationData.EffectEvents = existingAnimation.AnimationData.EffectEvents;
                         AnimationBlock.AnimationData.DialogueEvents = existingAnimation.AnimationData.DialogueEvents;
                         AnimationBlock.AnimationData.FootTracking = existingAnimation.AnimationData.FootTracking;
+                        AnimationBlock.PlaybackFlags = existingAnimation.PlaybackFlags;
+                        AnimationBlock.AnimationData.ProductionFlags = existingAnimation.AnimationData.ProductionFlags;
                     }
                 }
 

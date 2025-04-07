@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Assimp;
-using AssimpMesh = Assimp.Mesh;  // Alias to disambiguate from TagTool.Geometry.Mesh
+using AssimpMesh = Assimp.Mesh;
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Commands.Common;
@@ -21,24 +21,16 @@ namespace TagTool.Commands.RenderModels
 
         public ReplaceRenderGeometryCommand(GameCache cache, CachedTag tag, RenderModel definition) :
             base(false,
-
-                name:
-                "ReplaceRenderGeometry",
-
-                description:
-                "Replaces the render_geometry of the current render_model tag.",
-
-                usage:
-                "ReplaceRenderGeometry <COLLADA or FBX Scene> [IndexBufferFormat]",
-
-                examples:
-                "ReplaceRenderGeometry d:\\model.dae trianglestrip\nReplaceRenderGeometry d:\\model.fbx trianglestrip",
-
-                helpMessage:
-                "- Replaces the render_geometry of the current render_model tag with geometry compiled from a COLLADA (.DAE) or FBX (.FBX) scene file.\n" +
-                "- Your DAE or FBX file must contain a single mesh for every permutation.\n" +
-                "- Name your meshes as {region}:{permutation} (e.g. hull:base).\n" +
-                "- IndexBufferFormat is TriangleList unless TriangleStrip specified.")
+        name: "ReplaceRenderGeometry",
+        description: "Replaces the render_geometry of the current render_model tag.",
+        usage: "ReplaceRenderGeometry <COLLADA or FBX Scene> [IndexBufferFormat] [updatenodes] [markers]",
+        examples: "ReplaceRenderGeometry d:\\model.dae trianglestrip updatenodes markers\nReplaceRenderGeometry d:\\model.fbx updatenodes markers",
+        helpMessage: "- Replaces the render_geometry of the current render_model tag with geometry compiled from a COLLADA (.DAE) or FBX (.FBX) scene file.\n" +
+                     "- Name your meshes as {region}:{permutation} (e.g. hull:base).\n" +
+                     "- IndexBufferFormat is TriangleStrip unless TriangleList specified.\n" +
+                     "- When the optional flag 'updatenodes' is specified the tool will update the transform values for all Nodes and Runtime Node Orientations.\n" +
+                     "- When the optional flag 'markers' is specified the tool will remove all existing markers and generate new marker groups by reading nodes whose names begin with '#' from the source file.\n" +
+                     "Note: FBX is only supported for updating nodes and markers")
         {
             Cache = cache;
             Tag = tag;
@@ -48,10 +40,12 @@ namespace TagTool.Commands.RenderModels
         public override object Execute(List<string> args)
         {
             Console.WriteLine();
-
-            if (args.Count < 1 || args.Count > 2)
+            if (args.Count < 1 || args.Count > 4)
                 return new TagToolError(CommandError.ArgCount);
-
+            bool updateNodes = args.Any(a => a.ToLower() == "updatenodes");
+            bool updateMarkers = args.Any(a => a.ToLower() == "markers");
+            string sceneFilePath = args[0];
+            string indexBufferFormatArg = args.FirstOrDefault(a => a.ToLower() != "updatenodes" && a.ToLower() != "markers" && a != sceneFilePath);
             if (!Cache.TagCache.TryGetTag<Shader>(@"shaders\invalid", out var defaultShaderTag))
             {
                 new TagToolWarning("shaders\\invalid.shader' not found!\n"
@@ -62,7 +56,8 @@ namespace TagTool.Commands.RenderModels
 
             var sceneFile = new FileInfo(args[0]);
 
-            var indexBufferFormat = args.Count > 1 && args[1].ToLower() == "trianglestrip" ? IndexBufferFormat.TriangleStrip : IndexBufferFormat.TriangleList;
+            var indexBufferFormat = args.Count > 1 && args[1].ToLower() == "trianglelist" ? IndexBufferFormat.TriangleList : IndexBufferFormat.TriangleStrip;
+
 
             if (!sceneFile.Exists)
                 return new TagToolError(CommandError.FileNotFound);
@@ -70,12 +65,10 @@ namespace TagTool.Commands.RenderModels
             string extension = sceneFile.Extension.ToLower();
             if (extension != ".dae" && extension != ".fbx")
                 return new TagToolError(CommandError.FileType, $"\"{sceneFile.FullName}\"");
-
-            // Call ExecuteInternal with the appropriate parameters
-            return ExecuteInternal(Cache, Tag, Definition, stringIdCount, sceneFile, indexBufferFormat);
+            return ExecuteInternal(Cache, Tag, Definition, stringIdCount, sceneFile, indexBufferFormat, updateNodes, updateMarkers);
         }
 
-        public static object ExecuteInternal(GameCache Cache, CachedTag Tag, RenderModel Definition, int InitialStringIdCount, FileInfo SceneFile, IndexBufferFormat IndexBufferFormat)
+        public static object ExecuteInternal(GameCache Cache, CachedTag Tag, RenderModel Definition, int InitialStringIdCount, FileInfo SceneFile, IndexBufferFormat IndexBufferFormat, bool updateNodes = false, bool updateMarkers = false)
         {
             Console.WriteLine();
 
@@ -97,7 +90,81 @@ namespace TagTool.Commands.RenderModels
                     PostProcessSteps.Triangulate |
                     PostProcessSteps.JoinIdenticalVertices);
             }
+            if (updateNodes)
+            {
+                Console.WriteLine("   Updating node transforms from scene hierarchy...");
+                Dictionary<string, Assimp.Node> sceneNodesMap = new Dictionary<string, Assimp.Node>();
+                void TraverseScene(Assimp.Node node)
+                {
+                    string key = node.Name.Replace('.', '_').ToLower();
+                    if (!sceneNodesMap.ContainsKey(node.Name.ToLower()))
+                        sceneNodesMap[node.Name.ToLower()] = node;
+                    foreach (var child in node.Children)
+                        TraverseScene(child);
+                }
+                TraverseScene(scene.RootNode);
+                for (int i = 0; i < Definition.Nodes.Count; i++)
+                {
+                    var node = Definition.Nodes[i];
+                    string nodeName = Cache.StringTable.GetString(node.Name).Replace('.', '_').ToLower();
+                    if (sceneNodesMap.TryGetValue(nodeName, out Assimp.Node sNode))
+                    {
+                        sNode.Transform.Decompose(out Vector3D scale, out Assimp.Quaternion rotation, out Vector3D translation);
+                        // Set default transforms (scaling conversion applied)
+                        node.DefaultTranslation = new RealPoint3d(translation.X * 0.01f, translation.Y * 0.01f, translation.Z * 0.01f);
+                        float qx = rotation.X, qy = rotation.Y, qz = rotation.Z, qw = rotation.W;
+                        node.DefaultRotation = new RealQuaternion(qx, qy, qz, qw);
+                        node.DefaultScale = scale.X; // assuming uniform scale
 
+                        // Build rotation matrix from quaternion (row-major)
+                        float r00 = 1 - 2 * qy * qy - 2 * qz * qz;
+                        float r01 = 2 * qx * qy - 2 * qz * qw;
+                        float r02 = 2 * qx * qz + 2 * qy * qw;
+                        float r10 = 2 * qx * qy + 2 * qz * qw;
+                        float r11 = 1 - 2 * qx * qx - 2 * qz * qz;
+                        float r12 = 2 * qy * qz - 2 * qx * qw;
+                        float r20 = 2 * qx * qz - 2 * qy * qw;
+                        float r21 = 2 * qy * qz + 2 * qx * qw;
+                        float r22 = 1 - 2 * qx * qx - 2 * qy * qy;
+
+                        // Inverse rotation is the transpose of R.
+                        // Thus, the inverse rotation matrix R^T has rows:
+                        // row1 = (r00, r10, r20)
+                        // row2 = (r01, r11, r21)
+                        // row3 = (r02, r12, r22)
+                        node.InverseForward = new RealVector3d(r00, r10, r20);
+                        node.InverseLeft = new RealVector3d(r01, r11, r21);
+                        node.InverseUp = new RealVector3d(r02, r12, r22);
+
+                        // Compute inverse translation: -R^T * translation / scale.
+                        float dtX = node.DefaultTranslation.X;
+                        float dtY = node.DefaultTranslation.Y;
+                        float dtZ = node.DefaultTranslation.Z;
+                        float invScale = 1.0f / node.DefaultScale;
+                        float itx = -(r00 * dtX + r10 * dtY + r20 * dtZ) * invScale;
+                        float ity = -(r01 * dtX + r11 * dtY + r21 * dtZ) * invScale;
+                        float itz = -(r02 * dtX + r12 * dtY + r22 * dtZ) * invScale;
+                        node.InversePosition = new RealPoint3d(itx, ity, itz);
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine($"   Warning: Scene node matching render model node '{nodeName}' not found.");
+                        Console.ResetColor();
+                    }
+                }
+                if (Definition.RuntimeNodeOrientations != null && Definition.RuntimeNodeOrientations.Count == Definition.Nodes.Count)
+                {
+                    for (int i = 0; i < Definition.Nodes.Count; i++)
+                    {
+                        var updatedNode = Definition.Nodes[i];
+                        Definition.RuntimeNodeOrientations[i].Translation = updatedNode.DefaultTranslation;
+                        Definition.RuntimeNodeOrientations[i].Rotation = updatedNode.DefaultRotation;
+                        Definition.RuntimeNodeOrientations[i].Scale = updatedNode.DefaultScale;
+                    }
+                }
+                Console.WriteLine("   Node transform update complete.\n");
+            }
             RenderModelBuilder builder = new RenderModelBuilder(Cache);
             Dictionary<string, sbyte> nodes = new Dictionary<string, sbyte>();
             Dictionary<string, short> materialIndices = new Dictionary<string, short>();
@@ -664,11 +731,130 @@ namespace TagTool.Commands.RenderModels
             Console.Write("\n   Building render_geometry...");
 
             var newDefinition = builder.Build(Cache.Serializer);
+
+            if (updateMarkers)
+            {
+                // Create a dictionary for marker groups (group name -> marker group)
+                var markerGroups = new Dictionary<string, RenderModel.MarkerGroup>();
+
+                // Recursive function to process marker nodes from the Assimp scene
+                void ProcessMarkerNode(Assimp.Node node)
+                {
+                    if (node.Name.StartsWith("#"))
+                    {
+                        string markerText = node.Name.Substring(1); // remove '#'
+                        string groupName = "";
+                        int regionIndex = -1;
+                        int permutationIndex = -1;
+                        if (markerText.StartsWith("("))
+                        {
+                            int endParen = markerText.IndexOf(")");
+                            if (endParen > 0)
+                            {
+                                string inside = markerText.Substring(1, endParen - 1);
+                                var tokens = inside.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                                if (tokens.Length >= 2)
+                                {
+                                    string permName = tokens[0].ToLower();
+                                    string regionName = tokens[1].ToLower();
+                                    for (int r = 0; r < newDefinition.Regions.Count; r++)
+                                    {
+                                        string rName = Cache.StringTable.GetString(newDefinition.Regions[r].Name).ToLower();
+                                        if (rName == regionName)
+                                        {
+                                            regionIndex = r;
+                                            for (int p = 0; p < newDefinition.Regions[r].Permutations.Count; p++)
+                                            {
+                                                string pName = Cache.StringTable.GetString(newDefinition.Regions[r].Permutations[p].Name).ToLower();
+                                                if (pName == permName)
+                                                {
+                                                    permutationIndex = p;
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+                                groupName = markerText.Substring(endParen + 1);
+                            }
+                            else
+                            {
+                                groupName = markerText;
+                            }
+                        }
+                        else
+                        {
+                            groupName = markerText;
+                        }
+                        int dotIndex = groupName.IndexOf(".");
+                        if (dotIndex >= 0)
+                            groupName = groupName.Substring(0, dotIndex);
+                        groupName = groupName.Trim();
+                        if (string.IsNullOrEmpty(groupName))
+                            groupName = "marker"; // default group name
+
+                        // Decompose the node's transform for marker placement
+                        node.Transform.Decompose(out Vector3D mScale, out Assimp.Quaternion mRot, out Vector3D mTrans);
+                        RealPoint3d mTranslation = new RealPoint3d(mTrans.X * 0.01f, mTrans.Y * 0.01f, mTrans.Z * 0.01f);
+                        RealQuaternion mRotation = new RealQuaternion(mRot.X, mRot.Y, mRot.Z, mRot.W);
+                        float markerScale = mScale.X;
+
+                        // Create marker
+                        var marker = new RenderModel.MarkerGroup.Marker();
+                        marker.RegionIndex = (sbyte)regionIndex;
+                        marker.PermutationIndex = (sbyte)permutationIndex;
+                        marker.Translation = mTranslation;
+                        marker.Rotation = mRotation;
+                        marker.Scale = markerScale;
+
+                        // Determine parent node index
+                        sbyte parentNodeIndex = -1;
+                        if (node.Parent != null)
+                        {
+                            string parentName = FixBoneName(node.Parent.Name);
+                            if (nodes.TryGetValue(parentName, out sbyte index))
+                                parentNodeIndex = index;
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.WriteLine($"   Warning: Parent node '{parentName}' for marker '{markerText}' not found. Node index set to -1.");
+                                Console.ResetColor();
+                            }
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine($"   Warning: Marker '{markerText}' has no parent node. Node index set to -1.");
+                            Console.ResetColor();
+                        }
+                        marker.NodeIndex = parentNodeIndex;
+
+                        if (!markerGroups.ContainsKey(groupName))
+                        {
+                            var mg = new RenderModel.MarkerGroup();
+                            mg.Name = Cache.StringTable.GetOrAddString(groupName);
+                            mg.Markers = new List<RenderModel.MarkerGroup.Marker>();
+                            markerGroups[groupName] = mg;
+                        }
+                        markerGroups[groupName].Markers.Add(marker);
+                    }
+
+                    // Recurse children
+                    foreach (var child in node.Children)
+                        ProcessMarkerNode(child);
+                }
+
+                ProcessMarkerNode(scene.RootNode);
+                newDefinition.MarkerGroups = markerGroups.Values.ToList();
+            }
+
+            // Update the definition with the new built data.
             Definition.Regions = newDefinition.Regions;
             Definition.Geometry = newDefinition.Geometry;
             Definition.Nodes = newDefinition.Nodes;
             Definition.Materials = newDefinition.Materials;
-
+            Definition.MarkerGroups = newDefinition.MarkerGroups;
             Console.WriteLine("done.");
 
             Console.Write("   Writing render_model tag data...");
