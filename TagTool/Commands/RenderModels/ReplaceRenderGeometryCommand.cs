@@ -848,6 +848,10 @@ namespace TagTool.Commands.RenderModels
                 ProcessMarkerNode(scene.RootNode);
                 newDefinition.MarkerGroups = markerGroups.Values.ToList();
             }
+            else
+            {
+                newDefinition.MarkerGroups = Definition.MarkerGroups;
+            }
 
             // Update the definition with the new built data.
             Definition.Regions = newDefinition.Regions;
