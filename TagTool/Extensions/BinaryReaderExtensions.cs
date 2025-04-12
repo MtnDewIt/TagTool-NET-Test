@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Runtime.InteropServices;
 using TagTool.Common;
 using TagTool.Tags;
@@ -7,24 +8,6 @@ namespace System.IO
 {
     public static class BinaryReaderExtensions
     {
-        public static T ReadBits<T>(this BinaryReader reader, int count) where T : struct
-        {
-            var alignedSize = count.ToMultipleOf(8) / 8;
-
-            if (alignedSize > Marshal.SizeOf<T>())
-                throw new OverflowException($"{typeof(T).FullName} cannot exceed {Marshal.SizeOf<T>() * 8} bits; {count} specified.");
-
-            var bits = new BitArray(count);
-            var data = new BitArray(reader.ReadBytes(alignedSize));
-
-            for (var i = 0; i < count; i++)
-                bits[i] = data[i];
-
-            var array = new T[1];
-            bits.CopyTo(array, 0);
-            return array[0];
-        }
-
         public static float ReadSingle(this BinaryReader reader, TagFieldCompression compression)
         {
             switch (compression)
@@ -41,7 +24,7 @@ namespace System.IO
         }
 
         public static Half ReadHalf(this BinaryReader reader) =>
-            Half.ToHalf(reader.ReadUInt16());
+            BitConverter.UInt16BitsToHalf(reader.ReadUInt16());
 
         public static Point2d ReadPoint2d(this BinaryReader reader) =>
             new Point2d(reader.ReadInt16(), reader.ReadInt16());
@@ -102,42 +85,5 @@ namespace System.IO
 
         public static DatumHandle ReadDatumIndex(this BinaryReader reader) =>
             new DatumHandle(reader.ReadUInt32());
-
-        public static T ReadEnum<T>(this BinaryReader reader)
-            where T : struct, IConvertible
-        {
-            var type = typeof(T);
-
-            if (!type.IsEnum)
-                throw new NotSupportedException(type.Name);
-
-            var valueType = type.GetEnumUnderlyingType();
-
-            if (valueType == typeof(sbyte))
-                return (T)(object)reader.ReadSByte();
-
-            if (valueType == typeof(byte))
-                return (T)(object)reader.ReadByte();
-
-            if (valueType == typeof(short))
-                return (T)(object)reader.ReadInt16();
-
-            if (valueType == typeof(ushort))
-                return (T)(object)reader.ReadUInt16();
-
-            if (valueType == typeof(int))
-                return (T)(object)reader.ReadInt32();
-
-            if (valueType == typeof(uint))
-                return (T)(object)reader.ReadUInt32();
-
-            if (valueType == typeof(long))
-                return (T)(object)reader.ReadInt64();
-
-            if (valueType == typeof(ulong))
-                return (T)(object)reader.ReadUInt64();
-
-            throw new NotSupportedException(type.Name);
-        }
     }
 }

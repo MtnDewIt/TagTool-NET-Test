@@ -5,6 +5,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Runtime.Loader;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Commands.Tags;
@@ -22,7 +24,47 @@ namespace TagTool.Commands
 
         static void Main(string[] args)
         {
-            SetDirectories();
+            //allow managed dll resolution from Tools directory
+            AssemblyLoadContext.Default.Resolving += static (AssemblyLoadContext ctx, AssemblyName name) =>
+            {
+                foreach (var file in Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Tools"), "*.dll"))
+                {
+                    AssemblyName an;
+                    try
+                    {
+                        Assembly assembly = Assembly.LoadFile(file);
+
+                        an = new AssemblyName(assembly.GetName().Name);
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+                    if (AssemblyName.ReferenceMatchesDefinition(name, an)) return ctx.LoadFromAssemblyPath(file);
+                }
+                return null;
+            };
+
+            //allow unmanaged dll resolution from Tools directory
+            AssemblyLoadContext.Default.ResolvingUnmanagedDll += (Assembly assembly, string dllName) =>
+            {
+                foreach (var file in Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Tools"), "*.dll"))
+                {
+                    IntPtr handle;
+                    try
+                    {
+                        handle = NativeLibrary.Load(file);
+                    }
+                    catch (Exception) 
+                    {
+                        continue;
+                    }
+
+                    if (Path.GetFileName(file) == dllName) return handle;
+                }
+                return IntPtr.Zero;
+            };
+
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo("en-US");
             ConsoleHistory.Initialize();
 
@@ -184,14 +226,6 @@ namespace TagTool.Commands
             }
 
             end: return;
-        }
-
-        public static void SetDirectories()
-        {
-            // Needed to use AddDllDirectory
-            NativeInterop.SetDefaultDllDirectories(0x1000u); // LOAD_LIBRARY_SEARCH_DEFAULT_DIRS
-            // Add the tools directory to the search path to simplify usage of [DllImport]
-            NativeInterop.AddDllDirectory(Path.Combine(TagToolDirectory, "Tools"));
         }
 
         public static void ReportElapsed()

@@ -9,11 +9,10 @@ using TagTool.Commands.Common;
 using System.IO;
 using TagTool.IO;
 using Assimp;
-using System.Runtime.Remoting.Contexts;
 using TagTool.Layouts;
 using static TagTool.IO.ConsoleHistory;
 using TagTool.Tags;
-using System.Runtime.Remoting.Messaging;
+//using System.Runtime.Remoting.Messaging;
 using TagTool.Cache.Gen2;
 
 namespace TagTool.Commands.Tags

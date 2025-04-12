@@ -25,7 +25,7 @@ namespace TagTool.Lighting
             Bandwidth = coefficients[7];
         }
 
-        public VmfLight(ushort[] coefficients) : this(coefficients.Select(x => (float)Half.ToHalf(x)).ToArray())
+        public VmfLight(ushort[] coefficients) : this(coefficients.Select(x => (float)BitConverter.UInt16BitsToHalf(x)).ToArray())
         {
 
         }
