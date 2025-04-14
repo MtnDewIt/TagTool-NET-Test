@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using TagTool.Cache;
 using TagTool.Commands;
 using TagTool.Geometry;
@@ -91,7 +92,7 @@ namespace TagTool.Havok
         private static IntermediateFormat ExportMesh(GameCache cache, Mesh mesh)
         {
             var format = new IntermediateFormat();
-            format.Vertices = ReadWorldVertices(cache, mesh).Select(x => new Vector3D(x.Position.I, x.Position.J, x.Position.K)).ToList();
+            format.Vertices = ReadWorldVertices(cache, mesh).Select(x => new Vector3(x.Position.I, x.Position.J, x.Position.K)).ToList();
             format.Indcies = new List<int>();
             format.Parts = new List<IntermediateFormat.Part>();
             format.Subparts = new List<IntermediateFormat.Subpart>();
@@ -175,7 +176,7 @@ namespace TagTool.Havok
 
         class IntermediateFormat
         {
-            public List<Vector3D> Vertices;
+            public List<Vector3> Vertices;
             public List<int> Indcies;
             public List<Part> Parts;
             public List<Subpart> Subparts;

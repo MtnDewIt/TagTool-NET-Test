@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text.RegularExpressions;
 using Assimp;
 using AssimpMesh = Assimp.Mesh;
@@ -109,7 +110,7 @@ namespace TagTool.Commands.RenderModels
                     string nodeName = Cache.StringTable.GetString(node.Name).Replace('.', '_').ToLower();
                     if (sceneNodesMap.TryGetValue(nodeName, out Assimp.Node sNode))
                     {
-                        sNode.Transform.Decompose(out Vector3D scale, out Assimp.Quaternion rotation, out Vector3D translation);
+                        Matrix4x4.Decompose(sNode.Transform, out Vector3 scale, out Quaternion rotation, out Vector3 translation);
                         // Set default transforms (scaling conversion applied)
                         node.DefaultTranslation = new RealPoint3d(translation.X * 0.01f, translation.Y * 0.01f, translation.Z * 0.01f);
                         float qx = rotation.X, qy = rotation.Y, qz = rotation.Z, qw = rotation.W;
@@ -500,7 +501,7 @@ namespace TagTool.Commands.RenderModels
                             var position = part.Vertices[i];
                             var normal = part.Normals[i];
 
-                            Vector3D uv;
+                            Vector3 uv;
 
                             try
                             {
@@ -509,11 +510,11 @@ namespace TagTool.Commands.RenderModels
                             catch
                             {
                                 new TagToolWarning($"Missing texture coordinate for vertex {i} in '{regionName}:{permName}'");
-                                uv = new Vector3D();
+                                uv = new Vector3();
                             }
 
-                            var tangent = part.Tangents.Count != 0 ? part.Tangents[i] : new Vector3D();
-                            var bitangent = part.BiTangents.Count != 0 ? part.BiTangents[i] : new Vector3D();
+                            var tangent = part.Tangents.Count != 0 ? part.Tangents[i] : new Vector3();
+                            var bitangent = part.BiTangents.Count != 0 ? part.BiTangents[i] : new Vector3();
 
                             if (vertexType == VertexType.Skinned)
                             {
@@ -795,7 +796,7 @@ namespace TagTool.Commands.RenderModels
                             groupName = "marker"; // default group name
 
                         // Decompose the node's transform for marker placement
-                        node.Transform.Decompose(out Vector3D mScale, out Assimp.Quaternion mRot, out Vector3D mTrans);
+                        Matrix4x4.Decompose(node.Transform, out Vector3 mScale, out Quaternion mRot, out Vector3 mTrans);
                         RealPoint3d mTranslation = new RealPoint3d(mTrans.X * 0.01f, mTrans.Y * 0.01f, mTrans.Z * 0.01f);
                         RealQuaternion mRotation = new RealQuaternion(mRot.X, mRot.Y, mRot.Z, mRot.W);
                         float markerScale = mScale.X;
