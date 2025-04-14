@@ -6,6 +6,7 @@ using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.Geometry;
 using System.Linq;
+using System.Numerics;
 using TagTool.Tags;
 using TagTool.Geometry.BspCollisionGeometry;
 using Assimp;
@@ -19,7 +20,7 @@ namespace TagTool.Commands.CollisionModels
     {
         private GameCacheHaloOnlineBase Cache { get; }
         private CollisionGeometry Bsp { get; set; }
-        private List<Assimp.Vector3D> Vertices { get; set; }
+        private List<Vector3> Vertices { get; set; }
         private List<Face> Faces { get; set; }
         private List<@triangle> Triangles { get; set; }
         private bool debug = false;
@@ -27,8 +28,8 @@ namespace TagTool.Commands.CollisionModels
         private bool overwrite = false;
         private int max_surface_edges = 8;
         private bool buildmopp = false;
-        private Vector3D MaxBounds = new Vector3D(float.MinValue, float.MinValue, float.MinValue);
-        private Vector3D MinBounds = new Vector3D(float.MaxValue, float.MaxValue, float.MaxValue);
+        private Vector3 MaxBounds = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+        private Vector3 MinBounds = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
         //error geometry 
         private ErrorGeometryBuilder Errors = new ErrorGeometryBuilder();
 
@@ -202,7 +203,7 @@ namespace TagTool.Commands.CollisionModels
                 }
 
                 //get object bounds
-                foreach(Vector3D vert in Vertices)
+                foreach(Vector3 vert in Vertices)
                 {
                     if (vert.X < MinBounds.X)
                         MinBounds.X = vert.X;
@@ -296,9 +297,9 @@ namespace TagTool.Commands.CollisionModels
 
         public struct @triangle
         {
-            public Vector3D a;
-            public Vector3D b;
-            public Vector3D c;
+            public Vector3 a;
+            public Vector3 b;
+            public Vector3 c;
             public int material_index;
             public float area;
         }
@@ -345,9 +346,9 @@ namespace TagTool.Commands.CollisionModels
                 }
 
                 @triangle newtriangle = new @triangle{ a = Vertices[indices[0]], b = Vertices[indices[1]], c = Vertices[indices[2]], material_index = materialindex};
-                Vector3D point0 = Vertices[indices[0]];
-                Vector3D point1 = Vertices[indices[1]];
-                Vector3D point2 = Vertices[indices[2]];
+                Vector3 point0 = Vertices[indices[0]];
+                Vector3 point1 = Vertices[indices[1]];
+                Vector3 point2 = Vertices[indices[2]];
                 float xdiff_1_0 = point1.X - point0.X;
                 float ydiff_1_0 = point1.Y - point0.Y;
                 float zdiff_1_0 = point1.Z - point0.Z;
@@ -367,7 +368,7 @@ namespace TagTool.Commands.CollisionModels
             return true;
         }
 
-        public int add_vertex(Vector3D vertex)
+        public int add_vertex(Vector3 vertex)
         {
             Vertex newvertex = new Vertex { Point = new TagTool.Common.RealPoint3d { X = vertex.X * 0.01f, Y = vertex.Y * 0.01f, Z = vertex.Z * 0.01f }, FirstEdge = ushort.MaxValue };
             for (int i = 0; i < Bsp.Vertices.Count; i++)

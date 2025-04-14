@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using Assimp;
 using TagTool.Cache;
 using TagTool.Common;
@@ -157,8 +158,8 @@ namespace TagTool.Commands.RenderModels
                         var normal = mesh.Normals[i];
                         var uv = mesh.TextureCoordinateChannels[0][i];
 
-                        var tangent = mesh.Tangents.Count != 0 ? mesh.Tangents[i] : new Vector3D();
-                        var bitangent = mesh.BiTangents.Count != 0 ? mesh.BiTangents[i] : new Vector3D();
+                        var tangent = mesh.Tangents.Count != 0 ? mesh.Tangents[i] : new Vector3();
+                        var bitangent = mesh.BiTangents.Count != 0 ? mesh.BiTangents[i] : new Vector3();
 
                         if (vertexType == "skinned")
                         {
@@ -228,13 +229,13 @@ namespace TagTool.Commands.RenderModels
                         RenderMethod = Cache.TagCache.GetTag(@"shaders\invalid", "rmsh"),
                     });
 
-                    builder.BeginPart(material, partStartIndex, (ushort)meshIndices.Length, (ushort)mesh.VertexCount);
-                    builder.DefineSubPart(partStartIndex, (ushort)meshIndices.Length, (ushort)mesh.VertexCount);
+                    builder.BeginPart(material, partStartIndex, (ushort)meshIndices.Count(), (ushort)mesh.VertexCount);
+                    builder.DefineSubPart(partStartIndex, (ushort)meshIndices.Count(), (ushort)mesh.VertexCount);
                     builder.EndPart();
 
                     // Move to the next part
                     partStartVertex += (ushort)mesh.VertexCount;
-                    partStartIndex += (ushort)meshIndices.Length;
+                    partStartIndex += (ushort)meshIndices.Count();
 
                     // Bind the vertex and index buffers
                     if (vertexType == "skinned")

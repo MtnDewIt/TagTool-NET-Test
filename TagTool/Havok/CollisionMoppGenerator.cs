@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using TagTool.Cache;
 using TagTool.Commands;
 using TagTool.Geometry.BspCollisionGeometry;
@@ -67,7 +68,7 @@ namespace TagTool.Havok
 
         class IntermediateFormat
         {
-            public List<Vector3D> Vertices;
+            public List<Vector3> Vertices;
             public List<Surfae> Surfaces;
 
             public class Surfae
@@ -77,11 +78,11 @@ namespace TagTool.Havok
 
             public IntermediateFormat(CollisionGeometry bsp)
             {
-                Vertices = new List<Vector3D>();
+                Vertices = new List<Vector3>();
                 Surfaces = new List<Surfae>();
 
                 foreach (Vertex vertex in bsp.Vertices)
-                    Vertices.Add(new Vector3D(vertex.Point.X, vertex.Point.Y, vertex.Point.Z));
+                    Vertices.Add(new Vector3(vertex.Point.X, vertex.Point.Y, vertex.Point.Z));
 
                 for (int surfaceIndex = 0; surfaceIndex < bsp.Surfaces.Count; surfaceIndex++)
                 {
