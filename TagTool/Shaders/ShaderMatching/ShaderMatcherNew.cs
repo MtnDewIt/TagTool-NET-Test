@@ -316,6 +316,10 @@ namespace TagTool.Shaders.ShaderMatching
                 case "foliage":
                 case "water":
                 case "zonly":
+                case "black":
+                case "fur":
+                case "fur_stencil":
+                case "mux":
                     return true;
                 default:
                     return false;
@@ -478,17 +482,6 @@ namespace TagTool.Shaders.ShaderMatching
                         int portingOptionIndex = srcRmt2Descriptor.Options[j];
                         string optionName = PortingCache.StringTable.GetString(portingRmdfDefinition.Categories[j].ShaderOptions[portingOptionIndex].Name);
 
-                        // these are perfect option matches
-                        // do not touch unless verified
-                        if (srcRmt2Descriptor.Type == "shader")
-                        {
-                            if (methodName == "self_illumination" && optionName == "change_color")
-                                optionName = "illum_change_color";
-                        }
-                        if (methodName == "misc" && optionName == "default")
-                            optionName = "always_calc_albedo";
-                        if (methodName == "alpha_test" && optionName == "from_texture")
-                            optionName = "simple";
                         //if (PortingCache.Version == CacheVersion.Halo3ODST && methodName == "material_model" && optionName == "cook_torrance")
                         //    optionName = "cook_torrance_odst";
                         //if (methodName == "material_model" && optionName == "cook_torrance_rim_fresnel")
@@ -516,37 +509,11 @@ namespace TagTool.Shaders.ShaderMatching
                         // fixup names (remove when full rmdf + shader generation for each gen3 game)
                         switch ($"{methodName}\\{optionName}")
                         {
-                            // Reach rmsh //
-                            case @"albedo\patchy_emblem":
-                                optionName = "emblem_change_color";
-                                break;
-                            case @"bump_mapping\detail_blend":
-                            case @"bump_mapping\three_detail_blend":
-                                optionName = "detail";
-                                break;
-                            case @"specular_mask\specular_mask_mult_diffuse":
-                                optionName = "specular_mask_from_texture";
-                                break;
-                            // Reach rmtr  //
-                            case @"blending\distance_blend_base":
-                                optionName = "morph";
-                                break;
-                            // Reach rmfl //
+                            // Reach rmfl // These options require the addition of extra entry points in order to get full functionality
                             case @"material_model\flat":
                             case @"material_model\specular":
                             case @"material_model\translucent":
                                 optionName = "default";
-                                break;
-                            // Reach prt3 //
-                            case @"lighting\per_pixel_smooth":
-                            case @"lighting\smoke_lighting":
-                                optionName = "per_pixel_ravi_order_3";
-                                break;
-                            case @"lighting\per_vertex_ambient":
-                                optionName = "per_vertex_ravi_order_0";
-                                break;
-                            case @"depth_fade\low_res":
-                                optionName = "on";
                                 break;
                         }
 

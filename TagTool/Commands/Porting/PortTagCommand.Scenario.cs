@@ -757,6 +757,12 @@ namespace TagTool.Commands.Porting
                     scnr.SkyParameters = skyTag;
                 }
 
+                // convert decal placements
+                foreach (var decal in scnr.Decals) 
+                {
+                    decal.Scale = (float)Math.Sqrt(decal.ScaleReach.Lower * decal.ScaleReach.Upper);
+                }
+
                 // set Game Object Reset Height
 
                 scnr.SpawnData = new List<Scenario.SpawnDatum> { new Scenario.SpawnDatum { GameObjectResetHeight = -20f } };

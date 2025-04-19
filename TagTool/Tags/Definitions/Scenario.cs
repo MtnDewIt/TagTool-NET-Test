@@ -2365,7 +2365,7 @@ namespace TagTool.Tags.Definitions
             public short DecalPaletteIndex;
 
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
-            public byte EditingBoundToBsp;
+            public sbyte EditingBoundToBsp = -1;
             [TagField(Length = 1, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline700123)]
             public byte[] Padding1;
 

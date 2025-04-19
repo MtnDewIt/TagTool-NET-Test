@@ -75,6 +75,19 @@ namespace TagTool.Shaders.ShaderGenerator
             return stringId;
         }
 
+        private static bool AutoMacroIsParameter(string categoryName, HaloShaderGenerator.Globals.ShaderType shaderType) 
+        {
+            switch (shaderType) 
+            {
+                case HaloShaderGenerator.Globals.ShaderType.Decal:
+                    if (categoryName == "blend_mode" || categoryName == "parallax" || categoryName == "interier")
+                        return true;
+                    break;
+            }
+
+            return false;
+        }
+
         private static List<OptionInfo> BuildOptionInfo(GameCache cache, RenderMethodDefinition rmdf, 
             byte[] options, HaloShaderGenerator.Globals.ShaderType shaderType, bool ps = true)
         {
@@ -92,6 +105,19 @@ namespace TagTool.Shaders.ShaderGenerator
 
                     if (ps)
                     {
+                        if (AutoMacroIsParameter(category, shaderType))
+                        {
+                            optionInfo.Add(new OptionInfo
+                            {
+                                Category = cache.StringTable.GetString(rmdf.Categories[i].Name),
+                                PsMacro = cache.StringTable.GetString(rmdf.Categories[i].PixelFunction),
+                                VsMacro = cache.StringTable.GetString(rmdf.Categories[i].VertexFunction),
+                                Option = cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[options[i]].Name),
+                                PsMacroValue = cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[options[i]].PixelFunction),
+                                VsMacroValue = cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[options[i]].VertexFunction)
+                            });
+                        }
+
                         optionInfo.Add(new OptionInfo
                         {
                             Category = category,
