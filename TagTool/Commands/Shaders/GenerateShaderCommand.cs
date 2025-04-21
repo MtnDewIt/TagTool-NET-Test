@@ -752,7 +752,10 @@ namespace TagTool.Commands.Shaders
                         p.Type == RenderMethodOption.ParameterBlock.OptionDataType.ArgbColor) && 
                         p.Name == realName.Name).FirstOrDefault();
 
-                        var constant = new RealConstant();
+                        var constant = new RealConstant
+                        {
+                            Values = new float[4]
+                        };
 
                         if (parameter != null)
                         {
