@@ -195,7 +195,7 @@ namespace TagTool.Commands.Shaders
                     ShaderType = shaderType,
                     Options = aOptions,
                     Tag = tag,
-                    Dependants = GetDependantsAsync(Cache, stream, shaderType, aOptions),
+                    Dependants = GetDependantsAsync(Cache, stream, tag.Name),
                     AllRmopParameters = ShaderGeneratorNew.GatherParameters(Cache, stream, rmdf, options),
                     PixelShaderName = rmt2.PixelShader.Name,
                     VertexShaderName = rmt2.VertexShader.Name,
@@ -251,7 +251,7 @@ namespace TagTool.Commands.Shaders
 
                 (Cache as GameCacheHaloOnlineBase).SaveTagNames();
 
-                ReserializeDependantsAsync(Cache, stream, task.Result.Template, task.Result.Dependants);
+                ReserializeDependantsAsync(Cache, stream, task.Result.Template, task.Result.Dependants, task.Result.AllRmopParameters, task.Result.Options);
             }
 
             Console.Write($"\rSuccessfully recompiled {tasks.Count} {shaderType} templates. Serializing... Done");

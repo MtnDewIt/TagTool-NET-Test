@@ -11,6 +11,7 @@ using TagTool.Shaders.ShaderFunctions;
 using HaloShaderGenerator.Shader;
 using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock;
 using TagTool.Shaders.ShaderGenerator;
+using static TagTool.Tags.Definitions.RenderMethod;
 
 namespace TagTool.Commands.Shaders
 {
@@ -598,16 +599,27 @@ namespace TagTool.Commands.Shaders
             public string ExplicitName;
         }
 
+        public static List<RenderMethodOptionIndex> GenerateRenderMethodOptionIndices(byte[] options)
+        {
+            List<RenderMethodOptionIndex> newRmIndices = new List<RenderMethodOptionIndex>();
+
+            foreach (var option in options)
+            {
+                RenderMethodOptionIndex optionIndex = new RenderMethodOptionIndex();
+                optionIndex.OptionIndex = option;
+                newRmIndices.Add(optionIndex);
+            }
+
+            return newRmIndices;
+        }
+
         /// <summary>
         /// For async recompile
         /// </summary>
         public static List<SDependentRenderMethodData> GetDependantsAsync(GameCache cache,
             Stream stream,
-            string shaderType,
-            byte[] options)
+            string rmt2Name)
         {
-            string rmt2Name = $"shaders\\{shaderType}_templates\\_{string.Join("_", options)}";
-
             // Collect dependent render methods, store arguments
 
             List<SDependentRenderMethodData> dependentRenderMethods = new List<SDependentRenderMethodData>();
@@ -673,22 +685,54 @@ namespace TagTool.Commands.Shaders
         public static void ReserializeDependantsAsync(GameCache cache,
             Stream stream,
             RenderMethodTemplate rmt2,
-            List<SDependentRenderMethodData> dependentRenderMethods)
+            List<SDependentRenderMethodData> dependentRenderMethods,
+            List<RenderMethodOption.ParameterBlock> renderMethodParameters,
+            byte[] options)
         {
             // Fixup render method parameters
 
             foreach (var dependent in dependentRenderMethods)
             {
-                var postprocess = (dependent.Definition as RenderMethod).ShaderProperties[0];
+                var renderMethod = (dependent.Definition as RenderMethod);
+
+                renderMethod.Options = GenerateRenderMethodOptionIndices(options);
+
+                var postprocess = renderMethod.ShaderProperties[0];
 
                 List<TextureConstant> reorderedTextureConstants = new List<TextureConstant>();
                 foreach (var textureName in rmt2.TextureParameterNames)
                 {
                     int origIndex = dependent.OrderedTextures.IndexOf(cache.StringTable.GetString(textureName.Name));
                     if (origIndex != -1)
+                    {
                         reorderedTextureConstants.Add(postprocess.TextureConstants[origIndex]);
-                    else
-                        reorderedTextureConstants.Add(new TextureConstant());
+                    }
+                    else 
+                    {
+                        var parameter = renderMethodParameters.Where(p => 
+                        p.Type == RenderMethodOption.ParameterBlock.OptionDataType.Bitmap && 
+                        p.Name == textureName.Name).FirstOrDefault();
+
+                        var constant = new TextureConstant();
+
+                        if (parameter != null) 
+                        {
+                            constant = new TextureConstant
+                            {
+                                Bitmap = parameter.DefaultSamplerBitmap,
+                                SamplerAddressMode = new TextureConstant.PackedSamplerAddressMode
+                                {
+                                    AddressU = (TextureConstant.SamplerAddressModeEnum)parameter.DefaultAddressMode,
+                                    AddressV = (TextureConstant.SamplerAddressModeEnum)parameter.DefaultAddressMode
+                                },
+                                FilterMode = (TextureConstant.SamplerFilterMode)parameter.DefaultFilterMode,
+                                ExternTextureMode = TextureConstant.RenderMethodExternTextureMode.UseBitmapAsNormal,
+                                TextureTransformConstantIndex = -1
+                            };
+                        }
+
+                        reorderedTextureConstants.Add(constant);
+                    }
                 }
                 postprocess.TextureConstants = reorderedTextureConstants;
 
@@ -697,9 +741,41 @@ namespace TagTool.Commands.Shaders
                 {
                     int origIndex = dependent.OrderedRealParameters.IndexOf(cache.StringTable.GetString(realName.Name));
                     if (origIndex != -1)
+                    {
                         reorderedRealConstants.Add(postprocess.RealConstants[origIndex]);
+                    }
                     else
-                        reorderedRealConstants.Add(new RealConstant());
+                    {
+                        var parameter = renderMethodParameters.Where(p => 
+                        (p.Type == RenderMethodOption.ParameterBlock.OptionDataType.Real || 
+                        p.Type == RenderMethodOption.ParameterBlock.OptionDataType.Color || 
+                        p.Type == RenderMethodOption.ParameterBlock.OptionDataType.ArgbColor) && 
+                        p.Name == realName.Name).FirstOrDefault();
+
+                        var constant = new RealConstant();
+
+                        if (parameter != null)
+                        {
+                            switch (parameter.Type)
+                            {
+                                case RenderMethodOption.ParameterBlock.OptionDataType.Real:
+                                    constant.Values[0] = parameter.DefaultFloatArgument;
+                                    constant.Values[1] = parameter.DefaultFloatArgument;
+                                    constant.Values[2] = parameter.DefaultFloatArgument;
+                                    constant.Values[3] = parameter.DefaultFloatArgument;
+                                    break;
+                                case RenderMethodOption.ParameterBlock.OptionDataType.Color:
+                                case RenderMethodOption.ParameterBlock.OptionDataType.ArgbColor:
+                                    constant.Values[0] = parameter.DefaultColor.Alpha;
+                                    constant.Values[1] = parameter.DefaultColor.Red;
+                                    constant.Values[2] = parameter.DefaultColor.Green;
+                                    constant.Values[3] = parameter.DefaultColor.Blue;
+                                    break;
+                            }
+                        }
+
+                        reorderedRealConstants.Add(constant);
+                    }
                 }
                 postprocess.RealConstants = reorderedRealConstants;
 
@@ -708,9 +784,22 @@ namespace TagTool.Commands.Shaders
                 {
                     int origIndex = dependent.OrderedIntParameters.IndexOf(cache.StringTable.GetString(intName.Name));
                     if (origIndex != -1)
+                    {
                         reorderedIntConstants.Add(postprocess.IntegerConstants[origIndex]);
-                    else
-                        reorderedIntConstants.Add(new uint());
+                    }
+                    else 
+                    {
+                        var parameter = renderMethodParameters.Where(p => 
+                        p.Type == RenderMethodOption.ParameterBlock.OptionDataType.Int && 
+                        p.Name == intName.Name).FirstOrDefault();
+
+                        var constant = new uint();
+
+                        if (parameter != null)
+                            constant = parameter.DefaultIntBoolArgument;
+
+                        reorderedIntConstants.Add(constant);
+                    }
                 }
                 postprocess.IntegerConstants = reorderedIntConstants;
 
