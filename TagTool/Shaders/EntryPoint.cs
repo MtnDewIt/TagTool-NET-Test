@@ -67,8 +67,8 @@ namespace TagTool.Shaders
         Water_Tessellation = 1 << 15,
         Water_Shading = 1 << 16,
         Dynamic_Light_Cinematic = 1 << 17,
-        Z_Only = 1 << 21,
-        Sfx_Distort = 1 << 22,
+        Z_Only = 1 << 18,
+        Sfx_Distort = 1 << 19,
     }
 
     public enum EntryPointMs30 : sbyte
