@@ -65,8 +65,7 @@ namespace TagTool.Cache
 
         public SectionFileBounds Reports;
 
-        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding1;
+        public uint RealtimeChecksum;
 
         public FileCreator CreatorName;
 
@@ -75,7 +74,7 @@ namespace TagTool.Cache
         public int ContentHashMask;
 
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding2;
+        public byte[] Padding1;
 
         public ulong SignatureMarker;
 
@@ -103,7 +102,7 @@ namespace TagTool.Cache
 
         [TagField(Length = 0x594, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708, Flags = TagFieldFlags.Padding)]
         [TagField(Length = 0x584, MinVersion = CacheVersion.HaloOnline235640, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding3;
+        public byte[] Padding2;
 
         public Tag FooterSignature;
 
