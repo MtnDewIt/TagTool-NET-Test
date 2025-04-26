@@ -595,167 +595,166 @@ namespace TagTool.Commands.Porting
 
                 // Generate skya from fog parameters
 
-                if (!CacheContext.TagCache.TryGetTag(tagName + ".skya", out scnr.SkyParameters))
+                CachedTag skyaTag = scnr.SkyParameters ?? CacheContext.TagCache.AllocateTag<SkyAtmParameters>(tagName);
+                SkyAtmParameters skya = new SkyAtmParameters();
+                skya.AtmosphereSettings = new List<SkyAtmParameters.AtmosphereProperty>();
+                skya.UnderwaterSettings = new List<SkyAtmParameters.UnderwaterBlock>();
+
+                List<string> convertedWaterFog = new List<string>();
+
+                // Convert atmosphere globals
+
+                if (scnr.AtmosphereGlobals != null)
                 {
-                    SkyAtmParameters skya = new SkyAtmParameters();
-                    skya.AtmosphereSettings = new List<SkyAtmParameters.AtmosphereProperty>();
-                    skya.UnderwaterSettings = new List<SkyAtmParameters.UnderwaterBlock>();
+                    var atgf = BlamCache.Deserialize<AtmosphereGlobals>(blamCacheStream, scnr.AtmosphereGlobals);
 
-                    List<string> convertedWaterFog = new List<string>();
+                    skya.Flags = SkyAtmParameters.SkyAtmFlags.None;
+                    skya.FogBitmap = atgf.FogBitmap != null ? (CachedTag)ConvertData(cacheStream, blamCacheStream, atgf.FogBitmap, null, atgf.FogBitmap.Name) : null;
+                    skya.TextureRepeatRate = atgf.TextureRepeatRate;
+                    skya.DistanceBetweenSheets = atgf.DistanceBetweenSheets;
+                    skya.DepthFadeFactor = atgf.DepthFadeFactor;
+                    skya.ClusterSearchRadius = 25.0f;
+                    skya.TransparentSortDistance = atgf.TransparentSortDistance;
 
-                    // Convert atmosphere globals
+                    // This *should* fix the vertex explosions issues
+                    skya.TransparentSortLayer = TagTool.Shaders.SortingLayerValue.PrePass;
 
-                    if (scnr.AtmosphereGlobals != null)
+                    foreach (var underwaterSetting in atgf.UnderwaterSettings)
                     {
-                        var atgf = BlamCache.Deserialize<AtmosphereGlobals>(blamCacheStream, scnr.AtmosphereGlobals);
-
-                        skya.Flags = SkyAtmParameters.SkyAtmFlags.None;
-                        skya.FogBitmap = atgf.FogBitmap != null ? (CachedTag)ConvertData(cacheStream, blamCacheStream, atgf.FogBitmap, null, atgf.FogBitmap.Name) : null;
-                        skya.TextureRepeatRate = atgf.TextureRepeatRate;
-                        skya.DistanceBetweenSheets = atgf.DistanceBetweenSheets;
-                        skya.DepthFadeFactor = atgf.DepthFadeFactor;
-                        skya.ClusterSearchRadius = 25.0f;
-                        skya.TransparentSortDistance = atgf.TransparentSortDistance;
-                        skya.TransparentSortLayer = atgf.TransparentSortLayer;
-
-                        foreach (var underwaterSetting in atgf.UnderwaterSettings)
+                        var unwt = new SkyAtmParameters.UnderwaterBlock
                         {
-                            var unwt = new SkyAtmParameters.UnderwaterBlock
-                            {
-                                Name = (StringId)ConvertData(cacheStream, blamCacheStream, underwaterSetting.Name, null, null),
-                                Murkiness = underwaterSetting.Murkiness,
-                                FogColor = underwaterSetting.FogColor
-                            };
+                            Name = (StringId)ConvertData(cacheStream, blamCacheStream, underwaterSetting.Name, null, null),
+                            Murkiness = underwaterSetting.Murkiness,
+                            FogColor = underwaterSetting.FogColor
+                        };
 
-                            skya.UnderwaterSettings.Add(unwt);
+                        skya.UnderwaterSettings.Add(unwt);
 
-                            convertedWaterFog.Add(CacheContext.StringTable.GetString(unwt.Name));
-                        }
+                        convertedWaterFog.Add(CacheContext.StringTable.GetString(unwt.Name));
                     }
-
-                    // Convert underwater fog
-
-                    foreach (var sDesign in scnr.StructureDesigns)
-                    {
-                        if (sDesign.StructureDesign != null)
-                        {
-                            var blamSddt = BlamCache.Deserialize<StructureDesign>(blamCacheStream, BlamCache.TagCache.GetTag<StructureDesign>(sDesign.StructureDesign.Name));
-
-                            foreach (var waterInstance in blamSddt.WaterInstances)
-                            {
-                                var waterNameId = (StringId)ConvertData(cacheStream, blamCacheStream, blamSddt.WaterGroups[waterInstance.WaterNameIndex].Name, null, null);
-                                var waterName = CacheContext.StringTable.GetString(waterNameId);
-
-                                if (!convertedWaterFog.Contains(waterName))
-                                {
-                                    var unwt = new SkyAtmParameters.UnderwaterBlock
-                                    {
-                                        Name = waterNameId,
-                                        Murkiness = waterInstance.FogMurkiness,
-                                        FogColor = waterInstance.FogColor
-                                    };
-
-                                    skya.UnderwaterSettings.Add(unwt);
-
-                                    convertedWaterFog.Add(waterName);
-                                }
-                            }
-                        }
-                    }
-
-                    // Convert atmospheres
-
-                    foreach (var atmospherePalette in scnr.Atmosphere)
-                    {
-                        while (atmospherePalette.AtmosphereSettingIndex >= skya.AtmosphereSettings.Count)
-                            skya.AtmosphereSettings.Add(new SkyAtmParameters.AtmosphereProperty());
-
-                        if (atmospherePalette.AtmosphereFog != null)
-                        {
-                            var fogg = BlamCache.Deserialize<AtmosphereFog>(blamCacheStream, atmospherePalette.AtmosphereFog);
-
-                            var atmosphereSettings = skya.AtmosphereSettings[atmospherePalette.AtmosphereSettingIndex];
-
-                            atmosphereSettings.Flags |= SkyAtmParameters.AtmosphereProperty.AtmosphereFlags.EnableAtmosphere;
-                            atmosphereSettings.Name = (StringId)ConvertData(cacheStream, blamCacheStream, atmospherePalette.Name, null, null);
-
-                            // Patchy Fog
-
-                            if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.PatchyFogEnabled))
-                                atmosphereSettings.Flags |= SkyAtmParameters.AtmosphereProperty.AtmosphereFlags.PatchyFog;
-
-                            atmosphereSettings.SheetDensity = fogg.PatchyFog.SheetDensity;
-                            atmosphereSettings.FullIntensityHeight = fogg.PatchyFog.FullIntensityHeight;
-                            atmosphereSettings.HalfIntensityHeight = fogg.PatchyFog.HalfIntensityHeight;
-                            atmosphereSettings.WindDirection = fogg.PatchyFog.WindDirection;
-
-                            if (fogg.WeatherEffect != null)
-                                atmosphereSettings.WeatherEffect = (CachedTag)ConvertData(cacheStream, blamCacheStream, fogg.WeatherEffect, null, null);
-
-                            // Scattering
-                            // TODO: proper conversion for fog.
-
-                            AtmosphereFog.FogSettings fogSettings = null;
-
-                            if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.GroundFogEnabled))
-                                fogSettings = fogg.GroundFog;
-                            else if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.SkyFogEnabled))
-                                fogSettings = fogg.SkyFog;
-
-                            if (fogSettings != null)
-                            {
-                                atmosphereSettings.Flags |= SkyAtmParameters.AtmosphereProperty.AtmosphereFlags.OverrideRealSunValues;
-                                atmosphereSettings.Color = fogSettings.FogColor;
-                                atmosphereSettings.Intensity = 1.0f; // tweak?
-                                atmosphereSettings.SunAnglePitch = 0.0f;
-                                atmosphereSettings.SunAngleYaw = 0.0f;
-
-                                // reach has a fog light angle but i think this better for now
-                                if (scnr.SkyReferences.Count > 0 && scnr.SkyReferences[0].SkyObject != null)
-                                {
-                                    var skyObje = CacheContext.Deserialize<GameObject>(cacheStream, scnr.SkyReferences[0].SkyObject);
-                                    var hlmt = CacheContext.Deserialize<Model>(cacheStream, skyObje.Model);
-                                    var mode = CacheContext.Deserialize<RenderModel>(cacheStream, hlmt.RenderModel);
-                                
-                                    if (mode.LightgenLights.Count > 0)
-                                    {
-                                        var direction = mode.LightgenLights.Last().Direction; // last light is sun
-                                
-                                        atmosphereSettings.SunAnglePitch = (float)(Math.Asin(direction.K) * (180.0f / Math.PI));
-                                        if (atmosphereSettings.SunAnglePitch < 0.0f) // limit to 0-90
-                                            atmosphereSettings.SunAnglePitch = -atmosphereSettings.SunAnglePitch;
-
-                                        atmosphereSettings.SunAngleYaw = (float)(Math.Atan2(direction.J, direction.I) * (180.0f / Math.PI));
-                                    }
-                                }
-
-                                atmosphereSettings.SeaLevel = fogSettings.BaseHeight; // WU, lowest height of scenario
-
-                                // these are definitely wrong
-                                atmosphereSettings.RayleignHeightScale = fogSettings.FogHeight; // WU, height above sea where atmo 30% thick
-                                atmosphereSettings.MieHeightScale = fogSettings.FogHeight; // WU, height above sea where atmo 30% thick
-
-                                atmosphereSettings.MaxFogThickness = fogSettings.FogThickness * 65536.0f;
-                            }
-
-                            // todo: scale these with fog thickness
-                            atmosphereSettings.RayleighMultiplier = 0.05f; // scattering amount, small
-                            atmosphereSettings.MieMultiplier = 0.025f; // scattering amount, large
-
-                            atmosphereSettings.SunPhaseFunction = 0.2f; //todo
-                            atmosphereSettings.Desaturation = 0.0f;
-                            atmosphereSettings.DistanceBias = fogg.DistanceBias;
-                        }
-                    }
-
-                    // validate all values and recalculate atmosphere constants
-                    skya.Postprocess();
-
-                    CachedTag skyTag = CacheContext.TagCache.AllocateTag<SkyAtmParameters>(tagName);
-                    CacheContext.Serialize(cacheStream, skyTag, skya);
-
-                    scnr.SkyParameters = skyTag;
                 }
+
+                // Convert underwater fog
+
+                foreach (var sDesign in scnr.StructureDesigns)
+                {
+                    if (sDesign.StructureDesign != null)
+                    {
+                        var blamSddt = BlamCache.Deserialize<StructureDesign>(blamCacheStream, BlamCache.TagCache.GetTag<StructureDesign>(sDesign.StructureDesign.Name));
+
+                        foreach (var waterInstance in blamSddt.WaterInstances)
+                        {
+                            var waterNameId = (StringId)ConvertData(cacheStream, blamCacheStream, blamSddt.WaterGroups[waterInstance.WaterNameIndex].Name, null, null);
+                            var waterName = CacheContext.StringTable.GetString(waterNameId);
+
+                            if (!convertedWaterFog.Contains(waterName))
+                            {
+                                var unwt = new SkyAtmParameters.UnderwaterBlock
+                                {
+                                    Name = waterNameId,
+                                    Murkiness = waterInstance.FogMurkiness,
+                                    FogColor = waterInstance.FogColor
+                                };
+
+                                skya.UnderwaterSettings.Add(unwt);
+
+                                convertedWaterFog.Add(waterName);
+                            }
+                        }
+                    }
+                }
+
+                // Convert atmospheres
+
+                foreach (var atmospherePalette in scnr.Atmosphere)
+                {
+                    while (atmospherePalette.AtmosphereSettingIndex >= skya.AtmosphereSettings.Count)
+                        skya.AtmosphereSettings.Add(new SkyAtmParameters.AtmosphereProperty());
+
+                    if (atmospherePalette.AtmosphereFog != null)
+                    {
+                        var fogg = BlamCache.Deserialize<AtmosphereFog>(blamCacheStream, atmospherePalette.AtmosphereFog);
+
+                        var atmosphereSettings = skya.AtmosphereSettings[atmospherePalette.AtmosphereSettingIndex];
+
+                        atmosphereSettings.Flags |= SkyAtmParameters.AtmosphereProperty.AtmosphereFlags.EnableAtmosphere;
+                        atmosphereSettings.Name = (StringId)ConvertData(cacheStream, blamCacheStream, atmospherePalette.Name, null, null);
+
+                        // Patchy Fog
+
+                        if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.PatchyFogEnabled))
+                            atmosphereSettings.Flags |= SkyAtmParameters.AtmosphereProperty.AtmosphereFlags.PatchyFog;
+
+                        atmosphereSettings.SheetDensity = fogg.PatchyFog.SheetDensity;
+                        atmosphereSettings.FullIntensityHeight = fogg.PatchyFog.FullIntensityHeight;
+                        atmosphereSettings.HalfIntensityHeight = fogg.PatchyFog.HalfIntensityHeight;
+                        atmosphereSettings.WindDirection = fogg.PatchyFog.WindDirection;
+
+                        if (fogg.WeatherEffect != null)
+                            atmosphereSettings.WeatherEffect = (CachedTag)ConvertData(cacheStream, blamCacheStream, fogg.WeatherEffect, null, null);
+
+                        // Scattering
+                        // TODO: proper conversion for fog.
+
+                        AtmosphereFog.FogSettings fogSettings = null;
+
+                        if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.GroundFogEnabled))
+                            fogSettings = fogg.GroundFog;
+                        else if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.SkyFogEnabled))
+                            fogSettings = fogg.SkyFog;
+
+                        if (fogSettings != null)
+                        {
+                            atmosphereSettings.Flags |= SkyAtmParameters.AtmosphereProperty.AtmosphereFlags.OverrideRealSunValues;
+                            atmosphereSettings.Color = fogSettings.FogColor;
+                            atmosphereSettings.Intensity = 1.0f; // tweak?
+                            atmosphereSettings.SunAnglePitch = 0.0f;
+                            atmosphereSettings.SunAngleYaw = 0.0f;
+
+                            // reach has a fog light angle but i think this better for now
+                            if (scnr.SkyReferences.Count > 0 && scnr.SkyReferences[0].SkyObject != null)
+                            {
+                                var skyObje = CacheContext.Deserialize<GameObject>(cacheStream, scnr.SkyReferences[0].SkyObject);
+                                var hlmt = CacheContext.Deserialize<Model>(cacheStream, skyObje.Model);
+                                var mode = CacheContext.Deserialize<RenderModel>(cacheStream, hlmt.RenderModel);
+
+                                if (mode.LightgenLights.Count > 0)
+                                {
+                                    var direction = mode.LightgenLights.Last().Direction; // last light is sun
+
+                                    atmosphereSettings.SunAnglePitch = (float)(Math.Asin(direction.K) * (180.0f / Math.PI));
+                                    if (atmosphereSettings.SunAnglePitch < 0.0f) // limit to 0-90
+                                        atmosphereSettings.SunAnglePitch = -atmosphereSettings.SunAnglePitch;
+
+                                    atmosphereSettings.SunAngleYaw = (float)(Math.Atan2(direction.J, direction.I) * (180.0f / Math.PI));
+                                }
+                            }
+
+                            atmosphereSettings.SeaLevel = fogSettings.BaseHeight; // WU, lowest height of scenario
+
+                            // these are definitely wrong
+                            atmosphereSettings.RayleignHeightScale = fogSettings.FogHeight; // WU, height above sea where atmo 30% thick
+                            atmosphereSettings.MieHeightScale = fogSettings.FogHeight; // WU, height above sea where atmo 30% thick
+
+                            atmosphereSettings.MaxFogThickness = fogSettings.FogThickness * 65536.0f;
+                        }
+
+                        // todo: scale these with fog thickness
+                        atmosphereSettings.RayleighMultiplier = 0.05f; // scattering amount, small
+                        atmosphereSettings.MieMultiplier = 0.025f; // scattering amount, large
+
+                        atmosphereSettings.SunPhaseFunction = 0.2f; //todo
+                        atmosphereSettings.Desaturation = 0.0f;
+                        atmosphereSettings.DistanceBias = fogg.DistanceBias;
+                    }
+                }
+
+                // validate all values and recalculate atmosphere constants
+                skya.Postprocess();
+
+                CacheContext.Serialize(cacheStream, skyaTag, skya);
+
+                scnr.SkyParameters = skyaTag;
 
                 // convert decal placements
                 foreach (var decal in scnr.Decals) 

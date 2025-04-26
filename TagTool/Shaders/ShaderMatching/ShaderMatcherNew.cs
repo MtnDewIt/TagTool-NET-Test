@@ -496,12 +496,18 @@ namespace TagTool.Shaders.ShaderMatching
                             //}
                             if (methodName == "material_model")
                             {
-                                if (optionName == "cook_torrance")
-                                    optionName = "cook_torrance_reach";
-                                else if (optionName == "two_lobe_phong")
-                                    optionName = "two_lobe_phong_reach";
-                                //else if (optionName == "organism")
-                                //    optionName = "organism_reach";
+                                switch (optionName)
+                                {
+                                    case "cook_torrance":
+                                        optionName = "cook_torrance_reach";
+                                        break;
+                                    case "two_lobe_phong":
+                                        optionName = "two_lobe_phong_reach";
+                                        break;
+                                    //case "organism":
+                                    //    optionName = "organism_reach"
+                                    //    break;
+                                }
                             }
                         }
 
