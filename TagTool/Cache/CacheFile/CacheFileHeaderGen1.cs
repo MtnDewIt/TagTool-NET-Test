@@ -18,20 +18,20 @@ namespace TagTool.Cache
         public int FileCompressedLength;
         public uint TagTableHeaderOffset;
         public TagMemoryHeader TagMemoryHeader;
-
+        
         [TagField(Length = 32)]
         public string Name;
-
+        
         [TagField(Length = 32)]
         public string Build;
-
+        
         public CacheFileType CacheType;
         public CacheFileSharedType SharedCacheType;
         public uint Checksum;
-
+        
         [TagField(Length = 0x794)]
         public byte[] Padding;
-
+        
         public Tag FooterSignature;
 
         //

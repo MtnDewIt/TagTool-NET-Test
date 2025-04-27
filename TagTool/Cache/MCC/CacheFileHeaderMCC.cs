@@ -4,16 +4,19 @@ using TagTool.Tags;
 
 namespace TagTool.Cache.MCC
 {
-    [TagStructure(Size = 0x4000, MaxVersion = CacheVersion.Halo3Retail)]
-    [TagStructure(Size = 0x4000, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x4000, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST)]
     [TagStructure(Size = 0xA000, MinVersion = CacheVersion.HaloReach)]
     public class CacheFileHeaderMCC : CacheFileHeader
     {
+        //
+        // Header definition
+        //
+
         public Tag HeaderSignature;
         public CacheFileVersion FileVersion;
         public uint FileLength;
-        public HaloEngineVersion EngineVersion;
-        public sbyte PlatformType; // Xbox One = 1, PC = 2
+        public CacheFileEngineVersion EngineVersion;
+        public CacheFilePlatformType PlatformType;
         [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
         public byte[] Padding1;
         public TagMemoryHeader TagMemoryHeader;
@@ -104,17 +107,6 @@ namespace TagTool.Cache.MCC
             public uint IndicesOffset;
             public int NamespacesCount;
             public uint NamespacesOffset;
-        }
-
-        public enum HaloEngineVersion : sbyte
-        {
-            Halo1,
-            Halo2,
-            Halo3,
-            Halo4,
-            Halo2AMP,
-            Halo3ODST,
-            HaloReach
         }
     }
 }

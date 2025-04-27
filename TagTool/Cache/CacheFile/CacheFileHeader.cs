@@ -1,4 +1,7 @@
-﻿using TagTool.Cache.MCC;
+﻿using System;
+using System.Globalization;
+using System.Linq;
+using TagTool.Cache.MCC;
 using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
@@ -113,7 +116,6 @@ namespace TagTool.Cache
         public abstract StringIDHeader GetStringIDHeader();
         public abstract TagNameHeader GetTagNameHeader();
         public abstract TagMemoryHeader GetTagMemoryHeader();
-
     }
 
     [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo3Beta)]

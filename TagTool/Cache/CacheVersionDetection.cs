@@ -185,19 +185,23 @@ namespace TagTool.Cache
                     version = CacheVersion.HaloCustomEdition;
                     cachePlatform = CachePlatform.MCC;
                     break;
+
                 // TODO: Handle this bullshit (FUCK U 343)
                 case "":
                     version = CacheVersion.Halo2PC;
                     cachePlatform = CachePlatform.MCC;
                     break;
+
                 case "Dec 21 2023 22:31:37":
                     version = CacheVersion.Halo3Retail;
                     cachePlatform = CachePlatform.MCC;
                     break;
+
                 case "May 16 2023 11:44:41":
                     version = CacheVersion.Halo3ODST;
                     cachePlatform = CachePlatform.MCC;
                     break;
+
                 case "May 29 2019 00:44:52":
                 case "Jun 24 2019 00:36:03":
                 case "Jul 30 2019 14:17:16":
@@ -205,15 +209,17 @@ namespace TagTool.Cache
                     version = CacheVersion.HaloReach;
                     cachePlatform = CachePlatform.MCC;
                     break;
+
                 case "Apr  1 2023 17:35:22":
                     version = CacheVersion.Halo4;
                     cachePlatform = CachePlatform.MCC;
                     break;
+
                 case "Jun 13 2023 20:21:18":
                     version = CacheVersion.Halo2AMP;
                     cachePlatform = CachePlatform.MCC;
                     break;
-                    
+
                 default:
                     version = CacheVersion.Unknown;
                     cachePlatform = CachePlatform.All;

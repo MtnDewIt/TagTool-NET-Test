@@ -182,28 +182,28 @@ namespace TagTool.BlamFile
             if (mapVersion == CacheFileVersion.HaloMCCUniversal)
             {
                 reader.SeekTo(0xC);
-                var engineVersion = (CacheFileHeaderMCC.HaloEngineVersion)reader.ReadSByte();
+                var engineVersion = (CacheFileEngineVersion)reader.ReadSByte();
                 switch(engineVersion)
                 {
-                    case CacheFileHeaderMCC.HaloEngineVersion.Halo1:
+                    case CacheFileEngineVersion.Halo1:
                         cacheVersion = CacheVersion.HaloCustomEdition;
                         break;
-                    case CacheFileHeaderMCC.HaloEngineVersion.Halo2:
+                    case CacheFileEngineVersion.Halo2:
                         cacheVersion = CacheVersion.Halo2PC;
                         break;
-                    case CacheFileHeaderMCC.HaloEngineVersion.Halo3:
+                    case CacheFileEngineVersion.Halo3:
                         cacheVersion = CacheVersion.Halo3Retail;
                         break;
-                    case CacheFileHeaderMCC.HaloEngineVersion.Halo4:
+                    case CacheFileEngineVersion.Halo4:
                         cacheVersion = CacheVersion.Halo4;
                         break;
-                    case CacheFileHeaderMCC.HaloEngineVersion.Halo2AMP:
+                    case CacheFileEngineVersion.Halo2AMP:
                         cacheVersion = CacheVersion.Halo2AMP;
                         break;
-                    case CacheFileHeaderMCC.HaloEngineVersion.Halo3ODST:
+                    case CacheFileEngineVersion.Halo3ODST:
                         cacheVersion = CacheVersion.Halo3ODST;
                         break;
-                    case CacheFileHeaderMCC.HaloEngineVersion.HaloReach:
+                    case CacheFileEngineVersion.HaloReach:
                         cacheVersion = CacheVersion.HaloReach;
                         break;
                     default:

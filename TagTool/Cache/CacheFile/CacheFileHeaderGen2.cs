@@ -1,12 +1,10 @@
 ﻿using TagTool.Common;
-using TagTool.IO;
-using TagTool.Serialization;
 using TagTool.Tags;
 
 namespace TagTool.Cache
 {
     [TagStructure(Size = 0x800, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Vista, Platform = CachePlatform.Original)]
-    [TagStructure(Size = 0x380, MinVersion = CacheVersion.Halo2Vista, MaxVersion = CacheVersion.Halo2Vista, Platform = CachePlatform.MCC)]
+    [TagStructure(Size = 0x380, MinVersion = CacheVersion.Halo2PC, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.MCC)]
     public class CacheFileHeaderGen2 : CacheFileHeader
     {
         //
@@ -14,17 +12,19 @@ namespace TagTool.Cache
         //
 
         public Tag HeaderSignature;
+
         public CacheFileVersion FileVersion;
         public int FileLength;
         public int FileCompressedLength;
-        public uint TagTableHeaderOffset;
+
+        public PlatformUnsignedValue TagTableHeaderOffset;
+
         public TagMemoryHeader TagMemoryHeader;
 
         [TagField(MinVersion = CacheVersion.Halo2Vista)]
-        public int TagDependencyGraphOffset;
+        public int SharedTagDependencyOffset;
         [TagField(MinVersion = CacheVersion.Halo2Vista)]
-        public uint TagDependencyGraphSize;
-
+        public uint SharedTagDependencyCount;
 
         [TagField(Length = 256)]
         public string SourceFile;
@@ -34,29 +34,37 @@ namespace TagTool.Cache
 
         public CacheFileType CacheType;
         public CacheFileSharedType SharedCacheType;
+
         public uint CacheResourceCRC;
-        public bool Unknown2;
+
+        public bool Uncompressed;
         public bool TrackedBuild;
-        public bool Unknown3;
-        public byte Unknown4;
-        public int Unknown5;
-        public int Unknown6;
-        public int Unknown7;
-        public int Unknown8;
-        public int Unknown9;
+        public bool ValidSharedResourceUsage;
+        public byte HeaderFlags;
+
+        public LastModificationDate SlotModificationDate;
+
+        public int LowDetailTextureCount;
+        public int LowDetailTextureOffset;
+        public int LowDetailTextureByteCount;
 
         public StringIDHeader StringIdsHeader;
 
-        public int ExternalDependencies;
-        public ulong Timestamp;
-        public ulong MainMenuTimestamp;
-        public ulong SharedTimestamp;
-        public ulong CampaignTimestamp;       
+        public uint SharedFileFlags;
+
+        public LastModificationDate CreationDate;
+
+        [TagField(Length = (int)CacheFileSharedFileType.Count)]
+        public SharedModificationDate[] SharedCreationDate;
+
         [TagField(Length = 0x20)]
         public string Name;
-        public int Unknown13;
+
+        public GameLanguage Language;
+
         [TagField(Length = 256)]
         public string ScenarioPath;
+
         public int MinorVersion;
 
         public TagNameHeader TagNamesHeader;
@@ -71,21 +79,19 @@ namespace TagTool.Cache
         public uint SecondarySoundGestaltDatumIndex = uint.MaxValue;
 
         [TagField(MinVersion = CacheVersion.Halo2Vista)]
-        public int FastLoadGeometryBlockOffset = -1;
+        public int GeometryDataOffset = -1;
 
         [TagField(MinVersion = CacheVersion.Halo2Vista)]
-        public uint FastLoadGeometryBlockSize = 0;
+        public uint GeometryDataSize = 0;
 
         public uint Checksum;
 
         [TagField(MinVersion = CacheVersion.Halo2Vista)]
-        public uint MoppCodesChecksum;
+        public uint MoppChecksum;
 
-        [TagField(Length = 1320, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Xbox)]
-        public byte[] UnknownsH2X = new byte[1320];
-
-        [TagField(Length = 1284, MinVersion = CacheVersion.Halo2Vista, MaxVersion = CacheVersion.Halo2Vista)]
-        public byte[] UnknownsH2V = new byte[1284];
+        [TagField(Length = 1284, MinVersion = CacheVersion.Halo2Vista, MaxVersion = CacheVersion.Halo2Vista, Flags = TagFieldFlags.Padding)]
+        [TagField(Length = 1320, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Xbox, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding1;
 
         public Tag FooterSignature;
 
@@ -95,7 +101,7 @@ namespace TagTool.Cache
 
         public override Tag GetFootTag() => FooterSignature;
         public override Tag GetHeadTag() => HeaderSignature;
-        public override ulong GetTagTableHeaderOffset() => TagTableHeaderOffset;
+        public override ulong GetTagTableHeaderOffset() => TagTableHeaderOffset.Value;
         public override string GetName() => Name;
         public override string GetBuild() => Build;
         public override string GetScenarioPath() => null;
