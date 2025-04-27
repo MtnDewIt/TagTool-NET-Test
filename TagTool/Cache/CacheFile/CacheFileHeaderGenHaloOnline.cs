@@ -70,7 +70,7 @@ namespace TagTool.Cache
         public FileCreator CreatorName;
 
         public int ExpectedBaseAddress;
-        public int XdkVersion;
+        public int XDKVersion;
         public int ContentHashMask;
 
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]

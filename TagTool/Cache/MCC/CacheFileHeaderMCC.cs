@@ -109,10 +109,10 @@ namespace TagTool.Cache.MCC
         public enum HaloEngineVersion : sbyte
         {
             Halo1,
-            Unknown1,
+            Halo2,
             Halo3,
-            Unknown3,
-            Unknown4,
+            Halo4,
+            Halo2AMP,
             Halo3ODST,
             HaloReach
         }

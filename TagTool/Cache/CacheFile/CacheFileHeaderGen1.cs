@@ -27,7 +27,7 @@ namespace TagTool.Cache
 
         public CacheFileType CacheType;
         public CacheFileSharedType SharedCacheType;
-        public int Unknown;
+        public uint Checksum;
 
         [TagField(Length = 0x794)]
         public byte[] Padding;

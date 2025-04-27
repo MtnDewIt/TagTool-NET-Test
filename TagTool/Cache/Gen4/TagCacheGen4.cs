@@ -132,6 +132,7 @@ namespace TagTool.Cache.Gen4
                     break;
                 case CacheVersion.HaloReach:
                 case CacheVersion.Halo4:
+                case CacheVersion.Halo2AMP:
                     TagsKey = "LetsAllPlayNice!";
                     break;
             }

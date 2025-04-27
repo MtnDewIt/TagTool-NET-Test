@@ -5,9 +5,6 @@ using TagTool.Tags;
 
 namespace TagTool.Cache
 {
-    [TagStructure(Size = 0x800, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Halo3Beta)]
-    [TagStructure(Size = 0x3000, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0xA000, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach11883)]
     [TagStructure(Size = 0x1E000, MinVersion = CacheVersion.Halo4)]
     public class CacheFileHeaderGen4 : CacheFileHeader
     {
@@ -32,9 +29,6 @@ namespace TagTool.Cache
 
         public CacheFileType CacheType;
         public CacheFileSharedType SharedCacheType;
-
-        [TagField(MaxVersion = CacheVersion.Halo3Beta)]
-        public uint CacheResourceCRC;
 
         public bool Unknown2;     
         public bool TrackedBuild;       
@@ -83,16 +77,8 @@ namespace TagTool.Cache
 
         public int XDKVersion;
 
-        [TagField(Length = (int)CacheFilePartitionTypeBeta.Count, MaxVersion = CacheVersion.Halo3Beta)]
-        public CacheFilePartition[] PartitionsBeta = new CacheFilePartition[(int)CacheFilePartitionTypeBeta.Count];
-
         [TagField(Length = (int)CacheFilePartitionType.Count, MinVersion = CacheVersion.Halo3Retail)]
         public CacheFilePartition[] Partitions = new CacheFilePartition[(int)CacheFilePartitionType.Count];
-
-        [TagField(Length = 0x4EC, MaxVersion = CacheVersion.Halo3Beta)]
-        public byte[] UnknownH3Beta;
-
-        // everything after that is min h3 retail
 
         [TagField(MinVersion = CacheVersion.Halo3Retail)]
         public int CountUnknown1;
@@ -128,13 +114,7 @@ namespace TagTool.Cache
         [TagField(Length = 4, MinVersion = CacheVersion.Halo3Retail)]
         public int[] CompressionGUID;
 
-        [TagField(Length = 0x2B38, MinVersion = CacheVersion.Halo3Retail)]
-        public byte[] UnknownFileData;
-
-        [TagField(Length = 0x7000, MinVersion = CacheVersion.HaloReach)]
-        public byte[] UnknownReach;
-
-        [TagField(Length = 0x13FF0, MinVersion = CacheVersion.Halo4)]
+        [TagField(Length = 0x1DB28, MinVersion = CacheVersion.Halo4)]
         public byte[] UnknownH4FileData;
 
         public Tag FooterSignature;

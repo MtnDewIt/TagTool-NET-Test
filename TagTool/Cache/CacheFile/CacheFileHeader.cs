@@ -24,28 +24,41 @@ namespace TagTool.Cache
 
             if (fileVersion == CacheFileVersion.HaloMCCUniversal)
             {
-                // TODO: cleanup
-                // adapt the header for gen3 for now
-                var header = deserializer.Deserialize<CacheFileHeaderMCC>(dataContext);
-                var adapter = new CacheFileHeaderGen3()
+                switch (version)
                 {
-                    HeaderSignature = header.HeaderSignature,
-                    FileVersion = header.FileVersion,
-                    TagTableHeaderOffset = header.TagTableHeaderOffset,
-                    TagMemoryHeader = header.TagMemoryHeader,
-                    SourceFile = header.SourceFile,
-                    Build = header.Build,
-                    CacheType = header.CacheType,
-                    SharedCacheType = header.SharedCacheType,
-                    StringIdsHeader = header.GetStringIDHeader(),
-                    TagNamesHeader = header.TagNamesHeader,
-                    Name = header.Name,
-                    VirtualBaseAddress = header.VirtualBaseAddress,
-                    Partitions = header.Partitions,
-                    SectionTable = header.SectionTable,
-                    FooterSignature = header.FooterSignature
-                };
-                return adapter;
+                    case CacheVersion.HaloCustomEdition:
+                        return deserializer.Deserialize<CacheFileHeaderGen1>(dataContext);
+                    case CacheVersion.Halo2PC:
+                        return deserializer.Deserialize<CacheFileHeaderGen2>(dataContext);
+                    case CacheVersion.Halo3Retail:
+                    case CacheVersion.Halo3ODST:
+                    case CacheVersion.HaloReach:
+                        // TODO: cleanup
+                        // adapt the header for gen3 for now
+                        var header = deserializer.Deserialize<CacheFileHeaderMCC>(dataContext);
+                        var adapter = new CacheFileHeaderGen3()
+                        {
+                            HeaderSignature = header.HeaderSignature,
+                            FileVersion = header.FileVersion,
+                            TagTableHeaderOffset = header.TagTableHeaderOffset,
+                            TagMemoryHeader = header.TagMemoryHeader,
+                            SourceFile = header.SourceFile,
+                            Build = header.Build,
+                            CacheType = header.CacheType,
+                            SharedCacheType = header.SharedCacheType,
+                            StringIdsHeader = header.GetStringIDHeader(),
+                            TagNamesHeader = header.TagNamesHeader,
+                            Name = header.Name,
+                            VirtualBaseAddress = header.VirtualBaseAddress,
+                            Partitions = header.Partitions,
+                            SectionTable = header.SectionTable,
+                            FooterSignature = header.FooterSignature
+                        };
+                        return adapter;
+                        // return deserializer.Deserialize<CacheFileHeaderGen3>(dataContext);
+                    case CacheVersion.Halo4:
+                        return deserializer.Deserialize<CacheFileHeaderGen4>(dataContext);
+                }
             }
 
             switch (version)

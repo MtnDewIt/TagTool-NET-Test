@@ -181,6 +181,23 @@ namespace TagTool.Cache
                     cachePlatform = CachePlatform.Original;
                     break;
 
+                case "01.03.43.0000":
+                    version = CacheVersion.HaloCustomEdition;
+                    cachePlatform = CachePlatform.MCC;
+                    break;
+                // TODO: Handle this bullshit (FUCK U 343)
+                case "":
+                    version = CacheVersion.Halo2PC;
+                    cachePlatform = CachePlatform.MCC;
+                    break;
+                case "Dec 21 2023 22:31:37":
+                    version = CacheVersion.Halo3Retail;
+                    cachePlatform = CachePlatform.MCC;
+                    break;
+                case "May 16 2023 11:44:41":
+                    version = CacheVersion.Halo3ODST;
+                    cachePlatform = CachePlatform.MCC;
+                    break;
                 case "May 29 2019 00:44:52":
                 case "Jun 24 2019 00:36:03":
                 case "Jul 30 2019 14:17:16":
@@ -188,11 +205,15 @@ namespace TagTool.Cache
                     version = CacheVersion.HaloReach;
                     cachePlatform = CachePlatform.MCC;
                     break;
-
-                case "Sep 29 2021 09:17:56":
-                    version = CacheVersion.Halo3Retail;
+                case "Apr  1 2023 17:35:22":
+                    version = CacheVersion.Halo4;
                     cachePlatform = CachePlatform.MCC;
                     break;
+                case "Jun 13 2023 20:21:18":
+                    version = CacheVersion.Halo2AMP;
+                    cachePlatform = CachePlatform.MCC;
+                    break;
+                    
                 default:
                     version = CacheVersion.Unknown;
                     cachePlatform = CachePlatform.All;
@@ -212,8 +233,21 @@ namespace TagTool.Cache
             {
                 switch (version)
                 {
+                    case CacheVersion.HaloCustomEdition:
+                        return "01.03.43.0000";
+                    case CacheVersion.Halo2PC:
+                        // TODO: Handle this bullshit (FUCK U 343)
+                        return "";
                     case CacheVersion.Halo3Retail:
-                        return "Sep 29 2021 09:17:56";
+                        return "Dec 21 2023 22:31:37";
+                    case CacheVersion.Halo3ODST:
+                        return "May 16 2023 11:44:41";
+                    case CacheVersion.HaloReach:
+                        return "Jun 21 2023 15:35:31";
+                    case CacheVersion.Halo4:
+                        return "Apr  1 2023 17:35:22";
+                    case CacheVersion.Halo2AMP:
+                        return "Jun 13 2023 20:21:18";
                     default:
                         return version.ToString();
                 }
@@ -504,6 +538,7 @@ namespace TagTool.Cache
                 case CacheVersion.Halo2Vista:
                 case CacheVersion.Halo2Xbox:
                 case CacheVersion.Halo2Beta:
+                case CacheVersion.Halo2PC:
                     return CacheGeneration.Second;
 
                 case CacheVersion.Halo3Beta:
@@ -533,6 +568,7 @@ namespace TagTool.Cache
                     return CacheGeneration.HaloOnline;
 
                 case CacheVersion.Halo4:
+                case CacheVersion.Halo2AMP:
                     return CacheGeneration.Fourth;
 
                 default:
@@ -565,6 +601,7 @@ namespace TagTool.Cache
                 case CacheVersion.Halo2Beta:
                 case CacheVersion.Halo2Xbox:
                 case CacheVersion.Halo2Vista:
+                case CacheVersion.Halo2PC:
                     return GameTitle.Halo2;
                 case CacheVersion.Halo3Beta:
                 case CacheVersion.Halo3Retail:
@@ -594,6 +631,8 @@ namespace TagTool.Cache
                     return GameTitle.HaloReach;
                 case CacheVersion.Halo4:
                     return GameTitle.Halo4;
+                case CacheVersion.Halo2AMP:
+                    return GameTitle.Halo2AMP;
                 default:
                     return GameTitle.Unknown;
             }
@@ -637,6 +676,7 @@ namespace TagTool.Cache
             -1, // Halo2Beta
             -1, // Halo2Xbox
             -1, // Halo2Vista
+            -1, // Halo2PC (MCC)
             -1, // Halo3Beta
             -1, // Halo3Retail
             -1, // Halo3ODST
@@ -660,6 +700,7 @@ namespace TagTool.Cache
             -1, // HaloReach
             -1, // HaloReach11883
             -1  // Halo 4
+            -1, // Halo 2 Anniversary Multiplayer
         };
     }
 
@@ -673,6 +714,7 @@ namespace TagTool.Cache
         Halo2Beta,
         Halo2Xbox,
         Halo2Vista,
+        Halo2PC,
         Halo3Beta,
         Halo3Retail,
         Halo3ODST,
@@ -695,7 +737,8 @@ namespace TagTool.Cache
         HaloOnline700123,
         HaloReach,
         HaloReach11883,
-        Halo4
+        Halo4,
+        Halo2AMP
     }
 
     public enum CacheGeneration : int
