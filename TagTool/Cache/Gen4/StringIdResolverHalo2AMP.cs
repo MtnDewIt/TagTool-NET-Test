@@ -8,8 +8,8 @@ namespace TagTool.Cache
     /// </summary>
     public class StringIdResolverHalo2AMP : StringIdResolver
     {
-        private static readonly int[] SetOffsets = { 0x210C, 0x633, 0xEC9, 0xFD4, 0x1061, 0x1159, 0x11A4, 0x11CF, 0x1CD7, 0x1EE7, 0x1F1B, 0x1F9E, 0x1FD2, 0x1FDF, 0x2021 };
-        private const int SetMin = 0x633; // Mininum index that goes in a set
+        private static readonly int[] SetOffsets = { 0x212B, 0x635, 0xED1, 0xFDC, 0x1069, 0x1161, 0x11B6, 0x11E1, 0x1CF2, 0x1F05, 0x1F39, 0x1FBC, 0x1FF0, 0x1FFD, 0x203F };
+        private const int SetMin = 0x635; // Mininum index that goes in a set
         private const int SetMax = 0x7FFFF; // Maximum index that goes in a set
 
         public StringIdResolverHalo2AMP()
