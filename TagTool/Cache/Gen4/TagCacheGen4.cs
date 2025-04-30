@@ -115,19 +115,20 @@ namespace TagTool.Cache.Gen4
             var tagNamesHeader = Gen4Header.GetTagNameHeader();
             var tagMemoryHeader = Gen4Header.GetTagMemoryHeader();
 
-            switch (Version)
+            if (CachePlatform == CachePlatform.Original) 
             {
-                case CacheVersion.Halo3Beta:
-                case CacheVersion.Halo3Retail:
-                case CacheVersion.Halo3ODST:
-                    TagsKey = "";
-                    break;
-                case CacheVersion.HaloReach:
-                case CacheVersion.Halo4:
-                case CacheVersion.Halo2AMP:
-                    TagsKey = "LetsAllPlayNice!";
-                    break;
+                switch (Version)
+                {
+                    case CacheVersion.Halo4:
+                        TagsKey = "LetsAllPlayNice!";
+                        break;
+                    default:
+                        TagsKey = "";
+                        break;
+                }
             }
+            else
+                TagsKey = "";
 
             uint sectionOffset;
 

@@ -126,14 +126,11 @@ namespace TagTool.Cache.Gen3
             {
                 switch (Version)
                 {
-                    case CacheVersion.Halo3Beta:
-                    case CacheVersion.Halo3Retail:
-                    case CacheVersion.Halo3ODST:
-                        TagsKey = "";
-                        break;
                     case CacheVersion.HaloReach:
-                    case CacheVersion.Halo4:
                         TagsKey = "LetsAllPlayNice!";
+                        break;
+                    default:
+                        TagsKey = "";
                         break;
                 }
             }

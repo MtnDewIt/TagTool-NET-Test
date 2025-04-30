@@ -4,6 +4,7 @@ using System.IO;
 using TagTool.BlamFile;
 using TagTool.Cache.Gen4;
 using TagTool.Cache.Resources;
+using TagTool.Commands.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
@@ -76,28 +77,34 @@ namespace TagTool.Cache
 
                 if(TagCacheGen4.Instances.Count > 0)
                 {
-                    if (Version == CacheVersion.Halo3Beta || headerGen4.SectionTable.Sections[(int)CacheFileSectionType.LocalizationSection].Size == 0)
+                    if (headerGen4.SectionTable.Sections[(int)CacheFileSectionType.LocalizationSection].Size == 0)
                         LocaleTables = new List<LocaleTable>();
                     else
                     {
-                        var globals = Deserialize<Globals>(cacheStream, TagCacheGen4.GlobalInstances["matg"]);
-                        LocaleTables = LocalesTableGen4.CreateLocalesTable(reader, BaseMapFile, globals);
+                        //Allow caches to open even if Globals cannot deserialize
+                        try
+                        {
+                            var globals = Deserialize<Globals>(cacheStream, TagCacheGen4.GlobalInstances["matg"]);
+                            LocaleTables = LocalesTableGen4.CreateLocalesTable(reader, BaseMapFile, globals);
+                        }
+                        catch
+                        {
+                            new TagToolWarning("Failed to build locales table (Invalid Globals definition?)");
+                            LocaleTables = new List<LocaleTable>();
+                        }
                     }
                 }
             }
 
             // unused but kept for future uses
-            switch (Version)
+            if (Platform == CachePlatform.Original) 
             {
-                case CacheVersion.Halo3Beta:
-                case CacheVersion.Halo3Retail:
-                case CacheVersion.Halo3ODST:
-                    NetworkKey = "";
-                    break;
-                case CacheVersion.HaloReach:
-                case CacheVersion.Halo4:
-                    NetworkKey = "SneakerNetReigns";
-                    break;
+                switch (Version)
+                {
+                    case CacheVersion.Halo4:
+                        NetworkKey = "SneakerNetReigns";
+                        break;
+                }
             }
         }
 

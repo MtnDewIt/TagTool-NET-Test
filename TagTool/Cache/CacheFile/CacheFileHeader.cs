@@ -38,29 +38,50 @@ namespace TagTool.Cache
                     case CacheVersion.HaloReach:
                         // TODO: cleanup
                         // adapt the header for gen3 for now
-                        var header = deserializer.Deserialize<CacheFileHeaderMCC>(dataContext);
-                        var adapter = new CacheFileHeaderGen3()
+                        var gen3Header = deserializer.Deserialize<CacheFileHeaderMCC>(dataContext);
+                        var gen3Adapter = new CacheFileHeaderGen3()
                         {
-                            HeaderSignature = header.HeaderSignature,
-                            FileVersion = header.FileVersion,
-                            TagTableHeaderOffset = header.TagTableHeaderOffset,
-                            TagMemoryHeader = header.TagMemoryHeader,
-                            SourceFile = header.SourceFile,
-                            Build = header.Build,
-                            CacheType = header.CacheType,
-                            SharedCacheType = header.SharedCacheType,
-                            StringIdsHeader = header.GetStringIDHeader(),
-                            TagNamesHeader = header.TagNamesHeader,
-                            Name = header.Name,
-                            VirtualBaseAddress = header.VirtualBaseAddress,
-                            Partitions = header.Partitions,
-                            SectionTable = header.SectionTable,
-                            FooterSignature = header.FooterSignature
+                            HeaderSignature = gen3Header.HeaderSignature,
+                            FileVersion = gen3Header.FileVersion,
+                            TagTableHeaderOffset = gen3Header.TagTableHeaderOffset,
+                            TagMemoryHeader = gen3Header.TagMemoryHeader,
+                            SourceFile = gen3Header.SourceFile,
+                            Build = gen3Header.Build,
+                            CacheType = gen3Header.CacheType,
+                            SharedCacheType = gen3Header.SharedCacheType,
+                            StringIdsHeader = gen3Header.GetStringIDHeader(),
+                            TagNamesHeader = gen3Header.TagNamesHeader,
+                            Name = gen3Header.Name,
+                            VirtualBaseAddress = gen3Header.VirtualBaseAddress,
+                            Partitions = gen3Header.Partitions,
+                            SectionTable = gen3Header.SectionTable,
+                            FooterSignature = gen3Header.FooterSignature
                         };
-                        return adapter;
-                        // return deserializer.Deserialize<CacheFileHeaderGen3>(dataContext);
+                        return gen3Header;
                     case CacheVersion.Halo4:
-                        return deserializer.Deserialize<CacheFileHeaderGen4>(dataContext);
+                    case CacheVersion.Halo2AMP:
+                        // TODO: cleanup
+                        // adapt the header for gen4 for now
+                        var gen4Header = deserializer.Deserialize<CacheFileHeaderMCC>(dataContext);
+                        var gen4Adapter = new CacheFileHeaderGen4()
+                        {
+                            HeaderSignature = gen4Header.HeaderSignature,
+                            FileVersion = gen4Header.FileVersion,
+                            TagTableHeaderOffset = gen4Header.TagTableHeaderOffset,
+                            TagMemoryHeader = gen4Header.TagMemoryHeader,
+                            SourceFile = gen4Header.SourceFile,
+                            Build = gen4Header.Build,
+                            CacheType = gen4Header.CacheType,
+                            SharedCacheType = gen4Header.SharedCacheType,
+                            StringIdsHeader = gen4Header.GetStringIDHeader(),
+                            TagNamesHeader = gen4Header.TagNamesHeader,
+                            Name = gen4Header.Name,
+                            VirtualBaseAddress = gen4Header.VirtualBaseAddress,
+                            Partitions = gen4Header.Partitions,
+                            SectionTable = gen4Header.SectionTable,
+                            FooterSignature = gen4Header.FooterSignature
+                        };
+                        return gen4Adapter;
                 }
             }
 
@@ -129,6 +150,17 @@ namespace TagTool.Cache
         public int BufferSize;
         public uint IndicesOffset;
         public uint BufferOffset;
+    }
+
+    [TagStructure(Size = 0x18, MinVersion = CacheVersion.Halo3Retail)]
+    public class StringIDHeaderMCC : TagStructure
+    {
+        public int Count;
+        public uint BufferOffset;
+        public int BufferSize;
+        public uint IndicesOffset;
+        public int NamespacesCount;
+        public uint NamespacesOffset;
     }
 
     [TagStructure(Size = 0x10)]

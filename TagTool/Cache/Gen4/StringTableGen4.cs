@@ -16,33 +16,35 @@ namespace TagTool.Cache.Gen4
 
             var Gen4Header = (CacheFileHeaderGen4)baseMapFile.Header;
             var stringIDHeader = Gen4Header.GetStringIDHeader();
+            var cachePlatform = baseMapFile.CachePlatform;
 
-            switch (Version)
+            if (cachePlatform == CachePlatform.Original)
             {
-                case CacheVersion.Halo3Beta:
-                    Resolver = new StringIdResolverHalo3Beta();
-                    break;
+                switch (Version)
+                {
+                    case CacheVersion.Halo4:
+                        Resolver = new StringIdResolverHalo4();
+                        StringKey = "ILikeSafeStrings";
+                        break;
 
-                case CacheVersion.Halo3Retail:
-                    Resolver = new StringIdResolverHalo3();
-                    break;
+                    default:
+                        throw new NotSupportedException(CacheVersionDetection.GetBuildName(Version, baseMapFile.CachePlatform));
+                }
+            }
+            else if (cachePlatform == CachePlatform.MCC) 
+            {
+                switch (Version) 
+                {
+                    case CacheVersion.Halo4:
+                        Resolver = new StringIdResolverHalo4MCC();
+                        break;
+                    case CacheVersion.Halo2AMP:
+                        Resolver = new StringIdResolverHalo2AMP();
+                        break;
 
-                case CacheVersion.Halo3ODST:
-                    Resolver = new StringIdResolverHalo3ODST();
-                    break;
-
-                case CacheVersion.HaloReach:
-                    Resolver = new StringIdResolverHaloReach();
-                    StringKey = "ILikeSafeStrings";
-                    break;
-
-                case CacheVersion.Halo4:
-                    Resolver = new StringIdResolverHalo4();
-                    StringKey = "ILikeSafeStrings";
-                    break;
-
-                default:
-                    throw new NotSupportedException(CacheVersionDetection.GetBuildName(Version, baseMapFile.CachePlatform));
+                    default:
+                        throw new NotSupportedException(CacheVersionDetection.GetBuildName(Version, baseMapFile.CachePlatform));
+                }
             }
 
             var sectionTable = Gen4Header.SectionTable;

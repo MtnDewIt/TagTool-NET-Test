@@ -38,9 +38,6 @@ namespace TagTool.Cache.Gen3
                         Resolver = new StringIdResolverHaloReach();
                         StringKey = "ILikeSafeStrings";
                         break;
-                    case CacheVersion.Halo4:
-                        Resolver = new StringIdResolverHalo4();
-                        break;
 
                     default:
                         throw new NotSupportedException(CacheVersionDetection.GetBuildName(Version, cachePlatform));

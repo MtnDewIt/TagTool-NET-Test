@@ -3,16 +3,16 @@
 namespace TagTool.Cache
 {
     /// <summary>
-    /// StringID resolver for Halo 4. 
-    /// Halo 4 StringId are 5-8-19 (length-set-index) format instead of (8-8-16)
+    /// StringID resolver for Halo 2 Anniversary Multiplayer. 
+    /// Halo 2 Anniversary Multiplayer StringId are 5-8-19 (length-set-index) format instead of (8-8-16)
     /// </summary>
-    public class StringIdResolverHalo4 : StringIdResolver
+    public class StringIdResolverHalo2AMP : StringIdResolver
     {
-        private static readonly int[] SetOffsets = { 0x20BD, 0x631, 0xEA6, 0xFB1, 0x103E, 0x1136, 0x117D, 0x11A8, 0x1C95, 0x1EA1, 0x1ED4, 0x1F57, 0x1F8B, 0x1F98, 0x1FDA };
-        private const int SetMin = 0x631;   // Mininum index that goes in a set
+        private static readonly int[] SetOffsets = { 0x210C, 0x633, 0xEC9, 0xFD4, 0x1061, 0x1159, 0x11A4, 0x11CF, 0x1CD7, 0x1EE7, 0x1F1B, 0x1F9E, 0x1FD2, 0x1FDF, 0x2021 };
+        private const int SetMin = 0x633; // Mininum index that goes in a set
         private const int SetMax = 0x7FFFF; // Maximum index that goes in a set
 
-        public StringIdResolverHalo4()
+        public StringIdResolverHalo2AMP()
         {
             LengthBits = 5;
             SetBits = 8;
