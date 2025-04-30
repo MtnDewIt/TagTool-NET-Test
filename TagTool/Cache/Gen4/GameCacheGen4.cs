@@ -42,15 +42,11 @@ namespace TagTool.Cache
         {
             var headerGen4 = (CacheFileHeaderGen4)BaseMapFile.Header;
 
-            var baseAddress = Platform == CachePlatform.MCC ?
-                headerGen4.VirtualBaseAddress64 :
-                (ulong)headerGen4.VirtualBaseAddress32;
-
             var unpackedAddress = Platform == CachePlatform.MCC ?
                 (((ulong)address << 2) + 0x50000000) :
                 (ulong)address;
 
-            return (uint)(unpackedAddress - (baseAddress - (ulong)headerGen4.SectionTable.GetSectionOffset(CacheFileSectionType.TagSection)));
+            return (uint)(unpackedAddress - (headerGen4.VirtualBaseAddress.Value - (ulong)headerGen4.SectionTable.GetSectionOffset(CacheFileSectionType.TagSection)));
         }
 
         public Dictionary<string, GameCacheGen4> SharedCacheFiles { get; } = new Dictionary<string, GameCacheGen4>();

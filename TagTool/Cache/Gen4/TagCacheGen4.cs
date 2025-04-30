@@ -17,34 +17,26 @@ namespace TagTool.Cache.Gen4
         public int TagGroupCount;
         [TagField(Platform = CachePlatform.MCC)]
         public Tag TagGroupSignature = new Tag("343i");
-        [TagField(Platform = CachePlatform.Original)]
-        public uint TagGroupsAddress32;
-        [TagField(Platform = CachePlatform.MCC)]
-        public ulong TagGroupsAddress64;
+
+        public PlatformUnsignedValue TagGroupsAddress;
 
         public int TagInstancesCount;
         [TagField(Platform = CachePlatform.MCC)]
         public Tag TagInstancesSignature = new Tag("343i");
-        [TagField(Platform = CachePlatform.Original)]
-        public uint TagInstancesAddress32;
-        [TagField(Platform = CachePlatform.MCC)]
-        public ulong TagInstancesAddress64;
+
+        public PlatformUnsignedValue TagInstancesAddress;
 
         public int GlobalIndicesCount;
         [TagField(Platform = CachePlatform.MCC)]
         public Tag GlobalIndicesSignature = new Tag("343i");
-        [TagField(Platform = CachePlatform.Original)]
-        public uint GlobalIndicesAddress32;
-        [TagField(Platform = CachePlatform.MCC)]
-        public ulong GlobalIndicesAddress64;
+
+        public PlatformUnsignedValue GlobalIndicesAddress;
 
         public int InteropsCount;
         [TagField(Platform = CachePlatform.MCC)]
         public Tag InteropsSignature = new Tag("343i");
-        [TagField(Platform = CachePlatform.Original)]
-        public uint InteropsAddress32;
-        [TagField(Platform = CachePlatform.MCC)]
-        public ulong InteropsAddress64;
+
+        public PlatformUnsignedValue InteropsAddress;
 
         [TagField(Platform = CachePlatform.MCC)]
         public uint Unknown1;
@@ -155,20 +147,16 @@ namespace TagTool.Cache.Gen4
                 tagNamesOffsetsTableOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, tagNamesHeader.TagNameIndicesOffset);
                 tagNamesBufferOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, tagNamesHeader.TagNamesBufferOffset);
 
-                addressMask = CachePlatform == CachePlatform.MCC ?
-                (Gen4Header.VirtualBaseAddress64 - (ulong)sectionOffset) :
-                (ulong)(Gen4Header.VirtualBaseAddress32 - sectionOffset);
+                addressMask = Gen4Header.VirtualBaseAddress.Value - sectionOffset;
             }
             else
             {
                 tagNamesOffsetsTableOffset = tagNamesHeader.TagNameIndicesOffset;
                 tagNamesBufferOffset = tagNamesHeader.TagNamesBufferOffset;
-                addressMask = Gen4Header.VirtualBaseAddress32 - tagMemoryHeader.MemoryBufferOffset;
+                addressMask = Gen4Header.VirtualBaseAddress.Value - tagMemoryHeader.MemoryBufferOffset;
             }
 
-            var tagTableHeaderOffset = CachePlatform == CachePlatform.MCC ?
-                (Gen4Header.TagTableHeaderOffset64 - addressMask) :
-                ((ulong)Gen4Header.TagTableHeaderOffset32 - addressMask);
+            var tagTableHeaderOffset = Gen4Header.TagTableHeaderOffset.Value - addressMask;
 
             reader.SeekTo((long)tagTableHeaderOffset);
 
@@ -177,17 +165,9 @@ namespace TagTool.Cache.Gen4
 
             Header = deserializer.Deserialize<TagCacheGen4Header>(dataContext);
 
-            var tagGroupsOffset = CachePlatform == CachePlatform.MCC ?
-                Header.TagGroupsAddress64 - addressMask :
-                (ulong)Header.TagGroupsAddress32 - addressMask;
-
-            var tagInstancesOffset = CachePlatform == CachePlatform.MCC ?
-                Header.TagInstancesAddress64 - addressMask :
-                (ulong)Header.TagInstancesAddress32 - addressMask;
-
-            var globalIndicesOffset = CachePlatform == CachePlatform.MCC ?
-                Header.GlobalIndicesAddress64 - addressMask :
-                (ulong)Header.GlobalIndicesAddress32 - addressMask;
+            var tagGroupsOffset = Header.TagGroupsAddress.Value - addressMask;
+            var tagInstancesOffset = Header.TagInstancesAddress.Value - addressMask;
+            var globalIndicesOffset = Header.GlobalIndicesAddress.Value - addressMask;
 
             #region Read Tag Groups
 
@@ -220,7 +200,7 @@ namespace TagTool.Cache.Gen4
                 uint ID = (uint)((reader.ReadInt16() << 16) | i);
 
                 var offset = CachePlatform == CachePlatform.MCC ?
-                    (uint)((ulong)Gen4Header.SectionTable.SectionAddressToOffsets[2] + (ulong)Gen4Header.SectionTable.Sections[2].Offset + (((ulong)reader.ReadUInt32() * 4) - (Gen4Header.VirtualBaseAddress64 - 0x50000000))) :
+                    (uint)((ulong)Gen4Header.SectionTable.SectionAddressToOffsets[2] + (ulong)Gen4Header.SectionTable.Sections[2].Offset + (((ulong)reader.ReadUInt32() * 4) - (Gen4Header.VirtualBaseAddress.Value - 0x50000000))) :
                     (uint)(reader.ReadUInt32() - addressMask);
 
                 CachedTagGen4 tag = new CachedTagGen4(groupIndex, ID, offset, i, tagGroup);
