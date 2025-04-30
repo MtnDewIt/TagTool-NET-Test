@@ -43,8 +43,11 @@ namespace TagTool.Cache.MCC
         [TagField(MaxVersion = CacheVersion.HaloReach)]
         public int MinorVersion;
 
-        [TagField(Length = 6)]
+        [TagField(Length = (int)CacheFileSharedFileType.Count)]
         public SharedModificationDate[] SharedCreationDate;
+
+        [TagField(Length = 0x18)]
+        public byte[] Unknown1;
 
         public FileCreator CreatorName;
 
@@ -64,8 +67,8 @@ namespace TagTool.Cache.MCC
 
         public PlatformUnsignedValue TagTableHeaderOffset;
 
-        [TagField(Length = 0x10, Flags = TagFieldFlags.Padding)]
-        public byte[] Unused3;
+        [TagField(Length = 0x10)]
+        public byte[] Unknown2;
 
         [TagField(Length = (int)CacheFilePartitionType.Count)]
         public CacheFilePartition[] Partitions = new CacheFilePartition[(int)CacheFilePartitionType.Count];
@@ -77,8 +80,7 @@ namespace TagTool.Cache.MCC
         [TagField(Length = 0x3)]
         public SharedNetworkRequestHash[] Hash;
 
-        [TagField(Length = 0x20)]
-        public byte[] RSAKeyBlobHash;
+        public SHA256Hash RSAKeyBlobHash;
 
         public RSASignature RSASignature;
 
@@ -90,7 +92,7 @@ namespace TagTool.Cache.MCC
         [TagField(Length = 0x1180, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
         [TagField(Length = 0x6F64, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach)]
         [TagField(Length = 0x88C, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo2AMP)]
-        public byte[] Unknown1;
+        public byte[] Unknown3;
 
         public Tag FooterSignature;
 

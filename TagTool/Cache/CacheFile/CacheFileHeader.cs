@@ -57,7 +57,7 @@ namespace TagTool.Cache
                             SectionTable = gen3Header.SectionTable,
                             FooterSignature = gen3Header.FooterSignature
                         };
-                        return gen3Header;
+                        return gen3Adapter;
                     case CacheVersion.Halo4:
                     case CacheVersion.Halo2AMP:
                         // TODO: cleanup
