@@ -4,6 +4,7 @@ using TagTool.Tags;
 
 namespace TagTool.Cache.MCC
 {
+    [TagStructure(Size = 0x380, MinVersion = CacheVersion.Halo2PC, MaxVersion = CacheVersion.Halo2PC)]
     [TagStructure(Size = 0x4000, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST)]
     [TagStructure(Size = 0xA000, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach)]
     [TagStructure(Size = 0x1E000, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo2AMP)]
@@ -37,16 +38,17 @@ namespace TagTool.Cache.MCC
 
         public StringIDHeaderMCC StringIdsHeader;
 
-        [TagField(MaxVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
         public GameLanguage Language;
 
-        [TagField(MaxVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
         public int MinorVersion;
 
         [TagField(Length = (int)CacheFileSharedFileType.Count)]
         public SharedModificationDate[] SharedCreationDate;
 
-        [TagField(Length = 0x18)]
+        [TagField(Length = 0x10, MinVersion = CacheVersion.Halo2PC, MaxVersion = CacheVersion.Halo2PC)]
+        [TagField(Length = 0x18, MinVersion = CacheVersion.Halo3Retail)]
         public byte[] Unknown1;
 
         public FileCreator CreatorName;
@@ -70,24 +72,32 @@ namespace TagTool.Cache.MCC
         [TagField(Length = 0x10)]
         public byte[] Unknown2;
 
-        [TagField(Length = (int)CacheFilePartitionType.Count)]
+        [TagField(Length = (int)CacheFilePartitionType.Count, MinVersion = CacheVersion.Halo3Retail)]
         public CacheFilePartition[] Partitions = new CacheFilePartition[(int)CacheFilePartitionType.Count];
 
+        [TagField(MinVersion = CacheVersion.Halo3Retail)]
         public uint RealtimeChecksum;
+        [TagField(MinVersion = CacheVersion.Halo3Retail)]
         public uint ContentHashMask;
+        [TagField(MinVersion = CacheVersion.Halo3Retail)]
         public ulong SignatureMarker;
 
-        [TagField(Length = 0x3)]
+        [TagField(Length = 0x3, MinVersion = CacheVersion.Halo3Retail)]
         public SharedNetworkRequestHash[] Hash;
 
+        [TagField(MinVersion = CacheVersion.Halo3Retail)]
         public SHA256Hash RSAKeyBlobHash;
 
+        [TagField(MinVersion = CacheVersion.Halo3Retail)]
         public RSASignature RSASignature;
 
+        [TagField(MinVersion = CacheVersion.Halo3Retail)]
         public CacheFileSectionTable SectionTable;
 
+        [TagField(MinVersion = CacheVersion.Halo3Retail)]
         public SharedResourceUsage SharedResourceUsage;
 
+        [TagField(Length = 0x8C, MinVersion = CacheVersion.Halo2PC, MaxVersion = CacheVersion.Halo2PC)]
         [TagField(Length = 0x1524, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
         [TagField(Length = 0x1180, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
         [TagField(Length = 0x6F64, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach)]

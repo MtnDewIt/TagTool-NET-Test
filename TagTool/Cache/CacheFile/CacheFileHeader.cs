@@ -32,7 +32,25 @@ namespace TagTool.Cache
                     case CacheVersion.HaloCustomEdition:
                         return deserializer.Deserialize<CacheFileHeaderGen1>(dataContext);
                     case CacheVersion.Halo2PC:
-                        return deserializer.Deserialize<CacheFileHeaderGen2>(dataContext);
+                        // TODO: cleanup
+                        // adapt the header for gen2 for now
+                        var gen2Header = deserializer.Deserialize<CacheFileHeaderMCC>(dataContext);
+                        var gen2Adapter = new CacheFileHeaderGen2()
+                        {
+                            HeaderSignature = gen2Header.HeaderSignature,
+                            FileVersion = gen2Header.FileVersion,
+                            TagTableHeaderOffset = gen2Header.TagTableHeaderOffset,
+                            TagMemoryHeader = gen2Header.TagMemoryHeader,
+                            SourceFile = gen2Header.SourceFile,
+                            Build = gen2Header.Build,
+                            CacheType = gen2Header.CacheType,
+                            SharedCacheType = gen2Header.SharedCacheType,
+                            StringIdsHeader = gen2Header.GetStringIDHeader(),
+                            TagNamesHeader = gen2Header.TagNamesHeader,
+                            Name = gen2Header.Name,
+                            FooterSignature = gen2Header.FooterSignature
+                        };
+                        return gen2Adapter;
                     case CacheVersion.Halo3Retail:
                     case CacheVersion.Halo3ODST:
                     case CacheVersion.HaloReach:
@@ -152,7 +170,7 @@ namespace TagTool.Cache
         public uint BufferOffset;
     }
 
-    [TagStructure(Size = 0x18, MinVersion = CacheVersion.Halo3Retail)]
+    [TagStructure(Size = 0x18, MinVersion = CacheVersion.Halo2PC)]
     public class StringIDHeaderMCC : TagStructure
     {
         public int Count;
@@ -175,7 +193,7 @@ namespace TagTool.Cache
     [TagStructure(Size = 0xC, MaxVersion = CacheVersion.HaloCustomEdition)]
     [TagStructure(Size = 0xC, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Xbox)]
     [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo2Vista, MaxVersion = CacheVersion.Halo2Vista)]
-    [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo3Beta)]
+    [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo2PC)]
     public class TagMemoryHeader : TagStructure
     {
         [TagField(MaxVersion = CacheVersion.HaloCustomEdition)]

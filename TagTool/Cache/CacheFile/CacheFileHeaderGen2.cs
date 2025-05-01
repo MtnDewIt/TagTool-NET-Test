@@ -4,7 +4,6 @@ using TagTool.Tags;
 namespace TagTool.Cache
 {
     [TagStructure(Size = 0x800, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Vista, Platform = CachePlatform.Original)]
-    [TagStructure(Size = 0x380, MinVersion = CacheVersion.Halo2PC, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.MCC)]
     public class CacheFileHeaderGen2 : CacheFileHeader
     {
         //

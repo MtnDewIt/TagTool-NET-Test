@@ -24,11 +24,11 @@ namespace TagTool.Cache.Gen2
         [TagField(MinVersion = CacheVersion.Halo2Xbox)]
         public int TagGroupCount;
 
-        public uint TagsOffset;
-        public uint ScenarioID;
+        public uint TagTableOffset;
+        public uint ScenarioIndex;
 
         [TagField(MinVersion = CacheVersion.Halo2Xbox)]
-        public uint GlobalsID;
+        public uint GlobalsIndex;
 
         public int CRC;
         public int TagCount;
@@ -46,7 +46,7 @@ namespace TagTool.Cache.Gen2
         [TagField(MaxVersion = CacheVersion.Halo2Beta)]
         public Tag GrandParentTag;
 
-        public uint ID;
+        public uint Index;
 
         [TagField(MaxVersion = CacheVersion.Halo2Beta)]
         public uint TagNameAddress;
@@ -95,7 +95,7 @@ namespace TagTool.Cache.Gen2
             if (Version > CacheVersion.Halo2Beta)
                 tagCacheVirtualAddress = (Header.TagGroupsOffset - headerSize);
             else
-                tagCacheVirtualAddress = (Header.TagsOffset - headerSize);
+                tagCacheVirtualAddress = (Header.TagTableOffset - headerSize);
 
             //
             // Read tag groups
@@ -118,7 +118,7 @@ namespace TagTool.Cache.Gen2
             // Read cached tags
             //
 
-            reader.SeekTo(tagDataSectionOffset + Header.TagsOffset - tagCacheVirtualAddress);
+            reader.SeekTo(tagDataSectionOffset + Header.TagTableOffset - tagCacheVirtualAddress);
 
             for (int i = 0; i < Header.TagCount; i++)
             {
@@ -137,10 +137,10 @@ namespace TagTool.Cache.Gen2
                     reader.SeekTo(streamPosition);
                 }
 
-                if (entry.Tag.Value == -1 || entry.Tag.Value == 0 || entry.Size == -1 || entry.Address == 0xFFFFFFFF || entry.ID == 0 || entry.ID == 0xFFFFFFFF)
+                if (entry.Tag.Value == -1 || entry.Tag.Value == 0 || entry.Size == -1 || entry.Address == 0xFFFFFFFF || entry.Index == 0 || entry.Index == 0xFFFFFFFF)
                     Tags.Add(null);
                 else
-                    Tags.Add(new CachedTagGen2((int)(entry.ID & 0xFFFF), entry.ID, (TagGroupGen2)TagDefinitions.GetTagGroupFromTag(entry.Tag), entry.Address, entry.Size, name, IsShared));
+                    Tags.Add(new CachedTagGen2((int)(entry.Index & 0xFFFF), entry.Index, (TagGroupGen2)TagDefinitions.GetTagGroupFromTag(entry.Tag), entry.Address, entry.Size, name, IsShared));
             }
 
             //
@@ -176,12 +176,12 @@ namespace TagTool.Cache.Gen2
             // Set hardcoded tags from the header
             //
 
-            var scnrTag = (CachedTagGen2)GetTag(Header.ScenarioID);
+            var scnrTag = (CachedTagGen2)GetTag(Header.ScenarioIndex);
             HardcodedTags[scnrTag.Group.Tag] = scnrTag;
 
             if (Version > CacheVersion.Halo2Beta)
             {
-                var globalTag = (CachedTagGen2)GetTag(Header.GlobalsID);
+                var globalTag = (CachedTagGen2)GetTag(Header.GlobalsIndex);
                 HardcodedTags[globalTag.Group.Tag] = globalTag;
             }
 
@@ -198,7 +198,7 @@ namespace TagTool.Cache.Gen2
 
         public void FixupStructureBspTagsForXbox(EndianReader reader, MapFile mapFile)
         {
-            var scnrTag = (CachedTagGen2)GetTag(Header.ScenarioID);
+            var scnrTag = (CachedTagGen2)GetTag(Header.ScenarioIndex);
 
             uint magic = (uint)mapFile.Header.GetTagTableHeaderOffset() + mapFile.Header.GetTagMemoryHeader().MemoryBufferOffset - VirtualAddress;
 
