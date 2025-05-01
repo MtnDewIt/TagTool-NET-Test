@@ -32,7 +32,7 @@ namespace TagTool.Cache
         public CacheFileSharedType SharedCacheType;
 
         [TagField(MaxVersion = CacheVersion.Halo3Beta)]
-        public uint CacheResourceCRC;
+        public ResourceCRC CacheResourceCRC;
 
         public bool Uncompressed;
         public bool TrackedBuild;

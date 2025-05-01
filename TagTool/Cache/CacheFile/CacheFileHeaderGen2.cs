@@ -35,7 +35,7 @@ namespace TagTool.Cache
         public CacheFileType CacheType;
         public CacheFileSharedType SharedCacheType;
 
-        public uint CacheResourceCRC;
+        public ResourceCRC CacheResourceCRC;
 
         public bool Uncompressed;
         public bool TrackedBuild;
@@ -89,8 +89,8 @@ namespace TagTool.Cache
         [TagField(MinVersion = CacheVersion.Halo2Vista)]
         public uint MoppChecksum;
 
-        [TagField(Length = 1284, MinVersion = CacheVersion.Halo2Vista, MaxVersion = CacheVersion.Halo2Vista, Flags = TagFieldFlags.Padding)]
-        [TagField(Length = 1320, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Xbox, Flags = TagFieldFlags.Padding)]
+        [TagField(Length = 0x504, MinVersion = CacheVersion.Halo2Vista, MaxVersion = CacheVersion.Halo2Vista, Flags = TagFieldFlags.Padding)]
+        [TagField(Length = 0x528, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Xbox, Flags = TagFieldFlags.Padding)]
         public byte[] Padding1;
 
         public Tag FooterSignature;
