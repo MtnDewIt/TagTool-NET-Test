@@ -41,6 +41,7 @@ namespace TagTool.JSON.Parsers
                     CachePlatform = CachePlatform.Original,
                     Header = mapObject.Header,
                     MapFileBlf = mapObject.MapFileBlf,
+                    Reports = mapObject.Reports,
                 };
 
                 var headerData = mapData.Header as CacheFileHeaderGenHaloOnline;

@@ -30,7 +30,11 @@ namespace TagTool.Commands.Editing
                 Version = Cache.Version,
                 CachePlatform = Cache.Platform,
                 Header = MapFile.Header,
-                MapFileBlf = new Blf(Cache.Version, Cache.Platform)
+            };
+
+            if (Cache.Version == CacheVersion.HaloOnlineED)
+            {
+                mapData.MapFileBlf = new Blf(Cache.Version, Cache.Platform)
                 {
                     Format = MapFile.Blf.Format,
                     ContentFlags = MapFile.Blf.ContentFlags,
@@ -51,8 +55,15 @@ namespace TagTool.Commands.Editing
                     ContentHeader = MapFile.Blf.ContentHeader,
                     MapImage = MapFile.Blf.MapImage,
                     Buffer = MapFile.Blf.Buffer,
-                },
-            };
+                };
+            }
+            else 
+            {
+                mapData.Reports = new CacheFileReports(Cache.Version)
+                {
+                    Reports = MapFile.Reports.Reports,
+                };
+            }
 
             if (Cache is GameCacheModPackage)
             {

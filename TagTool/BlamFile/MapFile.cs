@@ -27,6 +27,8 @@ namespace TagTool.BlamFile
 
         public Blf MapFileBlf;
 
+        public CacheFileReports Reports;
+
         public MapFile()
         {
         }
@@ -37,10 +39,14 @@ namespace TagTool.BlamFile
             var serializer = new TagSerializer(Version, CachePlatform, EndianFormat);
             serializer.Serialize(dataContext, Header);
 
-            if(CacheVersionDetection.IsBetween(Version, CacheVersion.HaloOnlineED, CacheVersion.HaloOnline106708))
+            if (Version == CacheVersion.HaloOnlineED)
             {
-                if(MapFileBlf != null)
+                if (MapFileBlf != null)
                     MapFileBlf.Write(writer);
+            }
+            else 
+            {
+                Reports.Write(writer, EndianFormat);
             }
         }
 
@@ -66,12 +72,20 @@ namespace TagTool.BlamFile
             {
                 var mapFileHeaderSize = (int)TagStructure.GetTagStructureInfo(Header.GetType(), Version, CachePlatform).TotalSize;
 
-                // Seek to the blf
                 reader.SeekTo(mapFileHeaderSize);
-                // Read blf
-                MapFileBlf = new Blf(Version, CachePlatform);
-                if (!MapFileBlf.Read(reader))
-                    MapFileBlf = null;
+
+                if (Version == CacheVersion.HaloOnlineED)
+                {
+                    MapFileBlf = new Blf(Version, CachePlatform);
+
+                    if (!MapFileBlf.Read(reader))
+                        MapFileBlf = null;
+                }
+                else 
+                {
+                    Reports = new CacheFileReports(Version);
+                    Reports.Read(reader);
+                }
             }
         }
 
