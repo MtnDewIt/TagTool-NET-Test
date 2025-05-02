@@ -20,6 +20,18 @@ namespace TagTool.Commands.RenderModels
         private CachedTag Tag { get; }
         private RenderModel Definition { get; }
 
+        private const float ScaleFactor = 0.01f;
+        private static Dictionary<string, Assimp.Node> assimpNodesByName = new Dictionary<string, Assimp.Node>();
+        private static Dictionary<string, Matrix4x4> worldTransforms = new Dictionary<string, Matrix4x4>();
+
+        private static Matrix4x4 assimpToHalo = new Matrix4x4(
+            0, 0, 1, 0,
+           -1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 0, 1
+        );
+        private static Matrix4x4 assimpToHaloInverse;
+
         public ReplaceRenderGeometryCommand(GameCache cache, CachedTag tag, RenderModel definition) :
             base(false,
         name: "ReplaceRenderGeometry",
@@ -43,22 +55,13 @@ namespace TagTool.Commands.RenderModels
             Console.WriteLine();
             if (args.Count < 1 || args.Count > 4)
                 return new TagToolError(CommandError.ArgCount);
-            bool updateNodes = args.Any(a => a.ToLower() == "updatenodes");
-            bool updateMarkers = args.Any(a => a.ToLower() == "markers");
-            string sceneFilePath = args[0];
-            string indexBufferFormatArg = args.FirstOrDefault(a => a.ToLower() != "updatenodes" && a.ToLower() != "markers" && a != sceneFilePath);
-            if (!Cache.TagCache.TryGetTag<Shader>(@"shaders\invalid", out var defaultShaderTag))
-            {
-                new TagToolWarning("shaders\\invalid.shader' not found!\n"
-                    + "You will have to assign material shaders manually.");
-            }
 
-            var stringIdCount = Cache.StringTable.Count;
-
+            bool updateNodes = args.Any(a => a.Equals("updatenodes", StringComparison.OrdinalIgnoreCase));
+            bool updateMarkers = args.Any(a => a.Equals("markers", StringComparison.OrdinalIgnoreCase));
             var sceneFile = new FileInfo(args[0]);
-
-            var indexBufferFormat = args.Count > 1 && args[1].ToLower() == "trianglelist" ? IndexBufferFormat.TriangleList : IndexBufferFormat.TriangleStrip;
-
+            string indexBufferFormatArg = args.FirstOrDefault(a => !a.Equals(sceneFile.FullName, StringComparison.OrdinalIgnoreCase)
+                                                                    && !a.Equals("updatenodes", StringComparison.OrdinalIgnoreCase)
+                                                                    && !a.Equals("markers", StringComparison.OrdinalIgnoreCase));
 
             if (!sceneFile.Exists)
                 return new TagToolError(CommandError.FileNotFound);
@@ -66,12 +69,47 @@ namespace TagTool.Commands.RenderModels
             string extension = sceneFile.Extension.ToLower();
             if (extension != ".dae" && extension != ".fbx")
                 return new TagToolError(CommandError.FileType, $"\"{sceneFile.FullName}\"");
+
+            var indexBufferFormat = indexBufferFormatArg != null && indexBufferFormatArg.Equals("trianglelist", StringComparison.OrdinalIgnoreCase)
+                                    ? IndexBufferFormat.TriangleList
+                                    : IndexBufferFormat.TriangleStrip;
+
+            var stringIdCount = Cache.StringTable.Count;
             return ExecuteInternal(Cache, Tag, Definition, stringIdCount, sceneFile, indexBufferFormat, updateNodes, updateMarkers);
         }
 
-        public static object ExecuteInternal(GameCache Cache, CachedTag Tag, RenderModel Definition, int InitialStringIdCount, FileInfo SceneFile, IndexBufferFormat IndexBufferFormat, bool updateNodes = false, bool updateMarkers = false)
+        private static string MakeHEKCompatibleName(string str)
+        {
+            if (!string.IsNullOrEmpty(str) && str.StartsWith("Armature_", StringComparison.OrdinalIgnoreCase))
+                return str.Substring(str.IndexOf('_') + 1).Replace('.', '_').ToLower();
+            return str?.Replace('.', '_').ToLower();
+        }
+
+        private static void ProcessNode(Assimp.Node node, Matrix4x4 parentWorld)
+        {
+            string key = MakeHEKCompatibleName(node.Name);
+            Matrix4x4 world = parentWorld * node.Transform;
+            assimpNodesByName[key] = node;
+            worldTransforms[key] = world;
+            foreach (var child in node.Children)
+                ProcessNode(child, world);
+        }
+
+        public static object ExecuteInternal(
+            GameCache Cache,
+            CachedTag Tag,
+            RenderModel Definition,
+            int InitialStringIdCount,
+            FileInfo SceneFile,
+            IndexBufferFormat IndexBufferFormat,
+            bool updateNodes = false,
+            bool updateMarkers = false)
         {
             Console.WriteLine();
+            assimpNodesByName.Clear();
+            worldTransforms.Clear();
+            assimpToHaloInverse = assimpToHalo;
+            assimpToHaloInverse.Inverse();
 
             Scene scene;
             bool ShowTriangleStripWarning = false;
@@ -81,9 +119,8 @@ namespace TagTool.Commands.RenderModels
                 new TagToolWarning("shaders\\invalid.shader' not found!\nYou will have to assign material shaders manually.");
             }
 
-            using (AssimpContext importer = new AssimpContext())
+            using (var importer = new AssimpContext())
             {
-                importer.SetConfig(new Assimp.Configs.IntegerPropertyConfig("AI_CONFIG_PP_SLM_VERTEX_LIMIT", 131072));
                 scene = importer.ImportFile(SceneFile.FullName,
                     PostProcessSteps.CalculateTangentSpace |
                     PostProcessSteps.GenerateNormals |
@@ -95,97 +132,59 @@ namespace TagTool.Commands.RenderModels
             {
                 Console.WriteLine("Updating node transforms from scene hierarchy...");
 
-                var sceneNodesMap = new Dictionary<string, Assimp.Node>();
-                var worldTransforms = new Dictionary<string, Matrix4x4>();
-
-                void ProcessNode(Assimp.Node node, Matrix4x4 parentWorld)
-                {
-                    var local = node.Transform;
-                    var world = parentWorld * local;
-                    var key = node.Name.Replace('.', '_').ToLower();
-
-                    sceneNodesMap[key] = node;
-                    worldTransforms[key] = world;
-
-                    foreach (var child in node.Children)
-                        ProcessNode(child, world);
-                }
+                // 1) build maps of every Assimp node and its world‐transform
+                assimpNodesByName.Clear();
+                worldTransforms.Clear();
                 ProcessNode(scene.RootNode, Matrix4x4.Identity);
 
-                foreach (var haloNode in Definition.Nodes)
-                {
-                    var nodeName = Cache.StringTable.GetString(haloNode.Name)
-                        .Replace('.', '_')
-                        .ToLower();
+                // 2) pull every bone’s OffsetMatrix into a dictionary
+                var boneOffsetMap = new Dictionary<string, Matrix4x4>(StringComparer.OrdinalIgnoreCase);
+                foreach (var mesh in scene.Meshes)
+                    foreach (var bone in mesh.Bones)
+                        boneOffsetMap[MakeHEKCompatibleName(bone.Name)] = bone.OffsetMatrix;
 
-                    if (!sceneNodesMap.TryGetValue(nodeName, out var fbxNode) ||
-                        !worldTransforms.TryGetValue(nodeName, out var worldMatrix))
+                // 3) for each Halo node, assign defaults and compute inverse‐bind axes
+                for (int i = 0; i < Definition.Nodes.Count; i++)
+                {
+                    var haloNode = Definition.Nodes[i];
+                    var rawName = Cache.StringTable.GetString(haloNode.Name);
+                    var nodeName = MakeHEKCompatibleName(rawName);
+
+                    if (!assimpNodesByName.TryGetValue(nodeName, out var srcNode) ||
+                        !worldTransforms.TryGetValue(nodeName, out var world))
                     {
                         Console.WriteLine($"Warning: Missing node {nodeName}");
                         continue;
                     }
 
-                    fbxNode.Transform.Decompose(out var scale, out var rotation, out var translation);
-                    haloNode.DefaultTranslation = new RealPoint3d(
-                        translation.X * 0.01f,
-                        translation.Y * 0.01f,
-                        translation.Z * 0.01f
-                    );
-                    haloNode.DefaultRotation = new RealQuaternion(
-                        rotation.X,
-                        rotation.Y,
-                        rotation.Z,
-                        rotation.W
-                    );
-                    haloNode.DefaultScale = scale.X;
+                    // decompose LOCAL for defaults
+                    srcNode.Transform.Decompose(out var s, out var r, out var t);
+                    haloNode.DefaultTranslation = new RealPoint3d(t.X * ScaleFactor, t.Y * ScaleFactor, t.Z * ScaleFactor);
+                    haloNode.DefaultRotation = new RealQuaternion(r.X, r.Y, r.Z, r.W);
+                    haloNode.DefaultScale = s.X;
+                    haloNode.DistanceFromParent = srcNode.Parent == null
+                        ? 0f
+                        : t.Length() * ScaleFactor;
 
-                    var inverseWorld = worldMatrix;
-                    inverseWorld.Inverse();
+                    // pick inverse‑bind matrix
+                    Matrix4x4 invBind;
+                    if (!boneOffsetMap.TryGetValue(nodeName, out invBind))
+                    {
+                        invBind = world;
+                        invBind.Inverse();
+                    }
 
-                    haloNode.InverseForward = new RealVector3d(
-                        inverseWorld.A1,      
-                        inverseWorld.A3,      
-                        -inverseWorld.A2  
-                    );
+                    var m = invBind;  // alias
 
-                    haloNode.InverseLeft = new RealVector3d(
-                        -inverseWorld.B1,     
-                        -inverseWorld.B3,    
-                        -inverseWorld.B2     
-                    );
-
-                    haloNode.InverseUp = new RealVector3d(
-                        inverseWorld.C1,  
-                        inverseWorld.C3,  
-                        inverseWorld.C2       
-                    );
+                    haloNode.InverseForward = new RealVector3d(m.A1, m.B1, m.C1);
+                    haloNode.InverseLeft = new RealVector3d(m.A2, m.B2, m.C2);
+                    haloNode.InverseUp = new RealVector3d(m.A3, m.B3, m.C3);
 
                     haloNode.InversePosition = new RealPoint3d(
-                        inverseWorld.A4 * 0.01f,  
-                        inverseWorld.C4 * 0.01f, 
-                        -inverseWorld.B4 * 0.01f  
+                        m.A4 * ScaleFactor,
+                        m.B4 * ScaleFactor,
+                        m.C4 * ScaleFactor
                     );
-
-                    if (haloNode.ParentNode >= 0 && haloNode.ParentNode < Definition.Nodes.Count)
-                    {
-                        fbxNode.Transform.Decompose(out _, out _, out Vector3D localTranslation);
-
-                        var localTranslationMeters = new RealPoint3d(
-                            localTranslation.X * 0.01f,
-                            localTranslation.Y * 0.01f,
-                            localTranslation.Z * 0.01f
-                        );
-
-                        haloNode.DistanceFromParent = (float)Math.Sqrt(
-                            localTranslationMeters.X * localTranslationMeters.X +
-                            localTranslationMeters.Y * localTranslationMeters.Y +
-                            localTranslationMeters.Z * localTranslationMeters.Z
-                        );
-                    }
-                    else
-                    {
-                        haloNode.DistanceFromParent = 0f;
-                    }
                 }
 
                     if (Definition.RuntimeNodeOrientations?.Count == Definition.Nodes.Count)
@@ -210,7 +209,7 @@ namespace TagTool.Commands.RenderModels
 
             string CleanMaterialName(string name)
             {
-                var suffixRegex = new Regex(@"[)%=]+$");
+                var suffixRegex = new Regex(@"[!)%=]+$");
                 name = suffixRegex.Replace(name, "");
                 var shaderRegex = new Regex(@".*?_shaders_");
                 return shaderRegex.Replace(name, "").ToLower();
@@ -600,7 +599,7 @@ namespace TagTool.Commands.RenderModels
                         }
 
                         bool preventBackfaceCulling = false;
-                        var suffixMatch = Regex.Match(originalMatName, @"([)%=]+)$");
+                        var suffixMatch = Regex.Match(originalMatName, @"([!)%=]+)$");
                         if (suffixMatch.Success && suffixMatch.Groups[1].Value.Contains("%"))
                             preventBackfaceCulling = true;
 
@@ -635,7 +634,7 @@ namespace TagTool.Commands.RenderModels
                     else
                         builder.BindRigidVertexBuffer(rigidVertices, rigidNode);
 
-                    if (MeshIndexCountNew > ushort.MaxValue) Console.ForegroundColor = ConsoleColor.Red;
+                    if (MeshIndexCountNew > 166835) Console.ForegroundColor = ConsoleColor.Red;
                     else if (MeshIndexCountNew > MeshIndexCountOG) Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.WriteLine(IndexBufferFormat == IndexBufferFormat.TriangleList ?
                         MeshIndexCountOG.ToString() : $"     Mesh Index Count: {MeshIndexCountOG} > {MeshIndexCountNew}");
