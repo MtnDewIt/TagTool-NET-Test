@@ -157,7 +157,7 @@ namespace TagTool.Cache.Gen4
                 addressMask = Gen4Header.VirtualBaseAddress.Value - tagMemoryHeader.MemoryBufferOffset;
             }
 
-            var tagTableHeaderOffset = Gen4Header.TagTableHeaderOffset.Value - addressMask;
+            var tagTableHeaderOffset = (CachePlatform ==  CachePlatform.MCC ? Gen4Header.TagTableHeaderOffsetMCC : Gen4Header.TagTableHeaderOffset).Value - addressMask;
 
             reader.SeekTo((long)tagTableHeaderOffset);
 

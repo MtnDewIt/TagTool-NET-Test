@@ -110,7 +110,7 @@ namespace TagTool.Cache.Gen2
                 {
                     var group = new TagGroupGen2(new Tag(reader.ReadInt32()), new Tag(reader.ReadInt32()), new Tag(reader.ReadInt32()));
                     if (!TagDefinitions.TagDefinitionExists(group))
-                        new TagToolWarning($"Warning: tag definition for {group} does not exist!");
+                        new TagToolWarning($"tag definition for {group} does not exist!");
                 }
             }
 
@@ -128,7 +128,7 @@ namespace TagTool.Cache.Gen2
                 {
                     var group = new TagGroupGen2(entry.Tag, entry.ParentTag, entry.GrandParentTag);
                     if (!TagDefinitions.TagDefinitionExists(group))
-                        Debug.WriteLine($"Warning: tag definition for {group} does not exists!");
+                        Debug.WriteLine($"tag definition for {group} does not exists!");
 
 
                     var streamPosition = reader.BaseStream.Position;

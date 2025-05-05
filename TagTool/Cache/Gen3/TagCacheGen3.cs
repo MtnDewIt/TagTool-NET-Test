@@ -164,7 +164,7 @@ namespace TagTool.Cache.Gen3
                 tagDataSectionOffset = gen3Header.VirtualBaseAddress.Get32BitValue() - tagMemoryHeader.MemoryBufferOffset;
             }
 
-            var tagTableHeaderOffset = gen3Header.TagTableHeaderOffset.Value - tagDataSectionOffset;
+            var tagTableHeaderOffset = (CachePlatform == CachePlatform.MCC ? gen3Header.TagTableHeaderOffsetMCC : gen3Header.TagTableHeaderOffset).Value - tagDataSectionOffset;
 
             reader.SeekTo((long)tagTableHeaderOffset);
 

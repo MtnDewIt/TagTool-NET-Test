@@ -4,8 +4,8 @@ using TagTool.Tags;
 
 namespace TagTool.Cache
 {
-    [TagStructure(Size = 0x10)]
-    public class SHA256Hash
+    [TagStructure(Size = 0x20)]
+    public class SHA256Hash : TagStructure
     {
         [TagField(Length = 32)]
         public byte[] Data;

@@ -3,7 +3,7 @@
     public enum CacheFileSharedFileType : int 
     {
         None = -1,
-        Mainmenu,
+        Ui,
         Multiplayer,
         Singleplayer,
         Count

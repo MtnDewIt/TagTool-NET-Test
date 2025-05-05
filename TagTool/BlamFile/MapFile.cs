@@ -1,14 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using TagTool.Cache;
-using TagTool.Cache.MCC;
 using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
-using TagTool.Tags.Definitions;
 
 namespace TagTool.BlamFile
 {
@@ -39,14 +36,17 @@ namespace TagTool.BlamFile
             var serializer = new TagSerializer(Version, CachePlatform, EndianFormat);
             serializer.Serialize(dataContext, Header);
 
-            if (Version == CacheVersion.HaloOnlineED)
+            if (MapVersion == CacheFileVersion.HaloOnline) 
             {
-                if (MapFileBlf != null)
-                    MapFileBlf.Write(writer);
-            }
-            else 
-            {
-                Reports.Write(writer, EndianFormat);
+                if (Version == CacheVersion.HaloOnlineED)
+                {
+                    if (MapFileBlf != null)
+                        MapFileBlf.Write(writer);
+                }
+                else
+                {
+                    Reports.Write(writer, EndianFormat);
+                }
             }
         }
 
@@ -60,7 +60,7 @@ namespace TagTool.BlamFile
             Version = version;
             CachePlatform = platform;
 
-            Header = CacheFileHeader.Read(MapVersion, Version, CachePlatform, reader);
+            Header = CacheFileHeader.Read(Version, CachePlatform, reader);
 
             if (!Header.IsValid())
             {
@@ -203,7 +203,7 @@ namespace TagTool.BlamFile
                         cacheVersion = CacheVersion.HaloCustomEdition;
                         break;
                     case CacheFileEngineVersion.Halo2:
-                        cacheVersion = CacheVersion.Halo2PC;
+                        cacheVersion = CacheVersion.Halo2Retail;
                         break;
                     case CacheFileEngineVersion.Halo3:
                         cacheVersion = CacheVersion.Halo3Retail;

@@ -188,7 +188,7 @@ namespace TagTool.Cache
 
                 // TODO: Handle this bullshit (FUCK U 343)
                 case "":
-                    version = CacheVersion.Halo2PC;
+                    version = CacheVersion.Halo2Retail;
                     cachePlatform = CachePlatform.MCC;
                     break;
 
@@ -241,7 +241,7 @@ namespace TagTool.Cache
                 {
                     case CacheVersion.HaloCustomEdition:
                         return "01.03.43.0000";
-                    case CacheVersion.Halo2PC:
+                    case CacheVersion.Halo2Retail:
                         // TODO: Handle this bullshit (FUCK U 343)
                         return "";
                     case CacheVersion.Halo3Retail:
@@ -544,7 +544,7 @@ namespace TagTool.Cache
                 case CacheVersion.Halo2Vista:
                 case CacheVersion.Halo2Xbox:
                 case CacheVersion.Halo2Beta:
-                case CacheVersion.Halo2PC:
+                case CacheVersion.Halo2Retail:
                     return CacheGeneration.Second;
 
                 case CacheVersion.Halo3Beta:
@@ -607,7 +607,7 @@ namespace TagTool.Cache
                 case CacheVersion.Halo2Beta:
                 case CacheVersion.Halo2Xbox:
                 case CacheVersion.Halo2Vista:
-                case CacheVersion.Halo2PC:
+                case CacheVersion.Halo2Retail:
                     return GameTitle.Halo2;
                 case CacheVersion.Halo3Beta:
                 case CacheVersion.Halo3Retail:
@@ -682,7 +682,7 @@ namespace TagTool.Cache
             -1, // Halo2Beta
             -1, // Halo2Xbox
             -1, // Halo2Vista
-            -1, // Halo2PC (MCC)
+            -1, // Halo2Retail (MCC)
             -1, // Halo3Beta
             -1, // Halo3Retail
             -1, // Halo3ODST
@@ -720,7 +720,7 @@ namespace TagTool.Cache
         Halo2Beta,
         Halo2Xbox,
         Halo2Vista,
-        Halo2PC,
+        Halo2Retail,
         Halo3Beta,
         Halo3Retail,
         Halo3ODST,

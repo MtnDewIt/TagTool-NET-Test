@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using TagTool.BlamFile;
 using TagTool.Cache.Gen2;
 using TagTool.Cache.Resources;
+using TagTool.Extensions;
 using TagTool.IO;
 using TagTool.Serialization;
-using TagTool.Tags;
 
 namespace TagTool.Cache
 {
@@ -57,8 +58,78 @@ namespace TagTool.Cache
 
             LoadSharedResourceCaches();
 
-            using (var cacheStream = OpenCacheRead())
-            using (var reader = new EndianReader(cacheStream, Endianness))
+            var gen2Header = BaseMapFile.Header as CacheFileHeaderGen2;
+
+            Stream inputStream = null;
+
+            if (gen2Header.Flags.HasFlag(CacheFileFlags.Compressed))
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    using (var stream = OpenCacheRead())
+                    {
+                        using (var reader = new EndianReader(stream, Endianness))
+                        {
+                            var headerData = new byte[gen2Header.CompressedDataOffset];
+
+                            stream.ReadAll(headerData, 0, gen2Header.CompressedDataOffset);
+
+                            memoryStream.Write(headerData, 0, headerData.Length);
+
+                            reader.SeekTo(gen2Header.CompressedChunkTableOffset);
+
+                            List<CompressedFileChunk> chunks = new List<CompressedFileChunk>();
+
+                            for (int i = 0; i < gen2Header.CompressedChunkCount; i++)
+                            {
+                                int chunkSize = reader.ReadInt32();
+                                int chunkOffset = reader.ReadInt32();
+
+                                if (chunkSize == 0)
+                                    break;
+
+                                chunks.Add(new CompressedFileChunk(chunkSize, chunkOffset));
+                            }
+
+                            for (int i = 0; i < chunks.Count; i++)
+                            {
+                                if (chunks[i].Size < 0)
+                                {
+                                    int invertedSize = -chunks[i].Size;
+                                    byte[] buffer = new byte[invertedSize];
+
+                                    reader.SeekTo(chunks[i].Offset);
+
+                                    int bufferSize = reader.Read(buffer, 0, invertedSize);
+
+                                    memoryStream.Write(buffer, 0, bufferSize);
+                                }
+                                else
+                                {
+                                    reader.SeekTo(chunks[i].Offset + 2);
+
+                                    int decompressedSize = gen2Header.CompressedDataChunkSize;
+                                    byte[] decompressedBuffer = new byte[decompressedSize];
+
+                                    using (DeflateStream deflateStream = new DeflateStream(stream, CompressionMode.Decompress, true))
+                                        decompressedSize = deflateStream.ReadAll(decompressedBuffer, 0, decompressedBuffer.Length);
+
+                                    memoryStream.Write(decompressedBuffer, 0, decompressedSize);
+                                }
+                            }
+                        }
+                    }
+
+                    inputStream = new MemoryStream(memoryStream.ToArray());
+                    memoryStream.Dispose();
+                }
+            }
+            else 
+            {
+                inputStream = OpenCacheRead();
+            }
+
+            using (var reader = new EndianReader(inputStream, Endianness))
             {
                 TagCacheGen2 = new TagCacheGen2(reader, mapFile);
                 StringTableGen2 = new StringTableGen2(reader, mapFile);
@@ -271,6 +342,18 @@ namespace TagTool.Cache
                 base.Dispose(disposing);
                 if (disposing && SharedStream != null)
                     SharedStream.Dispose();
+            }
+        }
+
+        internal class CompressedFileChunk 
+        {
+            public int Size { get; set; }
+            public int Offset { get; set; }
+
+            public CompressedFileChunk(int size, int offset)
+            {
+                Size = size;
+                Offset = offset;
             }
         }
     }
