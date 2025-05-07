@@ -124,7 +124,7 @@ namespace TagTool.Cache
         public uint LanguagePacksSize = 0;
         
         [TagField(MinVersion = CacheVersion.Halo2Vista, MaxVersion = CacheVersion.Halo2Vista, Platform = CachePlatform.Original)]
-        public uint SecondarySoundGestaltDatumIndex = uint.MaxValue;
+        public int SecondarySoundGestaltDatumIndex = -1;
         
         [TagField(MinVersion = CacheVersion.Halo2Vista, MaxVersion = CacheVersion.Halo2Vista, Platform = CachePlatform.Original)]
         public int GeometryDataOffset = -1;
