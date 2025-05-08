@@ -105,11 +105,11 @@ namespace TagTool.Cache
                     version = CacheVersion.HaloOnline106708;
                     cachePlatform = CachePlatform.Original;
                     break;
-                case "1.235640 cert_ms23":
+                case "1.235640 cert_ms25":
                     version = CacheVersion.HaloOnline235640;
                     cachePlatform = CachePlatform.Original;
                     break;
-                case "0.0.1.301003 cert_MS26_new":
+                case "Jun 12 2015 13:02:50":
                     version = CacheVersion.HaloOnline301003;
                     cachePlatform = CachePlatform.Original;
                     break;
@@ -283,9 +283,9 @@ namespace TagTool.Cache
                     case CacheVersion.HaloOnline106708:
                         return "1.106708 cert_ms23";
                     case CacheVersion.HaloOnline235640:
-                        return "1.235640 cert_ms23";
+                        return "1.235640 cert_ms25";
                     case CacheVersion.HaloOnline301003:
-                        return "0.0.1.301003 cert_MS26_new";
+                        return "Jun 12 2015 13:02:50";
                     case CacheVersion.HaloOnline327043:
                         return "0.4.1.327043 cert_MS26_new";
                     case CacheVersion.HaloOnline372731:
@@ -309,7 +309,7 @@ namespace TagTool.Cache
                     case CacheVersion.HaloOnline571627:
                         return "11.1.571627 Live";
                     case CacheVersion.HaloOnline604673:
-                        return "11.1.604673 cert_ms29 Live";
+                        return "11.1.601838 Live";
                     case CacheVersion.HaloOnline700123:
                         return "12.1.700123 cert_ms30_oct19";
                     case CacheVersion.HaloReach:
@@ -675,14 +675,14 @@ namespace TagTool.Cache
         /// </summary>
         private static readonly long[] VersionTimestamps =
         {
-            -1, // Halo Xbox
-            -1, // Halo PC
-            -1, // Halo Custom Edition
+            -1, // HaloXbox
+            -1, // HaloPC
+            -1, // HaloCustomEdition
             -1, // Halo2Alpha,
             -1, // Halo2Beta
             -1, // Halo2Xbox
             -1, // Halo2Vista
-            -1, // Halo2Retail (MCC)
+            -1, // Halo2Retail
             -1, // Halo3Beta
             -1, // Halo3Retail
             -1, // Halo3ODST
@@ -690,23 +690,23 @@ namespace TagTool.Cache
             130713360239499012, // HaloOnline106708
             130772932862346058, // HaloOnline235640
             130785901486445524, // HaloOnline301003
-            130800445160458507, // V0_4_1_327043_cert_MS26_new
-            130814318396118255, // V8_1_372731_Live
-            130829123589114103, // V0_0_416097_Live
+            130800445160458507, // HaloOnline327043
+            130814318396118255, // HaloOnline372731
+            130829123589114103, // HaloOnline416097
             130834294034159845, // HaloOnline430475
-            130844512316254660, // V10_1_454665_Live
+            130844512316254660, // HaloOnline454665
             130851642645809862, // HaloOnline449175
             130858473716879375, // HaloOnline498295
-            130868891945946004, // V11_1_530605_Live
-            130869644198634503, // V11_1_532911_Live
-            130879952719550501, // V11_1_554482_Live
+            130868891945946004, // HaloOnline530605
+            130869644198634503, // HaloOnline532911
+            130879952719550501, // HaloOnline554482
             130881889330693956, // HaloOnline571627
             130893802351772672, // HaloOnline604673
             130930071628935939, // HaloOnline700123
             -1, // HaloReach
             -1, // HaloReach11883
-            -1  // Halo 4
-            -1, // Halo 2 Anniversary Multiplayer
+            -1  // Halo4
+            -1, // Halo2AMP
         };
     }
 

@@ -70,12 +70,12 @@ namespace TagTool.BlamFile
             // temporary code until map file format cleanup
             if (MapVersion == CacheFileVersion.HaloOnline)
             {
-                var mapFileHeaderSize = (int)TagStructure.GetTagStructureInfo(Header.GetType(), Version, CachePlatform).TotalSize;
-
-                reader.SeekTo(mapFileHeaderSize);
-
                 if (Version == CacheVersion.HaloOnlineED)
                 {
+                    var mapFileHeaderSize = (int)TagStructure.GetTagStructureInfo(Header.GetType(), Version, CachePlatform).TotalSize;
+
+                    reader.SeekTo(mapFileHeaderSize);
+
                     MapFileBlf = new Blf(Version, CachePlatform);
 
                     if (!MapFileBlf.Read(reader))
@@ -83,8 +83,12 @@ namespace TagTool.BlamFile
                 }
                 else 
                 {
+                    var header = Header as CacheFileHeaderGenHaloOnline;
+
+                    reader.SeekTo(header.Reports.Offset);
+
                     Reports = new CacheFileReports(Version);
-                    Reports.Read(reader);
+                    Reports.Read(reader, header);
                 }
             }
         }

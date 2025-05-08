@@ -18,25 +18,20 @@ namespace TagTool.BlamFile
             Version = version;
         }
 
-        public void Read(EndianReader reader)
+        public void Read(EndianReader reader, CacheFileHeaderGenHaloOnline header)
         {
             var deserializer = new TagDeserializer(Version, CachePlatform.Original);
             var dataContext = new DataSerializationContext(reader);
 
-            var fileSize = (int)reader.Length;
-            var headerSize = (int)TagStructure.GetTagStructureInfo(typeof(CacheFileHeaderGenHaloOnline), Version, CachePlatform.Original).TotalSize;
             var reportSize = (int)TagStructure.GetTagStructureInfo(typeof(CacheFileReport), Version, CachePlatform.Original).TotalSize;
 
-            Count = (fileSize - headerSize) / reportSize;
+            Count = header.Reports.Size / reportSize;
 
-            while (!reader.EOF) 
+            Reports = new CacheFileReport[Count];
+
+            for (int i = 0; i < Count; i++)
             {
-                Reports = new CacheFileReport[Count];
-
-                for (int i = 0; i < Count; i++) 
-                {
-                    Reports[i] = deserializer.Deserialize<CacheFileReport>(dataContext);
-                }
+                Reports[i] = deserializer.Deserialize<CacheFileReport>(dataContext);
             }
         }
 
