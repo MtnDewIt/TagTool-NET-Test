@@ -36,13 +36,19 @@ namespace TagTool.Cache
         public int SharedTagDependencyOffset;
         [TagField(MinVersion = CacheVersion.Halo2Vista, MaxVersion = CacheVersion.Halo2Vista, Platform = CachePlatform.Original)]
         public uint SharedTagDependencyCount;
-        
-        [TagField(Length = 256, MaxVersion = CacheVersion.Halo2Vista, Platform = CachePlatform.Original)]
+
+        [TagField(Length = 32, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha, Platform = CachePlatform.Original)]
+        public string NameAlpha;
+
+        [TagField(Length = 256, MinVersion = CacheVersion.Halo2Beta, MaxVersion = CacheVersion.Halo2Vista, Platform = CachePlatform.Original)]
         public string SourceFile;
         
         [TagField(Length = 32, MaxVersion = CacheVersion.Halo2Vista, Platform = CachePlatform.Original)]
         public string Build;
-        
+
+        [TagField(Length = 256, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha, Platform = CachePlatform.Original)]
+        public string SourceFileAlpha;
+
         public CacheFileType CacheType;
         public CacheFileSharedType SharedCacheType;
 
@@ -93,7 +99,7 @@ namespace TagTool.Cache
         [TagField(Length = 32, MinVersion = CacheVersion.Halo2Retail, MaxVersion = CacheVersion.Halo2Retail, Platform = CachePlatform.MCC)]
         public string BuildMCC;
 
-        [TagField(Length = 0x20)]
+        [TagField(Length = 0x20, MinVersion = CacheVersion.Halo2Beta)]
         public string Name;
 
         [TagField(MaxVersion = CacheVersion.Halo2Vista, Platform = CachePlatform.Original)]
@@ -172,7 +178,7 @@ namespace TagTool.Cache
         public override Tag GetFootTag() => FooterSignature;
         public override Tag GetHeadTag() => HeaderSignature;
         public override ulong GetTagTableHeaderOffset() => TagTableHeaderOffset.Value;
-        public override string GetName() => Name;
+        public override string GetName() => Name ?? NameAlpha;
         public override string GetBuild() => Build ?? BuildMCC;
         public override string GetScenarioPath() => ScenarioPath;
         public override CacheFileType GetCacheType() => CacheType;
