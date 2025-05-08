@@ -476,10 +476,13 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 					scenario_tag.ObjectReferenceFrames = new List<Scenario.ReferenceFrame>(); 
 				}
 				scenario_tag.ObjectReferenceFrames.Add(new Scenario.ReferenceFrame() {
-					ObjectHandle = new DatumHandle(44444, 444),								// -- 	SetField ObjectReferenceFrames[*].ObjectHandle 44444 444
-					OriginBspIndex = -1,                                                    // -- 	SetField ObjectReferenceFrames[*].OriginBspIndex -1
-					ObjectType = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Crate }, // -- 	SetField ObjectReferenceFrames[*].ObjectType.Halo3ODST Crate
-					Source = Scenario.ScenarioInstance.SourceValue.Editor,                  // -- 	SetField ObjectReferenceFrames[*].Source Editor
+					ObjectId = new ObjectIdentifier 
+					{
+					    UniqueId = new DatumHandle(44444, 444),                                         // -- 	SetField ObjectReferenceFrames[*].UniqueHandle 44444 444
+					    OriginBspIndex = -1,                                                            // -- 	SetField ObjectReferenceFrames[*].OriginBspIndex -1
+					    Type = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Crate },     // -- 	SetField ObjectReferenceFrames[*].ObjectType.Halo3ODST Crate
+					    Source = ObjectIdentifier.SourceValue.Editor,                                   // -- 	SetField ObjectReferenceFrames[*].Source Editor
+					},
 					NodeIndex = 0,                                                          // -- 	SetField ObjectReferenceFrames[*].NodeIndex 0
 					ProjectionAxis = 2,                                                     // -- 	SetField ObjectReferenceFrames[*].ProjectionAxis 2
 					Flags = Scenario.ReferenceFrame.AiReferenceFrameFlags.ProjectionSign	// -- 	SetField ObjectReferenceFrames[*].Flags ProjectionSign
