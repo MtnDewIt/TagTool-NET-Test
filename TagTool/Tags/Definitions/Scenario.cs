@@ -1316,18 +1316,6 @@ namespace TagTool.Tags.Definitions
             [TagField(Length = 0x2, Flags = Padding)]
             public byte[] Padding4;
 
-
-            public enum SourceValue : sbyte
-            {
-                None = -1,
-                Structure,
-                Editor,
-                Dynamic,
-                Legacy,
-                Sky,
-                Parent
-            }
-
             public enum BspPolicyValue : sbyte
             {
                 Default,
@@ -4741,10 +4729,7 @@ namespace TagTool.Tags.Definitions
         [TagStructure(Size = 0x10)]
         public class ReferenceFrame : TagStructure
 		{
-            public DatumHandle ObjectHandle;
-            public short OriginBspIndex;
-            public GameObjectType8 ObjectType;
-            public ScenarioInstance.SourceValue Source;
+            public ObjectIdentifier ObjectId;
             public short NodeIndex;
             public short ProjectionAxis;
             public AiReferenceFrameFlags Flags;

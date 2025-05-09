@@ -110,6 +110,7 @@ namespace TagTool.Commands.Tags
 				// modding commands
 				context.AddCommand(new OpenModPackageCommand(contextStack, hoCache));
                 context.AddCommand(new CreateCharacterType(cache));
+                context.AddCommand(new SetCustomizationFromModelCommand(cache));
                 context.AddCommand(new GenerateCanvasCommand(hoCache));
 
                 context.AddCommand(new UpdateMapFilesCommand(cache));

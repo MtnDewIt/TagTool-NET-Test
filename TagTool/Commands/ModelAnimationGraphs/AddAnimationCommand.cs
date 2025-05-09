@@ -28,15 +28,15 @@ namespace TagTool.Commands.ModelAnimationGraphs
         private CachedTag Jmad { get; set; }
         private bool BaseFix = false;
         private bool ScaleFix = false;
+        private bool KeepExisting = false;
+        private bool NoBlock = false;
 
         public AddAnimationCommand(GameCache cachecontext, ModelAnimationGraph animation, CachedTag jmad)
             : base(false,
 
                   "AddAnimation",
                   "Add an animation to a ModelAnimationGraph tag",
-
-                  "AddAnimation [basefix] [scalefix] <filepath>",
-
+                  "AddAnimation [basefix] [scalefix] [keep] [noblock] <filepath>",
                   "Add an animation to a ModelAnimationGraph tag from an animation in JMA/JMM/JMO/JMR/JMW/JMZ/JMT format")
         {
             CacheContext = cachecontext;
@@ -47,17 +47,19 @@ namespace TagTool.Commands.ModelAnimationGraphs
         public override object Execute(List<string> args)
         {
             //Arguments needed: <filepath>
-            if (args.Count < 1 || args.Count > 3)
+            if (args.Count < 1 || args.Count > 5)
                 return new TagToolError(CommandError.ArgCount);
 
             var argStack = new Stack<string>(args.AsEnumerable().Reverse());
 
             BaseFix = false;
             ScaleFix = false;
+            KeepExisting = false;
+            NoBlock = false;
             while (argStack.Count > 1)
             {
-                var arg = argStack.Peek();
-                switch (arg.ToLower())
+                var arg = argStack.Peek().ToLower();
+                switch (arg)
                 {
                     case "basefix":
                         BaseFix = true;
@@ -65,6 +67,14 @@ namespace TagTool.Commands.ModelAnimationGraphs
                         break;
                     case "scalefix":
                         ScaleFix = true;
+                        argStack.Pop();
+                        break;
+                    case "keep":
+                        KeepExisting = true;
+                        argStack.Pop();
+                        break;
+                    case "noblock":
+                        NoBlock = true;
                         argStack.Pop();
                         break;
                     default:
@@ -131,14 +141,12 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 bool replacing = false;
                 string file_name = Path.GetFileNameWithoutExtension(filepath.FullName).Replace(' ', ':');
                 StringId animation_name = CacheContext.StringTable.GetStringId(file_name);
-
-                int existingIndex = -1;
                 if (animation_name == StringId.Invalid)
-                    animation_name = CacheContext.StringTable.AddString(file_name);
+                    animation_name = CacheContext.StringTable.GetOrAddString(file_name);
                 else
                 {
-                    existingIndex = Animation.Animations.FindIndex(n => n.Name == animation_name);
-                    if(existingIndex != -1)
+                    int existingIndex = Animation.Animations.FindIndex(n => n.Name == animation_name);
+                    if (existingIndex != -1)
                         replacing = true;
                 }                                
 
@@ -216,19 +224,63 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 AnimationBlock.AnimationData.ResourceGroupIndex = (short)(Animation.ResourceGroups.Count - 1);
                 AnimationBlock.AnimationData.ResourceGroupMemberIndex = 0;
 
+                if (replacing && KeepExisting)
+                {
+                    int existingIndex = Animation.Animations.FindIndex(n => n.Name == animation_name);
+                    if (existingIndex != -1)
+                    {
+                        var existingAnimation = Animation.Animations[existingIndex];
+                        AnimationBlock.Weight = existingAnimation.Weight;
+                        AnimationBlock.AnimationData.FrameEvents = existingAnimation.AnimationData.FrameEvents;
+                        AnimationBlock.AnimationData.SoundEvents = existingAnimation.AnimationData.SoundEvents;
+                        AnimationBlock.AnimationData.EffectEvents = existingAnimation.AnimationData.EffectEvents;
+                        AnimationBlock.AnimationData.DialogueEvents = existingAnimation.AnimationData.DialogueEvents;
+                        AnimationBlock.AnimationData.FootTracking = existingAnimation.AnimationData.FootTracking;
+                        AnimationBlock.PlaybackFlags = existingAnimation.PlaybackFlags;
+                        AnimationBlock.AnimationData.ProductionFlags = existingAnimation.AnimationData.ProductionFlags;
+                    }
+                }
+
                 if (replacing)
                 {
-                    Animation.Animations[existingIndex] = AnimationBlock;
+                    int index = Animation.Animations.FindIndex(n => n.Name == animation_name);
+                    Animation.Animations[index] = AnimationBlock;
                 }
                 else
                 {
                     Animation.Animations.Add(AnimationBlock);
-                    existingIndex = Animation.Animations.Count - 1;
                 }
 
-                AddModeEntries(file_name, existingIndex);
-                
-                if(replacing)
+                if (replacing && NoBlock)
+                {
+                    bool found = false;
+                    foreach (var mode in Animation.Modes)
+                    {
+                        foreach (var wc in mode.WeaponClass)
+                        {
+                            foreach (var wt in wc.WeaponType)
+                            {
+                                if (wt.Set.Actions.Any(e => e.Animation == (short)Animation.Animations.FindIndex(n => n.Name == animation_name)) ||
+                                    wt.Set.Overlays.Any(e => e.Animation == (short)Animation.Animations.FindIndex(n => n.Name == animation_name)))
+                                {
+                                    Console.WriteLine("Existing mode block found for this animation index, skipping new mode block creation.");
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (found)
+                                break;
+                        }
+                        if (found)
+                            break;
+                    }
+                    if (found)
+                        continue; // Skip mode block creation for this animation.
+                }
+
+                AddModeEntries(file_name, Animation.Animations.FindIndex(n => n.Name == animation_name));
+
+                if (replacing)
                     Console.WriteLine($"Replaced {file_name} successfully!");
                 else
                     Console.WriteLine($"Added {file_name} successfully!");
@@ -308,6 +360,9 @@ namespace TagTool.Commands.ModelAnimationGraphs
         public int AddMode(string modeString)
         {
             StringId modeStringID = CacheContext.StringTable.GetStringId(modeString);
+            if (modeStringID == StringId.Invalid)
+                modeStringID = CacheContext.StringTable.GetOrAddString(modeString);
+
             int modesIndex = Animation.Modes.FindIndex(m => m.Name == modeStringID);
             if (modesIndex != -1)
                 return modesIndex;
@@ -325,6 +380,9 @@ namespace TagTool.Commands.ModelAnimationGraphs
         public int AddClass(int modeIndex, string classString)
         {
             StringId classStringID = CacheContext.StringTable.GetStringId(classString);
+            if (classStringID == StringId.Invalid)
+                classStringID = CacheContext.StringTable.GetOrAddString(classString);
+
             int classIndex = Animation.Modes[modeIndex].WeaponClass.FindIndex(m => m.Label == classStringID);
             if (classIndex != -1)
                 return classIndex;
@@ -342,8 +400,10 @@ namespace TagTool.Commands.ModelAnimationGraphs
         public int AddType(int modeIndex, int classIndex, string typeString)
         {
             StringId typeStringID = CacheContext.StringTable.GetStringId(typeString);
-            int typeIndex = Animation.Modes[modeIndex].WeaponClass[classIndex].WeaponType.
-                FindIndex(m => m.Label == typeStringID);
+            if (typeStringID == StringId.Invalid)
+                typeStringID = CacheContext.StringTable.GetOrAddString(typeString);
+
+            int typeIndex = Animation.Modes[modeIndex].WeaponClass[classIndex].WeaponType.FindIndex(m => m.Label == typeStringID);
             if (typeIndex != -1)
                 return typeIndex;
             else
@@ -364,6 +424,9 @@ namespace TagTool.Commands.ModelAnimationGraphs
         public void AddAction(int modeIndex, int classIndex, int typeIndex, string actionString, int animationIndex)
         {
             StringId actionStringID = CacheContext.StringTable.GetStringId(actionString);
+            if (actionStringID == StringId.Invalid)
+                actionStringID = CacheContext.StringTable.GetOrAddString(actionString);
+
             var set = Animation.Modes[modeIndex].WeaponClass[classIndex].WeaponType[typeIndex].Set;
             var newAction = new ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Entry
             {
