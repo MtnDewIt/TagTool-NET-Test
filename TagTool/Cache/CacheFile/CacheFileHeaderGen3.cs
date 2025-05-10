@@ -170,10 +170,10 @@ namespace TagTool.Cache
 
         [TagField(Length = 0x584, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original, Flags = TagFieldFlags.Padding)]
         [TagField(Length = 0x1E0, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original, Flags = TagFieldFlags.Padding)]
-        [TagField(Length = 0x6FC4, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
+        [TagField(Length = 0x18A4, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
         [TagField(Length = 0x1524, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
         [TagField(Length = 0x1180, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-        [TagField(Length = 0x6F64, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        [TagField(Length = 0x1844, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
         public byte[] Padding3;
 
         public Tag FooterSignature;
