@@ -470,6 +470,7 @@ namespace TagTool.Commands.RenderModels
                     var MeshIndexCountOG = 0;
                     var MeshIndexCountNew = 0;
                     Console.Write($"   [{regionName}:{permName}]({permMeshes.Count}) ");
+                    Console.WriteLine();
                     foreach (var part in permMeshes)
                     {
                         usedMeshes.Add(part.Name.ToLower());
@@ -564,6 +565,7 @@ namespace TagTool.Commands.RenderModels
                             uint indicesStrippedCount = MeshOptimizer.Stripify(indicesStripped, indicesOptimized, indicesOptimized.Length, 65536, 0);
                             meshIndices = indicesStripped.Take((int)indicesStrippedCount).Select(i => (ushort)i).ToArray();
                             bool badResult = indicesStrippedCount > indicesUint.Count();
+                            Console.Write("    ");
                             Console.ForegroundColor = badResult ? ConsoleColor.DarkYellow : ConsoleColor.DarkGray;
                             Console.Write($"{indicesStrippedCount} ");
                             Console.ResetColor();
@@ -571,6 +573,7 @@ namespace TagTool.Commands.RenderModels
                         }
                         else
                         {
+                            Console.Write("    ");
                             Console.ForegroundColor = ConsoleColor.DarkGray;
                             Console.Write($"{meshIndices.Count()} ");
                             Console.ResetColor();
@@ -586,6 +589,7 @@ namespace TagTool.Commands.RenderModels
 
                         if (originalMaterialMap.TryGetValue(shaderName, out var originalMaterial))
                         {
+                            Console.WriteLine($" Found material: {shaderName}");
                             if (!materialIndices.TryGetValue(shaderName, out materialIndex))
                             {
                                 materialIndex = builder.AddMaterial(originalMaterial);
@@ -595,6 +599,8 @@ namespace TagTool.Commands.RenderModels
                         else
                         {
                             Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.WriteLine($" Material not found: {shaderName}, using default material");
+                            Console.ResetColor();
                             materialIndex = builder.AddMaterial(new RenderMaterial { RenderMethod = defaultShaderTag });
                         }
 
@@ -757,6 +763,18 @@ namespace TagTool.Commands.RenderModels
                             string parentName = FixBoneName(node.Parent.Name);
                             if (nodes.TryGetValue(parentName, out sbyte index))
                                 parentNodeIndex = index;
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.WriteLine($"   Warning: Parent node '{parentName}' for marker '{markerText}' not found. Node index set to -1.");
+                                Console.ResetColor();
+                            }
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine($"   Warning: Marker '{markerText}' has no parent node. Node index set to -1.");
+                            Console.ResetColor();
                         }
                         marker.NodeIndex = parentNodeIndex;
 
