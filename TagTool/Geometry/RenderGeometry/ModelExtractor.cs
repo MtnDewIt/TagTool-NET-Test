@@ -216,6 +216,12 @@ namespace TagTool.Geometry
                 var meshValueList = new List<long>();
                 #endregion
 
+                var amfMarkerGroups = RenderModel.MarkerGroups
+                    .SelectMany(g => g.Markers.Select(m => new {
+                        GroupNameId = g.Name,
+                        Marker = m
+                    }))
+                    .ToList();
 
                 #region Header
                 amfWriter.Write("AMF!".ToCharArray());
@@ -227,7 +233,7 @@ namespace TagTool.Geometry
                 headerAddressList.Add(amfWriter.BaseStream.Position);
                 amfWriter.Write(0);
 
-                amfWriter.Write(RenderModel.MarkerGroups.Count);
+                amfWriter.Write(amfMarkerGroups.Count);
                 headerAddressList.Add(amfWriter.BaseStream.Position);
                 amfWriter.Write(0);
 
@@ -264,10 +270,34 @@ namespace TagTool.Geometry
 
                 #region Marker Groups
                 headerValueList.Add(amfWriter.BaseStream.Position);
-                foreach (var group in RenderModel.MarkerGroups)
+                foreach (var gm in amfMarkerGroups)
                 {
-                    amfWriter.Write(GetStringNT(group.Name));
-                    amfWriter.Write(group.Markers.Count);
+                    var baseName = CacheContext.StringTable.GetString(gm.GroupNameId);
+                    string formatted = baseName;
+
+                    // derive a name from its single marker
+                    var m = gm.Marker;
+                    if (m.RegionIndex >= 0 && m.RegionIndex < RenderModel.Regions.Count)
+                    {
+                        var regionDef = validRegions
+                            .FirstOrDefault(r => r.RegionsIdx == m.RegionIndex);
+                        if (regionDef != null)
+                        {
+                            var rawPerm = RenderModel.Regions[m.RegionIndex]
+                                              .Permutations[m.PermutationIndex];
+                            var permDef = regionDef.Permutations
+                                              .FirstOrDefault(p => p.Name == rawPerm.Name);
+                            if (permDef != null)
+                            {
+                                var permName = CacheContext.StringTable.GetString(permDef.Name);
+                                var regionName = CacheContext.StringTable.GetString(regionDef.Name);
+                                formatted = $"({permName} {regionName}){baseName}";
+                            }
+                        }
+                    }
+
+                    amfWriter.Write(NullTerminate(formatted));
+                    amfWriter.Write(1);  // exactly one marker in this “group”
                     markerAddressList.Add(amfWriter.BaseStream.Position);
                     amfWriter.Write(0);
                 }
@@ -275,22 +305,20 @@ namespace TagTool.Geometry
 
 
                 #region Markers
-                foreach (var group in RenderModel.MarkerGroups)
+                foreach (var gm in amfMarkerGroups)
                 {
                     markerValueList.Add(amfWriter.BaseStream.Position);
-                    foreach (var marker in group.Markers)
-                    {
-                        amfWriter.Write(marker.RegionIndex);
-                        amfWriter.Write(marker.PermutationIndex);
-                        amfWriter.Write((short)marker.NodeIndex);
-                        amfWriter.Write(marker.Translation.X * scale);
-                        amfWriter.Write(marker.Translation.Y * scale);
-                        amfWriter.Write(marker.Translation.Z * scale);
-                        amfWriter.Write(marker.Rotation.I);
-                        amfWriter.Write(marker.Rotation.J);
-                        amfWriter.Write(marker.Rotation.K);
-                        amfWriter.Write(marker.Rotation.W);
-                    }
+                    var m = gm.Marker;
+                    amfWriter.Write(m.RegionIndex);
+                    amfWriter.Write(m.PermutationIndex);
+                    amfWriter.Write((short)m.NodeIndex);
+                    amfWriter.Write(m.Translation.X * scale);
+                    amfWriter.Write(m.Translation.Y * scale);
+                    amfWriter.Write(m.Translation.Z * scale);
+                    amfWriter.Write(m.Rotation.I);
+                    amfWriter.Write(m.Rotation.J);
+                    amfWriter.Write(m.Rotation.K);
+                    amfWriter.Write(m.Rotation.W);
                 }
                 #endregion
 
