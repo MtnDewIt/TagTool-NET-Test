@@ -316,6 +316,10 @@ namespace TagTool.Shaders.ShaderMatching
                 case "foliage":
                 case "water":
                 case "zonly":
+                case "black":
+                case "fur":
+                case "fur_stencil":
+                case "mux":
                     return true;
                 default:
                     return false;
@@ -478,17 +482,6 @@ namespace TagTool.Shaders.ShaderMatching
                         int portingOptionIndex = srcRmt2Descriptor.Options[j];
                         string optionName = PortingCache.StringTable.GetString(portingRmdfDefinition.Categories[j].ShaderOptions[portingOptionIndex].Name);
 
-                        // these are perfect option matches
-                        // do not touch unless verified
-                        if (srcRmt2Descriptor.Type == "shader")
-                        {
-                            if (methodName == "self_illumination" && optionName == "change_color")
-                                optionName = "illum_change_color";
-                        }
-                        if (methodName == "misc" && optionName == "default")
-                            optionName = "always_calc_albedo";
-                        if (methodName == "alpha_test" && optionName == "from_texture")
-                            optionName = "simple";
                         //if (PortingCache.Version == CacheVersion.Halo3ODST && methodName == "material_model" && optionName == "cook_torrance")
                         //    optionName = "cook_torrance_odst";
                         //if (methodName == "material_model" && optionName == "cook_torrance_rim_fresnel")
@@ -503,12 +496,18 @@ namespace TagTool.Shaders.ShaderMatching
                             //}
                             if (methodName == "material_model")
                             {
-                                if (optionName == "cook_torrance")
-                                    optionName = "cook_torrance_reach";
-                                else if (optionName == "two_lobe_phong")
-                                    optionName = "two_lobe_phong_reach";
-                                //else if (optionName == "organism")
-                                //    optionName = "organism_reach";
+                                switch (optionName)
+                                {
+                                    case "cook_torrance":
+                                        optionName = "cook_torrance_reach";
+                                        break;
+                                    case "two_lobe_phong":
+                                        optionName = "two_lobe_phong_reach";
+                                        break;
+                                    //case "organism":
+                                    //    optionName = "organism_reach"
+                                    //    break;
+                                }
                             }
                         }
 
@@ -516,37 +515,11 @@ namespace TagTool.Shaders.ShaderMatching
                         // fixup names (remove when full rmdf + shader generation for each gen3 game)
                         switch ($"{methodName}\\{optionName}")
                         {
-                            // Reach rmsh //
-                            case @"albedo\patchy_emblem":
-                                optionName = "emblem_change_color";
-                                break;
-                            case @"bump_mapping\detail_blend":
-                            case @"bump_mapping\three_detail_blend":
-                                optionName = "detail";
-                                break;
-                            case @"specular_mask\specular_mask_mult_diffuse":
-                                optionName = "specular_mask_from_texture";
-                                break;
-                            // Reach rmtr  //
-                            case @"blending\distance_blend_base":
-                                optionName = "morph";
-                                break;
-                            // Reach rmfl //
+                            // Reach rmfl // These options require the addition of extra entry points in order to get full functionality
                             case @"material_model\flat":
                             case @"material_model\specular":
                             case @"material_model\translucent":
                                 optionName = "default";
-                                break;
-                            // Reach prt3 //
-                            case @"lighting\per_pixel_smooth":
-                            case @"lighting\smoke_lighting":
-                                optionName = "per_pixel_ravi_order_3";
-                                break;
-                            case @"lighting\per_vertex_ambient":
-                                optionName = "per_vertex_ravi_order_0";
-                                break;
-                            case @"depth_fade\low_res":
-                                optionName = "on";
                                 break;
                         }
 
@@ -670,38 +643,6 @@ namespace TagTool.Shaders.ShaderMatching
                 descriptor.HasParsed = true;
 
                 return true;
-            }
-
-            public HaloShaderGenerator.Generator.IShaderGenerator GetGenerator(bool applyFixes = false)
-            {
-                if (HasParsed && !IsMs30)
-                {
-                    switch (Type)
-                    {
-                        case "beam":            return new HaloShaderGenerator.Beam.BeamGenerator(Options, applyFixes);
-                        case "black":           return new HaloShaderGenerator.Black.ShaderBlackGenerator();
-                        case "contrail":        return new HaloShaderGenerator.Contrail.ContrailGenerator(Options, applyFixes);
-                        case "cortana":         return new HaloShaderGenerator.Cortana.CortanaGenerator(Options, applyFixes);
-                        case "custom":          return new HaloShaderGenerator.Custom.CustomGenerator(Options, applyFixes);
-                        case "decal":           return new HaloShaderGenerator.Decal.DecalGenerator(Options, applyFixes);
-                        case "foliage":         return new HaloShaderGenerator.Foliage.FoliageGenerator(Options, applyFixes);
-                        //case "glass":           return new HaloShaderGenerator.Glass.GlassGenerator(Options, applyFixes);
-                        case "halogram":        return new HaloShaderGenerator.Halogram.HalogramGenerator(Options, applyFixes);
-                        case "light_volume":    return new HaloShaderGenerator.LightVolume.LightVolumeGenerator(Options, applyFixes);
-                        case "particle":        return new HaloShaderGenerator.Particle.ParticleGenerator(Options, applyFixes);
-                        case "screen":          return new HaloShaderGenerator.Screen.ScreenGenerator(Options, applyFixes);
-                        case "shader":          return new HaloShaderGenerator.Shader.ShaderGenerator(Options, applyFixes);
-                        case "terrain":         return new HaloShaderGenerator.Terrain.TerrainGenerator(Options, applyFixes);
-                        case "water":           return new HaloShaderGenerator.Water.WaterGenerator(Options, applyFixes);
-                        case "zonly":           return new HaloShaderGenerator.ZOnly.ZOnlyGenerator(Options, applyFixes);
-                    }
-
-                    Console.WriteLine($"\"{Type}\" shader generation is currently unsupported.");
-                    return null;
-                }
-
-                Console.WriteLine("Invalid descriptor.");
-                return null;
             }
         }
 
