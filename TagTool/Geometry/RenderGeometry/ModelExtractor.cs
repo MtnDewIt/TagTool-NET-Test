@@ -279,20 +279,13 @@ namespace TagTool.Geometry
                     var m = gm.Marker;
                     if (m.RegionIndex >= 0 && m.RegionIndex < RenderModel.Regions.Count)
                     {
-                        var regionDef = validRegions
-                            .FirstOrDefault(r => r.RegionsIdx == m.RegionIndex);
-                        if (regionDef != null)
+                        var regionModel = RenderModel.Regions[m.RegionIndex];
+                        if (m.PermutationIndex >= 0 && m.PermutationIndex < regionModel.Permutations.Count)
                         {
-                            var rawPerm = RenderModel.Regions[m.RegionIndex]
-                                              .Permutations[m.PermutationIndex];
-                            var permDef = regionDef.Permutations
-                                              .FirstOrDefault(p => p.Name == rawPerm.Name);
-                            if (permDef != null)
-                            {
-                                var permName = CacheContext.StringTable.GetString(permDef.Name);
-                                var regionName = CacheContext.StringTable.GetString(regionDef.Name);
-                                formatted = $"({permName} {regionName}){baseName}";
-                            }
+                            var permModel = regionModel.Permutations[m.PermutationIndex];
+                            var permName = CacheContext.StringTable.GetString(permModel.Name);
+                            var regionName = CacheContext.StringTable.GetString(regionModel.Name);
+                            formatted = $"({permName} {regionName}){baseName}";
                         }
                     }
 
