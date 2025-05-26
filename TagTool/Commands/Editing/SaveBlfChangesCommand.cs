@@ -47,6 +47,7 @@ namespace TagTool.Commands.Editing
                 ModReference = Blf.ModReference,
                 MapVariantTagNames = Blf.MapVariantTagNames,
                 MapVariant = Blf.MapVariant,
+                PackedMapVariant = Blf.PackedMapVariant,
                 GameVariant = Blf.GameVariant,
                 ContentHeader = Blf.ContentHeader,
                 MapImage = Blf.MapImage,

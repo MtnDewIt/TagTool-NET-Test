@@ -77,6 +77,7 @@ namespace TagTool.Commands.Editing
                             break;
                         case ".bin":
                         case ".blf":
+                        case ".mvar":
                             blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
                             break;
                         case ".campaign":
