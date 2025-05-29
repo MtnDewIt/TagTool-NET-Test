@@ -80,13 +80,13 @@ namespace TagTool.BlamFile
             mapVariant.SpentBudget = ReinterpretCastFloat(bitStream.ReadUnsigned(32));
 
             mapVariant.Objects = new PackedObjectDatum[mapVariant.VariantObjectCount];
-            for (int i = 0; i < mapVariant.VariantObjectCount; i++) 
+            for (int i = 0; i < mapVariant.VariantObjectCount; i++)
             {
-                mapVariant.Objects[i] = PackedObjectDatum.Read(bitStream);
+                mapVariant.Objects[i] = PackedObjectDatum.Read(bitStream, mapVariant.WorldBounds);
             }
 
             mapVariant.ObjectTypeStartIndex = new short[14];
-            for (int i = 0; i < mapVariant.ObjectTypeStartIndex.Length; i++) 
+            for (int i = 0; i < mapVariant.ObjectTypeStartIndex.Length; i++)
             {
                 mapVariant.ObjectTypeStartIndex[i] = (short)bitStream.ReadUnsigned(9);
             }
@@ -118,16 +118,13 @@ namespace TagTool.BlamFile
             public int RuntimeObjectIndex = -1;
             public int RuntimeEditorObjectIndex = -1;
             public int QuotaIndex = -1;
-            public PackedPosition Position;
-            public PackedAxis Axis;
-            // TODO: Infer unpacked data from packed data
-            //public RealPoint3d Position;
-            //public RealVector3d Forward;
-            //public RealVector3d Up;
+            public RealPoint3d Position;
+            public RealVector3d Forward;
+            public RealVector3d Up;
             public ObjectIdentifier ParentObject;
             public VariantMultiplayerProperties Properties;
 
-            public static PackedObjectDatum Read(BitStream stream)
+            public static PackedObjectDatum Read(BitStream stream, RealRectangle3d worldBounds)
             {
                 var objectDatum = new PackedObjectDatum();
 
@@ -156,8 +153,10 @@ namespace TagTool.BlamFile
 
                 if (hasPosition)
                 {
-                    objectDatum.Position = PackedPosition.Read(stream);
-                    objectDatum.Axis = PackedAxis.Read(stream);
+                    objectDatum.Position = ReadQuantizedPosition(stream, 16, worldBounds);
+
+                    // TODO: Inline some functions, as it never properly returns the values for forward and up
+                    ReadAxis(stream, objectDatum.Forward, objectDatum.Up);
 
                     objectDatum.Properties = new VariantMultiplayerProperties
                     {
@@ -167,7 +166,7 @@ namespace TagTool.BlamFile
                         SharedStorage = (byte)stream.ReadUnsigned(8),
                         SpawnTime = (byte)stream.ReadUnsigned(8),
                         Team = (MultiplayerTeamDesignator)stream.ReadUnsigned(8),
-                        Boundary = new MultiplayerObjectBoundary 
+                        Boundary = new MultiplayerObjectBoundary
                         {
                             Type = (MultiplayerObjectBoundaryShape)stream.ReadUnsigned(8),
                         },
@@ -218,61 +217,284 @@ namespace TagTool.BlamFile
             return quotaDatum;
         }
 
+        public unsafe static RealPoint3d ReadQuantizedPosition(BitStream stream, int axisEncodingSizeInBits, RealRectangle3d worldBounds)
+        {
+            var point = stackalloc int[3];
+
+            point[0] = (int)stream.ReadUnsigned(axisEncodingSizeInBits);
+            point[1] = (int)stream.ReadUnsigned(axisEncodingSizeInBits);
+            point[2] = (int)stream.ReadUnsigned(axisEncodingSizeInBits);
+
+            var dequantizedPoint = new RealPoint3d(0.0f, 0.0f, 0.0f)
+            {
+                X = DequantizeReal(point[0], worldBounds.X0, worldBounds.X1, axisEncodingSizeInBits, false),
+                Y = DequantizeReal(point[1], worldBounds.X0, worldBounds.X1, axisEncodingSizeInBits, false),
+                Z = DequantizeReal(point[3], worldBounds.X0, worldBounds.X1, axisEncodingSizeInBits, false),
+            };
+
+            return dequantizedPoint;
+        }
+
+        public static void ReadAxis(BitStream stream, RealVector3d forward, RealVector3d up)
+        {
+            var isUp = stream.ReadBool();
+
+            if (isUp)
+            {
+                // TODO: Find home for global unit vectors
+                // GlobalUp
+                up.I = 0.0f;
+                up.J = 0.0f;
+                up.K = 1.0f;
+            }
+            else
+            {
+                int quantizedUp = (int)stream.ReadUnsigned(19);
+                DequantizeUnitVector3d(quantizedUp, up);
+            }
+
+            int quantizedForward = (int)stream.ReadUnsigned(8);
+            float forwardAngle = DequantizeReal(quantizedForward, -(int)Math.PI, (int)Math.PI, 8, true);
+
+            AngleToAxes(up, forwardAngle, forward);
+        }
+
+        public static void AngleToAxes(RealVector3d up, float angle, RealVector3d forward)
+        {
+            var forwardReference = new RealVector3d(0.0f, 0.0f, 0.0f);
+            var leftReference = new RealVector3d(0.0f, 0.0f, 0.0f);
+
+            AxesComputeReference(up, forwardReference, leftReference);
+
+            forward.I = forwardReference.I;
+            forward.J = forwardReference.J;
+            forward.K = forwardReference.K;
+
+            float u;
+            float v;
+
+            if (angle == Math.PI || angle == -Math.PI)
+            {
+                u = 0.0f;
+                v = -1.0f;
+            }
+            else
+            {
+                u = (float)Math.Sin(angle);
+                v = (float)Math.Cos(angle);
+            }
+
+            RotateVectorAboutAxis(forward, up, u, v);
+            RealVector3d.Normalize(forward);
+
+            if (!ValidReadlVector3dAxes2(forward, up)) 
+            {
+                throw new InvalidOperationException("Invalid forward and up vectors");
+            }
+        }
+
+        public static void AxesComputeReference(RealVector3d up, RealVector3d forwardReference, RealVector3d leftReference)
+        {
+            if (!ValidRealVector(up)) 
+            {
+                throw new ArgumentException("Up vector is not a valid vector");
+            }
+
+            // TODO: Find home for global unit vectors
+
+            // GlobalForward
+            float forwardAmount = Math.Abs(RealVector3d.DotProduct(up, new RealVector3d(1.0f, 0.0f, 0.0f)));
+            // GlobalLeft
+            float leftAmount = Math.Abs(RealVector3d.DotProduct(up, new RealVector3d(0.0f, 1.0f, 0.0f)));
+
+            if (forwardAmount >= leftAmount)
+            {
+                // GlobalLeft
+                forwardReference = RealVector3d.CrossProductNoNorm(new RealVector3d(0.0f, 1.0f, 0.0f), up);
+            }
+            else
+            {
+                // GlobalForward
+                forwardReference = RealVector3d.CrossProductNoNorm(up, new RealVector3d(1.0f, 0.0f, 0.0f));
+            }
+
+            float forwardMagnitude = RealVector3d.Magnitude(forwardReference);
+
+            if (forwardMagnitude < float.Epsilon)
+            {
+                throw new InvalidOperationException("Forward Magnitude was less than epsilon");
+            }
+
+            leftReference = RealVector3d.CrossProductNoNorm(up, forwardReference);
+
+            float leftMagnitude = RealVector3d.Magnitude(leftReference);
+
+            if (leftMagnitude < float.Epsilon)
+            {
+                throw new InvalidOperationException("Left Magnitude was less than epsilon");
+            }
+
+            if (!ValidReadlVector3dAxes3(forwardReference, leftReference, up))
+            {
+                throw new InvalidOperationException("Invalid vector axes");
+            }
+        }
+
+        public static bool ValidReadlVector3dAxes2(RealVector3d forward, RealVector3d up)
+        {
+            return ValidRealVector(forward)
+                && ValidRealVector(up)
+                && ValidRealComparison(RealVector3d.DotProduct(forward, up), 0.0f);
+        }
+
+        public static bool ValidReadlVector3dAxes3(RealVector3d forward, RealVector3d left, RealVector3d up)
+        {
+            return ValidRealVector(forward)
+                && ValidRealVector(left)
+                && ValidRealVector(up)
+                && ValidRealComparison(RealVector3d.DotProduct(forward, left), 0.0f)
+                && ValidRealComparison(RealVector3d.DotProduct(left, up), 0.0f)
+                && ValidRealComparison(RealVector3d.DotProduct(forward, up), 0.0f);
+        }
+
+        public static bool ValidReal(float value)
+        {
+            return !float.IsInfinity(value) && !float.IsNaN(value);
+        }
+
+        public static bool ValidRealComparison(float a1, float a2)
+        {
+            return ValidReal(a1 - a2) && Math.Abs(a1 - a2) < float.Epsilon;
+        }
+
+        public static bool ValidRealVector(RealVector3d vector) 
+        {
+            var squaredLength = vector.I * vector.I + vector.J * vector.J + vector.K * vector.K - 1.0f;
+
+            if (float.IsNaN(squaredLength) || float.IsInfinity(squaredLength)) 
+            {
+                return false;
+            }
+
+            return Math.Abs(squaredLength) < 0.001f;
+        }
+
+        public static void RotateVectorAboutAxis(RealVector3d forward, RealVector3d up, float u, float v) 
+        {
+            float v1 = (1.0f - v) * (((forward.I * up.I) + (forward.J * up.J)) + (forward.K * up.K));
+            float v2 = (forward.K * up.I) - (forward.I * up.K);
+            float v3 = (forward.I * up.J) - (forward.J * up.I);
+            forward.I = ((v * forward.I) + (v1 * up.I)) - (u * ((forward.J * up.K) - (forward.K * up.J)));
+            forward.J = ((v * forward.J) + (v1 * up.J)) - (u * v2);
+            forward.K = ((v * forward.K) + (v1 * up.K)) - (u * v3);
+        }
+
+        public static void DequantizeUnitVector3d(int value, RealVector3d vector) 
+        {
+            int face = value & 7;
+            float x = DequantizeReal((value >> 3) & 0xFF, -1.0f, 1.0f, 8, true);
+            float y = DequantizeReal((value >> 11) & 0xFF, -1.0f, 1.0f, 8, true);
+
+            switch (face)
+            {
+                case 0:
+                    vector.I = 1.0f;
+                    vector.J = x;
+                    vector.K = y;
+                    break;
+                case 1:
+                    vector.I = x;
+                    vector.J = 1.0f;
+                    vector.K = y;
+                    break;
+                case 2:
+                    vector.I = x;
+                    vector.J = y;
+                    vector.K = 1.0f;
+                    break;
+                case 3:
+                    vector.I = -1.0f;
+                    vector.J = x;
+                    vector.K = y;
+                    break;
+                case 4:
+                    vector.I = x;
+                    vector.J = -1.0f;
+                    vector.K = y;
+                    break;
+                case 5:
+                    vector.I = x;
+                    vector.J = y;
+                    vector.K = -1.0f;
+                    break;
+                default:
+                    throw new InvalidOperationException($"Invalid face value {face} when reading unit vector");
+            }
+
+            RealVector3d.Normalize(vector);
+        }
+
+        public static float DequantizeReal(int quantized, float minValue, float maxValue, int sizeInBits, bool exactMidPoint)
+        {
+            if (sizeInBits <= 0) 
+            {
+                throw new ArgumentException("Number of bits must be greater than zero");
+            }
+
+            if (maxValue <= minValue)
+            {
+                throw new ArgumentException("Maximum Value must be greater than Minimum Value");
+            }
+
+            if (exactMidPoint && sizeInBits <= 1)
+            {
+                throw new ArgumentException("Number of bits must be greater than 1 when exact mid point is enabled");
+            }
+
+            int stepCount = (1 << sizeInBits) - 1;
+
+            if (exactMidPoint)
+            {
+                stepCount -= stepCount % 2;
+            }
+
+            if (stepCount <= 0)
+            {
+                throw new InvalidOperationException("Number of steps was less than or equal to zero");
+            }
+
+            float dequantized;
+
+            if (quantized != 0)
+            {
+                if (quantized < stepCount)
+                {
+                    dequantized = (((stepCount - quantized) * minValue) + (quantized * maxValue)) / stepCount;
+                }
+                else
+                {
+                    dequantized = maxValue;
+                }
+            }
+            else
+            {
+                dequantized = minValue;
+            }
+
+            if (exactMidPoint && 2 * quantized == stepCount)
+            {
+                if (dequantized != (minValue + maxValue) / 2.0f) 
+                {
+                    throw new InvalidOperationException("Dequantized value must be equal to the exact mid point of Minimum Value and Maximum Value");
+                }
+            }
+
+            return dequantized;
+        }
+
         public static void WriteObjectQuota()
         {
             // TODO: Implement
-        }
-
-        [TagStructure(Size = 0x6)]
-        public class PackedPosition : TagStructure
-        {
-            public short X;
-            public short Y;
-            public short Z;
-
-            public static PackedPosition Read(BitStream stream)
-            {
-                var position = new PackedPosition();
-
-                position.X = (short)stream.ReadUnsigned(16);
-                position.Y = (short)stream.ReadUnsigned(16);
-                position.Z = (short)stream.ReadUnsigned(16);
-
-                return position;
-            }
-
-            public static void Write()
-            {
-                // TODO: Implement
-            }
-        }
-
-        [TagStructure(Size = 0x5)]
-        public class PackedAxis : TagStructure
-        {
-            public int Up;
-            public byte Forward;
-
-            public static PackedAxis Read(BitStream stream)
-            {
-                var axis = new PackedAxis();
-
-                var isUp = stream.ReadBool();
-
-                if (!isUp)
-                {
-                    axis.Up = (int)stream.ReadUnsigned(19);
-                }
-
-                axis.Forward = (byte)stream.ReadUnsigned(8);
-
-                return axis;
-            }
-
-            public static void Write()
-            {
-                // TODO: Implement
-            }
         }
     }
 }
