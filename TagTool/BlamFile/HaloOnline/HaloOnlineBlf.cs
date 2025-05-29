@@ -50,7 +50,7 @@ namespace TagTool.BlamFile.HaloOnline
         public BlfMapVariant MapVariant;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-        public BlfMapVariant PackedMapVariant;
+        public BlfPackedMapVariant PackedMapVariant;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
         public BlfGameVariant GameVariant;

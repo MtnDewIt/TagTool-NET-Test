@@ -37,7 +37,7 @@ namespace TagTool.BlamFile
         public BlfModPackageReference ModReference;
         public BlfMapVariantTagNames MapVariantTagNames;
         public BlfMapVariant MapVariant;
-        public BlfMapVariant PackedMapVariant;
+        public BlfPackedMapVariant PackedMapVariant;
         public BlfGameVariant GameVariant;
         public BlfContentHeader ContentHeader;
         public BlfMapImage MapImage;
@@ -182,81 +182,7 @@ namespace TagTool.BlamFile
 
                     case "mvar":
                         ContentFlags |= BlfFileContentFlags.PackedMapVariant;
-
-                        PackedMapVariant = new BlfMapVariant
-                        {
-                            Signature = reader.ReadTag(),
-                            Length = reader.ReadInt32(),
-                            MajorVersion = reader.ReadInt16(),
-                            MinorVersion = reader.ReadInt16(),
-                            MapVariant = new MapVariant
-                            {
-                                Metadata = new ContentItemMetadata
-                                {
-                                    //UniqueId = reader.ReadPackedUInt64(64),
-                                    //Name = reader.ReadPackedString(32),
-                                    //Description = reader.ReadPackedString(128),
-                                    //Author = reader.ReadPackedString(16),
-                                    //ContentType = (ContentItemType)reader.ReadPackedInt32(5),
-                                    //AuthorIsOnline = reader.ReadPackedBoolean(1),
-                                    //AuthorId = reader.ReadPackedUInt64(64),
-                                    //ContentSize = reader.ReadPackedUInt64(64),
-                                    //Timestamp = reader.ReadPackedUInt64(64),
-                                    //FilmDuration = reader.ReadPackedInt32(32),
-                                    //CampaignId = reader.ReadPackedInt32(32),
-                                    //MapId = reader.ReadPackedInt32(32),
-                                    //GameEngineType = (GameEngineType)reader.ReadPackedInt8(4),
-                                    //CampaignDifficulty = (int)reader.ReadPackedUInt8(3),
-                                    //HopperId = reader.ReadPackedInt16(32),
-                                    //GameId = reader.ReadPackedUInt64(64),
-                                },
-                                //VariantVersion = reader.ReadPackedUInt8(8),
-                                //MapVariantChecksum = reader.ReadPackedUInt32(32),
-                                //ScenarioObjectCount = reader.ReadPackedInt16(10),
-                                //VariantObjectCount = reader.ReadPackedInt16(10),
-                                //PlaceableQuotaCount = reader.ReadPackedInt16(9),
-                                //MapId = reader.ReadPackedInt32(32),
-                                //BuiltIn = reader.ReadPackedBoolean(1),
-                                WorldBounds = new RealRectangle3d 
-                                {
-                                    //X0 = reader.ReadPackedFloat(),
-                                    //X1 = reader.ReadPackedFloat(),
-                                    //Y0 = reader.ReadPackedFloat(),
-                                    //Y1 = reader.ReadPackedFloat(),
-                                    //Z0 = reader.ReadPackedFloat(),
-                                    //Z1 = reader.ReadPackedFloat(),
-                                },
-                                //RuntimeEngineSubType = (GameEngineSubType)reader.ReadPackedUInt8(4),
-                                //MaximumBudget = reader.ReadPackedFloat(32),
-                                //SpentBudget = reader.ReadPackedFloat(32),
-                                Objects = Enumerable.Repeat(new VariantObjectDatum(), 640).ToArray(),
-                                ObjectTypeStartIndex = new short[16],
-                                Quotas = Enumerable.Repeat(new VariantObjectQuota(), 256).ToArray(),
-                            },
-                        };
-
-                        for (int i = 0; i < PackedMapVariant.MapVariant.VariantObjectCount; i++) 
-                        {
-                            //PackedMapVariant.MapVariant.Objects[i] = deserializer.Deserialize<VariantObjectDatum>(dataContext);
-                        }
-
-                        for (int i = 0; i < 14; i++) 
-                        {
-                            //PackedMapVariant.MapVariant.ObjectTypeStartIndex[i] = reader.ReadPackedInt16(9);
-                        }
-
-                        for (int i = 0; i < PackedMapVariant.MapVariant.PlaceableQuotaCount; i++) 
-                        {
-                            //PackedMapVariant.MapVariant.Quotas[i] = deserializer.Deserialize<VariantObjectQuota>(dataContext);
-                        }
-
-                        var variantSize = PackedMapVariant.Length - 0xC;
-
-                        for (int i = 0; i < variantSize; i++) 
-                        {
-                            var temp = reader.ReadByte();
-                        }
-
+                        PackedMapVariant = BlfPackedMapVariant.Read(reader);
                         break;
 
                     case "chdr":

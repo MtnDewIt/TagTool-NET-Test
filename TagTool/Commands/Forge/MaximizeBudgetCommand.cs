@@ -109,7 +109,7 @@ namespace TagTool.Commands.Forge
                     Name = mapFile.MapFileBlf.Scenario.Names[0].Name,
                     Description = mapFile.MapFileBlf.Scenario.Descriptions[0].Name,
                     Author = "Bungie",
-                    ContentType = ContentItemType.SandboxMap,
+                    ContentType = ContentItemType.Usermap,
                     ContentSize = typeof(BlfMapVariant).GetSize(),
                     Timestamp = (ulong)DateTime.Now.ToFileTime(),
                     CampaignId = -1,

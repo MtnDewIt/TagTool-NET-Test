@@ -32,7 +32,7 @@ namespace TagTool.BlamFile
         [TagField(Length = 16, MinVersion = CacheVersion.Halo3ODST)]
         public short[] ObjectTypeStartIndex;
 
-        [TagField(Length = 0x100)]
+        [TagField(Length = 256)]
         public VariantObjectQuota[] Quotas;
 
         [TagField(Length = 80)]
@@ -72,7 +72,6 @@ namespace TagTool.BlamFile
     [TagStructure(Size = 0xC)]
     public class VariantObjectQuota : TagStructure
     {
-        [TagField(Platform = CachePlatform.Original)]
         public int ObjectDefinitionIndex = -1;
         public byte MinimumCount;
         public byte MaximumCount;

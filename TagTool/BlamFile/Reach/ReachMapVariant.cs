@@ -31,7 +31,7 @@ namespace TagTool.BlamFile.Reach
 
     public class ReachMapVariant
     {
-        public const int MaxObjects = 651;
+        public const int MaxObjects = 640;
         public const int MaxQuota = 256;
 
         public ReachContentItemMetadata Metadata;

@@ -40,7 +40,7 @@ namespace TagTool.BlamFile.Reach
             metadata.Name = sourceMapVariant.Name;
             metadata.Description = sourceMapVariant.Description;
             metadata.GameId = sourceMapVariant.Metadata.GameId;
-            metadata.ContentType = ContentItemType.SandboxMap;
+            metadata.ContentType = ContentItemType.Usermap;
             metadata.ContentSize = typeof(BlfMapVariant).GetSize();
             metadata.GameEngineType = GameEngineType.None;
             metadata.MapId = sourceMapVariant.MapId;

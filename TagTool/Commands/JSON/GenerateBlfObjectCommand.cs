@@ -39,7 +39,9 @@ namespace TagTool.Commands.JSON
             ".map",
             ".mapinfo",
             ".campaign",
-            ".blf"
+            ".blf",
+            ".bin",
+            ".mvar",
         };
 
         public GenerateBlfObjectCommand(GameCache cache, GameCacheHaloOnlineBase cacheContext) : base

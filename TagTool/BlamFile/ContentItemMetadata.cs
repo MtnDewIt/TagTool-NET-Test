@@ -53,19 +53,19 @@ namespace TagTool.BlamFile
     public enum ContentItemType : int
     {
         None = -1,
-        GameState,
-        CtfVariant,
-        SlayerVariant,
-        OddballVariant,
-        KingOfTheHillVariant,
-        JuggernautVariant,
-        TerritoriesVariant,
-        AssaultVariant,
-        InfectionVariant,
-        VipVariant,
-        SandboxMap,
+        Personal,
+        CTF,
+        Slayer,
+        Oddball,
+        King,
+        Juggernaut,
+        Territories,
+        Assault,
+        Infection,
+        VIP,
+        Usermap,
         Film,
-        FilmClip,
-        ScreenShot
+        Clip,
+        Screenshot,
     }
 }
