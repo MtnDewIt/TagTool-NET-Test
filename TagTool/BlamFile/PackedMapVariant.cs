@@ -12,41 +12,18 @@ using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.BlamFile
 {
-    [TagStructure(Align = 0x1)]
-    public class BlfPackedMapVariant : BlfChunkHeader
+    public class BlfPackedMapVariant
     {
-        public PackedContentItemMetadata Metadata;
-        public short VariantVersion;
-        public uint MapVariantChecksum;
-        public short ScenarioObjectCount;
-        public short VariantObjectCount;
-        public short PlaceableQuotaCount;
-        public int MapId = -1;
-        public bool BuiltIn;
-        public RealRectangle3d WorldBounds;
-        public GameEngineSubType RuntimeEngineSubType = GameEngineSubType.All;
-        public float MaximumBudget;
-        public float SpentBudget;
-
-        [TagField(Length = 640)]
-        public PackedObjectDatum[] Objects;
-
-        [TagField(Length = 14)]
-        public short[] ObjectTypeStartIndex;
-
-        [TagField(Length = 256)]
-        public VariantObjectQuota[] Quotas;
-
-        public static BlfPackedMapVariant Read(EndianReader reader)
+        public static BlfMapVariant Read(EndianReader reader)
         {
-            var mapVariant = new BlfPackedMapVariant();
+            var blfChunk = new BlfMapVariant();
 
-            mapVariant.Signature = reader.ReadTag();
-            mapVariant.Length = reader.ReadInt32();
-            mapVariant.MajorVersion = reader.ReadInt16();
-            mapVariant.MinorVersion = reader.ReadInt16();
+            blfChunk.Signature = reader.ReadTag();
+            blfChunk.Length = reader.ReadInt32();
+            blfChunk.MajorVersion = reader.ReadInt16();
+            blfChunk.MinorVersion = reader.ReadInt16();
 
-            var variantSize = mapVariant.Length - 0xC;
+            var variantSize = blfChunk.Length - 0xC;
 
             var buffer = new byte[variantSize];
 
@@ -58,7 +35,9 @@ namespace TagTool.BlamFile
             var stream = new MemoryStream(buffer);
             var bitStream = new BitStream(stream);
 
-            mapVariant.Metadata = PackedContentItemMetadata.Read(bitStream);
+            var mapVariant = new MapVariant();
+
+            mapVariant.Metadata = ReadMetadata(bitStream);
             mapVariant.VariantVersion = (short)bitStream.ReadUnsigned(8);
             mapVariant.MapVariantChecksum = bitStream.ReadUnsigned(32);
             mapVariant.ScenarioObjectCount = (short)bitStream.ReadUnsigned(10);
@@ -79,10 +58,10 @@ namespace TagTool.BlamFile
             mapVariant.MaximumBudget = ReinterpretCastFloat(bitStream.ReadUnsigned(32));
             mapVariant.SpentBudget = ReinterpretCastFloat(bitStream.ReadUnsigned(32));
 
-            mapVariant.Objects = new PackedObjectDatum[mapVariant.VariantObjectCount];
+            mapVariant.Objects = new VariantObjectDatum[mapVariant.VariantObjectCount];
             for (int i = 0; i < mapVariant.VariantObjectCount; i++)
             {
-                mapVariant.Objects[i] = PackedObjectDatum.Read(bitStream, mapVariant.WorldBounds);
+                mapVariant.Objects[i] = ReadObjectDatum(bitStream, mapVariant.WorldBounds);
             }
 
             mapVariant.ObjectTypeStartIndex = new short[14];
@@ -97,10 +76,41 @@ namespace TagTool.BlamFile
                 mapVariant.Quotas[i] = ReadObjectQuota(bitStream);
             }
 
-            return mapVariant;
+            blfChunk.MapVariant = mapVariant;
+
+            return blfChunk;
         }
 
         public static void Write()
+        {
+            // TODO: Implement
+        }
+
+        public static ContentItemMetadata ReadMetadata(BitStream stream)
+        {
+            var metadata = new ContentItemMetadata();
+
+            metadata.UniqueId = stream.ReadUnsigned64(64);
+            metadata.Name = stream.ReadUnicodeString(16);
+            metadata.Description = stream.ReadString(128);
+            metadata.Author = stream.ReadString(16);
+            metadata.ContentType = (ContentItemType)(stream.ReadUnsigned(5) - 1);
+            metadata.AuthorIsOnline = stream.ReadBool();
+            metadata.AuthorId = stream.ReadUnsigned64(64);
+            metadata.ContentSize = stream.ReadUnsigned64(64);
+            metadata.Timestamp = stream.ReadUnsigned64(64);
+            metadata.FilmDuration = (int)stream.ReadUnsigned(32);
+            metadata.CampaignId = (int)stream.ReadUnsigned(32);
+            metadata.MapId = (int)stream.ReadUnsigned(32);
+            metadata.GameEngineType = (GameEngineType)stream.ReadUnsigned(4);
+            metadata.CampaignDifficulty = (int)(stream.ReadUnsigned(3) - 1);
+            metadata.HopperId = (short)stream.ReadUnsigned(16);
+            metadata.GameId = stream.ReadUnsigned64(64);
+
+            return metadata;
+        }
+
+        public static void WriteMetadata()
         {
             // TODO: Implement
         }
@@ -110,97 +120,81 @@ namespace TagTool.BlamFile
             return BitConverter.ToSingle(BitConverter.GetBytes(value), 0);
         }
 
-        [TagStructure(Size = 0x54)]
-        public class PackedObjectDatum : TagStructure
+        public static VariantObjectDatum ReadObjectDatum(BitStream stream, RealRectangle3d worldBounds)
         {
-            public VariantObjectPlacementFlags Flags;
-            public short RuntimeRemovalTimer;
-            public int RuntimeObjectIndex = -1;
-            public int RuntimeEditorObjectIndex = -1;
-            public int QuotaIndex = -1;
-            public RealPoint3d Position;
-            public RealVector3d Forward;
-            public RealVector3d Up;
-            public ObjectIdentifier ParentObject;
-            public VariantMultiplayerProperties Properties;
+            var objectDatum = new VariantObjectDatum();
 
-            public static PackedObjectDatum Read(BitStream stream, RealRectangle3d worldBounds)
+            if (stream.ReadUnsigned(1) == 0)
             {
-                var objectDatum = new PackedObjectDatum();
-
-                if (stream.ReadUnsigned(1) == 0)
-                {
-                    return objectDatum;
-                }
-
-                objectDatum.Flags = (VariantObjectPlacementFlags)stream.ReadUnsigned(16);
-                objectDatum.QuotaIndex = (int)stream.ReadUnsigned(32);
-
-                var hasParentObject = stream.ReadUnsigned(1) > 0;
-
-                // TODO: Set default values for ObjectIdentifier
-                objectDatum.ParentObject = new ObjectIdentifier();
-
-                if (hasParentObject)
-                {
-                    objectDatum.ParentObject.UniqueId = new DatumHandle(stream.ReadUnsigned(32));
-                    objectDatum.ParentObject.OriginBspIndex = (short)stream.ReadUnsigned(16);
-                    objectDatum.ParentObject.Type = new GameObjectType8() { Halo3Retail = (GameObjectTypeHalo3Retail)stream.ReadUnsigned(8) };
-                    objectDatum.ParentObject.Source = (ObjectIdentifier.SourceValue)stream.ReadUnsigned(8);
-                }
-
-                var hasPosition = stream.ReadUnsigned(1) > 0;
-
-                if (hasPosition)
-                {
-                    objectDatum.Position = ReadQuantizedPosition(stream, 16, worldBounds);
-
-                    // TODO: Inline some functions, as it never properly returns the values for forward and up
-                    ReadAxis(stream, objectDatum.Forward, objectDatum.Up);
-
-                    objectDatum.Properties = new VariantMultiplayerProperties
-                    {
-                        Type = (MultiplayerObjectType)stream.ReadUnsigned(8),
-                        Flags = (VariantPlacementFlags)stream.ReadUnsigned(8),
-                        EngineFlags = (GameEngineSubTypeFlags)stream.ReadUnsigned(16),
-                        SharedStorage = (byte)stream.ReadUnsigned(8),
-                        SpawnTime = (byte)stream.ReadUnsigned(8),
-                        Team = (MultiplayerTeamDesignator)stream.ReadUnsigned(8),
-                        Boundary = new MultiplayerObjectBoundary
-                        {
-                            Type = (MultiplayerObjectBoundaryShape)stream.ReadUnsigned(8),
-                        },
-                    };
-
-                    if (objectDatum.Properties.Boundary.Type != MultiplayerObjectBoundaryShape.None)
-                    {
-                        switch (objectDatum.Properties.Boundary.Type)
-                        {
-                            case MultiplayerObjectBoundaryShape.Sphere:
-                                objectDatum.Properties.Boundary.WidthRadius = (short)stream.ReadUnsigned(16);
-                                break;
-                            case MultiplayerObjectBoundaryShape.Cylinder:
-                                objectDatum.Properties.Boundary.WidthRadius = (short)stream.ReadUnsigned(16);
-                                objectDatum.Properties.Boundary.BoxLength = (short)stream.ReadUnsigned(16);
-                                objectDatum.Properties.Boundary.PositiveHeight = (short)stream.ReadUnsigned(16);
-                                break;
-                            case MultiplayerObjectBoundaryShape.Box:
-                                objectDatum.Properties.Boundary.WidthRadius = (short)stream.ReadUnsigned(16);
-                                objectDatum.Properties.Boundary.BoxLength = (short)stream.ReadUnsigned(16);
-                                objectDatum.Properties.Boundary.PositiveHeight = (short)stream.ReadUnsigned(16);
-                                objectDatum.Properties.Boundary.NegativeHeight = (short)stream.ReadUnsigned(16);
-                                break;
-                        }
-                    }
-                }
-
                 return objectDatum;
             }
 
-            public static void Write()
+            objectDatum.Flags = (VariantObjectPlacementFlags)stream.ReadUnsigned(16);
+            objectDatum.QuotaIndex = (int)stream.ReadUnsigned(32);
+
+            var hasParentObject = stream.ReadUnsigned(1) > 0;
+
+            // TODO: Set default values for ObjectIdentifier
+            objectDatum.ParentObject = new ObjectIdentifier();
+
+            if (hasParentObject)
             {
-                // TODO: Implement
+                objectDatum.ParentObject.UniqueId = new DatumHandle(stream.ReadUnsigned(32));
+                objectDatum.ParentObject.OriginBspIndex = (short)stream.ReadUnsigned(16);
+                objectDatum.ParentObject.Type = new GameObjectType8() { Halo3Retail = (GameObjectTypeHalo3Retail)stream.ReadUnsigned(8) };
+                objectDatum.ParentObject.Source = (ObjectIdentifier.SourceValue)stream.ReadUnsigned(8);
             }
+
+            var hasPosition = stream.ReadUnsigned(1) > 0;
+
+            if (hasPosition)
+            {
+                objectDatum.Position = ReadQuantizedPosition(stream, 16, worldBounds);
+
+                ReadAxis(stream, out objectDatum.Forward, out objectDatum.Up);
+
+                objectDatum.Properties = new VariantMultiplayerProperties
+                {
+                    Type = (MultiplayerObjectType)stream.ReadUnsigned(8),
+                    Flags = (VariantPlacementFlags)stream.ReadUnsigned(8),
+                    EngineFlags = (GameEngineSubTypeFlags)stream.ReadUnsigned(16),
+                    SharedStorage = (byte)stream.ReadUnsigned(8),
+                    SpawnTime = (byte)stream.ReadUnsigned(8),
+                    Team = (MultiplayerTeamDesignator)stream.ReadUnsigned(8),
+                    Boundary = new MultiplayerObjectBoundary
+                    {
+                        Type = (MultiplayerObjectBoundaryShape)stream.ReadUnsigned(8),
+                    },
+                };
+
+                if (objectDatum.Properties.Boundary.Type != MultiplayerObjectBoundaryShape.None)
+                {
+                    switch (objectDatum.Properties.Boundary.Type)
+                    {
+                        case MultiplayerObjectBoundaryShape.Sphere:
+                            objectDatum.Properties.Boundary.WidthRadius = (short)stream.ReadUnsigned(16);
+                            break;
+                        case MultiplayerObjectBoundaryShape.Cylinder:
+                            objectDatum.Properties.Boundary.WidthRadius = (short)stream.ReadUnsigned(16);
+                            objectDatum.Properties.Boundary.BoxLength = (short)stream.ReadUnsigned(16);
+                            objectDatum.Properties.Boundary.PositiveHeight = (short)stream.ReadUnsigned(16);
+                            break;
+                        case MultiplayerObjectBoundaryShape.Box:
+                            objectDatum.Properties.Boundary.WidthRadius = (short)stream.ReadUnsigned(16);
+                            objectDatum.Properties.Boundary.BoxLength = (short)stream.ReadUnsigned(16);
+                            objectDatum.Properties.Boundary.PositiveHeight = (short)stream.ReadUnsigned(16);
+                            objectDatum.Properties.Boundary.NegativeHeight = (short)stream.ReadUnsigned(16);
+                            break;
+                    }
+                }
+            }
+
+            return objectDatum;
+        }
+
+        public static void WriteObjectDatum()
+        {
+            // TODO: Implement
         }
 
         public static VariantObjectQuota ReadObjectQuota(BitStream stream)
@@ -217,6 +211,11 @@ namespace TagTool.BlamFile
             return quotaDatum;
         }
 
+        public static void WriteObjectQuota()
+        {
+            // TODO: Implement
+        }
+
         public unsafe static RealPoint3d ReadQuantizedPosition(BitStream stream, int axisEncodingSizeInBits, RealRectangle3d worldBounds)
         {
             var point = stackalloc int[3];
@@ -228,14 +227,14 @@ namespace TagTool.BlamFile
             var dequantizedPoint = new RealPoint3d(0.0f, 0.0f, 0.0f)
             {
                 X = DequantizeReal(point[0], worldBounds.X0, worldBounds.X1, axisEncodingSizeInBits, false),
-                Y = DequantizeReal(point[1], worldBounds.X0, worldBounds.X1, axisEncodingSizeInBits, false),
-                Z = DequantizeReal(point[3], worldBounds.X0, worldBounds.X1, axisEncodingSizeInBits, false),
+                Y = DequantizeReal(point[1], worldBounds.Y0, worldBounds.Y1, axisEncodingSizeInBits, false),
+                Z = DequantizeReal(point[2], worldBounds.Z0, worldBounds.Z1, axisEncodingSizeInBits, false),
             };
 
             return dequantizedPoint;
         }
 
-        public static void ReadAxis(BitStream stream, RealVector3d forward, RealVector3d up)
+        public static void ReadAxis(BitStream stream, out RealVector3d forward, out RealVector3d up)
         {
             var isUp = stream.ReadBool();
 
@@ -243,37 +242,38 @@ namespace TagTool.BlamFile
             {
                 // TODO: Find home for global unit vectors
                 // GlobalUp
-                up.I = 0.0f;
-                up.J = 0.0f;
-                up.K = 1.0f;
+                up = new RealVector3d(0.0f, 0.0f, 1.0f);
             }
             else
             {
                 int quantizedUp = (int)stream.ReadUnsigned(19);
-                DequantizeUnitVector3d(quantizedUp, up);
+                DequantizeUnitVector3d(quantizedUp, out up);
             }
 
             int quantizedForward = (int)stream.ReadUnsigned(8);
-            float forwardAngle = DequantizeReal(quantizedForward, -(int)Math.PI, (int)Math.PI, 8, true);
+            float forwardAngle = DequantizeReal(quantizedForward, -(float)Math.PI, (float)Math.PI, 8, true);
 
-            AngleToAxes(up, forwardAngle, forward);
+            AngleToAxes(up, forwardAngle, out forward);
         }
 
-        public static void AngleToAxes(RealVector3d up, float angle, RealVector3d forward)
+        public static void AngleToAxes(RealVector3d up, float angle, out RealVector3d forward)
         {
             var forwardReference = new RealVector3d(0.0f, 0.0f, 0.0f);
             var leftReference = new RealVector3d(0.0f, 0.0f, 0.0f);
 
-            AxesComputeReference(up, forwardReference, leftReference);
+            AxesComputeReference(up, out forwardReference, out leftReference);
 
-            forward.I = forwardReference.I;
-            forward.J = forwardReference.J;
-            forward.K = forwardReference.K;
+            forward = new RealVector3d 
+            {
+                I = forwardReference.I,
+                J = forwardReference.J,
+                K = forwardReference.K,
+            };
 
             float u;
             float v;
 
-            if (angle == Math.PI || angle == -Math.PI)
+            if (angle == (float)Math.PI || angle == -(float)Math.PI)
             {
                 u = 0.0f;
                 v = -1.0f;
@@ -284,8 +284,8 @@ namespace TagTool.BlamFile
                 v = (float)Math.Cos(angle);
             }
 
-            RotateVectorAboutAxis(forward, up, u, v);
-            RealVector3d.Normalize(forward);
+            forward = RotateVectorAboutAxis(forward, up, u, v);
+            Normalize3d(forward, out forward);
 
             if (!ValidReadlVector3dAxes2(forward, up)) 
             {
@@ -293,7 +293,7 @@ namespace TagTool.BlamFile
             }
         }
 
-        public static void AxesComputeReference(RealVector3d up, RealVector3d forwardReference, RealVector3d leftReference)
+        public static void AxesComputeReference(RealVector3d up, out RealVector3d forwardReference, out RealVector3d leftReference)
         {
             if (!ValidRealVector(up)) 
             {
@@ -318,18 +318,19 @@ namespace TagTool.BlamFile
                 forwardReference = RealVector3d.CrossProductNoNorm(up, new RealVector3d(1.0f, 0.0f, 0.0f));
             }
 
-            float forwardMagnitude = RealVector3d.Magnitude(forwardReference);
+            //float forwardMagnitude = RealVector3d.Magnitude(forwardReference);
+            float forwardMagnitude = Normalize3d(forwardReference, out forwardReference);
 
-            if (forwardMagnitude < float.Epsilon)
+            if (forwardMagnitude < 0.0001f)
             {
                 throw new InvalidOperationException("Forward Magnitude was less than epsilon");
             }
 
             leftReference = RealVector3d.CrossProductNoNorm(up, forwardReference);
 
-            float leftMagnitude = RealVector3d.Magnitude(leftReference);
+            float leftMagnitude = Normalize3d(leftReference, out leftReference);
 
-            if (leftMagnitude < float.Epsilon)
+            if (leftMagnitude < 0.0001f)
             {
                 throw new InvalidOperationException("Left Magnitude was less than epsilon");
             }
@@ -340,8 +341,44 @@ namespace TagTool.BlamFile
             }
         }
 
+        public static float Magnitude3d(RealVector3d vector) 
+        {
+            return (float)Math.Sqrt(RealVector3d.Magnitude(vector));
+        }
+
+        public static RealVector3d ScaleVector3d(RealVector3d vector, float scale) 
+        {
+            vector.I *= scale;
+            vector.J *= scale;
+            vector.K *= scale;
+
+            return vector;
+        }
+
+        public static float Normalize3d(RealVector3d vector, out RealVector3d output) 
+        {
+            float result = Magnitude3d(vector);
+
+            if (Math.Abs(result) >= 0.0001f)
+            {
+                float scale = 1.0f / result;
+                output = ScaleVector3d(vector, scale);
+            }
+            else 
+            {
+                output = vector;
+                result = 0.0f;
+            }
+
+            return result;
+        }
+
         public static bool ValidReadlVector3dAxes2(RealVector3d forward, RealVector3d up)
         {
+            bool v1 = ValidRealVector(forward);
+            bool v2 = ValidRealVector(up);
+            bool v3 = ValidRealComparison(RealVector3d.DotProduct(forward, up), 0.0f);
+
             return ValidRealVector(forward)
                 && ValidRealVector(up)
                 && ValidRealComparison(RealVector3d.DotProduct(forward, up), 0.0f);
@@ -364,12 +401,12 @@ namespace TagTool.BlamFile
 
         public static bool ValidRealComparison(float a1, float a2)
         {
-            return ValidReal(a1 - a2) && Math.Abs(a1 - a2) < float.Epsilon;
+            return ValidReal(a1 - a2) && Math.Abs(a1 - a2) < 0.001f;
         }
 
         public static bool ValidRealVector(RealVector3d vector) 
         {
-            var squaredLength = vector.I * vector.I + vector.J * vector.J + vector.K * vector.K - 1.0f;
+            var squaredLength = RealVector3d.Magnitude(vector) - 1.0f;
 
             if (float.IsNaN(squaredLength) || float.IsInfinity(squaredLength)) 
             {
@@ -379,7 +416,7 @@ namespace TagTool.BlamFile
             return Math.Abs(squaredLength) < 0.001f;
         }
 
-        public static void RotateVectorAboutAxis(RealVector3d forward, RealVector3d up, float u, float v) 
+        public static RealVector3d RotateVectorAboutAxis(RealVector3d forward, RealVector3d up, float u, float v) 
         {
             float v1 = (1.0f - v) * (((forward.I * up.I) + (forward.J * up.J)) + (forward.K * up.K));
             float v2 = (forward.K * up.I) - (forward.I * up.K);
@@ -387,9 +424,11 @@ namespace TagTool.BlamFile
             forward.I = ((v * forward.I) + (v1 * up.I)) - (u * ((forward.J * up.K) - (forward.K * up.J)));
             forward.J = ((v * forward.J) + (v1 * up.J)) - (u * v2);
             forward.K = ((v * forward.K) + (v1 * up.K)) - (u * v3);
+
+            return forward;
         }
 
-        public static void DequantizeUnitVector3d(int value, RealVector3d vector) 
+        public static void DequantizeUnitVector3d(int value, out RealVector3d vector) 
         {
             int face = value & 7;
             float x = DequantizeReal((value >> 3) & 0xFF, -1.0f, 1.0f, 8, true);
@@ -398,40 +437,28 @@ namespace TagTool.BlamFile
             switch (face)
             {
                 case 0:
-                    vector.I = 1.0f;
-                    vector.J = x;
-                    vector.K = y;
+                    vector = new RealVector3d(1.0f, x, y);
                     break;
                 case 1:
-                    vector.I = x;
-                    vector.J = 1.0f;
-                    vector.K = y;
+                    vector = new RealVector3d(x, 1.0f, y);
                     break;
                 case 2:
-                    vector.I = x;
-                    vector.J = y;
-                    vector.K = 1.0f;
+                    vector = new RealVector3d(x, y, 1.0f);
                     break;
                 case 3:
-                    vector.I = -1.0f;
-                    vector.J = x;
-                    vector.K = y;
+                    vector = new RealVector3d(-1.0f, x, y);
                     break;
                 case 4:
-                    vector.I = x;
-                    vector.J = -1.0f;
-                    vector.K = y;
+                    vector = new RealVector3d(x, -1.0f, y);
                     break;
                 case 5:
-                    vector.I = x;
-                    vector.J = y;
-                    vector.K = -1.0f;
+                    vector = new RealVector3d(x, y, -1.0f);
                     break;
                 default:
                     throw new InvalidOperationException($"Invalid face value {face} when reading unit vector");
             }
 
-            RealVector3d.Normalize(vector);
+            Normalize3d(vector, out vector);
         }
 
         public static float DequantizeReal(int quantized, float minValue, float maxValue, int sizeInBits, bool exactMidPoint)
@@ -490,11 +517,6 @@ namespace TagTool.BlamFile
             }
 
             return dequantized;
-        }
-
-        public static void WriteObjectQuota()
-        {
-            // TODO: Implement
         }
     }
 }

@@ -4,12 +4,11 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.HaloOnline
 {
-    [TagStructure(Size = 0x14779, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
-    [TagStructure(Size = 0x66F9, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-    [TagStructure(Size = 0x192E9, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-    [TagStructure(Size = 0x29785, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED, Platform = CachePlatform.Original)]
-    [TagStructure(Size = 0x19779, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
-    [TagStructure(Size = 0x1C6C1, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x14779, MaxVersion = CacheVersion.Halo3Retail)]
+    [TagStructure(Size = 0x192E9, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x29785, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+    [TagStructure(Size = 0x19779, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x1C6C1, MinVersion = CacheVersion.HaloReach)]
     public class HaloOnlineBlf : TagStructure 
     {
         public EndianFormat Format;
@@ -46,11 +45,8 @@ namespace TagTool.BlamFile.HaloOnline
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
         public BlfMapVariantTagNames MapVariantTagNames;
 
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
         public BlfMapVariant MapVariant;
-
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-        public BlfPackedMapVariant PackedMapVariant;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
         public BlfGameVariant GameVariant;
@@ -81,7 +77,6 @@ namespace TagTool.BlamFile.HaloOnline
             ModReference = blfData.ModReference;
             MapVariantTagNames = blfData.MapVariantTagNames;
             MapVariant = blfData.MapVariant;
-            PackedMapVariant = blfData.PackedMapVariant;
             GameVariant = blfData.GameVariant;
             ContentHeader = blfData.ContentHeader;
             MapImage = blfData.MapImage;

@@ -102,7 +102,6 @@ namespace TagTool.BlamFile
                 MajorVersion = 12,
                 MinorVersion = 1,
                 MapVariant = mapVariant,
-                VariantVersion = 0
             };
             blf.ContentFlags |= BlfFileContentFlags.MapVariant;
 

@@ -37,7 +37,6 @@ namespace TagTool.BlamFile
         public BlfModPackageReference ModReference;
         public BlfMapVariantTagNames MapVariantTagNames;
         public BlfMapVariant MapVariant;
-        public BlfPackedMapVariant PackedMapVariant;
         public BlfGameVariant GameVariant;
         public BlfContentHeader ContentHeader;
         public BlfMapImage MapImage;
@@ -181,8 +180,8 @@ namespace TagTool.BlamFile
                         break;
 
                     case "mvar":
-                        ContentFlags |= BlfFileContentFlags.PackedMapVariant;
-                        PackedMapVariant = BlfPackedMapVariant.Read(reader);
+                        ContentFlags |= BlfFileContentFlags.MapVariant;
+                        MapVariant = BlfPackedMapVariant.Read(reader);
                         break;
 
                     case "chdr":
@@ -786,7 +785,9 @@ namespace TagTool.BlamFile
     [TagStructure(Size = 0xE094, Align = 0x1)]
     public class BlfMapVariant : BlfChunkHeader
     {
-        public uint VariantVersion;
+        [TagField(Length = 0x4)]
+        public byte[] Padding;
+
         public MapVariant MapVariant;
     }
 
