@@ -11,6 +11,7 @@ using TagTool.Serialization;
 using TagTool.Tags;
 using TagTool.Tags.Definitions.Common;
 using System.Linq;
+using TagTool.BlamFile.Reach;
 
 namespace TagTool.BlamFile
 {
@@ -186,6 +187,13 @@ namespace TagTool.BlamFile
 
                     case "chdr":
                         ContentFlags |= BlfFileContentFlags.ContentHeader;
+
+                        //var signature = reader.ReadTag();
+                        //var length = reader.ReadInt32();
+                        //var majorVersion = reader.ReadInt16();
+                        //var minorVersion = reader.ReadInt16();
+                        //var metadata = (ReachMetadata)deserializer.Deserialize(dataContext, typeof(ReachMetadata));
+
                         ContentHeader = (BlfContentHeader)deserializer.Deserialize(dataContext, typeof(BlfContentHeader));
                         break;
 

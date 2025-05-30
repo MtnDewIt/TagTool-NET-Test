@@ -1,8 +1,74 @@
 ﻿using System;
+using TagTool.Cache;
 using TagTool.Common;
+using TagTool.Tags;
 
 namespace TagTool.BlamFile.Reach
 {
+
+    [TagStructure(Size = 0x2B4, MinVersion = CacheVersion.HaloReach)]
+    public class ReachMetadata : TagStructure
+    {
+        public short Unknown1; // BuildVersion?
+        public short Unknown1A; // MapMinorVersion?
+
+        public int Unknown2; // Type?
+        public int Size;
+        public int Unknown4;
+        public int Unknown5;
+        public int Unknown6;
+        public int Unknown7;
+        public int Unknown8;
+        public int Unknown9;
+        public int Unknown10;
+        public int Unknown11;
+        public int Unknown12;
+        public int MapId = -1;
+        public int Unknown14;
+        public int Unknown15;
+
+        // ContentItemHistory
+
+        public ulong Unknown17; // CreationHistoryTimestamp?
+        public ulong Unknown19; // CreationHistoryAuthorId?
+
+        [TagField(Length = 16, CharSet = System.Runtime.InteropServices.CharSet.Ansi)]
+        public string Unknown20; // CreationHistoryAuthor?
+
+        public int Unknown21; // CreationHistoryUnknown?
+
+        // ContentItemHistory
+
+        public ulong Unknown23; // ModificationHistoryTimestamp?
+        public ulong Unknown24; // ModificationHistoryAuthorId?
+
+        [TagField(Length = 16, CharSet = System.Runtime.InteropServices.CharSet.Ansi)]
+        public string Unknown26; // ModificationHistoryAuthor?
+
+        public int Unknown27; // ModificationHistoryUnknown?
+
+
+
+        [TagField(Length = 128, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+        public string Name;
+
+        [TagField(Length = 128, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+        public string Description;
+
+        public int Unknown28;
+        public int Unknown29;
+        public int Unknown30;
+        public int Unknown31;
+        public int Unknown32;
+        public int Unknown33;
+        public int Unknown34;
+        public int Unknown35;
+        public int Unknown36;
+        public int Unknown37;
+        public int Unknown38;
+        public int Unknown39;
+    }
+
     public class ContentItemHistory
     {
         public DateTimeOffset Timestamp;

@@ -6,7 +6,8 @@ using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.BlamFile
 {
-    [TagStructure(Size = 0xF8)]
+    [TagStructure(Size = 0xF8, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x2B4, MinVersion = CacheVersion.HaloReach)]
     public class ContentItemMetadata : TagStructure
     {
         public ulong UniqueId;

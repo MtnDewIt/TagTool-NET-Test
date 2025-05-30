@@ -318,7 +318,6 @@ namespace TagTool.BlamFile
                 forwardReference = RealVector3d.CrossProductNoNorm(up, new RealVector3d(1.0f, 0.0f, 0.0f));
             }
 
-            //float forwardMagnitude = RealVector3d.Magnitude(forwardReference);
             float forwardMagnitude = Normalize3d(forwardReference, out forwardReference);
 
             if (forwardMagnitude < 0.0001f)
