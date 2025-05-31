@@ -2,71 +2,124 @@
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Tags;
+using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.BlamFile.Reach
 {
 
-    [TagStructure(Size = 0x2B4, MinVersion = CacheVersion.HaloReach)]
+    [TagStructure(Size = 0x2B0, MinVersion = CacheVersion.HaloReach)]
     public class ReachMetadata : TagStructure
     {
-        public short Unknown1; // BuildVersion?
-        public short Unknown1A; // MapMinorVersion?
+        public ContentItemTypeReach ContentTypeReach;
 
-        public int Unknown2; // Type?
-        public int Size;
-        public int Unknown4;
-        public int Unknown5;
-        public int Unknown6;
-        public int Unknown7;
-        public int Unknown8;
-        public int Unknown9;
-        public int Unknown10;
-        public int Unknown11;
-        public int Unknown12;
+        [TagField(Length = 0x3)]
+        public byte[] PaddingReach1;
+
+        public int FileLength;
+
+        public ulong Unknown4; // UnknownID1? // might be: OwnerId, ShareId, ServerFileId
+        public ulong Unknown6; // UnknownID2? // might be: OwnerId, ShareId, ServerFileId
+        public ulong Unknown8; // UnknownID3? // might be: OwnerId, ShareId, ServerFileId
+        public ulong Unknown10; // UnknownID4? // might be: OwnerId, ShareId, ServerFileId
+
+        public GameEngineActivity GameActivity;
+        public GameEngineMode GameMode;
+        public GameEngineTypeReach GameEngineType; // GameEngineType (Move enum out of definition)
+
+        [TagField(Length = 0x1)]
+        public byte[] PaddingReach2;
+
         public int MapId = -1;
-        public int Unknown14;
-        public int Unknown15;
+        public int EngineCategory = -1;
 
-        // ContentItemHistory
+        [TagField(Length = 0x4)]
+        public byte[] PaddingReach3;
 
-        public ulong Unknown17; // CreationHistoryTimestamp?
-        public ulong Unknown19; // CreationHistoryAuthorId?
-
-        [TagField(Length = 16, CharSet = System.Runtime.InteropServices.CharSet.Ansi)]
-        public string Unknown20; // CreationHistoryAuthor?
-
-        public int Unknown21; // CreationHistoryUnknown?
-
-        // ContentItemHistory
-
-        public ulong Unknown23; // ModificationHistoryTimestamp?
-        public ulong Unknown24; // ModificationHistoryAuthorId?
-
-        [TagField(Length = 16, CharSet = System.Runtime.InteropServices.CharSet.Ansi)]
-        public string Unknown26; // ModificationHistoryAuthor?
-
-        public int Unknown27; // ModificationHistoryUnknown?
-
-
+        public ContentItemAuthor CreationHistory;
+        public ContentItemAuthor ModificationHistory;
 
         [TagField(Length = 128, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
-        public string Name;
+        public string Name = string.Empty;
 
         [TagField(Length = 128, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
-        public string Description;
+        public string Description = string.Empty;
 
-        public int Unknown28;
-        public int Unknown29;
-        public int Unknown30;
-        public int Unknown31;
-        public int Unknown32;
-        public int Unknown33;
-        public int Unknown34;
-        public int Unknown35;
-        public int Unknown36;
-        public int Unknown37;
-        public int Unknown38;
-        public int Unknown39;
+        public int EngineIcon = -1;
+
+        public int Unknown29; // Unknown? 
+        public int Unknown30; // Unknown? 
+        public int Unknown31; // Unknown? 
+        public int Unknown32; // Unknown?
+        public int Unknown33; // Unknown?
+        public int Unknown34; // Unknown?
+        public int Unknown35; // Unknown?
+
+        public sbyte Unknown36; // CampaignId?
+        public sbyte Unknown36A; // CampaignDifficulty?
+        public sbyte Unknown36B; // CampaignMetagameScoring?
+        public sbyte Unknown36C; // CampaignInsertionPoint?
+        public int Unknown37; // CampaignSkulls?
+
+        public int Unknown38; // Unknown?
+        public int Unknown39; // Unknown?
+
+        public enum ContentItemTypeReach : sbyte
+        {
+            None = -1,
+            DLC,
+            Save,
+            Screenshot,
+            Film,
+            FilmClip,
+            MapVariant,
+            GameVariant,
+            Playlist,
+        }
+
+        public enum GameEngineActivity : sbyte
+        {
+            None = -1,
+            Activities,
+            Campaign,
+            Survival,
+            Matchmaking,
+            Forge,
+            Theater,
+        }
+
+        public enum GameEngineMode : byte
+        {
+            None = 0,
+            Campaign,
+            Survival,
+            Multiplayer,
+            Forge,
+            Theater,
+        }
+
+        public enum GameEngineTypeReach : byte
+        {
+            None = 0,
+            Forge,
+            Megalo,
+            Campaign,
+            Survival,
+        }
+
+        [TagStructure(Size = 0x24)]
+        public class ContentItemAuthor : TagStructure 
+        {
+            public ulong Timestamp;
+            public ulong AuthorId;
+
+            [TagField(Length = 16, CharSet = System.Runtime.InteropServices.CharSet.Ansi)]
+            public string Author = string.Empty;
+
+            public bool AuthorIsOnline;
+
+            [TagField(Length = 0x3)]
+            public byte[] Padding;
+        }
     }
 
     public class ContentItemHistory

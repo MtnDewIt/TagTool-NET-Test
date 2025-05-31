@@ -192,6 +192,8 @@ namespace TagTool.BlamFile
                         //var length = reader.ReadInt32();
                         //var majorVersion = reader.ReadInt16();
                         //var minorVersion = reader.ReadInt16();
+                        //var buildVersion = reader.ReadInt16();
+                        //var mapMinorVersion = reader.ReadInt16();
                         //var metadata = (ReachMetadata)deserializer.Deserialize(dataContext, typeof(ReachMetadata));
 
                         ContentHeader = (BlfContentHeader)deserializer.Deserialize(dataContext, typeof(BlfContentHeader));
