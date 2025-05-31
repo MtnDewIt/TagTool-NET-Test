@@ -12,28 +12,28 @@ namespace TagTool.BlamFile.Reach
     {
         public ContentItemTypeReach ContentTypeReach;
 
-        [TagField(Length = 0x3)]
+        [TagField(Length = 0x3, Flags = TagFieldFlags.Padding)]
         public byte[] PaddingReach1;
 
         public int FileLength;
 
-        public ulong Unknown4; // UnknownID1? // might be: OwnerId, ShareId, ServerFileId
-        public ulong Unknown6; // UnknownID2? // might be: OwnerId, ShareId, ServerFileId
-        public ulong Unknown8; // UnknownID3? // might be: OwnerId, ShareId, ServerFileId
-        public ulong Unknown10; // UnknownID4? // might be: OwnerId, ShareId, ServerFileId
+        public ulong UniqueId;
+        public ulong ParentUniqueId;
+        public ulong RootUniqueId;
+        public ulong GameId;
 
-        public GameEngineActivity GameActivity;
+        public GameEngineActivity GameActivity = GameEngineActivity.None;
         public GameEngineMode GameMode;
-        public GameEngineTypeReach GameEngineType; // GameEngineType (Move enum out of definition)
+        public GameEngineTypeReach GameEngineType;
 
-        [TagField(Length = 0x1)]
+        [TagField(Length = 0x1, Flags = TagFieldFlags.Padding)]
         public byte[] PaddingReach2;
 
         public int MapId = -1;
-        public int EngineCategory = -1;
+        public GameEngineCategory EngineCategory = GameEngineCategory.None;
 
-        [TagField(Length = 0x4)]
-        public byte[] PaddingReach3;
+        [TagField(Length = 0x7, Flags = TagFieldFlags.Padding)]
+        public byte[] PaddingReach4;
 
         public ContentItemAuthor CreationHistory;
         public ContentItemAuthor ModificationHistory;
@@ -44,24 +44,14 @@ namespace TagTool.BlamFile.Reach
         [TagField(Length = 128, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
         public string Description = string.Empty;
 
-        public int EngineIcon = -1;
+        [TagField(Length = 0x10)]
+        public byte[] FilmDataOrIconIndex;
 
-        public int Unknown29; // Unknown? 
-        public int Unknown30; // Unknown? 
-        public int Unknown31; // Unknown? 
-        public int Unknown32; // Unknown?
-        public int Unknown33; // Unknown?
-        public int Unknown34; // Unknown?
-        public int Unknown35; // Unknown?
+        [TagField(Length = 0x10)]
+        public byte[] MatchmakingData;
 
-        public sbyte Unknown36; // CampaignId?
-        public sbyte Unknown36A; // CampaignDifficulty?
-        public sbyte Unknown36B; // CampaignMetagameScoring?
-        public sbyte Unknown36C; // CampaignInsertionPoint?
-        public int Unknown37; // CampaignSkulls?
-
-        public int Unknown38; // Unknown?
-        public int Unknown39; // Unknown?
+        [TagField(Length = 0x10)]
+        public byte[] CampaignDataOrFirefightData;
 
         public enum ContentItemTypeReach : sbyte
         {
@@ -104,6 +94,114 @@ namespace TagTool.BlamFile.Reach
             Megalo,
             Campaign,
             Survival,
+        }
+
+        public enum GameEngineCategory : sbyte 
+        {
+            None = -1,
+            CTF,
+            Slayer,
+            Oddball,
+            King,
+            Juggernaut,
+            Territories,
+            Assault,
+            Infection,
+            VIP,
+            Invasion,
+            Stockpile,
+
+            Race = 12,
+            Headhunter = 13,
+
+            Insane = 16,
+        }
+
+        public enum GameEngineIcon : sbyte 
+        {
+            None = -1,
+            CTF,
+            Slayer,
+            Oddball,
+            King,
+            Juggernaut,
+            Territories,
+            Assault,
+            Infection,
+            VIP,
+            Invasion,
+            InvasionSlayer,
+            Stockpile,
+            ActionSack,
+            Race,
+            RocketRace,
+            Grifball,
+            Soccer,
+            Headhunter,
+            Crosshair,
+            Wheel,
+            Swirl,
+            Bunker,
+            HealthPack,
+            CastleDefense,
+            Return,
+            Shapes,
+            Cartographer,
+            EightBall,
+            Noble,
+            Covenant,
+            Attack,
+            Defend,
+            Ordnance,
+            Circle,
+            Recon,
+            Recover,
+            Ammo,
+            Skull,
+            Forge,
+
+            RecentGames = 49,
+            FileShare,
+        }
+
+        public enum GameCampaignId : sbyte 
+        {
+            None = -1,
+            Default = 1,
+        }
+
+        public enum GameDifficulty : sbyte 
+        {
+            Easy,
+            Normal,
+            Heroic,
+            Legendary,
+        }
+
+        public enum GameMetagameScoring : sbyte
+        {
+            None = 0,
+            Team,
+            FreeForAll,
+        }
+
+        public enum GameCampaignSkulls : uint 
+        {
+            None = 0,
+            Iron = 1 << 0,
+            BlackEye = 1 << 1,
+            ToughLuck = 1 << 2,
+            Catch = 1 << 3,
+            Fog = 1 << 4,
+            Famine = 1 << 5,
+            Thunderstorm = 1 << 6,
+            Tilt = 1 << 7,
+            Mythic = 1 << 8,
+            Assassin = 1 << 9,
+            Blind = 1 << 10,
+            Superman = 1 << 11,
+            BirthdayParty = 1 << 12,
+            Daddy = 1 << 13,
         }
 
         [TagStructure(Size = 0x24)]
