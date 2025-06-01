@@ -333,9 +333,8 @@ namespace TagTool.Geometry
                 TransparentSortingIndex = -1,
                 FirstIndex = firstIndex,
                 IndexCount = indexCount,
-                FirstSubPartIndex = (short)(_currentMesh.Mesh.SubParts.Count - 1),
+                FirstSubPartIndex = (short)_currentMesh.Mesh.SubParts.Count,
                 SubPartCount = 0,
-                // TODO: Unknown values here
                 VertexCount = vertexCount,
             };
         }
@@ -363,12 +362,13 @@ namespace TagTool.Geometry
         /// <param name="indexCount">The part's index count.</param>
         /// <param name="vertexCount">The part's vertex count.</param>
         /// <exception cref="System.InvalidOperationException">Cannot define a mesh subpart if no mesh part is active</exception>
-        public void DefineSubPart(ushort firstIndex, ushort indexCount, ushort vertexCount)
+        public void DefineSubPart(int firstIndex, ushort indexCount, ushort vertexCount)
         {
             if (_currentMesh == null)
                 throw new InvalidOperationException("Cannot define a part if no mesh is active");
 
-            _currentMesh.Mesh.SubParts.Add(
+            // Add subpart to the staging list rather than directly to the mesh
+            _subparts.Add(
                 new SubPart
                 {
                     FirstIndex = firstIndex,
