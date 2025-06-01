@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text.RegularExpressions;
 using Assimp;
 using AssimpMesh = Assimp.Mesh;
@@ -109,7 +110,7 @@ namespace TagTool.Commands.RenderModels
             assimpNodesByName.Clear();
             worldTransforms.Clear();
             assimpToHaloInverse = assimpToHalo;
-            assimpToHaloInverse.Inverse();
+            Matrix4x4.Invert(assimpToHaloInverse, out assimpToHaloInverse);
 
             Scene scene;
             bool ShowTriangleStripWarning = false;
@@ -158,7 +159,7 @@ namespace TagTool.Commands.RenderModels
                     }
 
                     // decompose LOCAL for defaults
-                    srcNode.Transform.Decompose(out var s, out var r, out var t);
+                    Matrix4x4.Decompose(srcNode.Transform, out var s, out var r, out var t);
                     haloNode.DefaultTranslation = new RealPoint3d(t.X * ScaleFactor, t.Y * ScaleFactor, t.Z * ScaleFactor);
                     haloNode.DefaultRotation = new RealQuaternion(r.X, r.Y, r.Z, r.W);
                     haloNode.DefaultScale = s.X;
@@ -171,19 +172,19 @@ namespace TagTool.Commands.RenderModels
                     if (!boneOffsetMap.TryGetValue(nodeName, out invBind))
                     {
                         invBind = world;
-                        invBind.Inverse();
+                        Matrix4x4.Invert(invBind, out invBind);
                     }
 
                     var m = invBind;  // alias
 
-                    haloNode.InverseForward = new RealVector3d(m.A1, m.B1, m.C1);
-                    haloNode.InverseLeft = new RealVector3d(m.A2, m.B2, m.C2);
-                    haloNode.InverseUp = new RealVector3d(m.A3, m.B3, m.C3);
+                    haloNode.InverseForward = new RealVector3d(m.M11, m.M21, m.M31);
+                    haloNode.InverseLeft = new RealVector3d(m.M12, m.M22, m.M32);
+                    haloNode.InverseUp = new RealVector3d(m.M13, m.M23, m.M33);
 
                     haloNode.InversePosition = new RealPoint3d(
-                        m.A4 * ScaleFactor,
-                        m.B4 * ScaleFactor,
-                        m.C4 * ScaleFactor
+                        m.M14 * ScaleFactor,
+                        m.M24 * ScaleFactor,
+                        m.M34 * ScaleFactor
                     );
                 }
 
@@ -496,12 +497,12 @@ namespace TagTool.Commands.RenderModels
                         {
                             var position = part.Vertices[i];
                             var normal = part.Normals[i];
-                            Vector3D uv;
+                            Vector3 uv;
                             try { uv = part.TextureCoordinateChannels[0][i]; }
-                            catch { uv = new Vector3D(); }
+                            catch { uv = new Vector3(); }
 
-                            var tangent = part.Tangents.Count != 0 ? part.Tangents[i] : new Vector3D();
-                            var bitangent = part.BiTangents.Count != 0 ? part.BiTangents[i] : new Vector3D();
+                            var tangent = part.Tangents.Count != 0 ? part.Tangents[i] : new Vector3();
+                            var bitangent = part.BiTangents.Count != 0 ? part.BiTangents[i] : new Vector3();
 
                             if (vertexType == VertexType.Skinned)
                             {
@@ -745,7 +746,7 @@ namespace TagTool.Commands.RenderModels
                         if (string.IsNullOrEmpty(groupName))
                             groupName = "marker";
 
-                        node.Transform.Decompose(out Vector3D mScale, out Assimp.Quaternion mRot, out Vector3D mTrans);
+                        Matrix4x4.Decompose(node.Transform, out Vector3 mScale, out Quaternion mRot, out Vector3 mTrans);
                         RealPoint3d mTranslation = new RealPoint3d(mTrans.X * 0.01f, mTrans.Y * 0.01f, mTrans.Z * 0.01f);
                         RealQuaternion mRotation = new RealQuaternion(mRot.X, mRot.Y, mRot.Z, mRot.W);
                         float markerScale = mScale.X;
