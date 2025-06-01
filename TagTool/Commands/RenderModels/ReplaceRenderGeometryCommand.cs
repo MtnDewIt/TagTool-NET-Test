@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using Assimp;
+using Assimp.Configs;
 using AssimpMesh = Assimp.Mesh;
 using TagTool.Cache;
 using TagTool.Common;
@@ -122,6 +123,7 @@ namespace TagTool.Commands.RenderModels
 
             using (var importer = new AssimpContext())
             {
+                importer.SetConfig(new ColladaUseColladaNamesConfig(true));
                 scene = importer.ImportFile(SceneFile.FullName,
                     PostProcessSteps.CalculateTangentSpace |
                     PostProcessSteps.GenerateNormals |
