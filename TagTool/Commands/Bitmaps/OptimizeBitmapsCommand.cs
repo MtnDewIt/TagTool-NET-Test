@@ -60,8 +60,10 @@ namespace TagTool.Commands.Mod
                 var name = tag.Name ?? tag.ToString();
                 var lower = name.ToLowerInvariant();
 
-                if (skips.Any(s => lower.Contains(s)) || lower.Contains("cubemap") ||
-                    (lower.Contains("lightmap") && !doLight))
+                if (skips.Any(s => lower.Contains(s))
+                    || lower.Contains("cubemap")
+                    || lower.Contains("chud")
+                    || (lower.Contains("lightmap") && !doLight))
                 {
                     Console.WriteLine($"Skipping tag: {name}");
                     continue;
