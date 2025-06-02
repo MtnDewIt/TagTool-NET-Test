@@ -22,6 +22,7 @@ using TagTool.Commands.ConvertCache;
 using TagTool.Commands.GenerateCache;
 using TagTool.Commands.GenerateDonkeyCache;
 using TagTool.Commands.JSON;
+using TagTool.Commands.Mod;
 
 namespace TagTool.Commands.Tags
 {
