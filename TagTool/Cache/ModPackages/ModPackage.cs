@@ -62,19 +62,6 @@ namespace TagTool.Cache
             
             ResourcesStream.Dispose();
 
-            //foreach (var stream in MapFileStreams) 
-            //{
-            //    stream.Dispose();
-            //}
-            //
-            //CampaignFileStream.Dispose();
-            //FontPackage.Dispose();
-            //
-            //foreach (var file in Files) 
-            //{
-            //    file.Value.Dispose();
-            //}
-
             GC.SuppressFinalize(this);
         }
 
