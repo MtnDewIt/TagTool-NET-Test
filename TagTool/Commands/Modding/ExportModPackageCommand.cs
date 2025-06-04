@@ -104,8 +104,8 @@ namespace TagTool.Commands.Modding
             ModPackage.CacheNames.Add("default");
 
             // temporary cache for holding tags and resources
-            TagCacheHaloOnline modPackTagCache = new TagCacheHaloOnline(CacheContext.Version, tagStream, ModPackage.StringTable, new Dictionary<int, string>());
-            ResourceCacheHaloOnline modPackResourceCache = new ResourceCacheHaloOnline(CacheContext.Version, CacheContext.Platform, ModPackage.ResourcesStream);
+            TagCacheHaloOnline modPackTagCache = new TagCacheHaloOnline(CacheContext.Version, tagStream.Stream, ModPackage.StringTable, new Dictionary<int, string>());
+            ResourceCacheHaloOnline modPackResourceCache = new ResourceCacheHaloOnline(CacheContext.Version, CacheContext.Platform, ModPackage.ResourcesStream.Stream);
 
             CreateDescription();
 
@@ -357,7 +357,7 @@ namespace TagTool.Commands.Modding
                         var cachedTagData = new CachedTagData();
                         cachedTagData.Data = new byte[0];
                         cachedTagData.Group = (TagGroupGen3)emptyTag.Group;
-                        modTagCache.SetTagData(modTagStream, (CachedTagHaloOnline)emptyTag, cachedTagData);
+                        modTagCache.SetTagData(modTagStream.Stream, (CachedTagHaloOnline)emptyTag, cachedTagData);
                         continue;
                     }
                     
@@ -416,7 +416,7 @@ namespace TagTool.Commands.Modding
                             else
                             {
                                 var newResourceIndex = modPackResourceCache.AddRaw(
-                                    ModPackage.ResourcesStream,
+                                    ModPackage.ResourcesStream.Stream,
                                     srcResourceCaches[resourceLocation].ExtractRaw(
                                         srcResourceStreams[resourceLocation],
                                         resourceIndex,
@@ -439,7 +439,7 @@ namespace TagTool.Commands.Modding
                             tagDataWriter.Write(pageable.Page.Index);
                         }
 
-                        modTagCache.SetTagDataRaw(modTagStream, (CachedTagHaloOnline)destTag, tagDataStream.ToArray());
+                        modTagCache.SetTagDataRaw(modTagStream.Stream, (CachedTagHaloOnline)destTag, tagDataStream.ToArray());
                     }
                 }
 
@@ -449,7 +449,7 @@ namespace TagTool.Commands.Modding
                         stream.Dispose();
                 }
 
-                modTagCache.UpdateTagOffsets(new EndianWriter(modTagStream));
+                modTagCache.UpdateTagOffsets(new EndianWriter(modTagStream.Stream));
             }
         }
 

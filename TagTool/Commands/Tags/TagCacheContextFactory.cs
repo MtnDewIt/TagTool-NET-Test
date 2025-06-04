@@ -22,6 +22,7 @@ using TagTool.Commands.ConvertCache;
 using TagTool.Commands.GenerateCache;
 using TagTool.Commands.GenerateDonkeyCache;
 using TagTool.Commands.JSON;
+using TagTool.Commands.Mod;
 
 namespace TagTool.Commands.Tags
 {
@@ -161,6 +162,7 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new ApplyModPackageCommand(modCache));
 				context.AddCommand(new ApplyModPackageTagsCommand(modCache));
 				context.AddCommand(new AddTagCacheCommand(modCache));
+                context.AddCommand(new OptimizeBitmapsCommand(modCache));
                 context.AddCommand(new DeleteTagCacheCommand(modCache));
                 context.AddCommand(new AddModFilesCommand(modCache));
                 context.AddCommand(new ListModFilesCommand(modCache));
