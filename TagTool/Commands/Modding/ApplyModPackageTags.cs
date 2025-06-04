@@ -459,7 +459,7 @@ namespace TagTool.Commands.Modding
 
 			var resourceStream = new MemoryStream();
 			var resourceCache = ModCache.ResourceCaches.GetResourceCache(ResourceLocation.Mods);
-			resourceCache.Decompress(modPack.ResourcesStream, resource.Page.Index, resource.Page.CompressedBlockSize, resourceStream);
+			resourceCache.Decompress(modPack.ResourcesStream.Stream, resource.Page.Index, resource.Page.CompressedBlockSize, resourceStream);
 			resourceStream.Position = 0;
 			resource.ChangeLocation(ResourceLocation.ResourcesB);
 			resource.Page.OldFlags &= ~OldRawPageFlags.InMods;
