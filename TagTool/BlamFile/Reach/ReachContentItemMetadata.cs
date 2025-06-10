@@ -1,19 +1,17 @@
-﻿using System;
-using TagTool.Cache;
+﻿using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.BlamFile.Reach
 {
-
     [TagStructure(Size = 0x2B0, MinVersion = CacheVersion.HaloReach)]
-    public class ReachMetadata : TagStructure
+    public class ReachContentItemMetadata : TagStructure
     {
         public ContentItemTypeReach ContentTypeReach;
 
         [TagField(Length = 0x3, Flags = TagFieldFlags.Padding)]
-        public byte[] PaddingReach1;
+        public byte[] PaddingReach;
 
         public int FileLength;
 
@@ -26,14 +24,11 @@ namespace TagTool.BlamFile.Reach
         public GameEngineMode GameMode;
         public GameEngineTypeReach GameEngineType;
 
-        [TagField(Length = 0x1, Flags = TagFieldFlags.Padding)]
-        public byte[] PaddingReach2;
-
         public int MapId = -1;
         public GameEngineCategory EngineCategory = GameEngineCategory.None;
 
         [TagField(Length = 0x7, Flags = TagFieldFlags.Padding)]
-        public byte[] PaddingReach4;
+        public byte[] PaddingReach2;
 
         public ContentItemAuthor CreationHistory;
         public ContentItemAuthor ModificationHistory;
@@ -44,14 +39,9 @@ namespace TagTool.BlamFile.Reach
         [TagField(Length = 128, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
         public string Description = string.Empty;
 
-        [TagField(Length = 0x10)]
-        public byte[] FilmDataOrIconIndex;
-
-        [TagField(Length = 0x10)]
-        public byte[] MatchmakingData;
-
-        [TagField(Length = 0x10)]
-        public byte[] CampaignDataOrFirefightData;
+        public ContentItemGeneric Generic;
+        public ContentItemMatchmaking Matchmaking;
+        public ContentItemMetagame Metagame;
 
         public enum ContentItemTypeReach : sbyte
         {
@@ -66,144 +56,6 @@ namespace TagTool.BlamFile.Reach
             Playlist,
         }
 
-        public enum GameEngineActivity : sbyte
-        {
-            None = -1,
-            Activities,
-            Campaign,
-            Survival,
-            Matchmaking,
-            Forge,
-            Theater,
-        }
-
-        public enum GameEngineMode : byte
-        {
-            None = 0,
-            Campaign,
-            Survival,
-            Multiplayer,
-            Forge,
-            Theater,
-        }
-
-        public enum GameEngineTypeReach : byte
-        {
-            None = 0,
-            Forge,
-            Megalo,
-            Campaign,
-            Survival,
-        }
-
-        public enum GameEngineCategory : sbyte 
-        {
-            None = -1,
-            CTF,
-            Slayer,
-            Oddball,
-            King,
-            Juggernaut,
-            Territories,
-            Assault,
-            Infection,
-            VIP,
-            Invasion,
-            Stockpile,
-
-            Race = 12,
-            Headhunter = 13,
-
-            Insane = 16,
-        }
-
-        public enum GameEngineIcon : sbyte 
-        {
-            None = -1,
-            CTF,
-            Slayer,
-            Oddball,
-            King,
-            Juggernaut,
-            Territories,
-            Assault,
-            Infection,
-            VIP,
-            Invasion,
-            InvasionSlayer,
-            Stockpile,
-            ActionSack,
-            Race,
-            RocketRace,
-            Grifball,
-            Soccer,
-            Headhunter,
-            Crosshair,
-            Wheel,
-            Swirl,
-            Bunker,
-            HealthPack,
-            CastleDefense,
-            Return,
-            Shapes,
-            Cartographer,
-            EightBall,
-            Noble,
-            Covenant,
-            Attack,
-            Defend,
-            Ordnance,
-            Circle,
-            Recon,
-            Recover,
-            Ammo,
-            Skull,
-            Forge,
-
-            RecentGames = 49,
-            FileShare,
-        }
-
-        public enum GameCampaignId : sbyte 
-        {
-            None = -1,
-            Default = 1,
-        }
-
-        public enum GameDifficulty : sbyte 
-        {
-            Easy,
-            Normal,
-            Heroic,
-            Legendary,
-        }
-
-        public enum GameMetagameScoring : sbyte
-        {
-            None = 0,
-            Team,
-            FreeForAll,
-        }
-
-        public enum GameCampaignSkulls : uint 
-        {
-            None = 0,
-            Iron = 1 << 0,
-            BlackEye = 1 << 1,
-            ToughLuck = 1 << 2,
-            Catch = 1 << 3,
-            Fog = 1 << 4,
-            Famine = 1 << 5,
-            Thunderstorm = 1 << 6,
-            Tilt = 1 << 7,
-            Mythic = 1 << 8,
-            Assassin = 1 << 9,
-            Blind = 1 << 10,
-            Superman = 1 << 11,
-            BirthdayParty = 1 << 12,
-            Daddy = 1 << 13,
-        }
-
         [TagStructure(Size = 0x24)]
         public class ContentItemAuthor : TagStructure 
         {
@@ -215,106 +67,194 @@ namespace TagTool.BlamFile.Reach
 
             public bool AuthorIsOnline;
 
-            [TagField(Length = 0x3)]
+            [TagField(Length = 0x3, Flags = TagFieldFlags.Padding)]
             public byte[] Padding;
+
+            public static ContentItemAuthor Decode(BitStream stream, bool packed)
+            {
+                var author = new ContentItemAuthor();
+
+                author.Timestamp = stream.ReadUnsigned64(64);
+                author.AuthorId = stream.ReadUnsigned64(64);
+                author.Author = stream.ReadString(16, packed);
+                author.AuthorIsOnline = stream.ReadUnsigned(packed ? 1 : 8) != 0;
+
+                if (!packed)
+                    stream.ReadBytes(3);
+
+                return author;
+            }
+
+            public static void Encode(BitStream stream, ContentItemAuthor author, bool packed) 
+            {
+                // TODO: Implement
+            }
         }
-    }
 
-    public class ContentItemHistory
-    {
-        public DateTimeOffset Timestamp;
-        public ulong AuthorUID;
-        public string AuthorName;
-        public bool AuthorIsOnline;
-
-        public void Decode(BitStream stream)
+        [TagStructure(Size = 0x10)]
+        public class ContentItemGeneric : TagStructure
         {
-            var timestamp = (long)stream.ReadUnsigned64(64);  
-            Timestamp = DateTimeOffset.FromUnixTimeSeconds(timestamp);
-            AuthorUID = stream.ReadUnsigned(64);
-            AuthorName = stream.ReadString(16);
-            AuthorIsOnline = stream.ReadUnsigned(1) != 0;
+            public int FilmDuration;
+            public GameEngineIcon EngineIcon = GameEngineIcon.None;
+
+            [TagField(Length = 0xB, Flags = TagFieldFlags.Padding)]
+            public byte[] Padding;
+
+            public static ContentItemGeneric Decode(BitStream stream, ReachContentItemMetadata metadata, bool packed)
+            {
+                var generic = new ContentItemGeneric();
+
+                if (metadata.ContentTypeReach == ContentItemTypeReach.Film || metadata.ContentTypeReach == ContentItemTypeReach.FilmClip)
+                {
+                    generic.FilmDuration = (int)stream.ReadUnsigned(32);
+
+                    if (!packed)
+                        stream.ReadBytes(12);
+                }
+                else if (metadata.ContentTypeReach == ContentItemTypeReach.GameVariant)
+                {
+                    generic.EngineIcon = (GameEngineIcon)stream.ReadUnsigned(8);
+
+                    if (!packed)
+                        stream.ReadBytes(15);
+                }
+                else 
+                {
+                    if (!packed)
+                        stream.ReadBytes(16);
+                }
+
+                return generic;
+            }
+
+            public static void Encode(BitStream stream, ContentItemGeneric generic, bool packed)
+            {
+                // TODO: Implement
+            }
         }
-    }
 
-    public class ReachContentItemMetadata
-    {
-        public ReachContentItemType Type;
-        public int Size;
-        public ulong Uid;
-        public ulong ParentUid;
-        public ulong RootUid;
-        public ulong GameId;
-        public int Activity;
-        public int GameMode;
-        public int GameEngineType;
-        public int MapId = -1;
-        public int MagaloCategoryIndex;
-        public ContentItemHistory CreationHistory;
-        public ContentItemHistory ModificationHistory;
-        public int Filmduration;
-        public int GameVariantIconIndex = -1;
-        public int HopperId = -1;
-        public int CampaignId = -1;
-        public int CampaignDifficulty = -1;
-        public int CampaignMetagameScoring;
-        public int CampaignInsertionPoint = -1;
-        public uint CampaignSkulls;
-
-        public void Decode(BitStream bitstream)
+        [TagStructure(Size = 0x10)]
+        public class ContentItemMatchmaking : TagStructure
         {
-            Type = (ReachContentItemType)((int)bitstream.ReadUnsigned(4) - 1);
-            Size = (int)bitstream.ReadUnsigned(32);
-            Uid = bitstream.ReadUnsigned64(64);
-            ParentUid = bitstream.ReadUnsigned64(64);
-            RootUid = bitstream.ReadUnsigned64(64);
-            GameId = bitstream.ReadUnsigned64(64);
-            Activity = (int)bitstream.ReadUnsigned(3) - 1;
-            GameMode = (int)bitstream.ReadUnsigned(3);
-            GameEngineType = (int)bitstream.ReadUnsigned(3);
-            MapId = (int)bitstream.ReadUnsigned(32);
-            MagaloCategoryIndex = (sbyte)bitstream.ReadUnsigned(8);
-            CreationHistory = new ContentItemHistory();
-            ModificationHistory = new ContentItemHistory();
-            CreationHistory.Decode(bitstream);
-            ModificationHistory.Decode(bitstream);
+            public short HopperId;
 
-            if(Type == ReachContentItemType.Film || Type == ReachContentItemType.FilmClip)
+            [TagField(Length = 0xE, Flags = TagFieldFlags.Padding)]
+            public byte[] Padding;
+
+            public static ContentItemMatchmaking Decode(BitStream stream, ReachContentItemMetadata metadata, bool packed)
             {
-                Filmduration = (int)bitstream.ReadUnsigned(32);
-            }
-            else if(Type == ReachContentItemType.GameVariant)
-            {
-                GameVariantIconIndex = (byte)bitstream.ReadUnsigned(8);
+                var matchmaking = new ContentItemMatchmaking();
+
+                // TODO: Confirm validity of activities enum
+                if (metadata.GameActivity == (GameEngineActivity)2) 
+                {
+                    matchmaking.HopperId = (short)stream.ReadUnsigned(16);
+
+                    if (!packed)
+                        matchmaking.Padding = stream.ReadBytes(14);
+                }
+                else 
+                {
+                    if (!packed)
+                        stream.ReadBytes(16);
+                }
+
+                return matchmaking;
             }
 
-            if (Activity == 2) // matchmaking
-                HopperId = (short)bitstream.ReadUnsigned(16);
-
-            if (GameMode == 1) // campaign
+            public static void Encode(BitStream stream, ContentItemMatchmaking metagame, bool packed)
             {
-                CampaignId = (int)bitstream.ReadUnsigned(8);
-                CampaignDifficulty = (int)bitstream.ReadUnsigned(2);
-                CampaignMetagameScoring = (int)bitstream.ReadUnsigned(2);
-                CampaignInsertionPoint = (int)bitstream.ReadUnsigned(2);
-                CampaignSkulls = bitstream.ReadUnsigned(32);
-            }
-            else if (GameMode == 2) // firefight
-            {
-                CampaignDifficulty = (int)bitstream.ReadUnsigned(8);
-                CampaignSkulls = bitstream.ReadUnsigned(32);
+                // TODO: Implement
             }
         }
-    }
 
-    public enum ReachContentItemType : int
-    {
-        Unknown0,
-        Unknown1,
-        Unknown2,
-        Film,
-        FilmClip,
-        MapVariant,
-        GameVariant
+        [TagStructure(Size = 0x10)]
+        public class ContentItemMetagame : TagStructure 
+        {
+            public int CampaignId;
+            public GameEngineDifficulty CampaignDifficulty;
+            public GameMetagameScoring CampaignMetagameScoring;
+            public int CampaignInsertionPoint;
+            public GamePrimarySkullFlags CampaignPrimarySkulls;
+            public GameSecondarySkullFlags CampaignSecondarySkulls;
+
+            public static ContentItemMetagame Decode(BitStream stream, ReachContentItemMetadata metadata, bool packed) 
+            {
+                var metagame = new ContentItemMetagame();
+
+                if (metadata.GameMode == GameEngineMode.Campaign)
+                {
+                    metagame.CampaignId = (int)stream.ReadUnsigned(packed ? 8 : 32);
+                    metagame.CampaignDifficulty = (GameEngineDifficulty)stream.ReadUnsigned(packed ? 2 : 16);
+                    metagame.CampaignMetagameScoring = (GameMetagameScoring)stream.ReadUnsigned(packed ? 2 : 16);
+                    metagame.CampaignInsertionPoint = (int)stream.ReadUnsigned(packed ? 2 : 32);
+
+                    if (!packed)
+                        stream.ReadBytes(4);
+                }
+                else if (metadata.GameMode == GameEngineMode.Survival)
+                {
+                    metagame.CampaignDifficulty = (GameEngineDifficulty)stream.ReadUnsigned(packed ? 2 : 16);
+                    metagame.CampaignPrimarySkulls = (GamePrimarySkullFlags)stream.ReadUnsigned(16);
+                    metagame.CampaignSecondarySkulls = (GameSecondarySkullFlags)stream.ReadUnsigned(16);
+
+                    if (!packed)
+                        stream.ReadBytes(10);
+                }
+                else 
+                {
+                    if (!packed)
+                        stream.ReadBytes(16);
+                }
+
+                return metagame;
+            }
+
+            public static void Encode(BitStream stream, ContentItemMetagame metagame, bool packed)
+            {
+                // TODO: Implement
+            }
+        }
+
+        public static ReachContentItemMetadata Decode(BitStream stream, bool packed) 
+        {
+            var metadata = new ReachContentItemMetadata();
+
+            metadata.ContentTypeReach = (ContentItemTypeReach)(stream.ReadUnsigned(packed ? 4 : 8) - (packed ? 1 : 0));
+
+            if (!packed)
+                stream.ReadBytes(3);
+
+            metadata.FileLength = (int)stream.ReadUnsigned(32);
+            metadata.UniqueId = stream.ReadUnsigned64(64);
+            metadata.ParentUniqueId = stream.ReadUnsigned64(64);
+            metadata.RootUniqueId = stream.ReadUnsigned64(64);
+            metadata.GameId = stream.ReadUnsigned64(64);
+            metadata.GameActivity = (GameEngineActivity)(stream.ReadUnsigned(packed ? 3 : 8) - (packed ? 1 : 0));
+            metadata.GameMode = (GameEngineMode)stream.ReadUnsigned(packed ? 3 : 8);
+            metadata.GameEngineType = (GameEngineTypeReach)stream.ReadUnsigned(packed ? 3 : 16);
+            metadata.MapId = (int)stream.ReadUnsigned(32);
+            metadata.EngineCategory = (GameEngineCategory)stream.ReadUnsigned(8);
+            
+            if (!packed)
+                stream.ReadBytes(7);
+
+            metadata.CreationHistory = ContentItemAuthor.Decode(stream, packed);
+            metadata.ModificationHistory = ContentItemAuthor.Decode(stream, packed);
+
+            metadata.Name = stream.ReadUnicodeString(128, packed);
+            metadata.Description = stream.ReadUnicodeString(128, packed);
+
+            metadata.Generic = ContentItemGeneric.Decode(stream, metadata, packed);
+            metadata.Matchmaking = ContentItemMatchmaking.Decode(stream, metadata, packed);
+            metadata.Metagame = ContentItemMetagame.Decode(stream, metadata, packed);
+
+            return metadata;
+        }
+
+        public static void Encode(BitStream stream, ReachContentItemMetadata metadata, bool packed)
+        {
+            // TODO: Implement
+        }
     }
 }

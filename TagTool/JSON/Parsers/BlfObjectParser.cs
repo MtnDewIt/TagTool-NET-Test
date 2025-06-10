@@ -3,6 +3,7 @@ using TagTool.Cache;
 using TagTool.IO;
 using TagTool.BlamFile;
 using TagTool.JSON.Handlers;
+using TagTool.BlamFile.Chunks;
 
 namespace TagTool.JSON.Parsers
 {
@@ -45,7 +46,7 @@ namespace TagTool.JSON.Parsers
             }
         }
 
-        public void UpdateQuotaIndexes(TagName[] tagNames, VariantObjectQuota[] quotaList)
+        public void UpdateQuotaIndexes(BlfMapVariantTagNames.TagName[] tagNames, VariantObjectQuota[] quotaList)
         {
             for (int i = 0; i < tagNames.Length; i++)
             {

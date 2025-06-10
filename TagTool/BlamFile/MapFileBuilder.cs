@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
+using TagTool.BlamFile.Chunks;
 using TagTool.Cache;
-using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.IO;
 using TagTool.Tags;
@@ -85,11 +85,11 @@ namespace TagTool.BlamFile
                 switch (scnr.MapType)
                 {
                     case ScenarioMapType.SinglePlayer:
-                        return MapInfo.MapFlags.HasFlag(BlfScenarioFlags.IsCampaign);
+                        return MapInfo.MapFlags.HasFlag(BlfScenario.BlfScenarioFlags.IsCampaign);
                     case ScenarioMapType.Multiplayer:
-                        return MapInfo.MapFlags.HasFlag(BlfScenarioFlags.IsMultiplayer);
+                        return MapInfo.MapFlags.HasFlag(BlfScenario.BlfScenarioFlags.IsMultiplayer);
                     case ScenarioMapType.MainMenu:
-                        return MapInfo.MapFlags.HasFlag(BlfScenarioFlags.IsMainmenu);
+                        return MapInfo.MapFlags.HasFlag(BlfScenario.BlfScenarioFlags.IsMainmenu);
                     default:
                         return false;
                 }
@@ -147,16 +147,16 @@ namespace TagTool.BlamFile
                 MinorVersion = 2
             };
 
-            blf.ContentFlags |= BlfFileContentFlags.StartOfFile | BlfFileContentFlags.EndOfFile;
+            blf.ContentFlags |= Blf.BlfFileContentFlags.StartOfFile | Blf.BlfFileContentFlags.EndOfFile;
 
             blf.Scenario = MapInfo ?? GenerateMapInfo(scnr, scenarioName);
-            blf.ContentFlags |= BlfFileContentFlags.Scenario;
+            blf.ContentFlags |= Blf.BlfFileContentFlags.Scenario;
 
             if (MapVariant != null)
             {
                 blf.MapVariant = MapVariant.MapVariant;
                 blf.MapVariantTagNames = MapVariant.MapVariantTagNames;
-                blf.ContentFlags |= BlfFileContentFlags.MapVariant | BlfFileContentFlags.MapVariantTagNames;
+                blf.ContentFlags |= Blf.BlfFileContentFlags.MapVariant | Blf.BlfFileContentFlags.MapVariantTagNames;
             }
 
             return blf;
@@ -174,19 +174,19 @@ namespace TagTool.BlamFile
 
             scnrBlf.MapId = scnr.MapId;
 
-            scnrBlf.Names = new NameUnicode32[12];
+            scnrBlf.Names = new BlfScenario.NameUnicode32[12];
             for (int i = 0; i < scnrBlf.Names.Length; i++)
-                scnrBlf.Names[i] = new NameUnicode32() { Name = MapName ?? scenarioName.ToPascalCase() };
+                scnrBlf.Names[i] = new BlfScenario.NameUnicode32() { Name = MapName ?? scenarioName.ToPascalCase() };
 
-            scnrBlf.Descriptions = new NameUnicode128[12];
+            scnrBlf.Descriptions = new BlfScenario.NameUnicode128[12];
             for (int i = 0; i < scnrBlf.Descriptions.Length; i++)
-                scnrBlf.Descriptions[i] = new NameUnicode128() { Name = MapDescription ?? "" };
+                scnrBlf.Descriptions[i] = new BlfScenario.NameUnicode128() { Name = MapDescription ?? "" };
 
             scnrBlf.ScenarioPath = scenarioName;
             scnrBlf.ImageFileBase = $"m_{scenarioName}";
             scnrBlf.MinimumDesiredPlayers = 2;
             scnrBlf.MaximumDesiredPlayers = 6;
-            scnrBlf.GameEngineTeamCounts = new GameEngineTeams
+            scnrBlf.GameEngineTeamCounts = new BlfScenario.GameEngineTeams
             {
                 NoGametypeTeamCount = 0,
                 CtfTeamCount = 2,
@@ -201,17 +201,17 @@ namespace TagTool.BlamFile
                 InfectionTeamCount = 8,
             };
 
-            scnrBlf.MapFlags = BlfScenarioFlags.Visible | BlfScenarioFlags.GeneratesFilm;
+            scnrBlf.MapFlags = BlfScenario.BlfScenarioFlags.Visible | BlfScenario.BlfScenarioFlags.GeneratesFilm;
             switch (scnr.MapType)
             {
                 case ScenarioMapType.MainMenu:
-                    scnrBlf.MapFlags |= BlfScenarioFlags.IsMainmenu;
+                    scnrBlf.MapFlags |= BlfScenario.BlfScenarioFlags.IsMainmenu;
                     break;
                 case ScenarioMapType.Multiplayer:
-                    scnrBlf.MapFlags |= BlfScenarioFlags.IsMultiplayer;
+                    scnrBlf.MapFlags |= BlfScenario.BlfScenarioFlags.IsMultiplayer;
                     break;
                 case ScenarioMapType.SinglePlayer:
-                    scnrBlf.MapFlags |= BlfScenarioFlags.IsCampaign;
+                    scnrBlf.MapFlags |= BlfScenario.BlfScenarioFlags.IsCampaign;
                     break;
             }
 

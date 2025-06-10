@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using TagTool.BlamFile.Chunks;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Tags;
@@ -22,7 +23,7 @@ namespace TagTool.BlamFile
         {
             var campaignBlf = new Blf(Cache.Version, Cache.Platform)
             {
-                ContentFlags = BlfFileContentFlags.StartOfFile | BlfFileContentFlags.EndOfFile | BlfFileContentFlags.Campaign,
+                ContentFlags = Blf.BlfFileContentFlags.StartOfFile | Blf.BlfFileContentFlags.EndOfFile | Blf.BlfFileContentFlags.Campaign,
 
                 StartOfFile = new BlfChunkStartOfFile
                 {
@@ -49,8 +50,8 @@ namespace TagTool.BlamFile
                     MinorVersion = 1,
                     CampaignId = 1,
 
-                    Names = Enumerable.Repeat(new CampaignNameUnicode32 { Name = Name }, 12).ToArray(),
-                    Descriptions = Enumerable.Repeat(new NameUnicode128 { Name = Description }, 12).ToArray(),
+                    Names = Enumerable.Repeat(new BlfCampaign.CampaignNameUnicode32 { Name = Name }, 12).ToArray(),
+                    Descriptions = Enumerable.Repeat(new BlfScenario.NameUnicode128 { Name = Description }, 12).ToArray(),
 
                     MapIds = includeMapIds ? GetMapIds() : new int[64],
                 },

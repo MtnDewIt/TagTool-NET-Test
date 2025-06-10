@@ -11,6 +11,7 @@ using TagTool.Cache.HaloOnline;
 using TagTool.BlamFile.MCC;
 using Newtonsoft.Json;
 using TagTool.Tags;
+using TagTool.BlamFile.Chunks;
 
 namespace TagTool.Commands.Files
 {
@@ -249,7 +250,7 @@ namespace TagTool.Commands.Files
 
                     var mapBlf = new Blf(Cache.Version, Cache.Platform)
                     {
-                        ContentFlags = BlfFileContentFlags.StartOfFile | BlfFileContentFlags.EndOfFile | BlfFileContentFlags.Scenario,
+                        ContentFlags = Blf.BlfFileContentFlags.StartOfFile | Blf.BlfFileContentFlags.EndOfFile | Blf.BlfFileContentFlags.Scenario,
 
                         StartOfFile = new BlfChunkStartOfFile
                         {
@@ -274,9 +275,9 @@ namespace TagTool.Commands.Files
                             Length = (int)TagStructure.GetStructureSize(typeof(BlfScenario), Cache.Version, Cache.Platform),
                             MajorVersion = 3,
                             MinorVersion = 1,
-                            Names = Enumerable.Repeat(new NameUnicode32 { Name = "" }, 12).ToArray(),
-                            Descriptions = Enumerable.Repeat(new NameUnicode128 { Name = "" }, 12).ToArray(),
-                            Insertions = Enumerable.Repeat(new BlfScenarioInsertion { Names = Enumerable.Repeat(new NameUnicode32 { Name = "" }, 12).ToArray(), Descriptions = Enumerable.Repeat(new NameUnicode128 { Name = "" }, 12).ToArray() }, 9).ToArray(),
+                            Names = Enumerable.Repeat(new BlfScenario.NameUnicode32 { Name = "" }, 12).ToArray(),
+                            Descriptions = Enumerable.Repeat(new BlfScenario.NameUnicode128 { Name = "" }, 12).ToArray(),
+                            Insertions = Enumerable.Repeat(new BlfScenario.BlfScenarioInsertion { Names = Enumerable.Repeat(new BlfScenario.NameUnicode32 { Name = "" }, 12).ToArray(), Descriptions = Enumerable.Repeat(new BlfScenario.NameUnicode128 { Name = "" }, 12).ToArray() }, 9).ToArray(),
                         },
                     };
 

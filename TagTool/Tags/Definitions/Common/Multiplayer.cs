@@ -163,6 +163,15 @@ namespace TagTool.Tags.Definitions.Common
         Infection,
     }
 
+    public enum GameEngineTypeReach : ushort
+    {
+        None = 0,
+        Forge,
+        Megalo,
+        Campaign,
+        Survival,
+    }
+
     public enum GameEngineSubType : int
     {
         CaptureTheFlag,
@@ -176,6 +185,112 @@ namespace TagTool.Tags.Definitions.Common
         Infection,
         TargetTraining,
         All
+    }
+
+    public enum GameEngineActivity : sbyte
+    {
+        None = -1,
+        Activities,
+        Campaign,
+        Survival,
+        Matchmaking,
+        Forge,
+        Theater,
+    }
+
+    public enum GameEngineCategory : sbyte
+    {
+        None = -1,
+        CTF,
+        Slayer,
+        Oddball,
+        King,
+        Juggernaut,
+        Territories,
+        Assault,
+        Infection,
+        VIP,
+        Invasion,
+        Stockpile,
+
+        Race = 12,
+        Headhunter = 13,
+
+        Insane = 16,
+    }
+
+    public enum GameEngineIcon : sbyte
+    {
+        None = -1,
+        CTF,
+        Slayer,
+        Oddball,
+        King,
+        Juggernaut,
+        Territories,
+        Assault,
+        Infection,
+        VIP,
+        Invasion,
+        InvasionSlayer,
+        Stockpile,
+        ActionSack,
+        Race,
+        RocketRace,
+        Grifball,
+        Soccer,
+        Headhunter,
+        Crosshair,
+        Wheel,
+        Swirl,
+        Bunker,
+        HealthPack,
+        CastleDefense,
+        Return,
+        Shapes,
+        Cartographer,
+        EightBall,
+        Noble,
+        Covenant,
+        Attack,
+        Defend,
+        Ordnance,
+        Circle,
+        Recon,
+        Recover,
+        Ammo,
+        Skull,
+        Forge,
+
+        RecentGames = 49,
+        FileShare,
+    }
+
+    public enum GameEngineMode : byte
+    {
+        None = 0,
+        Campaign,
+        Survival,
+        Multiplayer,
+        Forge,
+        Theater,
+    }
+
+    public enum GameEngineDifficulty : short
+    {
+        None = 0,
+        Easy,
+        Normal,
+        Heroic,
+        Legendary,
+    }
+
+    public enum GameMetagameScoring : short
+    {
+        None = 0,
+        Off,
+        Team,
+        FreeForAll,
     }
 
     [Flags]

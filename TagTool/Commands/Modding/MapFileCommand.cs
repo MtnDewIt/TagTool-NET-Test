@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TagTool.BlamFile;
+using TagTool.BlamFile.Chunks;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
@@ -168,9 +169,9 @@ namespace TagTool.Commands.Modding
             }
 
             mapFile.MapFileBlf.MapVariant = mapVariantBlf.MapVariant;
-            mapFile.MapFileBlf.ContentFlags |= BlfFileContentFlags.MapVariant;
+            mapFile.MapFileBlf.ContentFlags |= Blf.BlfFileContentFlags.MapVariant;
             mapFile.MapFileBlf.MapVariantTagNames = mapVariantBlf.MapVariantTagNames;
-            mapFile.MapFileBlf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
+            mapFile.MapFileBlf.ContentFlags |= Blf.BlfFileContentFlags.MapVariantTagNames;
         }
 
         private void UpdateMetadata(ContentItemMetadata metadata, BlfScenario blfScenario)

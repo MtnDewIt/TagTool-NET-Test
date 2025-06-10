@@ -16,6 +16,7 @@ using System.Diagnostics;
 using TagTool.BlamFile.GameVariants;
 using System.Text.RegularExpressions;
 using TagTool.JSON;
+using TagTool.BlamFile.Chunks;
 
 namespace TagTool.Commands.Files
 {
@@ -130,7 +131,7 @@ namespace TagTool.Commands.Files
                             MajorVersion = 1,
                             MinorVersion = 1,
                         };
-                        blf.ContentFlags |= BlfFileContentFlags.EndOfFile;
+                        blf.ContentFlags |= Blf.BlfFileContentFlags.EndOfFile;
                     }
 
                     variantName = blf.ContentHeader?.Metadata?.Name ?? "";
@@ -222,9 +223,9 @@ namespace TagTool.Commands.Files
                 Length = (int)TagStructure.GetStructureSize(typeof(BlfMapVariantTagNames), blf.Version, CachePlatform.Original),
                 MajorVersion = 1,
                 MinorVersion = 0,
-                Names = Enumerable.Range(0, 256).Select(x => new TagName()).ToArray(),
+                Names = Enumerable.Range(0, 256).Select(x => new BlfMapVariantTagNames.TagName()).ToArray(),
             };
-            blf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
+            blf.ContentFlags |= Blf.BlfFileContentFlags.MapVariantTagNames;
 
             for (int i = 0; i < blf.MapVariant.MapVariant.Quotas.Length; i++) 
             {
@@ -232,7 +233,7 @@ namespace TagTool.Commands.Files
 
                 if (objectIndex != -1 && TagMap.TryGetValue(objectIndex, out string name)) 
                 {
-                    blf.MapVariantTagNames.Names[i] = new TagName() { Name = name };
+                    blf.MapVariantTagNames.Names[i] = new BlfMapVariantTagNames.TagName() { Name = name };
                 }
             }
         }

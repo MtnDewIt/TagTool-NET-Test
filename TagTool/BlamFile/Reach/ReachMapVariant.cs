@@ -1,42 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using TagTool.Common;
+using TagTool.Cache;
+using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.BlamFile.Reach
 {
-    public class ReachBlfMapVariant
+    [TagStructure(Size = 0x30A, MinVersion = CacheVersion.HaloReach)]
+    public class ReachMapVariant : TagStructure
     {
-        public byte[] Hash;
-        public int Size;
-        public ReachMapVariant MapVariant;
-
-        public void Decode(Stream stream)
-        {
-            var reader = new ReachMapVariantReader(stream);
-            Decode(reader);
-        }
-
-        public void Decode(ReachMapVariantReader reader)
-        {
-            Hash = reader.ReadBytes(0x14);
-            Size = (int)reader.ReadUnsigned(32);
-            MapVariant = new ReachMapVariant();
-            MapVariant.Decode(reader);
-        }
-    }
-
-    public class ReachMapVariant
-    {
-        public const int MaxObjects = 640;
-        public const int MaxQuota = 256;
-
         public ReachContentItemMetadata Metadata;
-        public string Name;
-        public string Description;
         public int Version;
         public uint CacheCRC;
         public uint ScenarioPaletteCRC;
@@ -48,106 +23,75 @@ namespace TagTool.BlamFile.Reach
         public int MaxBudget;
         public int SpentBudget;
         public MegaloStringTable StringTable;
-        public List<ReachVariantObjectDatum> Objects;
-        public List<ReachVariantQuota> Quotas;
 
-        public Scenario.MapVariantPaletteBlock.MapVariantPaletteEntryBlock GetPaletteEntry(Scenario scenario, int quotaIndex)
+        [TagField(Length = 651)]
+        public ReachVariantObjectDatum[] Objects;
+
+        [TagField(Length = 256)]
+        public ReachVariantQuota[] Quotas;
+
+        public static ReachMapVariant Decode(BitStream stream)
         {
-            GetPaletteIndices(scenario, quotaIndex, out int paletteIndex, out int entryIndex);
-            return scenario.MapVariantPalettes[paletteIndex].Entries[entryIndex];
-        }
+            var mapVariant = new ReachMapVariant();
 
-        public bool GetPaletteIndices(Scenario scenario, int quotaIndex, out int paletteIndex, out int entryIndex)
-        {
-            paletteIndex = -1;
-            entryIndex = -1;
-
-            var absoluteIndex = quotaIndex;
-            for (int i = 0; i < scenario.MapVariantPalettes.Count; i++)
-            {
-                var palette = scenario.MapVariantPalettes[i];
-                
-                if (absoluteIndex < palette.Entries.Count)
-                {
-                    paletteIndex = i;
-                    entryIndex = absoluteIndex;
-                    return true;
-                }
-                absoluteIndex -= palette.Entries.Count;
-            }
-            return false;
-        }
-
-        public void Decode(ReachMapVariantReader reader)
-        {
-            Metadata = new ReachContentItemMetadata();
-            Metadata.Decode(reader);
-            Name = reader.ReadUnicodeString(128);
-            Description = reader.ReadUnicodeString(128);
-            Version = (int)reader.ReadUnsigned(8);
-            Debug.Assert(Version == 31);
-            CacheCRC = reader.ReadUnsigned(32);
-            ScenarioPaletteCRC = reader.ReadUnsigned(32);
-            PlaceableObjectQuota = (int)reader.ReadUnsigned(9);
-            Debug.Assert(PlaceableObjectQuota >= 0 && PlaceableObjectQuota <= MaxQuota);
-            MapId = (int)reader.ReadUnsigned(32);
-            BuiltIn = reader.ReadBool();
-            BuiltFromXml = reader.ReadBool();
-
-            WorldBounds = new RealRectangle3d
+            mapVariant.Metadata = ReachContentItemMetadata.Decode(stream, true);
+            mapVariant.Version = (int)stream.ReadUnsigned(8);
+            mapVariant.CacheCRC = stream.ReadUnsigned(32);
+            mapVariant.ScenarioPaletteCRC = stream.ReadUnsigned(32);
+            mapVariant.PlaceableObjectQuota = (int)stream.ReadUnsigned(9);
+            mapVariant.MapId = (int)stream.ReadUnsigned(32);
+            mapVariant.BuiltIn = stream.ReadBool();
+            mapVariant.BuiltFromXml = stream.ReadBool();
+            mapVariant.WorldBounds = new RealRectangle3d
             (
-                ReinterpretCastFloat(reader.ReadUnsigned(32)),
-                ReinterpretCastFloat(reader.ReadUnsigned(32)),
-                ReinterpretCastFloat(reader.ReadUnsigned(32)),
-                ReinterpretCastFloat(reader.ReadUnsigned(32)),
-                ReinterpretCastFloat(reader.ReadUnsigned(32)),
-                ReinterpretCastFloat(reader.ReadUnsigned(32))
+                stream.ReadFloat(32),
+                stream.ReadFloat(32),
+                stream.ReadFloat(32),
+                stream.ReadFloat(32),
+                stream.ReadFloat(32),
+                stream.ReadFloat(32)
             );
+            mapVariant.MaxBudget = (int)stream.ReadUnsigned(32);
+            mapVariant.SpentBudget = (int)stream.ReadUnsigned(32);
+            mapVariant.StringTable = MegaloStringTable.Decode(stream);
 
-            MaxBudget = (int)reader.ReadUnsigned(32);
-            SpentBudget = (int)reader.ReadUnsigned(32);
-
-            StringTable = new MegaloStringTable();
-            StringTable.Decode(reader);
-
-            Objects = new List<ReachVariantObjectDatum>();
-            for (int i = 0; i < MaxObjects; i++)
+            mapVariant.Objects = new ReachVariantObjectDatum[651];
+            for (int i = 0; i < 651; i++)
             {
-                var datum = new ReachVariantObjectDatum();
-                datum.Decode(reader, WorldBounds);
-                Objects.Add(datum);
+                mapVariant.Objects[i] = ReachVariantObjectDatum.Decode(stream, mapVariant.WorldBounds);
             }
 
-            Quotas = new List<ReachVariantQuota>();
-            for (int i = 0; i < MaxQuota; i++)
+            mapVariant.Quotas = new ReachVariantQuota[256];
+            for (int i = 0; i < 256; i++)
             {
-                var quota = new ReachVariantQuota();
-                quota.Decode(reader);
-                Quotas.Add(quota);
+                mapVariant.Quotas[i] = ReachVariantQuota.Decode(stream);
             }
-        }
 
-        static float ReinterpretCastFloat(uint value)
-        {
-            return BitConverter.ToSingle(BitConverter.GetBytes(value), 0);
+            return mapVariant;
         }
     }
 
-    public class ReachVariantQuota
+    [TagStructure(Size = 0xC, MinVersion = CacheVersion.HaloReach)]
+    public class ReachVariantQuota : TagStructure
     {
         public int MinimumCount;
         public int MaximumCount;
         public int PlacedOnMap;
 
-        public void Decode(BitStream bitstream)
+        public static ReachVariantQuota Decode(BitStream stream)
         {
-            MinimumCount = (int)bitstream.ReadUnsigned(8);
-            MaximumCount = (int)bitstream.ReadUnsigned(8);
-            PlacedOnMap = (int)bitstream.ReadUnsigned(8);
+            var quotaDatum = new ReachVariantQuota();
+
+            quotaDatum.MinimumCount = (int)stream.ReadUnsigned(8);
+            quotaDatum.MaximumCount = (int)stream.ReadUnsigned(8);
+            quotaDatum.PlacedOnMap = (int)stream.ReadUnsigned(8);
+
+            return quotaDatum;
         }
     }
 
-    public class ReachVariantObjectDatum
+    [TagStructure(Size = 0x62, MinVersion = CacheVersion.HaloReach)]
+    public class ReachVariantObjectDatum : TagStructure
     {
         public ObjectPlacementFlags Flags;
         public int QuotaIndex = -1;
@@ -158,41 +102,47 @@ namespace TagTool.BlamFile.Reach
         public int SpawnRelativeToIndex = -1;
         public ReachVarintMultiplayerObjectProperties Properties;
 
-        public void Decode(ReachMapVariantReader reader, RealRectangle3d worldBounds)
+        public static ReachVariantObjectDatum Decode(BitStream stream, RealRectangle3d worldBounds)
         {
-            if (!reader.ReadBool())
-                return;
+            var objectDatum = new ReachVariantObjectDatum();
 
-            Flags = (ObjectPlacementFlags)reader.ReadUnsigned(2);
+            if (!stream.ReadBool())
+                return objectDatum;
 
-            if (reader.ReadBool())
-                QuotaIndex = -1;
-            else
-                QuotaIndex = (int)reader.ReadUnsigned(8);
+            objectDatum.Flags = (ObjectPlacementFlags)stream.ReadUnsigned(2);
 
-            if (reader.ReadBool())
-                VariantIndex = -1;
-            else
-                VariantIndex = (int)reader.ReadUnsigned(5);
+            if (!stream.ReadBool())
+                objectDatum.QuotaIndex = (int)stream.ReadUnsigned(8);
 
-            Position = reader.ReadPosition(21, worldBounds);
-            reader.ReadAxes(14, 20, out Forward, out Up);
+            if (!stream.ReadBool())
+                objectDatum.VariantIndex = (int)stream.ReadUnsigned(5);
 
-            SpawnRelativeToIndex = (int)reader.ReadUnsigned(10) - 1;
+            var hasPosition = stream.ReadUnsigned(1) > 0;
 
-            Properties = new ReachVarintMultiplayerObjectProperties();
-            Properties.Decode(reader);
+            if (hasPosition) 
+            {
+                objectDatum.Position = RealMath.ReadQuantizedPositionPerAxis(stream, 21, worldBounds);
+
+                BitStream.ReadAxis(stream, 14, 20, true, out objectDatum.Forward, out objectDatum.Up);
+
+                objectDatum.SpawnRelativeToIndex = (int)stream.ReadUnsigned(10) - 1;
+
+                objectDatum.Properties = ReachVarintMultiplayerObjectProperties.Decode(stream);
+            }
+
+            return objectDatum;
         }
 
         [Flags]
-        public enum ObjectPlacementFlags
+        public enum ObjectPlacementFlags : byte
         {
             None = 0,
             OccupiedSlot = 1 << 0
         }
     }
 
-    public class ReachVarintMultiplayerObjectProperties
+    [TagStructure(Size = 0x31, MinVersion = CacheVersion.HaloReach)]
+    public class ReachVarintMultiplayerObjectProperties : TagStructure
     {
         public ReachMultiplayerObjectBoundary Boundary;
         public int SpawnOrder;
@@ -207,54 +157,55 @@ namespace TagTool.BlamFile.Reach
         public TeleporterPassabilityFlags TeleporterPassability;
         public int LocationNameIndex = -1;
 
-        public void Decode(ReachMapVariantReader reader)
+        public static ReachVarintMultiplayerObjectProperties Decode(BitStream stream)
         {
-            Boundary = new ReachMultiplayerObjectBoundary();
-            Boundary.Decode(reader);
+            var objectProperties = new ReachVarintMultiplayerObjectProperties();
 
-            SpawnOrder = (int)reader.ReadUnsigned(8);
-            SpawnTime = (int)reader.ReadUnsigned(8);
-            Type = (MultiplayerObjectTypeReach)(int)reader.ReadUnsigned(5);
+            objectProperties.Boundary = ReachMultiplayerObjectBoundary.Decode(stream);
 
-            if (reader.ReadBool())
-                MegaloLabelIndex = -1;
+            objectProperties.SpawnOrder = (int)stream.ReadUnsigned(8);
+            objectProperties.SpawnTime = (int)stream.ReadUnsigned(8);
+            objectProperties.Type = (MultiplayerObjectTypeReach)(int)stream.ReadUnsigned(5);
+
+            if (stream.ReadBool())
+                objectProperties.MegaloLabelIndex = -1;
             else
-                MegaloLabelIndex = (int)reader.ReadUnsigned(8);
+                objectProperties.MegaloLabelIndex = (int)stream.ReadUnsigned(8);
 
-            PlacementFlags = (VariantPlacementFlags)reader.ReadUnsigned(8);
-            Team = (MultiplayerTeamDesignator)((int)reader.ReadUnsigned(4) - 1);
+            objectProperties.PlacementFlags = (VariantPlacementFlags)stream.ReadUnsigned(8);
+            objectProperties.Team = (MultiplayerTeamDesignator)((int)stream.ReadUnsigned(4) - 1);
 
-            if (reader.ReadBool())
-                PrimaryChangeColorIndex = -1;
+            if (stream.ReadBool())
+                objectProperties.PrimaryChangeColorIndex = -1;
             else
-                PrimaryChangeColorIndex = (int)reader.ReadUnsigned(3);
+                objectProperties.PrimaryChangeColorIndex = (int)stream.ReadUnsigned(3);
 
-            if (Type == MultiplayerObjectTypeReach.Weapon)
+            if (objectProperties.Type == MultiplayerObjectTypeReach.Weapon)
             {
-                SpareClips = (int)reader.ReadUnsigned(8);
+                objectProperties.SpareClips = (int)stream.ReadUnsigned(8);
             }
             else
             {
-                if (Type <= MultiplayerObjectTypeReach.Device)
-                    return;
-                if (Type <= MultiplayerObjectTypeReach.TeleporterReceiver)
+                if (objectProperties.Type <= MultiplayerObjectTypeReach.Device)
+                    return objectProperties;
+                if (objectProperties.Type <= MultiplayerObjectTypeReach.TeleporterReceiver)
                 {
-                    TeleporterChannel = (int)reader.ReadUnsigned(5);
-                    TeleporterPassability = (TeleporterPassabilityFlags)reader.ReadUnsigned(5);
+                    objectProperties.TeleporterChannel = (int)stream.ReadUnsigned(5);
+                    objectProperties.TeleporterPassability = (TeleporterPassabilityFlags)stream.ReadUnsigned(5);
                 }
-                if (Type != MultiplayerObjectTypeReach.NamedLocationArea)
-                    return;
+                if (objectProperties.Type != MultiplayerObjectTypeReach.NamedLocationArea)
+                    return objectProperties;
 
-                LocationNameIndex = (int)reader.ReadUnsigned(8) - 1;
+                objectProperties.LocationNameIndex = (int)stream.ReadUnsigned(8) - 1;
             }
+
+            return objectProperties;
         }
 
-        
-
-
         [Flags]
-        public enum VariantPlacementFlags
+        public enum VariantPlacementFlags : byte
         {
+            None = 0,
             UniqueSpawn  = 1 << 0,
             NotInitiallyPlaced  = 1 << 1,
             SymmetricPlacement = 1 << 2,
@@ -266,44 +217,49 @@ namespace TagTool.BlamFile.Reach
         }
     }
 
-    public class ReachMultiplayerObjectBoundary
+    [TagStructure(Size = 0x11, MinVersion = CacheVersion.HaloReach)]
+    public class ReachMultiplayerObjectBoundary : TagStructure
     {
+        public MultiplayerObjectBoundaryShape Shape;
         public float WidthRadius;
         public float BoxLength;
         public float PositiveHeight;
         public float NegativeHeight;
-        public MultiplayerObjectBoundaryShape Shape;
 
-        public bool Decode(BitStream bitstream)
+        public static ReachMultiplayerObjectBoundary Decode(BitStream stream)
         {
-            Shape = (MultiplayerObjectBoundaryShape)bitstream.ReadUnsigned(2);
-            if (Shape == MultiplayerObjectBoundaryShape.Sphere)
+            var boundary = new ReachMultiplayerObjectBoundary();
+
+            boundary.Shape = (MultiplayerObjectBoundaryShape)stream.ReadUnsigned(2);
+
+            if (boundary.Shape == MultiplayerObjectBoundaryShape.Sphere)
             {
-                WidthRadius = bitstream.ReadQuantizedReal(0, 200.0f, 11, false, true);
+                boundary.WidthRadius = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
             }
             else
             {
-                if (Shape == MultiplayerObjectBoundaryShape.Cylinder)
+                if (boundary.Shape == MultiplayerObjectBoundaryShape.Cylinder)
                 {
-                    WidthRadius = bitstream.ReadQuantizedReal(0, 200.0f, 11, false, true);
+                    boundary.WidthRadius = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
                 }
                 else
                 {
-                    if (Shape != MultiplayerObjectBoundaryShape.Box)
+                    if (boundary.Shape != MultiplayerObjectBoundaryShape.Box)
                     {
-                        Debug.Assert(Shape == 0);
-                        return true;
+                        Debug.Assert(boundary.Shape == 0);
+                        return boundary;
                     }
 
 
-                    WidthRadius = bitstream.ReadQuantizedReal(0, 200.0f, 11, false, true);
-                    BoxLength = bitstream.ReadQuantizedReal(0, 200.0f, 11, false, true);
+                    boundary.WidthRadius = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
+                    boundary.BoxLength = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
                 }
 
-                PositiveHeight = bitstream.ReadQuantizedReal(0, 200.0f, 11, false, true);
-                NegativeHeight = bitstream.ReadQuantizedReal(0, 200.0f, 11, false, true);
+                boundary.PositiveHeight = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
+                boundary.NegativeHeight = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
             }
-            return true;
+
+            return boundary;
         }
     }
 }

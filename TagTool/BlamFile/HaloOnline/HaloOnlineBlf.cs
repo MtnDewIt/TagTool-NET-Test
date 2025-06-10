@@ -1,6 +1,7 @@
 ﻿using TagTool.Cache;
 using TagTool.IO;
 using TagTool.Tags;
+using TagTool.BlamFile.Chunks;
 
 namespace TagTool.BlamFile.HaloOnline
 {
@@ -12,8 +13,7 @@ namespace TagTool.BlamFile.HaloOnline
     public class HaloOnlineBlf : TagStructure 
     {
         public EndianFormat Format;
-        public BlfFileContentFlags ContentFlags;
-        public BlfAuthenticationType AuthenticationType;
+        public Blf.BlfFileContentFlags ContentFlags;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
         public BlfChunkStartOfFile StartOfFile;
@@ -64,7 +64,6 @@ namespace TagTool.BlamFile.HaloOnline
         {
             Format = blfData.Format;
             ContentFlags = blfData.ContentFlags;
-            AuthenticationType = blfData.AuthenticationType;
 
             StartOfFile = blfData.StartOfFile;
             EndOfFileCRC = blfData.EndOfFileCRC;

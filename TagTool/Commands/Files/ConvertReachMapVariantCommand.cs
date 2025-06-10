@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TagTool.BlamFile;
+using TagTool.BlamFile.Chunks;
 using TagTool.BlamFile.Reach;
 using TagTool.Cache;
 using TagTool.Commands.Common;
@@ -61,7 +62,8 @@ namespace TagTool.Commands.Files
             ErrorLog.Clear();
             UniqueIdTable.Clear();
 
-            ProcessDirectoryAsync(args[1], mapsDirectory).GetAwaiter().GetResult();
+            //ProcessDirectoryAsync(args[1], mapsDirectory).GetAwaiter().GetResult();
+            ProcessDirectoryAsync(args[1], mapsDirectory);
 
             Console.WriteLine($"{FileCount - ErrorLog.Count}/{FileCount} Map Variants Converted Successfully in {StopWatch.ElapsedMilliseconds.FormatMilliseconds()} with {ErrorLog.Count} {(ErrorLog.Count == 1 ? "error" : "errors")}\n");
 
@@ -73,7 +75,8 @@ namespace TagTool.Commands.Files
             return true;
         }
 
-        private async Task ProcessDirectoryAsync(string inputPath, DirectoryInfo mapsDirectory) 
+        //private async Task ProcessDirectoryAsync(string inputPath, DirectoryInfo mapsDirectory) 
+        private void ProcessDirectoryAsync(string inputPath, DirectoryInfo mapsDirectory)
         {
             var files = new List<string>();
 
@@ -88,59 +91,56 @@ namespace TagTool.Commands.Files
 
             StopWatch.Start();
 
-            var tasks = files.Select(filePath => ConvertFileAsync(filePath, mapsDirectory));
-            await Task.WhenAll(tasks);
+            foreach (var filePath in files) 
+            {
+                ConvertFileAsync(filePath, mapsDirectory);
+            }
+
+            //var tasks = files.Select(filePath => ConvertFileAsync(filePath, mapsDirectory));
+            //await Task.WhenAll(tasks);
 
             StopWatch.Stop();
         }
 
-        private async Task ConvertFileAsync(string filePath, DirectoryInfo mapsDirectory) 
+        //private async Task ConvertFileAsync(string filePath, DirectoryInfo mapsDirectory) 
+        private void ConvertFileAsync(string filePath, DirectoryInfo mapsDirectory)
         {
-            var input = new FileInfo(filePath);
-            Blf convertedBlf = null;
-
-            var variantName = "";
-
             try 
             {
-                Dictionary<Tag, BlfChunk> blfChunks;
-                using (var inputStream = input.OpenRead())
-                    blfChunks = BlfReader.ReadChunks(inputStream).ToDictionary(c => c.Tag);
+                var input = new FileInfo(filePath);
+                Blf blf = null;
 
-                if (blfChunks.ContainsKey("mvar"))
+                var variantName = "";
+
+                using (var stream = input.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    convertedBlf = ConvertMapVariant(mapsDirectory, blfChunks["mvar"]);
+                    var reader = new EndianReader(stream);
+
+                    blf = new Blf(CacheVersion.HaloReach, CachePlatform.Original);
+                    blf.Read(reader);
+
+                    if (blf.MapVariant != null)
+                    {
+                        blf = ConvertMapVariant(mapsDirectory, blf.MapVariant);
+
+                        if (blf == null)
+                            throw new Exception("Failed to convert map variant");
+                    }
+
+                    variantName = blf?.ContentHeader?.Metadata?.Name ?? "";
                 }
-                else if (blfChunks.ContainsKey("_cmp"))
-                {
-                    var decompressed = DecompressChunk(blfChunks["_cmp"]);
-                    var chunk = BlfReader.ReadChunks(new MemoryStream(decompressed)).First();
-                    if (chunk.Tag != "mvar")
-                        throw new Exception("Unsupported input file");
 
-                    convertedBlf = ConvertMapVariant(mapsDirectory, chunk);
-                }
-                else
-                {
-                    throw new Exception("Unsupported input file");
-                }
-
-                if (convertedBlf == null)
-                    throw new Exception("Failed to convert map variant");
-
-                variantName = convertedBlf?.ContentHeader?.Metadata?.Name ?? "";
-
-                var output = GetOutputPath(input, variantName, convertedBlf.ContentHeader.Metadata.UniqueId);
+                var output = GetOutputPath(input, variantName, blf.ContentHeader.Metadata.UniqueId);
 
                 Directory.CreateDirectory(Path.GetDirectoryName(output));
 
                 using (var stream = new FileInfo(output).Create())
                 {
                     var writer = new EndianWriter(stream);
-                    convertedBlf.Write(writer);
+                    blf.Write(writer);
                 }
 
-                UniqueIdTable.Add(convertedBlf.ContentHeader.Metadata.UniqueId);
+                UniqueIdTable.Add(blf.ContentHeader.Metadata.UniqueId);
             }
             catch (Exception e)
             {
@@ -148,13 +148,11 @@ namespace TagTool.Commands.Files
             }
         }
 
-        private Blf ConvertMapVariant(DirectoryInfo mapsDirectory, BlfChunk chunk)
+        private Blf ConvertMapVariant(DirectoryInfo mapsDirectory, BlfMapVariant mapVariant)
         {
-            var stream = new MemoryStream(chunk.Data);
-
-            if (chunk.MajorVerson == 31)
+            if (mapVariant.MajorVersion == 31)
             {
-                return ConvertReachMapVariant(stream, mapsDirectory);
+                return ConvertReachMapVariant(mapVariant.MapVariantReach, mapsDirectory);
             }
             else
             {
@@ -162,12 +160,9 @@ namespace TagTool.Commands.Files
             }
         }
 
-        private Blf ConvertReachMapVariant(MemoryStream stream, DirectoryInfo mapsDirectory)
+        private Blf ConvertReachMapVariant(ReachMapVariant mapVariant, DirectoryInfo mapsDirectory)
         {
-            var sourceBlf = new ReachBlfMapVariant();
-            sourceBlf.Decode(stream);
-
-            int mapId = sourceBlf.MapVariant.MapId;
+            int mapId = mapVariant.MapId;
             var sourceCache = GetMapCache(mapsDirectory, mapId);
             if (sourceCache == null)
                 return null;
@@ -264,7 +259,7 @@ namespace TagTool.Commands.Files
             converter.ExcludedMegaloLabels.Add("stp_flag");
             converter.ExcludedMegaloLabels.Add("stp_goal");
 
-            return converter.Convert(sourceScenario, sourceBlf);
+            return converter.Convert(sourceScenario, mapVariant);
         }
 
         private GameCache GetMapCache(DirectoryInfo mapsDirectory, int mapId)
@@ -277,6 +272,7 @@ namespace TagTool.Commands.Files
             return GameCache.Open(mapFile);
         }
 
+        /*
         private static byte[] DecompressChunk(BlfChunk cmpChunk)
         {
             var stream = new MemoryStream(cmpChunk.Data);
@@ -300,6 +296,7 @@ namespace TagTool.Commands.Files
                 return outStream.ToArray();
             }
         }
+        */
 
         private string GetOutputPath(FileInfo input, string variantName, ulong uniqueId)
         {

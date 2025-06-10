@@ -2,7 +2,9 @@
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Tags;
+using TagTool.Tags.Definitions;
 using TagTool.Tags.Definitions.Common;
+using static TagTool.BlamFile.VariantObjectDatum.VariantMultiplayerProperties;
 
 namespace TagTool.BlamFile
 {
@@ -40,6 +42,57 @@ namespace TagTool.BlamFile
 
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Halo3Retail)]
         public byte[] Padding2;
+
+        public static MapVariant Decode(BitStream stream) 
+        {
+            var mapVariant = new MapVariant();
+
+            mapVariant.Metadata = ContentItemMetadata.Decode(stream);
+            mapVariant.VariantVersion = (short)stream.ReadUnsigned(8);
+            mapVariant.MapVariantChecksum = stream.ReadUnsigned(32);
+            mapVariant.ScenarioObjectCount = (short)stream.ReadUnsigned(10);
+            mapVariant.VariantObjectCount = (short)stream.ReadUnsigned(10);
+            mapVariant.PlaceableQuotaCount = (short)stream.ReadUnsigned(9);
+            mapVariant.MapId = (int)stream.ReadUnsigned(32);
+            mapVariant.BuiltIn = stream.ReadBool();
+            mapVariant.WorldBounds = new RealRectangle3d
+            {
+                X0 = stream.ReadFloat(32),
+                X1 = stream.ReadFloat(32),
+                Y0 = stream.ReadFloat(32),
+                Y1 = stream.ReadFloat(32),
+                Z0 = stream.ReadFloat(32),
+                Z1 = stream.ReadFloat(32),
+            };
+            mapVariant.RuntimeEngineSubType = (GameEngineSubType)stream.ReadUnsigned(4);
+            mapVariant.MaximumBudget = stream.ReadFloat(32);
+            mapVariant.SpentBudget = stream.ReadFloat(32);
+
+            mapVariant.Objects = new VariantObjectDatum[mapVariant.VariantObjectCount];
+            for (int i = 0; i < mapVariant.VariantObjectCount; i++)
+            {
+                mapVariant.Objects[i] = VariantObjectDatum.Decode(stream, mapVariant.WorldBounds);
+            }
+
+            mapVariant.ObjectTypeStartIndex = new short[14];
+            for (int i = 0; i < mapVariant.ObjectTypeStartIndex.Length; i++)
+            {
+                mapVariant.ObjectTypeStartIndex[i] = (short)stream.ReadUnsigned(9);
+            }
+
+            mapVariant.Quotas = new VariantObjectQuota[mapVariant.PlaceableQuotaCount];
+            for (int i = 0; i < mapVariant.PlaceableQuotaCount; i++)
+            {
+                mapVariant.Quotas[i] = VariantObjectQuota.Decode(stream);
+            }
+
+            return mapVariant;
+        }
+
+        public static void Encode(BitStream stream, MapVariant mapVariant) 
+        {
+            // TODO: Implement
+        }
     }
 
     [TagStructure(Size = 0x54)]
@@ -55,18 +108,131 @@ namespace TagTool.BlamFile
         public RealVector3d Up;
         public ObjectIdentifier ParentObject;
         public VariantMultiplayerProperties Properties;
-    }
 
-    [TagStructure(Size = 0x18)]
-    public class VariantMultiplayerProperties : TagStructure
-    {
-        public GameEngineSubTypeFlags EngineFlags = GameEngineSubTypeFlags.All;
-        public VariantPlacementFlags Flags;
-        public MultiplayerTeamDesignator Team = MultiplayerTeamDesignator.Neutral;
-        public byte SharedStorage; // spare clips, teleporter channel, spawn order, reforge material
-        public byte SpawnTime;
-        public MultiplayerObjectType Type;
-        public MultiplayerObjectBoundary Boundary = new MultiplayerObjectBoundary();
+        [Flags]
+        public enum VariantObjectPlacementFlags : ushort
+        {
+            None = 0,
+            OccupiedSlot = 1 << 0,            // not an empty slot
+            Edited = 1 << 1,                  // set whenever the object has been edited in any way
+            RuntimeIgnored = 1 << 2,          // hack for globally placed scenario objects
+            ScenarioObject = 1 << 3,          // set for all scenario placements
+            Unused4 = 1 << 4,                 // unused
+            ScenarioObjectRemoved = 1 << 5,   // scenario object has been deleted
+            RuntimeSandboxSuspended = 1 << 6, // object has been suspended by the sandbox engine
+            RuntimeCandyMonitored = 1 << 7,   // object is being candy monitored
+            SpawnsRelative = 1 << 8,          // position and axes are relative to the parent
+            SpawnsAttached = 1 << 9           // object will be attached to the parent (node 0)
+        }
+
+        [TagStructure(Size = 0x18)]
+        public class VariantMultiplayerProperties : TagStructure
+        {
+            public GameEngineSubTypeFlags EngineFlags = GameEngineSubTypeFlags.All;
+            public VariantPlacementFlags Flags;
+            public MultiplayerTeamDesignator Team = MultiplayerTeamDesignator.Neutral;
+            public byte SharedStorage; // spare clips, teleporter channel, spawn order, reforge material
+            public byte SpawnTime;
+            public MultiplayerObjectType Type;
+            public MultiplayerObjectBoundary Boundary = new MultiplayerObjectBoundary();
+
+            [Flags]
+            public enum VariantPlacementFlags : byte
+            {
+                None = 0,
+                UniqueSpawn = 1 << 0,
+                NotInitiallyPlaced = 1 << 1,
+                Symmetric = 1 << 2,
+                Asymmetric = 1 << 3
+            }
+
+            [TagStructure(Size = 0x11)]
+            public class MultiplayerObjectBoundary : TagStructure
+            {
+                public MultiplayerObjectBoundaryShape Type;
+                public float WidthRadius;
+                public float BoxLength;
+                public float PositiveHeight;
+                public float NegativeHeight;
+            }
+        }
+
+        public static VariantObjectDatum Decode(BitStream stream, RealRectangle3d worldBounds)
+        {
+            var objectDatum = new VariantObjectDatum();
+
+            if (stream.ReadUnsigned(1) == 0)
+            {
+                return objectDatum;
+            }
+
+            objectDatum.Flags = (VariantObjectPlacementFlags)stream.ReadUnsigned(16);
+            objectDatum.QuotaIndex = (int)stream.ReadUnsigned(32);
+
+            var hasParentObject = stream.ReadUnsigned(1) > 0;
+
+            // TODO: Set default values for ObjectIdentifier
+            objectDatum.ParentObject = new ObjectIdentifier();
+
+            if (hasParentObject)
+            {
+                objectDatum.ParentObject.UniqueId = new DatumHandle(stream.ReadUnsigned(32));
+                objectDatum.ParentObject.OriginBspIndex = (short)stream.ReadUnsigned(16);
+                objectDatum.ParentObject.Type = new GameObjectType8() { Halo3Retail = (GameObjectTypeHalo3Retail)stream.ReadUnsigned(8) };
+                objectDatum.ParentObject.Source = (ObjectIdentifier.SourceValue)stream.ReadUnsigned(8);
+            }
+
+            var hasPosition = stream.ReadUnsigned(1) > 0;
+
+            if (hasPosition)
+            {
+                objectDatum.Position = RealMath.ReadQuantizedPosition(stream, 16, worldBounds);
+
+                BitStream.ReadAxis(stream, 8, 19, false, out objectDatum.Forward, out objectDatum.Up);
+
+                objectDatum.Properties = new VariantMultiplayerProperties
+                {
+                    Type = (MultiplayerObjectType)stream.ReadUnsigned(8),
+                    Flags = (VariantPlacementFlags)stream.ReadUnsigned(8),
+                    EngineFlags = (GameEngineSubTypeFlags)stream.ReadUnsigned(16),
+                    SharedStorage = (byte)stream.ReadUnsigned(8),
+                    SpawnTime = (byte)stream.ReadUnsigned(8),
+                    Team = (MultiplayerTeamDesignator)stream.ReadUnsigned(8),
+                    Boundary = new MultiplayerObjectBoundary
+                    {
+                        Type = (MultiplayerObjectBoundaryShape)stream.ReadUnsigned(8),
+                    },
+                };
+
+                if (objectDatum.Properties.Boundary.Type != MultiplayerObjectBoundaryShape.None)
+                {
+                    switch (objectDatum.Properties.Boundary.Type)
+                    {
+                        case MultiplayerObjectBoundaryShape.Sphere:
+                            objectDatum.Properties.Boundary.WidthRadius = BitStream.ReadQuantizedReal(stream, 0.0f, 60.0f, 16, false, false);
+                            break;
+                        case MultiplayerObjectBoundaryShape.Cylinder:
+                            objectDatum.Properties.Boundary.WidthRadius = BitStream.ReadQuantizedReal(stream, 0.0f, 60.0f, 16, false, false);
+                            objectDatum.Properties.Boundary.BoxLength = BitStream.ReadQuantizedReal(stream, 0.0f, 60.0f, 16, false, false);
+                            objectDatum.Properties.Boundary.PositiveHeight = BitStream.ReadQuantizedReal(stream, 0.0f, 60.0f, 16, false, false);
+                            break;
+                        case MultiplayerObjectBoundaryShape.Box:
+                            objectDatum.Properties.Boundary.WidthRadius = BitStream.ReadQuantizedReal(stream, 0.0f, 60.0f, 16, false, false);
+                            objectDatum.Properties.Boundary.BoxLength = BitStream.ReadQuantizedReal(stream, 0.0f, 60.0f, 16, false, false);
+                            objectDatum.Properties.Boundary.PositiveHeight = BitStream.ReadQuantizedReal(stream, 0.0f, 60.0f, 16, false, false);
+                            objectDatum.Properties.Boundary.NegativeHeight = BitStream.ReadQuantizedReal(stream, 0.0f, 60.0f, 16, false, false);
+                            break;
+                    }
+                }
+            }
+
+            return objectDatum;
+        }
+
+        public static void Encode(BitStream stream, VariantObjectDatum objectDatum)
+        {
+            // TODO: Implement
+        }
     }
 
     [TagStructure(Size = 0xC)]
@@ -78,42 +244,24 @@ namespace TagTool.BlamFile
         public byte PlacedOnMap;
         public byte MaxAllowed = 255;
         public float Cost = -1.0f;
-    }
 
-    [TagStructure(Size = 0x11)]
-    public class MultiplayerObjectBoundary : TagStructure
-    {
-        [TagField(EnumType = typeof(sbyte))]
-        public MultiplayerObjectBoundaryShape Type;
-        public float WidthRadius;
-        public float BoxLength;
-        public float PositiveHeight;
-        public float NegativeHeight;
-    }
+        public static VariantObjectQuota Decode(BitStream stream)
+        {
+            var quotaDatum = new VariantObjectQuota();
 
-    [Flags]
-    public enum VariantObjectPlacementFlags : ushort
-    {
-        None = 0,
-        OccupiedSlot = 1 << 0,            // not an empty slot
-        Edited = 1 << 1,                  // set whenever the object has been edited in any way
-        RuntimeIgnored = 1 << 2,          // hack for globally placed scenario objects
-        ScenarioObject = 1 << 3,          // set for all scenario placements
-        Unused4 = 1 << 4,                 // unused
-        ScenarioObjectRemoved = 1 << 5,   // scenario object has been deleted
-        RuntimeSandboxSuspended = 1 << 6, // object has been suspended by the sandbox engine
-        RuntimeCandyMonitored = 1 << 7,   // object is being candy monitored
-        SpawnsRelative = 1 << 8,          // position and axes are relative to the parent
-        SpawnsAttached = 1 << 9           // object will be attached to the parent (node 0)
-    }
+            quotaDatum.ObjectDefinitionIndex = (int)stream.ReadUnsigned(32);
+            quotaDatum.MinimumCount = (byte)stream.ReadUnsigned(8);
+            quotaDatum.MaximumCount = (byte)stream.ReadUnsigned(8);
+            quotaDatum.PlacedOnMap = (byte)stream.ReadUnsigned(8);
+            quotaDatum.MaxAllowed = (byte)stream.ReadUnsigned(8);
+            quotaDatum.Cost = stream.ReadFloat(32);
 
-    [Flags]
-    public enum VariantPlacementFlags : byte
-    {
-        None = 0,
-        UniqueSpawn = 1 << 0,
-        NotInitiallyPlaced = 1 << 1,
-        Symmetric = 1 << 2,
-        Asymmetric = 1 << 3
+            return quotaDatum;
+        }
+
+        public static void Encode(BitStream stream, VariantObjectQuota objectQuota)
+        {
+            // TODO: Implement
+        }
     }
 }

@@ -1,0 +1,94 @@
+﻿using System.IO;
+using TagTool.BlamFile.Reach;
+using TagTool.Cache;
+using TagTool.Common;
+using TagTool.IO;
+using TagTool.Serialization;
+using TagTool.Tags;
+
+namespace TagTool.BlamFile.Chunks
+{
+    [TagStructure(Size = 0xE094, Align = 0x1, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x322, Align = 0x1, MinVersion = CacheVersion.HaloReach)]
+    public class BlfMapVariant : BlfChunkHeader
+    {
+        [TagField(Length = 0x4, MaxVersion = CacheVersion.HaloOnline700123)]
+        public byte[] Padding;
+
+        [TagField(Length = 0x14, MinVersion = CacheVersion.HaloReach)]
+        public byte[] Hash;
+
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public int Size;
+
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        public MapVariant MapVariant;
+
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public ReachMapVariant MapVariantReach;
+
+        public static BlfMapVariant Decode(EndianReader reader, TagDeserializer deserializer, DataSerializationContext dataContext, bool packed) 
+        {
+            if (!packed)
+                return (BlfMapVariant)deserializer.Deserialize(dataContext, typeof(BlfMapVariant));
+
+            var blfChunk = new BlfMapVariant();
+
+            blfChunk.Signature = reader.ReadTag();
+            blfChunk.Length = reader.ReadInt32();
+            blfChunk.MajorVersion = reader.ReadInt16();
+            blfChunk.MinorVersion = reader.ReadInt16();
+
+            if (deserializer.Version == CacheVersion.HaloReach)
+            {
+                blfChunk.Hash = reader.ReadBytes(0x14);
+                blfChunk.Size = reader.ReadInt32();
+
+                var variantSize = blfChunk.Length - 0x24;
+
+                var buffer = new byte[variantSize];
+
+                for (int i = 0; i < variantSize; i++)
+                {
+                    buffer[i] = reader.ReadByte();
+                }
+
+                var stream = new MemoryStream(buffer);
+                var bitStream = new BitStream(stream);
+
+                blfChunk.MapVariantReach = ReachMapVariant.Decode(bitStream);
+            }
+            else 
+            {
+                reader.ReadBytes(4);
+
+                var variantSize = blfChunk.Length - 0x10;
+
+                var buffer = new byte[variantSize];
+
+                for (int i = 0; i < variantSize; i++)
+                {
+                    buffer[i] = reader.ReadByte();
+                }
+
+                var stream = new MemoryStream(buffer);
+                var bitStream = new BitStream(stream);
+
+                blfChunk.MapVariant = MapVariant.Decode(bitStream);
+            }
+
+            return blfChunk;
+        }
+
+        public static void Encode(EndianWriter writer, TagSerializer serializer, DataSerializationContext dataContext, BlfMapVariant mapVariant, bool packed) 
+        {
+            if (!packed) 
+            {
+                serializer.Serialize(dataContext, mapVariant);
+                return;
+            }
+
+            // TODO: Implement
+        }
+    }
+}

@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
-using TagTool.BlamFile;
 using System.Globalization;
-using TagTool.Cache;
+using TagTool.BlamFile.Chunks;
 
 namespace TagTool.JSON.Handlers
 {

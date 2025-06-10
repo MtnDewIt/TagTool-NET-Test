@@ -1,4 +1,5 @@
 ﻿using TagTool.Cache;
+using TagTool.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions.Common;
 using static System.Runtime.InteropServices.CharSet;
@@ -7,7 +8,6 @@ using static TagTool.Tags.TagFieldFlags;
 namespace TagTool.BlamFile
 {
     [TagStructure(Size = 0xF8, MaxVersion = CacheVersion.HaloOnline700123)]
-    [TagStructure(Size = 0x2B0, MinVersion = CacheVersion.HaloReach)]
     public class ContentItemMetadata : TagStructure
     {
         public ulong UniqueId;
@@ -49,6 +49,35 @@ namespace TagTool.BlamFile
         public byte[] Padding2 = new byte[2];
 
         public ulong GameId;
+
+        public static ContentItemMetadata Decode(BitStream stream)
+        {
+            var metadata = new ContentItemMetadata();
+
+            metadata.UniqueId = stream.ReadUnsigned64(64);
+            metadata.Name = stream.ReadUnicodeString(16);
+            metadata.Description = stream.ReadString(128);
+            metadata.Author = stream.ReadString(16);
+            metadata.ContentType = (ContentItemType)(stream.ReadUnsigned(5) - 1);
+            metadata.AuthorIsOnline = stream.ReadBool();
+            metadata.AuthorId = stream.ReadUnsigned64(64);
+            metadata.ContentSize = stream.ReadUnsigned64(64);
+            metadata.Timestamp = stream.ReadUnsigned64(64);
+            metadata.FilmDuration = (int)stream.ReadUnsigned(32);
+            metadata.CampaignId = (int)stream.ReadUnsigned(32);
+            metadata.MapId = (int)stream.ReadUnsigned(32);
+            metadata.GameEngineType = (GameEngineType)stream.ReadUnsigned(4);
+            metadata.CampaignDifficulty = (int)(stream.ReadUnsigned(3) - 1);
+            metadata.HopperId = (short)stream.ReadUnsigned(16);
+            metadata.GameId = stream.ReadUnsigned64(64);
+
+            return metadata;
+        }
+
+        public static void Encode(BitStream stream, ContentItemMetadata metadata)
+        {
+            // TODO: Implement
+        }
     }
 
     public enum ContentItemType : int

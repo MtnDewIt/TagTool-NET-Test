@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TagTool.BlamFile;
+using TagTool.BlamFile.Chunks;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
@@ -141,9 +142,9 @@ namespace TagTool.Commands.Forge
                 RebuildTagNameChunk(blf);
                 // Assign the new blf chunks to the map file
                 mapFile.MapFileBlf.MapVariant = blf.MapVariant;
-                mapFile.MapFileBlf.ContentFlags |= BlfFileContentFlags.MapVariant;
+                mapFile.MapFileBlf.ContentFlags |= Blf.BlfFileContentFlags.MapVariant;
                 mapFile.MapFileBlf.MapVariantTagNames = blf.MapVariantTagNames;
-                mapFile.MapFileBlf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
+                mapFile.MapFileBlf.ContentFlags |= Blf.BlfFileContentFlags.MapVariantTagNames;
                 // Finally serialize the scenario
                 Cache.Serialize(cacheStream, scenarioTag, scenario);
 
@@ -162,7 +163,7 @@ namespace TagTool.Commands.Forge
                     continue;
 
                 var tag = Cache.TagCache.GetTag(mapVariant.Quotas[i].ObjectDefinitionIndex);
-                blf.MapVariantTagNames.Names[i] = new TagName() { Name = $"{tag.Name}.{tag.Group.Tag}" };
+                blf.MapVariantTagNames.Names[i] = new BlfMapVariantTagNames.TagName() { Name = $"{tag.Name}.{tag.Group.Tag}" };
             }
         }
 
@@ -189,7 +190,7 @@ namespace TagTool.Commands.Forge
                 }
 
                 placement.QuotaIndex = newPaletteIndex;
-                placement.Flags = (placement.Flags & ~VariantObjectPlacementFlags.ScenarioObject) | VariantObjectPlacementFlags.Edited;
+                placement.Flags = (placement.Flags & ~VariantObjectDatum.VariantObjectPlacementFlags.ScenarioObject) | VariantObjectDatum.VariantObjectPlacementFlags.Edited;
                 paletteEntry.PlacedOnMap++;
                 paletteEntry.MaximumCount++;
                 mapVariant.Objects[mapVariant.VariantObjectCount++] = placement;
@@ -203,7 +204,7 @@ namespace TagTool.Commands.Forge
             for (int i = 0; i < mapVariant.Objects.Length; i++)
             {
                 var placement = mapVariant.Objects[i];
-                if (!placement.Flags.HasFlag(VariantObjectPlacementFlags.OccupiedSlot))
+                if (!placement.Flags.HasFlag(VariantObjectDatum.VariantObjectPlacementFlags.OccupiedSlot))
                     continue;
                 var paletteEntry = mapVariant.Quotas[placement.QuotaIndex];
 

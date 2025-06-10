@@ -38,7 +38,6 @@ namespace TagTool.Commands.Editing
                 {
                     Format = MapFile.Blf.Format,
                     ContentFlags = MapFile.Blf.ContentFlags,
-                    AuthenticationType = MapFile.Blf.AuthenticationType,
 
                     StartOfFile = MapFile.Blf.StartOfFile,
                     EndOfFileCRC = MapFile.Blf.EndOfFileCRC,
