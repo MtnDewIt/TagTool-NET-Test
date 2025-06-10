@@ -62,8 +62,7 @@ namespace TagTool.Commands.Files
             ErrorLog.Clear();
             UniqueIdTable.Clear();
 
-            //ProcessDirectoryAsync(args[1], mapsDirectory).GetAwaiter().GetResult();
-            ProcessDirectoryAsync(args[1], mapsDirectory);
+            ProcessDirectoryAsync(args[1], mapsDirectory).GetAwaiter().GetResult();
 
             Console.WriteLine($"{FileCount - ErrorLog.Count}/{FileCount} Map Variants Converted Successfully in {StopWatch.ElapsedMilliseconds.FormatMilliseconds()} with {ErrorLog.Count} {(ErrorLog.Count == 1 ? "error" : "errors")}\n");
 
@@ -75,8 +74,7 @@ namespace TagTool.Commands.Files
             return true;
         }
 
-        //private async Task ProcessDirectoryAsync(string inputPath, DirectoryInfo mapsDirectory) 
-        private void ProcessDirectoryAsync(string inputPath, DirectoryInfo mapsDirectory)
+        private async Task ProcessDirectoryAsync(string inputPath, DirectoryInfo mapsDirectory) 
         {
             var files = new List<string>();
 
@@ -96,14 +94,13 @@ namespace TagTool.Commands.Files
                 ConvertFileAsync(filePath, mapsDirectory);
             }
 
-            //var tasks = files.Select(filePath => ConvertFileAsync(filePath, mapsDirectory));
-            //await Task.WhenAll(tasks);
+            var tasks = files.Select(filePath => ConvertFileAsync(filePath, mapsDirectory));
+            await Task.WhenAll(tasks);
 
             StopWatch.Stop();
         }
 
-        //private async Task ConvertFileAsync(string filePath, DirectoryInfo mapsDirectory) 
-        private void ConvertFileAsync(string filePath, DirectoryInfo mapsDirectory)
+        private async Task ConvertFileAsync(string filePath, DirectoryInfo mapsDirectory) 
         {
             try 
             {
