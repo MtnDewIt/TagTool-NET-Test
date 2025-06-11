@@ -1,6 +1,5 @@
 ﻿using System;
 using TagTool.Cache;
-using TagTool.Commands.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
@@ -64,6 +63,8 @@ namespace TagTool.BlamFile
         // TODO: Clean up reach class structure
         // TODO: Add system for determing engine type from file data (WE MUST IGNORE THE CACHE CONTEXT)
         // TODO: Update definition versioning (Should stop all the damn warnings)
+        // TODO: look into reach MCC support
+        // TODO: Verify Halo 3 Game Variant Structs (See blf_cli for reference)
 
         public bool Read(EndianReader reader)
         {
