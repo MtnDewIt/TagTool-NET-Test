@@ -1,5 +1,6 @@
 ﻿using System;
 using TagTool.Cache;
+using TagTool.Common;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
@@ -80,6 +81,20 @@ namespace TagTool.BlamFile.GameVariants
         {
             Random = 0,
             Sequence,
+        }
+
+        public static GameVariantJuggernaut Decode(BitStream stream)
+        {
+            var variant = new GameVariantJuggernaut();
+
+            // TODO: Implement
+
+            return variant;
+        }
+
+        public static void Encode(BitStream stream, GameVariantJuggernaut variant)
+        {
+            // TODO: Implement
         }
     }
 }

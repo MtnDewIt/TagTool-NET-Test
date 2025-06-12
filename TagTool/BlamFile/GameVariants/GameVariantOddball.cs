@@ -1,5 +1,6 @@
 ﻿using System;
 using TagTool.Cache;
+using TagTool.Common;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
@@ -35,6 +36,20 @@ namespace TagTool.BlamFile.GameVariants
             None = 0,
             AutoBallPickup = 1 << 0,
             BallEffectEnabled = 1 << 1,
+        }
+
+        public static GameVariantOddball Decode(BitStream stream)
+        {
+            var variant = new GameVariantOddball();
+
+            // TODO: Implement
+
+            return variant;
+        }
+
+        public static void Encode(BitStream stream, GameVariantOddball variant)
+        {
+            // TODO: Implement
         }
     }
 }

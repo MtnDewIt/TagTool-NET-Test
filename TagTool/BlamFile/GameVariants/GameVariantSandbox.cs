@@ -1,5 +1,6 @@
 ﻿using System;
 using TagTool.Cache;
+using TagTool.Common;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
@@ -43,6 +44,20 @@ namespace TagTool.BlamFile.GameVariants
             Seconds_15 = 15,
             Seconds_30 = 30,
             Seconds_60 = 60,
+        }
+
+        public static GameVariantSandbox Decode(BitStream stream)
+        {
+            var variant = new GameVariantSandbox();
+
+            // TODO: Implement
+
+            return variant;
+        }
+
+        public static void Encode(BitStream stream, GameVariantSandbox variant)
+        {
+            // TODO: Implement
         }
     }
 }

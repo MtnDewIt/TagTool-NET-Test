@@ -1,5 +1,6 @@
 ﻿using System;
 using TagTool.Cache;
+using TagTool.Common;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
@@ -56,6 +57,20 @@ namespace TagTool.BlamFile.GameVariants
             Minutes_1 = 60,
             Minutes_2 = 120,
             Minutes_5 = 300,
+        }
+
+        public static GameVariantTerritories Decode(BitStream stream)
+        {
+            var variant = new GameVariantTerritories();
+
+            // TODO: Implement
+
+            return variant;
+        }
+
+        public static void Encode(BitStream stream, GameVariantTerritories variant)
+        {
+            // TODO: Implement
         }
     }
 }

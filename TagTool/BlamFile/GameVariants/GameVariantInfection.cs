@@ -1,5 +1,6 @@
 ﻿using System;
 using TagTool.Cache;
+using TagTool.Common;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
@@ -71,6 +72,20 @@ namespace TagTool.BlamFile.GameVariants
             Count_13,
             Count_14,
             Count_15,
+        }
+
+        public static GameVariantInfection Decode(BitStream stream)
+        {
+            var variant = new GameVariantInfection();
+
+            // TODO: Implement
+
+            return variant;
+        }
+
+        public static void Encode(BitStream stream, GameVariantInfection variant)
+        {
+            // TODO: Implement
         }
     }
 }

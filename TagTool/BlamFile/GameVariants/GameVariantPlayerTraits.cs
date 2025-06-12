@@ -1,5 +1,6 @@
 ﻿using System;
 using TagTool.Cache;
+using TagTool.Common;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
@@ -330,6 +331,20 @@ namespace TagTool.BlamFile.GameVariants
                 Meters_100,
                 Meters_150,
             }
+        }
+
+        public static GameVariantPlayerTraits Decode(BitStream stream)
+        {
+            var variant = new GameVariantPlayerTraits();
+
+            // TODO: Implement
+
+            return variant;
+        }
+
+        public static void Encode(BitStream stream, GameVariantPlayerTraits variant)
+        {
+            // TODO: Implement
         }
     }
 }

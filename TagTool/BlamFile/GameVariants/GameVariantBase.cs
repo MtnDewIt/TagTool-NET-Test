@@ -1,5 +1,6 @@
 ﻿using System;
 using TagTool.Cache;
+using TagTool.Common;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
@@ -141,6 +142,20 @@ namespace TagTool.BlamFile.GameVariants
             MinimumScore,
             MaximumScore,
             Default,
+        }
+
+        public static GameVariantBase Decode(BitStream stream)
+        {
+            var variant = new GameVariantBase();
+
+            // TODO: Implement
+
+            return variant;
+        }
+
+        public static void Encode(BitStream stream, GameVariantBase variant)
+        {
+            // TODO: Implement
         }
     }
 }

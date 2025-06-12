@@ -34,7 +34,7 @@ namespace TagTool.BlamFile.Chunks
         [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public GameVariantBase Variant;
 
-        public static BlfGameVariant Decode(EndianReader reader, TagDeserializer deserializer, DataSerializationContext dataContext) 
+        public static BlfGameVariant Decode(EndianReader reader, TagDeserializer deserializer, DataSerializationContext dataContext, bool packed) 
         {
             var gameVariant = new BlfGameVariant();
 
@@ -57,89 +57,108 @@ namespace TagTool.BlamFile.Chunks
                     buffer[i] = reader.ReadByte();
                 }
             }
-            else 
+            else if (deserializer.Version == CacheVersion.Halo3Retail)
             {
-                gameVariant.GameVariantType = (GameEngineType)reader.ReadInt32();
-                gameVariant.VTablePointer = reader.ReadUInt32();
-                gameVariant.VariantChecksum = reader.ReadUInt32();
-
-                if (CacheVersionDetection.IsBetween(deserializer.Version, CacheVersion.HaloOnlineED, CacheVersion.HaloOnline700123))
-                    gameVariant.VariantName = reader.ReadString(32);
-
-                gameVariant.Metadata = deserializer.Deserialize<ContentItemMetadata>(dataContext);
-
-                switch (gameVariant.GameVariantType)
+                if (!packed)
                 {
-                    case GameEngineType.CaptureTheFlag:
-                        gameVariant.Variant = deserializer.Deserialize<GameVariantCtf>(dataContext);
-                        break;
-                    case GameEngineType.Slayer:
-                        gameVariant.Variant = deserializer.Deserialize<GameVariantSlayer>(dataContext);
-                        break;
-                    case GameEngineType.Oddball:
-                        gameVariant.Variant = deserializer.Deserialize<GameVariantOddball>(dataContext);
-                        break;
-                    case GameEngineType.KingOfTheHill:
-                        gameVariant.Variant = deserializer.Deserialize<GameVariantKing>(dataContext);
-                        break;
-                    case GameEngineType.Sandbox:
-                        gameVariant.Variant = deserializer.Deserialize<GameVariantSandbox>(dataContext);
-                        break;
-                    case GameEngineType.Vip:
-                        gameVariant.Variant = deserializer.Deserialize<GameVariantVip>(dataContext);
-                        break;
-                    case GameEngineType.Juggernaut:
-                        gameVariant.Variant = deserializer.Deserialize<GameVariantJuggernaut>(dataContext);
-                        break;
-                    case GameEngineType.Territories:
-                        gameVariant.Variant = deserializer.Deserialize<GameVariantTerritories>(dataContext);
-                        break;
-                    case GameEngineType.Assault:
-                        gameVariant.Variant = deserializer.Deserialize<GameVariantAssault>(dataContext);
-                        break;
-                    case GameEngineType.Infection:
-                        gameVariant.Variant = deserializer.Deserialize<GameVariantInfection>(dataContext);
-                        break;
+                    gameVariant.GameVariantType = (GameEngineType)reader.ReadInt32();
+                    gameVariant.VTablePointer = reader.ReadUInt32();
+                    gameVariant.VariantChecksum = reader.ReadUInt32();
+
+                    if (CacheVersionDetection.IsBetween(deserializer.Version, CacheVersion.HaloOnlineED, CacheVersion.HaloOnline700123))
+                        gameVariant.VariantName = reader.ReadString(32);
+
+                    gameVariant.Metadata = deserializer.Deserialize<ContentItemMetadata>(dataContext);
+
+                    switch (gameVariant.GameVariantType)
+                    {
+                        case GameEngineType.CaptureTheFlag:
+                            gameVariant.Variant = deserializer.Deserialize<GameVariantCtf>(dataContext);
+                            break;
+                        case GameEngineType.Slayer:
+                            gameVariant.Variant = deserializer.Deserialize<GameVariantSlayer>(dataContext);
+                            break;
+                        case GameEngineType.Oddball:
+                            gameVariant.Variant = deserializer.Deserialize<GameVariantOddball>(dataContext);
+                            break;
+                        case GameEngineType.KingOfTheHill:
+                            gameVariant.Variant = deserializer.Deserialize<GameVariantKing>(dataContext);
+                            break;
+                        case GameEngineType.Sandbox:
+                            gameVariant.Variant = deserializer.Deserialize<GameVariantSandbox>(dataContext);
+                            break;
+                        case GameEngineType.Vip:
+                            gameVariant.Variant = deserializer.Deserialize<GameVariantVip>(dataContext);
+                            break;
+                        case GameEngineType.Juggernaut:
+                            gameVariant.Variant = deserializer.Deserialize<GameVariantJuggernaut>(dataContext);
+                            break;
+                        case GameEngineType.Territories:
+                            gameVariant.Variant = deserializer.Deserialize<GameVariantTerritories>(dataContext);
+                            break;
+                        case GameEngineType.Assault:
+                            gameVariant.Variant = deserializer.Deserialize<GameVariantAssault>(dataContext);
+                            break;
+                        case GameEngineType.Infection:
+                            gameVariant.Variant = deserializer.Deserialize<GameVariantInfection>(dataContext);
+                            break;
+                    }
+                }
+                else 
+                {
+                    var variantSize = gameVariant.Length - 0xC;
+
+                    var buffer = new byte[variantSize];
+
+                    for (int i = 0; i < variantSize; i++)
+                    {
+                        buffer[i] = reader.ReadByte();
+                    }
+
+                    // TODO: Implement
                 }
             }
 
             return gameVariant;
         }
 
-        public static void Encode(EndianWriter writer, TagSerializer serializer, DataSerializationContext dataContext, BlfGameVariant gameVariant) 
+        public static void Encode(EndianWriter writer, TagSerializer serializer, DataSerializationContext dataContext, BlfGameVariant gameVariant, bool packed) 
         {
-            switch (gameVariant.GameVariantType)
+            if (!packed) 
             {
-                case GameEngineType.CaptureTheFlag:
-                    gameVariant.Variant = gameVariant.Variant as GameVariantCtf;
-                    break;
-                case GameEngineType.Slayer:
-                    gameVariant.Variant = gameVariant.Variant as GameVariantSlayer;
-                    break;
-                case GameEngineType.Oddball:
-                    gameVariant.Variant = gameVariant.Variant as GameVariantOddball;
-                    break;
-                case GameEngineType.KingOfTheHill:
-                    gameVariant.Variant = gameVariant.Variant as GameVariantKing;
-                    break;
-                case GameEngineType.Sandbox:
-                    gameVariant.Variant = gameVariant.Variant as GameVariantSandbox;
-                    break;
-                case GameEngineType.Vip:
-                    gameVariant.Variant = gameVariant.Variant as GameVariantVip;
-                    break;
-                case GameEngineType.Juggernaut:
-                    gameVariant.Variant = gameVariant.Variant as GameVariantJuggernaut;
-                    break;
-                case GameEngineType.Territories:
-                    gameVariant.Variant = gameVariant.Variant as GameVariantTerritories;
-                    break;
-                case GameEngineType.Assault:
-                    gameVariant.Variant = gameVariant.Variant as GameVariantAssault;
-                    break;
-                case GameEngineType.Infection:
-                    gameVariant.Variant = gameVariant.Variant as GameVariantInfection;
-                    break;
+                switch (gameVariant.GameVariantType)
+                {
+                    case GameEngineType.CaptureTheFlag:
+                        gameVariant.Variant = gameVariant.Variant as GameVariantCtf;
+                        break;
+                    case GameEngineType.Slayer:
+                        gameVariant.Variant = gameVariant.Variant as GameVariantSlayer;
+                        break;
+                    case GameEngineType.Oddball:
+                        gameVariant.Variant = gameVariant.Variant as GameVariantOddball;
+                        break;
+                    case GameEngineType.KingOfTheHill:
+                        gameVariant.Variant = gameVariant.Variant as GameVariantKing;
+                        break;
+                    case GameEngineType.Sandbox:
+                        gameVariant.Variant = gameVariant.Variant as GameVariantSandbox;
+                        break;
+                    case GameEngineType.Vip:
+                        gameVariant.Variant = gameVariant.Variant as GameVariantVip;
+                        break;
+                    case GameEngineType.Juggernaut:
+                        gameVariant.Variant = gameVariant.Variant as GameVariantJuggernaut;
+                        break;
+                    case GameEngineType.Territories:
+                        gameVariant.Variant = gameVariant.Variant as GameVariantTerritories;
+                        break;
+                    case GameEngineType.Assault:
+                        gameVariant.Variant = gameVariant.Variant as GameVariantAssault;
+                        break;
+                    case GameEngineType.Infection:
+                        gameVariant.Variant = gameVariant.Variant as GameVariantInfection;
+                        break;
+                }
             }
 
             serializer.Serialize(dataContext, gameVariant);

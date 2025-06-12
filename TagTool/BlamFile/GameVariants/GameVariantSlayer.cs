@@ -1,4 +1,5 @@
 ﻿using TagTool.Cache;
+using TagTool.Common;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
@@ -32,5 +33,19 @@ namespace TagTool.BlamFile.GameVariants
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x80, MaxVersion = CacheVersion.Halo3ODST)]
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x60, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Alignment;
+
+        public static GameVariantSlayer Decode(BitStream stream)
+        {
+            var variant = new GameVariantSlayer();
+
+            // TODO: Implement
+
+            return variant;
+        }
+
+        public static void Encode(BitStream stream, GameVariantSlayer variant)
+        {
+            // TODO: Implement
+        }
     }
 }

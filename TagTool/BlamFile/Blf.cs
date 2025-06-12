@@ -56,6 +56,7 @@ namespace TagTool.BlamFile
             MapImage = 1 << 9,
             Author = 1 << 10,
             PackedMapVariant = 1 << 11,
+            PackedGameVariant = 1 << 12,
         }
 
         // TODO: Verify All Read / Write methods for all chunks
@@ -130,7 +131,12 @@ namespace TagTool.BlamFile
 
                     case "mpvr":
                         ContentFlags |= BlfFileContentFlags.GameVariant;
-                        GameVariant = BlfGameVariant.Decode(reader, deserializer, dataContext);
+                        GameVariant = BlfGameVariant.Decode(reader, deserializer, dataContext, false);
+                        break;
+
+                    case "gvar":
+                        ContentFlags |= BlfFileContentFlags.PackedGameVariant;
+                        GameVariant = BlfGameVariant.Decode(reader, deserializer, dataContext, true);
                         break;
 
                     case "chdr":
@@ -187,7 +193,10 @@ namespace TagTool.BlamFile
                 BlfMapVariant.Encode(writer, serializer, dataContext, MapVariant, true);
 
             if (ContentFlags.HasFlag(BlfFileContentFlags.GameVariant)) 
-                BlfGameVariant.Encode(writer, serializer, dataContext, GameVariant);
+                BlfGameVariant.Encode(writer, serializer, dataContext, GameVariant, false);
+
+            if (ContentFlags.HasFlag(BlfFileContentFlags.PackedGameVariant))
+                BlfGameVariant.Encode(writer, serializer, dataContext, GameVariant, true);
 
             if (ContentFlags.HasFlag(BlfFileContentFlags.Campaign))
                 BlfCampaign.Encode(serializer, dataContext, Campaign);
