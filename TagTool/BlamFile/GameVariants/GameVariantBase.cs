@@ -12,6 +12,10 @@ namespace TagTool.BlamFile.GameVariants
         public VariantRespawnOptions RespawnOptions;
         public VariantSocialOptions SocialOptions;
         public VariantMapOverrideOptions MapOverrideOptions;
+
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x2, MaxVersion = CacheVersion.Halo3ODST)]
+        public byte[] Padding;
+
         public BaseVariantFlags BaseFlags;
         public TeamScoring TeamScoringMethod;
 
@@ -34,7 +38,7 @@ namespace TagTool.BlamFile.GameVariants
             }
         }
 
-        [TagStructure(Size = 0x23, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0x24, MaxVersion = CacheVersion.Halo3ODST)]
         [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public class VariantRespawnOptions : TagStructure
         {
@@ -55,8 +59,8 @@ namespace TagTool.BlamFile.GameVariants
             public byte RespawnGrowth;
             public byte RespawnPlayerTraitsDuration;
 
-            [TagField(Flags = TagFieldFlags.Padding, Length = 3)]
-            public byte[] Padding1 = new byte[3];
+            [TagField(Flags = TagFieldFlags.Padding, Length = 0x3, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+            public byte[] Padding;
 
             public GameVariantPlayerTraits RespawnPlayerTraits;
 
@@ -114,7 +118,7 @@ namespace TagTool.BlamFile.GameVariants
             public byte YellowPowerupDuration;
 
             [TagField(Flags = TagFieldFlags.Padding, Length = 1)]
-            public byte[] Padding1 = new byte[1];
+            public byte[] Padding;
 
             [Flags]
             public enum MapOverrideFlags : int

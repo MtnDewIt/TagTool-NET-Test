@@ -10,7 +10,6 @@ using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.BlamFile.Chunks
 {
-
     [TagStructure(Size = 0x264, Align = 0x1)]
     public class BlfGameVariant : BlfChunkHeader
     {
@@ -44,11 +43,11 @@ namespace TagTool.BlamFile.Chunks
             gameVariant.MajorVersion = reader.ReadInt16();
             gameVariant.MinorVersion = reader.ReadInt16();
 
-            gameVariant.Hash = reader.ReadBytes(0x14);
-
             if (deserializer.Version == CacheVersion.HaloReach)
             {
                 // TODO: Figure out reach game variant structs
+                gameVariant.Hash = reader.ReadBytes(0x14);
+
                 var variantSize = gameVariant.Length - 0x20;
 
                 var buffer = new byte[variantSize];

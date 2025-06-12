@@ -60,9 +60,7 @@ namespace TagTool.BlamFile.Chunks
             }
             else 
             {
-                reader.ReadBytes(4);
-
-                var variantSize = blfChunk.Length - 0x10;
+                var variantSize = blfChunk.Length - 0xC;
 
                 var buffer = new byte[variantSize];
 

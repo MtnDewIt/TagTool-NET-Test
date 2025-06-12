@@ -7,7 +7,7 @@ namespace TagTool.BlamFile.HaloOnline
 {
     [TagStructure(Size = 0x14779, MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Size = 0x192E9, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x29785, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+    [TagStructure(Size = 0x29784, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
     [TagStructure(Size = 0x19779, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x1C6C1, MinVersion = CacheVersion.HaloReach)]
     public class HaloOnlineBlf : TagStructure 

@@ -4,8 +4,7 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.GameVariants
 {
-    [TagStructure(Size = 0x18, Align = 0x1, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x1C, Align = 0x1, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x1C)]
     public class GameVariantPlayerTraits : TagStructure 
     {
         public PlayerShieldVitalityTraits ShieldVitalityTraits;
@@ -18,8 +17,9 @@ namespace TagTool.BlamFile.GameVariants
         public PlayerAppearanceTraits AppearanceTraits;
         public PlayerSensorTraits SensorTraits;
 
-        [TagStructure(Size = 0x5, Align = 0x1, MaxVersion = CacheVersion.HaloOnlineED)]
-        [TagStructure(Size = 0x8, Align = 0x1, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0x5, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+        [TagStructure(Size = 0x8, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
         public class PlayerShieldVitalityTraits : TagStructure
         {
             public DamageResistancePercentage DamageResistance;
@@ -28,8 +28,9 @@ namespace TagTool.BlamFile.GameVariants
             public HeadshotImmunitySettings HeadshotImmunity;
             public ShieldMultiplierSettings ShieldMultiplier;
 
-            [TagField(Flags = TagFieldFlags.Padding, Length = 3, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
-            public byte[] Padding1 = new byte[3];
+            [TagField(Flags = TagFieldFlags.Padding, Length = 0x3, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST)]
+            [TagField(Flags = TagFieldFlags.Padding, Length = 0x3, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
+            public byte[] Padding;
 
             public enum DamageResistancePercentage : byte
             {
@@ -93,14 +94,14 @@ namespace TagTool.BlamFile.GameVariants
             }
         }
 
-        [TagStructure(Size = 0x3, Align = 0x1)]
+        [TagStructure(Size = 0x3)]
         public class PlayerExtendedTraits : TagStructure
         {
             public byte PlayerCharacterValue;
             public ExtendedTraitSettings ExtendedTraits;
 
             [TagField(Flags = TagFieldFlags.Padding, Length = 1)]
-            public byte[] Padding1;
+            public byte[] Padding;
 
             [Flags]
             public enum ExtendedTraitSettings : byte
@@ -113,7 +114,7 @@ namespace TagTool.BlamFile.GameVariants
             }
         }
 
-        [TagStructure(Size = 0x8, Align = 0x1)]
+        [TagStructure(Size = 0x8)]
         public class PlayerWeaponTraits : TagStructure
         {
             public WeaponGrenadeCount InitialGrenadeCount;
@@ -171,16 +172,15 @@ namespace TagTool.BlamFile.GameVariants
             }
         }
 
-        [TagStructure(Size = 0x3, Align = 0x1, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagStructure(Size = 0x4, Align = 0x1, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x4)]
         public class PlayerMovementTraits : TagStructure
         {
             public PlayerSpeedSettings PlayerSpeed;
             public PlayerGravitySettings PlayerGravity;
             public PlayerVehicleUsage VehicleUsage;
 
-            [TagField(Flags = TagFieldFlags.Padding, Length = 1, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-            public byte[] Padding1 = new byte[1];
+            [TagField(Flags = TagFieldFlags.Padding, Length = 1)]
+            public byte[] Padding;
 
             public enum PlayerSpeedSettings : byte
             {
@@ -221,7 +221,7 @@ namespace TagTool.BlamFile.GameVariants
             }
         }
 
-        [TagStructure(Size = 0x4, Align = 0x1)]
+        [TagStructure(Size = 0x4)]
         public class PlayerAppearanceTraits : TagStructure
         {
             public ActiveCamoSettings ActiveCamo;
@@ -304,7 +304,7 @@ namespace TagTool.BlamFile.GameVariants
             }
         }
 
-        [TagStructure(Size = 0x4, Align = 0x1)]
+        [TagStructure(Size = 0x4)]
         public class PlayerSensorTraits : TagStructure
         {
             public MotionTrackerSettings MotionTracker;
