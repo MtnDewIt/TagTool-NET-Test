@@ -21,8 +21,8 @@ namespace TagTool.BlamFile.MCC
         {
             scenario.MapId = scnr.MapId;
 
-            var parsedTitle = Title?.ParseLocalizedString(31, "Title");
-            var parsedDescription = Description?.ParseLocalizedString(127, "Description");
+            var parsedTitle = Title?.ParseLocalizedString(31, LocalizedString.LocalizedStringType.Title);
+            var parsedDescription = Description?.ParseLocalizedString(127, LocalizedString.LocalizedStringType.Description);
 
             for (int i = 0; i < scenario.Names.Length; i++)
                scenario.Names[i].Name = parsedTitle;

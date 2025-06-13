@@ -102,8 +102,8 @@ namespace TagTool.Commands.Files
 
                 var campaignFileBuilder = new CampaignFileGenerator(Cache)
                 {
-                    Name = campaignInfo.Title.ParseLocalizedString(63, "Title"),
-                    Description = campaignInfo.Description.ParseLocalizedString(127, "Description"),
+                    Name = campaignInfo.Title.ParseLocalizedString(63, BlamFile.MCC.LocalizedString.LocalizedStringType.Title),
+                    Description = campaignInfo.Description.ParseLocalizedString(127, BlamFile.MCC.LocalizedString.LocalizedStringType.Description),
                 };
 
                 var campaignBlf = campaignFileBuilder.GenerateCampaignBlf(false);
