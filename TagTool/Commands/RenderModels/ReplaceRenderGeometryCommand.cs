@@ -630,9 +630,13 @@ namespace TagTool.Commands.RenderModels
                             relativeOffset += chunk;
                             remaining -= chunk;
                         }
+
+                        if (preventBackfaceCulling)
+                        {
+                            builder.SetCurrentPartFlag(Part.PartFlagsNew.PreventBackfaceCulling);
+                        }
+
                         builder.EndPart();
-
-
 
                         partStartVertex += part.VertexCount;
                         partStartIndex += meshIndices.Length;
