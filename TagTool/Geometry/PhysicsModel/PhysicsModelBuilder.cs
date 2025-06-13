@@ -41,7 +41,7 @@ namespace TagTool.Geometry
             return Math.Sqrt(dx * dx + dy * dy + dz * dz);
         }
 
-        public bool ConvertJmsToJson(JmsFormat jms, GameCacheHaloOnlineBase cache, Stream cacheStream)
+        public bool ConvertJmsToJson(JmsFormat jms, bool moppFlag, GameCacheHaloOnlineBase cache, Stream cacheStream)
         {
             var output = new List<object>();
             var shapeToNodeIndexMap = new Dictionary<int, int>();
@@ -107,7 +107,7 @@ namespace TagTool.Geometry
 
             // Assuming ParseFromFile has been adjusted to accept a JSON string
             // Replace ParseFromFile with your method capable of processing JSON string
-            ParseFromFile(jsonString, false, jms, cache, cacheStream, shapeToNodeIndexMap);
+            ParseFromFile(jsonString, moppFlag, jms, cache, cacheStream, shapeToNodeIndexMap);
             return true;
         }
 
@@ -190,9 +190,9 @@ namespace TagTool.Geometry
             return new List<float> { halfExtentX, halfExtentY, halfExtentZ };
         }
 
-        public bool ParseFromFile(string fname, bool mopps, JmsFormat jms, GameCacheHaloOnlineBase cache, Stream cacheStream, Dictionary<int, int> shapeToNodeIndexMap)
+        public bool ParseFromFile(string jsonString, bool mopps, JmsFormat jms, GameCacheHaloOnlineBase cache, Stream cacheStream, Dictionary<int, int> shapeToNodeIndexMap)
         {
-            BlenderPhmoReader reader = new BlenderPhmoReader(fname);
+            BlenderPhmoReader reader = new BlenderPhmoReader(jsonString);
             fileStruct = reader.ReadFile();
             if (fileStruct == null)
             {
@@ -427,7 +427,7 @@ namespace TagTool.Geometry
 
                 if (mopps)
                 {
-                    MemoryStream moppCodeBlockStream = BlenderPhmoMoppUtil.GenerateForBlenderPhmoJsonFile(fname);
+                    MemoryStream moppCodeBlockStream = BlenderPhmoMoppUtil.GenerateForBlenderPhmoJson(jsonString);
 
                     defaultRigidBody.ShapeType = BlamShapeType.Mopp;
                     defaultRigidBody.ShapeIndex = 0;

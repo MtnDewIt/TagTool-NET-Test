@@ -12,7 +12,7 @@ using PhysicsModelGen4 = TagTool.Tags.Definitions.Gen4.PhysicsModel;
 
 namespace TagTool.Commands.Porting.Gen4
 {
-    partial class PortTagGen4Command : Command
+    public partial class PortTagGen4Command : Command
     {
         public readonly GameCacheHaloOnlineBase Cache;
         public readonly GameCacheGen4 Gen4Cache;

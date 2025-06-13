@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System;
 
@@ -216,6 +217,12 @@ namespace TagTool.Geometry
                 var meshValueList = new List<long>();
                 #endregion
 
+                var amfMarkerGroups = RenderModel.MarkerGroups
+                    .SelectMany(g => g.Markers.Select(m => new {
+                        GroupNameId = g.Name,
+                        Marker = m
+                    }))
+                    .ToList();
 
                 #region Header
                 amfWriter.Write("AMF!".ToCharArray());
@@ -227,7 +234,7 @@ namespace TagTool.Geometry
                 headerAddressList.Add(amfWriter.BaseStream.Position);
                 amfWriter.Write(0);
 
-                amfWriter.Write(RenderModel.MarkerGroups.Count);
+                amfWriter.Write(amfMarkerGroups.Count);
                 headerAddressList.Add(amfWriter.BaseStream.Position);
                 amfWriter.Write(0);
 
@@ -264,10 +271,27 @@ namespace TagTool.Geometry
 
                 #region Marker Groups
                 headerValueList.Add(amfWriter.BaseStream.Position);
-                foreach (var group in RenderModel.MarkerGroups)
+                foreach (var gm in amfMarkerGroups)
                 {
-                    amfWriter.Write(GetStringNT(group.Name));
-                    amfWriter.Write(group.Markers.Count);
+                    var baseName = CacheContext.StringTable.GetString(gm.GroupNameId);
+                    string formatted = baseName;
+
+                    // derive a name from its single marker
+                    var m = gm.Marker;
+                    if (m.RegionIndex >= 0 && m.RegionIndex < RenderModel.Regions.Count)
+                    {
+                        var regionModel = RenderModel.Regions[m.RegionIndex];
+                        if (m.PermutationIndex >= 0 && m.PermutationIndex < regionModel.Permutations.Count)
+                        {
+                            var permModel = regionModel.Permutations[m.PermutationIndex];
+                            var permName = CacheContext.StringTable.GetString(permModel.Name);
+                            var regionName = CacheContext.StringTable.GetString(regionModel.Name);
+                            formatted = $"({permName} {regionName}){baseName}";
+                        }
+                    }
+
+                    amfWriter.Write(NullTerminate(formatted));
+                    amfWriter.Write(1);  // exactly one marker in this “group”
                     markerAddressList.Add(amfWriter.BaseStream.Position);
                     amfWriter.Write(0);
                 }
@@ -275,22 +299,20 @@ namespace TagTool.Geometry
 
 
                 #region Markers
-                foreach (var group in RenderModel.MarkerGroups)
+                foreach (var gm in amfMarkerGroups)
                 {
                     markerValueList.Add(amfWriter.BaseStream.Position);
-                    foreach (var marker in group.Markers)
-                    {
-                        amfWriter.Write(marker.RegionIndex);
-                        amfWriter.Write(marker.PermutationIndex);
-                        amfWriter.Write((short)marker.NodeIndex);
-                        amfWriter.Write(marker.Translation.X * scale);
-                        amfWriter.Write(marker.Translation.Y * scale);
-                        amfWriter.Write(marker.Translation.Z * scale);
-                        amfWriter.Write(marker.Rotation.I);
-                        amfWriter.Write(marker.Rotation.J);
-                        amfWriter.Write(marker.Rotation.K);
-                        amfWriter.Write(marker.Rotation.W);
-                    }
+                    var m = gm.Marker;
+                    amfWriter.Write(m.RegionIndex);
+                    amfWriter.Write(m.PermutationIndex);
+                    amfWriter.Write((short)m.NodeIndex);
+                    amfWriter.Write(m.Translation.X * scale);
+                    amfWriter.Write(m.Translation.Y * scale);
+                    amfWriter.Write(m.Translation.Z * scale);
+                    amfWriter.Write(m.Rotation.I);
+                    amfWriter.Write(m.Rotation.J);
+                    amfWriter.Write(m.Rotation.K);
+                    amfWriter.Write(m.Rotation.W);
                 }
                 #endregion
 
@@ -631,8 +653,8 @@ namespace TagTool.Geometry
                 Node newNode = new Node(CacheContext.StringTable.GetString(node.Name));
 
                 var r = node.DefaultRotation.Normalize();
-                var t = System.Numerics.Matrix4x4
-                    .CreateFromQuaternion(new System.Numerics.Quaternion(r.I, r.J, r.K, r.W));
+                var t = Matrix4x4
+                    .CreateFromQuaternion(new Quaternion(r.I, r.J, r.K, r.W));
                 var transform = new Matrix4x4(
                     t.M11, t.M21, t.M31, node.DefaultTranslation.X,
                     t.M12, t.M22, t.M32, node.DefaultTranslation.Y,
@@ -740,7 +762,7 @@ namespace TagTool.Geometry
                                                 WrapModeU = baseMapTexture.SamplerAddressMode.AddressU.ToString() == "Clamp" ? TextureWrapMode.Clamp : baseMapTexture.SamplerAddressMode.AddressU.ToString() == "Mirror" ? TextureWrapMode.Mirror : TextureWrapMode.Wrap,
                                                 WrapModeV = baseMapTexture.SamplerAddressMode.AddressV.ToString() == "Clamp" ? TextureWrapMode.Clamp : baseMapTexture.SamplerAddressMode.AddressV.ToString() == "Mirror" ? TextureWrapMode.Mirror : TextureWrapMode.Wrap
                                             };
-                                            Material.AddMaterialTexture(ref baseMapTS);
+                                            Material.AddMaterialTexture(in baseMapTS);
                                         }
                                     }
 
@@ -840,23 +862,16 @@ namespace TagTool.Geometry
                 var vertex = vertices[i];
 
                 // Flip the model right side up.
-                mesh.Vertices.Add(new Vector3D(vertex.Position.X, vertex.Position.Y, vertex.Position.Z)); //vertex.Position.Z, -vertex.Position.Y
+                mesh.Vertices.Add(new Vector3(vertex.Position.X, vertex.Position.Y, vertex.Position.Z)); //vertex.Position.Z, -vertex.Position.Y
 
-                if (vertex.Normal != null)
-                    mesh.Normals.Add(vertex.Normal);
+                mesh.Normals.Add(vertex.Normal);
 
-                if (vertex.TexCoords != null)
-                {
-                    // Y didn't like being shifted before decompression, so do it here.
-                    mesh.TextureCoordinateChannels[textureCoordinateIndex].Add(
-                        new Vector3D(vertex.TexCoords.X, 1 - vertex.TexCoords.Y, vertex.TexCoords.Z));
-                }
+                // Y didn't like being shifted before decompression, so do it here.
+                mesh.TextureCoordinateChannels[textureCoordinateIndex].Add(
+                    new Vector3(vertex.TexCoords.X, 1 - vertex.TexCoords.Y, vertex.TexCoords.Z));
 
-                if (vertex.Tangents != null)
-                    mesh.Tangents.Add(vertex.Tangents);
-
-                if (vertex.Binormals != null)
-                    mesh.BiTangents.Add(vertex.Binormals);
+                mesh.Tangents.Add(vertex.Tangents);
+                mesh.BiTangents.Add(vertex.Binormals);
 
                 // Handle rigid type meshes by assigning them to their correct bone
                 if (geometryMesh.Type == VertexType.Rigid)
@@ -1042,11 +1057,11 @@ namespace TagTool.Geometry
                 var rigid = reader.ReadRigidVertex();
                 result.Add(new GenericVertex
                 {
-                    Position = ToVector3D(rigid.Position),
-                    Normal = ToVector3D(rigid.Normal),
-                    TexCoords = ToVector3D(rigid.Texcoord),
-                    Tangents = ToVector3D(rigid.Tangent),
-                    Binormals = ToVector3D(rigid.Binormal)
+                    Position = ToVector3(rigid.Position),
+                    Normal = ToVector3(rigid.Normal),
+                    TexCoords = ToVector3(rigid.Texcoord),
+                    Tangents = ToVector3(rigid.Tangent),
+                    Binormals = ToVector3(rigid.Binormal)
                 });
             }
             return result;
@@ -1066,11 +1081,11 @@ namespace TagTool.Geometry
                 var rigid = reader.ReadReachRigidVertex();
                 result.Add(new GenericVertex
                 {
-                    Position = ToVector3D(rigid.Position),
-                    Normal = ToVector3D(rigid.Normal),
-                    TexCoords = ToVector3D(rigid.Texcoord),
-                    Tangents = ToVector3D(rigid.Tangent),
-                    Binormals = ToVector3D(rigid.Binormal)
+                    Position = ToVector3(rigid.Position),
+                    Normal = ToVector3(rigid.Normal),
+                    TexCoords = ToVector3(rigid.Texcoord),
+                    Tangents = ToVector3(rigid.Tangent),
+                    Binormals = ToVector3(rigid.Binormal)
                 });
             }
             return result;
@@ -1090,11 +1105,11 @@ namespace TagTool.Geometry
                 var rigid = reader.ReadReachRigidBonedVertex();
                 result.Add(new GenericVertex
                 {
-                    Position = ToVector3D(rigid.Position),
-                    Normal = ToVector3D(rigid.Normal),
-                    TexCoords = ToVector3D(rigid.Texcoord),
-                    Tangents = ToVector3D(rigid.Tangent),
-                    Binormals = ToVector3D(rigid.Binormal),
+                    Position = ToVector3(rigid.Position),
+                    Normal = ToVector3(rigid.Normal),
+                    TexCoords = ToVector3(rigid.Texcoord),
+                    Tangents = ToVector3(rigid.Tangent),
+                    Binormals = ToVector3(rigid.Binormal),
                     Weights = rigid.BlendWeights,
                     Indices = rigid.BlendIndices
                 });
@@ -1116,9 +1131,9 @@ namespace TagTool.Geometry
                 var skinned = reader.ReadSkinnedVertex();
                 result.Add(new GenericVertex
                 {
-                    Position = ToVector3D(skinned.Position),
-                    Normal = ToVector3D(skinned.Normal),
-                    TexCoords = ToVector3D(skinned.Texcoord),
+                    Position = ToVector3(skinned.Position),
+                    Normal = ToVector3(skinned.Normal),
+                    TexCoords = ToVector3(skinned.Texcoord),
                     Weights = skinned.BlendWeights,
                     Indices = skinned.BlendIndices
                 });
@@ -1140,9 +1155,9 @@ namespace TagTool.Geometry
                 var skinned = reader.ReadReachSkinnedVertex();
                 result.Add(new GenericVertex
                 {
-                    Position = ToVector3D(skinned.Position),
-                    Normal = ToVector3D(skinned.Normal),
-                    TexCoords = ToVector3D(skinned.Texcoord),
+                    Position = ToVector3(skinned.Position),
+                    Normal = ToVector3(skinned.Normal),
+                    TexCoords = ToVector3(skinned.Texcoord),
                     Weights = skinned.BlendWeights,
                     Indices = skinned.BlendIndices
                 });
@@ -1164,11 +1179,11 @@ namespace TagTool.Geometry
                 var dualQuat = reader.ReadDualQuatVertex();
                 result.Add(new GenericVertex
                 {
-                    Position = ToVector3D(dualQuat.Position),
-                    Normal = ToVector3D(dualQuat.Normal),
-                    TexCoords = ToVector3D(dualQuat.Texcoord),
-                    Tangents = ToVector3D(dualQuat.Tangent),
-                    Binormals = ToVector3D(dualQuat.Binormal)
+                    Position = ToVector3(dualQuat.Position),
+                    Normal = ToVector3(dualQuat.Normal),
+                    TexCoords = ToVector3(dualQuat.Texcoord),
+                    Tangents = ToVector3(dualQuat.Tangent),
+                    Binormals = ToVector3(dualQuat.Binormal)
                 });
             }
             return result;
@@ -1188,11 +1203,11 @@ namespace TagTool.Geometry
                 var world = reader.ReadWorldVertex();
                 result.Add(new GenericVertex
                 {
-                    Position = ToVector3D(world.Position),
-                    Normal = ToVector3D(world.Normal),
-                    TexCoords = ToVector3D(world.Texcoord),
-                    Tangents = ToVector3D(world.Tangent),
-                    Binormals = ToVector3D(world.Binormal)
+                    Position = ToVector3(world.Position),
+                    Normal = ToVector3(world.Normal),
+                    TexCoords = ToVector3(world.Texcoord),
+                    Tangents = ToVector3(world.Tangent),
+                    Binormals = ToVector3(world.Binormal)
                 });
             }
             return result;
@@ -1212,9 +1227,9 @@ namespace TagTool.Geometry
                 var decorator = reader.ReadDecoratorVertex();
                 result.Add(new GenericVertex
                 {
-                    Position = ToVector3D(decorator.Position),
-                    Normal = ToVector3D(decorator.Normal),
-                    TexCoords = ToVector3D(decorator.Texcoord),
+                    Position = ToVector3(decorator.Position),
+                    Normal = ToVector3(decorator.Normal),
+                    TexCoords = ToVector3(decorator.Texcoord),
                 });
             }
             return result;
@@ -1232,8 +1247,8 @@ namespace TagTool.Geometry
 
             foreach (var vertex in vertices)
             {
-                vertex.Position = ToVector3D(compressor.DecompressPosition(new RealQuaternion(vertex.Position.X, vertex.Position.Y, vertex.Position.Z, 1)));
-                vertex.TexCoords = ToVector3D(compressor.DecompressUv(new RealVector2d(vertex.TexCoords.X, vertex.TexCoords.Y)));
+                vertex.Position = ToVector3(compressor.DecompressPosition(new RealQuaternion(vertex.Position.X, vertex.Position.Y, vertex.Position.Z, 1)));
+                vertex.TexCoords = ToVector3(compressor.DecompressUv(new RealVector2d(vertex.TexCoords.X, vertex.TexCoords.Y)));
             }
         }
 
@@ -1264,24 +1279,19 @@ namespace TagTool.Geometry
             }
         }
 
-        private static Vector3D ToVector3D(RealVector3d v)
+        private static Vector3 ToVector3(RealVector3d v)
         {
-            return new Vector3D(v.I, v.J, v.K);
+            return new Vector3(v.I, v.J, v.K);
         }
 
-        private static Vector3D ToVector3D(RealQuaternion q)
+        private static Vector3 ToVector3(RealQuaternion q)
         {
-            return new Vector3D(q.I, q.J, q.K);
+            return new Vector3(q.I, q.J, q.K);
         }
 
-        private static Vector3D ToVector3D(RealVector2d u)
+        private static Vector3 ToVector3(RealVector2d u)
         {
-            return new Vector3D(u.I, u.J, 0);
-        }
-
-        private static Vector2D ToVector2D(RealVector2d u)
-        {
-            return new Vector2D(u.I, u.J);
+            return new Vector3(u.I, u.J, 0);
         }
 
         /// <summary>
@@ -1289,11 +1299,11 @@ namespace TagTool.Geometry
         /// </summary>
         public class GenericVertex
         {
-            public Vector3D Position { get; set; }
-            public Vector3D Normal { get; set; }
-            public Vector3D TexCoords { get; set; }
-            public Vector3D Tangents { get; set; }
-            public Vector3D Binormals { get; set; }
+            public Vector3 Position { get; set; }
+            public Vector3 Normal { get; set; }
+            public Vector3 TexCoords { get; set; }
+            public Vector3 Tangents { get; set; }
+            public Vector3 Binormals { get; set; }
             public byte[] Indices { get; set; }
             public float[] Weights { get; set; }
         }

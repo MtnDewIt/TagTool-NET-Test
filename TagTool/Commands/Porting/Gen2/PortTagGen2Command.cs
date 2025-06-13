@@ -18,7 +18,7 @@ using System.Text;
 
 namespace TagTool.Commands.Porting.Gen2
 {
-    partial class PortTagGen2Command : Command
+    public partial class PortTagGen2Command : Command
     {
         public readonly GameCacheHaloOnlineBase Cache;
         public readonly GameCacheGen2 Gen2Cache;
