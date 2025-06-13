@@ -6,6 +6,7 @@ using TagTool.Tags.Definitions;
 using TagTool.BlamFile;
 using TagTool.JSON.Handlers;
 using TagTool.BlamFile.Chunks;
+using TagTool.BlamFile.Chunks.MapVariants;
 
 namespace TagTool.JSON.Parsers
 {

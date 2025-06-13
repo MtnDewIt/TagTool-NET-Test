@@ -13,9 +13,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using TagTool.BlamFile.GameVariants;
 using System.Text.RegularExpressions;
-using TagTool.JSON;
 using TagTool.BlamFile.Chunks;
 
 namespace TagTool.Commands.Files

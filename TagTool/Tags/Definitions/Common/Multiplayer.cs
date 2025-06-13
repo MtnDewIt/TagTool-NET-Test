@@ -86,7 +86,7 @@ namespace TagTool.Tags.Definitions.Common
         FlyingVehicle,
         Turret,
         Device,
-        Teleporter2way,
+        TeleporterTwoWay,
         TeleporterSender,
         TeleporterReceiver,
         PlayerSpawnLocation,

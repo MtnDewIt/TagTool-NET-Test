@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TagTool.BlamFile.Chunks;
+using TagTool.BlamFile.Chunks.MapVariants;
+using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
@@ -11,9 +13,9 @@ using TagTool.Tags.Definitions;
 using TagTool.Tags.Definitions.Common;
 using static TagTool.Tags.Definitions.Scenario;
 
-namespace TagTool.BlamFile.Reach
+namespace TagTool.BlamFile
 {
-    public class ReachMapVariantConverter
+    public class ReachMapVariantGenerator
     {
         private ReachMapVariant SourceMapVariant;
 
@@ -39,7 +41,7 @@ namespace TagTool.BlamFile.Reach
             metadata.Name = sourceMapVariant.Metadata.Name;
             metadata.Description = sourceMapVariant.Metadata.Description;
             metadata.GameId = sourceMapVariant.Metadata.GameId;
-            metadata.ContentType = ContentItemType.Usermap;
+            metadata.ContentType = ContentItemMetadata.ContentItemType.Usermap;
             metadata.ContentSize = typeof(BlfMapVariant).GetSize();
             metadata.GameEngineType = GameEngineType.None;
             metadata.MapId = sourceMapVariant.MapId;
@@ -284,7 +286,7 @@ namespace TagTool.BlamFile.Reach
 
             public IEnumerator<AuxVariantQuota> GetEnumerator() => _quotas.GetEnumerator();
 
-            IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
 
         public class AuxVariantQuota
@@ -324,7 +326,7 @@ namespace TagTool.BlamFile.Reach
                 case MultiplayerObjectTypeReach.Weapon:
                     result.SharedStorage = (byte)reachProperties.SpareClips;
                     break;
-                case MultiplayerObjectTypeReach.Teleporter2way:
+                case MultiplayerObjectTypeReach.TeleporterTwoWay:
                 case MultiplayerObjectTypeReach.TeleporterReceiver:
                 case MultiplayerObjectTypeReach.TeleporterSender:
                     result.SharedStorage = (byte)reachProperties.TeleporterChannel;

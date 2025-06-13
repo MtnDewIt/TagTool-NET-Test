@@ -1,8 +1,7 @@
 ﻿using System.IO;
-using TagTool.BlamFile.GameVariants;
-using TagTool.BlamFile.Reach;
+using TagTool.BlamFile.Chunks.GameVariants;
+using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
-using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;

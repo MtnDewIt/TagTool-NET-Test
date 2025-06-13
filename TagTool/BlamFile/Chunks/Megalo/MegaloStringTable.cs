@@ -6,7 +6,7 @@ using TagTool.Common;
 using TagTool.IO;
 using TagTool.Tags;
 
-namespace TagTool.BlamFile.Reach
+namespace TagTool.BlamFile.Chunks.Megalo
 {
     [TagStructure(Size = 0xC, MinVersion = CacheVersion.HaloReach)]
     public class MegaloStringTable : TagStructure

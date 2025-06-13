@@ -3,7 +3,7 @@ using TagTool.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions.Common;
 
-namespace TagTool.BlamFile.Reach
+namespace TagTool.BlamFile.Chunks.Metadata
 {
     [TagStructure(Size = 0x2B0, MinVersion = CacheVersion.HaloReach)]
     public class ReachContentItemMetadata : TagStructure

@@ -3,10 +3,11 @@ using System.Diagnostics;
 using TagTool.Common;
 using TagTool.Cache;
 using TagTool.Tags;
-using TagTool.Tags.Definitions;
 using TagTool.Tags.Definitions.Common;
+using TagTool.BlamFile.Chunks.Megalo;
+using TagTool.BlamFile.Chunks.Metadata;
 
-namespace TagTool.BlamFile.Reach
+namespace TagTool.BlamFile.Chunks.MapVariants
 {
     [TagStructure(Size = 0x30A, MinVersion = CacheVersion.HaloReach)]
     public class ReachMapVariant : TagStructure
@@ -43,14 +44,14 @@ namespace TagTool.BlamFile.Reach
             mapVariant.BuiltIn = stream.ReadBool();
             mapVariant.BuiltFromXml = stream.ReadBool();
             mapVariant.WorldBounds = new RealRectangle3d
-            (
-                stream.ReadFloat(32),
-                stream.ReadFloat(32),
-                stream.ReadFloat(32),
-                stream.ReadFloat(32),
-                stream.ReadFloat(32),
-                stream.ReadFloat(32)
-            );
+            {
+                X0 = stream.ReadFloat(32),
+                X1 = stream.ReadFloat(32),
+                Y0 = stream.ReadFloat(32),
+                Y1 = stream.ReadFloat(32),
+                Z0 = stream.ReadFloat(32),
+                Z1 = stream.ReadFloat(32)
+            };
             mapVariant.MaxBudget = (int)stream.ReadUnsigned(32);
             mapVariant.SpentBudget = (int)stream.ReadUnsigned(32);
             mapVariant.StringTable = MegaloStringTable.Decode(stream);

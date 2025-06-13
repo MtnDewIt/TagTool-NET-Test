@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TagTool.BlamFile;
 using TagTool.BlamFile.Chunks;
+using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;

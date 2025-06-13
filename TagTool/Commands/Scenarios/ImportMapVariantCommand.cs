@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using TagTool.BlamFile;
 using TagTool.BlamFile.Chunks;
+using TagTool.BlamFile.Chunks.MapVariants;
+using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;

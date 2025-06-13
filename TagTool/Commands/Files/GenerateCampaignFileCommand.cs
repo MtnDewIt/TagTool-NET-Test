@@ -79,7 +79,7 @@ namespace TagTool.Commands.Files
 
         public Blf GenerateCampaignBlf()
         {
-            var campaignFileBuilder = new CampaignFileBuilder(Cache) 
+            var campaignFileBuilder = new CampaignFileGenerator(Cache) 
             {
                 Name = "Halo 3",
                 Description = "Finish the Fight!",
@@ -100,7 +100,7 @@ namespace TagTool.Commands.Files
                 var campaignJsonData = File.ReadAllText(Path.Combine(modInfoFile.DirectoryName, "CampaignInfo.json"));
                 var campaignInfo = JsonConvert.DeserializeObject<CampaignInfo>(campaignJsonData);
 
-                var campaignFileBuilder = new CampaignFileBuilder(Cache)
+                var campaignFileBuilder = new CampaignFileGenerator(Cache)
                 {
                     Name = campaignInfo.Title.ParseLocalizedString(63, "Title"),
                     Description = campaignInfo.Description.ParseLocalizedString(127, "Description"),

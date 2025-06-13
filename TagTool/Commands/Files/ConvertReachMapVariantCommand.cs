@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TagTool.BlamFile;
 using TagTool.BlamFile.Chunks;
-using TagTool.BlamFile.Reach;
+using TagTool.BlamFile.Chunks.MapVariants;
 using TagTool.Cache;
 using TagTool.Commands.Common;
-using TagTool.Common;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
 
@@ -171,7 +169,7 @@ namespace TagTool.Commands.Files
                 throw new Exception($"Scenario map id did not match");
             }
 
-            var converter = new ReachMapVariantConverter();
+            var converter = new ReachMapVariantGenerator();
 
             // hardcode for now
             converter.SubstitutedTags.Add(@"objects\vehicles\human\warthog\warthog.vehi", @"objects\vehicles\warthog\warthog.vehi");

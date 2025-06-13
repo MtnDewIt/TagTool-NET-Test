@@ -8,13 +8,13 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.BlamFile
 {
-    public class CampaignFileBuilder
+    public class CampaignFileGenerator
     {
         public GameCache Cache { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public CampaignFileBuilder(GameCache cache)
+        public CampaignFileGenerator(GameCache cache)
         {
             Cache = cache;
         }

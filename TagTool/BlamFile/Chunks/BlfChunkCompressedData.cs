@@ -1,9 +1,5 @@
-﻿using System;
-using System.IO;
-using System.IO.Compression;
-using TagTool.BlamFile.Reach;
+﻿using System.IO;
 using TagTool.Cache;
-using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 

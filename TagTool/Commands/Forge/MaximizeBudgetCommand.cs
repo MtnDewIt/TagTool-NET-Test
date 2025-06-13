@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using TagTool.BlamFile;
 using TagTool.BlamFile.Chunks;
+using TagTool.BlamFile.Chunks.MapVariants;
+using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
@@ -110,7 +112,7 @@ namespace TagTool.Commands.Forge
                     Name = mapFile.MapFileBlf.Scenario.Names[0].Name,
                     Description = mapFile.MapFileBlf.Scenario.Descriptions[0].Name,
                     Author = "Bungie",
-                    ContentType = ContentItemType.Usermap,
+                    ContentType = ContentItemMetadata.ContentItemType.Usermap,
                     ContentSize = typeof(BlfMapVariant).GetSize(),
                     Timestamp = (ulong)DateTime.Now.ToFileTime(),
                     CampaignId = -1,

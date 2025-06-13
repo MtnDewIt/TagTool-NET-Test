@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TagTool.BlamFile;
+using TagTool.BlamFile.Chunks.MapVariants;
 using TagTool.Cache;
 using TagTool.Commands.CollisionModels;
 using TagTool.Commands.Common;

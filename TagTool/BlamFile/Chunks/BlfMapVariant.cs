@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using TagTool.BlamFile.Reach;
+using TagTool.BlamFile.Chunks.MapVariants;
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.IO;

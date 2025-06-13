@@ -2,30 +2,29 @@
 using TagTool.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions.Common;
-using static System.Runtime.InteropServices.CharSet;
-using static TagTool.Tags.TagFieldFlags;
+using System.Runtime.InteropServices;
 
-namespace TagTool.BlamFile
+namespace TagTool.BlamFile.Chunks.Metadata
 {
     [TagStructure(Size = 0xF8, MaxVersion = CacheVersion.HaloOnline700123)]
     public class ContentItemMetadata : TagStructure
     {
         public ulong UniqueId;
 
-        [TagField(CharSet = Unicode, Length = 16)]
+        [TagField(CharSet = CharSet.Unicode, Length = 16)]
         public string Name = string.Empty;
 
-        [TagField(CharSet = Ansi, Length = 128)]
+        [TagField(CharSet = CharSet.Ansi, Length = 128)]
         public string Description = string.Empty;
 
-        [TagField(CharSet = Ansi, Length = 16)]
+        [TagField(CharSet = CharSet.Ansi, Length = 16)]
         public string Author = string.Empty;
 
         public ContentItemType ContentType;
         public bool AuthorIsOnline;
 
-        [TagField(Length = 3, Flags = Padding)]
-        public byte[] Padding1 = new byte[3];
+        [TagField(Length = 3, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding1;
 
         public ulong AuthorId;
         public ulong ContentSize;
@@ -45,10 +44,29 @@ namespace TagTool.BlamFile
         [TagField(MaxVersion = CacheVersion.Halo3Retail)]
         public short HopperId;
 
-        [TagField(Length = 2, Flags = Padding)]
-        public byte[] Padding2 = new byte[2];
+        [TagField(Length = 2, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding2;
 
         public ulong GameId;
+
+        public enum ContentItemType : int
+        {
+            None = -1,
+            Personal,
+            CTF,
+            Slayer,
+            Oddball,
+            King,
+            Juggernaut,
+            Territories,
+            Assault,
+            Infection,
+            VIP,
+            Usermap,
+            Film,
+            Clip,
+            Screenshot,
+        }
 
         public static ContentItemMetadata Decode(BitStream stream)
         {
@@ -78,24 +96,5 @@ namespace TagTool.BlamFile
         {
             // TODO: Implement
         }
-    }
-
-    public enum ContentItemType : int
-    {
-        None = -1,
-        Personal,
-        CTF,
-        Slayer,
-        Oddball,
-        King,
-        Juggernaut,
-        Territories,
-        Assault,
-        Infection,
-        VIP,
-        Usermap,
-        Film,
-        Clip,
-        Screenshot,
     }
 }

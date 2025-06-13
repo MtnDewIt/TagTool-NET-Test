@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using TagTool.Cache;
 using TagTool.IO;
-using TagTool.BlamFile;
 using TagTool.JSON.Handlers;
 using TagTool.BlamFile.Chunks;
+using TagTool.BlamFile.Chunks.MapVariants;
 
 namespace TagTool.JSON.Parsers
 {

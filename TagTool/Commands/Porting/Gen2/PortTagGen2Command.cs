@@ -343,7 +343,7 @@ namespace TagTool.Commands.Porting.Gen2
             var scenarioName = Path.GetFileName(scenarioTag.Name);
             var scnr = cache.Deserialize<TagTool.Tags.Definitions.Scenario>(cacheStream, scenarioTag);
 
-            var mapBuilder = new MapFileBuilder(cache.Version);
+            var mapBuilder = new MapFileGenerator(cache.Version);
             mapBuilder.MapName = string.IsNullOrEmpty(mapName) ? scenarioName : mapName;
             mapBuilder.MapDescription = string.IsNullOrEmpty(mapDescription) ? "" : mapDescription;
             MapFile map = mapBuilder.Build(scenarioTag, scnr);

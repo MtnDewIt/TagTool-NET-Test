@@ -3,7 +3,7 @@ using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Tags;
 
-namespace TagTool.BlamFile.GameVariants
+namespace TagTool.BlamFile.Chunks.GameVariants
 {
     [TagStructure(Size = 0x1C)]
     public class GameVariantPlayerTraits : TagStructure 
