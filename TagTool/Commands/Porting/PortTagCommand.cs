@@ -1324,6 +1324,11 @@ namespace TagTool.Commands.Porting
                     blamDefinition = ConvertScenarioStructureBsp(sbsp, edTag);
                     break;
 
+                case ScenarioStructureLightingInfo stli:
+                    if (BlamCache.Version < CacheVersion.HaloReach)
+                        blamDefinition = ConvertScenarioStructureLightingInfo(stli);
+                    break;
+
                 case Sound sound:
                     //support sound conversion for HO generation caches
                     if (CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, BlamCache.Version))
