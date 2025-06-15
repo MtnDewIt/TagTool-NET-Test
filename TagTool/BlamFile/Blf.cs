@@ -4,6 +4,7 @@ using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
 using TagTool.BlamFile.Chunks;
+using System.IO;
 
 namespace TagTool.BlamFile
 {
@@ -70,6 +71,8 @@ namespace TagTool.BlamFile
         {
             if (!IsValid(reader))
                 return false;
+
+            GetFileVersion(reader, ref Version, ref CachePlatform);
 
             var deserializer = new TagDeserializer(Version, CachePlatform);
 
@@ -246,6 +249,120 @@ namespace TagTool.BlamFile
                 return true;
             else
                 return false;
+        }
+
+        private void GetFileVersion(EndianReader reader, ref CacheVersion version, ref CachePlatform platform) 
+        {
+            var startOfFile = reader.Position;
+            
+            /*
+            .campaign
+            - Could go off of the file length???
+            Halo3Retail Original: 
+            Halo3Retail MCC: 
+            HaloReach Original: 
+            HaloReach MCC: 
+            Halo4 Original: 
+            Halo4 MCC: 
+            */
+
+            reader.SeekTo(0xE);
+            var name = reader.ReadString(0x20);
+
+            reader.SeekTo(0x30);
+            var signature = reader.ReadTag();
+
+            if (name == "map variant" || name == "game var" || signature == "athr" || signature == "rhta")
+            {
+                reader.SeekTo(0x80);
+                var mccSignature = reader.ReadTag();
+
+                if (mccSignature == "mvar" || mccSignature == "ravm" || mccSignature == "gvar" || mccSignature == "ravg") 
+                {
+                    version = CacheVersion.Halo3Retail;
+                    platform = CachePlatform.MCC;
+                    reader.SeekTo(startOfFile);
+                    return;
+                }
+            }
+            else if (signature == "chdr" || signature == "rdhc")
+            {
+                reader.SeekTo(0x2F0);
+                var reachSignature = reader.ReadTag();
+
+                if (reachSignature == "mvar" || reachSignature == "ravm" || reachSignature == "mpvr" || reachSignature == "rvpm") 
+                {
+                    reader.SeekTo(0x3C);
+                    var reachMCCSignature = reader.ReadInt16();
+
+                    if (reachMCCSignature == 0x2E54 || reachMCCSignature == 0x542E)
+                    {
+                        version = CacheVersion.HaloReach;
+                        platform = CachePlatform.Original;
+                        reader.SeekTo(startOfFile);
+                        return;
+                    }
+                    // TODO: Maybe add extra check
+                    else
+                    {
+                        version = CacheVersion.HaloReach;
+                        platform = CachePlatform.MCC;
+                        reader.SeekTo(startOfFile);
+                        return;
+                    }
+                }
+
+                reader.SeekTo(0x138);
+                var h3Signature = reader.ReadTag();
+
+                if (h3Signature == "mapv" || h3Signature == "vpam" || h3Signature == "mpvr" || h3Signature == "rvpm")
+                {
+                    reader.SeekTo(0x3A);
+                    var eldewritoSignature = reader.ReadInt16();
+
+                    if (eldewritoSignature == 0x3 || eldewritoSignature == 0x300)
+                    {
+                        version = CacheVersion.HaloOnlineED;
+                        platform = CachePlatform.Original;
+                        reader.SeekTo(startOfFile);
+                        return;
+                    }
+                    // TODO: Maybe add extra check
+                    else 
+                    {
+                        version = CacheVersion.Halo3Retail;
+                        platform = CachePlatform.Original;
+                        reader.SeekTo(startOfFile);
+                        return;
+                    }
+                }
+            }
+            else 
+            {
+                switch (reader.Length)
+                {
+                    case 0x4E91:
+                        version = CacheVersion.Halo3Retail;
+                        platform = CachePlatform.Original;
+                        reader.SeekTo(startOfFile);
+                        return;
+                    case 0x9A01:
+                        version = CacheVersion.Halo3ODST;
+                        platform = CachePlatform.Original;
+                        reader.SeekTo(startOfFile);
+                        return;
+                    case 0xCDD9:
+                        version = CacheVersion.HaloReach;
+                        platform = CachePlatform.Original;
+                        reader.SeekTo(startOfFile);
+                        return;
+                    case 0x11F19:
+                        version = CacheVersion.Halo4;
+                        platform = CachePlatform.Original;
+                        reader.SeekTo(startOfFile);
+                        return;
+                }
+            }
         }
 
         /// <summary>
