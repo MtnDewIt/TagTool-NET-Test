@@ -70,7 +70,7 @@ namespace TagTool.BlamFile
             result.WorldBounds = sourceMapVariant.WorldBounds;
             result.MaximumBudget = sourceMapVariant.MaxBudget;
             result.SpentBudget = sourceMapVariant.SpentBudget;
-            result.MapVariantChecksum = sourceMapVariant.CacheCRC;
+            result.MapVariantChecksum = sourceMapVariant.MapVariantChecksum;
 
             var objectTypeMap = new ObjectTypeMap(sourceScenario);
             result.ObjectTypeStartIndex = objectTypeMap.CalculateObjetTypeStartIndices();
@@ -311,7 +311,7 @@ namespace TagTool.BlamFile
             return result;
         }
 
-        private VariantObjectDatum.VariantMultiplayerProperties ConvertMultiplayerProperties(ReachVarintMultiplayerObjectProperties reachProperties)
+        private VariantObjectDatum.VariantMultiplayerProperties ConvertMultiplayerProperties(ReachVariantMultiplayerObjectProperties reachProperties)
         {
             var result = new VariantObjectDatum.VariantMultiplayerProperties();
 

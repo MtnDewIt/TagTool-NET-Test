@@ -13,16 +13,22 @@ namespace TagTool.BlamFile.Chunks.MapVariants
     public class ReachMapVariant : TagStructure
     {
         public ReachContentItemMetadata Metadata;
-        public int Version;
-        public uint CacheCRC;
-        public uint ScenarioPaletteCRC;
-        public int PlaceableObjectQuota;
-        public int MapId;
-        public bool BuiltIn;
-        public bool BuiltFromXml;
+        public short VariantVersion;
+        public short PlaceableQuotaCount;
+        public int MapId = -1;
         public RealRectangle3d WorldBounds;
         public int MaxBudget;
         public int SpentBudget;
+        public bool RuntimeShowHelpers;
+        public bool BuiltIn;
+        public bool BuiltFromXml;
+
+        [TagField(Length = 0x1, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding1;
+
+        public uint MapVariantChecksum;
+        public uint ScenarioPaletteCRC;
+
         public MegaloStringTable StringTable;
 
         [TagField(Length = 651)]
@@ -31,15 +37,18 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         [TagField(Length = 256)]
         public ReachVariantQuota[] Quotas;
 
+        [TagField(Length = 32)]
+        public int[] SimulationEntities;
+
         public static ReachMapVariant Decode(BitStream stream)
         {
             var mapVariant = new ReachMapVariant();
 
             mapVariant.Metadata = ReachContentItemMetadata.Decode(stream, true);
-            mapVariant.Version = (int)stream.ReadUnsigned(8);
-            mapVariant.CacheCRC = stream.ReadUnsigned(32);
+            mapVariant.VariantVersion = (short)stream.ReadUnsigned(8);
+            mapVariant.MapVariantChecksum = stream.ReadUnsigned(32);
             mapVariant.ScenarioPaletteCRC = stream.ReadUnsigned(32);
-            mapVariant.PlaceableObjectQuota = (int)stream.ReadUnsigned(9);
+            mapVariant.PlaceableQuotaCount = (short)stream.ReadUnsigned(9);
             mapVariant.MapId = (int)stream.ReadUnsigned(32);
             mapVariant.BuiltIn = stream.ReadBool();
             mapVariant.BuiltFromXml = stream.ReadBool();
@@ -72,20 +81,20 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         }
     }
 
-    [TagStructure(Size = 0xC, MinVersion = CacheVersion.HaloReach)]
+    [TagStructure(Size = 0x3, MinVersion = CacheVersion.HaloReach)]
     public class ReachVariantQuota : TagStructure
     {
-        public int MinimumCount;
-        public int MaximumCount;
-        public int PlacedOnMap;
+        public byte MinimumCount;
+        public byte MaximumCount;
+        public byte PlacedOnMap;
 
         public static ReachVariantQuota Decode(BitStream stream)
         {
             var quotaDatum = new ReachVariantQuota();
 
-            quotaDatum.MinimumCount = (int)stream.ReadUnsigned(8);
-            quotaDatum.MaximumCount = (int)stream.ReadUnsigned(8);
-            quotaDatum.PlacedOnMap = (int)stream.ReadUnsigned(8);
+            quotaDatum.MinimumCount = (byte)stream.ReadUnsigned(8);
+            quotaDatum.MaximumCount = (byte)stream.ReadUnsigned(8);
+            quotaDatum.PlacedOnMap = (byte)stream.ReadUnsigned(8);
 
             return quotaDatum;
         }
@@ -101,7 +110,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         public RealVector3d Forward;
         public RealVector3d Up;
         public int SpawnRelativeToIndex = -1;
-        public ReachVarintMultiplayerObjectProperties Properties;
+        public ReachVariantMultiplayerObjectProperties Properties;
 
         public static ReachVariantObjectDatum Decode(BitStream stream, RealRectangle3d worldBounds)
         {
@@ -128,7 +137,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
 
                 objectDatum.SpawnRelativeToIndex = (int)stream.ReadUnsigned(10) - 1;
 
-                objectDatum.Properties = ReachVarintMultiplayerObjectProperties.Decode(stream);
+                objectDatum.Properties = ReachVariantMultiplayerObjectProperties.Decode(stream);
             }
 
             return objectDatum;
@@ -143,7 +152,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
     }
 
     [TagStructure(Size = 0x31, MinVersion = CacheVersion.HaloReach)]
-    public class ReachVarintMultiplayerObjectProperties : TagStructure
+    public class ReachVariantMultiplayerObjectProperties : TagStructure
     {
         public ReachMultiplayerObjectBoundary Boundary;
         public int SpawnOrder;
@@ -158,9 +167,9 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         public TeleporterPassabilityFlags TeleporterPassability;
         public int LocationNameIndex = -1;
 
-        public static ReachVarintMultiplayerObjectProperties Decode(BitStream stream)
+        public static ReachVariantMultiplayerObjectProperties Decode(BitStream stream)
         {
-            var objectProperties = new ReachVarintMultiplayerObjectProperties();
+            var objectProperties = new ReachVariantMultiplayerObjectProperties();
 
             objectProperties.Boundary = ReachMultiplayerObjectBoundary.Decode(stream);
 

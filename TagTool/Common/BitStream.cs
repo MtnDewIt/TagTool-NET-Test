@@ -21,7 +21,6 @@ namespace TagTool.Common
 
         // TODO: Redo Base Read Functions
         // TODO: Add Write Functionality
-        // TODO: Fix String Read Functions (if its unpacked, it just appends empty characters)
 
         public static void ReadAxis(BitStream stream, int forwardBits, int upBits, bool withEndPoints, out RealVector3d forward, out RealVector3d up)
         {
@@ -170,7 +169,9 @@ namespace TagTool.Common
                         break;
                 }
 
-                buffer.Append(Convert.ToChar(b));
+                if (b != 0)
+                    buffer.Append(Convert.ToChar(b));
+
                 length--;
             }
             return buffer.ToString();
@@ -189,7 +190,9 @@ namespace TagTool.Common
                         break;
                 }
 
-                buffer.Append(Convert.ToChar(b));
+                if (b != 0)
+                    buffer.Append(Convert.ToChar(b));
+
                 length--;
             }
             return buffer.ToString();
@@ -241,7 +244,7 @@ namespace TagTool.Common
             ulong oldAccumulator = _accumulator;
             ulong newAccumulator = DecodeAccumulator();
             int nextBits = _accumulatorBitsUsed + sizeInBits - QWORD_BITS;
-            _accumulator = newAccumulator << nextBits;
+            _accumulator = nextBits < QWORD_BITS ? newAccumulator << nextBits : 0;
             _accumulatorBitsUsed = nextBits;
             ulong carry = oldAccumulator >> (QWORD_BITS - sizeInBits);
             ulong value = newAccumulator >> (QWORD_BITS - nextBits);
