@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TagTool.BlamFile;
 using TagTool.BlamFile.Chunks;
 using TagTool.BlamFile.Chunks.MapVariants;
+using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.IO;
@@ -30,6 +31,35 @@ namespace TagTool.Commands.Files
         {
             ".map",
             ".mvar",
+        };
+
+        private static readonly Dictionary<int, string> MapIdToFilename = new Dictionary<int, string>()
+        {
+            [1000] = "20_sword_slayer",
+            [1020] = "45_launch_station",
+            [1035] = "50_panopticon",
+            [1040] = "45_aftship",
+            [1055] = "30_settlement",
+            [1080] = "70_boneyard",
+            [1150] = "52_ivory_tower",
+            [1200] = "35_island",
+            [1500] = "condemned",
+            [1510] = "trainingpreserve",
+            [2001] = "dlc_slayer",
+            [2002] = "dlc_invasion",
+            [2004] = "dlc_medium",
+            [3006] = "forge_halo",
+            [10010] = "cex_damnation",
+            [10020] = "cex_beaver_creek",
+            [10030] = "cex_timberland",
+            [10050] = "cex_headlong",
+            [10060] = "cex_hangemhigh",
+            [10070] = "cex_prisoner",
+        };
+
+        private static readonly Dictionary<ContentItemMetadata.ContentItemType, string> ContentTypeToFileExtension = new Dictionary<ContentItemMetadata.ContentItemType, string>()
+        {
+            [ContentItemMetadata.ContentItemType.Usermap] = ".map",
         };
 
         public ConvertReachMapVariantCommand(GameCacheHaloOnlineBase cache)
@@ -87,11 +117,6 @@ namespace TagTool.Commands.Files
 
             StopWatch.Start();
 
-            foreach (var filePath in files) 
-            {
-                ConvertFileAsync(filePath, mapsDirectory);
-            }
-
             var tasks = files.Select(filePath => ConvertFileAsync(filePath, mapsDirectory));
             await Task.WhenAll(tasks);
 
@@ -100,13 +125,15 @@ namespace TagTool.Commands.Files
 
         private async Task ConvertFileAsync(string filePath, DirectoryInfo mapsDirectory) 
         {
-            try 
+            var input = new FileInfo(filePath);
+            Blf blf = null;
+
+            string variantName = "";
+            ulong uniqueId = 0;
+            ContentItemMetadata.ContentItemType contentType = ContentItemMetadata.ContentItemType.None;
+
+            try
             {
-                var input = new FileInfo(filePath);
-                Blf blf = null;
-
-                var variantName = "";
-
                 using (var stream = input.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     var reader = new EndianReader(stream);
@@ -121,11 +148,13 @@ namespace TagTool.Commands.Files
                         if (blf == null)
                             throw new Exception("Failed to convert map variant");
                     }
-
-                    variantName = blf?.ContentHeader?.Metadata?.Name ?? "";
                 }
 
-                var output = GetOutputPath(input, variantName, blf.ContentHeader.Metadata.UniqueId);
+                variantName = blf?.ContentHeader?.Metadata?.Name ?? "";
+                uniqueId = blf?.ContentHeader?.Metadata?.UniqueId ?? 0;
+                contentType = blf?.ContentHeader?.Metadata?.ContentType ?? ContentItemMetadata.ContentItemType.None;
+
+                var output = GetOutputPath(variantName, contentType, uniqueId);
 
                 Directory.CreateDirectory(Path.GetDirectoryName(output));
 
@@ -135,7 +164,10 @@ namespace TagTool.Commands.Files
                     blf.Write(writer);
                 }
 
-                UniqueIdTable.Add(blf.ContentHeader.Metadata.UniqueId);
+                if (uniqueId != 0)
+                {
+                    UniqueIdTable.Add(uniqueId);
+                }
             }
             catch (Exception e)
             {
@@ -262,7 +294,7 @@ namespace TagTool.Commands.Files
             var mapFile = new FileInfo(Path.Combine(mapsDirectory.FullName, $"{MapIdToFilename[mapId]}.map"));
             if (!mapFile.Exists)
             {
-                throw new Exception($"'${MapIdToFilename[mapId]}.map' could not be found.");
+                throw new Exception($"'{MapIdToFilename[mapId]}.map' could not be found.");
             }
             return GameCache.Open(mapFile);
         }
@@ -293,9 +325,11 @@ namespace TagTool.Commands.Files
         }
         */
 
-        private string GetOutputPath(FileInfo input, string variantName, ulong uniqueId)
+        private string GetOutputPath(string variantName, ContentItemMetadata.ContentItemType contentType, ulong uniqueId)
         {
-            string outputPath = Path.Combine(OutputPath, $@"map_variants", Regex.Replace($"{variantName.TrimStart().TrimEnd()}", @"[*\\ /:""]", "_"), "sandbox.map");
+            var filteredName = Regex.Replace($"{variantName.TrimStart().TrimEnd().TrimEnd('.')}", @"[<>:""/\|?*]", "_");
+
+            string outputPath = Path.Combine(OutputPath, $@"map_variants", filteredName, $@"sandbox{ContentTypeToFileExtension[contentType]}");
 
             if (Path.Exists(outputPath) && UniqueIdTable.Contains(uniqueId))
             {
@@ -312,7 +346,7 @@ namespace TagTool.Commands.Files
             var time = DateTime.Now;
             var shortDateTime = $@"{time.ToShortDateString()}-{time.ToShortTimeString()}";
 
-            var fileName = Regex.Replace($"hott_{shortDateTime}_variant_errors.log", @"[*\\ /:]", "_");
+            var fileName = Regex.Replace($"hott_{shortDateTime}_variant_errors.log", @"[<>:""/\|?*]", "_");
             var filePath = "logs";
             var fullPath = Path.Combine(Program.TagToolDirectory, filePath, fileName);
 
@@ -329,29 +363,5 @@ namespace TagTool.Commands.Files
 
             Console.WriteLine($"Check \"{fullPath}\" for details on errors");
         }
-
-        private static readonly Dictionary<int, string> MapIdToFilename = new Dictionary<int, string>()
-        {
-            [1000] = "20_sword_slayer",
-            [1020] = "45_launch_station",
-            [1035] = "50_panopticon",
-            [1040] = "45_aftship",
-            [1055] = "30_settlement",
-            [1080] = "70_boneyard",
-            [1150] = "52_ivory_tower",
-            [1200] = "35_island",
-            [1500] = "condemned",
-            [1510] = "trainingpreserve",
-            [2001] = "dlc_slayer",
-            [2002] = "dlc_invasion",
-            [2004] = "dlc_medium",
-            [3006] = "forge_halo",
-            [10010] = "cex_damnation",
-            [10020] = "cex_beaver_creek",
-            [10030] = "cex_timberland",
-            [10050] = "cex_headlong",
-            [10060] = "cex_hangemhigh",
-            [10070] = "cex_prisoner",
-        };
     }
 }
