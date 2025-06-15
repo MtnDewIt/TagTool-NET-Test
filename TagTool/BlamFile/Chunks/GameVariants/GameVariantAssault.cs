@@ -31,7 +31,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         public GameVariantPlayerTraits CarrierTraits;
         public GameVariantPlayerTraits ArmingTraits;
 
-        //[TagField(Flags = TagFieldFlags.Padding, Length = 0x5C, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x64, MaxVersion = CacheVersion.Halo3ODST)]
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x3C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Alignment;
 

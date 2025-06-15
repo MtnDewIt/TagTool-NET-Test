@@ -2,6 +2,7 @@
 using TagTool.BlamFile.Chunks.GameVariants;
 using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
+using TagTool.Commands.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
@@ -44,6 +45,8 @@ namespace TagTool.BlamFile.Chunks
 
             if (deserializer.Version == CacheVersion.HaloReach)
             {
+                new TagToolWarning("Reach Game Variants Not Supported. Skipping...");
+
                 // TODO: Figure out reach game variant structs
                 gameVariant.Hash = reader.ReadBytes(0x14);
 
@@ -56,7 +59,7 @@ namespace TagTool.BlamFile.Chunks
                     buffer[i] = reader.ReadByte();
                 }
             }
-            else if (deserializer.Version == CacheVersion.Halo3Retail)
+            else if (deserializer.Version >= CacheVersion.Halo3Retail && deserializer.Version <= CacheVersion.HaloOnline700123)
             {
                 if (!packed)
                 {
@@ -105,6 +108,8 @@ namespace TagTool.BlamFile.Chunks
                 }
                 else 
                 {
+                    new TagToolWarning("Packed Game Variants Not Supported. Skipping...");
+
                     var variantSize = gameVariant.Length - 0xC;
 
                     var buffer = new byte[variantSize];

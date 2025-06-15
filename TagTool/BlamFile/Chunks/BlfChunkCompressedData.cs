@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using TagTool.Cache;
+using TagTool.Commands.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 
@@ -26,6 +27,8 @@ namespace TagTool.BlamFile.Chunks
             {
                 buffer[i] = reader.ReadByte();
             }
+
+            new TagToolWarning("Compressed Chunks Not Supported. Skipping...");
 
             if (deserializer.Version == CacheVersion.HaloReach)
             {

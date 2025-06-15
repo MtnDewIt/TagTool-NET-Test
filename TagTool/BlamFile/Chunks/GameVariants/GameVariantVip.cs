@@ -26,15 +26,15 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         public VipZoneMovementSettings ZoneMovement;
         public VipZoneOrderSettings ZoneOrder;
 
-        [TagField(Flags = TagFieldFlags.Padding, Length = 1)]
-        public byte[] Padding1 = new byte[1];
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x1)]
+        public byte[] Padding3;
 
         public short InfluenceRadius;
         public GameVariantPlayerTraits VipTeamTraits;
         public GameVariantPlayerTraits VipInfluenceTraits;
         public GameVariantPlayerTraits VipTraits;
 
-        //[TagField(Flags = TagFieldFlags.Padding, Length = 0x48, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x4A, MaxVersion = CacheVersion.Halo3ODST)]
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x28, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Alignment;
 

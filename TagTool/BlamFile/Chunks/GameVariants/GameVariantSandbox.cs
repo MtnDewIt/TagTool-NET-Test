@@ -13,7 +13,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         public SandboxRespawnTime RespawnTime;
         public GameVariantPlayerTraits PlayerTraits;
 
-        //[TagField(Flags = TagFieldFlags.Padding, Length = 0x90, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x90, MaxVersion = CacheVersion.Halo3ODST)]
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x70, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Alignment;
 

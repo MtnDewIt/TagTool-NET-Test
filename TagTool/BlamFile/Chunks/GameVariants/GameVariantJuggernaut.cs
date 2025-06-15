@@ -14,7 +14,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         public short ScoreToWinEarly;
 
         [TagField(Flags = TagFieldFlags.Padding, Length = 2)]
-        public byte[] Padding1 = new byte[2];
+        public byte[] Padding3;
 
         public JuggernautInitialJuggernautSettings InitialJuggernaut;
         public JuggernautNextJuggernautSettings NextJuggernaut;
@@ -32,9 +32,9 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         public GameVariantPlayerTraits JuggernautTraits;
 
         [TagField(Flags = TagFieldFlags.Padding, Length = 2)]
-        public byte[] Padding2 = new byte[2];
+        public byte[] Padding4;
 
-        //[TagField(Flags = TagFieldFlags.Padding, Length = 0x80, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x82, MaxVersion = CacheVersion.Halo3ODST)]
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x60, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Alignment;
 

@@ -15,10 +15,13 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         public VariantMapOverrideOptions MapOverrideOptions;
 
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x2, MaxVersion = CacheVersion.Halo3ODST)]
-        public byte[] Padding;
+        public byte[] Padding1;
 
         public BaseVariantFlags BaseFlags;
         public TeamScoring TeamScoringMethod;
+
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x2, MaxVersion = CacheVersion.Halo3ODST)]
+        public byte[] Padding2;
 
         [TagStructure(Size = 0x4)]
         public class VariantMiscellaneousOptions : TagStructure
@@ -60,7 +63,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             public byte RespawnGrowth;
             public byte RespawnPlayerTraitsDuration;
 
-            [TagField(Flags = TagFieldFlags.Padding, Length = 0x3, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+            [TagField(Flags = TagFieldFlags.Padding, Length = 0x3, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             public byte[] Padding;
 
             public GameVariantPlayerTraits RespawnPlayerTraits;
@@ -133,7 +136,8 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         [Flags]
         public enum BaseVariantFlags : short
         {
-            BuiltIn = 0,
+            None = 0,
+            BuiltIn = 1 << 0,
         }
 
         public enum TeamScoring : short
