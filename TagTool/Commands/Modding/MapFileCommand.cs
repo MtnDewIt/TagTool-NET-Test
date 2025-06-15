@@ -136,10 +136,10 @@ namespace TagTool.Commands.Modding
 
         private object ExecuteList(List<string> args)
         {
-            string columnFormat = "{0,-10} {1,-20} {2,-50} {3,-20}";
-            Console.WriteLine(new string('-', 100));
-            Console.WriteLine(columnFormat, "Map Id", "Map Name", "Scenario", "Map Variant");
-            Console.WriteLine(new string('-', 100));
+            string columnFormat = "{0,-10} {1,-20} {2,-20} {3,-50} {4,-20}";
+            Console.WriteLine(new string('-', 120));
+            Console.WriteLine(columnFormat, "Map Id", "File Name", "Map Name", "Scenario", "Map Variant");
+            Console.WriteLine(new string('-', 120));
 
             for (int i = 0; i < Cache.BaseModPackage.MapFileStreams.Count; i++)
             {
@@ -151,8 +151,9 @@ namespace TagTool.Commands.Modding
 
                 var header = (CacheFileHeaderGenHaloOnline)mapFile.Header;
                 var mapVariant = mapFile.MapFileBlf?.MapVariant?.MapVariant;
+                var mapName = mapFile.MapFileBlf?.Scenario?.Names[0]?.Name;
 
-                Console.WriteLine(columnFormat, header.MapId, header.Name, header.ScenarioPath, mapVariant == null ? "None" : mapVariant.Metadata.Name);
+                Console.WriteLine(columnFormat, header.MapId, header.Name, mapName == null ? "None" : mapName, header.ScenarioPath, mapVariant == null ? "None" : mapVariant.Metadata.Name);
             }
 
             return true;

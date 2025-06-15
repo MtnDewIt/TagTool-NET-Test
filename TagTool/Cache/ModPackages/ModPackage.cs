@@ -18,17 +18,15 @@ namespace TagTool.Cache
 {
     public class ModPackage : IDisposable
     {
-        private IntPtr Data { get; set; }
-
         public ModPackageHeader Header { get; set; } = new ModPackageHeader();
 
         public ModPackageMetadata Metadata { get; set; } = new ModPackageMetadata();
 
-        public List<ExtantStream> TagCachesStreams { get; set; } = new List<ExtantStream>();
+        public List<UnmanagedExtantStream> TagCachesStreams { get; set; } = new List<UnmanagedExtantStream>();
 
         public List<Dictionary<int, string>> TagCacheNames { get; set; } = new List<Dictionary<int, string>>();
 
-        public ExtantStream ResourcesStream { get; set; }
+        public UnmanagedExtantStream ResourcesStream { get; set; }
 
         public bool IsLarge { get; }
 
@@ -57,30 +55,14 @@ namespace TagTool.Cache
 
         public void Dispose()
         {
-            if (Data != default) 
+            foreach (var stream in TagCachesStreams) 
             {
-                Marshal.FreeHGlobal(Data);
-                Data = default;
+                stream.Dispose();
             }
-
-            foreach(ExtantStream stream in TagCachesStreams)
-            {
-                stream.SetDisposable(true);
-                stream.Dispose(true);
-            }
-            ResourcesStream.SetDisposable(true);
-            ResourcesStream.Dispose(true);
+            
+            ResourcesStream.Dispose();
 
             GC.SuppressFinalize(this);
-        }
-
-        ~ModPackage()
-        {
-            if (Data != default)
-            {
-                Marshal.FreeHGlobal(Data);
-                Data = default;
-            }
         }
 
         public ModPackage(FileInfo file = null, bool unmanagedResourceStream=false)
@@ -92,8 +74,13 @@ namespace TagTool.Cache
             else
             {
                 // init a single cache
-                var tagStream = new MemoryStream();
-                TagCachesStreams.Add(new ExtantStream(tagStream));
+                unsafe 
+                {
+                    long tagBufferSize = 2L * 1024 * 1024 * 1024;
+                    var tagData = Marshal.AllocHGlobal((IntPtr)tagBufferSize);
+                    var tagStream = new ExtantStream(new UnmanagedMemoryStream((byte*)tagData.ToPointer(), 0, tagBufferSize, FileAccess.ReadWrite));
+                    TagCachesStreams.Add(new UnmanagedExtantStream(tagData, tagStream));
+                }
 
                 FontPackage = new MemoryStream();
 
@@ -105,15 +92,22 @@ namespace TagTool.Cache
                 Header.SectionTable = new ModPackageSectionTable();
                 if (!unmanagedResourceStream)
                 {
-                    ResourcesStream = new ExtantStream(new MemoryStream());
+                    unsafe 
+                    {
+                        long resourceBufferSize = 2L * 1024 * 1024 * 1024; // 2 GB max
+                        var resourceData = Marshal.AllocHGlobal((IntPtr)resourceBufferSize);
+                        var resourceStream = new ExtantStream(new UnmanagedMemoryStream((byte*)resourceData.ToPointer(), 0, resourceBufferSize, FileAccess.ReadWrite));
+                        ResourcesStream = new UnmanagedExtantStream(resourceData, resourceStream);
+                    }
                 }
                 else
                 {
                     unsafe
                     {
-                        long bufferSize = 4L * 1024 * 1024 * 1024; // 4 GB max
-                        Data = Marshal.AllocHGlobal((IntPtr)bufferSize);
-                        ResourcesStream = new ExtantStream(new UnmanagedMemoryStream((byte*)Data.ToPointer(), 0, bufferSize, FileAccess.ReadWrite));
+                        long resourceBufferSize = 4L * 1024 * 1024 * 1024; // 4 GB max
+                        var resourceData = Marshal.AllocHGlobal((IntPtr)resourceBufferSize);
+                        var resourceStream = new ExtantStream(new UnmanagedMemoryStream((byte*)resourceData.ToPointer(), 0, resourceBufferSize, FileAccess.ReadWrite));
+                        ResourcesStream = new UnmanagedExtantStream(resourceData, resourceStream);
                     }
                 }
                 
@@ -417,8 +411,8 @@ namespace TagTool.Cache
 
                 uint offset = (uint)writer.BaseStream.Position;
 
-                TagCachesStreams[i].Position = 0;
-                StreamUtil.Copy(TagCachesStreams[i], writer.BaseStream, (int)TagCachesStreams[i].Length);
+                TagCachesStreams[i].Stream.Position = 0;
+                StreamUtil.Copy(TagCachesStreams[i].Stream, writer.BaseStream, (int)TagCachesStreams[i].Stream.Length);
                 StreamUtil.Align(writer.BaseStream, 4);
 
                 uint size = (uint)(writer.BaseStream.Position - offset);
@@ -470,8 +464,8 @@ namespace TagTool.Cache
 
         private void WriteResourcesSection(EndianWriter writer)
         {
-            ResourcesStream.Position = 0;
-            StreamUtil.Copy(ResourcesStream, writer.BaseStream, ResourcesStream.Length);
+            ResourcesStream.Stream.Position = 0;
+            StreamUtil.Copy(ResourcesStream.Stream, writer.BaseStream, ResourcesStream.Stream.Length);
         }
 
         private void WriteCampaignFileSection(EndianWriter writer)
@@ -525,7 +519,7 @@ namespace TagTool.Cache
             var entry = new GenericSectionEntry(reader);
             var cacheCount = entry.Count;
 
-            TagCachesStreams = new List<ExtantStream>();
+            TagCachesStreams = new List<UnmanagedExtantStream>();
             CacheNames = new List<string>();
 
             for(int i = 0; i < cacheCount; i++)
@@ -538,10 +532,15 @@ namespace TagTool.Cache
                 if (tableEntry.Size > int.MaxValue)
                     throw new Exception("Tag cache size not supported");
 
-                var tagStream = new MemoryStream();
-                StreamUtil.Copy(reader.BaseStream, tagStream, (int)tableEntry.Size);
-                tagStream.Position = 0;
-                TagCachesStreams.Add(new ExtantStream(tagStream));
+                unsafe
+                {
+                    long tagBufferSize = 2L * 1024 * 1024 * 1024;
+                    var tagData = Marshal.AllocHGlobal((IntPtr)tagBufferSize);
+                    var tagStream = new ExtantStream(new UnmanagedMemoryStream((byte*)tagData.ToPointer(), 0, tagBufferSize, FileAccess.ReadWrite));
+                    StreamUtil.Copy(reader.BaseStream, tagStream, (int)tableEntry.Size);
+                    tagStream.Position = 0;
+                    TagCachesStreams.Add(new UnmanagedExtantStream(tagData, tagStream));
+                }
             }
         }
 
@@ -550,26 +549,30 @@ namespace TagTool.Cache
             var section = GetSectionHeader(reader, ModPackageSection.Resources);
             if (!GoToSectionHeaderOffset(reader, section))
                 return;
-            Stream newResourceStream;
             if(section.Size <= 0x7FFFFFFF && !IsLarge)
             {
-                newResourceStream = new MemoryStream();
-                ResourcesStream = new ExtantStream(newResourceStream);
-                CopyStreamChunk(reader, ResourcesStream, section.Size);
+                unsafe 
+                {
+                    long resourcebufferSize = 2L * 1024 * 1024 * 1024; // 2 GB max
+                    var resourceData = Marshal.AllocHGlobal((IntPtr)resourcebufferSize);
+                    var resourceStream = new ExtantStream(new UnmanagedMemoryStream((byte*)resourceData.ToPointer(), 0, resourcebufferSize, FileAccess.ReadWrite));
+                    ResourcesStream = new UnmanagedExtantStream(resourceData, resourceStream);
+                    CopyStreamChunk(reader, ResourcesStream.Stream, section.Size);
+                }
             }
             else
             {
                 unsafe
                 {
-                    long bufferSize = 4L * 1024 * 1024 * 1024; // 4 GB max
-                    Data = Marshal.AllocHGlobal((IntPtr)bufferSize);
-                    newResourceStream = new UnmanagedMemoryStream((byte*)Data.ToPointer(), 0, bufferSize, FileAccess.ReadWrite);
-                    ResourcesStream = new ExtantStream(newResourceStream);
-                    CopyStreamChunk(reader, ResourcesStream, section.Size);
+                    long resourcebufferSize = 4L * 1024 * 1024 * 1024; // 4 GB max
+                    var resourceData = Marshal.AllocHGlobal((IntPtr)resourcebufferSize);
+                    var resourceStream = new ExtantStream(new UnmanagedMemoryStream((byte*)resourceData.ToPointer(), 0, resourcebufferSize, FileAccess.ReadWrite));
+                    ResourcesStream = new UnmanagedExtantStream(resourceData, resourceStream);
+                    CopyStreamChunk(reader, ResourcesStream.Stream, section.Size);
                 }
             }
             
-            ResourcesStream.Position = 0;
+            ResourcesStream.Stream.Position = 0;
         }
 
         private void ReadTagNamesSection(EndianReader reader, DataSerializationContext context, TagDeserializer deserializer)

@@ -35,9 +35,12 @@ namespace TagTool.Commands.PhysicsModels
             if (Cache.TagCache.TryGetCachedTag(tagname, out tag))
                 createNew = false;
 
+            StreamReader sr = new StreamReader(path);
+            string jsonString = sr.ReadToEnd();
+
             // Model building logic
             var modelbuilder = new PhysicsModelBuilder();
-            if (!modelbuilder.ParseFromFile(path, moppflag, null, (GameCacheHaloOnlineBase)Cache, cacheStream, null))
+            if (!modelbuilder.ParseFromFile(jsonString, moppflag, null, (GameCacheHaloOnlineBase)Cache, cacheStream, null))
                 return new TagToolError(CommandError.FileIO, "Failed to parse the specified file");
 
             var phmo = modelbuilder.Build();
@@ -78,7 +81,7 @@ namespace TagTool.Commands.PhysicsModels
 
             // Model building logic
             var modelbuilder = new PhysicsModelBuilder();
-            if (!modelbuilder.ConvertJmsToJson(jms, (GameCacheHaloOnlineBase)Cache, cacheStream))
+            if (!modelbuilder.ConvertJmsToJson(jms, moppflag, (GameCacheHaloOnlineBase)Cache, cacheStream))
                 return new TagToolError(CommandError.FileIO, "Failed to parse the specified jms");
 
             var phmo = modelbuilder.Build();

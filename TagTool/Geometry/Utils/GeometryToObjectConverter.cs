@@ -65,9 +65,23 @@ namespace TagTool.Geometry.Utils
                         continue;
                     var test_lbsp = SourceCache.Deserialize<ScenarioLightmapBspData>(SourceStream, lbspTag);
 
+                    // TODO: FIND A PROPER FIX
+
+                    var isBad = false;
+
+                    if (StructureBspIndex == (test_lbsp.BspIndex - 1) && test_lbsp.BspIndex == (StructureBspIndex + 1)) 
+                    {
+                        StructureBspIndex = test_lbsp.BspIndex;
+                        isBad = true;
+                    }
+
                     if (StructureBspIndex == test_lbsp.BspIndex)
                     {
                         Lbsp = test_lbsp;
+                        if (isBad) 
+                        {
+                            StructureBspIndex = (test_lbsp.BspIndex - 1);
+                        }
                         break;
                     }
                 }
@@ -215,6 +229,10 @@ namespace TagTool.Geometry.Utils
             DestCache.Serialize(DestStream, collisionModelTag, collisionModel);
             DestCache.Serialize(DestStream, modelTag, model);
             DestCache.Serialize(DestStream, scenTag, gameObject);
+
+            PortTag.FinishAsync();
+            PortTag.ProcessDeferredActions();
+            PortTag.FinalizeRenderMethods(DestStream, SourceStream);
 
             Console.WriteLine($"['{renderModelTag.Group}', 0x{renderModelTag.Index:X04}] {renderModelTag.Name}");
             Console.WriteLine($"['{collisionModelTag.Group}', 0x{collisionModelTag.Index:X04}] {collisionModelTag.Name}");

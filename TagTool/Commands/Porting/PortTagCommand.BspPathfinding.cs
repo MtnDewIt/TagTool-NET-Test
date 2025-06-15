@@ -100,7 +100,9 @@ namespace TagTool.Commands.Porting
                         new TagToolWarning("Instanced seam bit vector truncated!");
 
                     instancedgeo.SeamBitVector = new uint[] { instancedgeo.SeamBitVector[0] };
-              
+
+                    instancedgeo.Name = CacheContext.StringTable.GetOrAddString(BlamCache.StringTable.GetString(bsp.InstancedGeometryInstanceNames[bsp.InstancedGeometryInstances.IndexOf(instancedgeo)].Name));
+
                     instancedgeo.PathfindingPolicy = instancedgeo.LightmappingPolicyReach.ConvertLexical<Scenery.PathfindingPolicyValue>();
                     instancedgeo.LightmappingPolicy = instancedgeo.LightmappingPolicyReach.ConvertLexical<InstancedGeometryInstance.InstancedGeometryLightmappingPolicy>();
 

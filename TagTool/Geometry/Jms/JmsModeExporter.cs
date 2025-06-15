@@ -121,10 +121,10 @@ namespace TagTool.Geometry.Jms
                         var indices = ModelExtractor.ReadIndices(meshReader, mesh.Parts[partIndex]);
 
                         //recalculate vertex normals
-                        Vector3[] vertexPositions = vertices.Select(v => Vector3fromVector3D(v.Position)).ToArray();
+                        Vector3[] vertexPositions = vertices.Select(v => v.Position).ToArray();
                         Vector3[] vertexNormals = CalculateVertexNormals(vertexPositions, indices);
                         for (var v = 0; v < vertexNormals.Length; v++)
-                            vertices[v].Normal = Vector3DfromVector3(vertexNormals[v]);
+                            vertices[v].Normal = vertexNormals[v];
 
                         for(var j = 0; j < indices.Length; j += 3)
                         {
@@ -257,15 +257,6 @@ namespace TagTool.Geometry.Jms
             }
 
             return vertexNormals;
-        }
-
-        private Vector3 Vector3fromVector3D(Vector3D input)
-        {
-            return new Vector3(input.X, input.Y, input.Z);
-        }
-        private Vector3D Vector3DfromVector3(Vector3 input)
-        {
-            return new Vector3D(input.X, input.Y, input.Z);
         }
     }
 }

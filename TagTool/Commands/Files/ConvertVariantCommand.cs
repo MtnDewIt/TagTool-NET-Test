@@ -42,6 +42,21 @@ namespace TagTool.Commands.Files
             ".zombiez",
             ".map"
         };
+        
+        private static readonly Dictionary<ContentItemType, string> ContentTypeToFileExtension = new Dictionary<ContentItemType, string>()
+        {
+            [ContentItemType.None] = ".bin",
+            [ContentItemType.CtfVariant] = ".ctf",
+            [ContentItemType.SlayerVariant] = ".slayer",
+            [ContentItemType.OddballVariant] = ".oddball",
+            [ContentItemType.KingOfTheHillVariant] = ".koth",
+            [ContentItemType.JuggernautVariant] = ".jugg",
+            [ContentItemType.TerritoriesVariant] = ".terries",
+            [ContentItemType.AssaultVariant] = ".assault",
+            [ContentItemType.InfectionVariant] = ".zombiez",
+            [ContentItemType.VipVariant] = ".vip",
+            [ContentItemType.SandboxMap] = ".map",
+        };
 
         public ConvertVariantCommand(GameCache cache) : base
         (
@@ -107,7 +122,9 @@ namespace TagTool.Commands.Files
             var input = new FileInfo(filePath);
             var blf = new Blf(Cache.Version, Cache.Platform);
 
-            var variantName = "";
+            string variantName = "";
+            ulong uniqueId = 0;
+            ContentItemType contentType = ContentItemType.None;
 
             try
             {
@@ -132,10 +149,12 @@ namespace TagTool.Commands.Files
                         blf.ContentFlags |= Blf.BlfFileContentFlags.EndOfFile;
                     }
 
+                    uniqueId = blf.ContentHeader?.Metadata?.UniqueId ?? 0;
                     variantName = blf.ContentHeader?.Metadata?.Name ?? "";
+                    contentType = blf.ContentHeader?.Metadata?.ContentType ?? ContentItemType.None;
                 }
 
-                var output = GetOutputPath(input, variantName, blf.ContentHeader.Metadata.UniqueId);
+                var output = GetOutputPath(variantName, contentType, uniqueId);
 
                 Directory.CreateDirectory(Path.GetDirectoryName(output));
 
@@ -145,7 +164,10 @@ namespace TagTool.Commands.Files
                     blf.Write(writer);
                 }
 
-                UniqueIdTable.Add(blf.ContentHeader.Metadata.UniqueId);
+                if (uniqueId != 0)
+                {
+                    UniqueIdTable.Add(uniqueId);
+                }
             }
             catch (Exception e)
             {
@@ -236,9 +258,11 @@ namespace TagTool.Commands.Files
             }
         }
 
-        private string GetOutputPath(FileInfo input, string variantName, ulong uniqueId)
+        private string GetOutputPath(string variantName, ContentItemType contentType, ulong uniqueId)
         {
-            string outputPath = input.Name.EndsWith(".map") ? Path.Combine(OutputPath, $@"map_variants", Regex.Replace($"{variantName.TrimStart().TrimEnd()}", @"[*\\ /:""]", "_"), "sandbox.map") : Path.Combine(OutputPath, $@"game_variants", Regex.Replace($"{variantName.TrimStart().TrimEnd()}", @"[*\\ /:""]", "_"), $@"variant{input.Extension}");
+            var filteredName = Regex.Replace($"{variantName.TrimStart().TrimEnd().TrimEnd('.')}", @"[<>:""/\|?*]", "_");
+
+            string outputPath = contentType == ContentItemType.SandboxMap ? Path.Combine(OutputPath, $@"map_variants", filteredName, $@"sandbox{ContentTypeToFileExtension[contentType]}") : Path.Combine(OutputPath, $@"game_variants", filteredName, $@"variant{ContentTypeToFileExtension[contentType]}");
 
             if (Path.Exists(outputPath) && UniqueIdTable.Contains(uniqueId))
             {
@@ -255,7 +279,7 @@ namespace TagTool.Commands.Files
             var time = DateTime.Now;
             var shortDateTime = $@"{time.ToShortDateString()}-{time.ToShortTimeString()}";
 
-            var fileName = Regex.Replace($"hott_{shortDateTime}_variant_errors.log", @"[*\\ /:]", "_");
+            var fileName = Regex.Replace($"hott_{shortDateTime}_variant_errors.log", @"[<>:""/\|?*]", "_");
             var filePath = "logs";
             var fullPath = Path.Combine(Program.TagToolDirectory, filePath, fileName);
 

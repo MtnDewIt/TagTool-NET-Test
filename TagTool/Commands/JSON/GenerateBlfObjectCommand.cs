@@ -203,7 +203,7 @@ namespace TagTool.Commands.JSON
             var time = DateTime.Now;
             var shortDateTime = $@"{time.ToShortDateString()}-{time.ToShortTimeString()}";
 
-            var fileName = Regex.Replace($"hott_{shortDateTime}_blf_errors.log", @"[*\\ /:]", "_");
+            var fileName = Regex.Replace($"hott_{shortDateTime}_blf_errors.log", @"[<>:""/\|?*]", "_");
             var filePath = "logs";
             var fullPath = Path.Combine(Program.TagToolDirectory, filePath, fileName);
 

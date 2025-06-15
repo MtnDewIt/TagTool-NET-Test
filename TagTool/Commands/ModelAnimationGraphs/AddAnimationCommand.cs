@@ -238,6 +238,8 @@ namespace TagTool.Commands.ModelAnimationGraphs
                         AnimationBlock.AnimationData.FootTracking = existingAnimation.AnimationData.FootTracking;
                         AnimationBlock.PlaybackFlags = existingAnimation.PlaybackFlags;
                         AnimationBlock.AnimationData.ProductionFlags = existingAnimation.AnimationData.ProductionFlags;
+                        AnimationBlock.AnimationData.ParentAnimation = existingAnimation.AnimationData.ParentAnimation;
+                        AnimationBlock.AnimationData.NextAnimation = existingAnimation.AnimationData.NextAnimation;
                     }
                 }
 
