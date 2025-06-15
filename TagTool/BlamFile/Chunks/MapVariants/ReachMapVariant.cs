@@ -9,7 +9,7 @@ using TagTool.BlamFile.Chunks.Metadata;
 
 namespace TagTool.BlamFile.Chunks.MapVariants
 {
-    [TagStructure(Size = 0x30A, MinVersion = CacheVersion.HaloReach)]
+    [TagStructure(Size = 0xD9B0, MinVersion = CacheVersion.HaloReach)]
     public class ReachMapVariant : TagStructure
     {
         public ReachContentItemMetadata Metadata;
@@ -29,7 +29,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         public uint MapVariantChecksum;
         public uint ScenarioPaletteCRC;
 
-        public MegaloStringTable StringTable;
+        public SingleLanguageStringTable MegaloStringTable;
 
         [TagField(Length = 651)]
         public ReachVariantObjectDatum[] Objects;
@@ -63,7 +63,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             };
             mapVariant.MaxBudget = (int)stream.ReadUnsigned(32);
             mapVariant.SpentBudget = (int)stream.ReadUnsigned(32);
-            mapVariant.StringTable = MegaloStringTable.Decode(stream);
+            mapVariant.MegaloStringTable = SingleLanguageStringTable.Decode(stream);
 
             mapVariant.Objects = new ReachVariantObjectDatum[651];
             for (int i = 0; i < 651; i++)

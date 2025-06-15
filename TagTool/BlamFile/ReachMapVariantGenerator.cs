@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TagTool.BlamFile.Chunks;
 using TagTool.BlamFile.Chunks.MapVariants;
+using TagTool.BlamFile.Chunks.Megalo;
 using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
 using TagTool.Commands.Common;
@@ -18,6 +19,7 @@ namespace TagTool.BlamFile
     public class ReachMapVariantGenerator
     {
         private ReachMapVariant SourceMapVariant;
+        private List<string> MegaloStrings;
 
         public HashSet<string> ExcludedMegaloLabels = new HashSet<string>();
         public HashSet<string> ExcludedTags = new HashSet<string>();
@@ -26,6 +28,7 @@ namespace TagTool.BlamFile
         public Blf Convert(Scenario sourceScenario, ReachMapVariant sourceBlf)
         {
             SourceMapVariant = sourceBlf;
+            MegaloStrings = SingleLanguageStringTable.GetStrings(sourceBlf.MegaloStringTable);
 
             Console.WriteLine($"Converting Reach map variant`{SourceMapVariant.Metadata.Name}`...");
 
@@ -114,7 +117,7 @@ namespace TagTool.BlamFile
 
                 if(reachVariantObject.Properties.MegaloLabelIndex != -1)
                 {
-                    var megaloLabel = sourceMapVariant.StringTable.Strings[reachVariantObject.Properties.MegaloLabelIndex];
+                    var megaloLabel = MegaloStrings[reachVariantObject.Properties.MegaloLabelIndex];
                     if (ExcludedMegaloLabels.Contains(megaloLabel))
                     {
                         Console.WriteLine($"Deleted placement #{i} due to megalo label '{megaloLabel}'");
@@ -351,7 +354,7 @@ namespace TagTool.BlamFile
 
             var flags = GameEngineSubTypeFlags.TargetTraining;
 
-            var label = SourceMapVariant.StringTable.Strings[megaloLabelIndex];
+            var label = MegaloStrings[megaloLabelIndex];
             switch (label)
             {
                 case "as_bomb":
