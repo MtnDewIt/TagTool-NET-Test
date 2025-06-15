@@ -38,6 +38,9 @@ namespace TagTool.BlamFile.Chunks
                 if (deserializer.CachePlatform == CachePlatform.MCC)
                 {
                     // TODO: Figure out how to account for 343's bullshit :/
+                    // chunk header = big endian
+                    // chunk data = little endian
+                    contentHeader.MetadataReach = ReachContentItemMetadata.Decode(new BitStream(reader.BaseStream), false);
                 }
                 else 
                 {
