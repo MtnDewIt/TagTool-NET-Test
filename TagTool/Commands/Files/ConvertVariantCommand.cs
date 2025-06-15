@@ -1,20 +1,20 @@
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using TagTool.BlamFile;
+using TagTool.BlamFile.Chunks;
+using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
-using TagTool.Commands;
 using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
-using System;
-using System.Linq;
-using Newtonsoft.Json;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
-using TagTool.BlamFile.Chunks;
 
 namespace TagTool.Commands.Files
 {
@@ -43,19 +43,19 @@ namespace TagTool.Commands.Files
             ".map"
         };
         
-        private static readonly Dictionary<ContentItemType, string> ContentTypeToFileExtension = new Dictionary<ContentItemType, string>()
+        private static readonly Dictionary<ContentItemMetadata.ContentItemType, string> ContentTypeToFileExtension = new Dictionary<ContentItemMetadata.ContentItemType, string>()
         {
-            [ContentItemType.None] = ".bin",
-            [ContentItemType.CtfVariant] = ".ctf",
-            [ContentItemType.SlayerVariant] = ".slayer",
-            [ContentItemType.OddballVariant] = ".oddball",
-            [ContentItemType.KingOfTheHillVariant] = ".koth",
-            [ContentItemType.JuggernautVariant] = ".jugg",
-            [ContentItemType.TerritoriesVariant] = ".terries",
-            [ContentItemType.AssaultVariant] = ".assault",
-            [ContentItemType.InfectionVariant] = ".zombiez",
-            [ContentItemType.VipVariant] = ".vip",
-            [ContentItemType.SandboxMap] = ".map",
+            [ContentItemMetadata.ContentItemType.None] = ".bin",
+            [ContentItemMetadata.ContentItemType.CTF] = ".ctf",
+            [ContentItemMetadata.ContentItemType.Slayer] = ".slayer",
+            [ContentItemMetadata.ContentItemType.Oddball] = ".oddball",
+            [ContentItemMetadata.ContentItemType.King] = ".koth",
+            [ContentItemMetadata.ContentItemType.Juggernaut] = ".jugg",
+            [ContentItemMetadata.ContentItemType.Territories] = ".terries",
+            [ContentItemMetadata.ContentItemType.Assault] = ".assault",
+            [ContentItemMetadata.ContentItemType.Infection] = ".zombiez",
+            [ContentItemMetadata.ContentItemType.VIP] = ".vip",
+            [ContentItemMetadata.ContentItemType.Usermap] = ".map",
         };
 
         public ConvertVariantCommand(GameCache cache) : base
@@ -124,7 +124,7 @@ namespace TagTool.Commands.Files
 
             string variantName = "";
             ulong uniqueId = 0;
-            ContentItemType contentType = ContentItemType.None;
+            ContentItemMetadata.ContentItemType contentType = ContentItemMetadata.ContentItemType.None;
 
             try
             {
@@ -151,7 +151,7 @@ namespace TagTool.Commands.Files
 
                     uniqueId = blf.ContentHeader?.Metadata?.UniqueId ?? 0;
                     variantName = blf.ContentHeader?.Metadata?.Name ?? "";
-                    contentType = blf.ContentHeader?.Metadata?.ContentType ?? ContentItemType.None;
+                    contentType = blf.ContentHeader?.Metadata?.ContentType ?? ContentItemMetadata.ContentItemType.None;
                 }
 
                 var output = GetOutputPath(variantName, contentType, uniqueId);
@@ -258,11 +258,11 @@ namespace TagTool.Commands.Files
             }
         }
 
-        private string GetOutputPath(string variantName, ContentItemType contentType, ulong uniqueId)
+        private string GetOutputPath(string variantName, ContentItemMetadata.ContentItemType contentType, ulong uniqueId)
         {
             var filteredName = Regex.Replace($"{variantName.TrimStart().TrimEnd().TrimEnd('.')}", @"[<>:""/\|?*]", "_");
 
-            string outputPath = contentType == ContentItemType.SandboxMap ? Path.Combine(OutputPath, $@"map_variants", filteredName, $@"sandbox{ContentTypeToFileExtension[contentType]}") : Path.Combine(OutputPath, $@"game_variants", filteredName, $@"variant{ContentTypeToFileExtension[contentType]}");
+            string outputPath = contentType == ContentItemMetadata.ContentItemType.Usermap ? Path.Combine(OutputPath, $@"map_variants", filteredName, $@"sandbox{ContentTypeToFileExtension[contentType]}") : Path.Combine(OutputPath, $@"game_variants", filteredName, $@"variant{ContentTypeToFileExtension[contentType]}");
 
             if (Path.Exists(outputPath) && UniqueIdTable.Contains(uniqueId))
             {
