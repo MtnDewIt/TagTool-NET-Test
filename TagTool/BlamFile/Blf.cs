@@ -33,6 +33,10 @@ namespace TagTool.BlamFile
         public BlfGameVariant GameVariant;
         public BlfContentHeader ContentHeader;
         public BlfMapImage MapImage;
+        public BlfSavedFilmData SavedFilmData;
+        public BlfSavedFilmHeader SavedFilmHeader;
+        public BlfScreenshotCamera ScreenshotCamera;
+        public BlfScreenshotData ScreenshotData;
         public byte[] Buffer;
 
         public Blf(CacheVersion version, CachePlatform cachePlatform)
@@ -58,6 +62,10 @@ namespace TagTool.BlamFile
             Author = 1 << 10,
             PackedMapVariant = 1 << 11,
             PackedGameVariant = 1 << 12,
+            SavedFilmData = 1 << 13,
+            SavedFilmHeader = 1 << 14,
+            ScreenshotCamera = 1 << 15,
+            ScreenshotData = 1 << 16,
         }
 
         // TODO: Verify All Read / Write methods for all chunks
@@ -96,6 +104,11 @@ namespace TagTool.BlamFile
                         EndOfFile = BlfChunkEndOfFile.Decode(reader, deserializer, dataContext);
                         return true;
 
+                    case "_cmp":
+                        ContentFlags |= BlfFileContentFlags.MapVariant;
+                        MapVariant = BlfChunkCompressedData.Decode(reader, deserializer, dataContext);
+                        break;
+
                     case "cmpn":
                         ContentFlags |= BlfFileContentFlags.Campaign;
                         Campaign = BlfCampaign.Decode(deserializer, dataContext);
@@ -114,11 +127,6 @@ namespace TagTool.BlamFile
                     case "mapv":
                         ContentFlags |= BlfFileContentFlags.MapVariant;
                         MapVariant = BlfMapVariant.Decode(reader, deserializer, dataContext, false);
-                        break;
-
-                    case "_cmp":
-                        ContentFlags |= BlfFileContentFlags.MapVariant;
-                        MapVariant = BlfChunkCompressedData.Decode(reader, deserializer, dataContext);
                         break;
 
                     case "mvar":
@@ -157,12 +165,28 @@ namespace TagTool.BlamFile
                         break;
 
                     case "scnd":
+                        ContentFlags |= BlfFileContentFlags.ScreenshotData;
+                        ScreenshotData = BlfScreenshotData.Decode(deserializer, dataContext);
+                        break;
+
                     case "scnc":
+                        ContentFlags |= BlfFileContentFlags.ScreenshotCamera;
+                        ScreenshotCamera = BlfScreenshotCamera.Decode(deserializer, dataContext);
+                        break;
+
                     case "flmh":
+                        ContentFlags |= BlfFileContentFlags.SavedFilmHeader;
+                        SavedFilmHeader = BlfSavedFilmHeader.Decode(deserializer, dataContext);
+                        break;
+
                     case "flmd":
-                    case "ssig":
-                    case "mps2":
-                    case "chrt":
+                        ContentFlags |= BlfFileContentFlags.SavedFilmData;
+                        SavedFilmData = BlfSavedFilmData.Decode(deserializer, dataContext);
+                        break;
+
+                    case "ssig": 
+                    case "mps2": 
+                    case "chrt": 
                     default:
                         throw new NotImplementedException($"BLF chunk type {header.Signature} not implemented!");
                 }
@@ -214,6 +238,18 @@ namespace TagTool.BlamFile
 
             if (ContentFlags.HasFlag(BlfFileContentFlags.Author))
                 BlfAuthor.Encode(serializer, dataContext, Author);
+
+            if (ContentFlags.HasFlag(BlfFileContentFlags.ScreenshotData))
+                BlfScreenshotData.Encode(serializer, dataContext, ScreenshotData);
+
+            if (ContentFlags.HasFlag(BlfFileContentFlags.ScreenshotCamera))
+                BlfScreenshotCamera.Encode(serializer, dataContext, ScreenshotCamera);
+
+            if (ContentFlags.HasFlag(BlfFileContentFlags.SavedFilmHeader))
+                BlfSavedFilmHeader.Encode(serializer, dataContext, SavedFilmHeader);
+
+            if (ContentFlags.HasFlag(BlfFileContentFlags.SavedFilmData))
+                BlfSavedFilmData.Encode(serializer, dataContext, SavedFilmData);
 
             BlfChunkEndOfFile.Encode(serializer, dataContext, EndOfFile);
 

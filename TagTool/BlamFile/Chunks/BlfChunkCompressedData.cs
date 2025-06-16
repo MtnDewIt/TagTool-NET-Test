@@ -19,6 +19,8 @@ namespace TagTool.BlamFile.Chunks
             chunk.MajorVersion = reader.ReadInt16();
             chunk.MinorVersion = reader.ReadInt16();
 
+            new TagToolWarning("Compressed Chunks Not Supported. Skipping...");
+
             var variantSize = chunk.Length - 0xC;
 
             var buffer = new byte[variantSize];
@@ -27,8 +29,6 @@ namespace TagTool.BlamFile.Chunks
             {
                 buffer[i] = reader.ReadByte();
             }
-
-            new TagToolWarning("Compressed Chunks Not Supported. Skipping...");
 
             if (deserializer.Version == CacheVersion.HaloReach)
             {
