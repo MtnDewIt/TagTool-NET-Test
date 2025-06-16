@@ -295,7 +295,7 @@ namespace TagTool.BlamFile
                     reader.SeekTo(0x3C);
                     var buildVersion = reader.ReadUInt16();
 
-                    if (buildVersion == 0x2E54)
+                    if (buildVersion == 0x2E54 || buildVersion == 0x2F21)
                     {
                         version = CacheVersion.HaloReach;
                         platform = CachePlatform.Original;
