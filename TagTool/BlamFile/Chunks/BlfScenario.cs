@@ -1,23 +1,26 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using TagTool.Cache;
-using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.Chunks
 {
-    [TagStructure(Size = 0x4D44, Align = 0x1, MaxVersion = CacheVersion.Halo3Retail)]
-    [TagStructure(Size = 0x98B4, Align = 0x1, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-    [TagStructure(Size = 0xCC8C, Align = 0x1, MinVersion = CacheVersion.HaloReach)]
+    [TagStructure(Size = 0x4D44, MaxVersion = CacheVersion.Halo3Retail)]
+    [TagStructure(Size = 0x98B4, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0xCC8C, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach)]
+    [TagStructure(Size = 0x11DCC, MinVersion = CacheVersion.Halo4)]
     public class BlfScenario : BlfChunkHeader
     {
         public int MapId;
         public BlfScenarioFlags MapFlags;
 
-        [TagField(Length = 0xC)]
+        [TagField(Length = 0xC, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(Length = 0x11, MinVersion = CacheVersion.Halo4)]
         public NameUnicode32[] Names;
 
-        [TagField(Length = 0xC)]
+        [TagField(Length = 0xC, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(Length = 0x11, MinVersion = CacheVersion.Halo4)]
         public NameUnicode128[] Descriptions;
 
         [TagField(Length = 0x100)]
@@ -75,21 +78,21 @@ namespace TagTool.BlamFile.Chunks
             IsForgeOnly = 1 << 12,
         }
 
-        [TagStructure(Size = 0x40, Align = 0x1)]
+        [TagStructure(Size = 0x40)]
         public class NameUnicode32 : TagStructure
         {
-            [TagField(CharSet = System.Runtime.InteropServices.CharSet.Unicode, Length = 0x20, DataAlign = 0x1)]
+            [TagField(CharSet = CharSet.Unicode, Length = 0x20)]
             public string Name;
         }
 
-        [TagStructure(Size = 0x100, Align = 0x1)]
+        [TagStructure(Size = 0x100)]
         public class NameUnicode128 : TagStructure
         {
-            [TagField(CharSet = System.Runtime.InteropServices.CharSet.Unicode, Length = 0x80, DataAlign = 0x1)]
+            [TagField(CharSet = CharSet.Unicode, Length = 0x80)]
             public string Name;
         }
 
-        [TagStructure(Size = 0xB, Align = 0x1)]
+        [TagStructure(Size = 0xB)]
         public class GameEngineTeams : TagStructure
         {
             public byte NoGametypeTeamCount;
@@ -105,9 +108,10 @@ namespace TagTool.BlamFile.Chunks
             public byte InfectionTeamCount;
         }
 
-        [TagStructure(Size = 0xF08, Align = 0x1, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagStructure(Size = 0xF10, Align = 0x1, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-        [TagStructure(Size = 0xF88, Align = 0x1, MinVersion = CacheVersion.HaloReach)]
+        [TagStructure(Size = 0xF08, MaxVersion = CacheVersion.Halo3Retail)]
+        [TagStructure(Size = 0xF10, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0xF88, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach)]
+        [TagStructure(Size = 0x15C8, MinVersion = CacheVersion.Halo4)]
         public class BlfScenarioInsertion : TagStructure
         {
             public bool Visible;
@@ -115,6 +119,7 @@ namespace TagTool.BlamFile.Chunks
 
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public short ZoneSetIndex;
+
             [TagField(Length = 0x2, MinVersion = CacheVersion.HaloReach)]
             public byte[] Padding1;
 
@@ -126,13 +131,15 @@ namespace TagTool.BlamFile.Chunks
             [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
             public int SurvivalPresenceContextId;
 
-            [TagField(Length = 4, Flags = TagFieldFlags.Padding)]
+            [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
             public byte[] Padding2;
 
-            [TagField(Length = 0xC)]
+            [TagField(Length = 0xC, MaxVersion = CacheVersion.HaloReach)]
+            [TagField(Length = 0x11, MinVersion = CacheVersion.Halo4)]
             public NameUnicode32[] Names;
 
-            [TagField(Length = 0xC)]
+            [TagField(Length = 0xC, MaxVersion = CacheVersion.HaloReach)]
+            [TagField(Length = 0x11, MinVersion = CacheVersion.Halo4)]
             public NameUnicode128[] Descriptions;
 
             [Flags]

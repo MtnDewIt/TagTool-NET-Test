@@ -5,38 +5,39 @@ using TagTool.BlamFile.Chunks;
 
 namespace TagTool.BlamFile.HaloOnline
 {
-    [TagStructure(Size = 0x14778, MaxVersion = CacheVersion.Halo3Retail)]
-    [TagStructure(Size = 0x192E9, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x14778, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
+    [TagStructure(Size = 0x192E9, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
     [TagStructure(Size = 0x29784, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
     [TagStructure(Size = 0x19779, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
-    [TagStructure(Size = 0x1C6C1, MinVersion = CacheVersion.HaloReach)]
+    [TagStructure(Size = 0x1C6C1, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach)]
+    [TagStructure(Size = 0x21AAC, MinVersion = CacheVersion.Halo4)]
     public class HaloOnlineBlf : TagStructure 
     {
         public EndianFormat Format;
         public Blf.BlfFileContentFlags ContentFlags;
 
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public BlfChunkStartOfFile StartOfFile;
 
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public BlfEndOfFileCRC EndOfFileCRC;
 
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public BlfEndOfFileRSA EndOfFileRSA;
 
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public BlfEndOfFileSHA1 EndOfFileSHA1;
 
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public BlfChunkEndOfFile EndOfFile;
 
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public BlfAuthor Author;
 
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public BlfCampaign Campaign;
 
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public BlfScenario Scenario;
 
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
@@ -45,19 +46,19 @@ namespace TagTool.BlamFile.HaloOnline
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
         public BlfMapVariantTagNames MapVariantTagNames;
 
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public BlfMapVariant MapVariant;
 
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public BlfGameVariant GameVariant;
 
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public BlfContentHeader ContentHeader;
 
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public BlfMapImage MapImage;
 
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public byte[] Buffer;
 
         public HaloOnlineBlf(Blf blfData) 
