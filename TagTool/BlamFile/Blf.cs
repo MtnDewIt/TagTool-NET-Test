@@ -254,17 +254,6 @@ namespace TagTool.BlamFile
         private static void GetFileVersion(EndianReader reader, ref CacheVersion version, ref CachePlatform platform) 
         {
             var startOfFile = reader.Position;
-            
-            /*
-            .campaign
-            - Could go off of the file length???
-            Halo3Retail Original: 
-            Halo3Retail MCC: 
-            HaloReach Original: 
-            HaloReach MCC: 
-            Halo4 Original: 
-            Halo4 MCC: 
-            */
 
             reader.SeekTo(0xE);
             var name = reader.ReadString(0x20);
@@ -335,7 +324,34 @@ namespace TagTool.BlamFile
                     }
                 }
             }
-            else 
+            else if (signature == "mapi")
+            {
+                version = CacheVersion.Halo3Retail;
+                platform = CachePlatform.Original;
+                reader.SeekTo(startOfFile);
+                return;
+            }
+            else if (signature == "cmpn")
+            {
+                reader.SeekTo(0x38);
+                var campaignMajorVersion = reader.ReadInt16();
+
+                if (campaignMajorVersion == 0x0003)
+                {
+                    version = CacheVersion.Halo4;
+                    platform = CachePlatform.Original;
+                    reader.SeekTo(startOfFile);
+                    return;
+                }
+                else if (campaignMajorVersion == 0x0001) 
+                {
+                    version = CacheVersion.Halo3Retail;
+                    platform = CachePlatform.Original;
+                    reader.SeekTo(startOfFile);
+                    return;
+                }
+            }
+            else if (signature == "levl") 
             {
                 switch (reader.Length)
                 {
@@ -361,6 +377,8 @@ namespace TagTool.BlamFile
                         return;
                 }
             }
+
+            reader.SeekTo(startOfFile);
         }
 
         /// <summary>

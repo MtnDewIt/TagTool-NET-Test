@@ -1,30 +1,39 @@
-﻿using TagTool.Serialization;
+﻿using TagTool.Cache;
+using TagTool.Serialization;
 using TagTool.Tags;
+using System.Runtime.InteropServices;
 
 namespace TagTool.BlamFile.Chunks
 {
-    [TagStructure(Size = 0x130C, Align = 0x1)]
+    [TagStructure(Size = 0x130C, MaxVersion = CacheVersion.HaloReach)]
+    [TagStructure(Size = 0x1ACC, MinVersion = CacheVersion.Halo4)]
     public class BlfCampaign : BlfChunkHeader
     {
         public int CampaignId;
         public uint TypeFlags;
 
-        [TagField(Length = 0xC)]
+        [TagField(Length = 0xC, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(Length = 0x11, MinVersion = CacheVersion.Halo4)]
         public CampaignNameUnicode32[] Names;
 
-        [TagField(Length = 0xC)]
+        [TagField(Length = 0xC, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(Length = 0x11, MinVersion = CacheVersion.Halo4)]
         public BlfScenario.NameUnicode128[] Descriptions;
 
         [TagField(Length = 0x40)]
         public int[] MapIds;
 
-        [TagField(Length = 4, Flags = TagFieldFlags.Padding)]
+        [TagField(MinVersion = CacheVersion.Halo4)]
+        public int Unknown1AC4;
+
+        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(Length = 0x40, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo4)]
         public byte[] Padding1;
 
-        [TagStructure(Size = 0x80, Align = 0x1)]
+        [TagStructure(Size = 0x80)]
         public class CampaignNameUnicode32 : TagStructure
         {
-            [TagField(CharSet = System.Runtime.InteropServices.CharSet.Unicode, Length = 0x40, DataAlign = 0x1)]
+            [TagField(CharSet = CharSet.Unicode, Length = 0x40)]
             public string Name;
         }
 
