@@ -251,7 +251,7 @@ namespace TagTool.BlamFile
                 return false;
         }
 
-        private void GetFileVersion(EndianReader reader, ref CacheVersion version, ref CachePlatform platform) 
+        private static void GetFileVersion(EndianReader reader, ref CacheVersion version, ref CachePlatform platform) 
         {
             var startOfFile = reader.Position;
             
@@ -272,12 +272,12 @@ namespace TagTool.BlamFile
             reader.SeekTo(0x30);
             var signature = reader.ReadTag();
 
-            if (name == "map variant" || name == "game var" || signature == "athr" || signature == "rhta")
+            if (name == "map variant" || name == "game var" || signature == "athr")
             {
                 reader.SeekTo(0x80);
                 var mccSignature = reader.ReadTag();
 
-                if (mccSignature == "mvar" || mccSignature == "ravm" || mccSignature == "gvar" || mccSignature == "ravg") 
+                if (mccSignature == "mvar" || mccSignature == "gvar") 
                 {
                     version = CacheVersion.Halo3Retail;
                     platform = CachePlatform.MCC;
@@ -285,25 +285,24 @@ namespace TagTool.BlamFile
                     return;
                 }
             }
-            else if (signature == "chdr" || signature == "rdhc")
+            else if (signature == "chdr")
             {
                 reader.SeekTo(0x2F0);
                 var reachSignature = reader.ReadTag();
 
-                if (reachSignature == "mvar" || reachSignature == "ravm" || reachSignature == "mpvr" || reachSignature == "rvpm") 
+                if (reachSignature == "mvar" || reachSignature == "mpvr") 
                 {
                     reader.SeekTo(0x3C);
-                    var reachMCCSignature = reader.ReadInt16();
+                    var buildVersion = reader.ReadUInt16();
 
-                    if (reachMCCSignature == 0x2E54 || reachMCCSignature == 0x542E)
+                    if (buildVersion == 0x2E54)
                     {
                         version = CacheVersion.HaloReach;
                         platform = CachePlatform.Original;
                         reader.SeekTo(startOfFile);
                         return;
                     }
-                    // TODO: Maybe add extra check
-                    else
+                    else if (buildVersion == 0xFFFF)
                     {
                         version = CacheVersion.HaloReach;
                         platform = CachePlatform.MCC;
@@ -315,20 +314,19 @@ namespace TagTool.BlamFile
                 reader.SeekTo(0x138);
                 var h3Signature = reader.ReadTag();
 
-                if (h3Signature == "mapv" || h3Signature == "vpam" || h3Signature == "mpvr" || h3Signature == "rvpm")
+                if (h3Signature == "mapv" || h3Signature == "mpvr")
                 {
                     reader.SeekTo(0x3A);
-                    var eldewritoSignature = reader.ReadInt16();
+                    var contentMinorVersion = reader.ReadInt16();
 
-                    if (eldewritoSignature == 0x3 || eldewritoSignature == 0x300)
+                    if (contentMinorVersion == 0x0003)
                     {
                         version = CacheVersion.HaloOnlineED;
                         platform = CachePlatform.Original;
                         reader.SeekTo(startOfFile);
                         return;
                     }
-                    // TODO: Maybe add extra check
-                    else 
+                    else if (contentMinorVersion == 0x0002)
                     {
                         version = CacheVersion.Halo3Retail;
                         platform = CachePlatform.Original;
