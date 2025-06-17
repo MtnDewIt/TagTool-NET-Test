@@ -30,32 +30,21 @@ namespace TagTool.Commands.Files
                 return new TagToolError(CommandError.ArgInvalid, $"\"{args[0]}\" does not exist at the specified path");
 
             FileInfo output = new FileInfo(args[1]);
+
             if (!output.Directory.Exists)
                 output.Directory.Create();
 
-            CacheVersion version = CacheVersion.Halo3Retail;
-            CachePlatform cachePlatform = CachePlatform.Original;
-
-            // todo: support little endian
-            /*if (args.Count == 3)
-            {
-                if (CacheVersion.TryParse(args[2], out CacheVersion tempVersion))
-                    version = tempVersion;
-            }*/
-
-            Blf blf = new Blf(version, cachePlatform);
+            var blf = new Blf(CacheVersion.Halo3Retail, CachePlatform.Original);
 
             using (var stream = file.OpenRead())
             using (var reader = new EndianReader(stream))
             {
-                if (version == CacheVersion.Halo3Retail || version == CacheVersion.Halo3ODST)
-                    reader.Format = EndianFormat.BigEndian;
                 if (!blf.Read(reader))
                     return new TagToolError(CommandError.CustomMessage, "Could not parse BLF");
-            }
 
-            if (!blf.ContentFlags.HasFlag(Blf.BlfFileContentFlags.MapImage) || blf.Buffer == null || blf.Buffer.Length == 0)
-                return new TagToolError(CommandError.CustomMessage, "BLF does not contain image");
+                if (!blf.ContentFlags.HasFlag(Blf.BlfFileContentFlags.MapImage) && !blf.ContentFlags.HasFlag(Blf.BlfFileContentFlags.ScreenshotData) || blf.Buffer == null || blf.Buffer.Length == 0)
+                    return new TagToolError(CommandError.CustomMessage, "BLF does not contain image");
+            }
 
             using (var stream = output.Create())
             {

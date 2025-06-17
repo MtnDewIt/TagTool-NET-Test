@@ -262,6 +262,8 @@ namespace TagTool.Serialization
                 SerializePoint(block, (Point2d)value);
             else if (valueType == typeof(Rectangle2d))
                 SerializeRectangle2d(block, (Rectangle2d)value);
+            else if (valueType == typeof(RealRectangle2d))
+                SerializeRealRectangle2d(block, (RealRectangle2d)value);
             else if (valueType == typeof(RealRectangle3d))
                 SerializeRealRectangle3d(block, (RealRectangle3d)value);
             else if (valueType == typeof(RealPoint2d))
@@ -279,7 +281,9 @@ namespace TagTool.Serialization
             else if (valueType == typeof(RealPlane3d))
                 SerializePlane(block, (RealPlane3d)value);
             else if (valueType == typeof(RealMatrix4x3))
-                SerializeMatrix(block, (RealMatrix4x3)value);
+                SerializeMatrix4x3(block, (RealMatrix4x3)value);
+            else if (valueType == typeof(RealMatrix4x4))
+                SerializeMatrix4x4(block, (RealMatrix4x4)value);
             else if (valueType == typeof(StringId))
                 block.Writer.Write(((StringId)value).Value);
             else if (valueType == typeof(Angle))
@@ -761,6 +765,14 @@ namespace TagTool.Serialization
             block.Writer.Write(rect.Right);
         }
 
+        private void SerializeRealRectangle2d(IDataBlock block, RealRectangle2d rect)
+        {
+            block.Writer.Write(rect.Top);
+            block.Writer.Write(rect.Left);
+            block.Writer.Write(rect.Bottom);
+            block.Writer.Write(rect.Right);
+        }
+
         private void SerializeRealRectangle3d(IDataBlock block, RealRectangle3d rect)
         {
             block.Writer.Write(rect.X0);
@@ -820,7 +832,7 @@ namespace TagTool.Serialization
             block.Writer.Write(plane.D);
         }
 
-        private void SerializeMatrix(IDataBlock block, RealMatrix4x3 mat)
+        private void SerializeMatrix4x3(IDataBlock block, RealMatrix4x3 mat)
         {
             block.Writer.Write(mat.m11);
             block.Writer.Write(mat.m12);
@@ -834,6 +846,26 @@ namespace TagTool.Serialization
             block.Writer.Write(mat.m41);
             block.Writer.Write(mat.m42);
             block.Writer.Write(mat.m43);
+        }
+
+        private void SerializeMatrix4x4(IDataBlock block, RealMatrix4x4 mat) 
+        {
+            block.Writer.Write(mat.m11);
+            block.Writer.Write(mat.m12);
+            block.Writer.Write(mat.m13);
+            block.Writer.Write(mat.m14);
+            block.Writer.Write(mat.m21);
+            block.Writer.Write(mat.m22);
+            block.Writer.Write(mat.m23);
+            block.Writer.Write(mat.m24);
+            block.Writer.Write(mat.m31);
+            block.Writer.Write(mat.m32);
+            block.Writer.Write(mat.m33);
+            block.Writer.Write(mat.m34);
+            block.Writer.Write(mat.m41);
+            block.Writer.Write(mat.m42);
+            block.Writer.Write(mat.m43);
+            block.Writer.Write(mat.m44);
         }
 
         private void SerializeRange(ISerializationContext context, MemoryStream tagStream, IDataBlock block, object val)

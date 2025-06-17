@@ -5,12 +5,12 @@ using TagTool.BlamFile.Chunks;
 
 namespace TagTool.BlamFile.HaloOnline
 {
-    [TagStructure(Size = 0x14778, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
-    [TagStructure(Size = 0x192E9, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x29784, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
-    [TagStructure(Size = 0x19779, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
-    [TagStructure(Size = 0x1C6C1, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach)]
-    [TagStructure(Size = 0x21AAC, MinVersion = CacheVersion.Halo4)]
+    [TagStructure(Size = 0x148F8, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
+    [TagStructure(Size = 0x19469, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x29904, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+    [TagStructure(Size = 0x198F9, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x1C841, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach)]
+    [TagStructure(Size = 0x21C2C, MinVersion = CacheVersion.Halo4)]
     public class HaloOnlineBlf : TagStructure 
     {
         public EndianFormat Format;
@@ -59,6 +59,12 @@ namespace TagTool.BlamFile.HaloOnline
         public BlfMapImage MapImage;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
+        public BlfScreenshotCamera ScreenshotCamera;
+
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
+        public BlfScreenshotData ScreenshotData;
+
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public byte[] Buffer;
 
         public HaloOnlineBlf(Blf blfData) 
@@ -80,6 +86,8 @@ namespace TagTool.BlamFile.HaloOnline
             GameVariant = blfData.GameVariant;
             ContentHeader = blfData.ContentHeader;
             MapImage = blfData.MapImage;
+            ScreenshotCamera = blfData.ScreenshotCamera;
+            ScreenshotData = blfData.ScreenshotData;
             Buffer = blfData.Buffer;
         }
     }

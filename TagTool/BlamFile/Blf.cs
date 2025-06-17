@@ -166,7 +166,7 @@ namespace TagTool.BlamFile
 
                     case "scnd":
                         ContentFlags |= BlfFileContentFlags.ScreenshotData;
-                        ScreenshotData = BlfScreenshotData.Decode(deserializer, dataContext);
+                        ScreenshotData = BlfScreenshotData.Decode(reader, deserializer, dataContext, out Buffer);
                         break;
 
                     case "scnc":
@@ -240,7 +240,7 @@ namespace TagTool.BlamFile
                 BlfAuthor.Encode(serializer, dataContext, Author);
 
             if (ContentFlags.HasFlag(BlfFileContentFlags.ScreenshotData))
-                BlfScreenshotData.Encode(serializer, dataContext, ScreenshotData);
+                BlfScreenshotData.Encode(writer, serializer, dataContext, ScreenshotData, Buffer);
 
             if (ContentFlags.HasFlag(BlfFileContentFlags.ScreenshotCamera))
                 BlfScreenshotCamera.Encode(serializer, dataContext, ScreenshotCamera);
@@ -339,19 +339,19 @@ namespace TagTool.BlamFile
                 reader.SeekTo(0x138);
                 var h3Signature = reader.ReadTag();
 
-                if (h3Signature == "mapv" || h3Signature == "mpvr")
+                if (h3Signature == "mapv" || h3Signature == "mpvr" || h3Signature == "scnc")
                 {
                     reader.SeekTo(0x3A);
                     var contentMinorVersion = reader.ReadInt16();
 
-                    if (contentMinorVersion == 0x0003)
+                    if (contentMinorVersion == 0x3)
                     {
                         version = CacheVersion.HaloOnlineED;
                         platform = CachePlatform.Original;
                         reader.SeekTo(startOfFile);
                         return;
                     }
-                    else if (contentMinorVersion == 0x0002)
+                    else if (contentMinorVersion == 0x2)
                     {
                         version = CacheVersion.Halo3Retail;
                         platform = CachePlatform.Original;
@@ -372,14 +372,14 @@ namespace TagTool.BlamFile
                 reader.SeekTo(0x38);
                 var campaignMajorVersion = reader.ReadInt16();
 
-                if (campaignMajorVersion == 0x0003)
+                if (campaignMajorVersion == 0x3)
                 {
                     version = CacheVersion.Halo4;
                     platform = CachePlatform.Original;
                     reader.SeekTo(startOfFile);
                     return;
                 }
-                else if (campaignMajorVersion == 0x0001) 
+                else if (campaignMajorVersion == 0x1) 
                 {
                     version = CacheVersion.Halo3Retail;
                     platform = CachePlatform.Original;

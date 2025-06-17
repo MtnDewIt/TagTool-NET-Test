@@ -8,15 +8,15 @@ namespace TagTool.BlamFile.Chunks
     public class BlfScreenshotCamera : BlfChunkHeader
     {
         public uint BufferSize;
-        public ScreenshotCamera Camera;
+        public SavedCamera Camera;
         public uint GameTick;
         public uint FilmTick;
 
         [TagStructure(Size = 0x158)]
-        public class ScreenshotCamera : TagStructure 
+        public class SavedCamera : TagStructure 
         {
             public RenderCamera Camera;
-            public Rectangle2d FrustumBounds;
+            public RealRectangle2d FrustumBounds;
             public RenderProjection Projection;
 
             [TagStructure(Size = 0x88)]
@@ -54,10 +54,12 @@ namespace TagTool.BlamFile.Chunks
             [TagStructure(Size = 0xC0)]
             public class RenderProjection : TagStructure 
             {
+                public float WorldToViewScale;
                 public RealMatrix4x3 WorldToView;
+                public float ViewToWorldScale;
                 public RealMatrix4x3 ViewToWorld;
-                public Rectangle2d ProjectionBounds;
-                public float[][] ProjectionMatrix; // RealMatrix4x4???
+                public RealRectangle2d ProjectionBounds;
+                public RealMatrix4x4 ProjectionMatrix;
                 public RealVector2d WorldToScreenSize;
             }
         }
