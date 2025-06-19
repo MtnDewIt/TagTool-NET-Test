@@ -13,6 +13,8 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>$(NoWarn),CS0169,CS0414,CS0649,CS1591;CA1416</NoWarn>
     <LangVersion>12</LangVersion>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <GenerateLaunchSettingsFile>false</GenerateLaunchSettingsFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>obj\$(Platform)\$(ConfigurationName)\$(TargetFramework)\Documentation.xml</DocumentationFile>
@@ -90,7 +92,7 @@
   </ItemDefinitionGroup>
   <Target Name="PostBuild" AfterTargets="Build">
     <ItemGroup>
-      <ShaderGenerator Include="..\ShaderGenerator\HaloShaderGenerator\bin\$(Platform)\$(ConfigurationName)\$(TargetFramework)\**\*" />
+      <ShaderGenerator Include="..\ShaderGenerator\HaloShaderGenerator\bin\$(Platform)\$(ConfigurationName)\**\*" />
     </ItemGroup>
     <Copy SourceFiles="@(ShaderGenerator)" DestinationFolder="$(OutDir)Tools\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
