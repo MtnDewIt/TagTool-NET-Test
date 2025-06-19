@@ -181,8 +181,6 @@ namespace TagTool.Bitmaps
                     return Commands.Porting.PortingOptions.Current.HqNormalMapConversion ?
                        BitmapFormat.Dxn : BitmapFormat.Dxt1;
 
-                case BitmapFormat.DxnMonoAlpha:
-                case BitmapFormat.ReachDxnMonoAlpha:
                 case BitmapFormat.AY8:
                     return BitmapFormat.A8Y8;
 

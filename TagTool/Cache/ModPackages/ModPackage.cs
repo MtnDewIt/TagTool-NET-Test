@@ -18,8 +18,6 @@ namespace TagTool.Cache
 {
     public class ModPackage : IDisposable
     {
-        private IntPtr Data { get; set; }
-
         public ModPackageHeader Header { get; set; } = new ModPackageHeader();
 
         public ModPackageMetadata Metadata { get; set; } = new ModPackageMetadata();
