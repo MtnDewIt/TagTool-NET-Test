@@ -881,14 +881,6 @@ namespace TagTool.Geometry
                     bone.VertexWeights.Add(new VertexWeight(i - vertexOffset, 1.0f));  // Assign full weight to the correct bone
                 }
 
-                // Handle rigid type meshes by assigning them to their correct bone
-                if (geometryMesh.Type == VertexType.Rigid)
-                {
-                    var rigidNodeIndex = geometryMesh.RigidNodeIndex;
-                    var bone = mesh.Bones[rigidNodeIndex];
-                    bone.VertexWeights.Add(new VertexWeight(i - vertexOffset, 1.0f));  // Assign full weight to the correct bone
-                }
-
                 if (vertex.Indices != null)
                 {
                     for (int j = 0; j < vertex.Indices.Length; j++)
