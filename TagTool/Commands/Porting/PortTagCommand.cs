@@ -211,7 +211,6 @@ namespace TagTool.Commands.Porting
                     switch (blamTag.Group.Tag.ToString())
                     {
                         case "rmcs":
-                        case "rmgl":
                             resultTag = GetDefaultShader(blamTag.Group.Tag);
                             return false;
                     }
@@ -320,6 +319,43 @@ namespace TagTool.Commands.Porting
 
             if(definition is Scenario scenario)
             {
+                foreach (var entry in scenario.Machines)
+                {
+                    if (entry.Multiplayer.MegaloLabel.Contains("invasion") || entry.Multiplayer.MegaloLabel.StartsWith("inv"))
+                    {
+                        var machineWhitelist = new List<string>
+                        {
+                            "levels\\multi\\dlc\\objects\\dlc_invasion_alpha_relay\\dlc_invasion_alpha_relay",
+                            "levels\\multi\\dlc\\objects\\dlc_invasion_bravo_vent\\dlc_invasion_bravo_vent",
+                            "objects\\levels\\shared\\device_machines\\cov_spire_platform\\cov_spire_platform",
+                        };
+                
+                        if (entry.PaletteIndex != -1)
+                            if (machineWhitelist.Contains(scenario.MachinePalette[entry.PaletteIndex].Object?.Name))
+                                entry.Multiplayer.MegaloLabel = "none";
+                    }
+                }
+                
+                foreach (var entry in scenario.Crates)
+                {
+                    if (entry.Multiplayer.MegaloLabel.Contains("invasion") || entry.Multiplayer.MegaloLabel.StartsWith("inv"))
+                    {
+                        var crateWhitelist = new List<string>
+                        {
+                            "levels\\multi\\dlc\\objects\\dlc_invasion\\dlc_invasion_rock_med_a\\dlc_invasion_rock_med_a",
+                            "levels\\multi\\dlc\\objects\\dlc_invasion_heavy_shield\\dlc_invasion_heavy_shield",
+                            "objects\\levels\\forge\\ff_shield_door_medium\\ff_shield_door_medium",
+                            "objects\\levels\\multi\\35_island\\spire_base_cannon\\spire_base_cannon",
+                            "objects\\levels\\multi\\35_island\\spire_cliff_cannon\\spire_cliff_cannon",
+                            "objects\\levels\\multi\\35_island\\spire_gun_cannon\\spire_gun_cannon",
+                        };
+                
+                        if (entry.PaletteIndex != -1)
+                            if (crateWhitelist.Contains(scenario.CratePalette[entry.PaletteIndex].Object?.Name))
+                                entry.Multiplayer.MegaloLabel = "none";
+                    }
+                }
+
                 scenario.Bipeds.Clear();
                 scenario.BipedPalette.Clear();
                 //scenario.Vehicles.Clear();
@@ -451,6 +487,8 @@ namespace TagTool.Commands.Porting
                 CullNewObjects(scenario.EquipmentPalette, scenario.Equipment, reachObjectives);
 
                 RemoveNullPlacements(scenario.SceneryPalette, scenario.Scenery);
+                RemoveNullPlacements(scenario.MachinePalette, scenario.Machines);
+                RemoveNullPlacements(scenario.ControlPalette, scenario.Controls);
                 RemoveNullPlacements(scenario.CratePalette, scenario.Crates);
             }
 
@@ -1056,6 +1094,7 @@ namespace TagTool.Commands.Porting
                                     weapon.TargetTracking[0].LockedSound = ConvertTag(cacheStream, blamCacheStream, ParseLegacyTag(@"sound\weapons\missile_launcher\tracking_locked\tracking_locked.sound_looping")[0]);                                      
                                 }
                             }
+                            weapon.MagnificationFlags = Weapon.WeaponMagnificationFlags.Bit0;
                             break;
                         /*case Vehicle vehicle:
                             //fix vehicle weapon target tracking
@@ -1245,10 +1284,13 @@ namespace TagTool.Commands.Porting
                                                 TransformFlags = controlInstance.TransformFlags,
                                                 ManualBspFlags = controlInstance.ManualBspFlags,
                                                 LightAirprobeName = controlInstance.LightAirprobeName,
-                                                UniqueHandle = controlInstance.UniqueHandle,
-                                                OriginBspIndex = controlInstance.OriginBspIndex,
-                                                ObjectType = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Equipment },
-                                                Source = controlInstance.Source,
+                                                ObjectId = new ObjectIdentifier 
+                                                {
+                                                    UniqueId = controlInstance.ObjectId.UniqueId,
+                                                    OriginBspIndex = controlInstance.ObjectId.OriginBspIndex,
+                                                    Type = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Equipment },
+                                                    Source = controlInstance.ObjectId.Source,
+                                                },
                                                 BspPolicy = controlInstance.BspPolicy,
                                                 EditingBoundToBsp = controlInstance.EditingBoundToBsp,
                                                 EditorFolder = controlInstance.EditorFolder,

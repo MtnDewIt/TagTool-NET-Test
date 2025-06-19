@@ -346,7 +346,7 @@ namespace TagTool.Commands.Porting
                                 {
                                     if (link.LeftSector == entry1.Item2)
                                     {
-                                        if (link.RightSector != -1)
+                                        if ((link.RightSector & 0xFFFEFFFF) != 0)
                                         {
                                             for (var areaIndex = 0; areaIndex < task.Areas.Count; areaIndex++)
                                             {
@@ -371,7 +371,7 @@ namespace TagTool.Commands.Porting
                                     }
                                     else if (link.RightSector == entry1.Item2)
                                     {
-                                        if (link.LeftSector != -1)
+                                        if ((link.LeftSector & 0xFFFEFFFF) != 0)
                                         {
                                             for (var areaIndex = 0; areaIndex < task.Areas.Count; areaIndex++)
                                             {
@@ -859,6 +859,7 @@ namespace TagTool.Commands.Porting
         public void AddGametypeObjects(Scenario scnr)
         {
             scnr.SceneryPalette = scnr.SceneryPalette ?? new List<Scenario.ScenarioPaletteEntry>();
+            scnr.MachinePalette = scnr.MachinePalette ?? new List<Scenario.ScenarioPaletteEntry>();
             scnr.CratePalette = scnr.CratePalette ?? new List<Scenario.ScenarioPaletteEntry>();
 
             if (scnr.CratePalette.Count > 0)
@@ -906,6 +907,12 @@ namespace TagTool.Commands.Porting
                 scnr.Crates.AddRange(flagSpawns);
             }
 
+            if (scnr.MachinePalette.Count > 0) 
+            {
+                ProcessMegaloLabels(scnr.MachinePalette, scnr.Machines);
+                scnr.Machines = scnr.Machines.Where(e => e.PaletteIndex != -1).ToList();
+            }
+
             if (scnr.SceneryPalette.Count > 0)
             {
                 var invisible_spawn = scnr.SceneryPalette.FindIndex(e => e.Object?.Name == "objects\\multi\\spawning\\respawn_point_invisible");
@@ -948,7 +955,8 @@ namespace TagTool.Commands.Porting
                     return;
 
                 var permutationInstance = (instance as Scenario.PermutationInstance);
-                var newPaletteIndex = permutationInstance.PaletteIndex;
+                var scenarioInstance = (instance as Scenario.ScenarioInstance);
+                var newPaletteIndex = permutationInstance == null ? scenarioInstance.PaletteIndex : permutationInstance.PaletteIndex;
                 var ctfReturnIndex = GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_return_area");
 
                 switch (mpProperties.MegaloLabel)
@@ -1024,7 +1032,10 @@ namespace TagTool.Commands.Porting
 
                 mpProperties.SpawnFlags &= ~MultiplayerObjectPlacementSpawnFlags.HideUnlessRequired;
 
-                permutationInstance.PaletteIndex = newPaletteIndex;
+                if (permutationInstance != null)
+                    permutationInstance.PaletteIndex = newPaletteIndex;
+                else if (scenarioInstance != null)
+                    scenarioInstance.PaletteIndex = newPaletteIndex;
             }
         }
 
@@ -1692,262 +1703,246 @@ namespace TagTool.Commands.Porting
         {
             // Return false to convert normally.
             var blamScripts = ScriptInfo.Scripts[(BlamCache.Version, BlamCache.Platform)];
-            if (BlamCache.Platform == CachePlatform.MCC)
+            var opName = blamScripts[expr.Opcode].Name;
+            
+            switch (BlamCache.Platform) 
             {
-                var opName = blamScripts[expr.Opcode].Name;
-                switch (opName)
-                {
-                    case "vehicle_test_seat_list":
-                        expr.Opcode = 0x114;
-                        if (expr.Flags == HsSyntaxNodeFlags.Group &&
-                            expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Boolean)
-                        {
-                            UpdateAiTestSeat(cacheStream, scnr, expr);
-                        }
-                        return true;
-
-                    case "vehicle_test_seat":
-                        expr.Opcode = 0x115; // -> vehicle_test_seat_unit
-                        if (expr.Flags == HsSyntaxNodeFlags.Group &&
-                            expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Boolean)
-                        {
-                            UpdateAiTestSeat(cacheStream, scnr, expr);
-                        }
-                        return true;
-
-                    case "campaign_metagame_award_primary_skull":
-                        expr.Opcode = 0x1E5; // ^
-                        return true;
-
-                    case "campaign_metagame_award_secondary_skull":
-                        expr.Opcode = 0x1E6; // ^
-                        return true;
-
-                    case "player_action_test_cinematic_skip":
-                        expr.Opcode = 0x2F5; // player_action_test_jump
-                        return true;
-
-                    case "cinematic_object_get_unit":
-                    case "cinematic_object_get_scenery":
-                    case "cinematic_object_get_effect_scenery":
-                        expr.Opcode = 0x391; // -> cinematic_object_get
-                        return true;
-                    case "cinematic_scripting_create_object":
-                        expr.Opcode = 0x6A2;
-                        return true;
-                    case "cinematic_scripting_start_animation":
-                        expr.Opcode = 0x6A1;
-                        return true;
-                    case "cinematic_scripting_destroy_object":
-                        expr.Opcode = 0x6A6;
-                        return true;
-                    case "cinematic_scripting_create_and_animate_object":
-                        expr.Opcode = 0x6A3;
-                        return true;
-                    case "cinematic_scripting_create_and_animate_cinematic_object":
-                        expr.Opcode = 0x6A5;
-                        return true;
-                    case "cinematic_scripting_create_and_animate_object_no_animation":
-                        expr.Opcode = 0x6A4;
-                        return true;
-                    case "chud_show_weapon_stats":
-                        expr.Opcode = 0x423; // -> chud_show_crosshair
-                        return true;
-                    case "objectives_secondary_show":
-                        expr.Opcode = 0x4AE; // -> objectives_show
-                        return true;
-                    case "objectives_secondary_unavailable":
-                        expr.Opcode = 0x4B2; // -> objectives_show
-                        return true;
-                    case "mp_wake_script":
-                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
-                        {
-                            expr.Opcode = 0x6A7; // ^
-                            UpdateMpWakeScript(cacheStream, scnr, expr);
-                            return true;
-                        }
-                        else 
-                        {
-                            expr.Opcode = 0x017; // -> wake
-                            return true;
-                        }
-
-                    default:
-                        return false;
-                }
-            }        
-
-            if (BlamCache.Version == CacheVersion.Halo3Retail)
-            {
-                switch (expr.Opcode)
-                {
-                    case 0x0B3: // texture_camera_set_aspect_ratio
-                        expr.Opcode = 0x0B9;
-                        // Change the player appearance aspect ratio
-                        if (scnr.MapId == 0x10231971 && // mainmenu map id
-                            expr.Flags == HsSyntaxNodeFlags.Group &&
-                            expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Void)
-                        {
-                            var exprIndex = scnr.ScriptExpressions.IndexOf(expr) + 1;
-                            for (var n = 1; n < 2; n++)
-                                exprIndex = scnr.ScriptExpressions[exprIndex].NextExpressionHandle.Index;
-
-                            var expr2 = scnr.ScriptExpressions[exprIndex];
-                            expr2.Data = BitConverter.GetBytes(1.777f).Reverse().ToArray();
-                        }
-                        return true;
-
-                    case 0x0F9: // vehicle_test_seat_list
-                        expr.Opcode = 0x114;
-                        if (expr.Flags == HsSyntaxNodeFlags.Group &&
-                            expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Boolean)
-                        {
-                            UpdateAiTestSeat(cacheStream, scnr, expr);
-                        }
-                        return true;
-
-                    case 0x0FA: // vehicle_test_seat
-                        expr.Opcode = 0x115; // -> vehicle_test_seat_unit
-                        if (expr.Flags == HsSyntaxNodeFlags.Group &&
-                            expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Boolean)
-                        {
-                            UpdateAiTestSeat(cacheStream, scnr, expr);
-                        }
-                        return true;
-
-                    case 0x1B7: // campaign_metagame_award_primary_skull
-                        expr.Opcode = 0x1E5; // ^
-                        return true;
-
-                    case 0x1B8: //campaign_metagame_award_secondary_skull
-                        expr.Opcode = 0x1E6; // ^
-                        return true;
-
-                    case 0x2D2: // player_action_test_cinematic_skip
-                        expr.Opcode = 0x2F5; // player_action_test_jump
-                        return true;
-
-                    case 0x33C: // cinematic_object_get_unit
-                    case 0x33D: // cinematic_object_get_scenery
-                    case 0x33E: // cinematic_object_get_effect_scenery
-                        expr.Opcode = 0x391; // -> cinematic_object_get
-                        return true;
-
-                    case 0x34A:
-                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
-                        {
-                            expr.Opcode = 0x6A2;
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    case 0x34C:
-                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
-                        {
-                            expr.Opcode = 0x6A1;
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    case 0x34D:
-                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
-                        {
-                            expr.Opcode = 0x6A6;
-                            return true;
-                        }
-                        else
-                        {
-                            // cinematic_scripting_destroy_object
-                            expr.Opcode = 0x3A0;
-                            return true;
-                        }
-                    case 0x352:
-                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
-                        {
-                            expr.Opcode = 0x6A3;
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    case 0x353:
-                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
-                        {
-                            expr.Opcode = 0x6A5;
-                            return true;
-                        }
-                        else
-                        {
-                            // cinematic_scripting_create_and_animate_cinematic_object
-                            expr.Opcode = 0x3A6;
-                            // Remove the additional H3 argument
-                            if (expr.Flags == HsSyntaxNodeFlags.Group &&
-                                expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Void)
+                case CachePlatform.MCC:
+                    switch (BlamCache.Version)
+                    {
+                        case CacheVersion.Halo3Retail:
+                            switch (opName) 
                             {
-                                var exprIndex = scnr.ScriptExpressions.IndexOf(expr) + 1;
-                                for (var n = 1; n < 4; n++)
-                                    exprIndex = scnr.ScriptExpressions[exprIndex].NextExpressionHandle.Index;
+                                case "vehicle_test_seat_list":
+                                    expr.Opcode = 0x114; // -> vehicle_test_seat_unit_list
+                                    if (expr.Flags == HsSyntaxNodeFlags.Group &&
+                                        expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Boolean)
+                                    {
+                                        UpdateAiTestSeat(cacheStream, scnr, expr);
+                                    }
+                                    return true;
 
-                                var expr2 = scnr.ScriptExpressions[exprIndex];
-                                var expr3 = scnr.ScriptExpressions[expr2.NextExpressionHandle.Index];
+                                case "vehicle_test_seat":
+                                    expr.Opcode = 0x115; // -> vehicle_test_seat_unit
+                                    if (expr.Flags == HsSyntaxNodeFlags.Group &&
+                                        expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Boolean)
+                                    {
+                                        UpdateAiTestSeat(cacheStream, scnr, expr);
+                                    }
+                                    return true;
 
-                                expr2.NextExpressionHandle = expr3.NextExpressionHandle;
+                                case "campaign_metagame_award_primary_skull":
+                                    expr.Opcode = 0x1E5; // -> campaign_metagame_award_primary_skull
+                                    return true;
+
+                                case "campaign_metagame_award_secondary_skull":
+                                    expr.Opcode = 0x1E6; // -> campaign_metagame_award_secondary_skull
+                                    return true;
+
+                                case "player_action_test_cinematic_skip":
+                                    expr.Opcode = 0x2F5; // -> player_action_test_jump
+                                    return true;
+
+                                case "cinematic_object_get_unit":
+                                case "cinematic_object_get_scenery":
+                                case "cinematic_object_get_effect_scenery":
+                                    expr.Opcode = 0x391; // -> cinematic_object_get
+                                    return true;
+
+                                case "cinematic_scripting_create_object" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                                    expr.Opcode = 0x6A2; // -> cinematic_scripting_create_object_legacy
+                                    return true;
+
+                                case "cinematic_scripting_start_animation" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                                    expr.Opcode = 0x6A1; // -> cinematic_scripting_start_animation_legacy
+                                    return true;
+
+                                case "cinematic_scripting_destroy_object" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                                    expr.Opcode = 0x6A6; // -> cinematic_scripting_destroy_object_legacy
+                                    return true;
+
+                                case "cinematic_scripting_create_and_animate_object" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                                    expr.Opcode = 0x6A3; // -> cinematic_scripting_create_and_animate_object_legacy
+                                    return true;
+
+                                case "cinematic_scripting_create_and_animate_cinematic_object" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                                    expr.Opcode = 0x6A5; // -> cinematic_scripting_create_and_animate_cinematic_object_legacy
+                                    return true;
+
+                                case "cinematic_scripting_create_and_animate_cinematic_object":
+                                    expr.Opcode = 0x3A6; // -> cinematic_scripting_create_and_animate_cinematic_object
+                                    // Remove the additional H3 argument
+                                    if (expr.Flags == HsSyntaxNodeFlags.Group && 
+                                        expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Void)
+                                    {
+                                        var exprIndex = scnr.ScriptExpressions.IndexOf(expr) + 1;
+                                        for (var n = 1; n < 4; n++)
+                                            exprIndex = scnr.ScriptExpressions[exprIndex].NextExpressionHandle.Index;
+
+                                        var expr2 = scnr.ScriptExpressions[exprIndex];
+                                        var expr3 = scnr.ScriptExpressions[expr2.NextExpressionHandle.Index];
+
+                                        expr2.NextExpressionHandle = expr3.NextExpressionHandle;
+                                    }
+                                    return true;
+
+                                case "cinematic_scripting_create_and_animate_object_no_animation" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                                    expr.Opcode = 0x6A4; // -> cinematic_scripting_create_and_animate_object_no_animation_legacy
+                                    return true;
+
+                                case "mp_wake_script" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                                    expr.Opcode = 0x6A7; // -> mp_wake_script
+                                    UpdateMpWakeScript(cacheStream, scnr, expr);
+                                    return true;
+
+                                case "mp_wake_script":
+                                    expr.Opcode = 0x017; // -> wake
+                                    return true;
                             }
-                            return true;
-                        }
-                    case 0x354:
-                        if (CacheContext.Version == CacheVersion.HaloOnlineED)
-                        {
-                            expr.Opcode = 0x6A4;
-                            return true;
-                        }
-                        else
-                        {
-                            // cinematic_scripting_create_and_animate_object_no_animation
-                            expr.Opcode = 0x3A7; // ^
-                            return true;
-                        }
+                            break;
+                        case CacheVersion.Halo3ODST:
+                            switch (opName)
+                            {
+                                case "mp_wake_script" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                                    expr.Opcode = 0x6A7; // -> mp_wake_script
+                                    UpdateMpWakeScript(cacheStream, scnr, expr);
+                                    return true;
 
-                    case 0x3CD: // chud_show_weapon_stats
-                        expr.Opcode = 0x423; // -> chud_show_crosshair
-                        return true;
+                                case "mp_wake_script":
+                                    expr.Opcode = 0x017; // -> wake
+                                    return true;
+                            }
+                            break;
+                        case CacheVersion.HaloReach:
+                            switch (opName)
+                            {
+                                // TODO
+                            }
+                            break;
+                    }
+                    break;
+                case CachePlatform.Original:
+                    switch (BlamCache.Version)
+                    {
+                        case CacheVersion.Halo3Retail:
+                            switch (opName)
+                            {
+                                case "texture_camera_set_aspect_ratio":
+                                    expr.Opcode = 0x0B9; // -> texture_camera_set_aspect_ratio
+                                    // Change the player appearance aspect ratio
+                                    if (scnr.MapId == 0x10231971 && // mainmenu map id
+                                        expr.Flags == HsSyntaxNodeFlags.Group &&
+                                        expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Void)
+                                    {
+                                        var exprIndex = scnr.ScriptExpressions.IndexOf(expr) + 1;
+                                        for (var n = 1; n < 2; n++)
+                                            exprIndex = scnr.ScriptExpressions[exprIndex].NextExpressionHandle.Index;
 
-                    case 0x44D: // objectives_secondary_show
-                        expr.Opcode = 0x4AE; // -> objectives_show
-                        return true;
+                                        var expr2 = scnr.ScriptExpressions[exprIndex];
+                                        expr2.Data = BitConverter.GetBytes(1.777f).Reverse().ToArray();
+                                    }
+                                    return true;
 
-                    case 0x44F: // objectives_secondary_unavailable
-                    case 0x44E: // objectives_primary_unavailable
-                        expr.Opcode = 0x4B2; // -> objectives_show
-                        return true;
-                    case 0x118: // unit_add_equipment
-                        expr.Opcode = 0x136; // -> unit_add_equipment
-                        UpdateUnitAddEquipmentScript(cacheStream, scnr, expr);
-                        return true;
+                                case "vehicle_test_seat_list":
+                                    expr.Opcode = 0x114; // -> vehicle_test_seat_unit_list
+                                    if (expr.Flags == HsSyntaxNodeFlags.Group &&
+                                        expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Boolean)
+                                    {
+                                        UpdateAiTestSeat(cacheStream, scnr, expr);
+                                    }
+                                    return true;
 
-                    default:
-                        return false;
-                }
+                                case "vehicle_test_seat":
+                                    expr.Opcode = 0x115; // -> vehicle_test_seat_unit
+                                    if (expr.Flags == HsSyntaxNodeFlags.Group &&
+                                        expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Boolean)
+                                    {
+                                        UpdateAiTestSeat(cacheStream, scnr, expr);
+                                    }
+                                    return true;
+
+                                case "campaign_metagame_award_primary_skull":
+                                    expr.Opcode = 0x1E5; // -> campaign_metagame_award_primary_skull
+                                    return true;
+
+                                case "campaign_metagame_award_secondary_skull":
+                                    expr.Opcode = 0x1E6; // -> campaign_metagame_award_secondary_skull
+                                    return true;
+
+                                case "player_action_test_cinematic_skip":
+                                    expr.Opcode = 0x2F5; // -> player_action_test_jump
+                                    return true;
+
+                                case "cinematic_object_get_unit":
+                                case "cinematic_object_get_scenery":
+                                case "cinematic_object_get_effect_scenery":
+                                    expr.Opcode = 0x391; // -> cinematic_object_get
+                                    return true;
+
+                                case "cinematic_scripting_create_object" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                                    expr.Opcode = 0x6A2; // -> cinematic_scripting_create_object_legacy
+                                    return true;
+
+                                case "cinematic_scripting_start_animation" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                                    expr.Opcode = 0x6A1; // -> cinematic_scripting_start_animation_legacy
+                                    return true;
+
+                                case "cinematic_scripting_destroy_object" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                                    expr.Opcode = 0x6A6; // -> cinematic_scripting_destroy_object_legacy
+                                    return true;
+
+                                case "cinematic_scripting_create_and_animate_object" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                                    expr.Opcode = 0x6A3; // -> cinematic_scripting_create_and_animate_object_legacy
+                                    return true;
+
+                                case "cinematic_scripting_create_and_animate_cinematic_object" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                                    expr.Opcode = 0x6A5; // -> cinematic_scripting_create_and_animate_cinematic_object_legacy
+                                    return true;
+
+                                case "cinematic_scripting_create_and_animate_cinematic_object":
+                                    expr.Opcode = 0x3A6; // -> cinematic_scripting_create_and_animate_cinematic_object
+                                    // Remove the additional H3 argument
+                                    if (expr.Flags == HsSyntaxNodeFlags.Group &&
+                                        expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Void)
+                                    {
+                                        var exprIndex = scnr.ScriptExpressions.IndexOf(expr) + 1;
+                                        for (var n = 1; n < 4; n++)
+                                            exprIndex = scnr.ScriptExpressions[exprIndex].NextExpressionHandle.Index;
+
+                                        var expr2 = scnr.ScriptExpressions[exprIndex];
+                                        var expr3 = scnr.ScriptExpressions[expr2.NextExpressionHandle.Index];
+
+                                        expr2.NextExpressionHandle = expr3.NextExpressionHandle;
+                                    }
+                                    return true;
+
+                                case "cinematic_scripting_create_and_animate_object_no_animation" when CacheContext.Version == CacheVersion.HaloOnlineED:
+                                    expr.Opcode = 0x6A4; // -> cinematic_scripting_create_and_animate_object_no_animation_legacy
+                                    return true;
+
+                                case "unit_add_equipment":
+                                    expr.Opcode = 0x136; // -> unit_add_equipment
+                                    UpdateUnitAddEquipmentScript(cacheStream, scnr, expr);
+                                    return true;
+                            }
+                            break;
+                        case CacheVersion.Halo3ODST:
+                            switch (opName)
+                            {
+                                // TODO
+                            }
+                            break;
+                        case CacheVersion.HaloReach:
+                            switch (opName)
+                            {
+                                // TODO
+                            }
+                            break;
+                    }
+                    break;
             }
-            else if (BlamCache.Version == CacheVersion.Halo3ODST)
-            {
-                switch (expr.Opcode)
-                {
-                    case 0x3A3: // cinematic_scripting_create_and_animate_cinematic_object
-                        expr.Opcode = 0x3A6; // cinematic_scripting_create_and_animate_cinematic_object // example
-                        return true;
 
-                    default:
-                        return false;
-                }
-            }
-            else
-                return false;
+            return false;
         }
 
         private void UpdateUnitAddEquipmentScript(Stream cacheStream, Scenario scnr, HsSyntaxNode expr)
@@ -2033,10 +2028,12 @@ namespace TagTool.Commands.Porting
             var seatMappingString = BlamCache.StringTable.GetString(seatMappingStringId);
             var seatMappingIndex = (int)-1;
 
+            var opcodeTable = ScriptInfo.Scripts[(BlamCache.Version, BlamCache.Platform)];
+
             if (vehicleExpr.Flags == HsSyntaxNodeFlags.Group &&
                 seatMappingStringId != StringId.Invalid)
             {
-                if (vehicleExpr.Opcode == (BlamCache.Platform == CachePlatform.MCC ? 0x194 : 0x193)) // ai_vehicle_get_from_starting_location
+                if (opcodeTable[vehicleExpr.Opcode].Name == "ai_vehicle_get_from_starting_location")
                 {
                     var expr3 = scnr.ScriptExpressions[++exprIndex]; // function name
                     var expr4 = scnr.ScriptExpressions[expr3.NextExpressionHandle.Index]; // <ai> parameter

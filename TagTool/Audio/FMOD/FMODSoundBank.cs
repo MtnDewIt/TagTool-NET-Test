@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using TagTool.Commands.Common;
 using static TagTool.Audio.FMOD;
 
 namespace TagTool.Audio
@@ -55,8 +56,11 @@ namespace TagTool.Audio
         private byte[] ExtractInternal(int index)
         {
             FMOD_RESULT result = MasterSound.GetSubSound(index, out FMODSound subsound);
-            if (result != FMOD_RESULT.OK)               
-                ThrowFmodException(result, "Failed to get subsound of sound", subsound);
+            if (result != FMOD_RESULT.OK) 
+            {
+                new TagToolWarning($"Failed to get subsound from sound bank {BankFile.Name} at index {index}");
+                return Array.Empty<byte>();
+            }
 
             using (subsound)
             {

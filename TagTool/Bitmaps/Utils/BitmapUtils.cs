@@ -1,5 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+//using System.Runtime.Remoting.Messaging;
+using System.Text;
+using System.Threading.Tasks;
 using TagTool.Bitmaps.DDS;
 using TagTool.Bitmaps.Utils;
 using TagTool.Cache;
@@ -176,6 +181,8 @@ namespace TagTool.Bitmaps
                     return Commands.Porting.PortingOptions.Current.HqNormalMapConversion ?
                        BitmapFormat.Dxn : BitmapFormat.Dxt1;
 
+                case BitmapFormat.DxnMonoAlpha:
+                case BitmapFormat.ReachDxnMonoAlpha:
                 case BitmapFormat.AY8:
                     return BitmapFormat.A8Y8;
 
