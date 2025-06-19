@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
+using Assimp;
 using TagTool.Commands.Common;
 using TagTool.Common;
 
@@ -346,24 +348,71 @@ namespace TagTool.Geometry.Jms
                     }
 
                     // parse Nodes
+                    while (true)
+                    {
+                        if (stream.ReadLine() != ";### NODES ###")
+                        {
+                            continue;
+                        }
+                        break;
+                    }
+
                     NodeCount = uint.Parse(stream.ReadLine());
                     for (int i = 0; i < NodeCount; i++)
                     {
+                        // parse each Node Instance
+                        while (true)
+                        {
+                            if (stream.ReadLine() != ";NODE " + i.ToString())
+                            {
+                                continue;
+                            }
+                            break;
+                        }
+
                         JmsNode node = new JmsNode();
                         node.Read(stream);                  
                         Nodes.Add(node);
                     }
 
                     // parse Materials
+                    while (true)
+                    {
+                        if (stream.ReadLine() != ";### MATERIALS ###")
+                        {
+                            continue;
+                        }
+                        break;
+                    }
+
                     MaterialCount = uint.Parse(stream.ReadLine());
                     for (int i = 0; i < MaterialCount; i++)
                     {
+                        // parse each Material Instance
+                        while (true)
+                        {
+                            if (stream.ReadLine() != ";MATERIAL " + i.ToString())
+                            {
+                                continue;
+                            }
+                            break;
+                        }
+
                         JmsMaterial material = new JmsMaterial();
                         material.Read(stream);
                         Materials.Add(material);
                     }
 
                     // parse Markers
+                    while (true)
+                    {
+                        if (stream.ReadLine() != ";### MARKERS ###")
+                        {
+                            continue;
+                        }
+                        break;
+                    }
+
                     MarkerCount = uint.Parse(stream.ReadLine());
                     for (int i = 0; i < MarkerCount; i++)
                     {
@@ -373,21 +422,87 @@ namespace TagTool.Geometry.Jms
                     }
 
                     // parse Vertices
+                    while (true)
+                    {
+                        if (stream.ReadLine() != ";### VERTICES ###")
+                        {
+                            continue;
+                        }
+                        break;
+                    }
+
                     VertexCount = uint.Parse(stream.ReadLine());
                     for (int i = 0; i < VertexCount; i++)
                     {
+                        // parse each Vertex Instance
+                        while (true)
+                        {
+                            if (stream.ReadLine() != ";VERTEX " + i.ToString())
+                            {
+                                continue;
+                            }
+                            break;
+                        }
+
                         JmsVertex vertex = new JmsVertex();
                         vertex.Read(stream);
                         Vertices.Add(vertex);
                     }
 
                     // parse Triangles
+                    while (true)
+                    {
+                        if (stream.ReadLine() != ";### TRIANGLES ###")
+                        {
+                            continue;
+                        }
+                        break;
+                    }
+
                     TriangleCount = uint.Parse(stream.ReadLine());
                     for (int i = 0; i < TriangleCount; i++)
                     {
+                        // parse each Triangle Instance
+                        while (true)
+                        {
+                            if (stream.ReadLine() != ";TRIANGLE " + i.ToString())
+                            {
+                                continue;
+                            }
+                            break;
+                        }
+
                         JmsTriangle triangle = new JmsTriangle();
                         triangle.Read(stream);
                         Triangles.Add(triangle);
+                    }
+
+                    // parse Convex Shapes
+                    while (true)
+                    {
+                        if (stream.ReadLine() != ";### CONVEX SHAPES ###")
+                        {
+                            continue;
+                        }
+                        break;
+                    }
+
+                    ConvexShapeCount = uint.Parse(stream.ReadLine());
+                    for (int i = 0; i < ConvexShapeCount; i++)
+                    {
+                        // parse each ConvexShape Instance
+                        while (true)
+                        {
+                            if (stream.ReadLine() != ";CONVEX " + i.ToString())
+                            {
+                                continue;
+                            }
+                            break;
+                        }
+
+                        JmsConvexShape convexShape = new JmsConvexShape();
+                        convexShape.Read(stream);
+                        ConvexShapes.Add(convexShape);
                     }
                 }
             }
@@ -403,6 +518,10 @@ namespace TagTool.Geometry.Jms
 
             public void Read(StreamReader stream)
             {
+                Name = stream.ReadLine();
+                ParentNodeIndex = int.Parse(stream.ReadLine());
+                Rotation = ReadQuaternion(stream);
+                Position = ReadVector3d(stream);
             }
 
             public void Write(StreamWriter stream)
@@ -460,7 +579,7 @@ namespace TagTool.Geometry.Jms
             public RealVector3d Normal = new RealVector3d(0, 0, 0);
             public List<NodeSet> NodeSets = new List<NodeSet>();
             public List<UvSet> UvSets = new List<UvSet>();
-            public RealRgbColor VertexColor = new RealRgbColor();
+            public RealRgbColor VertexColor = new RealRgbColor(0, 0, 0);
 
             public class NodeSet
             {
@@ -473,6 +592,22 @@ namespace TagTool.Geometry.Jms
             }
             public void Read(StreamReader stream)
             {
+                Position = ReadPoint3d(stream);
+                Normal = ReadVector3d(stream);
+                int nodeSetCount = int.Parse(stream.ReadLine());
+                for (int i = 0; i < nodeSetCount; i++)
+                {
+                    NodeSets.Add(new NodeSet());
+                    NodeSets[i].NodeIndex = int.Parse(stream.ReadLine());
+                    NodeSets[i].NodeWeight = float.Parse(stream.ReadLine());
+                }
+                int uvSetCount = int.Parse(stream.ReadLine());
+                for (int i = 0; i < uvSetCount; i++)
+                {
+                    UvSets.Add(new UvSet());
+                    UvSets[i].TextureCoordinates = ReadPoint2d(stream);
+                }
+                VertexColor = ReadRGBColor(stream);
             }
             public void Write(StreamWriter stream)
             {
@@ -612,6 +747,14 @@ namespace TagTool.Geometry.Jms
 
             public void Read(StreamReader stream)
             {
+                Name = stream.ReadLine();
+                Parent = int.Parse(stream.ReadLine());
+                Material = int.Parse(stream.ReadLine());
+                Rotation = ReadQuaternion(stream);
+                Translation = ReadVector3d(stream);
+                ShapeVertexCount = int.Parse(stream.ReadLine());
+                for (int i = 0; i < ShapeVertexCount; i++)
+                    ShapeVertices.Add(ReadPoint3d(stream));
             }
 
             public void Write(StreamWriter stream)
@@ -773,6 +916,12 @@ namespace TagTool.Geometry.Jms
                 stream.WriteLine(number.ToString("0.0000000000"));
             }
 
+            public RealPoint2d ReadPoint2d(StreamReader stream)
+            {
+                string[] point2dArray = stream.ReadLine().Split('\t');
+                return new RealPoint2d(float.Parse(point2dArray[0]), float.Parse(point2dArray[1]));
+            }
+
             public RealVector3d ReadVector3d(StreamReader stream)
             {
                 string[] vector3dArray = stream.ReadLine().Split('\t');
@@ -783,6 +932,18 @@ namespace TagTool.Geometry.Jms
             {
                 string[] point3dArray = stream.ReadLine().Split('\t');
                 return new RealPoint3d(float.Parse(point3dArray[0]), float.Parse(point3dArray[1]), float.Parse(point3dArray[2]));
+            }
+
+            public RealRgbColor ReadRGBColor(StreamReader stream)
+            {
+                string[] rgbColorArray = stream.ReadLine().Split('\t');
+                return new RealRgbColor(float.Parse(rgbColorArray[0]), float.Parse(rgbColorArray[1]), float.Parse(rgbColorArray[2]));
+            }
+
+            public RealQuaternion ReadQuaternion(StreamReader stream)
+            {
+                string[] quaternion4dArray = stream.ReadLine().Split('\t');
+                return new RealQuaternion(float.Parse(quaternion4dArray[0]), float.Parse(quaternion4dArray[1]), float.Parse(quaternion4dArray[2]), float.Parse(quaternion4dArray[3]));
             }
         }       
     }

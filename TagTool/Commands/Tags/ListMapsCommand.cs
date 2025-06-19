@@ -28,6 +28,11 @@ namespace TagTool.Commands.Tags
         {
             List<string> maps = Directory.GetFiles($@"{CacheContext.Directory.FullName}", $@"*.map").ToList();
 
+            string columnFormat = "{0,-10} {1,-20} {2,-20} {3,-50} {4,-20}";
+            Console.WriteLine(new string('-', 120));
+            Console.WriteLine(columnFormat, "Map Id", "File Name", "Map Name", "Scenario", "Map Variant");
+            Console.WriteLine(new string('-', 120));
+
             foreach (var map in maps) 
             {
                 var file = new FileInfo(map);
@@ -39,11 +44,13 @@ namespace TagTool.Commands.Tags
                     var reader = new EndianReader(stream);
 
                     mapFile.Read(reader);
+
+                    var header = mapFile.Header as CacheFileHeaderGenHaloOnline;
+                    var mapVariant = mapFile.MapFileBlf?.MapVariant?.MapVariant;
+                    var mapName = mapFile.MapFileBlf?.Scenario?.Names[0]?.Name;
+
+                    Console.WriteLine(columnFormat, header.MapId, header.Name, mapName == null ? "None" : mapName, header.ScenarioPath, mapVariant == null ? "None" : mapVariant.Metadata.Name);
                 }
-
-                var header = mapFile.Header as CacheFileHeaderGenHaloOnline;
-
-                Console.WriteLine($@"[Size: 0x{header.FileLength:X4}, MapID: {header.MapId, -3}] {file.Name}");
             }
 
             return true;

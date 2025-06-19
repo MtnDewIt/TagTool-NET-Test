@@ -27,6 +27,7 @@ namespace TagTool.Commands.RenderMethods
 			context.AddCommand(new SetBitmapCommand(cache, tag, renderMethod));
 			context.AddCommand(new SpecifyBitmapsCommand(cache, tag, renderMethod));
             context.AddCommand(new PopulateParametersCommand(cache, tag, renderMethod));
+            context.AddCommand(new FixHologramCommand(cache, tag, renderMethod));
         }
     }
 }

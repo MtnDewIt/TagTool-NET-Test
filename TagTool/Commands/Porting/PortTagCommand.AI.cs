@@ -20,16 +20,40 @@ namespace TagTool.Commands.Porting
 
                 var behaviors = new Dictionary<string, bool>();
 
-                for (var i = 0; i < style.Behaviors.Length; i++)
-                    for (var j = 0; j < 32 && ((i * 32) + j) < style.BehaviorList.Count; j++)
-                        behaviors[style.BehaviorList[(i * 32) + j].BehaviorName] = ((style.Behaviors[i] & (1 << j)) != 0);
+                // TODO: Cleanup
+
+                for (var j = 0; j < 32 && ((1 * 32) + j) < style.BehaviorList.Count; j++)
+                    behaviors[style.BehaviorList[(1 * 32) + j].BehaviorName] = ((style.Behaviors1 & (Style.StyleBehaviors1)(1 << j)) != 0);
+
+                for (var j = 0; j < 32 && ((2 * 32) + j) < style.BehaviorList.Count; j++)
+                    behaviors[style.BehaviorList[(2 * 32) + j].BehaviorName] = ((style.Behaviors2 & (Style.StyleBehaviors2)(1 << j)) != 0);
+
+                for (var j = 0; j < 32 && ((3 * 32) + j) < style.BehaviorList.Count; j++)
+                    behaviors[style.BehaviorList[(3 * 32) + j].BehaviorName] = ((style.Behaviors3 & (Style.StyleBehaviors3)(1 << j)) != 0);
+
+                for (var j = 0; j < 32 && ((4 * 32) + j) < style.BehaviorList.Count; j++)
+                    behaviors[style.BehaviorList[(4 * 32) + j].BehaviorName] = ((style.Behaviors4 & (Style.StyleBehaviors4)(1 << j)) != 0);
+
+                for (var j = 0; j < 32 && ((5 * 32) + j) < style.BehaviorList.Count; j++)
+                    behaviors[style.BehaviorList[(5 * 32) + j].BehaviorName] = ((style.Behaviors5 & (Style.StyleBehaviors5)(1 << j)) != 0);
+
+                for (var j = 0; j < 32 && ((6 * 32) + j) < style.BehaviorList.Count; j++)
+                    behaviors[style.BehaviorList[(6 * 32) + j].BehaviorName] = ((style.Behaviors6 & (Style.StyleBehaviors6)(1 << j)) != 0);
+
+                for (var j = 0; j < 32 && ((7 * 32) + j) < style.BehaviorList.Count; j++)
+                    behaviors[style.BehaviorList[(7 * 32) + j].BehaviorName] = ((style.Behaviors7 & (Style.StyleBehaviors7)(1 << j)) != 0);
 
                 //
                 // Clear halo 3 behaviors
                 //
 
-                for (var i = 0; i < style.Behaviors.Length; i++)
-                    style.Behaviors[i] = 0;
+                style.Behaviors1 = Style.StyleBehaviors1.None;
+                style.Behaviors2 = Style.StyleBehaviors2.None;
+                style.Behaviors3 = Style.StyleBehaviors3.None;
+                style.Behaviors4 = Style.StyleBehaviors4.None;
+                style.Behaviors5 = Style.StyleBehaviors5.None;
+                style.Behaviors6 = Style.StyleBehaviors6.None;
+                style.Behaviors7 = Style.StyleBehaviors7.None;
 
                 //
                 // Insert odst styles into the halo 3 behavior list
@@ -55,17 +79,76 @@ namespace TagTool.Commands.Porting
                 // Set odst behaviors
                 //
 
-                for (var i = 0; i < style.Behaviors.Length; i++)
+                // TODO: Clean Up
+
+                for (var j = 0; j < 32 && ((1 * 32) + j) < style.BehaviorList.Count; j++)
                 {
-                    for (var j = 0; j < 32 && ((i * 32) + j) < style.BehaviorList.Count; j++)
-                    {
-                        var behavior = style.BehaviorList[(i * 32) + j].BehaviorName;
+                    var behavior = style.BehaviorList[(1 * 32) + j].BehaviorName;
 
-                        if (!behaviors.ContainsKey(behavior) || !behaviors[behavior])
-                            continue;
+                    if (!behaviors.ContainsKey(behavior) || !behaviors[behavior])
+                        continue;
 
-                        style.Behaviors[i] |= 1 << j;
-                    }
+                    style.Behaviors1 |= (Style.StyleBehaviors1)(1 << j);
+                }
+
+                for (var j = 0; j < 32 && ((2 * 32) + j) < style.BehaviorList.Count; j++)
+                {
+                    var behavior = style.BehaviorList[(2 * 32) + j].BehaviorName;
+
+                    if (!behaviors.ContainsKey(behavior) || !behaviors[behavior])
+                        continue;
+
+                    style.Behaviors2 |= (Style.StyleBehaviors2)(1 << j);
+                }
+
+                for (var j = 0; j < 32 && ((3 * 32) + j) < style.BehaviorList.Count; j++)
+                {
+                    var behavior = style.BehaviorList[(3 * 32) + j].BehaviorName;
+
+                    if (!behaviors.ContainsKey(behavior) || !behaviors[behavior])
+                        continue;
+
+                    style.Behaviors3 |= (Style.StyleBehaviors3)(1 << j);
+                }
+
+                for (var j = 0; j < 32 && ((4 * 32) + j) < style.BehaviorList.Count; j++)
+                {
+                    var behavior = style.BehaviorList[(4 * 32) + j].BehaviorName;
+
+                    if (!behaviors.ContainsKey(behavior) || !behaviors[behavior])
+                        continue;
+
+                    style.Behaviors4 |= (Style.StyleBehaviors4)(1 << j);
+                }
+
+                for (var j = 0; j < 32 && ((5 * 32) + j) < style.BehaviorList.Count; j++)
+                {
+                    var behavior = style.BehaviorList[(5 * 32) + j].BehaviorName;
+
+                    if (!behaviors.ContainsKey(behavior) || !behaviors[behavior])
+                        continue;
+
+                    style.Behaviors5 |= (Style.StyleBehaviors5)(1 << j);
+                }
+
+                for (var j = 0; j < 32 && ((6 * 32) + j) < style.BehaviorList.Count; j++)
+                {
+                    var behavior = style.BehaviorList[(6 * 32) + j].BehaviorName;
+
+                    if (!behaviors.ContainsKey(behavior) || !behaviors[behavior])
+                        continue;
+
+                    style.Behaviors6 |= (Style.StyleBehaviors6)(1 << j);
+                }
+
+                for (var j = 0; j < 32 && ((7 * 32) + j) < style.BehaviorList.Count; j++)
+                {
+                    var behavior = style.BehaviorList[(7 * 32) + j].BehaviorName;
+
+                    if (!behaviors.ContainsKey(behavior) || !behaviors[behavior])
+                        continue;
+
+                    style.Behaviors7 |= (Style.StyleBehaviors7)(1 << j);
                 }
             }
 

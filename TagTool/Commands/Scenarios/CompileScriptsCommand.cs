@@ -42,7 +42,14 @@ namespace TagTool.Commands.Scenarios
 
             ScriptCompiler scriptCompiler = new ScriptCompiler(Cache, Definition);
 
-            scriptCompiler.CompileFile(srcTxt);
+            try 
+            {
+                scriptCompiler.CompileFile(srcTxt);
+            }
+            catch (Exception e)
+            {
+                return new TagToolError(CommandError.OperationFailed, $"Failed to compile script: {e.Message}");
+            }
 
             Console.WriteLine("Done.");
 

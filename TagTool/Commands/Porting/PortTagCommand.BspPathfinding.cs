@@ -100,7 +100,9 @@ namespace TagTool.Commands.Porting
                         new TagToolWarning("Instanced seam bit vector truncated!");
 
                     instancedgeo.SeamBitVector = new uint[] { instancedgeo.SeamBitVector[0] };
-              
+
+                    instancedgeo.Name = CacheContext.StringTable.GetOrAddString(BlamCache.StringTable.GetString(bsp.InstancedGeometryInstanceNames[bsp.InstancedGeometryInstances.IndexOf(instancedgeo)].Name));
+
                     instancedgeo.PathfindingPolicy = instancedgeo.LightmappingPolicyReach.ConvertLexical<Scenery.PathfindingPolicyValue>();
                     instancedgeo.LightmappingPolicy = instancedgeo.LightmappingPolicyReach.ConvertLexical<InstancedGeometryInstance.InstancedGeometryLightmappingPolicy>();
 
@@ -149,6 +151,20 @@ namespace TagTool.Commands.Porting
         private TagResourceReference ConvertStructureBspCacheFileTagResourcesMCC(ScenarioStructureBsp bsp)
         {
             var resourceDefinition = BlamCache.ResourceCache.GetStructureBspCacheFileTagResources(bsp.PathfindingResource);
+
+            if (resourceDefinition == null) 
+            {
+                Console.Error.WriteLine("Pathfinding geometry does not have a valid resource definition, continuing anyway.");
+
+                resourceDefinition = new StructureBspCacheFileTagResources()
+                {
+                    SurfacePlanes = new TagBlock<StructureSurface>(CacheAddressType.Data),
+                    Planes = new TagBlock<StructureSurfaceToTriangleMapping>(CacheAddressType.Data),
+                    EdgeToSeams = new TagBlock<EdgeToSeamMapping>(CacheAddressType.Data),
+                    PathfindingData = new TagBlock<ResourcePathfinding>(CacheAddressType.Definition)
+                };
+            }
+
             bsp.PathfindingResource = CacheContext.ResourceCache.CreateStructureBspCacheFileResource(resourceDefinition);
             return bsp.PathfindingResource;
         }

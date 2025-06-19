@@ -7,6 +7,7 @@ using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
+using TagTool.Tags.Definitions.Common;
 using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Pathfinding
@@ -87,14 +88,14 @@ namespace TagTool.Pathfinding
     [TagStructure(Size = 0x10)]
     public class Link : TagStructure
     {
-        public short Vertex1;
-        public short Vertex2;
+        public ushort Vertex1;
+        public ushort Vertex2;
         public FlagsValue LinkFlags;
         public short HintIndex;
-        public short ForwardLink; // THESE SHOULD NOT BE UNSIGNED, -1 is used for when it DOES NOT have a corresponding link, and the engine most likely has a 32000 something limit
-        public short ReverseLink;
-        public short LeftSector;
-        public short RightSector;
+        public ushort ForwardLink;
+        public ushort ReverseLink;
+        public ushort LeftSector;
+        public ushort RightSector;
 
         [Flags]
         public enum FlagsValue : ushort
@@ -142,17 +143,14 @@ namespace TagTool.Pathfinding
     [TagStructure(Size = 0x18)]
     public class ObjectReference : TagStructure
     {
-        public Flags ObjectReferenceFlags; // Mobile flag
+        public ObjectReferenceFlags Flags;
 
         [TagField(Flags = Padding, Length = 2)]
         public byte[] Unused = new byte[2];
 
         public TagBlock<BspReference> Bsps;
 
-        public DatumHandle ObjectUniqueID; // DATUM, not just a short, c'mon guys
-        public short OriginBspIndex;
-        public ObjectTypeEnumDefinition ObjectType;
-        public ObjectSourceEnumDefinition Source;
+        public ObjectIdentifier ObjectId;
 
         [TagStructure(Size = 0x18)]
         public class BspReference : TagStructure
@@ -173,38 +171,9 @@ namespace TagTool.Pathfinding
                 public int NodeOrSectorIndex; // not a datum, just an index
             }
         }
-        public enum ObjectTypeEnumDefinition : sbyte // -1 means no object type
-        {
-            None = -1,
-            Biped,
-            Vehicle,
-            Weapon,
-            Equipment,
-            ArgDevice,
-            Terminal,
-            Projectile,
-            Scenery,
-            Machine,
-            Control,
-            SoundScenery,
-            Crate,
-            Creature,
-            Giant,
-            EffectScenery,
-        }
-        public enum ObjectSourceEnumDefinition : sbyte // -1 means no object source
-        {
-            None = -1,
-            Structure,
-            Editor,
-            Dynamic,
-            Legacy,
-            Sky,
-            Parent
-        }
 
         [Flags]
-        public enum Flags : ushort
+        public enum ObjectReferenceFlags : ushort
         {
             None = 0,
             Mobile = 1 << 0,

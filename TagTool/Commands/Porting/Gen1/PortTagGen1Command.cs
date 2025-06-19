@@ -13,7 +13,7 @@ using TagTool.Commands.Porting;
 
 namespace TagTool.Commands.Porting
 {
-    partial class PortTagGen1Command : Command
+    public partial class PortTagGen1Command : Command
     {
         public readonly GameCacheHaloOnlineBase Cache;
         public readonly GameCacheGen1 Gen1Cache;

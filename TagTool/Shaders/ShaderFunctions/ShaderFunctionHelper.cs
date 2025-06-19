@@ -80,7 +80,7 @@ namespace TagTool.Shaders.ShaderFunctions
 
             var properties = renderMethod.ShaderProperties[0];
 
-            uint validEntries = EntryPointHelper.GetEntryMask(cache.Version, template);
+            uint validEntries = EntryPointHelper.GetEntryMask(cache.Version, cache.Platform, template);
 
             for (int i = 0; i < properties.EntryPoints.Count; i++)
             {
@@ -178,7 +178,7 @@ namespace TagTool.Shaders.ShaderFunctions
         static public bool BuildAnimatedParameters(GameCache cache, RenderMethod renderMethod, RenderMethodTemplate template, List<AnimatedParameter> animatedParameters)
         {
             var properties = renderMethod.ShaderProperties[0];
-            uint validEntries = EntryPointHelper.GetEntryMask(cache.Version, template);
+            uint validEntries = EntryPointHelper.GetEntryMask(cache.Version, cache.Platform, template);
 
             properties.EntryPoints.Clear();
             properties.Passes.Clear();

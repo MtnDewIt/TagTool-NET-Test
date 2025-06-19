@@ -106,7 +106,7 @@ namespace TagTool.Commands.Modding
                     ms.Position = 0;
                 }
 
-                modCache.BaseModPackage.TagCachesStreams.Add(new ExtantStream(ms));
+                modCache.BaseModPackage.TagCachesStreams.Add(new UnmanagedExtantStream(IntPtr.Zero, new ExtantStream(ms)));
                 modCache.BaseModPackage.CacheNames.Add(name);
                 modCache.BaseModPackage.TagCacheNames.Add(tagNames);
             }
@@ -127,7 +127,7 @@ namespace TagTool.Commands.Modding
         public static void BuildInitialTagCache(GameCacheHaloOnline baseCache, GameCacheModPackage modCache, MemoryStream referenceStream)
         {
             modCache.BaseModPackage.CacheNames = new List<string>();
-            modCache.BaseModPackage.TagCachesStreams = new List<ExtantStream>();
+            modCache.BaseModPackage.TagCachesStreams = new List<UnmanagedExtantStream>();
             modCache.BaseModPackage.TagCacheNames = new List<Dictionary<int, string>>();
 
             var writer = new EndianWriter(referenceStream, false);

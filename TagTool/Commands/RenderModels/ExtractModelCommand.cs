@@ -37,7 +37,15 @@ namespace TagTool.Commands.RenderModels
                   "- [dds] Will extract used bitmaps in dds format to subfolders within <path> folder.\n" +
                   "- Format will be chosen based on extension given for output file, AMF if folder only.\n" +
                   "- All occurrence of * in <path>, will be replaced with the model name/index.\n" +
-                  "- If <path> is a folder only, an auto-named AMF file will be extracted there.")
+                  "- If <path> is a folder only, an auto-named AMF file will be extracted there.\n\n"+
+                  "Blender usage:\n"+
+                  "If using AMF, import in blender as 3DS MAX.\n" +
+                  "If using DAE, scale the armature 100 units and apply the scale.\n" +
+                  "If using FBX, scale the armature 10000 units, apply the scale and clear the rotation.\n" +
+                  "If using OBJ, scale the object 100 units and apply all transforms.\n" +
+                  "If you plan to use ReplaceRenderGeometry command please reset the bone orientations!\n" +
+                  "You can reset bone orientations with Halo Asset Development Toolset Add-On for Blender")
+
         {
             Cache = cacheContext;
             Tag = tag;

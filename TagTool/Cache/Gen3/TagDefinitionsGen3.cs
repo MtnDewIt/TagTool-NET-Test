@@ -136,6 +136,7 @@ namespace TagTool.Cache.Gen3
             { new TagGroupGen3("rmzo", "rm  ", "shader_zonly"), typeof(ShaderZonly) },
             { new TagGroupGen3("rmbl", "rumble"), typeof(Rumble) },
             { new TagGroupGen3("rwrd", "render_water_ripple"), typeof(RenderWaterRipple) },
+            { new TagGroupGen3("rsod", "render_skins_object_globals"), typeof(RenderSkinsObjectGlobals) },
             { new TagGroupGen3("sLdT", "scenario_lightmap"), typeof(ScenarioLightmap) },
             { new TagGroupGen3("sbsp", "scenario_structure_bsp"), typeof(ScenarioStructureBsp) },
             { new TagGroupGen3("scen", "obje", "scenery"), typeof(Scenery) },

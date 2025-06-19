@@ -13,12 +13,17 @@ namespace TagTool.Tags.Definitions
         public CachedTag VertexShader;
         public CachedTag PixelShader;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline235640)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline235640, Platform = CachePlatform.Original)]
+        [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
         public EntryPointBitMask ValidEntryPoints;
-        [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         public EntryPointBitMaskMs30 ValidEntryPointsHO;
-        [TagField(MinVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+        public EntryPointBitMaskMCC ValidEntryPointsMCC;
+        [TagField(MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
         public EntryPointBitMaskReach ValidEntryPointsReach;
+        [TagField(MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        public EntryPointBitMaskReachMCC ValidEntryPointsReachMCC;
 
         public List<TagBlockIndex> EntryPoints;
         public List<PassBlock> Passes;
@@ -35,12 +40,17 @@ namespace TagTool.Tags.Definitions
             public CachedTag VertexShader;
             public CachedTag PixelShader;
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline235640)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline235640, Platform = CachePlatform.Original)]
+            [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
             public EntryPointBitMask ValidEntryPoints;
-            [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             public EntryPointBitMaskMs30 ValidEntryPointsHO;
-            [TagField(MinVersion = CacheVersion.HaloReach)]
+            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+            public EntryPointBitMaskMCC ValidEntryPointsMCC;
+            [TagField(MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
             public EntryPointBitMaskReach ValidEntryPointsReach;
+            [TagField(MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+            public EntryPointBitMaskReachMCC ValidEntryPointsReachMCC;
 
             public List<TagBlockIndex> EntryPoints;
             public List<PassBlock> Passes;

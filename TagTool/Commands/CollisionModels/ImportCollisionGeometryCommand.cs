@@ -6,6 +6,7 @@ using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.Geometry;
 using System.Linq;
+using System.Numerics;
 using TagTool.Tags;
 using TagTool.Geometry.BspCollisionGeometry;
 using Assimp;
@@ -19,7 +20,7 @@ namespace TagTool.Commands.CollisionModels
     {
         private GameCacheHaloOnlineBase Cache { get; }
         private CollisionGeometry Bsp { get; set; }
-        private List<Assimp.Vector3D> Vertices { get; set; }
+        private List<Vector3D> Vertices { get; set; }
         private List<Face> Faces { get; set; }
         private List<@triangle> Triangles { get; set; }
         private bool debug = false;
@@ -27,8 +28,8 @@ namespace TagTool.Commands.CollisionModels
         private bool overwrite = false;
         private int max_surface_edges = 8;
         private bool buildmopp = false;
-        private Vector3D MaxBounds = new Vector3D(float.MinValue, float.MinValue, float.MinValue);
-        private Vector3D MinBounds = new Vector3D(float.MaxValue, float.MaxValue, float.MaxValue);
+        private Vector3 MaxBounds = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+        private Vector3 MinBounds = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
         //error geometry 
         private ErrorGeometryBuilder Errors = new ErrorGeometryBuilder();
 

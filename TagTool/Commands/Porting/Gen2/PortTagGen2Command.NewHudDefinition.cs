@@ -601,7 +601,7 @@ namespace TagTool.Commands.Porting.Gen2
                             string extraData = null;
                             if (nhdt.TextWidgets[textIndex].Justification == HudTextWidgets.JustificationValue.Center)
                             {
-                                extraData = "CenterHorizontally";
+                                extraData = "CurveHorizontally";
                             }
                             ConvertFlags(nhdt.TextWidgets[textIndex].Flags, newTextWidget, extraData);
 
@@ -1122,75 +1122,75 @@ namespace TagTool.Commands.Porting.Gen2
                         switch (enumName)
                         {
                             case "GrenadeTypeIsFrag":
-                                results.Add("UnitGeneralFlags.SelectedFragGrenades");
+                                results.Add("UnitMiscState.HumanGrenadeSelected");
                                 break;
                             case "GrenadeTypeIsPlasma":
-                                results.Add("UnitGeneralFlags.SelectedPlasmaGrenades");
+                                results.Add("UnitMiscState.PlasmaGrenadeSelected");
                                 break;
                             case "UnitIsSingleWielding":
-                                results.Add("UnitInventoryFlags.IsSingleWielding");
+                                results.Add("UnitArmedState.SingleWielding");
                                 break;
                             case "UnitIsDualWielding":
-                                results.Add("UnitInventoryFlags.IsDualWielding");
+                                results.Add("UnitArmedState.DualWielding");
                                 break;
                             case "UnitIsUnzoomed":
                                 Console.WriteLine("redundant zoom check, already handling");
                                 break;
                             case "UnitIsZoomedLevel1":
-                                results.Add("UnitZoomFlags.UnitIsZoomedLevel1");
+                                results.Add("UnitZoomState.ZoomLvl1");
                                 break;
                             case "UnitIsZoomedLevel2":
-                                results.Add("UnitZoomFlags.UnitIsZoomedLevel2");
+                                results.Add("UnitZoomState.ZoomLvl2");
                                 break;
                             case "BinocularsEnabled":
-                                results.Add("UnitGeneralFlags.BinocularsActive");
-                                results.Add("WindowState.WideFull");
-                                results.Add("WindowState.NativeFull");
+                                results.Add("UnitMiscState.BinocularsEnabled");
+                                results.Add("WindowState._720pFullscreen"); 
+                                results.Add("WindowState._480pFullscreen");
                                 break;
                             case "MotionSensorEnabled":
-                                results.Add("UnitGeneralFlags.MotionTrackerEnabled");
+                                results.Add("UnitMiscState.MotionSensorEnabled");
                                 break;
                             case "ShieldEnabled":
-                                results.Add("UnitGeneralFlags.HasShields");
+                                results.Add("UnitMiscState.ShieldAvailable");
                                 break;
                             case "AutoaimFriendly":
-                                results.Add("WeaponTargetFlags.Friendly");
+                                results.Add("WeaponCrosshairState.Normal");
                                 break;
                             case "AutoaimPlasma":
-                                results.Add("WeaponTargetFlags.PlasmaTrack");
+                                results.Add("WeaponCrosshairState.PlasmaTrack");
                                 break;
                             case "AutoaimHeadshot":
-                                results.Add("WeaponTargetFlags.EnemyHeadshot");
+                                results.Add("WeaponCrosshairState.EnemyHeadshot");
                                 break;
                             case "AutoaimVulnerable":
-                                results.Add("WeaponTargetFlags.EnemyWeakpoint");
+                                results.Add("WeaponCrosshairState.EnemyWeakpoint");
                                 break;
                             case "AutoaimInvincible":
-                                results.Add("WeaponTargetFlags.Invincible");
+                                results.Add("WeaponCrosshairState.Invincible");
                                 break;
                             case "PrimaryWeapon":
-                                results.Add("WeaponStatusFlags.SourceIsPrimaryWeapon");
+                                results.Add("WeaponArmedStateHO.RightHand");
                                 break;
                             case "SecondaryWeapon":
-                                results.Add("WeaponStatusFlags.SourceIsDualWeapon");
+                                results.Add("WeaponArmedStateHO.LeftHand");
                                 break;
                             case "BackpackWeapon":
-                                results.Add("WeaponStatusFlags.SourceIsBackpacked");
+                                results.Add("WeaponArmedStateHO.Backpack");
                                 break;
                             case "Overheated":
-                                results.Add("Weapon_SpecialFlags.Overheated");
+                                results.Add("WeaponFlash.Overheating");
                                 break;
                             case "OutOfAmmo":
-                                results.Add("Weapon_SpecialFlags.AmmoEmpty");
+                                results.Add("WeaponFlash.AmmoReserveEmpty");
                                 break;
                             case "LockTargetAvailable":
-                                results.Add("WeaponTargetFlags.LockAvailable");
+                                results.Add("WeaponCrosshairState.LockAvailable");
                                 break;
                             case "Locking":
-                                results.Add("WeaponTargetBFlags.LockingOnAvailable");
+                                results.Add("WeaponMiscState.LockingOnAvailable");
                                 break;
                             case "Locked":
-                                results.Add("WeaponTargetBFlags.LockedOnAvailable");
+                                results.Add("WeaponMiscState.LockedOnAvailable");
                                 break;
                             case "CampaignSolo":
                                 results.Add("GameState.CampaignSolo");
@@ -1199,10 +1199,10 @@ namespace TagTool.Commands.Porting.Gen2
                                 results.Add("GameState.CampaignCoop");
                                 break;
                             case "FreeForAll":
-                                results.Add("GameState.FreeForAll");
+                                results.Add("GameState.MultiFFA");
                                 break;
                             case "TeamGame":
-                                results.Add("GameState.TeamGame");
+                                results.Add("GameState.MultiTeam"); 
                                 break;
                             case "Default":
                             case "GrenadeTypeIsNone":
@@ -1231,10 +1231,10 @@ namespace TagTool.Commands.Porting.Gen2
                             case "UnitIsZoomedLevel1":
                             case "UnitIsZoomedLevel2":
                             case "BinocularsEnabled":
-                                results.Add("InverseFlags.NotZoomedIn");
+                                results.Add("HiddenState.Zoomed");
                                 break;
                             case "MotionSensorEnabled":
-                                results.Add("UnitGeneralFlags.MotionTrackerDisabled");
+                                results.Add("UnitMiscState.MotionSensorDisabled");
                                 break;
                             case "Default":
                             case "GrenadeTypeIsNone":

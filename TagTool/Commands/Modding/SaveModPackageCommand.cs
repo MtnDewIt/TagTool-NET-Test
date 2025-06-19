@@ -32,7 +32,7 @@ namespace TagTool.Commands.Modding
                 else if (Cache.ModPackageFile != null)
                     path = Cache.ModPackageFile.FullName;
                 else
-                    path += "mods\\" + Cache.DisplayName;
+                    path += "mods\\" + Cache.BaseModPackage.Metadata.Name;
             }
             else
             {

@@ -212,7 +212,7 @@ namespace TagTool.Commands.Modding
 
             //initialize new tag caches
             newMod.BaseModPackage.CacheNames = new List<string>();
-            newMod.BaseModPackage.TagCachesStreams = new List<ExtantStream>();
+            newMod.BaseModPackage.TagCachesStreams = new List<UnmanagedExtantStream>();
             newMod.BaseModPackage.TagCacheNames = new List<Dictionary<int, string>>();
 
             var referenceStream = new MemoryStream(); // will be reused by all base caches
@@ -267,7 +267,7 @@ namespace TagTool.Commands.Modding
                     ms.Position = 0;
                 }
 
-                newMod.BaseModPackage.TagCachesStreams.Add(new ExtantStream(ms));
+                newMod.BaseModPackage.TagCachesStreams.Add(new UnmanagedExtantStream(IntPtr.Zero, new ExtantStream(ms)));
                 newMod.BaseModPackage.CacheNames.Add(name);
                 newMod.BaseModPackage.TagCacheNames.Add(tagNames);
             }

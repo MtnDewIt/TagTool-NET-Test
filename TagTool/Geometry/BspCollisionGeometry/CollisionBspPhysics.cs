@@ -5,9 +5,10 @@ using TagTool.Tags;
 
 namespace TagTool.Geometry.BspCollisionGeometry
 {
-    [TagStructure(Size = 0xB0, Align=16, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-    [TagStructure(Size = 0x70, Align=16, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
-    [TagStructure(Size = 0x80, Align=16, MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x70, Align = 16, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x80, Align = 16, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0xB0, Align = 16, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0xB0, Align = 16, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
     public class CollisionBspPhysicsDefinition : TagStructure
     {
         public CollisionGeometryShape GeometryShape;

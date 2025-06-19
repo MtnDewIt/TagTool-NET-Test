@@ -7,7 +7,7 @@ using TagTool.IO;
 namespace TagTool.Cache
 {
     [TagStructure(Size = 0x458)]
-    public class ModPackageHeader
+    public class ModPackageHeader : TagStructure
     {
         public Tag Signature = new Tag("mod!");
 
@@ -42,7 +42,7 @@ namespace TagTool.Cache
     }
 
     [TagStructure(Size = 0x470)]
-    public class ModPackageMetadata
+    public class ModPackageMetadata : TagStructure
     {
         public Tag Signature = new Tag("desc");
 
@@ -103,7 +103,7 @@ namespace TagTool.Cache
     }
 
     [TagStructure(Size = 0x8)]
-    public class ModPackageSectionTable
+    public class ModPackageSectionTable : TagStructure
     {
         /// <summary>
         /// Number of sections in the table
@@ -116,7 +116,7 @@ namespace TagTool.Cache
     }
 
     [TagStructure(Size = 0x8)]
-    public class ModPackageSectionHeader
+    public class ModPackageSectionHeader : TagStructure
     {
         /// <summary>
         /// Size of the section
@@ -147,7 +147,7 @@ namespace TagTool.Cache
     }
 
     [TagStructure(Size = 0x104)]
-    public class ModPackageTagNamesEntry
+    public class ModPackageTagNamesEntry : TagStructure
     {
         public int TagIndex;
 
@@ -164,7 +164,7 @@ namespace TagTool.Cache
     }
 
     [TagStructure(Size = 0x8)]
-    public class GenericSectionEntry
+    public class GenericSectionEntry : TagStructure
     {
         /// <summary>
         /// Number of item in the table
@@ -196,7 +196,7 @@ namespace TagTool.Cache
     }
 
     [TagStructure(Size = 0x8)]
-    public class GenericTableEntry
+    public class GenericTableEntry : TagStructure
     {
         public uint Size;
         public uint Offset;
@@ -221,7 +221,7 @@ namespace TagTool.Cache
     }
 
     [TagStructure(Size = 0x28)]
-    public class CacheTableEntry
+    public class CacheTableEntry : TagStructure
     {
         public uint Size;
         public uint Offset;
@@ -239,7 +239,7 @@ namespace TagTool.Cache
     }
 
     [TagStructure(Size = 0x10)]
-    public class CacheMapTableEntry
+    public class CacheMapTableEntry : TagStructure
     {
         public int Size;
         public uint Offset;
@@ -273,7 +273,7 @@ namespace TagTool.Cache
 
 
     [TagStructure(Size = 0x108)]
-    public class FileTableEntry
+    public class FileTableEntry : TagStructure
     {
         public uint Size;
 
@@ -281,5 +281,12 @@ namespace TagTool.Cache
 
         [TagField(Length = 256)]
         public string Path;
+    }
+
+    [TagStructure(Size = 0x8C8)]
+    public class ModPackageData : TagStructure
+    {
+        public ModPackageHeader Header;
+        public ModPackageMetadata Metadata;
     }
 }

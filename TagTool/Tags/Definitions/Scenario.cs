@@ -366,11 +366,16 @@ namespace TagTool.Tags.Definitions
 
         [TagField(ValidTags = new[] { "cfxs" })]
         public CachedTag DefaultCameraFx;
+
+        [TagField(ValidTags = new[] { "pdm!" }, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
+        public CachedTag PodiumDefinitionOverride;
+
         [TagField(ValidTags = new[] { "sefc" })]
         public CachedTag DefaultScreenFx;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public CachedTag UnknownHO;
+        [TagField(ValidTags = new[] { "sefc" }, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+        public CachedTag DefaultScreenFxOverride;
+
         [TagField(ValidTags = new[] { "ssao" }, MinVersion = CacheVersion.HaloReach)]
         public CachedTag GlobalSsao;
 
@@ -817,10 +822,7 @@ namespace TagTool.Tags.Definitions
                 [TagStructure(Size = 0xC)]
                 public class DevicePortalAssociation : TagStructure
 				{
-                    public int UniqueId;
-                    public short OriginBspIndex;
-                    public GameObjectType8 ObjectType;
-                    public ObjectSource Source;
+                    public ObjectIdentifier ObjectId;
                     public short FirstGamePortalIndex;
                     public ushort GamePortalCount;
                 }
@@ -881,16 +883,6 @@ namespace TagTool.Tags.Definitions
                     Bit31 = 1 << 31
                 }
             }
-        }
-
-        public enum ObjectSource : sbyte
-        {
-            Structure,
-            Editor,
-            Dynamic,
-            Legacy,
-            Sky,
-            Parent
         }
 
         [TagStructure(Size = 0x64)]
@@ -1306,11 +1298,7 @@ namespace TagTool.Tags.Definitions
 
             public StringId LightAirprobeName;
 
-            // object id
-            public DatumHandle UniqueHandle;
-            public short OriginBspIndex;
-            public GameObjectType8 ObjectType;
-            public SourceValue Source; // sbyte
+            public ObjectIdentifier ObjectId;
 
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public BspPolicyValue BspPolicy; // sbyte
@@ -1327,18 +1315,6 @@ namespace TagTool.Tags.Definitions
 
             [TagField(Length = 0x2, Flags = Padding)]
             public byte[] Padding4;
-
-
-            public enum SourceValue : sbyte
-            {
-                None = -1,
-                Structure,
-                Editor,
-                Dynamic,
-                Legacy,
-                Sky,
-                Parent
-            }
 
             public enum BspPolicyValue : sbyte
             {
@@ -1699,8 +1675,9 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagStructure(Size = 0x24, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x24, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x24, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x24, MinVersion = CacheVersion.HaloReach)]
         public class TerminalInstance : ScenarioInstance
@@ -1726,10 +1703,10 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             public ArgbColor QuinaryColor;
 
-            public short PowerGroup;
-            public short PositionGroup;
-            public uint DeviceFlags;
-            public uint MachineFlags; // PahPah?
+            public short PowerGroupIndex;
+            public short PositionGroupIndex;
+            public ScenarioDeviceFlags DeviceFlags;
+            public uint PahPah;
         }
 
         [TagStructure(Size = 0x4C)]
@@ -4752,10 +4729,7 @@ namespace TagTool.Tags.Definitions
         [TagStructure(Size = 0x10)]
         public class ReferenceFrame : TagStructure
 		{
-            public DatumHandle ObjectHandle;
-            public short OriginBspIndex;
-            public GameObjectType8 ObjectType;
-            public ScenarioInstance.SourceValue Source;
+            public ObjectIdentifier ObjectId;
             public short NodeIndex;
             public short ProjectionAxis;
             public AiReferenceFrameFlags Flags;
@@ -5739,20 +5713,20 @@ namespace TagTool.Tags.Definitions
     public enum ScenarioFlags : ushort
     {
         None = 0,
-        Bit0 = 1 << 0,
-        Bit1 = 1 << 1,
-        Bit2 = 1 << 2,
-        Bit3 = 1 << 3,
-        Bit4 = 1 << 4,
-        CharactersUsePreviousMissionWeapons = 1 << 5,
-        Bit6 = 1 << 6,
-        Bit7 = 1 << 7,
-        Bit8 = 1 << 8,
-        Bit9 = 1 << 9,
-        Bit10 = 1 << 10,
-        Bit11 = 1 << 11,
-        Bit12 = 1 << 12,
-        Bit13 = 1 << 13,
+        CortanaHack = 1 << 0,
+        AlwaysDrawSky = 1 << 1,
+        DontStripPathfinding = 1 << 2,
+        SymmetricalMultiplayerMap = 1 << 3,
+        QuickLoad = 1 << 4,
+        CharactersUseWeaponsFromPreviousMission = 1 << 5,
+        LightmapsSmoothPalettesWithNeighborClusters = 1 << 6,
+        SnapToWhite = 1 << 7,
+        OverrideGlobals = 1 << 8,
+        BigVehicleUseCenterLightSampling = 1 << 9,
+        DontUseCampaignSharing = 1 << 10,
+        IgnoreSizeAndCantShip = 1 << 11,
+        AlwaysRunLightmapsPerBsp = 1 << 12,
+        Survival = 1 << 13,
         Bit14 = 1 << 14,
         H3Compatibility = 1 << 15
     }

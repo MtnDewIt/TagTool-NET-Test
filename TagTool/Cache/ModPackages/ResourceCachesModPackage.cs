@@ -28,7 +28,7 @@ namespace TagTool.Cache.ModPackages
             Package = package;
             Cache = cache;
             ExistingResources = new Dictionary<string, ResourcePage>();
-            ResourceCache = new ResourceCacheHaloOnline(package.PackageVersion, package.PackagePlatform, package.ResourcesStream);
+            ResourceCache = new ResourceCacheHaloOnline(package.PackageVersion, package.PackagePlatform, package.ResourcesStream.Stream);
             Serializer = new ResourceSerializer(Cache.Version, Cache.Platform);
             Deserializer = new ResourceDeserializer(Cache.Version, Cache.Platform);
         }
@@ -44,7 +44,7 @@ namespace TagTool.Cache.ModPackages
         public override Stream OpenCacheRead(ResourceLocation location)
         {
             if (location == ResourceLocation.Mods)
-                return Package.ResourcesStream;
+                return Package.ResourcesStream.Stream;
             else
                 return ModCache.BaseCacheReference.ResourceCaches.OpenCacheRead(location);
         }
@@ -52,7 +52,7 @@ namespace TagTool.Cache.ModPackages
         public override Stream OpenCacheReadWrite(ResourceLocation location)
         {
             if (location == ResourceLocation.Mods)
-                return Package.ResourcesStream;
+                return Package.ResourcesStream.Stream;
             else
                 return ModCache.BaseCacheReference.ResourceCaches.OpenCacheRead(location);
         }
@@ -60,7 +60,7 @@ namespace TagTool.Cache.ModPackages
         public override Stream OpenCacheWrite(ResourceLocation location)
         {
             if (location == ResourceLocation.Mods)
-                return Package.ResourcesStream;
+                return Package.ResourcesStream.Stream;
             else
                 return ModCache.BaseCacheReference.ResourceCaches.OpenCacheRead(location);
         }

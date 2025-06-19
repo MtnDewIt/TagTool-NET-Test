@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using Assimp;
 using TagTool.Cache;
 using TagTool.Common;
@@ -228,13 +229,13 @@ namespace TagTool.Commands.RenderModels
                         RenderMethod = Cache.TagCache.GetTag(@"shaders\invalid", "rmsh"),
                     });
 
-                    builder.BeginPart(material, partStartIndex, (ushort)meshIndices.Length, (ushort)mesh.VertexCount);
-                    builder.DefineSubPart(partStartIndex, (ushort)meshIndices.Length, (ushort)mesh.VertexCount);
+                    builder.BeginPart(material, partStartIndex, (ushort)meshIndices.Count(), (ushort)mesh.VertexCount);
+                    builder.DefineSubPart(partStartIndex, (ushort)meshIndices.Count(), (ushort)mesh.VertexCount);
                     builder.EndPart();
 
                     // Move to the next part
                     partStartVertex += (ushort)mesh.VertexCount;
-                    partStartIndex += (ushort)meshIndices.Length;
+                    partStartIndex += (ushort)meshIndices.Count();
 
                     // Bind the vertex and index buffers
                     if (vertexType == "skinned")

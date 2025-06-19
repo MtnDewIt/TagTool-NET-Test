@@ -18,10 +18,8 @@ using TagTool.Commands.Forge;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Scenarios;
 using TagTool.Cache.Monolithic;
-using TagTool.Commands.ConvertCache;
-using TagTool.Commands.GenerateCache;
-using TagTool.Commands.GenerateDonkeyCache;
 using TagTool.Commands.JSON;
+using TagTool.Commands.Mod;
 
 namespace TagTool.Commands.Tags
 {
@@ -70,8 +68,6 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new TagDependencyCommand(cache));
             context.AddCommand(new GuessTagDefCommand(cache));
 
-            context.AddCommand(new GenerateCacheCommand(cache));
-            context.AddCommand(new GenerateDonkeyCacheCommand(cache, contextStack));
             context.AddCommand(new GenerateBlfObjectCommand(cache, cache as GameCacheHaloOnline));
             context.AddCommand(new GenerateMapObjectCommand(cache, cache as GameCacheHaloOnline));
             context.AddCommand(new GenerateTagObjectCommand(cache, cache as GameCacheHaloOnline));
@@ -80,6 +76,8 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new EditBlfCommand(contextStack, cache as GameCacheHaloOnline, cache));
             context.AddCommand(new ConvertReachMapVariantCommand(cache as GameCacheHaloOnline));
             context.AddCommand(new ConvertHalo3MapVariantCommand(cache as GameCacheHaloOnline));
+
+            context.AddCommand(new DebugTestCommand(cache, cache as GameCacheHaloOnline, contextStack));
 
             // Halo Online Specific Commands
             if (cache is GameCacheHaloOnlineBase)
@@ -108,6 +106,7 @@ namespace TagTool.Commands.Tags
 				// modding commands
 				context.AddCommand(new OpenModPackageCommand(contextStack, hoCache));
                 context.AddCommand(new CreateCharacterType(cache));
+                context.AddCommand(new SetCustomizationFromModelCommand(cache));
                 context.AddCommand(new GenerateCanvasCommand(hoCache));
 
                 context.AddCommand(new UpdateMapFilesCommand(cache));
@@ -127,7 +126,6 @@ namespace TagTool.Commands.Tags
 
                 context.AddCommand(new TagResourceReportCommand(hoCache));
 
-                context.AddCommand(new ConvertCacheCommand(cache, hoCache));
                 context.AddCommand(new EditMapCommand(contextStack, hoCache, cache));
                 context.AddCommand(new ListMapsCommand(hoCache));
             }
@@ -158,6 +156,7 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new ApplyModPackageCommand(modCache));
 				context.AddCommand(new ApplyModPackageTagsCommand(modCache));
 				context.AddCommand(new AddTagCacheCommand(modCache));
+                context.AddCommand(new OptimizeBitmapsCommand(modCache));
                 context.AddCommand(new DeleteTagCacheCommand(modCache));
                 context.AddCommand(new AddModFilesCommand(modCache));
                 context.AddCommand(new ListModFilesCommand(modCache));
@@ -170,7 +169,6 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new AddForgeItemCommand(cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new AddSkyBoxCommand(cache as GameCacheHaloOnlineBase));
 
-                context.AddCommand(new ConvertCacheCommand(modCache, cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new UpdateShaderDataCommand(modCache, cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new EditMapCommand(contextStack, cache as GameCacheHaloOnlineBase, modCache));
                 context.AddCommand(new ExitModPackageCommand(contextStack, modCache));
@@ -178,6 +176,7 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new GenerateBlfObjectCommand(modCache, cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new GenerateMapObjectCommand(modCache, cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new GenerateTagObjectCommand(modCache, cache as GameCacheHaloOnlineBase));
+                context.AddCommand(new EditModMetadataCommand(contextStack, modCache));
             }
 
             if(cache is GameCacheMonolithic)
