@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using TagTool.BlamFile;
+using TagTool.BlamFile.Chunks;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.IO;
@@ -60,7 +61,7 @@ namespace TagTool.Commands.Files
                     ByteOrderMarker = -2,
                     InternalName = "",
                 },
-                ContentFlags = BlfFileContentFlags.StartOfFile | BlfFileContentFlags.MapImage | BlfFileContentFlags.EndOfFile,
+                ContentFlags = Blf.BlfFileContentFlags.StartOfFile | Blf.BlfFileContentFlags.MapImage | Blf.BlfFileContentFlags.EndOfFile,
                 Buffer = jpgImage,
                 EndOfFile = new BlfChunkEndOfFile
                 {
@@ -69,7 +70,7 @@ namespace TagTool.Commands.Files
                     MajorVersion = 1,
                     MinorVersion = 1,
                     AuthenticationDataSize = 0,
-                    AuthenticationType = BlfAuthenticationType.None,
+                    AuthenticationType = BlfChunkEndOfFile.BlfAuthenticationType.None,
                 }
             };
 

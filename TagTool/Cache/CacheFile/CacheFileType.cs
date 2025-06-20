@@ -8,7 +8,7 @@
         MainMenu,
         Shared,
         SharedCampaign,
-        Unknown5,
+        SharedMultiplayer,
         Unknown6
     }
 }

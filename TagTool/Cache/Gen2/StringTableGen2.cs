@@ -31,7 +31,7 @@ namespace TagTool.Cache.Gen2
                 Add("");
             }
 
-            reader.SeekTo(stringIDHeader.BufferOffset);
+            reader.SeekTo(baseMapFile.CachePlatform == CachePlatform.MCC ? stringIDHeader.BufferOffsetMCC : stringIDHeader.BufferOffset);
 
             EndianReader newReader = new EndianReader(new MemoryStream(reader.ReadBytes(stringIDHeader.BufferSize)), reader.Format);
 

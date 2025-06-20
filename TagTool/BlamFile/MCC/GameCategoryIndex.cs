@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TagTool.BlamFile.Chunks;
 
 namespace TagTool.BlamFile.MCC
 {
@@ -38,7 +39,7 @@ namespace TagTool.BlamFile.MCC
             GameCategory_Count = 28,
         }
 
-        public static GameEngineTeams DefaultTeamCounts = new GameEngineTeams 
+        public static BlfScenario.GameEngineTeams DefaultTeamCounts = new BlfScenario.GameEngineTeams
         {
             NoGametypeTeamCount = 0,
             CtfTeamCount = 2,
@@ -53,9 +54,9 @@ namespace TagTool.BlamFile.MCC
             InfectionTeamCount = 8,
         };
 
-        public static void ConvertGameCategoryIndexes(Dictionary<GameCategoryIndex, byte> gameCategories, GameEngineTeams gameEngineTeams)
+        public static void ConvertGameCategoryIndexes(Dictionary<GameCategoryIndex, byte> gameCategories, BlfScenario.GameEngineTeams gameEngineTeams)
         {
-            gameEngineTeams = new GameEngineTeams
+            gameEngineTeams = new BlfScenario.GameEngineTeams
             {
                 NoGametypeTeamCount = 0,
                 CtfTeamCount = gameCategories[GameCategoryIndex.GameCategory_CTF],

@@ -13,25 +13,39 @@ namespace TagTool.Cache
         //
 
         public Tag HeaderSignature;
+
         public CacheFileVersion FileVersion;
         public int FileLength;
-        public int FileCompressedLength;
-        public uint TagTableHeaderOffset;
-        public TagMemoryHeader TagMemoryHeader;
 
+        [TagField(MaxVersion = CacheVersion.HaloCustomEdition, Platform = CachePlatform.Original)]
+        public int FileCompressedLength;
+
+        [TagField(MinVersion = CacheVersion.HaloCustomEdition, MaxVersion = CacheVersion.HaloCustomEdition, Platform = CachePlatform.MCC)]
+        public CacheFileEngineVersion EngineVersion;
+        [TagField(MinVersion = CacheVersion.HaloCustomEdition, MaxVersion = CacheVersion.HaloCustomEdition, Platform = CachePlatform.MCC)]
+        public CacheFilePlatformType PlatformType;
+
+        [TagField(Length = 0x2, MinVersion = CacheVersion.HaloCustomEdition, MaxVersion = CacheVersion.HaloCustomEdition, Platform = CachePlatform.MCC, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding1;
+
+        public uint TagTableHeaderOffset;
+
+        public TagMemoryHeader TagMemoryHeader;
+        
         [TagField(Length = 32)]
         public string Name;
-
+        
         [TagField(Length = 32)]
         public string Build;
-
+        
         public CacheFileType CacheType;
         public CacheFileSharedType SharedCacheType;
-        public int Unknown;
 
+        public uint Checksum;
+        
         [TagField(Length = 0x794)]
         public byte[] Padding;
-
+        
         public Tag FooterSignature;
 
         //
