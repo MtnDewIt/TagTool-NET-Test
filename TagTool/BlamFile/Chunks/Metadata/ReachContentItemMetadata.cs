@@ -2,6 +2,7 @@
 using TagTool.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions.Common;
+using System.Runtime.InteropServices;
 
 namespace TagTool.BlamFile.Chunks.Metadata
 {
@@ -9,9 +10,6 @@ namespace TagTool.BlamFile.Chunks.Metadata
     public class ReachContentItemMetadata : TagStructure
     {
         public ContentItemTypeReach ContentTypeReach;
-
-        [TagField(Length = 0x3, Flags = TagFieldFlags.Padding)]
-        public byte[] PaddingReach;
 
         public int FileLength;
 
@@ -33,17 +31,17 @@ namespace TagTool.BlamFile.Chunks.Metadata
         public ContentItemAuthor CreationHistory;
         public ContentItemAuthor ModificationHistory;
 
-        [TagField(Length = 128, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+        [TagField(Length = 128, CharSet = CharSet.Unicode)]
         public string Name = string.Empty;
 
-        [TagField(Length = 128, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+        [TagField(Length = 128, CharSet = CharSet.Unicode)]
         public string Description = string.Empty;
 
         public ContentItemGeneric Generic;
         public ContentItemMatchmaking Matchmaking;
         public ContentItemMetagame Metagame;
 
-        public enum ContentItemTypeReach : sbyte
+        public enum ContentItemTypeReach : int
         {
             None = -1,
             DLC,
@@ -62,7 +60,7 @@ namespace TagTool.BlamFile.Chunks.Metadata
             public ulong Timestamp;
             public ulong AuthorId;
 
-            [TagField(Length = 16, CharSet = System.Runtime.InteropServices.CharSet.Ansi)]
+            [TagField(Length = 16, CharSet = CharSet.Ansi)]
             public string Author = string.Empty;
 
             public bool AuthorIsOnline;

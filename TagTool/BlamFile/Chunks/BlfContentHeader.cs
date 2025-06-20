@@ -13,8 +13,8 @@ namespace TagTool.BlamFile.Chunks
     [TagStructure(Size = 0x2B4, Align = 0x1, MinVersion = CacheVersion.HaloReach)]
     public class BlfContentHeader : BlfChunkHeader
     {
-        public ushort BuildVersion;
-        public ushort MapMinorVersion;
+        public short BuildVersion;
+        public short MapMinorVersion;
 
         [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public ContentItemMetadata Metadata;
@@ -30,21 +30,23 @@ namespace TagTool.BlamFile.Chunks
             contentHeader.Length = reader.ReadInt32();
             contentHeader.MajorVersion = reader.ReadInt16();
             contentHeader.MinorVersion = reader.ReadInt16();
-            contentHeader.BuildVersion = reader.ReadUInt16();
-            contentHeader.MapMinorVersion = reader.ReadUInt16();
+            contentHeader.BuildVersion = reader.ReadInt16();
+            contentHeader.MapMinorVersion = reader.ReadInt16();
 
             if (deserializer.Version == CacheVersion.HaloReach)
             {
+                var bitStream = new BitStream(reader.BaseStream);
+
                 if (deserializer.CachePlatform == CachePlatform.MCC)
                 {
                     // TODO: Figure out how to account for 343's bullshit :/
                     // chunk header = big endian
                     // chunk data = little endian
-                    contentHeader.MetadataReach = ReachContentItemMetadata.Decode(new BitStream(reader.BaseStream), false);
+                    contentHeader.MetadataReach = ReachContentItemMetadata.Decode(bitStream, false);
                 }
                 else 
                 {
-                    contentHeader.MetadataReach = ReachContentItemMetadata.Decode(new BitStream(reader.BaseStream), false);
+                    contentHeader.MetadataReach = ReachContentItemMetadata.Decode(bitStream, false);
                 }
             }
             else
