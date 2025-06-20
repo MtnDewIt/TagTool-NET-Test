@@ -319,23 +319,25 @@ namespace TagTool.BlamFile
             var result = new VariantObjectDatum.VariantMultiplayerProperties();
 
             result.EngineFlags = DetermineEngineFlags(reachProperties.MegaloLabelIndex);
-            result.Flags = reachProperties.PlacementFlags.ConvertLexical<VariantObjectDatum.VariantMultiplayerProperties.VariantPlacementFlags>();
+            result.Flags = reachProperties.Flags.ConvertLexical<VariantObjectDatum.VariantMultiplayerProperties.VariantPlacementFlags>();
             result.Team = reachProperties.Team;
-            result.SpawnTime = (byte)reachProperties.SpawnTime;
+            result.SpawnTime = reachProperties.SpawnTime;
             result.Type = reachProperties.Type.ConvertLexical<MultiplayerObjectType>();
 
             switch (reachProperties.Type)
             {
+                // TODO: Add proper handling for each object type
+
                 case MultiplayerObjectTypeReach.Weapon:
-                    result.SharedStorage = (byte)reachProperties.SpareClips;
+                    result.SharedStorage = reachProperties.SharedStorage[0];
                     break;
                 case MultiplayerObjectTypeReach.TeleporterTwoWay:
                 case MultiplayerObjectTypeReach.TeleporterReceiver:
                 case MultiplayerObjectTypeReach.TeleporterSender:
-                    result.SharedStorage = (byte)reachProperties.TeleporterChannel;
+                    result.SharedStorage = reachProperties.SharedStorage[0];
                     break;
                 default:
-                    result.SharedStorage = (byte)reachProperties.SpawnOrder;
+                    result.SharedStorage = reachProperties.UserData;
                     break;
             }
 

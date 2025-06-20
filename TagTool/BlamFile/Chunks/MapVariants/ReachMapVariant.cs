@@ -1,10 +1,10 @@
 ﻿using System;
-using TagTool.Common;
-using TagTool.Cache;
-using TagTool.Tags;
-using TagTool.Tags.Definitions.Common;
 using TagTool.BlamFile.Chunks.Megalo;
 using TagTool.BlamFile.Chunks.Metadata;
+using TagTool.Cache;
+using TagTool.Common;
+using TagTool.Tags;
+using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.BlamFile.Chunks.MapVariants
 {
@@ -103,19 +103,24 @@ namespace TagTool.BlamFile.Chunks.MapVariants
     public class ReachVariantObjectDatum : TagStructure
     {
         public ObjectPlacementFlags Flags;
-        public int QuotaIndex = -1;
-        public int VariantIndex = -1;
+        public short QuotaIndex = -1;
+        public int Unknown4 = -1;
         public RealPoint3d Position;
         public RealVector3d Forward;
         public RealVector3d Up;
-        public int SpawnRelativeToIndex = -1;
+        public short SpawnRelativeToIndex = -1;
+        public sbyte VariantIndex = -1;
+
+        [TagField(Length = 0x1)]
+        public byte[] Padding;
+
         public ReachVariantMultiplayerObjectProperties Properties;
 
         [Flags]
-        public enum ObjectPlacementFlags : byte
+        public enum ObjectPlacementFlags : ushort
         {
             None = 0,
-            OccupiedSlot = 1 << 0
+            OccupiedSlot = 1 << 0,
         }
 
         public static ReachVariantObjectDatum Decode(BitStream stream, RealRectangle3d worldBounds)
@@ -128,10 +133,10 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             objectDatum.Flags = (ObjectPlacementFlags)stream.ReadUnsigned(2);
 
             if (!stream.ReadBool())
-                objectDatum.QuotaIndex = (int)stream.ReadUnsigned(8);
+                objectDatum.QuotaIndex = (short)stream.ReadUnsigned(8);
 
             if (!stream.ReadBool())
-                objectDatum.VariantIndex = (int)stream.ReadUnsigned(5);
+                objectDatum.VariantIndex = (sbyte)stream.ReadUnsigned(5);
 
             var hasPosition = stream.ReadUnsigned(1) > 0;
 
@@ -141,7 +146,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
 
                 BitStream.ReadAxis(stream, 14, 20, true, out objectDatum.Forward, out objectDatum.Up);
 
-                objectDatum.SpawnRelativeToIndex = (int)stream.ReadUnsigned(10) - 1;
+                objectDatum.SpawnRelativeToIndex = (short)((int)stream.ReadUnsigned(10) - 1);
 
                 objectDatum.Properties = ReachVariantMultiplayerObjectProperties.Decode(stream);
             }
@@ -154,17 +159,20 @@ namespace TagTool.BlamFile.Chunks.MapVariants
     public class ReachVariantMultiplayerObjectProperties : TagStructure
     {
         public ReachMultiplayerObjectBoundary Boundary;
-        public int SpawnOrder;
-        public int SpawnTime;
+        public byte UserData;
+        public byte SpawnTime;
         public MultiplayerObjectTypeReach Type;
-        public int MegaloLabelIndex;
-        public VariantPlacementFlags PlacementFlags;
+        public short MegaloLabelIndex = -1;
+        public VariantPlacementFlags Flags;
         public MultiplayerTeamDesignator Team = MultiplayerTeamDesignator.Neutral;
-        public int PrimaryChangeColorIndex = -1;
-        public int SpareClips;
-        public int TeleporterChannel;
-        public TeleporterPassabilityFlags TeleporterPassability;
-        public int LocationNameIndex = -1;
+
+        [TagField(Length = 0x2)]
+        public byte[] SharedStorage = new byte[2];
+
+        public sbyte PrimaryChangeColorIndex = -1;
+
+        [TagField(Length = 0x1, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding;
 
         public static ReachVariantMultiplayerObjectProperties Decode(BitStream stream)
         {
@@ -172,40 +180,47 @@ namespace TagTool.BlamFile.Chunks.MapVariants
 
             objectProperties.Boundary = ReachMultiplayerObjectBoundary.Decode(stream);
 
-            objectProperties.SpawnOrder = (int)stream.ReadUnsigned(8);
-            objectProperties.SpawnTime = (int)stream.ReadUnsigned(8);
+            objectProperties.UserData = (byte)stream.ReadUnsigned(8);
+            objectProperties.SpawnTime = (byte)stream.ReadUnsigned(8);
             objectProperties.Type = (MultiplayerObjectTypeReach)(int)stream.ReadUnsigned(5);
 
-            if (stream.ReadBool())
-                objectProperties.MegaloLabelIndex = -1;
-            else
-                objectProperties.MegaloLabelIndex = (int)stream.ReadUnsigned(8);
+            if (!stream.ReadBool())
+                objectProperties.MegaloLabelIndex = (short)stream.ReadUnsigned(8);
 
-            objectProperties.PlacementFlags = (VariantPlacementFlags)stream.ReadUnsigned(8);
+            objectProperties.Flags = (VariantPlacementFlags)stream.ReadUnsigned(8);
             objectProperties.Team = (MultiplayerTeamDesignator)((int)stream.ReadUnsigned(4) - 1);
 
-            if (stream.ReadBool())
-                objectProperties.PrimaryChangeColorIndex = -1;
-            else
-                objectProperties.PrimaryChangeColorIndex = (int)stream.ReadUnsigned(3);
+            if (!stream.ReadBool())
+                objectProperties.PrimaryChangeColorIndex = (sbyte)stream.ReadUnsigned(3);
 
-            if (objectProperties.Type == MultiplayerObjectTypeReach.Weapon)
+            if (objectProperties.Type != MultiplayerObjectTypeReach.Ordinary) 
             {
-                objectProperties.SpareClips = (int)stream.ReadUnsigned(8);
-            }
-            else
-            {
-                if (objectProperties.Type <= MultiplayerObjectTypeReach.Device)
-                    return objectProperties;
-                if (objectProperties.Type <= MultiplayerObjectTypeReach.TeleporterReceiver)
+                switch (objectProperties.Type)
                 {
-                    objectProperties.TeleporterChannel = (int)stream.ReadUnsigned(5);
-                    objectProperties.TeleporterPassability = (TeleporterPassabilityFlags)stream.ReadUnsigned(5);
+                    case MultiplayerObjectTypeReach.Weapon:
+                        objectProperties.SharedStorage[0] = (byte)stream.ReadUnsigned(8);
+                        break;
+                    case MultiplayerObjectTypeReach.Grenade:
+                    case MultiplayerObjectTypeReach.Projectile:
+                    case MultiplayerObjectTypeReach.Powerup:
+                    case MultiplayerObjectTypeReach.Equipment:
+                    case MultiplayerObjectTypeReach.AmmoPack:
+                    case MultiplayerObjectTypeReach.LightLandVehicle:
+                    case MultiplayerObjectTypeReach.HeavyLandVehicle:
+                    case MultiplayerObjectTypeReach.FlyingVehicle:
+                    case MultiplayerObjectTypeReach.Turret:
+                    case MultiplayerObjectTypeReach.Device:
+                        return objectProperties;
+                    case MultiplayerObjectTypeReach.TeleporterTwoWay:
+                    case MultiplayerObjectTypeReach.TeleporterSender:
+                    case MultiplayerObjectTypeReach.TeleporterReceiver:
+                        objectProperties.SharedStorage[0] = (byte)stream.ReadUnsigned(5);
+                        objectProperties.SharedStorage[1] = (byte)stream.ReadUnsigned(5);
+                        break;
+                    case MultiplayerObjectTypeReach.NamedLocationArea:
+                        objectProperties.SharedStorage[0] = (byte)((int)stream.ReadUnsigned(8) - 1);
+                        break;
                 }
-                if (objectProperties.Type != MultiplayerObjectTypeReach.NamedLocationArea)
-                    return objectProperties;
-
-                objectProperties.LocationNameIndex = (int)stream.ReadUnsigned(8) - 1;
             }
 
             return objectProperties;
@@ -217,8 +232,8 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             None = 0,
             UniqueSpawn  = 1 << 0,
             NotInitiallyPlaced  = 1 << 1,
-            SymmetricPlacement = 1 << 2,
-            AsymmetricPlacement = 1 << 3,
+            Symmetric = 1 << 2,
+            Asymmetric = 1 << 3,
             IsShortcut = 1 << 4,
             HideUnlessRequired = 1 << 5,
             PhysicsFixed = 1 << 6, // create at rest
