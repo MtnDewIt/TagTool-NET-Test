@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using TagTool.Common;
 using TagTool.Cache;
 using TagTool.Tags;
@@ -100,7 +99,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         }
     }
 
-    [TagStructure(Size = 0x62, MinVersion = CacheVersion.HaloReach)]
+    [TagStructure(Size = 0x4C, MinVersion = CacheVersion.HaloReach)]
     public class ReachVariantObjectDatum : TagStructure
     {
         public ObjectPlacementFlags Flags;
@@ -111,6 +110,13 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         public RealVector3d Up;
         public int SpawnRelativeToIndex = -1;
         public ReachVariantMultiplayerObjectProperties Properties;
+
+        [Flags]
+        public enum ObjectPlacementFlags : byte
+        {
+            None = 0,
+            OccupiedSlot = 1 << 0
+        }
 
         public static ReachVariantObjectDatum Decode(BitStream stream, RealRectangle3d worldBounds)
         {
@@ -142,16 +148,9 @@ namespace TagTool.BlamFile.Chunks.MapVariants
 
             return objectDatum;
         }
-
-        [Flags]
-        public enum ObjectPlacementFlags : byte
-        {
-            None = 0,
-            OccupiedSlot = 1 << 0
-        }
     }
 
-    [TagStructure(Size = 0x31, MinVersion = CacheVersion.HaloReach)]
+    [TagStructure(Size = 0x1C, MinVersion = CacheVersion.HaloReach)]
     public class ReachVariantMultiplayerObjectProperties : TagStructure
     {
         public ReachMultiplayerObjectBoundary Boundary;
@@ -242,31 +241,25 @@ namespace TagTool.BlamFile.Chunks.MapVariants
 
             boundary.Shape = (MultiplayerObjectBoundaryShape)stream.ReadUnsigned(2);
 
-            if (boundary.Shape == MultiplayerObjectBoundaryShape.Sphere)
+            if (boundary.Shape != MultiplayerObjectBoundaryShape.None) 
             {
-                boundary.WidthRadius = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
-            }
-            else
-            {
-                if (boundary.Shape == MultiplayerObjectBoundaryShape.Cylinder)
+                switch (boundary.Shape)
                 {
-                    boundary.WidthRadius = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
+                    case MultiplayerObjectBoundaryShape.Sphere:
+                        boundary.WidthRadius = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
+                        break;
+                    case MultiplayerObjectBoundaryShape.Cylinder:
+                        boundary.WidthRadius = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
+                        boundary.PositiveHeight = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
+                        boundary.NegativeHeight = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
+                        break;
+                    case MultiplayerObjectBoundaryShape.Box:
+                        boundary.WidthRadius = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
+                        boundary.BoxLength = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
+                        boundary.PositiveHeight = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
+                        boundary.NegativeHeight = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
+                        break;
                 }
-                else
-                {
-                    if (boundary.Shape != MultiplayerObjectBoundaryShape.Box)
-                    {
-                        Debug.Assert(boundary.Shape == 0);
-                        return boundary;
-                    }
-
-
-                    boundary.WidthRadius = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
-                    boundary.BoxLength = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
-                }
-
-                boundary.PositiveHeight = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
-                boundary.NegativeHeight = BitStream.ReadQuantizedRealWithEndPoints(stream, 0.0f, 200.0f, 11, false, true);
             }
 
             return boundary;

@@ -37,6 +37,7 @@ namespace TagTool.BlamFile
         public BlfSavedFilmHeader SavedFilmHeader;
         public BlfScreenshotCamera ScreenshotCamera;
         public BlfScreenshotData ScreenshotData;
+        public BlfServerSignature ServerSignature;
         public byte[] Buffer;
 
         public Blf(CacheVersion version, CachePlatform cachePlatform)
@@ -66,6 +67,7 @@ namespace TagTool.BlamFile
             SavedFilmHeader = 1 << 14,
             ScreenshotCamera = 1 << 15,
             ScreenshotData = 1 << 16,
+            ServerSignature = 1 << 17,
         }
 
         // TODO: Verify All Read / Write methods for all chunks
@@ -184,9 +186,13 @@ namespace TagTool.BlamFile
                         SavedFilmData = BlfSavedFilmData.Decode(deserializer, dataContext);
                         break;
 
-                    case "ssig": 
-                    case "mps2": 
-                    case "chrt": 
+                    case "ssig":
+                        ContentFlags |= BlfFileContentFlags.ServerSignature;
+                        ServerSignature = BlfServerSignature.Decode(deserializer, dataContext);
+                        break;
+
+                    case "mps2":
+                    case "chrt":
                     default:
                         throw new NotImplementedException($"BLF chunk type {header.Signature} not implemented!");
                 }
@@ -250,6 +256,9 @@ namespace TagTool.BlamFile
 
             if (ContentFlags.HasFlag(BlfFileContentFlags.SavedFilmData))
                 BlfSavedFilmData.Encode(serializer, dataContext, SavedFilmData);
+
+            if (ContentFlags.HasFlag(BlfFileContentFlags.ServerSignature))
+                BlfServerSignature.Encode(serializer, dataContext, ServerSignature);
 
             BlfChunkEndOfFile.Encode(serializer, dataContext, EndOfFile);
 
@@ -315,7 +324,7 @@ namespace TagTool.BlamFile
                 reader.SeekTo(0x2F0);
                 var reachSignature = reader.ReadTag();
 
-                if (reachSignature == "mvar" || reachSignature == "mpvr") 
+                if (reachSignature == "mvar" || reachSignature == "mpvr" || reachSignature == "scnc") 
                 {
                     reader.SeekTo(0x3C);
                     var buildVersion = reader.ReadUInt16();

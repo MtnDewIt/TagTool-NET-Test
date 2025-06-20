@@ -1,16 +1,26 @@
-﻿using TagTool.Common;
+﻿using TagTool.Cache;
+using TagTool.Common;
 using TagTool.Serialization;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.Chunks
 {
-    [TagStructure(Size = 0x164)]
+    [TagStructure(Size = 0x164, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x1364, MinVersion = CacheVersion.HaloReach)]
     public class BlfScreenshotCamera : BlfChunkHeader
     {
+        [TagField(MaxVersion = CacheVersion.Halo3ODST)]
         public uint BufferSize;
+        [TagField(MaxVersion = CacheVersion.Halo3ODST)]
         public SavedCamera Camera;
+        [TagField(MaxVersion = CacheVersion.Halo3ODST)]
         public uint GameTick;
+        [TagField(MaxVersion = CacheVersion.Halo3ODST)]
         public uint FilmTick;
+
+        // TODO: Figure out what this is :/
+        [TagField(Length = 0x1364, MinVersion = CacheVersion.HaloReach)]
+        public byte[] ReachData;
 
         [TagStructure(Size = 0x158)]
         public class SavedCamera : TagStructure 

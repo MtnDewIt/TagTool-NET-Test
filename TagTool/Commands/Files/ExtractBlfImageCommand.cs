@@ -34,7 +34,7 @@ namespace TagTool.Commands.Files
             if (!output.Directory.Exists)
                 output.Directory.Create();
 
-            var blf = new Blf(CacheVersion.Halo3Retail, CachePlatform.Original);
+            var blf = new Blf(CacheVersion.HaloOnlineED, CachePlatform.Original);
 
             using (var stream = file.OpenRead())
             using (var reader = new EndianReader(stream))

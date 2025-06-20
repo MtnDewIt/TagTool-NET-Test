@@ -42,6 +42,9 @@ namespace TagTool.Commands.JSON
             ".blf",
             ".bin",
             ".mvar",
+            ".film",
+            ".clip",
+            ".shot"
         };
 
         public GenerateBlfObjectCommand(GameCache cache, GameCacheHaloOnlineBase cacheContext) : base
@@ -131,7 +134,16 @@ namespace TagTool.Commands.JSON
 
                     if (blfData.ContentHeader != null)
                     {
-                        fileName = blfData.ContentHeader.Metadata.Name.TrimEnd();
+                        switch (blfData.Version, blfData.CachePlatform) 
+                        {
+                            case (CacheVersion.HaloReach, CachePlatform.Original):
+                            case (CacheVersion.HaloReach, CachePlatform.MCC):
+                                fileName = blfData.ContentHeader.MetadataReach.Name.TrimEnd();
+                                break;
+                            default:
+                                fileName = blfData.ContentHeader.Metadata.Name.TrimEnd();
+                                break;
+                        }
                     }
 
                     var handler = new BlfObjectHandler(blfData.Version, blfData.CachePlatform);

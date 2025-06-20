@@ -64,6 +64,9 @@ namespace TagTool.BlamFile.HaloOnline
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public BlfScreenshotData ScreenshotData;
 
+        [TagField(MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.Halo4)]
+        public BlfServerSignature ServerSignature;
+        
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public byte[] Buffer;
 
@@ -88,6 +91,7 @@ namespace TagTool.BlamFile.HaloOnline
             MapImage = blfData.MapImage;
             ScreenshotCamera = blfData.ScreenshotCamera;
             ScreenshotData = blfData.ScreenshotData;
+            ServerSignature = blfData.ServerSignature;
             Buffer = blfData.Buffer;
         }
     }
