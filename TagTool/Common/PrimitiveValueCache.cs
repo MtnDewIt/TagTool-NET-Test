@@ -13,7 +13,7 @@ namespace TagTool.Common
     {
 		//bool
 		private static readonly object True = true;
-		private static readonly object False = true;
+		private static readonly object False = false;
 		public static object For(bool value) => value ? True : False;
 
 		//byte
