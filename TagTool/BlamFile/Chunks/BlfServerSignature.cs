@@ -7,12 +7,16 @@ namespace TagTool.BlamFile.Chunks
     [TagStructure(Size = 0x2C, MinVersion = CacheVersion.HaloReach)]
     public class BlfServerSignature : BlfChunkHeader
     {
+        // TODO: Map this out at some point;
+
         public FileServerSignature ServerSignature;
         public int Unknown34;
 
         [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloReach)]
         public class FileServerSignature : TagStructure 
         {
+            // TODO: Map this out at some point;
+
             [TagField(Length = 0x28, MinVersion = CacheVersion.HaloReach)]
             public byte[] Data;
         }

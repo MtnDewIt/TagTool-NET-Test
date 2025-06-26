@@ -3,10 +3,11 @@ using TagTool.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions.Common;
 using System.Runtime.InteropServices;
+using System;
 
 namespace TagTool.BlamFile.Chunks.Metadata
 {
-    [TagStructure(Size = 0x2B0, MinVersion = CacheVersion.HaloReach)]
+    [TagStructure(Size = 0x2B0, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.Halo2AMP)]
     public class ReachContentItemMetadata : TagStructure
     {
         public ContentItemTypeReach ContentTypeReach;
@@ -86,6 +87,7 @@ namespace TagTool.BlamFile.Chunks.Metadata
             public static void Encode(BitStream stream, ContentItemAuthor author, bool packed) 
             {
                 // TODO: Implement
+                throw new NotImplementedException();
             }
         }
 
@@ -128,6 +130,7 @@ namespace TagTool.BlamFile.Chunks.Metadata
             public static void Encode(BitStream stream, ContentItemGeneric generic, bool packed)
             {
                 // TODO: Implement
+                throw new NotImplementedException();
             }
         }
 
@@ -163,6 +166,7 @@ namespace TagTool.BlamFile.Chunks.Metadata
             public static void Encode(BitStream stream, ContentItemMatchmaking metagame, bool packed)
             {
                 // TODO: Implement
+                throw new NotImplementedException();
             }
         }
 
@@ -211,6 +215,7 @@ namespace TagTool.BlamFile.Chunks.Metadata
             public static void Encode(BitStream stream, ContentItemMetagame metagame, bool packed)
             {
                 // TODO: Implement
+                throw new NotImplementedException();
             }
         }
 
@@ -253,6 +258,7 @@ namespace TagTool.BlamFile.Chunks.Metadata
         public static void Encode(BitStream stream, ReachContentItemMetadata metadata, bool packed)
         {
             // TODO: Implement
+            throw new NotImplementedException();
         }
     }
 }

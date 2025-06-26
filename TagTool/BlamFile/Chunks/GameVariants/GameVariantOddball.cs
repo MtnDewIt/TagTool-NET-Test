@@ -50,6 +50,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         public static void Encode(BitStream stream, GameVariantOddball variant)
         {
             // TODO: Implement
+            throw new NotImplementedException();
         }
     }
 }

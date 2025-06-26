@@ -49,22 +49,24 @@ namespace TagTool.Commands.Editing
 
         public bool TryGetBlfFile(string input, out Blf result) 
         {
+            var file = new FileInfo(input);
+
+            var blfData = new Blf(Cache.Version, Cache.Platform);
+
+            using (var stream = file.OpenRead())
+            {
+                var reader = new EndianReader(stream);
+
+                blfData.Read(reader);
+            }
+
+            result = blfData;
+
+            return true;
+
             try
             {
-                var file = new FileInfo(input);
-
-                var blfData = new Blf(Cache.Version, Cache.Platform);
-
-                using (var stream = file.OpenRead())
-                {
-                    var reader = new EndianReader(stream);
-
-                    blfData.Read(reader);
-                }
-
-                result = blfData;
-
-                return true;
+                
             }
             catch
             {

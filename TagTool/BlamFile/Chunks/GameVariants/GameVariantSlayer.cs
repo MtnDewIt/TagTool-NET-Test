@@ -1,4 +1,5 @@
-﻿using TagTool.Cache;
+﻿using System;
+using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Tags;
 
@@ -46,6 +47,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         public static void Encode(BitStream stream, GameVariantSlayer variant)
         {
             // TODO: Implement
+            throw new NotImplementedException();
         }
     }
 }

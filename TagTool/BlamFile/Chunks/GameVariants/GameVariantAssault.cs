@@ -87,6 +87,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         public static void Encode(BitStream stream, GameVariantAssault variant)
         {
             // TODO: Implement
+            throw new NotImplementedException();
         }
     }
 }

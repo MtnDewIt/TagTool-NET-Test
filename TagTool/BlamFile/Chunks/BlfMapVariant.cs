@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using TagTool.BlamFile.Chunks.MapVariants;
 using TagTool.Cache;
+using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
@@ -58,7 +60,23 @@ namespace TagTool.BlamFile.Chunks
 
                 blfChunk.MapVariantReach = ReachMapVariant.Decode(bitStream);
             }
-            else 
+            else if (deserializer.Version == CacheVersion.Halo4 || deserializer.Version == CacheVersion.Halo2AMP)
+            {
+                blfChunk.Hash = reader.ReadBytes(0x14);
+                blfChunk.Size = reader.ReadInt32();
+
+                var variantSize = blfChunk.Length - 0x24;
+
+                var buffer = new byte[variantSize];
+
+                for (int i = 0; i < variantSize; i++)
+                {
+                    buffer[i] = reader.ReadByte();
+                }
+
+                new TagToolWarning("Gen 4 Map Variants Not Supported. Skipping...");
+            }
+            else
             {
                 var variantSize = blfChunk.Length - 0xC;
 
@@ -87,6 +105,7 @@ namespace TagTool.BlamFile.Chunks
             }
 
             // TODO: Implement
+            throw new NotImplementedException();
         }
     }
 }

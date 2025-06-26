@@ -5,6 +5,7 @@ using TagTool.Serialization;
 using TagTool.Tags;
 using TagTool.BlamFile.Chunks;
 using System.IO;
+using TagTool.Common;
 
 namespace TagTool.BlamFile
 {
@@ -38,6 +39,7 @@ namespace TagTool.BlamFile
         public BlfScreenshotCamera ScreenshotCamera;
         public BlfScreenshotData ScreenshotData;
         public BlfServerSignature ServerSignature;
+        public BlfFileshareMetadata FileshareMetadata;
         public byte[] Buffer;
 
         public Blf(CacheVersion version, CachePlatform cachePlatform)
@@ -68,6 +70,7 @@ namespace TagTool.BlamFile
             ScreenshotCamera = 1 << 15,
             ScreenshotData = 1 << 16,
             ServerSignature = 1 << 17,
+            FileshareMetadata = 1 << 18,
         }
 
         // TODO: Verify All Read / Write methods for all chunks
@@ -88,6 +91,9 @@ namespace TagTool.BlamFile
 
             while (!reader.EOF)
             {
+                if (reader.Position == reader.Length || ContentFlags.HasFlag(BlfFileContentFlags.EndOfFile) && CachePlatform != CachePlatform.MCC)
+                    return true;
+
                 var dataContext = new DataSerializationContext(reader, useAlignment: false);
                 var chunkHeaderPosition = reader.Position;
 
@@ -103,12 +109,35 @@ namespace TagTool.BlamFile
 
                     case "_eof":
                         ContentFlags |= BlfFileContentFlags.EndOfFile;
+                        var position = reader.Position;
                         EndOfFile = BlfChunkEndOfFile.Decode(reader, deserializer, dataContext);
-                        return true;
+                        switch (EndOfFile.AuthenticationType) 
+                        {
+                            case BlfChunkEndOfFile.BlfAuthenticationType.None:
+                                break;
+                            case BlfChunkEndOfFile.BlfAuthenticationType.CRC:
+                                reader.SeekTo(position);
+                                EndOfFileCRC = BlfChunkEndOfFile.Decode(reader, deserializer, dataContext) as BlfEndOfFileCRC;
+                                break;
+                            case BlfChunkEndOfFile.BlfAuthenticationType.RSA:
+                                reader.SeekTo(position);
+                                EndOfFileRSA = BlfChunkEndOfFile.Decode(reader, deserializer, dataContext) as BlfEndOfFileRSA;
+                                break;
+                            case BlfChunkEndOfFile.BlfAuthenticationType.SHA1:
+                                reader.SeekTo(position);
+                                EndOfFileSHA1 = BlfChunkEndOfFile.Decode(reader, deserializer, dataContext) as BlfEndOfFileSHA1;
+                                break;
+                        }
+                        break;
 
                     case "_cmp":
                         ContentFlags |= BlfFileContentFlags.MapVariant;
                         MapVariant = BlfChunkCompressedData.Decode(reader, deserializer, dataContext);
+                        break;
+
+                    case "_fsm":
+                        ContentFlags |= BlfFileContentFlags.FileshareMetadata;
+                        FileshareMetadata = BlfFileshareMetadata.Decode(deserializer, dataContext);
                         break;
 
                     case "cmpn":
@@ -183,7 +212,7 @@ namespace TagTool.BlamFile
 
                     case "flmd":
                         ContentFlags |= BlfFileContentFlags.SavedFilmData;
-                        SavedFilmData = BlfSavedFilmData.Decode(deserializer, dataContext);
+                        SavedFilmData = BlfSavedFilmData.Decode(reader, deserializer, dataContext, out Buffer);
                         break;
 
                     case "ssig":
@@ -191,8 +220,8 @@ namespace TagTool.BlamFile
                         ServerSignature = BlfServerSignature.Decode(deserializer, dataContext);
                         break;
 
-                    case "mps2":
-                    case "chrt":
+                    case "mps2": // s_blf_chunk_multiplayer_player_vs_player_statistics
+                    case "chrt": // Reach MCC: sub_140B6CAE0(a1 + 0x3B3E8, 'chrt', 0x120u, 2, 1)
                     default:
                         throw new NotImplementedException($"BLF chunk type {header.Signature} not implemented!");
                 }
@@ -255,12 +284,29 @@ namespace TagTool.BlamFile
                 BlfSavedFilmHeader.Encode(serializer, dataContext, SavedFilmHeader);
 
             if (ContentFlags.HasFlag(BlfFileContentFlags.SavedFilmData))
-                BlfSavedFilmData.Encode(serializer, dataContext, SavedFilmData);
+                BlfSavedFilmData.Encode(writer, serializer, dataContext, SavedFilmData, Buffer);
 
             if (ContentFlags.HasFlag(BlfFileContentFlags.ServerSignature))
                 BlfServerSignature.Encode(serializer, dataContext, ServerSignature);
 
-            BlfChunkEndOfFile.Encode(serializer, dataContext, EndOfFile);
+            if (ContentFlags.HasFlag(BlfFileContentFlags.FileshareMetadata))
+                BlfFileshareMetadata.Encode(serializer, dataContext, FileshareMetadata);
+
+            switch (EndOfFile.AuthenticationType) 
+            {
+                case BlfChunkEndOfFile.BlfAuthenticationType.None:
+                    BlfChunkEndOfFile.Encode(serializer, dataContext, EndOfFile);
+                    break;
+                case BlfChunkEndOfFile.BlfAuthenticationType.CRC:
+                    BlfChunkEndOfFile.Encode(serializer, dataContext, EndOfFileCRC);
+                    break;
+                case BlfChunkEndOfFile.BlfAuthenticationType.RSA:
+                    BlfChunkEndOfFile.Encode(serializer, dataContext, EndOfFileRSA);
+                    break;
+                case BlfChunkEndOfFile.BlfAuthenticationType.SHA1:
+                    BlfChunkEndOfFile.Encode(serializer, dataContext, EndOfFileSHA1);
+                    break;
+            }
 
             return true;
         }
@@ -324,10 +370,10 @@ namespace TagTool.BlamFile
                 reader.SeekTo(0x2F0);
                 var reachSignature = reader.ReadTag();
 
-                if (reachSignature == "mvar" || reachSignature == "mpvr" || reachSignature == "scnc") 
+                if (reachSignature == "mvar" || reachSignature == "mpvr" || reachSignature == "scnc" || reachSignature == "athr") 
                 {
                     reader.SeekTo(0x3C);
-                    var buildVersion = reader.ReadUInt16();
+                    var buildVersion = reader.ReadInt16();
 
                     if (buildVersion == 0x2E54 || buildVersion == 0x2F21)
                     {
@@ -336,36 +382,149 @@ namespace TagTool.BlamFile
                         reader.SeekTo(startOfFile);
                         return;
                     }
-                    else if (buildVersion == 0xFFFF)
+                    else if (buildVersion == 0x514A) 
                     {
-                        version = CacheVersion.HaloReach;
-                        platform = CachePlatform.MCC;
+                        version = CacheVersion.Halo4;
+                        platform = CachePlatform.Original;
                         reader.SeekTo(startOfFile);
                         return;
+                    }
+                    else if (buildVersion == -1)
+                    {
+                        reader.SeekTo(0x2F8);
+                        var majorVersion = reader.ReadInt16();
+
+                        if (majorVersion == 0x3)
+                        {
+                            reader.SeekTo(0x348);
+                            majorVersion = reader.ReadInt16();
+
+                            switch (majorVersion)
+                            {
+                                case 0x360E:
+                                    version = CacheVersion.HaloReach;
+                                    platform = CachePlatform.MCC;
+                                    reader.SeekTo(startOfFile);
+                                    return;
+                                case 0x4C8F:
+                                    version = CacheVersion.Halo4;
+                                    platform = CachePlatform.MCC;
+                                    reader.SeekTo(startOfFile);
+                                    return;
+                                case 0x5530:
+                                    version = CacheVersion.Halo2AMP;
+                                    platform = CachePlatform.MCC;
+                                    reader.SeekTo(startOfFile);
+                                    return;
+                            }
+                        }
+                        else
+                        {
+                            switch (majorVersion)
+                            {
+                                case 0x36:
+                                case 0x1F:
+                                    version = CacheVersion.HaloReach;
+                                    platform = CachePlatform.MCC;
+                                    reader.SeekTo(startOfFile);
+                                    return;
+                                case 0x84:
+                                case 0x32:
+                                    version = CacheVersion.Halo4;
+                                    platform = CachePlatform.MCC;
+                                    reader.SeekTo(startOfFile);
+                                    return;
+                                case 0x89:
+                                case 0x34:
+                                    version = CacheVersion.Halo2AMP;
+                                    platform = CachePlatform.MCC;
+                                    reader.SeekTo(startOfFile);
+                                    return;
+                            }
+                        }
                     }
                 }
 
                 reader.SeekTo(0x138);
                 var h3Signature = reader.ReadTag();
 
-                if (h3Signature == "mapv" || h3Signature == "mpvr" || h3Signature == "scnc")
+                if (h3Signature == "mapv" || h3Signature == "mpvr" || h3Signature == "scnc" || h3Signature == "athr")
                 {
                     reader.SeekTo(0x3A);
                     var contentMinorVersion = reader.ReadInt16();
 
                     if (contentMinorVersion == 0x3)
                     {
-                        version = CacheVersion.HaloOnlineED;
-                        platform = CachePlatform.Original;
-                        reader.SeekTo(startOfFile);
-                        return;
+                        reader.SeekTo(0x3C);
+                        var buildVersion = reader.ReadInt16();
+
+                        if (buildVersion == -24364)
+                        {
+                            version = CacheVersion.HaloOnlineED;
+                            platform = CachePlatform.Original;
+                            reader.SeekTo(startOfFile);
+                            return;
+                        }
+                        else if (buildVersion == 0x3647) 
+                        {
+                            if (h3Signature == "athr")
+                            {
+                                reader.SeekTo(0x198);
+                                var buildName = reader.ReadString(0x20);
+
+                                if (buildName == "13895.09.04.27.2201.atlas_relea")
+                                {
+                                    version = CacheVersion.Halo3ODST;
+                                    platform = CachePlatform.Original;
+                                    reader.SeekTo(startOfFile);
+                                    return;
+                                }
+                                else if (buildName == "untracked version")
+                                {
+                                    version = CacheVersion.Halo3ODST;
+                                    platform = CachePlatform.MCC;
+                                    reader.SeekTo(startOfFile);
+                                    return;
+                                }
+                            }
+                            else if (h3Signature == "mapv" || h3Signature == "mpvr" || h3Signature == "scnc") 
+                            {
+                                version = CacheVersion.Halo3ODST;
+                                platform = CachePlatform.Original;
+                                reader.SeekTo(startOfFile);
+                                return;
+                            }
+                        }
                     }
                     else if (contentMinorVersion == 0x2)
                     {
-                        version = CacheVersion.Halo3Retail;
-                        platform = CachePlatform.Original;
-                        reader.SeekTo(startOfFile);
-                        return;
+                        if (h3Signature == "athr")
+                        {
+                            reader.SeekTo(0x198);
+                            var buildName = reader.ReadString(0x20);
+
+                            if (buildName == "12070.08.09.05.2031.halo3_ship")
+                            {
+                                version = CacheVersion.Halo3Retail;
+                                platform = CachePlatform.Original;
+                                reader.SeekTo(startOfFile);
+                                return;
+                            }
+                            else if (buildName == "untracked version") 
+                            {
+                                version = CacheVersion.Halo3Retail;
+                                platform = CachePlatform.MCC;
+                                reader.SeekTo(startOfFile);
+                                return;
+                            }
+                        }
+                        else if (h3Signature == "mapv" || h3Signature == "mpvr" || h3Signature == "scnc") 
+                        {
+                            version = CacheVersion.Halo3Retail;
+                            platform = CachePlatform.Original;
+                            reader.SeekTo(startOfFile);
+                            return;
+                        }
                     }
                 }
             }

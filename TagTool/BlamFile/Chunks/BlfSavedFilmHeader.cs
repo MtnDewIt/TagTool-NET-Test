@@ -1,49 +1,78 @@
-﻿using TagTool.Serialization;
+﻿using TagTool.Cache;
+using TagTool.Serialization;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.Chunks
 {
-    [TagStructure(Size = 0x0)]
+    [TagStructure(Size = 0xFE60, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0xFC74, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+    [TagStructure(Size = 0x1F00C, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x1F514, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+    [TagStructure(Size = 0x2DFF4, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo4, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x2D4D4, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo2AMP, Platform = CachePlatform.MCC)]
     public class BlfSavedFilmHeader : BlfChunkHeader
     {
-        [TagField(Length = 0x4)]
+        [TagField(Length = 0x1F00C, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
+        [TagField(Length = 0x1F514, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        [TagField(Length = 0x2DFF4, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo4, Platform = CachePlatform.Original)]
+        [TagField(Length = 0x2D4D4, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo2AMP, Platform = CachePlatform.MCC)]
+        public byte[] UnknownData;
+
+        [TagField(Length = 0x4, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public byte[] Padding1;
-
-        [TagField(Length = 0x20)]
+        
+        [TagField(Length = 0x20, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public string BuildNumber;
-
+        
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public int ExecutableType;
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public int NetworkExecutableVersion;
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public int NetworkCompatibleVersion;
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public int MapLanguage;
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public int MapMinorVersion;
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public bool MapMinorVersionIsTracked;
-
-        [TagField(Length = 0xB)]
+        
+        [TagField(Length = 0xB, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public byte[] Padding2;
-
+        
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public int MapSignatureSize;
-
-        [TagField(Length = 0x3C)]
+        
+        [TagField(Length = 0x3C, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public byte[] MapSignatureBytes;
-
+        
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public bool IsHostFilm;
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public bool ContainsGamestate;
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public bool IsSnippet;
-
-        [TagField(Length = 0x5)]
+        
+        [TagField(Length = 0x5, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public byte[] Padding3;
-
-        [TagField(Length = 0x80)]
+        
+        [TagField(Length = 0x80, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public byte[] SessionId;
+        
+        [TagField(Length = 0xF810, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+        public byte[] Options;
 
-        public GameOptions Options;
+        //[TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+        //public GameOptions Options;
 
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public int RecordedTime;
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public int LengthInTicks;
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public int SnippetStartTick;
-
-        [TagField(Length = 0x538)]
+        
+        [TagField(Length = 0x538, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public byte[] PaddingToAlignForUtilityDrive;
 
         [TagStructure(Size = 0xF810)]
@@ -133,9 +162,9 @@ namespace TagTool.BlamFile.Chunks
             return deserializer.Deserialize<BlfSavedFilmHeader>(dataContext);
         }
 
-        public static void Encode(TagSerializer serializer, DataSerializationContext dataContext, BlfSavedFilmHeader scenario)
+        public static void Encode(TagSerializer serializer, DataSerializationContext dataContext, BlfSavedFilmHeader savedFilmHeader)
         {
-            serializer.Serialize(dataContext, scenario);
+            serializer.Serialize(dataContext, savedFilmHeader);
         }
     }
 }

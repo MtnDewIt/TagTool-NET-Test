@@ -16,10 +16,10 @@ namespace TagTool.BlamFile.Chunks
         public short BuildVersion;
         public short MapMinorVersion;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
         public ContentItemMetadata Metadata;
 
-        [TagField(MinVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.Halo2AMP)]
         public ReachContentItemMetadata MetadataReach;
 
         public static BlfContentHeader Decode(EndianReader reader, TagDeserializer deserializer, DataSerializationContext dataContext)
@@ -33,7 +33,7 @@ namespace TagTool.BlamFile.Chunks
             contentHeader.BuildVersion = reader.ReadInt16();
             contentHeader.MapMinorVersion = reader.ReadInt16();
 
-            if (deserializer.Version == CacheVersion.HaloReach)
+            if (deserializer.Version == CacheVersion.HaloReach || deserializer.Version == CacheVersion.Halo4 || deserializer.Version == CacheVersion.Halo2AMP)
             {
                 var bitStream = new BitStream(reader.BaseStream);
 
@@ -41,7 +41,7 @@ namespace TagTool.BlamFile.Chunks
                 {
                     // TODO: Figure out how to account for 343's bullshit :/
                     // chunk header = big endian
-                    // chunk data = little endian
+                    // chunk data = little endian 
                     contentHeader.MetadataReach = ReachContentItemMetadata.Decode(bitStream, false);
                 }
                 else 
@@ -66,7 +66,7 @@ namespace TagTool.BlamFile.Chunks
             writer.Write(contentHeader.BuildVersion);
             writer.Write(contentHeader.MapMinorVersion);
 
-            if (serializer.Version == CacheVersion.HaloReach)
+            if (serializer.Version == CacheVersion.HaloReach || serializer.Version == CacheVersion.Halo4 || serializer.Version == CacheVersion.Halo2AMP)
             {
                 ReachContentItemMetadata.Encode(new BitStream(writer.BaseStream), contentHeader.MetadataReach, false);
             }

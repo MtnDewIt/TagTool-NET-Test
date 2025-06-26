@@ -5,8 +5,9 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.Chunks
 {
-    [TagStructure(Size = 0x164, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x1364, MinVersion = CacheVersion.HaloReach)]
+    [TagStructure(Size = 0x164, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x1364, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach)]
+    [TagStructure(Size = 0x20E4, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo4)]
     public class BlfScreenshotCamera : BlfChunkHeader
     {
         [TagField(MaxVersion = CacheVersion.Halo3ODST)]
@@ -19,8 +20,9 @@ namespace TagTool.BlamFile.Chunks
         public uint FilmTick;
 
         // TODO: Figure out what this is :/
-        [TagField(Length = 0x1364, MinVersion = CacheVersion.HaloReach)]
-        public byte[] ReachData;
+        [TagField(Length = 0x1364, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach)]
+        [TagField(Length = 0x20E4, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo4)]
+        public byte[] UnknownData;
 
         [TagStructure(Size = 0x158)]
         public class SavedCamera : TagStructure 

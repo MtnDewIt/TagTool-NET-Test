@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using TagTool.BlamFile.Chunks.GameVariants;
 using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
@@ -45,8 +46,6 @@ namespace TagTool.BlamFile.Chunks
 
             if (deserializer.Version == CacheVersion.HaloReach)
             {
-                new TagToolWarning("Reach Game Variants Not Supported. Skipping...");
-
                 // TODO: Figure out reach game variant structs
                 gameVariant.Hash = reader.ReadBytes(0x14);
 
@@ -58,6 +57,24 @@ namespace TagTool.BlamFile.Chunks
                 {
                     buffer[i] = reader.ReadByte();
                 }
+
+                new TagToolWarning("Reach Game Variants Not Supported. Skipping...");
+            }
+            else if (deserializer.Version == CacheVersion.Halo4 || deserializer.Version == CacheVersion.Halo2AMP)
+            {
+                // TODO: Figure out gen 4 game variant structs
+                gameVariant.Hash = reader.ReadBytes(0x14);
+
+                var variantSize = gameVariant.Length - 0x20;
+
+                var buffer = new byte[variantSize];
+
+                for (int i = 0; i < variantSize; i++)
+                {
+                    buffer[i] = reader.ReadByte();
+                }
+
+                new TagToolWarning("Gen 4 Game Variants Not Supported. Skipping...");
             }
             else if (deserializer.Version >= CacheVersion.Halo3Retail && deserializer.Version <= CacheVersion.HaloOnline700123)
             {
@@ -106,7 +123,7 @@ namespace TagTool.BlamFile.Chunks
                             break;
                     }
                 }
-                else 
+                else
                 {
                     new TagToolWarning("Packed Game Variants Not Supported. Skipping...");
 
@@ -163,9 +180,13 @@ namespace TagTool.BlamFile.Chunks
                         gameVariant.Variant = gameVariant.Variant as GameVariantInfection;
                         break;
                 }
+
+                serializer.Serialize(dataContext, gameVariant);
+                return;
             }
 
-            serializer.Serialize(dataContext, gameVariant);
+            // TODO: Implement
+            throw new NotImplementedException();
         }
     }
 }
