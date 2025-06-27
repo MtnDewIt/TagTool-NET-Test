@@ -80,7 +80,30 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         {
             var variant = new GameVariantVip();
 
-            // TODO: Implement
+            variant.BaseFlags = (BaseVariantFlags)stream.ReadUnsigned(1);
+            variant.MiscellaneousOptions = VariantMiscellaneousOptions.Decode(stream);
+            variant.RespawnOptions = VariantRespawnOptions.Decode(stream);
+            variant.SocialOptions = VariantSocialOptions.Decode(stream);
+            variant.MapOverrideOptions = VariantMapOverrideOptions.Decode(stream);
+            variant.TeamScoringMethod = (TeamScoring)stream.ReadUnsigned(3);
+
+            variant.VariantFlags = (VipFlags)stream.ReadUnsigned(3);
+            variant.ScoreToWinRound = (short)stream.ReadUnsigned(10);
+            variant.KillPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.TakedownPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.KillAsVipPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.VipDeathPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.DestinationArrivalPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.SuicidePoints = (sbyte)stream.ReadUnsigned(5);
+            variant.VipSuicidePoints = (sbyte)stream.ReadUnsigned(5);
+            variant.BetrayalPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.VipSelection = (VipSelectionSettings)stream.ReadUnsigned(2);
+            variant.ZoneMovement = (VipZoneMovementSettings)stream.ReadUnsigned(4);
+            variant.ZoneOrder = (VipZoneOrderSettings)stream.ReadUnsigned(1);
+            variant.InfluenceRadius = (short)stream.ReadUnsigned(6);
+            variant.VipTeamTraits = GameVariantPlayerTraits.Decode(stream);
+            variant.VipInfluenceTraits = GameVariantPlayerTraits.Decode(stream);
+            variant.VipTraits = GameVariantPlayerTraits.Decode(stream);
 
             return variant;
         }

@@ -1,11 +1,10 @@
 ﻿using System;
+using System.IO;
+using TagTool.BlamFile.Chunks;
 using TagTool.Cache;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
-using TagTool.BlamFile.Chunks;
-using System.IO;
-using TagTool.Common;
 
 namespace TagTool.BlamFile
 {
@@ -207,7 +206,7 @@ namespace TagTool.BlamFile
 
                     case "flmh":
                         ContentFlags |= BlfFileContentFlags.SavedFilmHeader;
-                        SavedFilmHeader = BlfSavedFilmHeader.Decode(deserializer, dataContext);
+                        SavedFilmHeader = BlfSavedFilmHeader.Decode(reader, deserializer, dataContext);
                         break;
 
                     case "flmd":

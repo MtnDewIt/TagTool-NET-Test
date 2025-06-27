@@ -1,4 +1,8 @@
-﻿using TagTool.Cache;
+﻿using System.IO;
+using TagTool.BlamFile.Game;
+using TagTool.Cache;
+using TagTool.Common;
+using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
 
@@ -12,158 +16,107 @@ namespace TagTool.BlamFile.Chunks
     [TagStructure(Size = 0x2D4D4, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo2AMP, Platform = CachePlatform.MCC)]
     public class BlfSavedFilmHeader : BlfChunkHeader
     {
+        [TagField(Length = 0xFC74, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
         [TagField(Length = 0x1F00C, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
         [TagField(Length = 0x1F514, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
         [TagField(Length = 0x2DFF4, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo4, Platform = CachePlatform.Original)]
         [TagField(Length = 0x2D4D4, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo2AMP, Platform = CachePlatform.MCC)]
         public byte[] UnknownData;
 
-        [TagField(Length = 0x4, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public byte[] Padding1;
-        
-        [TagField(Length = 0x20, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public string BuildNumber;
-        
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public int ExecutableType;
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public int NetworkExecutableVersion;
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public int NetworkCompatibleVersion;
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public int MapLanguage;
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public int MapMinorVersion;
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public bool MapMinorVersionIsTracked;
-        
-        [TagField(Length = 0xB, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public byte[] Padding2;
-        
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public int MapSignatureSize;
-        
-        [TagField(Length = 0x3C, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public byte[] MapSignatureBytes;
-        
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public bool IsHostFilm;
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public bool ContainsGamestate;
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public bool IsSnippet;
-        
-        [TagField(Length = 0x5, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public byte[] Padding3;
-        
-        [TagField(Length = 0x80, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public byte[] SessionId;
-        
-        [TagField(Length = 0xF810, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public byte[] Options;
+        [TagField(Length = 0xFE60, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+        public SavedFilmHeader Header;
 
-        //[TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        //public GameOptions Options;
-
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public int RecordedTime;
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public int LengthInTicks;
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public int SnippetStartTick;
-        
-        [TagField(Length = 0x538, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public byte[] PaddingToAlignForUtilityDrive;
-
-        [TagStructure(Size = 0xF810)]
-        public class GameOptions : TagStructure
+        [TagStructure(Size = 0xFE60, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+        public class SavedFilmHeader : TagStructure 
         {
-            [TagStructure(Size = 0x78)]
-            public class CampaignArmaments : TagStructure
-            {
-                [TagStructure(Size = 0x1E)]
-                public class CampaignArmamentsPlayer : TagStructure
-                {
-                    [TagStructure(Size = 0x8)]
-                    public class CampaignArmamentsWeapon : TagStructure
-                    {
+            [TagField(Length = 0x4)]
+            public byte[] Padding1;
 
-                    }
-                }
-            }
+            [TagField(Length = 0x20)]
+            public string BuildNumber;
 
-            [TagStructure(Size = 0x5C)]
-            public class GameMatchmakingOptions : TagStructure
-            {
+            public int ExecutableType;
+            public int NetworkExecutableVersion;
+            public int NetworkCompatibleVersion;
+            public GameLanguage MapLanguage;
+            public int MapMinorVersion;
+            public bool MapMinorVersionIsTracked;
 
-            }
+            [TagField(Length = 0xB)]
+            public byte[] Padding2;
 
-            [TagStructure(Size = 0x6C)]
-            public class GameMachineOptions : TagStructure
-            {
+            public int MapSignatureSize;
 
-            }
+            [TagField(Length = 0x3C)]
+            public byte[] MapSignatureBytes;
 
-            [TagStructure(Size = 0x128)]
-            public class GamePlayerOptions : TagStructure
-            {
-                [TagStructure(Size = 0x110)]
-                public class PlayerConfiguration : TagStructure
-                {
-                    [TagStructure(Size = 0xC8)]
-                    public class PlayerConfigurationFromClient : TagStructure
-                    {
-                        [TagStructure(Size = 0x1E)]
-                        public class PlayerAppearance : TagStructure
-                        {
+            public bool IsHostFilm;
+            public bool ContainsGamestate;
+            public bool IsSnippet;
 
-                        }
+            [TagField(Length = 0x5)]
+            public byte[] Padding3;
 
-                        [TagStructure(Size = 0x58)]
-                        public class QueriedPlayerStatistics : TagStructure
-                        {
-                            [TagStructure(Size = 0x10)]
-                            public class QueriedPlayerGlobalStatistics : TagStructure
-                            {
+            [TagField(Length = 0x80)]
+            public byte[] SessionId;
 
-                            }
+            public GameOptions Options;
 
-                            [TagStructure(Size = 0x2C)]
-                            public class QueriedPlayerDisplayedStatistics : TagStructure
-                            {
+            public int RecordedTime;
+            public int LengthInTicks;
+            public int SnippetStartTick;
 
-                            }
-
-                            [TagStructure(Size = 0x1C)]
-                            public class QueriedPlayerHopperStatistics : TagStructure
-                            {
-
-                            }
-                        }
-                    }
-
-                    [TagStructure(Size = 0x48)]
-                    public class PlayerConfigurationFromHost : TagStructure
-                    {
-
-                    }
-                }
-            }
-
-            [TagStructure(Size = 0x6)]
-            public class MachineIdentifier : TagStructure
-            {
-
-            }
+            [TagField(Length = 0x538)]
+            public byte[] PaddingToAlignForUtilityDrive;
         }
 
-        public static BlfSavedFilmHeader Decode(TagDeserializer deserializer, DataSerializationContext dataContext)
+        public static BlfSavedFilmHeader Decode(EndianReader reader, TagDeserializer deserializer, DataSerializationContext dataContext)
         {
-            return deserializer.Deserialize<BlfSavedFilmHeader>(dataContext);
+            if (CacheVersionDetection.IsBetween(deserializer.Version, CacheVersion.Halo3Retail, CacheVersion.Halo3ODST) && deserializer.CachePlatform == CachePlatform.Original)
+            {
+                var savedFilmHeader = new BlfSavedFilmHeader();
+
+                savedFilmHeader.Signature = reader.ReadTag();
+                savedFilmHeader.Length = reader.ReadInt32();
+                savedFilmHeader.MajorVersion = reader.ReadInt16();
+                savedFilmHeader.MinorVersion = reader.ReadInt16();
+
+                savedFilmHeader.Header = new SavedFilmHeader
+                {
+                    Padding1 = reader.ReadBytes(0x4),
+                    BuildNumber = reader.ReadString(0x20),
+                    ExecutableType = reader.ReadInt32(),
+                    NetworkExecutableVersion = reader.ReadInt32(),
+                    NetworkCompatibleVersion = reader.ReadInt32(),
+                    MapLanguage = (GameLanguage)reader.ReadInt32(),
+                    MapMinorVersion = reader.ReadInt32(),
+                    MapMinorVersionIsTracked = reader.ReadBoolean(),
+                    Padding2 = reader.ReadBytes(0xB),
+                    MapSignatureSize = reader.ReadInt32(),
+                    MapSignatureBytes = reader.ReadBytes(0x3C),
+                    IsHostFilm = reader.ReadBoolean(),
+                    ContainsGamestate = reader.ReadBoolean(),
+                    IsSnippet = reader.ReadBoolean(),
+                    Padding3 = reader.ReadBytes(0x5),
+                    SessionId = reader.ReadBytes(0x80),
+                    Options = GameOptions.Decode(reader, deserializer, dataContext),
+                    RecordedTime = reader.ReadInt32(),
+                    LengthInTicks = reader.ReadInt32(),
+                    SnippetStartTick = reader.ReadInt32(),
+                    PaddingToAlignForUtilityDrive = reader.ReadBytes(0x538)
+                };
+
+                return savedFilmHeader;
+            }
+            else 
+            {
+                return deserializer.Deserialize<BlfSavedFilmHeader>(dataContext);
+            }
         }
 
         public static void Encode(TagSerializer serializer, DataSerializationContext dataContext, BlfSavedFilmHeader savedFilmHeader)
         {
+            GameOptions.Encode(savedFilmHeader.Header.Options);
             serializer.Serialize(dataContext, savedFilmHeader);
         }
     }

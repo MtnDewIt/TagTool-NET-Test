@@ -75,11 +75,29 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             Minutes_5 = 300,
         }
 
-        public static GameVariantAssault Decode(BitStream stream)
+        public static new GameVariantAssault Decode(BitStream stream)
         {
             var variant = new GameVariantAssault();
 
-            // TODO: Implement
+            variant.BaseFlags = (BaseVariantFlags)stream.ReadUnsigned(1);
+            variant.MiscellaneousOptions = VariantMiscellaneousOptions.Decode(stream);
+            variant.RespawnOptions = VariantRespawnOptions.Decode(stream);
+            variant.SocialOptions = VariantSocialOptions.Decode(stream);
+            variant.MapOverrideOptions = VariantMapOverrideOptions.Decode(stream);
+            variant.TeamScoringMethod = (TeamScoring)stream.ReadUnsigned(3);
+
+            variant.VariantFlags = (AssaultFlags)stream.ReadUnsigned(1);
+            variant.Gametype = (AssaultGametypeSettings)stream.ReadUnsigned(2);
+            variant.Respawn = (AssaultRespawnSettings)stream.ReadUnsigned(3);
+            variant.EnemyBombWaypoint = (AssaultEnemyBombWaypointSettings)stream.ReadUnsigned(3);
+            variant.ScoreToWin = (short)stream.ReadUnsigned(6);
+            variant.SuddenDeathTime = (AssaultSuddenDeathTime)stream.ReadUnsigned(9);
+            variant.BombArmingTime = (short)stream.ReadUnsigned(5);
+            variant.BombDisarmingTime = (short)stream.ReadUnsigned(5);
+            variant.BombFuseTime = (short)stream.ReadUnsigned(5);
+            variant.BombResetTime = (short)stream.ReadUnsigned(6);
+            variant.CarrierTraits = GameVariantPlayerTraits.Decode(stream);
+            variant.ArmingTraits = GameVariantPlayerTraits.Decode(stream);
 
             return variant;
         }

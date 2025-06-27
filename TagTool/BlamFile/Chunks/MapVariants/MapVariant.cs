@@ -31,9 +31,13 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         [TagField(Length = 640)]
         public VariantObjectDatum[] Objects;
 
-        [TagField(Length = 14, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagField(Length = 16, MinVersion = CacheVersion.Halo3ODST)]
+        [TagField(Length = 14, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
+        [TagField(Length = 15, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline449175)]
+        [TagField(Length = 16, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
         public short[] ObjectTypeStartIndex;
+
+        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline449175)]
+        public byte[] Padding2;
 
         [TagField(Length = 256)]
         public VariantObjectQuota[] Quotas;
@@ -42,7 +46,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         public int[] SimulationEntities;
 
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Halo3Retail)]
-        public byte[] Padding2;
+        public byte[] Padding3;
 
         public static MapVariant Decode(BitStream stream) 
         {
@@ -162,7 +166,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         {
             var objectDatum = new VariantObjectDatum();
 
-            if (stream.ReadUnsigned(1) == 0)
+            if (!stream.ReadBool())
             {
                 return objectDatum;
             }
@@ -170,7 +174,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             objectDatum.Flags = (VariantObjectPlacementFlags)stream.ReadUnsigned(16);
             objectDatum.QuotaIndex = (int)stream.ReadUnsigned(32);
 
-            var hasParentObject = stream.ReadUnsigned(1) > 0;
+            var hasParentObject = stream.ReadBool();
 
             // TODO: Set default values for ObjectIdentifier
             objectDatum.ParentObject = new ObjectIdentifier();
@@ -183,7 +187,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
                 objectDatum.ParentObject.Source = (ObjectIdentifier.SourceValue)stream.ReadUnsigned(8);
             }
 
-            var hasPosition = stream.ReadUnsigned(1) > 0;
+            var hasPosition = stream.ReadBool();
 
             if (hasPosition)
             {

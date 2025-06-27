@@ -86,7 +86,22 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         {
             var variant = new GameVariantCtf();
 
-            // TODO: Implement
+            variant.BaseFlags = (BaseVariantFlags)stream.ReadUnsigned(1);
+            variant.MiscellaneousOptions = VariantMiscellaneousOptions.Decode(stream);
+            variant.RespawnOptions = VariantRespawnOptions.Decode(stream);
+            variant.SocialOptions = VariantSocialOptions.Decode(stream);
+            variant.MapOverrideOptions = VariantMapOverrideOptions.Decode(stream);
+            variant.TeamScoringMethod = (TeamScoring)stream.ReadUnsigned(3);
+
+            variant.VariantFlags = (CtfFlags)stream.ReadUnsigned(1);
+            variant.HomeFlagWaypoint = (CtfHomeFlagWaypointSettings)stream.ReadUnsigned(2);
+            variant.Gametype = (CtfGametypeSettings)stream.ReadUnsigned(2);
+            variant.Respawn = (CtfRespawnSettings)stream.ReadUnsigned(2);
+            variant.ScoreToWin = (short)stream.ReadUnsigned(6);
+            variant.SuddenDeathTime = (CtfSuddenDeathTime)stream.ReadUnsigned(9);
+            variant.FlagResetTime = (short)stream.ReadUnsigned(9);
+            variant.TouchReturnTimeout = (CtfTouchReturnSettings)stream.ReadUnsigned(6);
+            variant.CarrierTraits = GameVariantPlayerTraits.Decode(stream);
 
             return variant;
         }

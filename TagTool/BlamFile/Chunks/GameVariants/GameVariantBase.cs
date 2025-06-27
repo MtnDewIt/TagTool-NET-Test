@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assimp;
+using System;
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Tags;
@@ -14,14 +15,11 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         public VariantSocialOptions SocialOptions;
         public VariantMapOverrideOptions MapOverrideOptions;
 
-        [TagField(Flags = TagFieldFlags.Padding, Length = 0x2, MaxVersion = CacheVersion.Halo3ODST)]
-        public byte[] Padding1;
-
         public BaseVariantFlags BaseFlags;
         public TeamScoring TeamScoringMethod;
 
-        [TagField(Flags = TagFieldFlags.Padding, Length = 0x2, MaxVersion = CacheVersion.Halo3ODST)]
-        public byte[] Padding2;
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x4, MaxVersion = CacheVersion.Halo3ODST)]
+        public byte[] Padding1;
 
         [TagStructure(Size = 0x4)]
         public class VariantMiscellaneousOptions : TagStructure
@@ -39,6 +37,24 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 RoundResetPlayers = 1 << 1,
                 RoundResetMap = 1 << 2,
                 SpectatingEnabled = 1 << 3,
+            }
+
+            public static VariantMiscellaneousOptions Decode(BitStream stream)
+            {
+                var miscellaneousOptions = new VariantMiscellaneousOptions();
+
+                miscellaneousOptions.Flags = (MiscellaneousOptionsFlags)stream.ReadUnsigned(3);
+                miscellaneousOptions.TimeLimit = (sbyte)stream.ReadUnsigned(8);
+                miscellaneousOptions.NumberOfRounds = (sbyte)stream.ReadUnsigned(4);
+                miscellaneousOptions.EarlyVictoryWinCount = (sbyte)stream.ReadUnsigned(4);
+
+                return miscellaneousOptions;
+            }
+
+            public static void Encode(BitStream stream, VariantMiscellaneousOptions miscellaneousOptions)
+            {
+                // TODO: Implement
+                throw new NotImplementedException();
             }
         }
 
@@ -78,6 +94,29 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 RespawnOnKills = 1 << 3,
                 AutoRespawnDisabled = 1 << 4,
             }
+
+            public static VariantRespawnOptions Decode(BitStream stream)
+            {
+                var respawnOptions = new VariantRespawnOptions();
+
+                respawnOptions.Flags = (RespawnFlags)stream.ReadUnsigned(4);
+                respawnOptions.LivesPerRound = (byte)stream.ReadUnsigned(6);
+                respawnOptions.TeamLivesPerRound = (byte)stream.ReadUnsigned(7);
+                respawnOptions.RespawnTime = (byte)stream.ReadUnsigned(8);
+                respawnOptions.SuicidePenalty = (byte)stream.ReadUnsigned(8);
+                respawnOptions.BetrayalPenalty = (byte)stream.ReadUnsigned(8);
+                respawnOptions.RespawnGrowth = (byte)stream.ReadUnsigned(4);
+                respawnOptions.RespawnPlayerTraitsDuration = (byte)stream.ReadUnsigned(6);
+                respawnOptions.RespawnPlayerTraits = GameVariantPlayerTraits.Decode(stream);
+
+                return respawnOptions;
+            }
+
+            public static void Encode(BitStream stream, VariantRespawnOptions respawnOptions)
+            {
+                // TODO: Implement
+                throw new NotImplementedException();
+            }
         }
 
         [TagStructure(Size = 0x4)]
@@ -105,6 +144,23 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 TeamChangingEnabled,
                 TeamChangingBalancingOnlyEnabled,
             }
+
+            public static VariantSocialOptions Decode(BitStream stream)
+            {
+                var socialOptions = new VariantSocialOptions();
+
+                stream.ReadBool();
+                socialOptions.TeamChanging = (TeamChangingFlags)stream.ReadUnsigned(2);
+                socialOptions.Flags = (SocialFlags)stream.ReadUnsigned(5);
+
+                return socialOptions;
+            }
+
+            public static void Encode(BitStream stream, VariantSocialOptions socialOptions)
+            {
+                // TODO: Implement
+                throw new NotImplementedException();
+            }
         }
 
         [TagStructure(Size = 0x7C)]
@@ -131,6 +187,30 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 GrenadesOnMap = 1 << 0,
                 IndestructibleVehicles = 1 << 1,
             }
+
+            public static VariantMapOverrideOptions Decode(BitStream stream)
+            {
+                var mapOverrideOptions = new VariantMapOverrideOptions();
+
+                mapOverrideOptions.Flags = (MapOverrideFlags)stream.ReadUnsigned(2);
+                mapOverrideOptions.BasePlayerTraits = GameVariantPlayerTraits.Decode(stream);
+                mapOverrideOptions.WeaponSetIndex = (short)stream.ReadUnsigned(8);
+                mapOverrideOptions.VehicleSetIndex = (short)stream.ReadUnsigned(8);
+                mapOverrideOptions.RedPowerupTraits = GameVariantPlayerTraits.Decode(stream);
+                mapOverrideOptions.BluePowerupTraits = GameVariantPlayerTraits.Decode(stream);
+                mapOverrideOptions.YellowPowerupTraits = GameVariantPlayerTraits.Decode(stream);
+                mapOverrideOptions.RedPowerupDuration = (byte)stream.ReadUnsigned(7);
+                mapOverrideOptions.BluePowerupDuration = (byte)stream.ReadUnsigned(7);
+                mapOverrideOptions.YellowPowerupDuration = (byte)stream.ReadUnsigned(7);
+
+                return mapOverrideOptions;
+            }
+
+            public static void Encode(BitStream stream, VariantMapOverrideOptions mapOverrideOptions)
+            {
+                // TODO: Implement
+                throw new NotImplementedException();
+            }
         }
 
         [Flags]
@@ -152,7 +232,12 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         {
             var variant = new GameVariantBase();
 
-            // TODO: Implement
+            variant.BaseFlags = (BaseVariantFlags)stream.ReadUnsigned(1);
+            variant.MiscellaneousOptions = VariantMiscellaneousOptions.Decode(stream);
+            variant.RespawnOptions = VariantRespawnOptions.Decode(stream);
+            variant.SocialOptions = VariantSocialOptions.Decode(stream);
+            variant.MapOverrideOptions = VariantMapOverrideOptions.Decode(stream);
+            variant.TeamScoringMethod = (TeamScoring)stream.ReadUnsigned(3);
 
             return variant;
         }

@@ -42,7 +42,23 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         {
             var variant = new GameVariantOddball();
 
-            // TODO: Implement
+            variant.BaseFlags = (BaseVariantFlags)stream.ReadUnsigned(1);
+            variant.MiscellaneousOptions = VariantMiscellaneousOptions.Decode(stream);
+            variant.RespawnOptions = VariantRespawnOptions.Decode(stream);
+            variant.SocialOptions = VariantSocialOptions.Decode(stream);
+            variant.MapOverrideOptions = VariantMapOverrideOptions.Decode(stream);
+            variant.TeamScoringMethod = (TeamScoring)stream.ReadUnsigned(3);
+
+            variant.VariantFlags = (OddballFlags)stream.ReadUnsigned(2);
+            variant.ScoreToWin = (short)stream.ReadUnsigned(11);
+            variant.CarryingPoints = (short)stream.ReadUnsigned(5);
+            variant.KillPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.BallKillPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.CarrierKillPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.BallCount = (byte)stream.ReadUnsigned(2);
+            variant.BallSpawnDelay = (short)stream.ReadUnsigned(7);
+            variant.BallInactiveRespawnDelay = (short)stream.ReadUnsigned(7);
+            variant.CarrierTraits = GameVariantPlayerTraits.Decode(stream);
 
             return variant;
         }

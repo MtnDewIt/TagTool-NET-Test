@@ -4,6 +4,7 @@ using TagTool.BlamFile.Chunks.GameVariants;
 using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
 using TagTool.Commands.Common;
+using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
@@ -125,8 +126,6 @@ namespace TagTool.BlamFile.Chunks
                 }
                 else
                 {
-                    new TagToolWarning("Packed Game Variants Not Supported. Skipping...");
-
                     var variantSize = gameVariant.Length - 0xC;
 
                     var buffer = new byte[variantSize];
@@ -136,7 +135,45 @@ namespace TagTool.BlamFile.Chunks
                         buffer[i] = reader.ReadByte();
                     }
 
-                    // TODO: Implement
+                    var stream = new MemoryStream(buffer);
+                    var bitStream = new BitStream(stream);
+
+                    gameVariant.GameVariantType = (GameEngineType)bitStream.ReadUnsigned(4);
+                    gameVariant.Metadata = ContentItemMetadata.Decode(bitStream);
+
+                    switch (gameVariant.GameVariantType) 
+                    {
+                        case GameEngineType.CaptureTheFlag:
+                            gameVariant.Variant = GameVariantCtf.Decode(bitStream);
+                            break;
+                        case GameEngineType.Slayer:
+                            gameVariant.Variant = GameVariantSlayer.Decode(bitStream);
+                            break;
+                        case GameEngineType.Oddball:
+                            gameVariant.Variant = GameVariantOddball.Decode(bitStream);
+                            break;
+                        case GameEngineType.KingOfTheHill:
+                            gameVariant.Variant = GameVariantKing.Decode(bitStream);
+                            break;
+                        case GameEngineType.Sandbox:
+                            gameVariant.Variant = GameVariantSandbox.Decode(bitStream);
+                            break;
+                        case GameEngineType.Vip:
+                            gameVariant.Variant = GameVariantVip.Decode(bitStream);
+                            break;
+                        case GameEngineType.Juggernaut:
+                            gameVariant.Variant = GameVariantJuggernaut.Decode(bitStream);
+                            break;
+                        case GameEngineType.Territories:
+                            gameVariant.Variant = GameVariantTerritories.Decode(bitStream);
+                            break;
+                        case GameEngineType.Assault:
+                            gameVariant.Variant = GameVariantAssault.Decode(bitStream);
+                            break;
+                        case GameEngineType.Infection:
+                            gameVariant.Variant = GameVariantInfection.Decode(bitStream);
+                            break;
+                    }
                 }
             }
 

@@ -59,7 +59,22 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         {
             var variant = new GameVariantKing();
 
-            // TODO: Implement
+            variant.BaseFlags = (BaseVariantFlags)stream.ReadUnsigned(1);
+            variant.MiscellaneousOptions = VariantMiscellaneousOptions.Decode(stream);
+            variant.RespawnOptions = VariantRespawnOptions.Decode(stream);
+            variant.SocialOptions = VariantSocialOptions.Decode(stream);
+            variant.MapOverrideOptions = VariantMapOverrideOptions.Decode(stream);
+            variant.TeamScoringMethod = (TeamScoring)stream.ReadUnsigned(3);
+
+            variant.VariantFlags = (KingFlags)stream.ReadUnsigned(1);
+            variant.ScoreToWin = (short)stream.ReadUnsigned(10);
+            variant.MovingHill = (MovingHillSettings)stream.ReadUnsigned(4);
+            variant.MovingHillOrder = (MovingHillOrderSettings)stream.ReadUnsigned(2);
+            variant.InsideHillPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.OutsideHillPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.UncontestedHillBonus = (sbyte)stream.ReadUnsigned(5);
+            variant.KillPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.InsideHillTraits = GameVariantPlayerTraits.Decode(stream);
 
             return variant;
         }

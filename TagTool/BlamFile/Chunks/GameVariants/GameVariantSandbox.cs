@@ -50,7 +50,17 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         {
             var variant = new GameVariantSandbox();
 
-            // TODO: Implement
+            variant.BaseFlags = (BaseVariantFlags)stream.ReadUnsigned(1);
+            variant.MiscellaneousOptions = VariantMiscellaneousOptions.Decode(stream);
+            variant.RespawnOptions = VariantRespawnOptions.Decode(stream);
+            variant.SocialOptions = VariantSocialOptions.Decode(stream);
+            variant.MapOverrideOptions = VariantMapOverrideOptions.Decode(stream);
+            variant.TeamScoringMethod = (TeamScoring)stream.ReadUnsigned(3);
+
+            variant.VariantFlags = (SandboxFlags)stream.ReadUnsigned(1);
+            variant.EditMode = (SandboxEditModeSettings)stream.ReadUnsigned(2);
+            variant.RespawnTime = (SandboxRespawnTime)stream.ReadUnsigned(6);
+            variant.PlayerTraits = GameVariantPlayerTraits.Decode(stream);
 
             return variant;
         }

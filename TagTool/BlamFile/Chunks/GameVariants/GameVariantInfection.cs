@@ -78,7 +78,28 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         {
             var variant = new GameVariantInfection();
 
-            // TODO: Implement
+            variant.BaseFlags = (BaseVariantFlags)stream.ReadUnsigned(1);
+            variant.MiscellaneousOptions = VariantMiscellaneousOptions.Decode(stream);
+            variant.RespawnOptions = VariantRespawnOptions.Decode(stream);
+            variant.SocialOptions = VariantSocialOptions.Decode(stream);
+            variant.MapOverrideOptions = VariantMapOverrideOptions.Decode(stream);
+            variant.TeamScoringMethod = (TeamScoring)stream.ReadUnsigned(3);
+
+            variant.VariantFlags = (InfectionFlags)stream.ReadUnsigned(1);
+            variant.SafeHaven = (InfectionSafeHavenSettings)stream.ReadUnsigned(2);
+            variant.NextZombie = (InfectionNextZombieSettings)stream.ReadUnsigned(2);
+            variant.InitialZombieCount = (InfectionInitialZombieCountSettings)stream.ReadUnsigned(5);
+            variant.SafeHavenMovementTime = (short)stream.ReadUnsigned(7);
+            variant.ZombieKillPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.InfectionPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.SafeHavenArrivalPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.SuicidePoints = (sbyte)stream.ReadUnsigned(5);
+            variant.BetrayalPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.LastManBonusPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.ZombieTraits = GameVariantPlayerTraits.Decode(stream);
+            variant.FirstZombieTraits = GameVariantPlayerTraits.Decode(stream);
+            variant.SafeHavenDefenderTraits = GameVariantPlayerTraits.Decode(stream);
+            variant.LastHumanTraits = GameVariantPlayerTraits.Decode(stream);
 
             return variant;
         }

@@ -87,7 +87,27 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         {
             var variant = new GameVariantJuggernaut();
 
-            // TODO: Implement
+            variant.BaseFlags = (BaseVariantFlags)stream.ReadUnsigned(1);
+            variant.MiscellaneousOptions = VariantMiscellaneousOptions.Decode(stream);
+            variant.RespawnOptions = VariantRespawnOptions.Decode(stream);
+            variant.SocialOptions = VariantSocialOptions.Decode(stream);
+            variant.MapOverrideOptions = VariantMapOverrideOptions.Decode(stream);
+            variant.TeamScoringMethod = (TeamScoring)stream.ReadUnsigned(3);
+
+            variant.VariantFlags = (JuggernautFlags)stream.ReadUnsigned(3);
+            variant.ScoreToWinRound = (short)stream.ReadUnsigned(9);
+            variant.InitialJuggernaut = (JuggernautInitialJuggernautSettings)stream.ReadUnsigned(2);
+            variant.NextJuggernaut = (JuggernautNextJuggernautSettings)stream.ReadUnsigned(2);
+            variant.ZoneMovement = (JuggernautZoneMovementSettings)stream.ReadUnsigned(4);
+            variant.ZoneOrder = (JuggernautZoneOrderSettings)stream.ReadUnsigned(1);
+            variant.KillPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.JuggernautKillPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.KillAsJuggernautPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.DestinationArrivalPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.SuicidePoints = (sbyte)stream.ReadUnsigned(5);
+            variant.BetrayalPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.JuggernautDelay = (byte)stream.ReadUnsigned(4);
+            variant.JuggernautTraits = GameVariantPlayerTraits.Decode(stream);
 
             return variant;
         }

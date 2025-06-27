@@ -63,7 +63,19 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         {
             var variant = new GameVariantTerritories();
 
-            // TODO: Implement
+            variant.BaseFlags = (BaseVariantFlags)stream.ReadUnsigned(1);
+            variant.MiscellaneousOptions = VariantMiscellaneousOptions.Decode(stream);
+            variant.RespawnOptions = VariantRespawnOptions.Decode(stream);
+            variant.SocialOptions = VariantSocialOptions.Decode(stream);
+            variant.MapOverrideOptions = VariantMapOverrideOptions.Decode(stream);
+            variant.TeamScoringMethod = (TeamScoring)stream.ReadUnsigned(3);
+
+            variant.VariantFlags = (TerritoriesFlags)stream.ReadUnsigned(2);
+            variant.RespawnOnCapture = (TerritoriesRespawnOnCaptureSettings)stream.ReadUnsigned(2);
+            variant.CaptureTime = (TerritoriesCaptureTimeSettings)stream.ReadUnsigned(7);
+            variant.SuddenDeathTime = (TerritoriesSuddenDeathSettings)stream.ReadUnsigned(10);
+            variant.DefenderTraits = GameVariantPlayerTraits.Decode(stream);
+            variant.AttackerTraits = GameVariantPlayerTraits.Decode(stream);
 
             return variant;
         }

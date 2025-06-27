@@ -39,7 +39,28 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         {
             var variant = new GameVariantSlayer();
 
-            // TODO: Implement
+            variant.BaseFlags = (BaseVariantFlags)stream.ReadUnsigned(1);
+            variant.MiscellaneousOptions = VariantMiscellaneousOptions.Decode(stream);
+            variant.RespawnOptions = VariantRespawnOptions.Decode(stream);
+            variant.SocialOptions = VariantSocialOptions.Decode(stream);
+            variant.MapOverrideOptions = VariantMapOverrideOptions.Decode(stream);
+            variant.TeamScoringMethod = (TeamScoring)stream.ReadUnsigned(3);
+
+            variant.ScoreToWin = (short)stream.ReadUnsigned(10);
+            variant.KillPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.AssistPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.DeathPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.SuicidePoints = (sbyte)stream.ReadUnsigned(5);
+            variant.BetrayalPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.LeaderKilledPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.EliminationPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.AssassinationsPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.HeadshotPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.MeleePoints = (sbyte)stream.ReadUnsigned(5);
+            variant.StickyPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.SplatterPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.KillingSpreePoints = (sbyte)stream.ReadUnsigned(5);
+            variant.LeaderTraits = GameVariantPlayerTraits.Decode(stream);
 
             return variant;
         }

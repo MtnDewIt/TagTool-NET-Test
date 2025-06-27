@@ -93,6 +93,25 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 Shield_3X,
                 Shield_4X,
             }
+
+            public static PlayerShieldVitalityTraits Decode(BitStream stream)
+            {
+                var shieldVitalityTraits = new PlayerShieldVitalityTraits();
+
+                shieldVitalityTraits.DamageResistance = (DamageResistancePercentage)stream.ReadUnsigned(4);
+                shieldVitalityTraits.ShieldRechargeRate = (ShieldRechargeRatePercentage)stream.ReadUnsigned(4);
+                shieldVitalityTraits.ShieldVampirism = (ShieldVampirismPercentage)stream.ReadUnsigned(3);
+                shieldVitalityTraits.HeadshotImmunity = (HeadshotImmunitySettings)stream.ReadUnsigned(2);
+                shieldVitalityTraits.ShieldMultiplier = (ShieldMultiplierSettings)stream.ReadUnsigned(3);
+
+                return shieldVitalityTraits;
+            }
+
+            public static void Encode(BitStream stream, PlayerShieldVitalityTraits shieldVitalityTraits)
+            {
+                // TODO: Implement
+                throw new NotImplementedException();
+            }
         }
 
         [TagStructure(Size = 0x3)]
@@ -171,6 +190,27 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 Allowed,
                 Disallowed,
             }
+
+            public static PlayerWeaponTraits Decode(BitStream stream)
+            {
+                var weaponTraits = new PlayerWeaponTraits();
+
+                weaponTraits.DamageModifier = (DamageModifierPercentage)stream.ReadUnsigned(4);
+                weaponTraits.PrimaryWeaponIndex = (byte)stream.ReadUnsigned(8);
+                weaponTraits.SecondaryWeaponIndex = (byte)stream.ReadUnsigned(8);
+                weaponTraits.InitialGrenadeCount = (WeaponGrenadeCount)stream.ReadUnsigned(2);
+                weaponTraits.InfiniteAmmo = (InfiniteAmmoSettings)stream.ReadUnsigned(2);
+                weaponTraits.RechargingGrenades = (RechargingGrenadesSettings)stream.ReadUnsigned(2);
+                weaponTraits.WeaponPickup = (WeaponPickupSettings)stream.ReadUnsigned(2);
+
+                return weaponTraits;
+            }
+
+            public static void Encode(BitStream stream, PlayerWeaponTraits weaponTraits)
+            {
+                // TODO: Implement
+                throw new NotImplementedException();
+            }
         }
 
         [TagStructure(Size = 0x4)]
@@ -219,6 +259,23 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 None,
                 PassengerOnly,
                 Full,
+            }
+
+            public static PlayerMovementTraits Decode(BitStream stream)
+            {
+                var movementTraits = new PlayerMovementTraits();
+
+                movementTraits.PlayerSpeed = (PlayerSpeedSettings)stream.ReadUnsigned(4);
+                movementTraits.PlayerGravity = (PlayerGravitySettings)stream.ReadUnsigned(3);
+                movementTraits.VehicleUsage = (PlayerVehicleUsage)stream.ReadUnsigned(2);
+
+                return movementTraits;
+            }
+
+            public static void Encode(BitStream stream, PlayerMovementTraits movementTraits)
+            {
+                // TODO: Implement
+                throw new NotImplementedException();
             }
         }
 
@@ -303,6 +360,24 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 Black,
                 Zombie,
             }
+
+            public static PlayerAppearanceTraits Decode(BitStream stream)
+            {
+                var appearanceTraits = new PlayerAppearanceTraits();
+
+                appearanceTraits.ActiveCamo = (ActiveCamoSettings)stream.ReadUnsigned(3);
+                appearanceTraits.Waypoint = (WaypointSettings)stream.ReadUnsigned(2);
+                appearanceTraits.Aura = (AuraSettings)stream.ReadUnsigned(3);
+                appearanceTraits.ForcedColorChange = (ForcedColorChangeSettings)stream.ReadUnsigned(4);
+
+                return appearanceTraits;
+            }
+
+            public static void Encode(BitStream stream, PlayerAppearanceTraits appearanceTraits)
+            {
+                // TODO: Implement
+                throw new NotImplementedException();
+            }
         }
 
         [TagStructure(Size = 0x4)]
@@ -331,18 +406,38 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 Meters_100,
                 Meters_150,
             }
+
+            public static PlayerSensorTraits Decode(BitStream stream)
+            {
+                var sensorTraits = new PlayerSensorTraits();
+
+                sensorTraits.MotionTracker = (MotionTrackerSettings)stream.ReadUnsigned(3);
+                sensorTraits.MotionTrackerRange = (MotionTrackerRangeSettings)stream.ReadUnsigned(3);
+
+                return sensorTraits;
+            }
+
+            public static void Encode(BitStream stream, PlayerSensorTraits sensorTraits)
+            {
+                // TODO: Implement
+                throw new NotImplementedException();
+            }
         }
 
         public static GameVariantPlayerTraits Decode(BitStream stream)
         {
-            var variant = new GameVariantPlayerTraits();
+            var playerTraits = new GameVariantPlayerTraits();
 
-            // TODO: Implement
+            playerTraits.ShieldVitalityTraits = PlayerShieldVitalityTraits.Decode(stream);
+            playerTraits.WeaponTraits = PlayerWeaponTraits.Decode(stream);
+            playerTraits.MovementTraits = PlayerMovementTraits.Decode(stream);
+            playerTraits.AppearanceTraits = PlayerAppearanceTraits.Decode(stream);
+            playerTraits.SensorTraits = PlayerSensorTraits.Decode(stream);
 
-            return variant;
+            return playerTraits;
         }
 
-        public static void Encode(BitStream stream, GameVariantPlayerTraits variant)
+        public static void Encode(BitStream stream, GameVariantPlayerTraits playerTraits)
         {
             // TODO: Implement
             throw new NotImplementedException();
