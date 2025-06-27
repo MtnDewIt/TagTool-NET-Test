@@ -26,7 +26,7 @@ namespace TagTool.BlamFile.Chunks
             }
             else
             {
-                new TagToolError(CommandError.CustomError, "No data, image will not be written to BLF");
+                new TagToolError(CommandError.CustomError, "No data, saved film will not be written to BLF");
             }
         }
     }
