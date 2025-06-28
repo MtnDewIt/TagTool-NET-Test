@@ -20,7 +20,7 @@ namespace TagTool.Commands.CollisionModels
     {
         private GameCacheHaloOnlineBase Cache { get; }
         private CollisionGeometry Bsp { get; set; }
-        private List<Vector3> Vertices { get; set; }
+        private List<Vector3D> Vertices { get; set; }
         private List<Face> Faces { get; set; }
         private List<@triangle> Triangles { get; set; }
         private bool debug = false;
@@ -203,7 +203,7 @@ namespace TagTool.Commands.CollisionModels
                 }
 
                 //get object bounds
-                foreach(Vector3 vert in Vertices)
+                foreach(Vector3D vert in Vertices)
                 {
                     if (vert.X < MinBounds.X)
                         MinBounds.X = vert.X;
@@ -297,9 +297,9 @@ namespace TagTool.Commands.CollisionModels
 
         public struct @triangle
         {
-            public Vector3 a;
-            public Vector3 b;
-            public Vector3 c;
+            public Vector3D a;
+            public Vector3D b;
+            public Vector3D c;
             public int material_index;
             public float area;
         }
@@ -346,9 +346,9 @@ namespace TagTool.Commands.CollisionModels
                 }
 
                 @triangle newtriangle = new @triangle{ a = Vertices[indices[0]], b = Vertices[indices[1]], c = Vertices[indices[2]], material_index = materialindex};
-                Vector3 point0 = Vertices[indices[0]];
-                Vector3 point1 = Vertices[indices[1]];
-                Vector3 point2 = Vertices[indices[2]];
+                Vector3D point0 = Vertices[indices[0]];
+                Vector3D point1 = Vertices[indices[1]];
+                Vector3D point2 = Vertices[indices[2]];
                 float xdiff_1_0 = point1.X - point0.X;
                 float ydiff_1_0 = point1.Y - point0.Y;
                 float zdiff_1_0 = point1.Z - point0.Z;
@@ -368,7 +368,7 @@ namespace TagTool.Commands.CollisionModels
             return true;
         }
 
-        public int add_vertex(Vector3 vertex)
+        public int add_vertex(Vector3D vertex)
         {
             Vertex newvertex = new Vertex { Point = new TagTool.Common.RealPoint3d { X = vertex.X * 0.01f, Y = vertex.Y * 0.01f, Z = vertex.Z * 0.01f }, FirstEdge = ushort.MaxValue };
             for (int i = 0; i < Bsp.Vertices.Count; i++)

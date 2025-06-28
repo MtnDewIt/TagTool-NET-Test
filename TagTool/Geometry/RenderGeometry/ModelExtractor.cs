@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Numerics;
+//using System.Numerics;
 using System.Text;
 using System;
 
@@ -653,8 +653,8 @@ namespace TagTool.Geometry
                 Node newNode = new Node(CacheContext.StringTable.GetString(node.Name));
 
                 var r = node.DefaultRotation.Normalize();
-                var t = Matrix4x4
-                    .CreateFromQuaternion(new Quaternion(r.I, r.J, r.K, r.W));
+                var t = System.Numerics.Matrix4x4
+                    .CreateFromQuaternion(new System.Numerics.Quaternion(r.I, r.J, r.K, r.W));
                 var transform = new Matrix4x4(
                     t.M11, t.M21, t.M31, node.DefaultTranslation.X,
                     t.M12, t.M22, t.M32, node.DefaultTranslation.Y,
@@ -862,13 +862,13 @@ namespace TagTool.Geometry
                 var vertex = vertices[i];
 
                 // Flip the model right side up.
-                mesh.Vertices.Add(new Vector3(vertex.Position.X, vertex.Position.Y, vertex.Position.Z)); //vertex.Position.Z, -vertex.Position.Y
+                mesh.Vertices.Add(new Vector3D(vertex.Position.X, vertex.Position.Y, vertex.Position.Z)); //vertex.Position.Z, -vertex.Position.Y
 
                 mesh.Normals.Add(vertex.Normal);
 
                 // Y didn't like being shifted before decompression, so do it here.
                 mesh.TextureCoordinateChannels[textureCoordinateIndex].Add(
-                    new Vector3(vertex.TexCoords.X, 1 - vertex.TexCoords.Y, vertex.TexCoords.Z));
+                    new Vector3D(vertex.TexCoords.X, 1 - vertex.TexCoords.Y, vertex.TexCoords.Z));
 
                 mesh.Tangents.Add(vertex.Tangents);
                 mesh.BiTangents.Add(vertex.Binormals);
@@ -1279,19 +1279,19 @@ namespace TagTool.Geometry
             }
         }
 
-        private static Vector3 ToVector3(RealVector3d v)
+        private static Vector3D ToVector3(RealVector3d v)
         {
-            return new Vector3(v.I, v.J, v.K);
+            return new Vector3D(v.I, v.J, v.K);
         }
 
-        private static Vector3 ToVector3(RealQuaternion q)
+        private static Vector3D ToVector3(RealQuaternion q)
         {
-            return new Vector3(q.I, q.J, q.K);
+            return new Vector3D(q.I, q.J, q.K);
         }
 
-        private static Vector3 ToVector3(RealVector2d u)
+        private static Vector3D ToVector3(RealVector2d u)
         {
-            return new Vector3(u.I, u.J, 0);
+            return new Vector3D(u.I, u.J, 0);
         }
 
         /// <summary>
@@ -1299,11 +1299,11 @@ namespace TagTool.Geometry
         /// </summary>
         public class GenericVertex
         {
-            public Vector3 Position { get; set; }
-            public Vector3 Normal { get; set; }
-            public Vector3 TexCoords { get; set; }
-            public Vector3 Tangents { get; set; }
-            public Vector3 Binormals { get; set; }
+            public Vector3D Position { get; set; }
+            public Vector3D Normal { get; set; }
+            public Vector3D TexCoords { get; set; }
+            public Vector3D Tangents { get; set; }
+            public Vector3D Binormals { get; set; }
             public byte[] Indices { get; set; }
             public float[] Weights { get; set; }
         }
