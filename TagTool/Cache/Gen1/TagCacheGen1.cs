@@ -69,10 +69,18 @@ namespace TagTool.Cache.Gen1
             var deserializer = new TagDeserializer(mapFile.Version, mapFile.CachePlatform);
             Header = deserializer.Deserialize<TagCacheGen1Header>(dataContext);
 
-            if (mapFile.Version == CacheVersion.HaloXbox)
-                BaseTagAddress = 0x803A6000;
-            else
-                BaseTagAddress = 0x40440000;
+            switch (mapFile.Version) 
+            {
+                case CacheVersion.HaloXbox:
+                    BaseTagAddress = 0x803A6000;
+                    break;
+                case CacheVersion.HaloCustomEdition when mapFile.CachePlatform == CachePlatform.MCC:
+                    BaseTagAddress = 0x50000000;
+                    break;
+                default:
+                    BaseTagAddress = 0x40440000;
+                    break;
+            }
 
             reader.SeekTo(Header.CachedTagArrayAddress - BaseTagAddress + tagDataSectionOffset);
 

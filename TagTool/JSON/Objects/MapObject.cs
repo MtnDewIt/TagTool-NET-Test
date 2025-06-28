@@ -30,5 +30,6 @@ namespace TagTool.JSON.Objects
             }
         }
         public Blf MapFileBlf { get; set; }
+        public CacheFileReports Reports { get; set; }
     }
 }

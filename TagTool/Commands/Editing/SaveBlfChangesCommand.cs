@@ -34,7 +34,6 @@ namespace TagTool.Commands.Editing
             {
                 Format = Blf.Format,
                 ContentFlags = Blf.ContentFlags,
-                AuthenticationType = Blf.AuthenticationType,
 
                 StartOfFile = Blf.StartOfFile,
                 EndOfFileCRC = Blf.EndOfFileCRC,

@@ -1,146 +1,180 @@
 ﻿using TagTool.Common;
-using TagTool.IO;
-using TagTool.Serialization;
 using TagTool.Tags;
 
 namespace TagTool.Cache
 {
-    [TagStructure(Size = 0x800, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Halo3Beta)]
-    [TagStructure(Size = 0x3000, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0xA000, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach11883)]
-    [TagStructure(Size = 0x1E000, MinVersion = CacheVersion.Halo4)]
+    [TagStructure(Size = 0x800, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Halo3Beta, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x3000, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0xA000, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x4000, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+    [TagStructure(Size = 0xA000, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     public class CacheFileHeaderGen3 : CacheFileHeader
     {
+        //
+        // Header definition
+        //
+
         public Tag HeaderSignature;
 
         public CacheFileVersion FileVersion;
         public int FileLength;
+
+        [TagField(MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
         public int FileCompressedLength;
 
+        [TagField(MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        public CacheFileEngineVersion EngineVersion;
+        [TagField(MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        public CacheFilePlatformType PlatformType;
+
+        [TagField(Length = 0x2, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding1;
+
+        [TagField(MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
         public PlatformUnsignedValue TagTableHeaderOffset;
 
         public TagMemoryHeader TagMemoryHeader;
 
-        [TagField(Length = 256)]
+        [TagField(Length = 256, MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
         public string SourceFile;
 
-        [TagField(Length = 32)]
+        [TagField(Length = 32, MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
         public string Build;
 
         public CacheFileType CacheType;
         public CacheFileSharedType SharedCacheType;
 
-        [TagField(MaxVersion = CacheVersion.Halo3Beta)]
-        public uint CacheResourceCRC;
+        [TagField(MaxVersion = CacheVersion.Halo3Beta, Platform = CachePlatform.Original)]
+        public ResourceCRC CacheResourceCRC;
 
-        public bool Unknown2;     
-        public bool TrackedBuild;       
-        public bool Unknown3;
-        public byte Unknown4;
-        public int Unknown5;
-        public int Unknown6;
-        public int Unknown7;       
-        public int Unknown8;
-        public int Unknown9;
+        [TagField(MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
+        public bool Uncompressed;
+        [TagField(MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
+        public bool TrackedBuild;
+
+        [TagField(MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        public CacheFileFlags Flags;
+
+        public bool ValidSharedResourceUsage;
+        public byte HeaderFlags;
+
+        [TagField(MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
+        public LastModificationDate SlotModificationDate;
+
+        [TagField(MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
+        public int LowDetailTextureCount;
+        [TagField(MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
+        public int LowDetailTextureOffset;
+        [TagField(MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
+        public int LowDetailTextureByteCount;
+
+        [TagField(MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        public TagNameHeader TagNamesHeaderMCC;
+
         public StringIDHeader StringIdsHeader;
-        public int ExternalDependencies;
-        public ulong Timestamp;
-        public ulong MainMenuTimestamp;
-        public ulong SharedTimestamp;
-        public ulong CampaignTimestamp;
 
-        [TagField(Platform = CachePlatform.MCC)]
-        public ulong MultiplayerTimestamp;
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        public GameLanguage LanguageMCC;
 
-        [TagField(Length = 0x20)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        public int MinorVersionMCC;
+
+        [TagField(MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
+        public uint SharedFileFlags;
+
+        [TagField(MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
+        public LastModificationDate CreationDate;
+
+        [TagField(Length = (int)CacheFileSharedFileType.Count)]
+        public SharedModificationDate[] SharedCreationDate;
+
+        [TagField(Length = 0x18, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        public byte[] Unknown1;
+
+        [TagField(Length = 0x20, MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
         public string Name;
-     
-        public int Unknown13;
 
-        [TagField(Length = 256)]
+        [TagField(MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
+        public GameLanguage Language;
+
+        [TagField(Length = 256, MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
         public string ScenarioPath;
 
+        [TagField(MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
         public int MinorVersion;
-        public TagNameHeader TagNamesHeader;
-        public uint Checksum;
-        
-        public int Unknown14;
-        public int Unknown15;
-        public int Unknown16;
-        public int Unknown17;
-        public int Unknown18;
-        public int Unknown19;
-        public int Unknown20;
-        public int Unknown21_1;
 
-        [TagField(Length = 0x10, MinVersion = CacheVersion.Halo4)]
-        public byte[] UnknownH4;
-        [TagField(Platform = CachePlatform.MCC)]
-        public int Unknown21_2;
+        [TagField(MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
+        public TagNameHeader TagNamesHeader;
+
+        [TagField(MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
+        public uint RealtimeChecksum;
+
+        public FileCreator CreatorName;
+
+        [TagField(Length = 32, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        public string BuildMCC;
+
+        [TagField(Length = 32, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        public string NameMCC;
+
+        [TagField(Length = 256, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        public string ScenarioPathMCC;
+
+        [TagField(Length = 256, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        public string SourceFileMCC;
 
         public PlatformUnsignedValue VirtualBaseAddress;
 
+        [TagField(MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        public PlatformUnsignedValue TagTableHeaderOffsetMCC;
+
+        [TagField(MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
         public int XDKVersion;
 
-        [TagField(Platform = CachePlatform.MCC)]
-        public int Unknown21_3;
+        [TagField(Length = 0x10, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        public byte[] Unknown2;
 
-        [TagField(Length = (int)CacheFilePartitionTypeBeta.Count, MaxVersion = CacheVersion.Halo3Beta)]
-        public CacheFilePartition[] PartitionsBeta = new CacheFilePartition[(int)CacheFilePartitionTypeBeta.Count];
-
+        [TagField(Length = (int)CacheFilePartitionTypeBeta.Count, MaxVersion = CacheVersion.Halo3Beta, Platform = CachePlatform.Original)]
         [TagField(Length = (int)CacheFilePartitionType.Count, MinVersion = CacheVersion.Halo3Retail)]
-        public CacheFilePartition[] Partitions = new CacheFilePartition[(int)CacheFilePartitionType.Count];
+        public CacheFilePartition[] Partitions;
 
-        [TagField(Length = 0x4EC, MaxVersion = CacheVersion.Halo3Beta)]
+        [TagField(Length = 0x4EC, MaxVersion = CacheVersion.Halo3Beta, Platform = CachePlatform.Original)]
         public byte[] UnknownH3Beta;
 
-        // everything after that is min h3 retail
+        [TagField(MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        public uint RealtimeChecksumMCC;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail)]
-        public int CountUnknown1;
-        [TagField(MinVersion = CacheVersion.Halo3Retail)]
-        public int Unknown22;
-        [TagField(MinVersion = CacheVersion.Halo3Retail)]
-        public int Unknown23;
-        [TagField(MinVersion = CacheVersion.Halo3Retail)]
-        public int Unknown24;
+        public int ContentHashMask;
 
-        [TagField(Length = 5, MinVersion = CacheVersion.Halo3Retail)]
-        public int[] SHA1_A;
-        [TagField(Length = 5, MinVersion = CacheVersion.Halo3Retail)]
-        public int[] SHA1_B;
-        [TagField(Length = 5, MinVersion = CacheVersion.Halo3Retail)]
-        public int[] SHA1_C;
-        [TagField(Length = 64, MinVersion = CacheVersion.Halo3Retail)]
-        public int[] RSA;
+        [TagField(Length = 0x4, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding2;
+
+        [TagField(MinVersion = CacheVersion.Halo3Retail)]
+        public ulong SignatureMarker;
+
+        [TagField(Length = 0x3, MinVersion = CacheVersion.Halo3Retail)]
+        public SharedNetworkRequestHash[] Hash;
+
+        [TagField(MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        public SHA256Hash RSAKeyBlobHash;
+
+        [TagField(MinVersion = CacheVersion.Halo3Retail)]
+        public RSASignature RSASignature;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail)]
         public CacheFileSectionTable SectionTable;
 
-        [TagField(Length = 4, MinVersion = CacheVersion.Halo3Retail)]
-        public int[] GUID;
-
         [TagField(MinVersion = CacheVersion.Halo3Retail)]
-        public short Unknown108;
-        [TagField(MinVersion = CacheVersion.Halo3Retail)]
-        public short CountUnknown2;
-        [TagField(MinVersion = CacheVersion.Halo3Retail)]
-        public int Unknown109;
+        public SharedResourceUsage SharedResourceUsage;
 
-        [TagField(Length = 4, MinVersion = CacheVersion.Halo3Retail)]
-        public int[] CompressionGUID;
-
-        [TagField(Length = 0x2B38, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
-        public byte[] UnknownFileData;
-
-        [TagField(Length = 0x2AF0, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-        public byte[] UnknownFileDataMCC;
-
-        [TagField(Length = 0x7000, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
-        public byte[] UnknownReach;
-
-        [TagField(Length = 0x13FF0, MinVersion = CacheVersion.Halo4)]
-        public byte[] UnknownH4FileData;
+        [TagField(Length = 0x584, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original, Flags = TagFieldFlags.Padding)]
+        [TagField(Length = 0x1E0, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original, Flags = TagFieldFlags.Padding)]
+        [TagField(Length = 0x18A4, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
+        [TagField(Length = 0x1524, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+        [TagField(Length = 0x1180, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+        [TagField(Length = 0x1844, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+        public byte[] Padding3;
 
         public Tag FooterSignature;
 
@@ -150,14 +184,14 @@ namespace TagTool.Cache
 
         public override Tag GetFootTag() => FooterSignature;
         public override Tag GetHeadTag() => HeaderSignature;
-        public override ulong GetTagTableHeaderOffset() => TagTableHeaderOffset.Value;
-        public override string GetName() => Name;
-        public override string GetBuild() => Build;
-        public override string GetScenarioPath() => null;
+        public override ulong GetTagTableHeaderOffset() => (TagTableHeaderOffset ?? TagTableHeaderOffsetMCC).Value;
+        public override string GetName() => Name ?? NameMCC;
+        public override string GetBuild() => Build ?? BuildMCC;
+        public override string GetScenarioPath() => ScenarioPath ?? ScenarioPathMCC;
         public override CacheFileType GetCacheType() => CacheType;
         public override CacheFileSharedType GetSharedCacheType() => SharedCacheType;
         public override StringIDHeader GetStringIDHeader() => StringIdsHeader;
-        public override TagNameHeader GetTagNameHeader() => TagNamesHeader;
+        public override TagNameHeader GetTagNameHeader() => TagNamesHeader ?? TagNamesHeaderMCC;
         public override TagMemoryHeader GetTagMemoryHeader() => TagMemoryHeader;
         public override int GetScenarioTagIndex() => -1;
     }

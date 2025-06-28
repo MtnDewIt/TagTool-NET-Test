@@ -214,12 +214,16 @@ namespace TagTool.Commands.Editing
                     return $"{realRgb.Red} {realRgb.Green} {realRgb.Blue}";
                 case RealRgbaColor realRgba:
                     return $"{realRgba.Red} {realRgba.Green} {realRgba.Blue} {realRgba.Alpha}";
+                case RealRectangle2d realRect2d:
+                    return $"{realRect2d.Top} {realRect2d.Left} {realRect2d.Bottom} {realRect2d.Right}";
                 case RealRectangle3d realRect3d:
                     return $"{realRect3d.X0} {realRect3d.X1} {realRect3d.Y0} {realRect3d.Y1} {realRect3d.Z0} {realRect3d.Z1}";
                 case Rectangle2d rect2d:
                     return $"{rect2d.Top} {rect2d.Left} {rect2d.Bottom} {rect2d.Right}";
                 case RealMatrix4x3 realMatrix4x3:
                     return FormatRealMatrix4x3(realMatrix4x3);
+                case RealMatrix4x4 realMatrix4x4:
+                    return FormatRealMatrix4x4(realMatrix4x4);
                 case IBounds bounds:
                     return FormatBounds(bounds);
                 case DatumHandle datumHandle:
@@ -254,6 +258,15 @@ namespace TagTool.Commands.Editing
                 $" {matrix.m21} {matrix.m22} {matrix.m23}" +
                 $" {matrix.m31} {matrix.m32} {matrix.m33}" +
                 $" {matrix.m41} {matrix.m42} {matrix.m43}";
+        }
+
+        private string FormatRealMatrix4x4(RealMatrix4x4 matrix) 
+        {
+            return
+                $"{matrix.m11} {matrix.m12} {matrix.m13} {matrix.m14}" +
+                $" {matrix.m21} {matrix.m22} {matrix.m23} {matrix.m24}" +
+                $" {matrix.m31} {matrix.m32} {matrix.m33} {matrix.m34}" +
+                $" {matrix.m41} {matrix.m42} {matrix.m43} {matrix.m44}";
         }
 
         private static object GetDefaultValue(Type type)

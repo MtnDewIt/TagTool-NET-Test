@@ -57,7 +57,9 @@ namespace TagTool.JSON.Handlers
                 new RealVector2dHandler(),
                 new RealVector3dHandler(),
                 new Rectangle2dHandler(),
+                new ResourceCRCHandler(),
                 new RSASignatureHandler(),
+                new SHA256HashHandler(),
                 new TagHandler(),
             };
         }
@@ -114,7 +116,9 @@ namespace TagTool.JSON.Handlers
                 new RealVector2dHandler(),
                 new RealVector3dHandler(),
                 new Rectangle2dHandler(),
+                new ResourceCRCHandler(),
                 new RSASignatureHandler(),
+                new SHA256HashHandler(),
                 new TagHandler(),
             };
 

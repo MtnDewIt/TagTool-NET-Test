@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TagTool.BlamFile.Chunks;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 

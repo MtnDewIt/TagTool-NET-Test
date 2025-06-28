@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TagTool.BlamFile.Chunks;
 using TagTool.Commands.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
@@ -42,7 +43,7 @@ namespace TagTool.BlamFile.MCC
             }
         }
 
-        public void ConvertInsertionPointInfo(Dictionary<string, Scenario> scenarioTable, Dictionary<string, CampaignMapInfo> campaignInfoList, BlfScenarioInsertion insertion, int index)
+        public void ConvertInsertionPointInfo(Dictionary<string, Scenario> scenarioTable, Dictionary<string, CampaignMapInfo> campaignInfoList, BlfScenario.BlfScenarioInsertion insertion, int index)
         {
             insertion.Visible = Valid;
             insertion.ZoneSetIndex = (short)ZoneSetIndex;
@@ -51,7 +52,7 @@ namespace TagTool.BlamFile.MCC
             {
                 if (ODST.IsFirefight) 
                 {
-                    insertion.Flags = BlfScenarioInsertion.BlfScenarioInsertionFlags.SurvivalBit;
+                    insertion.Flags = BlfScenario.BlfScenarioInsertion.BlfScenarioInsertionFlags.SurvivalBit;
                 }
 
                 if (ODST.ReturnFromMapGuid != Guid.Empty) 
@@ -60,8 +61,8 @@ namespace TagTool.BlamFile.MCC
                 }
             }       
 
-            var parsedTitle = Title?.ParseLocalizedString(31, $"Insertion Point {index} Title");
-            var parsedDescription = Description?.ParseLocalizedString(127, $"Insertion Point {index} Description");
+            var parsedTitle = Title?.ParseLocalizedString(31, LocalizedString.LocalizedStringType.Title);
+            var parsedDescription = Description?.ParseLocalizedString(127, LocalizedString.LocalizedStringType.Description);
 
             for (int i = 0; i < insertion.Names.Length; i++)
                 insertion.Names[i].Name = parsedTitle;
