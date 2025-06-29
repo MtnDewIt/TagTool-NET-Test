@@ -142,6 +142,12 @@ namespace TagTool.Commands.Porting
                             material.RenderMethod = defaultGray;
                     }
                 }
+
+                // convert runtime decal placements
+                foreach (var runtimeDecal in sbsp.RuntimeDecals) 
+                {
+                    runtimeDecal.Scale = (float)Math.Sqrt(runtimeDecal.ScaleReach.I * runtimeDecal.ScaleReach.J);
+                }
             }
 
             return sbsp;

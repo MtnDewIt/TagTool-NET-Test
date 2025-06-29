@@ -206,16 +206,6 @@ namespace TagTool.Commands.Porting
             {
                 RenderMethod renderMethod = BlamCache.Deserialize<RenderMethod>(blamCacheStream, blamTag);
 
-                if (BlamCache.Version >= CacheVersion.HaloReach)
-                {
-                    switch (blamTag.Group.Tag.ToString())
-                    {
-                        case "rmcs":
-                            resultTag = GetDefaultShader(blamTag.Group.Tag);
-                            return false;
-                    }
-                }
-
                 string templateName = renderMethod.ShaderProperties[0].Template.Name;
                 if(TagTool.Shaders.ShaderMatching.ShaderMatcherNew.Rmt2Descriptor.TryParse(templateName, out var rmt2Descriptor))
                 {
@@ -302,12 +292,6 @@ namespace TagTool.Commands.Porting
                     sbsp.Decorators.Clear();
                     foreach (var cluster in sbsp.Clusters)
                         cluster.DecoratorGrids.Clear();
-                }
-                
-                foreach(var cluster in sbsp.Clusters)
-                {
-                    cluster.RuntimeDecalCount = 0;
-                    cluster.RuntimeDecalStartIndex = -1;
                 }
             }
 
@@ -412,7 +396,6 @@ namespace TagTool.Commands.Porting
                 scenario.UnitSeatsMapping.Clear();
                 scenario.MissionScenes.Clear();
 
-                scenario.SkyParameters = null; // unused in reach, we will create a new one
                 scenario.PerformanceThrottles = null;
                 scenario.GamePerformanceThrottles = null;
 
@@ -544,8 +527,6 @@ namespace TagTool.Commands.Porting
                         string name = ((TagGroupGen3)part.Type.Group).Name;
 
                         if (name == "cheap_particle_emitter")
-                            part.Type = null;
-                        if (name == "decal_system")
                             part.Type = null;
                     }
             }
@@ -1343,6 +1324,11 @@ namespace TagTool.Commands.Porting
                     blamDefinition = ConvertScenarioStructureBsp(sbsp, edTag);
                     break;
 
+                case ScenarioStructureLightingInfo stli:
+                    if (BlamCache.Version < CacheVersion.HaloReach)
+                        blamDefinition = ConvertScenarioStructureLightingInfo(stli);
+                    break;
+
                 case Sound sound:
                     //support sound conversion for HO generation caches
                     if (CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, BlamCache.Version))
@@ -1413,6 +1399,9 @@ namespace TagTool.Commands.Porting
                 case DecalSystem decs:
                 case BeamSystem beam:
                 case ShaderCortana rmct:
+                case ShaderFur rmfu:
+                case ShaderFurStencil rmfs:
+                case ShaderMux rmmx:
                     if (!FlagIsSet(PortingFlags.MatchShaders))
                         return GetDefaultShader(blamTag.Group.Tag);
                     else

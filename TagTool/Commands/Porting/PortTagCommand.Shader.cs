@@ -68,6 +68,9 @@ namespace TagTool.Commands.Porting
                 case ShaderScreen rmss:
                 case ShaderZonly rmzo:
                 case ShaderCortana rmct:
+                case ShaderFur rmfu:
+                case ShaderFurStencil rmfs:
+                case ShaderMux rmmx:
                     var rmDef = (RenderMethod)definition;
                     if (rmDef.ShaderProperties.Count > 0 && PendingTemplates.Contains(rmDef.ShaderProperties[0].Template.Name))
                     {
@@ -178,6 +181,9 @@ namespace TagTool.Commands.Porting
                 case "rmcs":
                 case "rmzo":
                 case "rmct":
+                case "rmfu":
+                case "rmfs":
+                case "rmmx":
                     return CacheContext.TagCache.GetTag<Shader>(@"shaders\invalid");
             }
 
