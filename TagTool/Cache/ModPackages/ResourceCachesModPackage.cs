@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using TagTool.Cache.HaloOnline;
 using TagTool.Cache.Resources;
 using TagTool.Common;
+using TagTool.Extensions;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
@@ -110,10 +111,10 @@ namespace TagTool.Cache.ModPackages
 
             var dataSize = (int)(dataStream.Length - dataStream.Position);
             var data = new byte[dataSize];
-            dataStream.Read(data, 0, dataSize);
+            dataStream.ReadAll(data, 0, dataSize);
 
             string hash;
-            using (SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider())
+            using (SHA1 sha1 = SHA1.Create())
             {
                 hash = Convert.ToBase64String(sha1.ComputeHash(data));
             }

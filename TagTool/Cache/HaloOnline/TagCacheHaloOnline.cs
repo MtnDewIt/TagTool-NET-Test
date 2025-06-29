@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using TagTool.Cache.Gen3;
 using TagTool.Common;
+using TagTool.Extensions;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
@@ -147,7 +148,7 @@ namespace TagTool.Cache.HaloOnline
             var result = new byte[tag.TotalSize];
 
             stream.Position = tag.HeaderOffset;
-            stream.Read(result, 0, result.Length);
+            stream.ReadAll(result, 0, result.Length);
 
             return result;
         }
@@ -171,7 +172,7 @@ namespace TagTool.Cache.HaloOnline
             // Read the tag data
             stream.Position = tag.HeaderOffset + dataOffset;
             data.Data = new byte[tag.TotalSize - dataOffset];
-            stream.Read(data.Data, 0, data.Data.Length);
+            stream.ReadAll(data.Data, 0, data.Data.Length);
 
             // Correct pointers
             using (var dataWriter = new BinaryWriter(new MemoryStream(data.Data)))

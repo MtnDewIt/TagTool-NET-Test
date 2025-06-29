@@ -63,9 +63,6 @@ namespace TagTool.IO
             public override Encoding Encoding =>
                 BaseWriter.Encoding;
 
-            public override object InitializeLifetimeService() =>
-                BaseWriter.InitializeLifetimeService();
-
             private void WriteBase(string value)
             {
                 if (IsNewLine)
@@ -304,11 +301,6 @@ namespace TagTool.IO
                 BaseWriter.Close();
             }
 
-            public override ObjRef CreateObjRef(Type requestedType)
-            {
-                return BaseWriter.CreateObjRef(requestedType);
-            }
-
             public override void Flush()
             {
                 Lines.Add(CurrentLine);
@@ -373,9 +365,6 @@ namespace TagTool.IO
                 base.Close();
             }
 
-            public override ObjRef CreateObjRef(Type requestedType) =>
-                BaseReader.CreateObjRef(requestedType);
-            
             public override int Peek() =>
                 BaseReader.Peek();
 
