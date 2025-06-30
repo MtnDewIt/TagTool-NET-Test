@@ -34,6 +34,11 @@ jobs:
         Invoke-WebRequest -Uri "https://www.7-zip.org/a/7z1900-x64.msi" -OutFile "$env:TEMP\7z.msi"
         Start-Process -Wait -FilePath msiexec -ArgumentList "/i", "$env:TEMP\7z.msi", "/quiet" 
 
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.x'
+
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
 

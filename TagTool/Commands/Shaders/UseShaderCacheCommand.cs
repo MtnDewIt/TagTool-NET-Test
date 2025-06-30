@@ -34,15 +34,7 @@ namespace TagTool.Commands.Shaders
             {
                 if (!directory.Exists)
                 {
-                    Console.Write("Shader cache directory does not exist. Create it? [y/n] ");
-                    var answer = Console.ReadLine().ToLower();
-
-                    if (answer.Length == 0 || !(answer.StartsWith("y") || answer.StartsWith("n")))
-                        return new TagToolError(CommandError.YesNoSyntax);
-
-                    if (!answer.StartsWith("y"))
-                        return true;
-
+                    Console.Write("Shader cache directory does not exist. Creating...");
                     directory.Create();
                 }
 

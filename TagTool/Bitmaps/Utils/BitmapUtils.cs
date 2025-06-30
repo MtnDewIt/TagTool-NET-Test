@@ -57,6 +57,7 @@ namespace TagTool.Bitmaps
                     result.Flags |= BitmapFlags.Compressed;
                     break;
                 case BitmapFormat.Dxt5:
+                case BitmapFormat.Dxt5nm:
                     result.D3DFormat = (int)D3DFormat.D3DFMT_DXT5;
                     result.Flags |= BitmapFlags.Compressed;
                     break;
@@ -255,7 +256,7 @@ namespace TagTool.Bitmaps
         public static int GetMipmapCount(int width, int height, int minWidth = 1, int minHeight = 1, int maxCount = int.MaxValue)
         {
             int count = 1; // include the base level
-            while (count < maxCount && (width > minWidth && height > minHeight))
+            while (count < maxCount && (width > minWidth || height > minHeight))
             {
                 width = Math.Max(1, width / 2);
                 height = Math.Max(1, height / 2);

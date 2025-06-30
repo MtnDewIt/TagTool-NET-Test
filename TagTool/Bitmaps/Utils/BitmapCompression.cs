@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using TagTool.Bitmaps.Utils;
 using TagTool.Cache;
-using static TagTool.Tags.Definitions.Scenario.AiObjective;
 
 namespace TagTool.Bitmaps
 {
@@ -97,12 +97,15 @@ namespace TagTool.Bitmaps
         {
             int blockCountX = (width + 3) / 4;
             int blockCountY = (height + 3) / 4;
+            int blockCount = blockCountX * blockCountY;
+
             byte[] decompressedData = new byte[width * height * 4];
 
-            Parallel.For(0, blockCountY, y =>
+            Parallel.For(0, blockCount, blockIndex =>
             {
-                for (int x = 0; x < blockCountX; x++)
-                    decompressBlock(compressedData, x, y, width, height, decompressedData);
+                int x = blockIndex % blockCountX;
+                int y = blockIndex / blockCountX;
+                decompressBlock(compressedData, x, y, width, height, decompressedData);
             });
 
             return decompressedData;
@@ -113,7 +116,7 @@ namespace TagTool.Bitmaps
             int blockIndex = (blockY * ((width + 3) / 4) + blockX) * 8;
 
             RGBAColor* colors = stackalloc RGBAColor[4];
-            uint colorIndices = UnpackColorBlock(compressedData, blockIndex, colors, hasAlpha: true);
+            uint colorIndices = UnpackColorBlock(compressedData, blockIndex, colors, isDxt1: true);
 
             for (int j = 0; j < 4; j++)
             {
@@ -140,7 +143,7 @@ namespace TagTool.Bitmaps
             ulong alphaData = BitConverter.ToUInt64(compressedData, blockIndex);
 
             RGBAColor* colors = stackalloc RGBAColor[4];
-            uint colorIndices = UnpackColorBlock(compressedData, blockIndex + 8, colors, hasAlpha: false);
+            uint colorIndices = UnpackColorBlock(compressedData, blockIndex + 8, colors);
 
             for (int j = 0; j < 4; j++)
             {
@@ -226,7 +229,7 @@ namespace TagTool.Bitmaps
             byte* alphas = stackalloc byte[8];
             ulong alphaIndices = UnpackDXT5AlphaBlock(alphas, compressedData, blockIndex);
             RGBAColor* colors = stackalloc RGBAColor[4];
-            uint colorIndices = UnpackColorBlock(compressedData, blockIndex + 8, colors, hasAlpha: false);
+            uint colorIndices = UnpackColorBlock(compressedData, blockIndex + 8, colors);
 
             for (int j = 0; j < 4; j++)
             {
@@ -302,7 +305,7 @@ namespace TagTool.Bitmaps
             byte* alphas = stackalloc byte[8];
             ulong alphaIndices = UnpackDXT5AlphaBlock(alphas, compressedData, blockIndex);
             RGBAColor* colors = stackalloc RGBAColor[4];
-            uint colorIndices = UnpackColorBlock(compressedData, blockIndex + 8, colors, hasAlpha: false);
+            uint colorIndices = UnpackColorBlock(compressedData, blockIndex + 8, colors);
 
             for (int j = 0; j < 4; j++)
             {
@@ -326,7 +329,6 @@ namespace TagTool.Bitmaps
                 }
             }
         }
-
 
         private static unsafe void DecompressDXN(byte[] compressedData, int blockX, int blockY, int width, int height, byte[] decompressedData, bool signed, bool swapXY)
         {
@@ -402,8 +404,8 @@ namespace TagTool.Bitmaps
             RGBAColor* vectors = stackalloc RGBAColor[4];
             vectors[0] = new RGBAColor(compressedData[blockIndex + 1], compressedData[blockIndex + 0], 0, 255);
             vectors[1] = new RGBAColor(compressedData[blockIndex + 3], compressedData[blockIndex + 2], 0, 255);
-            vectors[2] = ColorLerp(vectors[0], vectors[1], 2, 1);
-            vectors[3] = ColorLerp(vectors[0], vectors[1], 1, 2);
+            vectors[2] = ColorLerp(vectors[0], vectors[1], 2, 1, 1);
+            vectors[3] = ColorLerp(vectors[0], vectors[1], 1, 2, 1);
 
             CalculateNormalZ(&vectors[0]);
             CalculateNormalZ(&vectors[1]);
@@ -432,7 +434,7 @@ namespace TagTool.Bitmaps
             }
         }
 
-        private static unsafe uint UnpackColorBlock(byte[] compressedData, int blockIndex, RGBAColor* colors, bool hasAlpha)
+        private static unsafe uint UnpackColorBlock(byte[] compressedData, int blockIndex, RGBAColor* colors, bool isDxt1 = false)
         {
             ushort color0 = BitConverter.ToUInt16(compressedData, blockIndex);
             ushort color1 = BitConverter.ToUInt16(compressedData, blockIndex + 2);
@@ -441,14 +443,14 @@ namespace TagTool.Bitmaps
             colors[0] = UnpackColor565(color0);
             colors[1] = UnpackColor565(color1);
 
-            if (color0 > color1 || !hasAlpha)
+            if (color0 > color1 || !isDxt1)
             {
-                colors[2] = ColorLerp(colors[0], colors[1], 2, 1);
-                colors[3] = ColorLerp(colors[0], colors[1], 1, 2);
+                colors[2] = ColorLerp(colors[0], colors[1], 2, 1, 1);
+                colors[3] = ColorLerp(colors[0], colors[1], 1, 2, 1);
             }
             else
             {
-                colors[2] = ColorLerp(colors[0], colors[1], 1, 1);
+                colors[2] = ColorLerp(colors[0], colors[1], 1, 1, 0); // power of 2 doesn't use a bias
                 colors[3] = RGBAColor.Transparent;
             }
 
@@ -473,20 +475,20 @@ namespace TagTool.Bitmaps
 
             if (alpha0 > alpha1)
             {
-                alphas[2] = Lerp(alpha0, alpha1, 6, 1);
-                alphas[3] = Lerp(alpha0, alpha1, 5, 2);
-                alphas[4] = Lerp(alpha0, alpha1, 4, 3);
-                alphas[5] = Lerp(alpha0, alpha1, 3, 4);
-                alphas[6] = Lerp(alpha0, alpha1, 2, 5);
-                alphas[7] = Lerp(alpha0, alpha1, 1, 6);
+                alphas[2] = Lerp(alpha0, alpha1, 6, 1, 3);
+                alphas[3] = Lerp(alpha0, alpha1, 5, 2, 3);
+                alphas[4] = Lerp(alpha0, alpha1, 4, 3, 3);
+                alphas[5] = Lerp(alpha0, alpha1, 3, 4, 3);
+                alphas[6] = Lerp(alpha0, alpha1, 2, 5, 3);
+                alphas[7] = Lerp(alpha0, alpha1, 1, 6, 3);
             }
             else
             {
 
-                alphas[2] = Lerp(alpha0, alpha1, 4, 1);
-                alphas[3] = Lerp(alpha0, alpha1, 3, 2);
-                alphas[4] = Lerp(alpha0, alpha1, 2, 3);
-                alphas[5] = Lerp(alpha0, alpha1, 1, 4);
+                alphas[2] = Lerp(alpha0, alpha1, 4, 1, 2);
+                alphas[3] = Lerp(alpha0, alpha1, 3, 2, 2);
+                alphas[4] = Lerp(alpha0, alpha1, 2, 3, 2);
+                alphas[5] = Lerp(alpha0, alpha1, 1, 4, 2);
                 alphas[6] = 0;
                 alphas[7] = 255;
             }
@@ -499,30 +501,38 @@ namespace TagTool.Bitmaps
             byte r = (byte)((color >> 11) & 0x1F);
             byte g = (byte)((color >> 5) & 0x3F);
             byte b = (byte)(color & 0x1F);
-            return new RGBAColor((byte)(r << 3), (byte)(g << 2), (byte)(b << 3), 255);
+
+            // Scale to 8-bit
+            r = (byte)((r << 3) | (r >> 2));
+            g = (byte)((g << 2) | (g >> 4));
+            b = (byte)((b << 3) | (b >> 2));
+
+            return new RGBAColor(r, g, b, 255);
         }
 
-        private static RGBAColor ColorLerp(RGBAColor c0, RGBAColor c1, int w0, int w1)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static RGBAColor ColorLerp(RGBAColor c0, RGBAColor c1, int w0, int w1, int bias)
         {
             return new RGBAColor(
-                Lerp(c0.R, c1.R, w0, w1),
-                Lerp(c0.G, c1.G, w0, w1),
-                Lerp(c0.B, c1.B, w0, w1), 255);
+                Lerp(c0.R, c1.R, w0, w1, bias),
+                Lerp(c0.G, c1.G, w0, w1, bias),
+                Lerp(c0.B, c1.B, w0, w1, bias), 255);
         }
 
-        private static byte Lerp(int a0, int a1, int w0, int w1)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static byte Lerp(byte a, byte b, int w0, int w1, int bias)
         {
-            int sum = w0 + w1;
-            int bias = sum / 2; // round to the nearest integer instead of truncating
-            return (byte)((w0 * a0 + w1 * a1 + bias) / sum);
+            return (byte)((a * w0 + b * w1 + bias) / (w0 + w1));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static unsafe void CalculateNormalZ(RGBAColor* vector)
         {
             vector->B = CalculateNormalZ(vector->R, vector->G);
             vector->A = 255;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static byte CalculateNormalZ(byte x, byte y)
         {
             float fx = ((x / 255f) * 2f) - 1f;
@@ -531,6 +541,7 @@ namespace TagTool.Bitmaps
             return (byte)((fz + 1f) / 2f * 255f);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static float CalculateNormalZ(float x, float y)
         {
             return (float)Math.Sqrt(Math.Max(0.0, Math.Min(1.0, 1.0 - (x * x) - (y * y))));
