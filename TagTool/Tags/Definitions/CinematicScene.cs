@@ -55,8 +55,13 @@ namespace TagTool.Tags.Definitions
                 NameIsFunctionCall = 1 << 2,
                 EffectObject = 1 << 3,
                 NoLightmapShadow = 1 << 4,
-                UseMasterChiefPlayerAppearance = 1 << 5,
-                UseDervishArbiterPlayerAppearance = 1 << 6
+                unknown5 = 1 << 5,
+                unknown6 = 1 << 6,
+                unknown7 = 1 << 7,
+                UsePlayer1Appearance = 1 << 8,
+                UsePlayer2Appearance = 1 << 9,
+                UsePlayer3Appearance = 1 << 10,
+                UsePlayer4Appearance = 1 << 11,
             }
 
             [Flags]

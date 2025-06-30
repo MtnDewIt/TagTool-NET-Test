@@ -16,7 +16,7 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public float WarmupTime;
 
-        public float UseDuration;
+        public float Duration;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public float CooldownTime;
@@ -42,7 +42,7 @@ namespace TagTool.Tags.Definitions
         public float MovementSpeedDomain; // wu/s
 
         [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
-        public short NumberOfUses;
+        public short Charges;
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public EquipmentFlagBits EquipmentFlags;
 
@@ -160,28 +160,28 @@ namespace TagTool.Tags.Definitions
         public byte[] Padding1;
 
         [TagField(ValidTags = new[] { "chdt" })]
-        public CachedTag HudInterface;
+        public CachedTag ChudInterface;
 
         [TagField(ValidTags = new[] { "scmb", "snd!" })]
         public CachedTag PickupSound;
         [TagField(ValidTags = new[] { "scmb", "snd!" }, MinVersion = CacheVersion.HaloOnlineED)]
-        public CachedTag EmptySound;
+        public CachedTag ActivateSound;
 
         [TagField(ValidTags = new[] { "effe", "snd!" })]
-        public CachedTag ActivationEffect;
+        public CachedTag ActivateEffect;
         [TagField(ValidTags = new[] { "effe", "snd!" })]
-        public CachedTag ActiveEffect;
-        [TagField(ValidTags = new[] { "effe", "snd!" })]
-        public CachedTag DeactivationEffect;
+        public CachedTag RunningEffect;
+        [TagField(ValidTags = new[] { "snd!" })]
+        public CachedTag DeactivateSound;
         [TagField(ValidTags = new[] { "effe" }, MinVersion = CacheVersion.HaloReach)]
         public CachedTag EnergyChargedEffect;
 
         [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-        public StringId EnterAnimation;
+        public StringId ActivationAnimation;
         [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-        public StringId IdleAnimation;
+        public StringId ActiveAnimation;
         [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-        public StringId ExitAnimation;
+        public StringId DeactivateAnimation;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public StringId ActiveAnimationStance;
@@ -195,10 +195,10 @@ namespace TagTool.Tags.Definitions
             EquipmentIsDangerousToAi = 1 << 2,
             ProtectsParentFromAoe = 1 << 3,
             ThirdPersonCameraAlways = 1 << 4,
-            UseForcedPrimaryChangeColor = 1 << 5,
-            UseForcedSecondaryChangeColor = 1 << 6,
-            CanBeUsedInVehicle = 1 << 7,
-            CanNotBeUsedOnFoot = 1 << 8,
+            HidesWeaponOnActivation = 1 << 5,
+            CannotActivateWhileAirborne = 1 << 6,
+            UsableInVehicle = 1 << 7,
+            AppliesOnVehicleInsteadOfUser = 1 << 8,
             NotDroppedByPlayer = 1 << 9,
             IsDroppedByAi = 1 << 10,
             Bit11 = 1 << 11,
@@ -426,9 +426,9 @@ namespace TagTool.Tags.Definitions
         public class HealthPackBlock : TagStructure
 		{
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
-            public float HealthGiven;
+            public float HeathAmount;
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
-            public float ShieldsGiven;
+            public float ShieldAmount;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public TagFunction Function;
@@ -437,46 +437,46 @@ namespace TagTool.Tags.Definitions
         [TagStructure(Size = 0x14)]
         public class ForcedReloadBlock : TagStructure
 		{
-            public CachedTag Effect;
-            public float AmmoPenalty;
+            public CachedTag WeaponEffect;
+            public float AmmoAmountTaken;
         }
 
         [TagStructure(Size = 0x20)]
         public class ConcussiveBlastBlock : TagStructure
 		{
-            public CachedTag SecondaryActivationEffect;
-            public CachedTag SecondaryDamageEffect;
+            public CachedTag ExplosionEffect;
+            public CachedTag ExplosionDamageEffect;
         }
 
         [TagStructure(Size = 0x28)]
         public class TankModeBlock : TagStructure
 		{
             [TagField(Flags = GlobalMaterial)]
-            public StringId NewPlayerMaterial;
-            public uint Unknown;
-            public float Duration;
-            public float DamageAbsorptionScale;
-            public float Unknown4;
-            public uint Unknown5;
-            public CachedTag ActiveHud;
+            public StringId TankModeMaterial;
+            public uint TankModeMaterialType;
+            public float TimeTankModeIsGrantedFor;
+            public float OverallDamageReduction;
+            public float MeleeDamageBoost;
+            public uint HeadshotDamageReduction;
+            public CachedTag ChudEffect;
         }
 
         [TagStructure(Size = 0x34)]
         public class MagPulseBlock : TagStructure
 		{
             [TagField(ValidTags = new[] { "effe" })]
-            public CachedTag ActivationEffect;
+            public CachedTag ExplosionEffect;
 
-            public CachedTag Unknown2;
-            public CachedTag Unknown3;
-            public uint Unknown4;
+            public CachedTag ProjectileEffect;
+            public CachedTag EquipmentEffect;
+            public uint Radius;
         }
 
         [TagStructure(Size = 0x6C, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x60, MinVersion = CacheVersion.HaloReach)]
         public class HologramBlock : TagStructure
 		{
-            public float Duration;
+            public float HologramDuration;
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public int HavokFilterGroup;
             [TagField(ValidTags = new[] { "effe" })]
@@ -492,105 +492,105 @@ namespace TagTool.Tags.Definitions
             public float ShimmerBulletPing;
             public TagFunction ShimmerToCamoFunction;
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
-            public CachedTag NavPointHud;
+            public CachedTag ChudHologramTarget;
         }
 
         [TagStructure(Size = 0x4C)]
         public class ReactiveArmorBlock : TagStructure
 		{
-            public float Unknown;
-            public float DamageReflectionRatio;
-            public uint Unknown3;
+            public float EffectDuration;
+            public float MeleeDamageReflected;
+            public uint OtherDamageReflected;
             public CachedTag ActivationEffect;
-            public CachedTag Unknown5;
-            public CachedTag MeleeImpactEffect;
-            public CachedTag Unknown7;
+            public CachedTag EndingEffect;
+            public CachedTag ReflectEffect;
+            public CachedTag InducedDamageEffect;
         }
 
         [TagStructure(Size = 0x34)]
         public class BombRunBlock : TagStructure
 		{
-            public int GrenadeCount;
-            public float VelocityBoundsA;
-            public float VelocityBoundsB;
-            public float HorizontalRandomness;
-            public float VerticalRandomness;
-            public CachedTag Projectile;
-            public CachedTag ThrowSound;
+            public int MaxGrenades;
+            public float MaxPowerModifier;
+            public float MinPowerModifier;
+            public float MaxAngleHorizontal;
+            public float MaxAngleVertical;
+            public CachedTag GrenadeToThrow;
+            public CachedTag ActivationSound;
         }
 
         [TagStructure(Size = 0x20)]
         public class ArmorLockBlock : TagStructure
 		{
             [TagField(ValidTags = new[] { "cddf" })]
-            public CachedTag CollisionDamage;
+            public CachedTag OverrideCollisionDamage;
             [TagField(ValidTags = new[] { "cddf" })]
-            public CachedTag UnknownCollisionDamage;
+            public CachedTag VehicleOverrideCollisionDamage;
         }
 
         [TagStructure(Size = 0x24)]
         public class AdrenalineBlock : TagStructure
 		{
-            public float SprintRestored;
+            public float StaminaAmount;
             public CachedTag ActivationEffect;
-            public CachedTag ActiveEffect;
+            public CachedTag StepsEffect;
         }
 
         [TagStructure(Size = 0x14)]
         public class LightningStrikeBlock : TagStructure
 		{
-            public float MeleeTimeReduction;
-            public CachedTag UnknownEffect;
+            public float StrikeAcceleration;
+            public CachedTag MeleeAttackSound;
         }
 
         [TagStructure(Size = 0x24)]
         public class ScramblerBlock : TagStructure
 		{
-            public uint Unknown;
-            public CachedTag Unknown2;
-            public int Unknown3;
-            public int Unknown4;
-            public int Unknown5;
-            public int Unknown6;
+            public uint ActionRadius;
+            public CachedTag AttachedEffect;
+            public int ActivationDelay;
+            public int DisableDelay;
+            public int EnableDelay;
+            public int TimeToLive;
         }
 
         [TagStructure(Size = 0x24)]
         public class WeaponJammerBlock : TagStructure
 		{
-            public uint Unknown;
-            public CachedTag Unknown2;
-            public int Unknown3;
-            public int Unknown4;
-            public int Unknown5;
-            public int Unknown6;
+            public uint ActionRadius;
+            public CachedTag AttachedEffect;
+            public int ActivationDelay;
+            public int DisableDelay;
+            public int EnableDelay;
+            public int TimeToLive;
         }
 
         [TagStructure(Size = 0x34)]
         public class AmmoPackBlock : TagStructure
 		{
-            public float Radius;
-            public int ClipCount;
-            public int MaxUseTime;
-            public int DelayBetweenClips;
-            public int DeploymentDelay;
-            public int Unknown6;
-            public List<Weapon> Weapons;
-            public CachedTag AmmoDeliverySound;
+            public float PickupRadius;
+            public int NumberOfActivations;
+            public int TimeToLive;
+            public int NextUseDelay;
+            public int FirstUseDelay;
+            public int DisappearDelay;
+            public List<AmmoPackWeapon> AdditionalAmmo;
+            public CachedTag ResupplySound;
 
             [TagStructure(Size = 0x18)]
-            public class Weapon : TagStructure
+            public class AmmoPackWeapon : TagStructure
 			{
                 public StringId Name;
-                public CachedTag WeaponObject;
-                public int ClipSize;
+                public CachedTag Weapon;
+                public int AmmoCount;
             }
         }
 
         [TagStructure(Size = 0x20)]
         public class VisionBlock : TagStructure
 		{
-            public CachedTag ScreenEffect;
-            public CachedTag DamageResponse;
+            public CachedTag GlobalScreenEffect;
+            public CachedTag SelfDamageEffect;
         }
     }
 }

@@ -108,7 +108,7 @@ namespace TagTool.Tags.Definitions
 
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagField(Platform = CachePlatform.MCC)]
-        public List<TagReferenceBlock> RevivingEquipment;
+        public List<TagReferenceBlock> HealthPacks;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<SpawnEffectsBlock> SpawnEffects;
