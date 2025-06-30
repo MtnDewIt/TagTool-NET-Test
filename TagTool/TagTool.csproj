@@ -62,8 +62,8 @@
     <None Include="..\Tools\fmod64.dll" Condition=" '$(Platform)' == 'x64' " Link="Tools\fmod.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="..\Tools\JsonMoppNet.dll" Private="false" />
-    <Reference Include="..\Tools\MIConvexHull.dll" Private="false" />
+    <Reference Include="..\Tools\JsonMoppNet.dll"/>
+    <Reference Include="..\Tools\MIConvexHull.dll"/>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
@@ -72,30 +72,24 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ShaderGenerator\HaloShaderGenerator\HaloShaderGenerator.csproj" PrivateAssets="all" Private="false" />
+    <ProjectReference Include="..\ShaderGenerator\HaloShaderGenerator\HaloShaderGenerator.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AssimpNet" Version="5.0.0-beta1" PrivateAssets="all" />
-    <PackageReference Include="lz4net" Version="1.0.15.93" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.12.0" PrivateAssets="all" />
-    <PackageReference Include="PluralizeService.Core" Version="1.2.21147.2" PrivateAssets="all" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" PrivateAssets="all" />
-    <PackageReference Include="Poly2Tri.NetStandard" Version="1.0.2" PrivateAssets="all" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" PrivateAssets="all" />
-    <PackageReference Include="System.Private.Uri" Version="4.3.2" PrivateAssets="all" />
-    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" PrivateAssets="all" />
+    <PackageReference Include="AssimpNet" Version="5.0.0-beta1"/>
+    <PackageReference Include="lz4net" Version="1.0.15.93" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.12.0"/>
+    <PackageReference Include="PluralizeService.Core" Version="1.2.21147.2"/>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+    <PackageReference Include="Poly2Tri.NetStandard" Version="1.0.2"/>
+    <PackageReference Include="System.Net.Http" Version="4.3.4"/>
+    <PackageReference Include="System.Private.Uri" Version="4.3.2"/>
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1"/>
   </ItemGroup>
   <ItemDefinitionGroup>
     <ReferenceCopyLocalPaths>
       <DestinationSubDirectory>Tools\</DestinationSubDirectory>
     </ReferenceCopyLocalPaths>
   </ItemDefinitionGroup>
-  <Target Name="PostBuild" AfterTargets="Build">
-    <ItemGroup>
-      <ShaderGenerator Include="..\ShaderGenerator\HaloShaderGenerator\bin\$(Platform)\$(ConfigurationName)\**\*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(ShaderGenerator)" DestinationFolder="$(OutDir)Tools\%(RecursiveDir)" SkipUnchangedFiles="true" />
-  </Target>
   <PropertyGroup>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
   </PropertyGroup>

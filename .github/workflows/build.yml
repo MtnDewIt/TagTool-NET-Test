@@ -7,7 +7,7 @@ on:
 jobs:
   build:
 
-    runs-on: windows-2019
+    runs-on: windows-2022
 
     steps:
     - uses: actions/checkout@v4
@@ -20,6 +20,11 @@ jobs:
         $version = (git rev-parse --short=7 HEAD).Trim()
         Write-Output "Version determined: $version"
         Write-Host "::set-output name=version::$version"
+
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.x'
 
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
