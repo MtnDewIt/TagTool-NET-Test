@@ -1094,7 +1094,7 @@ namespace TagTool.Commands.Porting
                                     weapon.TargetTracking[0].LockedSound = ConvertTag(cacheStream, blamCacheStream, ParseLegacyTag(@"sound\weapons\missile_launcher\tracking_locked\tracking_locked.sound_looping")[0]);                                      
                                 }
                             }
-                            weapon.MagnificationFlags = Weapon.WeaponMagnificationFlags.Bit0;
+                            weapon.ZoomProtection = Weapon.WeaponMagnificationFlags.Enabled;
                             break;
                         /*case Vehicle vehicle:
                             //fix vehicle weapon target tracking
