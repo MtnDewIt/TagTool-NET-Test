@@ -552,8 +552,8 @@ namespace TagTool.Commands.Porting
 
             if (definition is Equipment eqip)
             {
-                eqip.UseDuration = 5;
-                eqip.NumberOfUses = 1;
+                eqip.Duration = 5;
+                eqip.Charges = 1;
                 Enum.TryParse(eqip.EquipmentFlagsReach.ToString(), out eqip.EquipmentFlags);
 
                 if (eqip.EquipmentFlagsReach.HasFlag(Equipment.EquipmentFlagBitsReach.ThirdPersonCameraWhileActive))
