@@ -28,6 +28,7 @@ namespace TagTool.Commands.Forge
                 "AddSkyBox <name> <scenario> [acoustic palette]",
 
                 "Add a skybox from the specified scenario."
+                + "\nScenario can be either the full tag path or the tag path, plus the tag type"
                 + "\nPalette can be either a block index or the name of the acoustic palette.")
         {
             Cache = cache;
@@ -40,7 +41,7 @@ namespace TagTool.Commands.Forge
                 if (args.Count > 3)
                     return new TagToolError(CommandError.ArgCount);
 
-                if (!Cache.TagCache.TryGetCachedTag($"{args[1]}.scenario", out Scenario))
+                if (!Cache.TagCache.TryGetCachedTag(args[1], out Scenario) && !Cache.TagCache.TryGetTag<Scenario>(args[1], out Scenario))
                     return new TagToolError(CommandError.TagInvalid);
 
                 SkyBoxName = args[0].ToUpper();
