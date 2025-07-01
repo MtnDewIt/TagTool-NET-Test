@@ -62,6 +62,10 @@ namespace TagTool.Tags.Definitions
             [TagStructure(Size = 0x10)]
             public class AnimationBlock : TagStructure
 			{
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public float FrameNumber;
+
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public int TimeOffset; // milliseconds
                 public RealPoint3d Position;
             }

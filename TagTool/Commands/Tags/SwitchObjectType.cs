@@ -122,7 +122,7 @@ namespace TagTool.Commands.Tags
             instance.ChangeColors = input.ChangeColors;
             instance.NodeMaps = input.NodeMaps;
             instance.MultiplayerObject = input.MultiplayerObject;
-            instance.RevivingEquipment = input.RevivingEquipment;
+            instance.HealthPacks = input.HealthPacks;
             instance.PathfindingSpheres = input.PathfindingSpheres;
         }
     }

@@ -2065,7 +2065,7 @@ namespace TagTool.Tags.Definitions
             public class TextWidget : HudWidgetBase
             {
                 [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
-                public int WidgetIndex;
+                public int RuntimeWidgetIndex;
 
                 // flags
 

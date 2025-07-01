@@ -102,9 +102,9 @@ namespace TagTool.Tags.Definitions
         public Bounds<float> MagnificationRange;
 
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public WeaponMagnificationFlags MagnificationFlags;
+        public WeaponMagnificationFlags ZoomProtection;
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public float WeaponSwitchReadySpeed; // 0 default
+        public float WeaponSwitchAnimationSpeedModifier; // 0 default
 
         public AimAssistStruct WeaponAimAssist;
 
@@ -113,22 +113,12 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public List<Unit.TargetTrackingBlock> TargetTracking;
 
-        // ballistics ?
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public uint Unknown16;
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public uint Unknown17;
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public uint Unknown18;
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public uint Unknown19;
-
         // At the min range (or closer), the minimum ballistic arcing is used, at the max (or farther away), the maximum
         // arcing is used
-        [TagField(MinVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public Bounds<float> BallisticArcingFiringBounds; // world units
         // Controls speed and degree of arc. 0 = low, fast, 1 = high, slow
-        [TagField(MinVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public Bounds<float> BallisticArcingFractionBounds; // [0-1]
 
         public MovementPenaltyModes MovementPenalized;
@@ -170,14 +160,10 @@ namespace TagTool.Tags.Definitions
         [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public float ActiveCamoRegrowthRate;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public uint Unknown22; // HandleNode ?
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public float Unknown23;
-
-        [TagField(MaxVersion = CacheVersion.Halo3ODST)]
-        [TagField(MinVersion = CacheVersion.HaloReach)]
         public StringId HandleNode;
+
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public float WeaponSprintExitSpeedup;
 
         // -------- weapon labels
         public StringId WeaponClass;
@@ -327,11 +313,8 @@ namespace TagTool.Tags.Definitions
         [Flags]
         public enum WeaponMagnificationFlags : uint
         {
-            None = 0,
-            Bit0 = 1 << 0,
-            Bit1 = 1 << 1,
-            Bit2 = 1 << 2,
-            Bit3 = 1 << 3
+            Disabled,
+            Enabled
         }
 
         [TagStructure(Size = 0x20)]
@@ -974,7 +957,7 @@ namespace TagTool.Tags.Definitions
             CannotFireAtMaximumAge = 1 << 11,
             SecondaryTriggerOverridesGrenades = 1 << 12,
             SupportWeapon = 1 << 13,
-            HideFPWeaponWhenInIronSights = 1 << 14,
+            HideFPWeaponWhenInIronSights = 1 << 14, // EnablesIntegratedNightVision?
             AIsUseWeaponMeleeDamage = 1 << 15,
             PreventsBinoculars = 1 << 16,
             LoopFPFiringAnimation = 1 << 17,
@@ -991,7 +974,7 @@ namespace TagTool.Tags.Definitions
             CannotBeUsedByPlayer = 1 << 28,
             HoldFpFiringAnimation = 1 << 29,
             StrictDeviationAngle = 1 << 30,
-            Bit31 = 1u << 31
+            NotifiesTargetUnits = 1u << 31
         }
         
         [Flags]

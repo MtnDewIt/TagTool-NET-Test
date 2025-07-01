@@ -583,7 +583,7 @@ namespace TagTool.Commands.Porting.Gen2
                                 AnimationData = new List<AnimationDatum>(),
                                 RenderData = new List<RenderDatum>(),
                                 Font = WidgetFontValue.FullscreenHudMessage,
-                                WidgetIndex = widgetIndex
+                                RuntimeWidgetIndex = widgetIndex
                             };
                             widgetIndex++;
                             StateDatum newStateData = new StateDatum { };

@@ -30,6 +30,7 @@ using DefinitionsGen4 = TagTool.Tags.Definitions.Gen4;
 using CommandsGen4 = TagTool.Commands.Gen4;
 using TagTool.Commands.Common;
 using TagTool.Commands.Tags;
+using TagTool.Commands.HUD;
 
 namespace TagTool.Commands.Editing
 {
@@ -66,6 +67,10 @@ namespace TagTool.Commands.Editing
 
                     case "bink":
                         VideoContextFactory.Populate(commandContext, cache, tag, (Bink)definition);
+                        break;
+
+                    case "chdt":
+                        HudContextFactory.Populate(commandContext, cache, tag, (ChudDefinition)definition);
                         break;
 
                     case "coll":
