@@ -18,6 +18,7 @@ using TagTool.Commands.CollisionModels.OffsetCollisonBsp;
 using TagTool.Commands.CollisionModels;
 using TagTool.Porting;
 using static TagTool.Porting.PortingContext;
+using TagTool.Porting.Gen3;
 
 namespace TagTool.Geometry.Utils
 {
@@ -49,7 +50,7 @@ namespace TagTool.Geometry.Utils
             SourceCache = sourceCache;
             SourceStream = sourceStream;
             StructureBspIndex = structureBspIndex;
-            PortContext = new PortingContext(destCache, sourceCache);
+            PortContext = new PortingContextGen3(destCache, sourceCache);
 
             Scenario = scenario;
             StructureBspIndex = structureBspIndex;

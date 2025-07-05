@@ -18,9 +18,9 @@ using TagTool.Geometry.BspCollisionGeometry.Utils;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace TagTool.Porting
+namespace TagTool.Porting.Gen3
 {
-    partial class PortingContext
+    partial class PortingContextGen3
     {
         private TagResourceReference ConvertStructureBspTagResources(ScenarioStructureBsp bsp, out StructureBspTagResources outResourceDefinition)
         {

@@ -9,18 +9,15 @@ using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
-using static TagTool.Commands.Porting.PortTagCommand;
-using static TagTool.Tags.Definitions.Scenario;
 using System.Collections;
 using TagTool.Tags;
 using System.ComponentModel;
 using System.Text;
 using System.Reflection;
 using TagTool.Tags.Definitions.Common;
-using static TagTool.Porting.PortingContext;
 using TagTool.Porting;
-using TagTool.Commands.Sounds;
-using System.Threading;
+using static TagTool.Tags.Definitions.Scenario;
+using TagTool.Porting.Gen3;
 
 namespace TagTool.Commands.Porting
 {
@@ -440,9 +437,8 @@ namespace TagTool.Commands.Porting
             
             using (var tagRenamer = new TagRenamerScope())
             {
-                var porttag = new PortingContext(destCache, srcCache);
+                var porttag = new PortingContextGen3(destCache, srcCache);
                 porttag.SetFlags(portingFlags);
-                porttag.InitAsync();
 
                 var sldtTag = scnr.Lightmap;
                 tagRenamer.Rename(sldtTag, $"{scenarioPath}_faux_lightmap");
@@ -493,8 +489,7 @@ namespace TagTool.Commands.Porting
                 // finalize the scenario
                 destCache.Serialize(destStream, scnrTag, scnr);
 
-                porttag.FinishAsync();
-                porttag.ProcessDeferredActions();
+                porttag.Finish(destStream, srcStream);
             }
     
             foreach (var pair in resourceStreams)

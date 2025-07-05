@@ -7,6 +7,7 @@ using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
 using TagTool.Porting;
+using TagTool.Porting.Gen3;
 
 namespace TagTool.Commands.Porting
 {
@@ -14,7 +15,7 @@ namespace TagTool.Commands.Porting
     {
         private GameCache CacheContext { get; }
         private GameCache BlamCache { get; }
-        private PortingContext PortContext { get; }
+        private PortingContextGen3 PortContext { get; }
 
         private HashSet<string> MergedAnimationGraphs { get; }
         private Dictionary<string, (Dictionary<string, (short, short)>, Dictionary<short, short>)> MergedAnimationData { get; }
@@ -24,7 +25,7 @@ namespace TagTool.Commands.Porting
         private Stream BlamCacheStream { get; set; }
         private Dictionary<ResourceLocation, Stream> ResourceStreams { get; set; }
 
-        public MergeAnimationGraphsCommand(GameCache cacheContext, GameCache blamCache, PortingContext portingContext) :
+        public MergeAnimationGraphsCommand(GameCache cacheContext, GameCache blamCache, PortingContextGen3 portingContext) :
             base(true,
 
                   "MergeAnimationGraphs",

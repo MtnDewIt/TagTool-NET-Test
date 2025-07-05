@@ -12,20 +12,14 @@ namespace TagTool.Porting
     {
         private AsyncTaskQueue AsyncQueue;
 
-        public void InitAsync()
+        private void InitAsync()
         {
             Debug.Assert(AsyncQueue == null, "Async task queue already initialized!");
 
-            AsyncQueue = new AsyncTaskQueue(_deferredActions, PortingOptions.Current.MaxThreads);
+            AsyncQueue = new AsyncTaskQueue(DeferredActions, PortingOptions.Current.MaxThreads);
         }
 
-        public void WaitForPendingTasks()
-        {
-            AsyncQueue.WaitAllNoThrow();
-            AsyncQueue.Clear();
-        }
-
-        public void FinishAsync()
+        protected void WaitForPendingTasks()
         {
             AsyncQueue.WaitAllNoThrow();
             AsyncQueue.Clear();
@@ -137,7 +131,6 @@ namespace TagTool.Porting
                 {
                     dispatchInfo.Throw();
                 });
-
             }
         }
     }

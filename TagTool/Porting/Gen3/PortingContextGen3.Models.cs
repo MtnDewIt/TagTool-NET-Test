@@ -11,9 +11,9 @@ using TagTool.Serialization;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
-namespace TagTool.Porting
+namespace TagTool.Porting.Gen3
 {
-    partial class PortingContext
+    partial class PortingContextGen3
     {       
         private object ConvertParticleModel(CachedTag edTag, CachedTag blamTag, ParticleModel particleModel)
         {
