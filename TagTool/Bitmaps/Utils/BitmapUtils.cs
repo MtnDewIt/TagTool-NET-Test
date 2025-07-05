@@ -4,6 +4,7 @@ using TagTool.Bitmaps.DDS;
 using TagTool.Bitmaps.Utils;
 using TagTool.Cache;
 using TagTool.Direct3D.D3D9;
+using TagTool.Porting;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Resources;
@@ -169,12 +170,12 @@ namespace TagTool.Bitmaps
             switch (format)
             {
                 case BitmapFormat.Ctx1:
-                    return Commands.Porting.PortingOptions.Current.HqNormalMapConversion ? 
+                    return PortingOptions.Current.HqNormalMapConversion ? 
                         BitmapFormat.Dxn : BitmapFormat.Dxt1;
 
                 // Dxn causes excessive heap allocation
                 case BitmapFormat.Dxn:
-                    return Commands.Porting.PortingOptions.Current.HqNormalMapConversion ?
+                    return PortingOptions.Current.HqNormalMapConversion ?
                        BitmapFormat.Dxn : BitmapFormat.Dxt1;
 
                 case BitmapFormat.AY8:

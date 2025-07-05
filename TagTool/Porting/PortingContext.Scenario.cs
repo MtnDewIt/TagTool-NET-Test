@@ -14,9 +14,9 @@ using TagTool.Tags.Resources;
 using TagTool.Geometry;
 using TagTool.BlamFile;
 
-namespace TagTool.Commands.Porting
+namespace TagTool.Porting
 {
-    partial class PortTagCommand
+    partial class PortingContext
     {
         private Scenario CurrentScenario = null;
 

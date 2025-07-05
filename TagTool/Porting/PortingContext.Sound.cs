@@ -7,13 +7,16 @@ using System.Threading.Tasks;
 using TagTool.Audio;
 using TagTool.Cache;
 using TagTool.Cache.Gen3;
+using TagTool.Commands;
 using TagTool.Commands.Common;
+using TagTool.Commands.Porting;
+using TagTool.Commands.Sounds;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 
-namespace TagTool.Commands.Porting
+namespace TagTool.Porting
 {
-    partial class PortTagCommand
+    partial class PortingContext
     {
         private SoundCacheFileGestalt BlamSoundGestalt { get; set; } = null;
 
@@ -86,8 +89,8 @@ namespace TagTool.Commands.Porting
                 return null;
 
 
-            var useCache = Sounds.UseAudioCacheCommand.AudioCacheDirectory != null;
-            var soundCachePath = useCache ? Sounds.UseAudioCacheCommand.AudioCacheDirectory.FullName : "";
+            var useCache = UseAudioCacheCommand.AudioCacheDirectory != null;
+            var soundCachePath = useCache ? UseAudioCacheCommand.AudioCacheDirectory.FullName : "";
 
             byte[] xmaData = null;
             if (soundResource != null)
@@ -231,8 +234,8 @@ namespace TagTool.Commands.Porting
                 // Convert Blam permutations to ElDorado format
                 //
 
-                var useCache = Sounds.UseAudioCacheCommand.AudioCacheDirectory != null;
-                var soundCachePath = useCache ? Sounds.UseAudioCacheCommand.AudioCacheDirectory.FullName : "";
+                var useCache = UseAudioCacheCommand.AudioCacheDirectory != null;
+                var soundCachePath = useCache ? UseAudioCacheCommand.AudioCacheDirectory.FullName : "";
 
 
                 var permutationCount = BlamSoundGestalt.GetPermutationCount(pitchRangeIndex, BlamCache.Platform);

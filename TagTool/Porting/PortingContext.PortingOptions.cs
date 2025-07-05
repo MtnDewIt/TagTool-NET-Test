@@ -4,15 +4,10 @@ using System.Linq;
 using System.Reflection;
 using TagTool.Tags.Definitions;
 
-namespace TagTool.Commands.Porting
+namespace TagTool.Porting
 {
-	public partial class PortTagCommand
-	{
-		/// <summary>
-		/// Current set of <see cref="PortingFlags"/> which will affect the behavior of <see cref="PortTagCommand"/>.
-		/// </summary>
-		private PortingFlags Flags { get; set; }
-
+	public partial class PortingContext
+    {
 		/// <summary>
 		/// Flags which can be used to affect the behavior of <see cref="PortTagCommand"/>.
 		/// </summary>
@@ -188,98 +183,9 @@ namespace TagTool.Commands.Porting
 		public PortingFlags ToggleFlags(PortingFlags flags) => Flags ^= flags;
 
 		/// <summary>
-		/// Parses porting flag options from a <see cref="List{T}"/> of <see cref="string"/>.
-		/// </summary>
-		/// <param name="args"></param>
-		private string[] ParsePortingOptions(List<string> args)
-		{
-			Flags = PortingFlags.Default;
-
-			var flagNames = Enum.GetNames(typeof(PortingFlags)).Select(name => name.ToLower());
-			var flagValues = Enum.GetValues(typeof(PortingFlags)) as PortingFlags[];
-
-			string[] argParameters = new string[0];
-
-			for (var a = 0; a < args.Count(); a++)
-			{
-				string[] argSegments = args[a].Split('[');
-
-				var arg = argSegments[0].ToLower();
-
-				// Support legacy arguments
-				arg = arg.Replace("single", $"!{nameof(PortingFlags.Recursive)}");
-				arg = arg.Replace("noshaders", $"!{nameof(PortingFlags.MatchShaders)}");
-				arg = arg.Replace("silent", $"!{nameof(PortingFlags.Print)}");
-				arg = arg.ToLower(); // do this again incase the argument was replaced
-
-				// Use '!' or 'No' to negate an argument.
-				var toggleOn = !(arg.StartsWith("!") || arg.StartsWith("no"));
-				if (!toggleOn && arg.StartsWith("!"))
-					arg = arg.Remove(0, 1);
-				else if (!toggleOn && arg.StartsWith("no"))
-					arg = arg.Remove(0, 2);
-
-				// Throw exceptions at clumsy typers.
-				if (!flagNames.Contains(arg))
-					throw new FormatException($"Invalid {typeof(PortingFlags).FullName}: {args[0]}");
-
-				// Add/remove flags based on if they appeared as arguments, 
-				// and whether they were negated with '!' or 'No'
-				for (var i = 0; i < flagNames.Count(); i++)
-					if (arg == flagNames.ElementAt(i))
-						if (toggleOn)
-							SetFlags(flagValues[i]);
-						else
-							RemoveFlags(flagValues[i]);
-
-				// Get forge palette info if provided
-				if (arg == "mpobject" && argSegments.Count() > 1)
-				{
-					argParameters = argSegments[1].Split(']')[0].Split(',');
-				}
-			}
-			return argParameters;
-		}
-
-		/// <summary>
-		/// Generates a <see cref="Command.Description"/> based on the <see cref="PortingFlags"/> <see cref="Enum"/>.
-		/// </summary>
-		/// <returns>A <see cref="Command.Description"/> based on <see cref="PortingFlags"/>.</returns>
-		private static string GetPortingFlagsDescription()
-		{
-			var info =
-				"Ports a tag from the current cache file." + Environment.NewLine +
-				"Available Options:" + Environment.NewLine +
-				Environment.NewLine;
-
-			var padCount = Enum.GetNames(typeof(PortingFlags)).Max(flagName => flagName.Length);
-
-			foreach (var portingFlagInfo in typeof(PortingFlags).GetMembers(BindingFlags.Public | BindingFlags.Static).OrderBy(m => m.MetadataToken))
-			{
-				var attr = portingFlagInfo.GetCustomAttribute<PortingFlagDescriptionAttribute>(false);
-
-				// Use the attribute description for the flags help-description.
-				if (attr != null)
-					info += $"{portingFlagInfo.Name.PadRight(padCount)} - " +
-						$"{attr.Description}" + Environment.NewLine;
-
-				// Use the flags sub-set of the flag for the flags help-description
-				else
-				{
-					var portingFlags = (PortingFlags)Enum.Parse(typeof(PortingFlags), portingFlagInfo.Name);
-					info += $"{portingFlagInfo.Name.PadRight(padCount)} - " +
-						$"{string.Join(", ", portingFlags.GetIndividualFlags())}" + Environment.NewLine;
-				}
-			}
-
-			return info + Environment.NewLine +
-				"*Any option can be negated by prefixing it with `!`." + Environment.NewLine;
-		}
-
-		/// <summary>
 		/// Generic description attribute
 		/// </summary>
-		private class PortingFlagDescriptionAttribute : Attribute
+		public class PortingFlagDescriptionAttribute : Attribute
 		{
 			public string Description;
 

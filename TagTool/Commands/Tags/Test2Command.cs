@@ -7,7 +7,9 @@ using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Porting;
 using TagTool.Common;
+using TagTool.Porting;
 using TagTool.Tags;
+using static TagTool.Porting.PortingContext;
 
 namespace TagTool.Commands.Tags
 {
@@ -272,8 +274,7 @@ namespace TagTool.Commands.Tags
 
                         Console.WriteLine($"Converting {tag}...");
 
-                        var portTag = new PortTagCommand(Cache, srcCache);
-                        portTag.SetFlags(PortTagCommand.PortingFlags.Default);
+                        var portTag = new PortingContext(Cache, srcCache);
 
                         var convertedTag = portTag.ConvertTag(dstStream, srcStream, tag);
 

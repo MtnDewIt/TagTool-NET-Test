@@ -11,9 +11,9 @@ using TagTool.Serialization;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Resources;
 
-namespace TagTool.Commands.Porting
+namespace TagTool.Porting
 {
-    partial class PortTagCommand
+    partial class PortingContext
     {
         public List<ModelAnimationGraph.ResourceGroup> ConvertModelAnimationGraphResourceGroups(Stream cacheStream, Stream blamCacheStream, List<ModelAnimationGraph.ResourceGroup> resourceGroups)
         {

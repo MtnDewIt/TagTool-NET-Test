@@ -8,9 +8,9 @@ using TagTool.Serialization;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
-namespace TagTool.Commands.Porting
+namespace TagTool.Porting
 {
-    partial class PortTagCommand
+    partial class PortingContext
     {
         private Globals ConvertGlobals(Globals matg, Stream cacheStream)
         {

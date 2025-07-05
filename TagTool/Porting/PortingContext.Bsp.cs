@@ -12,9 +12,9 @@ using TagTool.Serialization;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Resources;
 
-namespace TagTool.Commands.Porting
+namespace TagTool.Porting
 {
-    partial class PortTagCommand
+    partial class PortingContext
     {
         public ScenarioStructureBsp ConvertScenarioStructureBsp(ScenarioStructureBsp sbsp, CachedTag instance)
         {

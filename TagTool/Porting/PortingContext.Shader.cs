@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 using System.Linq;
 using TagTool.Commands.Common;
 
-namespace TagTool.Commands.Porting
+namespace TagTool.Porting
 {
-    partial class PortTagCommand
+    partial class PortingContext
     {
         public List<string> PendingTemplates = new List<string>();
         public Dictionary<CachedTag, (CachedTag, object, object)> DeferredRenderMethods = new Dictionary<CachedTag, (CachedTag, object, object)>(); // format: base cache tag, (blam tag, converted definition, blam cache definition)

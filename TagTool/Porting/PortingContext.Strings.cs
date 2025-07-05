@@ -8,9 +8,9 @@ using TagTool.Cache;
 using TagTool.Serialization;
 using System;
 
-namespace TagTool.Commands.Porting
+namespace TagTool.Porting
 {
-    partial class PortTagCommand
+    partial class PortingContext
     {
         private MultilingualUnicodeStringList ConvertMultilingualUnicodeStringList(Stream cacheStream, Stream blamCacheStream, MultilingualUnicodeStringList unic)
         {

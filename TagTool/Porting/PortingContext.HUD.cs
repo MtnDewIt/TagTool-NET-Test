@@ -6,9 +6,9 @@ using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 
-namespace TagTool.Commands.Porting
+namespace TagTool.Porting
 {
-    partial class PortTagCommand
+    partial class PortingContext
     {
         private ChudDefinition.HudWidget.StateDatum ConvertStateData(ChudDefinition.HudWidget.StateDatum stateData)
         {

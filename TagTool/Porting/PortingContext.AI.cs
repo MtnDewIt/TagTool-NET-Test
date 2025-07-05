@@ -6,9 +6,9 @@ using TagTool.Common;
 using TagTool.Serialization;
 using TagTool.Tags.Definitions;
 
-namespace TagTool.Commands.Porting
+namespace TagTool.Porting
 {
-    partial class PortTagCommand
+    public partial class PortingContext
     {
         private Style ConvertStyle(Style style)
         {

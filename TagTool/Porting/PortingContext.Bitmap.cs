@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 using TagTool.Commands.Common;
 using TagTool.Cache.Gen3;
 
-namespace TagTool.Commands.Porting
+namespace TagTool.Porting
 {
-    partial class PortTagCommand
+    partial class PortingContext
     {
         private Dictionary<Bitmap, Task> BitmapConversionTasks = new Dictionary<Bitmap, Task>();
 
