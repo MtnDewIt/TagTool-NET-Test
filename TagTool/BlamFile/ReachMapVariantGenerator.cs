@@ -181,7 +181,7 @@ namespace TagTool.BlamFile
                 Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkStartOfFile), blf.Version, blf.CachePlatform),
                 MajorVersion = 1,
                 MinorVersion = 2,
-                ByteOrderMarker = -2
+                ByteOrderMark = -2
             };
             blf.ContentFlags |= Blf.BlfFileContentFlags.StartOfFile;
 

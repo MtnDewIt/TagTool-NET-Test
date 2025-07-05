@@ -7,13 +7,13 @@ namespace TagTool.BlamFile.Chunks
     public class BlfChunkStartOfFile : BlfChunkHeader
     {
         // when -2, order is little endian, else order is big endian. Check byteswapped BOM to be -2 otherwise invalid.
-        public short ByteOrderMarker;
+        public short ByteOrderMark;
 
         [TagField(Length = 0x20)]
-        public string InternalName;
+        public string FileType;
 
         [TagField(Length = 2, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding;
+        public byte[] Alignment;
 
         public static BlfChunkStartOfFile Decode(TagDeserializer deserializer, DataSerializationContext dataContext)
         {

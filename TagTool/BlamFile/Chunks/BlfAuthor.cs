@@ -7,15 +7,15 @@ namespace TagTool.BlamFile.Chunks
     public class BlfAuthor : BlfChunkHeader
     {
         [TagField(Length = 16)]
-        public string BuildName;
+        public string ProgramName;
 
-        public ulong BuildIdentifier;
+        public ulong ProgramBuildNumber;
 
         [TagField(Length = 28)]
-        public string BuildString;
+        public string ProgramBuildString;
 
         [TagField(Length = 16)]
-        public string AuthorName;
+        public string User;
 
         public static BlfAuthor Decode(TagDeserializer deserializer, DataSerializationContext dataContext)
         {

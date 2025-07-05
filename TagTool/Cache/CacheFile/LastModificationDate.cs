@@ -37,5 +37,24 @@ namespace TagTool.Cache
             Low = (uint)(ldap & uint.MaxValue);
             High = (uint)(ldap >> 32);
         }
+
+        public static LastModificationDate CreateFromVersion(CacheVersion version) 
+        {
+            var timestamp = CacheVersionDetection.GetTimestamp(version);
+
+            if (!DateTime.TryParse(timestamp, out var dateTime))
+                throw new ArgumentException("Invalid Timestamp String", timestamp);
+
+            var modificationDate = new LastModificationDate();
+
+            modificationDate.SetModificationDate(dateTime);
+
+            return modificationDate;
+        }
+
+        public static string GetTimestamp(LastModificationDate modificationDate) 
+        {
+            return $"{modificationDate.GetModificationDate():yyyy-MM-dd HH:mm:ss.FFFFFFF}";
+        }
     }
 }

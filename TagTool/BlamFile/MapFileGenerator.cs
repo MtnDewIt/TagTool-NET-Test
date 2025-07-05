@@ -136,7 +136,7 @@ namespace TagTool.BlamFile
                 Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkStartOfFile), Version, CachePlatform),
                 MajorVersion = 1,
                 MinorVersion = 2,
-                ByteOrderMarker = -2,
+                ByteOrderMark = -2,
             };
 
             blf.EndOfFile = new BlfChunkEndOfFile()
