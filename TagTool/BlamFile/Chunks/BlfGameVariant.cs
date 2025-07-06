@@ -122,6 +122,9 @@ namespace TagTool.BlamFile.Chunks
                         case GameEngineType.Infection:
                             gameVariant.Variant = deserializer.Deserialize<GameVariantInfection>(dataContext);
                             break;
+                        default:
+                            gameVariant.Variant = deserializer.Deserialize<GameVariantNone>(dataContext);
+                            break;
                     }
                 }
                 else
@@ -215,6 +218,9 @@ namespace TagTool.BlamFile.Chunks
                         break;
                     case GameEngineType.Infection:
                         gameVariant.Variant = gameVariant.Variant as GameVariantInfection;
+                        break;
+                    default:
+                        gameVariant.Variant = gameVariant.Variant as GameVariantNone;
                         break;
                 }
 

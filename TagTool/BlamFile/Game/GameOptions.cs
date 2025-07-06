@@ -2,6 +2,7 @@
 using TagTool.BlamFile.Chunks.GameVariants;
 using TagTool.BlamFile.Chunks.MapVariants;
 using TagTool.BlamFile.Chunks.Metadata;
+using TagTool.Cache;
 using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
@@ -10,7 +11,8 @@ using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.BlamFile.Game
 {
-    [TagStructure(Size = 0xF810)]
+    [TagStructure(Size = 0xF810, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
+    [TagStructure(Size = 0xEFC8, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
     public class GameOptions : TagStructure
     {
         public GameModeType GameMode;
@@ -49,14 +51,37 @@ namespace TagTool.BlamFile.Game
         public short CampaignInsertionPoint;
         public GameMetagameScoring CampaignMetagameScoring;
         public bool CampaignMetagameEnabled;
+
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
+        public bool SurvivalEnabled;
+
         public bool CampaignAllowPersistentStorage;
+
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
+        public bool CampaignCustomizationEnabled;
+
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
+        public CampaignArmaments CampaignArmaments;
+
+        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
+        public byte[] Padding3;
+
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
+        public CampaignGameProgression GameProgression;
+
         public GamePrimarySkullFlags32 CampaignActivePrimarySkulls;
         public GameSecondarySkullFlags32 CampaignActiveSecondarySkulls;
-        public CampaignArmaments CampaignArmaments;
+
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
+        public CampaignArmaments CampaignArmamentsH3;
+
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
+        public CampaignHubProgression HubProgression;
+
         public bool MatchmadeGame;
 
         [TagField(Length = 0x7, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding3;
+        public byte[] Padding4;
 
         public GameMatchmakingOptions GameMatchmakingOptions;
 
@@ -66,16 +91,17 @@ namespace TagTool.BlamFile.Game
         public ContentItemMetadata Metadata;
         public GameVariantBase MultiplayerVariant;
 
-        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding4;
+        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
+        public byte[] Padding5;
 
         public MapVariant MapVariant;
         public GameMachineOptions Machines;
 
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding5;
+        public byte[] Padding6;
 
-        [TagField(Length = 0x10)]
+        [TagField(Length = 0x10, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
+        [TagField(Length = 0x4, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
         public GamePlayerOptions[] Players;
 
         public static GameOptions Decode(EndianReader reader, TagDeserializer deserializer, DataSerializationContext dataContext) 
@@ -109,12 +135,36 @@ namespace TagTool.BlamFile.Game
             options.CampaignInsertionPoint = reader.ReadInt16();
             options.CampaignMetagameScoring = (GameMetagameScoring)reader.ReadInt16();
             options.CampaignMetagameEnabled = reader.ReadBoolean();
+
+            if (deserializer.Version == CacheVersion.Halo3ODST) 
+            {
+                options.SurvivalEnabled = reader.ReadBoolean();
+            }
+
             options.CampaignAllowPersistentStorage = reader.ReadBoolean();
+
+            if (deserializer.Version == CacheVersion.Halo3ODST) 
+            {
+                options.CampaignCustomizationEnabled = reader.ReadBoolean();
+                options.CampaignArmaments = deserializer.Deserialize<CampaignArmaments>(dataContext);
+                options.Padding3 = reader.ReadBytes(0x2);
+                options.GameProgression = deserializer.Deserialize<CampaignGameProgression>(dataContext);
+            }
+
             options.CampaignActivePrimarySkulls = (GamePrimarySkullFlags32)reader.ReadInt32();
             options.CampaignActiveSecondarySkulls = (GameSecondarySkullFlags32)reader.ReadInt32();
-            options.CampaignArmaments = deserializer.Deserialize<CampaignArmaments>(dataContext);
+
+            if (deserializer.Version == CacheVersion.Halo3Retail)
+            {
+                options.CampaignArmamentsH3 = deserializer.Deserialize<CampaignArmaments>(dataContext);
+            }
+            else if (deserializer.Version == CacheVersion.Halo3ODST)
+            {
+                options.HubProgression = deserializer.Deserialize<CampaignHubProgression>(dataContext);
+            }
+
             options.MatchmadeGame = reader.ReadBoolean();
-            options.Padding3 = reader.ReadBytes(0x7);
+            options.Padding4 = reader.ReadBytes(0x7);
             options.GameMatchmakingOptions = deserializer.Deserialize<GameMatchmakingOptions>(dataContext);
 
             options.GameVariantType = (GameEngineType)reader.ReadInt32();
@@ -154,17 +204,35 @@ namespace TagTool.BlamFile.Game
                 case GameEngineType.Infection:
                     options.MultiplayerVariant = deserializer.Deserialize<GameVariantInfection>(dataContext);
                     break;
+                default:
+                    options.MultiplayerVariant = deserializer.Deserialize<GameVariantNone>(dataContext);
+                    break;
             }
 
-            options.Padding4 = reader.ReadBytes(0x4);
+            if (deserializer.Version == CacheVersion.Halo3Retail) 
+            {
+                options.Padding5 = reader.ReadBytes(0x4);
+            }
+
             options.MapVariant = deserializer.Deserialize<MapVariant>(dataContext);
             options.Machines = deserializer.Deserialize<GameMachineOptions>(dataContext);
-            options.Padding5 = reader.ReadBytes(0x4);
+            options.Padding6 = reader.ReadBytes(0x4);
 
-            options.Players = new GamePlayerOptions[0x10];
-            for (int i = 0; i < 0x10; i++)
+            if (deserializer.Version == CacheVersion.Halo3Retail)
             {
-                options.Players[i] = deserializer.Deserialize<GamePlayerOptions>(dataContext);
+                options.Players = new GamePlayerOptions[0x10];
+                for (int i = 0; i < 0x10; i++)
+                {
+                    options.Players[i] = deserializer.Deserialize<GamePlayerOptions>(dataContext);
+                }
+            }
+            else if (deserializer.Version == CacheVersion.Halo3ODST) 
+            {
+                options.Players = new GamePlayerOptions[0x4];
+                for (int i = 0; i < 0x4; i++)
+                {
+                    options.Players[i] = deserializer.Deserialize<GamePlayerOptions>(dataContext);
+                }
             }
 
             return options;
@@ -203,6 +271,9 @@ namespace TagTool.BlamFile.Game
                     break;
                 case GameEngineType.Infection:
                     options.MultiplayerVariant = options.MultiplayerVariant as GameVariantInfection;
+                    break;
+                default:
+                    options.MultiplayerVariant = options.MultiplayerVariant as GameVariantNone;
                     break;
             }
         }

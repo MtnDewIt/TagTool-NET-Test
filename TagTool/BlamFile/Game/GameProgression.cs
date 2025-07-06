@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Tags;
 
@@ -79,12 +80,14 @@ namespace TagTool.BlamFile.Game
         public int ExperiencePenaltyDecrement;
     }
 
-    [TagStructure(Size = 0x6C)]
+    [TagStructure(Size = 0x6C, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
+    [TagStructure(Size = 0x24, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
     public class GameMachineOptions : TagStructure
     {
         public int MachineValidMask;
 
-        [TagField(Length = 0x10)]
+        [TagField(Length = 0x10, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
+        [TagField(Length = 0x4, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
         public MachineIdentifier[] MachineIdentifiers;
 
         public bool LocalMachineExists;
@@ -95,7 +98,8 @@ namespace TagTool.BlamFile.Game
         public MachineIdentifier LocalMachineIdentifier;
     }
 
-    [TagStructure(Size = 0x128)]
+    [TagStructure(Size = 0x128, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
+    [TagStructure(Size = 0x260, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
     public class GamePlayerOptions : TagStructure
     {
         public bool Valid;
@@ -110,7 +114,8 @@ namespace TagTool.BlamFile.Game
 
         public PlayerConfiguration Configuration;
 
-        [TagStructure(Size = 0x110)]
+        [TagStructure(Size = 0x110, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
+        [TagStructure(Size = 0x248, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
         public class PlayerConfiguration : TagStructure
         {
             public PlayerConfigurationFromClient Client;

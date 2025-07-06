@@ -1,5 +1,4 @@
-﻿using Assimp;
-using System;
+﻿using System;
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Tags;

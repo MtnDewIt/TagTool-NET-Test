@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Runtime.InteropServices;
 using TagTool.BlamFile.Game;
 using TagTool.Cache;
 using TagTool.Common;
@@ -66,7 +67,8 @@ namespace TagTool.BlamFile.Chunks
             public int LengthInTicks;
             public int SnippetStartTick;
 
-            [TagField(Length = 0x538)]
+            [TagField(Length = 0x538, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
+            [TagField(Length = 0xD80, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
             public byte[] PaddingToAlignForUtilityDrive;
         }
 
@@ -103,8 +105,16 @@ namespace TagTool.BlamFile.Chunks
                     RecordedTime = reader.ReadInt32(),
                     LengthInTicks = reader.ReadInt32(),
                     SnippetStartTick = reader.ReadInt32(),
-                    PaddingToAlignForUtilityDrive = reader.ReadBytes(0x538)
                 };
+
+                if (deserializer.Version == CacheVersion.Halo3Retail)
+                {
+                    savedFilmHeader.Header.PaddingToAlignForUtilityDrive = reader.ReadBytes(0x538);
+                }
+                else if (deserializer.Version == CacheVersion.Halo3ODST) 
+                {
+                    savedFilmHeader.Header.PaddingToAlignForUtilityDrive = reader.ReadBytes(0xD80);
+                }
 
                 return savedFilmHeader;
             }
