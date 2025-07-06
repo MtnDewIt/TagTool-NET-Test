@@ -11,6 +11,8 @@ using TagTool.Commands.Common;
 using TagTool.Commands.Files;
 using TagTool.Commands.Porting;
 using TagTool.Common;
+using TagTool.Porting.Gen3;
+using TagTool.Porting.HaloOnline;
 using TagTool.Tags;
 
 namespace TagTool.Porting
@@ -40,6 +42,26 @@ namespace TagTool.Porting
                 DefaultTags[tagType.Tag] = CacheContext.TagCache.FindFirstInGroup(tagType.Tag);
 
             InitAsync();
+        }
+
+        /// <summary>
+        /// Create context for porting from sourceCache to destCache
+        /// </summary>
+        /// <param name="destCache">Destination cache</param>
+        /// <param name="sourceCache">Source cache</param>
+        /// <returns>PortingContext</returns>
+        /// <exception cref="NotSupportedException">Thrown if te cache is not supported</exception>
+        public static PortingContext Create(GameCacheHaloOnlineBase destCache, GameCache sourceCache)
+        {
+            switch (sourceCache)
+            {
+                case GameCacheHaloOnlineBase:
+                    return new PortingContextHO(destCache, sourceCache);
+                case GameCacheGen3:
+                    return new PortingContextGen3(destCache, sourceCache);
+                default:
+                    throw new NotSupportedException($"Porting cache '{sourceCache.DisplayName}' not supported currently");
+            }
         }
 
         /// <summary>
@@ -360,9 +382,6 @@ namespace TagTool.Porting
         {
             switch (data)
             {
-                case TagResourceReference _:
-                    return data;
-
                 case StringId stringId:
                     stringId = ConvertStringId(stringId);
                     return stringId;

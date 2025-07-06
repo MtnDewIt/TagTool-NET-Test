@@ -45,8 +45,8 @@ namespace TagTool.Commands.Porting
                     return new TagToolError(CommandError.TagInvalid, args.Last());
             }
 
-            var porting = new PortingContextGen3(CacheContext, BlamCache);
-            porting.PortTag(tagList, flags, argParameters);
+            var context = PortingContext.Create(CacheContext, BlamCache);
+            context.PortTag(tagList, flags, argParameters);
 
             return true;
         }

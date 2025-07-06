@@ -760,6 +760,9 @@ namespace TagTool.Porting.Gen3
         {
             switch (data)
             {
+                case TagResourceReference:
+                    return data;
+
                 case TagFunction tagFunction:
                     return ConvertTagFunction(tagFunction);
 
