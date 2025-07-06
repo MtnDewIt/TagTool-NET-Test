@@ -1,8 +1,27 @@
 ﻿using System.Runtime.InteropServices;
+using TagTool.Common;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.Game
 {
+    [TagStructure(Size = 0x80)]
+    public class CampaignGameProgression : TagStructure 
+    {
+        [TagField(Length = 0x20)]
+        public int[] IntegerNames;
+    }
+
+    [TagStructure(Size = 0x80)]
+    public class CampaignHubProgression : TagStructure 
+    {
+        public CampaignArmaments CampaignHubArmaments;
+        public int CampaignHubReturnToInsertionPoint;
+        public bool CampaignHubProgressionValid;
+
+        [TagField(Length = 0x3)]
+        public byte[] Padding;
+    }
+
     [TagStructure(Size = 0x78)]
     public class CampaignArmaments : TagStructure
     {
@@ -81,10 +100,10 @@ namespace TagTool.BlamFile.Game
     {
         public bool Valid;
         public bool LeftGame;
-        public short UserInex;
-        public int ControllerIndex;
+        public short UserIndex;
+        public ControllerIndex ControllerIndex;
         public MachineIdentifier MachineIdentifier;
-        public ulong PlayerIdentifier;
+        public PlayerIdentifier PlayerIdentifier;
 
         [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
         public byte[] Padding1;

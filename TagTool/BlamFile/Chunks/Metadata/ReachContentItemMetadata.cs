@@ -177,8 +177,8 @@ namespace TagTool.BlamFile.Chunks.Metadata
             public GameEngineDifficulty CampaignDifficulty;
             public GameMetagameScoring CampaignMetagameScoring;
             public int CampaignInsertionPoint;
-            public GamePrimarySkullFlags CampaignPrimarySkulls;
-            public GameSecondarySkullFlags CampaignSecondarySkulls;
+            public GamePrimarySkullFlags16 CampaignPrimarySkulls;
+            public GameSecondarySkullFlags16 CampaignSecondarySkulls;
 
             public static ContentItemMetagame Decode(BitStream stream, ReachContentItemMetadata metadata, bool packed) 
             {
@@ -197,8 +197,8 @@ namespace TagTool.BlamFile.Chunks.Metadata
                 else if (metadata.GameMode == GameEngineMode.Survival)
                 {
                     metagame.CampaignDifficulty = (GameEngineDifficulty)stream.ReadUnsigned(packed ? 2 : 16);
-                    metagame.CampaignPrimarySkulls = (GamePrimarySkullFlags)stream.ReadUnsigned(16);
-                    metagame.CampaignSecondarySkulls = (GameSecondarySkullFlags)stream.ReadUnsigned(16);
+                    metagame.CampaignPrimarySkulls = (GamePrimarySkullFlags16)stream.ReadUnsigned(16);
+                    metagame.CampaignSecondarySkulls = (GameSecondarySkullFlags16)stream.ReadUnsigned(16);
 
                     if (!packed)
                         stream.ReadBytes(10);

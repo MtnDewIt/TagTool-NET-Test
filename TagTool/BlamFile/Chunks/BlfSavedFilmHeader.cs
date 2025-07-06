@@ -35,7 +35,7 @@ namespace TagTool.BlamFile.Chunks
             [TagField(Length = 0x20)]
             public string BuildNumber;
 
-            public int ExecutableType;
+            public ExecutableType ExecutableType;
             public int NetworkExecutableVersion;
             public int NetworkCompatibleVersion;
             public GameLanguage MapLanguage;
@@ -57,8 +57,8 @@ namespace TagTool.BlamFile.Chunks
             [TagField(Length = 0x5)]
             public byte[] Padding3;
 
-            [TagField(Length = 0x80)]
-            public byte[] SessionId;
+            [TagField(Length = 0x80, CharSet = CharSet.Ansi)]
+            public string SessionId;
 
             public GameOptions Options;
 
@@ -85,7 +85,7 @@ namespace TagTool.BlamFile.Chunks
                 {
                     Padding1 = reader.ReadBytes(0x4),
                     BuildNumber = reader.ReadString(0x20),
-                    ExecutableType = reader.ReadInt32(),
+                    ExecutableType = (ExecutableType)reader.ReadInt32(),
                     NetworkExecutableVersion = reader.ReadInt32(),
                     NetworkCompatibleVersion = reader.ReadInt32(),
                     MapLanguage = (GameLanguage)reader.ReadInt32(),
@@ -98,7 +98,7 @@ namespace TagTool.BlamFile.Chunks
                     ContainsGamestate = reader.ReadBoolean(),
                     IsSnippet = reader.ReadBoolean(),
                     Padding3 = reader.ReadBytes(0x5),
-                    SessionId = reader.ReadBytes(0x80),
+                    SessionId = reader.ReadString(0x80),
                     Options = GameOptions.Decode(reader, deserializer, dataContext),
                     RecordedTime = reader.ReadInt32(),
                     LengthInTicks = reader.ReadInt32(),
@@ -116,7 +116,11 @@ namespace TagTool.BlamFile.Chunks
 
         public static void Encode(TagSerializer serializer, DataSerializationContext dataContext, BlfSavedFilmHeader savedFilmHeader)
         {
-            GameOptions.Encode(savedFilmHeader.Header.Options);
+            if (CacheVersionDetection.IsBetween(serializer.Version, CacheVersion.Halo3Retail, CacheVersion.Halo3ODST) && serializer.CachePlatform == CachePlatform.Original) 
+            {
+                GameOptions.Encode(savedFilmHeader.Header.Options);
+            }
+
             serializer.Serialize(dataContext, savedFilmHeader);
         }
     }

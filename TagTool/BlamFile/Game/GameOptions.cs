@@ -13,9 +13,9 @@ namespace TagTool.BlamFile.Game
     [TagStructure(Size = 0xF810)]
     public class GameOptions : TagStructure
     {
-        public int GameMode;
-        public byte GameSimulation;
-        public byte GameNetworkType;
+        public GameModeType GameMode;
+        public GameSimulationType GameSimulation;
+        public GameNetworkType GameNetworkType;
         public ushort GameTickRate;
         public ulong GameInstance;
         public int RandomSeed;
@@ -37,7 +37,7 @@ namespace TagTool.BlamFile.Game
         [TagField(Length = 0x1, Flags = TagFieldFlags.Padding)]
         public byte[] Padding1;
 
-        public short GamePlayback;
+        public GamePlaybackType GamePlayback;
         public bool RecordSavedFilm;
 
         [TagField(Length = 0x1, Flags = TagFieldFlags.Padding)]
@@ -45,13 +45,13 @@ namespace TagTool.BlamFile.Game
 
         public int PlaybackStartTick;
         public int PlaybackLengthInTicks;
-        public short CampaignDifficulty;
+        public GameEngineDifficulty CampaignDifficulty;
         public short CampaignInsertionPoint;
-        public short CampaignMetagameScoring;
+        public GameMetagameScoring CampaignMetagameScoring;
         public bool CampaignMetagameEnabled;
         public bool CampaignAllowPersistentStorage;
-        public int CampaignActivePrimarySkulls;
-        public int CampaignActiveSecondarySkulls;
+        public GamePrimarySkullFlags32 CampaignActivePrimarySkulls;
+        public GameSecondarySkullFlags32 CampaignActiveSecondarySkulls;
         public CampaignArmaments CampaignArmaments;
         public bool MatchmadeGame;
 
@@ -82,9 +82,9 @@ namespace TagTool.BlamFile.Game
         {
             var options = new GameOptions();
 
-            options.GameMode = reader.ReadInt32();
-            options.GameSimulation = reader.ReadByte();
-            options.GameNetworkType = reader.ReadByte();
+            options.GameMode = (GameModeType)reader.ReadInt32();
+            options.GameSimulation = (GameSimulationType)reader.ReadByte();
+            options.GameNetworkType = (GameNetworkType)reader.ReadByte();
             options.GameTickRate = reader.ReadUInt16();
             options.GameInstance = reader.ReadUInt64();
             options.RandomSeed = reader.ReadInt32();
@@ -100,18 +100,18 @@ namespace TagTool.BlamFile.Game
             options.DumpRandomSeeds = reader.ReadBoolean();
             options.PlaytestMode = reader.ReadBoolean();
             options.Padding1 = reader.ReadBytes(0x1);
-            options.GamePlayback = reader.ReadInt16();
+            options.GamePlayback = (GamePlaybackType)reader.ReadInt16();
             options.RecordSavedFilm = reader.ReadBoolean();
             options.Padding2 = reader.ReadBytes(0x1);
             options.PlaybackStartTick = reader.ReadInt32();
             options.PlaybackLengthInTicks = reader.ReadInt32();
-            options.CampaignDifficulty = reader.ReadInt16();
+            options.CampaignDifficulty = (GameEngineDifficulty)reader.ReadInt16();
             options.CampaignInsertionPoint = reader.ReadInt16();
-            options.CampaignMetagameScoring = reader.ReadInt16();
+            options.CampaignMetagameScoring = (GameMetagameScoring)reader.ReadInt16();
             options.CampaignMetagameEnabled = reader.ReadBoolean();
             options.CampaignAllowPersistentStorage = reader.ReadBoolean();
-            options.CampaignActivePrimarySkulls = reader.ReadInt32();
-            options.CampaignActiveSecondarySkulls = reader.ReadInt32();
+            options.CampaignActivePrimarySkulls = (GamePrimarySkullFlags32)reader.ReadInt32();
+            options.CampaignActiveSecondarySkulls = (GameSecondarySkullFlags32)reader.ReadInt32();
             options.CampaignArmaments = deserializer.Deserialize<CampaignArmaments>(dataContext);
             options.MatchmadeGame = reader.ReadBoolean();
             options.Padding3 = reader.ReadBytes(0x7);

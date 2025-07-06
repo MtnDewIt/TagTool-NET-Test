@@ -276,23 +276,6 @@ namespace TagTool.Tags.Definitions.Common
         Theater,
     }
 
-    public enum GameEngineDifficulty : short
-    {
-        None = 0,
-        Easy,
-        Normal,
-        Heroic,
-        Legendary,
-    }
-
-    public enum GameMetagameScoring : short
-    {
-        None = 0,
-        Off,
-        Team,
-        FreeForAll,
-    }
-
     [Flags]
     public enum GameEngineSubTypeFlags : ushort
     {

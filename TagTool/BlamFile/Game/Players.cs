@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using TagTool.Common;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.Game
@@ -18,7 +19,7 @@ namespace TagTool.BlamFile.Game
         public bool IsSilverOrGoldLive;
         public bool IsOnlineEnabled;
         public bool IsControllerAttached;
-        public byte UserSelectedTeamIndex;
+        public sbyte UserSelectedTeamIndex;
         public bool DesiresVeto;
         public bool DesiresRematch;
         public byte HopperAccessFlags;
@@ -26,10 +27,10 @@ namespace TagTool.BlamFile.Game
         public bool IsUserCreatedContentAllowed;
         public bool IsFriendCreatedContentAllowed;
         public byte IsGriefer;
-        public byte CampaignDifficultyCompleted;
-        public uint BungieNetUserFlags;
-        public int GamerRegion;
-        public int GamerZone;
+        public CampaignProgress CampaignDifficultyCompleted;
+        public BungieNetUserFlags BungieNetUserFlags;
+        public GamerRegion GamerRegion;
+        public GamerZone GamerZone;
         public uint CheatFlags;
         public uint BanFlags;
         public int RepeatedPlayCoefficient;
@@ -50,44 +51,45 @@ namespace TagTool.BlamFile.Game
         public int PlayerTeam;
         public int PlayerAssignedTeam;
 
-        [TagField(Length = 0x3, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding1;
+        public CalculatedPlayerGlobalStatistics GlobalStatistics;
+        public CalculatedPlayerHopperStatistics HopperStatistics;
 
-        public bool StatsGlobalValid;
-        public int StatsGlobalExperience;
-        public int StatsGlobalRank;
-        public int StatsGlobalGrade;
+        [TagStructure(Size = 0x10)]
+        public class CalculatedPlayerGlobalStatistics : TagStructure 
+        {
+            [TagField(Length = 0x3, Flags = TagFieldFlags.Padding)]
+            public byte[] Padding1;
 
-        [TagField(Length = 0x3, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding2;
+            public bool Valid;
+            public int Experience;
+            public ExperienceRank Rank;
+            public ExperienceGrade Grade;
+        }
 
-        public bool StatsHopperValid;
-        public int StatsHopperSkill;
-        public int StatsHopperSkillDisplay;
-        public int StatsHopperSkillUpdateWeight;
+        [TagStructure(Size = 0x10)]
+        public class CalculatedPlayerHopperStatistics : TagStructure
+        {
+            [TagField(Length = 0x3, Flags = TagFieldFlags.Padding)]
+            public byte[] Padding2;
+
+            public bool Valid;
+            public int Skill;
+            public int SkillDisplay;
+            public int SkillUpdateWeight;
+        }
     }
 
     [TagStructure(Size = 0x1E)]
     public class PlayerAppearance : TagStructure
     {
-        public byte AppearanceFlags;
-        public byte PrimaryColor;
-        public byte SecondaryColor;
-        public byte TertiaryColor;
-        public byte PlayerModelChoice;
+        public PlayerAppearanceFlags AppearanceFlags;
+        public PlayerChangeColor ChangeColor;
+        public PlayerModelChoice PlayerModelChoice;
 
         [TagField(Length = 0x1, Flags = TagFieldFlags.Padding)]
         public byte[] Padding1;
 
-        public byte ForegroundEmblem;
-        public byte BackgroundEmblem;
-        public byte EmblemFlags;
-        public byte EmblemPrimaryColor;
-        public byte EmblemSecondaryColor;
-        public byte EmblemBackgroundColor;
-
-        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding2;
+        public PlayerEmblemInfo EmblemInfo;
 
         [TagField(Length = 0x4)]
         public byte[] SpartanModelArea;
@@ -97,6 +99,35 @@ namespace TagTool.BlamFile.Game
 
         [TagField(Length = 0x4, CharSet = CharSet.Unicode)]
         public string ServiceTag;
+
+        [TagStructure(Size = 0x3)]
+        public class PlayerChangeColor : TagStructure 
+        {
+            public PlayerColorIndex PrimaryChangeColor;
+            public PlayerColorIndex SecondaryChangeColor;
+            public PlayerColorIndex TertiaryChangeColor;
+        }
+
+        [TagStructure(Size = 0x8)]
+        public class PlayerEmblemInfo : TagStructure 
+        {
+            public byte ForegroundEmblemIndex;
+            public byte BackgroundEmblemIndex;
+            public PlayerEmblemInfoFlags Flags;
+            public PlayerColorIndex PrimaryChangeColor;
+            public PlayerColorIndex SecondaryChangeColor;
+            public PlayerColorIndex BackgroundChangeColor;
+
+            [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
+            public byte[] Padding2;
+        }
+    }
+
+    [TagStructure(Size = 0x8)]
+    public class PlayerIdentifier : TagStructure 
+    {
+        [TagField(Length = 0x8)]
+        public byte[] Identifier;
     }
 
     [TagStructure(Size = 0x58)]
