@@ -24,7 +24,7 @@ namespace TagTool.JSON.Parsers
             CacheContext = cacheContext;
             CacheStream = cacheStream;
             InputPath = inputPath;
-            Handler = new MapObjectHandler(Cache, CacheContext);
+            Handler = new MapObjectHandler(Cache.Version, Cache.Platform);
         }
 
         public void ParseFile(string filePath)

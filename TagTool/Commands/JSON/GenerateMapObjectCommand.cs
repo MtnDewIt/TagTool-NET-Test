@@ -158,7 +158,7 @@ namespace TagTool.Commands.JSON
                         Reports = mapData.Reports,
                     };
 
-                    var handler = new MapObjectHandler(Cache, CacheContext);
+                    var handler = new MapObjectHandler(Cache.Version, Cache.Platform);
 
                     var jsonData = handler.Serialize(mapObject);
 
@@ -203,7 +203,7 @@ namespace TagTool.Commands.JSON
                     Reports = mapData.Reports,
                 };
 
-                var handler = new MapObjectHandler(Cache, CacheContext);
+                var handler = new MapObjectHandler(Cache.Version, Cache.Platform);
 
                 var jsonData = handler.Serialize(mapObject);
 

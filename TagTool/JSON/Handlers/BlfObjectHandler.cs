@@ -1,6 +1,6 @@
-﻿using TagTool.Cache;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using TagTool.Cache;
 using TagTool.JSON.Objects;
 
 namespace TagTool.JSON.Handlers

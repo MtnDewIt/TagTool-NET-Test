@@ -16,9 +16,50 @@ namespace TagTool.JSON.Objects
             {
                 if (InlineHeader == null)
                 {
-                    if (MapVersion.GetGeneration() == CacheGeneration.HaloOnline)
+                    switch (MapVersion) 
                     {
-                        InlineHeader = (CacheFileHeader)Activator.CreateInstance(typeof(CacheFileHeaderGenHaloOnline));
+                        case CacheVersion.HaloPC:
+                        case CacheVersion.HaloXbox:
+                        case CacheVersion.HaloCustomEdition:
+                            InlineHeader = (CacheFileHeader)Activator.CreateInstance(typeof(CacheFileHeaderGen1));
+                            break;
+                        case CacheVersion.Halo2Alpha:
+                        case CacheVersion.Halo2Beta:
+                        case CacheVersion.Halo2Xbox:
+                        case CacheVersion.Halo2Vista:
+                        case CacheVersion.Halo2Retail:
+                            InlineHeader = (CacheFileHeader)Activator.CreateInstance(typeof(CacheFileHeaderGen2));
+                            break;
+                        case CacheVersion.Halo3Beta:
+                        case CacheVersion.Halo3Retail:
+                        case CacheVersion.Halo3ODST:
+                        case CacheVersion.HaloReach:
+                        case CacheVersion.HaloReach11883:
+                            InlineHeader = (CacheFileHeader)Activator.CreateInstance(typeof(CacheFileHeaderGen3));
+                            break;
+                        case CacheVersion.HaloOnlineED:
+                        case CacheVersion.HaloOnline106708:
+                        case CacheVersion.HaloOnline235640:
+                        case CacheVersion.HaloOnline301003:
+                        case CacheVersion.HaloOnline327043:
+                        case CacheVersion.HaloOnline372731:
+                        case CacheVersion.HaloOnline416097:
+                        case CacheVersion.HaloOnline430475:
+                        case CacheVersion.HaloOnline454665:
+                        case CacheVersion.HaloOnline449175:
+                        case CacheVersion.HaloOnline498295:
+                        case CacheVersion.HaloOnline530605:
+                        case CacheVersion.HaloOnline532911:
+                        case CacheVersion.HaloOnline554482:
+                        case CacheVersion.HaloOnline571627:
+                        case CacheVersion.HaloOnline604673:
+                        case CacheVersion.HaloOnline700123:
+                            InlineHeader = (CacheFileHeader)Activator.CreateInstance(typeof(CacheFileHeaderGenHaloOnline));
+                            break;
+                        case CacheVersion.Halo4:
+                        case CacheVersion.Halo2AMP:
+                            InlineHeader = (CacheFileHeader)Activator.CreateInstance(typeof(CacheFileHeaderGen4));
+                            break;
                     }
                 }
 
