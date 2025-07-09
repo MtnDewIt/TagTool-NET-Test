@@ -220,7 +220,7 @@ namespace TagTool.BlamFile
                         break;
 
                     case "mps2": // s_blf_chunk_multiplayer_player_vs_player_statistics
-                    case "chrt": // Reach MCC: sub_140B6CAE0(a1 + 0x3B3E8, 'chrt', 0x120u, 2, 1)
+                    case "chrt": // s_blf_chunk_network_banhammer_cheating_report
                     default:
                         throw new NotImplementedException($"BLF chunk type {header.Signature} not implemented!");
                 }

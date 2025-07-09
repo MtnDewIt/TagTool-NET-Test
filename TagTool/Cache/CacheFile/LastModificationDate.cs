@@ -22,10 +22,14 @@ namespace TagTool.Cache
             SetModificationDate(dateTime);
         }
 
-        public DateTime GetModificationDate()
+        public DateTime? GetModificationDate()
         {
-            var high = (long)High << 32;
-            var ldap = high + Low;
+            var hi = (long)High;
+            var lo = (long)Low;
+            var ldap = (hi << 32) | lo;
+
+            if (ldap < 0 || ldap > DateTime.MaxValue.Ticks)
+                return null;
 
             return DateTime.FromFileTimeUtc(ldap);
         }
