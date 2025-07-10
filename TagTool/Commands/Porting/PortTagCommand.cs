@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using TagTool.Cache;
 using TagTool.Commands.Common;
+using TagTool.Commands.Files;
 using TagTool.Porting;
-using TagTool.Porting.Gen3;
 
 namespace TagTool.Commands.Porting
 {
@@ -15,8 +16,9 @@ namespace TagTool.Commands.Porting
     {
         private GameCacheHaloOnlineBase CacheContext { get; }
         private GameCache BlamCache;
+        private PortingContext PortContext;
 
-        public PortTagCommand(GameCacheHaloOnlineBase cacheContext, GameCache blamCache) :
+        public PortTagCommand(GameCacheHaloOnlineBase cacheContext, GameCache blamCache, PortingContext portContext) :
             base(true,
 
                 "PortTag",
@@ -26,6 +28,7 @@ namespace TagTool.Commands.Porting
         {
             CacheContext = cacheContext;
             BlamCache = blamCache;
+            PortContext = portContext;
         }
 
         public override object Execute(List<string> args)
@@ -33,20 +36,36 @@ namespace TagTool.Commands.Porting
             if (args.Count < 1)
                 return new TagToolError(CommandError.ArgCount);
 
-            var portingOptions = args.Take(args.Count - 1).ToList();
+            PortingFlags flags = ParseFlags(args.Take(args.Count - 1).ToList());
+            List<CachedTag> tagList = ParseLegacyTag(args.Last(), flags);
 
-            string[] argParameters = ParsePortingOptions(portingOptions, out PortingFlags flags);
+            bool isScenarioPort = false;
+    
+            using Stream cacheStream = CacheContext.OpenCacheReadWrite();
+            using Stream blamCacheStream = BlamCache is GameCacheModPackage package ? package.OpenCacheRead(cacheStream) : BlamCache.OpenCacheRead();
+            using var portScope = PortContext.CreateScope(flags);
 
-            var tagName = args.Last();
-            List<CachedTag> tagList = ParseLegacyTag(tagName, flags);
-            foreach(CachedTag tag in tagList)
+            foreach (var blamTag in tagList)
             {
-                if(tag == null)
+                if (blamTag == null)
                     return new TagToolError(CommandError.TagInvalid, args.Last());
+
+                if (blamTag.IsInGroup("scnr"))
+                    isScenarioPort = true;
+
+                try
+                {
+                    PortContext.ConvertTag(cacheStream, blamCacheStream, blamTag);
+                }
+                catch (Exception ex)
+                {
+                    new TagToolError(CommandError.CustomError, $"{ex.GetType().Name} while porting '{blamTag}':");
+                    throw;
+                }
             }
 
-            var context = PortingContext.Create(CacheContext, BlamCache);
-            context.PortTag(tagList, flags, argParameters);
+            if (isScenarioPort && (flags & PortingFlags.UpdateMapFiles) != 0)
+                new UpdateMapFilesCommand(CacheContext).Execute([]);
 
             return true;
         }
@@ -55,14 +74,12 @@ namespace TagTool.Commands.Porting
 		/// Parses porting flag options from a <see cref="List{T}"/> of <see cref="string"/>.
 		/// </summary>
 		/// <param name="args"></param>
-		public string[] ParsePortingOptions(List<string> args, out PortingFlags Flags)
+		public PortingFlags ParseFlags(List<string> args)
         {
-            Flags = PortingFlags.Default;
+            var Flags = PortingFlags.Default;
 
             var flagNames = Enum.GetNames(typeof(PortingFlags)).Select(name => name.ToLower());
             var flagValues = Enum.GetValues(typeof(PortingFlags)) as PortingFlags[];
-
-            string[] argParameters = new string[0];
 
             for (var a = 0; a < args.Count(); a++)
             {
@@ -95,14 +112,8 @@ namespace TagTool.Commands.Porting
                             Flags |= flagValues[i];
                         else
                             Flags &= ~flagValues[i];
-
-                // Get forge palette info if provided
-                if (arg == "mpobject" && argSegments.Count() > 1)
-                {
-                    argParameters = argSegments[1].Split(']')[0].Split(',');
-                }
             }
-            return argParameters;
+            return Flags;
         }
 
         /// <summary>

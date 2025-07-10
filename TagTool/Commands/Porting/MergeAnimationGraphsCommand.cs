@@ -25,7 +25,7 @@ namespace TagTool.Commands.Porting
         private Stream BlamCacheStream { get; set; }
         private Dictionary<ResourceLocation, Stream> ResourceStreams { get; set; }
 
-        public MergeAnimationGraphsCommand(GameCache cacheContext, GameCache blamCache, PortingContextGen3 portingContext) :
+        public MergeAnimationGraphsCommand(GameCache cacheContext, GameCache blamCache, PortingContextGen3 portContext) :
             base(true,
 
                   "MergeAnimationGraphs",
@@ -43,7 +43,7 @@ namespace TagTool.Commands.Porting
             BlamCache = blamCache;
             MergedAnimationGraphs = new HashSet<string>();
             MergedAnimationData = new Dictionary<string, (Dictionary<string, (short, short)>, Dictionary<short, short>)>();
-            PortContext = portingContext;
+            PortContext = portContext;
         }
 
         public override object Execute(List<string> args)
@@ -134,7 +134,6 @@ namespace TagTool.Commands.Porting
 
                 var h3Tag = h3Reference.Reference;
 
-                PortContext.PortTag(h3Tag);
                 edReference.Reference = PortContext.ConvertTag(CacheStream, BlamCacheStream, h3Tag);
             }
         }
@@ -428,9 +427,9 @@ namespace TagTool.Commands.Porting
             MergeAnimationTagReferences(edDef.SoundReferences, h3Def.SoundReferences);
             MergeAnimationTagReferences(edDef.EffectReferences, h3Def.EffectReferences);
 
-            CacheStream = CacheContext.OpenCacheReadWrite();
-            BlamCacheStream = BlamCache.OpenCacheRead();
-            ResourceStreams = new Dictionary<ResourceLocation, Stream>();
+            using Stream CacheStream = CacheContext.OpenCacheReadWrite();
+            using Stream BlamCacheStream = BlamCache.OpenCacheRead();
+            using var portingScope = PortContext.CreateScope();
 
             var animationIndices = MergeAnimations(h3Tag, h3Def, edDef.Animations, replace);
 
@@ -477,12 +476,6 @@ namespace TagTool.Commands.Porting
             //
 
             CacheContext.Serialize(CacheStream, edTag, edDef);
-
-            foreach (var entry in ResourceStreams)
-                entry.Value.Close();
-
-            CacheStream.Close();
-            BlamCacheStream.Close();
 
             MergedAnimationGraphs.Add(h3Tag.Name);
             MergedAnimationData[h3Tag.Name] = (animationIndices, resourceGroupData);

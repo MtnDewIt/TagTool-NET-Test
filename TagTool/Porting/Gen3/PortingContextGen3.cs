@@ -22,25 +22,26 @@ namespace TagTool.Porting.Gen3
 {
     public partial class PortingContextGen3 : PortingContext
     {
+        class TraversalData
+        {
+            // A list of render methods to defer conversion until the end
+            public List<(RenderMethod RenderMethod, RenderMethod BlamRenderMethod)> DeferredRenderMethods = [];
+
+            // Should be set if some part of the tag could not be converted and would crash if used. If possible an alternate tag will be used
+            public bool IsFailedConversion = false;
+        }
+
         private readonly RenderGeometryConverter GeometryConverter;
+        private TraversalData _traversalData = null;
 
         public PortingContextGen3(GameCacheHaloOnlineBase cacheContext, GameCache blamCache) : base(cacheContext, blamCache)
         {
-            GeometryConverter = new RenderGeometryConverter(cacheContext, blamCache);   
+            GeometryConverter = new RenderGeometryConverter(cacheContext, blamCache);
         }
 
-        public override void Finish(Stream cacheStream, Stream blamCacheStream)
+        protected override void FinishInternal()
         {
-            base.Finish(cacheStream, blamCacheStream);
-
-            FinalizeRenderMethods(cacheStream, blamCacheStream);
-        }
-
-        protected override void Reset()
-        {
-            base.Reset();
-
-            DeferredRenderMethods.Clear();
+            FinalizeRenderMethods();
             Matcher.DeInit();
         }
 
@@ -84,10 +85,6 @@ namespace TagTool.Porting.Gen3
                 case "rmdf":
                 case "glvs":
                 case "glps":
-                    return false;
-                case "rmt2":
-                    // match rmt2 with current ones available, else return null
-                    resultTag = FindClosestRmt2(cacheStream, blamCacheStream, blamTag);
                     return false;
             }
 
@@ -204,14 +201,60 @@ namespace TagTool.Porting.Gen3
             return true;
         }
 
-
-        protected override object ConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition, out CachedTag resultTag, out bool isDeferred)
+        protected override CachedTag GetFallbackTag(CachedTag blamTag)
         {
-            resultTag = null;
+            // TODO: move this into PortingContext.cs
+            if (blamTag.IsInGroup("beam", "cntl", "decs", "ltvl", "prt3", "rm  "))
+            {
+                return GetDefaultShader(blamTag.Group.Tag);
+            }
 
-            //
-            // Perform pre-conversion fixups to the Blam tag definition
-            //
+            return base.GetFallbackTag(blamTag);
+        }
+
+        protected override CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition = null)
+        {
+            if (blamTag.IsInGroup("rmt2"))
+                return FindClosestRmt2(cacheStream, blamCacheStream, blamTag);
+
+            return base.ConvertTagInternal(cacheStream, blamCacheStream, blamTag, blamDefinition);
+        }
+
+        protected override object ConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition, out bool isDeferred)
+        {
+            isDeferred = false;
+
+            TraversalData oldTraversalData = _traversalData;
+            TraversalData traversalData = _traversalData = new TraversalData();
+
+            // Perform pre-conversion fixups
+            blamDefinition = PreConvertDefinition(cacheStream, blamCacheStream, blamTag, blamDefinition);
+            // Perform automatic conversion
+            blamDefinition = ConvertData(cacheStream, blamCacheStream, blamDefinition, blamDefinition, blamTag.Name);
+            // Perform post-conversion fixups
+            blamDefinition = PostConvertDefinition(cacheStream, blamCacheStream, blamTag, edTag, blamDefinition, out isDeferred);
+
+            _traversalData = oldTraversalData;
+
+            if (traversalData.IsFailedConversion)
+                return null;
+
+            if (traversalData.DeferredRenderMethods.Count > 0)
+            {
+                // For the render methods that have pending templates defer conversion until the end
+                DeferredRenderMethods.Add(new DeferredRenderMethodData(cacheStream, blamCacheStream, edTag, blamTag, blamDefinition, traversalData.DeferredRenderMethods));
+                isDeferred = true;
+            }
+
+            return blamDefinition;
+        }
+
+        /// <summary>
+        /// Perform pre-conversion fixups to Blam data
+        /// </summary>
+        private object PreConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition)
+        {
+            ((TagStructure)blamDefinition).PreConvert(BlamCache.Version, CacheContext.Version);
 
             if (BlamCache.Version >= CacheVersion.HaloReach)
             {
@@ -225,32 +268,33 @@ namespace TagTool.Porting.Gen3
                         material.RenderMethod = null;
                     break;
 
-                case Scenario scenario when !FlagIsSet(PortingFlags.Squads):
-                    scenario.Squads = new List<Scenario.Squad>();
-                    break;
-
-                case Scenario scenario when !FlagIsSet(PortingFlags.ForgePalette):
-                    scenario.SandboxEquipment.Clear();
-                    scenario.SandboxGoalObjects.Clear();
-                    scenario.SandboxScenery.Clear();
-                    scenario.SandboxSpawning.Clear();
-                    scenario.SandboxTeleporters.Clear();
-                    scenario.SandboxVehicles.Clear();
-                    scenario.SandboxWeapons.Clear();
+                case Scenario scenario:
+                    if (!FlagIsSet(PortingFlags.Squads))
+                    {
+                        scenario.Squads.Clear();
+                    }
+                    if (!FlagIsSet(PortingFlags.ForgePalette))
+                    {
+                        scenario.SandboxEquipment.Clear();
+                        scenario.SandboxGoalObjects.Clear();
+                        scenario.SandboxScenery.Clear();
+                        scenario.SandboxSpawning.Clear();
+                        scenario.SandboxTeleporters.Clear();
+                        scenario.SandboxVehicles.Clear();
+                        scenario.SandboxWeapons.Clear();
+                    }
                     break;
 
                 case ShieldImpact shit when BlamCache.Version < CacheVersion.HaloOnlineED:
                     shit = PreConvertShieldImpact(shit, BlamCache.Version, CacheContext);
                     // These won't convert automatically due to versioning
-                    shit.Plasma.PlasmaNoiseBitmap1 = (CachedTag)ConvertData(cacheStream, blamCacheStream, shit.Plasma.PlasmaNoiseBitmap1, null, shit.Plasma.PlasmaNoiseBitmap1.Name);
-                    shit.Plasma.PlasmaNoiseBitmap2 = (CachedTag)ConvertData(cacheStream, blamCacheStream, shit.Plasma.PlasmaNoiseBitmap2, null, shit.Plasma.PlasmaNoiseBitmap2.Name);
+                    shit.Plasma.PlasmaNoiseBitmap1 = ConvertTag(cacheStream, blamCacheStream, shit.Plasma.PlasmaNoiseBitmap1);
+                    shit.Plasma.PlasmaNoiseBitmap2 = ConvertTag(cacheStream, blamCacheStream, shit.Plasma.PlasmaNoiseBitmap2);
                     shit.ExtrusionOscillation.OscillationBitmap1 = shit.Plasma.PlasmaNoiseBitmap1;
                     shit.ExtrusionOscillation.OscillationBitmap2 = shit.Plasma.PlasmaNoiseBitmap2;
                     blamDefinition = shit;
                     break;
             }
-
-            ((TagStructure)blamDefinition).PreConvert(BlamCache.Version, CacheContext.Version);
 
             if (BlamCache.Version >= CacheVersion.HaloReach)
             {
@@ -261,17 +305,14 @@ namespace TagTool.Porting.Gen3
                 }
             }
 
+            return blamDefinition;
+        }
 
-            //
-            // Perform automatic conversion on the Blam tag definition
-            //
-
-            blamDefinition = ConvertData(cacheStream, blamCacheStream, blamDefinition, blamDefinition, blamTag.Name);
-
-            //
-            // Perform post-conversion fixups to Blam data
-            //
-
+        /// <summary>
+        /// Perform post-conversion fixups to Blam data
+        /// </summary>
+        private object PostConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition, out bool isDeferred)
+        {
             ((TagStructure)blamDefinition).PostConvert(BlamCache.Version, CacheContext.Version);
 
             isDeferred = false;
@@ -510,6 +551,16 @@ namespace TagTool.Porting.Gen3
                         default:
                             break;
                     };
+
+                    if (gameobject.MultiplayerObject.Count == 0 && FlagIsSet(PortingFlags.MPobject))
+                    {
+                        gameobject.MultiplayerObject.Add(new GameObject.MultiplayerObjectBlock()
+                        {
+                            DefaultSpawnTime = 30,
+                            DefaultAbandonTime = 30
+                        });
+                    }
+
                     break;
 
                 case Globals matg:
@@ -635,21 +686,7 @@ namespace TagTool.Porting.Gen3
                     break;
 
                 case ScenarioLightmap sLdT:
-                    if (BlamCache.Version < CacheVersion.HaloReach)
-                        blamDefinition = ConvertScenarioLightmap(cacheStream, blamCacheStream, blamTag.Name, sLdT);
-                    //fixup lightmap bsp references
-                    if (BlamCache.Version >= CacheVersion.HaloReach)
-                    {
-                        for (short i = 0; i < sLdT.PerPixelLightmapDataReferences.Count; i++)
-                        {
-                            if (sLdT.PerPixelLightmapDataReferences[i].LightmapBspData != null)
-                            {
-                                var lbsp = CacheContext.Deserialize<ScenarioLightmapBspData>(cacheStream, sLdT.PerPixelLightmapDataReferences[i].LightmapBspData);
-                                lbsp.BspIndex = i;
-                                CacheContext.Serialize(cacheStream, sLdT.PerPixelLightmapDataReferences[i].LightmapBspData, lbsp);
-                            }
-                        }
-                    }
+                    blamDefinition = ConvertScenarioLightmap(cacheStream, blamCacheStream, blamTag.Name, sLdT);
                     break;
 
                 case ScenarioLightmapBspData Lbsp:
@@ -708,53 +745,8 @@ namespace TagTool.Porting.Gen3
                     break;
             }
 
-            //
-            // Shader conversion
-            //
-
-            switch (blamDefinition)
-            {
-                case ShaderFoliage rmfl:
-                case ShaderBlack rmbk:
-                case ShaderTerrain rmtr:
-                case ShaderCustom rmcs:
-                case ShaderDecal rmd:
-                case ShaderHalogram rmhg:
-                case ShaderGlass rmgl:
-                case Shader rmsh:
-                case ShaderScreen rmss:
-                case ShaderWater rmw:
-                case ShaderZonly rmzo:
-                case ContrailSystem cntl:
-                case Particle prt3:
-                case LightVolumeSystem ltvl:
-                case DecalSystem decs:
-                case BeamSystem beam:
-                case ShaderCortana rmct:
-                    if (!FlagIsSet(PortingFlags.MatchShaders))
-                    {
-                        resultTag = GetDefaultShader(blamTag.Group.Tag);
-                        return null;
-                    }
-                    else
-                    {
-                        // Verify that the ShaderMatcher is ready to use
-                        if (!Matcher.IsInitialized)
-                            Matcher.Init(CacheContext, BlamCache, cacheStream, blamCacheStream, this, FlagIsSet(PortingFlags.Ms30), FlagIsSet(PortingFlags.PefectShaderMatchOnly));
-
-                        blamDefinition = ConvertShader(cacheStream, blamCacheStream, blamDefinition, blamTag, BlamCache.Deserialize(blamCacheStream, blamTag), edTag, out isDeferred);
-                        if (blamDefinition == null) // convert shader failed
-                        {
-                            resultTag = GetDefaultShader(blamTag.Group.Tag);
-                            return null;
-                        }
-                    }
-                    break;
-            }
-
             return blamDefinition;
         }
-
 
         public override object ConvertData(Stream cacheStream, Stream blamCacheStream, object data, object definition, string blamTagName)
         {
@@ -802,7 +794,7 @@ namespace TagTool.Porting.Gen3
                     versionedFlags.ConvertFlags(BlamCache.Version, BlamCache.Platform, CacheContext.Version, CacheContext.Platform);
                     return versionedFlags;
 
-                case GameObject.MultiplayerObjectBlock multiplayer when BlamCache.Version >= CacheVersion.HaloReach:
+                case GameObject.MultiplayerObjectBlock multiplayer:
                     {
                         multiplayer.Type = multiplayer.TypeReach.ConvertLexical<MultiplayerObjectType>();
                         multiplayer.Flags = multiplayer.FlagsReach.ConvertLexical<GameObject.MultiplayerObjectBlock.MultiplayerObjectFlags>();
@@ -837,7 +829,18 @@ namespace TagTool.Porting.Gen3
                     return ConvertTargetLockOnData(lockOnData);
 
                 case RenderMethod renderMethod:
-                    return ConvertStructure(cacheStream, blamCacheStream, renderMethod, definition, blamTagName);
+                    {
+                        RenderMethod edRenderMethod = ConvertStructure(cacheStream, blamCacheStream, renderMethod.DeepCloneV2(), definition, blamTagName);
+                        if (PendingTemplates.Contains(edRenderMethod.ShaderProperties[0].Template.Name))
+                        {
+                            _traversalData.DeferredRenderMethods.Add((edRenderMethod, renderMethod));
+                        }
+                        else if (ConvertShaderInternal(cacheStream, blamCacheStream, edRenderMethod, renderMethod) == null)
+                        {
+                            _traversalData.IsFailedConversion = true;
+                        }
+                        return edRenderMethod;
+                    }
 
                 case Scenario.MultiplayerObjectProperties scnrObj when BlamCache.Version >= CacheVersion.HaloReach:
                     {

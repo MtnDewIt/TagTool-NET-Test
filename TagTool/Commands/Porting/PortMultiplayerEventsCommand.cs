@@ -3,6 +3,7 @@ using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
 using System;
 using System.Collections.Generic;
+using TagTool.Porting;
 
 namespace TagTool.Commands.Porting
 {
@@ -64,7 +65,8 @@ namespace TagTool.Commands.Porting
                 oldMulgDefinition = HoCache.Deserialize<MultiplayerGlobals>(stream, edTag);
             }
 
-            new PortTagCommand(HoCache, BlamCache).Execute(new List<string> { "replace", "mulg", @"multiplayer\multiplayer_globals" });
+            using var portingContext = PortingContext.Create(HoCache, BlamCache);
+            new PortTagCommand(HoCache, BlamCache, portingContext).Execute(new List<string> { "replace", "mulg", @"multiplayer\multiplayer_globals" });
 
             using (var stream = HoCache.OpenCacheReadWrite())
             {

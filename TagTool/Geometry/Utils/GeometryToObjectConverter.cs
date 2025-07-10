@@ -43,14 +43,14 @@ namespace TagTool.Geometry.Utils
 
         public GeometryToObjectConverter(
             GameCacheHaloOnlineBase destCache, Stream destStream, GameCache sourceCache,
-            Stream sourceStream, Scenario scenario, int structureBspIndex)
+            Stream sourceStream, Scenario scenario, int structureBspIndex, PortingContext portContext)
         {
             DestCache = destCache;
             DestStream = destStream;
             SourceCache = sourceCache;
             SourceStream = sourceStream;
             StructureBspIndex = structureBspIndex;
-            PortContext = new PortingContextGen3(destCache, sourceCache);
+            PortContext = portContext;
 
             Scenario = scenario;
             StructureBspIndex = structureBspIndex;
