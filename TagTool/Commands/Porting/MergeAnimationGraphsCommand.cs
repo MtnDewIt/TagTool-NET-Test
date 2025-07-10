@@ -8,6 +8,7 @@ using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
 using TagTool.Porting;
 using TagTool.Porting.Gen3;
+using TagTool.Animations;
 
 namespace TagTool.Commands.Porting
 {
@@ -380,29 +381,6 @@ namespace TagTool.Commands.Porting
                     }
                 }
             }
-            var resolver = CacheContext.StringTable.Resolver;
-            edModes = edModes.OrderBy(a => resolver.GetSet(a.Name)).ThenBy(a => resolver.GetIndex(a.Name)).ToList();
-
-            foreach (var edMode in edModes)
-            {
-                edMode.WeaponClass = edMode.WeaponClass.OrderBy(a => resolver.GetSet(a.Label)).ThenBy(a => resolver.GetIndex(a.Label)).ToList();
-
-                foreach (var weaponClass in edMode.WeaponClass)
-                {
-                    weaponClass.WeaponType = weaponClass.WeaponType.OrderBy(a => resolver.GetSet(a.Label)).ThenBy(a => resolver.GetIndex(a.Label)).ToList();
-
-                    foreach (var weaponType in weaponClass.WeaponType)
-                    {
-                        weaponType.Set.Actions = weaponType.Set.Actions.OrderBy(a => resolver.GetSet(a.Label)).ThenBy(a => resolver.GetIndex(a.Label)).ToList();
-                        weaponType.Set.Overlays = weaponType.Set.Overlays.OrderBy(a => resolver.GetSet(a.Label)).ThenBy(a => resolver.GetIndex(a.Label)).ToList();
-                        weaponType.Set.DeathAndDamage = weaponType.Set.DeathAndDamage.OrderBy(a => resolver.GetSet(a.Label)).ThenBy(a => resolver.GetIndex(a.Label)).ToList();
-                        weaponType.Set.Transitions = weaponType.Set.Transitions.OrderBy(a => resolver.GetSet(a.FullName)).ThenBy(a => resolver.GetIndex(a.FullName)).ToList();
-
-                        foreach (var transition in weaponType.Set.Transitions)
-                            transition.Destinations = transition.Destinations.OrderBy(a => resolver.GetSet(a.FullName)).ThenBy(a => resolver.GetIndex(a.FullName)).ToList();
-                    }
-                }
-            }
 
             return edModes;
         }
@@ -475,6 +453,7 @@ namespace TagTool.Commands.Porting
             // Finalize
             //
 
+            AnimationSorter.Sort(edDef);
             CacheContext.Serialize(CacheStream, edTag, edDef);
 
             MergedAnimationGraphs.Add(h3Tag.Name);
