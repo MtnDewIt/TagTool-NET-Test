@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using TagTool.Cache;
 using TagTool.Tags.Definitions;
 
@@ -10,6 +7,39 @@ namespace TagTool.Porting.Gen3
 {
     public partial class PortingContextGen3
     {
+        private Weapon ConvertWeapon(Stream cacheStream, Stream blamCacheStream, Weapon weapon)
+        {
+            //fix weapon target tracking
+            if (weapon.Tracking > 0 || weapon.WeaponType == Weapon.WeaponTypeValue.Needler)
+            {
+                weapon.TargetTracking =
+                [
+                    new Unit.TargetTrackingBlock
+                    {
+                        AcquireTime = (weapon.Tracking == Weapon.TrackingType.HumanTracking ? 1.0f : 0.0f),
+                        GraceTime = (weapon.WeaponType == Weapon.WeaponTypeValue.Needler ? 0.2f : 0.1f),
+                        DecayTime = (weapon.WeaponType == Weapon.WeaponTypeValue.Needler ? 0.0f : 0.2f),
+                        TrackingTypes = (weapon.Tracking == Weapon.TrackingType.HumanTracking ?
+                            [
+                                new Unit.TargetTrackingBlock.TrackingType{ TrackingType2 = CacheContext.StringTable.GetStringId("ground_vehicles") },
+                                new Unit.TargetTrackingBlock.TrackingType{ TrackingType2 = CacheContext.StringTable.GetStringId("flying_vehicles") },
+                            ]
+                            :
+                            [new Unit.TargetTrackingBlock.TrackingType{ TrackingType2 = CacheContext.StringTable.GetStringId("bipeds")}]
+                        )
+                    }
+                ];
+
+                if (weapon.Tracking == Weapon.TrackingType.HumanTracking)
+                {
+                    weapon.TargetTracking[0].TrackingSound = ConvertTag(cacheStream, blamCacheStream, BlamCache.TagCache.GetTag(@"sound\weapons\missile_launcher\tracking_locking\tracking_locking.sound_looping"));
+                    weapon.TargetTracking[0].LockedSound = ConvertTag(cacheStream, blamCacheStream, BlamCache.TagCache.GetTag(@"sound\weapons\missile_launcher\tracking_locked\tracking_locked.sound_looping"));
+                }
+            }
+
+            return weapon;
+        }
+
         private object ConvertWeaponFlags(WeaponFlags weaponFlags)
         {
             // TODO: refactor for Halo 2
@@ -68,6 +98,5 @@ namespace TagTool.Porting.Gen3
                 data.Flags = data.FlagsOld.ConvertLexical<Model.TargetLockOnData.FlagsValue>();
             return data;
         }
-
     }
 }

@@ -6,7 +6,6 @@ using TagTool.Audio;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Commands.Porting;
-using TagTool.Commands.ScenarioStructureBSPs;
 using TagTool.Common;
 using TagTool.Damage;
 using TagTool.Geometry;
@@ -22,15 +21,6 @@ namespace TagTool.Porting.Gen3
 {
     public partial class PortingContextGen3 : PortingContext
     {
-        class TraversalData
-        {
-            // A list of render methods to defer conversion until the end
-            public List<(RenderMethod RenderMethod, RenderMethod BlamRenderMethod)> DeferredRenderMethods = [];
-
-            // Should be set if some part of the tag could not be converted and would crash if used. If possible an alternate tag will be used
-            public bool IsFailedConversion = false;
-        }
-
         private readonly RenderGeometryConverter GeometryConverter;
         private TraversalData _traversalData = null;
 
@@ -45,27 +35,435 @@ namespace TagTool.Porting.Gen3
             Matcher.DeInit();
         }
 
+        protected override CachedTag GetFallbackTag(CachedTag blamTag)
+        {
+            // TODO: move this into PortingContext.cs
+            if (blamTag.IsInGroup("beam", "cntl", "decs", "ltvl", "prt3", "rm  "))
+            {
+                return GetDefaultShader(blamTag.Group.Tag);
+            }
+
+            return base.GetFallbackTag(blamTag);
+        }
+
+        protected override CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition = null)
+        {
+            if (blamTag.IsInGroup("rmt2"))
+                return FindClosestRmt2(cacheStream, blamCacheStream, blamTag);
+
+            return base.ConvertTagInternal(cacheStream, blamCacheStream, blamTag, blamDefinition);
+        }
+
+        protected override object ConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition, out bool isDeferred)
+        {
+            isDeferred = false;
+
+            TraversalData oldTraversalData = _traversalData;
+            TraversalData traversalData = _traversalData = new TraversalData();
+
+            // Perform pre-conversion fixups
+            blamDefinition = PreConvertDefinition(cacheStream, blamCacheStream, blamTag, blamDefinition);
+            // Perform automatic conversion
+            blamDefinition = ConvertData(cacheStream, blamCacheStream, blamDefinition, blamDefinition, blamTag.Name);
+            // Perform post-conversion fixups
+            blamDefinition = PostConvertDefinition(cacheStream, blamCacheStream, blamTag, edTag, blamDefinition, out isDeferred);
+
+            _traversalData = oldTraversalData;
+
+            if (traversalData.IsFailedConversion)
+                return null;
+
+            if (traversalData.DeferredRenderMethods.Count > 0)
+            {
+                // For the render methods that have pending templates defer conversion until the end
+                DeferredRenderMethods.Add(new DeferredRenderMethodData(cacheStream, blamCacheStream, edTag, blamTag, blamDefinition, traversalData.DeferredRenderMethods));
+                isDeferred = true;
+            }
+
+            return blamDefinition;
+        }
+
+        /// <summary>
+        /// Perform pre-conversion fixups to Blam data
+        /// </summary>
+        private object PreConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition)
+        {
+            ((TagStructure)blamDefinition).PreConvert(BlamCache.Version, CacheContext.Version);
+
+            if (BlamCache.Version >= CacheVersion.HaloReach)
+            {
+                PreConvertReachDefinition(cacheStream, blamCacheStream, blamDefinition);
+            }
+
+            switch (blamDefinition)
+            {
+                case Scenario scenario:
+                    if (!FlagIsSet(PortingFlags.Squads))
+                    {
+                        scenario.Squads.Clear();
+                    }
+                    if (!FlagIsSet(PortingFlags.ForgePalette))
+                    {
+                        scenario.SandboxEquipment.Clear();
+                        scenario.SandboxGoalObjects.Clear();
+                        scenario.SandboxScenery.Clear();
+                        scenario.SandboxSpawning.Clear();
+                        scenario.SandboxTeleporters.Clear();
+                        scenario.SandboxVehicles.Clear();
+                        scenario.SandboxWeapons.Clear();
+                    }
+                    break;
+
+                case ShieldImpact shit when BlamCache.Version < CacheVersion.HaloOnlineED:
+                    shit = PreConvertShieldImpact(shit, BlamCache.Version, CacheContext);
+                    // These won't convert automatically due to versioning
+                    shit.Plasma.PlasmaNoiseBitmap1 = ConvertTag(cacheStream, blamCacheStream, shit.Plasma.PlasmaNoiseBitmap1);
+                    shit.Plasma.PlasmaNoiseBitmap2 = ConvertTag(cacheStream, blamCacheStream, shit.Plasma.PlasmaNoiseBitmap2);
+                    shit.ExtrusionOscillation.OscillationBitmap1 = shit.Plasma.PlasmaNoiseBitmap1;
+                    shit.ExtrusionOscillation.OscillationBitmap2 = shit.Plasma.PlasmaNoiseBitmap2;
+                    blamDefinition = shit;
+                    break;
+            }
+
+            return blamDefinition;
+        }
+
+        /// <summary>
+        /// Perform post-conversion fixups to Blam data
+        /// </summary>
+        private object PostConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition, out bool isDeferred)
+        {
+            ((TagStructure)blamDefinition).PostConvert(BlamCache.Version, CacheContext.Version);
+
+            isDeferred = false;
+            switch (blamDefinition)
+            {
+                case AreaScreenEffect sefc:
+                    blamDefinition = ConvertAreaScreenEffect(sefc);
+                    break;
+
+                case Bitmap bitm:
+                    isDeferred = true;
+                    blamDefinition = ConvertBitmapAsync(cacheStream, edTag, blamTag, bitm);
+                    break;
+
+                case CameraFxSettings cfxs:
+                    blamDefinition = ConvertCameraFxSettings(cfxs, blamTag.Name);
+                    break;
+
+                case Character character:
+                    blamDefinition = ConvertCharacter(cacheStream, character);
+                    break;
+
+                case ChudDefinition chdt:
+                    blamDefinition = ConvertChudDefinition(chdt);
+                    break;
+
+                case ChudGlobalsDefinition chudGlobals:
+                    blamDefinition = ConvertChudGlobalsDefinition(cacheStream, blamCacheStream, chudGlobals);
+                    break;
+
+                case ChudAnimationDefinition chudAnimation:
+                    blamDefinition = ConvertChudAnimationDefinition(chudAnimation);
+                    break;
+
+                case CinematicScene cisc:
+                    blamDefinition = ConvertCinematicScene(cisc);
+                    break;
+
+                case CortanaEffectDefinition crte:
+                    blamDefinition = ConvertCortanaEffectDefinition(crte);
+                    break;
+
+                case DamageEffect damageEffect:
+                    blamDefinition = ConvertDamageEffect(damageEffect);
+                    break;
+                case DamageResponseDefinition damageResponse:
+                    blamDefinition = ConvertDamageResponseDefinition(blamCacheStream, damageResponse);
+                    break;
+
+                case DecoratorSet decoratorSet when BlamCache.Version >= CacheVersion.HaloReach:
+                    blamDefinition = ConvertDecoratorSetReach(decoratorSet);
+                    break;
+
+                case Dialogue udlg:
+                    blamDefinition = ConvertDialogue(cacheStream, udlg);
+                    break;
+
+                case Effect effe:
+                    blamDefinition = ConvertEffect(cacheStream, effe, blamTag.Name);
+                    break;
+
+                case Equipment eqip:
+                    Enum.TryParse(eqip.EquipmentFlagsH3.ToString(), out eqip.EquipmentFlags);
+                    break;
+
+                case GameObject gameobject:
+                    blamDefinition = ConvertGameObject(cacheStream, blamCacheStream, gameobject);
+                    break;
+
+                case Globals matg:
+                    blamDefinition = ConvertGlobals(matg, cacheStream);
+                    break;
+
+                case LensFlare lens:
+                    blamDefinition = ConvertLensFlare(lens, cacheStream, blamCacheStream);
+                    break;
+
+                case Light ligh:
+                    blamDefinition = ConvertLight(ligh);
+                    break;
+
+                case Model hlmt:
+                    blamDefinition = ConvertModel(hlmt);
+                    break;
+
+                case ModelAnimationGraph jmad:
+                    blamDefinition = ConvertModelAnimationGraph(cacheStream, blamCacheStream, jmad);
+                    break;
+
+                case MultilingualUnicodeStringList unic:
+                    blamDefinition = ConvertMultilingualUnicodeStringList(cacheStream, blamCacheStream, unic);
+                    break;
+
+                case Particle particle:
+                    blamDefinition = ConvertParticle(particle);
+                    break;
+
+                case ParticleModel particleModel:
+                    blamDefinition = ConvertParticleModel(edTag, blamTag, particleModel);
+                    break;
+
+                case PhysicsModel phmo:
+                    blamDefinition = ConvertPhysicsModel(edTag, phmo);
+                    break;
+
+                case RasterizerGlobals rasg:
+                    blamDefinition = ConvertRasterizerGlobals(rasg);
+                    break;
+
+                case RenderMethodOption rmop:
+                    blamDefinition = ConvertRenderMethodOption(rmop);
+                    break;
+
+                case RenderModel mode:
+                    blamDefinition = ConvertGen3RenderModel(edTag, blamTag, mode);
+                    break;
+
+                case Scenario scnr:
+                    blamDefinition = ConvertScenario(cacheStream, blamCacheStream, scnr, blamTag.Name);
+                    break;
+
+                case ScenarioLightmap sLdT:
+                    blamDefinition = ConvertScenarioLightmap(cacheStream, blamCacheStream, blamTag.Name, sLdT);
+                    break;
+
+                case ScenarioLightmapBspData Lbsp:
+                    blamDefinition = ConvertScenarioLightmapBspData(Lbsp);
+                    break;
+
+                case ScenarioStructureBsp sbsp:
+                    blamDefinition = ConvertScenarioStructureBsp(sbsp, edTag);
+                    break;
+
+                case Sound sound:
+                    isDeferred = true;
+                    blamDefinition = ConvertSound(cacheStream, blamCacheStream, sound, edTag, blamTag.Name);
+                    break;
+                case SoundClasses sncl:
+                    blamDefinition = ConvertSoundClasses(sncl, BlamCache.Version);
+                    break;
+
+                case SoundLooping lsnd:
+                    blamDefinition = ConvertSoundLooping(lsnd);
+                    break;
+
+                case SoundMix snmx:
+                    blamDefinition = ConvertSoundMix(snmx);
+                    break;
+
+                case Style style:
+                    blamDefinition = ConvertStyle(style);
+                    break;
+
+                case TextValuePairDefinition sily:
+                    Enum.TryParse(sily.ParameterH3.ToString(), out sily.Parameter);
+                    break;
+
+                case UserInterfaceSharedGlobalsDefinition wigl:
+                    blamDefinition = ConvertUserInterfaceSharedGlobals(wigl);
+                    break;
+            }
+
+            return blamDefinition;
+        }
+
+        public override object ConvertData(Stream cacheStream, Stream blamCacheStream, object data, object definition, string blamTagName)
+        {
+            switch (data)
+            {
+                case TagResourceReference:
+                    return data;
+
+                case TagFunction tagFunction:
+                    return ConvertTagFunction(tagFunction);
+
+                case TagHkpMoppCode hkpMoppCode when definition is not StructureDesign:
+                    //Structure design mopp codes are NOT converted
+                    hkpMoppCode.Data.Elements = HavokConverter.ConvertMoppCodes(BlamCache.Version, BlamCache.Platform, CacheContext.Version, hkpMoppCode.Data.Elements);
+                    return hkpMoppCode;
+
+                case PhysicsModel.PhantomTypeFlags phantomTypeFlags:
+                    return ConvertPhantomTypeFlags(blamTagName, phantomTypeFlags);
+
+                case PhysicsModel.Shape shape:
+                    shape = ConvertStructure(cacheStream, blamCacheStream, shape, definition, blamTagName);
+                    // might be from 3, had no reference
+                    shape.ProxyCollisionGroup = shape.ProxyCollisionGroup > 2 ? (sbyte)(shape.ProxyCollisionGroup + 1) : shape.ProxyCollisionGroup;
+                    return shape;
+
+                case DamageReportingType damageReportingType:
+                    return ConvertDamageReportingType(damageReportingType);
+
+                case GameObjectType8 gameObjectType:
+                    gameObjectType.SetValue(CacheContext.Version, gameObjectType.GetValue(BlamCache.Version));
+                    return gameObjectType;
+                case GameObjectType16 gameObjectType:
+                    gameObjectType.SetValue(CacheContext.Version, gameObjectType.GetValue(BlamCache.Version));
+                    return gameObjectType;
+                case GameObjectType32 gameObjectType:
+                    gameObjectType.SetValue(CacheContext.Version, gameObjectType.GetValue(BlamCache.Version));
+                    return gameObjectType;
+
+                case ObjectTypeFlags objectTypeFlags:
+                    return ConvertObjectTypeFlags(objectTypeFlags);
+
+                case VersionedFlags versionedFlags:
+                    versionedFlags.ConvertFlags(BlamCache.Version, BlamCache.Platform, CacheContext.Version, CacheContext.Platform);
+                    return versionedFlags;
+
+                case GameObject.MultiplayerObjectBlock multiplayer:
+                    return ConvertMultiplayerObject(cacheStream, blamCacheStream, definition, blamTagName, multiplayer);
+
+                case BipedPhysicsFlags bipedPhysicsFlags:
+                    return ConvertBipedPhysicsFlags(bipedPhysicsFlags);
+
+                case WeaponFlags weaponFlags:
+                    return ConvertWeaponFlags(weaponFlags);
+
+                case Weapon.Trigger trigger:
+                    trigger = ConvertStructure(cacheStream, blamCacheStream, trigger, definition, blamTagName);
+                    return ConvertWeaponTrigger(trigger);
+
+                case BarrelFlags barrelflags:
+                    return ConvertBarrelFlags(barrelflags);
+
+                case Model.TargetLockOnData lockOnData:
+                    return ConvertTargetLockOnData(lockOnData);
+
+                case RenderMethod renderMethod:
+                    RenderMethod edRenderMethod = ConvertStructure(cacheStream, blamCacheStream, renderMethod.DeepCloneV2(), definition, blamTagName);
+                    if (PendingTemplates.Contains(edRenderMethod.ShaderProperties[0].Template.Name))
+                        _traversalData.DeferredRenderMethods.Add((edRenderMethod, renderMethod));
+                    else if (ConvertShaderInternal(cacheStream, blamCacheStream, edRenderMethod, renderMethod) == null)
+                        _traversalData.IsFailedConversion = true;
+                    return edRenderMethod;
+
+                case Scenario.MultiplayerObjectProperties scnrObj:
+                    scnrObj = ConvertStructure(cacheStream, blamCacheStream, scnrObj, definition, blamTagName);
+                    return ConvertScenarioObjectMultiplayer(cacheStream, blamCacheStream, definition, blamTagName, scnrObj);
+
+                case SoundClass soundClass:
+                    return soundClass.ConvertSoundClass(BlamCache.Version);
+
+                case GuiTextWidgetDefinition guiTextWidget:
+                    guiTextWidget = ConvertStructure(cacheStream, blamCacheStream, guiTextWidget, definition, blamTagName);
+                    return ConvertGuiTextWidget(cacheStream, blamCacheStream, definition, blamTagName, guiTextWidget);
+
+                case GuiDefinition guidefinition:
+                    guidefinition = ConvertStructure(cacheStream, blamCacheStream, guidefinition, definition, blamTagName);
+                    return ConvertGuiDefinition(cacheStream, blamCacheStream, definition, blamTagName, guidefinition);
+
+                case RuntimeGpuData runMGpu:
+                    return ConvertRuntimeGpuData(runMGpu);
+
+                case CollisionGeometry collisionGeometry:
+                    return ConvertCollisionBsp(collisionGeometry);
+
+                case CollisionBspPhysicsDefinition collisionBspPhysics when BlamCache.Version >= CacheVersion.HaloReach:
+                    collisionBspPhysics = ConvertStructure(cacheStream, blamCacheStream, collisionBspPhysics, definition, blamTagName);
+                    return ConvertCollisionBspPhysicsReach(collisionBspPhysics);
+
+                case RenderGeometry renderGeometry when BlamCache.Version >= CacheVersion.Halo3Retail:
+                    renderGeometry = ConvertStructure(cacheStream, blamCacheStream, renderGeometry, definition, blamTagName);
+                    return renderGeometry;
+
+                case Part part when BlamCache.Version < CacheVersion.Halo3Retail:
+                    part = ConvertStructure(cacheStream, blamCacheStream, part, definition, blamTagName);
+                    if (!Enum.TryParse(part.TypeOld.ToString(), out part.TypeNew))
+                        throw new NotSupportedException(part.TypeOld.ToString());
+                    return part;
+
+                case RenderMaterial.Property property when BlamCache.Version < CacheVersion.Halo3Retail:
+                    property = ConvertStructure(cacheStream, blamCacheStream, property, definition, blamTagName);
+                    property.IntValue = property.ShortValue;
+                    return property;
+
+                case PixelShaderReference _:
+                case VertexShaderReference _:
+                    return null;
+
+                default:
+                    return base.ConvertData(cacheStream, blamCacheStream, data, definition, blamTagName);
+            }
+        }
+
+        private TagFunction ConvertTagFunction(TagFunction function)
+        {
+            return TagFunction.ConvertTagFunction(CacheVersionDetection.IsLittleEndian(BlamCache.Version, BlamCache.Platform) ? EndianFormat.LittleEndian : EndianFormat.BigEndian, function);
+        }
+
+        protected override object ConvertFieldvalue(Stream cacheStream, Stream blamCacheStream, TagFieldInfo tagFieldInfo, object value, object definition, string blamTagName)
+        {
+            value = base.ConvertFieldvalue(cacheStream, blamCacheStream, tagFieldInfo, value, definition, blamTagName);
+
+            if (tagFieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.GlobalMaterial))
+            {
+                value = ConvertGlobalMaterialTypeField(cacheStream, blamCacheStream, tagFieldInfo, value);
+            }
+
+            return value;
+        }
+
+        protected override void MergeTags(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag)
+        {
+            switch (blamTag.Group.Tag.ToString())
+            {
+                case "char":
+                    MergeCharacter(cacheStream, blamCacheStream, edTag, blamTag);
+                    break;
+
+                case "mulg":
+                    MergeMultiplayerGlobals(cacheStream, blamCacheStream, edTag, blamTag);
+                    break;
+
+                case "unic":
+                    MergeMultilingualUnicodeStringList(cacheStream, blamCacheStream, edTag, blamTag);
+                    break;
+            }
+        }
+
         protected override bool TagIsValid(CachedTag blamTag, Stream cacheStream, Stream blamCacheStream, out CachedTag resultTag)
         {
             resultTag = null;
 
-            Tag groupTag = blamTag.Group.Tag;
-            switch (groupTag.ToString())
+            switch (blamTag.Group.Tag.ToString())
             {
-                case "snd!":
-                    if (!FlagIsSet(PortingFlags.Audio))
-                    {
-                        PortingConstants.DefaultTagNames.TryGetValue(groupTag, out string defaultSoundName);
-                        CacheContext.TagCache.TryGetTag($"{defaultSoundName}.{groupTag}", out resultTag);
-                        return false;
-                    }
-                    break;
-
                 case "udlg":
                     if (!FlagIsSet(PortingFlags.Dialogue))
                     {
-                        PortingConstants.DefaultTagNames.TryGetValue(groupTag, out string defaultUdlgName);
-                        CacheContext.TagCache.TryGetTag($"{defaultUdlgName}.{groupTag}", out resultTag);
+                        PortingConstants.DefaultTagNames.TryGetValue(blamTag.Group.Tag, out string defaultUdlgName);
+                        CacheContext.TagCache.TryGetTag($"{defaultUdlgName}.{blamTag.Group.Tag}", out resultTag);
                         return false;
                     }
                     break;
@@ -74,10 +472,11 @@ namespace TagTool.Porting.Gen3
                     if (!FlagIsSet(PortingFlags.Elites) && (blamTag.Name.Contains("elite") || blamTag.Name.Contains("dervish")))
                         return false;
                     break;
+
                 case "char" when BlamCache.Version >= CacheVersion.HaloReach:
                     return false;
 
-                case "sncl" when BlamCache.Version > CacheVersion.HaloOnline700123:
+                case "sncl" when BlamCache.Version >= CacheVersion.HaloReach:
                     resultTag = CacheContext.TagCache.GetTag<SoundClasses>(@"sound\sound_classes");
                     return false;
 
@@ -165,6 +564,8 @@ namespace TagTool.Porting.Gen3
             }
             else if (PortingConstants.RenderMethodGroups.Contains(blamTag.Group.Tag))
             {
+                // TODO: should probably be handling the effect system tags also
+
                 RenderMethod renderMethod = BlamCache.Deserialize<RenderMethod>(blamCacheStream, blamTag);
 
                 if (BlamCache.Version >= CacheVersion.HaloReach)
@@ -182,6 +583,7 @@ namespace TagTool.Porting.Gen3
                 if (TagTool.Shaders.ShaderMatching.ShaderMatcherNew.Rmt2Descriptor.TryParse(templateName, out var rmt2Descriptor))
                 {
                     foreach (var tag in CacheContext.TagCacheGenHO.TagTable)
+                    {
                         if (tag != null && tag.Group.Tag == "rmt2" && (tag.Name.Contains(rmt2Descriptor.Type) || FlagIsSet(PortingFlags.GenerateShaders)))
                         {
                             if ((FlagIsSet(PortingFlags.Ms30) && tag.Name.StartsWith("ms30\\")) || (!FlagIsSet(PortingFlags.Ms30) && !tag.Name.StartsWith("ms30\\")))
@@ -190,6 +592,7 @@ namespace TagTool.Porting.Gen3
                             else if (tag.Name.StartsWith("ms30\\"))
                                 continue;
                         }
+                    }
                 };
                 // TODO: add code for "!MatchShaders" -- if a perfect match isnt found a null tag will be left in the cache
 
@@ -201,808 +604,13 @@ namespace TagTool.Porting.Gen3
             return true;
         }
 
-        protected override CachedTag GetFallbackTag(CachedTag blamTag)
+        class TraversalData
         {
-            // TODO: move this into PortingContext.cs
-            if (blamTag.IsInGroup("beam", "cntl", "decs", "ltvl", "prt3", "rm  "))
-            {
-                return GetDefaultShader(blamTag.Group.Tag);
-            }
-
-            return base.GetFallbackTag(blamTag);
-        }
-
-        protected override CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition = null)
-        {
-            if (blamTag.IsInGroup("rmt2"))
-                return FindClosestRmt2(cacheStream, blamCacheStream, blamTag);
-
-            return base.ConvertTagInternal(cacheStream, blamCacheStream, blamTag, blamDefinition);
-        }
-
-        protected override object ConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition, out bool isDeferred)
-        {
-            isDeferred = false;
-
-            TraversalData oldTraversalData = _traversalData;
-            TraversalData traversalData = _traversalData = new TraversalData();
-
-            // Perform pre-conversion fixups
-            blamDefinition = PreConvertDefinition(cacheStream, blamCacheStream, blamTag, blamDefinition);
-            // Perform automatic conversion
-            blamDefinition = ConvertData(cacheStream, blamCacheStream, blamDefinition, blamDefinition, blamTag.Name);
-            // Perform post-conversion fixups
-            blamDefinition = PostConvertDefinition(cacheStream, blamCacheStream, blamTag, edTag, blamDefinition, out isDeferred);
-
-            _traversalData = oldTraversalData;
-
-            if (traversalData.IsFailedConversion)
-                return null;
-
-            if (traversalData.DeferredRenderMethods.Count > 0)
-            {
-                // For the render methods that have pending templates defer conversion until the end
-                DeferredRenderMethods.Add(new DeferredRenderMethodData(cacheStream, blamCacheStream, edTag, blamTag, blamDefinition, traversalData.DeferredRenderMethods));
-                isDeferred = true;
-            }
-
-            return blamDefinition;
-        }
-
-        /// <summary>
-        /// Perform pre-conversion fixups to Blam data
-        /// </summary>
-        private object PreConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition)
-        {
-            ((TagStructure)blamDefinition).PreConvert(BlamCache.Version, CacheContext.Version);
-
-            if (BlamCache.Version >= CacheVersion.HaloReach)
-            {
-                PreConvertReachDefinition(blamDefinition, blamCacheStream);
-            }
-
-            switch (blamDefinition)
-            {
-                case RenderModel mode when BlamCache.Version < CacheVersion.Halo3Retail:
-                    foreach (var material in mode.Materials)
-                        material.RenderMethod = null;
-                    break;
-
-                case Scenario scenario:
-                    if (!FlagIsSet(PortingFlags.Squads))
-                    {
-                        scenario.Squads.Clear();
-                    }
-                    if (!FlagIsSet(PortingFlags.ForgePalette))
-                    {
-                        scenario.SandboxEquipment.Clear();
-                        scenario.SandboxGoalObjects.Clear();
-                        scenario.SandboxScenery.Clear();
-                        scenario.SandboxSpawning.Clear();
-                        scenario.SandboxTeleporters.Clear();
-                        scenario.SandboxVehicles.Clear();
-                        scenario.SandboxWeapons.Clear();
-                    }
-                    break;
-
-                case ShieldImpact shit when BlamCache.Version < CacheVersion.HaloOnlineED:
-                    shit = PreConvertShieldImpact(shit, BlamCache.Version, CacheContext);
-                    // These won't convert automatically due to versioning
-                    shit.Plasma.PlasmaNoiseBitmap1 = ConvertTag(cacheStream, blamCacheStream, shit.Plasma.PlasmaNoiseBitmap1);
-                    shit.Plasma.PlasmaNoiseBitmap2 = ConvertTag(cacheStream, blamCacheStream, shit.Plasma.PlasmaNoiseBitmap2);
-                    shit.ExtrusionOscillation.OscillationBitmap1 = shit.Plasma.PlasmaNoiseBitmap1;
-                    shit.ExtrusionOscillation.OscillationBitmap2 = shit.Plasma.PlasmaNoiseBitmap2;
-                    blamDefinition = shit;
-                    break;
-            }
-
-            if (BlamCache.Version >= CacheVersion.HaloReach)
-            {
-                if (blamDefinition is Scenario scnr)
-                {
-                    var lightmap = BlamCache.Deserialize<ScenarioLightmap>(blamCacheStream, scnr.Lightmap);
-                    ConvertReachLightmap(cacheStream, blamCacheStream, scnr.Lightmap.Name, lightmap);
-                }
-            }
-
-            return blamDefinition;
-        }
-
-        /// <summary>
-        /// Perform post-conversion fixups to Blam data
-        /// </summary>
-        private object PostConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition, out bool isDeferred)
-        {
-            ((TagStructure)blamDefinition).PostConvert(BlamCache.Version, CacheContext.Version);
-
-            isDeferred = false;
-            switch (blamDefinition)
-            {
-                case AreaScreenEffect sefc:
-                    if (BlamCache.Version < CacheVersion.Halo3ODST)
-                    {
-                        sefc.GlobalHiddenFlags = AreaScreenEffect.HiddenFlagBits.UpdateThread | AreaScreenEffect.HiddenFlagBits.RenderThread;
-
-                        foreach (var screenEffect in sefc.ScreenEffects)
-                            screenEffect.HiddenFlags = AreaScreenEffect.HiddenFlagBits.UpdateThread | AreaScreenEffect.HiddenFlagBits.RenderThread;
-                    }
-                    foreach (var screenEffect in sefc.ScreenEffects)
-                    {
-                        //convert flags
-                        if (BlamCache.Version == CacheVersion.Halo3Retail)
-                            Enum.TryParse(screenEffect.Flags_H3.ToString(), out screenEffect.Flags_ODST);
-                        else if (BlamCache.Version >= CacheVersion.HaloOnline106708 && BlamCache.Version <= CacheVersion.HaloOnline700123)
-                            Enum.TryParse(screenEffect.Flags.ToString(), out screenEffect.Flags_ODST);
-
-                        if (CacheContext.StringTable.GetString(screenEffect.InputVariable) == "saved_film_vision_mode_intensity")
-                            screenEffect.Flags_ODST |= AreaScreenEffect.ScreenEffectBlock.SefcFlagBits_ODST.DebugDisable; // prevents spawning and rendering
-
-                        if (screenEffect.ObjectFalloff.Data.Length == 0)
-                            screenEffect.ObjectFalloff = TagFunction.DefaultConstant;
-                    }
-
-                    break;
-
-                case Bitmap bitm:
-                    //support bitmap conversion for HO generation caches
-                    if (CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, BlamCache.Version))
-                    {
-                        for (var tex = 0; tex < bitm.HardwareTextures.Count; tex++)
-                        {
-                            var blamResourceDefinition = BlamCache.ResourceCache.GetBitmapTextureInteropResource(bitm.HardwareTextures[tex]);
-                            bitm.HardwareTextures[tex] = CacheContext.ResourceCache.CreateBitmapResource(blamResourceDefinition);
-                        }
-                        blamDefinition = bitm;
-                        break;
-                    }
-                    isDeferred = true;
-                    blamDefinition = ConvertBitmapAsync(cacheStream, edTag, blamTag, bitm);
-                    break;
-
-                case CameraFxSettings cfxs:
-                    blamDefinition = ConvertCameraFxSettings(cfxs, blamTag.Name);
-                    break;
-
-                case Character character:
-                    blamDefinition = ConvertCharacter(cacheStream, character);
-                    break;
-
-                case ChudDefinition chdt:
-                    blamDefinition = ConvertChudDefinition(chdt);
-                    break;
-
-                case ChudGlobalsDefinition chudGlobals:
-                    blamDefinition = ConvertChudGlobalsDefinition(cacheStream, blamCacheStream, chudGlobals);
-                    break;
-
-                case ChudAnimationDefinition chudAnimation:
-                    {
-                        if (BlamCache.Version >= CacheVersion.HaloReach)
-                        {
-                            Enum.TryParse(chudAnimation.ReachFlags.ToString(), out chudAnimation.Flags);
-                        }
-                    }
-                    break;
-
-                case CinematicScene cisc when BlamCache.Version == CacheVersion.Halo3ODST:
-                    foreach (var shot in cisc.Shots)
-                    {
-                        foreach (var frame in shot.CameraFrames)
-                        {
-                            frame.FocalLength *= 0.65535f; // fov change in ODST affected cisc too it seems
-                        }
-                    }
-                    break;
-                case CortanaEffectDefinition crte:
-                    foreach (var gravemindblock in crte.Gravemind)
-                    {
-                        foreach (var vignetteblock in gravemindblock.Vignette)
-                        {
-                            foreach (var dynamicvaluesblock in vignetteblock.DynamicValues)
-                            {
-                                foreach (var framesblock in dynamicvaluesblock.Frames)
-                                {
-                                    // scale (since this is chud)
-                                    framesblock.Dynamicvalue1 *= 1.5f;
-                                    framesblock.Dynamicvalue2 *= 1.5f;
-                                }
-                            }
-                        }
-                    }
-                    break;
-
-                case DamageEffect damageEffect:
-                    blamDefinition = ConvertDamageEffect(damageEffect);
-                    break;
-                case DamageResponseDefinition damageResponse:
-                    blamDefinition = ConvertDamageResponseDefinition(blamCacheStream, damageResponse);
-                    break;
-
-                case DecoratorSet decoratorSet when BlamCache.Version >= CacheVersion.HaloReach:
-                    blamDefinition = ConvertDecoratorSetReach(decoratorSet);
-                    break;
-
-                case Dialogue udlg:
-                    blamDefinition = ConvertDialogue(cacheStream, udlg);
-                    break;
-
-                case Effect effe:
-                    blamDefinition = ConvertEffect(cacheStream, effe, blamTag.Name);
-                    break;
-
-                case Equipment eqip:
-                    Enum.TryParse(eqip.EquipmentFlagsH3.ToString(), out eqip.EquipmentFlags);
-                    break;
-
-                case GameObject gameobject:
-                    //fix AI object avoidance
-                    if (gameobject.Model != null)
-                    {
-                        var childmodeltag = CacheContext.TagCache.GetTag(gameobject.Model.Index);
-                        if (childmodeltag.DefinitionOffset > 0) //sometimes a tag that isn't ported yet can be referenced here, which causes a crash
-                        {
-                            var childmodel = CacheContext.Deserialize<Model>(cacheStream, childmodeltag);
-                            if (childmodel.CollisionModel != null)
-                            {
-                                var childcollisionmodel = CacheContext.Deserialize<CollisionModel>(cacheStream, childmodel.CollisionModel);
-                                if (childcollisionmodel.PathfindingSpheres.Count > 0)
-                                {
-                                    gameobject.PathfindingSpheres = new List<GameObject.PathfindingSphere>();
-                                    for (var i = 0; i < childcollisionmodel.PathfindingSpheres.Count; i++)
-                                    {
-                                        gameobject.PathfindingSpheres.Add(new GameObject.PathfindingSphere
-                                        {
-                                            Node = childcollisionmodel.PathfindingSpheres[i].Node,
-                                            Flags = (GameObject.PathfindingSphereFlags)childcollisionmodel.PathfindingSpheres[i].Flags,
-                                            Center = childcollisionmodel.PathfindingSpheres[i].Center,
-                                            Radius = childcollisionmodel.PathfindingSpheres[i].Radius
-                                        });
-                                    }
-                                }
-
-                                // fix rare instances of coll with bsp physics lacking required model reference
-                                bool collFixed = false;
-                                foreach (var region in childcollisionmodel.Regions)
-                                    foreach (var permutation in region.Permutations.Where(x => x.BspPhysics.Any()))
-                                        foreach (var bspphysics in permutation.BspPhysics)
-                                        {
-                                            if (bspphysics.GeometryShape.Model == null)
-                                            {
-                                                bspphysics.GeometryShape.Model = childmodeltag;
-                                                collFixed = true;
-                                            }
-                                        }
-
-                                if (collFixed)
-                                    CacheContext.Serialize(cacheStream, childmodel.CollisionModel, childcollisionmodel);
-                            }
-                        }
-                    };
-
-                    //all gameobjects are handled within this subswitch now
-                    switch (gameobject)
-                    {
-                        case Weapon weapon:
-                            //fix weapon target tracking
-                            if (weapon.Tracking > 0 || weapon.WeaponType == Weapon.WeaponTypeValue.Needler)
-                            {
-                                weapon.TargetTracking = new List<Unit.TargetTrackingBlock>{
-                                    new Unit.TargetTrackingBlock{
-                                        AcquireTime = (weapon.Tracking == Weapon.TrackingType.HumanTracking ? 1.0f : 0.0f),
-                                        GraceTime = (weapon.WeaponType == Weapon.WeaponTypeValue.Needler ? 0.2f : 0.1f),
-                                        DecayTime = (weapon.WeaponType == Weapon.WeaponTypeValue.Needler ? 0.0f : 0.2f),
-                                        TrackingTypes = (weapon.Tracking == Weapon.TrackingType.HumanTracking ?
-                                            new List<Unit.TargetTrackingBlock.TrackingType> {
-                                                new Unit.TargetTrackingBlock.TrackingType{
-                                                    TrackingType2 = CacheContext.StringTable.GetStringId("ground_vehicles")
-                                                },
-                                                new Unit.TargetTrackingBlock.TrackingType{
-                                                    TrackingType2 = CacheContext.StringTable.GetStringId("flying_vehicles")
-                                                },
-                                            }
-                                            :
-                                            new List<Unit.TargetTrackingBlock.TrackingType> {
-                                                new Unit.TargetTrackingBlock.TrackingType{
-                                                    TrackingType2 = CacheContext.StringTable.GetStringId("bipeds")
-                                                },
-                                        })
-                                    }
-                                };
-                                if (weapon.Tracking == Weapon.TrackingType.HumanTracking)
-                                {
-                                    weapon.TargetTracking[0].TrackingSound = ConvertTag(cacheStream, blamCacheStream, BlamCache.TagCache.GetTag(@"sound\weapons\missile_launcher\tracking_locking\tracking_locking.sound_looping"));
-                                    weapon.TargetTracking[0].LockedSound = ConvertTag(cacheStream, blamCacheStream, BlamCache.TagCache.GetTag(@"sound\weapons\missile_launcher\tracking_locked\tracking_locked.sound_looping"));
-                                }
-                            }
-                            break;
-                        /*case Vehicle vehicle:
-                            //fix vehicle weapon target tracking
-                            if (vehicle.TargetTracking == null)
-                                vehicle.TargetTracking = new List<Unit.TargetTrackingBlock>();
-                            foreach (var weaponBlock in vehicle.Weapons)
-                            {
-                                if (weaponBlock.Weapon2 != null)
-                                {
-                                    var vehicleWeap = CacheContext.Deserialize<Weapon>(cacheStream, weaponBlock.Weapon2);
-                                    if (vehicleWeap.Tracking > 0 && vehicleWeap.TargetTracking.Count > 0)
-                                    {
-                                        vehicle.TargetTracking.AddRange(vehicleWeap.TargetTracking);
-                                    }
-                                }
-                            }
-                            break;*/
-                        case Biped biped:
-                            // add bipeds filter to "target_main" (fixes needler tracking)
-                            if (biped.Model != null)
-                            {
-                                var hlmt = CacheContext.Deserialize<Model>(cacheStream, biped.Model);
-
-                                foreach (var target in hlmt.Targets)
-                                {
-                                    if (target.LockOnData.TrackingType == StringId.Invalid && CacheContext.StringTable.GetString(target.MarkerName) == "target_main")
-                                    {
-                                        target.LockOnData.TrackingType = CacheContext.StringTable.GetStringId("bipeds");
-                                    }
-                                }
-
-                                CacheContext.Serialize(cacheStream, biped.Model, hlmt);
-                            }
-                            break;
-                        default:
-                            break;
-                    };
-
-                    if (gameobject.MultiplayerObject.Count == 0 && FlagIsSet(PortingFlags.MPobject))
-                    {
-                        gameobject.MultiplayerObject.Add(new GameObject.MultiplayerObjectBlock()
-                        {
-                            DefaultSpawnTime = 30,
-                            DefaultAbandonTime = 30
-                        });
-                    }
-
-                    break;
-
-                case Globals matg:
-                    blamDefinition = ConvertGlobals(matg, cacheStream);
-                    break;
-
-                case LensFlare lens:
-                    blamDefinition = ConvertLensFlare(lens, cacheStream, blamCacheStream);
-                    break;
-
-                case Light ligh when BlamCache.Version >= CacheVersion.HaloReach:
-                    {
-                        Enum.TryParse(ligh.ReachFlags.ToString(), out ligh.Flags);
-
-                        if (ligh.DistanceDiffusionReach == 0)
-                            ligh.DistanceDiffusion = 10f;
-                        else
-                            ligh.DistanceDiffusion = ligh.DistanceDiffusionReach;
-
-                        ligh.AngularSmoothness = ligh.AngularFalloffSpeed;
-
-                        if (ligh.GelBitmap != null)
-                        {
-                            ligh.Flags |= Light.LightFlags.AllowShadowsAndGels;
-                            ligh.FrustumHeightScale = 1;
-                            ligh.DistanceDiffusion = 0.0001f;
-                            ligh.AngularSmoothness = 0;
-                        }
-                    }
-                    break;
-
-                case Model hlmt:
-                    foreach (var target in hlmt.Targets)
-                    {
-                        if (BlamCache.Version <= CacheVersion.Halo3ODST)
-                        {
-                            if (target.LockOnData.FlagsOld.HasFlag(Model.TargetLockOnData.FlagsValueOld.LockedByHumanTracking))
-                                target.LockOnData.TrackingType = CacheContext.StringTable.GetStringId("flying_vehicles");
-                            else if (target.LockOnData.FlagsOld.HasFlag(Model.TargetLockOnData.FlagsValueOld.LockedByPlasmaTracking))
-                                target.LockOnData.TrackingType = CacheContext.StringTable.GetStringId("bipeds");
-                        }
-                    }
-                    break;
-
-                case ModelAnimationGraph jmad:
-                    blamDefinition = ConvertModelAnimationGraph(cacheStream, blamCacheStream, jmad);
-                    break;
-
-                case MultilingualUnicodeStringList unic:
-                    blamDefinition = ConvertMultilingualUnicodeStringList(cacheStream, blamCacheStream, unic);
-                    break;
-
-                case Particle particle:
-                    if (BlamCache.Version == CacheVersion.Halo3Retail) // Shift all flags above 5 by 1.
-                    {
-                        int flagsH3 = (int)particle.FlagsH3;
-                        particle.Flags = (Particle.FlagsValue)((flagsH3 & 0x1F) + ((int)(flagsH3 & 0xFFFFFFE0) << 1));
-                        //particle.Flags &= ~Particle.FlagsValue.DiesInWater; // h3 particles in odst seem to have this flag unset - does it behave differently?
-                    }
-                    else if (BlamCache.Version >= CacheVersion.HaloReach) // Shift all flags above 11 by 2
-                    {
-                        int flagsReach = (int)particle.AppearanceFlagsReach;
-                        particle.AppearanceFlags = (Particle.AppearanceFlagsValue)((flagsReach & 0xFF) + ((flagsReach & 0x3F000) >> 2));
-                    }
-                    // temp prevent odst prt3 using cheap shader as we dont have the entry point shader
-                    if (particle.Flags.HasFlag(Particle.FlagsValue.UseCheapShader))
-                        particle.Flags &= ~Particle.FlagsValue.UseCheapShader;
-                    break;
-
-                case ParticleModel particleModel:
-                    blamDefinition = ConvertParticleModel(edTag, blamTag, particleModel);
-                    break;
-
-                case PhysicsModel phmo:
-                    blamDefinition = ConvertPhysicsModel(edTag, phmo);
-                    break;
-
-                case RasterizerGlobals rasg:
-                    blamDefinition = ConvertRasterizerGlobals(rasg);
-                    break;
-
-                case RenderMethodOption rmop when BlamCache.Version == CacheVersion.Halo3ODST || BlamCache.Version >= CacheVersion.HaloReach:
-                    foreach (var block in rmop.Parameters)
-                    {
-                        if (BlamCache.Version == CacheVersion.Halo3ODST && block.RenderMethodExtern >= RenderMethodExtern.emblem_player_shoulder_texture)
-                            block.RenderMethodExtern = (RenderMethodExtern)((int)block.RenderMethodExtern + 2);
-                        if (BlamCache.Version >= CacheVersion.HaloReach)
-                        {
-                            // TODO
-                        }
-                    }
-                    break;
-
-                case RenderModel mode:
-                    blamDefinition = ConvertGen3RenderModel(edTag, blamTag, mode);
-                    break;
-
-                case Scenario scnr:
-                    {
-                        blamDefinition = ConvertScenario(cacheStream, blamCacheStream, scnr, blamTag.Name);
-                        if (PortingOptions.Current.RegenerateStructureSurfaces)
-                        {
-                            foreach (var block in scnr.StructureBsps)
-                            {
-                                if (block.StructureBsp == null)
-                                    continue;
-
-                                CachedTag sbspTag = block.StructureBsp;
-                                var sbsp = CacheContext.Deserialize<ScenarioStructureBsp>(cacheStream, sbspTag);
-                                new GenerateStructureSurfacesCommand(CacheContext, sbspTag, sbsp, cacheStream, scnr).Execute(new List<string> { });
-                                CacheContext.Serialize(cacheStream, sbspTag, sbsp);
-                            }
-                        }
-
-                        if (BlamCache.Version >= CacheVersion.HaloReach)
-                        {
-                            foreach (var block in scnr.StructureBsps)
-                            {
-                                block.Flags = block.FlagsReach.ConvertLexical<Scenario.StructureBspBlock.StructureBspFlags>();
-                            }
-                        }
-                    }
-                    break;
-
-                case ScenarioLightmap sLdT:
-                    blamDefinition = ConvertScenarioLightmap(cacheStream, blamCacheStream, blamTag.Name, sLdT);
-                    break;
-
-                case ScenarioLightmapBspData Lbsp:
-                    if (BlamCache.Version < CacheVersion.HaloReach)
-                        blamDefinition = ConvertScenarioLightmapBspData(Lbsp);
-                    break;
-
-                case ScenarioStructureBsp sbsp:
-                    blamDefinition = ConvertScenarioStructureBsp(sbsp, edTag);
-                    break;
-
-                case Sound sound:
-                    //support sound conversion for HO generation caches
-                    if (CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, BlamCache.Version))
-                    {
-                        var blamResourceDefinition = BlamCache.ResourceCache.GetSoundResourceDefinition(sound.Resource);
-                        sound.Resource = CacheContext.ResourceCache.CreateSoundResource(blamResourceDefinition);
-                        blamDefinition = sound;
-                        break;
-                    }
-                    isDeferred = true;
-                    blamDefinition = ConvertSound(cacheStream, blamCacheStream, sound, edTag, blamTag.Name);
-                    break;
-                case SoundClasses sncl:
-                    blamDefinition = ConvertSoundClasses(sncl, BlamCache.Version);
-                    break;
-
-                case SoundLooping lsnd:
-                    blamDefinition = ConvertSoundLooping(lsnd);
-                    break;
-
-                case SoundMix snmx:
-                    blamDefinition = ConvertSoundMix(snmx);
-                    break;
-
-                case Style style:
-                    blamDefinition = ConvertStyle(style);
-                    break;
-
-                case TextValuePairDefinition sily:
-                    Enum.TryParse(sily.ParameterH3.ToString(), out sily.Parameter);
-                    break;
-
-                case UserInterfaceSharedGlobalsDefinition wigl:
-                    if (BlamCache.Version == CacheVersion.Halo3Retail)
-                    {
-                        wigl.UiWidgetBipeds = new List<UserInterfaceSharedGlobalsDefinition.UiWidgetBiped>
-                        {
-                            new UserInterfaceSharedGlobalsDefinition.UiWidgetBiped
-                            {
-                                AppearanceBipedName = "chief",
-                                RosterPlayer1BipedName = "elite",
-                            }
-                        };
-                    }
-                    break;
-            }
-
-            return blamDefinition;
-        }
-
-        public override object ConvertData(Stream cacheStream, Stream blamCacheStream, object data, object definition, string blamTagName)
-        {
-            switch (data)
-            {
-                case TagResourceReference:
-                    return data;
-
-                case TagFunction tagFunction:
-                    return ConvertTagFunction(tagFunction);
-
-                case TagHkpMoppCode hkpMoppCode:
-                    //Structure design mopp codes are NOT converted
-                    if (definition is StructureDesign)
-                        return hkpMoppCode;
-                    hkpMoppCode.Data.Elements = HavokConverter.ConvertMoppCodes(BlamCache.Version, BlamCache.Platform, CacheContext.Version, hkpMoppCode.Data.Elements);
-                    return hkpMoppCode;
-
-                case PhysicsModel.PhantomTypeFlags phantomTypeFlags:
-                    return ConvertPhantomTypeFlags(blamTagName, phantomTypeFlags);
-
-                case PhysicsModel.Shape shape:
-                    shape = ConvertStructure(cacheStream, blamCacheStream, shape, definition, blamTagName);
-                    // might be from 3, had no reference
-                    shape.ProxyCollisionGroup = shape.ProxyCollisionGroup > 2 ? (sbyte)(shape.ProxyCollisionGroup + 1) : shape.ProxyCollisionGroup;
-                    return shape;
-
-                case DamageReportingType damageReportingType:
-                    return ConvertDamageReportingType(damageReportingType);
-
-                case GameObjectType8 gameObjectType:
-                    gameObjectType.SetValue(CacheContext.Version, gameObjectType.GetValue(BlamCache.Version));
-                    return gameObjectType;
-                case GameObjectType16 gameObjectType:
-                    gameObjectType.SetValue(CacheContext.Version, gameObjectType.GetValue(BlamCache.Version));
-                    return gameObjectType;
-                case GameObjectType32 gameObjectType:
-                    gameObjectType.SetValue(CacheContext.Version, gameObjectType.GetValue(BlamCache.Version));
-                    return gameObjectType;
-
-                case ObjectTypeFlags objectTypeFlags:
-                    return ConvertObjectTypeFlags(objectTypeFlags);
-
-                case VersionedFlags versionedFlags:
-                    versionedFlags.ConvertFlags(BlamCache.Version, BlamCache.Platform, CacheContext.Version, CacheContext.Platform);
-                    return versionedFlags;
-
-                case GameObject.MultiplayerObjectBlock multiplayer:
-                    {
-                        multiplayer.Type = multiplayer.TypeReach.ConvertLexical<MultiplayerObjectType>();
-                        multiplayer.Flags = multiplayer.FlagsReach.ConvertLexical<GameObject.MultiplayerObjectBlock.MultiplayerObjectFlags>();
-                        multiplayer.DefaultSpawnTime = multiplayer.SpawnTimeReach;
-                        multiplayer.DefaultAbandonTime = multiplayer.AbandonTimeReach;
-                        if (multiplayer.DefaultSpawnTime == 0) multiplayer.DefaultSpawnTime = 30;
-                        if (multiplayer.DefaultAbandonTime == 0) multiplayer.DefaultAbandonTime = 30;
-                        multiplayer.BoundaryShape = multiplayer.ReachBoundaryShape;
-                        multiplayer.SpawnTimerType = multiplayer.SpawnTimerTypeReach.ConvertLexical<MultiplayerObjectSpawnTimerType>();
-                        foreach (var boundary in multiplayer.BoundaryShaders)
-                        {
-                            boundary.StandardShader = (CachedTag)ConvertData(cacheStream, blamCacheStream, boundary.StandardShader, definition, blamTagName);
-                            boundary.OpaqueShader = (CachedTag)ConvertData(cacheStream, blamCacheStream, boundary.OpaqueShader, definition, blamTagName);
-                        }
-                        return multiplayer;
-                    }
-
-                case BipedPhysicsFlags bipedPhysicsFlags:
-                    return ConvertBipedPhysicsFlags(bipedPhysicsFlags);
-
-                case WeaponFlags weaponFlags:
-                    return ConvertWeaponFlags(weaponFlags);
-
-                case Weapon.Trigger trigger:
-                    trigger = ConvertStructure(cacheStream, blamCacheStream, trigger, definition, blamTagName);
-                    return ConvertWeaponTrigger(trigger);
-
-                case BarrelFlags barrelflags:
-                    return ConvertBarrelFlags(barrelflags);
-
-                case Model.TargetLockOnData lockOnData:
-                    return ConvertTargetLockOnData(lockOnData);
-
-                case RenderMethod renderMethod:
-                    {
-                        RenderMethod edRenderMethod = ConvertStructure(cacheStream, blamCacheStream, renderMethod.DeepCloneV2(), definition, blamTagName);
-                        if (PendingTemplates.Contains(edRenderMethod.ShaderProperties[0].Template.Name))
-                        {
-                            _traversalData.DeferredRenderMethods.Add((edRenderMethod, renderMethod));
-                        }
-                        else if (ConvertShaderInternal(cacheStream, blamCacheStream, edRenderMethod, renderMethod) == null)
-                        {
-                            _traversalData.IsFailedConversion = true;
-                        }
-                        return edRenderMethod;
-                    }
-
-                case Scenario.MultiplayerObjectProperties scnrObj when BlamCache.Version >= CacheVersion.HaloReach:
-                    {
-                        scnrObj = ConvertStructure(cacheStream, blamCacheStream, scnrObj, definition, blamTagName);
-                        scnrObj.BoundaryWidthRadius = scnrObj.BoundaryWidthRadiusReach;
-                        scnrObj.BoundaryBoxLength = scnrObj.BoundaryBoxLengthReach;
-                        scnrObj.BoundaryPositiveHeight = scnrObj.BoundaryPositiveHeightReach;
-                        scnrObj.BoundaryNegativeHeight = scnrObj.BoundaryNegativeHeightReach;
-                        scnrObj.RemappingPolicy = scnrObj.RemappingPolicyReach;
-
-                        switch (scnrObj.MegaloLabel)
-                        {
-                            case "ctf_res_zone_away":
-                            case "ctf_res_zone":
-                            case "ctf_flag_return":
-                            case "ctf":
-                                scnrObj.EngineFlags |= GameEngineSubTypeFlags.CaptureTheFlag;
-                                break;
-                            case "slayer":
-                                scnrObj.EngineFlags |= GameEngineSubTypeFlags.Slayer;
-                                break;
-                            case "oddball_ball":
-                                scnrObj.EngineFlags |= GameEngineSubTypeFlags.Oddball;
-                                break;
-                            case "koth_hill":
-                                scnrObj.EngineFlags |= GameEngineSubTypeFlags.KingOfTheHill;
-                                break;
-                            case "terr_object":
-                                scnrObj.EngineFlags |= GameEngineSubTypeFlags.Territories;
-                                break;
-                            case "as_goal": // assault plant point
-                            case "as_bomb": // assault bomb spawn
-                            case "assault":
-                                scnrObj.EngineFlags |= GameEngineSubTypeFlags.Assault;
-                                break;
-                            case "inf_spawn":
-                            case "inf_haven":
-                                scnrObj.EngineFlags |= GameEngineSubTypeFlags.Infection;
-                                break;
-                            case "stp_goal": // use these for juggernaut points
-                                scnrObj.EngineFlags |= GameEngineSubTypeFlags.Juggernaut;
-                                break;
-                            case "stp_flag": // use these for VIP points
-                            case "stockpile":
-                                scnrObj.EngineFlags |= GameEngineSubTypeFlags.Vip;
-                                break;
-                            //case "ffa_only":
-                            //case "team_only":
-                            //case "hh_drop_point":
-                            //case "rally":
-                            //case "rally_flag":
-                            //case "race_flag":
-                            //case "race_spawn":
-                            //case "as_spawn":
-                            //case "none":
-                            //    break;
-                            default:
-                                break;
-                        }
-
-                        return data;
-                    }
-
-                case SoundClass soundClass:
-                    return soundClass.ConvertSoundClass(BlamCache.Version);
-
-                case GuiTextWidgetDefinition guiTextWidget:
-                    guiTextWidget = ConvertStructure(cacheStream, blamCacheStream, guiTextWidget, definition, blamTagName);
-                    switch (BlamCache.Version)
-                    {
-                        case CacheVersion.Halo3Retail when BlamCache.Platform == CachePlatform.Original:
-                            guiTextWidget.CustomFont = GetEquivalentValue(guiTextWidget.CustomFont, guiTextWidget.CustomFont_H3);
-                            break;
-                        case CacheVersion.Halo3Retail when BlamCache.Platform == CachePlatform.MCC:
-                            guiTextWidget.CustomFont = GetEquivalentValue(guiTextWidget.CustomFont, guiTextWidget.CustomFont_H3MCC);
-                            break;
-                        case CacheVersion.Halo3ODST:
-                            guiTextWidget.CustomFont = GetEquivalentValue(guiTextWidget.CustomFont, guiTextWidget.CustomFont_ODST);
-                            break;
-                    }
-                    return guiTextWidget;
-                case GuiDefinition guidefinition:
-                    guidefinition = ConvertStructure(cacheStream, blamCacheStream, guidefinition, definition, blamTagName);
-                    if (FlagIsSet(PortingFlags.AutoRescaleGui))
-                        RescaleGUIDef(guidefinition, 1.3125f);
-                    break;
-
-                case RuntimeGpuData runMGpu when BlamCache.Platform == CachePlatform.MCC:
-                    if (BlamCache.Version >= CacheVersion.Halo3ODST)
-                    {
-                        if (runMGpu.RuntimeGpuBlocks?.Count > 0)
-                        {
-                            runMGpu.Properties = runMGpu.RuntimeGpuBlocks[0].Properties;
-                            runMGpu.Functions = runMGpu.RuntimeGpuBlocks[0].Functions;
-                            runMGpu.Colors = runMGpu.RuntimeGpuBlocks[0].Colors;
-                        }
-                    }
-                    return runMGpu;
-
-                case CollisionGeometry collisionGeometry:
-                    return ConvertCollisionBsp(collisionGeometry);
-
-                case CollisionBspPhysicsDefinition collisionBspPhysics when BlamCache.Version >= CacheVersion.HaloReach:
-                    collisionBspPhysics = ConvertStructure(cacheStream, blamCacheStream, collisionBspPhysics, definition, blamTagName);
-                    return ConvertCollisionBspPhysicsReach(collisionBspPhysics);
-
-                case RenderGeometry renderGeometry when BlamCache.Version >= CacheVersion.Halo3Retail:
-                    renderGeometry = ConvertStructure(cacheStream, blamCacheStream, renderGeometry, definition, blamTagName);
-                    return renderGeometry;
-
-                case Part part when BlamCache.Version < CacheVersion.Halo3Retail:
-                    part = ConvertStructure(cacheStream, blamCacheStream, part, definition, blamTagName);
-                    if (!Enum.TryParse(part.TypeOld.ToString(), out part.TypeNew))
-                        throw new NotSupportedException(part.TypeOld.ToString());
-                    return part;
-
-                case RenderMaterial.Property property when BlamCache.Version < CacheVersion.Halo3Retail:
-                    property = ConvertStructure(cacheStream, blamCacheStream, property, definition, blamTagName);
-                    property.IntValue = property.ShortValue;
-                    return property;
-
-                case PixelShaderReference _:
-                case VertexShaderReference _:
-                    return null;
-            }
-
-            return base.ConvertData(cacheStream, blamCacheStream, data, definition, blamTagName);
-        }
-
-        private TagFunction ConvertTagFunction(TagFunction function)
-        {
-            return TagFunction.ConvertTagFunction(CacheVersionDetection.IsLittleEndian(BlamCache.Version, BlamCache.Platform) ? EndianFormat.LittleEndian : EndianFormat.BigEndian, function);
-        }
-
-        protected override object ConvertFieldvalue(Stream cacheStream, Stream blamCacheStream, TagFieldInfo tagFieldInfo, object value, object definition, string blamTagName)
-        {
-            value = base.ConvertFieldvalue(cacheStream, blamCacheStream, tagFieldInfo, value, definition, blamTagName);
-
-            if (tagFieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.GlobalMaterial))
-            {
-                value = ConvertGlobalMaterialTypeField(cacheStream, blamCacheStream, tagFieldInfo, value);
-            }
-
-            return value;
-        }
-
-        protected override void MergeTags(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag)
-        {
-            switch (blamTag.Group.Tag.ToString())
-            {
-                case "char":
-                    MergeCharacter(cacheStream, blamCacheStream, edTag, blamTag);
-                    break;
-
-                case "mulg":
-                    MergeMultiplayerGlobals(cacheStream, blamCacheStream, edTag, blamTag);
-                    break;
-
-                case "unic":
-                    MergeMultilingualUnicodeStringList(cacheStream, blamCacheStream, edTag, blamTag);
-                    break;
-            }
+            // A list of render methods to defer conversion until the end
+            public List<(RenderMethod RenderMethod, RenderMethod BlamRenderMethod)> DeferredRenderMethods = [];
+
+            // Should be set if some part of the tag could not be converted and would crash if used. If possible an alternate tag will be used
+            public bool IsFailedConversion = false;
         }
     }
 }

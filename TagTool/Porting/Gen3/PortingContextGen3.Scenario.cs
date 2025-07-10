@@ -13,6 +13,7 @@ using TagTool.Tags.Definitions.Common;
 using TagTool.Tags.Resources;
 using TagTool.Geometry;
 using TagTool.BlamFile;
+using TagTool.Commands.ScenarioStructureBSPs;
 
 namespace TagTool.Porting.Gen3
 {
@@ -28,6 +29,12 @@ namespace TagTool.Porting.Gen3
 
             if (CacheVersionDetection.GetGameTitle(BlamCache.Version) == GameTitle.Halo3)
                 scnr.Flags |= ScenarioFlags.H3Compatibility;
+
+            if (BlamCache.Version >= CacheVersion.HaloReach)
+            {
+                foreach (var block in scnr.StructureBsps)
+                    block.Flags = block.FlagsReach.ConvertLexical<Scenario.StructureBspBlock.StructureBspFlags>();
+            }
 
             foreach (var zoneset in scnr.ZoneSets)
             {
@@ -816,7 +823,84 @@ namespace TagTool.Porting.Gen3
                 }
             }
 
+            if (PortingOptions.Current.RegenerateStructureSurfaces)
+            {
+                foreach (var block in scnr.StructureBsps)
+                {
+                    if (block.StructureBsp == null)
+                        continue;
+
+                    CachedTag sbspTag = block.StructureBsp;
+                    var sbsp = CacheContext.Deserialize<ScenarioStructureBsp>(cacheStream, sbspTag);
+                    new GenerateStructureSurfacesCommand(CacheContext, sbspTag, sbsp, cacheStream, scnr).Execute(new List<string> { });
+                    CacheContext.Serialize(cacheStream, sbspTag, sbsp);
+                }
+            }
+
             return scnr;
+        }
+
+        private object ConvertScenarioObjectMultiplayer(Stream cacheStream, Stream blamCacheStream, object definition, string blamTagName, Scenario.MultiplayerObjectProperties scnrObj)
+        {
+            if (BlamCache.Version < CacheVersion.HaloReach)
+                return scnrObj;
+
+            scnrObj.BoundaryWidthRadius = scnrObj.BoundaryWidthRadiusReach;
+            scnrObj.BoundaryBoxLength = scnrObj.BoundaryBoxLengthReach;
+            scnrObj.BoundaryPositiveHeight = scnrObj.BoundaryPositiveHeightReach;
+            scnrObj.BoundaryNegativeHeight = scnrObj.BoundaryNegativeHeightReach;
+            scnrObj.RemappingPolicy = scnrObj.RemappingPolicyReach;
+
+            switch (scnrObj.MegaloLabel)
+            {
+                case "ctf_res_zone_away":
+                case "ctf_res_zone":
+                case "ctf_flag_return":
+                case "ctf":
+                    scnrObj.EngineFlags |= GameEngineSubTypeFlags.CaptureTheFlag;
+                    break;
+                case "slayer":
+                    scnrObj.EngineFlags |= GameEngineSubTypeFlags.Slayer;
+                    break;
+                case "oddball_ball":
+                    scnrObj.EngineFlags |= GameEngineSubTypeFlags.Oddball;
+                    break;
+                case "koth_hill":
+                    scnrObj.EngineFlags |= GameEngineSubTypeFlags.KingOfTheHill;
+                    break;
+                case "terr_object":
+                    scnrObj.EngineFlags |= GameEngineSubTypeFlags.Territories;
+                    break;
+                case "as_goal": // assault plant point
+                case "as_bomb": // assault bomb spawn
+                case "assault":
+                    scnrObj.EngineFlags |= GameEngineSubTypeFlags.Assault;
+                    break;
+                case "inf_spawn":
+                case "inf_haven":
+                    scnrObj.EngineFlags |= GameEngineSubTypeFlags.Infection;
+                    break;
+                case "stp_goal": // use these for juggernaut points
+                    scnrObj.EngineFlags |= GameEngineSubTypeFlags.Juggernaut;
+                    break;
+                case "stp_flag": // use these for VIP points
+                case "stockpile":
+                    scnrObj.EngineFlags |= GameEngineSubTypeFlags.Vip;
+                    break;
+                //case "ffa_only":
+                //case "team_only":
+                //case "hh_drop_point":
+                //case "rally":
+                //case "rally_flag":
+                //case "race_flag":
+                //case "race_spawn":
+                //case "as_spawn":
+                //case "none":
+                //    break;
+                default:
+                    break;
+            }
+            return scnrObj;
         }
 
         private Scenario.TriggerVolume ConvertTriggerVolumeReach(Scenario.TriggerVolume volume)

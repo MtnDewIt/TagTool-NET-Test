@@ -6,6 +6,7 @@ using TagTool.Shaders.ShaderMatching;
 using System;
 using TagTool.Shaders.ShaderConverter;
 using System.Collections.Generic;
+using TagTool.Shaders;
 
 namespace TagTool.Porting.Gen3
 {
@@ -171,6 +172,28 @@ namespace TagTool.Porting.Gen3
             finalRm.PredictionAtomIndex = newRm.PredictionAtomIndex;
 
             return finalRm;
+        }
+
+
+        private RenderMethodOption ConvertRenderMethodOption(RenderMethodOption rmop)
+        {
+            if (BlamCache.Version == CacheVersion.Halo3ODST || BlamCache.Version >= CacheVersion.HaloReach)
+            {
+                foreach (var block in rmop.Parameters)
+                {
+                    if (BlamCache.Version == CacheVersion.Halo3ODST && block.RenderMethodExtern >= RenderMethodExtern.emblem_player_shoulder_texture)
+                    {
+                        block.RenderMethodExtern = (RenderMethodExtern)((int)block.RenderMethodExtern + 2);
+                    }
+
+                    if (BlamCache.Version >= CacheVersion.HaloReach)
+                    {
+                        // TODO
+                    }
+                }
+            }
+
+            return rmop;
         }
     }
 }

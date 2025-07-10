@@ -13,8 +13,14 @@ namespace TagTool.Porting.Gen3
 {
     public partial class PortingContextGen3
     {
-        private void PreConvertReachDefinition(object definition, Stream blamCacheStream)
+        private void PreConvertReachDefinition(Stream cacheStream, Stream blamCacheStream, object definition)
         {
+            if (definition is Scenario scnr)
+            {
+                var lightmap = BlamCache.Deserialize<ScenarioLightmap>(blamCacheStream, scnr.Lightmap);
+                ConvertReachLightmap(cacheStream, blamCacheStream, scnr.Lightmap.Name, lightmap);
+            }
+
             if (definition is ScenarioStructureBsp sbsp)
             {
                 if (!PortingOptions.Current.ReachDecorators)

@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TagTool.Cache;
 using TagTool.Commands.Common;
+using TagTool.Tags;
 using TagTool.Tags.Definitions;
+using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.Porting.Gen3
 {
@@ -107,5 +109,84 @@ namespace TagTool.Porting.Gen3
             return effe;
         }
 
+        private Particle ConvertParticle(Particle particle)
+        {
+            if (BlamCache.Version == CacheVersion.Halo3Retail) // Shift all flags above 5 by 1.
+            {
+                int flagsH3 = (int)particle.FlagsH3;
+                particle.Flags = (Particle.FlagsValue)((flagsH3 & 0x1F) + ((int)(flagsH3 & 0xFFFFFFE0) << 1));
+                //particle.Flags &= ~Particle.FlagsValue.DiesInWater; // h3 particles in odst seem to have this flag unset - does it behave differently?
+            }
+            else if (BlamCache.Version >= CacheVersion.HaloReach) // Shift all flags above 11 by 2
+            {
+                int flagsReach = (int)particle.AppearanceFlagsReach;
+                particle.AppearanceFlags = (Particle.AppearanceFlagsValue)((flagsReach & 0xFF) + ((flagsReach & 0x3F000) >> 2));
+            }
+            // temp prevent odst prt3 using cheap shader as we dont have the entry point shader
+            if (particle.Flags.HasFlag(Particle.FlagsValue.UseCheapShader))
+                particle.Flags &= ~Particle.FlagsValue.UseCheapShader;
+
+            return particle;
+        }
+
+        private static CortanaEffectDefinition ConvertCortanaEffectDefinition(CortanaEffectDefinition crte)
+        {
+            foreach (var gravemindblock in crte.Gravemind)
+            {
+                foreach (var vignetteblock in gravemindblock.Vignette)
+                {
+                    foreach (var dynamicvaluesblock in vignetteblock.DynamicValues)
+                    {
+                        foreach (var framesblock in dynamicvaluesblock.Frames)
+                        {
+                            // scale (since this is chud)
+                            framesblock.Dynamicvalue1 *= 1.5f;
+                            framesblock.Dynamicvalue2 *= 1.5f;
+                        }
+                    }
+                }
+            }
+            return crte;
+        }
+
+        private AreaScreenEffect ConvertAreaScreenEffect(AreaScreenEffect sefc)
+        {
+            if (BlamCache.Version < CacheVersion.Halo3ODST)
+            {
+                sefc.GlobalHiddenFlags = AreaScreenEffect.HiddenFlagBits.UpdateThread | AreaScreenEffect.HiddenFlagBits.RenderThread;
+
+                foreach (var screenEffect in sefc.ScreenEffects)
+                    screenEffect.HiddenFlags = AreaScreenEffect.HiddenFlagBits.UpdateThread | AreaScreenEffect.HiddenFlagBits.RenderThread;
+            }
+            foreach (var screenEffect in sefc.ScreenEffects)
+            {
+                //convert flags
+                if (BlamCache.Version == CacheVersion.Halo3Retail)
+                    Enum.TryParse(screenEffect.Flags_H3.ToString(), out screenEffect.Flags_ODST);
+                else if (BlamCache.Version >= CacheVersion.HaloOnline106708 && BlamCache.Version <= CacheVersion.HaloOnline700123)
+                    Enum.TryParse(screenEffect.Flags.ToString(), out screenEffect.Flags_ODST);
+
+                if (CacheContext.StringTable.GetString(screenEffect.InputVariable) == "saved_film_vision_mode_intensity")
+                    screenEffect.Flags_ODST |= AreaScreenEffect.ScreenEffectBlock.SefcFlagBits_ODST.DebugDisable; // prevents spawning and rendering
+
+                if (screenEffect.ObjectFalloff.Data.Length == 0)
+                    screenEffect.ObjectFalloff = TagFunction.DefaultConstant;
+            }
+            return sefc;
+        }
+
+        private RuntimeGpuData ConvertRuntimeGpuData(RuntimeGpuData runMGpu)
+        {
+            if (BlamCache.Platform == CachePlatform.MCC && BlamCache.Version >= CacheVersion.Halo3ODST)
+            {
+                if (runMGpu.RuntimeGpuBlocks?.Count > 0)
+                {
+                    runMGpu.Properties = runMGpu.RuntimeGpuBlocks[0].Properties;
+                    runMGpu.Functions = runMGpu.RuntimeGpuBlocks[0].Functions;
+                    runMGpu.Colors = runMGpu.RuntimeGpuBlocks[0].Colors;
+                }
+            }
+            return runMGpu;
+        }
     }
 }
