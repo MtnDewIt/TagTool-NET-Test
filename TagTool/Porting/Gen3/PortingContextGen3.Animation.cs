@@ -10,6 +10,7 @@ using TagTool.Tags;
 using TagTool.Serialization;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Resources;
+using TagTool.Animations;
 
 namespace TagTool.Porting.Gen3
 {
@@ -536,32 +537,7 @@ namespace TagTool.Porting.Gen3
                 }
             }
 
-            var resolver = CacheContext.StringTable.Resolver;
-            definition.Modes = definition.Modes.OrderBy(a => resolver.GetSet(a.Name)).ThenBy(a => resolver.GetIndex(a.Name)).ToList();
-
-            foreach (var mode in definition.Modes)
-            {
-                mode.WeaponClass = mode.WeaponClass.OrderBy(a => resolver.GetSet(a.Label)).ThenBy(a => resolver.GetIndex(a.Label)).ToList();
-
-                foreach (var weaponClass in mode.WeaponClass)
-                {
-                    weaponClass.WeaponType = weaponClass.WeaponType.OrderBy(a => resolver.GetSet(a.Label)).ThenBy(a => resolver.GetIndex(a.Label)).ToList();
-
-                    foreach (var weaponType in weaponClass.WeaponType)
-                    {
-                        if (weaponType.Set == null)
-                            continue;
-
-                        weaponType.Set.Actions = weaponType.Set.Actions.OrderBy(a => resolver.GetSet(a.Label)).ThenBy(a => resolver.GetIndex(a.Label)).ToList();
-                        weaponType.Set.Overlays = weaponType.Set.Overlays.OrderBy(a => resolver.GetSet(a.Label)).ThenBy(a => resolver.GetIndex(a.Label)).ToList();
-                        weaponType.Set.DeathAndDamage = weaponType.Set.DeathAndDamage.OrderBy(a => resolver.GetSet(a.Label)).ThenBy(a => resolver.GetIndex(a.Label)).ToList();
-                        weaponType.Set.Transitions = weaponType.Set.Transitions.OrderBy(a => resolver.GetSet(a.FullName)).ThenBy(a => resolver.GetIndex(a.FullName)).ToList();
-
-                        foreach (var transition in weaponType.Set.Transitions)
-                            transition.Destinations = transition.Destinations.OrderBy(a => resolver.GetSet(a.FullName)).ThenBy(a => resolver.GetIndex(a.FullName)).ToList();
-                    }
-                }
-            }
+            AnimationSorter.Sort(definition);
 
             return definition;
         }
