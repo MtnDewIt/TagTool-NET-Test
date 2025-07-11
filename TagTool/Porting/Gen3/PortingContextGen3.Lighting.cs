@@ -161,6 +161,31 @@ namespace TagTool.Porting.Gen3
             return lensFlare;
         }
 
+        private Light ConvertLight(Light light)
+        {
+            if (BlamCache.Version < CacheVersion.HaloReach)
+                return light;
+
+            Enum.TryParse(light.ReachFlags.ToString(), out light.Flags);
+
+            if (light.DistanceDiffusionReach == 0)
+                light.DistanceDiffusion = 10f;
+            else
+                light.DistanceDiffusion = light.DistanceDiffusionReach;
+
+            light.AngularSmoothness = light.AngularFalloffSpeed;
+
+            if (light.GelBitmap != null)
+            {
+                light.Flags |= Light.LightFlags.AllowShadowsAndGels;
+                light.FrustumHeightScale = 1;
+                light.DistanceDiffusion = 0.0001f;
+                light.AngularSmoothness = 0;
+            }
+
+            return light;
+        }
+
         public ScenarioLightmap ConvertScenarioLightmap(Stream cacheStream, Stream blamCacheStream, string blamTagName, ScenarioLightmap scenarioLightmap)
         {  
             if (BlamCache.Version > CacheVersion.Halo3Retail || BlamCache.Platform == CachePlatform.MCC)
@@ -217,6 +242,9 @@ namespace TagTool.Porting.Gen3
 
         private ScenarioLightmapBspData ConvertScenarioLightmapBspData(ScenarioLightmapBspData Lbsp)
         {
+            if (BlamCache.Version >= CacheVersion.HaloReach)
+                return Lbsp;
+
             var lightmapResourceDefinition = BlamCache.ResourceCache.GetRenderGeometryApiResourceDefinition(Lbsp.Geometry.Resource);
 
             if (lightmapResourceDefinition == null)

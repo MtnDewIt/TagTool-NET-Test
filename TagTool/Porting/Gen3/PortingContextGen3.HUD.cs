@@ -343,6 +343,16 @@ namespace TagTool.Porting.Gen3
             return chudDefinition;
         }
 
+        private ChudAnimationDefinition ConvertChudAnimationDefinition(ChudAnimationDefinition chudAnimation) 
+        {
+            if (BlamCache.Version >= CacheVersion.HaloReach)
+            {
+                Enum.TryParse(chudAnimation.ReachFlags.ToString(), out chudAnimation.Flags);
+            }
+
+            return chudAnimation;
+        }
+
         private ChudGlobalsDefinition ConvertChudGlobalsDefinition(Stream cacheStream, Stream blamCacheStream, ChudGlobalsDefinition H3Definition)
         {
             for (int hudGlobalsIndex = 0; hudGlobalsIndex < H3Definition.HudGlobals.Count; hudGlobalsIndex++)
