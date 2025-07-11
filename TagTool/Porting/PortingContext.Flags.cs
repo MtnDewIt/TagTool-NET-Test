@@ -114,7 +114,7 @@ namespace TagTool.Porting
         /// <summary>
         /// Add a multiplayerobject block for spawnable tag types.
         /// </summary>
-        [Description("Add to forge palette by category index: ex. MPobject[17,Item_Name] (underscores -> spaces)")]
+        [Description("Add a multiplayerobject block for spawnable tag types")]
         MPobject = 1 << 18,
 
         [Description("Multipurpose Reach flag used for specific tweaks.")]

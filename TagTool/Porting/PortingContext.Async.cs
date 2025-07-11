@@ -104,14 +104,14 @@ namespace TagTool.Porting
 
             public void WaitAll()
             {
-                Task.WaitAll(Tasks.ToArray());
+                Task.WhenAll(Tasks.ToArray()).GetAwaiter().GetResult();
             }
 
             public void WaitAllNoThrow()
             {
                 try
                 {
-                    Task.WaitAll(Tasks.ToArray());
+                    Task.WhenAll(Tasks.ToArray()).GetAwaiter().GetResult();
                 }
                 catch
                 {

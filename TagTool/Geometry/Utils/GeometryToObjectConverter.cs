@@ -43,14 +43,14 @@ namespace TagTool.Geometry.Utils
 
         public GeometryToObjectConverter(
             GameCacheHaloOnlineBase destCache, Stream destStream, GameCache sourceCache,
-            Stream sourceStream, Scenario scenario, int structureBspIndex)
+            Stream sourceStream, Scenario scenario, int structureBspIndex, PortingContext portContext)
         {
             DestCache = destCache;
             DestStream = destStream;
             SourceCache = sourceCache;
             SourceStream = sourceStream;
             StructureBspIndex = structureBspIndex;
-            PortContext = new PortingContextGen3(destCache, sourceCache);
+            PortContext = portContext;
 
             Scenario = scenario;
             StructureBspIndex = structureBspIndex;
@@ -231,8 +231,6 @@ namespace TagTool.Geometry.Utils
             DestCache.Serialize(DestStream, collisionModelTag, collisionModel);
             DestCache.Serialize(DestStream, modelTag, model);
             DestCache.Serialize(DestStream, scenTag, gameObject);
-
-            PortContext.Finish(DestStream, SourceStream);
 
             Console.WriteLine($"['{renderModelTag.Group}', 0x{renderModelTag.Index:X04}] {renderModelTag.Name}");
             Console.WriteLine($"['{collisionModelTag.Group}', 0x{collisionModelTag.Index:X04}] {collisionModelTag.Name}");

@@ -6,17 +6,33 @@ using TagTool.Shaders.ShaderMatching;
 using System;
 using TagTool.Shaders.ShaderConverter;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Linq;
-using TagTool.Commands.Common;
 
 namespace TagTool.Porting.Gen3
 {
     partial class PortingContextGen3
     {
+        private class DeferredRenderMethodData
+        {
+            public readonly CachedTag EdTag;
+            public readonly CachedTag BlamTag;
+            public readonly Stream CacheStream;
+            public readonly Stream BlamCacheStream;
+            public readonly object Definition;
+            public readonly List<(RenderMethod RenderMethod, RenderMethod BlamRenderMethod)> RenderMethods = [];
+
+            public DeferredRenderMethodData(Stream cacheStream, Stream blamCacheStream, CachedTag edTag, CachedTag blamTag, object definition, List<(RenderMethod RenderMethod, RenderMethod BlamRenderMethod)> renderMethods)
+            {
+                CacheStream = cacheStream;
+                BlamCacheStream = blamCacheStream;
+                EdTag = edTag;
+                BlamTag = blamTag;
+                Definition = definition;
+                RenderMethods = renderMethods;
+            }
+        }
+
         public List<string> PendingTemplates = new List<string>();
-        public Dictionary<CachedTag, (CachedTag, object, object)> DeferredRenderMethods = new Dictionary<CachedTag, (CachedTag, object, object)>(); // format: base cache tag, (blam tag, converted definition, blam cache definition)
+        private List<DeferredRenderMethodData> DeferredRenderMethods = [];
 
         public class TemplateConversionResult
         {
@@ -37,91 +53,27 @@ namespace TagTool.Porting.Gen3
             return rasg;
         }
 
-        private void FinalizeRenderMethods(Stream cacheStream, Stream blamCacheStream)
+        private void FinalizeRenderMethods()
         {
             foreach (var deferredRm in DeferredRenderMethods)
             {
-                var definition = ConvertShaderInternal(cacheStream, blamCacheStream, (RenderMethod)deferredRm.Value.Item2, deferredRm.Value.Item1, (RenderMethod)deferredRm.Value.Item3);
+                foreach (var rm in deferredRm.RenderMethods)
+                    ConvertShaderInternal(deferredRm.CacheStream, deferredRm.BlamCacheStream, rm.RenderMethod, rm.BlamRenderMethod);
 
-                CacheContext.Serialize(cacheStream, deferredRm.Key, definition);
+                CacheContext.Serialize(deferredRm.CacheStream, deferredRm.EdTag, deferredRm.Definition);
 
                 if (FlagIsSet(PortingFlags.Print))
-                    Console.WriteLine($"['{deferredRm.Key.Group.Tag}', 0x{deferredRm.Key.Index:X4}] {deferredRm.Key.Name}.{(deferredRm.Key.Group as Cache.Gen3.TagGroupGen3).Name}");
+                    Console.WriteLine($"['{deferredRm.EdTag.Group.Tag}', 0x{deferredRm.EdTag.Index:X4}] {deferredRm.EdTag.Name}.{(deferredRm.EdTag.Group as Cache.Gen3.TagGroupGen3).Name}");
             }
             DeferredRenderMethods.Clear();
+            PendingTemplates.Clear();
         }
 
-        private object ConvertShader(Stream cacheStream, Stream blamCacheStream, object definition, CachedTag blamTag, object blamDefinition, CachedTag edTag, out bool isDeferred)
+        private RenderMethod ConvertShaderInternal(Stream cacheStream, Stream blamCacheStream, RenderMethod definition, RenderMethod blamDefinition)
         {
-            isDeferred = false;
-            switch (definition)
-            {
-                case ShaderFoliage rmfl:
-                case ShaderTerrain rmtr:
-                case ShaderCustom rmcs:
-                case ShaderDecal rmd:
-                case ShaderHalogram rmhg:
-                case Shader rmsh:
-                case ShaderWater rmw:
-                case ShaderBlack rmbk:
-                case ShaderGlass rmgl:
-                case ShaderScreen rmss:
-                case ShaderZonly rmzo:
-                case ShaderCortana rmct:
-                    var rmDef = (RenderMethod)definition;
-                    if (rmDef.ShaderProperties.Count > 0 && PendingTemplates.Contains(rmDef.ShaderProperties[0].Template.Name))
-                    {
-                        DeferredRenderMethods.Add(edTag, (blamTag, definition, blamDefinition)); // easier to defer and convert later
-                        isDeferred = true;
-                        return definition;
-                    }
-                    return ConvertShaderInternal(cacheStream, blamCacheStream, (RenderMethod)definition, blamTag, (RenderMethod)blamDefinition);
+            if (!Matcher.IsInitialized)
+                Matcher.Init(CacheContext, BlamCache, cacheStream, blamCacheStream, this, FlagIsSet(PortingFlags.Ms30), FlagIsSet(PortingFlags.PefectShaderMatchOnly));
 
-                case ContrailSystem cntl:
-                    var blamCntl = (ContrailSystem)blamDefinition;
-                    for (int i = 0; i < cntl.Contrails.Count; i++)
-                    {
-                        cntl.Contrails[i].RenderMethod = ConvertShaderInternal(cacheStream, blamCacheStream, cntl.Contrails[i].RenderMethod, blamTag, blamCntl.Contrails[i].RenderMethod);
-                        if (cntl.Contrails[i].RenderMethod == null) return null;
-                    }
-                    return cntl;
-
-                case Particle prt3:
-                    var blamPrt3 = (Particle)blamDefinition;
-                    prt3.RenderMethod = ConvertShaderInternal(cacheStream, blamCacheStream, prt3.RenderMethod, blamTag, blamPrt3.RenderMethod);
-                    if (prt3.RenderMethod == null) return null;
-                    return prt3;
-
-                case LightVolumeSystem ltvl:
-                    var blamLtvl = (LightVolumeSystem)blamDefinition;
-                    for (int i = 0; i < ltvl.LightVolumes.Count; i++)
-                    {
-                        ltvl.LightVolumes[i].RenderMethod = ConvertShaderInternal(cacheStream, blamCacheStream, ltvl.LightVolumes[i].RenderMethod, blamTag, blamLtvl.LightVolumes[i].RenderMethod);
-                        if (ltvl.LightVolumes[i].RenderMethod == null) return null;
-                    }
-                    return ltvl;
-                case DecalSystem decs:
-                    var blamDecs = (DecalSystem)blamDefinition;
-                    for (int i = 0; i < decs.Decal.Count; i++)
-                    {
-                        decs.Decal[i].RenderMethod = ConvertShaderInternal(cacheStream, blamCacheStream, decs.Decal[i].RenderMethod, blamTag, blamDecs.Decal[i].RenderMethod);
-                        if (decs.Decal[i].RenderMethod == null) return null;
-                    }
-                    return decs;
-                case BeamSystem beamSystem:
-                    var blamBeam = (BeamSystem)blamDefinition;
-                    for (int i = 0; i < beamSystem.Beams.Count; i++)
-                    {
-                        beamSystem.Beams[i].RenderMethod = ConvertShaderInternal(cacheStream, blamCacheStream, beamSystem.Beams[i].RenderMethod, blamTag, blamBeam.Beams[i].RenderMethod);
-                        if (beamSystem.Beams[i].RenderMethod == null) return null;
-                    }
-                    return beamSystem;
-            }
-            return null;
-        }
-
-        private RenderMethod ConvertShaderInternal(Stream cacheStream, Stream blamCacheStream, RenderMethod definition, CachedTag blamTag, RenderMethod blamDefinition)
-        {
             var shaderProperty = definition.ShaderProperties[0];
             var blamShaderProperty = blamDefinition.ShaderProperties[0];
 
@@ -129,7 +81,7 @@ namespace TagTool.Porting.Gen3
             if (shaderProperty.Template == null)
                 return null;
 
-            return ConvertRenderMethod(cacheStream, blamCacheStream, definition, blamDefinition, blamShaderProperty.Template, blamTag);
+            return ConvertRenderMethod(cacheStream, blamCacheStream, definition, blamDefinition, blamShaderProperty.Template);
         }
 
         private CachedTag GetDefaultShader(Tag groupTag)
@@ -194,7 +146,7 @@ namespace TagTool.Porting.Gen3
             return Matcher.FindClosestTemplate(blamRmt2, BlamCache.Deserialize<RenderMethodTemplate>(blamCacheStream, blamRmt2), FlagIsSet(PortingFlags.GenerateShaders));
         }
 
-        private RenderMethod ConvertRenderMethod(Stream cacheStream, Stream blamCacheStream, RenderMethod finalRm, RenderMethod blamRm, CachedTag blamRmt2, CachedTag blamTag)
+        private RenderMethod ConvertRenderMethod(Stream cacheStream, Stream blamCacheStream, RenderMethod finalRm, RenderMethod blamRm, CachedTag blamRmt2)
         {
             ShaderConverter shaderConverter = new ShaderConverter(CacheContext, 
                 BlamCache, 
