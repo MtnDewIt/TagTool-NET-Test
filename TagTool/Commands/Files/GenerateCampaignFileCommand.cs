@@ -31,54 +31,15 @@ namespace TagTool.Commands.Files
             if (args.Count != 1)
                 return new TagToolError(CommandError.ArgCount);
 
-            var fileName = $"halo3.campaign";
+            var mapInfoDir = Path.GetFullPath(args[0]);
 
-            var mapInfoDir = new DirectoryInfo(args[0]);
-            var srcFile = new FileInfo(Path.Combine(mapInfoDir.FullName, fileName));
-
-            if (!srcFile.Exists)
+            if (!File.Exists(Path.Combine(mapInfoDir, $"halo3.campaign")))
                 return new TagToolError(CommandError.FileNotFound);
 
-            if (Cache is GameCacheHaloOnline)
-            {
-                var destFile = new FileInfo(Path.Combine(Cache.Directory.FullName, fileName));
-
-                using (var stream = srcFile.Open(FileMode.Open, FileAccess.Read))
-                using (var reader = new EndianReader(stream))
-                using (var destStream = destFile.Create())
-                using (var writer = new EndianWriter(destStream))
-                {
-                    Blf campaignBlf = new Blf(CacheVersion.Halo3Retail, CachePlatform.Original);
-                    campaignBlf.Read(reader);
-                    campaignBlf.ConvertBlf(Cache.Version);
-                    campaignBlf.Write(writer);
-                }
-            }
-            else if (Cache is GameCacheModPackage)
-            {
-                var campaignFileStream = new MemoryStream();
-                using (var stream = srcFile.Open(FileMode.Open, FileAccess.Read))
-                using (var reader = new EndianReader(stream))
-                using (var writer = new EndianWriter(campaignFileStream, leaveOpen:true))
-                {
-                    Blf campaignBlf = new Blf(CacheVersion.Halo3Retail, CachePlatform.Original);
-                    campaignBlf.Read(reader);
-                    campaignBlf.ConvertBlf(Cache.Version);
-                    campaignBlf.Write(writer);
-                }
-                var modCache = Cache as GameCacheModPackage;
-
-                modCache.SetCampaignFile(campaignFileStream);
-            }
-            else
-            {
-                return new TagToolError(CommandError.CacheUnsupported);
-            }
-
-            
+            CampaignFileGenerator.GenerateCampaignFile(Cache, mapInfoDir);
+        
             Console.WriteLine("Done!");
             return true;
         }
-
     }
 }
