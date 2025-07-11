@@ -159,16 +159,14 @@ namespace TagTool.Bitmaps.Utils
 
         public static byte[] GetBitmapLevelData(BitmapTextureInteropResource.BitmapDefinition definition, Bitmap bitmap, int imageIndex, int level, int layerIndex)
         {
-            return GetBitmapLevelData(definition.PrimaryResourceData.Data, definition.SecondaryResourceData.Data, definition.Bitmap, bitmap, imageIndex, level, layerIndex);
-        }
+            byte[] primaryData = definition.PrimaryResourceData.Data;
+            byte[] secondaryData = definition.SecondaryResourceData.Data;
 
-        public static byte[] GetBitmapLevelData(byte[] primaryData, byte[] secondaryData, BitmapTextureInteropDefinition definition, Bitmap bitmap, int imageIndex, int level, int layerIndex)
-        {
             var pixelDataOffset = GetMipmapOffset(bitmap.Images[imageIndex], layerIndex, level);
             var pixelDataSize = GetMipmapPixelDataSize(bitmap.Images[imageIndex], layerIndex, level);
 
             byte[] pixelData = new byte[pixelDataSize];
-            if (level == 0 && definition.HighResInSecondaryResource > 0 || primaryData == null)
+            if (level == 0 && definition.Bitmap.HighResInSecondaryResource > 0 || primaryData == null)
             {
                 Array.Copy(secondaryData, pixelDataOffset, pixelData, 0, pixelData.Length);
             }

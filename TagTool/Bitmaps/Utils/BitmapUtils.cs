@@ -241,14 +241,6 @@ namespace TagTool.Bitmaps
             }
         }
 
-        public static byte[] GetBitmapSurface(byte[] primaryData, byte[] secondaryData, BitmapTextureInteropDefinition definition, Bitmap bitmap, int imageIndex, int level, int layerIndex, bool isPaired, int pairIndex, BitmapTextureInteropDefinition otherDefinition, CachePlatform platform)
-        {
-            if (platform == CachePlatform.MCC)
-                return BitmapUtilsPC.GetBitmapLevelData(primaryData, secondaryData, definition, bitmap, imageIndex, level, layerIndex);
-            else
-                return XboxBitmapUtils.GetXboxBitmapLevelData(primaryData, secondaryData, definition, level, layerIndex, isPaired, pairIndex, otherDefinition);
-        }
-
         public static int GetMipmapCount(int width, int height, int minWidth = 1, int minHeight = 1, int maxCount = int.MaxValue)
         {
             int count = 1; // include the base level

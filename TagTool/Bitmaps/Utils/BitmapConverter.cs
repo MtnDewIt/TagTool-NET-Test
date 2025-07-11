@@ -3,7 +3,6 @@ using System.IO;
 using TagTool.Cache;
 using TagTool.Extensions;
 using TagTool.Tags.Definitions;
-using TagTool.Tags.Resources;
 
 namespace TagTool.Bitmaps.Utils
 {
@@ -11,86 +10,27 @@ namespace TagTool.Bitmaps.Utils
     {
         public static BaseBitmap ConvertGen3Bitmap(GameCache cache, Bitmap bitmap, int imageIndex, string tagName, bool forDDS = false)
         {
-            var image = bitmap.Images[imageIndex];
-
-            if (image.XboxFlags.HasFlag(BitmapFlagsXbox.Xbox360UseInterleavedTextures))
-            {
-                BitmapTextureInterleavedInteropResource resource = cache.ResourceCache.GetBitmapTextureInterleavedInteropResource(bitmap.InterleavedHardwareTextures[image.InterleavedInterop]);
-                if (resource == null)
-                    return null;
-
-                BitmapTextureInteropDefinition definition = resource.Texture.Definition.Bitmap1;
-                BitmapTextureInteropDefinition otherDefinition = resource.Texture.Definition.Bitmap2;
-                if (image.InterleavedTextureIndex > 0)
-                    (definition, otherDefinition) = (otherDefinition, definition);
-
-                return ConvertGen3Bitmap(resource.Texture.Definition.PrimaryResourceData.Data, 
-                    resource.Texture.Definition.SecondaryResourceData.Data, 
-                    definition, 
-                    bitmap, 
-                    imageIndex, 
-                    true,
-                    image.InterleavedTextureIndex, 
-                    otherDefinition, 
-                    forDDS, 
-                    cache.Version,
-                    cache.Platform,
-                    tagName);
-            }
-            else
-            {
-                BitmapTextureInteropResource resource = cache.ResourceCache.GetBitmapTextureInteropResource(bitmap.HardwareTextures[imageIndex]);
-                if (resource == null)
-                    return null;
-
-                return ConvertGen3Bitmap(resource.Texture.Definition.PrimaryResourceData.Data, 
-                    resource.Texture.Definition.SecondaryResourceData.Data, 
-                    resource.Texture.Definition.Bitmap, 
-                    bitmap, 
-                    imageIndex, 
-                    false, 
-                    0, 
-                    null, 
-                    forDDS, 
-                    cache.Version, 
-                    cache.Platform,
-                    tagName);
-            }
-        }
-
-        private static BaseBitmap ConvertGen3Bitmap(byte[] primaryData, 
-            byte[] secondaryData, 
-            BitmapTextureInteropDefinition definition, 
-            Bitmap bitmap, 
-            int imageIndex, 
-            bool isPaired, 
-            int pairIndex, 
-            BitmapTextureInteropDefinition otherDefinition, 
-            bool forDDS, 
-            CacheVersion version, 
-            CachePlatform cachePlatform,
-            string tagName)
-        {
-            if (primaryData == null && secondaryData == null)
+            var extractor = new BitmapExtractorGen3(cache, bitmap, imageIndex);
+            if (extractor.HasInvalidResource)
                 return null;
 
             Bitmap.Image image = bitmap.Images[imageIndex];
-            BitmapFormat destinationformat = GestDestinationFormat(image.Format, tagName, bitmap, imageIndex, version, cachePlatform);
+            BitmapFormat destFormat = GestDestinationFormat(image.Format, tagName, bitmap, imageIndex, cache.Version, cache.Platform);
 
-            int mipLevelCount = definition.MipmapCount;
-            int layerCount = definition.BitmapType == BitmapType.CubeMap ? 6 : definition.Depth;
-            bool swapCubemapFaces = definition.BitmapType == BitmapType.CubeMap && cachePlatform != CachePlatform.MCC;
+            int mipCount = image.MipmapCount + 1;
+            int layerCount = image.Type == BitmapType.CubeMap ? 6 : image.Depth;
+            bool swapCubemapFaces = image.Type == BitmapType.CubeMap && cache.Platform != CachePlatform.MCC;
 
             // array bitmaps will be converted to texture3d and thus can't have mipmaps unfortunately
-            if (definition.BitmapType == BitmapType.Array && mipLevelCount > 1)
-                mipLevelCount = 1;
+            if (image.Type == BitmapType.Array && mipCount > 1)
+                mipCount = 1;
             // for d3d9 dxn mips have to be >= 4x4 to avoid a crash
-            if (destinationformat == BitmapFormat.Dxn)
-                mipLevelCount = BitmapUtils.GetMipmapCount(image.Width, image.Height, 4, 4, maxCount: mipLevelCount);
+            if (destFormat == BitmapFormat.Dxn)
+                mipCount = BitmapUtils.GetMipmapCount(image.Width, image.Height, 4, 4, maxCount: mipCount);
 
             // convert the surfaces
             var result = new MemoryStream();
-            foreach (var (layerIndex, mipLevel) in BitmapUtils.GetBitmapSurfacesEnumerable(layerCount, mipLevelCount, forDDS))
+            foreach (var (layerIndex, mipLevel) in BitmapUtils.GetBitmapSurfacesEnumerable(layerCount, mipCount, forDDS))
             {
                 int sourceLayerIndex = layerIndex;
                 if (swapCubemapFaces)
@@ -98,16 +38,19 @@ namespace TagTool.Bitmaps.Utils
                     if (layerIndex == 1) sourceLayerIndex = 2;
                     else if (layerIndex == 2) sourceLayerIndex = 1;
                 }
-                ConvertGen3BitmapData(image.Format, destinationformat, result, primaryData, secondaryData, definition, tagName, bitmap, imageIndex, mipLevel, sourceLayerIndex, isPaired, pairIndex, otherDefinition, version, cachePlatform);
+
+                byte[] surface = extractor.ExtractSurface(sourceLayerIndex, mipLevel, out int levelWidth, out int levelHeight);
+                surface = ConvertBitmapData(surface, levelWidth, levelHeight, image.Format, destFormat, bitmap, imageIndex, tagName, cache.Version, cache.Platform);
+                result.Write(surface);
             }
 
             // build the result bitmap
             BaseBitmap resultBitmap = new BaseBitmap(image);
             resultBitmap.Data = result.ToArray();
-            resultBitmap.MipMapCount = mipLevelCount;
+            resultBitmap.MipMapCount = mipCount;
             if (resultBitmap.Type == BitmapType.Array)
                 resultBitmap.Type = BitmapType.Texture3D;
-            resultBitmap.UpdateFormat(destinationformat);
+            resultBitmap.UpdateFormat(destFormat);
 
             return resultBitmap;
         }
@@ -131,18 +74,6 @@ namespace TagTool.Bitmaps.Utils
                 return BitmapFormat.A8R8G8B8;
 
             return BitmapUtils.GetEquivalentBitmapFormat(format);
-        }
-
-        private unsafe static void ConvertGen3BitmapData(BitmapFormat format, BitmapFormat destinationFormat, Stream resultStream, byte[] primaryData, byte[] secondaryData, BitmapTextureInteropDefinition definition, string tagName, Bitmap bitmap, int imageIndex,  int level, int layerIndex, bool isPaired, int pairIndex, BitmapTextureInteropDefinition otherDefinition, CacheVersion version, CachePlatform platform)
-        {
-            byte[] surface = BitmapUtils.GetBitmapSurface(primaryData, secondaryData, definition, bitmap, imageIndex, level, layerIndex, isPaired, pairIndex, otherDefinition, platform);
-            
-            int surfaceWidth = Math.Max(1, definition.Width >> level);
-            int surfaceHeight = Math.Max(1, definition.Height >> level);
-
-            surface = ConvertBitmapData(surface, surfaceWidth, surfaceHeight, format, destinationFormat, bitmap, imageIndex, tagName, version, platform);
-            
-            resultStream.Write(surface, 0, surface.Length);
         }
 
         private static byte[] ConvertBitmapData(byte[] data, int width, int height, BitmapFormat format, BitmapFormat destinationFormat, Bitmap bitmap, int imageIndex, string tagName, CacheVersion version, CachePlatform platform)
@@ -205,14 +136,14 @@ namespace TagTool.Bitmaps.Utils
         {
             if (format == BitmapFormat.Dxn)
             {
-                byte unorm(byte b) => (byte)(((sbyte)b / 127f + 1) / 2f * 255f);
                 for (int i = 0; i < data.Length; i += 16)
                 {
                     // signed -> unsigned
-                    data[i + 0] = unorm(data[i + 0]);
-                    data[i + 1] = unorm(data[i + 1]);
-                    data[i + 8] = unorm(data[i + 8]);
-                    data[i + 9] = unorm(data[i + 9]);
+                    data[i + 0] += 128;
+                    data[i + 1] += 128;
+                    data[i + 8] += 128;
+                    data[i + 9] += 128;
+
                     // swap X/Y
                     for (int j = 0; j < 8; j++)
                     {
