@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TagTool.Bitmaps.Utils;
 using TagTool.Cache;
 
 namespace TagTool.Bitmaps
@@ -58,7 +59,7 @@ namespace TagTool.Bitmaps
             }
         }
 
-        public static byte[] EncodeBitmap(byte[] bitm, BitmapFormat format, int virtualWidth, int virtualHeight)
+        public static byte[] EncodeBitmap(byte[] bitm, BitmapFormat format, int virtualWidth, int virtualHeight, CompressionQuality quality = CompressionQuality.Default)
         {
             switch (format)
             {
@@ -80,7 +81,7 @@ namespace TagTool.Bitmaps
 
                 default:
                     if(BitmapUtils.IsCompressedFormat(format))
-                        return BitmapCompression.Compress(bitm, virtualWidth, virtualHeight, format);
+                        return BitmapCompression.Compress(bitm, virtualWidth, virtualHeight, format, quality);
                     else
                         throw new NotSupportedException($"Unsupported bitmap format {format}.");
             }
