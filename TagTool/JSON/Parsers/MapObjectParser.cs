@@ -5,6 +5,8 @@ using TagTool.IO;
 using TagTool.Tags.Definitions;
 using TagTool.BlamFile;
 using TagTool.JSON.Handlers;
+using TagTool.BlamFile.Chunks;
+using TagTool.BlamFile.Chunks.MapVariants;
 
 namespace TagTool.JSON.Parsers
 {
@@ -22,7 +24,7 @@ namespace TagTool.JSON.Parsers
             CacheContext = cacheContext;
             CacheStream = cacheStream;
             InputPath = inputPath;
-            Handler = new MapObjectHandler(Cache, CacheContext);
+            Handler = new MapObjectHandler(Cache.Version, Cache.Platform);
         }
 
         public void ParseFile(string filePath)
@@ -41,6 +43,7 @@ namespace TagTool.JSON.Parsers
                     CachePlatform = CachePlatform.Original,
                     Header = mapObject.Header,
                     MapFileBlf = mapObject.MapFileBlf,
+                    Reports = mapObject.Reports,
                 };
 
                 var headerData = mapData.Header as CacheFileHeaderGenHaloOnline;
@@ -74,7 +77,7 @@ namespace TagTool.JSON.Parsers
             }
         }
 
-        public void UpdateQuotaIndexes(TagName[] tagNames, VariantObjectQuota[] quotaList)
+        public void UpdateQuotaIndexes(BlfMapVariantTagNames.TagName[] tagNames, VariantObjectQuota[] quotaList)
         {
             for (int i = 0; i < tagNames.Length; i++)
             {

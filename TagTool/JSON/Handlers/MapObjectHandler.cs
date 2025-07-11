@@ -7,20 +7,19 @@ namespace TagTool.JSON.Handlers
 {
     public class MapObjectHandler
     {
-        private GameCache Cache;
-        private GameCacheHaloOnlineBase CacheContext;
+        private CacheVersion Version;
+        private CachePlatform Platform;
 
         private static List<JsonConverter> Converters;
 
-        public MapObjectHandler(GameCache cache, GameCacheHaloOnlineBase cacheContext)
+        public MapObjectHandler(CacheVersion version, CachePlatform platform)
         {
-            Cache = cache;
-            CacheContext = cacheContext;
+            Version = version;
+            Platform = platform;
 
             Converters = new List<JsonConverter>
             {
-                new StringIdHandler(Cache, CacheContext),
-                new TagStructureHandler(Cache.Version, Cache.Platform),
+                new TagStructureHandler(Version, Platform),
 
                 // I really need to merge all these into a single handler which just takes a generic type as an input :/
                 new AngleHandler(),
@@ -57,7 +56,9 @@ namespace TagTool.JSON.Handlers
                 new RealVector2dHandler(),
                 new RealVector3dHandler(),
                 new Rectangle2dHandler(),
+                new ResourceCRCHandler(),
                 new RSASignatureHandler(),
+                new SHA256HashHandler(),
                 new TagHandler(),
             };
         }
@@ -77,8 +78,6 @@ namespace TagTool.JSON.Handlers
         {
             var converters = new List<JsonConverter>
             {
-                new StringIdHandler(Cache, CacheContext),
-
                 // I really need to merge all these into a single handler which just takes a generic type as an input :/
                 new AngleHandler(),
                 new ArgbColorHandler(),
@@ -114,7 +113,9 @@ namespace TagTool.JSON.Handlers
                 new RealVector2dHandler(),
                 new RealVector3dHandler(),
                 new Rectangle2dHandler(),
+                new ResourceCRCHandler(),
                 new RSASignatureHandler(),
+                new SHA256HashHandler(),
                 new TagHandler(),
             };
 

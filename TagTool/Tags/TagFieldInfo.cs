@@ -232,11 +232,18 @@ namespace TagTool.Tags
 					return 0x14;
 
                 case TypeCode.Object when type == typeof(RealBoundingBox):
-				case TypeCode.Object when type == typeof(RealRectangle3d):
+
+                case TypeCode.Object when type == typeof(RealRectangle2d):
+                    return 0x10;
+
+                case TypeCode.Object when type == typeof(RealRectangle3d):
 					return 0x18;
 
 				case TypeCode.Object when type == typeof(RealMatrix4x3):
 					return 0x30;
+
+                case TypeCode.Object when type == typeof(RealMatrix4x4):
+                    return 0x40;
 
                 case TypeCode.Object when type == typeof(DatumHandle):
                     return sizeof(uint);

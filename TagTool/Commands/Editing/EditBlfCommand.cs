@@ -49,64 +49,24 @@ namespace TagTool.Commands.Editing
 
         public bool TryGetBlfFile(string input, out Blf result) 
         {
+            var file = new FileInfo(input);
+
+            var blfData = new Blf(Cache.Version, Cache.Platform);
+
+            using (var stream = file.OpenRead())
+            {
+                var reader = new EndianReader(stream);
+
+                blfData.Read(reader);
+            }
+
+            result = blfData;
+
+            return true;
+
             try
             {
-                var file = new FileInfo(input);
-
-                Blf blfData = null;
-
-                using (var stream = file.OpenRead())
-                {
-                    var reader = new EndianReader(stream);
-
-                    switch (file.Extension)
-                    {
-                        case ".assault":
-                        case ".ctf":
-                        case ".jugg":
-                        case ".koth":
-                        case ".oddball":
-                        case ".slayer":
-                        case ".terries":
-                        case ".vip":
-                        case ".zombiez":
-                        case ".map":
-                            // I might add support for halo 3 variants at some point, but I'm not all that familiar
-                            // with the formatting for variants outside of ED, so for now we'll only support ED variants.
-                            blfData = new Blf(CacheVersion.HaloOnlineED, Cache.Platform);
-                            break;
-                        case ".bin":
-                        case ".blf":
-                            blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
-                            break;
-                        case ".campaign":
-                            blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
-                            break;
-                        case ".mapinfo":
-                            switch (reader.Length)
-                            {
-                                case 0x4E91:
-                                    blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
-                                    break;
-                                case 0x9A01:
-                                    blfData = new Blf(CacheVersion.Halo3ODST, Cache.Platform);
-                                    break;
-                                case 0xCDD9:
-                                    blfData = new Blf(CacheVersion.HaloReach, Cache.Platform);
-                                    break;
-                            }
-                            break;
-                        default:
-                            blfData = new Blf(Cache.Version, Cache.Platform);
-                            break;
-                    }
-
-                    blfData.Read(reader);
-                }
-
-                result = blfData;
-
-                return true;
+                
             }
             catch
             {

@@ -531,7 +531,7 @@ namespace TagTool.Commands.Scenarios
             var scenarioName = Path.GetFileName(scenarioTag.Name);
             var scnr = cache.Deserialize<Scenario>(cacheStream, scenarioTag);
 
-            var mapBuilder = new MapFileBuilder(cache.Version);
+            var mapBuilder = new MapFileGenerator(cache.Version);
             mapBuilder.MapName = mapName;
             mapBuilder.MapDescription = mapDescription;
             MapFile map = mapBuilder.Build(scenarioTag, scnr);

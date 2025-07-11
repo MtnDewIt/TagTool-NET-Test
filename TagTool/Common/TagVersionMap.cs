@@ -80,7 +80,7 @@ namespace TagTool.Common
             // TODO: idk what this is used for hmmm writer.WriteLine(string.Join(",", _versionMaps.Keys.Select(CacheVersionDetection.GetBuildName)));
 
             // Write a list of timestamps for the versions
-            writer.WriteLine(string.Join(",", _versionMaps.Keys.Select(v => CacheVersionDetection.GetTimestamp(v).ToString("X16"))));
+            writer.WriteLine(string.Join(",", _versionMaps.Keys.Select(CacheVersionDetection.GetTimestamp)));
 
             // Now write out each tag
             for (var i = 0; i < _nextGlobalTagIndex; i++)
@@ -107,16 +107,8 @@ namespace TagTool.Common
             var timestampLine = reader.ReadLine();
             if (timestampLine == null)
                 return result;
-            var timestamps = timestampLine.Split(',').Select(t =>
-            {
-                if (long.TryParse(t, NumberStyles.HexNumber, null, out long r))
-                    return r;
-                return -1;
-            });
-            var versions = timestamps.Select(t =>
-            {
-                return CacheVersionDetection.DetectFromTimestamp(t, out CacheVersion closest);
-            }).ToArray();
+            var timestamps = timestampLine.Split(',');
+            var versions = timestamps.Select(CacheVersionDetection.DetectFromTimestamp).ToArray();
 
             // Read each line and store the tag indices in the result map
             while (true)

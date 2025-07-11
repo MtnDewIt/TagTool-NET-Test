@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TagTool.BlamFile.Chunks;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
@@ -41,8 +42,8 @@ namespace TagTool.BlamFile.MCC
         {
             scenario.MapId = scnr.MapId;
 
-            var parsedTitle = Title?.ParseLocalizedString(31, "Title");
-            var parsedDescription = Description?.ParseLocalizedString(127, "Description");
+            var parsedTitle = Title?.ParseLocalizedString(31, LocalizedString.LocalizedStringType.Title);
+            var parsedDescription = Description?.ParseLocalizedString(127, LocalizedString.LocalizedStringType.Description);
 
             for (int i = 0; i < scenario.Names.Length; i++)
                 scenario.Names[i].Name = parsedTitle;
@@ -59,18 +60,18 @@ namespace TagTool.BlamFile.MCC
             scenario.MaximumDesiredPlayers = 6;
             scenario.GameEngineTeamCounts = GameCategory.DefaultTeamCounts;
 
-            scenario.MapFlags = BlfScenarioFlags.Visible | BlfScenarioFlags.GeneratesFilm;
+            scenario.MapFlags = BlfScenario.BlfScenarioFlags.Visible | BlfScenario.BlfScenarioFlags.GeneratesFilm;
 
             switch (scnr.MapType)
             {
                 case ScenarioMapType.MainMenu:
-                    scenario.MapFlags |= BlfScenarioFlags.IsMainmenu;
+                    scenario.MapFlags |= BlfScenario.BlfScenarioFlags.IsMainmenu;
                     break;
                 case ScenarioMapType.Multiplayer:
-                    scenario.MapFlags |= BlfScenarioFlags.IsMultiplayer;
+                    scenario.MapFlags |= BlfScenario.BlfScenarioFlags.IsMultiplayer;
                     break;
                 case ScenarioMapType.SinglePlayer:
-                    scenario.MapFlags |= BlfScenarioFlags.IsCampaign;
+                    scenario.MapFlags |= BlfScenario.BlfScenarioFlags.IsCampaign;
                     break;
             }
 
