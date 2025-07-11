@@ -78,7 +78,7 @@ namespace TagTool.Commands.Porting
                 }
                 else if (portingCache is GameCacheHaloOnlineBase hoPortingCache)
                 {
-                    context.AddCommand(new PortTagHOCommand(hoCache, hoPortingCache));
+                    context.AddCommand(new PortTagCommand(hoCache, hoPortingCache));
                 }
             }
 

@@ -12,23 +12,23 @@ using TagTool.Porting.Gen3;
 namespace TagTool.Commands.Porting
 {
     public partial class PortTagCommand : Command
-	{
-		public GameCacheHaloOnlineBase CacheContext { get; }
-		public GameCache BlamCache;
+    {
+        private GameCacheHaloOnlineBase CacheContext { get; }
+        private GameCache BlamCache;
 
-		public PortTagCommand(GameCacheHaloOnlineBase cacheContext, GameCache blamCache) :
-			base(true,
+        public PortTagCommand(GameCacheHaloOnlineBase cacheContext, GameCache blamCache) :
+            base(true,
 
-				"PortTag",
-				PortTagCommand.GetPortingFlagsDescription(),
-				"PortTag [Options] <Tag>",
-				"")
-		{
+                "PortTag",
+                PortTagCommand.GetPortingFlagsDescription(),
+                "PortTag [Options] <Tag>",
+                "")
+        {
             CacheContext = cacheContext;
             BlamCache = blamCache;
         }
 
-        public override object Execute(List<string> args) 
+        public override object Execute(List<string> args)
         {
             if (args.Count < 1)
                 return new TagToolError(CommandError.ArgCount);
@@ -38,16 +38,15 @@ namespace TagTool.Commands.Porting
             string[] argParameters = ParsePortingOptions(portingOptions, out PortingFlags flags);
 
             var tagName = args.Last();
-
             List<CachedTag> tagList = ParseLegacyTag(tagName, flags);
-            foreach (CachedTag tag in tagList)
+            foreach(CachedTag tag in tagList)
             {
-                if (tag == null)
+                if(tag == null)
                     return new TagToolError(CommandError.TagInvalid, args.Last());
             }
 
-            var porting = new PortingContextGen3(CacheContext, BlamCache);
-            porting.PortTag(tagList, flags, argParameters);
+            var context = PortingContext.Create(CacheContext, BlamCache);
+            context.PortTag(tagList, flags, argParameters);
 
             return true;
         }

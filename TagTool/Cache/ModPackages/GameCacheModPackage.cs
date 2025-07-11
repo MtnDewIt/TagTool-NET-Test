@@ -242,7 +242,7 @@ namespace TagTool.Cache
             if (location == ResourceLocation.Mods)
                 return resource;
 
-            Console.WriteLine($"Converting resource {resource.Page.Index}");
+            // Console.WriteLine($"Converting resource {resource.Page.Index}");
             var rawResource = BaseCacheReference.ResourceCaches.ExtractRawResource(resource);
             resource.ChangeLocation(ResourceLocation.Mods);
             ResourceCaches.AddRawResource(resource, rawResource);
