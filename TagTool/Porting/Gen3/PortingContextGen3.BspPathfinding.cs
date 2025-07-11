@@ -11,9 +11,9 @@ using System.Linq;
 using System.Collections.Generic;
 using System;
 
-namespace TagTool.Porting
+namespace TagTool.Porting.Gen3
 {
-    partial class PortingContext
+    partial class PortingContextGen3
     {
         private TagResourceReference ConvertStructureBspCacheFileTagResources(ScenarioStructureBsp bsp, StructureBspTagResources bspResources, CachedTag instance)
         {

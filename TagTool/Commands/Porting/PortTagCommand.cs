@@ -1,13 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using TagTool.Cache;
 using TagTool.Commands.Common;
-using System.Reflection;
 using TagTool.Porting;
-using static TagTool.Porting.PortingContext;
+using TagTool.Porting.Gen3;
 
 namespace TagTool.Commands.Porting
 {
@@ -37,16 +37,17 @@ namespace TagTool.Commands.Porting
 
             string[] argParameters = ParsePortingOptions(portingOptions, out PortingFlags flags);
 
-            var porting = new PortingContext(CacheContext, BlamCache);
             var tagName = args.Last();
 
-            foreach (var blamTag in porting.ParseLegacyTag(tagName))
+            List<CachedTag> tagList = ParseLegacyTag(tagName, flags);
+            foreach (CachedTag tag in tagList)
             {
-                if (blamTag == null)
-                    return new TagToolError(CommandError.TagInvalid, tagName);
-
-                porting.PortTag(blamTag, portingFlags: flags, optMpObjectParams: argParameters);
+                if (tag == null)
+                    return new TagToolError(CommandError.TagInvalid, args.Last());
             }
+
+            var porting = new PortingContextGen3(CacheContext, BlamCache);
+            porting.PortTag(tagList, flags, argParameters);
 
             return true;
         }
@@ -120,7 +121,7 @@ namespace TagTool.Commands.Porting
 
             foreach (var portingFlagInfo in typeof(PortingFlags).GetMembers(BindingFlags.Public | BindingFlags.Static).OrderBy(m => m.MetadataToken))
             {
-                var attr = portingFlagInfo.GetCustomAttribute<PortingFlagDescriptionAttribute>(false);
+                var attr = portingFlagInfo.GetCustomAttribute<DescriptionAttribute>(false);
 
                 // Use the attribute description for the flags help-description.
                 if (attr != null)
@@ -138,6 +139,53 @@ namespace TagTool.Commands.Porting
 
             return info + Environment.NewLine +
                 "*Any option can be negated by prefixing it with `!`." + Environment.NewLine;
+        }
+
+        private List<CachedTag> ParseLegacyTag(string tagSpecifier, PortingFlags flags)
+        {
+            List<CachedTag> result = new List<CachedTag>();
+
+            if ((flags & PortingFlags.Regex) != 0)
+            {
+                var regex = new Regex(tagSpecifier);
+                result = BlamCache.TagCache.TagTable.ToList().FindAll(item => item != null && regex.IsMatch(item.ToString() + "." + item.Group.Tag));
+                if (result.Count == 0)
+                {
+                    new TagToolError(CommandError.CustomError, $"Invalid regex: {tagSpecifier}");
+                    return new List<CachedTag>();
+                }
+                return result;
+            }
+
+            if (tagSpecifier.Length == 0 || (!char.IsLetter(tagSpecifier[0]) && !tagSpecifier.Contains('*')) || !tagSpecifier.Contains('.'))
+            {
+                new TagToolError(CommandError.CustomError, $"Invalid tag name: {tagSpecifier}");
+                return new List<CachedTag>();
+            }
+
+            var tagIdentifiers = tagSpecifier.Split('.');
+
+            if (!CacheContext.TagCache.TryParseGroupTag(tagIdentifiers[1], out var groupTag))
+            {
+                new TagToolError(CommandError.CustomError, $"Invalid tag name: {tagSpecifier}");
+                return new List<CachedTag>();
+            }
+
+            var tagName = tagIdentifiers[0];
+
+            // find the CacheFile.IndexItem(s)
+            if (tagName == "*") result = BlamCache.TagCache.TagTable.ToList().FindAll(
+                item => item != null && item.IsInGroup(groupTag));
+            else result.Add(BlamCache.TagCache.TagTable.ToList().Find(
+                item => item != null && item.IsInGroup(groupTag) && tagName == item.Name));
+
+            if (result.Count == 0)
+            {
+                new TagToolError(CommandError.CustomError, $"Invalid tag name: {tagSpecifier}");
+                return new List<CachedTag>();
+            }
+
+            return result;
         }
     }
 }

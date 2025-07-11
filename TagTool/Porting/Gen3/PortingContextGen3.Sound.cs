@@ -6,17 +6,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using TagTool.Audio;
 using TagTool.Cache;
-using TagTool.Cache.Gen3;
 using TagTool.Commands;
+using TagTool.Cache.Gen3;
 using TagTool.Commands.Common;
 using TagTool.Commands.Porting;
 using TagTool.Commands.Sounds;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 
-namespace TagTool.Porting
+namespace TagTool.Porting.Gen3
 {
-    partial class PortingContext
+    partial class PortingContextGen3
     {
         private SoundCacheFileGestalt BlamSoundGestalt { get; set; } = null;
 
@@ -87,7 +87,6 @@ namespace TagTool.Porting
             var soundResource = BlamCache.ResourceCache.GetSoundResourceDefinition(resourceReference);
             if(soundResource == null)
                 return null;
-
 
             var useCache = UseAudioCacheCommand.AudioCacheDirectory != null;
             var soundCachePath = useCache ? UseAudioCacheCommand.AudioCacheDirectory.FullName : "";

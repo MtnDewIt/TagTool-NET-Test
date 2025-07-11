@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 using System.Linq;
 using TagTool.Commands.Common;
 
-namespace TagTool.Porting
+namespace TagTool.Porting.Gen3
 {
-    partial class PortingContext
+    partial class PortingContextGen3
     {
         public List<string> PendingTemplates = new List<string>();
         public Dictionary<CachedTag, (CachedTag, object, object)> DeferredRenderMethods = new Dictionary<CachedTag, (CachedTag, object, object)>(); // format: base cache tag, (blam tag, converted definition, blam cache definition)
@@ -37,7 +37,7 @@ namespace TagTool.Porting
             return rasg;
         }
 
-        public void FinalizeRenderMethods(Stream cacheStream, Stream blamCacheStream)
+        private void FinalizeRenderMethods(Stream cacheStream, Stream blamCacheStream)
         {
             foreach (var deferredRm in DeferredRenderMethods)
             {

@@ -10,9 +10,9 @@ using static TagTool.Tags.Definitions.Model;
 using static TagTool.Tags.Definitions.Model.GlobalDamageInfoBlock;
 using static TagTool.Tags.Definitions.Model.GlobalDamageInfoBlock.DamageSection;
 
-namespace TagTool.Porting
+namespace TagTool.Porting.Gen3
 {
-    public partial class PortingContext
+    public partial class PortingContextGen3
     {
         public DamageEffect ConvertDamageEffect(DamageEffect damageEffect)
         {

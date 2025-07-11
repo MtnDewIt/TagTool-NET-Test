@@ -11,9 +11,9 @@ using TagTool.Lighting;
 using TagTool.Havok;
 using TagTool.Commands.Common;
 
-namespace TagTool.Porting
+namespace TagTool.Porting.Gen3
 {
-    partial class PortingContext
+    partial class PortingContextGen3
     {
         private LensFlare ConvertLensFlare(LensFlare lensFlare, Stream cacheStream, Stream blamCacheStream)
         {

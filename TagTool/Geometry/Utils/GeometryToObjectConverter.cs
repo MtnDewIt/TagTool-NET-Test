@@ -18,6 +18,7 @@ using TagTool.Commands.CollisionModels.OffsetCollisonBsp;
 using TagTool.Commands.CollisionModels;
 using TagTool.Porting;
 using static TagTool.Porting.PortingContext;
+using TagTool.Porting.Gen3;
 
 namespace TagTool.Geometry.Utils
 {
@@ -49,7 +50,7 @@ namespace TagTool.Geometry.Utils
             SourceCache = sourceCache;
             SourceStream = sourceStream;
             StructureBspIndex = structureBspIndex;
-            PortContext = new PortingContext(destCache, sourceCache);
+            PortContext = new PortingContextGen3(destCache, sourceCache);
 
             Scenario = scenario;
             StructureBspIndex = structureBspIndex;
@@ -231,9 +232,7 @@ namespace TagTool.Geometry.Utils
             DestCache.Serialize(DestStream, modelTag, model);
             DestCache.Serialize(DestStream, scenTag, gameObject);
 
-            PortContext.FinishAsync();
-            PortContext.ProcessDeferredActions();
-            PortContext.FinalizeRenderMethods(DestStream, SourceStream);
+            PortContext.Finish(DestStream, SourceStream);
 
             Console.WriteLine($"['{renderModelTag.Group}', 0x{renderModelTag.Index:X04}] {renderModelTag.Name}");
             Console.WriteLine($"['{collisionModelTag.Group}', 0x{collisionModelTag.Index:X04}] {collisionModelTag.Name}");

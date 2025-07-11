@@ -3,9 +3,9 @@ using TagTool.Tags.Definitions;
 using TagTool.Cache;
 using TagTool.Common;
 
-namespace TagTool.Porting
+namespace TagTool.Porting.Gen3
 {
-    partial class PortingContext
+    partial class PortingContextGen3
     {
         private ShieldImpact PreConvertShieldImpact(ShieldImpact shit, CacheVersion blamVersion, GameCacheHaloOnlineBase cache)
         {

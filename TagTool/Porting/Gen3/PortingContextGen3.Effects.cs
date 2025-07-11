@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
-namespace TagTool.Porting
+namespace TagTool.Porting.Gen3
 {
-    public partial class PortingContext
+    public partial class PortingContextGen3
     {
         private Effect ConvertEffect(Stream cacheStream, Effect effe, string blamTagName)
         {

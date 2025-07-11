@@ -8,7 +8,7 @@ using TagTool.Common;
 using TagTool.Geometry.Utils;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
-using static TagTool.Porting.PortingContext;
+using TagTool.Porting;
 
 namespace TagTool.Commands.Porting
 {

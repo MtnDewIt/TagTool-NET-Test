@@ -1,16 +1,18 @@
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using TagTool.Ai;
 using TagTool.Cache;
+using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Serialization;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
-namespace TagTool.Porting
+namespace TagTool.Porting.Gen3
 {
-    partial class PortingContext
+    partial class PortingContextGen3
     {
         private Globals ConvertGlobals(Globals matg, Stream cacheStream)
         {
@@ -339,6 +341,109 @@ namespace TagTool.Porting
             }
 
             CacheContext.Serialize(cacheStream, edTag, edDef);
+        }
+
+        private object ConvertGlobalMaterialTypeField(Stream cacheStream, Stream blamCacheStream, TagFieldInfo fieldinfo, object value)
+        {
+            // only enabled for reach, however it might be worth using for h3 and odst as a fallback
+            if (BlamCache.Version < CacheVersion.HaloReach)
+                return value;
+
+            var globals = TagDefinitionCache.Deserialize<Globals>(CacheContext, cacheStream, CacheContext.TagCache.FindFirstInGroup<Globals>());
+            var blamGlobals = TagDefinitionCache.Deserialize<Globals>(BlamCache, blamCacheStream, BlamCache.TagCache.FindFirstInGroup<Globals>());
+
+            var materials = globals.Materials;
+            var blamMaterials = BlamCache.Version >= CacheVersion.HaloReach ? blamGlobals.AlternateMaterials : blamGlobals.Materials;
+            return ConvertInternal(value);
+
+            object ConvertInternal(object val)
+            {
+                switch (val)
+                {
+                    case StringId stringId:
+                        if (stringId != StringId.Invalid)
+                            val = materials[FindMatchingMaterial(CacheContext.StringTable.GetString(stringId))].Name;
+                        break;
+                    case short index:
+                        if (index != -1)
+                        {
+                            if (index < 0 || index >= blamMaterials.Count)
+                            {
+                                index = 0;
+                                new TagToolWarning($"Global material type was out of range for '{fieldinfo.DeclaringType.FullName}.{fieldinfo.Name}', value: {index}");
+                            }
+                            else
+                            {
+                                val = FindMatchingMaterial(BlamCache.StringTable.GetString(blamMaterials[index].Name));
+                            }
+                        }
+                        break;
+                    case short[] indices:
+                        for (int i = 0; i < indices.Length; i++)
+                            indices[i] = (short)ConvertInternal(indices[i]);
+                        break;
+                    case StringId[] stringIds:
+                        for (int i = 0; i < stringIds.Length; i++)
+                            stringIds[i] = (StringId)ConvertInternal(stringIds[i]);
+                        break;
+                }
+                return val;
+            }
+
+            short FindMatchingMaterial(string name)
+            {
+                var originalName = name;
+
+                // we don't have wet materials
+                if (name.StartsWith("wet_"))
+                    name = name.Substring(4);
+
+                // other reach fixups
+                Dictionary<string, string> substitutions = new Dictionary<string, string>
+                {
+                    {"hard_metal_thin_hum_spartan", "hard_metal_thin_hum_masterchief"},
+                    {"energy_shield_thin_hum_spartan", "energy_shield_thin_hum_masterchief"},
+                    {"energy_shield_invulnerable", "energy_shield_invincible"},
+                    {"energy_hologram", "energy_holo"},
+                };
+                if (substitutions.TryGetValue(name, out var sub))
+                    name = sub;
+
+                // search for the name in the destination materials
+                var matchIndex = (short)materials.FindIndex(x => CacheContext.StringTable.GetString(x.Name) == name);
+                if (matchIndex != -1)
+                {
+                    if (name != originalName)
+                        Console.WriteLine($"Failed to find global material type '{originalName}', using '{name}'");
+
+                    return matchIndex;
+                }
+
+                // we couldn't find it, find the index in the source materials
+                var blamIndex = blamMaterials.FindIndex(x => BlamCache.StringTable.GetString(x.Name) == originalName);
+                if (blamIndex == -1)
+                {
+                    if (!originalName.StartsWith("default"))
+                        Console.WriteLine($"Failed to find global material type '{originalName}', using 'default_material'");
+                    return 0;
+                }
+
+                // if it has a parent search for its name
+                StringId parentName = blamMaterials[blamIndex].ParentName;
+                if (parentName == StringId.Invalid)
+                    return 0;
+
+                // recurse
+                matchIndex = FindMatchingMaterial(BlamCache.StringTable.GetString(parentName));
+
+                // if we still can't find anything after walking up the hierarchy, use 'default_material'
+                if (matchIndex == -1)
+                    matchIndex = 0;
+
+                name = CacheContext.StringTable.GetString(materials[matchIndex].Name);
+                Console.WriteLine($"Failed to find global material type '{originalName}', using '{name}'");
+                return matchIndex;
+            }
         }
     }
 }

@@ -2,22 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using TagTool.Bitmaps;
+using TagTool.Bitmaps.Utils;
 using TagTool.Cache;
+using TagTool.Cache.Gen3;
 using TagTool.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
-using TagTool.Bitmaps.Utils;
-using System.Threading.Tasks;
-using TagTool.Commands.Common;
-using TagTool.Cache.Gen3;
 
-namespace TagTool.Porting
+namespace TagTool.Porting.Gen3
 {
-    partial class PortingContext
+    partial class PortingContextGen3
     {
-        private Dictionary<Bitmap, Task> BitmapConversionTasks = new Dictionary<Bitmap, Task>();
-
         class BitmapConversionResult
         {
             public Bitmap Definition;

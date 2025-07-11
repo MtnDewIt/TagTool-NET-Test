@@ -14,9 +14,9 @@ using TagTool.Tags.Resources;
 using TagTool.Geometry;
 using TagTool.BlamFile;
 
-namespace TagTool.Porting
+namespace TagTool.Porting.Gen3
 {
-    partial class PortingContext
+    partial class PortingContextGen3
     {
         private Scenario CurrentScenario = null;
 
@@ -42,7 +42,7 @@ namespace TagTool.Porting
             // Halo 3 scenario ai data
             //
 
-            if (BlamCache.Version == CacheVersion.Halo3Retail && Flags.HasFlag(PortingFlags.Recursive))
+            if (BlamCache.Version == CacheVersion.Halo3Retail && FlagIsSet(PortingFlags.Recursive))
             {
                 var pathfindingBsps = new List<StructureBspCacheFileTagResources>();
 
@@ -503,7 +503,7 @@ namespace TagTool.Porting
                     scnr.TriggerVolumes[i] = ConvertTriggerVolumeReach(scnr.TriggerVolumes[i]);
             }
 
-            if (BlamCache.Version >= CacheVersion.HaloReach && Flags.HasFlag(PortingFlags.Recursive))
+            if (BlamCache.Version >= CacheVersion.HaloReach && FlagIsSet(PortingFlags.Recursive))
             {
                 // convert structure design
 

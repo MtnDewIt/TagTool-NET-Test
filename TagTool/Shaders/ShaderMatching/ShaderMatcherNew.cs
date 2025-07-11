@@ -9,6 +9,8 @@ using TagTool.Common;
 using TagTool.Tags.Definitions;
 using TagTool.Commands.Porting;
 using TagTool.Porting;
+using TagTool.Porting.Gen3;
+using static TagTool.Porting.Gen3.PortingContextGen3;
 
 namespace TagTool.Shaders.ShaderMatching
 {
@@ -18,7 +20,7 @@ namespace TagTool.Shaders.ShaderMatching
         private GameCache PortingCache;
         private Stream BaseCacheStream;
         private Stream PortingCacheStream;
-        private PortingContext PortContext;
+        private PortingContextGen3 PortContext;
         // shader type, definition
         private Dictionary<string, RenderMethodDefinition> RenderMethodDefinitions;
         private Dictionary<string, RenderMethodDefinition> PortingRenderMethodDefinitions;
@@ -38,7 +40,7 @@ namespace TagTool.Shaders.ShaderMatching
             GameCache portingCache, 
             Stream baseCacheStream, 
             Stream portingCacheStream,
-            PortingContext portContext,
+            PortingContextGen3 portContext,
             bool useMS30 = false, 
             bool perfectMatchesOnly = false)
         {
@@ -263,7 +265,7 @@ namespace TagTool.Shaders.ShaderMatching
 
             if (ShaderCache.ExportTemplate(BaseCacheStream, BaseCache, tagName, out CachedTag cachedRmt2Tag))
             {
-                if (PortContext.FlagIsSet(PortingContext.PortingFlags.Print))
+                if (PortContext.FlagIsSet(PortingFlags.Print))
                     Console.WriteLine($"['{cachedRmt2Tag.Group.Tag}', 0x{cachedRmt2Tag.Index:X4}] {cachedRmt2Tag.Name}.{(cachedRmt2Tag.Group as Cache.Gen3.TagGroupGen3).Name}");
                 return cachedRmt2Tag;
             }
@@ -358,7 +360,7 @@ namespace TagTool.Shaders.ShaderMatching
                     PortContext.RunAsync(
                         onExecute: () =>
                         {
-                            var result = new PortingContext.TemplateConversionResult();
+                            var result = new TemplateConversionResult();
 
                             result.Tag = rmt2Tag;
                             result.Definition = ShaderGenerator.ShaderGeneratorNew.GenerateTemplate(BaseCache, 
@@ -366,7 +368,7 @@ namespace TagTool.Shaders.ShaderMatching
 
                             return result;
                         },
-                        onSuccess: (PortingContext.TemplateConversionResult result) =>
+                        onSuccess: (TemplateConversionResult result) =>
                         {
                             var asyncRmt2 = result.Definition;
                             var asyncPixl = result.PixelShaderDefinition;
@@ -381,7 +383,7 @@ namespace TagTool.Shaders.ShaderMatching
                             BaseCache.Serialize(BaseCacheStream, asyncRmt2.VertexShader, asyncVtsh);
                             BaseCache.Serialize(BaseCacheStream, result.Tag, asyncRmt2);
 
-                            if (PortContext.FlagIsSet(PortingContext.PortingFlags.Print))
+                            if (PortContext.FlagIsSet(PortingFlags.Print))
                                 Console.WriteLine($"['{result.Tag.Group.Tag}', 0x{result.Tag.Index:X4}] {result.Tag.Name}.{(result.Tag.Group as Cache.Gen3.TagGroupGen3).Name}");
                         });
 
