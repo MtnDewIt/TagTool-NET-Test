@@ -6,9 +6,9 @@ using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TagTool.Commands.Porting
+namespace TagTool.Porting
 {
-    public partial class PortTagCommand
+    public partial class PortingContext
     {
         private AsyncTaskQueue AsyncQueue;
 

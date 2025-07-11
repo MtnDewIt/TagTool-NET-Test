@@ -8,9 +8,9 @@ using TagTool.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
-namespace TagTool.Commands.Porting
+namespace TagTool.Porting
 {
-    public partial class PortTagCommand : Command
+    public partial class PortingContext
     {
         private Effect ConvertEffect(Stream cacheStream, Effect effe, string blamTagName)
         {
