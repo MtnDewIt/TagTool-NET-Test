@@ -73,6 +73,7 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new SaveTagNamesCommand(hoCache));
                 context.AddCommand(new SaveModdedTagsCommand(hoCache));
                 context.AddCommand(new CreateTagCommand(hoCache));
+                context.AddCommand(new ReplaceTagCommand(hoCache));
                 context.AddCommand(new ImportTagCommand(hoCache));
                 context.AddCommand(new ImportLooseTagCommand(hoCache));
                 context.AddCommand(new TagResourceCommand(hoCache));
