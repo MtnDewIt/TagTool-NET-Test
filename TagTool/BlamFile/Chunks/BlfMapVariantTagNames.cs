@@ -3,13 +3,13 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.Chunks
 {
-    [TagStructure(Size = 0x10000, Align = 0x1)]
+    [TagStructure(Size = 0x10000)]
     public class BlfMapVariantTagNames : BlfChunkHeader
     {
         [TagField(Length = 0x100)]
         public TagName[] Names;
 
-        [TagStructure(Size = 0x100, Align = 0x1)]
+        [TagStructure(Size = 0x100)]
         public class TagName : TagStructure
         {
             [TagField(Length = 0x100)]

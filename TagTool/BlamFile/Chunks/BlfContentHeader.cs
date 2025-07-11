@@ -9,8 +9,8 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.Chunks
 {
-    [TagStructure(Size = 0xFC, Align = 0x1, MaxVersion = CacheVersion.HaloOnline700123)]
-    [TagStructure(Size = 0x2B4, Align = 0x1, MinVersion = CacheVersion.HaloReach)]
+    [TagStructure(Size = 0xFC, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x2B4, MinVersion = CacheVersion.HaloReach)]
     public class BlfContentHeader : BlfChunkHeader
     {
         public short BuildVersion;

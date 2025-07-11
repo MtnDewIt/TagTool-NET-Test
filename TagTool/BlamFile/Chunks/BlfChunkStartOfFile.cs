@@ -3,7 +3,7 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.Chunks
 {
-    [TagStructure(Size = 0x24, Align = 0x1)]
+    [TagStructure(Size = 0x24)]
     public class BlfChunkStartOfFile : BlfChunkHeader
     {
         // when -2, order is little endian, else order is big endian. Check byteswapped BOM to be -2 otherwise invalid.

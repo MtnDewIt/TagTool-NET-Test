@@ -5,7 +5,7 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.Chunks
 {
-    [TagStructure(Size = 0x5, Align = 0x1)]
+    [TagStructure(Size = 0x5)]
     public class BlfChunkEndOfFile : BlfChunkHeader
     {
         public int AuthenticationDataSize;
@@ -66,24 +66,24 @@ namespace TagTool.BlamFile.Chunks
         }
     }
 
-    [TagStructure(Size = 0x4, Align = 0x1)]
+    [TagStructure(Size = 0x4)]
     public class BlfEndOfFileCRC : BlfChunkEndOfFile
     {
         public BlfCRCChecksum Checksum;
 
-        [TagStructure(Size = 0x4, Align = 0x1)]
+        [TagStructure(Size = 0x4)]
         public class BlfCRCChecksum
         {
             public uint Checksum;
         }
     }
 
-    [TagStructure(Size = 0x100, Align = 0x1)]
+    [TagStructure(Size = 0x100)]
     public class BlfEndOfFileSHA1 : BlfChunkEndOfFile
     {
         public BlfSHA1Hash Hash;
 
-        [TagStructure(Size = 0x100, Align = 0x1)]
+        [TagStructure(Size = 0x100)]
         public class BlfSHA1Hash
         {
             [TagField(Length = 0x100)]
@@ -91,7 +91,7 @@ namespace TagTool.BlamFile.Chunks
         }
     }
 
-    [TagStructure(Size = 0x100, Align = 0x1)]
+    [TagStructure(Size = 0x100)]
     public class BlfEndOfFileRSA : BlfChunkEndOfFile
     {
         public RSASignature RSASignature;

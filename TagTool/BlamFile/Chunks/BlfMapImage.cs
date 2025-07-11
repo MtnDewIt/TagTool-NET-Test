@@ -5,7 +5,7 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.Chunks
 {
-    [TagStructure(Size = 0x8, Align = 0x1)]
+    [TagStructure(Size = 0x8)]
     public class BlfMapImage : BlfChunkHeader
     {
         public BlfImageType Type;

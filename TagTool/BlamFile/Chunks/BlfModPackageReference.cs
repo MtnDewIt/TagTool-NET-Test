@@ -6,7 +6,7 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.Chunks
 {
-    [TagStructure(Size = 0x484, Align = 0x1)]
+    [TagStructure(Size = 0x484)]
     public class BlfModPackageReference : BlfChunkHeader
     {
         [TagField(Length = 0x14)]
@@ -38,7 +38,7 @@ namespace TagTool.BlamFile.Chunks
             Current = 2
         }
 
-        [TagStructure(Size = 0x44, Align = 0x1)]
+        [TagStructure(Size = 0x44)]
         public class BlfModPackageReferenceV1 : BlfChunkHeader
         {
             [TagField(Length = 0x10, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]

@@ -12,7 +12,7 @@ using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.BlamFile.Chunks
 {
-    [TagStructure(Size = 0x264, Align = 0x1)]
+    [TagStructure(Size = 0x264)]
     public class BlfGameVariant : BlfChunkHeader
     {
         [TagField(Length = 0x14, MinVersion = CacheVersion.HaloReach)]

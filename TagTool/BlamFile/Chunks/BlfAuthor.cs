@@ -3,7 +3,7 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.Chunks
 {
-    [TagStructure(Size = 0x44, Align = 0x1)]
+    [TagStructure(Size = 0x44)]
     public class BlfAuthor : BlfChunkHeader
     {
         [TagField(Length = 16)]
