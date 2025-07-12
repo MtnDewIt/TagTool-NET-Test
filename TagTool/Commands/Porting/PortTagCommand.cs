@@ -39,8 +39,6 @@ namespace TagTool.Commands.Porting
             PortingFlags flags = ParseFlags(args.Take(args.Count - 1).ToList());
             List<CachedTag> tagList = ParseLegacyTag(args.Last(), flags);
 
-            bool isScenarioPort = false;
-    
             using Stream cacheStream = CacheContext.OpenCacheReadWrite();
             using Stream blamCacheStream = BlamCache is GameCacheModPackage package ? package.OpenCacheRead(cacheStream) : BlamCache.OpenCacheRead();
             using var portScope = PortContext.CreateScope(flags);
@@ -49,9 +47,6 @@ namespace TagTool.Commands.Porting
             {
                 if (blamTag == null)
                     return new TagToolError(CommandError.TagInvalid, args.Last());
-
-                if (blamTag.IsInGroup("scnr"))
-                    isScenarioPort = true;
 
                 try
                 {
@@ -63,9 +58,6 @@ namespace TagTool.Commands.Porting
                     throw;
                 }
             }
-
-            if (isScenarioPort && (flags & PortingFlags.UpdateMapFiles) != 0)
-                new UpdateMapFilesCommand(CacheContext).Execute([]);
 
             return true;
         }

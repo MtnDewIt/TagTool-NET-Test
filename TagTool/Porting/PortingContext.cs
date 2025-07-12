@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
@@ -12,6 +13,7 @@ using TagTool.Common;
 using TagTool.Porting.Gen3;
 using TagTool.Porting.HaloOnline;
 using TagTool.Tags;
+using TagTool.Tags.Definitions;
 
 namespace TagTool.Porting
 {
@@ -28,7 +30,9 @@ namespace TagTool.Porting
         private readonly Dictionary<uint, StringId> PortedStringIds = [];
 
         public PortingFlags Flags = PortingFlags.Default;
-        
+        private bool ShouldUpdateMapFiles = false;
+        private bool ShouldGenerateCampaignFile = false;
+
         protected PortingContext(GameCacheHaloOnlineBase cacheContext, GameCache blamCache)
         {
             CacheContext = cacheContext;
@@ -177,6 +181,13 @@ namespace TagTool.Porting
                 new TagToolError(CommandError.OperationFailed, $"Failed to convert tag '{blamTag}', using {fallback}");
 
                 return fallback;
+            }
+
+            if (blamDefinition is Scenario scnr && FlagIsSet(PortingFlags.UpdateMapFiles))
+            {
+                ShouldUpdateMapFiles = true;
+                if (scnr.MapType == ScenarioMapType.SinglePlayer)
+                    ShouldGenerateCampaignFile = true;
             }
 
             //
@@ -471,6 +482,11 @@ namespace TagTool.Porting
                 if (saveStrings)
                     CacheContext.SaveStrings();
                 CacheContext.SaveTagNames();
+
+                if (ShouldUpdateMapFiles)
+                    MapFileUpdater.UpdateMapFiles(CacheContext, BlamCache);
+                if (ShouldGenerateCampaignFile)
+                    CampaignFileGenerator.GenerateCampaignFile(CacheContext, BlamCache);
             }
             finally
             {
