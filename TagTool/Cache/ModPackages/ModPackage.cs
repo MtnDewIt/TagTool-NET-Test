@@ -101,6 +101,21 @@ namespace TagTool.Cache
             }
         }
 
+
+        public bool IsValidTagCacheIndex(int index)
+        {
+            return index >= 0 && index < CacheNames.Count;
+        }
+
+        public int AddTagCache(string name, Dictionary<int, string> tagNames, Stream stream)
+        {
+            TagCachesStreams.Add(new ExtantStream(stream));
+            CacheNames.Add(name);
+            TagCacheNames.Add(tagNames);
+
+            return CacheNames.Count - 1;
+        }
+
         public void AddMap(Stream mapStream, int mapId, int cacheIndex)
         {
             mapStream.Position = 0;
@@ -776,88 +791,6 @@ namespace TagTool.Cache
 
         // IO stuff
 
-        public void CreateDescription(bool ignoreArgumentVariables, bool useDialog)
-        {
-            if (useDialog)
-            {
-                Metadata = new ModPackageMetadata();
-
-                Console.WriteLine("Enter the display name of the mod package (32 chars max):");
-                Metadata.Name = CommandRunner.ApplyUserVars(Console.ReadLine().Trim(), ignoreArgumentVariables);
-
-                Console.WriteLine();
-                Console.WriteLine("Enter the description of the mod package (512 chars max):");
-                Metadata.Description = CommandRunner.ApplyUserVars(Console.ReadLine().Trim(), ignoreArgumentVariables);
-
-                Console.WriteLine();
-                Console.WriteLine("Enter the author of the mod package (32 chars max):");
-                Metadata.Author = CommandRunner.ApplyUserVars(Console.ReadLine().Trim(), ignoreArgumentVariables);
-
-                Console.WriteLine();
-                Console.WriteLine("Enter the version of the mod package: (major.minor)");
-
-                try
-                {
-                    var version = Version.Parse(CommandRunner.ApplyUserVars(Console.ReadLine(), ignoreArgumentVariables));
-                    Metadata.VersionMajor = (short)version.Major;
-                    Metadata.VersionMinor = (short)version.Minor;
-                    if (version.Major == 0 && version.Minor == 0)
-                        throw new ArgumentException(nameof(version));
-                }
-                catch (ArgumentException e)
-                {
-                    Console.WriteLine(e.Message);
-                    new TagToolError(CommandError.CustomError, "Failed to parse version number, using default (1.0)");
-                    Metadata.VersionMajor = 1;
-                    Metadata.VersionMinor = 0;
-                }
-
-                Console.WriteLine();
-                Console.WriteLine("Please enter the types of the mod package. Separated by a space [MainMenu Multiplayer Campaign Firefight Character]");
-                string response = CommandRunner.ApplyUserVars(Console.ReadLine().Trim(), ignoreArgumentVariables);
-
-                Header.ModifierFlags = Header.ModifierFlags & ModifierFlags.SignedBit;
-
-                var args = response.Split(' ');
-                for (int x = 0; x < args.Length; x++)
-                {
-                    if (Enum.TryParse<ModifierFlags>(args[x].ToLower().Trim(), out var value) && args[x] != "SignedBit")
-                    {
-                        Header.ModifierFlags |= value;
-                    }
-                    else if (string.IsNullOrWhiteSpace(args[x]))
-                    {
-                        if (args.Count() == 1)
-                        {
-                            Header.ModifierFlags |= ModifierFlags.multiplayer;
-                            Console.WriteLine($"Flags not provided. Multiplayer assumed.");
-                        }
-                    }
-                    else
-                        new TagToolWarning($"Could not parse flag \"{args[x]}\"");
-                }
-            }
-            else
-            {
-                Metadata = new ModPackageMetadata
-                {
-                    Description = "test",
-                    Author = "test",
-                    VersionMajor = 0,
-                    VersionMinor = 1
-                };
-
-                Header.ModifierFlags |= ModifierFlags.mainmenu;
-                Header.ModifierFlags |= ModifierFlags.campaign;
-                Header.ModifierFlags |= ModifierFlags.multiplayer;
-                Header.ModifierFlags |= ModifierFlags.firefight;
-                //Header.ModifierFlags |= ModifierFlags.character;
-            }
-
-            Console.WriteLine();
-
-            Metadata.BuildDateLow = (int)DateTime.Now.ToFileTime() & 0x7FFFFFFF;
-            Metadata.BuildDateHigh = (int)((DateTime.Now.ToFileTime() & 0x7FFFFFFF00000000) >> 32);
-        }
+        
     }
 }

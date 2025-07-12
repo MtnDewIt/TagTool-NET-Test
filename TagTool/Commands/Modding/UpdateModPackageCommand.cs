@@ -16,6 +16,7 @@ using static System.Net.WebRequestMethods;
 using static TagTool.Tags.Definitions.Model.Variant;
 using Assimp.Unmanaged;
 using TagTool.Cache.Resources;
+using TagTool.Cache.ModPackages;
 
 namespace TagTool.Commands.Modding
 {
@@ -66,8 +67,8 @@ namespace TagTool.Commands.Modding
 
             Console.WriteLine("Initializing cache...");
             oldMod = new GameCacheModPackage(Cache, infile, largeResourceStream: useLargeStreams);
-            newMod = new GameCacheModPackage(Cache, useLargeStreams);
-            InitializeModPackage();
+            newMod = new GameCacheModPackage(Cache, InitializeModPackage(useLargeStreams));
+
             Console.WriteLine("Transferring modded tags...");
             TransferModdedTags();
             if (hasError)
@@ -194,85 +195,30 @@ namespace TagTool.Commands.Modding
             }
             return data;
         }
-        private void InitializeModPackage()
+
+        private ModPackage InitializeModPackage(bool useLargeStreams)
         {
-            //copy over header
-            newMod.BaseModPackage.Header = oldMod.BaseModPackage.Header;
+            var builder = new ModPackageBuilder(Cache);
+            foreach (string name in oldMod.BaseModPackage.CacheNames)
+                builder.AddTagCache(name);
+
+            ModPackage modPackage = builder.Build(useLargeStreams);
 
             //copy over metadata
-            newMod.BaseModPackage.Metadata = oldMod.BaseModPackage.Metadata;
+            modPackage.Metadata = oldMod.BaseModPackage.Metadata;
 
+            //copy over header
+            modPackage.Header = oldMod.BaseModPackage.Header;
+    
             //copy over other fields
-            newMod.BaseModPackage.MapIds = oldMod.BaseModPackage.MapIds;
-            newMod.BaseModPackage.CampaignFileStream = oldMod.BaseModPackage.CampaignFileStream;
-            newMod.BaseModPackage.MapFileStreams = oldMod.BaseModPackage.MapFileStreams;
-            newMod.BaseModPackage.Files = oldMod.BaseModPackage.Files;
-            newMod.BaseModPackage.FontPackage = oldMod.BaseModPackage.FontPackage;
-            newMod.BaseModPackage.MapToCacheMapping = oldMod.BaseModPackage.MapToCacheMapping;
+            modPackage.MapIds = oldMod.BaseModPackage.MapIds;
+            modPackage.CampaignFileStream = oldMod.BaseModPackage.CampaignFileStream;
+            modPackage.MapFileStreams = oldMod.BaseModPackage.MapFileStreams;
+            modPackage.Files = oldMod.BaseModPackage.Files;
+            modPackage.FontPackage = oldMod.BaseModPackage.FontPackage;
+            modPackage.MapToCacheMapping = oldMod.BaseModPackage.MapToCacheMapping;
 
-            //initialize new tag caches
-            newMod.BaseModPackage.CacheNames = new List<string>();
-            newMod.BaseModPackage.TagCachesStreams = new List<ExtantStream>();
-            newMod.BaseModPackage.TagCacheNames = new List<Dictionary<int, string>>();
-
-            var referenceStream = new MemoryStream(); // will be reused by all base caches
-            var writer = new EndianWriter(referenceStream, false);
-            var modTagCache = new TagCacheHaloOnline(Cache.Version, referenceStream, newMod.BaseModPackage.StringTable);
-
-            //initialize new mod cache tags
-            referenceStream.Seek(0, SeekOrigin.End);
-            for (var tagIndex = 0; tagIndex < Cache.TagCache.Count; tagIndex++)
-            {
-                var srcTag = Cache.TagCache.GetTag(tagIndex);
-
-                if (srcTag == null)
-                {
-                    modTagCache.AllocateTag(new TagGroupGen3());
-                    continue;
-                }
-
-                var emptyTag = (CachedTagHaloOnline)modTagCache.AllocateTag(srcTag.Group, srcTag.Name);
-                var cachedTagData = new CachedTagData
-                {
-                    Data = new byte[0],
-                    Group = (TagGroupGen3)emptyTag.Group,
-                };
-
-                var headerSize = CachedTagHaloOnline.CalculateHeaderSize(cachedTagData);
-                var alignedHeaderSize = (uint)((headerSize + 0xF) & ~0xF);
-                emptyTag.HeaderOffset = referenceStream.Position;
-                emptyTag.Offset = alignedHeaderSize;
-                emptyTag.TotalSize = alignedHeaderSize;
-                emptyTag.WriteHeader(writer, modTagCache.StringTableReference);
-                StreamUtil.Fill(referenceStream, 0, (int)(alignedHeaderSize - headerSize));
-            }
-
-            modTagCache.UpdateTagOffsets(writer);
-
-            for (int i = 0; i < oldMod.BaseModPackage.CacheNames.Count; i++)
-            {
-                string name = oldMod.BaseModPackage.CacheNames[i];
-
-                Dictionary<int, string> tagNames = new Dictionary<int, string>();
-
-                foreach (var tag in Cache.TagCache.NonNull())
-                    tagNames[tag.Index] = tag.Name;
-
-                referenceStream.Position = 0;
-                var ms = referenceStream;
-                if (i > 0)
-                {
-                    ms = new MemoryStream();
-                    referenceStream.CopyTo(ms);
-                    ms.Position = 0;
-                }
-
-                newMod.BaseModPackage.TagCachesStreams.Add(new ExtantStream(ms));
-                newMod.BaseModPackage.CacheNames.Add(name);
-                newMod.BaseModPackage.TagCacheNames.Add(tagNames);
-            }
-
-            newMod.SetActiveTagCache(0);
+            return modPackage;
         }
     }
 }

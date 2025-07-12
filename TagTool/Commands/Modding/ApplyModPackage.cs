@@ -60,10 +60,10 @@ namespace TagTool.Commands.Modding
 
             if (tagCacheIndex != ModCache.GetCurrentTagCacheIndex())
             {
-                if (!ModCache.SetActiveTagCache(tagCacheIndex))
-                {
-                    return new TagToolError(CommandError.CustomMessage, "Failed to apply mod package to base cache, no changes applied");
-                }
+                if (!ModCache.BaseModPackage.IsValidTagCacheIndex(tagCacheIndex))
+                    return new TagToolError(CommandError.ArgInvalid, $"Invalid tag cache index {tagCacheIndex}");
+
+                ModCache.SetActiveTagCache(tagCacheIndex);
             }
 
             TagMapping = new Dictionary<int, int>();

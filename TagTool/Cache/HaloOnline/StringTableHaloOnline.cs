@@ -12,10 +12,9 @@ namespace TagTool.Cache.HaloOnline
     {
         private object _cacheLock = new object();
 
-        public StringTableHaloOnline(CacheVersion version, Stream stream)
+        public StringTableHaloOnline(CacheVersion version)
         {
             Version = version;
-
             Resolver = null;
 
             if (CacheVersionDetection.Compare(Version, CacheVersion.HaloOnline700123) >= 0)
@@ -24,7 +23,10 @@ namespace TagTool.Cache.HaloOnline
                 Resolver = new StringIdResolverMS28();
             else
                 Resolver = new StringIdResolverMS23();
+        }
 
+        public StringTableHaloOnline(CacheVersion version, Stream stream) : this(version)
+        {
             if ( stream != null && stream.Length != 0)
                 Load(stream);
             else
