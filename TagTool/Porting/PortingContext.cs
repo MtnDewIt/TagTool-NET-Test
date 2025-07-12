@@ -23,16 +23,16 @@ namespace TagTool.Porting
         public readonly GameCache BlamCache;
         protected readonly TagDefinitionCache TagDefinitionCache = new();
         protected readonly BlockingCollection<Action> DeferredActions = [];
-
         private readonly HashSet<int> ReplacedTags = [];
         private readonly HashSet<int> VisitedTags = [];
         private readonly Dictionary<int, CachedTag> PortedTags = [];
         private readonly Dictionary<uint, StringId> PortedStringIds = [];
-
-        public PortingFlags Flags = PortingFlags.Default;
         private bool ShouldUpdateMapFiles = false;
         private bool ShouldGenerateCampaignFile = false;
-        
+
+        public PortingFlags Flags = PortingFlags.Default;
+        public List<Tag> DoNotReplaceGroups = [];
+
         protected PortingContext(GameCacheHaloOnlineBase cacheContext, GameCache blamCache)
         {
             CacheContext = cacheContext;
@@ -210,7 +210,7 @@ namespace TagTool.Porting
         {
             return FlagIsSet(PortingFlags.Replace)
                     && !PortingConstants.DoNotReplaceGroups.Contains(existingTag.Group.Tag)
-                    && !DoNotReplaceGroupsCommand.UserDefinedDoNotReplaceGroups.Contains(existingTag.Group.Tag.ToString());
+                    && !DoNotReplaceGroups.Contains(existingTag.Group.Tag);
         }
 
         private CachedTag FindExistingTag(CachedTag blamTag)

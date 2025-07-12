@@ -60,7 +60,7 @@ namespace TagTool.Commands.Porting
                     context.AddCommand(new PortMultiplayerScenarioCommand(hoCache, portingCache, portingContext));
                     context.AddCommand(new PortInstancedGeometryObjectCommand(hoCache, portingCache, portingContext));
                     context.AddCommand(new PortClusterGeometryObjectCommand(hoCache, portingCache, portingContext));
-                    context.AddCommand(new DoNotReplaceGroupsCommand());
+                    context.AddCommand(new DoNotReplaceGroupsCommand(portingContext));
                 }
                 else if(portingCache is GameCacheGen4 gen4Cache)
                 {
