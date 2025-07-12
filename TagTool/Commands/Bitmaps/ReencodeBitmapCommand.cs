@@ -65,9 +65,10 @@ namespace TagTool.Commands.Bitmaps
             Bitmap.Image image = bitmap.Images[imageIndex];
 
             // for d3d9 dxn mips need to be >= 4x4 to avoid crashes
-            int minMipRes = destFormat == BitmapFormat.Dxn ? 4 : 1;
+            int mipCount = image.Format == BitmapFormat.Dxn
+                ? BitmapUtils.GetMipmapCountTruncate(image.Width, image.Height, 4, 4)
+                : BitmapUtils.GetMipmapCount(image.Width, image.Height);
 
-            int mipCount = BitmapUtils.GetMipmapCount(image.Width, image.Height, minMipRes, minMipRes);
             int layerCount = image.Type == BitmapType.CubeMap ? 6 : image.Depth;
 
             // for each layer extract the base level and generate mips

@@ -10,7 +10,8 @@ namespace TagTool.Bitmaps
     public enum CompressionQuality
     {
         Default,
-        HighQuality
+        Low,
+        High,
     }
 
     public static class BitmapCompression
@@ -49,7 +50,7 @@ namespace TagTool.Bitmaps
 
         private static unsafe byte[] CompressDXT5nm(byte[] data, int width, int height, CompressionQuality quality)
         {
-            if (quality != CompressionQuality.HighQuality)
+            if (quality < CompressionQuality.High)
             {
                 byte[] buffer = new byte[data.Length];
                 fixed (byte* src = data)
@@ -57,12 +58,12 @@ namespace TagTool.Bitmaps
                 {
                     for (int i = 0; i < data.Length; i += 4)
                     {
-                        byte y = src[i + 1];
-                        byte x = src[i + 2];
-                        dest[i + 0] = y;
-                        dest[i + 1] = y;
-                        dest[i + 2] = y;
-                        dest[i + 3] = x;
+                        byte g = src[i + 1];
+                        byte r = src[i + 2];
+                        dest[i + 0] = g;
+                        dest[i + 1] = g;
+                        dest[i + 2] = g;
+                        dest[i + 3] = r;
                     }
                 }
                 return Compress(SquishLib.SquishFlags.kDxt5, buffer, width, height);
@@ -374,7 +375,7 @@ namespace TagTool.Bitmaps
                     byte r = alphas[alphaIndex];
                     byte g = colors[colorIndex].G;
 
-                    decompressedData[pixelIndex + 0] = CalculateNormalZ(r, g);
+                    decompressedData[pixelIndex + 0] = BitmapUtils.CalculateNormalZ(r, g);
                     decompressedData[pixelIndex + 1] = g;
                     decompressedData[pixelIndex + 2] = r;
                     decompressedData[pixelIndex + 3] = 255;
@@ -407,7 +408,7 @@ namespace TagTool.Bitmaps
                     byte g = greenValues[greenIndex];
                     if (swapXY) (r, g) = (g, r);
 
-                    decompressedData[pixelIndex + 0] = CalculateNormalZ(r, g); // Blue channel is 0 for BC5
+                    decompressedData[pixelIndex + 0] = BitmapUtils.CalculateNormalZ(r, g); // Blue channel is 0 for BC5
                     decompressedData[pixelIndex + 1] = g;
                     decompressedData[pixelIndex + 2] = r;
                     decompressedData[pixelIndex + 3] = 255; // Alpha channel is 255 (opaque)
@@ -580,23 +581,8 @@ namespace TagTool.Bitmaps
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static unsafe void CalculateNormalZ(RGBAColor* vector)
         {
-            vector->B = CalculateNormalZ(vector->R, vector->G);
+            vector->B = BitmapUtils.CalculateNormalZ(vector->R, vector->G);
             vector->A = 255;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static byte CalculateNormalZ(byte x, byte y)
-        {
-            float fx = ((x / 255f) * 2f) - 1f;
-            float fy = ((y / 255f) * 2f) - 1f;
-            float fz = CalculateNormalZ(fx, fy);
-            return (byte)((fz + 1f) / 2f * 255f);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float CalculateNormalZ(float x, float y)
-        {
-            return (float)Math.Sqrt(Math.Max(0.0, Math.Min(1.0, 1.0 - (x * x) - (y * y))));
         }
     }
 }

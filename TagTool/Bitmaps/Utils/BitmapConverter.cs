@@ -2,6 +2,7 @@
 using System.IO;
 using TagTool.Cache;
 using TagTool.Extensions;
+using TagTool.Porting;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.Bitmaps.Utils
@@ -26,7 +27,7 @@ namespace TagTool.Bitmaps.Utils
                 mipCount = 1;
             // for d3d9 dxn mips have to be >= 4x4 to avoid a crash
             if (destFormat == BitmapFormat.Dxn)
-                mipCount = BitmapUtils.GetMipmapCount(image.Width, image.Height, 4, 4, maxCount: mipCount);
+                mipCount = BitmapUtils.GetMipmapCountTruncate(image.Width, image.Height, 4, 4, maxCount: mipCount);
 
             // convert the surfaces
             var result = new MemoryStream();
@@ -56,50 +57,58 @@ namespace TagTool.Bitmaps.Utils
         }
 
         private static BitmapFormat GestDestinationFormat(BitmapFormat format, string tagName, Bitmap bitmap, int imageIndex, CacheVersion version, CachePlatform platform)
-        {
-            // fix dxt5 bumpmaps (h3 wraith bump)
-            if (bitmap.Usage == Bitmap.BitmapUsageGlobalEnum.BumpMapfromHeightMap &&
-                format == BitmapFormat.Dxt5 &&
-                tagName != @"levels\multi\zanzibar\bitmaps\palm_frond_a_bump")
-            {
-                return BitmapFormat.Dxn;
-            }
-
-            // non-pow2 dxn is not supported in d3d9
-            if (format == BitmapFormat.Dxn && !BitmapUtils.IsPowerOfTwo(bitmap.Images[imageIndex].Width, bitmap.Images[imageIndex].Height))
-                return BitmapFormat.A8R8G8B8;
-
+        {  
             // array textures will be converted to texture3d which does not support v8u8
             if (bitmap.Usage == Bitmap.BitmapUsageGlobalEnum.WaterArray)
                 return BitmapFormat.A8R8G8B8;
 
+            if (BitmapUtils.IsNormalMap(bitmap, imageIndex))
+            {
+                format = BitmapUtils.GetNormalMapFormat(format);
+
+                // non-pow2 dxn is not supported in d3d9
+                if (format == BitmapFormat.Dxn && !BitmapUtils.IsPowerOfTwo(bitmap.Images[imageIndex].Width, bitmap.Images[imageIndex].Height))
+                    return BitmapFormat.Dxt1;
+
+                return format;
+            }
+
             return BitmapUtils.GetEquivalentBitmapFormat(format);
         }
 
-        private static byte[] ConvertBitmapData(byte[] data, int width, int height, BitmapFormat format, BitmapFormat destinationFormat, Bitmap bitmap, int imageIndex, string tagName, CacheVersion version, CachePlatform platform)
+        private static CompressionQuality GetCompressionQuality(BitmapFormat destFormat)
         {
-            if (platform == CachePlatform.MCC && format == destinationFormat)
+            if (destFormat == BitmapFormat.Dxt5nm && PortingOptions.Current.HqNormalMapConversion)
+                return CompressionQuality.High;
+
+            return CompressionQuality.Default;
+        }
+
+        private static byte[] ConvertBitmapData(byte[] data, int width, int height, BitmapFormat format, BitmapFormat destFormat, Bitmap bitmap, int imageIndex, string tagName, CacheVersion version, CachePlatform platform)
+        {
+            if (platform == CachePlatform.MCC && format == destFormat)
                 return ConvertDXGIFormats(data, width, height, format);
 
             // DXN -> ATI2
-            if (platform == CachePlatform.Original && format == BitmapFormat.Dxn && destinationFormat == BitmapFormat.Dxn)
+            if (platform == CachePlatform.Original && format == BitmapFormat.Dxn && destFormat == BitmapFormat.Dxn)
                 return BitmapDecoder.SwapXYDxn(data, width, height);
 
+            CompressionQuality quality = GetCompressionQuality(destFormat);
+
             // fix dxt5 bumpmaps (h3 wraith bump)
-            if (format == BitmapFormat.Dxt5 &&
-                bitmap.Usage == Bitmap.BitmapUsageGlobalEnum.BumpMapfromHeightMap &&
-                tagName != @"levels\multi\zanzibar\bitmaps\palm_frond_a_bump") // this tag is actually an alpha test bitmap, ignore it
+            if (format == BitmapFormat.Dxt5 && tagName == @"objects\vehicles\wraith\bitmaps\wraith_bump")
             {
                 data = BitmapDecoder.DecodeBitmap(data, format, width, height, version, platform);
-                // (0<->1) to (-1<->1)
                 for (int i = 0; i < data.Length; i += 4)
                 {
-                    data[i + 0] = 0;
-                    data[i + 1] = (byte)((data[i + 1] + 255) / 2);
-                    data[i + 2] = (byte)((data[i + 2] + 255) / 2);
-                    data[i + 3] = 0;
+                    byte g = (byte)((data[i + 1] + 255) / 2);
+                    byte r = (byte)((data[i + 2] + 255) / 2);
+                    data[i + 0] = BitmapUtils.CalculateNormalZ(r, g);
+                    data[i + 1] = g;
+                    data[i + 2] = r;
+                    data[i + 3] = 255;
                 }
-                return BitmapDecoder.EncodeBitmap(data, BitmapFormat.Dxn, width, height);
+                return BitmapDecoder.EncodeBitmap(data, destFormat, width, height, quality);
             }
 
             // cubemap compatibility - this is required for h3 shaders to look correct when using reach dynamic cubemaps
@@ -122,15 +131,16 @@ namespace TagTool.Bitmaps.Utils
                     rawData[i + 2] = (byte)vector[2];
                     //rawData[i + 3] = (byte)(biasedAlpha * 255.0f); // no need to touch alpha.
                 }
-                return BitmapDecoder.EncodeBitmap(rawData, destinationFormat, width, height);
+                return BitmapDecoder.EncodeBitmap(rawData, destFormat, width, height, quality);
             }
 
-            if (format == destinationFormat)
+            if (format == destFormat)
                 return data;
 
             data = BitmapDecoder.DecodeBitmap(data, format, width, height, version, platform);
-            return BitmapDecoder.EncodeBitmap(data, destinationFormat, width, height);
+            return BitmapDecoder.EncodeBitmap(data, destFormat, width, height, quality);
         }
+
 
         private static unsafe byte[] ConvertDXGIFormats(byte[] data, int width, int height, BitmapFormat format)
         {
