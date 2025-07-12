@@ -312,9 +312,12 @@ namespace TagTool.Commands.RenderModels
 							materialIndex = materialIndices[meshMaterial.Name];
 						else
 						{
+							if (!Cache.TagCache.TryGetTag(meshMaterial.Name, out CachedTag shaderTag))
+								shaderTag = defaultShaderTag;
+
 							materialIndices.Add(meshMaterial.Name, builder.AddMaterial(new RenderMaterial
 							{
-								RenderMethod = defaultShaderTag,
+								RenderMethod = shaderTag,
 							}));
 							materialIndex = materialIndices[meshMaterial.Name];
 						}
