@@ -881,7 +881,7 @@ namespace TagTool.Porting.Gen3
                 }
             }
 
-            if (PortingOptions.Current.RegenerateStructureSurfaces)
+            if (Options.RegenerateStructureSurfaces)
             {
                 foreach (var block in scnr.StructureBsps)
                 {
@@ -898,7 +898,7 @@ namespace TagTool.Porting.Gen3
             return scnr;
         }
 
-        private object ConvertScenarioObjectMultiplayer(Stream cacheStream, Stream blamCacheStream, object definition, string blamTagName, Scenario.MultiplayerObjectProperties scnrObj) 
+        private object ConvertScenarioObjectMultiplayer(Stream cacheStream, Stream blamCacheStream, object definition, string blamTagName, Scenario.MultiplayerObjectProperties scnrObj)
         {
             if (BlamCache.Version < CacheVersion.HaloReach)
                 return scnrObj;

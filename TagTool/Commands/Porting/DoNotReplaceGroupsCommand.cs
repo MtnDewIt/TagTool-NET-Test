@@ -8,7 +8,7 @@ namespace TagTool.Commands.Porting
 {
     class DoNotReplaceGroupsCommand : Command
     {
-        private PortingContext PortContext;
+        private readonly PortingContext PortContext;
 
         public DoNotReplaceGroupsCommand(PortingContext portContext)
                : base(true,

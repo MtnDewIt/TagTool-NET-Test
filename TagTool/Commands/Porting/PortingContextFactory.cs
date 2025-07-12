@@ -8,7 +8,6 @@ using TagTool.Commands.Tags;
 using TagTool.Porting;
 using TagTool.Porting.Gen3;
 using TagTool.Porting.HaloOnline;
-using TagTool.Serialization;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Porting
@@ -54,13 +53,9 @@ namespace TagTool.Commands.Porting
                 if (portingCache is GameCacheGen3 || portingCache is GameCacheMonolithic)
                 {
                     var portingContext = (PortingContextGen3)PortingContext.Create(hoCache, portingCache);
-                    context.AddCommand(new PortTagCommand(hoCache, portingCache, portingContext));
+                    PopulatePortingCommands(context, portingCache, hoCache, portingContext);
                     context.AddCommand(new MergeAnimationGraphsCommand(hoCache, portingCache, portingContext));
-                    context.AddCommand(new PortMultiplayerEventsCommand(hoCache, portingCache));
-                    context.AddCommand(new PortMultiplayerScenarioCommand(hoCache, portingCache, portingContext));
-                    context.AddCommand(new PortInstancedGeometryObjectCommand(hoCache, portingCache, portingContext));
-                    context.AddCommand(new PortClusterGeometryObjectCommand(hoCache, portingCache, portingContext));
-                    context.AddCommand(new DoNotReplaceGroupsCommand(portingContext));
+                    context.AddCommand(new PortMultiplayerScenarioCommand(hoCache, portingCache, portingContext));                  
                 }
                 else if(portingCache is GameCacheGen4 gen4Cache)
                 {
@@ -78,16 +73,27 @@ namespace TagTool.Commands.Porting
                 }
                 else if (portingCache is GameCacheHaloOnlineBase hoPortingCache)
                 {
-                    var portingContext = new PortingContextHO(hoCache, portingCache);
-                    context.AddCommand(new PortTagCommand(hoCache, hoPortingCache, portingContext));
+                    var portingContext = (PortingContextHO)PortingContext.Create(hoCache, portingCache);
+                    PopulatePortingCommands(context, portingCache, hoCache, portingContext);
                 }
             }
 
-            context.AddCommand(new DiffTagCommand(currentCache, portingCache));
-            context.AddCommand(new SetPortingOptionCommand());
+            context.AddCommand(new DiffTagCommand(currentCache, portingCache));          
             context.AddCommand(new NameBlamTagCommand(portingCache));
             context.AddCommand(new IgnoreBlamTagCommand(portingCache));
             context.AddCommand(new ListBlamTagsCommand(portingCache));
+        }
+
+        private static void PopulatePortingCommands(CommandContext context, GameCache portingCache, GameCacheHaloOnlineBase hoCache, PortingContext portingContext)
+        {
+            // Temporary method until the other contexts are implemented
+
+            context.AddCommand(new PortTagCommand(hoCache, portingCache, portingContext));
+            context.AddCommand(new PortMultiplayerEventsCommand(hoCache, portingCache));
+            context.AddCommand(new PortInstancedGeometryObjectCommand(hoCache, portingCache, portingContext));
+            context.AddCommand(new PortClusterGeometryObjectCommand(hoCache, portingCache, portingContext));
+            context.AddCommand(new DoNotReplaceGroupsCommand(portingContext));
+            context.AddCommand(new SetPortingOptionCommand(portingContext));
         }
     }
 }

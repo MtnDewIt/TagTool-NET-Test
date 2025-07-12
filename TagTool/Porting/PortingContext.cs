@@ -32,6 +32,7 @@ namespace TagTool.Porting
 
         public PortingFlags Flags = PortingFlags.Default;
         public List<Tag> DoNotReplaceGroups = [];
+        public PortingOptions Options = new();
 
         protected PortingContext(GameCacheHaloOnlineBase cacheContext, GameCache blamCache)
         {

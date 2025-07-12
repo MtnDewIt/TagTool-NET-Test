@@ -16,7 +16,7 @@ namespace TagTool.Porting
         {
             Debug.Assert(AsyncQueue == null, "Async task queue already initialized!");
 
-            AsyncQueue = new AsyncTaskQueue(DeferredActions, PortingOptions.Current.MaxThreads);
+            AsyncQueue = new AsyncTaskQueue(DeferredActions, Options.MaxThreads);
         }
 
         protected void WaitForPendingTasks()
