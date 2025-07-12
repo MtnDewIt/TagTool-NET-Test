@@ -12,6 +12,9 @@ namespace TagTool.Porting
         [Description("Audio codec to use for ported sounds")]
         public Compression AudioCodec = Compression.MP3;
 
+        [Description("Path to audio cache directory")]
+        public string AudioCache = null;
+
         [Description("Path to reach lightmap cache directory")]
         public string ReachLightmapCache = null;
 
