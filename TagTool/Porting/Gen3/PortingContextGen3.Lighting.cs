@@ -322,8 +322,8 @@ namespace TagTool.Porting.Gen3
             CachedLightmap convertedLightmap = null;
             if (Lbsp.LightmapSHCoefficientsBitmap != null)
             {
-                var lightmapCachePath = !string.IsNullOrEmpty(PortingOptions.Current.ReachLightmapCache)
-                   ? Path.Combine(PortingOptions.Current.ReachLightmapCache, LbspTag.Name)
+                var lightmapCachePath = !string.IsNullOrEmpty(Options.ReachLightmapCache)
+                   ? Path.Combine(Options.ReachLightmapCache, LbspTag.Name)
                    : null;
 
                 convertedLightmap = new CachedLightmap();

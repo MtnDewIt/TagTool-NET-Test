@@ -99,7 +99,7 @@ namespace TagTool.Porting.Gen3
                     return null;
             }
 
-            var targetFormat = PortingOptions.Current.AudioCodec;
+            var targetFormat = Options.AudioCodec;
 
 
             for (int pitchRangeIndex = 0; pitchRangeIndex < sound.PitchRanges.Count; pitchRangeIndex++)
@@ -226,7 +226,7 @@ namespace TagTool.Porting.Gen3
                 // Set compression format
                 //
 
-                var targetFormat = PortingOptions.Current.AudioCodec;
+                var targetFormat = Options.AudioCodec;
                 sound.PlatformCodec.Compression = targetFormat;
 
                 //

@@ -823,7 +823,7 @@ namespace TagTool.Porting.Gen3
                 }
             }
 
-            if (PortingOptions.Current.RegenerateStructureSurfaces)
+            if (Options.RegenerateStructureSurfaces)
             {
                 foreach (var block in scnr.StructureBsps)
                 {

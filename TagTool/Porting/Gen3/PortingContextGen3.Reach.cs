@@ -23,7 +23,7 @@ namespace TagTool.Porting.Gen3
 
             if (definition is ScenarioStructureBsp sbsp)
             {
-                if (!PortingOptions.Current.ReachDecorators)
+                if (!Options.ReachDecorators)
                 {
                     sbsp.Decorators.Clear();
                     foreach (var cluster in sbsp.Clusters)

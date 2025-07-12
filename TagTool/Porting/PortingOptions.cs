@@ -29,7 +29,5 @@ namespace TagTool.Porting
 
         [Description("Regenerates the structure surface triangle mappings")]
         public bool RegenerateStructureSurfaces = false;
-
-        public static PortingOptions Current = new PortingOptions();
     }
 }

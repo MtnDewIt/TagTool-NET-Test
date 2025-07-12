@@ -2,25 +2,33 @@
 using System.IO;
 using TagTool.Cache;
 using TagTool.Extensions;
-using TagTool.Porting;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.Bitmaps.Utils
 {
-    public static class BitmapConverter
+    public class BitmapConverterGen3
     {
-        public static BaseBitmap ConvertGen3Bitmap(GameCache cache, Bitmap bitmap, int imageIndex, string tagName, bool forDDS = false)
+        public GameCache Cache { get; }
+        public bool HqNormalMapCompression { get; set; }
+        public bool ForceDxt5nm { get; set; }
+
+        public BitmapConverterGen3(GameCache cache)
         {
-            var extractor = new BitmapExtractorGen3(cache, bitmap, imageIndex);
+            Cache = cache;
+        }
+
+        public BaseBitmap ConvertBitmap(Bitmap bitmap, int imageIndex, string tagName, bool forDDS = false)
+        {
+            var extractor = new BitmapExtractorGen3(Cache, bitmap, imageIndex);
             if (extractor.HasInvalidResource)
                 return null;
 
             Bitmap.Image image = bitmap.Images[imageIndex];
-            BitmapFormat destFormat = GestDestinationFormat(image.Format, tagName, bitmap, imageIndex, cache.Version, cache.Platform);
+            BitmapFormat destFormat = GestDestinationFormat(image.Format, tagName, bitmap, imageIndex);
 
             int mipCount = image.MipmapCount + 1;
             int layerCount = image.Type == BitmapType.CubeMap ? 6 : image.Depth;
-            bool swapCubemapFaces = image.Type == BitmapType.CubeMap && cache.Platform != CachePlatform.MCC;
+            bool swapCubemapFaces = image.Type == BitmapType.CubeMap && Cache.Platform != CachePlatform.MCC;
 
             // array bitmaps will be converted to texture3d and thus can't have mipmaps unfortunately
             if (image.Type == BitmapType.Array && mipCount > 1)
@@ -41,7 +49,7 @@ namespace TagTool.Bitmaps.Utils
                 }
 
                 byte[] surface = extractor.ExtractSurface(sourceLayerIndex, mipLevel, out int levelWidth, out int levelHeight);
-                surface = ConvertBitmapData(surface, levelWidth, levelHeight, image.Format, destFormat, bitmap, imageIndex, tagName, cache.Version, cache.Platform);
+                surface = ConvertBitmapData(surface, levelWidth, levelHeight, image.Format, destFormat, bitmap, imageIndex, tagName);
                 result.Write(surface);
             }
 
@@ -56,7 +64,7 @@ namespace TagTool.Bitmaps.Utils
             return resultBitmap;
         }
 
-        private static BitmapFormat GestDestinationFormat(BitmapFormat format, string tagName, Bitmap bitmap, int imageIndex, CacheVersion version, CachePlatform platform)
+        private BitmapFormat GestDestinationFormat(BitmapFormat format, string tagName, Bitmap bitmap, int imageIndex)
         {  
             // array textures will be converted to texture3d which does not support v8u8
             if (bitmap.Usage == Bitmap.BitmapUsageGlobalEnum.WaterArray)
@@ -64,7 +72,7 @@ namespace TagTool.Bitmaps.Utils
 
             if (BitmapUtils.IsNormalMap(bitmap, imageIndex))
             {
-                format = BitmapUtils.GetNormalMapFormat(format);
+                format = GetNormalMapFormat(format);
 
                 // non-pow2 dxn is not supported in d3d9
                 if (format == BitmapFormat.Dxn && !BitmapUtils.IsPowerOfTwo(bitmap.Images[imageIndex].Width, bitmap.Images[imageIndex].Height))
@@ -76,21 +84,32 @@ namespace TagTool.Bitmaps.Utils
             return BitmapUtils.GetEquivalentBitmapFormat(format);
         }
 
-        private static CompressionQuality GetCompressionQuality(BitmapFormat destFormat)
+        private CompressionQuality GetCompressionQuality(BitmapFormat destFormat)
         {
-            if (destFormat == BitmapFormat.Dxt5nm && PortingOptions.Current.HqNormalMapConversion)
+            if (destFormat == BitmapFormat.Dxt5nm && HqNormalMapCompression)
                 return CompressionQuality.High;
 
             return CompressionQuality.Default;
         }
 
-        private static byte[] ConvertBitmapData(byte[] data, int width, int height, BitmapFormat format, BitmapFormat destFormat, Bitmap bitmap, int imageIndex, string tagName, CacheVersion version, CachePlatform platform)
+        private BitmapFormat GetNormalMapFormat(BitmapFormat format)
         {
-            if (platform == CachePlatform.MCC && format == destFormat)
+            if (ForceDxt5nm)
+                return BitmapFormat.Dxt5nm;
+
+            if (format == BitmapFormat.V8U8)
+                return format;
+
+            return HqNormalMapCompression ? BitmapFormat.Dxn : BitmapFormat.Dxt1;
+        }
+
+        private byte[] ConvertBitmapData(byte[] data, int width, int height, BitmapFormat format, BitmapFormat destFormat, Bitmap bitmap, int imageIndex, string tagName)
+        {
+            if (Cache.Platform == CachePlatform.MCC && format == destFormat)
                 return ConvertDXGIFormats(data, width, height, format);
 
             // DXN -> ATI2
-            if (platform == CachePlatform.Original && format == BitmapFormat.Dxn && destFormat == BitmapFormat.Dxn)
+            if (Cache.Platform == CachePlatform.Original && format == BitmapFormat.Dxn && destFormat == BitmapFormat.Dxn)
                 return BitmapDecoder.SwapXYDxn(data, width, height);
 
             CompressionQuality quality = GetCompressionQuality(destFormat);
@@ -98,7 +117,7 @@ namespace TagTool.Bitmaps.Utils
             // fix dxt5 bumpmaps (h3 wraith bump)
             if (format == BitmapFormat.Dxt5 && tagName == @"objects\vehicles\wraith\bitmaps\wraith_bump")
             {
-                data = BitmapDecoder.DecodeBitmap(data, format, width, height, version, platform);
+                data = BitmapDecoder.DecodeBitmap(data, format, width, height, Cache.Version, Cache.Platform);
                 for (int i = 0; i < data.Length; i += 4)
                 {
                     byte g = (byte)((data[i + 1] + 255) / 2);
@@ -112,9 +131,9 @@ namespace TagTool.Bitmaps.Utils
             }
 
             // cubemap compatibility - this is required for h3 shaders to look correct when using reach dynamic cubemaps
-            if (version >= CacheVersion.HaloReach && bitmap.Images[imageIndex].ExponentBias == 2)
+            if (Cache.Version >= CacheVersion.HaloReach && bitmap.Images[imageIndex].ExponentBias == 2)
             {
-                var rawData = BitmapDecoder.DecodeBitmap(data, format, width, height, version, platform);
+                var rawData = BitmapDecoder.DecodeBitmap(data, format, width, height, Cache.Version, Cache.Platform);
                 const float oneDiv255 = 1.0f / 255.0f;
                 float expBias = (float)Math.Pow(2.0f, bitmap.Images[imageIndex].ExponentBias); // 4.0f
                 for (int i = 0; i < data.Length; i += 4)
@@ -137,10 +156,9 @@ namespace TagTool.Bitmaps.Utils
             if (format == destFormat)
                 return data;
 
-            data = BitmapDecoder.DecodeBitmap(data, format, width, height, version, platform);
+            data = BitmapDecoder.DecodeBitmap(data, format, width, height, Cache.Version, Cache.Platform);
             return BitmapDecoder.EncodeBitmap(data, destFormat, width, height, quality);
         }
-
 
         private static unsafe byte[] ConvertDXGIFormats(byte[] data, int width, int height, BitmapFormat format)
         {

@@ -172,7 +172,7 @@ namespace TagTool.Bitmaps
             {
                 case BitmapFormat.Dxn:
                 case BitmapFormat.Ctx1:
-                    return GetNormalMapFormat(format);
+                    return BitmapFormat.Dxn;
 
                 case BitmapFormat.AY8:
                     return BitmapFormat.A8Y8;
@@ -238,17 +238,6 @@ namespace TagTool.Bitmaps
             }
 
             return false;
-        }
-
-        public static BitmapFormat GetNormalMapFormat(BitmapFormat format)
-        {
-            if (PortingOptions.Current.UseExperimentalDxt5nm)
-                return BitmapFormat.Dxt5nm;
-
-            if (format == BitmapFormat.V8U8)
-                return format;
-
-            return PortingOptions.Current.HqNormalMapConversion ? BitmapFormat.Dxn : BitmapFormat.Dxt1;
         }
 
         public static bool IsCompressedFormat(BitmapFormat format)
