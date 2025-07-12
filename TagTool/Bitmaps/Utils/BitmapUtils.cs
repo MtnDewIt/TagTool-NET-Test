@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-//using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
 using TagTool.Bitmaps.DDS;
 using TagTool.Bitmaps.Utils;
 using TagTool.Cache;
@@ -244,14 +239,6 @@ namespace TagTool.Bitmaps
                     for (int mipLevel = 0; mipLevel < mipLevelCount; mipLevel++)
                         yield return (layerIndex, mipLevel);
             }
-        }
-
-        public static byte[] GetBitmapSurface(byte[] primaryData, byte[] secondaryData, BitmapTextureInteropDefinition definition, Bitmap bitmap, int imageIndex, int level, int layerIndex, bool isPaired, int pairIndex, BitmapTextureInteropDefinition otherDefinition, CachePlatform platform)
-        {
-            if (platform == CachePlatform.MCC)
-                return BitmapUtilsPC.GetBitmapLevelData(primaryData, secondaryData, definition, bitmap, imageIndex, level, layerIndex);
-            else
-                return XboxBitmapUtils.GetXboxBitmapLevelData(primaryData, secondaryData, definition, level, layerIndex, isPaired, pairIndex, otherDefinition);
         }
 
         public static int GetMipmapCount(int width, int height, int minWidth = 1, int minHeight = 1, int maxCount = int.MaxValue)
