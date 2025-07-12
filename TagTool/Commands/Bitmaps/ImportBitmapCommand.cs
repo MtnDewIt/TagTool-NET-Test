@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using TagTool.Bitmaps;
 using TagTool.Tags.Definitions;
 using TagTool.Cache;
@@ -26,7 +27,7 @@ namespace TagTool.Commands.Bitmaps
                    "Imports an image from a DDS file.",
                    "ImportBitmap <image index> <dds file> [curve] [conversion] [mipCount|-1]",
                    "The image index must be in hexadecimal.\n" +
-                   "Optional curve (linear, sRGB, gamma2, xRGB), conversion (DXT1, DXN), and mip count (0–16).\n" +
+                   "Optional curve (linear, sRGB, gamma2, xRGB), conversion (DXT1, DXT5, DXN), and mip count (0–16).\n" +
                    "If no mipCount is provided, uses the DDS's own mips.\n" +
                    "If mipCount = -1, matches the original tag mip counts.")
         {
@@ -83,6 +84,7 @@ namespace TagTool.Commands.Bitmaps
                         case "gamma2": curve = BitmapImageCurve.Gamma2; break;
                         case "xrgb": curve = BitmapImageCurve.xRGB; break;
                         case "dxt1":
+                        case "dxt5":
                         case "dxn":
                             conversionArg = a; break;
                         default:
@@ -129,110 +131,143 @@ namespace TagTool.Commands.Bitmaps
                     if (finalMips == 0) finalMips = 1;
                 }
 
-                // create resource (handles all compressed / uncompressed automatically)
-                var resource = BitmapInjector.CreateBitmapResourceFromDDS(Cache, file, curve);
+                uint fourcc = file.Header.PixelFormat.FourCC;
+                BitmapFormat srcFmt = fourcc switch
+                {
+                    0x31545844 => BitmapFormat.Dxt1,
+                    0x33545844 => BitmapFormat.Dxt3,
+                    0x35545844 => BitmapFormat.Dxt5,
+                    0 => BitmapFormat.A8R8G8B8,
+                    _ => throw new Exception("Unsupported DDS format: " + fourcc)
+                };
+
+                // Choose target format
+                BitmapFormat dstFmt;
+                if (conversionArg != null)
+                {
+                    dstFmt = conversionArg switch
+                    {
+                        "dxn" => BitmapFormat.Dxn,
+                        "dxt5" => BitmapFormat.Dxt5,
+                        _ => BitmapFormat.Dxt1
+                    };
+                }
+                else if (isNormal)
+                {
+                    dstFmt = srcFmt switch
+                    {
+                        BitmapFormat.Dxt5 => BitmapFormat.Dxt5,
+                        BitmapFormat.Dxt3 or BitmapFormat.Dxt1 => BitmapFormat.Dxt1,
+                        BitmapFormat.A8R8G8B8 => BitmapFormat.Dxn,
+                        _ => srcFmt
+                    };
+                }
+                else
+                {
+                    dstFmt = srcFmt;
+                }
 
                 // decide if we need to rebuild mips / conversion
                 bool rebuild = conversionArg != null || isNormal || mipCountArg.HasValue;
-                if (rebuild)
+
+                if (!rebuild && dstFmt == srcFmt && finalMips == ddsMips)
+                {
+                    var resource = BitmapInjector.CreateBitmapResourceFromDDS(Cache, file, curve);
+                    var reference = Cache.ResourceCache.CreateBitmapResource(resource);
+                    Bitmap.HardwareTextures[imageIndex] = reference;
+                    Bitmap.Images[imageIndex] = BitmapUtils.CreateBitmapImageFromResourceDefinition(resource.Texture.Definition.Bitmap);
+                }
+                else
                 {
                     byte[] rawFile = File.ReadAllBytes(imagePath);
                     const int hdr = 128;
+                    int offset = hdr;
+                    List<byte[]> rawMips = new List<byte[]>();
 
-                    // detect source format, include uncompressed BGRA
-                    uint fourcc = file.Header.PixelFormat.FourCC;
-                    BitmapFormat srcFmt = fourcc switch
+                    for (int lvl = 0; lvl < ddsMips; lvl++)
                     {
-                        0x31545844 => BitmapFormat.Dxt1,
-                        0x33545844 => BitmapFormat.Dxt3,
-                        0x35545844 => BitmapFormat.Dxt5,
-                        0 => BitmapFormat.A8R8G8B8,   // treat FourCC==0 as linear BGRA32
-                        _ => throw new Exception("Unsupported DDS format: " + fourcc)
-                    };
+                        int w = Math.Max(1, width >> lvl);
+                        int h = Math.Max(1, height >> lvl);
+                        int sz = srcFmt == BitmapFormat.A8R8G8B8
+                            ? 4 * w * h
+                            : ((w + 3) / 4) * ((h + 3) / 4) * (srcFmt == BitmapFormat.Dxt1 ? 8 : 16);
 
-                    // choose target format
-                    BitmapFormat dstFmt;
-                        if (conversionArg != null)
-                            {
-                                // explicit override: DXT1 or DXN
-                        dstFmt = (conversionArg == "dxn")
-                                    ? BitmapFormat.Dxn
-                                    : BitmapFormat.Dxt1;
-                            }
-                        else if (isNormal)
-                            {
-                                // only native DXT1 stays DXT1; all other normal sources → DXN
-                        dstFmt = (srcFmt == BitmapFormat.Dxt1)
-                                    ? BitmapFormat.Dxt1
-                                    : BitmapFormat.Dxn;
-                            }
+                        if (offset + sz > rawFile.Length)
+                            break;
+
+                        byte[] slice = new byte[sz];
+                        Array.Copy(rawFile, offset, slice, 0, sz);
+                        offset += sz;
+
+                        byte[] raw;
+                        if (srcFmt == BitmapFormat.A8R8G8B8)
+                        {
+                            raw = slice;
+                        }
                         else
-                            {
-                                // non‐normals: leave them exactly as they were
-                        dstFmt = srcFmt;
-                            }
-
-                    // decode top mip
-                    int blockSz = (srcFmt == BitmapFormat.Dxt1 ? 8 : 16);
-                    if (srcFmt == BitmapFormat.A8R8G8B8) blockSz = 4 * width * height;
-                    int topSz = srcFmt == BitmapFormat.A8R8G8B8
-                        ? blockSz
-                        : ((width + 3) / 4) * ((height + 3) / 4) * blockSz;
-                    if (rawFile.Length - hdr < topSz)
-                        throw new Exception("Incomplete DDS data for top mip");
-
-                    byte[] topRaw;
-                    if (srcFmt == BitmapFormat.A8R8G8B8)
-                    {
-                        // uncompressed: skip header
-                        topRaw = new byte[width * height * 4];
-                        Array.Copy(rawFile, hdr, topRaw, 0, topRaw.Length);
-                    }
-                    else
-                    {
-                        var cmp = new byte[topSz];
-                        Array.Copy(rawFile, hdr, cmp, 0, topSz);
-                        topRaw = BitmapDecoder.DecodeBitmap(cmp, srcFmt, width, height);
+                        {
+                            raw = BitmapDecoder.DecodeBitmap(slice, srcFmt, w, h);
+                        }
+                        rawMips.Add(raw);
                     }
 
-                    // build mip chain
-                    var mips = new List<byte[]>();
-                    byte[] prevRaw = topRaw;
-                    int prevW = width, prevH = height;
+                    byte[] prevRaw = rawMips.Last();
+                    int prevW = Math.Max(1, width >> (rawMips.Count - 1));
+                    int prevH = Math.Max(1, height >> (rawMips.Count - 1));
+                    for (int lvl = rawMips.Count; lvl < finalMips; lvl++)
+                    {
+                        int w = Math.Max(1, prevW >> 1);
+                        int h = Math.Max(1, prevH >> 1);
+                        byte[] thisRaw = GenerateMip(prevRaw, prevW, prevH, w, h);
+                        rawMips.Add(thisRaw);
+                        prevRaw = thisRaw;
+                        prevW = w;
+                        prevH = h;
+                    }
+
+                    if (rawMips.Count > finalMips)
+                        rawMips = rawMips.GetRange(0, finalMips);
+
+                    List<byte[]> encodedMips = new List<byte[]>();
                     for (int lvl = 0; lvl < finalMips; lvl++)
                     {
-                        int w = (lvl == 0) ? prevW : Math.Max(1, prevW >> 1);
-                        int h = (lvl == 0) ? prevH : Math.Max(1, prevH >> 1);
-                        byte[] thisRaw = (lvl == 0) ? prevRaw : GenerateMip(prevRaw, prevW, prevH, w, h);
-                        byte[] encoded = (dstFmt == BitmapFormat.A8R8G8B8)
-                            ? thisRaw
-                            : BitmapDecoder.EncodeBitmap(thisRaw, dstFmt, w, h);
-                        mips.Add(encoded);
-                        prevRaw = thisRaw;
-                        prevW = w; prevH = h;
+                        int w = Math.Max(1, width >> lvl);
+                        int h = Math.Max(1, height >> lvl);
+                        byte[] raw = rawMips[lvl];
+
+                        if (dstFmt == BitmapFormat.A8R8G8B8)
+                        {
+                            encodedMips.Add(raw);
+                        }
+                        else
+                        {
+                            encodedMips.Add(BitmapDecoder.EncodeBitmap(raw, dstFmt, w, h));
+                        }
                     }
 
-                    // concatenate
-                    int total = 0;
-                    foreach (var b in mips) total += b.Length;
-                    var allData = new byte[total];
-                    int pos = 0;
-                    foreach (var b in mips)
+                    byte[] allData = encodedMips.SelectMany(b => b).ToArray();
+
+                    var baseBitmap = new BaseBitmap
                     {
-                        Array.Copy(b, 0, allData, pos, b.Length);
-                        pos += b.Length;
-                    }
+                        Width = (short)width,
+                        Height = (short)height,
+                        Depth = 1,
+                        Type = BitmapType.Texture2D,
+                        Format = dstFmt,
+                        Flags = BitmapFlags.None,
+                        Curve = curve,
+                        MipMapCount = (short)(finalMips - 1),
+                        Data = allData
+                    };
 
-                    resource.Texture.Definition.PrimaryResourceData = new TagData(allData);
-                    resource.Texture.Definition.Bitmap.Format = dstFmt;
+                    baseBitmap.UpdateFormat(dstFmt);
+
+                    var resource = BitmapUtils.CreateBitmapTextureInteropResource(baseBitmap);
+                    var reference = Cache.ResourceCache.CreateBitmapResource(resource);
+                    Bitmap.HardwareTextures[imageIndex] = reference;
+
+                    BitmapUtils.SetBitmapImageData(baseBitmap, Bitmap.Images[imageIndex]);
                 }
-
-                resource.Texture.Definition.Bitmap.MipmapCount = (sbyte)finalMips;
-
-                var reference = Cache.ResourceCache.CreateBitmapResource(resource);
-                Bitmap.HardwareTextures[imageIndex] = reference;
-                Bitmap.Images[imageIndex] = BitmapUtils
-                    .CreateBitmapImageFromResourceDefinition(resource.Texture.Definition.Bitmap);
 
                 using var ws = Cache.OpenCacheReadWrite();
                 Cache.Serialize(ws, Tag, Bitmap);
@@ -257,8 +292,8 @@ namespace TagTool.Commands.Bitmaps
                     int[] sum = new int[4];
                     for (int oy = 0; oy < 2; oy++) for (int ox = 0; ox < 2; ox++)
                         {
-                            int ix = Math.Min(sx + ox, srcW - 1),
-                                iy = Math.Min(sy + oy, srcH - 1);
+                            int ix = Math.Min(sx + ox, srcW - 1);
+                            int iy = Math.Min(sy + oy, srcH - 1);
                             int idx = (iy * srcW + ix) * 4;
                             sum[0] += src[idx]; sum[1] += src[idx + 1];
                             sum[2] += src[idx + 2]; sum[3] += src[idx + 3];
