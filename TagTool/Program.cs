@@ -12,6 +12,7 @@ using TagTool.Commands.Common;
 using TagTool.Commands.Tags;
 using TagTool.Common;
 using TagTool.IO;
+using TagTool.Scripting.CSharp;
 
 namespace TagTool.Commands
 {
@@ -68,6 +69,15 @@ namespace TagTool.Commands
             };
 
             ConsoleHistory.Initialize();
+
+            var contextStack = new CommandContextStack();
+
+            // if the first argument is a c# script, execute it and exit
+            if (args.Length > 0 && args[0].EndsWith(".cs"))
+            {
+                int exitCode = ExecuteCSharpScript(args, contextStack);
+                Environment.Exit(exitCode);
+            }
 
             // If there are extra arguments, use them to automatically execute a command
             List<string> autoexecCommand = null;
@@ -187,7 +197,7 @@ namespace TagTool.Commands
 #endif
 
             // Create command context
-            var contextStack = new CommandContextStack();
+           
             var tagsContext = TagCacheContextFactory.Create(contextStack, gameCache);
             contextStack.Push(tagsContext);
 
@@ -289,6 +299,22 @@ namespace TagTool.Commands
         private static void TestShaderGeneratorAssembly()
         {
             var hlslFloat = HaloShaderGenerator.Globals.HLSLType.Float;
+        }
+
+        private static int ExecuteCSharpScript(string[] args, CommandContextStack contextStack)
+        {
+            string filePath = args[0];
+            try
+            {
+                var evalContext = new ScriptEvaluationContext(contextStack);
+                contextStack.ScriptEvaluator.ExecuteScriptFile(evalContext, args[0], args[1..]);
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                new TagToolError(CommandError.CustomError, ex.Message);
+                return -1;
+            }
         }
     }
 }

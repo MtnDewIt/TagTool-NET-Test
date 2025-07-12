@@ -36,28 +36,42 @@ namespace TagTool.Commands.Common
         {
             var evalContext = new ScriptEvaluationContext(ContextStack);
 
-            if (args.Count == 0)
+            string input = CommandRunner.CommandLine.Substring(CommandRunner.CommandLine.IndexOf(' ') + 1);
+            try
             {
-                return RunInteractiveShell(evalContext);
-            }
-            else if (args.Count > 1 && args[0].Trim() == "<")
-            {
-                return ExecuteScriptFile(evalContext, args);
-            }
-            else if (args.Count == 1 && args[0].Trim() == "!")
-            {
-                Evaluator.ClearState();
-                Console.WriteLine("State cleared.");
-                return true;
-            }
-            else
-            {
-                string input = CommandRunner.CommandLine.Substring(CommandRunner.CommandLine.IndexOf(' ') + 1);
-                object result = Evaluator.EvaluateScript(evalContext, input, inline: false);
-                if (result != null)
-                    PrintReplResult(result);
+                if (args.Count == 0)
+                {
+                    return RunInteractiveShell(evalContext);
+                }
+                else if (args.Count > 1 && args[0].Trim() == "<")
+                {
+                    string filePath = args[1];
 
-                return true;
+                    if (!File.Exists(filePath))
+                        return new TagToolError(CommandError.FileNotFound, filePath);
+
+                    Evaluator.ExecuteScriptFile(evalContext, filePath, args[2..]);
+                    return true;
+                }
+                else if (args.Count == 1 && args[0].Trim() == "!")
+                {
+                    Evaluator.ClearState();
+                    Console.WriteLine("State cleared.");
+                    return true;
+                }
+                else
+                {
+
+                    object result = Evaluator.EvaluateScript(evalContext, input, inline: false);
+                    if (result != null)
+                        PrintReplResult(result);
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new TagToolError(CommandError.CustomError, ex.Message);
             }
         }
 
@@ -87,19 +101,6 @@ namespace TagTool.Commands.Common
             return true;
         }
 
-        private object ExecuteScriptFile(ScriptEvaluationContext evalContext, List<string> args)
-        {
-            var scriptFile = new FileInfo(args[1]);
-            if (!scriptFile.Exists)
-                return new TagToolError(CommandError.FileNotFound, scriptFile.FullName);
-
-            args.RemoveRange(0, 2);
-            evalContext.Args = args;
-            evalContext.ScriptFile = scriptFile.FullName;
-
-            string input = File.ReadAllText(scriptFile.FullName);
-            return Evaluator.EvaluateScript(evalContext, input, inline: false, isolate: true, sourceDirectory: scriptFile.Directory);
-        }
 
         private static void PrintReplResult(object value)
         {
