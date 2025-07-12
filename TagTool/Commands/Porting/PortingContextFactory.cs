@@ -8,6 +8,7 @@ using TagTool.Commands.Tags;
 using TagTool.Porting;
 using TagTool.Porting.Gen3;
 using TagTool.Porting.HaloOnline;
+using TagTool.Scripting.CSharp;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Porting
@@ -46,7 +47,7 @@ namespace TagTool.Commands.Porting
 
         public static void Populate(CommandContextStack contextStack, CommandContext context, GameCache currentCache, GameCache portingCache)
         {
-            context.ScriptGlobals.Add(ExecuteCSharpCommand.GlobalPortingCacheKey, portingCache);
+            context.ScriptGlobals.Add(nameof(ScriptEvaluationContext.PortingCache), portingCache);
 
             if (currentCache is GameCacheHaloOnlineBase hoCache)
             {
@@ -87,6 +88,8 @@ namespace TagTool.Commands.Porting
         private static void PopulatePortingCommands(CommandContext context, GameCache portingCache, GameCacheHaloOnlineBase hoCache, PortingContext portingContext)
         {
             // Temporary method until the other contexts are implemented
+
+            context.ScriptGlobals.Add(nameof(ScriptEvaluationContext.PortingContext), portingContext);
 
             context.AddCommand(new PortTagCommand(hoCache, portingCache, portingContext));
             context.AddCommand(new PortMultiplayerEventsCommand(hoCache, portingCache));

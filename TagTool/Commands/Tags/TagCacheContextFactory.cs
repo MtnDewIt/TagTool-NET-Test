@@ -18,6 +18,7 @@ using TagTool.Commands.Forge;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Scenarios;
 using TagTool.Cache.Monolithic;
+using TagTool.Scripting.CSharp;
 
 namespace TagTool.Commands.Tags
 {
@@ -32,7 +33,7 @@ namespace TagTool.Commands.Tags
 
         public static void Populate(CommandContextStack contextStack, CommandContext context, GameCache cache, GameCache portingCache = null)
         {
-            context.ScriptGlobals.Add(ExecuteCSharpCommand.GlobalCacheKey, cache);
+            context.ScriptGlobals.Add(nameof(ScriptEvaluationContext.Cache), cache);
 
             context.AddCommand(new TestCommand(cache));
             context.AddCommand(new DumpLogCommand());
