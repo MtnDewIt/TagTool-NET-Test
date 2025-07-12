@@ -29,7 +29,7 @@ namespace TagTool.Audio
         {
             var split = tagName.Split('\\');
             var endName = split[split.Length - 1]; //get the last portion of the tag name
-            var newPath = cacheFilePath;
+            var newPath = Path.GetFullPath(cacheFilePath);
 
             newPath = Path.Combine(newPath, version.ToString());
 

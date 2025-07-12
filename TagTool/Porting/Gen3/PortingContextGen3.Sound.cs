@@ -88,8 +88,8 @@ namespace TagTool.Porting.Gen3
             if(soundResource == null)
                 return null;
 
-            var useCache = UseAudioCacheCommand.AudioCacheDirectory != null;
-            var soundCachePath = useCache ? UseAudioCacheCommand.AudioCacheDirectory.FullName : "";
+            var useCache = Options.AudioCache != null || UseAudioCacheCommand.AudioCacheDirectory != null;
+            var soundCachePath = Options.AudioCache ?? UseAudioCacheCommand.AudioCacheDirectory?.FullName ?? "";
 
             byte[] xmaData = null;
             if (soundResource != null)
@@ -233,9 +233,8 @@ namespace TagTool.Porting.Gen3
                 // Convert Blam permutations to ElDorado format
                 //
 
-                var useCache = UseAudioCacheCommand.AudioCacheDirectory != null;
-                var soundCachePath = useCache ? UseAudioCacheCommand.AudioCacheDirectory.FullName : "";
-
+                var useCache = Options.AudioCache != null || UseAudioCacheCommand.AudioCacheDirectory != null;
+                var soundCachePath = Options.AudioCache ?? UseAudioCacheCommand.AudioCacheDirectory?.FullName ?? "";
 
                 var permutationCount = BlamSoundGestalt.GetPermutationCount(pitchRangeIndex, BlamCache.Platform);
                 var permutationOrder = BlamSoundGestalt.GetPermutationOrder(pitchRangeIndex, BlamCache.Platform);
