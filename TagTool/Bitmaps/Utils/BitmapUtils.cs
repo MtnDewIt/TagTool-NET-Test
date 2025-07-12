@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TagTool.Bitmaps.DDS;
 using TagTool.Bitmaps.Utils;
 using TagTool.Cache;
@@ -169,14 +170,9 @@ namespace TagTool.Bitmaps
         {
             switch (format)
             {
-                case BitmapFormat.Ctx1:
-                    return PortingOptions.Current.HqNormalMapConversion ? 
-                        BitmapFormat.Dxn : BitmapFormat.Dxt1;
-
-                // Dxn causes excessive heap allocation
                 case BitmapFormat.Dxn:
-                    return PortingOptions.Current.HqNormalMapConversion ?
-                       BitmapFormat.Dxn : BitmapFormat.Dxt1;
+                case BitmapFormat.Ctx1:
+                    return GetNormalMapFormat(format);
 
                 case BitmapFormat.AY8:
                     return BitmapFormat.A8Y8;
@@ -199,6 +195,60 @@ namespace TagTool.Bitmaps
                 default:
                     return format;
             }
+        }
+
+        public static bool IsNormalMap(Bitmap bitmap, int imageIndex)
+        {
+            switch (bitmap.Images[imageIndex].Format)
+            {
+                case BitmapFormat.Ctx1:
+                case BitmapFormat.Dxn:
+                case BitmapFormat.Dxt5nm:
+                    return true;
+            }
+
+            Bitmap.BitmapUsageFormat usageFormat = GetBitmapUsageFormat(bitmap);
+            if (usageFormat != Bitmap.BitmapUsageFormat.UseDefaultDefinedByUsage)
+            {
+                switch (usageFormat)
+                {
+                    case Bitmap.BitmapUsageFormat.BestCompressedBumpFormat:
+                    case Bitmap.BitmapUsageFormat.BestUncompressedBumpFormat:
+                    case Bitmap.BitmapUsageFormat.NormalMapFormats:
+                    case Bitmap.BitmapUsageFormat.Ctx1CompressedNormalsSmaller:
+                    case Bitmap.BitmapUsageFormat.DxnCompressedNormalsBetter:
+                    case Bitmap.BitmapUsageFormat._16BitNormals:
+                    case Bitmap.BitmapUsageFormat._32BitNormals:
+                    case Bitmap.BitmapUsageFormat._8Bit4ChannelVector:
+                        return true;
+                }
+            }
+            else
+            {
+                switch (bitmap.Usage)
+                {
+                    case Bitmap.BitmapUsageGlobalEnum.BumpMapfromHeightMap:
+                    case Bitmap.BitmapUsageGlobalEnum.ZBrushBumpMapfromBumpMap:
+                    case Bitmap.BitmapUsageGlobalEnum.NormalMapAkaZbump:
+                    case Bitmap.BitmapUsageGlobalEnum.DetailZbrushBumpMap:
+                    case Bitmap.BitmapUsageGlobalEnum.DetailNormalMap:
+                    case Bitmap.BitmapUsageGlobalEnum.WarpMapEMBM:
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static BitmapFormat GetNormalMapFormat(BitmapFormat format)
+        {
+            if (PortingOptions.Current.UseExperimentalDxt5nm)
+                return BitmapFormat.Dxt5nm;
+
+            if (format == BitmapFormat.V8U8)
+                return format;
+
+            return PortingOptions.Current.HqNormalMapConversion ? BitmapFormat.Dxn : BitmapFormat.Dxt1;
         }
 
         public static bool IsCompressedFormat(BitmapFormat format)
@@ -241,10 +291,22 @@ namespace TagTool.Bitmaps
             }
         }
 
-        public static int GetMipmapCount(int width, int height, int minWidth = 1, int minHeight = 1, int maxCount = int.MaxValue)
+        public static int GetMipmapCount(int width, int height, int maxCount = int.MaxValue)
         {
             int count = 1; // include the base level
-            while (count < maxCount && (width > minWidth || height > minHeight))
+            while (count < maxCount && (width > 1 || height > 1))
+            {
+                width = Math.Max(1, width / 2);
+                height = Math.Max(1, height / 2);
+                count++;
+            }
+            return count;
+        }
+
+        public static int GetMipmapCountTruncate(int width, int height, int minWidth = 1, int minHeight = 1, int maxCount = int.MaxValue)
+        {
+            int count = 1; // include the base level
+            while (count < maxCount && (width > minWidth && height > minHeight))
             {
                 width = Math.Max(1, width / 2);
                 height = Math.Max(1, height / 2);
@@ -273,6 +335,32 @@ namespace TagTool.Bitmaps
             byte[] raw = new byte[dataSize];
             Array.Copy(resultBitmap.Data, raw, dataSize);
             resultBitmap.Data = raw;
+        }
+
+        public static Bitmap.BitmapUsageFormat GetBitmapUsageFormat(Bitmap bitmap)
+        {
+            if (bitmap.ForceBitmapFormat != Bitmap.BitmapUsageFormat.UseDefaultDefinedByUsage)
+                return bitmap.ForceBitmapFormat;
+
+            if (bitmap.UsageOverrides.Count > 0)
+                return bitmap.UsageOverrides[0].BitmapFormat;
+
+            return Bitmap.BitmapUsageFormat.UseDefaultDefinedByUsage;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float CalculateNormalZ(float x, float y)
+        {
+            return MathF.Sqrt(Math.Clamp(1f - (x * x) - (y * y), 0f, 1f));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte CalculateNormalZ(byte r, byte g)
+        {
+            float x = (r / 127.5f) - 1f;
+            float y = (g / 127.5f) - 1f;
+            float z = CalculateNormalZ(x, y);
+            return (byte)((z + 1f) * 127.5f + 0.5f);
         }
     }
 }

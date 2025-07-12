@@ -32,7 +32,7 @@ namespace TagTool.Porting
         public PortingFlags Flags = PortingFlags.Default;
         private bool ShouldUpdateMapFiles = false;
         private bool ShouldGenerateCampaignFile = false;
-
+        
         protected PortingContext(GameCacheHaloOnlineBase cacheContext, GameCache blamCache)
         {
             CacheContext = cacheContext;
@@ -495,6 +495,8 @@ namespace TagTool.Porting
                 TagDefinitionCache.Clear();
                 VisitedTags.Clear();
                 PortedTags.Clear();
+                ShouldGenerateCampaignFile = false;
+                ShouldUpdateMapFiles = false;
             }
         }
 

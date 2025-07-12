@@ -81,6 +81,26 @@ namespace TagTool.Porting.Gen3
             bitmap.Flags = BitmapRuntimeFlags.UsingTagInteropAndTagResource;
             bitmap.UnknownB4 = 0;
 
+            if (BlamCache.Version >= CacheVersion.HaloReach)
+            {
+                switch (bitmap.Usage)
+                {
+                    case Bitmap.BitmapUsageGlobalEnum.NormalMapAkaZbump:
+                    case Bitmap.BitmapUsageGlobalEnum.DetailZbrushBumpMap:
+                    case Bitmap.BitmapUsageGlobalEnum.DetailNormalMap:
+                        bitmap.Usage = Bitmap.BitmapUsageGlobalEnum.ZBrushBumpMapfromBumpMap;
+                        break;
+                    case Bitmap.BitmapUsageGlobalEnum.MaterialMap:
+                    case Bitmap.BitmapUsageGlobalEnum.SmokeWarp:
+                    case Bitmap.BitmapUsageGlobalEnum.CubemapGel:
+                    case Bitmap.BitmapUsageGlobalEnum.LensFlareGamma22EffectsOnly:
+                    case Bitmap.BitmapUsageGlobalEnum.SignedNoise:
+                    case Bitmap.BitmapUsageGlobalEnum.RoughnessMapAuto:
+                        bitmap.Usage = Bitmap.BitmapUsageGlobalEnum.DiffuseMap;
+                        break;
+                }
+            }
+
             RunAsync(
                 onExecute: () =>
                 {

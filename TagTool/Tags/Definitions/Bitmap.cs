@@ -89,6 +89,10 @@ namespace TagTool.Tags.Definitions
             VectorMap,
             _3DTexture,
             FloatMapWARNING, // HUGE)
+
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            HalfFloatMapHalfHuge,
+
             HeightMapforParallax,
             ZBrushBumpMapfromBumpMap,
 
