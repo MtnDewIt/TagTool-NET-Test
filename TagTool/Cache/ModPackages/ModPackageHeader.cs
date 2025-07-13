@@ -63,6 +63,13 @@ namespace TagTool.Cache
 
         [TagField(CharSet = Ansi, Length = 512)]
         public string URL;
+
+        public void SetBuildDate (DateTime timestamp)
+        {
+            long now = timestamp.ToFileTime();
+            BuildDateLow = (int)now & 0x7FFFFFFF;
+            BuildDateHigh = (int)((now & 0x7FFFFFFF00000000) >> 32);
+        }
     }
 
     public enum ModPackageSection : int

@@ -85,13 +85,15 @@ namespace TagTool.Commands.Modding
 			else if (!int.TryParse(args[0], System.Globalization.NumberStyles.Integer, null, out tagCacheIndex))
 				return new TagToolError(CommandError.ArgInvalid, $"\"{args[0]}\"");
 
-			if (tagCacheIndex != ModCache.GetCurrentTagCacheIndex()) {
-				if (!ModCache.SetActiveTagCache(tagCacheIndex)) {
-					return new TagToolError(CommandError.CustomMessage, "Failed to apply mod package to base cache, no changes applied");
-				}
-			}
+            if (tagCacheIndex != ModCache.GetCurrentTagCacheIndex())
+            {
+                if (!ModCache.BaseModPackage.IsValidTagCacheIndex(tagCacheIndex))
+                    return new TagToolError(CommandError.ArgInvalid, $"Invalid tag cache index {tagCacheIndex}");
 
-			Console.WriteLine("Blacklisting Tags:\n");
+                ModCache.SetActiveTagCache(tagCacheIndex);
+            }
+
+            Console.WriteLine("Blacklisting Tags:\n");
 
 			Console.WriteLine("1. You can blacklist a specific tag by entering its name -> vehicles/warthog");
 			Console.WriteLine("Examples:\tweapons/rocket_launcher\t\tcharacters/masterchief\n");

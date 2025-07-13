@@ -30,46 +30,29 @@ namespace TagTool.Cache
         public GameCacheModPackage(GameCacheHaloOnlineBase baseCache, FileInfo file, bool largeResourceStream = false)
         {
             ModPackageFile = file;
-            Version = CacheVersion.HaloOnlineED;
-            Platform = CachePlatform.Original;
-
-            Endianness = EndianFormat.LittleEndian;
-            Deserializer = new TagDeserializer(Version, Platform);
-            Serializer = new TagSerializer(Version, Platform);
             Directory = file.Directory;
-            BaseCacheReference = baseCache;
 
             // load mod package
-            BaseModPackage = new ModPackage(file, unmanagedResourceStream: largeResourceStream);
-
-            ResourceCaches = new ResourceCachesModPackage(this, BaseModPackage);
-            StringTableHaloOnline = BaseModPackage.StringTable;
-            SetActiveTagCache(0);
+            var modPackage = new ModPackage(file, unmanagedResourceStream: largeResourceStream);
+            Init(baseCache, modPackage, largeResourceStream);
         }
 
-        public GameCacheModPackage(GameCacheHaloOnline baseCache, bool largeResourceStream=false)
+        public GameCacheModPackage(GameCacheHaloOnline baseCache, ModPackage modPackage)
         {
-            ModPackageFile = null;
-            Directory = null;
+            Init(baseCache, modPackage);
+        }
 
+        private void Init(GameCacheHaloOnlineBase baseCache, ModPackage modPackage, bool largeResourceStream = false)
+        {
+            BaseCacheReference = baseCache;
+            BaseModPackage = modPackage;
             Version = CacheVersion.HaloOnlineED;
-            Endianness = EndianFormat.LittleEndian;
             Platform = CachePlatform.Original;
-
+            Endianness = EndianFormat.LittleEndian;
             Deserializer = new TagDeserializer(Version, Platform);
             Serializer = new TagSerializer(Version, Platform);
-            BaseModPackage = new ModPackage(unmanagedResourceStream: largeResourceStream);
-            BaseCacheReference = baseCache;
             ResourceCaches = new ResourceCachesModPackage(this, BaseModPackage);
-
-            // create copy of string table
-            using (var stringStream = (baseCache as GameCacheHaloOnline).StringIdCacheFile.OpenRead())
-            {
-                var newStringTable = new StringTableHaloOnline(CacheVersion.HaloOnlineED, stringStream);
-                StringTableHaloOnline = newStringTable;
-                BaseModPackage.StringTable = newStringTable;
-            }
-
+            StringTableHaloOnline = BaseModPackage.StringTable;
 
             SetActiveTagCache(0);
         }
@@ -142,31 +125,32 @@ namespace TagTool.Cache
 
         public int GetCurrentTagCacheIndex() => CurrentTagCacheIndex;
 
-        public bool SetActiveTagCache(int index)
+        public void SetActiveTagCache(int index)
         {
-            if( index >= 0 && index < GetTagCacheCount())
-            {
-                CurrentTagCacheIndex = index;
-                TagCacheGenHO = new TagCacheHaloOnline(Version, BaseModPackage.TagCachesStreams[CurrentTagCacheIndex].Stream, StringTableHaloOnline, BaseModPackage.TagCacheNames[CurrentTagCacheIndex]);
-                if(GetTagCacheCount() > 1)
-                    DisplayName = BaseModPackage.Metadata.Name + $" {BaseModPackage.CacheNames[CurrentTagCacheIndex]}" + ".pak";
-                else
-                    DisplayName = BaseModPackage.Metadata.Name + ".pak";
+            if (!BaseModPackage.IsValidTagCacheIndex(index))
+                throw new ArgumentOutOfRangeException(nameof(index), index, "Invalid tag cache index");
 
-                Console.WriteLine($"Current Tag Cache: {BaseModPackage.CacheNames[CurrentTagCacheIndex]}.");
-                return true;
-            }
+            CurrentTagCacheIndex = index;
+            TagCacheGenHO = new TagCacheHaloOnline(Version, BaseModPackage.TagCachesStreams[CurrentTagCacheIndex].Stream, StringTableHaloOnline, BaseModPackage.TagCacheNames[CurrentTagCacheIndex]);
+            if (GetTagCacheCount() > 1)
+                DisplayName = BaseModPackage.Metadata.Name + $" {BaseModPackage.CacheNames[CurrentTagCacheIndex]}" + ".pak";
             else
-            {
-                Console.WriteLine($"Invalid tag cache index {index}, {GetTagCacheCount()} tag cache available");
-                return false;
-            }
+                DisplayName = BaseModPackage.Metadata.Name + ".pak";
+        }
+
+        public bool SaveModPackage(string filePath)
+        {
+            return SaveModPackage(new FileInfo(filePath));
         }
 
         public bool SaveModPackage(FileInfo file)
         {
+            SaveStrings();
+            SaveTagNames();
+            BaseModPackage.DetermineMapFlags();
+
             // check for null tags
-            foreach(var tag in TagCache.TagTable)
+            foreach (var tag in TagCache.TagTable)
             {
                 if(tag == null || tag.Name == null)
                 {
