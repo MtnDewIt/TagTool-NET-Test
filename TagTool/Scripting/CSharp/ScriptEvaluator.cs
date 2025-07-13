@@ -41,7 +41,20 @@ namespace TagTool.Scripting.CSharp
             _state = null;
         }
 
-        public object EvaluateScript(object context, string input, bool inline = false, bool isolate = false, DirectoryInfo sourceDirectory = null)
+        public void ExecuteScriptFile(ScriptEvaluationContext context, string filePath, IReadOnlyList<string> args)
+        {
+            var scriptFile = new FileInfo(filePath);
+            if (!scriptFile.Exists)
+                throw new FileNotFoundException(scriptFile.FullName);
+
+            context.Args = args;
+            context.ScriptFile = scriptFile.FullName;
+
+            string input = File.ReadAllText(scriptFile.FullName);
+            EvaluateScript(context, input, inline: false, isolate: true, sourceDirectory: scriptFile.Directory);
+        }
+
+        public object EvaluateScript(ScriptEvaluationContext context, string input, bool inline = false, bool isolate = false, DirectoryInfo sourceDirectory = null)
         {
             sourceDirectory ??= new DirectoryInfo(Program.TagToolDirectory);
             var preprocessResult = new ScriptPreprocessor().PreprocessScript(input);
@@ -54,25 +67,18 @@ namespace TagTool.Scripting.CSharp
                 .WithEmitDebugInformation(true)
                 .WithImports(DefaultImports);
 
-            try
-            {
-                ScriptState<object> newState = _state == null || isolate
-                    ? CSharpScript.RunAsync(preprocessResult.Source, scriptOptions, context).GetAwaiter().GetResult()
-                    : _state.ContinueWithAsync(preprocessResult.Source, scriptOptions).GetAwaiter().GetResult();
 
-                if (!isolate)
-                    _state = newState;
+            ScriptState<object> newState = _state == null || isolate
+                ? CSharpScript.RunAsync(preprocessResult.Source, scriptOptions, context).GetAwaiter().GetResult()
+                : _state.ContinueWithAsync(preprocessResult.Source, scriptOptions).GetAwaiter().GetResult();
 
-                return newState.ReturnValue;
-            }
-            catch (Exception ex)
-            {
-                new TagToolError(CommandError.CustomError, ex.Message);
-                return null;
-            }
+            if (!isolate)
+                _state = newState;
+
+            return newState.ReturnValue;
         }
 
-        public string EvaluateInlineExpressions(object context, string input, int offset = 0)
+        public string EvaluateInlineExpressions(ScriptEvaluationContext context, string input, int offset = 0)
         {
             int startIndex = -1;
             var stack = new Stack<int>();
@@ -103,8 +109,7 @@ namespace TagTool.Scripting.CSharp
 
             if (stack.Count != 0 && startIndex != -1)
             {
-                new TagToolError(CommandError.CustomError, $"(0:{offset + startIndex + 1}): Unmatched brace.");
-                return null;
+                throw new FormatException($"(0:{offset + startIndex + 1}): Unmatched brace in c# expression");
             }
 
             return input;

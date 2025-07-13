@@ -31,6 +31,9 @@ namespace TagTool.Scripting.CSharp
         [Description("Dictionary of user defined variables")]
         public IReadOnlyDictionary<string, string> UserVars => _contextStack.ArgumentVariables;
 
+        [Description("Command context stack")]
+        public CommandContextStack ContextStack => _contextStack;
+
         [Description("Current cache")]
         public GameCache Cache => _contextGlobals.Get<GameCache>(nameof(Cache));
 

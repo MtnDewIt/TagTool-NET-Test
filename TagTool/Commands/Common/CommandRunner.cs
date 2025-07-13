@@ -24,10 +24,17 @@ namespace TagTool.Commands.Common
         {
             // Evaluate c# expressions
 
-            var evalContext = new ScriptEvaluationContext(ContextStack);
-            commandLine = ContextStack.ScriptEvaluator.EvaluateInlineExpressions(evalContext, commandLine);
-            if (commandLine == null)
-                return null;
+            try
+            {
+                var evalContext = new ScriptEvaluationContext(ContextStack);
+                commandLine = ContextStack.ScriptEvaluator.EvaluateInlineExpressions(evalContext, commandLine);
+                if (commandLine == null)
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                new TagToolError(CommandError.CustomError, $"{ex.Message}");
+            }
 
             // Allow inline comments beginning with "//"
 
