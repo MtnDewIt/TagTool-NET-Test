@@ -598,6 +598,19 @@ namespace TagTool.Commands.RenderModels
                                 materialIndices[shaderName] = materialIndex;
                             }
                         }
+                        /*
+                        else if (!materialIndices.ContainsKey(meshMaterial.Name))
+                        {
+                            if (!Cache.TagCache.TryGetTag(meshMaterial.Name, out CachedTag shaderTag))
+                                shaderTag = defaultShaderTag;
+
+                            materialIndices.Add(meshMaterial.Name, builder.AddMaterial(new RenderMaterial
+                            {
+                                RenderMethod = shaderTag,
+                            }));
+                            materialIndex = materialIndices[meshMaterial.Name];
+                        }
+                        */
                         else
                         {
                             Console.ForegroundColor = ConsoleColor.Cyan;
