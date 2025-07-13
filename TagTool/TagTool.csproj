@@ -46,8 +46,6 @@
     <None Include="Commands\Tags\ConvertTagCommand.cs" />
     <Compile Remove="Common\RealMatrix3x3.cs" />
     <None Include="Common\RealMatrix3x3.cs" />
-    <Compile Remove="VideoUtils.cs" />
-    <None Include="VideoUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Physics\**\*" Link="Physics\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />

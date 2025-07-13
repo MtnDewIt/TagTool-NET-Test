@@ -22,7 +22,7 @@ namespace TagTool.Commands.Common
                 Console.WriteLine("WARNING: " + customMessage);
                 Console.ResetColor();
 
-                Program.WarningCount += 1;
+                RunMetrics.WarningCount += 1;
             }
         }
     }
