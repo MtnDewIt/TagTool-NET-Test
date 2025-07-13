@@ -219,11 +219,11 @@ namespace TagTool.Commands.Scenarios
 
             string opcodeName = "";
 
-            if (ScriptExpressionIsValue(Definition.ScriptExpressions[index]) && ScriptInfo.ValueTypes[(Cache.Version, Cache.Platform)].ContainsKey(Definition.ScriptExpressions[index].Opcode))
-                opcodeName = $"{ScriptInfo.ValueTypes[(Cache.Version, Cache.Platform)][Definition.ScriptExpressions[index].Opcode]},value";
+            if (ScriptExpressionIsValue(Definition.ScriptExpressions[index]) && Cache.ScriptDefinitions.ValueTypes.ContainsKey(Definition.ScriptExpressions[index].Opcode))
+                opcodeName = $"{Cache.ScriptDefinitions.ValueTypes[Definition.ScriptExpressions[index].Opcode]},value";
 
-            else if (ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].ContainsKey(Definition.ScriptExpressions[index].Opcode))
-                opcodeName = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)][Definition.ScriptExpressions[index].Opcode].Name;
+            else if (Cache.ScriptDefinitions.Scripts.ContainsKey(Definition.ScriptExpressions[index].Opcode))
+                opcodeName = Cache.ScriptDefinitions.Scripts[Definition.ScriptExpressions[index].Opcode].Name;
 
             try
             {

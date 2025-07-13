@@ -652,7 +652,7 @@ namespace TagTool.Scripting.Compiler
                     if (global.Name == symbol.Value)
                         return CompileGlobalReference(symbol, global);
 
-                foreach (var global in ScriptInfo.Globals[(Cache.Version, Cache.Platform)])
+                foreach (var global in Cache.ScriptDefinitions.Globals)
                     if (global.Value == symbol.Value)
                         return CompileGlobalReference(symbol, type, global.Value, (ushort)(global.Key | 0x8000));
             }
@@ -1194,7 +1194,7 @@ namespace TagTool.Scripting.Compiler
                 case "begin":
                 case "begin_random":
                     {
-                        var builtin = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].First(x => x.Value.Name == functionNameSymbol.Value);
+                        var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
 
                         var firstHandle = DatumHandle.None;
                         HsSyntaxNode prevExpr = null;
@@ -1234,7 +1234,7 @@ namespace TagTool.Scripting.Compiler
 
                 case "if":
                     {
-                        var builtin = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].First(x => x.Value.Name == functionNameSymbol.Value);
+                        var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
 
                         var ifHandle = AllocateExpression(type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
                         var ifExpr = ScriptExpressions[ifHandle.Index];
@@ -1284,7 +1284,7 @@ namespace TagTool.Scripting.Compiler
 
                 case "cond":
                     {
-                        var builtin = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].First(x => x.Value.Name == functionNameSymbol.Value);
+                        var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
 
                         var condHandle = AllocateExpression(type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
                         var condExpr = ScriptExpressions[condHandle.Index];
@@ -1350,7 +1350,7 @@ namespace TagTool.Scripting.Compiler
                             if (global.Name != globalName.Value)
                                 continue;
 
-                            var builtin = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].First(x => x.Value.Name == functionNameSymbol.Value);
+                            var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
 
                             var setHandle = AllocateExpression(global.Type.HaloOnline, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
                             var setExpr = ScriptExpressions[setHandle.Index];
@@ -1377,7 +1377,7 @@ namespace TagTool.Scripting.Compiler
                 case "and":
                 case "or":
                     {
-                        var builtin = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].First(x => x.Value.Name == functionNameSymbol.Value);
+                        var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
 
                         var handle = AllocateExpression(builtin.Value.Type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
                         var expr = ScriptExpressions[handle.Index];
@@ -1415,7 +1415,7 @@ namespace TagTool.Scripting.Compiler
                 case "min":
                 case "max":
                     {
-                        var builtin = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].First(x => x.Value.Name == functionNameSymbol.Value);
+                        var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
 
                         var handle = AllocateExpression(builtin.Value.Type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
                         var expr = ScriptExpressions[handle.Index];
@@ -1464,7 +1464,7 @@ namespace TagTool.Scripting.Compiler
                 case "<=":
                 case ">=":
                     {
-                        var builtin = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].First(x => x.Value.Name == functionNameSymbol.Value);
+                        var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
 
                         var handle = AllocateExpression(builtin.Value.Type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
                         var expr = ScriptExpressions[handle.Index];
@@ -1507,7 +1507,7 @@ namespace TagTool.Scripting.Compiler
 
                 case "sleep":
                     {
-                        var builtin = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].First(x => x.Value.Name == functionNameSymbol.Value);
+                        var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
 
                         var handle = AllocateExpression(builtin.Value.Type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
                         var expr = ScriptExpressions[handle.Index];
@@ -1548,7 +1548,7 @@ namespace TagTool.Scripting.Compiler
 
                 case "sleep_forever":
                     {
-                        var builtin = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].First(x => x.Value.Name == functionNameSymbol.Value);
+                        var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
 
                         var handle = AllocateExpression(builtin.Value.Type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
                         var expr = ScriptExpressions[handle.Index];
@@ -1573,7 +1573,7 @@ namespace TagTool.Scripting.Compiler
 
                 case "sleep_until":
                     {
-                        var builtin = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].First(x => x.Value.Name == functionNameSymbol.Value);
+                        var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
 
                         var handle = AllocateExpression(builtin.Value.Type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
                         var expr = ScriptExpressions[handle.Index];
@@ -1618,7 +1618,7 @@ namespace TagTool.Scripting.Compiler
 
                 case "wake":
                     {
-                        var builtin = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].First(x => x.Value.Name == functionNameSymbol.Value);
+                        var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
 
                         var handle = AllocateExpression(builtin.Value.Type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
                         var expr = ScriptExpressions[handle.Index];
@@ -1643,7 +1643,7 @@ namespace TagTool.Scripting.Compiler
             // Check if function name is a built-in function
             //
 
-            foreach (var entry in ScriptInfo.Scripts[(Cache.Version, Cache.Platform)])
+            foreach (var entry in Cache.ScriptDefinitions.Scripts)
             {
                 if (functionNameSymbol.Value != entry.Value.Name)
                     continue;
@@ -1729,7 +1729,7 @@ namespace TagTool.Scripting.Compiler
 
         private DatumHandle CompileExternMethodReference(ScriptGroup group, ScriptSymbol functionNameSymbol, HsScript script)
         {
-            var builtin = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].First(x => x.Value.Name == "dew_method_stub");
+            var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == "dew_method_stub");
             var scriptIndex = (short)Scripts.IndexOf(script);
 
             var handle = AllocateExpression(script.ReturnType.HaloOnline, HsSyntaxNodeFlags.Group |  HsSyntaxNodeFlags.Extern, (ushort)builtin.Key, scriptIndex);

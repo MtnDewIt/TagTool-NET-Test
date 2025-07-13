@@ -228,8 +228,8 @@ namespace TagTool.Scripting
         {
             string result = "unk_op";
 
-            if (ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].ContainsKey(Opcode))
-                result = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)][Opcode].Name;
+            if (Cache.ScriptDefinitions.Scripts.ContainsKey(Opcode))
+                result = Cache.ScriptDefinitions.Scripts[Opcode].Name;
 
             return result;
         }
