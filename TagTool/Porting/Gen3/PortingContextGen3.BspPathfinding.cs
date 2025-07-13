@@ -149,6 +149,7 @@ namespace TagTool.Porting.Gen3
         private TagResourceReference ConvertStructureBspCacheFileTagResourcesMCC(ScenarioStructureBsp bsp)
         {
             var resourceDefinition = BlamCache.ResourceCache.GetStructureBspCacheFileTagResources(bsp.PathfindingResource);
+            resourceDefinition ??= new StructureBspCacheFileTagResources();
             bsp.PathfindingResource = CacheContext.ResourceCache.CreateStructureBspCacheFileResource(resourceDefinition);
             return bsp.PathfindingResource;
         }
