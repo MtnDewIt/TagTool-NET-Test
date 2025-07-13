@@ -364,6 +364,9 @@ namespace TagTool.Bitmaps
 
         public static byte[] GetXboxBitmapLevelData(byte[] primaryData, byte[] secondaryData, BitmapTextureInteropDefinition definition, int level, int layerIndex, bool isPaired, int pairIndex, BitmapTextureInteropDefinition otherDefinition)
         {
+            if (pairIndex > 0)
+                (definition, otherDefinition) = (otherDefinition, definition);
+
             byte[] data;
             uint levelOffset;
 
@@ -444,16 +447,19 @@ namespace TagTool.Bitmaps
             else
             {
                 bool useHighResBuffer = definition.HighResInSecondaryResource > 0;
+                var bitmap1 = pairIndex == 0 ? definition : otherDefinition;
+                var bitmap2 = pairIndex == 0 ? otherDefinition : definition;
+
                 if (level == 0 && useHighResBuffer)
                 {
-                    levelOffset = GetXboxInterleavedBitmapOffset(definition, otherDefinition, layerIndex, level, pairIndex);
+                    levelOffset = GetXboxInterleavedBitmapOffset(bitmap1, bitmap2, layerIndex, level, pairIndex);
                     uint alignedSecondaryLength = (uint)((secondaryData.Length + 0x3FFF) & ~0x3FFF);
                     data = new byte[alignedSecondaryLength];
                     Array.Copy(secondaryData, 0, data, 0, secondaryData.Length);
                 }
                 else
                 {
-                    levelOffset = GetXboxInterleavedBitmapOffset(definition, otherDefinition, layerIndex, level, pairIndex, useHighResBuffer);
+                    levelOffset = GetXboxInterleavedBitmapOffset(bitmap1, bitmap2, layerIndex, level, pairIndex, useHighResBuffer);
                     uint alignedPrimaryLength = (uint)((primaryData.Length + 0x3FFF) & ~0x3FFF);
                     data = new byte[alignedPrimaryLength];
                     Array.Copy(primaryData, 0, data, 0, primaryData.Length);
