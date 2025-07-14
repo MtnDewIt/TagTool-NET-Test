@@ -151,41 +151,5 @@ namespace TagTool.Scripting
             [HsType.HaloOnlineValue.LoopingSoundBudgetReference] = 4,
             [HsType.HaloOnlineValue.SoundBudgetReference] = 4
         };
-
-        public static Dictionary<(CacheVersion, CachePlatform), Dictionary<int, string>> ValueTypes { get; } = new Dictionary<(CacheVersion, CachePlatform), Dictionary<int, string>>
-        {
-            [(CacheVersion.Halo3Retail, CachePlatform.Original)] = ScriptInfoHalo3Retail.ValueTypes,
-            [(CacheVersion.Halo3Retail, CachePlatform.MCC)] = ScriptInfoHalo3RetailMCC.ValueTypes,
-            [(CacheVersion.Halo3ODST, CachePlatform.Original)] = ScriptInfoHalo3ODST.ValueTypes,
-            [(CacheVersion.Halo3ODST, CachePlatform.MCC)] = ScriptInfoHalo3ODSTMCC.ValueTypes,
-            [(CacheVersion.HaloOnlineED, CachePlatform.Original)] = ScriptInfoED.ValueTypes,
-            [(CacheVersion.HaloOnline106708, CachePlatform.Original)] = ScriptInfoMS23.ValueTypes,
-            [(CacheVersion.HaloReach, CachePlatform.Original)] = ScriptInfoHaloReach.ValueTypes,
-            [(CacheVersion.HaloReach, CachePlatform.MCC)] = ScriptInfoHaloReachMCC.ValueTypes,
-        };
-
-        public static Dictionary<(CacheVersion, CachePlatform), Dictionary<int, string>> Globals = new Dictionary<(CacheVersion, CachePlatform), Dictionary<int, string>>
-        {
-            [(CacheVersion.Halo3Retail, CachePlatform.Original)] = ScriptInfoHalo3Retail.Globals,
-            [(CacheVersion.Halo3Retail, CachePlatform.MCC)] = ScriptInfoHalo3RetailMCC.Globals,
-            [(CacheVersion.Halo3ODST, CachePlatform.Original)] = ScriptInfoHalo3ODST.Globals,
-            [(CacheVersion.Halo3ODST, CachePlatform.MCC)] = ScriptInfoHalo3ODSTMCC.Globals,
-            [(CacheVersion.HaloOnlineED, CachePlatform.Original)] = ScriptInfoED.Globals,
-            [(CacheVersion.HaloOnline106708, CachePlatform.Original)] = ScriptInfoMS23.Globals,
-            [(CacheVersion.HaloReach, CachePlatform.Original)] = ScriptInfoHaloReach.Globals,
-            [(CacheVersion.HaloReach, CachePlatform.MCC)] = ScriptInfoHaloReachMCC.Globals,
-        };
-
-        public static Dictionary<(CacheVersion, CachePlatform), Dictionary<int, ScriptInfo>> Scripts { get; } = new Dictionary<(CacheVersion, CachePlatform), Dictionary<int, ScriptInfo>>
-        {
-            [(CacheVersion.Halo3Retail, CachePlatform.Original)] = ScriptInfoHalo3Retail.Scripts,
-            [(CacheVersion.Halo3Retail, CachePlatform.MCC)] = ScriptInfoHalo3RetailMCC.Scripts,
-            [(CacheVersion.Halo3ODST, CachePlatform.Original)] = ScriptInfoHalo3ODST.Scripts,
-            [(CacheVersion.Halo3ODST, CachePlatform.MCC)] = ScriptInfoHalo3ODSTMCC.Scripts,
-            [(CacheVersion.HaloOnlineED, CachePlatform.Original)] = ScriptInfoED.Scripts,
-            [(CacheVersion.HaloOnline106708, CachePlatform.Original)] = ScriptInfoMS23.Scripts,
-            [(CacheVersion.HaloReach, CachePlatform.Original)] = ScriptInfoHaloReach.Scripts,
-            [(CacheVersion.HaloReach, CachePlatform.MCC)] = ScriptInfoHaloReachMCC.Scripts,
-        };
     }
 }

@@ -9,6 +9,7 @@ using TagTool.Cache.Monolithic;
 using TagTool.Cache.Resources;
 using TagTool.Common;
 using TagTool.IO;
+using TagTool.Scripting;
 using TagTool.Serialization;
 using TagTool.Tags;
 
@@ -23,6 +24,12 @@ namespace TagTool.Cache
         public TagSerializer Serializer;
         public TagDeserializer Deserializer;
         public DirectoryInfo Directory;
+
+        // TODO: cleanup. the reason I'm doing this is because GameCache doesn't have a constructor
+        // where the version and platform is available, and I don't want to have to call 
+        // ScriptDefinitionsFactory.Create in every GameCache implementation
+        private IScriptDefinitions _scriptDefinitions;
+        public IScriptDefinitions ScriptDefinitions => _scriptDefinitions ?? (_scriptDefinitions = ScriptDefinitionsFactory.Create(Version, Platform));
 
         public List<LocaleTable> LocaleTables;
         public abstract StringTable StringTable { get; }

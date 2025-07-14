@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace TagTool.Scripting
+namespace TagTool.Scripting.Definitions
 {
-    public class ScriptInfoED
+    public class HS_HaloOnlineED : IScriptDefinitions
     {
-        public static Dictionary<int, string> ValueTypes = new Dictionary<int, string>
+        public static readonly IReadOnlyDictionary<int, string> ValueTypes = new Dictionary<int, string>()
         {
             [0x00] = "unparsed",
             [0x01] = "special_form",
@@ -91,8 +92,7 @@ namespace TagTool.Scripting
             [0x52] = "looping_sound_budget_reference",
             [0x53] = "sound_budget_reference",
         };
-
-        public static Dictionary<int, string> Globals = new Dictionary<int, string>
+        public static readonly IReadOnlyDictionary<int, string> Globals = new Dictionary<int, string>()
         {
             [0x000] = "unknown0",
             [0x001] = "unknown1",
@@ -1410,8 +1410,7 @@ namespace TagTool.Scripting
             [0x521] = "unknown521",
             [0x522] = "unknown522",
         };
-
-        public static Dictionary<int, ScriptInfo> Scripts = new Dictionary<int, ScriptInfo>
+        public static readonly IReadOnlyDictionary<int, ScriptInfo> Scripts = new Dictionary<int, ScriptInfo>()
         {
             [0x000] = new ScriptInfo(HsType.HaloOnlineValue.Passthrough, "begin"),
             [0x001] = new ScriptInfo(HsType.HaloOnlineValue.Passthrough, "begin_random"),
@@ -8483,5 +8482,9 @@ namespace TagTool.Scripting
             },
             [0x6A8] = new ScriptInfo(HsType.HaloOnlineValue.Short, "dew_method_stub"),
         };
+        
+        IReadOnlyDictionary<int, ScriptInfo> IScriptDefinitions.Scripts => Scripts;
+        IReadOnlyDictionary<int, string> IScriptDefinitions.ValueTypes => ValueTypes;
+        IReadOnlyDictionary<int, string> IScriptDefinitions.Globals => Globals;
     }
 }
