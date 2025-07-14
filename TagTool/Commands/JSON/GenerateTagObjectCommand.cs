@@ -103,6 +103,11 @@ namespace TagTool.Commands.JSON
             else if (input.Equals("all", StringComparison.OrdinalIgnoreCase))
             {
                 tagTable = Cache.TagCache.NonNull().ToList();
+
+                if (Cache is GameCacheModPackage modCache)
+                {
+                    tagTable.RemoveAll(x => (x as CachedTagHaloOnline).IsEmpty());
+                }
             }
             else 
             {
