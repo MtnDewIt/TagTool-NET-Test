@@ -5,8 +5,10 @@ using System.Diagnostics;
 namespace TagTool.Commands.Common
 {
 	class StopwatchCommand : Command
-	{
-		public StopwatchCommand()
+    {
+        private static readonly Stopwatch _stopWatch = new();
+
+        public StopwatchCommand()
 			: base(true,
 
 				  "Stopwatch",
@@ -34,7 +36,7 @@ namespace TagTool.Commands.Common
 				{
 					case "print":
 						{
-							var milliseconds = Program._stopWatch.ElapsedMilliseconds;
+							var milliseconds = _stopWatch.ElapsedMilliseconds;
 							var output = milliseconds.FormatMilliseconds();
 							var startColor = Console.ForegroundColor;
 							Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -43,16 +45,16 @@ namespace TagTool.Commands.Common
 						}
 						break;
 					case "reset":
-						Program._stopWatch.Reset();
+						_stopWatch.Reset();
 						break;
 					case "restart":
-						Program._stopWatch.Restart();
+						_stopWatch.Restart();
 						break;
 					case "start":
-						Program._stopWatch.Start();
+						_stopWatch.Start();
 						break;
 					case "stop":
-						Program._stopWatch.Stop();
+						_stopWatch.Stop();
 						break;
 					default:
 						return new TagToolError(CommandError.ArgInvalid, $"\"{arg}\""); ;

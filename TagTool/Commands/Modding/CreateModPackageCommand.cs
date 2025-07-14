@@ -96,9 +96,7 @@ namespace TagTool.Commands.Modding
                 new GameCacheModPackage(Cache, modPackage), 
                 $"{modPackage.Metadata.Name}.pak"));
 
-            Program.ErrorCount = 0;
-            Program.WarningCount = 0;
-            Program._stopWatch.Start();
+            RunMetrics.Start();
 
             return true;
         }
