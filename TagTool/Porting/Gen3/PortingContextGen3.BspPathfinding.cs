@@ -151,20 +151,7 @@ namespace TagTool.Porting.Gen3
         private TagResourceReference ConvertStructureBspCacheFileTagResourcesMCC(ScenarioStructureBsp bsp)
         {
             var resourceDefinition = BlamCache.ResourceCache.GetStructureBspCacheFileTagResources(bsp.PathfindingResource);
-
-            if (resourceDefinition == null) 
-            {
-                Console.Error.WriteLine("Pathfinding geometry does not have a valid resource definition, continuing anyway.");
-
-                resourceDefinition = new StructureBspCacheFileTagResources()
-                {
-                    SurfacePlanes = new TagBlock<StructureSurface>(CacheAddressType.Data),
-                    Planes = new TagBlock<StructureSurfaceToTriangleMapping>(CacheAddressType.Data),
-                    EdgeToSeams = new TagBlock<EdgeToSeamMapping>(CacheAddressType.Data),
-                    PathfindingData = new TagBlock<ResourcePathfinding>(CacheAddressType.Definition)
-                };
-            }
-
+            resourceDefinition ??= new StructureBspCacheFileTagResources();
             bsp.PathfindingResource = CacheContext.ResourceCache.CreateStructureBspCacheFileResource(resourceDefinition);
             return bsp.PathfindingResource;
         }
