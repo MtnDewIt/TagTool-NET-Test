@@ -27,7 +27,6 @@ namespace TagTool.Porting
         private readonly HashSet<int> VisitedTags = [];
         private readonly Dictionary<int, CachedTag> PortedTags = [];
         private readonly Dictionary<uint, StringId> PortedStringIds = [];
-        private bool ShouldUpdateMapFiles = false;
         private bool ShouldGenerateCampaignFile = false;
 
         public PortingFlags Flags = PortingFlags.Default;
@@ -184,13 +183,6 @@ namespace TagTool.Porting
                 return fallback;
             }
 
-            if (blamDefinition is Scenario scnr && FlagIsSet(PortingFlags.UpdateMapFiles))
-            {
-                ShouldUpdateMapFiles = true;
-                if (scnr.MapType == ScenarioMapType.SinglePlayer)
-                    ShouldGenerateCampaignFile = true;
-            }
-
             //
             // Finalize and serialize the new ElDorado tag definition
             //
@@ -202,6 +194,15 @@ namespace TagTool.Porting
 
                 if (FlagIsSet(PortingFlags.Print))
                     Console.WriteLine($"['{edTag.Group.Tag}', 0x{edTag.Index:X4}] {edTag}");
+
+                if (blamDefinition is Scenario scnr && FlagIsSet(PortingFlags.UpdateMapFiles))
+                {
+                    string mapInfoDir = BlamCache.Directory == null ? "" : Path.Combine(BlamCache.Directory.FullName, "info");
+                    MapFileUpdater.UpdateMapFile(CacheContext, blamTag, scnr, mapInfoDir);
+
+                    if (scnr.MapType == ScenarioMapType.SinglePlayer)
+                        ShouldGenerateCampaignFile = true;
+                }
             }
 
             return edTag;
@@ -484,8 +485,6 @@ namespace TagTool.Porting
                     CacheContext.SaveStrings();
                 CacheContext.SaveTagNames();
 
-                if (ShouldUpdateMapFiles)
-                    MapFileUpdater.UpdateMapFiles(CacheContext, BlamCache);
                 if (ShouldGenerateCampaignFile)
                     CampaignFileGenerator.GenerateCampaignFile(CacheContext, BlamCache);
             }
@@ -497,7 +496,6 @@ namespace TagTool.Porting
                 VisitedTags.Clear();
                 PortedTags.Clear();
                 ShouldGenerateCampaignFile = false;
-                ShouldUpdateMapFiles = false;
             }
         }
 
