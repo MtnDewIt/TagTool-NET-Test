@@ -1,29 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Common
 {
+    /// <remarks>
+    /// Prefer using <see cref="Log.Warning(string)"/> directly when outside of commands
+    /// </remarks>
     public class TagToolWarning
     {
-        private static readonly object Mutex = new object();
-
         public TagToolWarning(string customMessage = null)
         {
-            lock (Mutex)
-            {
-                // if we're not at the start of the line, insert a new one to avoid ugliness with Console.Write()
-                if (Console.LargestWindowWidth != 0 && Console.CursorLeft > 0)
-                    Console.WriteLine();
-
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("WARNING: " + customMessage);
-                Console.ResetColor();
-
-                RunMetrics.WarningCount += 1;
-            }
+            Log.Warning(customMessage);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Common
 {
@@ -20,91 +20,79 @@ namespace TagTool.Commands.Common
         YesNoSyntax,
     }
 
+    /// <remarks>
+    /// Prefer using <see cref="Log.Error(string)"/> directly when outside of commands
+    /// </remarks>
     class TagToolError
     {
-        private static readonly object Mutex = new object();
-
         public TagToolError(CommandError cmdError, string customMessage = null)
         {
-            lock (Mutex)
+            Log.Error(FormatErrorMessage(cmdError, customMessage));
+        }
+
+        private static string FormatErrorMessage(CommandError cmdError, string customMessage)
+        {
+            bool showHelpMessage = true;
+            string output = "";
+
+            if (cmdError != CommandError.CustomMessage && cmdError != CommandError.CustomError)
             {
-                // if we're not at the start of the line, insert a new one to avoid ugliness with Console.Write()
-                if (Console.LargestWindowWidth != 0 && Console.CursorLeft > 0)
-                    Console.WriteLine();
-
-                Console.ForegroundColor = ConsoleColor.Red;
-
-                if (cmdError != CommandError.None)
+                switch (cmdError)
                 {
-                    bool showHelpMessage = true;
-
-                    if (cmdError != CommandError.CustomMessage && cmdError != CommandError.CustomError)
-                    {
-                        string outputLine = "ERROR: ";
-
-                        switch (cmdError)
-                        {
-                            case CommandError.ArgCount:
-                                outputLine += "Incorrect amount of arguments supplied";
-                                break;
-                            case CommandError.ArgInvalid:
-                                outputLine += "An invalid argument was specified";
-                                break;
-                            case CommandError.OperationFailed:
-                                outputLine += "An internal operation failed to evaluate";
-                                showHelpMessage = false;
-                                break;
-                            case CommandError.TagInvalid:
-                                outputLine += "The specified tag does not exist in the current tag cache";
-                                break;
-                            case CommandError.SyntaxInvalid:
-                                outputLine += "Invalid syntax used";
-                                break;
-                            case CommandError.DirectoryNotFound:
-                                outputLine += "The specified directory could not be found!";
-                                break;
-                            case CommandError.FileNotFound:
-                                outputLine += "The specified file could not be found!";
-                                break;
-                            case CommandError.FileIO:
-                                outputLine += "A file IO operation could not be completed";
-                                showHelpMessage = false;
-                                break;
-                            case CommandError.FileType:
-                                outputLine += "The specified file is of the incorrect type";
-                                break;
-                            case CommandError.CacheUnsupported:
-                                outputLine += "The specified blam cache is not supported";
-                                showHelpMessage = false;
-                                break;
-                            case CommandError.YesNoSyntax:
-                                outputLine += "A response option other than \"y\" or \"n\" was given";
-                                showHelpMessage = false;
-                                break;
-                        }
-
-                        Console.WriteLine(outputLine);
-                    }
-
-                    bool hasCustomMessage = customMessage != null && customMessage != "";
-
-                    if (cmdError == CommandError.CustomError && hasCustomMessage)
-                    {
-                        Console.WriteLine("ERROR: " + customMessage);
+                    case CommandError.ArgCount:
+                        output += "Incorrect amount of arguments supplied";
+                        break;
+                    case CommandError.ArgInvalid:
+                        output += "An invalid argument was specified";
+                        break;
+                    case CommandError.OperationFailed:
+                        output += "An internal operation failed to evaluate";
                         showHelpMessage = false;
-                    }
-
-                    else if (hasCustomMessage)
-                        Console.WriteLine("> " + customMessage);
-
-                    if (showHelpMessage)
-                        Console.WriteLine($"Enter \"Help {CommandRunner.CurrentCommandName}\" for command syntax.");
+                        break;
+                    case CommandError.TagInvalid:
+                        output += "The specified tag does not exist in the current tag cache";
+                        break;
+                    case CommandError.SyntaxInvalid:
+                        output += "Invalid syntax used";
+                        break;
+                    case CommandError.DirectoryNotFound:
+                        output += "The specified directory could not be found!";
+                        break;
+                    case CommandError.FileNotFound:
+                        output += "The specified file could not be found!";
+                        break;
+                    case CommandError.FileIO:
+                        output += "A file IO operation could not be completed";
+                        showHelpMessage = false;
+                        break;
+                    case CommandError.FileType:
+                        output += "The specified file is of the incorrect type";
+                        break;
+                    case CommandError.CacheUnsupported:
+                        output += "The specified blam cache is not supported";
+                        showHelpMessage = false;
+                        break;
+                    case CommandError.YesNoSyntax:
+                        output += "A response option other than \"y\" or \"n\" was given";
+                        showHelpMessage = false;
+                        break;
                 }
-
-                Console.ResetColor();
-
-                RunMetrics.ErrorCount += 1;
             }
+
+            bool hasCustomMessage = !string.IsNullOrEmpty(customMessage);
+
+            if (cmdError == CommandError.CustomError && hasCustomMessage)
+            {
+                output = customMessage;
+                showHelpMessage = false;
+            }
+            else if (hasCustomMessage)
+                output += $"\n> {customMessage}";
+
+            if (showHelpMessage)
+                output += $"\nEnter \"Help {CommandRunner.CurrentCommandName}\" for command syntax.";
+
+            return output;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Immutable;
-using TagTool.Commands.Common;
 
 namespace TagTool.Common.Logging
 {
@@ -8,7 +7,7 @@ namespace TagTool.Common.Logging
     {
         private static ImmutableList<ILogHandler> _handlers = [];
 
-        public static LogLevel Level = LogLevel.Info;
+        public static LogLevel Level { get; set; } = LogLevel.Info;
 
         public static void Debug(string message)
         {
@@ -47,12 +46,10 @@ namespace TagTool.Common.Logging
 
         private static void Handle(LogMessage message)
         {
-            if (message.Level < Level)
-                return;
-
             foreach (ILogHandler handler in _handlers)
             {
-                handler.Log(message);
+                if (handler.IgnoresFilter || message.Level >= Level)
+                    handler.Log(message);
             }
         }
     }

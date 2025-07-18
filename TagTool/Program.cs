@@ -24,6 +24,7 @@ namespace TagTool.Commands
 
             // Setup logging and output
             Log.AddHandler(new ConsoleLogHandler());
+            Log.AddHandler(new RunMetricsLogHandler());
             Log.Level = LogLevel.Info; // TODO: set via command line
 
             Console.SetOut(new AnsiWriter(Console.Out));

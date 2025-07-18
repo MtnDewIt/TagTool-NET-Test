@@ -22,6 +22,8 @@ namespace TagTool.Common.Logging
 
     public interface ILogHandler
     {
+        bool IgnoresFilter => false;
+
         void Log(in LogMessage message);
     }
 }
