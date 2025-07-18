@@ -15,64 +15,68 @@ namespace TagTool.BlamFile
     public class MapFileUpdater
     {
         /// <summary>
-        /// Updates or creates map files for each of the scenario tags in the cache
+        /// Creates or updates the map files for each scenario tag in the cache
         /// </summary>
+        /// <param name="cache">Cache</param>
+        /// <param name="mapInfoDir">Path to the map info directory</param>
+        /// <param name="forceUpdate">Force recreation of the .map file</param>
         public static void UpdateMapFiles(GameCache cache, string mapInfoDir = "", bool forceUpdate = false)
         {
-            if (!Directory.Exists(mapInfoDir))
-                return;
+            var helper = new UpdateMapFilesHelper(cache, mapInfoDir, forceUpdate);
+            using Stream cacheStream = cache.OpenCacheRead();
+            foreach (CachedTagHaloOnline scnrTag in cache.TagCache.FindAllInGroup<Scenario>())
+            {
+                // ignore base cache references for mod paks
+                if (scnrTag.IsEmpty())
+                    continue;
 
-            using var cacheStream = cache.OpenCacheRead();
-            new UpdateMapFilesHelper(cache, cacheStream).UpdateMapFiles(mapInfoDir, forceUpdate);
+                var scnr = cache.Deserialize<Scenario>(cacheStream, scnrTag);
+                helper.UpdateMapFile(scnrTag, scnr);
+            }
         }
 
         /// <summary>
-        /// Updates or creates map files for each of the scenario tags in the cache
+        /// Creates or updates the map file for the given scenario
         /// </summary>
-        public static void UpdateMapFiles(GameCache cache, GameCache blamCache, bool forceUpdate = false)
+        /// <param name="cache">Cache</param>
+        /// <param name="scnrTag">Scenario Tag</param>
+        /// <param name="scnr">Scenario Definition</param>
+        /// <param name="mapInfoDir">Path to the map info directory</param>
+        /// <param name="forceUpdate">Force recreation of the .map file</param>
+        public static void UpdateMapFile(GameCache cache, CachedTag scnrTag, Scenario scnr, string mapInfoDir = "", bool forceUpdate = false)
         {
-            string mapInfoDir = blamCache.Directory != null ? Path.Combine(blamCache.Directory.FullName, "info") : "";
-            UpdateMapFiles(cache, mapInfoDir, forceUpdate);
+            var helper = new UpdateMapFilesHelper(cache, mapInfoDir, forceUpdate);
+            helper.UpdateMapFile(scnrTag, scnr);
         }
 
         class UpdateMapFilesHelper
         {
-            public GameCache _cache;
-            private Stream _cacheStream;
+            private readonly GameCache _cache;
+            private readonly string _mapInfoDir;
+            private readonly bool _forceUpdate;
 
-            public UpdateMapFilesHelper(GameCache cache, Stream cacheStream)
+            public UpdateMapFilesHelper(GameCache cache, string mapInfoDir, bool forceUpdate)
             {
                 _cache = cache;
-                _cacheStream = cacheStream;
+                _mapInfoDir = mapInfoDir;
+                _forceUpdate = forceUpdate;
             }
 
-            public void UpdateMapFiles(string mapInfoPath, bool forceUpdate)
-            {
-                foreach (CachedTagHaloOnline scnrTag in _cache.TagCache.FindAllInGroup<Scenario>())
-                {
-                    if (scnrTag.IsEmpty())
-                        continue;
-
-                    UpdateMapFile(scnrTag, mapInfoPath, forceUpdate);
-                }
-            }
-
-            public void UpdateMapFile(CachedTagHaloOnline scnrTag, string mapInfoDir, bool forceUpdate)
+            public void UpdateMapFile(CachedTag scnrTag, Scenario scnr)
             {
                 string mapName = scnrTag.Name.Split('\\').Last();
-                string mapInfoFilePath = Path.Combine(mapInfoDir, $"{mapName}.mapinfo");
+                string mapInfoFilePath = Path.Combine(_mapInfoDir, $"{mapName}.mapinfo");
 
                 bool isExcessionData = File.Exists(Path.Combine(mapInfoDir, "ModInfo.json"));
                 if (isExcessionData)
                     mapInfoFilePath = mapInfoDir;
 
-                Scenario scnr = _cache.Deserialize<Scenario>(_cacheStream, scnrTag);
                 Blf mapInfo = LoadMapInfo(scnrTag, mapInfoFilePath, isExcessionData);
                 MapFile map = LoadOrBuildMapFile(scnrTag, forceUpdate, scnr, mapInfo);
 
                 var header = (CacheFileHeaderGenHaloOnline)map.Header;
                 header.ScenarioTagIndex = scnrTag.Index;
-                if (mapInfo != null && (forceUpdate || map.MapFileBlf == null))
+                if (mapInfo != null && (_forceUpdate || map.MapFileBlf == null))
                     map.MapFileBlf = mapInfo;
 
                 SaveMapFile(map, mapName, scnr.MapId);
@@ -83,7 +87,7 @@ namespace TagTool.BlamFile
                     Console.WriteLine($"Scenario 0x{scnrTag.Index:X4} \"{mapName}\" using map info");
             }
 
-            private MapFile LoadOrBuildMapFile(CachedTagHaloOnline scnrTag, bool forceUpdate, Scenario scnr, Blf mapInfo)
+            private MapFile LoadOrBuildMapFile(CachedTag scnrTag, bool forceUpdate, Scenario scnr, Blf mapInfo)
             {
                 try
                 {
@@ -124,7 +128,7 @@ namespace TagTool.BlamFile
                 }
             }
 
-            private MapFile BuildMapFile(CachedTagHaloOnline scnrTag, Scenario scnr, Blf mapInfo)
+            private MapFile BuildMapFile(CachedTag scnrTag, Scenario scnr, Blf mapInfo)
             {
                 var mapBuilder = new MapFileBuilder(_cache.Version);
                 if (mapInfo != null)
