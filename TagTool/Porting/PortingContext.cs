@@ -10,6 +10,7 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
 using TagTool.Commands.Porting;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Porting.Gen3;
 using TagTool.Porting.HaloOnline;
 using TagTool.Tags;
@@ -99,12 +100,12 @@ namespace TagTool.Porting
                 result = ConvertTagInternal(cacheStream, blamCacheStream, blamTag, blamDefinition);
 
                 if (result == null)
-                    new TagToolWarning($"null tag allocated for reference \"{blamTag}\"");
+                    Log.Warning($"null tag allocated for reference \"{blamTag}\"");
             }
             else if (blamTag.Name != null && blamTag.IsInGroup("bitm"))
             {
                 if (CacheContext.TagCache.TryGetTag($"{blamTag}", out result))
-                    new TagToolWarning($"using bitm tag reference \"{blamTag}\" from source cache");
+                    Log.Warning($"using bitm tag reference \"{blamTag}\" from source cache");
             }
 
             PortedTags[blamTag.Index] = result;
@@ -118,7 +119,7 @@ namespace TagTool.Porting
 
             if (!CacheContext.TagCache.TagDefinitions.TagDefinitionExists(blamTag.Group))
             {
-                new TagToolWarning($"Tag group {blamTag.Group} does not exist in destination cache! Returning null!");
+                Log.Warning($"Tag group {blamTag.Group} does not exist in destination cache! Returning null!");
                 return null;
             }
 
@@ -178,7 +179,7 @@ namespace TagTool.Porting
                     CacheContext.TagCacheGenHO.Tags.RemoveAt(edTag.Index);
 
                 CachedTag fallback = GetFallbackTag(blamTag);
-                new TagToolError(CommandError.OperationFailed, $"Failed to convert tag '{blamTag}', using {fallback}");
+                Log.Error($"Failed to convert tag '{blamTag}', using {fallback}");
 
                 return fallback;
             }
@@ -390,7 +391,7 @@ namespace TagTool.Porting
                     return data;
 
                 default:
-                    new TagToolWarning($"Unhandled type in `ConvertData`: {data.GetType().Name} (probably harmless).");
+                    Log.Warning($"Unhandled type in `ConvertData`: {data.GetType().Name} (probably harmless).");
                     break;
             }
 

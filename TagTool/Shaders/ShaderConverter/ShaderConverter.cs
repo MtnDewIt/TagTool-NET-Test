@@ -14,6 +14,7 @@ using static TagTool.Shaders.ShaderMatching.ShaderMatcherNew;
 using static TagTool.Tags.Definitions.RenderMethod;
 using static TagTool.Tags.Definitions.RenderMethodOption;
 using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock;
+using TagTool.Common.Logging;
 
 namespace TagTool.Shaders.ShaderConverter
 {
@@ -172,7 +173,7 @@ namespace TagTool.Shaders.ShaderConverter
                 int index = ParameterMappings.FindIndex(x => x.Type == ShaderParameter.RType.Sampler && x.Name == name);
 
                 if (index == -1)
-                    new TagToolWarning($"Shader converter: could not match texture \"{name}\"");
+                    Log.Warning($"Shader converter: could not match texture \"{name}\"");
             }
         }
 
@@ -290,7 +291,7 @@ namespace TagTool.Shaders.ShaderConverter
                         Cache.StringTable.GetString(x.Name) == name);
 
                     if (parameterIndex == -1) // this will crash for the meantime
-                        new TagToolWarning($"Shader converter: texture parameter \"{name}\" does not exist in rmop");
+                        Log.Warning($"Shader converter: texture parameter \"{name}\" does not exist in rmop");
 
                     textureConstants.Add(new TextureConstant
                     {
@@ -402,7 +403,7 @@ namespace TagTool.Shaders.ShaderConverter
 
                         if (!added)
                         {
-                            new TagToolWarning($"Shader converter: real parameter \"{name}\" does not exist in rmop");
+                            Log.Warning($"Shader converter: real parameter \"{name}\" does not exist in rmop");
                             realConstants.Add(new RealConstant
                             {
                                 Arg0 = 0.0f,
@@ -464,7 +465,7 @@ namespace TagTool.Shaders.ShaderConverter
                     int parameterIndex = Parameters.FindIndex(x => Cache.StringTable.GetString(x.Name) == name);
 
                     if (parameterIndex == -1) // this will crash for the meantime
-                        new TagToolWarning($"Shader converter: real parameter \"{name}\" does not exist in rmop");
+                        Log.Warning($"Shader converter: real parameter \"{name}\" does not exist in rmop");
 
                     intConstants.Add(Parameters[parameterIndex].DefaultIntBoolArgument);
                 }
@@ -504,7 +505,7 @@ namespace TagTool.Shaders.ShaderConverter
                     int parameterIndex = Parameters.FindIndex(x => Cache.StringTable.GetString(x.Name) == name);
 
                     if (parameterIndex == -1) // this will crash for the meantime
-                        new TagToolWarning($"Shader converter: bool parameter \"{name}\" does not exist in rmop");
+                        Log.Warning($"Shader converter: bool parameter \"{name}\" does not exist in rmop");
 
                     boolConstants |= (Parameters[parameterIndex].DefaultIntBoolArgument << i);
                 }

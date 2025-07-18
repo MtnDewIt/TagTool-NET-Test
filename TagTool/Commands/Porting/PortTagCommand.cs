@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Commands.Files;
+using TagTool.Common.Logging;
 using TagTool.Porting;
 
 namespace TagTool.Commands.Porting
@@ -54,7 +55,7 @@ namespace TagTool.Commands.Porting
                 }
                 catch (Exception ex)
                 {
-                    new TagToolError(CommandError.CustomError, $"{ex.GetType().Name} while porting '{blamTag}':");
+                    Log.Error($"{ex.GetType().Name} while porting '{blamTag}':");
                     throw;
                 }
             }
@@ -153,7 +154,7 @@ namespace TagTool.Commands.Porting
                 result = BlamCache.TagCache.TagTable.ToList().FindAll(item => item != null && regex.IsMatch(item.ToString() + "." + item.Group.Tag));
                 if (result.Count == 0)
                 {
-                    new TagToolError(CommandError.CustomError, $"Invalid regex: {tagSpecifier}");
+                    Log.Error($"Invalid regex: {tagSpecifier}");
                     return new List<CachedTag>();
                 }
                 return result;
@@ -161,7 +162,7 @@ namespace TagTool.Commands.Porting
 
             if (tagSpecifier.Length == 0 || (!char.IsLetter(tagSpecifier[0]) && !tagSpecifier.Contains('*')) || !tagSpecifier.Contains('.'))
             {
-                new TagToolError(CommandError.CustomError, $"Invalid tag name: {tagSpecifier}");
+                Log.Error($"Invalid tag name: {tagSpecifier}");
                 return new List<CachedTag>();
             }
 
@@ -169,7 +170,7 @@ namespace TagTool.Commands.Porting
 
             if (!CacheContext.TagCache.TryParseGroupTag(tagIdentifiers[1], out var groupTag))
             {
-                new TagToolError(CommandError.CustomError, $"Invalid tag name: {tagSpecifier}");
+                Log.Error($"Invalid tag name: {tagSpecifier}");
                 return new List<CachedTag>();
             }
 
@@ -183,7 +184,7 @@ namespace TagTool.Commands.Porting
 
             if (result.Count == 0)
             {
-                new TagToolError(CommandError.CustomError, $"Invalid tag name: {tagSpecifier}");
+                Log.Error($"Invalid tag name: {tagSpecifier}");
                 return new List<CachedTag>();
             }
 

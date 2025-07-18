@@ -13,6 +13,7 @@ using TagTool.Commands.Common;
 using System.Text.RegularExpressions;
 using TagTool.Commands;
 using System.Linq;
+using TagTool.Common.Logging;
 
 namespace TagTool.Cache
 {
@@ -317,7 +318,7 @@ namespace TagTool.Cache
                 serializer.Serialize(dataContext, Header);
 
                 if (packageStream.Length > uint.MaxValue)
-                    new TagToolWarning($"Mod package size exceeded 0x{uint.MaxValue.ToString("X8")} bytes, it will fail to load.");
+                    Log.Warning($"Mod package size exceeded 0x{uint.MaxValue.ToString("X8")} bytes, it will fail to load.");
 
             }
         }
@@ -688,7 +689,7 @@ namespace TagTool.Cache
                 }
                 catch
                 {
-                    new TagToolError(CommandError.CustomError, $"Failed to read map file for map id {tableEntry.MapId}");
+                    Log.Error($"Failed to read map file for map id {tableEntry.MapId}");
                 }
             }
         }

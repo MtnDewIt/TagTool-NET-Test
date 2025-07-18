@@ -10,6 +10,7 @@ using TagTool.Tags.Definitions;
 using static TagTool.Commands.Shaders.GenerateShaderCommand;
 using TagTool.Shaders.ShaderGenerator;
 using TagTool.Cache.HaloOnline;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Shaders
 {
@@ -98,7 +99,7 @@ namespace TagTool.Commands.Shaders
                     if (!Cache.TagCache.TryGetTag($"rasterizer\\shaders\\{explicitShader}.pixl", out info.PixelTag) ||
                         !Cache.TagCache.TryGetTag($"rasterizer\\shaders\\{explicitShader}.vtsh", out info.VertexTag))
                     {
-                        new TagToolError(CommandError.CustomMessage, $"Explicit shader {explicitShader} could not be found (skipping)");
+                        Log.Error($"Explicit shader {explicitShader} could not be found (skipping)");
                     }
                     else
                     {
@@ -256,7 +257,7 @@ namespace TagTool.Commands.Shaders
                 var pixl = Cache.Deserialize<PixelShader>(stream, rmt2.PixelShader);
 
                 if (rmt2.PixelShader.Name == null || rmt2.PixelShader.Name == "")
-                    new TagToolWarning($"pixel_shader {rmt2.PixelShader.Index:X16} has no name");
+                    Log.Warning($"pixel_shader {rmt2.PixelShader.Index:X16} has no name");
 
                 for (int i = 0; i < pixl.EntryPointShaders.Count; i++)
                 {
@@ -264,13 +265,13 @@ namespace TagTool.Commands.Shaders
                         (glps.EntryPoints[i].DefaultCompiledShaderIndex == -1 && glps.EntryPoints[i].CategoryDependency.Count == 0);
 
                     if (pixl.EntryPointShaders[i].Count > 0 && !entryNeeded)
-                        new TagToolWarning($"{rmt2.PixelShader.Name} has unneeded entry point shader {(TagTool.Shaders.EntryPoint)i}");
+                        Log.Warning($"{rmt2.PixelShader.Name} has unneeded entry point shader {(TagTool.Shaders.EntryPoint)i}");
 
                     if (pixl.EntryPointShaders[i].Count == 0 && entryNeeded)
-                        new TagToolWarning($"{rmt2.PixelShader.Name} missing entry point shader {(TagTool.Shaders.EntryPoint)i}");
+                        Log.Warning($"{rmt2.PixelShader.Name} missing entry point shader {(TagTool.Shaders.EntryPoint)i}");
 
                     if (pixl.EntryPointShaders[i].Count > 0 && pixl.EntryPointShaders[i].Offset >= pixl.Shaders.Count)
-                        new TagToolWarning($"{rmt2.PixelShader.Name} has invalid compiled shader indices {i}");
+                        Log.Warning($"{rmt2.PixelShader.Name} has invalid compiled shader indices {i}");
                 }
             }
 

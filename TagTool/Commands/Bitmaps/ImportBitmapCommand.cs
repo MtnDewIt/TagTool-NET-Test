@@ -10,6 +10,7 @@ using TagTool.Common;
 using TagTool.Tags;
 using TagTool.Bitmaps.DDS;
 using TagTool.IO;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Bitmaps
 {
@@ -56,7 +57,7 @@ namespace TagTool.Commands.Bitmaps
                 Bitmap.Images.Add(new Bitmap.Image { Signature = new Tag("bitm") });
                 Bitmap.HardwareTextures.Add(new TagResourceReference());
                 imageIndex = Bitmap.Images.Count - 1;
-                new TagToolWarning($"Index exceeds image count; new image created at index {imageIndex}");
+                Log.Warning($"Index exceeds image count; new image created at index {imageIndex}");
             }
             else if (imageIndex < 0)
                 return new TagToolError(CommandError.ArgInvalid, "Invalid image index");

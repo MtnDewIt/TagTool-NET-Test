@@ -6,6 +6,7 @@ using TagTool.Bitmaps;
 using TagTool.Bitmaps.Utils;
 using TagTool.Cache;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Resources;
 
@@ -43,7 +44,7 @@ namespace TagTool.Commands.Bitmaps
             var resourceDefinition = Cache.ResourceCache.GetBitmapTextureInteropResource(Bitmap.HardwareTextures[imageIndex]);
             if (resourceDefinition == null)
             {
-                new TagToolWarning("No bitmap resource");
+                Log.Warning("No bitmap resource");
                 return true;
             }
 

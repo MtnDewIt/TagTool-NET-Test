@@ -13,6 +13,7 @@ using TagTool.Common;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
 using TagTool.Commands.Tags;
+using TagTool.Common.Logging;
 
 namespace TagTool.Geometry
 {
@@ -132,7 +133,7 @@ namespace TagTool.Geometry
                     success = ExportCollada(modelFile);
                     break;
                 default:
-                    new TagToolError(CommandError.ArgInvalid, $"Unsupported export format \"{exportFileFormat}\"");
+                    Log.Error($"Unsupported export format \"{exportFileFormat}\"");
                     return success;
             }
 

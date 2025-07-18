@@ -16,6 +16,7 @@ using static TagTool.Tags.Definitions.PhysicsModel;
 using TagTool.Commands.ModelAnimationGraphs;
 using TagTool.Extensions;
 using System.Collections.Frozen;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Tags
 {
@@ -259,7 +260,7 @@ namespace TagTool.Commands.Tags
                                 });
                                 break;
                             default:
-                                new TagToolError(CommandError.OperationFailed, $"Render model vertex buffer type '{mesh.Type}' unsupported!");
+                                Log.Error($"Render model vertex buffer type '{mesh.Type}' unsupported!");
                                 break;
                         }
 
@@ -289,7 +290,7 @@ namespace TagTool.Commands.Tags
                                 modeResource.IndexBuffers[meshindex].Definition.Format = IndexBufferFormat.TriangleStrip;
                                 break;
                             default:
-                                new TagToolError(CommandError.OperationFailed, $"Render model index buffer type '{mesh.IndexBufferType}' unsupported!");
+                                Log.Error($"Render model index buffer type '{mesh.IndexBufferType}' unsupported!");
                                 break;
                         }
                         
@@ -329,7 +330,7 @@ namespace TagTool.Commands.Tags
                     break;
                 default:
                     if(layout.ResourceDefinitions.Length > 0)
-                        new TagToolWarning($"'{layout.ResourceDefinitions[0].Name}' import not yet supported!");
+                        Log.Warning($"'{layout.ResourceDefinitions[0].Name}' import not yet supported!");
                     break;
             }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TagTool.Cache;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 using TagTool.Tags.Definitions;
 using PhysicsModelGen4 = TagTool.Tags.Definitions.Gen4.PhysicsModel;
 
@@ -81,7 +82,7 @@ namespace TagTool.Commands.Porting.Gen4
                 };
                 //fix up phantom type flags
                 if (!Enum.TryParse(gen4phantomtype.Flags.ToString(), out newPhantomType.Flags.HaloOnline))
-                    new TagToolWarning($"Some phantom type flags failed to convert!");
+                    Log.Warning($"Some phantom type flags failed to convert!");
 
                 physicsModel.PhantomTypes.Add(newPhantomType);
             }
@@ -468,7 +469,7 @@ namespace TagTool.Commands.Porting.Gen4
             }
 
             if (gen4PhysicsModel.Mopps.Count > 0)
-                new TagToolWarning("Gen 4 phmo mopp porting not currently implemented!");
+                Log.Warning("Gen 4 phmo mopp porting not currently implemented!");
 
             return physicsModel;
         }

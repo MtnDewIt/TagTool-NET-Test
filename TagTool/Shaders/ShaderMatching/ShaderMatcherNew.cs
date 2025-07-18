@@ -11,6 +11,7 @@ using TagTool.Commands.Porting;
 using TagTool.Porting;
 using TagTool.Porting.Gen3;
 using static TagTool.Porting.Gen3.PortingContextGen3;
+using TagTool.Common.Logging;
 
 namespace TagTool.Shaders.ShaderMatching
 {
@@ -156,7 +157,7 @@ namespace TagTool.Shaders.ShaderMatching
             Rmt2Descriptor sourceRmt2Desc;
             if (!Rmt2Descriptor.TryParse(sourceRmt2Tag.Name, out sourceRmt2Desc))
             {
-                new TagToolError(CommandError.OperationFailed, $"Invalid rmt2 name '{sourceRmt2Tag.Name}'");
+                Log.Error($"Invalid rmt2 name '{sourceRmt2Tag.Name}'");
                 return null;
             }
 
@@ -339,7 +340,7 @@ namespace TagTool.Shaders.ShaderMatching
 
             if (!RenderMethodDefinitions.ContainsKey(rmt2Desc.Type))
             {
-                new TagToolError(CommandError.CustomMessage, $"No rmdf tag present for {rmt2Desc.Type}");
+                Log.Error($"No rmdf tag present for {rmt2Desc.Type}");
                 return false;
             }
             RenderMethodDefinition rmdf = RenderMethodDefinitions[rmt2Desc.Type];
@@ -575,7 +576,7 @@ namespace TagTool.Shaders.ShaderMatching
 
                         if (!matchFound)
                         {
-                            new TagToolWarning($"Unrecognized {srcRmt2Descriptor.Type} method option \"{methodName}\\{optionName}\"");
+                            Log.Warning($"Unrecognized {srcRmt2Descriptor.Type} method option \"{methodName}\\{optionName}\"");
                         }
                         break;
                     }

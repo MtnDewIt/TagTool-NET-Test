@@ -6,6 +6,7 @@ using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.Shaders.ShaderMatching;
 using TagTool.Tags.Definitions;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.RenderMethods
 {
@@ -152,7 +153,7 @@ namespace TagTool.Commands.RenderMethods
                 if (names.Count > 0 && args[1].ToLower() != "none")
                 {
                     Console.WriteLine();
-                    new TagToolWarning($"Flag(s) not found: {String.Join(", ", names)}");
+                    Log.Warning($"Flag(s) not found: {String.Join(", ", names)}");
                 }
                 
                 properties.BooleanConstants = (uint)accumulator;

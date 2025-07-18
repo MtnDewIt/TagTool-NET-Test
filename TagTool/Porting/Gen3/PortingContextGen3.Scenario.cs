@@ -14,6 +14,7 @@ using TagTool.Tags.Resources;
 using TagTool.Geometry;
 using TagTool.BlamFile;
 using TagTool.Commands.ScenarioStructureBSPs;
+using TagTool.Common.Logging;
 
 namespace TagTool.Porting.Gen3
 {
@@ -343,7 +344,7 @@ namespace TagTool.Porting.Gen3
                             {
                                 if (entry1.Item1 >= pathfindingBsps.Count || entry1.Item2 >= pathfindingBsps[entry1.Item1].PathfindingData[0].Sectors.Count)
                                 {
-                                    new TagToolWarning("Invalid zone area sector data!");
+                                    Log.Warning("Invalid zone area sector data!");
                                     continue;
                                 }
 
@@ -520,7 +521,7 @@ namespace TagTool.Porting.Gen3
                 {
                     if (scnr.StructureDesigns.Count > 1)
                     {
-                        new TagToolWarning("Multiple structure designs currently not supported.");
+                        Log.Warning("Multiple structure designs currently not supported.");
                     }
                     else
                     {
@@ -1470,7 +1471,7 @@ namespace TagTool.Porting.Gen3
             // Some script expressions use opcode as a script reference. Only continue if it is a reference
             if (!BlamCache.ScriptDefinitions.ValueTypes.ContainsKey(expr.Opcode))
             {
-                new TagToolError(CommandError.CustomError, $"not in {BlamCache.Version} opcode table 0x{expr.Opcode:X3}.");
+                Log.Error($"not in {BlamCache.Version} opcode table 0x{expr.Opcode:X3}.");
                 return;
             }
 
@@ -1522,7 +1523,7 @@ namespace TagTool.Porting.Gen3
 
             if (!BlamCache.ScriptDefinitions.Scripts.ContainsKey(expr.Opcode))
             {
-                new TagToolError(CommandError.CustomError, $"not in {BlamCache.Version} opcode table: 0x{expr.Opcode:X3}. (ConvertScriptExpressionOpcode)");
+                Log.Error($"not in {BlamCache.Version} opcode table: 0x{expr.Opcode:X3}. (ConvertScriptExpressionOpcode)");
                 return;
             }
 
@@ -1563,7 +1564,7 @@ namespace TagTool.Porting.Gen3
             // If no match was found, the opcode is currently unsupported.
             //
 
-            new TagToolWarning($"No equivalent script op was found for '{BlamCache.ScriptDefinitions.Scripts[expr.Opcode].Name}' (0x{expr.Opcode:X3}, expr {scnr.ScriptExpressions.IndexOf(expr)})");
+            Log.Warning($"No equivalent script op was found for '{BlamCache.ScriptDefinitions.Scripts[expr.Opcode].Name}' (0x{expr.Opcode:X3}, expr {scnr.ScriptExpressions.IndexOf(expr)})");
 
             ConvertScriptExpressionUnsupportedOpcode(expr);
         }
@@ -2015,7 +2016,7 @@ namespace TagTool.Porting.Gen3
 
                         if (startingProfileIndex == -1)
                         {
-                            new TagToolWarning($"StartingProfile reference could not be converted {profileName}");
+                            Log.Warning($"StartingProfile reference could not be converted {profileName}");
                             return;
                         }
 
@@ -2100,7 +2101,7 @@ namespace TagTool.Porting.Gen3
 
                         if(unitInstance.Index == -1)
                         {
-                            new TagToolWarning($"Unit tag reference invalid in script in UpdateAiTestSeat! squads index {squadIndex} fireteam index {fireTeamIndex}");
+                            Log.Warning($"Unit tag reference invalid in script in UpdateAiTestSeat! squads index {squadIndex} fireteam index {fireTeamIndex}");
                             return;
                         }
 
@@ -2113,7 +2114,7 @@ namespace TagTool.Porting.Gen3
 
                         if (unitDefinition.Model.Index == -1)
                         {
-                            new TagToolWarning($"Unit model tag reference invalid in UpdateAiTestSeat! Unit {unitInstance.Name}");
+                            Log.Warning($"Unit model tag reference invalid in UpdateAiTestSeat! Unit {unitInstance.Name}");
                             return;
                         }
 

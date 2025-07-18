@@ -118,13 +118,13 @@ namespace TagTool.Porting.Gen3
                 //if (Options.Current.Gen1Collision)
                 //{
                 //    if (!largebuilder.generate_bsp(ref largebsp, false) || !resizer.collision_bsp_check_counts(largebsp))
-                //        new TagToolError(CommandError.CustomError, "Failed to generate collision bsp!");
+                //        Log.Error("Failed to generate collision bsp!");
                 //}
                 //else
                 //{
                 //    gen3builder.Bsp = largebsp;
                 //    if (!gen3builder.build_bsp() || !resizer.collision_bsp_check_counts(largebsp))
-                //        new TagToolError(CommandError.CustomError, "Failed to generate collision bsp!");
+                //        Log.Error("Failed to generate collision bsp!");
                 //}
                 var superNodeConverter = new SupernodeToNodeConverter();
                 largebsp = superNodeConverter.Convert(largebsp);
@@ -154,13 +154,13 @@ namespace TagTool.Porting.Gen3
                 //if (Options.Current.Gen1Collision)
                 //{
                 //    if (!largebuilder.generate_bsp(ref largebsp, false))
-                //        new TagToolError(CommandError.CustomError, "Failed to generate collision bsp!");
+                //        Log.Error("Failed to generate collision bsp!");
                 //}
                 //else
                 //{
                 //    gen3builder.Bsp = largebsp;
                 //    if (!gen3builder.build_bsp())
-                //        new TagToolError(CommandError.CustomError, "Failed to generate collision bsp!");
+                //        Log.Error("Failed to generate collision bsp!");
                 //}
             }
 

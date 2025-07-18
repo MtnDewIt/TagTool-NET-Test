@@ -6,6 +6,7 @@ using System.Linq;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
 
@@ -391,7 +392,7 @@ namespace TagTool.Scripting
                         Opcode = expr.Opcode
                     };
                 default:
-                    new TagToolError(CommandError.CustomError, $"<UNIMPLEMENTED EXPR: {expr.Flags.ToString()} {GetHsTypeAsString(Cache.Version, expr.ValueType)}>");
+                    Log.Error($"<UNIMPLEMENTED EXPR: {expr.Flags.ToString()} {GetHsTypeAsString(Cache.Version, expr.ValueType)}>");
                     return new GenericExpression();
             }
         }
@@ -411,7 +412,7 @@ namespace TagTool.Scripting
                     return type.HaloOnline.ToString();
 
                 default:
-                    new TagToolWarning($"No HsType found for cache \"{version}\". Defaulting to HaloOnline");
+                    Log.Warning($"No HsType found for cache \"{version}\". Defaulting to HaloOnline");
                     return type.HaloOnline.ToString();
             }
         }

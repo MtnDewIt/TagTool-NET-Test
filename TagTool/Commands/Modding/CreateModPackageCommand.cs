@@ -6,6 +6,7 @@ using TagTool.Cache.HaloOnline;
 using TagTool.Cache.ModPackages;
 using TagTool.Commands.Common;
 using TagTool.Commands.Tags;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Modding
 {
@@ -130,7 +131,7 @@ namespace TagTool.Commands.Modding
             catch (ArgumentException e)
             {
                 Console.WriteLine(e.Message);
-                new TagToolError(CommandError.CustomError, "Failed to parse version number, using default (1.0)");
+                Log.Error("Failed to parse version number, using default (1.0)");
                 metadata.VersionMajor = 1;
                 metadata.VersionMinor = 0;
             }
@@ -161,7 +162,7 @@ namespace TagTool.Commands.Modding
                     }
                 }
                 else
-                    new TagToolWarning($"Could not parse flag \"{args[x]}\"");
+                    Log.Warning($"Could not parse flag \"{args[x]}\"");
             }
 
             return modifierFlags;

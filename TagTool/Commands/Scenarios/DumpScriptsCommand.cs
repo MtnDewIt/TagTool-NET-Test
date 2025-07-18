@@ -8,6 +8,7 @@ using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Scripting;
 using TagTool.Tags.Definitions;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Scenarios
 {
@@ -163,7 +164,7 @@ namespace TagTool.Commands.Scenarios
                     return type.HaloOnline.ToString();
 
                 default:
-                    new TagToolWarning($"No HsType found for cache \"{version}\". Defaulting to HaloOnline");
+                    Log.Warning($"No HsType found for cache \"{version}\". Defaulting to HaloOnline");
                     return type.HaloOnline.ToString();
             }
         }
@@ -183,7 +184,7 @@ namespace TagTool.Commands.Scenarios
                     return (int)type.HaloOnline;
 
                 default:
-                    new TagToolWarning($"No HsType found for cache \"{version}\". Defaulting to HaloOnline");
+                    Log.Warning($"No HsType found for cache \"{version}\". Defaulting to HaloOnline");
                     return (int)type.HaloOnline;
             }
         }
@@ -232,7 +233,7 @@ namespace TagTool.Commands.Scenarios
             }
             catch (Exception)
             {
-                new TagToolError(CommandError.CustomError, "Out-of-range exception in Definition.Scripts! (?)");
+                Log.Error("Out-of-range exception in Definition.Scripts! (?)");
             }
 
             CsvAdd(tabs +

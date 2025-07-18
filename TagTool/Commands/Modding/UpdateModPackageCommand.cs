@@ -17,6 +17,7 @@ using static TagTool.Tags.Definitions.Model.Variant;
 using Assimp.Unmanaged;
 using TagTool.Cache.Resources;
 using TagTool.Cache.ModPackages;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Modding
 {
@@ -165,7 +166,7 @@ namespace TagTool.Commands.Modding
                         return newRef;
                     else
                     {
-                        new TagToolError(CommandError.CustomError, $"Referenced tag {tagRef.Name}.{tagRef.Group} not found in current base cache!");
+                        Log.Error($"Referenced tag {tagRef.Name}.{tagRef.Group} not found in current base cache!");
                         hasError = true;
                     }
                     return null;

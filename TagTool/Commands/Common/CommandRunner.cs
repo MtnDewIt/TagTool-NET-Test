@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Scripting.CSharp;
 
@@ -33,7 +34,7 @@ namespace TagTool.Commands.Common
             }
             catch (Exception ex)
             {
-                new TagToolError(CommandError.CustomError, $"{ex.Message}");
+                Log.Error($"{ex.Message}");
             }
 
             // Allow inline comments beginning with "//"
@@ -72,7 +73,7 @@ namespace TagTool.Commands.Common
                     if (ContextStack.IsBase())
                         Console.WriteLine("Cannot exit, already at base context! Use 'quit' to quit tagtool.");
                     else if (ContextStack.IsModPackage())
-                        new TagToolWarning("Use 'exitmodpackage' to leave a mod package context.");
+                        Log.Warning("Use 'exitmodpackage' to leave a mod package context.");
                     else
                         ContextStack.Pop();
                     return;
@@ -81,7 +82,7 @@ namespace TagTool.Commands.Common
                         if (ContextStack.IsModPackage())
                             ContextStack.Pop();
                         else
-                            new TagToolWarning("Use 'exit' to leave standard contexts.");
+                            Log.Warning("Use 'exit' to leave standard contexts.");
                     }
                     return;
                 case "cs" when !ExecuteCSharpCommand.OutputIsRedirectable(commandArgs.Skip(1).ToList()):
@@ -104,7 +105,7 @@ namespace TagTool.Commands.Common
             // Try to execute it
             if (!ExecuteCommand(ContextStack.Context, commandArgs, ContextStack.ArgumentVariables))
             {
-                new TagToolError(CommandError.CustomError, $"Unrecognized command \"{commandArgs[0]}\"\n"
+                Log.Error($"Unrecognized command \"{commandArgs[0]}\"\n"
                 + "Use \"help\" to list available commands.");
             }
 
@@ -178,8 +179,7 @@ namespace TagTool.Commands.Common
                 }
                 catch (Exception e) when (!Debugger.IsAttached)
                 {
-                    new TagToolError(CommandError.CustomError, e.Message);
-                    Console.WriteLine("STACKTRACE: " + Environment.NewLine + e.StackTrace);
+                    Log.Error(e);
                     ConsoleHistory.Dump("hott_*_crash.log");
                 }
             }

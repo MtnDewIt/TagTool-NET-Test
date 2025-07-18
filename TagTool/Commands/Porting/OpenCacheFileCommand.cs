@@ -3,6 +3,7 @@ using TagTool.Commands.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Porting
 {
@@ -48,7 +49,7 @@ namespace TagTool.Commands.Porting
 
             if (!fileName.Exists)
             {
-                new TagToolError(CommandError.CustomError, $"Cache \"{fileName.FullName}\" does not exist.");
+                Log.Error($"Cache \"{fileName.FullName}\" does not exist.");
                 return true;
             }
                 

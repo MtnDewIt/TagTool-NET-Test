@@ -66,7 +66,7 @@ namespace TagTool.Commands
             var cacheFileInfo = new FileInfo(cacheFilePath);
 
             if (args.Length > 0 && !cacheFileInfo.Exists)
-                new TagToolError(CommandError.CustomError, "Invalid path to a tag cache!");
+                Log.Error("Invalid path to a tag cache!");
 
             if (!cacheFileInfo.Exists)
                 cacheFileInfo = PromptCacheFile();
@@ -131,7 +131,7 @@ namespace TagTool.Commands
                 if (File.Exists(cacheFilePath))
                     return new FileInfo(cacheFilePath);
 
-                new TagToolError(CommandError.CustomError, "Invalid path to a tag cache!");
+                Log.Error("Invalid path to a tag cache!");
             }
         }
 
@@ -146,8 +146,7 @@ namespace TagTool.Commands
             }
             catch (Exception e)
             {
-                new TagToolError(CommandError.CustomError, e.Message);
-                Console.WriteLine("\nSTACKTRACE: " + Environment.NewLine + e.StackTrace);
+                Log.Error(e);
                 ConsoleHistory.Dump("hott_*_init.log");
                 return null;
             }
@@ -197,7 +196,7 @@ namespace TagTool.Commands
             }
             catch (Exception ex)
             {
-                new TagToolError(CommandError.CustomError, ex.Message);
+                Log.Error(ex);
                 return -1;
             }
         }

@@ -10,6 +10,7 @@ using TagTool.Serialization;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 
 namespace TagTool.Cache
 {
@@ -107,7 +108,7 @@ namespace TagTool.Cache
                         }
                         catch
                         {
-                            new TagToolWarning("Failed to build locales table (Invalid Globals definition?)");
+                            Log.Warning("Failed to build locales table (Invalid Globals definition?)");
                             LocaleTables = new List<LocaleTable>();
                         }                                          
                     }
@@ -140,7 +141,7 @@ namespace TagTool.Cache
                     if (mainDirectory.Exists)
                         FMODSoundCacheDirectories.Add(mainDirectory);
                     else
-                        new TagToolWarning("Failed to find main mcc sound banks!");
+                        Log.Warning("Failed to find main mcc sound banks!");
                 }
 
                 DirectoryInfo localDirectory = new DirectoryInfo(Path.Combine(CacheFile.Directory.FullName, "..", "fmod\\pc"));
@@ -154,7 +155,7 @@ namespace TagTool.Cache
                 }
 
                 if (FMODSoundCacheDirectories.Count == 0)
-                    new TagToolWarning("Failed to load any FMOD sound banks!");
+                    Log.Warning("Failed to load any FMOD sound banks!");
 
                 FMODSoundCache = new FMODSoundCache(FMODSoundCacheDirectories);
             }

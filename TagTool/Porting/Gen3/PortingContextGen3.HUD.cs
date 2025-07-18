@@ -4,6 +4,7 @@ using System.IO;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.Porting.Gen3
@@ -441,7 +442,7 @@ namespace TagTool.Porting.Gen3
                 }
                 catch
                 {
-                    new TagToolWarning($"Motion sensor bitmap 'ui\\chud\\bitmaps\\sensor_blips' not found.");
+                    Log.Warning($"Motion sensor bitmap 'ui\\chud\\bitmaps\\sensor_blips' not found.");
                 }
             }
 
@@ -510,7 +511,7 @@ namespace TagTool.Porting.Gen3
                 }
                 catch (ArgumentException)
                 {
-                    new TagToolWarning($"Unable to find matching flag for {flag2} in {typeof(E1).FullName}");
+                    Log.Warning($"Unable to find matching flag for {flag2} in {typeof(E1).FullName}");
                     continue;
                 }
             }
@@ -536,7 +537,7 @@ namespace TagTool.Porting.Gen3
             }
             catch (Exception)
             {
-                new TagToolWarning($"Unable to find matching value for \"{enum2}\" in {typeof(E1).FullName}");
+                Log.Warning($"Unable to find matching value for \"{enum2}\" in {typeof(E1).FullName}");
                 return enum1;
             }
         }

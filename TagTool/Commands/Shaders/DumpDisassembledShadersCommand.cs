@@ -10,6 +10,7 @@ using TagTool.Geometry;
 using TagTool.Cache.HaloOnline;
 using TagTool.Shaders;
 using System.Diagnostics;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Shaders
 {
@@ -99,7 +100,7 @@ namespace TagTool.Commands.Shaders
 
                     if (glvsTag == null || glpsTag == null)
                     {
-                        new TagToolWarning($"Cache \"{cache.DisplayName}\" has invalid shader type \"{shaderType}\"");
+                        Log.Warning($"Cache \"{cache.DisplayName}\" has invalid shader type \"{shaderType}\"");
                         continue;
                     }
 
@@ -121,7 +122,7 @@ namespace TagTool.Commands.Shaders
 
                             if (CurrentRmt2.PixelShader == null)
                             {
-                                new TagToolError(CommandError.CustomError, "Template pixel shader was null");
+                                Log.Error("Template pixel shader was null");
                                 CurrentRmt2 = null;
                                 continue;
                             }

@@ -6,6 +6,7 @@ using System.IO;
 using System.Reflection;
 using TagTool.Commands;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 
 namespace TagTool.Scripting.CSharp
 {
@@ -130,7 +131,7 @@ namespace TagTool.Scripting.CSharp
                 }
                 catch (Exception ex)
                 {
-                    new TagToolError(CommandError.CustomError, $"Failed to load assembly `{importName}`. {ex.Message}");
+                    Log.Error($"Failed to load assembly `{importName}`. {ex.Message}");
                 }
             }
             return references;

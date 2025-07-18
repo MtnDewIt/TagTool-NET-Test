@@ -15,6 +15,7 @@ using Gen3Globals = TagTool.Tags.Definitions.Globals;
 using static TagTool.Tags.Definitions.Gen2.Scenario.ScenarioLevelDataBlock;
 using System.Text;
 using TagTool.Porting;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Porting.Gen2
 {
@@ -74,7 +75,7 @@ namespace TagTool.Commands.Porting.Gen2
             if (Gen2Cache.TagCache.TagDefinitions.GetTagDefinitionType(gen2Tag.Group.Tag) == null ||
                 Cache.TagCache.TagDefinitions.GetTagDefinitionType(gen2Tag.Group.Tag) == null)
             {
-                new TagToolError(CommandError.CustomError, $"Failed to convert tag '{gen2Tag}' Group not supported. Returning null");
+                Log.Error($"Failed to convert tag '{gen2Tag}' Group not supported. Returning null");
                 return null;
             }
             */
@@ -164,7 +165,7 @@ namespace TagTool.Commands.Porting.Gen2
             if (!supportedTagGroups.Contains(group))
             {
                 if (!hiddenTagGroups.Contains(group))
-                    new TagToolWarning($"Porting tag group '{group}' not yet supported, returning null!");
+                    Log.Warning($"Porting tag group '{group}' not yet supported, returning null!");
 
                 return null;
             }
@@ -281,7 +282,7 @@ namespace TagTool.Commands.Porting.Gen2
                 default:
                     if (!hiddenTagGroups.Contains(gen2Tag.Group.ToString()))
                     {
-                        new TagToolWarning($"Porting tag group '{gen2Tag.Group}' not yet supported, returning null!");
+                        Log.Warning($"Porting tag group '{gen2Tag.Group}' not yet supported, returning null!");
                     }
                     return null;
             }
@@ -404,7 +405,7 @@ namespace TagTool.Commands.Porting.Gen2
                 case PlatformUnsignedValue _:
                     return data;
                 default:
-                    new TagToolWarning($"Unhandled type in `ConvertData`: {data.GetType().Name} (probably harmless).");
+                    Log.Warning($"Unhandled type in `ConvertData`: {data.GetType().Name} (probably harmless).");
                     break;
             }
 
@@ -484,7 +485,7 @@ namespace TagTool.Commands.Porting.Gen2
 
             if (value == null || !Enum.TryParse(value, out damageReportingType.HaloOnline))
             {
-                new TagToolWarning($"Unsupported Damage reporting type '{value}'. Using default.");
+                Log.Warning($"Unsupported Damage reporting type '{value}'. Using default.");
                 damageReportingType.HaloOnline = Damage.DamageReportingType.HaloOnlineValue.GuardiansUnknown;
             }
 
@@ -514,7 +515,7 @@ namespace TagTool.Commands.Porting.Gen2
 
             if (tagSpecifier.Length == 0 || (!char.IsLetter(tagSpecifier[0]) && !tagSpecifier.Contains('*')) || !tagSpecifier.Contains('.'))
             {
-                new TagToolError(CommandError.CustomError, $"Invalid tag name: {tagSpecifier}");
+                Log.Error($"Invalid tag name: {tagSpecifier}");
                 return new List<CachedTag>();
             }
 
@@ -522,7 +523,7 @@ namespace TagTool.Commands.Porting.Gen2
 
             if (!Cache.TagCache.TryParseGroupTag(tagIdentifiers[1], out var groupTag))
             {
-                new TagToolError(CommandError.CustomError, $"Invalid tag name: {tagSpecifier}");
+                Log.Error($"Invalid tag name: {tagSpecifier}");
                 return new List<CachedTag>();
             }
 
@@ -536,7 +537,7 @@ namespace TagTool.Commands.Porting.Gen2
 
             if (result.Count == 0 || result.Any(r => r == null))
             {
-                new TagToolError(CommandError.CustomError, $"Invalid tag name: {tagSpecifier}");
+                Log.Error($"Invalid tag name: {tagSpecifier}");
                 return new List<CachedTag>();
             }
 

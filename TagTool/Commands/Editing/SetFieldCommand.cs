@@ -9,6 +9,7 @@ using TagTool.Commands.Common;
 using TagTool.Tags;
 using TagTool.Cache.HaloOnline;
 using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock.TextureConstant;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Editing
 {
@@ -446,7 +447,7 @@ namespace TagTool.Commands.Editing
 
                 var blamType = Activator.CreateInstance(type) as IBlamType;
                 if (!blamType.TryParse(cache, args, out blamType, out string error))
-                    new TagToolError(CommandError.CustomError, error);
+                    Log.Error(error);
                 return blamType;
             }
             else if (type == typeof(CachedTag))

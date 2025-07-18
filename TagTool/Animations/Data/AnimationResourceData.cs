@@ -4,6 +4,7 @@ using System.IO;
 using System;
 using System.Collections;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 
 namespace TagTool.Animations.Data
 {
@@ -107,7 +108,7 @@ namespace TagTool.Animations.Data
                         Animation_Data.Read(reader);
                         continue;
                     default:
-                        new TagToolWarning($"Animation codec {codec} not recognized or supported.");
+                        Log.Warning($"Animation codec {codec} not recognized or supported.");
                         return false;
                 }
             }

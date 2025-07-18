@@ -10,6 +10,7 @@ using TagTool.Commands.Common;
 using TagTool.Tags;
 using TagTool.IO;
 using TagTool.Commands.Porting;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Porting
 {
@@ -57,7 +58,7 @@ namespace TagTool.Commands.Porting
             if (Gen1Cache.TagCache.TagDefinitions.GetTagDefinitionType(gen1Tag.Group.Tag) == null ||
                 Cache.TagCache.TagDefinitions.GetTagDefinitionType(gen1Tag.Group.Tag) == null)
             {
-                new TagToolError(CommandError.CustomError, $"Failed to convert tag '{gen1Tag}' Group not supported. Returning null");
+                Log.Error($"Failed to convert tag '{gen1Tag}' Group not supported. Returning null");
                 return null;
             }
             return ConvertTagInternal(cacheStream, gen1CacheStream, resourceStreams, gen1Tag);
@@ -103,7 +104,7 @@ namespace TagTool.Commands.Porting
                 case PlatformUnsignedValue _:
                     return data;
                 default:
-                    new TagToolWarning($"Unhandled type in `ConvertData`: {data.GetType().Name} (probably harmless).");
+                    Log.Warning($"Unhandled type in `ConvertData`: {data.GetType().Name} (probably harmless).");
                     break;
             }
 
@@ -183,7 +184,7 @@ namespace TagTool.Commands.Porting
 
             if (tagSpecifier.Length == 0 || (!char.IsLetter(tagSpecifier[0]) && !tagSpecifier.Contains('*')) || !tagSpecifier.Contains('.'))
             {
-                new TagToolError(CommandError.CustomError, $"Invalid tag name: {tagSpecifier}");
+                Log.Error($"Invalid tag name: {tagSpecifier}");
                 return new List<CachedTag>();
             }
 
@@ -191,7 +192,7 @@ namespace TagTool.Commands.Porting
 
             if (!Cache.TagCache.TryParseGroupTag(tagIdentifiers[1], out var groupTag))
             {
-                new TagToolError(CommandError.CustomError, $"Invalid tag name: {tagSpecifier}");
+                Log.Error($"Invalid tag name: {tagSpecifier}");
                 return new List<CachedTag>();
             }
 
@@ -205,7 +206,7 @@ namespace TagTool.Commands.Porting
 
             if (result.Count == 0)
             {
-                new TagToolError(CommandError.CustomError, $"Invalid tag name: {tagSpecifier}");
+                Log.Error($"Invalid tag name: {tagSpecifier}");
                 return new List<CachedTag>();
             }
 

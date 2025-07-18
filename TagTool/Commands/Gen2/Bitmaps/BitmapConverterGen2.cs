@@ -14,6 +14,7 @@ using TagTool.Tags.Definitions;
 using BitmapGen2 = TagTool.Tags.Definitions.Gen2.Bitmap;
 using TagTool.Cache;
 using TagTool.Bitmaps.DDS;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Gen2.Bitmaps
 {
@@ -225,7 +226,7 @@ namespace TagTool.Commands.Gen2.Bitmaps
                 return result;
             else
             {
-                new TagToolError(CommandError.None, $"Failed to find bitmap format matching {format}");
+                Log.Error($"Failed to find bitmap format matching {format}");
                 return BitmapFormat.A8R8G8B8;
             }
         }

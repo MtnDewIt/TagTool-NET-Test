@@ -8,6 +8,7 @@ using TagTool.IO;
 using System.IO;
 using TagTool.Tags;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 
 namespace TagTool.Geometry.BspCollisionGeometry.Utils
 {
@@ -372,7 +373,7 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
                         {
                             if (!warning_posted && debug)
                             {
-                                new TagToolWarning("found intersecting surfaces!");
+                                Log.Warning("found intersecting surfaces!");
                                 warning_posted = true;
                             }
                             //Error geometry output
@@ -658,7 +659,7 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
                 {
                     if (!warning_posted && debug)
                     {
-                        new TagToolWarning("Overlapping surfaces found!");
+                        Log.Warning("Overlapping surfaces found!");
                         foreach (int surface_index in plane_matched_surface_array.surface_array)
                         {
                             int abs_surface_index = surface_index & 0x7FFFFFFF;

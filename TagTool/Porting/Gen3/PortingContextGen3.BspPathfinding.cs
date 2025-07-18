@@ -10,6 +10,7 @@ using TagTool.Commands.Common;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using TagTool.Common.Logging;
 
 namespace TagTool.Porting.Gen3
 {
@@ -97,7 +98,7 @@ namespace TagTool.Porting.Gen3
                         instancedgeo.Flags |= InstancedGeometryInstance.InstancedGeometryFlags.NoPhysics;
 
                     if (instancedgeo.SeamBitVector.Skip(1).Any(x => x != 0))
-                        new TagToolWarning("Instanced seam bit vector truncated!");
+                        Log.Warning("Instanced seam bit vector truncated!");
 
                     instancedgeo.SeamBitVector = new uint[] { instancedgeo.SeamBitVector[0] };
               

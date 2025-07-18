@@ -12,6 +12,7 @@ using Assimp;
 using TagTool.Tags.Definitions;
 using TagTool.Geometry.BspCollisionGeometry.Utils;
 using TagTool.Commands.CollisionModels;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.CollisionModels
 {
@@ -188,7 +189,7 @@ namespace TagTool.Commands.CollisionModels
 
                 if (!add_triangles(0))
                 {
-                    new TagToolError(CommandError.CustomError, "Failed to import collision geometry!");
+                    Log.Error("Failed to import collision geometry!");
                     return false;
                 }
 
@@ -223,7 +224,7 @@ namespace TagTool.Commands.CollisionModels
 
             if (!collision_geometry_add_surfaces() || !collision_geometry_check_for_open_edges() || !reduce_collision_geometry())
             {
-                new TagToolError(CommandError.CustomError, "Failed to import collision geometry!");
+                Log.Error("Failed to import collision geometry!");
                 return false;
             }
 
@@ -231,7 +232,7 @@ namespace TagTool.Commands.CollisionModels
             {
                 if (!verify_collision_geometry())
                 {
-                    new TagToolError(CommandError.CustomError, "Failed to verify collision geometry!");
+                    Log.Error("Failed to verify collision geometry!");
                     return false;
                 }
             }
@@ -254,7 +255,7 @@ namespace TagTool.Commands.CollisionModels
                 CollisionModel.Region.Permutation temp_permutation = collisionModel.Regions[0].Permutations[0];
                 if(!moppgenerator.generate_mopp_codes(ref temp_permutation))
                 {
-                    new TagToolError(CommandError.CustomError, "Failed to build mopps!");
+                    Log.Error("Failed to build mopps!");
                     return false;
                 }
                 else
@@ -309,7 +310,7 @@ namespace TagTool.Commands.CollisionModels
                 List<int> indices = Faces[i].Indices;
                 if(indices.Count != 3)
                 {
-                    new TagToolError(CommandError.CustomError, $"Face {i} did not have exactly 3 vertices!");
+                    Log.Error($"Face {i} did not have exactly 3 vertices!");
 
                     //Error geometry output
                     List<int> ErrorIndices = new List<int>();
@@ -363,7 +364,7 @@ namespace TagTool.Commands.CollisionModels
             }
             if(Bsp.Vertices.Count >= ushort.MaxValue)
             {
-                new TagToolError(CommandError.CustomError, "Can only support up to 65535 unique vertices!");
+                Log.Error("Can only support up to 65535 unique vertices!");
                 return -1;
             }
             Bsp.Vertices.Add(newvertex);
@@ -376,7 +377,7 @@ namespace TagTool.Commands.CollisionModels
             {
                 if (Bsp.Surfaces.Count >= ushort.MaxValue)
                 {
-                    new TagToolError(CommandError.CustomError, "Can only support up to 65535 unique surfaces!");
+                    Log.Error("Can only support up to 65535 unique surfaces!");
                     return false;
                 }
                 Bsp.Surfaces.Add(new Surface());
@@ -460,7 +461,7 @@ namespace TagTool.Commands.CollisionModels
                     }
                     else
                     {
-                        new TagToolError(CommandError.CustomError, $"Edge is contacted by more than two surfaces!!");
+                        Log.Error($"Edge is contacted by more than two surfaces!!");
 
                         //Error geometry output
                         List<int> ErrorIndices = new List<int>();
@@ -483,7 +484,7 @@ namespace TagTool.Commands.CollisionModels
                 if (Bsp.Edges[edge_index].StartVertex == point0_index &&
                     Bsp.Edges[edge_index].EndVertex == point1_index)
                 {
-                    new TagToolError(CommandError.CustomError, $"Edge is contacted by more than two surfaces!!");
+                    Log.Error($"Edge is contacted by more than two surfaces!!");
 
                     //Error geometry output
                     List<int> ErrorIndices = new List<int>();
@@ -506,7 +507,7 @@ namespace TagTool.Commands.CollisionModels
 
             if (Bsp.Edges.Count >= ushort.MaxValue)
             {
-                new TagToolError(CommandError.CustomError, "Can only support up to 65535 unique edges!");
+                Log.Error("Can only support up to 65535 unique edges!");
                 return -1;
             }
 
@@ -534,7 +535,7 @@ namespace TagTool.Commands.CollisionModels
                 {
                     if (!forceimport)
                     {
-                        new TagToolError(CommandError.CustomError, $"Edge {edge_index} is open!");
+                        Log.Error($"Edge {edge_index} is open!");
 
                         //Error geometry output
                         List<int> ErrorIndices = new List<int>();
@@ -554,7 +555,7 @@ namespace TagTool.Commands.CollisionModels
                     }
                     else
                     {
-                        new TagToolWarning("This mesh contains open edges which may lead to collision errors!" +
+                        Log.Warning("This mesh contains open edges which may lead to collision errors!" +
                             " You have enabled the 'force' argument so import will proceed regardless!");
                         return true;
                     }
@@ -818,12 +819,12 @@ namespace TagTool.Commands.CollisionModels
                 }
                 if (!recompile_collision_geometry(surface_deleted_table, edge_deleted_table))
                 {
-                    new TagToolError(CommandError.CustomError, "Failed to recompile collision geometry!");
+                    Log.Error("Failed to recompile collision geometry!");
                     return false;
                 }
                 return true;
             }
-            new TagToolError(CommandError.CustomError, "Failed to reduce collision geometry");
+            Log.Error("Failed to reduce collision geometry");
             return false;
         }
 
@@ -934,7 +935,7 @@ namespace TagTool.Commands.CollisionModels
                     int first_edge = edge_deleted_table[Bsp.Surfaces[surface_index].FirstEdge];
                     if (first_edge < 0 || first_edge > Bsp.Edges.Count)
                     {
-                        new TagToolError(CommandError.CustomError, "first_edge_index<0 && first_edge_index>bsp->edges.count");
+                        Log.Error("first_edge_index<0 && first_edge_index>bsp->edges.count");
                         return false;
                     }
                     Bsp.Surfaces[surface_index].FirstEdge = (ushort)first_edge;
@@ -978,12 +979,12 @@ namespace TagTool.Commands.CollisionModels
             }
             if (pointlist.Count < 3)
             {
-                new TagToolError(CommandError.CustomError, "Surface has less than 3 points!");
+                Log.Error("Surface has less than 3 points!");
                 return false;
             }
             if (!plane_generation_points_valid(pointlist[0], pointlist[1], pointlist[2]))
             {
-                new TagToolError(CommandError.CustomError, "Surface has overlapping vertices! (distance < 0.0001)\n"
+                Log.Error("Surface has overlapping vertices! (distance < 0.0001)\n"
                 + "Make sure that your model is scaled properly and not too detailed!\n"
                 + "If your model is scaled properly, try merging vertices by distance");
                 debug_print_vertices(pointlist);
@@ -1016,7 +1017,7 @@ namespace TagTool.Commands.CollisionModels
                     }
                     else
                     {
-                        new TagToolError(CommandError.CustomError, "Did not produce valid plane from points!");
+                        Log.Error("Did not produce valid plane from points!");
                         return false;
                     }                                        
                 }
@@ -1062,7 +1063,7 @@ namespace TagTool.Commands.CollisionModels
                 }
                 if (pointlist.Count < 3)
                 {
-                    new TagToolError(CommandError.CustomError, "Not enough points to generate a plane!");
+                    Log.Error("Not enough points to generate a plane!");
                     return false;
                 }
                 else
@@ -1098,7 +1099,7 @@ namespace TagTool.Commands.CollisionModels
                                 }
                                 else
                                 {
-                                    new TagToolError(CommandError.CustomError, "Did not produce valid plane from points!");
+                                    Log.Error("Did not produce valid plane from points!");
                                     return false;
                                 }
                             }
@@ -1111,7 +1112,7 @@ namespace TagTool.Commands.CollisionModels
                         }
                         if (count == -1)
                         {
-                            new TagToolError(CommandError.CustomError, "No valid planes could be produced from pointset!");
+                            Log.Error("No valid planes could be produced from pointset!");
                             return false;
                         }
                     }

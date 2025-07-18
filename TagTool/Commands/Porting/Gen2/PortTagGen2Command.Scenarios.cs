@@ -7,6 +7,7 @@ using System.Text;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Geometry;
 using TagTool.Geometry.BspCollisionGeometry;
 using TagTool.Geometry.Utils;
@@ -656,7 +657,7 @@ namespace TagTool.Commands.Porting.Gen2
 
                     if (clustermeshes.Count > 1)
                     {
-                        new TagToolWarning("cluster had >1 render mesh! Culling extras...");
+                        Log.Warning("cluster had >1 render mesh! Culling extras...");
                         clustermeshes = new List<Gen2BSPResourceMesh> { clustermeshes.First() };
                     }
                 }
@@ -742,7 +743,7 @@ namespace TagTool.Commands.Porting.Gen2
 
                     if (instancemeshes.Count > 1)
                     {
-                        new TagToolWarning("instance had >1 render mesh! Culling extras...");
+                        Log.Warning("instance had >1 render mesh! Culling extras...");
                         instancemeshes = new List<Gen2BSPResourceMesh> { instancemeshes.First() };
                     }
                 }

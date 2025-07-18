@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Common
 {
@@ -91,7 +92,7 @@ namespace TagTool.Commands.Common
             var command = ContextStack.Context.GetCommand(commandName);
             if (command == null)
             {
-                new TagToolError(CommandError.CustomError,$"Unable to find command \"{commandName}\"");
+                Log.Error($"Unable to find command \"{commandName}\"");
                 return;
             }
 			
