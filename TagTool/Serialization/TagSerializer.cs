@@ -8,10 +8,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using TagTool.Tags;
-using static System.Runtime.InteropServices.CharSet;
 using static TagTool.Tags.TagFieldFlags;
 using TagTool.Commands.Common;
 using TagTool.Geometry.BspCollisionGeometry;
+using System.Runtime.InteropServices;
 
 namespace TagTool.Serialization
 {
@@ -364,7 +364,7 @@ namespace TagTool.Serialization
             if (valueInfo == null || valueInfo.Length == 0)
                 throw new ArgumentException("Cannot serialize a string with no length set");
 
-            var charSize = valueInfo.CharSet == Unicode ? 2 : 1;
+            var charSize = valueInfo.CharSet == CharSet.Unicode ? 2 : 1;
             var byteCount = valueInfo.Length * charSize;
             var clampedLength = 0;
 
@@ -374,11 +374,11 @@ namespace TagTool.Serialization
 
                 switch (valueInfo.CharSet)
                 {
-                    case Ansi:
+                    case CharSet.Ansi:
                         bytes = Encoding.ASCII.GetBytes(str);
                         break;
 
-                    case Unicode:
+                    case CharSet.Unicode:
                         if (Format == EndianFormat.LittleEndian)
                             bytes = Encoding.Unicode.GetBytes(str);
                         else

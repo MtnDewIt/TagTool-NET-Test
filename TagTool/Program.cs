@@ -6,6 +6,7 @@ using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Commands.Tags;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Scripting.CSharp;
 
@@ -20,6 +21,12 @@ namespace TagTool.Commands
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo("en-US");
 
             AssemblyResolver.ConfigureAssemblyResolution();
+
+            // Setup logging and output
+            Log.AddHandler(new ConsoleLogHandler());
+            Log.Level = LogLevel.Info; // TODO: set via command line
+
+            Console.SetOut(new AnsiWriter(Console.Out));
             ConsoleHistory.Initialize();
 
             var assembly = Assembly.GetExecutingAssembly();
