@@ -55,7 +55,7 @@ namespace TagTool.Commands.Files
                         }
                         catch (ArgumentException)
                         {
-                            return new TagToolError(CommandError.CustomMessage, "Invalid path argument");
+                            return new TagToolError(CommandError.ArgInvalid, "Invalid path argument");
                         }
                     }
                     else

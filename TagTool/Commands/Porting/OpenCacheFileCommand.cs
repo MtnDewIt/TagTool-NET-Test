@@ -48,10 +48,7 @@ namespace TagTool.Commands.Porting
             var fileName = new FileInfo(args[0]);
 
             if (!fileName.Exists)
-            {
-                Log.Error($"Cache \"{fileName.FullName}\" does not exist.");
-                return true;
-            }
+                return new TagToolError(CommandError.FileNotFound, fileName.FullName);
                 
             Console.Write("Loading cache...");
 

@@ -36,7 +36,7 @@ namespace TagTool.Commands.Common
         {
             var evalContext = new ScriptEvaluationContext(ContextStack);
 
-            string input = CommandRunner.CommandLine.Substring(CommandRunner.CommandLine.IndexOf(' ') + 1);
+            string input = CommandRunner.Current.CommandLine.Substring(CommandRunner.Current.CommandLine.IndexOf(' ') + 1);
             try
             {
                 if (args.Count == 0)

@@ -6,6 +6,10 @@ namespace TagTool.Common.Logging
     {
         public void Log(in LogMessage message)
         {
+            // if we're not at the start of the line, insert a new one to avoid ugliness with Console.Write()
+            if (Console.LargestWindowWidth != 0 && Console.CursorLeft > 0)
+                Console.WriteLine();
+
             Console.WriteLine(FormatLogMessage(message));
         }
 

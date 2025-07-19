@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -38,6 +39,20 @@ namespace TagTool.Commands
 
             AssemblyResolver.CheckMissingDependencies();
 
+            try
+            {
+                return MainCore(args);
+            }
+            catch (Exception ex) when (!Debugger.IsAttached)
+            {
+                Log.Error(ex);
+                ConsoleHistory.Dump("hott_*_crash.log");
+                return -1;
+            }
+        }
+
+        static int MainCore(string[] args)
+        {
             var contextStack = new CommandContextStack();
 
             // if the first argument is a c# script, execute it and exit
@@ -102,7 +117,9 @@ namespace TagTool.Commands
                 Console.Write("{0}> ", contextStack.GetPath());
                 Console.Title = $"TagTool {contextStack.GetPath()}>";
 
-                commandRunner.RunCommand(Console.ReadLine(), printInput: false);
+                object result = commandRunner.RunCommand(Console.ReadLine(), printInput: false);
+                if (result is TagToolError error)
+                    Log.Error(error.Message);
             }
         }
 

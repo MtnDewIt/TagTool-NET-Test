@@ -51,11 +51,11 @@ namespace TagTool.Commands.Files
                 if (version == CacheVersion.Halo3Retail || version == CacheVersion.Halo3ODST)
                     reader.Format = EndianFormat.BigEndian;
                 if (!blf.Read(reader))
-                    return new TagToolError(CommandError.CustomMessage, "Could not parse BLF");
+                    return new TagToolError(CommandError.CustomError, "Could not parse BLF");
             }
 
             if (!blf.ContentFlags.HasFlag(BlfFileContentFlags.MapImage) || blf.JpegImage == null || blf.JpegImage.Length == 0)
-                return new TagToolError(CommandError.CustomMessage, "BLF does not contain image");
+                return new TagToolError(CommandError.CustomError, "BLF does not contain image");
 
             using (var stream = output.Create())
             {

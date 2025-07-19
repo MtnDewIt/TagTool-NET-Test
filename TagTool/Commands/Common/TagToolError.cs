@@ -5,8 +5,8 @@ namespace TagTool.Commands.Common
     public enum CommandError
     {
         None,
-        CustomMessage,
         CustomError,
+        CmdScriptError, // internal use only
         ArgCount,
         ArgInvalid,
         OperationFailed,
@@ -25,29 +25,37 @@ namespace TagTool.Commands.Common
     /// </remarks>
     class TagToolError
     {
-        public TagToolError(CommandError cmdError, string customMessage = null)
+        public readonly CommandError Error;
+        public readonly string Message;
+
+        public TagToolError(CommandError cmdError, string customMessage = "")
         {
-            Log.Error(FormatErrorMessage(cmdError, customMessage));
+            Error = cmdError;
+            Message = FormatErrorMessage(Error, customMessage);
         }
 
         private static string FormatErrorMessage(CommandError cmdError, string customMessage)
         {
-            bool showHelpMessage = true;
+            bool showHelpMessage = false;
             string output = "";
 
-            if (cmdError != CommandError.CustomMessage && cmdError != CommandError.CustomError)
+            if (cmdError == CommandError.CmdScriptError)
+                return customMessage;
+
+            if (cmdError != CommandError.CustomError)
             {
                 switch (cmdError)
                 {
                     case CommandError.ArgCount:
                         output += "Incorrect amount of arguments supplied";
+                        showHelpMessage = true;
                         break;
                     case CommandError.ArgInvalid:
                         output += "An invalid argument was specified";
+                        showHelpMessage = true;
                         break;
                     case CommandError.OperationFailed:
                         output += "An internal operation failed to evaluate";
-                        showHelpMessage = false;
                         break;
                     case CommandError.TagInvalid:
                         output += "The specified tag does not exist in the current tag cache";
@@ -63,18 +71,17 @@ namespace TagTool.Commands.Common
                         break;
                     case CommandError.FileIO:
                         output += "A file IO operation could not be completed";
-                        showHelpMessage = false;
                         break;
                     case CommandError.FileType:
                         output += "The specified file is of the incorrect type";
+                        showHelpMessage = true;
                         break;
                     case CommandError.CacheUnsupported:
                         output += "The specified blam cache is not supported";
-                        showHelpMessage = false;
                         break;
                     case CommandError.YesNoSyntax:
                         output += "A response option other than \"y\" or \"n\" was given";
-                        showHelpMessage = false;
+                        showHelpMessage = true;
                         break;
                 }
             }
@@ -90,7 +97,7 @@ namespace TagTool.Commands.Common
                 output += $"\n> {customMessage}";
 
             if (showHelpMessage)
-                output += $"\nEnter \"Help {CommandRunner.CurrentCommandName}\" for command syntax.";
+                output += $"\nEnter \"Help {CommandRunner.Current?.CurrentCommandName}\" for command syntax.";
 
             return output;
         }

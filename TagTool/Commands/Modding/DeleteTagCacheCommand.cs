@@ -32,7 +32,7 @@ namespace TagTool.Commands.Modding
                 return new TagToolError(CommandError.ArgInvalid, $"\"{args[0]}\"");
 
             if (tagCacheIndex == Cache.GetCurrentTagCacheIndex())
-                return new TagToolError(CommandError.CustomMessage, "A tag cache cannot be deleted while it is in use");
+                return new TagToolError(CommandError.CustomError, "A tag cache cannot be deleted while it is in use");
 
             if (tagCacheIndex < Cache.BaseModPackage.TagCachesStreams.Count && tagCacheIndex >= 0)
             {

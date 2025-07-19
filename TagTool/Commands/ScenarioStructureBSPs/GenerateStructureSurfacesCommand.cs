@@ -60,7 +60,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
             if (!Cache.TagCache.TryGetCachedTag(lightmapTagName, out lbspTag))
             {
                 if (!TryGetLbspTag(stream, out lbspTag))
-                    return new TagToolWarning("Structure surface generation aborted: Lbsp not found");
+                    return new TagToolError(CommandError.CustomError, "Structure surface generation aborted: Lbsp not found");
             }
 
             lbsp = Cache.Deserialize<ScenarioLightmapBspData>(stream, lbspTag);

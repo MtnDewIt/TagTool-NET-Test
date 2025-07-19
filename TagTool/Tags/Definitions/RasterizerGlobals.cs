@@ -109,7 +109,7 @@ namespace TagTool.Tags.Definitions
                         rasterizerDefaultBitmap = RasterizerDefaultBitmap.ripple_pattern;
                         break;
                     default:
-                        //new TagToolWarning("Could not parse default bitmap, using default_white.");
+                        //Log.Warning("Could not parse default bitmap, using default_white.");
                         rasterizerDefaultBitmap = RasterizerDefaultBitmap.default_white;
                         return false;
                 }

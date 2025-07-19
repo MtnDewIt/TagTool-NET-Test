@@ -413,7 +413,9 @@ namespace TagTool.Commands.RenderModels
 			Console.WriteLine("   Replaced render_geometry successfully.\n");
 
 			if (showTriangleStripWarning)
-				return new TagToolWarning($"One or more meshes using TriangleStrips produced more indices than TriangleList would have.");
+			{
+				Log.Warning($"One or more meshes using TriangleStrips produced more indices than TriangleList would have.");
+			}
 
 			return true;
 		}
