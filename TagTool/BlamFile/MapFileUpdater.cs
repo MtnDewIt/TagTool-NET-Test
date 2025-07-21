@@ -24,10 +24,10 @@ namespace TagTool.BlamFile
         {
             var helper = new UpdateMapFilesHelper(cache, mapInfoDir, forceUpdate);
             using Stream cacheStream = cache.OpenCacheRead();
-            foreach (CachedTagHaloOnline scnrTag in cache.TagCache.FindAllInGroup<Scenario>())
+            foreach (CachedTag scnrTag in cache.TagCache.FindAllInGroup<Scenario>())
             {
                 // ignore base cache references for mod paks
-                if (scnrTag.IsEmpty())
+                if ((scnrTag as CachedTagHaloOnline).IsEmpty())
                     continue;
 
                 var scnr = cache.Deserialize<Scenario>(cacheStream, scnrTag);
@@ -67,12 +67,12 @@ namespace TagTool.BlamFile
                 string mapName = scnrTag.Name.Split('\\').Last();
                 string mapInfoFilePath = Path.Combine(_mapInfoDir, $"{mapName}.mapinfo");
 
-                bool isExcessionData = File.Exists(Path.Combine(mapInfoDir, "ModInfo.json"));
+                bool isExcessionData = File.Exists(Path.Combine(_mapInfoDir, "ModInfo.json"));
                 if (isExcessionData)
-                    mapInfoFilePath = mapInfoDir;
+                    mapInfoFilePath = _mapInfoDir;
 
                 Blf mapInfo = LoadMapInfo(scnrTag, mapInfoFilePath, isExcessionData);
-                MapFile map = LoadOrBuildMapFile(scnrTag, forceUpdate, scnr, mapInfo);
+                MapFile map = LoadOrBuildMapFile(scnrTag, _forceUpdate, scnr, mapInfo);
 
                 var header = (CacheFileHeaderGenHaloOnline)map.Header;
                 header.ScenarioTagIndex = scnrTag.Index;
@@ -167,7 +167,7 @@ namespace TagTool.BlamFile
             private Blf LoadMapInfo(CachedTag scenario, string filePath, bool isExcessionData)
             {
                 if (isExcessionData)
-                    return GenerateMapInfo(_cacheStream, scenario, filePath);
+                    return GenerateMapInfo(scenario, filePath);
 
                 if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
                     return null;
@@ -188,19 +188,20 @@ namespace TagTool.BlamFile
                 return mapInfo;
             }
 
-            private Blf GenerateMapInfo(Stream stream, CachedTag scenario, string mapInfoPath)
+            private Blf GenerateMapInfo(CachedTag scenario, string mapInfoPath)
             {
+                using var cacheStream = _cache.OpenCacheRead();
                 var jsonData = File.ReadAllText(Path.Combine(mapInfoPath, "ModInfo.json"));
                 var modInfo = JsonConvert.DeserializeObject<ModInfo>(jsonData);
                 var mapInfoList = modInfo.GetMapInfoList(mapInfoPath);
                 var campaignInfoTable = ModInfo.GetCampaignInfoTable(mapInfoPath);
-                var scenarioTable = CampaignInfo.GetScenarioTable(_cache, stream);
+                var scenarioTable = CampaignInfo.GetScenarioTable(_cache, cacheStream);
 
                 foreach (var mapInfo in mapInfoList)
                 {
                     if (scenario.Name.EndsWith(mapInfo.Key))
                     {
-                        var scnr = _cache.Deserialize<Scenario>(stream, scenario);
+                        var scnr = _cache.Deserialize<Scenario>(cacheStream, scenario);
 
                         var mapBlf = new Blf(_cache.Version, _cache.Platform)
                         {

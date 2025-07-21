@@ -10,8 +10,16 @@ namespace TagTool.BlamFile
     public class CampaignFileBuilder
     {
         public GameCache Cache { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+
+        /// <summary>
+        /// Optional Campaign Display Name
+        /// </summary>
+        public string CampaignName { get; set; }
+
+        /// <summary>
+        /// Optional Campaign Description
+        /// </summary>
+        public string CampaignDescription { get; set; }
 
         public CampaignFileBuilder(GameCache cache)
         {
@@ -49,8 +57,8 @@ namespace TagTool.BlamFile
                     MinorVersion = 1,
                     CampaignId = 1,
 
-                    Names = Enumerable.Repeat(new CampaignNameUnicode32 { Name = Name }, 12).ToArray(),
-                    Descriptions = Enumerable.Repeat(new NameUnicode128 { Name = Description }, 12).ToArray(),
+                    Names = Enumerable.Repeat(new CampaignNameUnicode32 { Name = CampaignName }, 12).ToArray(),
+                    Descriptions = Enumerable.Repeat(new NameUnicode128 { Name = CampaignDescription }, 12).ToArray(),
 
                     MapIds = includeMapIds ? GetMapIds() : new int[64],
                 },

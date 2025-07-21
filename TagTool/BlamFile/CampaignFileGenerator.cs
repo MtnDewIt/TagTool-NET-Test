@@ -13,8 +13,6 @@ namespace TagTool.BlamFile
 {
     public class CampaignFileGenerator
     {
-        // TODO: Merge with the existing CampaignFileBuilder class
-
         public static void GenerateCampaignFile(GameCache cache, FileInfo mapInfo, FileInfo modInfo) 
         {
             string fileName = $"halo3.campaign";
@@ -66,8 +64,8 @@ namespace TagTool.BlamFile
         {
             var campaignFileBuilder = new CampaignFileBuilder(cache)
             {
-                Name = "Halo 3",
-                Description = "Finish the Fight!",
+                CampaignName = "Halo 3",
+                CampaignDescription = "Finish the Fight!",
             };
 
             var campaignBlf = campaignFileBuilder.GenerateCampaignBlf(true);
@@ -75,7 +73,6 @@ namespace TagTool.BlamFile
             return campaignBlf;
         }
 
-        // Might move this into the excession campaign info class
         public static Blf GenerateCampaignBlf(GameCache cache, FileInfo modInfoFile)
         {
             var jsonData = File.ReadAllText(Path.Combine(modInfoFile.FullName));
@@ -88,8 +85,8 @@ namespace TagTool.BlamFile
 
                 var campaignFileBuilder = new CampaignFileBuilder(cache)
                 {
-                    Name = campaignInfo.Title.ParseLocalizedString(63, "Title"),
-                    Description = campaignInfo.Description.ParseLocalizedString(127, "Description"),
+                    CampaignName = campaignInfo.Title.ParseLocalizedString(63, "Title"),
+                    CampaignDescription = campaignInfo.Description.ParseLocalizedString(127, "Description"),
                 };
 
                 var campaignBlf = campaignFileBuilder.GenerateCampaignBlf(false);
