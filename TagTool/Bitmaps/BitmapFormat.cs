@@ -13,7 +13,7 @@ namespace TagTool.Bitmaps
         Y8,
         AY8,
         A8Y8,
-        Unused1,
+        R8,
         Unused2,
         R5G6B5,
         Unused3,
@@ -42,13 +42,13 @@ namespace TagTool.Bitmaps
         Q8W8V8U8,
         A2R10G10B10,
         A16B16G16R16,
-        [TagEnumMember(MinVersion = Cache.CacheVersion.HaloReach)]
         V16U16,
         [TagEnumMember(MinVersion = Cache.CacheVersion.HaloReach)]
         L16,
         [TagEnumMember(MinVersion = Cache.CacheVersion.HaloReach)]
         R16G16,
-        Abgr16,
+        [TagEnumMember(MinVersion = Cache.CacheVersion.HaloReach)]
+        SignedR16G16B16A16,
         Dxt3a,
         Dxt5a,
         Dxt3A1111,
@@ -59,9 +59,13 @@ namespace TagTool.Bitmaps
         Dxt5aAlpha,
         Dxt5aMono,
         DxnMonoAlpha,
+        [TagEnumMember(MinVersion = Cache.CacheVersion.HaloReach)]
         Dxt5Red,
+        [TagEnumMember(MinVersion = Cache.CacheVersion.HaloReach)]
         Dxt5Green,
+        [TagEnumMember(MinVersion = Cache.CacheVersion.HaloReach)]
         Dxt5Blue,
+        [TagEnumMember(MinVersion = Cache.CacheVersion.HaloReach)]
         Depth24,
     }
 
@@ -72,9 +76,9 @@ namespace TagTool.Bitmaps
        {
             8,   // A8
             8,   // Y8
-            8,   // Ay8
+            8,   // AY8
             16,  // A8Y8
-            0,   // Unused1
+            8,   // R8
             0,   // Unused2
             16,  // R5G6B5
             0,   // Unused3
@@ -104,7 +108,7 @@ namespace TagTool.Bitmaps
             32,  // V16U16
             16,  // L16
             32,  // R16G16
-            64,  // Abgr16
+            64,  // SignedR16G16B16A16
             4,   // Dxt3A
             4,   // Dxt5A
             4,   // Dxt3A1111
