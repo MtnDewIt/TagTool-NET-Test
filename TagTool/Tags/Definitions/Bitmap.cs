@@ -365,6 +365,8 @@ namespace TagTool.Tags.Definitions
             HalfMonochrome,
             Compressed4BitMonochrome,
             CompressedInterpolatedMonochrome,
+            [TagEnumMember(MaxVersion = CacheVersion.HaloOnline700123)]
+            Unused12,
             [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
             Dxt5Red,
             [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
