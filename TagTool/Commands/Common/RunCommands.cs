@@ -32,6 +32,8 @@ namespace TagTool.Commands.Common
                 return new TagToolError(CommandError.FileNotFound, fileName);
 
             var commandRunner = new CommandRunner(ContextStack);
+            // inherit error suppression
+            commandRunner.SuppressErrors = CommandRunner.Current?.SuppressErrors ?? false;
             return commandRunner.RunCommandScript(fileName, shouldPrint);
         }
     }

@@ -14,6 +14,8 @@ namespace TagTool.Commands.Common
         public bool EOF { get; private set; } = false;
         public string CommandLine { get; private set; }
         public string CurrentCommandName { get; private set; }
+        // If true errors returned from commands will not cause the script to terminate
+        public bool SuppressErrors { get; set; }
 
         public static CommandRunner Current { get; private set; }
 
@@ -42,10 +44,18 @@ namespace TagTool.Commands.Common
                     if (result is TagToolError error)
                     {
                         string indentedMessage = string.Join("\n", error.Message.Split('\n').Select((line, i) => i > 0 ? $"  {line}" : line));
-
-                        return error.Error == CommandError.CmdScriptError
-                            ? error
-                            : new TagToolError(CommandError.CmdScriptError, $"Error executing \"{line}\"\n  in \"{fileName}\" on line {reader.LineNumber}: {indentedMessage}");
+                        string errorMessage = $"Error executing \"{line}\"\n  in \"{fileName}\" on line {reader.LineNumber}: {indentedMessage}";
+                        
+                        if (SuppressErrors)
+                        {
+                            Log.Error(errorMessage);
+                        }
+                        else
+                        {
+                            return error.Error == CommandError.CmdScriptError
+                                ? error
+                                : new TagToolError(CommandError.CmdScriptError, errorMessage);
+                        }
                     }
                 }
             }
