@@ -21,10 +21,9 @@ namespace TagTool.Commands.Modding
                 "CreateModPackage",
                 "Create context for a mod package. Optionally have more than one tag cache and use unmanaged streams for 2gb + resources.",
 
-                "CreateModPackage [# of tag caches, [large]] [testname]",
+                "CreateModPackage [# of tag caches] [testname]",
 
                 "\t- [# of tag caches]: An integer used for when you want more than one isolated tag cache."
-                + "\n\t- [large]: Used with a tag cache count to allow unmanaged streams for 2GB + resources."
                 + "\n\t- [testname]: A name for a test mod package. Skips the standard dialog, used without other arguments.")
         {
             ContextStack = contextStack;
@@ -37,7 +36,6 @@ namespace TagTool.Commands.Modding
                 return new TagToolError(CommandError.ArgCount);
 
             int tagCacheCount = 1;
-            bool useLargeStreams = false;
             bool useDialog = true;
 
             if (args.Count > 0)
@@ -52,9 +50,6 @@ namespace TagTool.Commands.Modding
                     else
                         return new TagToolError(CommandError.ArgInvalid, $"\"{args[0]}\"");
                 }
-
-                if (args.Count == 2 && args[1].ToLower() == "large")
-                    useLargeStreams = true;
             }
 
             var builder = new ModPackageBuilder(Cache);
@@ -69,7 +64,7 @@ namespace TagTool.Commands.Modding
                 for (int i = 0; i < tagCacheCount; i++)
                 {
                     string name = "default";
-                    if (tagCacheCount > 1 && (args.Count == 1 && useLargeStreams))
+                    if (tagCacheCount > 1)
                     {
                         Console.WriteLine($"Enter the name of tag cache {i} (32 chars max):");
                         name = Console.ReadLine().Trim();
@@ -88,7 +83,7 @@ namespace TagTool.Commands.Modding
 
             Console.WriteLine("Creating mod package...");
 
-            ModPackage modPackage = builder.Build(useLargeStreams);
+            ModPackage modPackage = builder.Build();
 
             Console.WriteLine("Done.");
 

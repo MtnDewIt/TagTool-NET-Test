@@ -28,14 +28,14 @@ namespace TagTool.Cache
 
         public GameCacheHaloOnlineBase BaseCacheReference;
 
-        public GameCacheModPackage(GameCacheHaloOnlineBase baseCache, FileInfo file, bool largeResourceStream = false)
+        public GameCacheModPackage(GameCacheHaloOnlineBase baseCache, FileInfo file)
         {
             ModPackageFile = file;
             Directory = file.Directory;
 
             // load mod package
-            var modPackage = new ModPackage(file, unmanagedResourceStream: largeResourceStream);
-            Init(baseCache, modPackage, largeResourceStream);
+            var modPackage = new ModPackage(file);
+            Init(baseCache, modPackage);
         }
 
         public GameCacheModPackage(GameCacheHaloOnline baseCache, ModPackage modPackage)
@@ -43,7 +43,7 @@ namespace TagTool.Cache
             Init(baseCache, modPackage);
         }
 
-        private void Init(GameCacheHaloOnlineBase baseCache, ModPackage modPackage, bool largeResourceStream = false)
+        private void Init(GameCacheHaloOnlineBase baseCache, ModPackage modPackage)
         {
             BaseCacheReference = baseCache;
             BaseModPackage = modPackage;

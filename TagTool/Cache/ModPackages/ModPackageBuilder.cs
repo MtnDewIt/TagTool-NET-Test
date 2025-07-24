@@ -50,14 +50,14 @@ namespace TagTool.Cache.ModPackages
             .AddTagCache("default");
         }
 
-        public ModPackage Build(bool useLargeStreams = true)
+        public ModPackage Build()
         {
             ModPackageCacheUtils.BuildInitialTagCache(
                 BaseCache,
                 out Dictionary<int, string> referenceTagNames,
                 out Stream referenceStream);
 
-            var modPackage = new ModPackage(unmanagedResourceStream: useLargeStreams);
+            var modPackage = new ModPackage();
             modPackage.Header.ModifierFlags = ModifierFlags;
             modPackage.Metadata = Metadata ?? new ModPackageMetadata();
             modPackage.StringTable = new StringTableHaloOnline(BaseCache.Version);

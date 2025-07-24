@@ -43,16 +43,9 @@ namespace TagTool.Commands.Modding
 
         public override object Execute(List<string> args)
         {
-            bool useLargeStreams = false;
 
             if (args.Count < 2)
                 return new TagToolError(CommandError.ArgCount);
-
-            if (args.Count > 2 && args[0].ToLower() == "large")
-            {
-                useLargeStreams = true;
-                args.RemoveAt(0);
-            }
 
             if (!args[0].EndsWith(".pak"))
                 args[0] += ".pak";
@@ -67,8 +60,8 @@ namespace TagTool.Commands.Modding
                 return new TagToolError(CommandError.FileNotFound, $"\"{args[0]}\"");
 
             Console.WriteLine("Initializing cache...");
-            oldMod = new GameCacheModPackage(Cache, infile, largeResourceStream: useLargeStreams);
-            newMod = new GameCacheModPackage(Cache, InitializeModPackage(useLargeStreams));
+            oldMod = new GameCacheModPackage(Cache, infile);
+            newMod = new GameCacheModPackage(Cache, InitializeModPackage());
 
             Console.WriteLine("Transferring modded tags...");
             TransferModdedTags();
@@ -197,13 +190,13 @@ namespace TagTool.Commands.Modding
             return data;
         }
 
-        private ModPackage InitializeModPackage(bool useLargeStreams)
+        private ModPackage InitializeModPackage()
         {
             var builder = new ModPackageBuilder(Cache);
             foreach (string name in oldMod.BaseModPackage.CacheNames)
                 builder.AddTagCache(name);
 
-            ModPackage modPackage = builder.Build(useLargeStreams);
+            ModPackage modPackage = builder.Build();
 
             //copy over metadata
             modPackage.Metadata = oldMod.BaseModPackage.Metadata;

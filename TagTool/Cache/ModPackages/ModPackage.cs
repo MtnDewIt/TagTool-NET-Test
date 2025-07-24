@@ -65,9 +65,9 @@ namespace TagTool.Cache
             ResourcesStream.Dispose();
         }
 
-        public ModPackage(FileInfo file = null, bool unmanagedResourceStream=false)
+        public ModPackage(FileInfo file = null)
         {
-            IsLarge = unmanagedResourceStream;
+            IsLarge = true;
 
             if (file != null)
                 Load(file);
@@ -85,20 +85,12 @@ namespace TagTool.Cache
                 Files = new Dictionary<string, Stream>();
                 StringTable = new StringTableHaloOnline(CacheVersion.HaloOnlineED, null);
                 Header.SectionTable = new ModPackageSectionTable();
-                if (!unmanagedResourceStream)
+                unsafe
                 {
-                    ResourcesStream = new ExtantStream(new MemoryStream());
+                    long bufferSize = 4L * 1024 * 1024 * 1024; // 4 GB max
+                    IntPtr data = Marshal.AllocHGlobal((IntPtr)bufferSize);
+                    ResourcesStream = new ExtantStream(new UnmanagedMemoryStream((byte*)data.ToPointer(), 0, bufferSize, FileAccess.ReadWrite));
                 }
-                else
-                {
-                    unsafe
-                    {
-                        long bufferSize = 4L * 1024 * 1024 * 1024; // 4 GB max
-                        IntPtr data = Marshal.AllocHGlobal((IntPtr)bufferSize);
-                        ResourcesStream = new ExtantStream(new UnmanagedMemoryStream((byte*)data.ToPointer(), 0, bufferSize, FileAccess.ReadWrite));
-                    }
-                }
-                
             }
         }
 
