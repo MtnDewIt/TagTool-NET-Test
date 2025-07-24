@@ -22,7 +22,7 @@ namespace TagTool.Commands.Common
             ContextStack = contextStack;
         }
 
-        public object RunCommandScript(string filePath, bool shouldPrint)
+        public object RunCommandScript(string filePath, bool shouldPrint = false)
         {
             if (!File.Exists(filePath))
                 return new TagToolError(CommandError.FileNotFound, filePath);

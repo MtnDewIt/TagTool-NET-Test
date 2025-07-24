@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using TagTool.Cache;
 using TagTool.Commands.Common;
@@ -77,6 +78,10 @@ namespace TagTool.Commands
                     autoExecLines = autoExecLines[1..];
                 }
             }
+            else
+            {
+                autoExecLines = [];
+            }
 
             var cacheFileInfo = new FileInfo(cacheFilePath);
 
@@ -94,13 +99,17 @@ namespace TagTool.Commands
             contextStack.Push(tagsContext);
 
             var commandRunner = new CommandRunner(contextStack);
+
+            if (!RunAutoExecFile(commandRunner, autoExecLines))
+                return -1;
+
             if (autoexecCommand != null)
             {
-                commandRunner.RunCommand(autoexecCommand, printInput: false);
+                if (!RunAutoExec(commandRunner, args, autoexecCommand))
+                    return -1;
             }
             else
             {
-                RunAutoExecCommands(commandRunner, autoExecLines);
                 RunCommandLoop(commandRunner, contextStack);
             }
 
@@ -193,14 +202,51 @@ namespace TagTool.Commands
             return File.ReadAllLines(autoExecFilePath);
         }
 
-        private static void RunAutoExecCommands(CommandRunner commandRunner, string[] commands)
+        private static bool RunAutoExec(CommandRunner commandRunner, string[] args, string autoexecCommand)
         {
+            object result = null;
+
+            // Allow passing .cmds and .cs files directly
+            if (args.Length > 1 && args[1].EndsWith(".cs"))
+            {
+                if (ExecuteCSharpScript(args[1..], commandRunner.ContextStack) != 0)
+                    return false;
+            }
+            else if (args.Length > 1 && args[1].EndsWith(".cmds"))
+            {
+                result = commandRunner.RunCommandScript(args[1]);
+            }
+            else
+            {
+                // Legacy support for executing a command
+                result = commandRunner.RunCommand(autoexecCommand);
+            }
+
+            if (result is TagToolError error)
+            {
+                Log.Error(error.Message);
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool RunAutoExecFile(CommandRunner commandRunner, string[] commands)
+        {
+            // TODO: make this use CommandRunner.RunCommandScript
             foreach (string line in commands)
             {
                 if (commandRunner.EOF)
                     break;
-                commandRunner.RunCommand(line);
+
+                object result = commandRunner.RunCommand(line);
+                if (result is TagToolError error)
+                {
+                    Log.Error(error.Message);
+                    return false;
+                }
             }
+            return true;
         }
 
         private static int ExecuteCSharpScript(string[] args, CommandContextStack contextStack)
