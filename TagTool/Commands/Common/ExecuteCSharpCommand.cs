@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using TagTool.Common.Logging;
 using TagTool.Scripting.CSharp;
 
 namespace TagTool.Commands.Common
@@ -69,8 +71,9 @@ namespace TagTool.Commands.Common
                     return true;
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!Debugger.IsAttached)
             {
+                Log.Error(ex);
                 return new TagToolError(CommandError.CustomError, ex.Message);
             }
         }
