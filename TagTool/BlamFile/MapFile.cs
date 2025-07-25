@@ -127,10 +127,10 @@ namespace TagTool.BlamFile
                 return true;
         }
 
-        private static string GetBuildDate(EndianReader reader, CacheFileVersion version)
+        private static string GetBuildDate(EndianReader reader, CacheFileVersion cacheFileVersion, CacheVersion version = CacheVersion.Unknown)
         {
             var buildDataLength = 0x20;
-            switch (version)
+            switch (cacheFileVersion)
             {
                 case CacheFileVersion.HaloPC:
                 case CacheFileVersion.HaloCustomEdition:
@@ -147,13 +147,15 @@ namespace TagTool.BlamFile
                 case CacheFileVersion.Halo3Beta:
                 case CacheFileVersion.Halo3:
                 case CacheFileVersion.HaloOnline:
-                    if (IsGen3MCCFormat(reader))
-                        reader.SeekTo(0x120);
-                    else
                         reader.SeekTo(0x11C);
                     break;
                 case CacheFileVersion.HaloMCCUniversal:
-                    reader.SeekTo(0xA0);
+                    {
+                        if(version <= CacheVersion.HaloReach)
+                            reader.SeekTo(0xA0);
+                        else
+                            reader.SeekTo(0x98);
+                    }
                     break;
 
                 case CacheFileVersion.HaloReach:
@@ -178,7 +180,6 @@ namespace TagTool.BlamFile
         private static void DetectCacheVersionAndPlatform(EndianReader reader, CacheFileVersion mapVersion, ref CacheVersion cacheVersion, ref CachePlatform cachePlatform)
         {
             var version = GetMapFileVersion(reader);
-            var buildDate = GetBuildDate(reader, version);
 
             if (mapVersion == CacheFileVersion.HaloMCCUniversal)
             {
@@ -195,6 +196,13 @@ namespace TagTool.BlamFile
                     case CacheFileHeaderMCC.HaloEngineVersion.HaloReach:
                         cacheVersion = CacheVersion.HaloReach;
                         break;
+                    case CacheFileHeaderMCC.HaloEngineVersion.Halo4:
+                    case CacheFileHeaderMCC.HaloEngineVersion.Unknown3:
+                        cacheVersion = CacheVersion.Halo4;
+                        break;
+                    case CacheFileHeaderMCC.HaloEngineVersion.H2AMP:
+                        cacheVersion = CacheVersion.H2AMP;
+                        break;
                     default:
                         throw new NotSupportedException("Unsupported engine version");
                 }
@@ -202,6 +210,7 @@ namespace TagTool.BlamFile
             }
             else
             {
+                var buildDate = GetBuildDate(reader, version);
                 CacheVersionDetection.GetFromBuildName(buildDate, ref cacheVersion, ref cachePlatform);
             }
         }

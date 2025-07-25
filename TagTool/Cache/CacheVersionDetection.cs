@@ -533,6 +533,7 @@ namespace TagTool.Cache
                     return CacheGeneration.HaloOnline;
 
                 case CacheVersion.Halo4:
+                case CacheVersion.H2AMP:
                     return CacheGeneration.Fourth;
 
                 default:
@@ -594,6 +595,8 @@ namespace TagTool.Cache
                     return GameTitle.HaloReach;
                 case CacheVersion.Halo4:
                     return GameTitle.Halo4;
+                case CacheVersion.H2AMP:
+                    return GameTitle.H2AMP;
                 default:
                     return GameTitle.Unknown;
             }
@@ -658,7 +661,8 @@ namespace TagTool.Cache
             130893802351772672, // HaloOnline604673
             130930071628935939, // HaloOnline700123
             -1, // HaloReach
-            -1  // Halo 4
+            -1, // Halo 4
+            -1, // H2AMP
         };
     }
 
@@ -694,7 +698,8 @@ namespace TagTool.Cache
         HaloOnline700123,
         HaloReach,
         HaloReach11883,
-        Halo4
+        Halo4,
+        H2AMP
     }
 
     public enum CacheGeneration : int
