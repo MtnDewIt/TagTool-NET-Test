@@ -17,6 +17,7 @@ namespace TagTool.Cache.Gen3
             var gen3Header = (CacheFileHeaderGen3)baseMapFile.Header;
             var stringIDHeader = gen3Header.GetStringIDHeader();
             var cachePlatform = baseMapFile.CachePlatform;
+            var sectionTable = gen3Header.SectionTable;
 
             if (cachePlatform == CachePlatform.Original)
             {
@@ -47,27 +48,7 @@ namespace TagTool.Cache.Gen3
                 }
             }
             else if(cachePlatform == CachePlatform.MCC)
-            {
-                switch (Version)
-                {
-                    case CacheVersion.Halo3Retail:
-                        Resolver = new StringIdResolverHalo3MCC();
-                        break;
-
-                    case CacheVersion.Halo3ODST:
-                        Resolver = new StringIdResolverHalo3ODSTMCC();
-                        break;
-
-                    case CacheVersion.HaloReach:
-                        Resolver = new StringIdResolverHaloReachMCC();
-                        break;
-
-                    default:
-                        throw new NotSupportedException(CacheVersionDetection.GetBuildName(Version, cachePlatform));
-                }
-            }
-
-            var sectionTable = gen3Header.SectionTable;
+                Resolver = new StringIdResolverMCC(reader, stringIDHeader, sectionTable);
 
             // means no strings
             if (sectionTable != null && sectionTable.Sections[(int)CacheFileSectionType.StringSection].Size == 0)
