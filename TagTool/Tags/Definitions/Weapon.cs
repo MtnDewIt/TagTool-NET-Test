@@ -14,13 +14,17 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Name = "weapon", Tag = "weap", Size = 0x390, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
     [TagStructure(Name = "weapon", Tag = "weap", Size = 0x2CC, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
     [TagStructure(Name = "weapon", Tag = "weap", Size = 0x350, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x364, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x2D8, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x354, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x294, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     public class Weapon : Item
     {
         public WeaponFlags WeaponFlags;
         public SecondaryWeaponFlags SecondaryWeaponFlags;
+
+        [TagField(Platform = CachePlatform.Original)]
+        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
         public StringId UnusedLabel;
+
         public SecondaryTriggerModeValue SecondaryTriggerMode;
         public short MaximumAlternateShotsLoaded;
         public float TurnOnTime;
@@ -183,7 +187,7 @@ namespace TagTool.Tags.Definitions
 
         // -------- interface
         [TagField(Flags = Padding, Length = 16, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagField(Flags = Padding, Length = 16, MinVersion = CacheVersion.HaloReach)]
+        [TagField(Flags = Padding, Length = 16, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
         public byte[] SharedInterface;
 
         public List<FirstPersonBlock> FirstPerson;
@@ -326,7 +330,9 @@ namespace TagTool.Tags.Definitions
             public CachedTag FirstPersonAnimations;
         }
 
-        [TagStructure(Size = 0x80)]
+        [TagStructure(Size = 0x80, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x80, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0x60, Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach)]
         public class Magazine : TagStructure
         {
             public MagazineFlags Flags;
@@ -335,19 +341,33 @@ namespace TagTool.Tags.Definitions
             public short RoundsTotalMaximum;
             public short RoundsLoadedMaximum;
             public short RoundsInventoryMaximum;
-            [TagField(Length = 2, Flags = TagFieldFlags.Padding)]
+
+            [TagField(Length = 2, Flags = Padding, Platform = CachePlatform.Original)]
+            [TagField(Length = 2, Flags = Padding, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
             public byte[] Padding1;
+
             // the length of time it takes to load a single magazine into the weapon
-            public float ReloadTime;  // seconds
+            [TagField(Platform = CachePlatform.Original)]
+            [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
+            public float ReloadDialogueTime;  // seconds
+
             public short RoundsReloaded;
-            [TagField(Length = 2, Flags = TagFieldFlags.Padding)]
+
+            [TagField(Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach)]
+            public float ReloadDialogueTimeReachMCC;
+
+            [TagField(Length = 2, Flags = Padding, Platform = CachePlatform.Original)]
+            [TagField(Length = 2, Flags = Padding, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
             public byte[] Padding2;
+
             // the length of time it takes to chamber the next round
+            [TagField(Platform = CachePlatform.Original)]
+            [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
             public float ChamberTime; // seconds
-            [TagField(Length = 8, Flags = TagFieldFlags.Padding)]
+
+            [TagField(Length = 24, Flags = Padding, Platform = CachePlatform.Original)]
+            [TagField(Length = 24, Flags = Padding, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
             public byte[] Padding3;
-            [TagField(Length = 16, Flags = TagFieldFlags.Padding)]
-            public byte[] Padding4;
 
             [TagField(ValidTags = new[] { "snd!", "effe" })]
             public CachedTag ReloadingEffect;

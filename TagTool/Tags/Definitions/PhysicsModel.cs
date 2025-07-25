@@ -90,9 +90,9 @@ namespace TagTool.Tags.Definitions
 
         public List<Phantom> Phantoms;
 
-        [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public uint Unknown17;
-        [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public uint Unknown18;
 
         [Flags]
@@ -731,7 +731,7 @@ namespace TagTool.Tags.Definitions
             public short MaterialIndex;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
-            public byte MaterialIndexReach;
+            public sbyte MaterialIndexReach;
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public MaterialFlags MaterialFlags;
 
@@ -755,6 +755,9 @@ namespace TagTool.Tags.Definitions
         [TagStructure(Size = 0x6C, Align = 0x10, Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach)]
         public class Sphere : Shape
         {
+            [TagField(Flags = Padding, Length = 0x4, Align = 16, Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach)]
+            public byte[] ReachMCCPad;
+
             // translate shape
             [TagField(Align = 16)]
             public HavokShapeBase ConvexBase;

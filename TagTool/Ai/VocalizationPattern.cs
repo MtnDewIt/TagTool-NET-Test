@@ -20,7 +20,12 @@ namespace TagTool.Ai
         public SpeakerTypeEnum ListenerTarget; // The relationship between the subject and the cause
         public HostilityEnum Hostility;
         public PatternFlags Flags;
+
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public ActorTypeEnum CauseActorType;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public ActorTypeEnumReach CauseActorTypeReach;
+
         public DialogueObjectTypesEnum CauseType;
         public StringId CauseAiTypeName;
 
@@ -49,7 +54,11 @@ namespace TagTool.Ai
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public GameTypeEnum GameType;
 
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public ActorTypeEnum SubjectActorType;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public ActorTypeEnumReach SubjectActorTypeReach;
+
         public DialogueObjectTypesEnum SubjectType;
 
         [TagField(MinVersion = CacheVersion.HaloReach, Length = 0x2, Flags = Padding)]

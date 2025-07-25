@@ -934,14 +934,18 @@ namespace TagTool.Tags.Definitions
             Bit2 = 1 << 2
         }
 
-        [TagStructure(Size = 0x30)]
+        [TagStructure(Size = 0x30, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x2C, MinVersion = CacheVersion.HaloReach)]
         public class Inheritance : TagStructure
 		{
             [TagField(ValidTags = new[] { "jmad" })]
             public CachedTag InheritedGraph;
             public List<NodeMapBlock> NodeMap;
             public List<NodeMapFlag> NodeMapFlags;
+
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float RootZOffset;
+
             public InheritanceListFlags Flags;
 
             [TagStructure(Size = 0x2)]

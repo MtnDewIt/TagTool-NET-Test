@@ -116,11 +116,7 @@ namespace TagTool.Tags.Definitions
                 [TagField(MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
                 public ChudKeyframeColorSourceEnum ColorSource;
 
-                [TagField(Length = 2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.HaloOnlineED)]
-                [TagField(Length = 2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-                public byte[] XYJAZZQJ;
-
-                public enum ChudKeyframeColorSourceEnum : short
+                public enum ChudKeyframeColorSourceEnum : int
                 {
                     Taco
                 }
