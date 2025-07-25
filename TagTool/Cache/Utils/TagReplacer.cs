@@ -86,8 +86,8 @@ namespace TagTool.Cache.Utils
             foreach (HsSyntaxNode node in scenario.ScriptExpressions)
             {
                 if (node.Flags.HasFlag(HsSyntaxNodeFlags.Primitive)
-                    && node.ValueType.HaloOnline >= HsType.HaloOnlineValue.Sound
-                    && node.ValueType.HaloOnline <= HsType.HaloOnlineValue.AnyTagNotResolving)
+                    && node.ValueType >= HsType.Sound
+                    && node.ValueType <= HsType.AnyTagNotResolving)
                 {
                     int srcTagIndex = BitConverter.ToInt32(node.Data, 0);
                     if (srcTagIndex == tag.Index)

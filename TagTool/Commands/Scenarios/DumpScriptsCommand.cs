@@ -9,6 +9,7 @@ using TagTool.Common;
 using TagTool.Scripting;
 using TagTool.Tags.Definitions;
 using TagTool.Common.Logging;
+using TagTool.Tags;
 
 namespace TagTool.Commands.Scenarios
 {
@@ -154,39 +155,24 @@ namespace TagTool.Commands.Scenarios
             switch (version)
             {
                 case CacheVersion.Halo3Retail:
-                    return type.Halo3Retail.ToString();
+                    return type.ToString();
 
                 case CacheVersion.Halo3ODST:
-                    return type.Halo3ODST.ToString();
+                    return type.ToString();
 
                 case CacheVersion.HaloOnlineED:
                 case CacheVersion.HaloOnline106708:
-                    return type.HaloOnline.ToString();
+                    return type.ToString();
 
                 default:
                     Log.Warning($"No HsType found for cache \"{version}\". Defaulting to HaloOnline");
-                    return type.HaloOnline.ToString();
+                    return type.ToString();
             }
         }
 
         private int GetHsTypeAsInteger(CacheVersion version, HsType type)
         {
-            switch (version)
-            {
-                case CacheVersion.Halo3Retail:
-                    return (int)type.Halo3Retail;
-
-                case CacheVersion.Halo3ODST:
-                    return (int)type.Halo3ODST;
-
-                case CacheVersion.HaloOnlineED:
-                case CacheVersion.HaloOnline106708:
-                    return (int)type.HaloOnline;
-
-                default:
-                    Log.Warning($"No HsType found for cache \"{version}\". Defaulting to HaloOnline");
-                    return (int)type.HaloOnline;
-            }
+            return VersionedEnum.ExportValue(typeof(HsType), type, Cache.Version, Cache.Platform);
         }
 
         private void ParseScriptExpression(int index, int tabcount)

@@ -15,6 +15,7 @@ namespace TagTool.Scripting
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public StringId ScriptNameReach;
         public HsScriptType Type;
+        [TagField(EnumType = typeof(ushort))]
         public HsType ReturnType;
         public DatumHandle RootExpressionHandle;
         public List<HsScriptParameter> Parameters;

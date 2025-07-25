@@ -19,15 +19,15 @@ namespace TagTool.Porting.Gen3
             {
                 foreach (var global in scnr.Globals)
                 {
-                    ConvertHsType(global.Type);
+                    global.Type = ConvertHsType(global.Type);
                 }
 
                 foreach (var script in scnr.Scripts)
                 {
-                    ConvertHsType(script.ReturnType);
+                    script.ReturnType = ConvertHsType(script.ReturnType);
 
                     foreach (var parameter in script.Parameters)
-                        ConvertHsType(parameter.Type);
+                        parameter.Type = ConvertHsType(parameter.Type);
                 }
 
                 foreach (var expr in scnr.ScriptExpressions)
@@ -83,7 +83,7 @@ namespace TagTool.Porting.Gen3
                     return true;
 
                 case HsSyntaxNodeFlags.Expression:
-                    if ((int)expr.ValueType.HaloOnline > 0x4)
+                    if (expr.ValueType > HsType.Void)
                         return true;
                     else
                         return false;
@@ -97,22 +97,15 @@ namespace TagTool.Porting.Gen3
             }
         }
 
-        private void ConvertHsType(HsType type)
+        private HsType ConvertHsType(HsType type)
         {
-            if (!Enum.TryParse(
-                BlamCache.Version == CacheVersion.Halo3Retail ?
-                    type.Halo3Retail.ToString() :
-                    type.Halo3ODST.ToString(),
-                out type.HaloOnline))
+            if (type == HsType.PlayerColor)
             {
-                throw new NotImplementedException(
-                    BlamCache.Version == CacheVersion.Halo3Retail ?
-                        type.Halo3Retail.ToString() :
-                        type.Halo3ODST.ToString());
+                Log.Warning($"{HsType.PlayerColor} not supported");
+                return HsType.Invalid;
             }
 
-            if ((int)type.HaloOnline == 255)
-                type.HaloOnline = HsType.HaloOnlineValue.Invalid;
+            return type;
         }
 
         private void ConvertScriptValueOpcode(HsSyntaxNode expr)
@@ -239,30 +232,30 @@ namespace TagTool.Porting.Gen3
         private void ConvertScriptExpressionData(Stream cacheStream, Stream blamCacheStream, HsSyntaxNode expr)
         {
             if (expr.Flags == HsSyntaxNodeFlags.Expression)
-                switch (expr.ValueType.HaloOnline)
+                switch (expr.ValueType)
                 {
-                    case HsType.HaloOnlineValue.Sound:
-                    case HsType.HaloOnlineValue.Effect:
-                    case HsType.HaloOnlineValue.Damage:
-                    case HsType.HaloOnlineValue.LoopingSound:
-                    case HsType.HaloOnlineValue.AnimationGraph:
-                    case HsType.HaloOnlineValue.DamageEffect:
-                    case HsType.HaloOnlineValue.ObjectDefinition:
-                    case HsType.HaloOnlineValue.Bitmap:
-                    case HsType.HaloOnlineValue.Shader:
-                    case HsType.HaloOnlineValue.RenderModel:
-                    case HsType.HaloOnlineValue.StructureDefinition:
-                    case HsType.HaloOnlineValue.LightmapDefinition:
-                    case HsType.HaloOnlineValue.CinematicDefinition:
-                    case HsType.HaloOnlineValue.CinematicSceneDefinition:
-                    case HsType.HaloOnlineValue.BinkDefinition:
-                    case HsType.HaloOnlineValue.AnyTag:
-                    case HsType.HaloOnlineValue.AnyTagNotResolving:
+                    case HsType.Sound:
+                    case HsType.Effect:
+                    case HsType.Damage:
+                    case HsType.LoopingSound:
+                    case HsType.AnimationGraph:
+                    case HsType.DamageEffect:
+                    case HsType.ObjectDefinition:
+                    case HsType.Bitmap:
+                    case HsType.Shader:
+                    case HsType.RenderModel:
+                    case HsType.StructureDefinition:
+                    case HsType.LightmapDefinition:
+                    case HsType.CinematicDefinition:
+                    case HsType.CinematicSceneDefinition:
+                    case HsType.BinkDefinition:
+                    case HsType.AnyTag:
+                    case HsType.AnyTagNotResolving:
                         ConvertScriptTagReferenceExpressionData(cacheStream, blamCacheStream, expr);
                         return;
 
-                    case HsType.HaloOnlineValue.AiLine when BitConverter.ToInt32(expr.Data, 0) != -1:
-                    case HsType.HaloOnlineValue.StringId:
+                    case HsType.AiLine when BitConverter.ToInt32(expr.Data, 0) != -1:
+                    case HsType.StringId:
                         ConvertScriptStringIdExpressionData(cacheStream, blamCacheStream, expr);
                         return;
 
@@ -275,19 +268,19 @@ namespace TagTool.Porting.Gen3
             switch (expr.Flags)
             {
                 case HsSyntaxNodeFlags.Expression:
-                    switch (expr.ValueType.HaloOnline)
+                    switch (expr.ValueType)
                     {
-                        case HsType.HaloOnlineValue.Object:
-                        case HsType.HaloOnlineValue.Unit:
-                        case HsType.HaloOnlineValue.Vehicle:
-                        case HsType.HaloOnlineValue.Weapon:
-                        case HsType.HaloOnlineValue.Device:
-                        case HsType.HaloOnlineValue.Scenery:
-                        case HsType.HaloOnlineValue.EffectScenery:
+                        case HsType.Object:
+                        case HsType.Unit:
+                        case HsType.Vehicle:
+                        case HsType.Weapon:
+                        case HsType.Device:
+                        case HsType.Scenery:
+                        case HsType.EffectScenery:
                             dataSize = 2; // definitely not 4
                             break;
 
-                        case HsType.HaloOnlineValue.Ai: // int
+                        case HsType.Ai: // int
                             break;
 
                         default:
@@ -303,9 +296,9 @@ namespace TagTool.Porting.Gen3
                     }
                     else if (BlamCache.Version == CacheVersion.Halo3ODST)
                     {
-                        switch (expr.ValueType.HaloOnline)
+                        switch (expr.ValueType)
                         {
-                            case HsType.HaloOnlineValue.Long:
+                            case HsType.Long:
                                 dataSize = 2; // definitely not 4
                                 break;
                             default:
@@ -327,15 +320,15 @@ namespace TagTool.Porting.Gen3
                 // Breakpoint any case statement below to examine different types of "object" expression data
                 //
 
-                switch (expr.ValueType.HaloOnline)
+                switch (expr.ValueType)
                 {
-                    case HsType.HaloOnlineValue.Object: break;
-                    case HsType.HaloOnlineValue.Unit: break;
-                    case HsType.HaloOnlineValue.Vehicle: break;
-                    case HsType.HaloOnlineValue.Weapon: break;
-                    case HsType.HaloOnlineValue.Device: break;
-                    case HsType.HaloOnlineValue.Scenery: break;
-                    case HsType.HaloOnlineValue.EffectScenery: break;
+                    case HsType.Object: break;
+                    case HsType.Unit: break;
+                    case HsType.Vehicle: break;
+                    case HsType.Weapon: break;
+                    case HsType.Device: break;
+                    case HsType.Scenery: break;
+                    case HsType.EffectScenery: break;
                 }
             }
 #endif
@@ -355,7 +348,7 @@ namespace TagTool.Porting.Gen3
                     expr.Data[1] = bytes[1];
                 }
             }
-            else if (expr.Flags == HsSyntaxNodeFlags.Expression && expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Ai)
+            else if (expr.Flags == HsSyntaxNodeFlags.Expression && expr.ValueType == HsType.Ai)
             {
                 var value = BitConverter.ToUInt32(expr.Data, 0);
 
@@ -454,7 +447,7 @@ namespace TagTool.Porting.Gen3
                     case "vehicle_test_seat_list":
                         expr.Opcode = 0x114;
                         if (expr.Flags == HsSyntaxNodeFlags.Group &&
-                            expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Boolean)
+                            expr.ValueType == HsType.Boolean)
                         {
                             UpdateAiTestSeat(cacheStream, scnr, expr);
                         }
@@ -463,7 +456,7 @@ namespace TagTool.Porting.Gen3
                     case "vehicle_test_seat":
                         expr.Opcode = 0x115; // -> vehicle_test_seat_unit
                         if (expr.Flags == HsSyntaxNodeFlags.Group &&
-                            expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Boolean)
+                            expr.ValueType == HsType.Boolean)
                         {
                             UpdateAiTestSeat(cacheStream, scnr, expr);
                         }
@@ -532,7 +525,7 @@ namespace TagTool.Porting.Gen3
                         // Change the player appearance aspect ratio
                         if (scnr.MapId == 0x10231971 && // mainmenu map id
                             expr.Flags == HsSyntaxNodeFlags.Group &&
-                            expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Void)
+                            expr.ValueType == HsType.Void)
                         {
                             var exprIndex = scnr.ScriptExpressions.IndexOf(expr) + 1;
                             for (var n = 1; n < 2; n++)
@@ -546,7 +539,7 @@ namespace TagTool.Porting.Gen3
                     case 0x0F9: // vehicle_test_seat_list
                         expr.Opcode = 0x114;
                         if (expr.Flags == HsSyntaxNodeFlags.Group &&
-                            expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Boolean)
+                            expr.ValueType == HsType.Boolean)
                         {
                             UpdateAiTestSeat(cacheStream, scnr, expr);
                         }
@@ -555,7 +548,7 @@ namespace TagTool.Porting.Gen3
                     case 0x0FA: // vehicle_test_seat
                         expr.Opcode = 0x115; // -> vehicle_test_seat_unit
                         if (expr.Flags == HsSyntaxNodeFlags.Group &&
-                            expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Boolean)
+                            expr.ValueType == HsType.Boolean)
                         {
                             UpdateAiTestSeat(cacheStream, scnr, expr);
                         }
@@ -587,7 +580,7 @@ namespace TagTool.Porting.Gen3
                     //    expr.Opcode = 0x3A6;
                     //    // Remove the additional H3 argument
                     //    if (expr.Flags == HsSyntaxNodeFlags.Group &&
-                    //        expr.ValueType.HaloOnline == HsType.HaloOnlineValue.Void)
+                    //        expr.ValueType.HaloOnline == HsType.Void)
                     //    {
                     //        var exprIndex = scnr.ScriptExpressions.IndexOf(expr) + 1;
                     //        for (var n = 1; n < 4; n++)
@@ -669,7 +662,7 @@ namespace TagTool.Porting.Gen3
 
                 if (profileExpr.StringAddress != 0)
                 {
-                    if (profileExpr.ValueType.Halo3Retail.ToString() != "StartingProfile")
+                    if (profileExpr.ValueType.ToString() != "StartingProfile")
                         return;
 
                     using (var scriptStringStream = new MemoryStream(scnr.ScriptStrings))
@@ -687,7 +680,7 @@ namespace TagTool.Porting.Gen3
                             return;
                         }
 
-                        profileExpr.ValueType.Halo3Retail = HsType.Halo3RetailValue.StartingProfile;
+                        profileExpr.ValueType = HsType.StartingProfile;
                         profileExpr.Data = new byte[] { (byte)((startingProfileIndex >> 8)), (byte)(startingProfileIndex & 0xFF), 0xFF, 0xFF };
                         return;
                     }
@@ -716,7 +709,7 @@ namespace TagTool.Porting.Gen3
                         if (scriptName == script.ScriptName)
                         {
 
-                            stringExpr.ValueType.Halo3Retail = HsType.Halo3RetailValue.Script;
+                            stringExpr.ValueType = HsType.Script;
                             stringExpr.Data = BitConverter.GetBytes(i).ToArray();
                             return;
                         }
@@ -886,7 +879,7 @@ namespace TagTool.Porting.Gen3
             }
 
             seatMappingExpr.Opcode = 0x00C; // -> unit_seat_mapping
-            seatMappingExpr.ValueType.Halo3Retail = HsType.Halo3RetailValue.UnitSeatMapping;
+            seatMappingExpr.ValueType = HsType.UnitSeatMapping;
             seatMappingExpr.Data = BitConverter.GetBytes((seatMappingIndex & ushort.MaxValue) | (1 << 16)).Reverse().ToArray();
             //all four bytes need to be FF for the argument to be "none"
             if (seatMappingStringId == StringId.Invalid)

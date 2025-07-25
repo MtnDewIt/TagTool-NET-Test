@@ -14,8 +14,8 @@ namespace TagTool.Porting.HaloOnline
             foreach (HsSyntaxNode node in scnr.ScriptExpressions)
             {
                 if (node.Flags.HasFlag(HsSyntaxNodeFlags.Primitive)
-                    && node.ValueType.HaloOnline >= HsType.HaloOnlineValue.Sound
-                    && node.ValueType.HaloOnline <= HsType.HaloOnlineValue.AnyTagNotResolving)
+                    && node.ValueType >= HsType.Sound
+                    && node.ValueType <= HsType.AnyTagNotResolving)
                 {
                     int srcTagIndex = BitConverter.ToInt32(node.Data, 0);
                     int destTagIndex = -1;
