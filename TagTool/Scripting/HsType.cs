@@ -36,6 +36,8 @@ namespace TagTool.Scripting
         AiLine,
         StartingProfile,
         Conversation,
+        [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+        Player,
         ZoneSet,
         DesignerZone,
         PointReference,
@@ -56,7 +58,11 @@ namespace TagTool.Scripting
         LightmapDefinition,
         CinematicDefinition,
         CinematicSceneDefinition,
+        [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+        CinematicTransitionDefinition,
         BinkDefinition,
+        [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+        CuiScreenDefinition,
         AnyTag,
         AnyTagNotResolving,
         GameDifficulty,
@@ -65,11 +71,11 @@ namespace TagTool.Scripting
         Controller,
         ButtonPreset,
         JoystickPreset,
-
         [TagEnumMember(MaxVersion = CacheVersion.Halo3ODST)]
         [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
         PlayerColor,
-
+        [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+        PlayerModelChoice,
         PlayerCharacterType,
         VoiceOutputSetting,
         VoiceMask,
@@ -78,12 +84,16 @@ namespace TagTool.Scripting
         ModelState,
         Event,
         CharacterPhysics,
-
         [TagEnumMember(MinVersion = CacheVersion.Halo3ODST)]
         PrimarySkull,
         [TagEnumMember(MinVersion = CacheVersion.Halo3ODST)]
         SecondarySkull,
-
+        [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+        Skull,
+        [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+        FiringPointEvaluator,
+        [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+        DamageRegion,
         Object,
         Unit,
         Vehicle,
