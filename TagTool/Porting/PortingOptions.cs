@@ -32,5 +32,8 @@ namespace TagTool.Porting
 
         [Description("Regenerates the structure surface triangle mappings")]
         public bool RegenerateStructureSurfaces = false;
+
+        [Description("Enables the fix for vehicle_test_seat_list & vehicle_test_seat (requires dll changes)")]
+        public bool EnableH3VehicleTestSeat = false;
     }
 }

@@ -445,19 +445,21 @@ namespace TagTool.Porting.Gen3
                 switch (opName)
                 {
                     case "vehicle_test_seat_list":
-                        expr.Opcode = 0x114;
-                        if (expr.Flags == HsSyntaxNodeFlags.Group &&
-                            expr.ValueType == HsType.Boolean)
+                        if (Options.EnableH3VehicleTestSeat)
+                            expr.Opcode = 0x6A9; // -> vehicle_test_seat_list_legacy
+                        else
                         {
+                            expr.Opcode = 0x114; // -> vehicle_test_seat_list
                             UpdateAiTestSeat(cacheStream, scnr, expr);
                         }
                         return true;
 
                     case "vehicle_test_seat":
-                        expr.Opcode = 0x115; // -> vehicle_test_seat_unit
-                        if (expr.Flags == HsSyntaxNodeFlags.Group &&
-                            expr.ValueType == HsType.Boolean)
+                        if (Options.EnableH3VehicleTestSeat)
+                            expr.Opcode = 0x6AA; // -> vehicle_test_seat_legacy
+                        else
                         {
+                            expr.Opcode = 0x115; // -> vehicle_test_seat_unit
                             UpdateAiTestSeat(cacheStream, scnr, expr);
                         }
                         return true;
@@ -537,19 +539,21 @@ namespace TagTool.Porting.Gen3
                         return true;
 
                     case 0x0F9: // vehicle_test_seat_list
-                        expr.Opcode = 0x114;
-                        if (expr.Flags == HsSyntaxNodeFlags.Group &&
-                            expr.ValueType == HsType.Boolean)
+                        if (Options.EnableH3VehicleTestSeat)
+                            expr.Opcode = 0x6A9; // -> vehicle_test_seat_list_legacy
+                        else
                         {
+                            expr.Opcode = 0x114; // -> vehicle_test_seat_list
                             UpdateAiTestSeat(cacheStream, scnr, expr);
                         }
                         return true;
 
                     case 0x0FA: // vehicle_test_seat
-                        expr.Opcode = 0x115; // -> vehicle_test_seat_unit
-                        if (expr.Flags == HsSyntaxNodeFlags.Group &&
-                            expr.ValueType == HsType.Boolean)
+                        if (Options.EnableH3VehicleTestSeat)
+                            expr.Opcode = 0x6AA; // -> vehicle_test_seat_legacy
+                        else
                         {
+                            expr.Opcode = 0x115; // -> vehicle_test_seat_unit
                             UpdateAiTestSeat(cacheStream, scnr, expr);
                         }
                         return true;
@@ -662,7 +666,7 @@ namespace TagTool.Porting.Gen3
 
                 if (profileExpr.StringAddress != 0)
                 {
-                    if (profileExpr.ValueType.ToString() != "StartingProfile")
+                    if (profileExpr.ValueType != HsType.StartingProfile)
                         return;
 
                     using (var scriptStringStream = new MemoryStream(scnr.ScriptStrings))
@@ -718,8 +722,12 @@ namespace TagTool.Porting.Gen3
             }
         }
 
+        [Obsolete("Will no longer be needed")]
         private void UpdateAiTestSeat(Stream cacheStream, Scenario scnr, HsSyntaxNode expr)
         {
+            if (expr.Flags != HsSyntaxNodeFlags.Group)
+                return;
+
             var exprIndex = scnr.ScriptExpressions.IndexOf(expr) + 1;
             for (var n = 1; n < 2; n++)
                 exprIndex = scnr.ScriptExpressions[exprIndex].NextExpressionHandle.Index;
@@ -739,7 +747,7 @@ namespace TagTool.Porting.Gen3
             if (vehicleExpr.Flags == HsSyntaxNodeFlags.Group &&
                 seatMappingStringId != StringId.Invalid)
             {
-                if (vehicleExpr.Opcode == (BlamCache.Platform == CachePlatform.MCC ? 0x194 : 0x193)) // ai_vehicle_get_from_starting_location
+                if (BlamCache.ScriptDefinitions.Scripts[vehicleExpr.Opcode].Name == "ai_vehicle_get_from_starting_location")
                 {
                     var expr3 = scnr.ScriptExpressions[++exprIndex]; // function name
                     var expr4 = scnr.ScriptExpressions[expr3.NextExpressionHandle.Index]; // <ai> parameter

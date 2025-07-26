@@ -5088,6 +5088,18 @@ namespace TagTool.Scripting.Definitions
                 new ScriptInfo.ParameterInfo(HsType.Script),
             },
             [0x6A8] = new ScriptInfo(HsType.Short, "dew_method_stub"),
+            [0x6A9] = new ScriptInfo(HsType.Boolean, "vehicle_test_seat_list_legacy")
+            {
+                new ScriptInfo.ParameterInfo(HsType.Vehicle),
+                new ScriptInfo.ParameterInfo(HsType.StringId),
+                new ScriptInfo.ParameterInfo(HsType.ObjectList),
+            },
+            [0x6AA] = new ScriptInfo(HsType.Boolean, "vehicle_test_seat_legacy")
+            {
+                new ScriptInfo.ParameterInfo(HsType.Vehicle),
+                new ScriptInfo.ParameterInfo(HsType.StringId),
+                new ScriptInfo.ParameterInfo(HsType.Unit),
+            },
         };
         
         IReadOnlyDictionary<int, ScriptInfo> IScriptDefinitions.Scripts => Scripts;
