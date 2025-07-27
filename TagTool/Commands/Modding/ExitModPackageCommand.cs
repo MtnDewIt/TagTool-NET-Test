@@ -5,6 +5,7 @@ using TagTool.Commands.Common;
 using TagTool.Commands.Tags;
 using System.IO;
 using System.ComponentModel.Design.Serialization;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Modding
 {
@@ -36,7 +37,7 @@ namespace TagTool.Commands.Modding
             }
             else 
             {
-                new TagToolWarning("Use 'exit' to leave standard contexts.");
+                Log.Warning("Use 'exit' to leave standard contexts.");
             }
 
             return true;

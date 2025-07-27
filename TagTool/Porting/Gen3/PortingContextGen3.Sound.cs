@@ -13,6 +13,7 @@ using TagTool.Commands.Porting;
 using TagTool.Commands.Sounds;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
+using TagTool.Common.Logging;
 
 namespace TagTool.Porting.Gen3
 {
@@ -48,8 +49,7 @@ namespace TagTool.Porting.Gen3
             || !File.Exists($@"{Program.TagToolDirectory}\Tools\towav.exe")
             || !File.Exists($@"{Program.TagToolDirectory}\Tools\xmadec.exe"))
             {
-                new TagToolError(CommandError.CustomError,
-                    "Failed to locate sound conversion tools. Please install ffmpeg, towav and xmadec in the Tools folder.");
+                Log.Error("Failed to locate sound conversion tools. Please install ffmpeg, towav and xmadec in the Tools folder.");
                 return null;
             }
 

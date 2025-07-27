@@ -7,6 +7,7 @@ using System.Collections;
 using TagTool.Common;
 using TagTool.Commands.Common;
 using System.Runtime.CompilerServices;
+using TagTool.Common.Logging;
 
 namespace TagTool.Tags
 {
@@ -112,7 +113,7 @@ namespace TagTool.Tags
 
 			var typename = Info.Types[0].FullName.Replace("TagTool.", "").Replace("Tags.Definitions.", "");
 			if (offset != expectedSize)
-				new TagToolWarning($"Bad Size. Version: {Info.Version}:{Info.CachePlatform}, Type: '{typename}', Expected: 0x{expectedSize:X}, Actual: 0x{offset:X}");
+				Log.Warning($"Bad Size. Version: {Info.Version}:{Info.CachePlatform}, Type: '{typename}', Expected: 0x{expectedSize:X}, Actual: 0x{offset:X}");
 #endif
 		}
 
@@ -176,9 +177,6 @@ namespace TagTool.Tags
                 
                 if (attribute.EnumType == null)
                     throw new Exception("FlagBits Enum must have the 'EnumType' TagField attribute set");
-
-				if (!VersionedEnum.IsSufficientStorageType(info.Type, attribute.EnumType, targetVersion, cachePlatform))
-					throw new Exception($"FlagBits  enum 'EnumType' TagField attribute is not large enough to store all the members for cache version: '{targetVersion}', platform: '{cachePlatform}'");
 			}
 			else if(field.FieldType.IsEnum)
 			{
@@ -188,9 +186,6 @@ namespace TagTool.Tags
 				{
 					if (attribute.EnumType == null)
 						throw new Exception("Versioned Enum must have the 'EnumType' TagField attribute set");
-
-					if (!VersionedEnum.IsSufficientStorageType(info.Type, attribute.EnumType, targetVersion, cachePlatform))
-						throw new Exception($"Versioned Enum 'EnumType' TagField attribute is not large enough to store all the members for cache version: '{targetVersion}', platform: '{cachePlatform}'");
 				}
 			}
 		}

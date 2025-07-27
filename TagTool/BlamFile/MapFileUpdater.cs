@@ -6,6 +6,7 @@ using TagTool.BlamFile.MCC;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
@@ -82,7 +83,7 @@ namespace TagTool.BlamFile
                 SaveMapFile(map, mapName, scnr.MapId);
 
                 if (mapInfo == null)
-                    new TagToolWarning($"Scenario 0x{scnrTag.Index:X4} \"{mapName}\" NOT using map info");
+                    Log.Warning($"Scenario 0x{scnrTag.Index:X4} \"{mapName}\" NOT using map info");
                 else
                     Console.WriteLine($"Scenario 0x{scnrTag.Index:X4} \"{mapName}\" using map info");
             }

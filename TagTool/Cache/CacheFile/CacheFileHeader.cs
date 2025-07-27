@@ -27,6 +27,30 @@ namespace TagTool.Cache
                 // TODO: cleanup
                 // adapt the header for gen3 for now
                 var header = deserializer.Deserialize<CacheFileHeaderMCC>(dataContext);
+                header.StringIdsHeader.BufferOffset = header.StringIdsHeader.BufferOffsetMCC;
+
+                if (version >= CacheVersion.Halo4)
+                {
+                    return new CacheFileHeaderGen4()
+                    {
+                        HeaderSignature = header.HeaderSignature,
+                        FileVersion = header.FileVersion,
+                        TagTableHeaderOffset64 = header.TagTableHeaderOffset.Value,
+                        TagMemoryHeader = header.TagMemoryHeader,
+                        SourceFile = header.SourceFile,
+                        Build = header.Build,
+                        CacheType = header.CacheType,
+                        SharedCacheType = header.SharedCacheType,
+                        StringIdsHeader = header.GetStringIDHeader(),
+                        TagNamesHeader = header.TagNamesHeader,
+                        Name = header.Name,
+                        VirtualBaseAddress64 = header.VirtualBaseAddress.Value,
+                        Partitions = header.Partitions,
+                        SectionTable = header.SectionTable,
+                        FooterSignature = header.FooterSignature
+                    };
+                }
+
                 var adapter = new CacheFileHeaderGen3()
                 {
                     HeaderSignature = header.HeaderSignature,
@@ -83,6 +107,7 @@ namespace TagTool.Cache
                 case CacheVersion.HaloOnline700123:
                     return deserializer.Deserialize<CacheFileHeaderGenHaloOnline>(dataContext);
                 case CacheVersion.Halo4:
+                case CacheVersion.H2AMP:
                     return deserializer.Deserialize<CacheFileHeaderGen4>(dataContext);
             }
             return null;
@@ -104,16 +129,28 @@ namespace TagTool.Cache
     }
 
     [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo3Beta)]
-    [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3Retail)]
+    [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x18, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
     public class StringIDHeader : TagStructure
     {
         [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo3Beta)]
         public uint BufferAlignedOffset;
 
         public int Count;
+
+        [TagField(Platform = CachePlatform.MCC)]
+        public uint BufferOffsetMCC;
+
         public int BufferSize;
         public uint IndicesOffset;
+
+        [TagField(Platform = CachePlatform.Original)]
         public uint BufferOffset;
+
+        [TagField(Platform = CachePlatform.MCC)]
+        public int NamespacesCount;
+        [TagField(Platform = CachePlatform.MCC)]
+        public uint NamespacesOffset;
     }
 
     [TagStructure(Size = 0x10)]

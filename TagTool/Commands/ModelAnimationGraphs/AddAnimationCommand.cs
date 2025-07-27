@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Bson;
 using System.Reflection.Emit;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.ModelAnimationGraphs
 {
@@ -133,7 +134,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                         FrameInfoType = ModelAnimationTagResource.GroupMemberMovementDataType.dx_dy_dz_dyaw;
                         break;
                     default:
-                        new TagToolError(CommandError.CustomError, $"Filetype {file_extension.ToUpper()} not recognized!");
+                        Log.Error($"Filetype {file_extension.ToUpper()} not recognized!");
                         return false;
                 }
 
@@ -265,7 +266,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                                 if (wt.Set.Actions.Any(e => e.Animation == (short)Animation.Animations.FindIndex(n => n.Name == animation_name)) ||
                                     wt.Set.Overlays.Any(e => e.Animation == (short)Animation.Animations.FindIndex(n => n.Name == animation_name)))
                                 {
-                                    Console.WriteLine("Existing mode block found for this animation index, skipping new mode block creation.");
+                                    Log.Warning("Existing mode block found for this animation index, skipping new mode block creation.");
                                     found = true;
                                     break;
                                 }
@@ -305,7 +306,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 new List<string> { "s_kill", "s_ping", "h_kill", "h_ping", "sync_actions", "suspension", "tread", "object", "2", "device"};
             if(tokens.Any(t => unsupportedTokens.Contains(t)))
             {
-                new TagToolWarning($"Unsupported string token found in filename {filename}. Manual mode addition is required.");
+                Log.Warning($"Unsupported string token found in filename {filename}. Manual mode addition is required.");
                 return;
             }
 
@@ -463,7 +464,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 int matching_index = importer.AnimationNodes.FindIndex(x => x.Name.Equals(nodeName));
                 if (matching_index == -1)
                 {
-                    new TagToolWarning($"No node matching '{nodeName}' found in imported file! Will proceed with blank data for missing node");
+                    Log.Warning($"No node matching '{nodeName}' found in imported file! Will proceed with blank data for missing node");
                     newAnimationNodes.Add(new AnimationImporter.AnimationNode() { Name = nodeName, FirstChildNode = skellynode.FirstChildNodeIndex, NextSiblingNode = skellynode.NextSiblingNodeIndex, ParentNode = skellynode.ParentNodeIndex });
                 }
                 else

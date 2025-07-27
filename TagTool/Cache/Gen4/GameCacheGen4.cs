@@ -38,6 +38,8 @@ namespace TagTool.Cache
         /// </summary>
         public readonly int PageAlign = 0x800;
 
+        public ulong Expand = 0x0;
+
         public uint TagAddressToOffset(uint address)
         {
             var headerGen4 = (CacheFileHeaderGen4)BaseMapFile.Header;
@@ -47,7 +49,7 @@ namespace TagTool.Cache
                 (ulong)headerGen4.VirtualBaseAddress32;
 
             var unpackedAddress = Platform == CachePlatform.MCC ?
-                (((ulong)address << 2) + 0x50000000) :
+                (((ulong)address << 2) + Expand) :
                 (ulong)address;
 
             return (uint)(unpackedAddress - (baseAddress - (ulong)headerGen4.SectionTable.GetSectionOffset(CacheFileSectionType.TagSection)));
@@ -69,18 +71,22 @@ namespace TagTool.Cache
 
             DisplayName = mapFile.Header.GetName() + ".map";
 
+            if (Platform == CachePlatform.MCC)
+                Expand = (ulong)(Version <= CacheVersion.Halo4 ? 0x4FFF0000 : 0x7AC00000);
+
             Directory = file.Directory;
 
             using(var cacheStream = OpenCacheRead())
             using(var reader = new EndianReader(cacheStream, Endianness))
             {
                 StringTableGen4 = new StringTableGen4(reader, BaseMapFile);
-                TagCacheGen4 = new TagCacheGen4(reader, BaseMapFile, StringTableGen4);
+                TagCacheGen4 = new TagCacheGen4(reader, BaseMapFile, StringTableGen4, Expand);
                 ResourceCacheGen4 = new ResourceCacheGen4(this);
 
                 if(TagCacheGen4.Instances.Count > 0)
                 {
-                    if (Version == CacheVersion.Halo3Beta || headerGen4.SectionTable.Sections[(int)CacheFileSectionType.LocalizationSection].Size == 0)
+
+                    if (headerGen4.SectionTable.Sections[(int)CacheFileSectionType.LocalizationSection].Size == 0)
                         LocaleTables = new List<LocaleTable>();
                     else
                     {

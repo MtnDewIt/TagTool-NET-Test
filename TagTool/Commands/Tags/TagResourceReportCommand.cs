@@ -52,7 +52,7 @@ namespace TagTool.Commands.Tags
             if (args.Count > 0)
             {
                 if (!Cache.TagCache.TryGetCachedTag(args[0], out var tag))
-                    new TagToolError(CommandError.TagInvalid);
+                    return new TagToolError(CommandError.TagInvalid, args[0]);
 
                 tags.Add(tag);
             }

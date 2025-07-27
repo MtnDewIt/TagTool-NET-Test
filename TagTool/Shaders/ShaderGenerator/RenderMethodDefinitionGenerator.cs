@@ -13,6 +13,7 @@ using TagTool.Shaders;
 using TagTool.Tags.Definitions;
 using static TagTool.Tags.Definitions.RenderMethodDefinition;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 
 namespace TagTool.Shaders.ShaderGenerator
 {
@@ -49,7 +50,7 @@ namespace TagTool.Shaders.ShaderGenerator
             
             if (!cache.TagCache.TryGetTag<RenderMethodDefinition>(rmdfName, out CachedTag rmdfTag)) // generate
             {
-                new TagToolError(CommandError.CustomMessage, $"No rmdf tag present for {shaderType}");
+                Log.Error($"No rmdf tag present for {shaderType}");
                 return false;
                 //rmdfTag = cache.TagCache.AllocateTag<RenderMethodDefinition>(rmdfName);
                 //var rmdf = GenerateRenderMethodDefinition(cache, stream, generator, shaderType, out _, out _);

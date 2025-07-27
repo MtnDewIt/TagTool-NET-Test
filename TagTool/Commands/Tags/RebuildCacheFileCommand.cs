@@ -288,7 +288,7 @@ namespace TagTool.Commands
                     return true;
 
                 case HsSyntaxNodeFlags.Expression:
-                    if ((int)expr.ValueType.HaloOnline > 0x4)
+                    if (expr.ValueType > HsType.Void)
                         return true;
                     else
                         return false;
@@ -318,25 +318,25 @@ namespace TagTool.Commands
                 if (!ScriptExpressionIsValue(expr))
                     continue;
 
-                switch (expr.ValueType.HaloOnline)
+                switch (expr.ValueType)
                 {
-                    case HsType.HaloOnlineValue.Sound:
-                    case HsType.HaloOnlineValue.Effect:
-                    case HsType.HaloOnlineValue.Damage:
-                    case HsType.HaloOnlineValue.LoopingSound:
-                    case HsType.HaloOnlineValue.AnimationGraph:
-                    case HsType.HaloOnlineValue.DamageEffect:
-                    case HsType.HaloOnlineValue.ObjectDefinition:
-                    case HsType.HaloOnlineValue.Bitmap:
-                    case HsType.HaloOnlineValue.Shader:
-                    case HsType.HaloOnlineValue.RenderModel:
-                    case HsType.HaloOnlineValue.StructureDefinition:
-                    case HsType.HaloOnlineValue.LightmapDefinition:
-                    case HsType.HaloOnlineValue.CinematicDefinition:
-                    case HsType.HaloOnlineValue.CinematicSceneDefinition:
-                    case HsType.HaloOnlineValue.BinkDefinition:
-                    case HsType.HaloOnlineValue.AnyTag:
-                    case HsType.HaloOnlineValue.AnyTagNotResolving:
+                    case HsType.Sound:
+                    case HsType.Effect:
+                    case HsType.Damage:
+                    case HsType.LoopingSound:
+                    case HsType.AnimationGraph:
+                    case HsType.DamageEffect:
+                    case HsType.ObjectDefinition:
+                    case HsType.Bitmap:
+                    case HsType.Shader:
+                    case HsType.RenderModel:
+                    case HsType.StructureDefinition:
+                    case HsType.LightmapDefinition:
+                    case HsType.CinematicDefinition:
+                    case HsType.CinematicSceneDefinition:
+                    case HsType.BinkDefinition:
+                    case HsType.AnyTag:
+                    case HsType.AnyTagNotResolving:
                         CopyScriptTagReferenceExpressionData(expr);
                         break;
 

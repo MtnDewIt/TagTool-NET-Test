@@ -20,6 +20,7 @@ using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock;
 using ShaderGen2 = TagTool.Tags.Definitions.Gen2.Shader;
 using TagGroupGen3 = TagTool.Cache.Gen3.TagGroupGen3;
 using TagTool.Cache.HaloOnline;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Porting.Gen2
 {
@@ -1245,7 +1246,7 @@ namespace TagTool.Commands.Porting.Gen2
                         break;
                     }
                 default:
-                    new TagToolWarning($"Shader template '{shader_template}' not yet supported!");
+                    Log.Warning($"Shader template '{shader_template}' not yet supported!");
                     return null;
             }
 
@@ -1363,7 +1364,7 @@ namespace TagTool.Commands.Porting.Gen2
                     else
                     {
                         shaderCategoriesRMSH[(int)NewShader.ShaderMethods.Self_Illumination] = (byte)NewShader.Self_Illumination.Simple;
-                        new TagToolWarning($"Shader template '{shader_template}' has unknown or default illum type");
+                        Log.Warning($"Shader template '{shader_template}' has unknown or default illum type");
                     }
                 }
 

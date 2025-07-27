@@ -5,6 +5,7 @@ using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
 using System.Linq;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Forge
 {
@@ -64,7 +65,8 @@ namespace TagTool.Commands.Forge
                         case 1:
                             break;
                         default:
-                            return new TagToolWarning("Multiple categories which this name were found. Parent category will be the last encountered.");
+                            Log.Warning("Multiple categories which this name were found. Parent category will be the last encountered.");
+                            return true;
                     }
 
                     ParentIndex = nameIndices.Last();

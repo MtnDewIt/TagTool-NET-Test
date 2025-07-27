@@ -6,19 +6,26 @@ using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "cinematic_scene", Tag = "cisc", Size = 0x78, MinVersion = CacheVersion.Halo3Retail)]
+    [TagStructure(Name = "cinematic_scene", Tag = "cisc", Size = 0x78, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "cinematic_scene", Tag = "cisc", Size = 0x5C, MinVersion = CacheVersion.HaloReach)]
     public class CinematicScene : TagStructure
-	{
+    {
         public StringId Name;
-        [TagField(Length = 32)]
+        [TagField(Length = 32, MaxVersion = CacheVersion.HaloOnline700123)]
         public string AnchorName;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public StringId Anchor;
+
         public SceneResetObjectLightingEnum ResetObjectLighting;
+
         [TagField(Length = 2, Flags = Padding)]
         public byte[] Padd;
+
         public byte[] ImportScriptHeader;
+
         public List<ObjectBlock> Objects;
         public List<ShotBlock> Shots;
-        public List<TextureCameraBlock> TextureCameras;
+        public List<ExtraCameraFrameDataBlock> ExtraCameraFrameData;
         public byte[] ImportScriptFooter;
         public uint Version;
 
@@ -29,11 +36,14 @@ namespace TagTool.Tags.Definitions
             ResetLighting
         }
 
-        [TagStructure(Size = 0x74)]
+        [TagStructure(Size = 0x74, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x5C, MinVersion = CacheVersion.HaloReach)]
         public class ObjectBlock : TagStructure
 		{
-            [TagField(Length = 32)]
+            [TagField(Length = 32, MaxVersion = CacheVersion.HaloOnline700123)]
             public string ImportName;
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public StringId Name;
 
             [TagField(Flags = Label)]
             public StringId Identifier;
@@ -85,9 +95,10 @@ namespace TagTool.Tags.Definitions
         }
 
         [TagStructure(Size = 0xA4, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagStructure(Size = 0xBC, MinVersion = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0xBC, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0xA4, MinVersion = CacheVersion.HaloReach)]
         public class ShotBlock : TagStructure
-		{
+        {
             public byte[] ImportScriptHeader;
             public ShotFlags Flags;
             public float EnvironmentDarken;
@@ -255,8 +266,8 @@ namespace TagTool.Tags.Definitions
         }
 
         [TagStructure(Size = 0x14)]
-        public class TextureCameraBlock : TagStructure
-		{
+        public class ExtraCameraFrameDataBlock : TagStructure
+        {
             [TagField(Flags = Label)]
             public StringId Name;
             public StringId Type;

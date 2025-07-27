@@ -11,6 +11,7 @@ using TagTool.Serialization;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Resources;
 using TagTool.Animations;
+using TagTool.Common.Logging;
 
 namespace TagTool.Porting.Gen3
 {
@@ -109,7 +110,7 @@ namespace TagTool.Porting.Gen3
                                 CacheContext.Serializer.Serialize(dataContext, BlamCache.Deserializer.Deserialize<ModelAnimationTagResource.GroupMember.ScaleFrame>(dataContext));
 
                             if (sourceStream.Position != StaticDataSize || destStream.Position != StaticDataSize)
-                                new TagToolError(CommandError.CustomError, "Static Data Size did not match data sizes struct!");
+                                Log.Error("Static Data Size did not match data sizes struct!");
 
                             //read next codec header
                             codec = BlamCache.Deserializer.Deserialize<ModelAnimationTagResource.GroupMember.Codec>(dataContext);
@@ -327,14 +328,14 @@ namespace TagTool.Porting.Gen3
                                 member.AnimationData.Data = sourceStream.ToArray();
                                 continue;
                             default:
-                                new TagToolError(CommandError.CustomError, $"Animation codec {codec.AnimationCodec.ToString()} not supported!");
+                                Log.Error($"Animation codec {codec.AnimationCodec.ToString()} not supported!");
                                 member.AnimationData.Data = null;
                                 continue;
                         }
 
                         if ((sourceStream.Position != StaticDataSize + CompressedDataSize || destStream.Position != StaticDataSize + CompressedDataSize)
                             && codec.AnimationCodec != ModelAnimationTagResource.AnimationCompressionFormats.Type9)
-                            new TagToolError(CommandError.CustomError, "Compressed Data Size did not match data sizes struct!");
+                            Log.Error("Compressed Data Size did not match data sizes struct!");
 
                         #region How Footer/Flags works
                         // Better description by DemonicSandwich from http://remnantmods.com/forums/viewtopic.php?f=13&t=1574 : Node List Block: (matches my previous observations)
@@ -368,7 +369,7 @@ namespace TagTool.Porting.Gen3
 
                         if ((sourceStream.Position != StaticDataSize + CompressedDataSize + StaticNodeFlagsSize || destStream.Position != StaticDataSize + CompressedDataSize + StaticNodeFlagsSize)
                             && codec.AnimationCodec != ModelAnimationTagResource.AnimationCompressionFormats.Type9)
-                            new TagToolError(CommandError.CustomError, "Static Node Flags Size did not match data sizes struct!");
+                            Log.Error("Static Node Flags Size did not match data sizes struct!");
 
                         if (AnimatedNodeFlagsSize > 0)
                         {
@@ -379,7 +380,7 @@ namespace TagTool.Porting.Gen3
 
                         if ((sourceStream.Position != StaticDataSize + CompressedDataSize + StaticNodeFlagsSize + AnimatedNodeFlagsSize || destStream.Position != StaticDataSize + CompressedDataSize + StaticNodeFlagsSize + AnimatedNodeFlagsSize)
                             && codec.AnimationCodec != ModelAnimationTagResource.AnimationCompressionFormats.Type9) 
-                            new TagToolError(CommandError.CustomError, "Animated Node Flags Size did not match data sizes struct!");
+                            Log.Error("Animated Node Flags Size did not match data sizes struct!");
 
                         #endregion
 
@@ -409,7 +410,7 @@ namespace TagTool.Porting.Gen3
                         if ((sourceStream.Position != StaticDataSize + CompressedDataSize + StaticNodeFlagsSize + AnimatedNodeFlagsSize + MovementDataSize ||
                             destStream.Position != StaticDataSize + CompressedDataSize + StaticNodeFlagsSize + AnimatedNodeFlagsSize + MovementDataSize)
                             && codec.AnimationCodec != ModelAnimationTagResource.AnimationCompressionFormats.Type9)
-                            new TagToolError(CommandError.CustomError, "Movement Data Size did not match data sizes struct!");
+                            Log.Error("Movement Data Size did not match data sizes struct!");
 
                         //convert pill offset data
                         if(member.PackedDataSizes.PillOffsetData > 0)
@@ -424,7 +425,7 @@ namespace TagTool.Porting.Gen3
                         if ((member.AnimationData.Data.Length != destStream.ToArray().Length + reachextradata)
                             && codec.AnimationCodec != ModelAnimationTagResource.AnimationCompressionFormats.Type9)
                         {
-                            new TagToolError(CommandError.CustomError, "Converted Animation Data was of a different length than the original!");
+                            Log.Error("Converted Animation Data was of a different length than the original!");
                         }
 
                         // set new data
@@ -462,7 +463,7 @@ namespace TagTool.Porting.Gen3
                         continue;
 
                     if (animation.AnimationDataBlock.Count > 1)
-                        new TagToolWarning("Reach animation has >1 animation data block, whereas HO only supports 1");
+                        Log.Warning("Reach animation has >1 animation data block, whereas HO only supports 1");
                     animation.AnimationData = animation.AnimationDataBlock[0];
 
                     if (animation.AnimationData.AnimationTypeReach == ModelAnimationGraph.FrameTypeReach.None)
@@ -507,7 +508,7 @@ namespace TagTool.Porting.Gen3
                                 continue;
 
                             if (weaponType.AnimationSetsReach.Count > 1)
-                                new TagToolWarning("Reach animation has >1 weapon type sets block, whereas HO only supports 1");
+                                Log.Warning("Reach animation has >1 weapon type sets block, whereas HO only supports 1");
                             weaponType.Set = weaponType.AnimationSetsReach[0];
                             //manually convert stringids from copied reach data
                             foreach(var action in weaponType.Set.Actions)

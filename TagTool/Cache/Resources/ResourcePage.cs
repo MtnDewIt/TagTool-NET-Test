@@ -133,7 +133,7 @@ namespace TagTool.Cache.Resources
         /// <summary>
         /// Mask for the location part of the flags.
         /// </summary>
-        LocationMask = 0x3E,
+        LocationMask = 0x7E,
     }
 
     /// <summary>

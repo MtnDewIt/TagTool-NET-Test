@@ -8,7 +8,8 @@ using static TagTool.Tags.TagFieldFlags;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "projectile", Tag = "proj", Size = 0x1A8, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "projectile", Tag = "proj", Size = 0x1AC, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "projectile", Tag = "proj", Size = 0x1AC, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline604673)]
+    [TagStructure(Name = "projectile", Tag = "proj", Size = 0x1B4, Version = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "projectile", Tag = "proj", Size = 0x1F8, MinVersion = CacheVersion.HaloReach)]
     public class Projectile : GameObject
     {

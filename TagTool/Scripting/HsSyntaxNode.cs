@@ -9,6 +9,7 @@ namespace TagTool.Scripting
 	{
         public ushort Identifier;
         public ushort Opcode;
+        [TagField(EnumType = typeof(ushort))]
         public HsType ValueType;
         public HsSyntaxNodeFlags Flags;
         public DatumHandle NextExpressionHandle;

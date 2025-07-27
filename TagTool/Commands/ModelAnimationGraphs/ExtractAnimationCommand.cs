@@ -15,6 +15,7 @@ using static TagTool.Animations.AnimationDefaultNodeHelper;
 using TagTool.Tags.Resources;
 using System.Text;
 using System.Threading.Tasks;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.ModelAnimationGraphs
 {
@@ -106,7 +107,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
 
                 if(animationblock.AnimationData == null)
                 {
-                    new TagToolWarning($"Animation {CacheContext.StringTable.GetString(animationblock.Name)} inherits from another jmad...skipping...");
+                    Log.Warning($"Animation {CacheContext.StringTable.GetString(animationblock.Name)} inherits from another jmad...skipping...");
                     continue;
                 }
 
@@ -116,7 +117,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
 
                 if (animationData1 == null)
                 {
-                    new TagToolWarning($"Failed to export {str} (invalid resource?)");
+                    Log.Warning($"Failed to export {str} (invalid resource?)");
                     continue;
                 }
                 Animation animation = new Animation(renderModelNodes, animationData1);

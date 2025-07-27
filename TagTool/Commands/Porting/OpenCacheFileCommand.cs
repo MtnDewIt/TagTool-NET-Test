@@ -3,6 +3,7 @@ using TagTool.Commands.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Porting
 {
@@ -47,10 +48,7 @@ namespace TagTool.Commands.Porting
             var fileName = new FileInfo(args[0]);
 
             if (!fileName.Exists)
-            {
-                new TagToolError(CommandError.CustomError, $"Cache \"{fileName.FullName}\" does not exist.");
-                return true;
-            }
+                return new TagToolError(CommandError.FileNotFound, fileName.FullName);
                 
             Console.Write("Loading cache...");
 
@@ -70,9 +68,9 @@ namespace TagTool.Commands.Porting
             if (fileName.Extension == ".pak")
             {
                 if (Cache is GameCacheModPackage)
-                    return new GameCacheModPackage(((GameCacheModPackage)Cache).BaseCacheReference, fileName, true);
+                    return new GameCacheModPackage(((GameCacheModPackage)Cache).BaseCacheReference, fileName);
                 else if (Cache is GameCacheHaloOnlineBase)
-                    return new GameCacheModPackage((GameCacheHaloOnlineBase)Cache, fileName, true);
+                    return new GameCacheModPackage((GameCacheHaloOnlineBase)Cache, fileName);
                 else
                     return new TagToolError(CommandError.OperationFailed, "Mod package porting only allowed on ED base cache or mod package caches!");
             }

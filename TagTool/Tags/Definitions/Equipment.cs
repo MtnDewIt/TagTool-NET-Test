@@ -171,8 +171,8 @@ namespace TagTool.Tags.Definitions
         public CachedTag ActivateEffect;
         [TagField(ValidTags = new[] { "effe", "snd!" })]
         public CachedTag RunningEffect;
-        [TagField(ValidTags = new[] { "snd!" })]
-        public CachedTag DeactivateSound;
+        [TagField(ValidTags = new[] { "effe", "snd!" })]
+        public CachedTag DeactivateEffect;
         [TagField(ValidTags = new[] { "effe" }, MinVersion = CacheVersion.HaloReach)]
         public CachedTag EnergyChargedEffect;
 

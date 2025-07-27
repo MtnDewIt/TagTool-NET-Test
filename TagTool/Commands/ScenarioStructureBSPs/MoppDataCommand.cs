@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using TagTool.IO;
 using TagTool.Tags;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.ScenarioStructureBSPs
 {
@@ -61,7 +62,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
             if (!File.Exists(file))
             {
-                new TagToolError(CommandError.FileNotFound, $"\"{file}\"");
+                Log.Error($"\"{file}\" not found");
                 return;
             }
 

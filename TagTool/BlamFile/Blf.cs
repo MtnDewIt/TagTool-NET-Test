@@ -4,6 +4,7 @@ using TagTool.BlamFile.GameVariants;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
@@ -286,7 +287,7 @@ namespace TagTool.BlamFile
                 }
                 else
                 {
-                    new TagToolError(CommandError.CustomError, "No data, image will not be written to BLF");
+                    Log.Error("No data, image will not be written to BLF");
                 }
             }
 

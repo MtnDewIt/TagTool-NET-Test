@@ -11,6 +11,7 @@ using TagTool.Shaders.ShaderFunctions;
 using HaloShaderGenerator.Shader;
 using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock;
 using TagTool.Shaders.ShaderGenerator;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Shaders
 {
@@ -251,7 +252,7 @@ namespace TagTool.Commands.Shaders
         {
             if (shader == "chud_overlay_blend")
             {
-                new TagToolWarning("chud_overlay_blend is not a chud shader - compile as explicit");
+                Log.Warning("chud_overlay_blend is not a chud shader - compile as explicit");
                 return true;
             }
 

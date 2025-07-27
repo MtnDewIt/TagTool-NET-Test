@@ -12,6 +12,7 @@ using TagTool.Animations;
 using TagTool.Tags.Resources;
 using System.Text;
 using System.Threading.Tasks;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.ModelAnimationGraphs
 {
@@ -112,7 +113,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                         FrameInfoType = ModelAnimationTagResource.GroupMemberMovementDataType.dx_dy_dz_dyaw;
                         break;
                     default:
-                        new TagToolError(CommandError.CustomError, $"Filetype {file_extension.ToUpper()} not recognized!");
+                        Log.Error($"Filetype {file_extension.ToUpper()} not recognized!");
                         return false;
                 }
 

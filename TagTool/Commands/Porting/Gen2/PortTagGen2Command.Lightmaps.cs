@@ -21,6 +21,7 @@ using static TagTool.Tags.Definitions.Gen2.ScenarioStructureLightmap.StructureLi
 using TagTool.Bitmaps.DDS;
 using TagTool.Bitmaps.Utils;
 using System.Text.RegularExpressions;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Porting.Gen2
 {
@@ -74,7 +75,7 @@ namespace TagTool.Commands.Porting.Gen2
             lbsp.StaticPerVertexLightingBuffers = new List<ScenarioLightmapBspData.StaticPerVertexLighting>();
 
             if (gen2Lightmap.LightmapGroups.Count > 1)
-                new TagToolError(CommandError.OperationFailed, ">1 lightmap group in lightmap!");
+                Log.Error(">1 lightmap group in lightmap!");
             var lgroup = gen2Lightmap.LightmapGroups[0];
 
             //set up geometry carried over from sbsp
@@ -470,7 +471,7 @@ namespace TagTool.Commands.Porting.Gen2
                         SphericalHarmonics.AmbientSHCoefficientsFromAmbientColor(color, R, G, B);
                         break;
                     default:
-                        new TagToolError(CommandError.OperationFailed, "Unknown lightmap bitmap format! Aborting!");
+                        Log.Error("Unknown lightmap bitmap format! Aborting!");
                         return null;
                 }
 

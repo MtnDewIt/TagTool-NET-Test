@@ -10,6 +10,7 @@ using TagTool.Tags;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using System.Diagnostics;
+using TagTool.Common.Logging;
 
 namespace TagTool.Effects
 {
@@ -65,7 +66,7 @@ namespace TagTool.Effects
                 return (1.0f - s) * min + max * s;
             }
 
-            new TagToolWarning("Emitter scalar property set as colour. Evaluating as 0");
+            Log.Warning("Emitter scalar property set as colour. Evaluating as 0");
             min = 0.0f;
             max = 0.0f;
             return 0.0f;

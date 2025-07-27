@@ -1,8 +1,8 @@
 ﻿using System;
 using TagTool.Common;
 using TagTool.Tags;
-using static System.Runtime.InteropServices.CharSet;
 using TagTool.IO;
+using System.Runtime.InteropServices;
 
 namespace TagTool.Cache
 {
@@ -46,13 +46,13 @@ namespace TagTool.Cache
     {
         public Tag Signature = new Tag("desc");
 
-        [TagField(CharSet = Unicode, Length = 32)]
+        [TagField(CharSet = CharSet.Unicode, Length = 32)]
         public string Name;
 
-        [TagField(CharSet = Ansi, Length = 32)]
+        [TagField(CharSet = CharSet.Ansi, Length = 32)]
         public string Author;
 
-        [TagField(CharSet = Ansi, Length = 512)]
+        [TagField(CharSet = CharSet.Ansi, Length = 512)]
         public string Description;
 
         public int BuildDateHigh;
@@ -61,7 +61,7 @@ namespace TagTool.Cache
         public short VersionMajor = 1;
         public short VersionMinor;
 
-        [TagField(CharSet = Ansi, Length = 512)]
+        [TagField(CharSet = CharSet.Ansi, Length = 512)]
         public string URL;
 
         public void SetBuildDate (DateTime timestamp)

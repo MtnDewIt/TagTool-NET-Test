@@ -4,6 +4,7 @@ using System.IO;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Damage;
 using TagTool.Tags.Definitions;
 using static TagTool.Tags.Definitions.Model;
@@ -93,7 +94,7 @@ namespace TagTool.Porting.Gen3
 
             if (value == null || !Enum.TryParse(value, out damageReportingType.HaloOnline))
             {
-                new TagToolWarning($"Unsupported Damage reporting type '{value}'. Using default.");
+                Log.Warning($"Unsupported Damage reporting type '{value}'. Using default.");
                 damageReportingType.HaloOnline = DamageReportingType.HaloOnlineValue.GuardiansUnknown;
             }    
 
@@ -201,7 +202,7 @@ namespace TagTool.Porting.Gen3
                         }
 
                         if (instantResponse.RegionTransitions.Count > 2)
-                            new TagToolWarning("Reach damage info has >2 transition blocks, whereas HO only supports 2");
+                            Log.Warning("Reach damage info has more than 2 transition blocks, whereas HO only supports 2");
                     }
 
                     if (instantResponse.SeatEjections?.Count > 0) 
@@ -209,7 +210,7 @@ namespace TagTool.Porting.Gen3
                         newInstantResponse.EjectingSeatLabel = instantResponse.SeatEjections[0].Label;
 
                         if (instantResponse.SeatEjections.Count > 1)
-                            new TagToolWarning("Reach damage info has >1 seat ejection block, whereas HO only supports 1");
+                            Log.Warning("Reach damage info has more than 1 seat ejection block, whereas HO only supports 1");
                     }
 
                     if (instantResponse.GenericEffectMarker != instantResponse.SpecificEffectMarker) 

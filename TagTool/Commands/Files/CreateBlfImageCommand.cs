@@ -44,7 +44,7 @@ namespace TagTool.Commands.Files
             }
 
             if (jpgImage == null || jpgImage.Length == 0)
-                return new TagToolError(CommandError.CustomMessage, "Invalid image");
+                return new TagToolError(CommandError.CustomError, "Invalid image");
 
             CacheVersion version = CacheVersion.HaloOnlineED;
             CachePlatform cachePlatform = CachePlatform.Original;

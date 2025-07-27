@@ -1,6 +1,6 @@
-using TagTool.Ai;
 using System;
 using System.Collections.Generic;
+using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.Tags.Definitions
 {
@@ -12,7 +12,7 @@ namespace TagTool.Tags.Definitions
         [TagField(Flags = TagFieldFlags.Padding, Length = 2)]
         public byte[] Pad = new byte[2];
 
-        public List<CharacterMetagameProperties> MetagameProperties;
+        public List<MetagameBucket> MetagameProperties;
         public int SelfDestructionTimer; // seconds
 
         [Flags]

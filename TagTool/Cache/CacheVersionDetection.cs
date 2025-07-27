@@ -359,6 +359,23 @@ namespace TagTool.Cache
             return true;
         }
 
+        public static bool AttributeInCacheVersion(TagEnumMemberAttribute attr, CacheVersion compare)
+        {
+            if (attr.Version != CacheVersion.Unknown)
+                if (attr.Version != compare)
+                    return false;
+
+            if (attr.Gen != CacheGeneration.Unknown)
+                if (!IsInGen(attr.Gen, compare))
+                    return false;
+
+            if (attr.MinVersion != CacheVersion.Unknown || attr.MaxVersion != CacheVersion.Unknown)
+                if (!IsBetween(compare, attr.MinVersion, attr.MaxVersion))
+                    return false;
+
+            return true;
+        }
+
         public static bool AttributeInCacheVersion(TagStructureAttribute attr, CacheVersion compare)
         {
             if (attr.Version != CacheVersion.Unknown)
@@ -377,6 +394,11 @@ namespace TagTool.Cache
         }
 
         public static bool AttributeInPlatform(TagFieldAttribute attr, CachePlatform compare)
+        {
+            return ComparePlatform(attr.Platform, compare);
+        }
+
+        public static bool AttributeInPlatform(TagEnumMemberAttribute attr, CachePlatform compare)
         {
             return ComparePlatform(attr.Platform, compare);
         }
@@ -471,6 +493,18 @@ namespace TagTool.Cache
             return true;
         }
 
+        public static bool TestAttribute(TagEnumMemberAttribute a, CacheVersion version, CachePlatform platform)
+        {
+            if (!IsInGen(a.Gen, version))
+                return false;
+            if (!AttributeInPlatform(a, platform))
+                return false;
+            if (!AttributeInCacheVersion(a, version))
+                return false;
+
+            return true;
+        }
+
         public static bool TestAttribute(TagStructureAttribute a, CacheVersion version, CachePlatform platform)
         {
             if (!InCacheBuildType(a.BuildType, version))
@@ -533,6 +567,7 @@ namespace TagTool.Cache
                     return CacheGeneration.HaloOnline;
 
                 case CacheVersion.Halo4:
+                case CacheVersion.H2AMP:
                     return CacheGeneration.Fourth;
 
                 default:
@@ -594,6 +629,8 @@ namespace TagTool.Cache
                     return GameTitle.HaloReach;
                 case CacheVersion.Halo4:
                     return GameTitle.Halo4;
+                case CacheVersion.H2AMP:
+                    return GameTitle.H2AMP;
                 default:
                     return GameTitle.Unknown;
             }
@@ -660,6 +697,7 @@ namespace TagTool.Cache
             -1, // HaloReach
             -1, // HaloReach11883
             -1  // Halo 4
+            -1, // H2AMP
         };
     }
 
@@ -695,7 +733,8 @@ namespace TagTool.Cache
         HaloOnline700123,
         HaloReach,
         HaloReach11883,
-        Halo4
+        Halo4,
+        H2AMP
     }
 
     public enum CacheGeneration : int

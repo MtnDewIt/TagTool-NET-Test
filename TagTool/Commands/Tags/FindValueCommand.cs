@@ -8,6 +8,7 @@ using TagTool.Cache;
 using TagTool.Cache.Monolithic;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Tags;
 
 namespace TagTool.Commands.Tags
@@ -105,7 +106,7 @@ namespace TagTool.Commands.Tags
                             }
                             catch
                             {
-                                new TagToolWarning($"{outputPrefix}{path} invalid string id found! {path}");
+                                Log.Warning($"{outputPrefix}{path} invalid string id found! {path}");
                             }
                         }
                         break;

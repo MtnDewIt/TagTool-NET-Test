@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TagTool.Cache;
-using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
 
@@ -391,29 +391,14 @@ namespace TagTool.Scripting
                         Opcode = expr.Opcode
                     };
                 default:
-                    new TagToolError(CommandError.CustomError, $"<UNIMPLEMENTED EXPR: {expr.Flags.ToString()} {GetHsTypeAsString(Cache.Version, expr.ValueType)}>");
+                    Log.Error($"<UNIMPLEMENTED EXPR: {expr.Flags.ToString()} {GetHsTypeAsString(Cache.Version, expr.ValueType)}>");
                     return new GenericExpression();
             }
         }
 
         private string GetHsTypeAsString(CacheVersion version, HsType type)
         {
-            switch (version)
-            {
-                case CacheVersion.Halo3Retail:
-                    return type.Halo3Retail.ToString();
-
-                case CacheVersion.Halo3ODST:
-                    return type.Halo3ODST.ToString();
-
-                case CacheVersion.HaloOnlineED:
-                case CacheVersion.HaloOnline106708:
-                    return type.HaloOnline.ToString();
-
-                default:
-                    new TagToolWarning($"No HsType found for cache \"{version}\". Defaulting to HaloOnline");
-                    return type.HaloOnline.ToString();
-            }
+            return type.ToString();
         }
 
         private int GetGroupStartExpressionIndex(int exprIndex)

@@ -46,6 +46,7 @@
     <None Include="Common\RealMatrix3x3.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\data\**\*" Link="data\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
     <None Include="..\Physics\**\*" Link="Physics\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
     <None Include="..\Tools\**\*" Link="Tools\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
     <None Remove="..\Tools\meshoptimizer32.dll" />

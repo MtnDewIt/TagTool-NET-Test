@@ -6,6 +6,7 @@ using TagTool.BlamFile.MCC;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
 
@@ -141,7 +142,7 @@ namespace TagTool.BlamFile
                 }
                 else
                 {
-                    new TagToolWarning("Failed to resolve MapIds - Campaign Map Info List Was Empty");
+                    Log.Warning("Failed to resolve MapIds - Campaign Map Info List Was Empty");
                 }
 
                 return campaignBlf;

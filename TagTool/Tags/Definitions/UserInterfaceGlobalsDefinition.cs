@@ -1,12 +1,15 @@
 using TagTool.Cache;
 using System.Collections.Generic;
+using TagTool.Common;
+using static TagTool.Tags.Definitions.Gen4.UserInterfaceGlobalsDefinition;
 
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "user_interface_globals_definition", Tag = "wgtz", Size = 0x3C, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "user_interface_globals_definition", Tag = "wgtz", Size = 0x50, MinVersion = CacheVersion.HaloOnlineED)]
-    [TagStructure(Name = "user_interface_globals_definition", Tag = "wgtz", Size = 0x60, MinVersion = CacheVersion.HaloOnline498295)]
-    
+    [TagStructure(Name = "user_interface_globals_definition", Tag = "wgtz", Size = 0x50, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline449175)]
+    [TagStructure(Name = "user_interface_globals_definition", Tag = "wgtz", Size = 0x60, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "user_interface_globals_definition", Tag = "wgtz", Size = 0xA4, MinVersion = CacheVersion.HaloReach)]
+
     public class UserInterfaceGlobalsDefinition : TagStructure
 	{
         [TagField(ValidTags = new[] { "wigl" })]
@@ -18,19 +21,38 @@ namespace TagTool.Tags.Definitions
 
         public List<ScreenWidget> ScreenWidgets;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public List<CuiOverlayCameraBlock> CuiOverlayCameras;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public List<CuiPlayerModelCameraSettingsDefinition> PlayerModelCameraSettings;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public List<CuiPlayerModelControllerSettingsDefinition> PlayerModelInputSettings;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public List<CuiPlayerModelTransitionSettingsDefinition> PlayerModelCameraTransitionSettings;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public CachedTag PurchaseGlobals;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public List<CuiActiveRosterSettingsBlock> ActiveRosterSettings;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public CachedTag PgcrCategoriesDefinitions;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public List<CampaignStateScreenScriptBlock> CampaignStateScreenScripts;
+
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag TextureRenderList;
-
-        [TagField(MinVersion = CacheVersion.HaloOnline498295)]
+        [TagField(MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag SwearFilter; // TODO: Version number
-
-        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public uint UnknownHO;
 
-        [TagStructure(Size = 0x10)]
+        [TagStructure(Size = 0x10, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x14, MinVersion = CacheVersion.HaloReach)]
         public class ScreenWidget : TagStructure
 		{
-            [TagField(ValidTags = new[] { "scn3" })]
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public StringId Name;
+
+            [TagField(ValidTags = new[] { "scn3", "cusc" })]
             public CachedTag Widget;
         }
     }

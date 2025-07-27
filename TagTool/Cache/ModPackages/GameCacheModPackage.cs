@@ -15,6 +15,7 @@ using TagTool.Tags.Resources;
 using TagTool.Cache.HaloOnline;
 using TagTool.Cache.ModPackages;
 using System.Collections;
+using TagTool.Common.Logging;
 
 namespace TagTool.Cache
 {
@@ -27,14 +28,14 @@ namespace TagTool.Cache
 
         public GameCacheHaloOnlineBase BaseCacheReference;
 
-        public GameCacheModPackage(GameCacheHaloOnlineBase baseCache, FileInfo file, bool largeResourceStream = false)
+        public GameCacheModPackage(GameCacheHaloOnlineBase baseCache, FileInfo file)
         {
             ModPackageFile = file;
             Directory = file.Directory;
 
             // load mod package
-            var modPackage = new ModPackage(file, unmanagedResourceStream: largeResourceStream);
-            Init(baseCache, modPackage, largeResourceStream);
+            var modPackage = new ModPackage(file);
+            Init(baseCache, modPackage);
         }
 
         public GameCacheModPackage(GameCacheHaloOnline baseCache, ModPackage modPackage)
@@ -42,7 +43,7 @@ namespace TagTool.Cache
             Init(baseCache, modPackage);
         }
 
-        private void Init(GameCacheHaloOnlineBase baseCache, ModPackage modPackage, bool largeResourceStream = false)
+        private void Init(GameCacheHaloOnlineBase baseCache, ModPackage modPackage)
         {
             BaseCacheReference = baseCache;
             BaseModPackage = modPackage;
@@ -155,9 +156,9 @@ namespace TagTool.Cache
                 if(tag == null || tag.Name == null)
                 {
                     if (tag != null)
-                        new TagToolWarning($"Tag: 0x{tag.Index:X4} has no name, will crash ingame!");
+                        Log.Warning($"Tag: 0x{tag.Index:X4} has no name, will crash ingame!");
                     else
-                        new TagToolWarning($"null tag detected.");
+                        Log.Warning($"null tag detected.");
 
                     return false;
                 }

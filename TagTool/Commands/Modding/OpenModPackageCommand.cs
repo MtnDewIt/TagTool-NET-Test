@@ -64,7 +64,7 @@ namespace TagTool.Commands.Modding
 
             Console.WriteLine("Initializing cache...");
 
-            ModCache = new GameCacheModPackage(Cache, file, largeResourceStream: useLargeStreams);
+            ModCache = new GameCacheModPackage(Cache, file);
             Context = TagCacheContextFactory.Create(ContextStack, ModCache, $"{ModCache.BaseModPackage.Metadata.Name}.pak");
             ContextStack.Push(Context);
 

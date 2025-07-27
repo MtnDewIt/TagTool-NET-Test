@@ -2,6 +2,7 @@
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Scenarios
@@ -38,7 +39,7 @@ namespace TagTool.Commands.Scenarios
 
                 if (sLdTTag == null) 
                 {
-                    new TagToolWarning("No lightmap found for current scenario");
+                    Log.Warning("No lightmap found for current scenario");
                     return true;
                 }
 

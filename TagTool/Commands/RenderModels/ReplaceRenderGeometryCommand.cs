@@ -12,6 +12,7 @@ using TagTool.Commands.Common;
 using TagTool.Geometry;
 using TagTool.Tags.Definitions;
 using static TagTool.Tags.Definitions.RenderModel;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.RenderModels
 {
@@ -117,7 +118,7 @@ namespace TagTool.Commands.RenderModels
 
             if (!Cache.TagCache.TryGetTag<Shader>(@"shaders\invalid", out CachedTag defaultShaderTag))
             {
-                new TagToolWarning("shaders\\invalid.shader' not found!\nYou will have to assign material shaders manually.");
+                Log.Warning("shaders\\invalid.shader' not found!\nYou will have to assign material shaders manually.");
             }
 
             using (var importer = new AssimpContext())
@@ -372,7 +373,7 @@ namespace TagTool.Commands.RenderModels
                                                 currentBone = boneNode;
                                             else
                                             {
-                                                new TagToolWarning($"Bone {bone.Name} not found for permutation {regionName}:{permName}");
+                                                Log.Warning($"Bone {bone.Name} not found for permutation {regionName}:{permName}");
                                                 partIsRigid = false;
                                                 break;
                                             }
@@ -483,7 +484,7 @@ namespace TagTool.Commands.RenderModels
                             {
                                 string bonefix = FixBoneName(bone.Name);
                                 if (!nodes.ContainsKey(bonefix))
-                                    new TagToolWarning($"There is no node {bonefix} to match bone {bone.Name}");
+                                    Log.Warning($"There is no node {bonefix} to match bone {bone.Name}");
                                 else
                                 {
                                     sbyte nodeIndex = nodes[bonefix];
@@ -517,7 +518,7 @@ namespace TagTool.Commands.RenderModels
                                         {
                                             string bonefix = FixBoneName(bone.Name);
                                             if (!nodes.ContainsKey(bonefix))
-                                                return new TagToolError(CommandError.CustomError, $"There is no node {bonefix} to match bone {bone.Name}");
+                                                Log.Error($"There is no node {bonefix} to match bone {bone.Name}");
                                             sbyte nodeIndex = nodes[bonefix];
                                             blendIndicesList.Add((byte)skinnedBoneMapping.IndexOf((byte)nodeIndex));
                                             blendWeightsList.Add(vertexInfo.Weight);
@@ -835,8 +836,9 @@ namespace TagTool.Commands.RenderModels
             }
 
             Console.WriteLine("   Replaced render_geometry successfully.\n");
-            if (ShowTriangleStripWarning)
-                return new TagToolWarning($"One or more meshes using TriangleStrips produced more indices than TriangleList would have.");
+            {
+				Log.Warning($"One or more meshes using TriangleStrips produced more indices than TriangleList would have.");
+			}
 
             return true;
         }

@@ -13,6 +13,7 @@ using TagTool.Commands.Common;
 using System.Text.RegularExpressions;
 using TagTool.Commands;
 using System.Linq;
+using TagTool.Common.Logging;
 
 namespace TagTool.Cache
 {
@@ -65,9 +66,9 @@ namespace TagTool.Cache
             GC.SuppressFinalize(this);
         }
 
-        public ModPackage(FileInfo file = null, bool unmanagedResourceStream=false)
+        public ModPackage(FileInfo file = null)
         {
-            IsLarge = unmanagedResourceStream;
+            IsLarge = true;
 
             if (file != null)
                 Load(file);
@@ -90,27 +91,13 @@ namespace TagTool.Cache
                 Files = new Dictionary<string, Stream>();
                 StringTable = new StringTableHaloOnline(CacheVersion.HaloOnlineED, null);
                 Header.SectionTable = new ModPackageSectionTable();
-                if (!unmanagedResourceStream)
+                unsafe
                 {
-                    unsafe 
-                    {
-                        long resourceBufferSize = 2L * 1024 * 1024 * 1024; // 2 GB max
-                        var resourceData = Marshal.AllocHGlobal((IntPtr)resourceBufferSize);
-                        var resourceStream = new ExtantStream(new UnmanagedMemoryStream((byte*)resourceData.ToPointer(), 0, resourceBufferSize, FileAccess.ReadWrite));
-                        ResourcesStream = new UnmanagedExtantStream(resourceData, resourceStream);
-                    }
+                    long resourceBufferSize = 4L * 1024 * 1024 * 1024; // 4 GB max
+                    var resourceData = Marshal.AllocHGlobal((IntPtr)resourceBufferSize);
+                    var resourceStream = new ExtantStream(new UnmanagedMemoryStream((byte*)resourceData.ToPointer(), 0, resourceBufferSize, FileAccess.ReadWrite));
+                    ResourcesStream = new UnmanagedExtantStream(resourceData, resourceStream);
                 }
-                else
-                {
-                    unsafe
-                    {
-                        long resourceBufferSize = 4L * 1024 * 1024 * 1024; // 4 GB max
-                        var resourceData = Marshal.AllocHGlobal((IntPtr)resourceBufferSize);
-                        var resourceStream = new ExtantStream(new UnmanagedMemoryStream((byte*)resourceData.ToPointer(), 0, resourceBufferSize, FileAccess.ReadWrite));
-                        ResourcesStream = new UnmanagedExtantStream(resourceData, resourceStream);
-                    }
-                }
-                
             }
         }
 
@@ -330,7 +317,7 @@ namespace TagTool.Cache
                 serializer.Serialize(dataContext, Header);
 
                 if (packageStream.Length > uint.MaxValue)
-                    new TagToolWarning($"Mod package size exceeded 0x{uint.MaxValue.ToString("X8")} bytes, it will fail to load.");
+                    Log.Warning($"Mod package size exceeded 0x{uint.MaxValue.ToString("X8")} bytes, it will fail to load.");
 
             }
         }
@@ -710,7 +697,7 @@ namespace TagTool.Cache
                 }
                 catch
                 {
-                    new TagToolError(CommandError.CustomError, $"Failed to read map file for map id {tableEntry.MapId}");
+                    Log.Error($"Failed to read map file for map id {tableEntry.MapId}");
                 }
             }
         }

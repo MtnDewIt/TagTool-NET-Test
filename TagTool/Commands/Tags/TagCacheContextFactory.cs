@@ -39,6 +39,8 @@ namespace TagTool.Commands.Tags
 
             context.AddCommand(new TestCommand(cache));
             context.AddCommand(new DumpLogCommand());
+            context.AddCommand(new SetLogLevelCommand());
+            context.AddCommand(new SuppressErrorsCommand());
             context.AddCommand(new RunCommands(contextStack));
             context.AddCommand(new ClearCommand());
             context.AddCommand(new ExecuteCSharpCommand(contextStack));
@@ -68,6 +70,7 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new FindValueCommand(cache, null));
             context.AddCommand(new TagDependencyCommand(cache));
             context.AddCommand(new GuessTagDefCommand(cache));
+            context.AddCommand(new DiffTagCommand(cache, cache));
 
             context.AddCommand(new GenerateBlfObjectCommand(cache, cache as GameCacheHaloOnline));
             context.AddCommand(new GenerateMapObjectCommand(cache, cache as GameCacheHaloOnline));

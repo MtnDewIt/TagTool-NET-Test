@@ -6,6 +6,7 @@ using System.Linq;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Definitions.Common;
@@ -270,7 +271,7 @@ namespace TagTool.BlamFile
 
             if (parentNameIndex < 0 || parentNameIndex >= _scenario.ObjectNames.Count)
             {
-                new TagToolWarning($"Parent object #{parentNameIndex} not found!");
+                Log.Warning($"Parent object #{parentNameIndex} not found!");
                 return;
             }
 

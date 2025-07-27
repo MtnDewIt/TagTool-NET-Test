@@ -8,10 +8,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using TagTool.Tags;
-using static System.Runtime.InteropServices.CharSet;
 using static TagTool.Tags.TagFieldFlags;
 using TagTool.Commands.Common;
 using TagTool.Geometry.BspCollisionGeometry;
+using System.Runtime.InteropServices;
+using TagTool.Common.Logging;
 
 namespace TagTool.Serialization
 {
@@ -348,7 +349,7 @@ namespace TagTool.Serialization
             }
             catch (ArgumentOutOfRangeException)
             {
-                new TagToolWarning($"Enum value out of range {enumInfo.Type.FullName} = {value}");
+                Log.Warning($"Enum value out of range {enumInfo.Type.FullName} = {value}");
                 return value;
             }
         }
@@ -364,7 +365,7 @@ namespace TagTool.Serialization
             if (valueInfo == null || valueInfo.Length == 0)
                 throw new ArgumentException("Cannot serialize a string with no length set");
 
-            var charSize = valueInfo.CharSet == Unicode ? 2 : 1;
+            var charSize = valueInfo.CharSet == CharSet.Unicode ? 2 : 1;
             var byteCount = valueInfo.Length * charSize;
             var clampedLength = 0;
 
@@ -374,11 +375,11 @@ namespace TagTool.Serialization
 
                 switch (valueInfo.CharSet)
                 {
-                    case Ansi:
+                    case CharSet.Ansi:
                         bytes = Encoding.ASCII.GetBytes(str);
                         break;
 
-                    case Unicode:
+                    case CharSet.Unicode:
                         if (Format == EndianFormat.LittleEndian)
                             bytes = Encoding.Unicode.GetBytes(str);
                         else
@@ -429,7 +430,7 @@ namespace TagTool.Serialization
                 if (invalid)
                 {
                     var groups = string.Join(", ", valueInfo.ValidTags);
-                    new TagToolWarning($"Tag reference with invalid group found during serialization:"
+                    Log.Warning($"Tag reference with invalid group found during serialization:"
                         + $"\n - {referencedTag.Name}.{referencedTag.Group.Tag}"
                         + $"\n - valid groups: {groups}");
                 }
@@ -855,7 +856,7 @@ namespace TagTool.Serialization
             else
             {
                 if (val > ushort.MaxValue)
-                    new TagToolWarning("Downgrade from uint to ushort for index buffer index. Unexpected behavior.");
+                    Log.Warning("Downgrade from uint to ushort for index buffer index. Unexpected behavior.");
 
                 block.Writer.Write((ushort)val.Value);
             }
@@ -871,7 +872,7 @@ namespace TagTool.Serialization
             else
             {
                 if (val.ClusterIndex > ushort.MaxValue || val.TriangleIndex > ushort.MaxValue)
-                    new TagToolWarning("Downgrade from int to short for plane reference. Unexpected behavior.");
+                    Log.Warning("Downgrade from int to short for plane reference. Unexpected behavior.");
 
                 block.Writer.Write((ushort)val.TriangleIndex);
                 block.Writer.Write((ushort)val.ClusterIndex);

@@ -9,6 +9,7 @@ using TagTool.Geometry.Utils;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Porting;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Porting
 {
@@ -230,12 +231,12 @@ namespace TagTool.Commands.Porting
 
                         if (index == -1)
                         {
-                            new TagToolError(CommandError.OperationFailed, $"Instance not found by identifier {identifier}!");
+                            Log.Error($"Instance not found by identifier {identifier}!");
                             continue;
                         }
                         if (desiredInstances.ContainsKey(index))
                         {
-                            new TagToolError(CommandError.OperationFailed, $"Instance {identifier} already selected!");
+                            Log.Error($"Instance {identifier} already selected!");
                             continue;
                         }
 
@@ -257,7 +258,7 @@ namespace TagTool.Commands.Porting
 
                 if (desiredInstances.Count < 1)
                 {
-                    new TagToolWarning("No qualifying instances found!");
+                    Log.Warning("No qualifying instances found!");
                     return true;
                 }
 

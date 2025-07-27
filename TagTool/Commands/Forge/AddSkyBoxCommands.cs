@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TagTool.Cache;
-using TagTool.Common;
 using TagTool.Commands.Common;
+using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Forge
@@ -69,7 +70,8 @@ namespace TagTool.Commands.Forge
                             case 1:
                                 break;
                             default:
-                                return new TagToolWarning("Multiple palettes with this name were found. Palette will be the last encountered.");
+                                Log.Warning("Multiple palettes with this name were found. Palette will be the last encountered.");
+                                return true;
                         }
 
                         AcousticPaletteIndex = nameIndices.Last();

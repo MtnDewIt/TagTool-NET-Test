@@ -8,6 +8,7 @@ using TagTool.Commands.Common;
 using TagTool.IO;
 using System.IO;
 using TagTool.Tags;
+using TagTool.Common.Logging;
 
 namespace TagTool.Geometry.BspCollisionGeometry.Utils
 {
@@ -91,7 +92,7 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
                 LargeCollisionBspBlock bsp_copy = Bsp.DeepClone();
                 if (!leafmapbuilder.munge_collision_bsp(this))
                 {
-                    new TagToolWarning("Failed to build leaf map!");
+                    Log.Warning("Failed to build leaf map!");
                     Bsp = bsp_copy;
                 }
             }

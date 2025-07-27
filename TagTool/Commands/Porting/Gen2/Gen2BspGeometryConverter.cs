@@ -14,6 +14,7 @@ using TagTool.Commands.Common;
 using TagTool.Tags;
 using TagTool.Cache;
 using RenderModelGen2 = TagTool.Tags.Definitions.Gen2.RenderModel;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Porting.Gen2
 {
@@ -210,7 +211,7 @@ namespace TagTool.Commands.Porting.Gen2
                         else
                         {
                             declaration = VertexDeclarationsVista[vertexBuffer.TypeIndex];
-                            new TagToolError(CommandError.CustomMessage, $"UNKNOWN VERTEX - Locator:{resource.SecondaryLocator},Stride:{vertexBuffer.StrideIndex},Type:{vertexBuffer.TypeIndex}");
+                            Log.Error($"UNKNOWN VERTEX - Locator:{resource.SecondaryLocator},Stride:{vertexBuffer.StrideIndex},Type:{vertexBuffer.TypeIndex}");
                         }
                     }
                     else
@@ -218,7 +219,7 @@ namespace TagTool.Commands.Porting.Gen2
 
                     int calculated_size = CalculateVertexSize(declaration);
                     if (calculated_size != vertexBuffer.StrideIndex)
-                        new TagToolError(CommandError.CustomError, $"vertex type {vertexBuffer.TypeIndex} of declared size {vertexBuffer.StrideIndex} didn't match defined size of {calculated_size}");
+                        Log.Error($"vertex type {vertexBuffer.TypeIndex} of declared size {vertexBuffer.StrideIndex} didn't match defined size of {calculated_size}");
 
                     //Console.WriteLine($"Locator:{resource.SecondaryLocator},Stride:{vertexBuffer.StrideIndex},Type:{vertexBuffer.TypeIndex}");
 
@@ -260,7 +261,7 @@ namespace TagTool.Commands.Porting.Gen2
                                                 element.K != Math.Floor(element.K) ||
                                                 element.W != Math.Floor(element.W))
                                             {
-                                                new TagToolError(CommandError.OperationFailed, "Blend Index with Non Integer Value!");
+                                                Log.Error("Blend Index with Non Integer Value!");
                                             }
                                             vertex.Point.NodeIndices = element.ToArray().Select(x => (int)x).ToArray();
                                             //Console.WriteLine($"Boned/Skinned Vertex with blendindices {vertex.Point.NodeIndices[0]},{vertex.Point.NodeIndices[1]},{vertex.Point.NodeIndices[2]},{vertex.Point.NodeIndices[3]}");

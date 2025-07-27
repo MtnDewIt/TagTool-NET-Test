@@ -7,6 +7,7 @@ using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Commands.Porting;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Damage;
 using TagTool.Geometry;
 using TagTool.Geometry.BspCollisionGeometry;
@@ -526,7 +527,7 @@ namespace TagTool.Porting.Gen3
                     {
                         if (sound.Resource.Gen3ResourceID == DatumHandle.None)
                         {
-                            new TagToolWarning($"Invalid resource for sound {blamTag.Name}");
+                            Log.Warning($"Invalid resource for sound {blamTag.Name}");
                             return false;
                         }
                     }
@@ -549,7 +550,7 @@ namespace TagTool.Porting.Gen3
 
                         if (bitmapResourceDefinition == null)
                         {
-                            new TagToolWarning($"Invalid resource for bitm {blamTag.Name}");
+                            Log.Warning($"Invalid resource for bitm {blamTag.Name}");
                             return false;
                         }
                     }

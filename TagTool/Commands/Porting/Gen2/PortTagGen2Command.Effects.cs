@@ -17,6 +17,7 @@ using static TagTool.Tags.Definitions.Scenario.MissionScene;
 using static TagTool.Tags.Definitions.Gen2.Scenario.ScenarioCutsceneTitleBlock;
 using TagTool.Effects;
 using TagTool.Commands.Shaders;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Porting.Gen2
 {
@@ -604,7 +605,7 @@ namespace TagTool.Commands.Porting.Gen2
             }
             else
             {
-                new TagToolWarning($"Unexpected function part type {gpuFunction.FunctionType.Type} in multipart function!");
+                Log.Warning($"Unexpected function part type {gpuFunction.FunctionType.Type} in multipart function!");
             }
 
             dataOffset += nextSectionOffset;
@@ -752,7 +753,7 @@ namespace TagTool.Commands.Porting.Gen2
 
             if (prt3 == null)
             {
-                new TagToolWarning("Particle system has no particle! States will not be compiled.");
+                Log.Warning("Particle system has no particle! States will not be compiled.");
                 return runtimeGpu;
             }
 
@@ -797,7 +798,7 @@ namespace TagTool.Commands.Porting.Gen2
                         }
                     }
                     catch (Exception ex) {
-                        new TagToolWarning($"Failed to add gpu functions");
+                        Log.Warning($"Failed to add gpu functions");
                     }
 
                     property.MInnardsY.IsConstant = 0;

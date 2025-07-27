@@ -918,7 +918,7 @@ namespace TagTool.Shaders.ShaderGenerator
                 }
                 else if (ParameterTypeToRegisterType(parameter.Type) == type)
                 {
-                    //new TagToolWarning($"no binding for {constantTable.ShaderType} {(is_extern ? "extern " : "")}{type} \"{parameterName}\"");
+                    //Log.Warning($"no binding for {constantTable.ShaderType} {(is_extern ? "extern " : "")}{type} \"{parameterName}\"");
                 }
             }
 

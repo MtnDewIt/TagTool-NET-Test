@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TagTool.BlamFile;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
@@ -110,7 +111,7 @@ namespace TagTool.Cache.Gen2
                 {
                     var group = new TagGroupGen2(new Tag(reader.ReadInt32()), new Tag(reader.ReadInt32()), new Tag(reader.ReadInt32()));
                     if (!TagDefinitions.TagDefinitionExists(group))
-                        new TagToolWarning($"Warning: tag definition for {group} does not exist!");
+                        Log.Warning($"Warning: tag definition for {group} does not exist!");
                 }
             }
 

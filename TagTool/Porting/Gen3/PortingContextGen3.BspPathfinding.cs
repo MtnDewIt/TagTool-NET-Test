@@ -10,6 +10,7 @@ using TagTool.Commands.Common;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using TagTool.Common.Logging;
 
 namespace TagTool.Porting.Gen3
 {
@@ -17,30 +18,27 @@ namespace TagTool.Porting.Gen3
     {
         private TagResourceReference ConvertStructureBspCacheFileTagResources(ScenarioStructureBsp bsp, StructureBspTagResources bspResources, CachedTag instance)
         {
-            if(BlamCache.Platform == CachePlatform.MCC)
-                return ConvertStructureBspCacheFileTagResourcesMCC(bsp);
-
             //
             // Set up ElDorado resource reference
             //
 
-            if (BlamCache.Version < CacheVersion.Halo3ODST)
+            if (BlamCache.Version < CacheVersion.Halo3ODST && BlamCache.Platform == CachePlatform.Original)
                 bsp.PathfindingResource = new TagResourceReference();
 
             //
             // Load Blam resource data
             //
-
-            var resourceDefinition = BlamCache.Version > CacheVersion.Halo3Retail ? BlamCache.ResourceCache.GetStructureBspCacheFileTagResources(bsp.PathfindingResource) : null;
-
-            if (resourceDefinition == null && BlamCache.Version >= CacheVersion.Halo3ODST)
-                return bsp.PathfindingResource;
-
+            StructureBspCacheFileTagResources resourceDefinition = null;
+            if (BlamCache.Version > CacheVersion.Halo3Retail || BlamCache.Platform == CachePlatform.MCC)
+            {
+                resourceDefinition = BlamCache.ResourceCache.GetStructureBspCacheFileTagResources(bsp.PathfindingResource);
+                if (resourceDefinition == null)
+                    return null;
+            }
             //
-            // Port Blam resource definition
+            // Port Blam resource definition if cache is halo3retail
             //
-
-            if (BlamCache.Version < CacheVersion.Halo3ODST)
+            else
             {
                 resourceDefinition = new StructureBspCacheFileTagResources()
                 {
@@ -49,26 +47,46 @@ namespace TagTool.Porting.Gen3
                     EdgeToSeams = new TagBlock<EdgeToSeamMapping>(CacheAddressType.Data, bsp.EdgeToSeamEdge),
                     PathfindingData = new TagBlock<ResourcePathfinding>(CacheAddressType.Definition)
                 };
-                foreach(var pathfinding in bsp.PathfindingData)
+                foreach (var pathfinding in bsp.PathfindingData)
                 {
                     resourceDefinition.PathfindingData.Add(PathfindingConverter.CreateResourcePathfindingFromTag(pathfinding));
-                }
+                }               
+            }
+
+            //Fixup hint data
+            if(BlamCache.Version < CacheVersion.Halo3ODST)
+            {
                 // convert hints
-                foreach(var pathfindingDatum in resourceDefinition.PathfindingData)
+                /*
+                 * FORMATS FOR DATA2 and DATA3 of jump hints
+                 * 
+                 * H3 FORMAT:
+                 * short LandingSector;
+                 * byte JumpHeightFlags; (an actor can only use this jump hint if their maximum jump height flag is ticked here)
+                 * byte ControlFlags;
+                 * int Unused;
+                 * 
+                 * ODST+ FORMAT:
+                 * short JumpHeightFlags (an actor can only use this jump hint if their maximum jump height flag is ticked here)
+                 * short ControlFlags;
+                 * short Unused;
+                 * short LandingSector;
+                */
+                foreach (var pathfindingDatum in resourceDefinition.PathfindingData)
                 {
-                    foreach(var hint in pathfindingDatum.PathfindingHints)
+                    foreach (var hint in pathfindingDatum.PathfindingHints)
                     {
                         if (hint.HintType == PathfindingHint.HintTypeValue.JumpLink || hint.HintType == PathfindingHint.HintTypeValue.WallJumpLink)
                         {
-                            hint.Data[3] = (hint.Data[3] & ~ushort.MaxValue) | ((hint.Data[2] >> 16) & ushort.MaxValue);
+                            hint.Data[3] = (hint.Data[3] & ~ushort.MaxValue) | ((hint.Data[2] >> 16) & ushort.MaxValue); //move landing sector to data3
                             hint.Data[2] = (hint.Data[2] & ~(ushort.MaxValue << 16)); //remove old landing sector
                             hint.Data[2] = (hint.Data[2] | ((hint.Data[2] & (byte.MaxValue << 8)) << 8)); //move jump height flags
-                            hint.Data[2] = (hint.Data[2] & ~(byte.MaxValue << 8)); //remove old flags
+                            hint.Data[2] = (hint.Data[2] & ~(byte.MaxValue << 8)); //remove old jump height flags
                         }
                     }
                 }
                 // fix surface planes
-                foreach(var surfacePlane in resourceDefinition.SurfacePlanes)
+                foreach (var surfacePlane in resourceDefinition.SurfacePlanes)
                 {
                     surfacePlane.SurfaceToTriangleMappingCount = surfacePlane.SurfaceToTriangleMappingCountOld;
                     surfacePlane.FirstSurfaceToTriangleMappingIndex = surfacePlane.FirstSurfaceToTriangleMappingIndexOld;
@@ -97,10 +115,10 @@ namespace TagTool.Porting.Gen3
                         instancedgeo.Flags |= InstancedGeometryInstance.InstancedGeometryFlags.NoPhysics;
 
                     if (instancedgeo.SeamBitVector.Skip(1).Any(x => x != 0))
-                        new TagToolWarning("Instanced seam bit vector truncated!");
+                        Log.Warning("Instanced seam bit vector truncated!");
 
                     instancedgeo.SeamBitVector = new uint[] { instancedgeo.SeamBitVector[0] };
-
+              
                     instancedgeo.Name = CacheContext.StringTable.GetOrAddString(BlamCache.StringTable.GetString(bsp.InstancedGeometryInstanceNames[bsp.InstancedGeometryInstances.IndexOf(instancedgeo)].Name));
 
                     instancedgeo.PathfindingPolicy = instancedgeo.LightmappingPolicyReach.ConvertLexical<Scenery.PathfindingPolicyValue>();
@@ -137,7 +155,7 @@ namespace TagTool.Porting.Gen3
 
             bsp.PathfindingResource = CacheContext.ResourceCache.CreateStructureBspCacheFileResource(resourceDefinition);
 
-            if (BlamCache.Version < CacheVersion.Halo3ODST)
+            if (BlamCache.Version < CacheVersion.Halo3ODST && BlamCache.Platform == CachePlatform.Original)
             {
                 bsp.StructureSurfaces.Clear();
                 bsp.StructureSurfaceToTriangleMapping.Clear();
@@ -145,14 +163,6 @@ namespace TagTool.Porting.Gen3
                 bsp.PathfindingData.Clear();
             }
 
-            return bsp.PathfindingResource;
-        }
-
-        private TagResourceReference ConvertStructureBspCacheFileTagResourcesMCC(ScenarioStructureBsp bsp)
-        {
-            var resourceDefinition = BlamCache.ResourceCache.GetStructureBspCacheFileTagResources(bsp.PathfindingResource);
-            resourceDefinition ??= new StructureBspCacheFileTagResources();
-            bsp.PathfindingResource = CacheContext.ResourceCache.CreateStructureBspCacheFileResource(resourceDefinition);
             return bsp.PathfindingResource;
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TagTool.Cache;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.RenderModels
@@ -38,7 +39,7 @@ namespace TagTool.Commands.RenderModels
 
                 if (!CacheContext.TagCache.TryGetTag(Console.ReadLine(), out material.RenderMethod))
                 {
-                    new TagToolError(CommandError.CustomError, "Invalid shader specified. Using default shader.");
+                    Log.Error("Invalid shader specified. Using default shader.");
                     material.RenderMethod = CacheContext.TagCache.GetTag<Shader>(@"shaders\default");
                 }
             }

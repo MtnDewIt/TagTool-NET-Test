@@ -13,6 +13,7 @@ using Gen2SoundCacheFileGestalt = TagTool.Tags.Definitions.Gen2.SoundCacheFileGe
 using System;
 using System.Linq;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Porting.Gen2
 {
@@ -66,7 +67,7 @@ namespace TagTool.Commands.Porting.Gen2
             }
             else
             {
-                new TagToolError(CommandError.None, $"Looping sound {gen2Tag.Name} unable to determine sound class from child sound! Returning null!");
+                Log.Error($"Looping sound {gen2Tag.Name} unable to determine sound class from child sound! Returning null!");
                 return null;
             }
             

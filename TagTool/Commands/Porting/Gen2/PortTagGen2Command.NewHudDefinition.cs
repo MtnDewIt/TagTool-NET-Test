@@ -27,6 +27,7 @@ using BitmapGen3 = TagTool.Tags.Definitions.Bitmap;
 using TagTool.Bitmaps;
 using TagTool.Bitmaps.Utils;
 using TagTool.Tags.Resources;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Porting.Gen2
 {
@@ -473,7 +474,7 @@ namespace TagTool.Commands.Porting.Gen2
                                     break;
                                 case "binocular_mask":
                                 default:
-                                    new TagToolWarning($"render data for bitmap string '{bitmapWidgetString}' not yet supported");
+                                    Log.Warning($"render data for bitmap string '{bitmapWidgetString}' not yet supported");
                                     break;
                             }
 
@@ -570,7 +571,7 @@ namespace TagTool.Commands.Porting.Gen2
                                     convertedInput = "chud_out_a";
                                     break;
                                 default:
-                                    new TagToolWarning($"could not convert hud input string '{Gen2Cache.StringTable.GetString(nhdt.TextWidgets[textIndex].String)}'");
+                                    Log.Warning($"could not convert hud input string '{Gen2Cache.StringTable.GetString(nhdt.TextWidgets[textIndex].String)}'");
                                     break;
                             }
 
@@ -642,7 +643,7 @@ namespace TagTool.Commands.Porting.Gen2
                                     };
                                     break;
                                 default:
-                                    new TagToolWarning($"render data for text string '{textWidgetString}' not yet supported");
+                                    Log.Warning($"render data for text string '{textWidgetString}' not yet supported");
                                     break;
                             }
 
@@ -712,7 +713,7 @@ namespace TagTool.Commands.Porting.Gen2
                         hudWidget.SortLayer = WidgetLayerEnum.Background;
                         break;
                     default:
-                        new TagToolWarning($"Hud Widget '{Cache.StringTable.GetString(hudWidget.Name)}' found but not handled");
+                        Log.Warning($"Hud Widget '{Cache.StringTable.GetString(hudWidget.Name)}' found but not handled");
                         break;
                 }
             }
@@ -881,7 +882,7 @@ namespace TagTool.Commands.Porting.Gen2
                             case "FlipHorizontally":
                             case "TalkingPlayerHack":
                             default:
-                                new TagToolWarning($"match not found for bitmap flag type {flagName}");
+                                Log.Warning($"match not found for bitmap flag type {flagName}");
                                 break;
                         }
                     }
@@ -927,7 +928,7 @@ namespace TagTool.Commands.Porting.Gen2
                 case "LockOnTarget":
                     return "WeaponTarget";
                 default:
-                    new TagToolWarning($"match not found for anchor type {input}");
+                    Log.Warning($"match not found for anchor type {input}");
                     return "Crosshair";
             }
         }
@@ -1000,7 +1001,7 @@ namespace TagTool.Commands.Porting.Gen2
                 case "widget_simple_custom":
                 case "widget_simple_flash":
                 default:
-                    new TagToolWarning($"unsupported hud shader template '{shader_template}'");
+                    Log.Warning($"unsupported hud shader template '{shader_template}'");
                     break;
             }
             for (int i = 0; i < h2_pixel_constants.Count; i++)

@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Commands.Tags;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Scripting.CSharp;
 
@@ -20,6 +23,13 @@ namespace TagTool.Commands
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo("en-US");
 
             AssemblyResolver.ConfigureAssemblyResolution();
+
+            // Setup logging and output
+            Log.AddHandler(new ConsoleLogHandler());
+            Log.AddHandler(new RunMetricsLogHandler());
+            Log.Level = LogLevel.Info; // TODO: set via command line
+
+            Console.SetOut(new AnsiWriter(Console.Out));
             ConsoleHistory.Initialize();
 
             var assembly = Assembly.GetExecutingAssembly();
@@ -30,6 +40,20 @@ namespace TagTool.Commands
 
             AssemblyResolver.CheckMissingDependencies();
 
+            try
+            {
+                return MainCore(args);
+            }
+            catch (Exception ex) when (!Debugger.IsAttached)
+            {
+                Log.Error(ex);
+                ConsoleHistory.Dump("hott_*_crash.log");
+                return -1;
+            }
+        }
+
+        static int MainCore(string[] args)
+        {
             var contextStack = new CommandContextStack();
 
             // if the first argument is a c# script, execute it and exit
@@ -54,11 +78,15 @@ namespace TagTool.Commands
                     autoExecLines = autoExecLines[1..];
                 }
             }
+            else
+            {
+                autoExecLines = [];
+            }
 
             var cacheFileInfo = new FileInfo(cacheFilePath);
 
             if (args.Length > 0 && !cacheFileInfo.Exists)
-                new TagToolError(CommandError.CustomError, "Invalid path to a tag cache!");
+                Log.Error("Invalid path to a tag cache!");
 
             if (!cacheFileInfo.Exists)
                 cacheFileInfo = PromptCacheFile();
@@ -71,13 +99,17 @@ namespace TagTool.Commands
             contextStack.Push(tagsContext);
 
             var commandRunner = new CommandRunner(contextStack);
+
+            if (!RunAutoExecFile(commandRunner, autoExecLines))
+                return -1;
+
             if (autoexecCommand != null)
             {
-                commandRunner.RunCommand(autoexecCommand, printInput: false);
+                if (!RunAutoExec(commandRunner, args, autoexecCommand))
+                    return -1;
             }
             else
             {
-                RunAutoExecCommands(commandRunner, autoExecLines);
                 RunCommandLoop(commandRunner, contextStack);
             }
 
@@ -94,7 +126,9 @@ namespace TagTool.Commands
                 Console.Write("{0}> ", contextStack.GetPath());
                 Console.Title = $"TagTool {contextStack.GetPath()}>";
 
-                commandRunner.RunCommand(Console.ReadLine(), printInput: false);
+                object result = commandRunner.RunCommand(Console.ReadLine(), printInput: false);
+                if (result is TagToolError error)
+                    Log.Error(error.Message);
             }
         }
 
@@ -123,7 +157,7 @@ namespace TagTool.Commands
                 if (File.Exists(cacheFilePath))
                     return new FileInfo(cacheFilePath);
 
-                new TagToolError(CommandError.CustomError, "Invalid path to a tag cache!");
+                Log.Error("Invalid path to a tag cache!");
             }
         }
 
@@ -138,8 +172,7 @@ namespace TagTool.Commands
             }
             catch (Exception e)
             {
-                new TagToolError(CommandError.CustomError, e.Message);
-                Console.WriteLine("\nSTACKTRACE: " + Environment.NewLine + e.StackTrace);
+                Log.Error(e);
                 ConsoleHistory.Dump("hott_*_init.log");
                 return null;
             }
@@ -169,14 +202,51 @@ namespace TagTool.Commands
             return File.ReadAllLines(autoExecFilePath);
         }
 
-        private static void RunAutoExecCommands(CommandRunner commandRunner, string[] commands)
+        private static bool RunAutoExec(CommandRunner commandRunner, string[] args, string autoexecCommand)
         {
+            object result = null;
+
+            // Allow passing .cmds and .cs files directly
+            if (args.Length > 1 && args[1].EndsWith(".cs"))
+            {
+                if (ExecuteCSharpScript(args[1..], commandRunner.ContextStack) != 0)
+                    return false;
+            }
+            else if (args.Length > 1 && args[1].EndsWith(".cmds"))
+            {
+                result = commandRunner.RunCommandScript(args[1]);
+            }
+            else
+            {
+                // Legacy support for executing a command
+                result = commandRunner.RunCommand(autoexecCommand);
+            }
+
+            if (result is TagToolError error)
+            {
+                Log.Error(error.Message);
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool RunAutoExecFile(CommandRunner commandRunner, string[] commands)
+        {
+            // TODO: make this use CommandRunner.RunCommandScript
             foreach (string line in commands)
             {
                 if (commandRunner.EOF)
                     break;
-                commandRunner.RunCommand(line);
+
+                object result = commandRunner.RunCommand(line);
+                if (result is TagToolError error)
+                {
+                    Log.Error(error.Message);
+                    return false;
+                }
             }
+            return true;
         }
 
         private static int ExecuteCSharpScript(string[] args, CommandContextStack contextStack)
@@ -189,7 +259,7 @@ namespace TagTool.Commands
             }
             catch (Exception ex)
             {
-                new TagToolError(CommandError.CustomError, ex.Message);
+                Log.Error(ex);
                 return -1;
             }
         }

@@ -1,4 +1,5 @@
 ﻿using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 
 namespace TagTool.BlamFile.MCC
 {
@@ -14,7 +15,7 @@ namespace TagTool.BlamFile.MCC
             }
 
             var output = $@"string length exceeded supported value [{Neutral.Length} > {length}]. Extra characters have been removed";
-            new TagToolWarning($@"{errorMessage} {output}");
+            Log.Warning($@"{errorMessage} {output}");
 
             return Neutral.Remove(length);
         }

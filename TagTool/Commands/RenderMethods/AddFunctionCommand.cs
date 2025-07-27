@@ -6,6 +6,7 @@ using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Shaders.ShaderFunctions;
 using System.Linq;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.RenderMethods
 {
@@ -69,7 +70,7 @@ namespace TagTool.Commands.RenderMethods
             if (functionIndex >= properties.Functions.Count || newBlock)
             {
                 if (properties.Functions.Count != 0 && !newBlock)
-                    new TagToolWarning($"Function block at index {functionIndex} does not exist; a new function block with blank data will be added.");
+                    Log.Warning($"Function block at index {functionIndex} does not exist; a new function block with blank data will be added.");
 
                 properties.Functions.Add(new RenderMethod.RenderMethodAnimatedParameterBlock
                 {
@@ -131,7 +132,7 @@ namespace TagTool.Commands.RenderMethods
                 };
 
                 if (animatedParameters.Contains(newParameter))
-                    new TagToolWarning("The specified parameter is already being animated.");
+                    Log.Warning("The specified parameter is already being animated.");
                 else
                     animatedParameters.Add(newParameter);
 

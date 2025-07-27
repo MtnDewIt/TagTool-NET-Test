@@ -116,6 +116,7 @@ namespace TagTool.Cache
                     }
 
                 case CacheVersion.Halo4:
+                case CacheVersion.H2AMP:
                     return new GameCacheGen4(map, file);
             }
 

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Definitions.Common;
@@ -58,7 +59,7 @@ namespace TagTool.Porting.Gen3
                             if (emitter.EmissionShape == Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.BoatHullSurface ||
                                 emitter.EmissionShape == Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.Jetwash)
                             {
-                                new TagToolWarning($"Unsupported particle emitter shape '{emitter.EmissionShape}'. Using default.");
+                                Log.Warning($"Unsupported particle emitter shape '{emitter.EmissionShape}'. Using default.");
                                 emitter.EmissionShape = Effect.Event.ParticleSystem.Emitter.EmissionShapeValue.Sprayer;
                             }
 
@@ -66,7 +67,7 @@ namespace TagTool.Porting.Gen3
                             {
                                 Effects.EmitterCustomPointPlotter pecpPlotter = new Effects.EmitterCustomPointPlotter(CacheContext, cacheStream, emitter, blamTagName, i);
                                 if (!pecpPlotter.ConvertEmitterToCustomPoints())
-                                    new TagToolWarning($"Particle emitter \"{CacheContext.StringTable.GetString(emitter.Name)}_{i}\" will have incorrect dimensions: AxisScale {emitter.AxisScale}");
+                                    Log.Warning($"Particle emitter \"{CacheContext.StringTable.GetString(emitter.Name)}_{i}\" will have incorrect dimensions: AxisScale {emitter.AxisScale}");
                             }
 
                             if (!Enum.TryParse(emitter.ParticleMovement.FlagsReach.ToString(), out emitter.ParticleMovement.Flags))
@@ -221,7 +222,7 @@ namespace TagTool.Porting.Gen3
 
             if (prt3 == null)
             {
-                new TagToolWarning("Particle system has no particle! States will not be compiled.");
+                Log.Warning("Particle system has no particle! States will not be compiled.");
                 return runtimeGpu;
             }
 
@@ -502,7 +503,7 @@ namespace TagTool.Porting.Gen3
             }
             else
             {
-                new TagToolWarning($"Unexpected function part type {gpuFunction.FunctionType.Type} in multipart function!");
+                Log.Warning($"Unexpected function part type {gpuFunction.FunctionType.Type} in multipart function!");
             }
 
             dataOffset += nextSectionOffset;

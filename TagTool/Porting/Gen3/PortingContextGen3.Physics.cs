@@ -7,6 +7,7 @@ using TagTool.Serialization;
 using TagTool.Cache;
 using System.Collections.Generic;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 
 namespace TagTool.Porting.Gen3
 {
@@ -95,7 +96,7 @@ namespace TagTool.Porting.Gen3
                 case CacheVersion.Halo2Xbox:
                     if (flags.Halo2.ToString().Contains("Unknown"))
                     {
-                        new TagToolWarning($"Disabling unknown phantom type flags ({flags.Halo2.ToString()})");
+                        Log.Warning($"Disabling unknown phantom type flags ({flags.Halo2.ToString()})");
                         Console.WriteLine($"         in tag \"{tagName}.physics_model\"");
 
                         foreach (var flag in Enum.GetValues(typeof(PhysicsModel.PhantomTypeFlags.Halo2Bits)))
@@ -109,7 +110,7 @@ namespace TagTool.Porting.Gen3
                 case CacheVersion.Halo3Retail:
                     if (flags.Halo3Retail.ToString().Contains("Unknown"))
                     {
-                        new TagToolWarning($"Found unknown phantom type flags ({flags.Halo3Retail.ToString()})");
+                        Log.Warning($"Found unknown phantom type flags ({flags.Halo3Retail.ToString()})");
                         Console.WriteLine($"         in tag \"{tagName}.physics_model\"");
                         /*
                         foreach (var flag in Enum.GetValues(typeof(PhysicsModel.PhantomTypeFlags.Halo3RetailBits)))

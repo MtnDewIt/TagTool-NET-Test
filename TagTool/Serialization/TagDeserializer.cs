@@ -17,6 +17,7 @@ using System.Diagnostics;
 using System.Buffers;
 using System.Runtime.ExceptionServices;
 using System.Diagnostics;
+using TagTool.Common.Logging;
 
 namespace TagTool.Serialization
 {
@@ -137,7 +138,7 @@ namespace TagTool.Serialization
                 {
                     if (b != 0)
                     {
-                        new TagToolWarning($"Non-zero padding found in {tagFieldInfo.FieldInfo.DeclaringType.FullName}.{tagFieldInfo.FieldInfo.Name} = {b}");
+                        Log.Warning($"Non-zero padding found in {tagFieldInfo.FieldInfo.DeclaringType.FullName}.{tagFieldInfo.FieldInfo.Name} = {b}");
                         break;
                     }
                 }
@@ -405,7 +406,7 @@ namespace TagTool.Serialization
             }
             catch (ArgumentOutOfRangeException)
             {
-                new TagToolWarning($"Enum value out of range {enumInfo.Type.FullName} = {value}");
+                Log.Warning($"Enum value out of range {enumInfo.Type.FullName} = {value}");
 
                 // We're unable to convert the value, nothing we can do. Cast the value as is.
                 return CastEnumValue(enumInfo.Type, valueInfo.EnumType, value);
@@ -590,7 +591,7 @@ namespace TagTool.Serialization
                 if(!valueInfo.ValidTags.Any(x => result.IsInGroup(x)))
                 {
                     var groups = string.Join(", ", valueInfo.ValidTags);
-                    new TagToolWarning($"Tag reference with invalid group found during deserialization:"
+                    Log.Warning($"Tag reference with invalid group found during deserialization:"
                         + $"\n - { result.Name }.{ result.Group.Tag}" 
                         + $"\n - valid groups: {groups}");
                 }

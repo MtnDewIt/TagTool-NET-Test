@@ -10,6 +10,7 @@ using TagTool.Geometry;
 using TagTool.Lighting;
 using TagTool.Havok;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 
 namespace TagTool.Porting.Gen3
 {
@@ -265,7 +266,7 @@ namespace TagTool.Porting.Gen3
                     {
                         if (staticPerVertexLighting.VertexBufferIndex >= lightmapResourceDefinition.VertexBuffers.Count)
                         {
-                            new TagToolWarning("Invalid per vertex lighting buffer index!");
+                            Log.Warning("Invalid per vertex lighting buffer index!");
                             staticPerVertexLighting.VertexBufferIndex = -1;
                             continue;
                         }

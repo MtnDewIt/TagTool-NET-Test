@@ -105,10 +105,10 @@ namespace TagTool.Tags.Definitions
             public List<AnimationBlock> Keyframes;
             public TagFunction Function = new TagFunction { Data = new byte[0] };
 
-            [TagStructure(Size = 0x4, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-            [TagStructure(Size = 0x4, MinVersion = CacheVersion.HaloReach)]
+            [TagStructure(Size = 0x4, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
             [TagStructure(Size = 0x8, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+            [TagStructure(Size = 0x4, MinVersion = CacheVersion.HaloReach)]
             public class AnimationBlock : TagStructure
 			{
                 public int TimeOffset; // milliseconds
@@ -117,11 +117,7 @@ namespace TagTool.Tags.Definitions
                 [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
                 public ChudKeyframeColorSourceEnum ColorSource;
 
-                [TagField(Length = 2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-                [TagField(Length = 2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-                public byte[] XYJAZZQJ;
-
-                public enum ChudKeyframeColorSourceEnum : short
+                public enum ChudKeyframeColorSourceEnum : int
                 {
                     Taco
                 }

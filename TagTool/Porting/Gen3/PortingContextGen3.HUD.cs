@@ -4,6 +4,7 @@ using System.IO;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.Porting.Gen3
@@ -26,7 +27,6 @@ namespace TagTool.Porting.Gen3
                     {
                         stateData.GameState = GetEquivalentFlags(stateData.GameState, stateData.GameStateMCC);
                         stateData.SandboxState = stateData.SandboxStateMCC;
-                        stateData.HindsightState = GetEquivalentFlags(stateData.HindsightState, stateData.HindsightStateMCC);
                         stateData.NonWeaponFlashHO = GetEquivalentFlags(stateData.NonWeaponFlashHO, stateData.NonWeaponFlashMCC);
                     }
                     stateData.MiscState = GetEquivalentFlags(stateData.MiscState, stateData.MiscStateH3);
@@ -42,14 +42,7 @@ namespace TagTool.Porting.Gen3
                     else if (BlamCache.Platform == CachePlatform.MCC)
                     {
                         stateData.GameState = GetEquivalentFlags(stateData.GameState, stateData.GameStateMCC);
-                        stateData.MiscState = GetEquivalentFlags(stateData.MiscState, stateData.MiscStateODST);
                         stateData.SandboxState = stateData.SandboxStateMCC;
-                        stateData.HindsightState = GetEquivalentFlags(stateData.HindsightState, stateData.HindsightStateMCC);
-                        stateData.SkullState = GetEquivalentFlags(stateData.SkullState, stateData.SkullStateMCC);
-                        stateData.SurvivalRoundState = GetEquivalentFlags(stateData.SurvivalRoundState, stateData.SurvivalRoundStateMCC);
-                        stateData.SurvivalWaveState = GetEquivalentFlags(stateData.SurvivalWaveState, stateData.SurvivalWaveStateMCC);
-                        stateData.SurvivalLivesState = GetEquivalentFlags(stateData.SurvivalLivesState, stateData.SurvivalLivesStateMCC);
-                        stateData.DifficultyState = GetEquivalentFlags(stateData.DifficultyState, stateData.DifficultyStateMCC);
                         stateData.NonWeaponFlashHO = GetEquivalentFlags(stateData.NonWeaponFlashHO, stateData.NonWeaponFlashMCC);
                     }
                     stateData.UnitImpulseStateHO = GetEquivalentFlags(stateData.UnitImpulseStateHO, stateData.UnitImpulseStateODST);
@@ -469,7 +462,7 @@ namespace TagTool.Porting.Gen3
                 }
                 catch
                 {
-                    new TagToolWarning($"Motion sensor bitmap 'ui\\chud\\bitmaps\\sensor_blips' not found.");
+                    Log.Warning($"Motion sensor bitmap 'ui\\chud\\bitmaps\\sensor_blips' not found.");
                 }
             }
 
@@ -538,7 +531,7 @@ namespace TagTool.Porting.Gen3
                 }
                 catch (ArgumentException)
                 {
-                    new TagToolWarning($"Unable to find matching flag for {flag2} in {typeof(E1).FullName}");
+                    Log.Warning($"Unable to find matching flag for {flag2} in {typeof(E1).FullName}");
                     continue;
                 }
             }
@@ -564,7 +557,7 @@ namespace TagTool.Porting.Gen3
             }
             catch (Exception)
             {
-                new TagToolWarning($"Unable to find matching value for \"{enum2}\" in {typeof(E1).FullName}");
+                Log.Warning($"Unable to find matching value for \"{enum2}\" in {typeof(E1).FullName}");
                 return enum1;
             }
         }

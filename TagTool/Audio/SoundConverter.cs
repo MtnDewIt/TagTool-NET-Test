@@ -8,6 +8,7 @@ using TagTool.Cache;
 using TagTool.Commands;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Extensions;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
@@ -29,7 +30,7 @@ namespace TagTool.Audio
         {
             var split = tagName.Split('\\');
             var endName = split[split.Length - 1]; //get the last portion of the tag name
-            var newPath = Path.GetFullPath(cacheFilePath);
+            var newPath = cacheFilePath;
 
             newPath = Path.Combine(newPath, version.ToString());
 
@@ -212,8 +213,7 @@ namespace TagTool.Audio
 
                     if (blamSound == null)
                     {
-                        new TagToolWarning($"Failed to find sound \"{tagName}\" permutation {permutationIndex} in FMOD sound cache!");
-
+                        Log.Warning($"Failed to find sound \"{tagName}\" permutation {permutationIndex} in FMOD sound cache!");
                         return new BlamSound();
                     }
                     else 

@@ -6,6 +6,7 @@ using TagTool.Ai;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Serialization;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
@@ -370,7 +371,7 @@ namespace TagTool.Porting.Gen3
                             if (index < 0 || index >= blamMaterials.Count)
                             {
                                 index = 0;
-                                new TagToolWarning($"Global material type was out of range for '{fieldinfo.DeclaringType.FullName}.{fieldinfo.Name}', value: {index}");
+                                Log.Warning($"Global material type was out of range for '{fieldinfo.DeclaringType.FullName}.{fieldinfo.Name}', value: {index}");
                             }
                             else
                             {

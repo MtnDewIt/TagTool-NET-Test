@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using TagTool.Animations;
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Tags;
@@ -28,6 +29,10 @@ namespace TagTool.Porting.HaloOnline
             {
                 case Scenario scnr:
                     blamDefinition = ConvertScenario(cacheStream, blamCacheStream, scnr);
+                    break;
+
+                case ModelAnimationGraph jmad:
+                    AnimationSorter.Sort(jmad);
                     break;
             }
 
@@ -62,15 +67,10 @@ namespace TagTool.Porting.HaloOnline
             else
             {
                 byte[] data = BlamCacheHO.ResourceCaches.ExtractRawResource(pageable);
-                if (data != null)
-                    CacheContext.ResourceCaches.AddRawResource(pageable, data);
-                else
-                    pageable.Page.Index = -1;
-
-                location = GetPreferredResourceLocation(pageable.Resource.ResourceType);
-                pageable.ChangeLocation(location);
-
-                ConvertedResources.Add(key, new ResourceDesc(location, pageable.Page.Index));
+                ResourceLocation newLocation = GetPreferredResourceLocation(pageable.Resource.ResourceType);
+                pageable.ChangeLocation(newLocation);
+                CacheContext.ResourceCaches.AddRawResource(pageable, data);
+                ConvertedResources.Add(key, new ResourceDesc(newLocation, pageable.Page.Index));
             }
 
             return pageable;

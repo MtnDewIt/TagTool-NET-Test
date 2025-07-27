@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TagTool.Ai;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Lighting;
 
@@ -172,7 +173,7 @@ namespace TagTool.Commands.Porting.Gen2
                 if (minSize < SizeClasses[0] || maxSize > SizeClasses.Last() ||
                     maxSize > 2 * minSize)
                 {
-                    new TagToolError(CommandError.CustomMessage, $"Bitmap of dimensions {container.Size[0]},{container.Size[1]} not supported yet by packer! Aborting!");
+                    Log.Error($"Bitmap of dimensions {container.Size[0]},{container.Size[1]} not supported yet by packer! Aborting!");
                     return false;
                 }
             }
