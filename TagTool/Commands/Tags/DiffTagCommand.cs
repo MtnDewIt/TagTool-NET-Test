@@ -68,7 +68,7 @@ namespace TagTool.Commands.Tags
             using var stream2 = Cache2.OpenCacheRead();
             {
                 var definition1 = (TagStructure)Cache1.Deserialize(stream1, tag1);
-                var definition2 = (TagStructure)Cache1.Deserialize(stream1, tag2);
+                var definition2 = (TagStructure)Cache2.Deserialize(stream2, tag2);
                 differences = differ.Diff(definition1, definition2);
             }
 
