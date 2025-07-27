@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <hs>
   <types>
     <type opcode="0x00" name="unparsed" />
@@ -150,9 +150,7 @@
     <function opcode="0x016" name="sleep_until" type="boolean" />
     <function opcode="0x017" name="wake" type="void" />
     <function opcode="0x018" name="inspect" type="void" />
-    <function opcode="0x019" name="unit" type="unit">
-      <arg type="object" />
-    </function>
+    <function opcode="0x019" name="unit" type="unit" />
     <function opcode="0x01A" name="evaluate" type="void">
       <arg type="script" />
     </function>
@@ -170,7 +168,25 @@
     <function opcode="0x01E" name="log_print" type="void">
       <arg type="string" />
     </function>
+    <function opcode="0x01F" name="debug_scripting_show_thread" type="void">
+      <arg type="string" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x020" name="debug_script_thread" type="void">
+      <arg type="string" />
+      <arg type="boolean" />
+    </function>
     <function opcode="0x021" name="debug_scripting" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x022" name="debug_scripting_globals" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x023" name="debug_scripting_variable" type="void">
+      <arg type="string" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x024" name="debug_scripting_variable_all" type="void">
       <arg type="boolean" />
     </function>
     <function opcode="0x025" name="breakpoint" type="void">
@@ -602,7 +618,11 @@
     </function>
     <function opcode="0x0A2" name="havok_dump_world_close_movie" type="void" />
     <function opcode="0x0A3" name="havok_profile_start" type="void" />
-    <function opcode="0x0A4" name="havok_profile_end" type="void" />
+    <function opcode="0x0A4" name="havok_profile_stop" type="void" />
+    <function opcode="0x0A5" name="havok_profile_range" type="void">
+      <arg type="long" />
+      <arg type="long" />
+    </function>
     <function opcode="0x0A6" name="havok_reset_allocated_state" type="void" />
     <function opcode="0x0A7" name="breakable_surfaces_enable" type="void">
       <arg type="boolean" />
@@ -629,6 +649,7 @@
     <function opcode="0x0AE" name="render_lights" type="boolean">
       <arg type="boolean" />
     </function>
+    <function opcode="0x0AF" name="print_light_state" type="void" />
     <function opcode="0x0B0" name="render_lights_enable_cinematic_shadow" type="void">
       <arg type="boolean" />
       <arg type="object" />
@@ -675,6 +696,9 @@
     <function opcode="0x0BB" name="texture_camera_render_mode" type="void">
       <arg type="long" />
     </function>
+    <function opcode="0x0BC" name="texture_camera_set_unknown_object" type="void">
+      <arg type="object" />
+    </function>
     <function opcode="0x0BD" name="texture_camera_set_fov" type="void">
       <arg type="real" />
     </function>
@@ -683,6 +707,24 @@
     </function>
     <function opcode="0x0BF" name="texture_camera_enable_dynamic_lights" type="void">
       <arg type="boolean" />
+    </function>
+    <function opcode="0x0C0" name="hud_camera_on" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x0C1" name="hud_camera_off" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x0C2" name="hud_camera_set_position" type="void">
+      <arg type="long" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x0C3" name="hud_camera_set_target" type="void">
+      <arg type="long" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
     </function>
     <function opcode="0x0C4" name="hud_camera_attach_to_object" type="void">
       <arg type="long" />
@@ -694,6 +736,10 @@
       <arg type="object" />
       <arg type="string_id" />
     </function>
+    <function opcode="0x0C6" name="hud_camera_structure" type="void">
+      <arg type="long" />
+      <arg type="boolean" />
+    </function>
     <function opcode="0x0C7" name="hud_camera_highlight_object" type="void">
       <arg type="long" />
       <arg type="object" />
@@ -701,6 +747,45 @@
       <arg type="real" />
       <arg type="real" />
       <arg type="real" />
+    </function>
+    <function opcode="0x0C8" name="hud_camera_clear_objects" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x0C9" name="hud_camera_spin_around" type="void">
+      <arg type="long" />
+      <arg type="object" />
+    </function>
+    <function opcode="0x0CA" name="hud_camera_from_player_view" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x0CB" name="hud_camera_window" type="void">
+      <arg type="long" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x0CC" name="render_debug_texture_camera" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x0CD" name="debug_structure_cluster" type="void">
+      <arg type="long" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x0CE" name="render_debug_structure_cluster_fog" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x0CF" name="render_debug_structure_fog_plane" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x0D0" name="render_debug_structure_fog_plane_infinite_extent" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x0D1" name="render_debug_structure_fog_zone" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x0D2" name="render_debug_structure_fog_zone_floodfill" type="void">
+      <arg type="long" />
     </function>
     <function opcode="0x0D3" name="render_debug_structure_all_fog_planes" type="void">
       <arg type="boolean" />
@@ -725,6 +810,25 @@
       <arg type="real" />
       <arg type="real" />
       <arg type="real" />
+    </function>
+    <function opcode="0x0D8" name="render_debug_structure_non_occluded_fog_planes" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x0D9" name="render_debug_structure_lightmaps_use_pervertex" type="void" />
+    <function opcode="0x0DA" name="render_debug_structure_lightmaps_use_reset" type="void" />
+    <function opcode="0x0DB" name="render_debug_structure_lightmaps_sample_enable" type="void" />
+    <function opcode="0x0DC" name="render_debug_structure_lightmaps_sample_disable" type="void" />
+    <function opcode="0x0DD" name="render_debug_query_object_bitmaps" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x0DE" name="render_debug_query_bsp_resources" type="void">
+      <arg type="long" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x0DF" name="render_debug_query_all_object_resources" type="void" />
+    <function opcode="0x0E0" name="render_debug_query_d3d_resources" type="void" />
+    <function opcode="0x0E1" name="render_debug_text_using_simple_font" type="void">
+      <arg type="boolean" />
     </function>
     <function opcode="0x0E2" name="render_postprocess_color_tweaking_reset" type="void" />
     <function opcode="0x0E3" name="scenery_animation_start" type="void">
@@ -837,6 +941,14 @@
       <arg type="boolean" />
       <arg type="short" />
     </function>
+    <function opcode="0x0FA" name="unit_custom_animation_relative_at_frame" type="boolean">
+      <arg type="unit" />
+      <arg type="animation_graph" />
+      <arg type="string_id" />
+      <arg type="string_id" />
+      <arg type="boolean" />
+      <arg type="short" />
+    </function>
     <function opcode="0x0FB" name="unit_is_playing_custom_animation" type="boolean">
       <arg type="unit" />
     </function>
@@ -846,6 +958,11 @@
     <function opcode="0x0FD" name="object_set_custom_animations_prevent_lipsync_head_movement" type="void">
       <arg type="boolean" />
     </function>
+    <function opcode="0x0FE" name="preferred_animation_list_add" type="boolean">
+      <arg type="object" />
+      <arg type="string_id" />
+    </function>
+    <function opcode="0x0FF" name="preferred_animation_list_clear" type="void" />
     <function opcode="0x100" name="unit_set_actively_controlled" type="void">
       <arg type="unit" />
       <arg type="boolean" />
@@ -859,6 +976,11 @@
     </function>
     <function opcode="0x103" name="unit_set_enterable_by_player" type="void">
       <arg type="unit" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x104" name="unit_set_seat_enterable_by_player" type="void">
+      <arg type="unit" />
+      <arg type="unit_seat_mapping" />
       <arg type="boolean" />
     </function>
     <function opcode="0x105" name="unit_get_enterable_by_player" type="boolean">
@@ -877,9 +999,12 @@
       <arg type="unit" />
       <arg type="boolean" />
     </function>
-    <function opcode="0x109" name="unit_in_vehicle_type" type="boolean">
+    <function opcode="0x109" name="unit_in_vehicle_type_mask" type="boolean">
       <arg type="unit" />
       <arg type="long" />
+    </function>
+    <function opcode="0x10A" name="object_get_turret_count" type="short">
+      <arg type="object" />
     </function>
     <function opcode="0x10B" name="object_get_turret" type="vehicle">
       <arg type="object" />
@@ -889,7 +1014,7 @@
       <arg type="unit" />
       <arg type="string_id" />
     </function>
-    <function opcode="0x10D" name="unit_set_emotion_by_?" type="void">
+    <function opcode="0x10D" name="unit_set_emotion" type="void">
       <arg type="unit" />
       <arg type="long" />
       <arg type="real" />
@@ -909,7 +1034,7 @@
       <arg type="unit" />
       <arg type="boolean" />
     </function>
-    <function opcode="0x111" name="unit_set_dialogue" type="void">
+    <function opcode="0x111" name="unit_set_voice" type="void">
       <arg type="unit" />
       <arg type="any_tag" />
     </function>
@@ -920,7 +1045,7 @@
     <function opcode="0x113" name="unit_in_vehicle" type="boolean">
       <arg type="unit" />
     </function>
-    <function opcode="0x114" name="vehicle_test_seat_list" type="boolean">
+    <function opcode="0x114" name="vehicle_test_seat_unit_list" type="boolean">
       <arg type="vehicle" />
       <arg type="unit_seat_mapping" />
       <arg type="object_list" />
@@ -1023,6 +1148,13 @@
     <function opcode="0x12E" name="unit_drop_support_weapon" type="void">
       <arg type="unit" />
     </function>
+    <function opcode="0x12F" name="unit_spew_action" type="void">
+      <arg type="unit" />
+    </function>
+    <function opcode="0x130" name="unit_force_reload" type="void">
+      <arg type="unit" />
+    </function>
+    <function opcode="0x131" name="animation_stats_dump" type="void" />
     <function opcode="0x132" name="unit_animation_forced_seat" type="void">
       <arg type="string_id" />
     </function>
@@ -1089,6 +1221,10 @@
       <arg type="device" />
       <arg type="boolean" />
     </function>
+    <function opcode="0x143" name="device_ignore_player_set" type="void">
+      <arg type="device" />
+      <arg type="boolean" />
+    </function>
     <function opcode="0x144" name="device_operates_automatically_set" type="void">
       <arg type="device" />
       <arg type="boolean" />
@@ -1137,7 +1273,14 @@
       <arg type="boolean" />
     </function>
     <function opcode="0x151" name="cheats_load" type="void" />
+    <function opcode="0x152" name="drop_safe" type="void">
+      <arg type="any_tag" />
+    </function>
     <function opcode="0x153" name="drop" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x154" name="drop_variant" type="void">
+      <arg type="string" />
       <arg type="string" />
     </function>
     <function opcode="0x155" name="ai_enable" type="void">
@@ -1152,6 +1295,9 @@
     </function>
     <function opcode="0x159" name="ai_player_dialogue_enable" type="void">
       <arg type="boolean" />
+    </function>
+    <function opcode="0x15A" name="ai_infection_suppress" type="void">
+      <arg type="long" />
     </function>
     <function opcode="0x15B" name="ai_fast_and_dumb" type="void">
       <arg type="boolean" />
@@ -1265,6 +1411,9 @@
       <arg type="ai" />
       <arg type="boolean" />
     </function>
+    <function opcode="0x17C" name="ai_engineer_explode" type="void">
+      <arg type="ai" />
+    </function>
     <function opcode="0x17D" name="ai_grunt_kamikaze" type="void">
       <arg type="ai" />
     </function>
@@ -1332,8 +1481,12 @@
       <arg type="object" />
       <arg type="real" />
     </function>
-    <function opcode="0x18E" name="ai_migrate" type="short">
+    <function opcode="0x18E" name="ai_migrate_form" type="short">
       <arg type="ai" />
+      <arg type="ai" />
+      <arg type="short" />
+    </function>
+    <function opcode="0x18F" name="ai_morph" type="boolean">
       <arg type="ai" />
       <arg type="short" />
     </function>
@@ -1407,6 +1560,66 @@
     </function>
     <function opcode="0x1A5" name="object_get_ai" type="ai">
       <arg type="object" />
+    </function>
+    <function opcode="0x1A6" name="ai_rotate_scenario" type="boolean">
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x1A7" name="ai_translate_scenario" type="boolean">
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x1A8" name="scenario_duplicate_bsp_objects" type="void">
+      <arg type="string" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x1A9" name="scenario_duplicate_bsp_objects" type="void">
+      <arg type="string" />
+      <arg type="string" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x1AA" name="scenario_rotate" type="void">
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x1AB" name="scenario_reflect" type="void">
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x1AC" name="scenario_translate" type="void">
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x1AD" name="scenario_rotate" type="void">
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="string" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x1AE" name="scenario_reflect" type="void">
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="string" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x1AF" name="scenario_translate" type="void">
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="string" />
+      <arg type="string" />
     </function>
     <function opcode="0x1B0" name="ai_set_task" type="boolean">
       <arg type="ai" />
@@ -1486,7 +1699,7 @@
     <function opcode="0x1C7" name="player_in_vehicle" type="boolean">
       <arg type="vehicle" />
     </function>
-    <function opcode="0x1C8" name="player_in_vehicle?" type="boolean">
+    <function opcode="0x1C8" name="ai_player_needs_vehicle" type="boolean">
       <arg type="unit" />
     </function>
     <function opcode="0x1C9" name="ai_player_any_needs_vehicle" type="boolean" />
@@ -1539,6 +1752,17 @@
     <function opcode="0x1D7" name="flock_delete" type="boolean">
       <arg type="string_id" />
     </function>
+    <function opcode="0x1D8" name="flock_definition_set" type="boolean">
+      <arg type="string_id" />
+      <arg type="any_tag" />
+    </function>
+    <function opcode="0x1D9" name="flock_unperch" type="void">
+      <arg type="string_id" />
+    </function>
+    <function opcode="0x1DA" name="drop_ai" type="void">
+      <arg type="string" />
+      <arg type="string" />
+    </function>
     <function opcode="0x1DB" name="ai_verify_tags" type="void" />
     <function opcode="0x1DC" name="ai_wall_lean" type="boolean">
       <arg type="ai" />
@@ -1586,7 +1810,7 @@
       <arg type="object" />
       <arg type="secondary_skull" />
     </function>
-    <function opcode="0x1E7" name="campaign_metagame_award_event" type="void">
+    <function opcode="0x1E7" name="campaign_metagame_award_medal" type="void">
       <arg type="object" />
       <arg type="short" />
     </function>
@@ -1753,13 +1977,17 @@
     <function opcode="0x210" name="cs_number_queued" type="short">
       <arg type="ai" />
     </function>
+    <function opcode="0x211" name="cs_moving" type="boolean" />
+    <function opcode="0x212" name="cs_moving" type="boolean">
+      <arg type="ai" />
+    </function>
     <function opcode="0x213" name="vs_running_atom" type="boolean">
       <arg type="ai" />
     </function>
     <function opcode="0x214" name="vs_running_atom_movement" type="boolean">
       <arg type="ai" />
     </function>
-    <function opcode="0x215" name="vs_running_atom_?" type="boolean">
+    <function opcode="0x215" name="vs_running_atom_action" type="boolean">
       <arg type="ai" />
     </function>
     <function opcode="0x216" name="vs_running_atom_dialogue" type="boolean">
@@ -1903,10 +2131,10 @@
       <arg type="real" />
       <arg type="real" />
     </function>
-    <function opcode="0x233" name="cs_move_towards?" type="void">
+    <function opcode="0x233" name="cs_move_towards" type="void">
       <arg type="object" />
     </function>
-    <function opcode="0x234" name="vs_move_towards?" type="void">
+    <function opcode="0x234" name="vs_move_towards" type="void">
       <arg type="ai" />
       <arg type="boolean" />
       <arg type="object" />
@@ -2147,6 +2375,14 @@
       <arg type="boolean" />
       <arg type="ai_line" />
     </function>
+    <function opcode="0x263" name="cs_die" type="void">
+      <arg type="short" />
+    </function>
+    <function opcode="0x264" name="vs_die" type="void">
+      <arg type="ai" />
+      <arg type="boolean" />
+      <arg type="short" />
+    </function>
     <function opcode="0x265" name="cs_deploy_turret" type="void">
       <arg type="point_reference" />
     </function>
@@ -2248,10 +2484,10 @@
       <arg type="ai" />
       <arg type="boolean" />
     </function>
-    <function opcode="0x27D" name="cs_suppress_dialogue_global?" type="void">
+    <function opcode="0x27D" name="cs_suppress_dialogue_global" type="void">
       <arg type="boolean" />
     </function>
-    <function opcode="0x27E" name="vs_suppress_dialogue_global?" type="void">
+    <function opcode="0x27E" name="vs_suppress_dialogue_global" type="void">
       <arg type="ai" />
       <arg type="boolean" />
     </function>
@@ -2390,11 +2626,11 @@
       <arg type="ai" />
       <arg type="boolean" />
     </function>
-    <function opcode="0x2A1" name="cs_turn_sharpness?" type="void">
+    <function opcode="0x2A1" name="cs_turn_sharpness" type="void">
       <arg type="boolean" />
       <arg type="real" />
     </function>
-    <function opcode="0x2A2" name="vs_turn_sharpness?" type="void">
+    <function opcode="0x2A2" name="vs_turn_sharpness" type="void">
       <arg type="ai" />
       <arg type="boolean" />
       <arg type="real" />
@@ -2511,6 +2747,14 @@
       <arg type="boolean" />
       <arg type="long" />
     </function>
+    <function opcode="0x2C5" name="cs_smash_direction" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x2C6" name="vs_smash_direction" type="void">
+      <arg type="ai" />
+      <arg type="boolean" />
+      <arg type="long" />
+    </function>
     <function opcode="0x2C7" name="camera_control" type="void">
       <arg type="boolean" />
     </function>
@@ -2545,7 +2789,7 @@
       <arg type="cutscene_flag" />
       <arg type="real" />
     </function>
-    <function opcode="0x2CE" name="camera_set_animation_relative_with_speed_?boolean" type="void">
+    <function opcode="0x2CE" name="camera_set_animation_relative_with_speed_loop" type="void">
       <arg type="animation_graph" />
       <arg type="string_id" />
       <arg type="unit" />
@@ -2553,7 +2797,7 @@
       <arg type="real" />
       <arg type="boolean" />
     </function>
-    <function opcode="0x2CF" name="camera_set_animation_relative_with_speed_?boolean_real" type="void">
+    <function opcode="0x2CF" name="camera_set_animation_relative_with_speed_loop_offset" type="void">
       <arg type="animation_graph" />
       <arg type="string_id" />
       <arg type="unit" />
@@ -2589,6 +2833,14 @@
     <function opcode="0x2D8" name="camera_set_field_of_view" type="void">
       <arg type="real" />
       <arg type="short" />
+    </function>
+    <function opcode="0x2D9" name="cinematic_camera_set_easing_in" type="void">
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
     </function>
     <function opcode="0x2DA" name="cinematic_camera_set_easing_out" type="void">
       <arg type="real" />
@@ -2633,11 +2885,21 @@
       <arg type="cutscene_camera_point" />
     </function>
     <function opcode="0x2E9" name="pvs_clear" type="void" />
+    <function opcode="0x2EA" name="pvs_reset" type="void" />
     <function opcode="0x2EB" name="players_unzoom_all" type="void" />
     <function opcode="0x2EC" name="player_enable_input" type="void">
       <arg type="boolean" />
     </function>
     <function opcode="0x2ED" name="player_disable_movement" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x2EE" name="player_disable_weapon_pickup" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x2EF" name="player_disable_sprint" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x2F0" name="player_disable_consumables" type="void">
       <arg type="boolean" />
     </function>
     <function opcode="0x2F1" name="player_flashlight_on" type="boolean" />
@@ -2671,6 +2933,9 @@
     <function opcode="0x30B" name="player_action_test_y" type="boolean" />
     <function opcode="0x30C" name="player_action_test_left_shoulder" type="boolean" />
     <function opcode="0x30D" name="player_action_test_right_shoulder" type="boolean" />
+    <function opcode="0x30E" name="unknown_30E" type="boolean">
+      <arg type="long" />
+    </function>
     <function opcode="0x30F" name="unit_action_test_reset" type="void">
       <arg type="unit" />
     </function>
@@ -2768,7 +3033,8 @@
       <arg type="long" />
     </function>
     <function opcode="0x330" name="map_reset" type="void" />
-    <function opcode="0x332" name="switch_zone_set" type="void">
+    <function opcode="0x331" name="map_reset_random" type="void" />
+    <function opcode="0x332" name="switch_bsp" type="void">
       <arg type="long" />
     </function>
     <function opcode="0x333" name="switch_zone_set" type="void">
@@ -2776,6 +3042,10 @@
     </function>
     <function opcode="0x334" name="current_zone_set" type="long" />
     <function opcode="0x335" name="current_zone_set_fully_active" type="long" />
+    <function opcode="0x336" name="switch_map_and_zone_set" type="void">
+      <arg type="string" />
+      <arg type="long" />
+    </function>
     <function opcode="0x337" name="crash" type="void">
       <arg type="string" />
     </function>
@@ -2797,19 +3067,47 @@
     <function opcode="0x33C" name="screenshot" type="void">
       <arg type="string" />
     </function>
+    <function opcode="0x33D" name="screenshot_debug" type="void" />
     <function opcode="0x33E" name="screenshot_big" type="void">
       <arg type="short" />
       <arg type="string" />
     </function>
-    <function opcode="0x33F" name="screenshot_big_jittered" type="void">
+    <function opcode="0x33F" name="screenshot_big_raw" type="void">
       <arg type="short" />
       <arg type="string" />
     </function>
-    <function opcode="0x344" name="main_menu" type="void" />
-    <function opcode="0x345" name="main_halt" type="void" />
+    <function opcode="0x340" name="screenshot_size" type="void">
+      <arg type="short" />
+      <arg type="short" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x341" name="screenshot_simple" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x342" name="screenshot_cubemap" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x343" name="screenshot_webmap" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x344" name="cubemap_dynamic_generate" type="void" />
+    <function opcode="0x345" name="unknown_345" type="void" />
+    <function opcode="0x346" name="unknown_346" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x347" name="unknown_347" type="void">
+      <arg type="string" />
+      <arg type="long" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x348" name="main_menu" type="void" />
+    <function opcode="0x349" name="main_halt" type="void" />
     <function opcode="0x34A" name="map_name" type="void">
       <arg type="string" />
     </function>
+    <function opcode="0x34B" name="unknown_34B" type="void" />
     <function opcode="0x34C" name="game_multiplayer" type="void">
       <arg type="string" />
     </function>
@@ -2819,14 +3117,36 @@
     <function opcode="0x34E" name="game_difficulty" type="void">
       <arg type="game_difficulty" />
     </function>
+    <function opcode="0x34F" name="game_active_primary_skulls" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x350" name="game_active_secondary_skulls" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x351" name="game_coop_players" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x352" name="game_initial_zone_set" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x353" name="game_tick_rate" type="void">
+      <arg type="long" />
+    </function>
     <function opcode="0x354" name="game_start" type="void">
       <arg type="string" />
+    </function>
+    <function opcode="0x355" name="game_start_when_ready" type="void" />
+    <function opcode="0x356" name="game_start_when_joined" type="void">
+      <arg type="long" />
     </function>
     <function opcode="0x357" name="game_rate" type="void">
       <arg type="real" />
       <arg type="real" />
       <arg type="real" />
     </function>
+    <function opcode="0x358" name="texture_cache_flush" type="void" />
+    <function opcode="0x359" name="geometry_cache_flush" type="void" />
+    <function opcode="0x35A" name="sound_cache_flush" type="void" />
     <function opcode="0x35B" name="debug_memory" type="void" />
     <function opcode="0x35C" name="debug_memory_by_file" type="void" />
     <function opcode="0x35D" name="debug_memory_for_file" type="void">
@@ -2834,6 +3154,40 @@
     </function>
     <function opcode="0x35E" name="debug_tags" type="void" />
     <function opcode="0x35F" name="tags_verify_all" type="void" />
+    <function opcode="0x360" name="unknown_360" type="void" />
+    <function opcode="0x361" name="unknown_361" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x362" name="unknown_362" type="void" />
+    <function opcode="0x363" name="unknown_363" type="void" />
+    <function opcode="0x364" name="profiler_enable" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x365" name="profiler_set_thread" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x366" name="profiler_set_sort_method" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x367" name="profiler_set_range" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x368" name="profiler_set_attribute" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x369" name="trace_next_frame" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x36A" name="trace_next_frame_to_file" type="void">
+      <arg type="long" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x36B" name="trace_tick" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x36C" name="collision_log_enable" type="void">
+      <arg type="boolean" />
+    </function>
     <function opcode="0x36D" name="damage_control_get" type="void">
       <arg type="string" />
     </function>
@@ -2841,6 +3195,7 @@
       <arg type="string" />
       <arg type="boolean" />
     </function>
+    <function opcode="0x36F" name="ai_lines" type="void" />
     <function opcode="0x370" name="ai_dialogue_break_on_vocalization" type="void">
       <arg type="string_id" />
     </function>
@@ -2887,10 +3242,14 @@
       <arg type="cinematic_scene_definition" />
       <arg type="long" />
     </function>
+    <function opcode="0x37F" name="cinematic_get_shot" type="void" />
     <function opcode="0x380" name="cinematic_set_early_exit" type="void">
       <arg type="long" />
     </function>
     <function opcode="0x381" name="cinematic_get_early_exit" type="long" />
+    <function opcode="0x382" name="cinematic_set_active_camera" type="void">
+      <arg type="string_id" />
+    </function>
     <function opcode="0x383" name="cinematic_object_create" type="void">
       <arg type="string" />
     </function>
@@ -2921,9 +3280,27 @@
       <arg type="object" />
     </function>
     <function opcode="0x38E" name="cinematic_lighting_rebuild_all" type="void" />
+    <function opcode="0x38F" name="cinematic_lighting_update_dynamic_light_direction" type="void">
+      <arg type="string" />
+      <arg type="long" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x390" name="cinematic_lighting_update_sh_light" type="void">
+      <arg type="string" />
+      <arg type="long" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+    </function>
     <function opcode="0x391" name="cinematic_object_get" type="object">
       <arg type="string" />
     </function>
+    <function opcode="0x392" name="cinematic_reset" type="void" />
     <function opcode="0x393" name="camera_set_briefing" type="void">
       <arg type="boolean" />
     </function>
@@ -2940,19 +3317,19 @@
       <arg type="long" />
       <arg type="long" />
     </function>
-    <function opcode="0x397" name="cinematic_tag_reference_get_sound" type="sound">
+    <function opcode="0x397" name="cinematic_tag_reference_get_dialogue" type="sound">
       <arg type="long" />
       <arg type="long" />
       <arg type="long" />
       <arg type="long" />
     </function>
-    <function opcode="0x398" name="cinematic_tag_reference_get_sound2" type="sound">
+    <function opcode="0x398" name="cinematic_tag_reference_get_music" type="sound">
       <arg type="long" />
       <arg type="long" />
       <arg type="long" />
       <arg type="long" />
     </function>
-    <function opcode="0x399" name="cinematic_tag_reference_get_looping_sound" type="looping_sound">
+    <function opcode="0x399" name="cinematic_tag_reference_get_music" type="looping_sound">
       <arg type="long" />
       <arg type="long" />
       <arg type="long" />
@@ -2963,7 +3340,7 @@
       <arg type="long" />
       <arg type="long" />
     </function>
-    <function opcode="0x39B" name="cinematic_tag_reference_get_?" type="boolean">
+    <function opcode="0x39B" name="cinematic_scripting_object_coop_flags_valid" type="boolean">
       <arg type="long" />
       <arg type="long" />
       <arg type="long" />
@@ -2973,6 +3350,22 @@
       <arg type="real" />
       <arg type="real" />
       <arg type="short" />
+    </function>
+    <function opcode="0x39D" name="cinematic_scripting_create_object" type="void">
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x39E" name="cinematic_scripting_create_cinematic_object" type="void">
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x39F" name="cinematic_scripting_start_animation" type="void">
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="string_id" />
     </function>
     <function opcode="0x3A0" name="cinematic_scripting_destroy_object" type="void">
       <arg type="long" />
@@ -3005,6 +3398,13 @@
       <arg type="long" />
       <arg type="long" />
     </function>
+    <function opcode="0x3A5" name="cinematic_scripting_create_and_animate_object" type="void">
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="string_id" />
+      <arg type="boolean" />
+    </function>
     <function opcode="0x3A6" name="cinematic_scripting_create_and_animate_cinematic_object" type="void">
       <arg type="long" />
       <arg type="long" />
@@ -3018,8 +3418,7 @@
       <arg type="long" />
       <arg type="boolean" />
     </function>
-    <function opcode="0x3A8"
-      name="cinematic_scripting_create_and_animate_cinematic_object_no_animation" type="void">
+    <function opcode="0x3A8" name="cinematic_scripting_create_and_animate_cinematic_object_no_animation" type="void">
       <arg type="long" />
       <arg type="long" />
       <arg type="long" />
@@ -3056,12 +3455,117 @@
     <function opcode="0x3B6" name="game_insertion_point_lock" type="void">
       <arg type="short" />
     </function>
+    <function opcode="0x3B7" name="saved_games_enumerate" type="void">
+      <arg type="controller" />
+    </function>
+    <function opcode="0x3B8" name="saved_games_delete_campaign_save" type="void">
+      <arg type="controller" />
+    </function>
+    <function opcode="0x3B9" name="saved_games_save_last_film" type="void">
+      <arg type="controller" />
+    </function>
+    <function opcode="0x3BA" name="saved_games_autosave_free_up_space" type="void" />
+    <function opcode="0x3BB" name="content_catalogue_display_status" type="void">
+      <arg type="controller" />
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
     <function opcode="0x3BC" name="achievement_grant_to_player" type="void">
       <arg type="unit" />
       <arg type="string_id" />
     </function>
     <function opcode="0x3BD" name="achievement_grant_to_all_players" type="void">
       <arg type="string_id" />
+    </function>
+    <function opcode="0x3BE" name="achievements_enable" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x3BF" name="achievements_skip_validation_checks" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x3C0" name="debug_spawning_influencers" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x3C1" name="debug_spawning_respawn_zones" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x3C2" name="debug_spawning_proximity_forbid" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x3C3" name="debug_spawning_moving_vehicle" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x3C4" name="debug_spawning_weapon_influences" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x3C5" name="debug_spawning_dangerous_projectiles" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x3C6" name="debug_spawning_deployed_equipment" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x3C7" name="debug_spawning_proximity_enemy" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x3C8" name="debug_spawning_teammates" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x3C9" name="debug_spawning_random_influence" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x3CA" name="debug_spawning_nominal_weight" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x3CB" name="debug_spawning_natural_weight" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x3CC" name="debug_spawning_target" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x3CD" name="debug_spawning_use_history" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x3CE" name="debug_initial_spawn_point_objects" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x3CF" name="debug_respawn_point_objects" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x3D0" name="game_export_variant_settings" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x3D1" name="game_engine_event_test_general" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x3D2" name="game_engine_event_test_flavor" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x3D3" name="game_engine_event_test_slayer" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x3D4" name="game_engine_event_test_ctf" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x3D5" name="game_engine_event_test_oddball" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x3D6" name="game_engine_event_test_king" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x3D7" name="game_engine_event_test_vip" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x3D8" name="game_engine_event_test_juggernaut" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x3D9" name="game_engine_event_test_territories" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x3DA" name="game_engine_event_test_assault" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x3DB" name="game_engine_event_test_infection" type="void">
+      <arg type="long" />
     </function>
     <function opcode="0x3DC" name="core_load" type="void" />
     <function opcode="0x3DD" name="core_load_name" type="void">
@@ -3081,6 +3585,12 @@
     <function opcode="0x3E3" name="core_set_upload_option" type="void">
       <arg type="string" />
     </function>
+    <function opcode="0x3E4" name="force_debugger_not_present" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x3E5" name="force_debugger_always_present" type="void">
+      <arg type="boolean" />
+    </function>
     <function opcode="0x3E6" name="game_safe_to_save" type="boolean" />
     <function opcode="0x3E7" name="game_safe_to_speak" type="boolean" />
     <function opcode="0x3E8" name="game_all_quiet" type="boolean" />
@@ -3090,6 +3600,8 @@
     <function opcode="0x3EC" name="game_save_immediate" type="void" />
     <function opcode="0x3ED" name="game_saving" type="boolean" />
     <function opcode="0x3EE" name="game_reverted" type="boolean" />
+    <function opcode="0x3EF" name="unknown_3EF" type="void" />
+    <function opcode="0x3F0" name="unknown_3F0" type="void" />
     <function opcode="0x3F1" name="sound_set_tag_parameter_unsafe" type="void">
       <arg type="string" />
       <arg type="string" />
@@ -3147,6 +3659,11 @@
     </function>
     <function opcode="0x3FB" name="sound_impulse_mark_as_outro" type="void">
       <arg type="sound" />
+    </function>
+    <function opcode="0x3FC" name="sound_impulse_start_naked" type="void">
+      <arg type="sound" />
+      <arg type="string_id" />
+      <arg type="string_id" />
     </function>
     <function opcode="0x3FD" name="sound_looping_predict" type="void">
       <arg type="looping_sound" />
@@ -3226,6 +3743,9 @@
     <function opcode="0x410" name="biped_ragdoll" type="void">
       <arg type="unit" />
     </function>
+    <function opcode="0x411" name="water_float_reset" type="void">
+      <arg type="object" />
+    </function>
     <function opcode="0x412" name="hud_show_training_text" type="void">
       <arg type="boolean" />
     </function>
@@ -3238,8 +3758,11 @@
     <function opcode="0x415" name="player_training_activate_flashlight" type="void" />
     <function opcode="0x416" name="player_training_activate_crouch" type="void" />
     <function opcode="0x417" name="player_training_activate_stealth" type="void" />
-    <function opcode="0x418" name="player_training_activate_?" type="void" />
+    <function opcode="0x418" name="player_training_activate_equipment" type="void" />
     <function opcode="0x419" name="player_training_activate_jump" type="void" />
+    <function opcode="0x41A" name="player_training_reset" type="void">
+      <arg type="controller" />
+    </function>
     <function opcode="0x41B" name="hud_activate_team_nav_point_flag" type="void">
       <arg type="team" />
       <arg type="cutscene_flag" />
@@ -3254,8 +3777,20 @@
       <arg type="string_id" />
       <arg type="boolean" />
     </function>
+    <function opcode="0x41E" name="chud_texture_cam" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x41F" name="chud_cortana_set_range_multiplier" type="void">
+      <arg type="real" />
+    </function>
     <function opcode="0x420" name="play_cortana_effect" type="void">
       <arg type="string_id" />
+    </function>
+    <function opcode="0x421" name="chud_show" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x422" name="chud_show_weapon_stats" type="void">
+      <arg type="boolean" />
     </function>
     <function opcode="0x423" name="chud_show_crosshair" type="void">
       <arg type="boolean" />
@@ -3304,7 +3839,7 @@
       <arg type="real" />
     </function>
     <function opcode="0x432" name="cls" type="void" />
-    <function opcode="0x433" name="error_overflow_suppression" type="void">
+    <function opcode="0x433" name="events_spam_suppression_enable" type="void">
       <arg type="boolean" />
     </function>
     <function opcode="0x434" name="error_geometry_show" type="void">
@@ -3445,8 +3980,303 @@
       <arg type="boolean" />
     </function>
     <function opcode="0x45D" name="controller_get_look_invert" type="boolean" />
-    <function opcode="0x45E" name="controller_unlock_solo_levels" type="long">
+    <function opcode="0x45E" name="user_interface_controller_get_last_level_played" type="long">
       <arg type="short" />
+    </function>
+    <function opcode="0x45F" name="controller_set_look_inverted" type="void">
+      <arg type="controller" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x460" name="controller_set_vibration_enabled" type="void">
+      <arg type="controller" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x461" name="controller_set_flight_stick_aircraft_controls" type="void">
+      <arg type="controller" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x462" name="controller_set_auto_center_look" type="void">
+      <arg type="controller" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x463" name="controller_set_crouch_lock" type="void">
+      <arg type="controller" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x464" name="controller_set_button_preset" type="void">
+      <arg type="controller" />
+      <arg type="button_preset" />
+    </function>
+    <function opcode="0x465" name="controller_set_joystick_preset" type="void">
+      <arg type="controller" />
+      <arg type="joystick_preset" />
+    </function>
+    <function opcode="0x466" name="controller_set_look_sensitivity" type="void">
+      <arg type="controller" />
+      <arg type="short" />
+    </function>
+    <function opcode="0x467" name="controller_unlock_single_player_levels" type="void">
+      <arg type="controller" />
+    </function>
+    <function opcode="0x468" name="controller_lock_single_player_levels" type="void">
+      <arg type="controller" />
+    </function>
+    <function opcode="0x469" name="controller_unlock_skulls" type="void">
+      <arg type="controller" />
+    </function>
+    <function opcode="0x46A" name="controller_lock_skulls" type="void">
+      <arg type="controller" />
+    </function>
+    <function opcode="0x46B" name="controller_unlock_models" type="void">
+      <arg type="controller" />
+    </function>
+    <function opcode="0x46C" name="controller_lock_models" type="void">
+      <arg type="controller" />
+    </function>
+    <function opcode="0x46D" name="controller_set_single_player_level_completed" type="void">
+      <arg type="controller" />
+      <arg type="long" />
+      <arg type="boolean" />
+      <arg type="game_difficulty" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x46E" name="controller_set_player_character_type" type="void">
+      <arg type="controller" />
+      <arg type="player_character_type" />
+    </function>
+    <function opcode="0x46F" name="controller_set_emblem_info" type="void">
+      <arg type="controller" />
+      <arg type="short" />
+      <arg type="short" />
+      <arg type="short" />
+      <arg type="short" />
+    </function>
+    <function opcode="0x470" name="controller_set_voice_output_setting" type="void">
+      <arg type="controller" />
+      <arg type="voice_output_setting" />
+    </function>
+    <function opcode="0x471" name="controller_set_voice_mask" type="void">
+      <arg type="controller" />
+      <arg type="voice_mask" />
+    </function>
+    <function opcode="0x472" name="controller_set_subtitle_setting" type="void">
+      <arg type="controller" />
+      <arg type="subtitle_setting" />
+    </function>
+    <function opcode="0x473" name="controller_set_campaign_solo_high_score" type="void">
+      <arg type="controller" />
+      <arg type="long" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x474" name="controller_set_campaign_coop_high_score" type="void">
+      <arg type="controller" />
+      <arg type="long" />
+      <arg type="real" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x475" name="controller_set_survival_solo_high_score" type="void">
+      <arg type="controller" />
+      <arg type="long" />
+      <arg type="short" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x476" name="controller_set_survival_coop_high_score" type="void">
+      <arg type="controller" />
+      <arg type="long" />
+      <arg type="short" />
+      <arg type="real" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x477" name="controller_clear_high_scores" type="void">
+      <arg type="controller" />
+    </function>
+    <function opcode="0x478" name="controller_set_unsignedin_user" type="void">
+      <arg type="controller" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x479" name="controller_display_storage_device_selection" type="void">
+      <arg type="controller" />
+    </function>
+    <function opcode="0x47A" name="font_cache_bitmap_save" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x47B" name="ui_debug_load_main_menu" type="void" />
+    <function opcode="0x47C" name="ui_debug_text_bounds" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x47D" name="ui_debug_text_font" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x47E" name="ui_debug_show_title_safe_bounds" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x47F" name="ui_debug_element_bounds" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x480" name="ui_memory_dump" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x481" name="ui_time_scale_step" type="void">
+      <arg type="real" />
+    </function>
+    <function opcode="0x482" name="xoverlapped_debug_render" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x483" name="gui_load_screen" type="void">
+      <arg type="string_id" />
+    </function>
+    <function opcode="0x484" name="gui_reset" type="void" />
+    <function opcode="0x485" name="gui_start" type="void" />
+    <function opcode="0x486" name="gui_stop" type="void" />
+    <function opcode="0x487" name="gui_error_post" type="void">
+      <arg type="string_id" />
+      <arg type="long" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x488" name="gui_error_post_toast" type="void">
+      <arg type="string_id" />
+      <arg type="long" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x489" name="gui_error_resolve" type="void">
+      <arg type="string_id" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x48A" name="gui_error_clear" type="void">
+      <arg type="string_id" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x48B" name="gui_dialog_show" type="void">
+      <arg type="string_id" />
+    </function>
+    <function opcode="0x48C" name="gui_spartan_milestone_show" type="void">
+      <arg type="short" />
+    </function>
+    <function opcode="0x48D" name="gui_spartan_rank_show" type="void">
+      <arg type="short" />
+    </function>
+    <function opcode="0x48E" name="gui_print_active_screens" type="void" />
+    <function opcode="0x48F" name="gui_print_active_screen_strings" type="void" />
+    <function opcode="0x490" name="gui_debug_screen_name" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x491" name="gui_debug_screen_animation" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x492" name="gui_debug_screen_bounds" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x493" name="gui_debug_screen_rotation" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x494" name="gui_debug_group_name" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x495" name="gui_debug_group_animation" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x496" name="gui_debug_group_bounds" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x497" name="gui_debug_group_rotation" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x498" name="gui_debug_list_name" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x499" name="gui_debug_list_animation" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x49A" name="gui_debug_list_bounds" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x49B" name="gui_debug_list_rotation" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x49C" name="gui_debug_list_item_name" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x49D" name="gui_debug_list_item_animation" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x49E" name="gui_debug_list_item_bounds" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x49F" name="gui_debug_list_item_rotation" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x4A0" name="gui_debug_text_name" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x4A1" name="gui_debug_text_animation" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x4A2" name="gui_debug_text_bounds" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x4A3" name="gui_debug_text_rotation" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x4A4" name="gui_debug_bitmap_name" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x4A5" name="gui_debug_bitmap_animation" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x4A6" name="gui_debug_bitmap_bounds" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x4A7" name="gui_debug_bitmap_rotation" type="void">
+      <arg type="string_id" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x4A8" name="gui_debug_music_state" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x4A9" name="cc_enable" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x4AA" name="cc_test" type="void">
+      <arg type="boolean" />
     </function>
     <function opcode="0x4AB" name="objectives_clear" type="void" />
     <function opcode="0x4AC" name="objectives_show_up_to" type="void">
@@ -3476,14 +4306,139 @@
     <function opcode="0x4B4" name="input_suppress_rumble" type="void">
       <arg type="boolean" />
     </function>
-    <function opcode="0x4D1" name="net_delegate_?" type="void">
-      <arg type="long" />
+    <function opcode="0x4B5" name="input_disable_claw_button_combos" type="void">
+      <arg type="boolean" />
     </function>
-    <function opcode="0x4D2" name="net_map_name" type="void">
+    <function opcode="0x4B6" name="update_remote_camera" type="void" />
+    <function opcode="0x4B7" name="net_build_network_config" type="void" />
+    <function opcode="0x4B8" name="net_build_game_variant" type="void">
       <arg type="string" />
     </function>
-    <function opcode="0x4D4" name="net_campaign_difficulty" type="void">
+    <function opcode="0x4B9" name="net_verify_game_variant" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x4BA" name="net_load_and_use_game_variant" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x4BB" name="net_use_hopper_directory" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x4BC" name="net_quality_dump" type="void" />
+    <function opcode="0x4BD" name="net_quality_clear" type="void" />
+    <function opcode="0x4BE" name="net_quality_set_connection_badness_history" type="void">
+      <arg type="boolean" />
       <arg type="short" />
+    </function>
+    <function opcode="0x4BF" name="net_quality_set_squad_host_badness_history" type="void">
+      <arg type="boolean" />
+      <arg type="short" />
+    </function>
+    <function opcode="0x4C0" name="net_quality_set_squad_client_badness_history" type="void">
+      <arg type="boolean" />
+      <arg type="short" />
+    </function>
+    <function opcode="0x4C1" name="net_quality_set_group_host_badness_history" type="void">
+      <arg type="boolean" />
+      <arg type="short" />
+    </function>
+    <function opcode="0x4C2" name="net_quality_set_group_client_badness_history" type="void">
+      <arg type="boolean" />
+      <arg type="short" />
+    </function>
+    <function opcode="0x4C3" name="net_quality_set_estimated_bandwidth" type="void">
+      <arg type="boolean" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x4C4" name="net_join_friend" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x4C5" name="net_join_squad_to_friend" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x4C6" name="net_join_sessionid" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x4C7" name="net_join_squad_to_sessionid" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x4C8" name="net_enable_join_friend_loop" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x4C9" name="net_set_maximum_player_count" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x4CA" name="net_set_campaign_insertion_point" type="void">
+      <arg type="short" />
+    </function>
+    <function opcode="0x4CB" name="net_status_filter" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x4CC" name="net_sim_reset" type="void" />
+    <function opcode="0x4CD" name="net_sim_spike_now" type="void" />
+    <function opcode="0x4CE" name="net_sim_dropspike_now" type="void" />
+    <function opcode="0x4CF" name="net_test_ping" type="void" />
+    <function opcode="0x4D0" name="net_test_channel_delete" type="void" />
+    <function opcode="0x4D1" name="net_test_delegate_host" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x4D2" name="net_test_map_name" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x4D3" name="net_test_variant" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x4D4" name="net_test_campaign_difficulty" type="void">
+      <arg type="short" />
+    </function>
+    <function opcode="0x4D5" name="net_test_reset_objects" type="void" />
+    <function opcode="0x4D6" name="net_test_fatal_error" type="void" />
+    <function opcode="0x4D7" name="net_set_machine_name" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x4D8" name="events_enabled" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x4D9" name="events_disable_suppression" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x4DA" name="event_global_display_category" type="void">
+      <arg type="event" />
+    </function>
+    <function opcode="0x4DB" name="event_global_log_category" type="void">
+      <arg type="event" />
+    </function>
+    <function opcode="0x4DC" name="event_global_remote_log_category" type="void">
+      <arg type="event" />
+    </function>
+    <function opcode="0x4DD" name="event_display_category" type="void">
+      <arg type="string" />
+      <arg type="event" />
+    </function>
+    <function opcode="0x4DE" name="event_force_display_category" type="void">
+      <arg type="string" />
+      <arg type="event" />
+    </function>
+    <function opcode="0x4DF" name="event_log_category" type="void">
+      <arg type="string" />
+      <arg type="event" />
+    </function>
+    <function opcode="0x4E0" name="event_remote_log_category" type="void">
+      <arg type="string" />
+      <arg type="event" />
+    </function>
+    <function opcode="0x4E1" name="event_debugger_break_category" type="void">
+      <arg type="string" />
+      <arg type="event" />
+    </function>
+    <function opcode="0x4E2" name="event_halt_category" type="void">
+      <arg type="string" />
+      <arg type="event" />
+    </function>
+    <function opcode="0x4E3" name="event_list_categories" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x4E4" name="events_suppress_console_display" type="void">
+      <arg type="boolean" />
     </function>
     <function opcode="0x4E5" name="play_bink_movie" type="void">
       <arg type="string" />
@@ -3491,7 +4446,7 @@
     <function opcode="0x4E6" name="play_bink_movie_from_tag" type="void">
       <arg type="bink_definition" />
     </function>
-    <function opcode="0x4E7" name="play_credits" type="void" />
+    <function opcode="0x4E7" name="play_credits_skip_to_menu" type="void" />
     <function opcode="0x4E8" name="bink_time" type="long" />
     <function opcode="0x4E9" name="set_global_doppler_factor" type="void">
       <arg type="real" />
@@ -3507,16 +4462,170 @@
     <function opcode="0x4EC" name="data_mine_set_mission_segment" type="void">
       <arg type="string" />
     </function>
-    <function opcode="0x4ED" name="data_mine_display_mission_segment" type="void">
+    <function opcode="0x4ED" name="data_mine_insert" type="void">
       <arg type="string" />
     </function>
-    <function opcode="0x4EE" name="data_mine_insert" type="void" />
-    <function opcode="0x4F0" name="data_mine_upload" type="void" />
-    <function opcode="0x4F1" name="data_mine_playback" type="void">
-      <arg type="string" />
-    </function>
-    <function opcode="0x4F3" name="data_mine_enable" type="void">
+    <function opcode="0x4EE" name="data_mine_upload" type="void" />
+    <function opcode="0x4EF" name="data_mine_enable" type="void">
       <arg type="boolean" />
+    </function>
+    <function opcode="0x4F0" name="data_mine_flush" type="void" />
+    <function opcode="0x4F1" name="data_mine_debug_menu_setting" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x4F2" name="data_mine_open_debug_menu" type="void" />
+    <function opcode="0x4F3" name="data_mine_set_display_mission_segment" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x4F4" name="unknown_4F4" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x4F5" name="test_memory_allocators" type="void">
+      <arg type="long" />
+      <arg type="short" />
+      <arg type="short" />
+      <arg type="short" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x4F6" name="test_memory_allocators" type="void">
+      <arg type="long" />
+      <arg type="short" />
+      <arg type="short" />
+      <arg type="short" />
+      <arg type="long" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x4F7" name="display_video_standard" type="void" />
+    <function opcode="0x4F8" name="test_xcr_monkey_enable" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x4F9" name="test_show_guide_status" type="void" />
+    <function opcode="0x4FA" name="test_show_users_xuids" type="void" />
+    <function opcode="0x4FB" name="test_show_are_users_friends" type="void">
+      <arg type="long" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x4FC" name="test_invite_friend" type="void">
+      <arg type="long" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x4FD" name="test_get_squad_session_id" type="void" />
+    <function opcode="0x4FE" name="test_auto_get_screens" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x4FF" name="test_auto_get_screen_widgets" type="void">
+      <arg type="long" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x500" name="test_auto_screen_get_datasources" type="void">
+      <arg type="long" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x501" name="test_auto_screen_get_data_columns" type="void">
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="string_id" />
+    </function>
+    <function opcode="0x502" name="test_auto_screen_get_data" type="void">
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="string_id" />
+      <arg type="string_id" />
+    </function>
+    <function opcode="0x503" name="test_auto_screen_invoke_list_item_by_name" type="void">
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="string_id" />
+      <arg type="string_id" />
+      <arg type="string_id" />
+    </function>
+    <function opcode="0x504" name="test_auto_screen_invoke_list_item_by_text" type="void">
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="string_id" />
+      <arg type="string_id" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x505" name="test_auto_screen_invoke_list_item_by_handle" type="void">
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="string_id" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x506" name="test_auto_screen_send_button_press" type="void">
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x507" name="test_download_storage_file" type="void">
+      <arg type="string" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x508" name="test_game_results_save_to_file" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x509" name="test_game_results_load_from_file" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x50A" name="test_roster_save_to_file" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x50B" name="test_roster_load_from_file" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x50C" name="test_fragment_utility_drive" type="void">
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x50D" name="test_metagame_results_save_to_file" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x50E" name="test_metagame_results_load_from_file" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x50F" name="clear_webcache" type="void" />
+    <function opcode="0x510" name="force_manifest_redownload" type="void" />
+    <function opcode="0x511" name="online_files_retry" type="void" />
+    <function opcode="0x512" name="online_files_upload" type="void">
+      <arg type="string" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x513" name="online_files_throttle_bandwidth" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x514" name="online_marketplace_refresh" type="void" />
+    <function opcode="0x515" name="webstats_disable" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x516" name="webstats_test_submit" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x517" name="webstats_test_submit_multiplayer" type="void" />
+    <function opcode="0x518" name="webstats_test_submit_campaign" type="void" />
+    <function opcode="0x519" name="webstats_throttle_bandwidth" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x51A" name="netdebug_prefer_internet" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x51B" name="flag_new" type="void">
+      <arg type="string" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x51C" name="flag_new_at_look" type="void">
+      <arg type="string" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x51D" name="flags_clear" type="void" />
+    <function opcode="0x51E" name="flags_default_name" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x51F" name="flags_default_comment" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x520" name="flags_set_filter" type="void">
+      <arg type="string" />
     </function>
     <function opcode="0x521" name="object_list_children" type="object_list">
       <arg type="object" />
@@ -3529,6 +4638,22 @@
     <function opcode="0x523" name="voice_set_voice_repeater_peer_index" type="void">
       <arg type="long" />
     </function>
+    <function opcode="0x524" name="voice_set_mute" type="void">
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x525" name="net_leaderboard_clear_hopper" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x526" name="net_leaderboard_clear_global_arbitrated" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x527" name="net_leaderboard_clear_global_unarbitrated" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x528" name="net_leaderboard_refresh" type="void" />
+    <function opcode="0x529" name="dump_loaded_tags" type="void" />
     <function opcode="0x52A" name="interpolator_start" type="long">
       <arg type="string_id" />
       <arg type="real" />
@@ -3602,6 +4727,9 @@
     <function opcode="0x53C" name="interpolator_stop_all" type="void" />
     <function opcode="0x53D" name="interpolator_restart_all" type="void" />
     <function opcode="0x53E" name="interpolator_flip" type="void" />
+    <function opcode="0x53F" name="set_pc_runtime_language" type="void">
+      <arg type="string" />
+    </function>
     <function opcode="0x540" name="animation_cache_stats_reset" type="void" />
     <function opcode="0x541" name="cinematic_clone_players_weapon" type="void">
       <arg type="object" />
@@ -3669,6 +4797,20 @@
     </function>
     <function opcode="0x555" name="cache_block_for_one_frame" type="void" />
     <function opcode="0x556" name="sound_suppress_ambience_update_on_revert" type="void" />
+    <function opcode="0x557" name="render_autoexposure_enable" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x558" name="render_exposure_full" type="void">
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x559" name="render_exposure_fade_in" type="void">
+      <arg type="real" />
+      <arg type="real" />
+    </function>
     <function opcode="0x55A" name="render_exposure_fade_out" type="void">
       <arg type="real" />
     </function>
@@ -3679,6 +4821,9 @@
     <function opcode="0x55C" name="render_autoexposure_instant" type="void">
       <arg type="long" />
     </function>
+    <function opcode="0x55D" name="render_exposure_set_environment_darken" type="void">
+      <arg type="real" />
+    </function>
     <function opcode="0x55E" name="render_depth_of_field_enable" type="void">
       <arg type="boolean" />
     </function>
@@ -3688,6 +4833,14 @@
       <arg type="real" />
       <arg type="real" />
     </function>
+    <function opcode="0x560" name="render_dof_focus_depth" type="void">
+      <arg type="real" />
+    </function>
+    <function opcode="0x561" name="render_dof_blur_animate" type="void">
+      <arg type="real" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x562" name="render_debug_video_mode" type="void" />
     <function opcode="0x563" name="cinematic_lightmap_shadow_disable" type="void" />
     <function opcode="0x564" name="cinematic_lightmap_shadow_enable" type="void" />
     <function opcode="0x565" name="predict_animation" type="void">
@@ -3745,6 +4898,9 @@
     <function opcode="0x577" name="mp_object_destroy" type="void">
       <arg type="object" />
     </function>
+    <function opcode="0x578" name="tag_file_set_backend" type="void">
+      <arg type="string" />
+    </function>
     <function opcode="0x579" name="mp_object_belongs_to_team" type="void">
       <arg type="object" />
       <arg type="mp_team" />
@@ -3753,6 +4909,10 @@
       <arg type="object" />
       <arg type="mp_team" />
     </function>
+    <function opcode="0x57B" name="mp_debug_goal_object_boundary_geometry" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x57C" name="mp_dump_candy_monitor_state" type="void" />
     <function opcode="0x57D" name="set_camera_third_person" type="void">
       <arg type="long" />
       <arg type="boolean" />
@@ -3760,23 +4920,158 @@
     <function opcode="0x57E" name="get_camera_third_person" type="boolean">
       <arg type="long" />
     </function>
+    <function opcode="0x57F" name="determinism_debug_manager_enable_logging" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x580" name="determinism_debug_manager_set_trace_flags" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x581" name="determinism_debug_manager_enable_game_state_checksum" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x582" name="determinism_debug_manager_enable_trace" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x583" name="determinism_debug_manager_set_consumer_sample_level" type="void">
+      <arg type="string" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x584" name="unknown_584" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x585" name="saved_film_play" type="void">
+      <arg type="controller" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x586" name="saved_film_play_last" type="void" />
+    <function opcode="0x587" name="saved_film_disable_version_checking" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x588" name="saved_film_toggle_debug_saving" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x589" name="saved_films_delete_on_level_load" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x58A" name="saved_films_show_timestamp" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x58B" name="saved_film_manager_should_record_film_default" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x58C" name="mover_set_program" type="boolean">
+      <arg type="object" />
+      <arg type="short" />
+    </function>
+    <function opcode="0x58D" name="determinism_log_compare_log_files" type="void">
+      <arg type="string" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x58E" name="floating_point_exceptions_enable" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x58F" name="determinism_debug_manager_enable_log_file_comparision_on_oos" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x590" name="event_logs_snapshot" type="void" />
+    <function opcode="0x591" name="tag_reload_force" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x592" name="tag_unload_force" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x593" name="tag_load_force" type="void">
+      <arg type="string" />
+    </function>
     <function opcode="0x594" name="predict_bink_movie" type="void">
       <arg type="string" />
     </function>
     <function opcode="0x595" name="predict_bink_movie_from_tag" type="void">
       <arg type="bink_definition" />
     </function>
+    <function opcode="0x596" name="profiler_dump_history" type="void" />
     <function opcode="0x597" name="camera_set_mode" type="void">
       <arg type="long" />
       <arg type="long" />
     </function>
+    <function opcode="0x598" name="camera_set_flying_cam_at_point" type="void">
+      <arg type="long" />
+      <arg type="cutscene_camera_point" />
+    </function>
+    <function opcode="0x599" name="unknown_599" type="void">
+      <arg type="long" />
+      <arg type="object" />
+    </function>
     <function opcode="0x59A" name="game_coop_player_count" type="long" />
+    <function opcode="0x59B" name="player_force_mode" type="void">
+      <arg type="string_id" />
+    </function>
+    <function opcode="0x59C" name="profiler_output_pulse" type="void" />
+    <function opcode="0x59D" name="string_id_name" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x59E" name="find" type="void">
+      <arg type="string" />
+    </function>
     <function opcode="0x59F" name="add_recycling_volume" type="void">
       <arg type="trigger_volume" />
       <arg type="long" />
       <arg type="long" />
     </function>
+    <function opcode="0x5A0" name="tag_resources_set_per_frame_publish" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x5A1" name="object_recycling_clear_history" type="void" />
+    <function opcode="0x5A2" name="dump_cinematics_script" type="void" />
+    <function opcode="0x5A3" name="global_preferences_clear" type="void" />
+    <function opcode="0x5A4" name="network_storage_set_storage_subdirectory" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x5A5" name="network_storage_set_storage_user" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x5A6" name="status_line_dump" type="void" />
     <function opcode="0x5A7" name="game_tick_get" type="long" />
+    <function opcode="0x5A8" name="loop_it" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x5A9" name="loop_clear" type="void" />
+    <function opcode="0x5AA" name="status_lines_enable" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x5AB" name="status_lines_disable" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x5AC" name="on_target_platform" type="boolean" />
+    <function opcode="0x5AD" name="profile_activate" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x5AE" name="profile_deactivate" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x5AF" name="net_game_set_player_standing" type="void">
+      <arg type="string" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x5B0" name="net_get_game_id" type="void" />
+    <function opcode="0x5B1" name="net_test_matchmaking_hopper_list" type="void" />
+    <function opcode="0x5B2" name="net_test_matchmaking_hopper_game_list" type="void" />
+    <function opcode="0x5B3" name="net_test_matchmaking_hopper_set_game" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x5B4" name="saved_film_set_playback_game_speed" type="void">
+      <arg type="real" />
+    </function>
+    <function opcode="0x5B5" name="saved_film_set_pending_playback_game_speed" type="void">
+      <arg type="real" />
+    </function>
+    <function opcode="0x5B6" name="noguchis_mystery_tour" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x5B7" name="designer_zone_sync" type="void" />
+    <function opcode="0x5B8" name="dump_designer_zone" type="void">
+      <arg type="designer_zone" />
+    </function>
     <function opcode="0x5B9" name="designer_zone_activate" type="void">
       <arg type="designer_zone" />
     </function>
@@ -3787,8 +5082,117 @@
       <arg type="object" />
       <arg type="boolean" />
     </function>
+    <function opcode="0x5BC" name="saved_film_seek_to_film_tick" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x5BD" name="tag_is_active" type="boolean">
+      <arg type="any_tag_not_resolving" />
+    </function>
+    <function opcode="0x5BE" name="tag_resources_set_incremental_publish" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x5BF" name="dump_active_resources" type="void" />
     <function opcode="0x5C0" name="object_set_persistent" type="void">
       <arg type="object" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x5C1" name="display_zone_size_estimates" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x5C2" name="report_zone_size_estimates" type="void" />
+    <function opcode="0x5C3" name="net_test_disconnect_squad" type="void" />
+    <function opcode="0x5C4" name="net_test_disconnect_group" type="void" />
+    <function opcode="0x5C5" name="net_test_clear_squad_session_parameter" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x5C6" name="net_test_clear_group_session_parameter" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x5C7" name="net_test_life_cycle_pause" type="void">
+      <arg type="string" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x5C8" name="net_test_life_cycle_display_states" type="void" />
+    <function opcode="0x5C9" name="overlapped_display_task_descriptions" type="void" />
+    <function opcode="0x5CA" name="overlapped_task_inject_error" type="void">
+      <arg type="string" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x5CB" name="net_leaderboard_clear_hopper_all_users" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x5CC" name="net_leaderboard_clear_global_arbitrated_all_users" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x5CD" name="net_leaderboard_clear_global_unarbitrated_all_users" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x5CE" name="test_sapien_crash" type="void" />
+    <function opcode="0x5CF" name="output_window_add_category" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x5D0" name="output_window_remove_category" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x5D1" name="output_window_list_categories" type="void" />
+    <function opcode="0x5D2" name="decorators_split" type="void">
+      <arg type="long" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x5D3" name="bandwidth_profiler_enable" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x5D4" name="bandwidth_profiler_set_context" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x5D5" name="overlapped_task_pause" type="void">
+      <arg type="string" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x5D6" name="net_banhammer_set_controller_cheat_flags" type="void">
+      <arg type="controller" />
+      <arg type="string" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x5D7" name="net_banhammer_set_controller_ban_flags" type="void">
+      <arg type="controller" />
+      <arg type="string" />
+      <arg type="long" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x5D8" name="net_banhammer_dump_strings" type="void" />
+    <function opcode="0x5D9" name="net_banhammer_dump_repeated_play_list" type="void" />
+    <function opcode="0x5DA" name="net_leaderboard_set_user_stats" type="void">
+      <arg type="long" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x5DB" name="net_leaderboard_set_user_game_stats" type="void">
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x5DC" name="net_build_map_variant" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x5DD" name="net_verify_map_variant" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x5DE" name="async_set_work_delay_milliseconds" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x5DF" name="sound_looping_start_with_effect" type="void">
+      <arg type="looping_sound" />
+      <arg type="object" />
+      <arg type="real" />
+      <arg type="string_id" />
+    </function>
+    <function opcode="0x5E0" name="tag_resources_set_demand_throttle_to_io" type="void">
       <arg type="boolean" />
     </function>
     <function opcode="0x5E1" name="set_performance_throttle" type="void">
@@ -3796,12 +5200,15 @@
       <arg type="long" />
       <arg type="real" />
     </function>
-    <function opcode="0x5E2" name="set_quality" type="void">
+    <function opcode="0x5E2" name="set_gfx_quality" type="void">
       <arg type="long" />
     </function>
     <function opcode="0x5E3" name="get_performance_throttle" type="real">
       <arg type="string" />
       <arg type="long" />
+    </function>
+    <function opcode="0x5E4" name="voice_set_headset_boost" type="void">
+      <arg type="real" />
     </function>
     <function opcode="0x5E5" name="cinematic_zone_activate" type="void">
       <arg type="long" />
@@ -3809,9 +5216,35 @@
     <function opcode="0x5E6" name="cinematic_zone_deactivate" type="void">
       <arg type="long" />
     </function>
+    <function opcode="0x5E7" name="cinematic_zone_activate_from_editor" type="void">
+      <arg type="any_tag" />
+    </function>
+    <function opcode="0x5E8" name="cinematic_zone_deactivate_from_editor" type="void">
+      <arg type="any_tag" />
+    </function>
+    <function opcode="0x5E9" name="tiling_current" type="long" />
     <function opcode="0x5EA" name="unit_limit_lipsync_to_mouth_only" type="void">
       <arg type="unit" />
       <arg type="boolean" />
+    </function>
+    <function opcode="0x5EB" name="dump_active_zone_tags" type="void" />
+    <function opcode="0x5EC" name="calculate_tag_prediction" type="void">
+      <arg type="any_tag" />
+    </function>
+    <function opcode="0x5ED" name="tag_resources_enable_fast_prediction" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x5EE" name="unit_start_first_person_custom_animation" type="boolean">
+      <arg type="unit" />
+      <arg type="animation_graph" />
+      <arg type="string_id" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x5EF" name="unit_is_playing_custom_first_person_animation" type="boolean">
+      <arg type="unit" />
+    </function>
+    <function opcode="0x5F0" name="unit_stop_first_person_custom_animation" type="void">
+      <arg type="unit" />
     </function>
     <function opcode="0x5F1" name="prepare_to_switch_to_zone_set" type="void">
       <arg type="zone_set" />
@@ -3848,7 +5281,22 @@
       <arg type="real" />
       <arg type="real" />
     </function>
+    <function opcode="0x5FB" name="run_like_dvd" type="void" />
+    <function opcode="0x5FC" name="profiler_auto_core_save" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x5FD" name="run_no_hdd" type="void" />
     <function opcode="0x5FE" name="cinematic_tag_reference_get_bink" type="bink_definition">
+      <arg type="long" />
+    </function>
+    <function opcode="0x5FF" name="voice_set_force_match_configurations" type="void">
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x600" name="voice_set_force_hud" type="void">
+      <arg type="long" />
       <arg type="long" />
     </function>
     <function opcode="0x601" name="object_set_custom_animation_speed" type="void">
@@ -3861,12 +5309,17 @@
       <arg type="string_id" />
       <arg type="short" />
     </function>
-    <function opcode="0x603" name="film_manager_set_reproduction_mode" type="void">
+    <function opcode="0x603" name="saved_film_set_repro_mode" type="void">
       <arg type="boolean" />
     </function>
-    <function opcode="0x604" name="cortana_effect_tag_reference_get_scene" type="cinematic_scene_definition">
+    <function opcode="0x604" name="cortana_tag_reference_get_scene" type="cinematic_scene_definition">
       <arg type="long" />
     </function>
+    <function opcode="0x605" name="net_banhammer_force_download" type="void">
+      <arg type="boolean" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x606" name="font_set_emergency" type="void" />
     <function opcode="0x607" name="biped_force_ground_fitting_on" type="void">
       <arg type="unit" />
       <arg type="boolean" />
@@ -3888,11 +5341,20 @@
     <function opcode="0x60D" name="unit_get_primary_weapon" type="weapon">
       <arg type="unit" />
     </function>
+    <function opcode="0x60E" name="dump_cortana_script" type="void" />
+    <function opcode="0x60F" name="budget_resource_get_animation_graph" type="animation_graph">
+      <arg type="animation_budget_reference" />
+    </function>
     <function opcode="0x610" name="game_award_level_complete_achievements" type="void" />
+    <function opcode="0x611" name="budget_resource_get_looping_sound" type="looping_sound">
+      <arg type="looping_sound_budget_reference" />
+    </function>
     <function opcode="0x612" name="game_safe_to_respawn" type="void">
       <arg type="boolean" />
     </function>
     <function opcode="0x613" name="cortana_effect_kill" type="void" />
+    <function opcode="0x614" name="test_create_content_item_slayer" type="void" />
+    <function opcode="0x615" name="test_create_content_item_screenshot" type="void" />
     <function opcode="0x616" name="cinematic_scripting_destroy_cortana_effect_cinematic" type="void" />
     <function opcode="0x617" name="ai_migrate_infanty" type="void">
       <arg type="ai" />
@@ -3919,6 +5381,18 @@
     </function>
     <function opcode="0x61D" name="stop_bink_movie" type="void" />
     <function opcode="0x61E" name="play_credits_unskippable" type="void" />
+    <function opcode="0x61F" name="budget_resource_get_sound" type="sound">
+      <arg type="sound_budget_reference" />
+    </function>
+    <function opcode="0x620" name="controller_set_single_player_level_unlocked" type="void">
+      <arg type="controller" />
+      <arg type="short" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x621" name="physical_memory_dump" type="void" />
+    <function opcode="0x622" name="tag_resources_validate_all_pages" type="void">
+      <arg type="boolean" />
+    </function>
     <function opcode="0x623" name="cinematic_set_debug_mode" type="void">
       <arg type="boolean" />
     </function>
@@ -3927,6 +5401,7 @@
       <arg type="long" />
       <arg type="long" />
     </function>
+    <function opcode="0x625" name="dummy_function" type="void" />
     <function opcode="0x626" name="gp_integer_get" type="long">
       <arg type="string_id" />
     </function>
@@ -3941,6 +5416,17 @@
       <arg type="string_id" />
       <arg type="boolean" />
     </function>
+    <function opcode="0x62A" name="gp_dump" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x62B" name="gp_dump_debug" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x62C" name="gp_startup" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x62D" name="gp_reset" type="void" />
+    <function opcode="0x62E" name="gp_commit_options" type="void" />
     <function opcode="0x62F" name="cinematic_scripting_start_screen_effect" type="void">
       <arg type="long" />
       <arg type="long" />
@@ -3959,6 +5445,44 @@
     <function opcode="0x632" name="prepare_game_level" type="void">
       <arg type="string_id" />
     </function>
+    <function opcode="0x633" name="game_start_with_network_session" type="void">
+      <arg type="long" />
+      <arg type="long" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x634" name="levels_add_campaign_map_with_id" type="void">
+      <arg type="long" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x635" name="levels_add_campaign_map" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x636" name="sound_impulse_start_editor" type="void">
+      <arg type="sound" />
+      <arg type="object" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x637" name="sound_impulse_start_effect_editor" type="void">
+      <arg type="sound" />
+      <arg type="object" />
+      <arg type="real" />
+      <arg type="string_id" />
+    </function>
+    <function opcode="0x638" name="sound_impulse_start_3d_editor" type="void">
+      <arg type="sound" />
+      <arg type="real" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x639" name="sound_looping_start_editor" type="void">
+      <arg type="looping_sound" />
+      <arg type="object" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x63A" name="debug_sound_channels_log_start" type="void" />
+    <function opcode="0x63B" name="debug_sound_channels_log_start_named" type="void">
+      <arg type="string" />
+    </function>
+    <function opcode="0x63C" name="debug_sound_channels_log_stop" type="void" />
     <function opcode="0x63D" name="cinematic_scripting_set_user_input_constraints" type="void">
       <arg type="long" />
       <arg type="long" />
@@ -3972,6 +5496,17 @@
     <function opcode="0x63F" name="skull_secondary_enable" type="void">
       <arg type="secondary_skull" />
       <arg type="boolean" />
+    </function>
+    <function opcode="0x640" name="controller_set_popup_message_index" type="void">
+      <arg type="controller" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x641" name="controller_set_vidmaster_seen" type="void">
+      <arg type="controller" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x642" name="gui_enter_lobby" type="void">
+      <arg type="long" />
     </function>
     <function opcode="0x643" name="survival_mode_respawn_dead_players" type="void" />
     <function opcode="0x644" name="survival_mode_lives_get" type="long" />
@@ -3998,11 +5533,17 @@
     <function opcode="0x64F" name="survival_mode_bonus_multiplier_set" type="void">
       <arg type="real" />
     </function>
+    <function opcode="0x650" name="debug_sound_channel_fadeout_time" type="void">
+      <arg type="real" />
+    </function>
     <function opcode="0x651" name="survival_mode_set_rounds_per_set" type="void">
       <arg type="short" />
     </function>
     <function opcode="0x652" name="survival_mode_set_waves_per_round" type="void">
       <arg type="short" />
+    </function>
+    <function opcode="0x653" name="render_model_marker_name_filter" type="void">
+      <arg type="string" />
     </function>
     <function opcode="0x654" name="survival_mode_event_new" type="void">
       <arg type="string_id" />
@@ -4014,6 +5555,10 @@
     <function opcode="0x659" name="campaign_metagame_get_player_score" type="long">
       <arg type="unit" />
     </function>
+    <function opcode="0x65A" name="collision_debug_lightmaps_print" type="void" />
+    <function opcode="0x65B" name="debug_coop_campaign_save" type="void">
+      <arg type="boolean" />
+    </function>
     <function opcode="0x65C" name="player_set_look_training_hack" type="void">
       <arg type="unit" />
       <arg type="boolean" />
@@ -4021,6 +5566,25 @@
     <function opcode="0x65D" name="device_arg_has_been_touched_by_unit" type="boolean">
       <arg type="device" />
       <arg type="unit" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x65E" name="gui_hide_all_screens" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x65F" name="debug_lightmap_inspect" type="void" />
+    <function opcode="0x660" name="achievements_display_debug_names" type="void" />
+    <function opcode="0x661" name="achievement_grant_to_controller_by_debug_name" type="void">
+      <arg type="controller" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x662" name="achievements_grant_all_to_controller" type="void">
+      <arg type="controller" />
+    </function>
+    <function opcode="0x663" name="achievements_award_all_vidmaster_achievements" type="void">
+      <arg type="controller" />
+    </function>
+    <function opcode="0x664" name="chud_fade_for_first_person_cinematic" type="void">
+      <arg type="real" />
       <arg type="long" />
     </function>
     <function opcode="0x665" name="achievement_post_chud_progression" type="void">
@@ -4037,6 +5601,13 @@
       <arg type="cutscene_flag" />
       <arg type="real" />
       <arg type="boolean" />
+    </function>
+    <function opcode="0x668" name="run_like_package" type="void" />
+    <function opcode="0x669" name="unknown_669" type="void">
+      <arg type="long" />
+    </function>
+    <function opcode="0x66A" name="unknown_66A" type="void">
+      <arg type="long" />
     </function>
     <function opcode="0x66B" name="unit_confirm_message" type="void">
       <arg type="unit" />
@@ -4066,19 +5637,138 @@
     <function opcode="0x672" name="chud_bonus_round_set_target_score" type="void">
       <arg type="long" />
     </function>
+    <function opcode="0x673" name="unknown_673" type="void" />
+    <function opcode="0x674" name="unknown_674" type="void">
+      <arg type="short" />
+      <arg type="short" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x675" name="unknown_675" type="void">
+      <arg type="short" />
+      <arg type="short" />
+      <arg type="short" />
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x676" name="unknown_676" type="void" />
+    <function opcode="0x677" name="unknown_677" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x678" name="unknown_678" type="void" />
+    <function opcode="0x679" name="unknown_679" type="void" />
+    <function opcode="0x67A" name="unknown_67A" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x67B" name="unknown_67B" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x67C" name="unknown_67C" type="void" />
     <function opcode="0x67D" name="ui_get_player_model_id" type="long" />
     <function opcode="0x67E" name="ui_get_music_id" type="long" />
+    <function opcode="0x67F" name="unknown_67F" type="void">
+      <arg type="long" />
+      <arg type="long" />
+    </function>
     <function opcode="0x680" name="biped_set_armor" type="void">
       <arg type="object" />
       <arg type="string_id" />
       <arg type="string_id" />
     </function>
+    <function opcode="0x681" name="biped_unit_set_armor" type="void">
+      <arg type="string_id" />
+      <arg type="string_id" />
+    </function>
+    <function opcode="0x682" name="session_advertise_local_network" type="void" />
+    <function opcode="0x683" name="ssao_enable" type="void">
+      <arg type="short" />
+    </function>
+    <function opcode="0x684" name="ssao_radius" type="void">
+      <arg type="real" />
+    </function>
+    <function opcode="0x685" name="ssao_intensity" type="void">
+      <arg type="real" />
+    </function>
+    <function opcode="0x686" name="ssao_sampleZThreshold" type="void">
+      <arg type="real" />
+    </function>
+    <function opcode="0x687" name="fxaa_enable" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x688" name="color_grading_enable" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x689" name="lightshafts_enable" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x68A" name="unknown_68A" type="void">
+      <arg type="short" />
+      <arg type="string_id" />
+    </function>
+    <function opcode="0x68B" name="reflections_enable" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x68C" name="reflection_blur_enable" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x68D" name="reflection_multisampling_enabled" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x68E" name="reflection_multisample_passes" type="void">
+      <arg type="short" />
+    </function>
+    <function opcode="0x68F" name="reflection_fxaa_enable" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x690" name="reflection_debug_enable" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x691" name="reflection_color_bilinear_filter_enable" type="void">
+      <arg type="boolean" />
+    </function>
     <function opcode="0x692" name="game_finished_wait_time_add" type="void">
       <arg type="real" />
     </function>
+    <function opcode="0x693" name="unknown_693" type="void" />
     <function opcode="0x694" name="background_set" type="void">
       <arg type="short" />
     </function>
+    <function opcode="0x695" name="unknown_695" type="void">
+      <arg type="string_id" />
+    </function>
+    <function opcode="0x696" name="unknown_696" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x697" name="unknown_697" type="void">
+      <arg type="long" />
+      <arg type="string" />
+      <arg type="string" />
+    </function>
+    <function opcode="0x698" name="unknown_698" type="void" />
+    <function opcode="0x699" name="mouse_is_inverted" type="void" />
+    <function opcode="0x69A" name="mouse_invert" type="long" />
+    <function opcode="0x69B" name="unknown_69B" type="void">
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x69C" name="unknown_69C" type="void">
+      <arg type="short" />
+      <arg type="long" />
+    </function>
+    <function opcode="0x69D" name="unknown_69D" type="void" />
+    <function opcode="0x69E" name="unknown_69E" type="void">
+      <arg type="long" />
+      <arg type="real" />
+      <arg type="real" />
+      <arg type="real" />
+    </function>
+    <function opcode="0x69F" name="unknown_69F" type="void">
+      <arg type="boolean" />
+    </function>
+    <function opcode="0x6A0" name="unknown_6A0" type="void" />
     <function opcode="0x6A1" name="cinematic_scripting_start_animation_legacy" type="void">
       <arg type="long" />
       <arg type="long" />
@@ -4101,8 +5791,7 @@
       <arg type="string_id" />
       <arg type="boolean" />
     </function>
-    <function opcode="0x6A4"
-      name="cinematic_scripting_create_and_animate_object_no_animation_legacy" type="void">
+    <function opcode="0x6A4" name="cinematic_scripting_create_and_animate_object_no_animation_legacy" type="void">
       <arg type="long" />
       <arg type="long" />
       <arg type="long" />
