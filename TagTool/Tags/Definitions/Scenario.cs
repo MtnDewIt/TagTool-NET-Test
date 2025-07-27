@@ -302,7 +302,7 @@ namespace TagTool.Tags.Definitions
         public List<WeatherPaletteBlock> WeatherPaletteReach;
 
         [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
-        public List<GNullBlock> Unused1;
+        public List<GNullBlock> Unused;
         [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         public List<GNullBlock> Unused2;
         [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]

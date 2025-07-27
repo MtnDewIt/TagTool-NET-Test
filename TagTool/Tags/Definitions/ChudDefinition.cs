@@ -163,6 +163,8 @@ namespace TagTool.Tags.Definitions
                 [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public UnitMiscStateFlags UnitMiscState;
 
+                //UNIT
+
                 [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
                 public UnknownStateFlags UnknownState;
 

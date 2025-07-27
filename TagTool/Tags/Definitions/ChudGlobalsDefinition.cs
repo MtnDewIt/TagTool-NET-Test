@@ -3,6 +3,7 @@ using TagTool.Common;
 using System;
 using System.Collections.Generic;
 using static TagTool.Tags.TagFieldFlags;
+using System.Drawing;
 
 namespace TagTool.Tags.Definitions
 {
