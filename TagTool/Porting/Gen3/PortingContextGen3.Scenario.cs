@@ -69,10 +69,6 @@ namespace TagTool.Porting.Gen3
                     if (sbsp.PathfindingResource != null)
                     {
                         pathfindingBsp = CacheContext.ResourceCache.GetStructureBspCacheFileTagResources(sbsp.PathfindingResource);
-
-                        if (!sbsp.PathfindingResource.HaloOnlinePageableResource.GetLocation(out var location))
-                            throw new NullReferenceException();
-
                     }
                     pathfindingBsps.Add(pathfindingBsp);
                 }

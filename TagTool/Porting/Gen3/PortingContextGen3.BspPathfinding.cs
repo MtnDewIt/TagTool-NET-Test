@@ -18,30 +18,27 @@ namespace TagTool.Porting.Gen3
     {
         private TagResourceReference ConvertStructureBspCacheFileTagResources(ScenarioStructureBsp bsp, StructureBspTagResources bspResources, CachedTag instance)
         {
-            if(BlamCache.Platform == CachePlatform.MCC)
-                return ConvertStructureBspCacheFileTagResourcesMCC(bsp);
-
             //
             // Set up ElDorado resource reference
             //
 
-            if (BlamCache.Version < CacheVersion.Halo3ODST)
+            if (BlamCache.Version < CacheVersion.Halo3ODST && BlamCache.Platform == CachePlatform.Original)
                 bsp.PathfindingResource = new TagResourceReference();
 
             //
             // Load Blam resource data
             //
-
-            var resourceDefinition = BlamCache.Version > CacheVersion.Halo3Retail ? BlamCache.ResourceCache.GetStructureBspCacheFileTagResources(bsp.PathfindingResource) : null;
-
-            if (resourceDefinition == null && BlamCache.Version >= CacheVersion.Halo3ODST)
-                return bsp.PathfindingResource;
-
+            StructureBspCacheFileTagResources resourceDefinition = null;
+            if (BlamCache.Version > CacheVersion.Halo3Retail || BlamCache.Platform == CachePlatform.MCC)
+            {
+                resourceDefinition = BlamCache.ResourceCache.GetStructureBspCacheFileTagResources(bsp.PathfindingResource);
+                if (resourceDefinition == null)
+                    return null;
+            }
             //
-            // Port Blam resource definition
+            // Port Blam resource definition if cache is halo3retail
             //
-
-            if (BlamCache.Version < CacheVersion.Halo3ODST)
+            else
             {
                 resourceDefinition = new StructureBspCacheFileTagResources()
                 {
@@ -50,10 +47,15 @@ namespace TagTool.Porting.Gen3
                     EdgeToSeams = new TagBlock<EdgeToSeamMapping>(CacheAddressType.Data, bsp.EdgeToSeamEdge),
                     PathfindingData = new TagBlock<ResourcePathfinding>(CacheAddressType.Definition)
                 };
-                foreach(var pathfinding in bsp.PathfindingData)
+                foreach (var pathfinding in bsp.PathfindingData)
                 {
                     resourceDefinition.PathfindingData.Add(PathfindingConverter.CreateResourcePathfindingFromTag(pathfinding));
-                }
+                }               
+            }
+
+            //Fixup hint data
+            if(BlamCache.Version < CacheVersion.Halo3ODST)
+            {
                 // convert hints
                 /*
                  * FORMATS FOR DATA2 and DATA3 of jump hints
@@ -72,7 +74,7 @@ namespace TagTool.Porting.Gen3
                 */
                 foreach (var pathfindingDatum in resourceDefinition.PathfindingData)
                 {
-                    foreach(var hint in pathfindingDatum.PathfindingHints)
+                    foreach (var hint in pathfindingDatum.PathfindingHints)
                     {
                         if (hint.HintType == PathfindingHint.HintTypeValue.JumpLink || hint.HintType == PathfindingHint.HintTypeValue.WallJumpLink)
                         {
@@ -84,7 +86,7 @@ namespace TagTool.Porting.Gen3
                     }
                 }
                 // fix surface planes
-                foreach(var surfacePlane in resourceDefinition.SurfacePlanes)
+                foreach (var surfacePlane in resourceDefinition.SurfacePlanes)
                 {
                     surfacePlane.SurfaceToTriangleMappingCount = surfacePlane.SurfaceToTriangleMappingCountOld;
                     surfacePlane.FirstSurfaceToTriangleMappingIndex = surfacePlane.FirstSurfaceToTriangleMappingIndexOld;
@@ -151,7 +153,7 @@ namespace TagTool.Porting.Gen3
 
             bsp.PathfindingResource = CacheContext.ResourceCache.CreateStructureBspCacheFileResource(resourceDefinition);
 
-            if (BlamCache.Version < CacheVersion.Halo3ODST)
+            if (BlamCache.Version < CacheVersion.Halo3ODST && BlamCache.Platform == CachePlatform.Original)
             {
                 bsp.StructureSurfaces.Clear();
                 bsp.StructureSurfaceToTriangleMapping.Clear();
@@ -159,14 +161,6 @@ namespace TagTool.Porting.Gen3
                 bsp.PathfindingData.Clear();
             }
 
-            return bsp.PathfindingResource;
-        }
-
-        private TagResourceReference ConvertStructureBspCacheFileTagResourcesMCC(ScenarioStructureBsp bsp)
-        {
-            var resourceDefinition = BlamCache.ResourceCache.GetStructureBspCacheFileTagResources(bsp.PathfindingResource);
-            resourceDefinition ??= new StructureBspCacheFileTagResources();
-            bsp.PathfindingResource = CacheContext.ResourceCache.CreateStructureBspCacheFileResource(resourceDefinition);
             return bsp.PathfindingResource;
         }
     }
