@@ -17,7 +17,7 @@ namespace TagTool.Commands.Scenarios
             base(true,
 
                 "CompilePodiumScripts",
-                "Optionally compiles and appends podium scripts onto the scenario for you from tools\\podium_scripts.hsc",
+                "Optionally compiles and appends podium scripts onto the scenario for you from data\\hs\\scripts\\podium_scripts.hsc",
 
                 "CompilePodiumScripts",
 
@@ -29,7 +29,7 @@ namespace TagTool.Commands.Scenarios
 
         public override object Execute(List<string> args)
         {
-            var scriptsTxt = $@"{Program.TagToolDirectory}\Tools\podium_scripts.hsc";
+            var scriptsTxt = $@"{DirectoryPaths.Data}\hs\scripts\podium_scripts.hsc";
 
             if (args.Count != 0)
                 return new TagToolError(CommandError.ArgCount);
