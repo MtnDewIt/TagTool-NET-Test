@@ -50,7 +50,7 @@ namespace TagTool.Porting.Gen3
             if (expr.Opcode == 0xBABA)
                 return;
 
-            ConvertHsType(expr.ValueType);
+            expr.ValueType = ConvertHsType(expr.ValueType);
 
             switch (expr.Flags)
             {
@@ -438,91 +438,57 @@ namespace TagTool.Porting.Gen3
         private bool ConvertScriptUsingPresets(Stream cacheStream, Scenario scnr, HsSyntaxNode expr)
         {
             // Return false to convert normally.
-            var blamScripts = BlamCache.ScriptDefinitions.Scripts;
+
+            if (!BlamCache.ScriptDefinitions.Scripts.ContainsKey(expr.Opcode))
+                return false;
+
+            string opName = BlamCache.ScriptDefinitions.Scripts[expr.Opcode].Name;
+
             if (BlamCache.Platform == CachePlatform.MCC)
             {
-                var opName = blamScripts[expr.Opcode].Name;
                 switch (opName)
                 {
-                    case "vehicle_test_seat_list":
-                        if (Options.EnableH3VehicleTestSeat)
-                            expr.Opcode = 0x6A9; // -> vehicle_test_seat_list_legacy
-                        else
-                        {
-                            expr.Opcode = 0x114; // -> vehicle_test_seat_list
-                            UpdateAiTestSeat(cacheStream, scnr, expr);
-                        }
+                    case "mp_wake_script":
+                        expr.Opcode = 0x6A7; // -> mp_wake_script
+                        UpdateMpWakeScript(cacheStream, scnr, expr);
+                        return true;
+                }
+            }
+
+            if (BlamCache.Version == CacheVersion.Halo3Retail)
+            {
+                switch (opName)
+                {
+                    case "cinematic_object_get_unit":
+                    case "cinematic_object_get_scenery":
+                    case "cinematic_object_get_effect_scenery":
+                        expr.Opcode = 0x391; // -> cinematic_object_get
                         return true;
 
-                    case "vehicle_test_seat":
-                        if (Options.EnableH3VehicleTestSeat)
-                            expr.Opcode = 0x6AA; // -> vehicle_test_seat_legacy
-                        else
-                        {
-                            expr.Opcode = 0x115; // -> vehicle_test_seat_unit
-                            UpdateAiTestSeat(cacheStream, scnr, expr);
-                        }
+                    case "cinematic_scripting_create_object":
+                        expr.Opcode = 0x6A2; // -> cinematic_scripting_create_object_legacy
                         return true;
-
-                    case "campaign_metagame_award_primary_skull":
-                        expr.Opcode = 0x1E5; // ^
+                    case "cinematic_scripting_start_animation":
+                        expr.Opcode = 0x6A1; // -> cinematic_scripting_start_animation_legacy
                         return true;
-
-                    case "campaign_metagame_award_secondary_skull":
-                        expr.Opcode = 0x1E6; // ^
+                    case "cinematic_scripting_destroy_object":
+                        expr.Opcode = 0x6A6; // -> cinematic_scripting_destroy_object_legacy
+                        return true;
+                    case "cinematic_scripting_create_and_animate_object":
+                        expr.Opcode = 0x6A3; // -> cinematic_scripting_create_and_animate_object_legacy
+                        return true;
+                    case "cinematic_scripting_create_and_animate_cinematic_object":
+                        expr.Opcode = 0x6A5; // -> cinematic_scripting_create_and_animate_cinematic_object_legacy
+                        return true;
+                    case "cinematic_scripting_create_and_animate_object_no_animation":
+                        expr.Opcode = 0x6A4; // -> cinematic_scripting_create_and_animate_object_no_animation_legacy
                         return true;
 
                     case "player_action_test_cinematic_skip":
                         expr.Opcode = 0x2F5; // player_action_test_jump
                         return true;
 
-                    case "cinematic_object_get_unit":
-                    case "cinematic_object_get_scenery":
-                    case "cinematic_object_get_effect_scenery":
-                        expr.Opcode = 0x391; // -> cinematic_object_get
-                        return true;
-                    case "cinematic_scripting_create_object":
-                        expr.Opcode = 0x6A2;
-                        return true;
-                    case "cinematic_scripting_start_animation":
-                        expr.Opcode = 0x6A1;
-                        return true;
-                    case "cinematic_scripting_destroy_object":
-                        expr.Opcode = 0x6A6;
-                        return true;
-                    case "cinematic_scripting_create_and_animate_object":
-                        expr.Opcode = 0x6A3;
-                        return true;
-                    case "cinematic_scripting_create_and_animate_cinematic_object":
-                        expr.Opcode = 0x6A5;
-                        return true;
-                    case "cinematic_scripting_create_and_animate_object_no_animation":
-                        expr.Opcode = 0x6A4;
-                        return true;
-                    case "chud_show_weapon_stats":
-                        expr.Opcode = 0x423; // -> chud_show_crosshair
-                        return true;
-                    case "objectives_secondary_show":
-                        expr.Opcode = 0x4AE; // -> objectives_show
-                        return true;
-                    case "objectives_secondary_unavailable":
-                        expr.Opcode = 0x4B2; // -> objectives_show
-                        return true;
-                    case "mp_wake_script":
-                        expr.Opcode = 0x6A7; // ^
-                        UpdateMpWakeScript(cacheStream, scnr, expr);
-                        return true;
-
-                    default:
-                        return false;
-                }
-            }
-
-            if (BlamCache.Version == CacheVersion.Halo3Retail)
-            {
-                switch (expr.Opcode)
-                {
-                    case 0x0B3: // texture_camera_set_aspect_ratio
+                    case "texture_camera_set_aspect_ratio":
                         expr.Opcode = 0x0B9;
                         // Change the player appearance aspect ratio
                         if (scnr.MapId == 0x10231971 && // mainmenu map id
@@ -538,17 +504,22 @@ namespace TagTool.Porting.Gen3
                         }
                         return true;
 
-                    case 0x0F9: // vehicle_test_seat_list
+                    case "unit_add_equipment":
+                        expr.Opcode = 0x136; // -> unit_add_equipment
+                        UpdateUnitAddEquipmentScript(cacheStream, scnr, expr);
+                        return true;
+
+                    case "vehicle_test_seat_list":
                         if (Options.EnableH3VehicleTestSeat)
                             expr.Opcode = 0x6A9; // -> vehicle_test_seat_list_legacy
                         else
                         {
-                            expr.Opcode = 0x114; // -> vehicle_test_seat_list
+                            expr.Opcode = 0x114; // -> vehicle_test_seat_unit_list
                             UpdateAiTestSeat(cacheStream, scnr, expr);
                         }
                         return true;
 
-                    case 0x0FA: // vehicle_test_seat
+                    case "vehicle_test_seat": // 
                         if (Options.EnableH3VehicleTestSeat)
                             expr.Opcode = 0x6AA; // -> vehicle_test_seat_legacy
                         else
@@ -557,104 +528,10 @@ namespace TagTool.Porting.Gen3
                             UpdateAiTestSeat(cacheStream, scnr, expr);
                         }
                         return true;
-
-                    case 0x1B7: // campaign_metagame_award_primary_skull
-                        expr.Opcode = 0x1E5; // ^
-                        return true;
-
-                    case 0x1B8: //campaign_metagame_award_secondary_skull
-                        expr.Opcode = 0x1E6; // ^
-                        return true;
-
-                    case 0x2D2: // player_action_test_cinematic_skip
-                        expr.Opcode = 0x2F5; // player_action_test_jump
-                        return true;
-
-                    case 0x33C: // cinematic_object_get_unit
-                    case 0x33D: // cinematic_object_get_scenery
-                    case 0x33E: // cinematic_object_get_effect_scenery
-                        expr.Opcode = 0x391; // -> cinematic_object_get
-                        return true;
-
-                    //case 0x34D: // cinematic_scripting_destroy_object; remove last argument
-                    //    expr.Opcode = 0x3A0;
-                    //    return true;
-                    //
-                    //case 0x353: // cinematic_scripting_create_and_animate_cinematic_object
-                    //    expr.Opcode = 0x3A6;
-                    //    // Remove the additional H3 argument
-                    //    if (expr.Flags == HsSyntaxNodeFlags.Group &&
-                    //        expr.ValueType.HaloOnline == HsType.Void)
-                    //    {
-                    //        var exprIndex = scnr.ScriptExpressions.IndexOf(expr) + 1;
-                    //        for (var n = 1; n < 4; n++)
-                    //            exprIndex = scnr.ScriptExpressions[exprIndex].NextExpressionHandle.Index;
-                    //
-                    //        var expr2 = scnr.ScriptExpressions[exprIndex];
-                    //        var expr3 = scnr.ScriptExpressions[expr2.NextExpressionHandle.Index];
-                    //
-                    //        expr2.NextExpressionHandle = expr3.NextExpressionHandle;
-                    //    }
-                    //    return true;
-                    //
-                    //case 0x354: //cinematic_scripting_create_and_animate_object_no_animation
-                    //    expr.Opcode = 0x3A7; // ^
-                    //    return true;
-
-                    case 0x34A:
-                        expr.Opcode = 0x6A2;
-                        return true;
-                    case 0x34C:
-                        expr.Opcode = 0x6A1;
-                        return true;
-                    case 0x34D:
-                        expr.Opcode = 0x6A6;
-                        return true;
-                    case 0x352:
-                        expr.Opcode = 0x6A3;
-                        return true;
-                    case 0x353:
-                        expr.Opcode = 0x6A5;
-                        return true;
-                    case 0x354:
-                        expr.Opcode = 0x6A4;
-                        return true;
-
-                    case 0x3CD: // chud_show_weapon_stats
-                        expr.Opcode = 0x423; // -> chud_show_crosshair
-                        return true;
-
-                    case 0x44D: // objectives_secondary_show
-                        expr.Opcode = 0x4AE; // -> objectives_show
-                        return true;
-
-                    case 0x44F: // objectives_secondary_unavailable
-                    case 0x44E: // objectives_primary_unavailable
-                        expr.Opcode = 0x4B2; // -> objectives_show
-                        return true;
-                    case 0x118: // unit_add_equipment
-                        expr.Opcode = 0x136; // -> unit_add_equipment
-                        UpdateUnitAddEquipmentScript(cacheStream, scnr, expr);
-                        return true;
-
-                    default:
-                        return false;
                 }
             }
-            else if (BlamCache.Version == CacheVersion.Halo3ODST)
-            {
-                switch (expr.Opcode)
-                {
-                    case 0x3A3: // cinematic_scripting_create_and_animate_cinematic_object
-                        expr.Opcode = 0x3A6; // cinematic_scripting_create_and_animate_cinematic_object // example
-                        return true;
 
-                    default:
-                        return false;
-                }
-            }
-            else
-                return false;
+            return false;
         }
 
         private void UpdateUnitAddEquipmentScript(Stream cacheStream, Scenario scnr, HsSyntaxNode expr)
@@ -894,8 +771,13 @@ namespace TagTool.Porting.Gen3
                 seatMappingExpr.Data = BitConverter.GetBytes(-1);
         }
 
+        [Obsolete("This should be removed, pending dll fixes")]
         private void AdjustScripts(Scenario scnr, string tagName)
         {
+            // Disable for mcc as it's entirely incorrect
+            if (BlamCache.Platform == CachePlatform.MCC)
+                return;
+
             var mapName = tagName.Split("\\".ToCharArray()).Last();
 
             if (mapName == "mainmenu" && BlamCache.Version == CacheVersion.Halo3ODST)
@@ -927,6 +809,7 @@ namespace TagTool.Porting.Gen3
             }
         }
 
+        [Obsolete("This should be removed, pending dll fixes")]
         private static Dictionary<string, List<string>> DisabledScriptsString = new Dictionary<string, List<string>>
         {
             // Format: Script expression tagblock index (dec), expression handle (salt + tagblock index), next expression handle (salt + tagblock index), opcode, data, 
@@ -1047,28 +930,6 @@ namespace TagTool.Porting.Gen3
                 "00035397,EDB98A45,FFFFFFFF,0000,00000000,Expression,FunctionName,begin,// ED068992 disable the whole thing for now",
                 "00035767,EF2B8BB7,FFFFFFFF,0000,00000000,Expression,FunctionName,begin,// EF238BAF",
                 "00035910,EFBA8C46,EFC08C4C,0333,478CBBEF,Group,Void,switch_zone_set,// EFBD8C49",
-            },
-
-            ["005_intro"] = new List<string>
-            {
-                "00002585,ED8C0A19,ED920A1F,0424,1A0A8DED,Group,Void,,chud_show_shield,ED8F0A1C",
-                "00003019,EF3E0BCB,EF440BD1,0424,CC0B3FEF,Group,Void,chud_show_shield,", // to fix
-                "00002221,EC2008AD,EC2F08BC,0053,AE0821EC,ScriptReference,Void,", // disable g_player_training as it freezes scripts
-            },
-
-            ["040_voi"] = new List<string>
-            {
-                "00001611,E9BE064B,FFFFFFFF,0005,01FFFFFF,Expression,Boolean,boolean,C:player_disable_movement",
-                "00009478,887A2506,FFFFFFFF,0005,01FFFFFF,Expression,Boolean,boolean,C:player_disable_movement",
-                "00012297,937D3009,FFFFFFFF,0005,01FFFFFF,Expression,Boolean,boolean,C:player_disable_movement",
-            },
-
-            ["070_waste"] = new List<string>
-            {
-                // Default script lines:
-                "00001611,E9BE064B,FFFFFFFF,0005,01FFFFFF,Expression,Boolean,boolean,",
-                "00009478,887A2506,887B2507,0013,3C000040,Expression,Ai,ai,",
-                "00012297,937D3009,937E300A,0002,00000000,Expression,FunctionName,,if",
             },
         };
     }
