@@ -359,41 +359,6 @@ namespace TagTool.Tags.Definitions
             ComputeAccelerationFromAiming = 1 << 29
         }
 
-        [Flags]
-        public enum UnitFlagBitsReachMCC : uint
-        {
-            CircularAiming = 1 << 0,
-            DestroyedAfterDying = 1 << 1,
-            HalfSpeedInterpolation = 1 << 2,
-            FiresFromCamera = 1 << 3,
-            EntranceInsideBoundingSphere = 1 << 4,
-            DoesntShowReadiedWeapon = 1 << 5,
-            CausesPassengerDialogue = 1 << 6,
-            ResistsPings = 1 << 7,
-            MeleeAttackIsFatal = 1 << 8,
-            DontRefaceDuringPings = 1 << 9,
-            HasNoAiming = 1 << 10,
-            ImpactMeleeAttachesToUnit = 1 << 11,
-            ImpactMeleeDiesOnShields = 1 << 12,
-            CannotOpenDoorsAutomatically = 1 << 13,
-            MeleeAttackersCannotAttach = 1 << 14,
-            NotInstantlyKilledByMelee = 1 << 15,
-            FlashlightPowerDoesntTransferToWeapon = 1 << 16,
-            RunsAroundFlaming = 1 << 17,
-            TopLevelForAoeDamage = 1 << 18,
-            SpecialCinematicUnit = 1 << 19,
-            IgnoredByAutoaiming = 1 << 20,
-            ShieldsFryInfectionForms = 1 << 21,
-            UseVelocityAsAcceleration = 1 << 22,
-            CanDualWield = 1 << 23,
-            ActsAsGunnerForParent = 1 << 24,
-            ControlledByParentGunner = 1 << 25,
-            ParentsPrimaryWeapon = 1 << 26,
-            UnitHasBoost = 1 << 27,
-            AllowAimWhileOpeningOrClosing = 1 << 28,
-            ComputeAccelerationFromAiming = 1 << 29
-        }
-
         public enum DefaultTeamValue : short
         {
             Default,
