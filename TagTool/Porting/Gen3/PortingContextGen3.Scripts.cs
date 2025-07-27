@@ -459,6 +459,14 @@ namespace TagTool.Porting.Gen3
             {
                 switch (opName)
                 {
+                    // changed from short -> primary_skull/secondary_skull in odst. fine to leave as short
+                    case "campaign_metagame_award_primary_skull":
+                        expr.Opcode = 0x1E5;
+                        return true;
+                    case "campaign_metagame_award_secondary_skull":
+                        expr.Opcode = 0x1E6;
+                        return true;
+
                     case "cinematic_object_get_unit":
                     case "cinematic_object_get_scenery":
                     case "cinematic_object_get_effect_scenery":
