@@ -55,16 +55,31 @@ namespace TagTool.Porting.Gen3
                     resourceDefinition.PathfindingData.Add(PathfindingConverter.CreateResourcePathfindingFromTag(pathfinding));
                 }
                 // convert hints
-                foreach(var pathfindingDatum in resourceDefinition.PathfindingData)
+                /*
+                 * FORMATS FOR DATA2 and DATA3 of jump hints
+                 * 
+                 * H3 FORMAT:
+                 * short LandingSector;
+                 * byte JumpHeightFlags; (an actor can only use this jump hint if their maximum jump height flag is ticked here)
+                 * byte ControlFlags;
+                 * int Unused;
+                 * 
+                 * ODST+ FORMAT:
+                 * short JumpHeightFlags (an actor can only use this jump hint if their maximum jump height flag is ticked here)
+                 * short ControlFlags;
+                 * short Unused;
+                 * short LandingSector;
+                */
+                foreach (var pathfindingDatum in resourceDefinition.PathfindingData)
                 {
                     foreach(var hint in pathfindingDatum.PathfindingHints)
                     {
                         if (hint.HintType == PathfindingHint.HintTypeValue.JumpLink || hint.HintType == PathfindingHint.HintTypeValue.WallJumpLink)
                         {
-                            hint.Data[3] = (hint.Data[3] & ~ushort.MaxValue) | ((hint.Data[2] >> 16) & ushort.MaxValue);
+                            hint.Data[3] = (hint.Data[3] & ~ushort.MaxValue) | ((hint.Data[2] >> 16) & ushort.MaxValue); //move landing sector to data3
                             hint.Data[2] = (hint.Data[2] & ~(ushort.MaxValue << 16)); //remove old landing sector
                             hint.Data[2] = (hint.Data[2] | ((hint.Data[2] & (byte.MaxValue << 8)) << 8)); //move jump height flags
-                            hint.Data[2] = (hint.Data[2] & ~(byte.MaxValue << 8)); //remove old flags
+                            hint.Data[2] = (hint.Data[2] & ~(byte.MaxValue << 8)); //remove old jump height flags
                         }
                     }
                 }
