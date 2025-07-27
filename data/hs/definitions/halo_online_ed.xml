@@ -5816,7 +5816,7 @@
     <function opcode="0x6A7" name="mp_wake_script" type="void">
       <arg type="script" />
     </function>
-    <function opcode="0x6A8" name="dew_method_stub" type="short" />
+    <function opcode="0x6A8" name="dew_method_stub" type="unparsed" />
     <function opcode="0x6A9" name="vehicle_test_seat_list_legacy" type="boolean">
       <arg type="vehicle" />
       <arg type="string_id" />
