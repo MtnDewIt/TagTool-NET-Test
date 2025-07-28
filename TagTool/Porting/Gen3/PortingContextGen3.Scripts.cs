@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Common.Logging;
@@ -565,67 +567,60 @@ namespace TagTool.Porting.Gen3
 
         private void UpdateUnitAddEquipmentScript(Stream cacheStream, Scenario scnr, HsSyntaxNode expr)
         {
-            if (BlamCache.Version == CacheVersion.Halo3Retail)
+            var exprIndex = scnr.ScriptExpressions.IndexOf(expr);
+            var profileExpr = scnr.ScriptExpressions[exprIndex + 3]; // <StartingProfile> parameter
+
+            if (profileExpr.ValueType != HsType.StartingProfile || profileExpr.StringAddress == 0)
+                return;
+
+            string profileName = GetScriptString(scnr, (int)profileExpr.StringAddress);
+            int startingProfileIndex = scnr.PlayerStartingProfile.FindIndex(sp => sp.Name == profileName);
+
+            if (startingProfileIndex == -1)
             {
-                var exprIndex = scnr.ScriptExpressions.IndexOf(expr);
-                var profileExpr = scnr.ScriptExpressions[exprIndex + 3]; // <StartingProfile> parameter
-
-                if (profileExpr.StringAddress != 0)
-                {
-                    if (profileExpr.ValueType != HsType.StartingProfile)
-                        return;
-
-                    using (var scriptStringStream = new MemoryStream(scnr.ScriptStrings))
-                    using (var scriptStringReader = new BinaryReader(scriptStringStream))
-                    {
-                        var profileName = "";
-                        scriptStringReader.BaseStream.Position = profileExpr.StringAddress;
-                        for (char c; (c = scriptStringReader.ReadChar()) != 0x00; profileName += c) ;
-
-                        var startingProfileIndex = scnr.PlayerStartingProfile.FindIndex(sp => sp.Name == profileName);
-
-                        if (startingProfileIndex == -1)
-                        {
-                            Log.Warning($"StartingProfile reference could not be converted {profileName}");
-                            return;
-                        }
-
-                        profileExpr.ValueType = HsType.StartingProfile;
-                        profileExpr.Data = new byte[] { (byte)((startingProfileIndex >> 8)), (byte)(startingProfileIndex & 0xFF), 0xFF, 0xFF };
-                        return;
-                    }
-                }
+                Log.Warning($"StartingProfile reference could not be converted {profileName}");
+                return;
             }
+
+            profileExpr.ValueType = HsType.StartingProfile;
+
+            // We have to endian swap here as it gets swapped again later in ConvertScriptExpressionData. TODO: cleanup
+            if (BlamCache.Endianness == IO.EndianFormat.BigEndian)
+                BinaryPrimitives.WriteInt16BigEndian(profileExpr.Data, (short)startingProfileIndex);
+            else
+                BinaryPrimitives.WriteInt16LittleEndian(profileExpr.Data, (short)startingProfileIndex);
         }
 
         private void UpdateMpWakeScript(Stream cacheStream, Scenario scnr, HsSyntaxNode expr)
         {
-            var exprIndex = scnr.ScriptExpressions.IndexOf(expr) + 1;
+            int exprIndex = scnr.ScriptExpressions.IndexOf(expr) + 1;
+            HsSyntaxNode stringExpr = scnr.ScriptExpressions[exprIndex]; // <string> parameter
 
-            var stringExpr = scnr.ScriptExpressions[exprIndex]; // <string> parameter
+            string scriptName = GetScriptString(scnr, (int)stringExpr.StringAddress);
 
-            if (stringExpr.StringAddress != 0)
+            for (var i = 0; i < scnr.Scripts.Count; i++)
             {
-                using (var scriptStringStream = new MemoryStream(scnr.ScriptStrings))
-                using (var scriptStringReader = new BinaryReader(scriptStringStream))
+                if (scriptName == scnr.Scripts[i].ScriptName)
                 {
-                    var scriptName = "";
-                    scriptStringReader.BaseStream.Position = stringExpr.StringAddress;
-                    for (char c; (c = scriptStringReader.ReadChar()) != 0x00; scriptName += c) ;
-
-                    for (var i = 0; i < scnr.Scripts.Count; i++)
-                    {
-                        var script = scnr.Scripts[i];
-                        if (scriptName == script.ScriptName)
-                        {
-
-                            stringExpr.ValueType = HsType.Script;
-                            stringExpr.Data = BitConverter.GetBytes(i).ToArray();
-                            return;
-                        }
-                    }
+                    stringExpr.ValueType = HsType.Script;
+                    BinaryPrimitives.WriteInt32LittleEndian(stringExpr.Data, i);
+                    return;
                 }
             }
+
+            Log.Error($"Failed to convert mp_wake_script. Script not found \"{scriptName}\"");
+        }
+
+        private static string GetScriptString(Scenario scnr, int offset)
+        {
+            if (offset < 0 || offset >= scnr.ScriptStrings.Length)
+                throw new ArgumentOutOfRangeException(nameof(offset), "Script string offset out of range");
+
+            int endOffset = Array.IndexOf(scnr.ScriptStrings, (byte)0, offset);
+            if (endOffset < 0)
+                throw new FormatException("Script string data invalid");
+
+            return Encoding.Default.GetString(scnr.ScriptStrings, offset, endOffset - offset);
         }
 
         [Obsolete("Will no longer be needed")]
