@@ -391,7 +391,7 @@ namespace TagTool.Cache.HaloOnline
             pageableResource.Page = new ResourcePage();
             pageableResource.Resource = new ResourceData();
             pageableResource.ChangeLocation(location);
-            pageableResource.Resource.FlagsHO = 1;
+            pageableResource.Resource.FlagsHO = ResourceData.DataFlags.HasPageableData;
             pageableResource.Resource.ResourceType = resourceType;
 
             resourceReference.HaloOnlinePageableResource = pageableResource;

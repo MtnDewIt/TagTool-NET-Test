@@ -10,7 +10,7 @@ namespace TagTool.Cache.Resources
     public class ResourceData : TagStructure
 	{
         public CachedTag ParentTag;
-        public ushort Salt;
+        public ushort ResourceSalt;
 
         [TagField(Gen = CacheGeneration.Third)]
         public sbyte ResourceTypeIndex;
@@ -28,7 +28,7 @@ namespace TagTool.Cache.Resources
         [TagField(Gen = CacheGeneration.Third)]
         public int SecondaryFixupInformationOffset;
 
-        [TagField(Gen = CacheGeneration.Third)]
+        [TagField(EnumType = typeof(short), Gen = CacheGeneration.Third)]
         public DataFlags Flags;
 
         [TagField(Gen = CacheGeneration.Third)]
@@ -42,11 +42,11 @@ namespace TagTool.Cache.Resources
         public List<ResourceFixupLocation> FixupLocations = new List<ResourceFixupLocation>();
         public List<ResourceInteropLocation> InteropLocations = new List<ResourceInteropLocation>();
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public int FlagsHO = 1;
+        [TagField(EnumType = typeof(int), MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public DataFlags FlagsHO = DataFlags.HasPageableData;
 
         [Flags]
-        public enum DataFlags : short
+        public enum DataFlags : int
         {
             None = 0,
             HasPageableData = 1 << 0,
