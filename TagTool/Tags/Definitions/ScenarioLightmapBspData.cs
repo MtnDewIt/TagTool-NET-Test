@@ -180,7 +180,9 @@ namespace TagTool.Tags.Definitions
     {
         public RealPoint3d Position;
         public StringId Name;
-        public uint Flags;
+        public ushort ManualBspFlags;
+        [TagField(Length = 2, Flags = TagFieldFlags.Padding)]
+        public byte[] ProbePad;
         [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public HalfRGBLightProbe LightProbe;
         [TagField(MinVersion = CacheVersion.HaloReach)]
