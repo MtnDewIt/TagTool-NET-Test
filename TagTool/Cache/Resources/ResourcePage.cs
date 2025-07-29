@@ -9,7 +9,7 @@ namespace TagTool.Cache.Resources
     [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloOnline235640, MaxVersion = CacheVersion.HaloOnline700123)]
     public class ResourcePage : TagStructure
 	{
-        public short Salt;
+        public short HeaderSaltAtRuntime;
 
         [TagField(Gen = CacheGeneration.Third)]
         public XboxPageFlags XboxFlags;
@@ -26,7 +26,7 @@ namespace TagTool.Cache.Resources
         [TagField(MinVersion = CacheVersion.HaloOnline235640, MaxVersion = CacheVersion.HaloOnline700123)]
         public NewRawPageFlags NewFlags;
 
-        public sbyte CompressionCodecIndex;
+        public CompressionCodec CodecIndex;
 
         [TagField(Gen = CacheGeneration.Third)]
         public short SharedCacheIndex;
@@ -35,50 +35,53 @@ namespace TagTool.Cache.Resources
         public short SharedCacheLocationIndex;
 
         [TagField(MinVersion = CacheVersion.HaloOnline235640, MaxVersion = CacheVersion.HaloOnline700123)]
-        public int Unknown1;
+        public int Unknown;
 
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public int Index;
 
         [TagField(Gen = CacheGeneration.Third)]
-        public int BlockIndex;
+        public uint BlockIndex;
 
         public uint CompressedBlockSize;
         public uint UncompressedBlockSize;
-        public int CrcChecksum;
 
-        [TagField(Length = 20, Gen = CacheGeneration.Third)]
-        public byte[] EntireBufferHash;
+        public ResourceChecksum Checksum;
 
-        [TagField(Length = 20, Gen = CacheGeneration.Third)]
-        public byte[] FirstChunkHash;
-
-        [TagField(Length = 20, Gen = CacheGeneration.Third)]
-        public byte[] LastChunkHash;
-
-        public short ResourceReferenceCount;
-        public short SubpageTableIndex;
-
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public uint Unknown2;
-
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public uint Unknown3;
-
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public uint Unknown4;
+        public ResourceSubpageTable StreamingSublocationTable;
 
         [Flags]
         public enum XboxPageFlags : byte 
         {
             None = 0,
-            ValidChecksum = 1 << 0,
-            SharedAndRequired = 1 << 1,
-            DVDOnlySharedAndRequired = 1 << 2,
-            DVDOnlyAndRequired = 1 << 3,
-            ReferencedByCacheFileHeader = 1 << 4,
-            OnlyFullValidChecksum = 1 << 5,
-            SharedAndPreOptimized = 1 << 6,
+            AllChecksumsValid = 1 << 0,
+            SharedRequired = 1 << 1,
+            SharedRequiredDVDOnly = 1 << 2,
+            RequiredDVDOnly = 1 << 3,
+            ReferencedInHeader = 1 << 4,
+            FullChecksumValidOnly = 1 << 5,
+        }
+
+        public enum CompressionCodec : sbyte
+        {
+            None = -1,
+            LZ,
+        }
+
+        [TagStructure(Size = 0x40, Gen = CacheGeneration.Third)]
+        [TagStructure(Size = 0x4, Gen = CacheGeneration.HaloOnline)]
+        public class ResourceChecksum : TagStructure
+        {
+            public int CRC32Value;
+
+            [TagField(Length = 0x14, Gen = CacheGeneration.Third)]
+            public byte[] EntireBufferHash;
+
+            [TagField(Length = 0x14, Gen = CacheGeneration.Third)]
+            public byte[] FirstChunkHash;
+
+            [TagField(Length = 0x14, Gen = CacheGeneration.Third)]
+            public byte[] LastChunkHash;
         }
     }
 
@@ -89,6 +92,11 @@ namespace TagTool.Cache.Resources
     [Flags]
     public enum OldRawPageFlags : byte
     {
+        /// <summary>
+        /// Indicates that there is no cached resource.
+        /// </summary>
+        None = 0,
+
         /// <summary>
         /// Indicates that the resource's checksum should be validated.
         /// </summary>
@@ -143,6 +151,11 @@ namespace TagTool.Cache.Resources
     [Flags]
     public enum NewRawPageFlags : byte
     {
+        /// <summary>
+        /// Indicates that there is no cached resource.
+        /// </summary>
+        None = 0,
+
         /// <summary>
         /// Indicates that the resource's checksum should be validated.
         /// </summary>

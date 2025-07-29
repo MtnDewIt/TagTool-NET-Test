@@ -451,7 +451,7 @@ namespace TagTool.Serialization
             var count = reader.ReadInt32();
             var pointer = new CacheAddress(reader.ReadUInt32());
             
-            if (count == 0)
+            if (count == 0 || (count != 0 && pointer.Value == 0))
             {
                 // Null tag block
                 reader.BaseStream.Position = startOffset + (!CacheVersionDetection.IsInGen(CacheGeneration.Second, Version) ? 0xC : 0x8);
@@ -494,7 +494,7 @@ namespace TagTool.Serialization
             var count = reader.ReadInt32();
 
             var pointer = new CacheAddress(reader.ReadUInt32());
-            if (count == 0)
+            if (count == 0 || (count != 0 && pointer.Value == 0))
             {
                 // Null tag block
                 reader.BaseStream.Position = startOffset + (!CacheVersionDetection.IsInGen(CacheGeneration.Second, Version) ? 0xC : 0x8);

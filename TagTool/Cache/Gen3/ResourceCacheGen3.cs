@@ -370,7 +370,7 @@ namespace TagTool.Cache.Gen3
             if (segment.RequiredPageIndex == -1 || segment.RequiredSegmentOffset == -1)
                 return null;
 
-            if (ResourceLayoutTable.Pages[segment.RequiredPageIndex].CrcChecksum == -1)
+            if (ResourceLayoutTable.Pages[segment.RequiredPageIndex].Checksum.CRC32Value == -1)
                 return null;
 
             return ReadSegmentData(resource, segment.RequiredPageIndex, segment.RequiredSegmentOffset, segment.RequiredSizeIndex);
@@ -388,7 +388,7 @@ namespace TagTool.Cache.Gen3
             if (segment.OptionalPageIndex == -1 || segment.OptionalSegmentOffset == -1)
                 return null;
 
-            if (ResourceLayoutTable.Pages[segment.OptionalPageIndex].CrcChecksum == -1)
+            if (ResourceLayoutTable.Pages[segment.OptionalPageIndex].Checksum.CRC32Value == -1)
                 return null;
 
             return ReadSegmentData(resource, segment.OptionalPageIndex, segment.OptionalSegmentOffset, segment.OptionalSizeIndex);
@@ -434,11 +434,11 @@ namespace TagTool.Cache.Gen3
                 if (page.SharedCacheIndex < 0 || (ResourceLayoutTable.SharedFiles[page.SharedCacheIndex].GlobalSharedSegmentOffset & 1) != 0)
                 {
                     var sectionTable = ((CacheFileHeaderGen3)cache.BaseMapFile.Header).SectionTable;
-                    blockOffset = sectionTable.GetOffset(CacheFileSectionType.ResourceSection, (uint)page.BlockIndex);
+                    blockOffset = sectionTable.GetOffset(CacheFileSectionType.ResourceSection, page.BlockIndex);
                 }
                 else
                 {
-                    blockOffset = ResourceLayoutTable.SharedFiles[page.SharedCacheIndex].BlockOffset + (uint)page.BlockIndex;
+                    blockOffset = ResourceLayoutTable.SharedFiles[page.SharedCacheIndex].BlockOffset + page.BlockIndex;
                 }
 
                 reader.SeekTo(blockOffset);
@@ -447,7 +447,7 @@ namespace TagTool.Cache.Gen3
                 if (resource.ResourceTypeIndex != -1 && GetResourceTypeName(resource) == "sound_resource_definition")
                     return compressed;
 
-                if (page.CompressionCodecIndex == -1)
+                if (page.CodecIndex == ResourcePage.CompressionCodec.None)
                     return compressed;
                 else
                     using (var readerDeflate = new DeflateStream(new MemoryStream(compressed), CompressionMode.Decompress))
