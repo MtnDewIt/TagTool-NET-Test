@@ -7,9 +7,9 @@ using System.Linq;
 using TagTool.Tags.Definitions;
 using PhysicsModelGen2 = TagTool.Tags.Definitions.Gen2.PhysicsModel;
 
-namespace TagTool.Commands.Porting.Gen2
+namespace TagTool.Porting.Gen2
 {
-    partial class PortTagGen2Command : Command
+    partial class PortingContextGen2
     {
         public PhysicsModel ConvertPhysicsModel(PhysicsModelGen2 gen2PhysicsModel)
         {

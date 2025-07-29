@@ -1,23 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using TagTool.Audio;
 using TagTool.Cache;
 using TagTool.Cache.Gen2;
-using TagTool.Common;
-using TagTool.Tags;
-using TagTool.Audio;
-using TagTool.Tags.Definitions;
-using Gen2Sound = TagTool.Tags.Definitions.Gen2.Sound;
-using Gen2LoopingSound = TagTool.Tags.Definitions.Gen2.SoundLooping;
-using Gen2SoundEnvironment = TagTool.Tags.Definitions.Gen2.SoundEnvironment;
-using Gen2SoundCacheFileGestalt = TagTool.Tags.Definitions.Gen2.SoundCacheFileGestalt;
-using System;
-using System.Linq;
 using TagTool.Commands.Common;
+using TagTool.Commands.Sounds;
+using TagTool.Common;
 using TagTool.Common.Logging;
+using TagTool.Tags;
+using TagTool.Tags.Definitions;
+using Gen2LoopingSound = TagTool.Tags.Definitions.Gen2.SoundLooping;
+using Gen2Sound = TagTool.Tags.Definitions.Gen2.Sound;
+using Gen2SoundCacheFileGestalt = TagTool.Tags.Definitions.Gen2.SoundCacheFileGestalt;
+using Gen2SoundEnvironment = TagTool.Tags.Definitions.Gen2.SoundEnvironment;
 
-namespace TagTool.Commands.Porting.Gen2
+namespace TagTool.Porting.Gen2
 {
-    partial class PortTagGen2Command : Command
+    partial class PortingContextGen2
     {
         private Gen2SoundCacheFileGestalt SoundGestalt { get; set; } = null;
         private Gen2SoundCacheFileGestalt SharedSoundGestalt { get; set; } = null;
@@ -62,7 +63,7 @@ namespace TagTool.Commands.Porting.Gen2
 
             if(sound != null)
             {
-                Sound soundDef = Cache.Deserialize<Sound>(cacheStream, sound);
+                Sound soundDef = CacheContext.Deserialize<Sound>(cacheStream, sound);
                 newLoop.SoundClass = (SoundLooping.SoundClassValue)soundDef.SoundClass.HaloOnline;
             }
             else
@@ -78,10 +79,10 @@ namespace TagTool.Commands.Porting.Gen2
         {
             Sound sound = new Sound();
 
-            LoadGen2SoundGestalt(Gen2Cache, gen2Stream);
+            LoadGen2SoundGestalt(BlamCache, gen2Stream);
             Gen2SoundCacheFileGestalt ugh;
 
-            if (Gen2Cache.Version == CacheVersion.Halo2Vista && gen2Tag.IsShared)
+            if (BlamCache.Version == CacheVersion.Halo2Vista && gen2Tag.IsShared)
                 ugh = SharedSoundGestalt;
             else
                 ugh = SoundGestalt;
@@ -200,9 +201,8 @@ namespace TagTool.Commands.Porting.Gen2
                 // Convert Blam permutations to ElDorado format
                 //
 
-                var useCache = Sounds.UseAudioCacheCommand.AudioCacheDirectory != null;
-                var soundCachePath = useCache ? Sounds.UseAudioCacheCommand.AudioCacheDirectory.FullName : "";
-
+                var useCache = Options.AudioCache != null || UseAudioCacheCommand.AudioCacheDirectory != null;
+                var soundCachePath = Options.AudioCache ?? UseAudioCacheCommand.AudioCacheDirectory?.FullName ?? "";
 
                 var permutationCount = ugh.GetPermutationCount(pitchRangeIndex);
                 var relativePitchRangeIndex = pitchRangeIndex - gen2Sound.PitchRangeIndex;
@@ -243,12 +243,13 @@ namespace TagTool.Commands.Porting.Gen2
                         var permutationChunkIndex = gen2Permutation.FirstChunk + k;
                         var chunk = ugh.Chunks[permutationChunkIndex];
                         var chunkSize = chunk.GetSize();
-                        byte[] chunkData = Gen2Cache.GetCacheRawData((uint)chunk.ResourceReference.Gen2ResourceAddress, (int)chunkSize); 
+                        GameCacheGen2 gen2Cache = (GameCacheGen2)BlamCache;
+                        byte[] chunkData = gen2Cache.GetCacheRawData((uint)chunk.ResourceReference.Gen2ResourceAddress, (int)chunkSize); 
                         Array.Copy(chunkData, 0, permutationData, currentOffset, chunkSize);
                         currentOffset += chunkSize;
                     }
 
-                    BlamSound blamSound = SoundConverter.ConvertGen2Sound(Gen2Cache, ugh, gen2Sound, relativePitchRangeIndex, i, permutationData, targetFormat, useCache, soundCachePath, gen2Name);
+                    BlamSound blamSound = SoundConverter.ConvertGen2Sound(BlamCache, ugh, gen2Sound, relativePitchRangeIndex, i, permutationData, targetFormat, useCache, soundCachePath, gen2Name);
 
                     permutationData = blamSound.Data;
                     permutation.SampleCount = blamSound.SampleCount;
@@ -272,7 +273,7 @@ namespace TagTool.Commands.Porting.Gen2
 
             var data = soundDataAggregate.ToArray();
             var resourceDefinition = AudioUtils.CreateSoundResourceDefinition(data);
-            var resourceReference = Cache.ResourceCache.CreateSoundResource(resourceDefinition);
+            var resourceReference = CacheContext.ResourceCache.CreateSoundResource(resourceDefinition);
             sound.Resource = resourceReference;
 
             //

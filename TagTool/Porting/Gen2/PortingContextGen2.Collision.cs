@@ -7,9 +7,9 @@ using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using CollisionModelGen2 = TagTool.Tags.Definitions.Gen2.CollisionModel;
 
-namespace TagTool.Commands.Porting.Gen2
+namespace TagTool.Porting.Gen2
 {
-	partial class PortTagGen2Command : Command
+	partial class PortingContextGen2
 	{
 		public CollisionModel ConvertCollisionModel(CollisionModelGen2 gen2CollisionModel)
 		{

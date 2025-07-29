@@ -11,6 +11,7 @@ using TagTool.Lighting;
 using TagTool.Havok;
 using TagTool.Commands.Common;
 using TagTool.Common.Logging;
+using System.Linq;
 
 namespace TagTool.Porting.Gen3
 {
@@ -192,50 +193,26 @@ namespace TagTool.Porting.Gen3
             if (BlamCache.Version > CacheVersion.Halo3Retail || BlamCache.Platform == CachePlatform.MCC)
                 return scenarioLightmap;
 
-            scenarioLightmap.PerPixelLightmapDataReferences = new List<ScenarioLightmap.DataReferenceBlock>();
+            scenarioLightmap.PerPixelLightmapDataReferences = [];
 
             for (int i = 0; i < scenarioLightmap.Lightmaps.Count; i++)
             {
-                var entry = scenarioLightmap.Lightmaps[i];
-
-                var wasReplacing = FlagIsSet(PortingFlags.Replace);
-
-                RemoveFlags(PortingFlags.Replace);
-                var Lbsp = ConvertStructure(cacheStream, blamCacheStream, entry, scenarioLightmap, blamTagName);
+                ScenarioLightmapBspData Lbsp = scenarioLightmap.Lightmaps[i];
+                // We need to convert to the structure as due to versioning Lightmaps doesn't get auto-converted
+                Lbsp = ConvertStructure(cacheStream, blamCacheStream, Lbsp, scenarioLightmap, blamTagName);
                 Lbsp = ConvertScenarioLightmapBspData(Lbsp);
-                if (wasReplacing)
-                    SetFlags(PortingFlags.Replace);
 
-                Lbsp.Airprobes = new List<Airprobe>(scenarioLightmap.Airprobes);
-                Lbsp.SceneryLightProbes = new List<SceneryLightProbe>(scenarioLightmap.SceneryLightProbes);
-                Lbsp.MachineLightProbes = new List<MachineLightProbes>(scenarioLightmap.MachineLightProbes);
+                Lbsp.Airprobes = scenarioLightmap.Airprobes.Where(x => (x.ManualBspFlags & (1u << i)) != 0).ToList();
+                Lbsp.MachineLightProbes = scenarioLightmap.MachineLightProbes.Where(x => x.ObjectId.OriginBspIndex == i).ToList();
+                Lbsp.SceneryLightProbes = scenarioLightmap.SceneryLightProbes.Where(x => x.ObjectId.OriginBspIndex == i).ToList();
 
-                var groupTag = CacheContext.TagCache.TagDefinitions.GetTagGroupFromTag("Lbsp");
+                string tagName = (scenarioLightmap.Lightmaps.Count != 1 ? $"{blamTagName}_{i}_data" : $"{blamTagName}_data") + ".Lbsp";
+                if (!CacheContext.TagCache.TryGetCachedTag(tagName, out CachedTag edTag))
+                    edTag = CacheContext.TagCacheGenHO.AllocateTag(CacheContext.TagCache.TagDefinitions.GetTagGroupFromTag("Lbsp"), tagName);
 
-                CachedTag edTag;
-
-                if (FlagIsSet(PortingFlags.Replace) && CacheContext.TagCache.TryGetCachedTag((scenarioLightmap.Lightmaps.Count != 1 ? $"{blamTagName}_{i}_data" : $"{blamTagName}_data")+".Lbsp", out CachedTag result))
-                {
-                    CacheContext.Serialize(cacheStream, result, Lbsp);
-                    edTag = result;
-                }
-                else
-                {
-                    edTag = CacheContext.TagCacheGenHO.AllocateTag(groupTag);
-
-                    if (scenarioLightmap.Lightmaps.Count != 1)
-                        edTag.Name = $"{blamTagName}_{i}_data";
-                    else
-                        edTag.Name = $"{blamTagName}_data";
-
-                    CacheContext.Serialize(cacheStream, edTag, Lbsp);
-                }
+                CacheContext.Serialize(cacheStream, edTag, Lbsp);
                 scenarioLightmap.PerPixelLightmapDataReferences.Add(new ScenarioLightmap.DataReferenceBlock() { LightmapBspData = edTag });
             }
-
-            scenarioLightmap.Airprobes.Clear();
-            scenarioLightmap.SceneryLightProbes.Clear();
-            scenarioLightmap.MachineLightProbes.Clear();
 
             return scenarioLightmap;
         }

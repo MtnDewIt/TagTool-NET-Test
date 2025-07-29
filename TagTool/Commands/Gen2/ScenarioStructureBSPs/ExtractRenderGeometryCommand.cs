@@ -5,7 +5,7 @@ using TagTool.Tags.Definitions.Gen2;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using static TagTool.Commands.Porting.Gen2.Gen2BspGeometryConverter;
+using static TagTool.Porting.Gen2.Gen2BspGeometryConverter;
 using TagTool.Common;
 using System.Linq;
 

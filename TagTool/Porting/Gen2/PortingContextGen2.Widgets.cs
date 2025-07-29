@@ -13,9 +13,9 @@ using TagTool.Commands.Common;
 using TagTool.Commands.Porting;
 using TagTool.Tags.Definitions;
 
-namespace TagTool.Commands.Porting.Gen2
+namespace TagTool.Porting.Gen2
 {
-    partial class PortTagGen2Command : Command
+    partial class PortingContextGen2
     {
         public TagStructure ConvertWidget(object gen2Tag)
         {

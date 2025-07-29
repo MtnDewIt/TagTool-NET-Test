@@ -85,11 +85,15 @@ namespace TagTool.Porting.Gen3
                         }
                     }
                 }
-                // fix surface planes
-                foreach (var surfacePlane in resourceDefinition.SurfacePlanes)
+
+                if (BlamCache.Platform == CachePlatform.Original)
                 {
-                    surfacePlane.SurfaceToTriangleMappingCount = surfacePlane.SurfaceToTriangleMappingCountOld;
-                    surfacePlane.FirstSurfaceToTriangleMappingIndex = surfacePlane.FirstSurfaceToTriangleMappingIndexOld;
+                    // fix surface planes
+                    foreach (var surfacePlane in resourceDefinition.SurfacePlanes)
+                    {
+                        surfacePlane.SurfaceToTriangleMappingCount = surfacePlane.SurfaceToTriangleMappingCountOld;
+                        surfacePlane.FirstSurfaceToTriangleMappingIndex = surfacePlane.FirstSurfaceToTriangleMappingIndexOld;
+                    }
                 }
             }
 

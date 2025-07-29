@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TagTool.Common;
 using TagTool.Geometry;
 
-namespace TagTool.Commands.Porting.Gen2
+namespace TagTool.Porting.Gen2
 {
     class Gen2VertexDefinitions
     {
@@ -119,11 +119,11 @@ namespace TagTool.Commands.Porting.Gen2
                 case VertexDeclarationType.ShortN:
                     return new RealQuaternion(stream.ReadShortN());
                 case VertexDeclarationType.Short2N:
-                    return new RealQuaternion(stream.Read(2, () => ((float)stream.ReadShort() + (float)0x7FFF) / (float)0xFFFF));
+                    return new RealQuaternion(stream.Read(2, () => (stream.ReadShort() + (float)0x7FFF) / 0xFFFF));
                 case VertexDeclarationType.Short3N:
-                    return new RealQuaternion(stream.Read(3, () => ((float)stream.ReadShort() + (float)0x7FFF) / (float)0xFFFF));
+                    return new RealQuaternion(stream.Read(3, () => (stream.ReadShort() + (float)0x7FFF) / 0xFFFF));
                 case VertexDeclarationType.Short4N:
-                    return new RealQuaternion(stream.Read(4, () => ((float)stream.ReadShort() + (float)0x7FFF) / (float)0xFFFF));
+                    return new RealQuaternion(stream.Read(4, () => (stream.ReadShort() + (float)0x7FFF) / 0xFFFF));
                 case VertexDeclarationType.HenD3N:
                     return RealQuaternion.FromHenDN3(stream.ReadColor());
                 default:

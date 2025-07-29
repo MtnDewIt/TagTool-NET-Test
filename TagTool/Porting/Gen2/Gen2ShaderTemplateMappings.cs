@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TagTool.Commands.Porting.Gen2
+namespace TagTool.Porting.Gen2
 {
     public static class Gen2ShaderTemplateMappings
     {

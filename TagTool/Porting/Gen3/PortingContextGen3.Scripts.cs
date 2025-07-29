@@ -73,7 +73,7 @@ namespace TagTool.Porting.Gen3
                     break;
             }
 
-            ConvertScriptExpressionData(cacheStream, blamCacheStream, expr);
+            ConvertScriptExpressionData(cacheStream, blamCacheStream, scnr, expr);
         }
 
         private bool ScriptExpressionIsValue(HsSyntaxNode expr)
@@ -231,7 +231,7 @@ namespace TagTool.Porting.Gen3
             ConvertScriptExpressionUnsupportedOpcode(expr);
         }
 
-        private void ConvertScriptExpressionData(Stream cacheStream, Stream blamCacheStream, HsSyntaxNode expr)
+        private void ConvertScriptExpressionData(Stream cacheStream, Stream blamCacheStream, Scenario scnr, HsSyntaxNode expr)
         {
             if (expr.Flags == HsSyntaxNodeFlags.Expression)
                 switch (expr.ValueType)
@@ -259,6 +259,9 @@ namespace TagTool.Porting.Gen3
                     case HsType.AiLine when BitConverter.ToInt32(expr.Data, 0) != -1:
                     case HsType.StringId:
                         ConvertScriptStringIdExpressionData(cacheStream, blamCacheStream, expr);
+                        return;
+                    case HsType.StartingProfile:
+                        ConvertStartingProfileExpressionData(scnr, expr);
                         return;
 
                     default:
@@ -437,6 +440,19 @@ namespace TagTool.Porting.Gen3
             expr.Data = BitConverter.GetBytes(edStringId.Value).ToArray();
         }
 
+        private void ConvertStartingProfileExpressionData(Scenario scnr, HsSyntaxNode expr)
+        {
+            string profileName = GetScriptString(scnr, (int)expr.StringAddress);
+            int index = scnr.PlayerStartingProfile.FindIndex(p => p.Name == profileName);
+            if (index == -1)
+            {
+                Log.Warning($"StartingProfile reference could not be converted {profileName}");
+                return;
+            }
+
+            BinaryPrimitives.WriteInt16LittleEndian(expr.Data, (short)index);
+        }
+
         private bool ConvertScriptUsingPresets(Stream cacheStream, Scenario scnr, HsSyntaxNode expr)
         {
             // Return false to convert normally.
@@ -535,11 +551,6 @@ namespace TagTool.Porting.Gen3
                         }
                         return true;
 
-                    case "unit_add_equipment":
-                        expr.Opcode = 0x136; // -> unit_add_equipment
-                        UpdateUnitAddEquipmentScript(cacheStream, scnr, expr);
-                        return true;
-
                     case "vehicle_test_seat_list":
                         if (Options.EnableH3VehicleTestSeat)
                             expr.Opcode = 0x6A9; // -> vehicle_test_seat_list_legacy
@@ -563,32 +574,6 @@ namespace TagTool.Porting.Gen3
             }
 
             return false;
-        }
-
-        private void UpdateUnitAddEquipmentScript(Stream cacheStream, Scenario scnr, HsSyntaxNode expr)
-        {
-            var exprIndex = scnr.ScriptExpressions.IndexOf(expr);
-            var profileExpr = scnr.ScriptExpressions[exprIndex + 3]; // <StartingProfile> parameter
-
-            if (profileExpr.ValueType != HsType.StartingProfile || profileExpr.StringAddress == 0)
-                return;
-
-            string profileName = GetScriptString(scnr, (int)profileExpr.StringAddress);
-            int startingProfileIndex = scnr.PlayerStartingProfile.FindIndex(sp => sp.Name == profileName);
-
-            if (startingProfileIndex == -1)
-            {
-                Log.Warning($"StartingProfile reference could not be converted {profileName}");
-                return;
-            }
-
-            profileExpr.ValueType = HsType.StartingProfile;
-
-            // We have to endian swap here as it gets swapped again later in ConvertScriptExpressionData. TODO: cleanup
-            if (BlamCache.Endianness == IO.EndianFormat.BigEndian)
-                BinaryPrimitives.WriteInt16BigEndian(profileExpr.Data, (short)startingProfileIndex);
-            else
-                BinaryPrimitives.WriteInt16LittleEndian(profileExpr.Data, (short)startingProfileIndex);
         }
 
         private void UpdateMpWakeScript(Stream cacheStream, Scenario scnr, HsSyntaxNode expr)

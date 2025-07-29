@@ -9,6 +9,7 @@ using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
 using TagTool.Commands.Porting;
+using TagTool.Porting.Gen2;
 using TagTool.Common;
 using TagTool.Common.Logging;
 using TagTool.Porting.Gen3;
@@ -57,6 +58,8 @@ namespace TagTool.Porting
                     return new PortingContextHO(destCache, sourceCache);
                 case GameCacheGen3:
                     return new PortingContextGen3(destCache, sourceCache);
+                case GameCacheGen2:
+                    return new PortingContextGen2(destCache, sourceCache);
                 default:
                     throw new NotSupportedException($"Porting cache '{sourceCache.DisplayName}' not supported currently");
             }
@@ -111,13 +114,18 @@ namespace TagTool.Porting
             PortedTags[blamTag.Index] = result;
             return result;
         }
+        protected virtual bool GroupIsValid(CachedTag blamTag, out CachedTag resultTag)
+        {
+            resultTag = blamTag;
+            return CacheContext.TagCache.TagDefinitions.TagDefinitionExists(blamTag.Group.Tag);
+        }
 
         protected virtual CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition)
         {
             if (blamTag == null)
                 return null;
 
-            if (!CacheContext.TagCache.TagDefinitions.TagDefinitionExists(blamTag.Group))
+            if (!GroupIsValid(blamTag, out CachedTag resultTag))
             {
                 Log.Warning($"Tag group {blamTag.Group} does not exist in destination cache! Returning null!");
                 return null;
@@ -131,7 +139,7 @@ namespace TagTool.Porting
 
             if (!FlagIsSet(PortingFlags.New))
             {
-                CachedTag existingTag =  FindExistingTag(blamTag);
+                CachedTag existingTag =  FindExistingTag(resultTag);
                 if (existingTag != null)
                 {
                     // Avoid re-entrancy
@@ -158,7 +166,7 @@ namespace TagTool.Porting
             // Allocate Eldorado Tag
             //
 
-            edTag ??= AllocateNewTag(blamTag);
+            edTag ??= AllocateNewTag(resultTag);
             edTag.Name = blamTag.Name;
 
             //
@@ -179,7 +187,7 @@ namespace TagTool.Porting
                     CacheContext.TagCacheGenHO.Tags.RemoveAt(edTag.Index);
 
                 CachedTag fallback = GetFallbackTag(blamTag);
-                Log.Error($"Failed to convert tag '{blamTag}', using {fallback}");
+                Log.Error($"Failed to convert tag '{blamTag}', using fallback tag: {fallback}");
 
                 return fallback;
             }
@@ -291,7 +299,7 @@ namespace TagTool.Porting
         /// <param name="definition"></param>
         /// <param name="blamTagName"></param>
         /// <returns></returns>
-        protected T ConvertStructure<T>(Stream cacheStream, Stream blamCacheStream, T data, object definition, string blamTagName) where T : TagStructure
+        protected virtual T ConvertStructure<T>(Stream cacheStream, Stream blamCacheStream, T data, object definition, string blamTagName) where T : TagStructure
         {
             foreach (var tagFieldInfo in TagStructure.GetTagFieldEnumerable(data.GetType(), CacheContext.Version, CacheContext.Platform))
             {

@@ -42,7 +42,7 @@ namespace TagTool.Commands.Gen2.Bitmaps
             byte[] rawBitmapData = cache.GetCacheRawData((uint)gen2Img.Lod0Pointer, gen2Img.Lod0Size);
 
             //h2v raw bitmap data is gz compressed
-            if (cache.Version == TagTool.Cache.CacheVersion.Halo2Vista)
+            if (cache.Version == CacheVersion.Halo2Vista)
             {
                 using (var stream = new MemoryStream(rawBitmapData))
                 using (var resultStream = new MemoryStream())
@@ -129,7 +129,10 @@ namespace TagTool.Commands.Gen2.Bitmaps
                 // Prevent memory allocation crash
                 BitmapUtils.TrimLowestMipmaps(baseBitmap);
 
-                baseBitmap.Data = BitmapDecoder.EncodeBitmap(rawData, BitmapFormat.Dxn, image.Width, image.Height);
+                //Truncate all mipmaps for now -- TODO: fix
+                byte[] truncatedData = rawData.Take(image.Width * image.Height * 4).ToArray();
+
+                baseBitmap.Data = BitmapDecoder.EncodeBitmap(truncatedData, BitmapFormat.Dxn, image.Width, image.Height);
 
                 image.MipmapCount = (sbyte)(baseBitmap.MipMapCount - 1);
 

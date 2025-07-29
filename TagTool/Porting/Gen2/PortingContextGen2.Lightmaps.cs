@@ -22,14 +22,15 @@ using TagTool.Bitmaps.DDS;
 using TagTool.Bitmaps.Utils;
 using System.Text.RegularExpressions;
 using TagTool.Common.Logging;
+using TagTool.Porting.Gen2;
 
-namespace TagTool.Commands.Porting.Gen2
+namespace TagTool.Porting.Gen2
 {
-    partial class PortTagGen2Command : Command
+    partial class PortingContextGen2
     {
         public CachedTag ConvertLightmap(TagTool.Tags.Definitions.Gen2.Scenario gen2Scenario, Scenario newScenario, string scenarioPath, Stream cacheStream, Stream gen2CacheStream)
         {
-            var sldtTag = Cache.TagCache.AllocateTag<ScenarioLightmapBspData>($"{scenarioPath}_faux_lightmap");
+            var sldtTag = CacheContext.TagCache.AllocateTag<ScenarioLightmapBspData>($"{scenarioPath}_faux_lightmap");
             var sldt = new ScenarioLightmap();
             sldt.PerPixelLightmapDataReferences = new List<ScenarioLightmap.DataReferenceBlock>();
             sldt.PerVertexLightmapDataReferences = new List<CachedTag>();
@@ -39,21 +40,21 @@ namespace TagTool.Commands.Porting.Gen2
                 var lightmapDataName = newScenario.StructureBsps[i].StructureBsp.Name;
                 if (gen2Scenario.StructureBsps[i].StructureLightmap != null)
                 {
-                    ScenarioStructureBsp sbsp = Cache.Deserialize<ScenarioStructureBsp>(cacheStream, newScenario.StructureBsps[i].StructureBsp);
-                    var gen2Lightmap = Gen2Cache.Deserialize<TagTool.Tags.Definitions.Gen2.ScenarioStructureLightmap>(gen2CacheStream, gen2Scenario.StructureBsps[i].StructureLightmap);
+                    ScenarioStructureBsp sbsp = CacheContext.Deserialize<ScenarioStructureBsp>(cacheStream, newScenario.StructureBsps[i].StructureBsp);
+                    var gen2Lightmap = BlamCache.Deserialize<TagTool.Tags.Definitions.Gen2.ScenarioStructureLightmap>(gen2CacheStream, gen2Scenario.StructureBsps[i].StructureLightmap);
                     lbsp = ConvertLightmapData(sbsp, gen2Lightmap, cacheStream, gen2CacheStream, i, lightmapDataName);
                     if (lbsp == null)
                         return null;
                     sbsp.Geometry = lbsp.Geometry;
-                    Cache.Serialize(cacheStream, newScenario.StructureBsps[i].StructureBsp, sbsp);
+                    CacheContext.Serialize(cacheStream, newScenario.StructureBsps[i].StructureBsp, sbsp);
                 }
 
                 lbsp.BspIndex = (short)i;
-                var lbspTag = Cache.TagCache.AllocateTag<ScenarioLightmapBspData>(lightmapDataName);
-                Cache.Serialize(cacheStream, lbspTag, lbsp);
+                var lbspTag = CacheContext.TagCache.AllocateTag<ScenarioLightmapBspData>(lightmapDataName);
+                CacheContext.Serialize(cacheStream, lbspTag, lbsp);
                 sldt.PerPixelLightmapDataReferences.Add(new ScenarioLightmap.DataReferenceBlock() { LightmapBspData = lbspTag });
             }
-            Cache.Serialize(cacheStream, sldtTag, sldt);
+            CacheContext.Serialize(cacheStream, sldtTag, sldt);
             return sldtTag;
         }
 
@@ -63,11 +64,11 @@ namespace TagTool.Commands.Porting.Gen2
             List<int> instanceMeshIndices = new List<int>();
             foreach (var cluster in sbsp.Clusters)
                 clusterMeshIndices.Add(cluster.MeshIndex);
-            var sbspResource = Cache.ResourceCache.GetStructureBspTagResources(sbsp.CollisionBspResource);
+            var sbspResource = CacheContext.ResourceCache.GetStructureBspTagResources(sbsp.CollisionBspResource);
             foreach (var instance in sbsp.InstancedGeometryInstances)
                 instanceMeshIndices.Add(sbspResource.InstancedGeometry[instance.DefinitionIndex].MeshIndex);
 
-            RenderGeometryApiResourceDefinition resourceDef = Cache.ResourceCache.GetRenderGeometryApiResourceDefinition(sbsp.Geometry.Resource);
+            RenderGeometryApiResourceDefinition resourceDef = CacheContext.ResourceCache.GetRenderGeometryApiResourceDefinition(sbsp.Geometry.Resource);
 
             ScenarioLightmapBspData lbsp = new ScenarioLightmapBspData();
             lbsp.ClusterStaticPerVertexLightingBuffers = new List<ScenarioLightmapBspData.ClusterStaticPerVertexLighting>();
@@ -81,7 +82,7 @@ namespace TagTool.Commands.Porting.Gen2
             //set up geometry carried over from sbsp
             lbsp.Geometry = sbsp.Geometry;
 
-            var gen2bitmap = Gen2Cache.Deserialize<TagTool.Tags.Definitions.Gen2.Bitmap>(gen2CacheStream, lgroup.BitmapGroup);
+            var gen2bitmap = BlamCache.Deserialize<TagTool.Tags.Definitions.Gen2.Bitmap>(gen2CacheStream, lgroup.BitmapGroup);
 
             Bitmap linearSHBitmap = new Bitmap() { Flags = BitmapRuntimeFlags.UsingTagInteropAndTagResource, Images = new List<Bitmap.Image>(), HardwareTextures = new List<TagResourceReference>() };
             Bitmap intensityBitmap = new Bitmap() { Flags = BitmapRuntimeFlags.UsingTagInteropAndTagResource, Images = new List<Bitmap.Image>(), HardwareTextures = new List<TagResourceReference>() };
@@ -121,7 +122,8 @@ namespace TagTool.Commands.Porting.Gen2
             foreach (var bucket in lgroup.GeometryBuckets)
             {
                 bucket.RawVertices = new List<LightmapVertexBufferBucketBlock.LightmapBucketRawVertexBlock>();
-                using (var stream = new MemoryStream(Gen2Cache.GetCacheRawData(bucket.GeometryBlockInfo.BlockOffset, (int)bucket.GeometryBlockInfo.BlockSize)))
+                GameCacheGen2 gen2Cache = (GameCacheGen2)BlamCache;
+                using (var stream = new MemoryStream(gen2Cache.GetCacheRawData(bucket.GeometryBlockInfo.BlockOffset, (int)bucket.GeometryBlockInfo.BlockSize)))
                 using (var reader = new EndianReader(stream))
                 using (var writer = new EndianWriter(stream))
                 {
@@ -280,7 +282,7 @@ namespace TagTool.Commands.Porting.Gen2
                     var tex = lightmapRawVertices[t];
 
                     //H2X lightmap texcoords are compressed to 0.5-1 space
-                    if (Gen2Cache.Version == CacheVersion.Halo2Xbox)
+                    if (BlamCache.Version == CacheVersion.Halo2Xbox)
                         tex.Texcoord = new RealVector2d(tex.Texcoord.I * 2 - 1, tex.Texcoord.J * 2 - 1);
                     int[] originalOffset = new int[] { (int)Math.Round(tex.Texcoord.I * image.Width), (int)Math.Round(tex.Texcoord.J * image.Height) };
                     int[] newOffset = new int[] { clusterOffset[0] + originalOffset[0], clusterOffset[1] + originalOffset[1] };
@@ -329,7 +331,7 @@ namespace TagTool.Commands.Porting.Gen2
                     var tex = lightmapRawVertices[t];
 
                     //H2X lightmap texcoords are compressed to 0.5-1 space
-                    if (Gen2Cache.Version == CacheVersion.Halo2Xbox)
+                    if (BlamCache.Version == CacheVersion.Halo2Xbox)
                         tex.Texcoord = new RealVector2d(tex.Texcoord.I * 2 - 1, tex.Texcoord.J * 2 - 1);
                     int[] originalOffset = new int[] { (int)Math.Round(tex.Texcoord.I * image.Width), (int)Math.Round(tex.Texcoord.J * image.Height) };
                     int[] newOffset = new int[] { instanceOffset[0] + originalOffset[0], instanceOffset[1] + originalOffset[1] };
@@ -368,25 +370,26 @@ namespace TagTool.Commands.Porting.Gen2
             convertedLightmap.Intensity = bitmapStreamDI.ToArray();
 
             Console.WriteLine("Importing lightmap...");
-            ImportIntoLbsp(convertedLightmap, linearSHBitmap, intensityBitmap, Cache, lbsp, 0);
+            ImportIntoLbsp(convertedLightmap, linearSHBitmap, intensityBitmap, CacheContext, lbsp, 0);
 
-            CachedTag SHBitmapTag = Cache.TagCache.AllocateTag<Bitmap>(lgroup.BitmapGroup.Name + "_SH");
-            CachedTag intensityBitmapTag = Cache.TagCache.AllocateTag<Bitmap>(lgroup.BitmapGroup.Name + "_intensity");
-            Cache.Serialize(cacheStream, SHBitmapTag, linearSHBitmap);
-            Cache.Serialize(cacheStream, intensityBitmapTag, intensityBitmap);
+            CachedTag SHBitmapTag = CacheContext.TagCache.AllocateTag<Bitmap>(lgroup.BitmapGroup.Name + "_SH");
+            CachedTag intensityBitmapTag = CacheContext.TagCache.AllocateTag<Bitmap>(lgroup.BitmapGroup.Name + "_intensity");
+            CacheContext.Serialize(cacheStream, SHBitmapTag, linearSHBitmap);
+            CacheContext.Serialize(cacheStream, intensityBitmapTag, intensityBitmap);
             lbsp.LightmapSHCoefficientsBitmap = SHBitmapTag;
             lbsp.LightmapDominantLightDirectionBitmap = intensityBitmapTag;
 
-            lbsp.Geometry.Resource = Cache.ResourceCache.CreateRenderGeometryApiResource(resourceDef);
+            lbsp.Geometry.Resource = CacheContext.ResourceCache.CreateRenderGeometryApiResource(resourceDef);
 
             return lbsp;
         }
 
         public Tuple<List<RealRgbColor[]>, List<float[]>> BuildCoefficients(Gen2BSPResourceMesh mesh, TagTool.Tags.Definitions.Gen2.Bitmap.BitmapDataBlock image, StructureLightmapPaletteColorBlock palette)
         {
-            byte[] rawBitmapData = Gen2Cache.GetCacheRawData((uint)image.Lod0Pointer, (int)image.Lod0Size);
+            GameCacheGen2 gen2Cache = (GameCacheGen2)BlamCache;
+            byte[] rawBitmapData = gen2Cache.GetCacheRawData((uint)image.Lod0Pointer, (int)image.Lod0Size);
             //h2v raw bitmap data is gz compressed
-            if (Gen2Cache.Version == CacheVersion.Halo2Vista)
+            if (BlamCache.Version == CacheVersion.Halo2Vista)
             {
                 using (var stream = new MemoryStream(rawBitmapData))
                 using (var resultStream = new MemoryStream())
@@ -591,7 +594,7 @@ namespace TagTool.Commands.Porting.Gen2
             var vertexBufferStart = (int)vertexBufferStream.Position;
             var vertexCount = vertices.Count;
 
-            var vertexStream = VertexStreamFactory.Create(Cache.Version, Cache.Platform, vertexBufferStream);
+            var vertexStream = VertexStreamFactory.Create(CacheContext.Version, CacheContext.Platform, vertexBufferStream);
             foreach (var vert in vertices)
             {
                 float[] R = new float[4];
@@ -600,7 +603,7 @@ namespace TagTool.Commands.Porting.Gen2
                 SphericalHarmonics.EvaluateDirectionalLight(2, vert.Color, vert.IncidentDirection, R, G, B);
                 var probe = new SphericalHarmonics.SH2Probe(R, G, B);
                 vertexStream.WriteStaticPerVertexData(VmfConversion.CompressStaticPerVertex(vert.Color, probe,
-                    Cache.Version, Cache.Platform));
+                    CacheContext.Version, CacheContext.Platform));
             }
 
             StreamUtil.Align(vertexBufferStream, 4);
@@ -632,7 +635,7 @@ namespace TagTool.Commands.Porting.Gen2
             var vertexBufferStart = (int)vertexBufferStream.Position;
             var vertexCount = vertices.Count;
 
-            var vertexStream = VertexStreamFactory.Create(Cache.Version, Cache.Platform, vertexBufferStream);
+            var vertexStream = VertexStreamFactory.Create(CacheContext.Version, CacheContext.Platform, vertexBufferStream);
             foreach (var vert in vertices)
                 vertexStream.WriteStaticPerPixelData(new StaticPerPixelData
                 {
