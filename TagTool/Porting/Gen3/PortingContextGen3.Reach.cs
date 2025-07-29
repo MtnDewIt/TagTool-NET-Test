@@ -94,8 +94,8 @@ namespace TagTool.Porting.Gen3
                 scenario.SquadGroups.Clear();
                 scenario.AiObjectives.Clear();
                 scenario.AiUserHintData.Clear();
-                scenario.Scripts.Clear();
-                scenario.ScriptStrings = null;
+                //scenario.Scripts.Clear();
+                //scenario.ScriptStrings = null;
 
                 scenario.CharacterPalette.Clear();
                 scenario.UnitSeatsMapping.Clear();
