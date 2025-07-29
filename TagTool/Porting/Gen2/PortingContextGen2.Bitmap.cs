@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using TagTool.Tags.Definitions;
-using BitmapGen2 = TagTool.Tags.Definitions.Gen2.Bitmap;
+using System.IO;
+using System.IO.Compression;
+using System.Numerics;
 using TagTool.Bitmaps;
 using TagTool.Bitmaps.Utils;
-using System.IO;
-using TagTool.IO;
+using TagTool.Cache;
 using TagTool.Commands.Common;
-using System.IO.Compression;
-using TagTool.Common;
-using System.Numerics;
 using TagTool.Commands.Gen2.Bitmaps;
+using TagTool.Common;
+using TagTool.IO;
+using TagTool.Tags.Definitions;
+using BitmapGen2 = TagTool.Tags.Definitions.Gen2.Bitmap;
 
-namespace TagTool.Commands.Porting.Gen2
+namespace TagTool.Porting.Gen2
 {
-	partial class PortTagGen2Command : Command
+	partial class PortingContextGen2
 	{
         public Bitmap ConvertBitmap(BitmapGen2 gen2Bitmap, string gen2TagName)
         {
@@ -57,15 +58,15 @@ namespace TagTool.Commands.Porting.Gen2
             //convert images
             foreach (var gen2Img in gen2Bitmap.Bitmaps)
             {
-                byte[] rawBitmapData = BitmapConverterGen2.ConvertBitmapData(Gen2Cache, gen2Bitmap, gen2Img);
-                Bitmap.Image newImg = BitmapConverterGen2.ConvertBitmapImage(Gen2Cache, gen2Img, rawBitmapData);
+                byte[] rawBitmapData = BitmapConverterGen2.ConvertBitmapData((GameCacheGen2)BlamCache, gen2Bitmap, gen2Img);
+                Bitmap.Image newImg = BitmapConverterGen2.ConvertBitmapImage((GameCacheGen2)BlamCache, gen2Img, rawBitmapData);
                 BaseBitmap bitmapbase = new BaseBitmap(newImg);
                 bitmapbase.Data = rawBitmapData;
 
                 BitmapConverterGen2.PostprocessBitmap(bitmapbase, gen2Bitmap, newImg, gen2TagName);
 
                 var bitmapResourceDefinition = BitmapUtils.CreateBitmapTextureInteropResource(bitmapbase);
-                var resourceReference = Cache.ResourceCache.CreateBitmapResource(bitmapResourceDefinition);
+                var resourceReference = CacheContext.ResourceCache.CreateBitmapResource(bitmapResourceDefinition);
                 newBitmap.HardwareTextures.Add(resourceReference);
 
                 newBitmap.Images.Add(newImg);

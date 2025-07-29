@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static TagTool.Commands.Porting.Gen2.Gen2VertexDefinitions;
+using static TagTool.Porting.Gen2.Gen2VertexDefinitions;
 using TagTool.Common;
 using TagTool.Geometry;
 using TagTool.IO;
@@ -15,7 +15,7 @@ using TagTool.Tags;
 using TagTool.Cache;
 using TagTool.Common.Logging;
 
-namespace TagTool.Commands.Porting.Gen2
+namespace TagTool.Porting.Gen2
 {
     class Gen2RenderGeometryConverter
     {
@@ -148,7 +148,7 @@ namespace TagTool.Commands.Porting.Gen2
             }
         }
 
-        public static List<Gen2ResourceMesh> ReadResourceMeshes(GameCacheGen2 Gen2Cache, CacheFileResourceGen2 Resource, int vertexcount, RenderGeometryCompressionFlags CompressionFlags, TagTool.Tags.Definitions.Gen2.RenderModel.SectionLightingFlags LightingFlags, VertexCompressor compressor)
+        public static List<Gen2ResourceMesh> ReadResourceMeshes(GameCacheGen2 Gen2Cache, CacheFileResourceGen2 Resource, int vertexcount, RenderGeometryCompressionFlags CompressionFlags, Tags.Definitions.Gen2.RenderModel.SectionLightingFlags LightingFlags, VertexCompressor compressor)
         {
             List<Gen2ResourceMesh> meshes = new List<Gen2ResourceMesh>();
 
@@ -241,7 +241,7 @@ namespace TagTool.Commands.Porting.Gen2
                     {
                         var vertex = mesh.RawVertices[i];
 
-                        stream.Position = 8 + Resource.SectionDataSize + resource.ResourceDataOffset + ((resource.ResourceDataSize / vertexcount) * i);
+                        stream.Position = 8 + Resource.SectionDataSize + resource.ResourceDataOffset + resource.ResourceDataSize / vertexcount * i;
 
                         foreach (var entry in declaration)
                         {
@@ -331,17 +331,17 @@ namespace TagTool.Commands.Porting.Gen2
                                     break;
 
                                 case 3:
-                                    if (LightingFlags.HasFlag(TagTool.Tags.Definitions.Gen2.RenderModel.SectionLightingFlags.HasLightmapTexcoords))
+                                    if (LightingFlags.HasFlag(Tags.Definitions.Gen2.RenderModel.SectionLightingFlags.HasLightmapTexcoords))
                                         vertex.PrimaryLightmapTexcoord = element.XY;
                                     break;
 
                                 case 4:
-                                    if (LightingFlags.HasFlag(TagTool.Tags.Definitions.Gen2.RenderModel.SectionLightingFlags.HasLightmapIncRad))
+                                    if (LightingFlags.HasFlag(Tags.Definitions.Gen2.RenderModel.SectionLightingFlags.HasLightmapIncRad))
                                         vertex.PrimaryLightmapIncidentDirection = element.IJK;
                                     break;
 
                                 case 5:
-                                    if (LightingFlags.HasFlag(TagTool.Tags.Definitions.Gen2.RenderModel.SectionLightingFlags.HasLightmapColors))
+                                    if (LightingFlags.HasFlag(Tags.Definitions.Gen2.RenderModel.SectionLightingFlags.HasLightmapColors))
                                         vertex.PrimaryLightmapColor = element.RGB;
                                     break;
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TagTool.Cache;
+using TagTool.Commands;
 using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Common.Logging;
@@ -132,7 +133,7 @@ namespace TagTool.Commands.Porting.Gen4
                 return data;
 
             var type = data[0].GetType();
-            if ((type.IsValueType && type != typeof(StringId)) ||
+            if (type.IsValueType && type != typeof(StringId) ||
                 type == typeof(string))
                 return data;
 
@@ -156,7 +157,7 @@ namespace TagTool.Commands.Porting.Gen4
                     continue;
 
                 // skip the field if no conversion is needed
-                if ((tagFieldInfo.FieldType.IsValueType && tagFieldInfo.FieldType != typeof(StringId)) ||
+                if (tagFieldInfo.FieldType.IsValueType && tagFieldInfo.FieldType != typeof(StringId) ||
                 tagFieldInfo.FieldType == typeof(string))
                     continue;
 
@@ -193,7 +194,7 @@ namespace TagTool.Commands.Porting.Gen4
         {
             List<CachedTag> result = new List<CachedTag>();
 
-            if (tagSpecifier.Length == 0 || (!char.IsLetter(tagSpecifier[0]) && !tagSpecifier.Contains('*')) || !tagSpecifier.Contains('.'))
+            if (tagSpecifier.Length == 0 || !char.IsLetter(tagSpecifier[0]) && !tagSpecifier.Contains('*') || !tagSpecifier.Contains('.'))
             {
                 Log.Error($"Invalid tag name: {tagSpecifier}");
                 return new List<CachedTag>();

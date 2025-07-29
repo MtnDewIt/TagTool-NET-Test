@@ -19,9 +19,9 @@ using TagTool.Effects;
 using TagTool.Commands.Shaders;
 using TagTool.Common.Logging;
 
-namespace TagTool.Commands.Porting.Gen2
+namespace TagTool.Porting.Gen2
 {
-	partial class PortTagGen2Command : Command
+	partial class PortingContextGen2
 	{
         public TagStructure ConvertEffect(object gen2Tag, object origGen2Tag, Stream stream, Stream blamStream)
         {
@@ -85,7 +85,7 @@ namespace TagTool.Commands.Porting.Gen2
             //newParticle.RenderMethod = ConvertParticleRenderMethod();
             byte[] rmOptions = new byte[] { };
 
-            newParticle.RenderMethod = Cache.Deserialize<Particle>(cacheStream, Cache.TagCache.GetTag("fx\\particles\\atmospheric\\fiery_smoke\\smoke_fiery_small.prt3")).RenderMethod;
+            newParticle.RenderMethod = CacheContext.Deserialize<Particle>(cacheStream, CacheContext.TagCache.GetTag("fx\\particles\\atmospheric\\fiery_smoke\\smoke_fiery_small.prt3")).RenderMethod;
             // newParticle.RenderMethod = GenerateRenderMethodCommand.GenerateRenderMethod(, , (Cache as GameCacheHaloOnlineBase, cacheStream, rmOptions);
 
             // TODO: appearance flags conversion
@@ -118,7 +118,7 @@ namespace TagTool.Commands.Porting.Gen2
                 out newParticle.RuntimeMConstantOverTimeProperties);
 
             // generate gpu data
-            ParticleGpu.ParticleCompileGpuData(newParticle, Cache, cacheStream);
+            ParticleGpu.ParticleCompileGpuData(newParticle, CacheContext, cacheStream);
 
             return newParticle;
         }
@@ -151,7 +151,7 @@ namespace TagTool.Commands.Porting.Gen2
                 newEvent.Accelerations = new List<Effect.Event.Acceleration>();
                 newEvent.ParticleSystems = new List<Effect.Event.ParticleSystem>();
 
-                newEvent.Name = Cache.StringTable.GetOrAddString($"event_{i}");
+                newEvent.Name = CacheContext.StringTable.GetOrAddString($"event_{i}");
                 newEvent.Flags = (Effect.Event.EventFlags)eventBlock.Flags;
                 newEvent.SkipFraction = eventBlock.SkipFraction;
                 newEvent.DelayBounds.Lower = eventBlock.DelayBounds.Lower;
@@ -178,7 +178,7 @@ namespace TagTool.Commands.Porting.Gen2
                     if (part.Type != null)
                     {
                         var gen2group = part.Type.Group.Tag.ToString();
-                        if(Tag.TryParseGroupTag(Cache, gen2group, out newPart.RuntimeBaseGroupTag))
+                        if(Tag.TryParseGroupTag(CacheContext, gen2group, out newPart.RuntimeBaseGroupTag))
                             newPart.Type = part.Type;
                     }
 
@@ -225,8 +225,8 @@ namespace TagTool.Commands.Porting.Gen2
                     ps.LodFeatherOutDelta = oldPs.LodFeatherOutDelta;
                     ps.InverseLodFeatherOut = oldPs.InverseLodFeatherOut;
 
-                    Particle prt3 = ps.Particle != null ? Cache.Deserialize<Particle>(cacheStream, ps.Particle) : null;
-                    var oldPrt3 = oldPs.Particle != null ? Gen2Cache.Deserialize<TagTool.Tags.Definitions.Gen2.Particle>(gen2Stream, oldEffect.Events[i].ParticleSystems[j].Particle) : null;
+                    Particle prt3 = ps.Particle != null ? CacheContext.Deserialize<Particle>(cacheStream, ps.Particle) : null;
+                    var oldPrt3 = oldPs.Particle != null ? BlamCache.Deserialize<TagTool.Tags.Definitions.Gen2.Particle>(gen2Stream, oldEffect.Events[i].ParticleSystems[j].Particle) : null;
 
                     ps.RuntimeMaximumLifespan = 8.0f; // TODO: (emitters --> max(ps.RuntimeMaximumLifespan, ps.ParticleLifespan) )
                     for (int k = 0; k < oldPs.Emitters.Count; k++)
@@ -234,7 +234,7 @@ namespace TagTool.Commands.Porting.Gen2
                         var oldEm = oldPs.Emitters[k];
                         Effect.Event.ParticleSystem.Emitter emitter = new Effect.Event.ParticleSystem.Emitter();
 
-                        emitter.Name = Cache.StringTable.GetOrAddString($"emitter_{k}");
+                        emitter.Name = CacheContext.StringTable.GetOrAddString($"emitter_{k}");
                         emitter.EmissionShape = (Effect.Event.ParticleSystem.Emitter.EmissionShapeValue)oldEm.EmissionShape;
                         emitter.EmitterFlags = Effect.Event.ParticleSystem.Emitter.FlagsValue.Postprocessed 
                             | Effect.Event.ParticleSystem.Emitter.FlagsValue.IsCpu; // CPU for now
@@ -343,7 +343,7 @@ namespace TagTool.Commands.Porting.Gen2
 
                         if (oldEm.ParticlePhysics != null)
                         {
-                            ParticlePhysics pmov = Cache.Deserialize<ParticlePhysics>(cacheStream, oldEm.ParticlePhysics);
+                            ParticlePhysics pmov = CacheContext.Deserialize<ParticlePhysics>(cacheStream, oldEm.ParticlePhysics);
 
                             emitter.ParticleMovement = new Effect.Event.ParticleSystem.Emitter.ParticleMovementData
                             {

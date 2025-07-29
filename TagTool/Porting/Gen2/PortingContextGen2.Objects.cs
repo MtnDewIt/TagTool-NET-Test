@@ -13,10 +13,11 @@ using TagTool.Cache.Gen2;
 using System.IO;
 using TagTool.Commands.Common;
 using Gen2Eqip = TagTool.Tags.Definitions.Gen2.Equipment;
+using TagTool.Porting.Gen2;
 
-namespace TagTool.Commands.Porting.Gen2
+namespace TagTool.Porting.Gen2
 {
-    partial class PortTagGen2Command : Command
+    partial class PortingContextGen2
     {
         public TagStructure ConvertObject(object gen2Tag, Stream cacheStream)
         {
@@ -96,7 +97,7 @@ namespace TagTool.Commands.Porting.Gen2
                         defaultAbandonTime = 60;
                         itemType = MultiplayerObjectType.Powerup;
                     }
-                    newequipment.PickupSound = Cache.TagCache.GetTag<Sound>(@"sound\game_sfx\multiplayer\pickup_invis");
+                    newequipment.PickupSound = CacheContext.TagCache.GetTag<Sound>(@"sound\game_sfx\multiplayer\pickup_invis");
                     break;
                 case Gen2Eqip.PowerupTypeValue.OverShield:
                     {
@@ -109,7 +110,7 @@ namespace TagTool.Commands.Porting.Gen2
                         defaultAbandonTime = 60;
                         itemType = MultiplayerObjectType.Powerup;
                     }
-                    newequipment.PickupSound = Cache.TagCache.GetTag<Sound>(@"sound\game_sfx\multiplayer\pickup_invis");
+                    newequipment.PickupSound = CacheContext.TagCache.GetTag<Sound>(@"sound\game_sfx\multiplayer\pickup_invis");
                     break;
             }
 
@@ -153,7 +154,7 @@ namespace TagTool.Commands.Porting.Gen2
             if (gen2Tag.FirstPersonWeaponOffset.K != 0) { newweapon.FirstPersonWeaponOffset.K = ((float)gen2Tag.FirstPersonWeaponOffset.K * -2); }
 
             if (gen2Tag.PlayerInterface.NewHudInterface != null) {
-                newweapon.HudInterface = Cache.TagCacheGenHO.GetTag(gen2Tag.PlayerInterface.NewHudInterface.ToString());
+                newweapon.HudInterface = CacheContext.TagCacheGenHO.GetTag(gen2Tag.PlayerInterface.NewHudInterface.ToString());
             }
 
             AutoConverter.TranslateEnum(gen2Tag.WeaponFlags, out newweapon.WeaponFlags.NewFlags, newweapon.WeaponFlags.NewFlags.GetType());
@@ -170,10 +171,10 @@ namespace TagTool.Commands.Porting.Gen2
             //fixup for coll model reference in bsp physics
             if (newscenery.Model != null)
             {
-                Model model = Cache.Deserialize<Model>(cacheStream, newscenery.Model);
+                Model model = CacheContext.Deserialize<Model>(cacheStream, newscenery.Model);
                 if (model.CollisionModel != null)
                 {
-                    CollisionModel coll = Cache.Deserialize<CollisionModel>(cacheStream, model.CollisionModel);
+                    CollisionModel coll = CacheContext.Deserialize<CollisionModel>(cacheStream, model.CollisionModel);
                     foreach (var region in coll.Regions)
                     {
                         foreach (var perm in region.Permutations)
@@ -187,7 +188,7 @@ namespace TagTool.Commands.Porting.Gen2
                             }
                         }
                     }
-                    Cache.Serialize(cacheStream, model.CollisionModel, coll);
+                    CacheContext.Serialize(cacheStream, model.CollisionModel, coll);
                 }
             }
             return newscenery;
@@ -333,14 +334,14 @@ namespace TagTool.Commands.Porting.Gen2
                                     TorqueScale = 1.0f,
                                     EngineGravityFunction = new Vehicle.AnitGravityEngineFunctionStruct
                                     {// TODO
-                                        ObjectFunctionDamageRegion = Cache.StringTable.GetStringId("hull"),
+                                        ObjectFunctionDamageRegion = CacheContext.StringTable.GetStringId("hull"),
                                         AntiGravityEngineSpeedRange = new Bounds<float>(0.5f, 2.0f), //ghost values
                                         EngineSpeedAcceleration = 0.5f,
                                         MaximumVehicleSpeed = 4.0f
                                     },
                                     ContrailObjectFunction = new Vehicle.AnitGravityEngineFunctionStruct
                                     {// TODO
-                                        ObjectFunctionDamageRegion = Cache.StringTable.GetStringId("hull"),
+                                        ObjectFunctionDamageRegion = CacheContext.StringTable.GetStringId("hull"),
                                         AntiGravityEngineSpeedRange = new Bounds<float>(0.5f, 2.0f), //ghost values
                                         EngineSpeedAcceleration = 2.5f,
                                         MaximumVehicleSpeed = 8.0f
@@ -435,7 +436,7 @@ namespace TagTool.Commands.Porting.Gen2
             if (gen2Tag.NewHudInterfaces.Count > 0 && gen2Tag.NewHudInterfaces[0].NewUnitHudInterface != null) {
                 newbiped.HudInterfaces = new List<Unit.HudInterface> {
                     new Unit.HudInterface {
-                        UnitHudInterface = Cache.TagCache.GetTag(gen2Tag.NewHudInterfaces[0].NewUnitHudInterface.ToString())
+                        UnitHudInterface = CacheContext.TagCache.GetTag(gen2Tag.NewHudInterfaces[0].NewUnitHudInterface.ToString())
                     }
                 };
             }
@@ -485,17 +486,17 @@ namespace TagTool.Commands.Porting.Gen2
         {
             if (weapon.Model != null)
             {
-                Cache.TagCacheGenHO.TryGetTag(weapon.Model.ToString(), out CachedTag weaponModel);
-                Model weaponModelInstance = Cache.Deserialize<Model>(cacheStream, weaponModel);
+                CacheContext.TagCacheGenHO.TryGetTag(weapon.Model.ToString(), out CachedTag weaponModel);
+                Model weaponModelInstance = CacheContext.Deserialize<Model>(cacheStream, weaponModel);
                 if (weaponModelInstance.CollisionModel != null && weaponModelInstance.PhysicsModel == null)
                 {
-                    Cache.TagCacheGenHO.TryGetTag(weaponModelInstance.CollisionModel.ToString(), out CachedTag weaponCollisionModel);
-                    CollisionModel weaponCollisionModelInstance = Cache.Deserialize<CollisionModel>(cacheStream, weaponCollisionModel);
+                    CacheContext.TagCacheGenHO.TryGetTag(weaponModelInstance.CollisionModel.ToString(), out CachedTag weaponCollisionModel);
+                    CollisionModel weaponCollisionModelInstance = CacheContext.Deserialize<CollisionModel>(cacheStream, weaponCollisionModel);
 
                     ObjConvexHullProcessor generator = new ObjConvexHullProcessor();
-                    weaponModelInstance.PhysicsModel = generator.ConvertCollisionModelToPhysics(weaponCollisionModelInstance, cacheStream, weaponCollisionModel, Cache);
+                    weaponModelInstance.PhysicsModel = generator.ConvertCollisionModelToPhysics(weaponCollisionModelInstance, cacheStream, weaponCollisionModel, CacheContext);
 
-                    Cache.Serialize(cacheStream, weaponModel, weaponModelInstance);
+                    CacheContext.Serialize(cacheStream, weaponModel, weaponModelInstance);
                 }
             }
         }

@@ -12,7 +12,7 @@ using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Lighting;
 
-namespace TagTool.Commands.Porting.Gen2
+namespace TagTool.Porting.Gen2
 {
     public class LightmapPacker
     {
@@ -87,13 +87,13 @@ namespace TagTool.Commands.Porting.Gen2
                             newOffset = offset;
                             break;
                         case 1:
-                            newOffset = new int[] { offset[0] + (bitmap.Width() / 2), offset[1] };
+                            newOffset = new int[] { offset[0] + bitmap.Width() / 2, offset[1] };
                             break;
                         case 2:
-                            newOffset = new int[] { offset[0], offset[1] + (bitmap.Height() / 2) };
+                            newOffset = new int[] { offset[0], offset[1] + bitmap.Height() / 2 };
                             break;
                         case 3:
-                            newOffset = new int[] { offset[0] + (bitmap.Width() / 2), offset[1] + (bitmap.Height() / 2) };
+                            newOffset = new int[] { offset[0] + bitmap.Width() / 2, offset[1] + bitmap.Height() / 2 };
                             break;
                     }
                     WriteNestedBitmap(writer, nested, newOffset, useDummyData);

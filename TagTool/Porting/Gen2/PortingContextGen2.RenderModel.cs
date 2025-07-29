@@ -5,11 +5,12 @@ using TagTool.Common;
 using TagTool.Geometry;
 using TagTool.Tags.Definitions;
 using RenderModelGen2 = TagTool.Tags.Definitions.Gen2.RenderModel;
-using static TagTool.Commands.Porting.Gen2.Gen2RenderGeometryConverter;
+using static TagTool.Porting.Gen2.Gen2RenderGeometryConverter;
+using TagTool.Cache;
 
-namespace TagTool.Commands.Porting.Gen2
+namespace TagTool.Porting.Gen2
 {
-	partial class PortTagGen2Command : Command
+	partial class PortingContextGen2
 	{
         public RenderModel ConvertRenderModel(RenderModelGen2 gen2RenderModel)
         {
@@ -30,7 +31,7 @@ namespace TagTool.Commands.Porting.Gen2
                             U2 = new Bounds<float>(0.0f, 1.0f),
                             V2 = new Bounds<float>(0.0f, 1.0f),
                         });
-                section.Meshes = ReadResourceMeshes(Gen2Cache, section.Resource, section.TotalVertexCount, section.GeometryCompressionFlags, section.LightingFlags, compressor);
+                section.Meshes = ReadResourceMeshes((GameCacheGen2)BlamCache, section.Resource, section.TotalVertexCount, section.GeometryCompressionFlags, section.LightingFlags, compressor);
             }
 
             //TODO: Convert prt info
@@ -74,7 +75,7 @@ namespace TagTool.Commands.Porting.Gen2
             }
             */
 
-            var builder = new RenderModelBuilder(Cache);
+            var builder = new RenderModelBuilder(CacheContext);
 
             foreach (var node in gen2RenderModel.Nodes)
                 builder.AddNode(new RenderModel.Node 
@@ -95,7 +96,7 @@ namespace TagTool.Commands.Porting.Gen2
                 });
 
             foreach (var material in gen2RenderModel.Materials)
-                builder.AddMaterial(new RenderMaterial { RenderMethod = material.RenderMethod == null ? Cache.TagCache.GetTag(@"shaders\invalid.shader") : material.RenderMethod });
+                builder.AddMaterial(new RenderMaterial { RenderMethod = material.RenderMethod == null ? CacheContext.TagCache.GetTag(@"shaders\invalid.shader") : material.RenderMethod });
 
             foreach (var region in gen2RenderModel.Regions)
             {
@@ -114,14 +115,14 @@ namespace TagTool.Commands.Porting.Gen2
                     }
 
                     var section = gen2RenderModel.Sections[sectionIndex];
-                    BuildMeshes(Gen2Cache, builder, section.Meshes, section.GeometryClassification, section.OpaqueMaxNodesVertex, section.RigidNode);
+                    BuildMeshes((GameCacheGen2)BlamCache, builder, section.Meshes, section.GeometryClassification, section.OpaqueMaxNodesVertex, section.RigidNode);
                     
                     builder.EndPermutation();
                 }
                 builder.EndRegion();
             }
 
-            RenderModel result = builder.Build(Cache.Serializer);
+            RenderModel result = builder.Build(CacheContext.Serializer);
 
             result.MarkerGroups = new List<RenderModel.MarkerGroup>();
             //add marker groups

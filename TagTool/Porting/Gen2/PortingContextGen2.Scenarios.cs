@@ -18,15 +18,15 @@ using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Definitions.Common;
 using TagTool.Tags.Resources;
-using static TagTool.Commands.Porting.Gen2.Gen2BspGeometryConverter;
+using static TagTool.Porting.Gen2.Gen2BspGeometryConverter;
 using static TagTool.Tags.Definitions.Scenario;
 using static TagTool.Tags.Definitions.Scenario.SpawnDatum;
 using Gen2Scenario = TagTool.Tags.Definitions.Gen2.Scenario;
 using Gen2ScenarioStructureBsp = TagTool.Tags.Definitions.Gen2.ScenarioStructureBsp;
 
-namespace TagTool.Commands.Porting.Gen2
+namespace TagTool.Porting.Gen2
 {
-    partial class PortTagGen2Command : Command
+    partial class PortingContextGen2
     {
         List<List<Gen2BSPResourceMesh>> bspMeshes = new List<List<Gen2BSPResourceMesh>>();
 
@@ -64,38 +64,38 @@ namespace TagTool.Commands.Porting.Gen2
                     switch (netgameFlagsBlock.Type)
                     {
                         case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.OddballSpawn:
-                            Cache.TagCache.TryGetTag<Crate>(@"objects\multi\oddball\oddball_ball_spawn_point", out objectiveItem);
+                            CacheContext.TagCache.TryGetTag<Crate>(@"objects\multi\oddball\oddball_ball_spawn_point", out objectiveItem);
                             mpProperties.SpawnOrder = ballCount;
                             ballCount += 1;
                             break;
                         case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.CtfFlagSpawn
                         when (mpProperties.Team != MultiplayerTeamDesignator.Neutral):
-                            Cache.TagCache.TryGetTag<Crate>(@"objects\multi\ctf\ctf_flag_spawn_point", out objectiveItem);
+                            CacheContext.TagCache.TryGetTag<Crate>(@"objects\multi\ctf\ctf_flag_spawn_point", out objectiveItem);
                             netgameFlagsBlock.Position.Z -= 0.05f;
                             break;
                         case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.CtfFlagReturn
                         when (mpProperties.Team != MultiplayerTeamDesignator.Neutral):
-                            Cache.TagCache.TryGetTag<Crate>(@"objects\multi\ctf\ctf_flag_return_area", out objectiveItem);
+                            CacheContext.TagCache.TryGetTag<Crate>(@"objects\multi\ctf\ctf_flag_return_area", out objectiveItem);
                             netgameFlagsBlock.Position.Z -= 0.03f;
                             break;
                         case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.AssaultBombSpawn:
-                            Cache.TagCache.TryGetTag<Crate>(@"objects\multi\assault\assault_bomb_spawn_point", out objectiveItem);
+                            CacheContext.TagCache.TryGetTag<Crate>(@"objects\multi\assault\assault_bomb_spawn_point", out objectiveItem);
                             netgameFlagsBlock.Position.Z -= 0.063f;
                             break;
                         case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.AssaultBombReturn:
-                            Cache.TagCache.TryGetTag<Crate>(@"objects\multi\assault\assault_bomb_goal_area", out objectiveItem);
+                            CacheContext.TagCache.TryGetTag<Crate>(@"objects\multi\assault\assault_bomb_goal_area", out objectiveItem);
                             if (netgameFlagsBlock.Identifier > 0)
                                 continue;
                             //netgameFlagsBlock.Position.Z -= 0.038f;
                             break;
                         case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.TeleporterSrc:
-                            Cache.TagCache.TryGetTag<Crate>(@"objects\multi\teleporter_sender\teleporter_sender", out objectiveItem);
+                            CacheContext.TagCache.TryGetTag<Crate>(@"objects\multi\teleporter_sender\teleporter_sender", out objectiveItem);
                             mpProperties.TeleporterChannel = (sbyte)netgameFlagsBlock.Identifier;
                             mpProperties.Team = MultiplayerTeamDesignator.Neutral;
                             netgameFlagsBlock.Position.Z -= 0.35f;
                             break;
                         case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.TeleporterDest:
-                            Cache.TagCache.TryGetTag<Crate>(@"objects\multi\teleporter_reciever\teleporter_reciever", out objectiveItem);
+                            CacheContext.TagCache.TryGetTag<Crate>(@"objects\multi\teleporter_reciever\teleporter_reciever", out objectiveItem);
                             mpProperties.TeleporterChannel = (sbyte)netgameFlagsBlock.Identifier;
                             mpProperties.Team = MultiplayerTeamDesignator.Neutral;
                             // hack: replacement (gen3) teleporters need to be offset from walls
@@ -107,7 +107,7 @@ namespace TagTool.Commands.Porting.Gen2
                             netgameFlagsBlock.Position.Z -= 0.35f;
                             break;
                         case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.TerritoriesFlag:
-                            Cache.TagCache.TryGetTag<Crate>(@"objects\multi\territories\territory_static", out objectiveItem);
+                            CacheContext.TagCache.TryGetTag<Crate>(@"objects\multi\territories\territory_static", out objectiveItem);
                             if (territoryIdentifiers.Contains(netgameFlagsBlock.Identifier))
                                 continue;
                             netgameFlagsBlock.Position.Z -= 0.06f;
@@ -204,7 +204,7 @@ namespace TagTool.Commands.Porting.Gen2
 
             if (kothBorders.Any())
             {
-                Cache.TagCache.TryGetTag<Crate>(@"objects\multi\koth\koth_hill_static", out var objectiveItem);
+                CacheContext.TagCache.TryGetTag<Crate>(@"objects\multi\koth\koth_hill_static", out var objectiveItem);
                 paletteIndex = GetPaletteIndexOrAdd(newScenario, objectiveItem);
             }
 
@@ -261,18 +261,18 @@ namespace TagTool.Commands.Porting.Gen2
         }
 
         public TagStructure ConvertScenario(Gen2Scenario gen2Tag, Gen2Scenario rawgen2Tag, string scenarioPath
-            , Stream cacheStream, Stream gen2CacheStream, Dictionary<ResourceLocation, Stream> resourceStreams)
+            , Stream cacheStream, Stream gen2CacheStream)
         {
             Scenario newScenario = new Scenario();
             AutoConverter.InitTagBlocks(newScenario);
 
             //default values for now, pulled from valhalla
-            Cache.TagCache.TryGetTag<Wind>(@"levels\multi\riverworld\wind_riverworld", out var windTag);
-            Cache.TagCache.TryGetTag<Bitmap>(@"levels\multi\riverworld\riverworld_riverworld_cubemaps", out var cubemapsTag);
-            Cache.TagCache.TryGetTag<CameraFxSettings>(@"levels\multi\riverworld\riverworld", out var cfxsTag);
-            Cache.TagCache.TryGetTag<SkyAtmParameters>(@"levels\multi\riverworld\sky\riverworld", out var skyaTag);
-            Cache.TagCache.TryGetTag<ChocolateMountainNew>(@"levels\multi\riverworld\riverworld", out var chmtTag);
-            Cache.TagCache.TryGetTag<PerformanceThrottles>(@"levels\multi\riverworld\riverworld", out var perfTag);
+            CacheContext.TagCache.TryGetTag<Wind>(@"levels\multi\riverworld\wind_riverworld", out var windTag);
+            CacheContext.TagCache.TryGetTag<Bitmap>(@"levels\multi\riverworld\riverworld_riverworld_cubemaps", out var cubemapsTag);
+            CacheContext.TagCache.TryGetTag<CameraFxSettings>(@"levels\multi\riverworld\riverworld", out var cfxsTag);
+            CacheContext.TagCache.TryGetTag<SkyAtmParameters>(@"levels\multi\riverworld\sky\riverworld", out var skyaTag);
+            CacheContext.TagCache.TryGetTag<ChocolateMountainNew>(@"levels\multi\riverworld\riverworld", out var chmtTag);
+            CacheContext.TagCache.TryGetTag<PerformanceThrottles>(@"levels\multi\riverworld\riverworld", out var perfTag);
 
             newScenario.DefaultCameraFx = cfxsTag;
             newScenario.SkyParameters = skyaTag;
@@ -313,11 +313,11 @@ namespace TagTool.Commands.Porting.Gen2
             {
                 newScenario.ZoneSets.Add(new Scenario.ZoneSet
                 {
-                    Name = Cache.StringTable.GetStringId("default"),
+                    Name = CacheContext.StringTable.GetStringId("default"),
                     AudibilityIndex = -1
                 });
 
-                ScenarioStructureBsp currentbsp = Cache.Deserialize<ScenarioStructureBsp>(cacheStream, gen2Tag.StructureBsps[i].StructureBsp);
+                ScenarioStructureBsp currentbsp = CacheContext.Deserialize<ScenarioStructureBsp>(cacheStream, gen2Tag.StructureBsps[i].StructureBsp);
 
                 //bsps
                 newScenario.StructureBsps.Add(new Scenario.StructureBspBlock
@@ -402,34 +402,34 @@ namespace TagTool.Commands.Porting.Gen2
                 {
                     string skytagname = gen2sky.Sky.Name;
 
-                    var gen2skytag = Gen2Cache.Deserialize<TagTool.Tags.Definitions.Gen2.Sky>(gen2CacheStream, gen2sky.Sky);
+                    var gen2skytag = BlamCache.Deserialize<TagTool.Tags.Definitions.Gen2.Sky>(gen2CacheStream, gen2sky.Sky);
                     CachedTag skymodetag = null;
                     if (gen2skytag.RenderModel != null)
                     {
-                        skymodetag = ConvertTag(cacheStream, gen2CacheStream, resourceStreams, gen2skytag.RenderModel);
+                        skymodetag = ConvertTag(cacheStream, gen2CacheStream, gen2skytag.RenderModel);
 
                         //fixup skymodetag with gen2 sky render model scale
-                        RenderModel skymode = Cache.Deserialize<RenderModel>(cacheStream, skymodetag);
+                        RenderModel skymode = CacheContext.Deserialize<RenderModel>(cacheStream, skymodetag);
 
                         skymode.Nodes[0].DefaultScale *= (gen2skytag.RenderModelScale / 2);
 
-                        Cache.Serialize(cacheStream, skymodetag, skymode);
+                        CacheContext.Serialize(cacheStream, skymodetag, skymode);
                     }
 
                     var newmodel = new Model
                     {
                         RenderModel = skymodetag
                     };
-                    CachedTag newmodeltag = Cache.TagCache.AllocateTag<Model>($"{skytagname}");
-                    Cache.Serialize(cacheStream, newmodeltag, newmodel);
+                    CachedTag newmodeltag = CacheContext.TagCache.AllocateTag<Model>($"{skytagname}");
+                    CacheContext.Serialize(cacheStream, newmodeltag, newmodel);
                     var newscen = new Scenery
                     {
                         BoundingRadius = 5555.0f,
                         ObjectType = new GameObjectType16 { Halo3ODST = GameObjectTypeHalo3ODST.Scenery },
                         Model = newmodeltag
                     };
-                    CachedTag newscentag = Cache.TagCache.AllocateTag<Scenery>($"{skytagname}");
-                    Cache.Serialize(cacheStream, newscentag, newscen);
+                    CachedTag newscentag = CacheContext.TagCache.AllocateTag<Scenery>($"{skytagname}");
+                    CacheContext.Serialize(cacheStream, newscentag, newscen);
                     newScenario.SkyReferences.Add(new Scenario.SkyReference
                     {
                         SkyObject = newscentag,
@@ -439,7 +439,7 @@ namespace TagTool.Commands.Porting.Gen2
                 }
             }
 
-            ConvertScenarioPlacements(gen2Tag, rawgen2Tag, newScenario, gen2CacheStream, cacheStream, resourceStreams);
+            ConvertScenarioPlacements(gen2Tag, rawgen2Tag, newScenario, gen2CacheStream, cacheStream);
 
             newScenario.Lightmap = ConvertLightmap(rawgen2Tag, newScenario, scenarioPath, cacheStream, gen2CacheStream);
 
@@ -475,7 +475,7 @@ namespace TagTool.Commands.Porting.Gen2
                 scnr.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>() {
                     new Scenario.PlayerStartingProfileBlock() {
                         Name = "start_assault",
-                        PrimaryWeapon = Cache.TagCache.GetTag(@"objects\weapons\rifle\assault_rifle\assault_rifle", "weap"),
+                        PrimaryWeapon = CacheContext.TagCache.GetTag(@"objects\weapons\rifle\assault_rifle\assault_rifle", "weap"),
                         PrimaryRoundsLoaded = 32,
                         PrimaryRoundsTotal = 108,
                         StartingFragGrenadeCount = (noGrenades || plasmaGrenades) ? (byte)0 : grenadeCount,
@@ -489,7 +489,7 @@ namespace TagTool.Commands.Porting.Gen2
                     scnr.PlayerStartingProfile[0].Name = "start_assault";
         
                 if (scnr.PlayerStartingProfile[0].PrimaryWeapon == null)
-                    scnr.PlayerStartingProfile[0].PrimaryWeapon = Cache.TagCache.GetTag(@"objects\weapons\rifle\assault_rifle\assault_rifle", "weap");
+                    scnr.PlayerStartingProfile[0].PrimaryWeapon = CacheContext.TagCache.GetTag(@"objects\weapons\rifle\assault_rifle\assault_rifle", "weap");
             }
         }
 
@@ -506,7 +506,7 @@ namespace TagTool.Commands.Porting.Gen2
             {
                 newSbsp.Materials.Add(new RenderMaterial
                 {
-                    RenderMethod = material.Shader == null ? Cache.TagCache.GetTag(@"shaders\invalid.shader") : material.Shader,
+                    RenderMethod = material.Shader == null ? CacheContext.TagCache.GetTag(@"shaders\invalid.shader") : material.Shader,
                     Properties = material.Properties?.Count() == 0 ? null : new List<RenderMaterial.Property>
                     {
                         new RenderMaterial.Property()
@@ -527,7 +527,7 @@ namespace TagTool.Commands.Porting.Gen2
             {
                 newSbsp.CollisionMaterials.Add(new ScenarioStructureBsp.CollisionMaterial
                 {
-                    RenderMethod = material.NewShader == null ? Cache.TagCache.GetTag(@"shaders\invalid.shader") : material.NewShader,
+                    RenderMethod = material.NewShader == null ? CacheContext.TagCache.GetTag(@"shaders\invalid.shader") : material.NewShader,
                     RuntimeGlobalMaterialIndex = material.RuntimeGlobalMaterialIndex,
                     //RuntimeGlobalMaterialIndex = GetEquivalentGlobalMaterial(material.RuntimeGlobalMaterialIndex, Globals, Gen3Globals),
                     ConveyorSurfaceIndex = material.ConveyorSurfaceIndex,
@@ -537,7 +537,7 @@ namespace TagTool.Commands.Porting.Gen2
 
             //RENDER GEO RESOURCE
             //begin building render geo resource
-            var builder = new RenderModelBuilder(Cache);
+            var builder = new RenderModelBuilder(CacheContext);
             builder.BeginRegion(StringId.Invalid);
             builder.BeginPermutation(StringId.Invalid);
 
@@ -651,7 +651,7 @@ namespace TagTool.Commands.Porting.Gen2
                                 U2 = new Bounds<float>(0.0f, 1.0f),
                                 V2 = new Bounds<float>(0.0f, 1.0f),
                             });
-                    clustermeshes = ReadResourceMeshes(Gen2Cache, cluster.GeometryBlockInfo,
+                    clustermeshes = ReadResourceMeshes((GameCacheGen2)BlamCache, cluster.GeometryBlockInfo,
                     cluster.SectionInfo.TotalVertexCount, (RenderGeometryCompressionFlags)cluster.SectionInfo.GeometryCompressionFlags,
                     (TagTool.Tags.Definitions.Gen2.RenderModel.SectionLightingFlags)cluster.SectionInfo.SectionLightingFlags, compressor);
 
@@ -737,7 +737,7 @@ namespace TagTool.Commands.Porting.Gen2
                                 U2 = new Bounds<float>(0.0f, 1.0f),
                                 V2 = new Bounds<float>(0.0f, 1.0f),
                             });
-                    instancemeshes = ReadResourceMeshes(Gen2Cache, instanced.RenderInfo.GeometryBlockInfo,
+                    instancemeshes = ReadResourceMeshes((GameCacheGen2)BlamCache, instanced.RenderInfo.GeometryBlockInfo,
                     instanced.RenderInfo.SectionInfo.TotalVertexCount, (RenderGeometryCompressionFlags)instanced.RenderInfo.SectionInfo.GeometryCompressionFlags,
                     (TagTool.Tags.Definitions.Gen2.RenderModel.SectionLightingFlags)instanced.RenderInfo.SectionInfo.SectionLightingFlags, compressor);
 
@@ -849,7 +849,7 @@ namespace TagTool.Commands.Porting.Gen2
             //close out render geo resource
             builder.EndPermutation();
             builder.EndRegion();
-            RenderModel meshbuild = builder.Build(Cache.Serializer);
+            RenderModel meshbuild = builder.Build(CacheContext.Serializer);
 
             //create empty pathfinding resource
             var pathfindingresource = new StructureBspCacheFileTagResources();
@@ -862,7 +862,7 @@ namespace TagTool.Commands.Porting.Gen2
             pathfindingresource.PathfindingData = new TagBlock<Pathfinding.ResourcePathfinding>(CacheAddressType.Data);
 
             //write pathfinding resource
-            newSbsp.PathfindingResource = Cache.ResourceCache.CreateStructureBspCacheFileResource(pathfindingresource);
+            newSbsp.PathfindingResource = CacheContext.ResourceCache.CreateStructureBspCacheFileResource(pathfindingresource);
 
             //write meshes and render model resource
             newSbsp.Geometry = meshbuild.Geometry;
@@ -900,7 +900,7 @@ namespace TagTool.Commands.Porting.Gen2
             }
 
             //write collision resource
-            newSbsp.CollisionBspResource = Cache.ResourceCache.CreateStructureBspResource(CollisionResource);
+            newSbsp.CollisionBspResource = CacheContext.ResourceCache.CreateStructureBspResource(CollisionResource);
 
             //fixup per mesh visibility mopp
             newSbsp.Geometry.MeshClusterVisibility = new List<RenderGeometry.PerMeshMoppBlock>();
@@ -943,7 +943,7 @@ namespace TagTool.Commands.Porting.Gen2
         }
 
         public void ConvertScenarioPlacements(Gen2Scenario gen2Tag, Gen2Scenario rawgen2tag,
-            Scenario newScenario, Stream gen2CacheStream, Stream cacheStream, Dictionary<ResourceLocation, Stream> resourceStreams)
+            Scenario newScenario, Stream gen2CacheStream, Stream cacheStream)
         {
             // Object names
             foreach (var objname in gen2Tag.ObjectNames)
@@ -1210,7 +1210,7 @@ namespace TagTool.Commands.Porting.Gen2
             {
                 newScenario.SceneryPalette.Add(new Scenario.ScenarioPaletteEntry
                 {
-                    Object = Cache.TagCache.GetTag<Scenery>(@"objects\multi\spawning\respawn_point")
+                    Object = CacheContext.TagCache.GetTag<Scenery>(@"objects\multi\spawning\respawn_point")
                 });
                 bool prematchcameraset = false;
                 int firstSpawnIndex = newScenario.Scenery.Count();
@@ -1248,7 +1248,7 @@ namespace TagTool.Commands.Porting.Gen2
 
                 newScenario.SceneryPalette.Add(new Scenario.ScenarioPaletteEntry
                 {
-                    Object = Cache.TagCache.GetTag<Scenery>(@"objects\multi\spawning\respawn_point_invisible")
+                    Object = CacheContext.TagCache.GetTag<Scenery>(@"objects\multi\spawning\respawn_point_invisible")
                 });
                 var invisibleSpawn = newScenario.Scenery[firstSpawnIndex].DeepCloneV2();
                 invisibleSpawn.PaletteIndex = (short)(newScenario.SceneryPalette.Count() - 1);
@@ -1270,7 +1270,7 @@ namespace TagTool.Commands.Porting.Gen2
 
                 if (NetgameEquipment.ItemVehicleCollection != null)
                 {
-                    object itemdef = Gen2Cache.Deserialize(gen2CacheStream, NetgameEquipment.ItemVehicleCollection);
+                    object itemdef = BlamCache.Deserialize(gen2CacheStream, NetgameEquipment.ItemVehicleCollection);
 
                     switch (NetgameEquipment.ItemVehicleCollection.Group.ToString())
                     {
@@ -1278,8 +1278,8 @@ namespace TagTool.Commands.Porting.Gen2
                             vehilayout = (TagTool.Tags.Definitions.Gen2.VehicleCollection)itemdef;
                             if (vehilayout.VehiclePermutations[0].Vehicle != null)
                             {
-                                ConvertTag(cacheStream, gen2CacheStream, resourceStreams, vehilayout.VehiclePermutations[0].Vehicle);
-                                if (!Cache.TagCache.TryGetCachedTag(vehilayout.VehiclePermutations[0].Vehicle.ToString(), out paletteTag))
+                                ConvertTag(cacheStream, gen2CacheStream, vehilayout.VehiclePermutations[0].Vehicle);
+                                if (!CacheContext.TagCache.TryGetCachedTag(vehilayout.VehiclePermutations[0].Vehicle.ToString(), out paletteTag))
                                     break;
 
                                 var palette_index = newScenario.VehiclePalette.FindIndex(v => (v.Object == null ? "" : v.Object.Name) == vehilayout.VehiclePermutations[0].Vehicle.Name);
@@ -1318,8 +1318,8 @@ namespace TagTool.Commands.Porting.Gen2
                             itemlayout = (TagTool.Tags.Definitions.Gen2.ItemCollection)itemdef;
                             if (itemlayout.ItemPermutations[0].Item != null)
                             {
-                                ConvertTag(cacheStream, gen2CacheStream, resourceStreams, itemlayout.ItemPermutations[0].Item);
-                                if (!Cache.TagCache.TryGetCachedTag(itemlayout.ItemPermutations[0].Item.ToString(), out paletteTag))
+                                ConvertTag(cacheStream, gen2CacheStream, itemlayout.ItemPermutations[0].Item);
+                                if (!CacheContext.TagCache.TryGetCachedTag(itemlayout.ItemPermutations[0].Item.ToString(), out paletteTag))
                                     break;
 
                                 if (itemlayout.ItemPermutations[0].Item.Group.ToString().Equals("weap"))
@@ -1452,9 +1452,9 @@ namespace TagTool.Commands.Porting.Gen2
             if (datum == null)
                 return;
 
-            Cache.TagCache.TryGetTag<Scenery>(@"objects\multi\spawning\initial_spawn_point", out CachedTag initialSpawnItem);
-            Cache.TagCache.TryGetTag<Scenery>(@"objects\multi\spawning\respawn_point", out CachedTag spawnItem);
-            Cache.TagCache.TryGetTag<Scenery>(@"objects\multi\spawning\respawn_zone", out CachedTag zoneItem);
+            CacheContext.TagCache.TryGetTag<Scenery>(@"objects\multi\spawning\initial_spawn_point", out CachedTag initialSpawnItem);
+            CacheContext.TagCache.TryGetTag<Scenery>(@"objects\multi\spawning\respawn_point", out CachedTag spawnItem);
+            CacheContext.TagCache.TryGetTag<Scenery>(@"objects\multi\spawning\respawn_zone", out CachedTag zoneItem);
 
             // convert initial zones to spawns
             short initialSpawnIndex = GetPaletteIndexOrAdd(newScenario, initialSpawnItem);
@@ -1558,10 +1558,10 @@ namespace TagTool.Commands.Porting.Gen2
             var result = new List<TagHkpMoppCode>();
 
             using (var moppStream = new MemoryStream(moppdata))
-            using (var moppReader = new EndianReader(moppStream, Gen2Cache.Endianness))
+            using (var moppReader = new EndianReader(moppStream, BlamCache.Endianness))
             {
                 var context = new DataSerializationContext(moppReader);
-                var deserializer = new TagDeserializer(Gen2Cache.Version, Gen2Cache.Platform);
+                var deserializer = new TagDeserializer(BlamCache.Version, BlamCache.Platform);
                 while (!moppReader.EOF)
                 {
                     long startOffset = moppReader.Position;
@@ -1597,13 +1597,13 @@ namespace TagTool.Commands.Porting.Gen2
                 return data;
 
             byte[] result;
-            using (var inputReader = new EndianReader(new MemoryStream(data), CacheVersionDetection.IsLittleEndian(Gen2Cache.Version, Gen2Cache.Platform) ? EndianFormat.LittleEndian : EndianFormat.BigEndian))
+            using (var inputReader = new EndianReader(new MemoryStream(data), CacheVersionDetection.IsLittleEndian(BlamCache.Version, BlamCache.Platform) ? EndianFormat.LittleEndian : EndianFormat.BigEndian))
             using (var outputStream = new MemoryStream())
-            using (var outputWriter = new EndianWriter(outputStream, CacheVersionDetection.IsLittleEndian(Cache.Version, Cache.Platform) ? EndianFormat.LittleEndian : EndianFormat.BigEndian))
+            using (var outputWriter = new EndianWriter(outputStream, CacheVersionDetection.IsLittleEndian(CacheContext.Version, CacheContext.Platform) ? EndianFormat.LittleEndian : EndianFormat.BigEndian))
             {
                 var dataContext = new DataSerializationContext(inputReader, outputWriter);
-                var deserializer = new TagDeserializer(Gen2Cache.Version, Gen2Cache.Platform);
-                var serializer = new TagSerializer(Cache.Version, Cache.Platform);
+                var deserializer = new TagDeserializer(BlamCache.Version, BlamCache.Platform);
+                var serializer = new TagSerializer(CacheContext.Version, CacheContext.Platform);
                 while (!inputReader.EOF)
                 {
                     var header = deserializer.Deserialize<Havok.Gen2.MoppCodeHeader>(dataContext);

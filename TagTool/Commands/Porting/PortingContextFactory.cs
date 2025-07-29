@@ -2,7 +2,7 @@
 using TagTool.Cache;
 using TagTool.Cache.Monolithic;
 using TagTool.Commands.Common;
-using TagTool.Commands.Porting.Gen2;
+using TagTool.Porting.Gen2;
 using TagTool.Commands.Porting.Gen4;
 using TagTool.Commands.Tags;
 using TagTool.Porting;
@@ -64,8 +64,8 @@ namespace TagTool.Commands.Porting
                 }
                 else if (portingCache is GameCacheGen2 gen2cache)
                 {
-                    var portTagCommand = new PortTagGen2Command(hoCache, gen2cache);
-                    context.AddCommand(portTagCommand);
+                    var portingContext = (PortingContextGen2)PortingContext.Create(hoCache, portingCache);
+                    context.AddCommand(new PortTagCommand(hoCache, portingCache, portingContext));
                 }
                 else if (portingCache is GameCacheGen1 gen1cache)
                 {

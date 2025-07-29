@@ -10,7 +10,7 @@ using MIConvexHull;
 using TagTool.Commands.PhysicsModels;
 using System.Collections.Generic;
 
-namespace TagTool.Commands.Porting.Gen2
+namespace TagTool.Porting.Gen2
 {
     public class ObjConvexHullProcessor
     {

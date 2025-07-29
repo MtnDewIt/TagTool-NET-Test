@@ -22,9 +22,9 @@ using TagGroupGen3 = TagTool.Cache.Gen3.TagGroupGen3;
 using TagTool.Cache.HaloOnline;
 using TagTool.Common.Logging;
 
-namespace TagTool.Commands.Porting.Gen2
+namespace TagTool.Porting.Gen2
 {
-    partial class PortTagGen2Command : Command
+    partial class PortingContextGen2
     {
         static readonly Dictionary<string, string> ShaderTypeGroups = new Dictionary<string, string>
         {
@@ -68,7 +68,7 @@ namespace TagTool.Commands.Porting.Gen2
                         foreach (var bitmapEntry in bitmaps)
                         {
                             var bitmapRef = bitmapEntry.Bitmap;
-                            BitmapGen2 bitmapDefinition = Gen2Cache.Deserialize<BitmapGen2>(gen2CacheStream, bitmapRef);
+                            BitmapGen2 bitmapDefinition = BlamCache.Deserialize<BitmapGen2>(gen2CacheStream, bitmapRef);
 
                             // Checking the Usage value
                             switch (bitmapDefinition.Usage)
@@ -152,7 +152,7 @@ namespace TagTool.Commands.Porting.Gen2
                 '+'
             };
 
-            ShaderGen2 h2Shader = Gen2Cache.Deserialize<ShaderGen2>(gen2CacheStream, gen2Tag);
+            ShaderGen2 h2Shader = BlamCache.Deserialize<ShaderGen2>(gen2CacheStream, gen2Tag);
 
             switch (shader_template)
             {
@@ -299,7 +299,7 @@ namespace TagTool.Commands.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (Cache.Version == CacheVersion.Halo2Vista)
+                        if (CacheContext.Version == CacheVersion.Halo2Vista)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -365,7 +365,7 @@ namespace TagTool.Commands.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (Gen2Cache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2Vista)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -415,7 +415,7 @@ namespace TagTool.Commands.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (Gen2Cache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2Vista)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -465,7 +465,7 @@ namespace TagTool.Commands.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (Gen2Cache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2Vista)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -524,7 +524,7 @@ namespace TagTool.Commands.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (Gen2Cache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2Vista)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -537,7 +537,7 @@ namespace TagTool.Commands.Porting.Gen2
                             h2_vertex_constants.Add("bump_map");
                         }
                         
-                        if (Gen2Cache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2Vista)
                         {
                             h2_pixel_constants.Add("env_tint_color"); // env tint color
                             h2_pixel_constants.Add(""); // env glancing tint color
@@ -640,7 +640,7 @@ namespace TagTool.Commands.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (Gen2Cache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2Vista)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -666,7 +666,7 @@ namespace TagTool.Commands.Porting.Gen2
                         }
                         
                         
-                        if (Gen2Cache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2Vista)
                         {
                             h2_pixel_constants.Add("normal_specular_tint"); // specular_color
                             h2_pixel_constants.Add("glancing_specular_tint"); // specular_glancing_color
@@ -832,7 +832,7 @@ namespace TagTool.Commands.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (Gen2Cache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2Vista)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -892,7 +892,7 @@ namespace TagTool.Commands.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (Gen2Cache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2Vista)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -974,7 +974,7 @@ namespace TagTool.Commands.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (Gen2Cache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2Vista)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -1006,7 +1006,7 @@ namespace TagTool.Commands.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (Gen2Cache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2Vista)
                         {
                             h2_vertex_constants.Add("detail_map");
                             h2_vertex_constants.Add("detail_map2");
@@ -1130,7 +1130,7 @@ namespace TagTool.Commands.Porting.Gen2
                         h2_bitmap_order.Add("specular_mask_texture");
                         h2_bitmap_order.Add("base_map");
                         
-                        if (Gen2Cache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2Vista)
                         {
                             h2_vertex_constants.Add("+specular_mask_texture");
                             h2_vertex_constants.Add("");
@@ -1425,47 +1425,47 @@ namespace TagTool.Commands.Porting.Gen2
 
             ShaderMatcherNew.Rmt2Descriptor rmt2Desc = new ShaderMatcherNew.Rmt2Descriptor(new_shader_type, shaderCategories);
 
-            CachedTag rmdfTag = Cache.TagCache.GetTag<RenderMethodDefinition>($"shaders\\{rmt2Desc.Type}");
+            CachedTag rmdfTag = CacheContext.TagCache.GetTag<RenderMethodDefinition>($"shaders\\{rmt2Desc.Type}");
             RenderMethodDefinition rmdf;
 
             RenderMethodTemplate rmt2Definition;
-            if (!Cache.TagCacheGenHO.TryGetTag(rmt2TagName + ".rmt2", out CachedTag rmt2Tag))
+            if (!CacheContext.TagCacheGenHO.TryGetTag(rmt2TagName + ".rmt2", out CachedTag rmt2Tag))
             {
                 // Generate the template
                 var generator = rmt2Desc.GetGenerator(true);
 
                 GlobalPixelShader glps;
                 GlobalVertexShader glvs;
-                if (!Cache.TagCache.TryGetTag($"shaders\\{rmt2Desc.Type}.rmdf", out rmdfTag))
+                if (!CacheContext.TagCache.TryGetTag($"shaders\\{rmt2Desc.Type}.rmdf", out rmdfTag))
                 {
                     Console.WriteLine($"Generating rmdf for \"{rmt2Desc.Type}\"");
-                    rmdf = TagTool.Shaders.ShaderGenerator.RenderMethodDefinitionGenerator.GenerateRenderMethodDefinition(Cache, cacheStream, generator, rmt2Desc.Type, out glps, out glvs);
-                    rmdfTag = Cache.TagCache.AllocateTag<RenderMethodDefinition>($"shaders\\{rmt2Desc.Type}");
-                    Cache.Serialize(cacheStream, rmdfTag, rmdf);
-                    Cache.SaveTagNames();
+                    rmdf = TagTool.Shaders.ShaderGenerator.RenderMethodDefinitionGenerator.GenerateRenderMethodDefinition(CacheContext, cacheStream, generator, rmt2Desc.Type, out glps, out glvs);
+                    rmdfTag = CacheContext.TagCache.AllocateTag<RenderMethodDefinition>($"shaders\\{rmt2Desc.Type}");
+                    CacheContext.Serialize(cacheStream, rmdfTag, rmdf);
+                    CacheContext.SaveTagNames();
                 }
                 else
                 {
-                    rmdf = Cache.Deserialize<RenderMethodDefinition>(cacheStream, rmdfTag);
-                    glps = Cache.Deserialize<GlobalPixelShader>(cacheStream, rmdf.GlobalPixelShader);
-                    glvs = Cache.Deserialize<GlobalVertexShader>(cacheStream, rmdf.GlobalVertexShader);
+                    rmdf = CacheContext.Deserialize<RenderMethodDefinition>(cacheStream, rmdfTag);
+                    glps = CacheContext.Deserialize<GlobalPixelShader>(cacheStream, rmdf.GlobalPixelShader);
+                    glvs = CacheContext.Deserialize<GlobalVertexShader>(cacheStream, rmdf.GlobalVertexShader);
                 }
 
-                rmt2Definition = TagTool.Shaders.ShaderGenerator.ShaderGenerator.GenerateRenderMethodTemplate(Cache, cacheStream, rmdf, glps, glvs, generator, rmt2TagName, out PixelShader pixl, out VertexShader vtsh);
-                rmt2Tag = Cache.TagCache.AllocateTag<RenderMethodTemplate>(rmt2TagName);
+                rmt2Definition = TagTool.Shaders.ShaderGenerator.ShaderGenerator.GenerateRenderMethodTemplate(CacheContext, cacheStream, rmdf, glps, glvs, generator, rmt2TagName, out PixelShader pixl, out VertexShader vtsh);
+                rmt2Tag = CacheContext.TagCache.AllocateTag<RenderMethodTemplate>(rmt2TagName);
 
-                Cache.Serialize(cacheStream, rmt2Tag, rmt2Definition);
+                CacheContext.Serialize(cacheStream, rmt2Tag, rmt2Definition);
             }
             else
             {
-                rmt2Definition = Cache.Deserialize<RenderMethodTemplate>(cacheStream, rmt2Tag);
+                rmt2Definition = CacheContext.Deserialize<RenderMethodTemplate>(cacheStream, rmt2Tag);
             }
 
             // check if tag already exists, or allocate new one
             string rmGroup = ShaderTypeGroups[rmt2Desc.Type];
 
-            var rmt2 = Cache.Deserialize<RenderMethodTemplate>(cacheStream, rmt2Tag);
-            rmdf = Cache.Deserialize<RenderMethodDefinition>(cacheStream, rmdfTag);
+            var rmt2 = CacheContext.Deserialize<RenderMethodTemplate>(cacheStream, rmt2Tag);
+            rmdf = CacheContext.Deserialize<RenderMethodDefinition>(cacheStream, rmdfTag);
 
             // store rmop definitions for quick lookup
             List<RenderMethodOption> renderMethodOptions = new List<RenderMethodOption>();
@@ -1473,11 +1473,11 @@ namespace TagTool.Commands.Porting.Gen2
             {
                 var rmopTag = rmdf.Categories[i].ShaderOptions[rmt2Desc.Options[i]].Option;
                 if (rmopTag != null)
-                    renderMethodOptions.Add(Cache.Deserialize<RenderMethodOption>(cacheStream, rmopTag));
+                    renderMethodOptions.Add(CacheContext.Deserialize<RenderMethodOption>(cacheStream, rmopTag));
             }
 
             // create definition
-            object definition = Activator.CreateInstance(Cache.TagCache.TagDefinitions.GetTagDefinitionType(rmGroup));
+            object definition = Activator.CreateInstance(CacheContext.TagCache.TagDefinitions.GetTagDefinitionType(rmGroup));
             // make changes as RenderMethod so the code can be reused for each rm type
             var rmDefinition = definition as RenderMethod;
 
@@ -1499,18 +1499,18 @@ namespace TagTool.Commands.Porting.Gen2
             {
                 Template = rmt2Tag,
                 // setup constants
-                TextureConstants = populateConstants.SetupTextureConstants(rmt2, renderMethodOptions, Cache),
-                RealConstants = populateConstants.SetupRealConstants(rmt2, renderMethodOptions, Cache),
-                IntegerConstants = populateConstants.SetupIntegerConstants(rmt2, renderMethodOptions, Cache),
-                BooleanConstants = populateConstants.SetupBooleanConstants(rmt2, renderMethodOptions, Cache),
+                TextureConstants = populateConstants.SetupTextureConstants(rmt2, renderMethodOptions, CacheContext),
+                RealConstants = populateConstants.SetupRealConstants(rmt2, renderMethodOptions, CacheContext),
+                IntegerConstants = populateConstants.SetupIntegerConstants(rmt2, renderMethodOptions, CacheContext),
+                BooleanConstants = populateConstants.SetupBooleanConstants(rmt2, renderMethodOptions, CacheContext),
                 // get alpha blend mode
-                BlendMode = populateConstants.GetAlphaBlendMode(rmt2Desc, rmdf, Cache),
+                BlendMode = populateConstants.GetAlphaBlendMode(rmt2Desc, rmdf, CacheContext),
                 // TODO
                 QueryableProperties = new short[] { -1, -1, -1, -1, -1, -1, -1, -1 }
             };
 
             rmDefinition.ShaderProperties.Add(shaderProperty);
-            rmDefinition.BaseRenderMethod = Cache.TagCacheGenHO.GetTag<RenderMethodDefinition>(rmt2Desc.GetRmdfName());
+            rmDefinition.BaseRenderMethod = CacheContext.TagCacheGenHO.GetTag<RenderMethodDefinition>(rmt2Desc.GetRmdfName());
             Definition = rmDefinition;
 
             // Add all the texture maps
@@ -1519,7 +1519,7 @@ namespace TagTool.Commands.Porting.Gen2
                 bool found = false;
                 var h2_postprocess = gen2Shader.PostprocessDefinition[0];
                 var h2_texture_reference = h2_postprocess.Bitmaps;
-                string current_type = Cache.StringTable[((int)shadermap.Name.Value)];   // Gets the current type of bitmap in the template
+                string current_type = CacheContext.StringTable[((int)shadermap.Name.Value)];   // Gets the current type of bitmap in the template
                 string current_bitmap = null; // Sets up the variable for bitmap assignment and reference
 
                 // If the string in the bitmap order list matches the current_type in the rmt2,
@@ -1558,8 +1558,8 @@ namespace TagTool.Commands.Porting.Gen2
                 //            found = true;
                 //            if (h2_texture_reference[i].Bitmap != null) 
                 //            {
-                //                CachedTag multiChannelBitmapTag = Cache.TagCacheGenHO.GetTag(h2_texture_reference[i].Bitmap.ToString());
-                //                Bitmap multiChannelBitmap = Cache.Deserialize<Bitmap>(cacheStream, multiChannelBitmapTag);
+                //                CachedTag multiChannelBitmapTag = CacheContext.TagCacheGenHO.GetTag(h2_texture_reference[i].Bitmap.ToString());
+                //                Bitmap multiChannelBitmap = CacheContext.Deserialize<Bitmap>(cacheStream, multiChannelBitmapTag);
                 //                Bitmap.Image multiChannelBitmapImage = multiChannelBitmap.Images[0];
                 //                BaseBitmap bitmapBase = new BaseBitmap(multiChannelBitmapImage)
                 //                {
@@ -1574,24 +1574,24 @@ namespace TagTool.Commands.Porting.Gen2
                 //                    Images = new List<Bitmap.Image>(),
                 //                    HardwareTextures = new List<TagTool.Tags.TagResourceReference>()
                 //                };
-                //                var tagIndex = Cache.TagCache.Count+1;
-                //                var newSpec = Cache.TagCache.AllocateTag(new TagGroupGen3());
-                //                newSpec = Cache.TagCache.CreateCachedTag(tagIndex, new TagGroupGen3());
+                //                var tagIndex = CacheContext.TagCache.Count+1;
+                //                var newSpec = CacheContext.TagCache.AllocateTag(new TagGroupGen3());
+                //                newSpec = CacheContext.TagCache.CreateCachedTag(tagIndex, new TagGroupGen3());
                 //
                 //                string originalName = h2_texture_reference[i].Bitmap.ToString();
                 //                newSpec.Name = originalName.Insert(originalName.LastIndexOf(".bitmap"), "_spec");
                 //
-                //                //Cache.TagCacheGenHO.Tags[tagIndex] = (CachedTagHaloOnline)newSpec;
+                //                //CacheContext.TagCacheGenHO.Tags[tagIndex] = (CachedTagHaloOnline)newSpec;
                 //
                 //                bitmapBase.Data = BitmapDecoder.FillR(bitmapBase.Data, multiChannelBitmapImage.Width, multiChannelBitmapImage.Height);
                 //
                 //                var bitmapResourceDefinition = BitmapUtils.CreateBitmapTextureInteropResource(bitmapBase);
-                //                var resourceReference = Cache.ResourceCache.CreateBitmapResource(bitmapResourceDefinition);
+                //                var resourceReference = CacheContext.ResourceCache.CreateBitmapResource(bitmapResourceDefinition);
                 //                newSpecBitmap.HardwareTextures.Add(resourceReference);
                 //                newSpecBitmap.Images.Add(multiChannelBitmapImage);
                 //                bitmapBase.UpdateFormat(BitmapFormat.Dxt5aMono);
                 //                multiChannelBitmapImage.Format = BitmapFormat.Dxt5aMono;
-                //                Cache.Serialize(cacheStream, newSpec, newSpecBitmap);
+                //                CacheContext.Serialize(cacheStream, newSpec, newSpecBitmap);
                 //
                 //                current_bitmap = newSpec.ToString();
                 //            }
@@ -1609,7 +1609,7 @@ namespace TagTool.Commands.Porting.Gen2
                 {
                     for (int samplerIndex = 0; samplerIndex < rmt2Definition.TextureParameterNames.Count; samplerIndex++)
                     {
-                        string sampler_name = Cache.StringTable[(int)rmt2Definition.TextureParameterNames[samplerIndex].Name.Value];
+                        string sampler_name = CacheContext.StringTable[(int)rmt2Definition.TextureParameterNames[samplerIndex].Name.Value];
                         if (sampler_name == current_type)
                         {
                             if (current_bitmap != null)
@@ -1630,7 +1630,7 @@ namespace TagTool.Commands.Porting.Gen2
                                         }
                                         break;
                                 }
-                                Definition.ShaderProperties[0].TextureConstants[samplerIndex].Bitmap = Cache.TagCacheGenHO.GetTag(current_bitmap);
+                                Definition.ShaderProperties[0].TextureConstants[samplerIndex].Bitmap = CacheContext.TagCacheGenHO.GetTag(current_bitmap);
                                 break;
                             }
                         }
@@ -1650,7 +1650,7 @@ namespace TagTool.Commands.Porting.Gen2
                 var h2color_properties = h2resource[0].ColorProperties;
                 var h2value_properties = h2resource[0].ValueProperties;
 
-                string current_type = Cache.StringTable[((int)floatconstant.Name.Value)];   // Gets the current type of bitmap in the template
+                string current_type = CacheContext.StringTable[((int)floatconstant.Name.Value)];   // Gets the current type of bitmap in the template
 
                 switch (current_type)
                 {

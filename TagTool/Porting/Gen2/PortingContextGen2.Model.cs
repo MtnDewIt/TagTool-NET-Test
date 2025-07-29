@@ -3,14 +3,14 @@ using System.IO;
 using TagTool.Tags.Definitions;
 using ModelGen2 = TagTool.Tags.Definitions.Gen2.Model;
 
-namespace TagTool.Commands.Porting.Gen2
+namespace TagTool.Porting.Gen2
 {
-    partial class PortTagGen2Command : Command
+    partial class PortingContextGen2
     {
         public Model ConvertModel(ModelGen2 gen2Model, Stream cacheStream)
         {
             RenderModel rendermodel = null;
-            if (gen2Model.RenderModel != null) rendermodel = (RenderModel)Cache.Deserialize(cacheStream, gen2Model.RenderModel);
+            if (gen2Model.RenderModel != null) rendermodel = (RenderModel)CacheContext.Deserialize(cacheStream, gen2Model.RenderModel);
             var model = new Model
             {
                 CollisionModel = gen2Model.CollisionModel,
