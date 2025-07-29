@@ -1431,27 +1431,17 @@ namespace TagTool.Porting.Gen2
             RenderMethodTemplate rmt2Definition;
             if (!CacheContext.TagCacheGenHO.TryGetTag(rmt2TagName + ".rmt2", out CachedTag rmt2Tag))
             {
-                // Generate the template
-                var generator = rmt2Desc.GetGenerator(true);
-
-                GlobalPixelShader glps;
-                GlobalVertexShader glvs;
-                if (!CacheContext.TagCache.TryGetTag($"shaders\\{rmt2Desc.Type}.rmdf", out rmdfTag))
+                if (CacheContext.TagCache.TryGetTag($"shaders\\{rmt2Desc.Type}.rmdf", out rmdfTag))
                 {
-                    Console.WriteLine($"Generating rmdf for \"{rmt2Desc.Type}\"");
-                    rmdf = TagTool.Shaders.ShaderGenerator.RenderMethodDefinitionGenerator.GenerateRenderMethodDefinition(CacheContext, cacheStream, generator, rmt2Desc.Type, out glps, out glvs);
-                    rmdfTag = CacheContext.TagCache.AllocateTag<RenderMethodDefinition>($"shaders\\{rmt2Desc.Type}");
-                    CacheContext.Serialize(cacheStream, rmdfTag, rmdf);
-                    CacheContext.SaveTagNames();
+                    rmdf = CacheContext.Deserialize<RenderMethodDefinition>(cacheStream, rmdfTag);
+                    rmt2Definition = ShaderGeneratorNew.GenerateTemplateSafe(CacheContext, cacheStream, rmdf, rmt2TagName, out _, out _);
                 }
                 else
                 {
-                    rmdf = CacheContext.Deserialize<RenderMethodDefinition>(cacheStream, rmdfTag);
-                    glps = CacheContext.Deserialize<GlobalPixelShader>(cacheStream, rmdf.GlobalPixelShader);
-                    glvs = CacheContext.Deserialize<GlobalVertexShader>(cacheStream, rmdf.GlobalVertexShader);
+                    Log.Error($"No rmdf tag present for {rmt2Desc.Type}");
+                    rmt2Definition = null;
                 }
 
-                rmt2Definition = TagTool.Shaders.ShaderGenerator.ShaderGenerator.GenerateRenderMethodTemplate(CacheContext, cacheStream, rmdf, glps, glvs, generator, rmt2TagName, out PixelShader pixl, out VertexShader vtsh);
                 rmt2Tag = CacheContext.TagCache.AllocateTag<RenderMethodTemplate>(rmt2TagName);
 
                 CacheContext.Serialize(cacheStream, rmt2Tag, rmt2Definition);
