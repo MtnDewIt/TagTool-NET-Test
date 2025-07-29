@@ -9,6 +9,7 @@ using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Common.Logging;
 using TagTool.Scripting;
+using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.Porting.Gen3
@@ -101,10 +102,19 @@ namespace TagTool.Porting.Gen3
 
         private HsType ConvertHsType(HsType type)
         {
-            if (type == HsType.PlayerColor)
+            switch (type)
             {
-                Log.Warning($"{HsType.PlayerColor} not supported");
-                return HsType.Invalid;
+                // Unsupported types
+                case HsType.Skull:
+                    return HsType.PrimarySkull;
+                case HsType.PlayerModelChoice:
+                case HsType.PlayerColor:
+                case HsType.Player:
+                    return HsType.Short;
+                case HsType.CuiScreenDefinition:
+                case HsType.CinematicTransitionDefinition:
+                case HsType.FiringPointEvaluator:
+                    return HsType.Invalid;
             }
 
             return type;
@@ -154,7 +164,63 @@ namespace TagTool.Porting.Gen3
             if (expr.Opcode == 0xBABA || expr.Opcode == 0xCDCD)
                 return;
 
-            expr.Opcode = 0x000; // begin
+            if (expr.Flags == HsSyntaxNodeFlags.ScriptReference)
+                return;
+
+            switch (expr.ValueType)
+            {
+                case HsType.FunctionName:
+                    expr.StringAddress = 0;
+                    break;
+
+                case HsType.Void:
+                    // change to begin. Note that the args will still get evaluated
+                    expr.Opcode = 0;
+                    break;
+
+                // Change the expression to a primitive with a reasonable default value
+                case HsType.Ai:
+                case HsType.AiLine:
+                case HsType.StartingProfile:
+                case HsType.ObjectList:
+                case HsType.Object:
+                case HsType.Unit:
+                case HsType.UnitSeatMapping:
+                case HsType.Vehicle:
+                case HsType.Weapon:
+                case HsType.Device:
+                case HsType.Scenery:
+                case HsType.EffectScenery:
+                case HsType.Sound:
+                case HsType.Effect:
+                case HsType.Damage:
+                case HsType.LoopingSound:
+                case HsType.AnimationGraph:
+                case HsType.DamageEffect:
+                case HsType.ObjectDefinition:
+                case HsType.Bitmap:
+                case HsType.Shader:
+                case HsType.RenderModel:
+                case HsType.StructureDefinition:
+                case HsType.LightmapDefinition:
+                case HsType.CinematicDefinition:
+                case HsType.CinematicSceneDefinition:
+                case HsType.BinkDefinition:
+                case HsType.AnyTag:
+                case HsType.AnyTagNotResolving:
+                    expr.StringAddress = 0;
+                    expr.Opcode = (ushort)VersionedEnum.ExportValue(typeof(HsType), expr.ValueType, CacheContext.Version, CacheContext.Platform);
+                    expr.Flags = HsSyntaxNodeFlags.Expression;
+                    Array.Fill(expr.Data, (byte)0xFF);
+                    break;
+
+                default:
+                    expr.StringAddress = 0;
+                    expr.Opcode = (ushort)VersionedEnum.ExportValue(typeof(HsType), expr.ValueType, CacheContext.Version, CacheContext.Platform);
+                    expr.Flags = HsSyntaxNodeFlags.Expression;
+                    Array.Fill(expr.Data, (byte)0);
+                    break;
+            }
         }
 
         private void ConvertScriptExpressionOpcode(Scenario scnr, HsSyntaxNode expr)
@@ -347,10 +413,19 @@ namespace TagTool.Porting.Gen3
                 {
                     var opcode = BitConverter.ToUInt16(expr.Data, 0) & ~0x8000;
                     var name = BlamCache.ScriptDefinitions.Globals[opcode];
-                    opcode = CacheContext.ScriptDefinitions.Globals.First(p => p.Value == name).Key | 0x8000;
-                    var bytes = BitConverter.GetBytes(opcode);
-                    expr.Data[0] = bytes[0];
-                    expr.Data[1] = bytes[1];
+                    var global = CacheContext.ScriptDefinitions.Globals.FirstOrDefault(p => p.Value == name);
+                    if (global.Value == null)
+                    {
+                        Log.Warning($"No equivalent script global was found for '{name}' (0x{expr.Opcode:X3}, expr {scnr.ScriptExpressions.IndexOf(expr)})");
+                        ConvertScriptExpressionUnsupportedOpcode(expr);
+                    }
+                    else
+                    {
+                        opcode = global.Key | 0x8000;
+                        var bytes = BitConverter.GetBytes(opcode);
+                        expr.Data[0] = bytes[0];
+                        expr.Data[1] = bytes[1];
+                    }
                 }
             }
             else if (expr.Flags == HsSyntaxNodeFlags.Expression && expr.ValueType == HsType.Ai)
@@ -403,9 +478,6 @@ namespace TagTool.Porting.Gen3
 
         private void ConvertScriptTagReferenceExpressionData(Stream cacheStream, Stream blamCacheStream, HsSyntaxNode expr)
         {
-            if (!FlagIsSet(PortingFlags.Recursive))
-                return;
-
             uint tagIndex;
             if (CacheVersionDetection.IsLittleEndian(BlamCache.Version, BlamCache.Platform))
                 tagIndex = BitConverter.ToUInt32(expr.Data, 0);
@@ -413,9 +485,6 @@ namespace TagTool.Porting.Gen3
                 tagIndex = BitConverter.ToUInt32(expr.Data.Reverse().ToArray(), 0);
 
             var tag = ConvertTag(cacheStream, blamCacheStream, BlamCache.TagCache.GetTag(tagIndex));
-
-            if (tag == null)
-                return;
 
             expr.Data = BitConverter.GetBytes(tag?.Index ?? -1).ToArray();
         }
