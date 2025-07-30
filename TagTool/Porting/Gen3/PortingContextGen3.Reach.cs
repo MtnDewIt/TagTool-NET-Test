@@ -39,42 +39,25 @@ namespace TagTool.Porting.Gen3
 
             if (definition is Scenario scenario)
             {
-                foreach (var entry in scenario.Machines)
+                List<string> machineWhitelist = new List<string>
                 {
-                    if (entry.Multiplayer.MegaloLabel.Contains("invasion") || entry.Multiplayer.MegaloLabel.StartsWith("inv"))
-                    {
-                        var machineWhitelist = new List<string>
-                        {
-                            "levels\\multi\\dlc\\objects\\dlc_invasion_alpha_relay\\dlc_invasion_alpha_relay",
-                            "levels\\multi\\dlc\\objects\\dlc_invasion_bravo_vent\\dlc_invasion_bravo_vent",
-                            "objects\\levels\\shared\\device_machines\\cov_spire_platform\\cov_spire_platform",
-                        };
+                    "levels\\multi\\dlc\\objects\\dlc_invasion_alpha_relay\\dlc_invasion_alpha_relay",
+                    "levels\\multi\\dlc\\objects\\dlc_invasion_bravo_vent\\dlc_invasion_bravo_vent",
+                    "objects\\levels\\shared\\device_machines\\cov_spire_platform\\cov_spire_platform",
+                };
 
-                        if (entry.PaletteIndex != -1)
-                            if (machineWhitelist.Contains(scenario.MachinePalette[entry.PaletteIndex].Object?.Name))
-                                entry.Multiplayer.MegaloLabel = "none";
-                    }
-                }
-
-                foreach (var entry in scenario.Crates)
+                List<string> crateWhitelist = new List<string>
                 {
-                    if (entry.Multiplayer.MegaloLabel.Contains("invasion") || entry.Multiplayer.MegaloLabel.StartsWith("inv"))
-                    {
-                        var crateWhitelist = new List<string>
-                        {
-                            "levels\\multi\\dlc\\objects\\dlc_invasion\\dlc_invasion_rock_med_a\\dlc_invasion_rock_med_a",
-                            "levels\\multi\\dlc\\objects\\dlc_invasion_heavy_shield\\dlc_invasion_heavy_shield",
-                            "objects\\levels\\forge\\ff_shield_door_medium\\ff_shield_door_medium",
-                            "objects\\levels\\multi\\35_island\\spire_base_cannon\\spire_base_cannon",
-                            "objects\\levels\\multi\\35_island\\spire_cliff_cannon\\spire_cliff_cannon",
-                            "objects\\levels\\multi\\35_island\\spire_gun_cannon\\spire_gun_cannon",
-                        };
+                    "levels\\multi\\dlc\\objects\\dlc_invasion\\dlc_invasion_rock_med_a\\dlc_invasion_rock_med_a",
+                    "levels\\multi\\dlc\\objects\\dlc_invasion_heavy_shield\\dlc_invasion_heavy_shield",
+                    "objects\\levels\\forge\\ff_shield_door_medium\\ff_shield_door_medium",
+                    "objects\\levels\\multi\\35_island\\spire_base_cannon\\spire_base_cannon",
+                    "objects\\levels\\multi\\35_island\\spire_cliff_cannon\\spire_cliff_cannon",
+                    "objects\\levels\\multi\\35_island\\spire_gun_cannon\\spire_gun_cannon",
+                };
 
-                        if (entry.PaletteIndex != -1)
-                            if (crateWhitelist.Contains(scenario.CratePalette[entry.PaletteIndex].Object?.Name))
-                                entry.Multiplayer.MegaloLabel = "none";
-                    }
-                }
+                CullInvasionObjects(scenario.MachinePalette, scenario.Machines, machineWhitelist);
+                CullInvasionObjects(scenario.CratePalette, scenario.Crates, crateWhitelist);
 
                 scenario.Bipeds.Clear();
                 scenario.BipedPalette.Clear();
@@ -313,6 +296,22 @@ namespace TagTool.Porting.Gen3
 
                 if (proj.ConicalSpread.Any())
                     proj.Flags |= Projectile.ProjectileFlags.TravelsInstantaneously;
+            }
+        }
+
+        public void CullInvasionObjects<T>(List<Scenario.ScenarioPaletteEntry> palette, List<T> instanceList, List<string> whiteList) 
+        {
+            for (int i = 0; i < instanceList.Count; i++) 
+            {
+                var label = (instanceList[i] as Scenario.IMultiplayerInstance).Multiplayer.MegaloLabel;
+                var paletteIndex = (instanceList[i] as Scenario.ScenarioInstance).PaletteIndex;
+
+                if (label.Contains("invasion") || label.StartsWith("inv")) 
+                {
+                    if (paletteIndex != -1)
+                        if (whiteList.Contains(palette[paletteIndex].Object?.Name))
+                            (instanceList[i] as Scenario.IMultiplayerInstance).Multiplayer.MegaloLabel = "none";
+                }
             }
         }
 
