@@ -142,6 +142,13 @@ namespace TagTool.Porting.Gen3
                             material.RenderMethod = defaultGray;
                     }
                 }
+
+                // convert runtime decal placements
+                foreach (var runtimeDecal in sbsp.RuntimeDecals)
+                {
+                    // Normalize vector into singular float value (Could probably handle this better)
+                    runtimeDecal.Scale = (float)Math.Sqrt(runtimeDecal.ScaleReach.I * runtimeDecal.ScaleReach.J);
+                }
             }
 
             return sbsp;

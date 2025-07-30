@@ -29,12 +29,6 @@ namespace TagTool.Porting.Gen3
                     foreach (var cluster in sbsp.Clusters)
                         cluster.DecoratorGrids.Clear();
                 }
-
-                foreach (var cluster in sbsp.Clusters)
-                {
-                    cluster.RuntimeDecalCount = 0;
-                    cluster.RuntimeDecalStartIndex = -1;
-                }
             }
 
             if (definition is AreaScreenEffect sefc)
@@ -274,8 +268,6 @@ namespace TagTool.Porting.Gen3
                         string name = ((TagGroupGen3)part.Type.Group).Name;
 
                         if (name == "cheap_particle_emitter")
-                            part.Type = null;
-                        if (name == "decal_system")
                             part.Type = null;
                     }
             }

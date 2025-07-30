@@ -534,6 +534,10 @@ namespace TagTool.Porting.Gen3
             {
                 for(int i = 0; i < scnr.TriggerVolumes.Count; i++)
                     scnr.TriggerVolumes[i] = ConvertTriggerVolumeReach(scnr.TriggerVolumes[i]);
+
+                // TODO: Handle this a little better
+                for(int i = 0; i < scnr.Decals.Count; i++)
+                    scnr.Decals[i].Scale = (float)Math.Sqrt(scnr.Decals[i].ScaleReach.Lower * scnr.Decals[i].ScaleReach.Upper);
             }
 
             if (BlamCache.Version >= CacheVersion.HaloReach && FlagIsSet(PortingFlags.Recursive))
