@@ -131,6 +131,9 @@ namespace TagTool.Porting.Gen3
                 case "rmcs":
                 case "rmzo":
                 case "rmct":
+                case "rmfu":
+                case "rmfs":
+                case "rmmx":
                     return CacheContext.TagCache.GetTag<Shader>(@"shaders\invalid");
             }
 
