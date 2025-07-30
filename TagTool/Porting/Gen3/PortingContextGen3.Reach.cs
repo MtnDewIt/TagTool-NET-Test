@@ -133,7 +133,6 @@ namespace TagTool.Porting.Gen3
                 scenario.UnitSeatsMapping.Clear();
                 scenario.MissionScenes.Clear();
 
-                scenario.SkyParameters = null; // unused in reach, we will create a new one
                 scenario.PerformanceThrottles = null;
                 scenario.GamePerformanceThrottles = null;
 
