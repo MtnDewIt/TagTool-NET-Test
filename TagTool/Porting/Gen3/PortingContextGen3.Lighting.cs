@@ -217,7 +217,6 @@ namespace TagTool.Porting.Gen3
             return scenarioLightmap;
         }
 
-
         private ScenarioLightmapBspData ConvertScenarioLightmapBspData(ScenarioLightmapBspData Lbsp)
         {
             if (BlamCache.Version >= CacheVersion.HaloReach)
@@ -263,7 +262,6 @@ namespace TagTool.Porting.Gen3
 
             return Lbsp;
         }
-
 
         private ScenarioLightmap ConvertReachLightmap(Stream cacheStream, Stream blamCacheStream, string blamTagName, ScenarioLightmap scenarioLightmap)
         {
@@ -411,6 +409,30 @@ namespace TagTool.Porting.Gen3
             Lbsp.Geometry.Resource = CacheContext.ResourceCache.CreateRenderGeometryApiResource(newLightmapResourceDefinition);
 
             return Lbsp;
+        }
+
+        private ScenarioStructureLightingInfo ConvertScenarioStructureLightingInfo(ScenarioStructureLightingInfo stli)
+        {
+            if (BlamCache.Version >= CacheVersion.HaloReach) 
+            {
+                for (int i = 0; i < stli.GenericLightDefinitions.Count; i++)
+                {
+                    stli.GenericLightDefinitions[i].Type = stli.GenericLightDefinitions[i].TypeReach.ConvertLexical<ScenarioStructureLightingInfo.GenericLightDefinition.GenericLightInstanceType>();
+                    stli.GenericLightDefinitions[i].Flags = stli.GenericLightDefinitions[i].FlagsReach.ConvertLexical<ScenarioStructureLightingInfo.GenericLightDefinition.GenericLightInstanceFlags>();
+                }
+
+                for (int i = 0; i < stli.MaterialInfo.Count; i++)
+                {
+                    stli.MaterialInfo[i].Flags = stli.MaterialInfo[i].FlagsReach.ConvertLexical<ScenarioStructureLightingInfo.LightingMaterialInfo.LightingMaterialFlags>();
+
+                    // TODO: Convert Frustum Values
+                    stli.MaterialInfo[i].FrustumBlend = 0.0f;
+                    stli.MaterialInfo[i].FrustumFalloffAngle = Angle.FromDegrees(0.0f);
+                    stli.MaterialInfo[i].FrustumCutoffAngle = Angle.FromDegrees(0.0f);
+                }
+            }
+
+            return stli;
         }
 
         private CameraFxSettings ConvertCameraFxSettings(CameraFxSettings cfxs, string blamTagName)

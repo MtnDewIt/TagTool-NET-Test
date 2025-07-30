@@ -267,6 +267,10 @@ namespace TagTool.Porting.Gen3
                     blamDefinition = ConvertScenarioStructureBsp(sbsp, edTag);
                     break;
 
+                case ScenarioStructureLightingInfo stli:
+                    blamDefinition = ConvertScenarioStructureLightingInfo(stli);
+                    break;
+
                 case Sound sound:
                     isDeferred = true;
                     blamDefinition = ConvertSound(cacheStream, blamCacheStream, sound, edTag, blamTag.Name);
