@@ -23,7 +23,11 @@ namespace TagTool.Commands.Shaders
                 "Generates a render method definition tag according to the specified type.",
 
                 "GenerateRmdf <Shader Type> [noglobals] [nofixes]",
-                "Generates a render method definition tag according to the specified type.")
+                "Generates a render method definition tag according to the specified type.\n" + 
+                "Use \"noglobals\" to prevent the global pixel and global vertex shader from being recompiled\n" +
+                "By default, the global pixel and global vertex shaders will be recompiled, after the rmdf definition gets generated\n" +
+                "Use \"nofixes\" to toggle the APPLY_FIXES macro off.\n" +
+                "The default value for the APPLY_FIXES macro for each shader type supported by the generator is always set to true.")
         {
             Cache = cache;
         }

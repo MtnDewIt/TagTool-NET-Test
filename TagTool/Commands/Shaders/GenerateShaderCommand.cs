@@ -55,7 +55,9 @@ namespace TagTool.Commands.Shaders
             }
         }
 
-        GameCache Cache;
+        public GameCache Cache;
+
+        private bool applyFixes = true;
 
         public GenerateShaderCommand(GameCache cache) :
             base(true,
@@ -68,7 +70,7 @@ namespace TagTool.Commands.Shaders
                 "Generates a shader template\n" +
                 "<shader type> - Specify shader type, EX. \"shader\" for \'rmsh\'.\n" +
                 "Use \"explicit\" for explicit shaders (ps+vs), \"chud\" for chud (ps+vs), and \"glvs\" or \"glps\" for global shaders.\n" +
-                "Use true or false after the shader type when using explicit, chud or global shaders to toggle the APPLY_FIXES macro\n" + 
+                "Use \"nofixes\" after the shader type when using explicit, chud or global shaders to toggle the APPLY_FIXES macro\n" + 
                 "The default value for the APPLY_FIXES macro for each shader type supported by the generator is always set to true\n" +
                 "<options> - Specify the template\'s options as either integers or by names.\n" +
                 "For explicit shaders, you should specify the name or the rasg shader index.")
@@ -85,12 +87,12 @@ namespace TagTool.Commands.Shaders
 
             if (shaderType == "explicit" || shaderType == "chud" || shaderType == "glvs" || shaderType == "glps")
             {
-                bool applyFixes = true;
-
                 if (args.Count > 2)
                 {
-                    if (!bool.TryParse(args[2], out applyFixes))
-                        return new TagToolError(CommandError.ArgInvalid, $"\"{args[1]}\" is not a valid boolean value.");
+                    if (string.Equals(args[2], "nofixes", StringComparison.OrdinalIgnoreCase))
+                        applyFixes = false;
+                    else
+                        return new TagToolError(CommandError.ArgInvalid, $"\"{args[2]}\" is not a valid input parameter.");
                 }
 
                 if (shaderType == "explicit")
