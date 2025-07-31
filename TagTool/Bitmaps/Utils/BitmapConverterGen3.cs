@@ -72,7 +72,7 @@ namespace TagTool.Bitmaps.Utils
 
             if (BitmapUtils.IsNormalMap(bitmap, imageIndex))
             {
-                format = GetNormalMapFormat(format);
+                format = GetNormalMapFormat(bitmap, format);
 
                 // non-pow2 dxn is not supported in d3d9
                 if (format == BitmapFormat.Dxn && !BitmapUtils.IsPowerOfTwo(bitmap.Images[imageIndex].Width, bitmap.Images[imageIndex].Height))
@@ -92,13 +92,20 @@ namespace TagTool.Bitmaps.Utils
             return CompressionQuality.Default;
         }
 
-        private BitmapFormat GetNormalMapFormat(BitmapFormat format)
+        private BitmapFormat GetNormalMapFormat(Bitmap bitmap, BitmapFormat format)
         {
             if (ForceDxt5nm)
                 return BitmapFormat.Dxt5nm;
 
-            if (format == BitmapFormat.V8U8)
-                return format;
+            if (Cache.Platform == CachePlatform.MCC && bitmap.ForceBitmapFormat == Bitmap.BitmapUsageFormat.DxnCompressedNormalsBetter)
+            {
+                switch (format)
+                {
+                    case BitmapFormat.V8U8:
+                    case BitmapFormat.V16U16:
+                        return BitmapFormat.Dxn;
+                }
+            }
 
             return HqNormalMapCompression ? BitmapFormat.Dxn : BitmapFormat.Dxt1;
         }
@@ -136,7 +143,7 @@ namespace TagTool.Bitmaps.Utils
                 var rawData = BitmapDecoder.DecodeBitmap(data, format, width, height, Cache.Version, Cache.Platform);
                 const float oneDiv255 = 1.0f / 255.0f;
                 float expBias = (float)Math.Pow(2.0f, bitmap.Images[imageIndex].ExponentBias); // 4.0f
-                for (int i = 0; i < data.Length; i += 4)
+                for (int i = 0; i < rawData.Length; i += 4)
                 {
                     var vector = VectorExtensions.InitializeVector(new float[] { rawData[i], rawData[i + 1], rawData[i + 2], rawData[i + 3] });
 
