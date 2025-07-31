@@ -4,14 +4,12 @@ using System.IO;
 using System.Linq;
 using TagTool.Cache;
 using TagTool.Commands.Common;
-using TagTool.Tags;
-using TagTool.Tags.Definitions;
+using TagTool.Common.Logging;
 using TagTool.Shaders;
 using TagTool.Shaders.ShaderFunctions;
-using HaloShaderGenerator.Shader;
-using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock;
 using TagTool.Shaders.ShaderGenerator;
-using TagTool.Common.Logging;
+using TagTool.Tags.Definitions;
+using static TagTool.Tags.Definitions.RenderMethod;
 
 namespace TagTool.Commands.Shaders
 {
@@ -367,25 +365,25 @@ namespace TagTool.Commands.Shaders
             {
                 var postprocess = (dependent.Definition as RenderMethod).ShaderProperties[0];
 
-                List<TextureConstant> reorderedTextureConstants = new List<TextureConstant>();
+                List<RenderMethodPostprocessBlock.TextureConstant> reorderedTextureConstants = new List<RenderMethodPostprocessBlock.TextureConstant>();
                 foreach (var textureName in rmt2.TextureParameterNames)
                 {
                     int origIndex = dependent.OrderedTextures.IndexOf(cache.StringTable.GetString(textureName.Name));
                     if (origIndex != -1)
                         reorderedTextureConstants.Add(postprocess.TextureConstants[origIndex]);
                     else
-                        reorderedTextureConstants.Add(new TextureConstant());
+                        reorderedTextureConstants.Add(new RenderMethodPostprocessBlock.TextureConstant());
                 }
                 postprocess.TextureConstants = reorderedTextureConstants;
 
-                List<RealConstant> reorderedRealConstants = new List<RealConstant>();
+                List<RenderMethodPostprocessBlock.RealConstant> reorderedRealConstants = new List<RenderMethodPostprocessBlock.RealConstant>();
                 foreach (var realName in rmt2.RealParameterNames)
                 {
                     int origIndex = dependent.OrderedRealParameters.IndexOf(cache.StringTable.GetString(realName.Name));
                     if (origIndex != -1)
                         reorderedRealConstants.Add(postprocess.RealConstants[origIndex]);
                     else
-                        reorderedRealConstants.Add(new RealConstant());
+                        reorderedRealConstants.Add(new RenderMethodPostprocessBlock.RealConstant());
                 }
                 postprocess.RealConstants = reorderedRealConstants;
 
@@ -450,7 +448,7 @@ namespace TagTool.Commands.Shaders
                             {
                                 if (animatedParam.Name == paramName)
                                 {
-                                    var newBlock = new RenderMethodRoutingInfoBlock 
+                                    var newBlock = new RenderMethodPostprocessBlock.RenderMethodRoutingInfoBlock 
                                     { 
                                         SourceIndex = rmt2RoutingInfo.SourceIndex, 
                                         FunctionIndex = (byte)animatedParam.FunctionIndex,
@@ -481,7 +479,7 @@ namespace TagTool.Commands.Shaders
                             {
                                 if (animatedParam.Name == paramName)
                                 {
-                                    var newBlock = new RenderMethodRoutingInfoBlock
+                                    var newBlock = new RenderMethodPostprocessBlock.RenderMethodRoutingInfoBlock
                                     {
                                         SourceIndex = rmt2RoutingInfo.SourceIndex,
                                         FunctionIndex = (byte)animatedParam.FunctionIndex,
@@ -512,7 +510,7 @@ namespace TagTool.Commands.Shaders
                             {
                                 if (animatedParam.Name == paramName)
                                 {
-                                    var newBlock = new RenderMethodRoutingInfoBlock
+                                    var newBlock = new RenderMethodPostprocessBlock.RenderMethodRoutingInfoBlock
                                     {
                                         SourceIndex = rmt2RoutingInfo.SourceIndex,
                                         FunctionIndex = (byte)animatedParam.FunctionIndex,
@@ -699,7 +697,7 @@ namespace TagTool.Commands.Shaders
 
                 var postprocess = renderMethod.ShaderProperties[0];
 
-                List<TextureConstant> reorderedTextureConstants = new List<TextureConstant>();
+                List<RenderMethodPostprocessBlock.TextureConstant> reorderedTextureConstants = new List<RenderMethodPostprocessBlock.TextureConstant>();
                 foreach (var textureName in rmt2.TextureParameterNames)
                 {
                     int origIndex = dependent.OrderedTextures.IndexOf(cache.StringTable.GetString(textureName.Name));
@@ -713,20 +711,20 @@ namespace TagTool.Commands.Shaders
                         p.Type == RenderMethodOption.ParameterBlock.OptionDataType.Bitmap && 
                         p.Name == textureName.Name).FirstOrDefault();
 
-                        var constant = new TextureConstant();
+                        var constant = new RenderMethodPostprocessBlock.TextureConstant();
 
                         if (parameter != null) 
                         {
-                            constant = new TextureConstant
+                            constant = new RenderMethodPostprocessBlock.TextureConstant
                             {
                                 Bitmap = parameter.DefaultSamplerBitmap,
-                                SamplerAddressMode = new TextureConstant.PackedSamplerAddressMode
+                                SamplerAddressMode = new RenderMethodPostprocessBlock.TextureConstant.PackedSamplerAddressMode
                                 {
-                                    AddressU = (TextureConstant.SamplerAddressModeEnum)parameter.DefaultAddressMode,
-                                    AddressV = (TextureConstant.SamplerAddressModeEnum)parameter.DefaultAddressMode
+                                    AddressU = (RenderMethodPostprocessBlock.TextureConstant.SamplerAddressModeEnum)parameter.DefaultAddressMode,
+                                    AddressV = (RenderMethodPostprocessBlock.TextureConstant.SamplerAddressModeEnum)parameter.DefaultAddressMode
                                 },
-                                FilterMode = (TextureConstant.SamplerFilterMode)parameter.DefaultFilterMode,
-                                ExternTextureMode = TextureConstant.RenderMethodExternTextureMode.UseBitmapAsNormal,
+                                FilterMode = (RenderMethodPostprocessBlock.TextureConstant.SamplerFilterMode)parameter.DefaultFilterMode,
+                                ExternTextureMode = RenderMethodPostprocessBlock.TextureConstant.RenderMethodExternTextureMode.UseBitmapAsNormal,
                                 TextureTransformConstantIndex = -1
                             };
                         }
@@ -736,7 +734,7 @@ namespace TagTool.Commands.Shaders
                 }
                 postprocess.TextureConstants = reorderedTextureConstants;
 
-                List<RealConstant> reorderedRealConstants = new List<RealConstant>();
+                List<RenderMethodPostprocessBlock.RealConstant> reorderedRealConstants = new List<RenderMethodPostprocessBlock.RealConstant>();
                 foreach (var realName in rmt2.RealParameterNames)
                 {
                     int origIndex = dependent.OrderedRealParameters.IndexOf(cache.StringTable.GetString(realName.Name));
@@ -752,7 +750,7 @@ namespace TagTool.Commands.Shaders
                         p.Type == RenderMethodOption.ParameterBlock.OptionDataType.ArgbColor) && 
                         p.Name == realName.Name).FirstOrDefault();
 
-                        var constant = new RealConstant
+                        var constant = new RenderMethodPostprocessBlock.RealConstant
                         {
                             Values = new float[4]
                         };
@@ -856,7 +854,7 @@ namespace TagTool.Commands.Shaders
                             {
                                 if (animatedParam.Name == paramName)
                                 {
-                                    var newBlock = new RenderMethodRoutingInfoBlock
+                                    var newBlock = new RenderMethodPostprocessBlock.RenderMethodRoutingInfoBlock
                                     {
                                         SourceIndex = rmt2RoutingInfo.SourceIndex,
                                         FunctionIndex = (byte)animatedParam.FunctionIndex,
@@ -887,7 +885,7 @@ namespace TagTool.Commands.Shaders
                             {
                                 if (animatedParam.Name == paramName)
                                 {
-                                    var newBlock = new RenderMethodRoutingInfoBlock
+                                    var newBlock = new RenderMethodPostprocessBlock.RenderMethodRoutingInfoBlock
                                     {
                                         SourceIndex = rmt2RoutingInfo.SourceIndex,
                                         FunctionIndex = (byte)animatedParam.FunctionIndex,
@@ -918,7 +916,7 @@ namespace TagTool.Commands.Shaders
                             {
                                 if (animatedParam.Name == paramName)
                                 {
-                                    var newBlock = new RenderMethodRoutingInfoBlock
+                                    var newBlock = new RenderMethodPostprocessBlock.RenderMethodRoutingInfoBlock
                                     {
                                         SourceIndex = rmt2RoutingInfo.SourceIndex,
                                         FunctionIndex = (byte)animatedParam.FunctionIndex,
