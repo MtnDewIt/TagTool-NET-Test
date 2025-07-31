@@ -70,6 +70,8 @@ namespace TagTool.Commands.Shaders
                 "Generates a shader template\n" +
                 "<shader type> - Specify shader type, EX. \"shader\" for \'rmsh\'.\n" +
                 "Use \"explicit\" for explicit shaders (ps+vs), \"chud\" for chud (ps+vs), and \"glvs\" or \"glps\" for global shaders.\n" +
+                "Use true or false after the shader type when using explicit, chud or global shaders to toggle the APPLY_FIXES macro\n" + 
+                "The default value for the APPLY_FIXES macro for each shader type supported by the generator is always set to true\n" +
                 "<options> - Specify the template\'s options as either integers or by names.\n" +
                 "For explicit shaders, you should specify the name or the rasg shader index.")
         {
@@ -78,17 +80,28 @@ namespace TagTool.Commands.Shaders
 
         public override object Execute(List<string> args)
         {
-            if (args.Count < 2)
+            if (args.Count > 3 || args.Count < 2)
                 return new TagToolError(CommandError.ArgCount);
 
             string shaderType = args[0].ToLower();
 
-            if (shaderType == "explicit")
-                return GenerateExplicitShader(args[1].ToLower(), args.Count > 2 ? args[2].ToLower() : "default", args.Count > 3 ? args[3].ToLower() : "");
-            else if (shaderType == "chud")
-                return GenerateChudShader(args[1].ToLower());
-            else if (shaderType == "glvs" || shaderType == "glps")
-                return GenerateGlobalShader(args[1].ToLower(), shaderType == "glps");
+            if (shaderType == "explicit" || shaderType == "chud" || shaderType == "glvs" || shaderType == "glps")
+            {
+                bool applyFixes = true;
+
+                if (args.Count > 2)
+                {
+                    if (!bool.TryParse(args[2], out applyFixes))
+                        return new TagToolError(CommandError.ArgInvalid, $"\"{args[1]}\" is not a valid boolean value.");
+                }
+
+                if (shaderType == "explicit")
+                    return GenerateExplicitShader(args[1].ToLower(), applyFixes);
+                else if (shaderType == "chud")
+                    return GenerateChudShader(args[1].ToLower(), applyFixes);
+                else if (shaderType == "glvs" || shaderType == "glps")
+                    return GenerateGlobalShader(args[1].ToLower(), shaderType == "glps", applyFixes);
+            }
 
             args.RemoveAt(0); // we should only have options from this point
 
@@ -142,78 +155,7 @@ namespace TagTool.Commands.Shaders
             return true;
         }
 
-        public static HaloShaderGenerator.Generator.IShaderGenerator GetShaderGenerator(string shaderType, byte[] options, bool applyFixes = false)
-        {
-            switch (shaderType)
-            {
-                case "beam":            return new HaloShaderGenerator.Beam.BeamGenerator(options, applyFixes);
-                case "black":           return new HaloShaderGenerator.Black.ShaderBlackGenerator();
-                case "contrail":        return new HaloShaderGenerator.Contrail.ContrailGenerator(options, applyFixes);
-                case "cortana":         return new HaloShaderGenerator.Cortana.CortanaGenerator(options, applyFixes);
-                case "custom":          return new HaloShaderGenerator.Custom.CustomGenerator(options, applyFixes);
-                case "decal":           return new HaloShaderGenerator.Decal.DecalGenerator(options, applyFixes);
-                case "foliage":         return new HaloShaderGenerator.Foliage.FoliageGenerator(options, applyFixes);
-                //case "glass":           return new HaloShaderGenerator.Glass.GlassGenerator(options, applyFixes);
-                case "halogram":        return new HaloShaderGenerator.Halogram.HalogramGenerator(options, applyFixes);
-                case "light_volume":    return new HaloShaderGenerator.LightVolume.LightVolumeGenerator(options, applyFixes);
-                case "particle":        return new HaloShaderGenerator.Particle.ParticleGenerator(options, applyFixes);
-                case "screen":          return new HaloShaderGenerator.Screen.ScreenGenerator(options, applyFixes);
-                case "shader":          return new HaloShaderGenerator.Shader.ShaderGenerator(options, applyFixes);
-                case "terrain":         return new HaloShaderGenerator.Terrain.TerrainGenerator(options, applyFixes);
-                case "water":           return new HaloShaderGenerator.Water.WaterGenerator(options, applyFixes);
-                case "zonly":           return new HaloShaderGenerator.ZOnly.ZOnlyGenerator(options, applyFixes);
-            }
-            return null;
-        }
-
-        public static HaloShaderGenerator.Generator.IShaderGenerator GetGlobalShaderGenerator(string shaderType, bool applyFixes = false)
-        {
-            switch (shaderType)
-            {
-                case "beam":            return new HaloShaderGenerator.Beam.BeamGenerator(applyFixes);
-                case "black":           return new HaloShaderGenerator.Black.ShaderBlackGenerator();
-                case "contrail":        return new HaloShaderGenerator.Contrail.ContrailGenerator(applyFixes);
-                case "cortana":         return new HaloShaderGenerator.Cortana.CortanaGenerator(applyFixes);
-                case "custom":          return new HaloShaderGenerator.Custom.CustomGenerator(applyFixes);
-                case "decal":           return new HaloShaderGenerator.Decal.DecalGenerator(applyFixes);
-                case "foliage":         return new HaloShaderGenerator.Foliage.FoliageGenerator(applyFixes);
-                //case "glass":           return new HaloShaderGenerator.Glass.GlassGenerator(applyFixes);
-                case "halogram":        return new HaloShaderGenerator.Halogram.HalogramGenerator(applyFixes);
-                case "light_volume":    return new HaloShaderGenerator.LightVolume.LightVolumeGenerator(applyFixes);
-                case "particle":        return new HaloShaderGenerator.Particle.ParticleGenerator(applyFixes);
-                case "screen":          return new HaloShaderGenerator.Screen.ScreenGenerator(applyFixes);
-                case "shader":          return new HaloShaderGenerator.Shader.ShaderGenerator(applyFixes);
-                case "terrain":         return new HaloShaderGenerator.Terrain.TerrainGenerator(applyFixes);
-                case "water":           return new HaloShaderGenerator.Water.WaterGenerator(applyFixes);
-                case "zonly":           return new HaloShaderGenerator.ZOnly.ZOnlyGenerator(applyFixes);
-            }
-            return null;
-        }
-
-        public ShaderConstantTable BuildConstantTable(HaloShaderGenerator.ShaderGeneratorResult generatorResult, GameCache cache, bool pixelShader)
-        {
-            ShaderConstantTable result = new ShaderConstantTable
-            {
-                ShaderType = pixelShader ? ShaderType.PixelShader : ShaderType.VertexShader,
-                Constants = new List<ShaderParameter>()
-            };
-
-            foreach (var register in generatorResult.Registers)
-            {
-                var nameId = cache.StringTable.GetStringId(register.Name);
-                if (nameId == TagTool.Common.StringId.Invalid)
-                    nameId = cache.StringTable.AddString(register.Name);
-
-                ShaderParameter.RType rType = (ShaderParameter.RType)Enum.Parse(typeof(ShaderParameter.RType), register.registerType.ToString());
-
-                var parameterBlock = new ShaderParameter { ParameterName = nameId, RegisterCount = (byte)register.Size, RegisterIndex = (ushort)register.Register, RegisterType = rType };
-                result.Constants.Add(parameterBlock);
-            }
-
-            return result;
-        }
-
-        private object GenerateExplicitShader(string shader, string entry, string vertexType)
+        private object GenerateExplicitShader(string shader, bool applyFixes)
         {
             if (!Enum.TryParse(shader, out ExplicitShader value))
             {
@@ -238,17 +180,20 @@ namespace TagTool.Commands.Shaders
                 else
                     vtshTag = Cache.TagCache.AllocateTag<VertexShader>($"rasterizer\\shaders\\{value}");
 
-                ShaderGeneratorNew.GenerateExplicitShader(Cache, stream, value.ToString(), true, out PixelShader pixl, out VertexShader vtsh);
+                ShaderGeneratorNew.GenerateExplicitShader(Cache, stream, value.ToString(), applyFixes, out PixelShader pixl, out VertexShader vtsh);
 
                 Cache.Serialize(stream, vtshTag, vtsh);
                 Cache.Serialize(stream, pixlTag, pixl);
+
+                Cache.SaveStrings();
+                (Cache as GameCacheHaloOnlineBase).SaveTagNames();
             }
 
             Console.WriteLine($"Generated explicit shaders for \"{value}\"");
             return true;
         }
 
-        private object GenerateChudShader(string shader)
+        private object GenerateChudShader(string shader, bool applyFixes)
         {
             if (shader == "chud_overlay_blend")
             {
@@ -280,34 +225,49 @@ namespace TagTool.Commands.Shaders
                 else
                     vtshTag = Cache.TagCache.AllocateTag<VertexShader>($"rasterizer\\shaders\\{value}");
 
-                ShaderGeneratorNew.GenerateChudShader(Cache, stream, value.ToString(), false, out PixelShader pixl, out VertexShader vtsh);
+                ShaderGeneratorNew.GenerateChudShader(Cache, stream, value.ToString(), applyFixes, out PixelShader pixl, out VertexShader vtsh);
 
                 Cache.Serialize(stream, vtshTag, vtsh);
                 Cache.Serialize(stream, pixlTag, pixl);
+
+                Cache.SaveStrings();
+                (Cache as GameCacheHaloOnlineBase).SaveTagNames();
             }
 
             Console.WriteLine($"Generated chud shader for {value}");
             return true;
         }
 
-        private object GenerateGlobalShader(string shaderType, bool pixel)
+        private object GenerateGlobalShader(string shaderType, bool pixel, bool applyFixes)
         {
             var type = (HaloShaderGenerator.Globals.ShaderType)Enum.Parse(typeof(HaloShaderGenerator.Globals.ShaderType), shaderType, true);
 
+            string rmdfName = $"shaders\\{shaderType}.rmdf";
+
+            switch (type)
+            {
+                case HaloShaderGenerator.Globals.ShaderType.LightVolume:
+                    rmdfName = "shaders\\light_volume.rmdf";
+                    break;
+                case HaloShaderGenerator.Globals.ShaderType.FurStencil:
+                    rmdfName = "shaders\\fur_stencil.rmdf";
+                    break;
+            }
+
             using (var stream = Cache.OpenCacheReadWrite())
             {
-                CachedTag rmdfTag = Cache.TagCache.GetTag($"shaders\\{shaderType}.rmdf");
+                CachedTag rmdfTag = Cache.TagCache.GetTag(rmdfName);
                 RenderMethodDefinition rmdf = Cache.Deserialize<RenderMethodDefinition>(stream, rmdfTag);
 
                 if (pixel)
                 {
-                    GlobalPixelShader glps = TagTool.Shaders.ShaderGenerator.ShaderGeneratorNew.GenerateSharedPixelShaders(Cache, rmdf, type, true);
+                    GlobalPixelShader glps = TagTool.Shaders.ShaderGenerator.ShaderGeneratorNew.GenerateSharedPixelShaders(Cache, rmdf, type, applyFixes);
                     CachedTag glpsTag = Cache.TagCache.GetTag(rmdf.GlobalPixelShader.Index);
                     Cache.Serialize(stream, glpsTag, glps);
                 }
                 else
                 {
-                    GlobalVertexShader glvs = TagTool.Shaders.ShaderGenerator.ShaderGeneratorNew.GenerateSharedVertexShaders(Cache, rmdf, type, true);
+                    GlobalVertexShader glvs = TagTool.Shaders.ShaderGenerator.ShaderGeneratorNew.GenerateSharedVertexShaders(Cache, rmdf, type, applyFixes);
                     CachedTag glvsTag = Cache.TagCache.GetTag(rmdf.GlobalVertexShader.Index);
                     Cache.Serialize(stream, glvsTag, glvs);
                 }
@@ -621,6 +581,8 @@ namespace TagTool.Commands.Shaders
             public CachedTag Tag;
             public List<SDependentRenderMethodData> Dependants;
             public List<RenderMethodOption.ParameterBlock> AllRmopParameters;
+            public string PixelShaderName;
+            public string VertexShaderName;
             // post
             public PixelShader PixelShader;
             public VertexShader VertexShader;
@@ -637,16 +599,27 @@ namespace TagTool.Commands.Shaders
             public string ExplicitName;
         }
 
+        public static List<RenderMethodOptionIndex> GenerateRenderMethodOptionIndices(byte[] options)
+        {
+            List<RenderMethodOptionIndex> newRmIndices = new List<RenderMethodOptionIndex>();
+
+            foreach (var option in options)
+            {
+                RenderMethodOptionIndex optionIndex = new RenderMethodOptionIndex();
+                optionIndex.OptionIndex = option;
+                newRmIndices.Add(optionIndex);
+            }
+
+            return newRmIndices;
+        }
+
         /// <summary>
         /// For async recompile
         /// </summary>
         public static List<SDependentRenderMethodData> GetDependantsAsync(GameCache cache,
             Stream stream,
-            string shaderType,
-            byte[] options)
+            string rmt2Name)
         {
-            string rmt2Name = $"shaders\\{shaderType}_templates\\_{string.Join("_", options)}";
-
             // Collect dependent render methods, store arguments
 
             List<SDependentRenderMethodData> dependentRenderMethods = new List<SDependentRenderMethodData>();
@@ -712,22 +685,54 @@ namespace TagTool.Commands.Shaders
         public static void ReserializeDependantsAsync(GameCache cache,
             Stream stream,
             RenderMethodTemplate rmt2,
-            List<SDependentRenderMethodData> dependentRenderMethods)
+            List<SDependentRenderMethodData> dependentRenderMethods,
+            List<RenderMethodOption.ParameterBlock> renderMethodParameters,
+            byte[] options)
         {
             // Fixup render method parameters
 
             foreach (var dependent in dependentRenderMethods)
             {
-                var postprocess = (dependent.Definition as RenderMethod).ShaderProperties[0];
+                var renderMethod = (dependent.Definition as RenderMethod);
+
+                renderMethod.Options = GenerateRenderMethodOptionIndices(options);
+
+                var postprocess = renderMethod.ShaderProperties[0];
 
                 List<TextureConstant> reorderedTextureConstants = new List<TextureConstant>();
                 foreach (var textureName in rmt2.TextureParameterNames)
                 {
                     int origIndex = dependent.OrderedTextures.IndexOf(cache.StringTable.GetString(textureName.Name));
                     if (origIndex != -1)
+                    {
                         reorderedTextureConstants.Add(postprocess.TextureConstants[origIndex]);
-                    else
-                        reorderedTextureConstants.Add(new TextureConstant());
+                    }
+                    else 
+                    {
+                        var parameter = renderMethodParameters.Where(p => 
+                        p.Type == RenderMethodOption.ParameterBlock.OptionDataType.Bitmap && 
+                        p.Name == textureName.Name).FirstOrDefault();
+
+                        var constant = new TextureConstant();
+
+                        if (parameter != null) 
+                        {
+                            constant = new TextureConstant
+                            {
+                                Bitmap = parameter.DefaultSamplerBitmap,
+                                SamplerAddressMode = new TextureConstant.PackedSamplerAddressMode
+                                {
+                                    AddressU = (TextureConstant.SamplerAddressModeEnum)parameter.DefaultAddressMode,
+                                    AddressV = (TextureConstant.SamplerAddressModeEnum)parameter.DefaultAddressMode
+                                },
+                                FilterMode = (TextureConstant.SamplerFilterMode)parameter.DefaultFilterMode,
+                                ExternTextureMode = TextureConstant.RenderMethodExternTextureMode.UseBitmapAsNormal,
+                                TextureTransformConstantIndex = -1
+                            };
+                        }
+
+                        reorderedTextureConstants.Add(constant);
+                    }
                 }
                 postprocess.TextureConstants = reorderedTextureConstants;
 
@@ -736,9 +741,44 @@ namespace TagTool.Commands.Shaders
                 {
                     int origIndex = dependent.OrderedRealParameters.IndexOf(cache.StringTable.GetString(realName.Name));
                     if (origIndex != -1)
+                    {
                         reorderedRealConstants.Add(postprocess.RealConstants[origIndex]);
+                    }
                     else
-                        reorderedRealConstants.Add(new RealConstant());
+                    {
+                        var parameter = renderMethodParameters.Where(p => 
+                        (p.Type == RenderMethodOption.ParameterBlock.OptionDataType.Real || 
+                        p.Type == RenderMethodOption.ParameterBlock.OptionDataType.Color || 
+                        p.Type == RenderMethodOption.ParameterBlock.OptionDataType.ArgbColor) && 
+                        p.Name == realName.Name).FirstOrDefault();
+
+                        var constant = new RealConstant
+                        {
+                            Values = new float[4]
+                        };
+
+                        if (parameter != null)
+                        {
+                            switch (parameter.Type)
+                            {
+                                case RenderMethodOption.ParameterBlock.OptionDataType.Real:
+                                    constant.Values[0] = parameter.DefaultFloatArgument;
+                                    constant.Values[1] = parameter.DefaultFloatArgument;
+                                    constant.Values[2] = parameter.DefaultFloatArgument;
+                                    constant.Values[3] = parameter.DefaultFloatArgument;
+                                    break;
+                                case RenderMethodOption.ParameterBlock.OptionDataType.Color:
+                                case RenderMethodOption.ParameterBlock.OptionDataType.ArgbColor:
+                                    constant.Values[0] = parameter.DefaultColor.Alpha;
+                                    constant.Values[1] = parameter.DefaultColor.Red;
+                                    constant.Values[2] = parameter.DefaultColor.Green;
+                                    constant.Values[3] = parameter.DefaultColor.Blue;
+                                    break;
+                            }
+                        }
+
+                        reorderedRealConstants.Add(constant);
+                    }
                 }
                 postprocess.RealConstants = reorderedRealConstants;
 
@@ -747,9 +787,22 @@ namespace TagTool.Commands.Shaders
                 {
                     int origIndex = dependent.OrderedIntParameters.IndexOf(cache.StringTable.GetString(intName.Name));
                     if (origIndex != -1)
+                    {
                         reorderedIntConstants.Add(postprocess.IntegerConstants[origIndex]);
-                    else
-                        reorderedIntConstants.Add(new uint());
+                    }
+                    else 
+                    {
+                        var parameter = renderMethodParameters.Where(p => 
+                        p.Type == RenderMethodOption.ParameterBlock.OptionDataType.Int && 
+                        p.Name == intName.Name).FirstOrDefault();
+
+                        var constant = new uint();
+
+                        if (parameter != null)
+                            constant = parameter.DefaultIntBoolArgument;
+
+                        reorderedIntConstants.Add(constant);
+                    }
                 }
                 postprocess.IntegerConstants = reorderedIntConstants;
 
