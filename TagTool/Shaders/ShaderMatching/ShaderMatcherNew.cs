@@ -486,28 +486,6 @@ namespace TagTool.Shaders.ShaderMatching
                         int portingOptionIndex = srcRmt2Descriptor.Options[j];
                         string optionName = PortingCache.StringTable.GetString(portingRmdfDefinition.Categories[j].ShaderOptions[portingOptionIndex].Name);
 
-                        // these are perfect option matches
-                        // do not touch unless verified
-                        // shouldn't be necessary, just add the data to the base cache :/
-                        switch ($"{methodName}\\{optionName}") 
-                        {
-                            case @"self_illumination\change_color" when srcRmt2Descriptor.Type == "shader":
-                                optionName = "illum_change_color";
-                                break;
-                            case @"misc\default":
-                                optionName = "always_calc_albedo";
-                                break;
-                            case @"alpha_test\from_texture":
-                                optionName = "simple";
-                                break;
-                            //case @"material_model\cook_torrance" when PortingCache.Version == CacheVersion.Halo3ODST:
-                            //    optionName = "cook_torrance_odst";
-                            //    break;
-                            //case @"material_model\cook_torrance_rim_fresnel":
-                            //    optionName = "cook_torrance";
-                            //    break;
-                        }
-
                         if (PortingCache.Version == CacheVersion.HaloReach)
                         {
                             switch ($"{methodName}\\{optionName}") 
@@ -532,6 +510,25 @@ namespace TagTool.Shaders.ShaderMatching
                         // fixup names (remove when full rmdf + shader generation for each gen3 game)
                         switch ($"{methodName}\\{optionName}")
                         {
+                            // these are perfect option matches
+                            // do not touch unless verified
+                            // shouldn't be necessary, just add the data to the base cache :/
+                            //case @"self_illumination\change_color" when srcRmt2Descriptor.Type == "shader":
+                            //    optionName = "illum_change_color";
+                            //    break;
+                            //case @"misc\default":
+                            //    optionName = "always_calc_albedo";
+                            //    break;
+                            //case @"alpha_test\from_texture":
+                            //    optionName = "simple";
+                            //    break;
+                            //case @"material_model\cook_torrance" when PortingCache.Version == CacheVersion.Halo3ODST:
+                            //    optionName = "cook_torrance_odst";
+                            //    break;
+                            //case @"material_model\cook_torrance_rim_fresnel":
+                            //    optionName = "cook_torrance";
+                            //    break;
+
                             //// Reach rmsh //
                             //case @"albedo\patchy_emblem":
                             //    optionName = "emblem_change_color";
