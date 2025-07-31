@@ -1,6 +1,7 @@
 ﻿using HaloShaderGenerator.Globals;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
@@ -9,7 +10,11 @@ namespace TagTool.Commands.Shaders
 {
     public class GenerateRmdfCommand : Command
     {
-        GameCache Cache;
+        public GameCache Cache;
+
+        private bool regenGlobals = true;
+        private bool applyFixes = true;
+        private ShaderType shaderType;
 
         public GenerateRmdfCommand(GameCache cache) :
             base(true,
@@ -17,10 +22,7 @@ namespace TagTool.Commands.Shaders
                 "GenerateRmdf",
                 "Generates a render method definition tag according to the specified type.",
 
-                // TODO: Update this to use actual variable names instead of boolean inputs
-                // TODO: Maybe also use an input stack, and just track which inputs are included,
-                // rather than forcing the user to provide inputs for each parameter.
-                "GenerateRmdf <Shader Type> <Regenerate Global Shaders> [Apply Fixes]",
+                "GenerateRmdf <Shader Type> [noglobals] [nofixes]",
                 "Generates a render method definition tag according to the specified type.")
         {
             Cache = cache;
@@ -28,28 +30,36 @@ namespace TagTool.Commands.Shaders
 
         public override object Execute(List<string> args)
         {
-            bool regenGlobals = false;
-            bool applyFixes = true;
+            Stack<string> argStack = new Stack<string>(args.AsEnumerable().Reverse());
 
-            if (args.Count > 3)
+            if (args.Count < 1 || args.Count > 3)
                 return new TagToolError(CommandError.ArgCount);
 
-            if (!Enum.TryParse(args[0], true, out ShaderType shaderType))
+            if (!Enum.TryParse(argStack.Pop(), true, out shaderType))
                 return new TagToolError(CommandError.ArgInvalid, $"\"{args[0]}\" is not a supported or valid shader type.");
 
-            if (!bool.TryParse(args[1], out regenGlobals))
-                return new TagToolError(CommandError.ArgInvalid, $"\"{args[1]}\" is not a valid boolean value.");
+            while (argStack.Count > 0) 
+            {
+                string arg = argStack.Peek();
+                switch (arg.ToLower()) 
+                {
+                    case "noglobals":
+                        argStack.Pop();
+                        regenGlobals = false;
+                        break;
+                    case "nofixes":
+                        argStack.Pop();
+                        applyFixes = false;
+                        break;
+                    default:
+                        return new TagToolError(CommandError.ArgInvalid, $"\"{arg}\" is not a valid input parameter");
+                }
+            }
 
-            if (args.Count > 2)
-                if (!bool.TryParse(args[2], out applyFixes))
-                    return new TagToolError(CommandError.ArgInvalid, $"\"{args[2]}\" is not a valid boolean value.");
-
-            // TODO: Update global shader generator table
             var generator = TagTool.Shaders.ShaderGenerator.ShaderGenerator.GetGlobalShaderGenerator(shaderType);
 
             string rmdfName = $"shaders\\{shaderType.ToString().ToLowerInvariant()}";
 
-            // TODO: Update shader generator
             switch (shaderType)
             {
                 case ShaderType.LightVolume:
@@ -67,7 +77,6 @@ namespace TagTool.Commands.Shaders
 
             using (var stream = Cache.OpenCacheReadWrite())
             {
-                // TODO: Update render method definition generator
                 var rmdf = TagTool.Shaders.ShaderGenerator.RenderMethodDefinitionGenerator.GenerateRenderMethodDefinition(Cache, stream, generator, shaderType, regenGlobals, applyFixes);
                 Cache.Serialize(stream, rmdfTag, rmdf);
             }
