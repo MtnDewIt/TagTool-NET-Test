@@ -486,32 +486,45 @@ namespace TagTool.Shaders.ShaderMatching
                         int portingOptionIndex = srcRmt2Descriptor.Options[j];
                         string optionName = PortingCache.StringTable.GetString(portingRmdfDefinition.Categories[j].ShaderOptions[portingOptionIndex].Name);
 
-                        //if (PortingCache.Version == CacheVersion.Halo3ODST && methodName == "material_model" && optionName == "cook_torrance")
-                        //    optionName = "cook_torrance_odst";
-                        //if (methodName == "material_model" && optionName == "cook_torrance_rim_fresnel")
-                        //    optionName = "cook_torrance";
+                        // these are perfect option matches
+                        // do not touch unless verified
+                        // shouldn't be necessary, just add the data to the base cache :/
+                        switch ($"{methodName}\\{optionName}") 
+                        {
+                            case @"self_illumination\change_color" when srcRmt2Descriptor.Type == "shader":
+                                optionName = "illum_change_color";
+                                break;
+                            case @"misc\default":
+                                optionName = "always_calc_albedo";
+                                break;
+                            case @"alpha_test\from_texture":
+                                optionName = "simple";
+                                break;
+                            //case @"material_model\cook_torrance" when PortingCache.Version == CacheVersion.Halo3ODST:
+                            //    optionName = "cook_torrance_odst";
+                            //    break;
+                            //case @"material_model\cook_torrance_rim_fresnel":
+                            //    optionName = "cook_torrance";
+                            //    break;
+                        }
 
                         if (PortingCache.Version == CacheVersion.HaloReach)
                         {
-                            // keep in sync with cubemap conversion - not needed anymore?
-                            //if (methodName == "environment_mapping" && optionName == "dynamic")
-                            //{
-                            //    optionName = "dynamic_reach";
-                            //}
-                            if (methodName == "material_model")
+                            switch ($"{methodName}\\{optionName}") 
                             {
-                                switch (optionName)
-                                {
-                                    case "cook_torrance":
-                                        optionName = "cook_torrance_reach";
-                                        break;
-                                    case "two_lobe_phong":
-                                        optionName = "two_lobe_phong_reach";
-                                        break;
-                                    //case "organism":
-                                    //    optionName = "organism_reach"
-                                    //    break;
-                                }
+                                // keep in sync with cubemap conversion - not needed anymore?
+                                //case @"environment_mapping\dynamic":
+                                //    optionName = "dynamic_reach";
+                                //    break;
+                                case @"material_model\cook_torrance":
+                                    optionName = "cook_torrance_reach";
+                                    break;
+                                case @"material_model\two_lobe_phong":
+                                    optionName = "two_lobe_phong_reach";
+                                    break;
+                                //case @"material_model\organism":
+                                //    optionName = "organism_reach"
+                                //    break;
                             }
                         }
 
@@ -519,12 +532,38 @@ namespace TagTool.Shaders.ShaderMatching
                         // fixup names (remove when full rmdf + shader generation for each gen3 game)
                         switch ($"{methodName}\\{optionName}")
                         {
+                            //// Reach rmsh //
+                            //case @"albedo\patchy_emblem":
+                            //    optionName = "emblem_change_color";
+                            //    break;
+                            //case @"bump_mapping\detail_blend":
+                            //case @"bump_mapping\three_detail_blend":
+                            //    optionName = "detail";
+                            //    break;
+                            //case @"specular_mask\specular_mask_mult_diffuse":
+                            //    optionName = "specular_mask_from_texture";
+                            //    break;
+                            //// Reach rmtr  //
+                            //case @"blending\distance_blend_base":
+                            //    optionName = "morph";
+                            //    break;
                             // Reach rmfl // These options require the addition of extra entry points in order to get full functionality
                             case @"material_model\flat":
                             case @"material_model\specular":
                             case @"material_model\translucent":
                                 optionName = "default";
                                 break;
+                            //// Reach prt3 //
+                            //case @"lighting\per_pixel_smooth":
+                            //case @"lighting\smoke_lighting":
+                            //    optionName = "per_pixel_ravi_order_3";
+                            //    break;
+                            //case @"lighting\per_vertex_ambient":
+                            //    optionName = "per_vertex_ravi_order_0";
+                            //    break;
+                            //case @"depth_fade\low_res":
+                            //    optionName = "on";
+                            //    break;
                         }
 
                         bool matchFound = false;
