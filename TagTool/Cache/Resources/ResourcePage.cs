@@ -48,6 +48,7 @@ namespace TagTool.Cache.Resources
 
         public ResourceChecksum Checksum;
 
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public ResourceSubpageTable StreamingSublocationTable;
 
         [Flags]
