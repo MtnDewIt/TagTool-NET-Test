@@ -145,7 +145,8 @@ namespace TagTool.Commands.Shaders
 
                             var pixl = cache.Deserialize<PixelShader>(stream, CurrentRmt2.PixelShader);
 
-                            Directory.CreateDirectory(OutputPath + "\\" + cache.Version.ToString() + "\\" + tagName);
+                            var tagOutputPath = Path.Combine(OutputPath, cache.Version.ToString(), tagName);
+                            Directory.CreateDirectory(tagOutputPath);
 
                             foreach (var entry in Enum.GetValues(entryPointEnum))
                             {
@@ -172,7 +173,9 @@ namespace TagTool.Commands.Shaders
                     }
 
                     // glps
-                    Directory.CreateDirectory(OutputPath + "\\" + cache.Version.ToString() + "\\" + glpsTagName);
+                    var glpsOutputPath = Path.Combine(OutputPath, cache.Version.ToString(), glpsTagName);
+                    Directory.CreateDirectory(glpsOutputPath);
+
                     foreach (var entry in Enum.GetValues(entryPointEnum))
                     {
                         CurrentEntryPointIndex = GetEntryPointIndex(entry, cache.Version);
@@ -213,6 +216,8 @@ namespace TagTool.Commands.Shaders
                         {
                             var vertexFormat = glvs.VertexTypes[(int)vert];
                             var dirName = Path.Combine(glvsTagName, vert.ToString().ToLower());
+                            var outputPath = Path.Combine(OutputPath, cache.Version.ToString(), dirName);
+
                             foreach (var entry in Enum.GetValues(entryPointEnum))
                             {
                                 CurrentEntryPointIndex = GetEntryPointIndex(entry, cache.Version);
@@ -222,7 +227,8 @@ namespace TagTool.Commands.Shaders
                                     var entryShader = vertexFormat.EntryPoints[CurrentEntryPointIndex].ShaderIndex;
                                     if (entryShader != -1)
                                     {
-                                        Directory.CreateDirectory(OutputPath + "\\" + cache.Version.ToString() + "\\" + dirName);
+
+                                        Directory.CreateDirectory(outputPath);
                                         string entryName = entry.ToString().ToLower() + ".shared_vertex_shader";
                                         string vertexShaderFileName = Path.Combine(dirName, entryName);
 
@@ -240,7 +246,7 @@ namespace TagTool.Commands.Shaders
 
                                                 if (entryShader != -1)
                                                 {
-                                                    Directory.CreateDirectory(OutputPath + "\\" + cache.Version.ToString() + "\\" + dirName);
+                                                    Directory.CreateDirectory(outputPath);
                                                     string entryName = entry.ToString().ToLower() + $"_catg{i}_i{j}.shared_vertex_shader";
                                                     string vertexShaderFileName = Path.Combine(dirName, entryName);
 
@@ -274,7 +280,9 @@ namespace TagTool.Commands.Shaders
                         else
                         {
                             string shaderName = explicitShader.PixelShader.Name.Split('\\')[2];
-                            Directory.CreateDirectory(OutputPath + "\\" + cache.Version.ToString() + "\\explicit\\" + shaderName);
+
+                            var outputPath = Path.Combine(OutputPath, cache.Version.ToString(), "explicit", shaderName);
+                            Directory.CreateDirectory(outputPath);
 
                             var pixl = cache.Deserialize<PixelShader>(stream, explicitShader.PixelShader);
                             foreach (var entry in Enum.GetValues(entryPointEnum))
@@ -320,7 +328,9 @@ namespace TagTool.Commands.Shaders
                                         int shaderIndex = vtsh.EntryPoints[CurrentEntryPointIndex].SupportedVertexTypes[j].Offset + k;
 
                                         var dirName = Path.Combine("explicit\\" + shaderName + "\\", ((VertexType)k).ToString().ToLower() + "\\");
-                                        Directory.CreateDirectory(OutputPath + "\\" + cache.Version.ToString() + "\\" + dirName);
+
+                                        var outputPath = Path.Combine(OutputPath, cache.Version.ToString(), dirName);
+                                        Directory.CreateDirectory(outputPath);
 
                                         string entryName = shaderIndex + "_" + entry.ToString().ToLower() + ".vertex_shader";
                                         string vertexShaderFilename = Path.Combine(dirName, entryName);
@@ -353,7 +363,9 @@ namespace TagTool.Commands.Shaders
                             else
                             {
                                 string shaderName = hudShader.PixelShader.Name.Split('\\')[2];
-                                Directory.CreateDirectory(OutputPath + "\\" + cache.Version.ToString() + "\\chud\\" + shaderName);
+
+                                var outputPath = Path.Combine(OutputPath, cache.Version.ToString(), "chud", shaderName);
+                                Directory.CreateDirectory(outputPath);
 
                                 var pixl = cache.Deserialize<PixelShader>(stream, hudShader.PixelShader);
                                 foreach (var entry in Enum.GetValues(entryPointEnum))
@@ -399,7 +411,9 @@ namespace TagTool.Commands.Shaders
                                             int shaderIndex = vtsh.EntryPoints[CurrentEntryPointIndex].SupportedVertexTypes[j].Offset + k;
 
                                             var dirName = Path.Combine("chud\\" + shaderName + "\\", ((VertexType)k).ToString().ToLower() + "\\");
-                                            Directory.CreateDirectory(OutputPath + "\\" + cache.Version.ToString() + "\\" + dirName);
+
+                                            var outputPath = Path.Combine(OutputPath, cache.Version.ToString(), dirName);
+                                            Directory.CreateDirectory(outputPath);
 
                                             string entryName = shaderIndex + "_" + entry.ToString().ToLower() + ".vertex_shader";
                                             string vertexShaderFilename = Path.Combine(dirName, entryName);
