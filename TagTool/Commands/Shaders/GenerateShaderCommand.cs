@@ -57,8 +57,6 @@ namespace TagTool.Commands.Shaders
 
         public GameCache Cache;
 
-        private bool applyFixes = true;
-
         public GenerateShaderCommand(GameCache cache) :
             base(true,
 
@@ -80,6 +78,8 @@ namespace TagTool.Commands.Shaders
 
         public override object Execute(List<string> args)
         {
+            bool applyFixes = true;
+
             if (args.Count > 3 || args.Count < 2)
                 return new TagToolError(CommandError.ArgCount);
 

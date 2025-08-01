@@ -12,10 +12,6 @@ namespace TagTool.Commands.Shaders
     {
         public GameCache Cache;
 
-        private bool regenGlobals = true;
-        private bool applyFixes = true;
-        private ShaderType shaderType;
-
         public GenerateRmdfCommand(GameCache cache) :
             base(true,
 
@@ -34,12 +30,15 @@ namespace TagTool.Commands.Shaders
 
         public override object Execute(List<string> args)
         {
+            bool regenGlobals = true;
+            bool applyFixes = true;
+
             Stack<string> argStack = new Stack<string>(args.AsEnumerable().Reverse());
 
             if (args.Count < 1 || args.Count > 3)
                 return new TagToolError(CommandError.ArgCount);
 
-            if (!Enum.TryParse(argStack.Pop(), true, out shaderType))
+            if (!Enum.TryParse(argStack.Pop(), true, out ShaderType shaderType))
                 return new TagToolError(CommandError.ArgInvalid, $"\"{args[0]}\" is not a supported or valid shader type.");
 
             while (argStack.Count > 0) 
