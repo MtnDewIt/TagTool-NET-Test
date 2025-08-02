@@ -3113,7 +3113,7 @@ namespace TagTool.Tags.Definitions
             public RealEulerAngles2d Facing;
             public Angle Roll;
 
-            public List<GNullBlock> Tasks;
+            public List<GroupDistributionBlock.TaskDistribution> Tasks;
 
             public short Character;
             public short Weapon;
