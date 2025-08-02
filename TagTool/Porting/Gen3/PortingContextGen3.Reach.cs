@@ -303,14 +303,14 @@ namespace TagTool.Porting.Gen3
         {
             for (int i = 0; i < instanceList.Count; i++) 
             {
-                var label = (instanceList[i] as Scenario.IMultiplayerInstance).Multiplayer.MegaloLabel;
+                var objectProperties = ReflectionHelpers.GetFirstInstanceOfType<Scenario.MultiplayerObjectProperties>(instanceList[i]);
                 var paletteIndex = (instanceList[i] as Scenario.ScenarioInstance).PaletteIndex;
 
-                if (label.Contains("invasion") || label.StartsWith("inv")) 
+                if (objectProperties.MegaloLabel.Contains("invasion") || objectProperties.MegaloLabel.StartsWith("inv")) 
                 {
                     if (paletteIndex != -1)
                         if (whiteList.Contains(palette[paletteIndex].Object?.Name))
-                            (instanceList[i] as Scenario.IMultiplayerInstance).Multiplayer.MegaloLabel = "none";
+                            objectProperties.MegaloLabel = "none";
                 }
             }
         }
