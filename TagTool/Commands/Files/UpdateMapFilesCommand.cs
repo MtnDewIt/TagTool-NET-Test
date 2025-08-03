@@ -1,17 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Commands.Common;
-using TagTool.Tags.Definitions;
-using TagTool.IO;
-using TagTool.BlamFile;
-using TagTool.Cache.HaloOnline;
-using TagTool.BlamFile.MCC;
-using Newtonsoft.Json;
-using TagTool.Tags;
-using TagTool.BlamFile.Chunks;
 
 namespace TagTool.Commands.Files
 {
@@ -40,254 +32,22 @@ namespace TagTool.Commands.Files
                 return new TagToolError(CommandError.ArgCount);
 
             bool forceUpdate = false;
-            bool pathProvided = false;
             string mapInfoPath = "";
-            string modInfoPath = "";
 
             if (args.Count >= 1)
             {
-                pathProvided = true;
-
-                if (!Directory.Exists(args[0])) 
-                {
+                if (!Directory.Exists(args[0]))
                     return new TagToolError(CommandError.ArgInvalid, "Given mapinfo directory does not exist.");
-                }
-                else 
-                {
+                else
                     mapInfoPath = args[0];
-                    modInfoPath = Path.Combine(args[0], "ModInfo.json");
-                }
             }
 
-            if (args.Count == 2)
-                if (args[1].ToLower() == "forceupdate")
-                    forceUpdate = true;
+            if (args.Count > 1 && args[1].Equals("forceupdate", StringComparison.CurrentCultureIgnoreCase))
+                forceUpdate = true;
 
-            var isExcessionData = File.Exists(modInfoPath);
+            MapFileUpdater.UpdateMapFiles(Cache, mapInfoPath, forceUpdate);
 
-            using (var cacheStream = Cache.OpenCacheRead()) 
-            {
-                if (Cache is GameCacheHaloOnline)
-                {
-                    // Generate / update the map files
-                    foreach (var scenario in Cache.TagCache.FindAllInGroup("scnr"))
-                    {
-                        var name = scenario.Name.Split('\\').Last();
-                        var mapInfoName = $"{name}.mapinfo";
-                        var mapFileName = $"{name}.map";
-                        var targetPath = Path.Combine(Cache.Directory.FullName, mapFileName);
-
-                        MapFile map;
-                        Blf mapInfo = null;
-
-                        if (pathProvided)
-                        {
-                            if (isExcessionData)
-                            {
-                                mapInfo = GenerateMapInfo(cacheStream, scenario, mapInfoPath, modInfoPath);
-                            }
-                            else
-                            {
-                                mapInfo = GetMapInfo(mapInfoPath, mapInfoName);
-                            }
-                        }
-
-                        try
-                        {
-                            var fileInfo = Cache.Directory.GetFiles(mapFileName)[0];
-                            map = new MapFile();
-                            using (var stream = fileInfo.Open(FileMode.Open, FileAccess.Read))
-                            using (var reader = new EndianReader(stream))
-                                map.Read(reader);
-
-                            var header = (CacheFileHeaderGenHaloOnline)map.Header;
-                            header.ScenarioTagIndex = scenario.Index;
-
-                            if (mapInfo != null)
-                                if (forceUpdate || map.MapFileBlf == null)
-                                    map.MapFileBlf = mapInfo;
-
-                        }
-                        catch (Exception)
-                        {
-                            using (var tagStream = Cache.OpenCacheRead())
-                            {
-                                var scnr = Cache.Deserialize<Scenario>(tagStream, scenario);
-
-                                var mapBuilder = new MapFileGenerator(Cache.Version);
-                                mapBuilder.MapInfo = mapInfo?.Scenario;
-
-                                map = mapBuilder.Build(scenario, scnr);
-                            }
-                        }
-
-                        var targetFile = new FileInfo(targetPath);
-                        using (var stream = targetFile.Create())
-                        using (var writer = new EndianWriter(stream))
-                        {
-                            map.Write(writer);
-                        }
-
-                        if (mapInfo != null)
-                            Console.WriteLine($"Scenario 0x{scenario.Index:X4} \"{name}\" using map info");
-                        else
-                            new TagToolWarning($"Scenario 0x{scenario.Index:X4} \"{name}\" NOT using map info");
-
-                    }
-                    Console.WriteLine("Done!");
-                    return true;
-                }
-                else if (Cache is GameCacheModPackage modCache)
-                {
-                    // Generate / update the map files
-                    foreach (var scenario in Cache.TagCache.FindAllInGroup("scnr"))
-                    {
-                        // ignore maps that are in the base cache unmodified
-                        if ((scenario as CachedTagHaloOnline).IsEmpty())
-                            continue;
-
-                        var name = scenario.Name.Split('\\').Last();
-                        var mapInfoName = $"{name}.mapinfo";
-                        var mapFileName = $"{name}.map";
-
-                        MapFile map;
-                        Blf mapInfo = null;
-
-                        if (pathProvided)
-                        {
-                            if (isExcessionData)
-                            {
-                                mapInfo = GenerateMapInfo(cacheStream, scenario, mapInfoPath, modInfoPath);
-                            }
-                            else
-                            {
-                                mapInfo = GetMapInfo(mapInfoPath, mapInfoName);
-                            }
-                        }
-
-                        var tagStream = Cache.OpenCacheRead();
-                        var scnr = Cache.Deserialize<Scenario>(tagStream, scenario);
-
-                        var mapBuilder = new MapFileGenerator(Cache.Version);
-                        mapBuilder.MapInfo = mapInfo?.Scenario;
-                        map = mapBuilder.Build(scenario, scnr);
-
-                        var mapStream = new MemoryStream();
-                        var writer = new EndianWriter(mapStream, leaveOpen: true);
-                        map.Write(writer);
-
-                        var header = (CacheFileHeaderGenHaloOnline)map.Header;
-                        modCache.AddMapFile(mapStream, header.MapId);
-
-                        if (mapInfo != null)
-                            Console.WriteLine($"Scenario 0x{scenario.Index:X4} \"{name}\" using map info");
-                        else
-                            new TagToolWarning($"Scenario 0x{scenario.Index:X4} \"{name}\" NOT using map info");
-                    }
-                    Console.WriteLine("Done!");
-                    return true;
-                }
-                else 
-                {
-                    return new TagToolError(CommandError.CacheUnsupported);
-                }
-            }
-        }
-
-        public Blf GetMapInfo(string mapInfoPath, string mapInfoName) 
-        {
-            var mapInfoDir = new DirectoryInfo(mapInfoPath);
-            var files = mapInfoDir.GetFiles(mapInfoName);
-
-            if (files.Length != 0)
-            {
-                var mapInfoFile = files[0];
-                using (var stream = mapInfoFile.Open(FileMode.Open, FileAccess.Read))
-                using (var reader = new EndianReader(stream))
-                {
-                    CacheVersion version = CacheVersion.Halo3Retail;
-                    CachePlatform platform = CachePlatform.Original;
-
-                    switch (reader.Length)
-                    {
-                        case 0x4e91:
-                            version = CacheVersion.Halo3Retail;
-                            break;
-                        case 0x9A01:
-                            version = CacheVersion.Halo3ODST;
-                            break;
-                        case 0xCDD9:
-                            version = CacheVersion.HaloReach;
-                            break;
-                        default:
-                            throw new Exception("Unexpected map info file size");
-                    }
-
-                    var mapInfo = new Blf(version, platform);
-                    mapInfo.Read(reader);
-                    mapInfo.ConvertBlf(Cache.Version);
-
-                    return mapInfo;
-                }
-            }
-
-            return null;
-        }
-
-        public Blf GenerateMapInfo(Stream stream, CachedTag scenario, string mapInfoPath, string modInfoPath)
-        {
-            var jsonData = File.ReadAllText(modInfoPath);
-            var modInfo = JsonConvert.DeserializeObject<ModInfo>(jsonData);
-            var mapInfoList = modInfo.GetMapInfoList(mapInfoPath);
-            var campaignInfoTable = ModInfo.GetCampaignInfoTable(mapInfoPath);
-            var scenarioTable = CampaignInfo.GetScenarioTable(Cache, stream);
-
-            foreach (var mapInfo in mapInfoList)
-            {
-                if (scenario.Name.EndsWith(mapInfo.Key))
-                {
-                    var scnr = Cache.Deserialize<Scenario>(stream, scenario);
-
-                    var mapBlf = new Blf(Cache.Version, Cache.Platform)
-                    {
-                        ContentFlags = Blf.BlfFileContentFlags.StartOfFile | Blf.BlfFileContentFlags.EndOfFile | Blf.BlfFileContentFlags.Scenario,
-
-                        StartOfFile = new BlfChunkStartOfFile
-                        {
-                            Signature = "_blf",
-                            Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkStartOfFile), Cache.Version, Cache.Platform),
-                            MajorVersion = 1,
-                            MinorVersion = 2,
-                            ByteOrderMark = -2,
-                        },
-
-                        EndOfFile = new BlfChunkEndOfFile
-                        {
-                            Signature = "_eof",
-                            Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkEndOfFile), Cache.Version, Cache.Platform),
-                            MajorVersion = 1,
-                            MinorVersion = 2
-                        },
-
-                        Scenario = new BlfScenario
-                        {
-                            Signature = "levl",
-                            Length = (int)TagStructure.GetStructureSize(typeof(BlfScenario), Cache.Version, Cache.Platform),
-                            MajorVersion = 3,
-                            MinorVersion = 1,
-                            Names = Enumerable.Repeat(new BlfScenario.NameUnicode32 { Name = "" }, 12).ToArray(),
-                            Descriptions = Enumerable.Repeat(new BlfScenario.NameUnicode128 { Name = "" }, 12).ToArray(),
-                            Insertions = Enumerable.Repeat(new BlfScenario.BlfScenarioInsertion { Names = Enumerable.Repeat(new BlfScenario.NameUnicode32 { Name = "" }, 12).ToArray(), Descriptions = Enumerable.Repeat(new BlfScenario.NameUnicode128 { Name = "" }, 12).ToArray() }, 9).ToArray(),
-                        },
-                    };
-
-                    ModInfo.ConvertMapInfo(scenarioTable, campaignInfoTable, mapInfo.Value, mapBlf.Scenario, scnr);
-
-                    return mapBlf;
-                }
-            }
-
-            return null;
+            return true;
         }
     }
 }

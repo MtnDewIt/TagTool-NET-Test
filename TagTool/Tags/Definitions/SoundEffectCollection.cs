@@ -11,21 +11,44 @@ namespace TagTool.Tags.Definitions
 	{
         public List<PlatformSoundPlaybackBlock> SoundEffects;
 
-        [TagStructure(Size = 0x4C)]
+        [TagStructure(Size = 0x4C, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x30, MinVersion = CacheVersion.HaloReach)]
         public class PlatformSoundPlaybackBlock : TagStructure
 		{
             public StringId Name;
+
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public List<PlatformSoundOverrideMixbinsBlock> OverrideMixbins;
+
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public PlatformSoundPlaybackFlagsDefinition Flags;
+
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public uint RadioChannel;
 
-            [TagField(Length = 0x4, Flags = Padding)]
+            [TagField(Length = 0x4, Flags = Padding, MaxVersion = CacheVersion.HaloOnline700123)]
             public byte[] Padding0;
 
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public List<FilterBlock> Filter;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public List<PitchLFOBlock> PitchLFO;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public List<FilterLFOBlock> FilterLFO;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public List<SoundEffectBlock> SoundEffect;
+
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public SoundEffectFlagsReach FlagsReach;
+
+            [TagField(ValidTags = ["srad"], MinVersion = CacheVersion.HaloReach)]
+            public CachedTag RadioEffect;
+
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public List<LowpassEffectBlock> LowPassEffect;
+
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public List<SoundEffectBlock.Component> SoundComponents;
 
             [TagStructure(Size = 0x8)]
             public class PlatformSoundOverrideMixbinsBlock : TagStructure
@@ -56,6 +79,13 @@ namespace TagTool.Tags.Definitions
             {
                 Use3dRadioHack = 1 << 0,
                 ForceFirstPerson = 1 << 1
+            }
+
+            [Flags]
+            public enum SoundEffectFlagsReach : uint
+            {
+                TurnOffInSplitscreen = 1 << 0,
+                OnlyTurnOnInFirstPerson = 1 << 1
             }
 
             [TagStructure(Size = 0x48)]
@@ -115,7 +145,11 @@ namespace TagTool.Tags.Definitions
                     [TagField(ValidTags = new[] { "snd!", "lsnd" })]
                     public CachedTag Sound;
                     public uint Gain;
+
+                    [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                     public SoundEffectComponentFlags Flags;
+                    [TagField(MinVersion = CacheVersion.HaloReach)]
+                    public SoundEffectComponentFlagsReach FlagsReach;
 
                     [Flags]
                     public enum SoundEffectComponentFlags : uint
@@ -126,6 +160,15 @@ namespace TagTool.Tags.Definitions
                         PlayAlternate = 1 << 3,
                         PlayAlternateOnAbnormalStop = 1 << 4,
                         SyncWithOriginLoopingSound = 1 << 5
+                    }
+
+                    [Flags]
+                    public enum SoundEffectComponentFlagsReach : uint
+                    {
+                        DontPlayAtStart = 1 << 0,
+                        PlayOnStop = 1 << 1,
+                        PlayAlternate = 1 << 2,
+                        SyncWithOriginLoopingSound = 1 << 3
                     }
                 }
 
@@ -152,6 +195,16 @@ namespace TagTool.Tags.Definitions
                 public class GNullBlock : TagStructure
                 {
                 }
+            }
+
+
+            [TagStructure(Size = 0x10)]
+            public class LowpassEffectBlock : TagStructure
+            {
+                public float Attack;
+                public float Release;
+                public float CutoffFrequency;
+                public float OutputGain;
             }
         }
     }

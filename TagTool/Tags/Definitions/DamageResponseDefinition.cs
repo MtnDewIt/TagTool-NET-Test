@@ -71,7 +71,7 @@ namespace TagTool.Tags.Definitions
                 public float Duration;
                 public GlobalReverseTransitionFunctionsEnum FadeFunction;
 
-                [TagField(Length = 2, Flags = Padding, MinVersion = CacheVersion.Halo3Retail)]
+                [TagField(Length = 2, Flags = Padding, MinVersion = CacheVersion.Halo3Beta)]
                 public byte[] Padding0;
 
                 public float MaxIntensity;

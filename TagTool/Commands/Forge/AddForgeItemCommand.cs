@@ -5,6 +5,7 @@ using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
 using System.Linq;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Forge
 {
@@ -43,7 +44,7 @@ namespace TagTool.Commands.Forge
                     return new TagToolError(CommandError.ArgCount);
 
                 if (!Cache.TagCache.TryGetCachedTag(args.Last(), out Item))
-                    return new TagToolError(CommandError.CustomError, $"Could not find tag \"{args.Last()}\"");
+                    return new TagToolError(CommandError.TagInvalid);
                 else if (!Item.IsInGroup("obje"))
                     return new TagToolError(CommandError.CustomError, "Tag is not an object.");
 
@@ -95,7 +96,8 @@ namespace TagTool.Commands.Forge
                             case 1:
                                 break;
                             default:
-                                return new TagToolWarning("Multiple categories which this name were found. Category will be the last encountered.");
+                                Log.Warning("Multiple categories which this name were found. Category will be the last encountered.");
+                                return true;
                         }
 
                         PaletteCategoryIndex = nameIndices.Last();

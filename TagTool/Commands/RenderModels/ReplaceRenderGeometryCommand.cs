@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Numerics;
 using System.Text.RegularExpressions;
 using Assimp;
 using Assimp.Configs;
@@ -13,6 +12,7 @@ using TagTool.Commands.Common;
 using TagTool.Geometry;
 using TagTool.Tags.Definitions;
 using static TagTool.Tags.Definitions.RenderModel;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.RenderModels
 {
@@ -111,14 +111,14 @@ namespace TagTool.Commands.RenderModels
             assimpNodesByName.Clear();
             worldTransforms.Clear();
             assimpToHaloInverse = assimpToHalo;
-            Matrix4x4.Invert(assimpToHaloInverse, out assimpToHaloInverse);
+            assimpToHaloInverse.Inverse();
 
             Scene scene;
             bool ShowTriangleStripWarning = false;
 
             if (!Cache.TagCache.TryGetTag<Shader>(@"shaders\invalid", out CachedTag defaultShaderTag))
             {
-                new TagToolWarning("shaders\\invalid.shader' not found!\nYou will have to assign material shaders manually.");
+                Log.Warning("shaders\\invalid.shader' not found!\nYou will have to assign material shaders manually.");
             }
 
             using (var importer = new AssimpContext())
@@ -161,7 +161,7 @@ namespace TagTool.Commands.RenderModels
                     }
 
                     // decompose LOCAL for defaults
-                    Matrix4x4.Decompose(srcNode.Transform, out var s, out var r, out var t);
+                    srcNode.Transform.Decompose(out var s, out var r, out var t);
                     haloNode.DefaultTranslation = new RealPoint3d(t.X * ScaleFactor, t.Y * ScaleFactor, t.Z * ScaleFactor);
                     haloNode.DefaultRotation = new RealQuaternion(r.X, r.Y, r.Z, r.W);
                     haloNode.DefaultScale = s.X;
@@ -174,19 +174,19 @@ namespace TagTool.Commands.RenderModels
                     if (!boneOffsetMap.TryGetValue(nodeName, out invBind))
                     {
                         invBind = world;
-                        Matrix4x4.Invert(invBind, out invBind);
+                        invBind.Inverse();
                     }
 
                     var m = invBind;  // alias
 
-                    haloNode.InverseForward = new RealVector3d(m.M11, m.M21, m.M31);
-                    haloNode.InverseLeft = new RealVector3d(m.M12, m.M22, m.M32);
-                    haloNode.InverseUp = new RealVector3d(m.M13, m.M23, m.M33);
+                    haloNode.InverseForward = new RealVector3d(m.A1, m.B1, m.C1);
+                    haloNode.InverseLeft = new RealVector3d(m.A2, m.B2, m.C2);
+                    haloNode.InverseUp = new RealVector3d(m.A3, m.B3, m.C3);
 
                     haloNode.InversePosition = new RealPoint3d(
-                        m.M14 * ScaleFactor,
-                        m.M24 * ScaleFactor,
-                        m.M34 * ScaleFactor
+                        m.A4 * ScaleFactor,
+                        m.B4 * ScaleFactor,
+                        m.C4 * ScaleFactor
                     );
                 }
 
@@ -373,7 +373,7 @@ namespace TagTool.Commands.RenderModels
                                                 currentBone = boneNode;
                                             else
                                             {
-                                                new TagToolWarning($"Bone {bone.Name} not found for permutation {regionName}:{permName}");
+                                                Log.Warning($"Bone {bone.Name} not found for permutation {regionName}:{permName}");
                                                 partIsRigid = false;
                                                 break;
                                             }
@@ -484,7 +484,7 @@ namespace TagTool.Commands.RenderModels
                             {
                                 string bonefix = FixBoneName(bone.Name);
                                 if (!nodes.ContainsKey(bonefix))
-                                    new TagToolWarning($"There is no node {bonefix} to match bone {bone.Name}");
+                                    Log.Warning($"There is no node {bonefix} to match bone {bone.Name}");
                                 else
                                 {
                                     sbyte nodeIndex = nodes[bonefix];
@@ -499,12 +499,12 @@ namespace TagTool.Commands.RenderModels
                         {
                             var position = part.Vertices[i];
                             var normal = part.Normals[i];
-                            Vector3 uv;
+                            Vector3D uv;
                             try { uv = part.TextureCoordinateChannels[0][i]; }
-                            catch { uv = new Vector3(); }
+                            catch { uv = new Vector3D(); }
 
-                            var tangent = part.Tangents.Count != 0 ? part.Tangents[i] : new Vector3();
-                            var bitangent = part.BiTangents.Count != 0 ? part.BiTangents[i] : new Vector3();
+                            var tangent = part.Tangents.Count != 0 ? part.Tangents[i] : new Vector3D();
+                            var bitangent = part.BiTangents.Count != 0 ? part.BiTangents[i] : new Vector3D();
 
                             if (vertexType == VertexType.Skinned)
                             {
@@ -518,7 +518,7 @@ namespace TagTool.Commands.RenderModels
                                         {
                                             string bonefix = FixBoneName(bone.Name);
                                             if (!nodes.ContainsKey(bonefix))
-                                                return new TagToolError(CommandError.CustomError, $"There is no node {bonefix} to match bone {bone.Name}");
+                                                Log.Error($"There is no node {bonefix} to match bone {bone.Name}");
                                             sbyte nodeIndex = nodes[bonefix];
                                             blendIndicesList.Add((byte)skinnedBoneMapping.IndexOf((byte)nodeIndex));
                                             blendWeightsList.Add(vertexInfo.Weight);
@@ -599,6 +599,19 @@ namespace TagTool.Commands.RenderModels
                                 materialIndices[shaderName] = materialIndex;
                             }
                         }
+                        /*
+                        else if (!materialIndices.ContainsKey(meshMaterial.Name))
+                        {
+                            if (!Cache.TagCache.TryGetTag(meshMaterial.Name, out CachedTag shaderTag))
+                                shaderTag = defaultShaderTag;
+
+                            materialIndices.Add(meshMaterial.Name, builder.AddMaterial(new RenderMaterial
+                            {
+                                RenderMethod = shaderTag,
+                            }));
+                            materialIndex = materialIndices[meshMaterial.Name];
+                        }
+                        */
                         else
                         {
                             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -752,7 +765,7 @@ namespace TagTool.Commands.RenderModels
                         if (string.IsNullOrEmpty(groupName))
                             groupName = "marker";
 
-                        Matrix4x4.Decompose(node.Transform, out Vector3 mScale, out Quaternion mRot, out Vector3 mTrans);
+                        node.Transform.Decompose(out Vector3D mScale, out Assimp.Quaternion mRot, out Vector3D mTrans);
                         RealPoint3d mTranslation = new RealPoint3d(mTrans.X * 0.01f, mTrans.Y * 0.01f, mTrans.Z * 0.01f);
                         RealQuaternion mRotation = new RealQuaternion(mRot.X, mRot.Y, mRot.Z, mRot.W);
                         float markerScale = mScale.X;
@@ -823,8 +836,9 @@ namespace TagTool.Commands.RenderModels
             }
 
             Console.WriteLine("   Replaced render_geometry successfully.\n");
-            if (ShowTriangleStripWarning)
-                return new TagToolWarning($"One or more meshes using TriangleStrips produced more indices than TriangleList would have.");
+            {
+				Log.Warning($"One or more meshes using TriangleStrips produced more indices than TriangleList would have.");
+			}
 
             return true;
         }

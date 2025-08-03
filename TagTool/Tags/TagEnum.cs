@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Xml.Linq;
 using TagTool.Cache;
+using TagTool.Scripting;
 
 namespace TagTool.Tags
 {
@@ -130,8 +132,10 @@ namespace TagTool.Tags
 
     public class TagEnumMemberEnumerable : IEnumerable<TagEnumMemberInfo>
     {
-        public TagEnumInfo Info;
-        public List<TagEnumMemberInfo> Members = new List<TagEnumMemberInfo>();
+        public readonly TagEnumInfo Info;
+        public readonly List<TagEnumMemberInfo> Members = [];
+        public readonly List<TagEnumMemberInfo> VersionedMembers = [];
+        public readonly List<int> Constants = [];
 
         public TagEnumMemberEnumerable(TagEnumInfo info)
         {
@@ -147,10 +151,11 @@ namespace TagTool.Tags
             int memberIndex = 0;
             foreach (var fieldInfo in Info.Type.GetFields(BindingFlags.Static | BindingFlags.Public).OrderBy(x => x.MetadataToken))
             {
-                var attr = fieldInfo.GetCustomAttribute<TagEnumMemberAttribute>() ?? TagEnumMemberAttribute.Default;
+                var attributes = fieldInfo.GetCustomAttributes<TagEnumMemberAttribute>(false);
+                var matchingAttributes = attributes.Where(a => CacheVersionDetection.TestAttribute(a, Info.CacheVersion, Info.CachePlatform));
+                var attr = matchingAttributes.FirstOrDefault() ?? attributes.DefaultIfEmpty(TagEnumMemberAttribute.Default).First();
 
-                if (TagEnum.AttributeInCacheVersion(attr, Info.CacheVersion) &&
-                    TagEnum.AttributeInPlatform(attr, Info.CachePlatform))
+                if (CacheVersionDetection.TestAttribute(attr, Info.CacheVersion, Info.CachePlatform))
                 {
                     var value = fieldInfo.GetValue(null);
                     if (Info.Attribute.IsVersioned)
@@ -159,7 +164,14 @@ namespace TagTool.Tags
                             throw new NotSupportedException("Versioned enums must be sequential.");
                     }
 
-                    Members.Add(new TagEnumMemberInfo(fieldInfo, attr, value));
+                    var info = new TagEnumMemberInfo(fieldInfo, attr, value);
+
+                    if ((attr.Flags & TagEnumMemberFlags.Constant) != 0)
+                        Constants.Add(Convert.ToInt32(value));
+                    else
+                        VersionedMembers.Add(info);
+
+                    Members.Add(info);
                 }
 
                 memberIndex++;
@@ -167,11 +179,11 @@ namespace TagTool.Tags
         }
     }
 
-    public class TagEnumMemberInfo
+    public record TagEnumMemberInfo
     {
-        public FieldInfo FieldInfo;
-        public TagEnumMemberAttribute Attribute;
-        public object Value;
+        public readonly FieldInfo FieldInfo;
+        public readonly TagEnumMemberAttribute Attribute;
+        public readonly object Value;
 
         public TagEnumMemberInfo(FieldInfo fieldInfo, TagEnumMemberAttribute attr, object value)
         {
@@ -189,9 +201,15 @@ namespace TagTool.Tags
         public bool IsVersioned { get; set; } = false;
     }
 
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public class TagEnumMemberAttribute : Attribute
     {
         public static readonly TagEnumMemberAttribute Default = new TagEnumMemberAttribute();
+
+        /// <summary>
+        /// The flags of the field.
+        /// </summary>
+        public TagEnumMemberFlags Flags { get; set; } = TagEnumMemberFlags.None;
 
         /// <summary>
         /// The minimum cache version the tag field is present in.
@@ -217,5 +235,16 @@ namespace TagTool.Tags
         /// The platforms that the tag field are available on.
         /// </summary>
         public CachePlatform Platform { get; set; } = CachePlatform.All;
+    }
+
+    [Flags]
+    public enum TagEnumMemberFlags
+    {
+        None = 0,
+
+        /// <summary>
+        /// Used for values that are contrary to the natural order. e.g -1, 0xBABA
+        /// </summary>
+        Constant = 1 << 0
     }
 }

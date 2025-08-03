@@ -389,6 +389,23 @@ namespace TagTool.Cache
             return true;
         }
 
+        public static bool AttributeInCacheVersion(TagEnumMemberAttribute attr, CacheVersion compare)
+        {
+            if (attr.Version != CacheVersion.Unknown)
+                if (attr.Version != compare)
+                    return false;
+
+            if (attr.Gen != CacheGeneration.Unknown)
+                if (!IsInGen(attr.Gen, compare))
+                    return false;
+
+            if (attr.MinVersion != CacheVersion.Unknown || attr.MaxVersion != CacheVersion.Unknown)
+                if (!IsBetween(compare, attr.MinVersion, attr.MaxVersion))
+                    return false;
+
+            return true;
+        }
+
         public static bool AttributeInCacheVersion(TagStructureAttribute attr, CacheVersion compare)
         {
             if (attr.Version != CacheVersion.Unknown)
@@ -407,6 +424,11 @@ namespace TagTool.Cache
         }
 
         public static bool AttributeInPlatform(TagFieldAttribute attr, CachePlatform compare)
+        {
+            return ComparePlatform(attr.Platform, compare);
+        }
+
+        public static bool AttributeInPlatform(TagEnumMemberAttribute attr, CachePlatform compare)
         {
             return ComparePlatform(attr.Platform, compare);
         }
@@ -491,6 +513,18 @@ namespace TagTool.Cache
         {
             if (!InCacheBuildType(a.BuildType, version))
                 return false;
+            if (!IsInGen(a.Gen, version))
+                return false;
+            if (!AttributeInPlatform(a, platform))
+                return false;
+            if (!AttributeInCacheVersion(a, version))
+                return false;
+
+            return true;
+        }
+
+        public static bool TestAttribute(TagEnumMemberAttribute a, CacheVersion version, CachePlatform platform)
+        {
             if (!IsInGen(a.Gen, version))
                 return false;
             if (!AttributeInPlatform(a, platform))

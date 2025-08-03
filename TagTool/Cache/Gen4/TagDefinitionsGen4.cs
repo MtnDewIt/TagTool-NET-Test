@@ -258,13 +258,13 @@ namespace TagTool.Cache.Gen4
             { new TagGroupGen4("SDzs", "streamingzoneset"), typeof(Streamingzoneset) },
             { new TagGroupGen4("hsdt", "script"), typeof(Script) },
             { new TagGroupGen4("hscn", "script_container"), typeof(ScriptContainer) },
-            { new TagGroupGen4("ffgt", "GameEngineFirefightVariantTag"), typeof(GameEngineFirefightVariantTag) },
-            { new TagGroupGen4("iuii", "InfinityUIImages"), typeof(InfinityUiimages) },
+            { new TagGroupGen4("ffgt", "gameenginefirefightvarianttag"), typeof(GameEngineFirefightVariantTag) },
+            { new TagGroupGen4("iuii", "infinityuiimages"), typeof(InfinityUiimages) },
             { new TagGroupGen4("smet", "structure_meta"), typeof(StructureMeta) },
             { new TagGroupGen4("pcaa", "pca_animation"), typeof(PcaAnimation) },
-            { new TagGroupGen4("kccd", "KillCamCameraParamter"), typeof(KillCamCameraParamter) },
-            { new TagGroupGen4("ssdf", "SpawnSettings"), typeof(SpawnSettingsDefinition) },
-            { new TagGroupGen4("mgee", "multiplayerEffects"), typeof(Multiplayereffects) },
+            { new TagGroupGen4("kccd", "killcamcameraparamter"), typeof(KillCamCameraParamter) },
+            { new TagGroupGen4("ssdf", "spawnsettings"), typeof(SpawnSettingsDefinition) },
+            { new TagGroupGen4("mgee", "multiplayereffects"), typeof(Multiplayereffects) },
             { new TagGroupGen4("rmla", "render_model_lightmap_atlas"), typeof(RenderModelLightmapAtlas) },
             { new TagGroupGen4("ffgd", "firefight_globals"), typeof(FirefightGlobals) },
             { new TagGroupGen4("sict", "self_illumination"), typeof(SelfIllumination) },
@@ -273,8 +273,8 @@ namespace TagTool.Cache.Gen4
             { new TagGroupGen4("sirg", "sound_incident_response"), typeof(SoundIncidentResponse) },
             { new TagGroupGen4("crvs", "curve_scalar"), typeof(CurveScalar) },
             { new TagGroupGen4("forg", "forge_globals"), typeof(ForgeGlobals) },
-            { new TagGroupGen4("sigd", "SuppressedIncident"), typeof(SuppressedIncident) },
-            { new TagGroupGen4("narg", "NarrativeGlobals"), typeof(NarrativeGlobals) }
+            { new TagGroupGen4("sigd", "suppressedincident"), typeof(SuppressedIncident) },
+            { new TagGroupGen4("narg", "narrativeglobals"), typeof(NarrativeGlobals) }
         });
         public TagDefinitionsGen4() : base(Gen4Definitions) { }
 

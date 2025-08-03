@@ -47,7 +47,7 @@ namespace TagTool.Commands.Editing
                 return new TagToolError(CommandError.ArgCount);
 
             if (CopyBlockElementsCommand.Elements == null)
-                return new TagToolError(CommandError.CustomMessage, "You need to copy at least one block element first");
+                return new TagToolError(CommandError.CustomError, "You need to copy at least one block element first");
 
             var fieldName = args[0];
             var fieldNameLow = fieldName.ToLower();

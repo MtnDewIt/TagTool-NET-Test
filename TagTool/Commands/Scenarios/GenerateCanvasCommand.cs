@@ -14,6 +14,7 @@ using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Resources;
 using static TagTool.Tags.Definitions.Scenario;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Scenarios
 {
@@ -105,12 +106,12 @@ namespace TagTool.Commands.Scenarios
             var fullName = $"{parameters.ScenarioPath}.scnr";
             if (Cache.TagCache.TagExists(fullName))
             {
-                new TagToolError(CommandError.CustomError, "A scenario tag with this name already exists.");
+                Log.Error("A scenario tag with this name already exists.");
                 return false;
             }
             else if (!Cache.TagCache.IsTagPathValid(fullName))
             {
-                new TagToolError(CommandError.CustomError, $"Malformed target tag path '{parameters.ScenarioPath}'");
+                Log.Error($"Malformed target tag path '{parameters.ScenarioPath}'");
                 return false;
             }
 
@@ -135,13 +136,13 @@ namespace TagTool.Commands.Scenarios
                 parameters.MapId = result;
                 if (parameters.MapId < 7001 || parameters.MapId > 65534)
                 {
-                    new TagToolError(CommandError.CustomError, "MapID must be between 7000 and 65535.");
+                    Log.Error("MapID must be between 7000 and 65535.");
                     return false;
                 }
             }
             else
             {
-                new TagToolError(CommandError.CustomError, "MapID must be an integer.");
+                Log.Error("MapID must be an integer.");
                 return false;
             }
 
@@ -169,19 +170,19 @@ namespace TagTool.Commands.Scenarios
         {
             if (string.IsNullOrWhiteSpace(input))
             {
-                new TagToolError(CommandError.CustomError, $"Input is null or empty.");
+                Log.Error($"Input is null or empty.");
                 return false;
             }
 
             if (upperBound > 0 && input.Length > upperBound)
             {
-                new TagToolError(CommandError.CustomError, $"Input exceeds {upperBound} characters.");
+                Log.Error($"Input exceeds {upperBound} characters.");
                 return false;
             }
 
             if (input.Contains("|"))
             {
-                new TagToolError(CommandError.CustomError, $"Input contains invalid characters.");
+                Log.Error($"Input contains invalid characters.");
                 return false;
             }
 

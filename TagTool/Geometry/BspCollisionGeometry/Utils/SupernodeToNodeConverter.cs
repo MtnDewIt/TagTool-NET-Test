@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.Tags;
+using TagTool.Common.Logging;
 
 namespace TagTool.Geometry.BspCollisionGeometry.Utils
 {
@@ -53,7 +54,7 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
                 LargeCollisionBspBlock bsp_copy = Bsp.DeepClone();
                 if (!leafmapbuilder.munge_collision_bsp(Bsp_Builder))
                 {
-                    new TagToolWarning("Failed to build leaf map!");
+                    Log.Warning("Failed to build leaf map!");
                     Bsp = bsp_copy;
                 }
             }
@@ -118,10 +119,10 @@ namespace TagTool.Geometry.BspCollisionGeometry.Utils
         public Plane generate_new_node_plane(Bsp3dSupernode supernode, int plane_index)
         {
             if (plane_index > 14)
-                new TagToolError(CommandError.OperationFailed, "Plane index cannot exceed 14!");
+                Log.Error("Plane index cannot exceed 14!");
             int axis = (supernode.PlaneDimensions >> (2 * plane_index)) & 3;
             if (axis > 2)
-                new TagToolError(CommandError.OperationFailed, "Node plane axis cannot exceed 2!");
+                Log.Error("Node plane axis cannot exceed 2!");
             Plane plane = new Plane();
             RealPlane3d planevalue = new RealPlane3d();
             switch (axis)

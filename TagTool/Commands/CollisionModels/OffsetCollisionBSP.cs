@@ -9,6 +9,7 @@ using TagTool.Geometry.BspCollisionGeometry;
 using TagTool.Tags.Definitions;
 using TagTool.Tags;
 using System.Diagnostics;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.CollisionModels.OffsetCollisonBsp
 {
@@ -48,7 +49,7 @@ namespace TagTool.Commands.CollisionModels.OffsetCollisonBsp
             }
             else
             {
-                new TagToolError(CommandError.CustomError, "Failed to offset collision bsp!");
+                Log.Error("Failed to offset collision bsp!");
                 return false;
             }
         }
@@ -81,7 +82,7 @@ namespace TagTool.Commands.CollisionModels.OffsetCollisonBsp
                 }
                 else
                 {
-                    new TagToolError(CommandError.CustomError, $"Plane {plane_index} could not be regenerated!");
+                    Log.Error($"Plane {plane_index} could not be regenerated!");
                     return false;
                 }
             }
@@ -239,7 +240,7 @@ namespace TagTool.Commands.CollisionModels.OffsetCollisonBsp
                 if (!verify_split_parameters(parameters))
                 {
                     if(debug)
-                        new TagToolWarning($"Plane {plane_index} new offset does not match original!");
+                        Log.Warning($"Plane {plane_index} new offset does not match original!");
                     planewarnings++;
                 }
             }
@@ -424,7 +425,7 @@ namespace TagTool.Commands.CollisionModels.OffsetCollisonBsp
             //no matching vertex has been found
             if (matching_vertex_index == -1)
             {
-                new TagToolError(CommandError.CustomError, $"Could not find a vertex to generate a 2d plane for node {node_index}");
+                Log.Error($"Could not find a vertex to generate a 2d plane for node {node_index}");
                 return false;
             }
 
@@ -504,7 +505,7 @@ namespace TagTool.Commands.CollisionModels.OffsetCollisonBsp
             if (!verify_split_parameters(parameters))
             {
                 if (debug)
-                    new TagToolWarning($"Bsp2dNode {node_index} new offset does not match original!");
+                    Log.Warning($"Bsp2dNode {node_index} new offset does not match original!");
                 planewarnings++;
             }
 
@@ -544,7 +545,7 @@ namespace TagTool.Commands.CollisionModels.OffsetCollisonBsp
 
                 if (!recalculate_bsp2dnodes(node_index, plane_block, plane_projection_axis, plane_mirror_check, plane_matching_vertices))
                 {
-                    new TagToolError(CommandError.CustomError, $"Could not regenerate bsp2dnode {node_index}");
+                    Log.Error($"Could not regenerate bsp2dnode {node_index}");
                     return false;
                 }
                 

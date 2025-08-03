@@ -1,4 +1,5 @@
-﻿using TagTool.Cache;
+﻿using System;
+using TagTool.Cache;
 using System.Collections.Generic;
 using TagTool.Commands.Common;
 
@@ -24,10 +25,13 @@ namespace TagTool.Commands.Modding
             if (args.Count > 0)
                 return new TagToolError(CommandError.ArgCount);
 
-            Cache.BaseModPackage.CreateDescription(IgnoreArgumentVariables,  true);
+            Cache.BaseModPackage.Metadata = CreateModPackageCommand.PromptMetadata(IgnoreArgumentVariables);
+
+            Console.WriteLine();
+
+            Cache.BaseModPackage.Header.ModifierFlags = CreateModPackageCommand.PromptTypes(IgnoreArgumentVariables, Cache.BaseModPackage.Header.ModifierFlags);
 
             return true;
-
         }
     }
 }

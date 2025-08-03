@@ -11,28 +11,42 @@ namespace TagTool.Tags.Definitions
     {
         public List<AchievementInformationBlock> AchievementInformation;
 
-        [TagStructure(Size = 0x18, Platform = CachePlatform.Original)]
-        [TagStructure(Size = 0x10, Platform = CachePlatform.MCC)]
+        [TagStructure(Size = 0x18, Platform = CachePlatform.Original, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x10, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0x14, MinVersion = CacheVersion.HaloReach)]
         public class AchievementInformationBlock : TagStructure
         {
-            [TagField(Platform = CachePlatform.Original)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             public Achievements AchievementName;
 
-            [TagField(Platform = CachePlatform.MCC)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.MCC)]
             public AchievementsMCC AchievementNameMCC;
 
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public LevelFlags Flags;
 
-            [TagField(Flags = Label)]
+            [TagField(Flags = Label, MaxVersion = CacheVersion.HaloOnline700123)]
             public StringId RestrictedLevelName;
 
+            [TagField(Flags = Label, MaxVersion = CacheVersion.HaloOnline700123)]
             public int MaximumProgressCount;
 
-            [TagField(Platform = CachePlatform.Original)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             public int ProgressionTrackingInterval;
 
-            [TagField(Platform = CachePlatform.Original)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             public int ChudBitmapSequenceIndex;
+
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public StringId Name;
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public byte Type; // TODO: Make enum
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public DifficultyFlags Difficulty;
+            [TagField(MinVersion = CacheVersion.HaloReach, Flags = Padding, Length = 2)]
+            public byte[] ReachPadding;
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public List<RestrictedLevel> RestrictedLevels;
 
             public enum Achievements : int
             {
@@ -177,6 +191,22 @@ namespace TagTool.Tags.Definitions
                 DisabledInSurvival = 1 << 1,
                 DisabledInHub = 1 << 2,
                 DisabledInScreens = 1 << 3,
+            }
+
+            [Flags]
+            public enum DifficultyFlags : byte
+            {
+                None = 0,
+                Easy = 1 << 0,
+                Normal = 1 << 1,
+                Heroic = 1 << 2,
+                Legendary = 1 << 3,
+            }
+
+            [TagStructure(Size = 0x4)]
+            public class RestrictedLevel : TagStructure
+            {
+                public StringId LevelName;
             }
         }
     }

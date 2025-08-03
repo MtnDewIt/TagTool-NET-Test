@@ -14,20 +14,7 @@ namespace TagTool.Cache.Gen4
         {
             
             List<LocaleTable> localesTable = new List<LocaleTable>();
-            string localesKey = "";
-            switch (baseMapFile.Version)
-            {
-                case CacheVersion.Halo3Retail:
-                    localesKey = "";
-                    break;
-                case CacheVersion.Halo3ODST:
-                    localesKey = "";
-                    break;
-                case CacheVersion.HaloReach:
-                case CacheVersion.Halo4:
-                    localesKey = "BungieHaloReach!";
-                    break;
-            }
+            string localesKey = baseMapFile.CachePlatform == CachePlatform.Original ? "BungieHaloReach!" : "";
             var sectionTable = ((CacheFileHeaderGen4)baseMapFile.Header).SectionTable;
 
             if (sectionTable.Sections[(int)CacheFileSectionType.LocalizationSection].Size == 0)
@@ -38,16 +25,18 @@ namespace TagTool.Cache.Gen4
                 LocaleTable table = new LocaleTable();
                 var languageIndex = (int)language;
 
-                var localeBlock = matg.LanguagePack[languageIndex];
+                var localeBlock = baseMapFile.CachePlatform == CachePlatform.Original
+                    ? matg.LanguagePacks[languageIndex]
+                    : matg.LanguagePacksMCC[languageIndex];
 
-                if (localeBlock.NumberOfStrings == 0)
+                if (localeBlock.StringCount == 0)
                     continue;
 
 
-                var stringCount = localeBlock.NumberOfStrings;
-                var tableSize = localeBlock.StringDataSize;
-                var offsetsTableOffset = sectionTable.GetOffset(CacheFileSectionType.LocalizationSection, (uint)localeBlock.StringReferenceCacheOffset);
-                var tableOffset = sectionTable.GetOffset(CacheFileSectionType.LocalizationSection, (uint)localeBlock.StringDataCacheOffset);
+                var stringCount = localeBlock.StringCount;
+                var tableSize = localeBlock.LocaleTableSize;
+                var offsetsTableOffset = sectionTable.GetOffset(CacheFileSectionType.LocalizationSection, (uint)localeBlock.LocaleIndexTableAddress);
+                var tableOffset = sectionTable.GetOffset(CacheFileSectionType.LocalizationSection, (uint)localeBlock.LocaleDataIndexAddress);
 
                 reader.SeekTo(offsetsTableOffset);
                 var stringOffsets = new int[stringCount];

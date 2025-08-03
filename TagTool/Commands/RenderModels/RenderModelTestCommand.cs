@@ -158,8 +158,8 @@ namespace TagTool.Commands.RenderModels
                         var normal = mesh.Normals[i];
                         var uv = mesh.TextureCoordinateChannels[0][i];
 
-                        var tangent = mesh.Tangents.Count != 0 ? mesh.Tangents[i] : new Vector3();
-                        var bitangent = mesh.BiTangents.Count != 0 ? mesh.BiTangents[i] : new Vector3();
+                        var tangent = mesh.Tangents.Count != 0 ? mesh.Tangents[i] : new Vector3D();
+                        var bitangent = mesh.BiTangents.Count != 0 ? mesh.BiTangents[i] : new Vector3D();
 
                         if (vertexType == "skinned")
                         {

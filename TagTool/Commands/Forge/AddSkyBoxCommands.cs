@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TagTool.Cache;
-using TagTool.Common;
 using TagTool.Commands.Common;
+using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Forge
@@ -28,6 +29,7 @@ namespace TagTool.Commands.Forge
                 "AddSkyBox <name> <scenario> [acoustic palette]",
 
                 "Add a skybox from the specified scenario."
+                + "\nScenario can be either the full tag path or the tag path, plus the tag type"
                 + "\nPalette can be either a block index or the name of the acoustic palette.")
         {
             Cache = cache;
@@ -40,7 +42,7 @@ namespace TagTool.Commands.Forge
                 if (args.Count > 3)
                     return new TagToolError(CommandError.ArgCount);
 
-                if (!Cache.TagCache.TryGetCachedTag($"{args[1]}.scenario", out Scenario))
+                if (!Cache.TagCache.TryGetCachedTag(args[1], out Scenario) && !Cache.TagCache.TryGetTag<Scenario>(args[1], out Scenario))
                     return new TagToolError(CommandError.TagInvalid);
 
                 SkyBoxName = args[0].ToUpper();
@@ -68,7 +70,8 @@ namespace TagTool.Commands.Forge
                             case 1:
                                 break;
                             default:
-                                return new TagToolWarning("Multiple palettes with this name were found. Palette will be the last encountered.");
+                                Log.Warning("Multiple palettes with this name were found. Palette will be the last encountered.");
+                                return true;
                         }
 
                         AcousticPaletteIndex = nameIndices.Last();

@@ -57,7 +57,7 @@ namespace TagTool.Ai
         public float JumpStorey; // wu/tick
         public float JumpTower; // wu/tick
 
-        [TagField(MinVersion = CacheVersion.HaloReach, Length = 0x4, Flags = TagFieldFlags.Padding, Platform = CachePlatform.Original)]
+        [TagField(MinVersion = CacheVersion.HaloReach, Length = 0x4, Flags = TagFieldFlags.Padding)]
         public byte[] ReachPadding;
 
         public float MaxJumpDownHeightDown; // wu
@@ -67,7 +67,7 @@ namespace TagTool.Ai
         public float MaxJumpDownHeightStorey; // wu
         public float MaxJumpDownHeightTower; // wu
 
-        [TagField(MinVersion = CacheVersion.HaloReach, Length = 0x4, Flags = TagFieldFlags.Padding, Platform = CachePlatform.Original)]
+        [TagField(MinVersion = CacheVersion.HaloReach, Length = 0x4, Flags = TagFieldFlags.Padding)]
         public byte[] ReachPadding1;
 
         public Bounds<float> HoistStep;
@@ -171,7 +171,7 @@ namespace TagTool.Ai
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public Bounds<short> SearchPatternCellsPerShellRange;
 
-        [TagField(MinVersion = CacheVersion.HaloReach, Length = 0x2, Flags = TagFieldFlags.Padding, Platform = CachePlatform.Original)]
+        [TagField(MinVersion = CacheVersion.HaloReach, Length = 0x2, Flags = TagFieldFlags.Padding)]
         public byte[] ReachPadding2;
 
         [TagStructure(Size = 0xC)]

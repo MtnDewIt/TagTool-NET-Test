@@ -67,7 +67,7 @@ namespace TagTool.Bitmaps
             }
             else if (CacheVersionDetection.GetGeneration(cache.Version) ==  CacheGeneration.Third)
             {
-                return BitmapConverter.ConvertGen3Bitmap(cache, bitmap, imageIndex, tagName, forDDS);
+                return new BitmapConverterGen3(cache).ConvertBitmap(bitmap, imageIndex, tagName, forDDS);
             }
 
             return null;

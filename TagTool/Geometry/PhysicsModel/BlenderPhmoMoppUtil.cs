@@ -80,7 +80,7 @@ namespace TagTool.Geometry
             TagHkpMoppCode resource = new TagHkpMoppCode()
             {
                 ReferencedObject = new HkpReferencedObject { ReferenceCount = 0x80 },
-                Info = new CodeInfo { Offset = new RealQuaternion(binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle())},
+                Info = new CodeInfo { Offset = new RealVector4d(binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle(), binaryReader.ReadSingle())},
                 ArrayBase = new HkArrayBase { CapacityAndFlags = binaryReader.ReadUInt32() },
             };
 

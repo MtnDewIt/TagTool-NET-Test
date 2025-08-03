@@ -13,6 +13,7 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Name = "bitmap", Tag = "bitm", Size = 0xC0, MinVersion = CacheVersion.HaloReach)]
     public class Bitmap : TagStructure
 	{
+        [TagField(EnumType = typeof(int))]
         public BitmapUsageGlobalEnum Usage; // Choose how you are using this bitmap
         public BitmapRuntimeFlags Flags; // The runtime flags of this bitmap
         public short SpriteSpacing; // Number of pixels between adjacent sprites (0 uses default, negative numbers set no spacing)
@@ -38,7 +39,8 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public short AtlasIndex; // Index into global atlas if the texture is missing its required resources and has been atlased
 
-        public short ForceBitmapFormat; // Overrides the format defined by usage
+        [TagField(EnumType = typeof(short))]
+        public BitmapUsageFormat ForceBitmapFormat; // Overrides the format defined by usage
 
         [TagField(Format = "[0,1]", MinVersion = CacheVersion.HaloReach)]
         public float TightBoundsThreshold; // This is the level cutoff for tight bounds. 0.0 is monochrome black, 1.0 is monochrome white
@@ -68,6 +70,7 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public int UnknownB4;
 
+        [TagEnum(IsVersioned = true)]
         public enum BitmapUsageGlobalEnum : int
         {
             DiffuseMap,
@@ -86,15 +89,42 @@ namespace TagTool.Tags.Definitions
             VectorMap,
             _3DTexture,
             FloatMapWARNING, // HUGE)
+
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            HalfFloatMapHalfHuge,
+
             HeightMapforParallax,
             ZBrushBumpMapfromBumpMap,
+
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            NormalMapAkaZbump,
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            DetailZbrushBumpMap,
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            DetailNormalMap,
+
             BlendMaplinearForTerrains,
             PalettizedEffectsOnly,
             CHUDRelatedBitmap,
             LightmapArray,
             WaterArray,
             InterfaceSprite,
-            InterfaceGradient
+            InterfaceGradient,
+
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            MaterialMap,
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            SmokeWarp,
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            MuxMaterialBlendMap,
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            CubemapGel,
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            LensFlareGamma22EffectsOnly,
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            SignedNoise,
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            RoughnessMapAuto
         }
 
         [TagStructure(Size = 0x8)]
@@ -121,7 +151,8 @@ namespace TagTool.Tags.Definitions
             public BitmapUsageSwizzleDef SwizzleGreen;
             public BitmapUsageSwizzleDef SwizzleBlue;
             public BitmapUsageSwizzleDef SwizzleAlpha;
-            public int BitmapFormat; // 0 means the usage above is used
+            [TagField(EnumType = typeof(int))]
+            public BitmapUsageFormat BitmapFormat; // 0 means the usage above is used
 
             public enum BitmapCurveEnum : int
             {
@@ -285,118 +316,77 @@ namespace TagTool.Tags.Definitions
             public byte[] ReachMCCPadding;
         }
 
-        public enum BitmapUsageFormatShort : short
+        [TagEnum(IsVersioned = true)]
+        public enum BitmapUsageFormat
         {
-            UseDefaultdefinedByUsage,
+            UseDefaultDefinedByUsage,
             BestCompressedColorFormat,
             BestUncompressedColorFormat,
             BestCompressedBumpFormat,
             BestUncompressedBumpFormat,
             BestCompressedMonochromeFormat,
             BestUncompressedMonochromeFormat,
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            BestCompressedMonochromeFormatWithoutAlpha,
             Unused2,
             Unused3,
             Unused4,
             Unused5,
             Unused6,
             ColorAndAlphaFormats,
-            DXT1CompressedColorColorKeyAlpha,
-            DXT3CompressedColor4bitAlpha,
-            DXT5CompressedColorCompressed8bitAlpha,
-            _24bitColor8bitAlpha,
-            _8bitMonochrome8bitAlpha,
-            ChannelMask3bitColor1bitAlpha,
-            _30bitColor2bitAlpha,
-            _48bitColor16bitAlpha,
-            HALFColorAlpha,
-            FLOATColorAlpha,
-            AY88bitIntensityReplicatedToARGB,
-            DXT3A4bitIntensityReplicatedToARGB,
-            DXT5ADXTcompressedIntensityReplicatedToARGB,
+            Dxt1CompressedColorColorKeyAlpha,
+            Dxt3CompressedColor4BitAlpha,
+            Dxt5CompressedColorCompressed8BitAlpha,
+            _24BitColor8BitAlpha,
+            _8BitMonochrome8BitAlpha,
+            ChannelMask3BitColor1BitAlpha,
+            _30BitColor2BitAlpha,
+            _48BitColor16BitAlpha,
+            HalfColorAlpha,
+            FloatColorAlpha,
+            Ay88BitIntensityReplicatedToArgb,
+            Dxt3A4BitIntensityReplicatedToArgb,
+            Dxt5ADxtCompressedIntensityReplicatedToArgb,
             CompressedMonochromeAlpha,
-            A4R4G4B412bitColor4bitAlpha,
+            A4R4G4B412BitColor4BitAlpha,
             ColorOnlyFormats,
-            _8bitMonochrome,
-            Compressed24bitColor,
-            _32bitColorR11G11B10,
-            _16bitMonochrome,
-            _16bitRedGreenOnly,
-            HALFRedOnly,
-            FLOATRedOnly,
-            HALFRedGreenOnly,
-            FLOATRedGreenOnly,
-            Compressed4bitMonochrome,
+            _8BitMonochrome,
+            Compressed24BitColor,
+            _32BitColorR11G11B10,
+            _16BitMonochrome,
+            _16BitRedGreenOnly,
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            _16BitSignedArgb,
+            HalfRedOnly,
+            FloatRedOnly,
+            HalfRedGreenOnly,
+            FloatRedGreenOnly,
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            HalfMonochrome,
+            Compressed4BitMonochrome,
             CompressedInterpolatedMonochrome,
+            [TagEnumMember(MaxVersion = CacheVersion.HaloOnline700123)]
             Unused12,
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            Dxt5Red,
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            Dxt5Green,
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            Dxt5Blue,
             AlphaOnlyFormats,
-            DXT3A4bitAlpha,
-            DXT5A8bitCompressedAlpha,
-            _8bitAlpha,
+            Dxt3A4BitAlpha,
+            Dxt5A8BitCompressedAlpha,
+            _8BitAlpha,
             Unused13,
             Unused14,
             Unused15,
             NormalMapFormats,
-            DXNCompressedNormalsbetter,
-            CTX1CompressedNormalssmaller,
-            _16bitNormals,
-            _32bitNormals
-        }
-
-        public enum BitmapUsageFormatInt : int
-        {
-            UseDefaultdefinedByUsage,
-            BestCompressedColorFormat,
-            BestUncompressedColorFormat,
-            BestCompressedBumpFormat,
-            BestUncompressedBumpFormat,
-            BestCompressedMonochromeFormat,
-            BestUncompressedMonochromeFormat,
-            Unused2,
-            Unused3,
-            Unused4,
-            Unused5,
-            Unused6,
-            ColorAndAlphaFormats,
-            DXT1CompressedColorColorKeyAlpha,
-            DXT3CompressedColor4bitAlpha,
-            DXT5CompressedColorCompressed8bitAlpha,
-            _24bitColor8bitAlpha,
-            _8bitMonochrome8bitAlpha,
-            ChannelMask3bitColor1bitAlpha,
-            _30bitColor2bitAlpha,
-            _48bitColor16bitAlpha,
-            HALFColorAlpha,
-            FLOATColorAlpha,
-            AY88bitIntensityReplicatedToARGB,
-            DXT3A4bitIntensityReplicatedToARGB,
-            DXT5ADXTcompressedIntensityReplicatedToARGB,
-            CompressedMonochromeAlpha,
-            A4R4G4B412bitColor4bitAlpha,
-            ColorOnlyFormats,
-            _8bitMonochrome,
-            Compressed24bitColor,
-            _32bitColorR11G11B10,
-            _16bitMonochrome,
-            _16bitRedGreenOnly,
-            HALFRedOnly,
-            FLOATRedOnly,
-            HALFRedGreenOnly,
-            FLOATRedGreenOnly,
-            Compressed4bitMonochrome,
-            CompressedInterpolatedMonochrome,
-            Unused12,
-            AlphaOnlyFormats,
-            DXT3A4bitAlpha,
-            DXT5A8bitCompressedAlpha,
-            _8bitAlpha,
-            Unused13,
-            Unused14,
-            Unused15,
-            NormalMapFormats,
-            DXNCompressedNormalsbetter,
-            CTX1CompressedNormalssmaller,
-            _16bitNormals,
-            _32bitNormals
+            DxnCompressedNormalsBetter,
+            Ctx1CompressedNormalsSmaller,
+            _16BitNormals,
+            _32BitNormals,
+            [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+            _8Bit4ChannelVector
         }
     }
 }

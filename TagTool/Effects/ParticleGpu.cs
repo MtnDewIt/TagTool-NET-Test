@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.Effects
@@ -23,7 +24,7 @@ namespace TagTool.Effects
 
             if (particle.RenderMethod.ShaderProperties.Count == 0)
             {
-                new TagToolWarning("Could not compile particle gpu data: invalid render method");
+                Log.Warning("Could not compile particle gpu data: invalid render method");
                 return;
             }
 

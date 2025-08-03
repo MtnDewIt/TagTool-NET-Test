@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using TagTool.Common;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 
 namespace TagTool.Cache.Monolithic
 {
@@ -36,7 +37,7 @@ namespace TagTool.Cache.Monolithic
         {
             if (Cache.TagCache.TryGetCachedTag($"{name}.{groupTag}", out CachedTag tag))
                 return tag;
-            new TagToolWarning($"Could not resolve referenced tag {name}.{groupTag}");
+            Log.Warning($"Could not resolve referenced tag {name}.{groupTag}");
             return null;
         }
     }

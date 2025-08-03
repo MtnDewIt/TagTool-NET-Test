@@ -8,6 +8,10 @@ using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 using TagTool.Commands.Porting;
+using TagTool.Porting;
+using TagTool.Porting.Gen3;
+using static TagTool.Porting.Gen3.PortingContextGen3;
+using TagTool.Common.Logging;
 
 namespace TagTool.Shaders.ShaderMatching
 {
@@ -17,7 +21,7 @@ namespace TagTool.Shaders.ShaderMatching
         private GameCache PortingCache;
         private Stream BaseCacheStream;
         private Stream PortingCacheStream;
-        private Commands.Porting.PortTagCommand PortTagCommand;
+        private PortingContextGen3 PortContext;
         // shader type, definition
         private Dictionary<string, RenderMethodDefinition> RenderMethodDefinitions;
         private Dictionary<string, RenderMethodDefinition> PortingRenderMethodDefinitions;
@@ -37,7 +41,7 @@ namespace TagTool.Shaders.ShaderMatching
             GameCache portingCache, 
             Stream baseCacheStream, 
             Stream portingCacheStream,
-            Commands.Porting.PortTagCommand portTagCommand,
+            PortingContextGen3 portContext,
             bool useMS30 = false, 
             bool perfectMatchesOnly = false)
         {
@@ -48,7 +52,7 @@ namespace TagTool.Shaders.ShaderMatching
             BaseCacheStream = baseCacheStream;
             PortingCacheStream = portingCacheStream;
             IsInitialized = true;
-            PortTagCommand = portTagCommand;
+            PortContext = portContext;
 
             // we need to store all of these for async. will save cpu time for map ports since we no longer deserialize for every shader tag
             RenderMethodDefinitions = new Dictionary<string, RenderMethodDefinition>();
@@ -76,7 +80,7 @@ namespace TagTool.Shaders.ShaderMatching
             BaseCacheStream = null;
             PortingCacheStream = null;
             IsInitialized = false;
-            PortTagCommand = null;
+            PortContext = null;
             RenderMethodDefinitions = null;
             PortingRenderMethodDefinitions = null;
             RenderMethodOptions = null;
@@ -147,7 +151,7 @@ namespace TagTool.Shaders.ShaderMatching
             Rmt2Descriptor sourceRmt2Desc;
             if (!Rmt2Descriptor.TryParse(sourceRmt2Tag.Name, out sourceRmt2Desc))
             {
-                new TagToolError(CommandError.OperationFailed, $"Invalid rmt2 name '{sourceRmt2Tag.Name}'");
+                Log.Error($"Invalid rmt2 name '{sourceRmt2Tag.Name}'");
                 return null;
             }
 
@@ -262,7 +266,7 @@ namespace TagTool.Shaders.ShaderMatching
 
             if (ShaderCache.ExportTemplate(BaseCacheStream, BaseCache, tagName, out CachedTag cachedRmt2Tag))
             {
-                if (PortTagCommand.FlagIsSet(Commands.Porting.PortTagCommand.PortingFlags.Print))
+                if (PortContext.FlagIsSet(PortingFlags.Print))
                     Console.WriteLine($"['{cachedRmt2Tag.Group.Tag}', 0x{cachedRmt2Tag.Index:X4}] {cachedRmt2Tag.Name}.{(cachedRmt2Tag.Group as Cache.Gen3.TagGroupGen3).Name}");
                 return cachedRmt2Tag;
             }
@@ -307,13 +311,17 @@ namespace TagTool.Shaders.ShaderMatching
             // todo: support rmd but avoid decs
             switch (shaderType)
             {
-                case "shader":
-                case "custom":
+                case "black":
                 case "cortana":
-                case "halogram":
-                case "glass":
-                case "terrain":
+                case "custom":
                 case "foliage":
+                case "fur":
+                case "fur_stencil":
+                case "glass":
+                case "halogram":
+                case "mux":
+                case "shader":
+                case "terrain":
                 case "water":
                 case "zonly":
                     return true;
@@ -328,7 +336,7 @@ namespace TagTool.Shaders.ShaderMatching
 
             if (!RenderMethodDefinitions.ContainsKey(rmt2Desc.Type))
             {
-                new TagToolError(CommandError.CustomMessage, $"No rmdf tag present for {rmt2Desc.Type}");
+                Log.Error($"No rmdf tag present for {rmt2Desc.Type}");
                 return false;
             }
             RenderMethodDefinition rmdf = RenderMethodDefinitions[rmt2Desc.Type];
@@ -342,7 +350,7 @@ namespace TagTool.Shaders.ShaderMatching
                 if (CanGenerateAsync(rmt2Desc.Type))
                 {
                     CachedTag rmt2Tag = BaseCache.TagCache.AllocateTag<RenderMethodTemplate>(tagName);
-                    PortTagCommand.PendingTemplates.Add(tagName);
+                    PortContext.PendingTemplates.Add(tagName);
 
                     var glps = BaseCache.Deserialize<GlobalPixelShader>(BaseCacheStream, rmdf.GlobalPixelShader);
                     var glvs = BaseCache.Deserialize<GlobalVertexShader>(BaseCacheStream, rmdf.GlobalVertexShader);
@@ -354,10 +362,10 @@ namespace TagTool.Shaders.ShaderMatching
 
                     var allRmopParameters = ShaderGenerator.ShaderGeneratorNew.GatherParametersAsync(RenderMethodOptions, rmdf, options);
 
-                    PortTagCommand.RunAsync(
+                    PortContext.RunAsync(
                         onExecute: () =>
                         {
-                            var result = new PortTagCommand.TemplateConversionResult();
+                            var result = new TemplateConversionResult();
 
                             result.Tag = rmt2Tag;
                             result.Definition = ShaderGenerator.ShaderGeneratorNew.GenerateTemplate(BaseCache, 
@@ -365,7 +373,7 @@ namespace TagTool.Shaders.ShaderMatching
 
                             return result;
                         },
-                        onSuccess: (PortTagCommand.TemplateConversionResult result) =>
+                        onSuccess: (TemplateConversionResult result) =>
                         {
                             var asyncRmt2 = result.Definition;
                             var asyncPixl = result.PixelShaderDefinition;
@@ -380,7 +388,7 @@ namespace TagTool.Shaders.ShaderMatching
                             BaseCache.Serialize(BaseCacheStream, asyncRmt2.VertexShader, asyncVtsh);
                             BaseCache.Serialize(BaseCacheStream, result.Tag, asyncRmt2);
 
-                            if (PortTagCommand.FlagIsSet(PortTagCommand.PortingFlags.Print))
+                            if (PortContext.FlagIsSet(PortingFlags.Print))
                                 Console.WriteLine($"['{result.Tag.Group.Tag}', 0x{result.Tag.Index:X4}] {result.Tag.Name}.{(result.Tag.Group as Cache.Gen3.TagGroupGen3).Name}");
                         });
 
@@ -392,7 +400,7 @@ namespace TagTool.Shaders.ShaderMatching
                     rmt2 = ShaderGenerator.ShaderGeneratorNew.GenerateTemplateSafe(BaseCache, BaseCacheStream, rmdf, tagName, out pixl, out vtsh);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Console.WriteLine($"Generation failed, finding best substitute");
                 return false;
@@ -478,37 +486,23 @@ namespace TagTool.Shaders.ShaderMatching
                         int portingOptionIndex = srcRmt2Descriptor.Options[j];
                         string optionName = PortingCache.StringTable.GetString(portingRmdfDefinition.Categories[j].ShaderOptions[portingOptionIndex].Name);
 
-                        // these are perfect option matches
-                        // do not touch unless verified
-                        if (srcRmt2Descriptor.Type == "shader")
-                        {
-                            if (methodName == "self_illumination" && optionName == "change_color")
-                                optionName = "illum_change_color";
-                        }
-                        if (methodName == "misc" && optionName == "default")
-                            optionName = "always_calc_albedo";
-                        if (methodName == "alpha_test" && optionName == "from_texture")
-                            optionName = "simple";
-                        //if (PortingCache.Version == CacheVersion.Halo3ODST && methodName == "material_model" && optionName == "cook_torrance")
-                        //    optionName = "cook_torrance_odst";
-                        //if (methodName == "material_model" && optionName == "cook_torrance_rim_fresnel")
-                        //    optionName = "cook_torrance";
-
                         if (PortingCache.Version == CacheVersion.HaloReach)
                         {
-                            // keep in sync with cubemap conversion - not needed anymore?
-                            //if (methodName == "environment_mapping" && optionName == "dynamic")
-                            //{
-                            //    optionName = "dynamic_reach";
-                            //}
-                            if (methodName == "material_model")
+                            switch ($"{methodName}\\{optionName}") 
                             {
-                                if (optionName == "cook_torrance")
+                                // keep in sync with cubemap conversion - not needed anymore?
+                                //case @"environment_mapping\dynamic":
+                                //    optionName = "dynamic_reach";
+                                //    break;
+                                case @"material_model\cook_torrance":
                                     optionName = "cook_torrance_reach";
-                                else if (optionName == "two_lobe_phong")
+                                    break;
+                                case @"material_model\two_lobe_phong":
                                     optionName = "two_lobe_phong_reach";
-                                //else if (optionName == "organism")
-                                //    optionName = "organism_reach";
+                                    break;
+                                //case @"material_model\organism":
+                                //    optionName = "organism_reach"
+                                //    break;
                             }
                         }
 
@@ -516,38 +510,57 @@ namespace TagTool.Shaders.ShaderMatching
                         // fixup names (remove when full rmdf + shader generation for each gen3 game)
                         switch ($"{methodName}\\{optionName}")
                         {
-                            // Reach rmsh //
-                            case @"albedo\patchy_emblem":
-                                optionName = "emblem_change_color";
-                                break;
-                            case @"bump_mapping\detail_blend":
-                            case @"bump_mapping\three_detail_blend":
-                                optionName = "detail";
-                                break;
-                            case @"specular_mask\specular_mask_mult_diffuse":
-                                optionName = "specular_mask_from_texture";
-                                break;
-                            // Reach rmtr  //
-                            case @"blending\distance_blend_base":
-                                optionName = "morph";
-                                break;
-                            // Reach rmfl //
+                            // these are perfect option matches
+                            // do not touch unless verified
+                            // shouldn't be necessary, just add the data to the base cache :/
+                            //case @"self_illumination\change_color" when srcRmt2Descriptor.Type == "shader":
+                            //    optionName = "illum_change_color";
+                            //    break;
+                            //case @"misc\default":
+                            //    optionName = "always_calc_albedo";
+                            //    break;
+                            //case @"alpha_test\from_texture":
+                            //    optionName = "simple";
+                            //    break;
+                            //case @"material_model\cook_torrance" when PortingCache.Version == CacheVersion.Halo3ODST:
+                            //    optionName = "cook_torrance_odst";
+                            //    break;
+                            //case @"material_model\cook_torrance_rim_fresnel":
+                            //    optionName = "cook_torrance";
+                            //    break;
+
+                            //// Reach rmsh //
+                            //case @"albedo\patchy_emblem":
+                            //    optionName = "emblem_change_color";
+                            //    break;
+                            //case @"bump_mapping\detail_blend":
+                            //case @"bump_mapping\three_detail_blend":
+                            //    optionName = "detail";
+                            //    break;
+                            //case @"specular_mask\specular_mask_mult_diffuse":
+                            //    optionName = "specular_mask_from_texture";
+                            //    break;
+                            //// Reach rmtr  //
+                            //case @"blending\distance_blend_base":
+                            //    optionName = "morph";
+                            //    break;
+                            // Reach rmfl // These options require the addition of extra entry points in order to get full functionality
                             case @"material_model\flat":
                             case @"material_model\specular":
                             case @"material_model\translucent":
                                 optionName = "default";
                                 break;
-                            // Reach prt3 //
-                            case @"lighting\per_pixel_smooth":
-                            case @"lighting\smoke_lighting":
-                                optionName = "per_pixel_ravi_order_3";
-                                break;
-                            case @"lighting\per_vertex_ambient":
-                                optionName = "per_vertex_ravi_order_0";
-                                break;
-                            case @"depth_fade\low_res":
-                                optionName = "on";
-                                break;
+                            //// Reach prt3 //
+                            //case @"lighting\per_pixel_smooth":
+                            //case @"lighting\smoke_lighting":
+                            //    optionName = "per_pixel_ravi_order_3";
+                            //    break;
+                            //case @"lighting\per_vertex_ambient":
+                            //    optionName = "per_vertex_ravi_order_0";
+                            //    break;
+                            //case @"depth_fade\low_res":
+                            //    optionName = "on";
+                            //    break;
                         }
 
                         bool matchFound = false;
@@ -564,7 +577,7 @@ namespace TagTool.Shaders.ShaderMatching
 
                         if (!matchFound)
                         {
-                            new TagToolWarning($"Unrecognized {srcRmt2Descriptor.Type} method option \"{methodName}\\{optionName}\"");
+                            Log.Warning($"Unrecognized {srcRmt2Descriptor.Type} method option \"{methodName}\\{optionName}\"");
                         }
                         break;
                     }
@@ -670,38 +683,6 @@ namespace TagTool.Shaders.ShaderMatching
                 descriptor.HasParsed = true;
 
                 return true;
-            }
-
-            public HaloShaderGenerator.Generator.IShaderGenerator GetGenerator(bool applyFixes = false)
-            {
-                if (HasParsed && !IsMs30)
-                {
-                    switch (Type)
-                    {
-                        case "beam":            return new HaloShaderGenerator.Beam.BeamGenerator(Options, applyFixes);
-                        case "black":           return new HaloShaderGenerator.Black.ShaderBlackGenerator();
-                        case "contrail":        return new HaloShaderGenerator.Contrail.ContrailGenerator(Options, applyFixes);
-                        case "cortana":         return new HaloShaderGenerator.Cortana.CortanaGenerator(Options, applyFixes);
-                        case "custom":          return new HaloShaderGenerator.Custom.CustomGenerator(Options, applyFixes);
-                        case "decal":           return new HaloShaderGenerator.Decal.DecalGenerator(Options, applyFixes);
-                        case "foliage":         return new HaloShaderGenerator.Foliage.FoliageGenerator(Options, applyFixes);
-                        //case "glass":           return new HaloShaderGenerator.Glass.GlassGenerator(Options, applyFixes);
-                        case "halogram":        return new HaloShaderGenerator.Halogram.HalogramGenerator(Options, applyFixes);
-                        case "light_volume":    return new HaloShaderGenerator.LightVolume.LightVolumeGenerator(Options, applyFixes);
-                        case "particle":        return new HaloShaderGenerator.Particle.ParticleGenerator(Options, applyFixes);
-                        case "screen":          return new HaloShaderGenerator.Screen.ScreenGenerator(Options, applyFixes);
-                        case "shader":          return new HaloShaderGenerator.Shader.ShaderGenerator(Options, applyFixes);
-                        case "terrain":         return new HaloShaderGenerator.Terrain.TerrainGenerator(Options, applyFixes);
-                        case "water":           return new HaloShaderGenerator.Water.WaterGenerator(Options, applyFixes);
-                        case "zonly":           return new HaloShaderGenerator.ZOnly.ZOnlyGenerator(Options, applyFixes);
-                    }
-
-                    Console.WriteLine($"\"{Type}\" shader generation is currently unsupported.");
-                    return null;
-                }
-
-                Console.WriteLine("Invalid descriptor.");
-                return null;
             }
         }
 

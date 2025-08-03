@@ -5,6 +5,7 @@ using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
 using TagTool.Pathfinding;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.ScenarioStructureBSPs
 {
@@ -34,7 +35,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
             if (Cache.Version >= CacheVersion.Halo3ODST && Definition.PathfindingResource == null)
             {
-                new TagToolError(CommandError.OperationFailed, "Pathfinding geometry does not have a resource associated with it.");
+                Log.Error("Pathfinding geometry does not have a resource associated with it.");
                 return true;
             }
 

@@ -10,6 +10,7 @@ using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Definitions.Common;
@@ -89,7 +90,7 @@ namespace TagTool.Commands.Forge
             }
             catch (Exception ex) 
             {
-                new TagToolWarning($@"Failed to maximize budget for {mapFile.Header.GetScenarioPath()}.scenario : {ex.Message}");
+                Log.Warning($@"Failed to maximize budget for {mapFile.Header.GetScenarioPath()}.scenario : {ex.Message}");
                 return;
             }
 

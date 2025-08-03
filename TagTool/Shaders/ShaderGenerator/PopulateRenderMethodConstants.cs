@@ -5,6 +5,7 @@ using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
 using TagTool.Shaders.ShaderMatching;
 using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock;
+using TagTool.Common.Logging;
 
 namespace TagTool.Shaders.ShaderGenerator
 {
@@ -57,7 +58,7 @@ namespace TagTool.Shaders.ShaderGenerator
                 }
 
                 if (textureConstant.Bitmap == null)
-                    new TagToolWarning($"Texture constant \"{name}\" has no default bitmap. This needs to be set or this shader can become corrupted ingame");
+                    Log.Warning($"Texture constant \"{name}\" has no default bitmap. This needs to be set or this shader can become corrupted ingame");
 
                 textureConstants.Add(textureConstant);
             }

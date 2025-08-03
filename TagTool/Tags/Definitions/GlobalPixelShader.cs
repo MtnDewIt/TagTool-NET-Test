@@ -12,8 +12,7 @@ namespace TagTool.Tags.Definitions
 
         [TagStructure(Size = 0x10, Platform = Cache.CachePlatform.Original)]
         [TagStructure(Size = 0x14, MaxVersion = Cache.CacheVersion.Halo3Retail, Platform = Cache.CachePlatform.MCC)]
-        [TagStructure(Size = 0x10, MaxVersion = Cache.CacheVersion.Halo3ODST, Platform = Cache.CachePlatform.MCC)]
-        [TagStructure(Size = 0x10, MinVersion = Cache.CacheVersion.HaloReach, Platform = Cache.CachePlatform.MCC)]
+        [TagStructure(Size = 0x10, MinVersion = Cache.CacheVersion.Halo3ODST, Platform = Cache.CachePlatform.MCC)]
         public class EntryPointBlock : TagStructure
 		{
             public List<CategoryDependencyBlock> CategoryDependency;

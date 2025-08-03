@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using TagTool.Cache;
 using TagTool.Commands.Common;
@@ -35,9 +36,13 @@ namespace TagTool.Commands.Modding
             else if(!int.TryParse(args[0], System.Globalization.NumberStyles.Integer, null, out tagCacheIndex))
                 return new TagToolError(CommandError.ArgInvalid, $"\"{args[0]}\"");              
 
+            if (!Cache.BaseModPackage.IsValidTagCacheIndex(tagCacheIndex))
+                return new TagToolError(CommandError.ArgInvalid, $"Invalid tag cache index {tagCacheIndex}");
 
-            System.Console.WriteLine();
+            Console.WriteLine();
             Cache.SetActiveTagCache(tagCacheIndex);
+
+            Console.WriteLine($"Current Tag Cache: {Cache.BaseModPackage.CacheNames[Cache.GetCurrentTagCacheIndex()]}.");
 
             return true;
         }

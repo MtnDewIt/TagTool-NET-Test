@@ -6,6 +6,7 @@ using TagTool.Commands.Common;
 using TagTool.Tags;
 using TagTool.JSON.Parsers;
 using System.Collections.Generic;
+using TagTool.Common.Logging;
 
 namespace TagTool.JSON.Handlers
 {
@@ -72,7 +73,7 @@ namespace TagTool.JSON.Handlers
             }
             else
             {
-                new TagToolWarning($@"Could not find tag: '{tagName}.{tagType}'. Assigning null tag instead");
+                Log.Warning($@"Could not find tag: '{tagName}.{tagType}'. Assigning null tag instead");
                 return null;
             }
         }

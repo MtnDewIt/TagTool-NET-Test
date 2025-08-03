@@ -30,6 +30,8 @@ using DefinitionsGen4 = TagTool.Tags.Definitions.Gen4;
 using CommandsGen4 = TagTool.Commands.Gen4;
 using TagTool.Commands.Common;
 using TagTool.Commands.Tags;
+using TagTool.Commands.HUD;
+using TagTool.Scripting.CSharp;
 
 namespace TagTool.Commands.Editing
 {
@@ -48,8 +50,8 @@ namespace TagTool.Commands.Editing
             var tagName = tag?.Name ?? $"0x{tag.Index:X4}";
 
             var commandContext = new CommandContext(contextStack.Context, string.Format("{0}.{1}", tagName, groupName));
-            commandContext.ScriptGlobals.Add(ExecuteCSharpCommand.GlobalTagKey, tag);
-            commandContext.ScriptGlobals.Add(ExecuteCSharpCommand.GlobalDefinitionKey, definition);
+            commandContext.ScriptGlobals.Add(nameof(ScriptEvaluationContext.Tag), tag);
+            commandContext.ScriptGlobals.Add(nameof(ScriptEvaluationContext.Definition), definition);
 
             commandContext.AddCommand(new ExecuteCSharpCommand(contextStack));
             if (CacheVersionDetection.IsInGen(CacheGeneration.Third, cache.Version) || CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, cache.Version))
@@ -66,6 +68,10 @@ namespace TagTool.Commands.Editing
 
                     case "bink":
                         VideoContextFactory.Populate(commandContext, cache, tag, (Bink)definition);
+                        break;
+
+                    case "chdt":
+                        HudContextFactory.Populate(commandContext, cache, tag, (ChudDefinition)definition);
                         break;
 
                     case "coll":

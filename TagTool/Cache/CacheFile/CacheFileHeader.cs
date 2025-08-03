@@ -37,7 +37,6 @@ namespace TagTool.Cache
                 case CacheVersion.Halo3Retail:
                 case CacheVersion.Halo3ODST:
                 case CacheVersion.HaloReach:
-                case CacheVersion.HaloReach11883:
                     return deserializer.Deserialize<CacheFileHeaderGen3>(dataContext);
                 case CacheVersion.HaloOnlineED:
                 case CacheVersion.HaloOnline106708:
@@ -88,19 +87,18 @@ namespace TagTool.Cache
 
         public int Count;
 
-        [TagField(MinVersion = CacheVersion.Halo2Retail, Platform = CachePlatform.MCC)]
+        [TagField(Platform = CachePlatform.MCC)]
         public uint BufferOffsetMCC;
 
         public int BufferSize;
         public uint IndicesOffset;
 
-        [TagField(MinVersion = CacheVersion.Halo2Alpha, Platform = CachePlatform.Original)]
+        [TagField(Platform = CachePlatform.Original)]
         public uint BufferOffset;
 
-        [TagField(MinVersion = CacheVersion.Halo2Retail, Platform = CachePlatform.MCC)]
+        [TagField(Platform = CachePlatform.MCC)]
         public int NamespacesCount;
-
-        [TagField(MinVersion = CacheVersion.Halo2Retail, Platform = CachePlatform.MCC)]
+        [TagField(Platform = CachePlatform.MCC)]
         public uint NamespacesOffset;
     }
 

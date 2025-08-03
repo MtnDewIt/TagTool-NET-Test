@@ -5,6 +5,7 @@ using TagTool.Commands.Common;
 
 namespace TagTool.Commands.Sounds
 {
+    [Obsolete("To be replaced with PortingOptions.AudioCache")]
     public class UseAudioCacheCommand : Command
     {
         public static DirectoryInfo AudioCacheDirectory = null;
@@ -13,7 +14,7 @@ namespace TagTool.Commands.Sounds
             base(true,
 
                 "UseAudioCache",
-                "Specify a directory to store audio files",
+                "Specify a directory to store audio files.",
 
                 "UseAudioCache <Directory>",
                 "")

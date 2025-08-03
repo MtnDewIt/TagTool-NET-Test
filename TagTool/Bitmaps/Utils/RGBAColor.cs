@@ -17,5 +17,7 @@ namespace TagTool.Bitmaps
             B = Blue;
             A = Alpha;
         }
+
+        public static readonly RGBAColor Transparent = new RGBAColor(0, 0, 0, 0);
     }
 }

@@ -200,7 +200,6 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 				}
 				else { 
 					if (replaceResult is TagToolError error) { return error; }
-					if (replaceResult is TagToolWarning warning) { return warning; }
 					return new TagToolError(CommandError.CustomError, "Unknown error occurred while replacing render geometry.");
 				}
 
@@ -284,7 +283,6 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 			}
 			else{
 				if (importCollisionCommandResult is TagToolError error) { return error; }
-				if (importCollisionCommandResult is TagToolWarning warning) { return warning; }
 			}
 
 			// Edit the CollisionModel tag we just created
@@ -370,7 +368,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 				
 				// Set Crate Properties
 				crate_tag.ObjectType = new GameObjectType16() { Halo3ODST = GameObjectTypeHalo3ODST.Crate };				 // -- 	SetField ObjectType.Halo3ODST Crate
-				crate_tag.ObjectFlags = new ObjectDefinitionFlags() { FlagsReach = GameObjectFlagsReach.DoesNotCastShadow }; // -- 	SetField ObjectFlags.Flags DoesNotCastShadow
+				crate_tag.ObjectFlags = new ObjectDefinitionFlags() { Flags = ObjectFlags.DoesNotCastShadow }; // -- 	SetField ObjectFlags.Flags DoesNotCastShadow
 				crate_tag.BoundingRadius = 10000;																			 // -- 	SetField BoundingRadius 10000
 				crate_tag.Model = Cache.TagCache.GetTag($"{ TagName}.model");												 // -- 	SetField Model {tagName}.model
 				
@@ -516,7 +514,6 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 					}
 					else {
 						if (pathfindingResult is TagToolError error) { return error; }
-						if (pathfindingResult is TagToolWarning warning) { return warning; }
 						return new TagToolError(CommandError.CustomError, "Failed to generate pathfinding data.");
 					}
 
@@ -547,7 +544,6 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 					}
 					else {
 						if (editPathfindingResult is TagToolError error) { return error; }
-						if (editPathfindingResult is TagToolWarning warning) { return warning; }
 						return new TagToolError(CommandError.CustomError, "Failed to apply pathfinding data.");
 					}
 

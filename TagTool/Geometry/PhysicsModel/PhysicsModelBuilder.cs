@@ -12,6 +12,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using TagTool.Cache;
 using static TagTool.Tags.Definitions.PhysicsModel;
+using TagTool.Common.Logging;
 
 namespace TagTool.Geometry
 {
@@ -199,7 +200,7 @@ namespace TagTool.Geometry
                 fileStruct = reader.ReadString();
                 if (fileStruct == null)
                 {
-                    new TagToolError(CommandError.CustomError, "Could not parse file!");
+                    Log.Error("Could not parse file!");
                     return false;
                 }
             }
@@ -222,7 +223,7 @@ namespace TagTool.Geometry
 
             if (shapedefs.Count < 1)
             {
-                new TagToolError(CommandError.CustomError, "No shapes found!");
+                Log.Error("No shapes found!");
                 return false;
             }
             else
@@ -293,7 +294,7 @@ namespace TagTool.Geometry
                     BlamShapeType typeAdded = AddShape(_phmo, listelem, globalsInstance, cache);
                     if (typeAdded == BlamShapeType.TriangleMesh)
                     {
-                        new TagToolError(CommandError.CustomError, "Failed to load shape!");
+                        Log.Error("Failed to load shape!");
                         return false;
                     }
 

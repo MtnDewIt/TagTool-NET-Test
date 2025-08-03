@@ -7,6 +7,7 @@ using System.Xml;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Layouts;
 
 namespace TagTool.Commands.Definitions
@@ -67,7 +68,7 @@ namespace TagTool.Commands.Definitions
                 var pluginPath = Path.Combine(inDir, pluginFileName);
                 if (!File.Exists(pluginPath))
                 {
-                    new TagToolWarning($"No plugin found for the '{tag.Group.Tag}' tag group");
+                    Log.Warning($"No plugin found for the '{tag.Group.Tag}' tag group");
                     continue;
                 }
 
@@ -82,7 +83,7 @@ namespace TagTool.Commands.Definitions
                 // Warn the user about conflicts
                 numConflicts += loadedPlugin.Conflicts.Count;
                 foreach (var conflict in loadedPlugin.Conflicts)
-                    new TagToolWarning($"Field \"{conflict.Name}\" at offset 0x{conflict.Offset:X} in block \"{conflict.Block ?? "(root)"}\" conflicts!");
+                    Log.Warning($"Field \"{conflict.Name}\" at offset 0x{conflict.Offset:X} in block \"{conflict.Block ?? "(root)"}\" conflicts!");
 
                 // Write it
                 var outPath = Path.Combine(outDir, writer.GetSuggestedFileName(loadedPlugin.Layout));

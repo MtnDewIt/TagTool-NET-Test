@@ -4,22 +4,37 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using static TagTool.Tags.TagFieldFlags;
+using static TagTool.Tags.Definitions.Globals;
 
 namespace TagTool.Tags.Definitions.Gen4
 {
-    [TagStructure(Name = "globals", Tag = "matg", Size = 0x8E0)]
+    [TagStructure(Name = "globals", Tag = "matg", Size = 0x8E0, Platform = CachePlatform.Original)]
+    [TagStructure(Name = "globals", Tag = "matg", Size = 0x8C8, Platform = CachePlatform.MCC)]
     public class Globals : TagStructure
     {
-        [TagField(Length = 0xAC, Flags = TagFieldFlags.Padding)]
+        [TagField(Length = 0xAC, Flags = TagFieldFlags.Padding, Platform = CachePlatform.Original)]
         public byte[] Padding;
         public LanguageEnum Language;
+
+        [TagField(Length = 4, Flags = TagFieldFlags.Padding, Platform = CachePlatform.MCC)]
+        public byte[] LanguagePad = new byte[4];
+
+        [TagField(Length = 17, Platform = CachePlatform.MCC)]
+        public LanguagePack[] LanguagePacksMCC = new LanguagePack[17];
+
         public List<HavokCleanupResourcesBlock> HavokCleanupResources;
         public List<SoundGlobalsBlock> SoundGlobals;
+
+        [TagField(Platform = CachePlatform.Original)]
         public List<AiGlobalsDataBlockStruct> Deprecated;
+
         [TagField(ValidTags = new [] { "aigl" })]
         public CachedTag AiGlobalsRef;
         public List<GameGlobalsDamageBlock> DamageTable;
+
+        [TagField(Platform = CachePlatform.Original)]
         public List<SoundBlock> Sounds;
+
         public List<CameraBlock> Camera;
         public List<ControllerInputBlock> ControllerInput;
         public List<PlayerControlBlock> PlayerControl;
@@ -28,12 +43,19 @@ namespace TagTool.Tags.Definitions.Gen4
         public List<CoopDifficultyBlockStruct> CoOpDifficulty;
         public List<SoftCeilingGlobalsBlock> SoftCeilings;
         public List<InterfaceTagReferences> InterfaceTags;
+
+        [TagField(Platform = CachePlatform.Original)]
         public List<CheatWeaponsBlock> WeaponList;
+        [TagField(Platform = CachePlatform.Original)]
         public List<CheatPowerupsBlock> CheatPowerups;
+
         public List<PlayerInformationBlock> PlayerInformation;
         public List<PlayerRepresentationBlock> PlayerRepresentation;
         public List<DamageGlobalsBlock> Damage;
+
+        [TagField(Platform = CachePlatform.Original)]
         public List<ShieldBoostBlock> ShieldBoost;
+
         public List<MaterialsBlock> Materials;
         public List<MultiplayerColorBlock> ProfileColors;
         public List<MultiplayerColorBlock> EmblemColors;
@@ -64,8 +86,8 @@ namespace TagTool.Tags.Definitions.Gen4
         [TagField(ValidTags = new [] { "gmeg" })]
         public CachedTag GameMedalGlobals;
 
-        [TagField(Length = 17)]
-        public LanguagePackDefinition[] LanguagePack = new LanguagePackDefinition[17];
+        [TagField(Length = 17, Platform = CachePlatform.Original)]
+        public LanguagePack[] LanguagePacks = new LanguagePack[17];
 
         [TagField(ValidTags = new [] { "rasg" })]
         public CachedTag RasterizerGlobalsRef;
@@ -151,7 +173,8 @@ namespace TagTool.Tags.Definitions.Gen4
             public CachedTag ObjectCleanupEffect;
         }
         
-        [TagStructure(Size = 0xB8)]
+        [TagStructure(Size = 0xB8, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0xA8, Platform = CachePlatform.MCC)]
         public class SoundGlobalsBlock : TagStructure
         {
             [TagField(ValidTags = new [] { "sncl" })]
@@ -160,7 +183,7 @@ namespace TagTool.Tags.Definitions.Gen4
             public CachedTag SoundEffects;
             [TagField(ValidTags = new [] { "snmx" })]
             public CachedTag SoundMix;
-            [TagField(ValidTags = new [] { "spk!" })]
+            [TagField(ValidTags = new [] { "spk!" }, Platform = CachePlatform.Original)]
             public CachedTag SoundCombatDialogueConstants;
             [TagField(ValidTags = new [] { "sgp!" })]
             public CachedTag SoundPropagation;
@@ -698,7 +721,8 @@ namespace TagTool.Tags.Definitions.Gen4
             public float RadialDeadZone;
         }
         
-        [TagStructure(Size = 0x16C)]
+        [TagStructure(Size = 0x16C, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x170, Platform = CachePlatform.MCC)]
         public class PlayerControlBlock : TagStructure
         {
             public List<ControllerMappingReferenceBlock> ControllerButtonMappings;
@@ -731,6 +755,10 @@ namespace TagTool.Tags.Definitions.Gen4
             public float MinimumActionHoldTimeForOpponents; // seconds
             // for spinny-shotgun goodness
             public float PeggedZoomSupressionThreshold;
+
+            [TagField(Platform = CachePlatform.MCC)]
+            public uint AutoUnzoomTicks;
+
             public float MinimumVerticalVelocity; // wu/s
             public float CooldownTime; // seconds
             public RealVector2d DoubleJumpVelocity; // horizontal, vertical
@@ -1107,15 +1135,33 @@ namespace TagTool.Tags.Definitions.Gen4
                 }
             }
             
-            [TagStructure(Size = 0xC)]
+            [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo4)]
+            [TagStructure(Size = 0x10, MinVersion = CacheVersion.H2AMP)]
             public class PlayerTraitsAppearanceBlock : TagStructure
             {
+                [TagField(MinVersion = CacheVersion.H2AMP)]
+                public StringId DeathEffectH2;
+                [TagField(MinVersion = CacheVersion.H2AMP)]
+                public StringId AttachedEffectH2;
+
                 public PlayerTraitActiveCamo ActiveCamo;
+
+                [TagField(MinVersion = CacheVersion.H2AMP)]
+                public PlayerTraitColor PrimaryColor;
+                [TagField(MinVersion = CacheVersion.H2AMP)]
+                public PlayerTraitColor SecondaryColor;
+
                 public PlayerTraitWaypoint Waypoint;
                 public PlayerTraitWaypoint GamertagVisible;
                 public PlayerTraitAura Aura;
+
+                [TagField(MaxVersion = CacheVersion.Halo4)]
                 public StringId DeathEffect;
+                [TagField(MaxVersion = CacheVersion.Halo4)]
                 public StringId AttachedEffect;
+
+                [TagField(MinVersion = CacheVersion.H2AMP)]
+                public short Unknown;
                 
                 public enum PlayerTraitActiveCamo : sbyte
                 {
@@ -1142,6 +1188,27 @@ namespace TagTool.Tags.Definitions.Gen4
                     TeamColor,
                     Black,
                     White
+                }
+
+                public enum PlayerTraitColor : sbyte
+                {
+                    Unchanged,
+                    Red,
+                    Orange,
+                    Gold,
+                    DarkGreen,
+                    LightGreen,
+                    DarkBlue,
+                    LightBlue,
+                    Purple,
+                    Pink,
+                    Black,
+                    Grey,
+                    White,
+                    Brown,
+                    Sand,
+                    DarkRed,
+                    Infection
                 }
             }
             
@@ -1511,35 +1578,36 @@ namespace TagTool.Tags.Definitions.Gen4
             public float VehicleTangentDamping;
         }
         
-        [TagStructure(Size = 0x130)]
+        [TagStructure(Size = 0x130, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x70, Platform = CachePlatform.MCC)]
         public class InterfaceTagReferences : TagStructure
         {
             [TagField(ValidTags = new [] { "bitm" })]
             public CachedTag SpinnerBitmap;
-            [TagField(ValidTags = new [] { "bitm" })]
+            [TagField(ValidTags = new [] { "bitm" }, Platform = CachePlatform.Original)]
             public CachedTag Obsolete2;
-            [TagField(ValidTags = new [] { "colo" })]
+            [TagField(ValidTags = new [] { "colo" }, Platform = CachePlatform.Original)]
             public CachedTag ScreenColorTable;
-            [TagField(ValidTags = new [] { "colo" })]
+            [TagField(ValidTags = new [] { "colo" }, Platform = CachePlatform.Original)]
             public CachedTag HudColorTable;
-            [TagField(ValidTags = new [] { "colo" })]
+            [TagField(ValidTags = new [] { "colo" }, Platform = CachePlatform.Original)]
             public CachedTag EditorColorTable;
-            [TagField(ValidTags = new [] { "colo" })]
+            [TagField(ValidTags = new [] { "colo" }, Platform = CachePlatform.Original)]
             public CachedTag DialogColorTable;
-            [TagField(ValidTags = new [] { "bitm" })]
+            [TagField(ValidTags = new [] { "bitm" }, Platform = CachePlatform.Original)]
             public CachedTag MotionSensorSweepBitmap;
-            [TagField(ValidTags = new [] { "bitm" })]
+            [TagField(ValidTags = new [] { "bitm" }, Platform = CachePlatform.Original)]
             public CachedTag MotionSensorSweepBitmapMask;
-            [TagField(ValidTags = new [] { "bitm" })]
+            [TagField(ValidTags = new [] { "bitm" }, Platform = CachePlatform.Original)]
             public CachedTag MultiplayerHudBitmap;
             public CachedTag Unused;
-            [TagField(ValidTags = new [] { "bitm" })]
+            [TagField(ValidTags = new [] { "bitm" }, Platform = CachePlatform.Original)]
             public CachedTag MotionSensorBlipBitmap;
-            [TagField(ValidTags = new [] { "bitm" })]
+            [TagField(ValidTags = new [] { "bitm" }, Platform = CachePlatform.Original)]
             public CachedTag InterfaceGooMap1;
-            [TagField(ValidTags = new [] { "bitm" })]
+            [TagField(ValidTags = new [] { "bitm" }, Platform = CachePlatform.Original)]
             public CachedTag InterfaceGooMap2;
-            [TagField(ValidTags = new [] { "bitm" })]
+            [TagField(ValidTags = new [] { "bitm" }, Platform = CachePlatform.Original)]
             public CachedTag InterfaceGooMap3;
             [TagField(ValidTags = new [] { "wgtz" })]
             public CachedTag MainmenuUiGlobals;
@@ -1978,28 +2046,6 @@ namespace TagTool.Tags.Definitions.Gen4
             public class CampaignMetagameSkullBlock : TagStructure
             {
                 public float DifficultyMultiplier;
-            }
-        }
-        
-        [TagStructure(Size = 0x44)]
-        public class LanguagePackDefinition : TagStructure
-        {
-            public int StringReferencePointer;
-            public int StringDataPointer;
-            public int NumberOfStrings;
-            public int StringDataSize;
-            public int StringReferenceCacheOffset;
-            public int StringDataCacheOffset;
-            [TagField(Length = 20)]
-            public DataHashDefinition[]  StringReferenceChecksum;
-            [TagField(Length = 20)]
-            public DataHashDefinition[]  StringDataChecksum;
-            public int DataLoadedBoolean;
-            
-            [TagStructure(Size = 0x1)]
-            public class DataHashDefinition : TagStructure
-            {
-                public byte HashByte;
             }
         }
         

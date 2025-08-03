@@ -17,7 +17,7 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Name = "scenario_structure_bsp", Tag = "sbsp", Size = 0x3AC, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
     [TagStructure(Name = "scenario_structure_bsp", Tag = "sbsp", Size = 0x3B8, MinVersion = CacheVersion.HaloOnline604673, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "scenario_structure_bsp", Tag = "sbsp", Size = 0x51C, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
-    [TagStructure(Name = "scenario_structure_bsp", Tag = "sbsp", Size = 0x548, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+    [TagStructure(Name = "scenario_structure_bsp", Tag = "sbsp", Size = 0x530, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     public class ScenarioStructureBsp : TagStructure
     {
         [TagField(Flags = TagFieldFlags.Padding, Length = 12, MaxVersion = CacheVersion.Halo2Vista)]
@@ -140,6 +140,9 @@ namespace TagTool.Tags.Definitions
         public List<ConveyorSurface> ConveyorSurfaces;
         public List<BreakableSurfaceBits> BreakableSurfaces;
         public List<TagPathfinding> PathfindingData;
+
+        [TagField(Platform = CachePlatform.Original)]
+        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
         public List<StructureBspPathfindingEdgesBlock> PathfindingEdges;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -183,8 +186,10 @@ namespace TagTool.Tags.Definitions
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<InstancedGeometryInstanceName> InstancedGeometryInstanceNames;
+
         [TagField(ValidTags = new[] { "iimz" }, MinVersion = CacheVersion.HaloReach)]
         public CachedTag InstanceImposters;
+
         public List<TagReferenceBlock> Decorators;
         public RenderGeometry DecoratorGeometry;
 
@@ -211,7 +216,10 @@ namespace TagTool.Tags.Definitions
         [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public List<NullBlock> Audability;
         
+        [TagField(Platform = CachePlatform.Original)]
+        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
         public List<NullBlock> ObjectFakeLightprobes;
+
         public RenderGeometry Geometry;
 
         public List<WidgetReferenceBlock> WidgetReferences;
@@ -639,9 +647,10 @@ namespace TagTool.Tags.Definitions
             {
                 public CachedTag StructureBsp;
                 public int ClusterIndex;
-                [TagField(Align = 4, Platform = CachePlatform.Original)]
-                [TagField(Align = 8, Platform = CachePlatform.MCC)]
+                [TagField(Length = 4, Platform = CachePlatform.MCC)]
+                public byte[] Padding5;
                 public HkpMoppBvTreeShape Shape;
+
                 public List<TagHkpMoppCode> MoppCodes;
                 [TagField(Length = 0x4, Platform = CachePlatform.MCC)]
                 public byte[] Padding6;

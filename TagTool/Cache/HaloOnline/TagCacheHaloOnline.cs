@@ -92,7 +92,7 @@ namespace TagTool.Cache.HaloOnline
         public override CachedTag AllocateTag(TagGroup type, string name = null)
         {
             var tagIndex = Tags.Count;
-            var tag = new CachedTagHaloOnline(tagIndex, (TagGroupGen3)type, name);
+            var tag = new CachedTagHaloOnline(tagIndex, type, name);
             Tags.Add(tag);
             return tag;
         }
@@ -102,7 +102,7 @@ namespace TagTool.Cache.HaloOnline
         /// </summary>
         public override CachedTag CreateCachedTag(int index, TagGroup group, string name = null)
         {
-            return new CachedTagHaloOnline(index, (TagGroupGen3)group, name);
+            return new CachedTagHaloOnline(index, group, name);
         }
 
         public override CachedTag CreateCachedTag()

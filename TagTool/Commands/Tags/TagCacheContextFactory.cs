@@ -20,6 +20,7 @@ using TagTool.Commands.Scenarios;
 using TagTool.Cache.Monolithic;
 using TagTool.Commands.JSON;
 using TagTool.Commands.Mod;
+using TagTool.Scripting.CSharp;
 
 namespace TagTool.Commands.Tags
 {
@@ -34,10 +35,12 @@ namespace TagTool.Commands.Tags
 
         public static void Populate(CommandContextStack contextStack, CommandContext context, GameCache cache, GameCache portingCache = null)
         {
-            context.ScriptGlobals.Add(ExecuteCSharpCommand.GlobalCacheKey, cache);
+            context.ScriptGlobals.Add(nameof(ScriptEvaluationContext.Cache), cache);
 
             context.AddCommand(new TestCommand(cache));
             context.AddCommand(new DumpLogCommand());
+            context.AddCommand(new SetLogLevelCommand());
+            context.AddCommand(new SuppressErrorsCommand());
             context.AddCommand(new RunCommands(contextStack));
             context.AddCommand(new ClearCommand());
             context.AddCommand(new ExecuteCSharpCommand(contextStack));
@@ -67,6 +70,7 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new FindValueCommand(cache, null));
             context.AddCommand(new TagDependencyCommand(cache));
             context.AddCommand(new GuessTagDefCommand(cache));
+            context.AddCommand(new DiffTagCommand(cache, cache));
 
             context.AddCommand(new GenerateBlfObjectCommand(cache, cache as GameCacheHaloOnline));
             context.AddCommand(new GenerateMapObjectCommand(cache, cache as GameCacheHaloOnline));
@@ -86,6 +90,7 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new SaveTagNamesCommand(hoCache));
                 context.AddCommand(new SaveModdedTagsCommand(hoCache));
                 context.AddCommand(new CreateTagCommand(hoCache));
+                context.AddCommand(new ReplaceTagCommand(hoCache));
                 context.AddCommand(new ImportTagCommand(hoCache));
                 context.AddCommand(new ImportLooseTagCommand(hoCache));
                 context.AddCommand(new TagResourceCommand(hoCache));
@@ -99,7 +104,7 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new GenerateShaderCommand(hoCache));
                 context.AddCommand(new RecompileShadersCommand(hoCache));
                 context.AddCommand(new GenerateRenderMethodCommand(hoCache));
-                //context.AddCommand(new GenerateRmdfCommand(hoCache));
+                context.AddCommand(new GenerateRmdfCommand(hoCache));
                 context.AddCommand(new GenerateBitmapCommand(hoCache));
                 context.AddCommand(new SwitchObjectTypeCommand(hoCache));
 
@@ -187,7 +192,6 @@ namespace TagTool.Commands.Tags
 
             // porting related
             context.AddCommand(new UseXSDCommand());
-            context.AddCommand(new UseAudioCacheCommand());
             context.AddCommand(new UseShaderCacheCommand());
             context.AddCommand(new OpenCacheFileCommand(contextStack, cache));
             context.AddCommand(new DiffTagCommand(cache, portingCache ?? cache));

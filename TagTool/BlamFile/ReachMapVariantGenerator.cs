@@ -9,6 +9,7 @@ using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Definitions.Common;
@@ -94,7 +95,7 @@ namespace TagTool.BlamFile
             {
                 if (result.VariantObjectCount >= 640)
                 {
-                    new TagToolWarning($"Map variant object limit reached!");
+                    Log.Warning($"Map variant object limit reached!");
                     break;
                 }
 
@@ -103,7 +104,7 @@ namespace TagTool.BlamFile
                     continue;
 
                 if (reachVariantObject.SpawnRelativeToIndex != -1)
-                    new TagToolWarning("Relative placement found. Not currently supported!");
+                    Log.Warning("Relative placement found. Not currently supported!");
 
                 var reachQuota = sourceMapVariant.Quotas[reachVariantObject.QuotaIndex];
 

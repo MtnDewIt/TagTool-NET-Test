@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TagTool.Commands.Common
 {
@@ -27,17 +23,18 @@ namespace TagTool.Commands.Common
         public override object Execute(List<string> args)
         {
             if (args.Count < 1)
-                return false;
+                return new TagToolError(CommandError.ArgCount);
+
+            bool shouldPrint = (args.Count >= 2 && args[1].ToLower() == "print");
+
+            string fileName = args[0];
+            if (!File.Exists(fileName))
+                return new TagToolError(CommandError.FileNotFound, fileName);
 
             var commandRunner = new CommandRunner(ContextStack);
-
-            using (var stream = File.OpenText(args[0]))
-            {
-               for(string line; (line = stream.ReadLine()) != null && !commandRunner.EOF;)
-                    commandRunner.RunCommand(line, (args.Count >= 2 && args[1].ToLower() == "print"));
-            }
-
-            return true;
+            // inherit error suppression
+            commandRunner.SuppressErrors = CommandRunner.Current?.SuppressErrors ?? false;
+            return commandRunner.RunCommandScript(fileName, shouldPrint);
         }
     }
 }

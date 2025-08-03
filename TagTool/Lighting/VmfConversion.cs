@@ -5,6 +5,7 @@ using System.Linq;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Geometry;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
@@ -61,7 +62,7 @@ namespace TagTool.Lighting
             {
                 if (!data.Skip(data.Length / 6 * 6).Take(data.Length % 6).All(x => x == 0xCD))
                 {
-                    new TagToolWarning("Expected debug fill in static per vertex data!");
+                    Log.Warning("Expected debug fill in static per vertex data!");
                 }
             }
 

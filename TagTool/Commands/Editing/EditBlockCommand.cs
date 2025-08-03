@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TagTool.Cache;
 using TagTool.Commands.Common;
+using TagTool.Scripting.CSharp;
 using TagTool.Tags;
 
 namespace TagTool.Commands.Editing
@@ -124,11 +125,11 @@ namespace TagTool.Commands.Editing
             var blockStructure = TagStructure.GetTagStructureInfo(blockValue.GetType(), Version, Platform);
 
             var blockContext = new CommandContext(ContextStack.Context, contextName);
-            blockContext.ScriptGlobals.Add(ExecuteCSharpCommand.GlobalElementKey, blockValue);
+            blockContext.ScriptGlobals.Add(nameof(ScriptEvaluationContext.Element), blockValue);
 
             blockContext.AddCommand(new ListFieldsCommand(Cache, blockStructure, blockValue));
             blockContext.AddCommand(new SetFieldCommand(ContextStack, Cache, Version, Platform, ObjectFile, blockStructure, blockValue));
-            //blockContext.AddCommand(new ExtractResourceCommand(ContextStack, CacheContext, Tag, blockStructure, blockValue));
+            //blockContext.AddCommand(new ExtractResourceCommand(_contextStack, CacheContext, Tag, blockStructure, blockValue));
             blockContext.AddCommand(new EditBlockCommand(ContextStack, Cache, Version, Platform, ObjectFile, blockValue));
             blockContext.AddCommand(new AddBlockElementsCommand(ContextStack, Cache, Version, Platform, ObjectFile, blockStructure, blockValue));
             blockContext.AddCommand(new RemoveBlockElementsCommand(ContextStack, Cache, Version, Platform, ObjectFile, blockStructure, blockValue));

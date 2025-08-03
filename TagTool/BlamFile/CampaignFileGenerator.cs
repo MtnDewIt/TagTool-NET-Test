@@ -1,104 +1,189 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using TagTool.BlamFile.Chunks;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using TagTool.BlamFile.MCC;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
-using TagTool.Tags;
+using TagTool.Commands.Common;
+using TagTool.Common.Logging;
+using TagTool.IO;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.BlamFile
 {
     public class CampaignFileGenerator
     {
-        public GameCache Cache { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-
-        public CampaignFileGenerator(GameCache cache)
+        public static void GenerateCampaignFile(GameCache cache, FileInfo mapInfo, FileInfo modInfo)
         {
-            Cache = cache;
+            string fileName = $"halo3.campaign";
+            Blf campaignBlf = null;
+
+            if (mapInfo.Exists)
+            {
+                ReadBlf(cache, campaignBlf, mapInfo);
+            }
+            else if (modInfo.Exists)
+            {
+                campaignBlf = GenerateCampaignBlf(cache, modInfo);
+            }
+            else
+            {
+                campaignBlf = GenerateCampaignBlf(cache);
+            }
+
+            if (campaignBlf == null)
+            {
+                new TagToolError(CommandError.OperationFailed);
+                return;
+            }
+
+            if (cache is GameCacheHaloOnline)
+            {
+                WriteBlf(cache, campaignBlf, fileName);
+            }
+            else if (cache is GameCacheModPackage modCache)
+            {
+                WriteModBlf(modCache, campaignBlf);
+            }
+            else
+            {
+                new TagToolError(CommandError.CacheUnsupported);
+                return;
+            }
         }
 
-        public Blf GenerateCampaignBlf(bool includeMapIds) 
+        public static void GenerateCampaignFile(GameCache cache, GameCache blamCache)
         {
-            var campaignBlf = new Blf(Cache.Version, Cache.Platform)
+            FileInfo mapInfo = blamCache.Directory != null ? new FileInfo(Path.Combine(blamCache.Directory.FullName, "info")) : null;
+            FileInfo modInfo = null; // TODO: Get mod info relative to cache path
+
+            GenerateCampaignFile(cache, mapInfo, modInfo);
+        }
+
+        public static Blf GenerateCampaignBlf(GameCache cache)
+        {
+            var campaignFileBuilder = new CampaignFileBuilder(cache)
             {
-                ContentFlags = Blf.BlfFileContentFlags.StartOfFile | Blf.BlfFileContentFlags.EndOfFile | Blf.BlfFileContentFlags.Campaign,
-
-                StartOfFile = new BlfChunkStartOfFile
-                {
-                    Signature = "_blf",
-                    Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkStartOfFile), Cache.Version, Cache.Platform),
-                    MajorVersion = 1,
-                    MinorVersion = 2,
-                    ByteOrderMark = -2,
-                },
-
-                EndOfFile = new BlfChunkEndOfFile
-                {
-                    Signature = "_eof",
-                    Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkEndOfFile), Cache.Version, Cache.Platform),
-                    MajorVersion = 1,
-                    MinorVersion = 2
-                },
-
-                Campaign = new BlfCampaign
-                {
-                    Signature = "cmpn",
-                    Length = (int)TagStructure.GetStructureSize(typeof(BlfCampaign), Cache.Version, Cache.Platform),
-                    MajorVersion = 1,
-                    MinorVersion = 1,
-                    CampaignId = 1,
-
-                    Names = Enumerable.Repeat(new BlfCampaign.CampaignNameUnicode32 { Name = Name }, 12).ToArray(),
-                    Descriptions = Enumerable.Repeat(new BlfScenario.NameUnicode128 { Name = Description }, 12).ToArray(),
-
-                    MapIds = includeMapIds ? GetMapIds() : new int[64],
-                },
+                CampaignName = "Halo 3",
+                CampaignDescription = "Finish the Fight!",
             };
+
+            var campaignBlf = campaignFileBuilder.GenerateCampaignBlf(true);
 
             return campaignBlf;
         }
 
-        public int[] GetMapIds()
+        public static Blf GenerateCampaignBlf(GameCache cache, FileInfo modInfoFile)
         {
-            var singlePlayerMapIds = new List<int>();
-            var outputBuffer = new int[64];
+            var jsonData = File.ReadAllText(Path.Combine(modInfoFile.FullName));
+            var modInfo = JsonConvert.DeserializeObject<ModInfo>(jsonData);
 
-            if (Cache is GameCacheHaloOnline)
+            if (modInfo.GameModContents.HasCampaign)
             {
-                foreach (var scenario in Cache.TagCache.FindAllInGroup("scnr"))
-                {
-                    using (var stream = Cache.OpenCacheRead())
-                    {
-                        var scnr = Cache.Deserialize<Scenario>(stream, scenario);
+                var campaignJsonData = File.ReadAllText(Path.Combine(modInfoFile.DirectoryName, "CampaignInfo.json"));
+                var campaignInfo = JsonConvert.DeserializeObject<CampaignInfo>(campaignJsonData);
 
-                        if (scnr.MapType == ScenarioMapType.SinglePlayer)
-                            singlePlayerMapIds.Add(scnr.MapId);
+                var campaignFileBuilder = new CampaignFileBuilder(cache)
+                {
+                    CampaignName = campaignInfo.Title.ParseLocalizedString(63, "Title"),
+                    CampaignDescription = campaignInfo.Description.ParseLocalizedString(127, "Description"),
+                };
+
+                var campaignBlf = campaignFileBuilder.GenerateCampaignBlf(false);
+
+                var mapInfoList = campaignInfo.GetCampaignMapInfo(modInfoFile.DirectoryName);
+
+                if (mapInfoList != null)
+                {
+                    var singlePlayerMapIds = new List<int>();
+
+                    foreach (var mapInfo in mapInfoList)
+                    {
+                        if (cache is GameCacheHaloOnline)
+                        {
+                            foreach (var scenario in cache.TagCache.FindAllInGroup("scnr"))
+                            {
+                                if (scenario.Name.EndsWith(mapInfo.Key))
+                                {
+                                    using (var stream = cache.OpenCacheRead())
+                                    {
+                                        var scnr = cache.Deserialize<Scenario>(stream, scenario);
+
+                                        if (scnr.MapType == ScenarioMapType.SinglePlayer)
+                                            singlePlayerMapIds.Add(scnr.MapId);
+                                    }
+                                }
+                            }
+                        }
+                        else if (cache is GameCacheModPackage modCache)
+                        {
+                            for (int i = 0; i < modCache.BaseModPackage.GetTagCacheCount(); i++)
+                            {
+                                modCache.SetActiveTagCache(i);
+
+                                var tagCacheStream = modCache.OpenCacheRead();
+
+                                foreach (var scenario in modCache.TagCache.FindAllInGroup("scnr"))
+                                {
+                                    if (scenario.Name.EndsWith(mapInfo.Key))
+                                    {
+                                        var scnr = modCache.Deserialize<Scenario>(tagCacheStream, scenario);
+
+                                        if (scnr.MapType == ScenarioMapType.SinglePlayer)
+                                            singlePlayerMapIds.Add(scnr.MapId);
+                                    }
+                                }
+                            }
+                        }
                     }
+
+                    singlePlayerMapIds.CopyTo(campaignBlf.Campaign.MapIds);
                 }
+                else
+                {
+                    Log.Warning("Failed to resolve MapIds - Campaign Map Info List Was Empty");
+                }
+
+                return campaignBlf;
             }
-            else if (Cache is GameCacheModPackage modCache)
+
+            return null;
+        }
+
+        public static void ReadBlf(GameCache cache, Blf campaignBlf, FileInfo srcFile)
+        {
+            campaignBlf = new Blf(CacheVersion.Halo3Retail, CachePlatform.Original);
+
+            using (var stream = srcFile.Open(FileMode.Open, FileAccess.Read))
+            using (var reader = new EndianReader(stream))
             {
-                for (int i = 0; i < modCache.BaseModPackage.GetTagCacheCount(); i++)
-                {
-                    modCache.SetActiveTagCache(i);
+                campaignBlf.Read(reader);
+                campaignBlf.ConvertBlf(cache.Version);
+            }
+        }
 
-                    var tagCacheStream = modCache.OpenCacheRead();
+        public static void WriteBlf(GameCache cache, Blf campaignBlf, string fileName)
+        {
+            var destFile = new FileInfo(Path.Combine(cache.Directory.FullName, fileName));
 
-                    foreach (var scenario in modCache.TagCache.FindAllInGroup("scnr"))
-                    {
-                        var scnr = Cache.Deserialize<Scenario>(tagCacheStream, scenario);
+            using (var destStream = destFile.Create())
+            using (var writer = new EndianWriter(destStream))
+            {
+                campaignBlf.Write(writer);
+            }
+        }
 
-                        if (scnr.MapType == ScenarioMapType.SinglePlayer)
-                            singlePlayerMapIds.Add(scnr.MapId);
-                    }
-                }
+        public static void WriteModBlf(GameCacheModPackage modCache, Blf campaignBlf)
+        {
+            var campaignFileStream = new MemoryStream();
+
+            using (var writer = new EndianWriter(campaignFileStream, leaveOpen: true))
+            {
+                campaignBlf.Write(writer);
             }
 
-            singlePlayerMapIds.CopyTo(outputBuffer);
-
-            return outputBuffer;
+            modCache.SetCampaignFile(campaignFileStream);
         }
     }
 }

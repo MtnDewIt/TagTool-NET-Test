@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using TagTool.Commands.Common;
+using TagTool.Porting;
 
 namespace TagTool.Commands.Porting
 {
     class DoNotReplaceGroupsCommand : Command
     {
-        public DoNotReplaceGroupsCommand()
+        private readonly PortingContext PortContext;
+
+        public DoNotReplaceGroupsCommand(PortingContext portContext)
                : base(true,
 
                      "DoNotReplaceGroups",
@@ -18,16 +21,14 @@ namespace TagTool.Commands.Porting
                      "Prevents the specified tag groups from being replaced when porting tags.\n" +
                      "Tag group format: \"grp1,grp2,grp3\". Use \"all\" to clear the list.")
         {
-            UserDefinedDoNotReplaceGroups = new List<string>();
+            PortContext = portContext;        
         }
-
-        public static List<string> UserDefinedDoNotReplaceGroups = new List<string>();
 
         public override object Execute(List<string> args)
         {
             if (args.Count == 0)
             {
-                Console.WriteLine("Current groups: " + string.Join(", ", UserDefinedDoNotReplaceGroups));
+                Console.WriteLine("Current groups: " + string.Join(", ", PortContext.DoNotReplaceGroups));
                 return true;
             }
             else if (args.Count < 1 || args.Count > 2)
@@ -41,7 +42,7 @@ namespace TagTool.Commands.Porting
                     adding = false;
                     if (args[1] == "all")
                     {
-                        UserDefinedDoNotReplaceGroups.Clear();
+                        PortContext.DoNotReplaceGroups.Clear();
                         return true;
                     }
                     args.RemoveAt(0);
@@ -60,10 +61,10 @@ namespace TagTool.Commands.Porting
                 while (tempGroup.Length < 4)
                     tempGroup += " ";
 
-                if (adding && !UserDefinedDoNotReplaceGroups.Contains(tempGroup))
-                    UserDefinedDoNotReplaceGroups.Add(tempGroup);
-                else if (!adding && UserDefinedDoNotReplaceGroups.Contains(tempGroup))
-                    UserDefinedDoNotReplaceGroups.Remove(tempGroup);
+                if (adding && !PortContext.DoNotReplaceGroups.Contains(tempGroup))
+                    PortContext.DoNotReplaceGroups.Add(tempGroup);
+                else if (!adding && PortContext.DoNotReplaceGroups.Contains(tempGroup))
+                    PortContext.DoNotReplaceGroups.Remove(tempGroup);
             }
 
             return true;

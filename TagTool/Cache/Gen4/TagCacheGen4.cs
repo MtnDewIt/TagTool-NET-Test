@@ -102,7 +102,7 @@ namespace TagTool.Cache.Gen4
             return new CachedTagGen4(-1, new TagGroupGen4(), null);
         }
 
-        public TagCacheGen4(EndianReader reader, MapFile baseMapFile, StringTableGen4 stringTable)
+        public TagCacheGen4(EndianReader reader, MapFile baseMapFile, StringTableGen4 stringTable, ulong expand = 0)
         {
             CachePlatform = baseMapFile.CachePlatform;
             Version = baseMapFile.Version;
@@ -110,25 +110,11 @@ namespace TagTool.Cache.Gen4
             Groups = new List<TagGroupGen4>();
             Instances = new List<CachedTagGen4>();
             GlobalInstances = new Dictionary<Tag, CachedTagGen4>();
+            TagsKey = baseMapFile.CachePlatform == CachePlatform.Original ? "LetsAllPlayNice!" : "";
 
             var Gen4Header = (CacheFileHeaderGen4)baseMapFile.Header;
             var tagNamesHeader = Gen4Header.GetTagNameHeader();
             var tagMemoryHeader = Gen4Header.GetTagMemoryHeader();
-
-            if (CachePlatform == CachePlatform.Original) 
-            {
-                switch (Version)
-                {
-                    case CacheVersion.Halo4:
-                        TagsKey = "LetsAllPlayNice!";
-                        break;
-                    default:
-                        TagsKey = "";
-                        break;
-                }
-            }
-            else
-                TagsKey = "";
 
             uint sectionOffset;
 
@@ -183,6 +169,7 @@ namespace TagTool.Cache.Gen4
                     GrandParentTag = reader.ReadTag(),
                     Name = stringTable.GetString(new StringId(reader.ReadUInt32()))
                 };
+
                 Groups.Add(group);
                 if(!TagDefinitions.TagDefinitionExists(group))
                     Debug.WriteLine($"Warning: tag definition for {group.Tag} : {group.Name} does not exists!");

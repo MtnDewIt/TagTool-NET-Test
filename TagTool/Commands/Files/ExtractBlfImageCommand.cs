@@ -4,6 +4,7 @@ using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.IO;
+using static TagTool.BlamFile.Blf;
 
 namespace TagTool.Commands.Files
 {
@@ -40,11 +41,11 @@ namespace TagTool.Commands.Files
             using (var reader = new EndianReader(stream))
             {
                 if (!blf.Read(reader))
-                    return new TagToolError(CommandError.CustomMessage, "Could not parse BLF");
-
-                if (!blf.ContentFlags.HasFlag(Blf.BlfFileContentFlags.MapImage) && !blf.ContentFlags.HasFlag(Blf.BlfFileContentFlags.ScreenshotData) || blf.Buffer == null || blf.Buffer.Length == 0)
-                    return new TagToolError(CommandError.CustomMessage, "BLF does not contain image");
+                    return new TagToolError(CommandError.CustomError, "Could not parse BLF");
             }
+
+            if (!blf.ContentFlags.HasFlag(BlfFileContentFlags.MapImage) || blf.Buffer == null || blf.Buffer.Length == 0)
+                return new TagToolError(CommandError.CustomError, "BLF does not contain image");
 
             using (var stream = output.Create())
             {

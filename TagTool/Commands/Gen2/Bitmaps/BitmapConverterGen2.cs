@@ -14,6 +14,7 @@ using TagTool.Tags.Definitions;
 using BitmapGen2 = TagTool.Tags.Definitions.Gen2.Bitmap;
 using TagTool.Cache;
 using TagTool.Bitmaps.DDS;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Gen2.Bitmaps
 {
@@ -41,7 +42,7 @@ namespace TagTool.Commands.Gen2.Bitmaps
             byte[] rawBitmapData = cache.GetCacheRawData((uint)gen2Img.Lod0Pointer, gen2Img.Lod0Size);
 
             //h2v raw bitmap data is gz compressed
-            if (cache.Version == TagTool.Cache.CacheVersion.Halo2Vista)
+            if (cache.Version == CacheVersion.Halo2Vista)
             {
                 using (var stream = new MemoryStream(rawBitmapData))
                 using (var resultStream = new MemoryStream())
@@ -125,12 +126,14 @@ namespace TagTool.Commands.Gen2.Bitmaps
                     rawData[i + 3] = 0xFF;
                 }
 
-                baseBitmap.Data = TagTool.Bitmaps.Utils.BitmapConverter.EncodeDXN(rawData, image.Width, image.Height, out baseBitmap.MipMapCount, true);
-
-                // Swap R and G channel (DX9 ATI2N)
-                baseBitmap.Data = BitmapDecoder.SwapXYDxn(baseBitmap.Data, image.Width, image.Height);
                 // Prevent memory allocation crash
-                TagTool.Bitmaps.Utils.BitmapConverter.TrimLowestMipmaps(baseBitmap);
+                BitmapUtils.TrimLowestMipmaps(baseBitmap);
+
+                //Truncate all mipmaps for now -- TODO: fix
+                byte[] truncatedData = rawData.Take(image.Width * image.Height * 4).ToArray();
+
+                baseBitmap.Data = BitmapDecoder.EncodeBitmap(truncatedData, BitmapFormat.Dxn, image.Width, image.Height);
+
                 image.MipmapCount = (sbyte)(baseBitmap.MipMapCount - 1);
 
                 baseBitmap.UpdateFormat(BitmapFormat.Dxn);
@@ -226,7 +229,7 @@ namespace TagTool.Commands.Gen2.Bitmaps
                 return result;
             else
             {
-                new TagToolError(CommandError.None, $"Failed to find bitmap format matching {format}");
+                Log.Error($"Failed to find bitmap format matching {format}");
                 return BitmapFormat.A8R8G8B8;
             }
         }
