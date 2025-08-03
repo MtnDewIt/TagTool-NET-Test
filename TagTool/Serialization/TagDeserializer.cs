@@ -298,6 +298,8 @@ namespace TagTool.Serialization
                 return new RealVector2d(reader.ReadSingle(compression), reader.ReadSingle(compression));
             if (valueType == typeof(RealVector3d))
                 return new RealVector3d(reader.ReadSingle(compression), reader.ReadSingle(compression), reader.ReadSingle(compression));
+            if (valueType == typeof(RealVector4d))
+                return new RealVector4d(reader.ReadSingle(compression), reader.ReadSingle(compression), reader.ReadSingle(compression), reader.ReadSingle(compression));
             if (valueType == typeof(RealQuaternion))
                 return new RealQuaternion(reader.ReadSingle(compression), reader.ReadSingle(compression), reader.ReadSingle(compression), reader.ReadSingle(compression));
             if (valueType == typeof(RealPlane2d))
