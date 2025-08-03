@@ -63,10 +63,7 @@ namespace TagTool.Tags.Definitions
         public List<List> Lists;
         public List<ListShape> ListShapes;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public List<CMoppBvTreeShape> Mopps;
-        [TagField(MinVersion = CacheVersion.HaloReach)]
-        public List<Gen4.PhysicsModel.MoppsBlockStruct> ReachMopps;
 
         public byte[] MoppData;
         public List<HingeConstraint> HingeConstraints;
@@ -840,10 +837,16 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public int UseSpuBuffer;
 
+            [TagField(Flags = Padding, Length = 0x8, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+            public byte[] ReachMCCPad;
+
             public PlatformUnsignedValue AnotherFieldPointerSkip;
             public int PlaneEquationsSize;
             public uint PlaneEquationsCapacity;
             public uint Connectivity;
+
+            [TagField(Flags = Padding, Length = 0xC, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+            public byte[] ReachMCCPad1;
         }
 
         [TagStructure(Size = 0x30, Align = 0x10)]
@@ -887,6 +890,9 @@ namespace TagTool.Tags.Definitions
             public PlatformUnsignedValue FieldPointerSkip1;
             public int ChildShapesSize;
             public uint ChildShapesCapacity;
+
+            [TagField(Flags = Padding, Length = 0x10, Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach)]
+            public byte[] ReachMCCPad;
 
             [TagField(Align = 16)]
             public RealVector3d AabbHalfExtents;

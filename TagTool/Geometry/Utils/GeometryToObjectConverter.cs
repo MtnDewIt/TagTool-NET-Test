@@ -182,7 +182,7 @@ namespace TagTool.Geometry.Utils
                         //fix mopp code offsets to origin
                         foreach (var mopp in collisionModel.Regions[0].Permutations[0].BspMoppCodes)
                         {
-                            mopp.Info.Offset = new RealQuaternion(
+                            mopp.Info.Offset = new RealVector4d(
                                 mopp.Info.Offset.I - GeometryOffset.X,
                                 mopp.Info.Offset.J - GeometryOffset.Y,
                                 mopp.Info.Offset.K - GeometryOffset.Z,
