@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using TagTool.Cache;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Serialization;
 
@@ -19,7 +20,7 @@ namespace TagTool.BlamFile.Chunks
             chunk.MajorVersion = reader.ReadInt16();
             chunk.MinorVersion = reader.ReadInt16();
 
-            new TagToolWarning("Compressed Chunks Not Supported. Skipping...");
+            Log.Warning("Compressed Chunks Not Supported. Skipping...");
 
             var variantSize = chunk.Length - 0xC;
 

@@ -9,7 +9,7 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.BlamFile
 {
-    public class MapFileGenerator
+    public class MapFileBuilder
     {
         private CacheVersion Version;
         private CachePlatform CachePlatform;
@@ -34,7 +34,7 @@ namespace TagTool.BlamFile
         /// </summary>
         public Blf MapVariant { get; set; }
 
-        public MapFileGenerator(CacheVersion version)
+        public MapFileBuilder(CacheVersion version)
         {
             Version = version;
             CachePlatform = CachePlatform.Original;

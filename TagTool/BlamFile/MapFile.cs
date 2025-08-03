@@ -226,13 +226,6 @@ namespace TagTool.BlamFile
                     case CacheFileEngineVersion.HaloReach:
                         cacheVersion = CacheVersion.HaloReach;
                         break;
-                    case CacheFileHeaderMCC.HaloEngineVersion.Halo4:
-                    case CacheFileHeaderMCC.HaloEngineVersion.Unknown3:
-                        cacheVersion = CacheVersion.Halo4;
-                        break;
-                    case CacheFileHeaderMCC.HaloEngineVersion.H2AMP:
-                        cacheVersion = CacheVersion.H2AMP;
-                        break;
                     default:
                         throw new NotSupportedException("Unsupported engine version");
                 }

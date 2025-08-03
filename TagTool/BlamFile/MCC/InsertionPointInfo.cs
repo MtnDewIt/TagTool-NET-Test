@@ -62,8 +62,8 @@ namespace TagTool.BlamFile.MCC
                 }
             }       
 
-            var parsedTitle = Title?.ParseLocalizedString(31, LocalizedString.LocalizedStringType.Title);
-            var parsedDescription = Description?.ParseLocalizedString(127, LocalizedString.LocalizedStringType.Description);
+            var parsedTitle = Title?.ParseLocalizedString(31, "Title");
+            var parsedDescription = Description?.ParseLocalizedString(127, "Description");
 
             for (int i = 0; i < insertion.Names.Length; i++)
                 insertion.Names[i].Name = parsedTitle;

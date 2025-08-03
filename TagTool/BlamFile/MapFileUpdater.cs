@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using TagTool.BlamFile.Chunks;
 using TagTool.BlamFile.MCC;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
@@ -10,6 +11,7 @@ using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
+using static TagTool.BlamFile.Blf;
 
 namespace TagTool.BlamFile
 {
@@ -214,7 +216,7 @@ namespace TagTool.BlamFile
                                 Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkStartOfFile), _cache.Version, _cache.Platform),
                                 MajorVersion = 1,
                                 MinorVersion = 2,
-                                ByteOrderMarker = -2,
+                                ByteOrderMark = -2,
                             },
 
                             EndOfFile = new BlfChunkEndOfFile
@@ -231,9 +233,9 @@ namespace TagTool.BlamFile
                                 Length = (int)TagStructure.GetStructureSize(typeof(BlfScenario), _cache.Version, _cache.Platform),
                                 MajorVersion = 3,
                                 MinorVersion = 1,
-                                Names = Enumerable.Repeat(new NameUnicode32 { Name = "" }, 12).ToArray(),
-                                Descriptions = Enumerable.Repeat(new NameUnicode128 { Name = "" }, 12).ToArray(),
-                                Insertions = Enumerable.Repeat(new BlfScenarioInsertion { Names = Enumerable.Repeat(new NameUnicode32 { Name = "" }, 12).ToArray(), Descriptions = Enumerable.Repeat(new NameUnicode128 { Name = "" }, 12).ToArray() }, 9).ToArray(),
+                                Names = Enumerable.Repeat(new BlfScenario.NameUnicode32 { Name = "" }, 12).ToArray(),
+                                Descriptions = Enumerable.Repeat(new BlfScenario.NameUnicode128 { Name = "" }, 12).ToArray(),
+                                Insertions = Enumerable.Repeat(new BlfScenario.BlfScenarioInsertion { Names = Enumerable.Repeat(new BlfScenario.NameUnicode32 { Name = "" }, 12).ToArray(), Descriptions = Enumerable.Repeat(new BlfScenario.NameUnicode128 { Name = "" }, 12).ToArray() }, 9).ToArray(),
                             },
                         };
 

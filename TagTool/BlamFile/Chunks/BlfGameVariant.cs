@@ -5,6 +5,7 @@ using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
@@ -59,7 +60,7 @@ namespace TagTool.BlamFile.Chunks
                     buffer[i] = reader.ReadByte();
                 }
 
-                new TagToolWarning("Reach Game Variants Not Supported. Skipping...");
+                Log.Warning("Reach Game Variants Not Supported. Skipping...");
             }
             else if (deserializer.Version == CacheVersion.Halo4 || deserializer.Version == CacheVersion.Halo2AMP)
             {
@@ -75,7 +76,7 @@ namespace TagTool.BlamFile.Chunks
                     buffer[i] = reader.ReadByte();
                 }
 
-                new TagToolWarning("Gen 4 Game Variants Not Supported. Skipping...");
+                Log.Warning("Gen 4 Game Variants Not Supported. Skipping...");
             }
             else if (deserializer.Version >= CacheVersion.Halo3Retail && deserializer.Version <= CacheVersion.HaloOnline700123)
             {

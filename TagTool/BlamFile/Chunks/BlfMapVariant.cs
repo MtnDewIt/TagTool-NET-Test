@@ -4,6 +4,7 @@ using TagTool.BlamFile.Chunks.MapVariants;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
@@ -74,7 +75,7 @@ namespace TagTool.BlamFile.Chunks
                     buffer[i] = reader.ReadByte();
                 }
 
-                new TagToolWarning("Gen 4 Map Variants Not Supported. Skipping...");
+                Log.Warning("Gen 4 Map Variants Not Supported. Skipping...");
             }
             else
             {
