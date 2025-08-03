@@ -324,7 +324,7 @@ namespace TagTool.Porting.Gen3
                 }
             }
 
-            if (sound.SoundReference.ExtraInfoIndex != -1)
+            if (sound.SoundReference.ExtraInfoIndex != -1 && BlamCache.Version < CacheVersion.HaloReach)
             {
                 if (BlamCache.Version < CacheVersion.HaloReach)
                 {

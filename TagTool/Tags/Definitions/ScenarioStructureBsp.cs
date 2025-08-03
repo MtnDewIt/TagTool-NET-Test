@@ -647,9 +647,10 @@ namespace TagTool.Tags.Definitions
             {
                 public CachedTag StructureBsp;
                 public int ClusterIndex;
-                [TagField(Align = 4, Platform = CachePlatform.Original)]
-                [TagField(Align = 8, Platform = CachePlatform.MCC)]
+                [TagField(Length = 4, Platform = CachePlatform.MCC)]
+                public byte[] Padding5;
                 public HkpMoppBvTreeShape Shape;
+
                 public List<TagHkpMoppCode> MoppCodes;
                 [TagField(Length = 0x4, Platform = CachePlatform.MCC)]
                 public byte[] Padding6;

@@ -395,9 +395,9 @@ namespace TagTool.Porting.Gen3
                 case CollisionGeometry collisionGeometry:
                     return ConvertCollisionBsp(collisionGeometry);
 
-                case CollisionBspPhysicsDefinition collisionBspPhysics when BlamCache.Version >= CacheVersion.HaloReach:
-                    collisionBspPhysics = ConvertStructure(cacheStream, blamCacheStream, collisionBspPhysics, definition, blamTagName);
-                    return ConvertCollisionBspPhysicsReach(collisionBspPhysics);
+                case HkpMoppBvTreeShape hkpMoppBvTreeShape when BlamCache.Version >= CacheVersion.HaloReach:
+                    hkpMoppBvTreeShape.Child = hkpMoppBvTreeShape.ChildReach;
+                    return ConvertStructure(cacheStream, blamCacheStream, hkpMoppBvTreeShape, definition, blamTagName);
 
                 case RenderGeometry renderGeometry when BlamCache.Version >= CacheVersion.Halo3Retail:
                     renderGeometry = ConvertStructure(cacheStream, blamCacheStream, renderGeometry, definition, blamTagName);

@@ -216,17 +216,6 @@ namespace TagTool.Porting.Gen3
             return bspPhysics;
         }
 
-        public CollisionBspPhysicsDefinition ConvertCollisionBspPhysicsReach(CollisionBspPhysicsDefinition bspPhysics)
-        {
-            bspPhysics.MoppBvTreeShape = new Havok.CMoppBvTreeShape()
-            {
-                ReferencedObject = new Havok.HkpReferencedObject(),
-                Type = 27,
-                Scale = bspPhysics.MoppBvTreeShapeReach.MoppScale,
-            };
-            return bspPhysics;
-        }
-
         List<ScenarioStructureBsp.Cluster.DecoratorGrid> ConvertDecoratorGrid(List<TinyPositionVertex> vertices, ScenarioStructureBsp.Cluster.DecoratorGrid grid)
         {
             List<ScenarioStructureBsp.Cluster.DecoratorGrid> decoratorGrids = new List<ScenarioStructureBsp.Cluster.DecoratorGrid>();

@@ -273,6 +273,8 @@ namespace TagTool.Serialization
                 SerializeVector(block, (RealVector2d)value);
             else if (valueType == typeof(RealVector3d))
                 SerializeVector(block, (RealVector3d)value);
+            else if (valueType == typeof(RealVector4d))
+                SerializeVector(block, (RealVector4d)value);
             else if (valueType == typeof(RealQuaternion))
                 SerializeVector(block, (RealQuaternion)value);
             else if (valueType == typeof(RealPlane2d))
@@ -796,6 +798,14 @@ namespace TagTool.Serialization
             block.Writer.Write(vec.I);
             block.Writer.Write(vec.J);
             block.Writer.Write(vec.K);
+        }
+
+        private void SerializeVector(IDataBlock block, RealVector4d vec)
+        {
+            block.Writer.Write(vec.I);
+            block.Writer.Write(vec.J);
+            block.Writer.Write(vec.K);
+            block.Writer.Write(vec.W);
         }
 
         private void SerializeVector(IDataBlock block, RealQuaternion vec)
