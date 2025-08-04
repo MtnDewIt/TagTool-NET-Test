@@ -39,9 +39,6 @@ namespace TagTool.Cache.Gen3
                         Resolver = new StringIdResolverHaloReach();
                         StringKey = "ILikeSafeStrings";
                         break;
-                    case CacheVersion.Halo4:
-                        Resolver = new StringIdResolverHalo4();
-                        break;
 
                     default:
                         throw new NotSupportedException(CacheVersionDetection.GetBuildName(Version, cachePlatform));
@@ -59,7 +56,7 @@ namespace TagTool.Cache.Gen3
             if (Version > CacheVersion.Halo3Beta)
             {
                 stringIdIndexTableOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, stringIDHeader.IndicesOffset);
-                stringIdBufferOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, stringIDHeader.BufferOffset);
+                stringIdBufferOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, baseMapFile.CachePlatform == CachePlatform.MCC ? stringIDHeader.BufferOffsetMCC : stringIDHeader.BufferOffset);
             }
             else
             {

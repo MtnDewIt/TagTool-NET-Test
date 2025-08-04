@@ -188,7 +188,7 @@ namespace TagTool.Cache.Gen4
                 uint ID = (uint)((reader.ReadInt16() << 16) | i);
 
                 var offset = CachePlatform == CachePlatform.MCC ?
-                    (uint)((ulong)Gen4Header.SectionTable.SectionAddressToOffsets[2] + (ulong)Gen4Header.SectionTable.Sections[2].Offset + (((ulong)reader.ReadUInt32() * 4) - (Gen4Header.VirtualBaseAddress.Value - 0x50000000))) :
+                    (uint)((ulong)Gen4Header.SectionTable.SectionAddressToOffsets[2] + (ulong)Gen4Header.SectionTable.Sections[2].Offset + (((ulong)reader.ReadUInt32() * 4) - (Gen4Header.VirtualBaseAddress.Value - expand))) :
                     (uint)(reader.ReadUInt32() - addressMask);
 
                 CachedTagGen4 tag = new CachedTagGen4(groupIndex, ID, offset, i, tagGroup);
