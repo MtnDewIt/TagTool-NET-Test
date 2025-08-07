@@ -39,7 +39,7 @@ namespace TagTool.Tags.Definitions
         [TagStructure(Size = 0x74, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x5C, MinVersion = CacheVersion.HaloReach)]
         public class ObjectBlock : TagStructure
-		{
+        {
             [TagField(Length = 32, MaxVersion = CacheVersion.HaloOnline700123)]
             public string ImportName;
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -52,6 +52,10 @@ namespace TagTool.Tags.Definitions
             public CachedTag PuppetObject;
             public ObjectFlags Flags;
             public uint ShotsActiveFlags;
+
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public uint LightmapShadowFlags;
+
             public CinematicCoopTypeFlags OverrideCreationFlags;
             public byte[] ImportOverrideCreationScript;
             public List<AttachmentsBlock> Attachments;
@@ -83,26 +87,51 @@ namespace TagTool.Tags.Definitions
                 _4PlayerCoop = 1 << 3
             }
 
-            [TagStructure(Size = 0x38)]
+            [TagStructure(Size = 0x38, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagStructure(Size = 0x20, MinVersion = CacheVersion.HaloReach)]
             public class AttachmentsBlock : TagStructure
-			{
+            {
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public SceneObjectAttachmentFlags Flags;
+                [TagField(MinVersion = CacheVersion.HaloReach, Length = 0x3, Flags = Padding)]
+                public byte[] Pad;
+
                 public StringId ObjectMarkerName;
-                [TagField(Length = 32)]
+                [TagField(Length = 32, MaxVersion = CacheVersion.HaloOnline700123)]
                 public string AttachmentObjectName;
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public StringId AttachmentObjectId;
                 public StringId AttachmentMarkerName;
                 public CachedTag AttachmentType;
+
+                [Flags]
+                public enum SceneObjectAttachmentFlags : byte
+                {
+                    Invisible = 1 << 0
+                }
+
             }
         }
 
         [TagStructure(Size = 0xA4, MaxVersion = CacheVersion.Halo3Retail)]
         [TagStructure(Size = 0xBC, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-        [TagStructure(Size = 0xA4, MinVersion = CacheVersion.HaloReach)]
+        [TagStructure(Size = 0xD0, MinVersion = CacheVersion.HaloReach)]
         public class ShotBlock : TagStructure
         {
             public byte[] ImportScriptHeader;
             public ShotFlags Flags;
             public float EnvironmentDarken;
             public float ForcedExposure;
+
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public short MaximumLookAngleT;
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public short MaximumLookAngleL;
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public short MaximumLookAngleB;
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public short MaximumLookAngleR;
+
             public List<LightingBlock> Lighting;
             public List<ClipBlock> Clips;
             public List<DialogueBlock> Dialogue;
@@ -113,7 +142,9 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.Halo3ODST)]
             public List<ScreenEffectBlock> ScreenEffects;
 
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public List<CortanaEffectBlock> CortanaEffects;
+
             public List<ImportScriptBlock> ImportScripts;
 
             [TagField(MinVersion = CacheVersion.Halo3ODST)]
@@ -122,6 +153,11 @@ namespace TagTool.Tags.Definitions
             public byte[] ImportScriptFooter;
             public int FrameCount;
             public List<CameraFrame> CameraFrames;
+
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public List<DynamicFrameDataBlock> DynamicFrameData;
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public List<ConstantFrameDataBlock> ConstantFrameData;
 
             [Flags]
             public enum ShotFlags : int
@@ -135,20 +171,20 @@ namespace TagTool.Tags.Definitions
             [TagStructure(Size = 0x18, MaxVersion = CacheVersion.Halo3Retail)]
             [TagStructure(Size = 0x1C, MinVersion = CacheVersion.Halo3ODST)]
             public class LightingBlock : TagStructure
-			{
+            {
                 [TagField(MinVersion = CacheVersion.Halo3ODST)]
                 public LightingFlags Flags;
+                [TagField(Flags = Label)]
+                public CachedTag CinematicLight;
+                public int ObjectIndex;
+                public StringId Marker;
+
                 [Flags]
                 public enum LightingFlags : int
                 {
                     None = 0,
                     PersistsAcrossShots = 1 << 0
                 }
-
-                [TagField(Flags = Label)]
-                public CachedTag CinematicLight;
-                public int ObjectIndex;
-                public StringId Marker;
             }
 
             [TagStructure(Size = 0x14)]
@@ -162,7 +198,7 @@ namespace TagTool.Tags.Definitions
 
             [TagStructure(Size = 0x2C)]
             public class ClipBlock : TagStructure
-			{
+            {
                 public RealPoint3d PlaneCenter;
                 public RealPoint3d PlaneDirection;
                 public uint FrameStart;
@@ -172,52 +208,86 @@ namespace TagTool.Tags.Definitions
 
                 [TagStructure(Size = 0x4)]
                 public class ClipObject : TagStructure
-				{
+                {
                     public uint ObjectIndex;
                 }
             }
 
-            [TagStructure(Size = 0x24)]
+            [TagStructure(Size = 0x24, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagStructure(Size = 0x3C, MinVersion = CacheVersion.HaloReach)]
             public class DialogueBlock : TagStructure
-			{
+            {
                 [TagField(Flags = Label)]
-                public CachedTag Sound;
+                public CachedTag Dialogue;
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public CachedTag FemaleDialogue;
                 public int Frame;
                 public float Scale;
                 public StringId LipsyncActor;
                 public StringId DefaultSoundEffect;
                 public StringId Subtitle;
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public StringId FemaleSubtitle;
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public StringId Character;
             }
 
             [TagStructure(Size = 0x18)]
             public class MusicBlock : TagStructure
-			{
+            {
                 public MusicFlags Flags;
+                [TagField(Flags = Label)]
+                public CachedTag Sound;
+                public int Frame;
+
                 [Flags]
                 public enum MusicFlags : int
                 {
                     None = 0,
                     StopMusicAtFrameRatherThanStartingIt = 1 << 0
                 }
-
-                [TagField(Flags = Label)]
-                public CachedTag Sound;
-                public int Frame;
             }
 
-            [TagStructure(Size = 0x1C)]
+            [TagStructure(Size = 0x1C, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloReach)]
             public class EffectBlock : TagStructure
-			{
+            {
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public CinematicShotEffectFlags Flags;
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public SceneshotEffectState State;
+                [TagField(MinVersion = CacheVersion.HaloReach, Length = 0x2, Flags = Padding)]
+                public byte[] Pad;
+
                 [TagField(Flags = Label)]
                 public CachedTag Effect;
                 public int Frame;
                 public StringId Marker;
-                public int MarkerParent;
+                public int MarkerParentIndex;
+
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public StringId FunctionA;
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public StringId FunctionB;
+
+                [Flags]
+                public enum CinematicShotEffectFlags : byte
+                {
+                    UseMayaValue = 1 << 0,
+                    Looping = 1 << 1
+                }
+
+                public enum SceneshotEffectState : byte
+                {
+                    Start,
+                    Stop,
+                    Kill
+                }
             }
 
             [TagStructure(Size = 0x14)]
             public class FunctionBlock : TagStructure
-			{
+            {
                 public int ObjectIndex;
                 [TagField(Flags = Label)]
                 public StringId TargetFunctionName;
@@ -225,7 +295,7 @@ namespace TagTool.Tags.Definitions
 
                 [TagStructure(Size = 0x10)]
                 public class KeyFrame : TagStructure
-				{
+                {
                     public KeyFrameFlags Flags;
                     [Flags]
                     public enum KeyFrameFlags : int
@@ -242,7 +312,7 @@ namespace TagTool.Tags.Definitions
 
             [TagStructure(Size = 0x18)]
             public class ScreenEffectBlock : TagStructure
-			{
+            {
                 [TagField(Flags = Label)]
                 public CachedTag ScreenEffect;
                 public int StartFrame;
@@ -251,17 +321,54 @@ namespace TagTool.Tags.Definitions
 
             [TagStructure(Size = 0x14)]
             public class CortanaEffectBlock : TagStructure
-			{
+            {
                 [TagField(Flags = Label)]
                 public CachedTag CortanaEffect;
                 public uint Frame;
             }
 
-            [TagStructure(Size = 0x18)]
+            [TagStructure(Size = 0x18, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagStructure(Size = 0x24, MinVersion = CacheVersion.HaloReach)]
             public class ImportScriptBlock : TagStructure
-			{
+            {
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public ImportScriptFlags Flags;
+                [TagField(MinVersion = CacheVersion.HaloReach, Length = 0x3, Flags = Padding)]
+                public byte[] Pad;
+
                 public int Frame;
                 public byte[] ImportScript;
+
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public int NodeID;
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public int SequenceID;
+
+                [Flags]
+                public enum ImportScriptFlags : byte
+                {
+                    UseMayaValue = 1 << 0
+                }
+            }
+
+            [TagStructure(Size = 0x24)]
+            public class DynamicFrameDataBlock : TagStructure
+            {
+                public RealPoint3d CameraPosition;
+                public RealVector3d CameraForward;
+                public RealVector3d CameraUp;
+            }
+
+            [TagStructure(Size = 0x1C)]
+            public class ConstantFrameDataBlock : TagStructure
+            {
+                public uint FrameIndex;
+                public float FocalLength;
+                public DepthOfFieldFlags Flags;
+                public float NearFocalPlaneDistance;
+                public float FarFocalPlaneDistance;
+                public float FocalDepth;
+                public float BlurAmount;
             }
         }
 
@@ -275,10 +382,11 @@ namespace TagTool.Tags.Definitions
 
             [TagStructure(Size = 0xC)]
             public class CameraShotBlock : TagStructure
-			{
+            {
                 public List<FrameBlock> Frames;
 
-                [TagStructure(Size = 0x48)]
+                [TagStructure(Size = 0x48, MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagStructure(Size = 0x40, MinVersion = CacheVersion.HaloReach)]
                 public class FrameBlock : TagStructure
                 {
                     public CinematicExtraCameraFrameFlags Flags;
@@ -293,27 +401,32 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x44)]
+        [TagStructure(Size = 0x44, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x3C, MinVersion = CacheVersion.HaloReach)]
         public class CameraFrame : TagStructure
         {
             public RealPoint3d CameraPosition;
             public RealVector3d CameraForward;
             public RealVector3d CameraUp;
+
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float HorizontalFieldOfView;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float HorizontalFilmAperture;
+
             public float FocalLength;
-            public FlagBits Flags;
+            public DepthOfFieldFlags Flags;
             public float NearFocalPlaneDistance;
             public float FarFocalPlaneDistance;
             public float FocalDepth;
             public float BlurAmount;
+        }
 
-            [Flags]
-            public enum FlagBits : int
-            {
-                None,
-                EnableDepthOfField = 1 << 0
-            }
+        [Flags]
+        public enum DepthOfFieldFlags : int
+        {
+            None,
+            EnableDepthOfField = 1 << 0
         }
     }
 }
