@@ -31,6 +31,9 @@ namespace TagTool.Porting.Gen3
 
                     foreach (var parameter in script.Parameters)
                         parameter.Type = ConvertHsType(parameter.Type);
+
+                    if (BlamCache.Version >= CacheVersion.HaloReach)
+                        script.ScriptName = BlamCache.StringTable.GetString(script.ScriptNameReach);
                 }
 
                 foreach (var expr in scnr.ScriptExpressions)

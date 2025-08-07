@@ -29,6 +29,12 @@ namespace TagTool.Scripting
 
         public void DecompileScripts(TextWriter scriptWriter)
         {
+            if (Cache.Version >= CacheVersion.HaloReach)
+            {
+                foreach (var script in Definition.Scripts)
+                    script.ScriptName = Cache.StringTable.GetString(script.ScriptNameReach);
+            }
+
             ParseScripts();
 
             using (var indentWriter = new IndentedTextWriter(scriptWriter, "	"))
@@ -198,7 +204,7 @@ namespace TagTool.Scripting
             indentWriter.Indent++;
 
             //if statements have first member on the same line
-            if (expr.Opcode == 2)
+            if (expr.Opcode == GetOpcode("if"))
                 indentWriter.Write(' ');
             else
                 indentWriter.WriteLine();
@@ -232,6 +238,16 @@ namespace TagTool.Scripting
                 result = Cache.ScriptDefinitions.Scripts[Opcode].Name;
 
             return result;
+        }
+
+        private ushort GetOpcode(string name)
+        {
+            foreach (var pair in Cache.ScriptDefinitions.Scripts)
+            {
+                if (pair.Value.Name == name)
+                    return (ushort)pair.Key;
+            }
+            return ushort.MaxValue;
         }
 
         private GenericExpression ParseValueExpression(int exprIndex)
@@ -340,7 +356,7 @@ namespace TagTool.Scripting
             {
                 case HsSyntaxNodeFlags.Group:
                     result.Type = GenericExpression.ExpressionType.Group;
-                    if (expr.Opcode <= 6 && expr.Opcode != 4)
+                    if (expr.Opcode <= GetOpcode("or") && expr.Opcode != GetOpcode("set"))
                         result.Type = GenericExpression.ExpressionType.MultilineGroup;
                     result.Name = OpcodeLookup(expr.Opcode);
                     break;
