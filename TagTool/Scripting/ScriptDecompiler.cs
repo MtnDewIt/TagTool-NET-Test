@@ -29,6 +29,12 @@ namespace TagTool.Scripting
 
         public void DecompileScripts(TextWriter scriptWriter)
         {
+            if (Cache.Version >= CacheVersion.HaloReach)
+            {
+                foreach (var script in Definition.Scripts)
+                    script.ScriptName = Cache.StringTable.GetString(script.ScriptNameReach);
+            }
+
             ParseScripts();
 
             using (var indentWriter = new IndentedTextWriter(scriptWriter, "	"))

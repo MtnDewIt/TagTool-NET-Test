@@ -15,7 +15,7 @@ namespace TagTool.Porting.Gen3
     {
         private void PreConvertReachDefinition(Stream cacheStream, Stream blamCacheStream, object definition)
         {
-            if (definition is Scenario scnr)
+            if (definition is Scenario scnr && FlagIsSet(PortingFlags.Recursive))
             {
                 var lightmap = BlamCache.Deserialize<ScenarioLightmap>(blamCacheStream, scnr.Lightmap);
                 ConvertReachLightmap(cacheStream, blamCacheStream, scnr.Lightmap.Name, lightmap);
@@ -45,8 +45,12 @@ namespace TagTool.Porting.Gen3
 
             if (definition is Scenario scenario)
             {
-                scenario.Bipeds.Clear();
-                scenario.BipedPalette.Clear();
+                foreach (var objName in scenario.ObjectNames)
+                    objName.Name = BlamCache.StringTable.GetString(objName.NameReach);
+
+                //scenario.Bipeds.Clear();
+                //scenario.BipedPalette.Clear();
+
                 //scenario.Vehicles.Clear();
                 //scenario.VehiclePalette.Clear();
                 //scenario.Weapons.Clear();
@@ -107,16 +111,6 @@ namespace TagTool.Porting.Gen3
 
                 //scenario.ScenarioKillTriggers.Clear();
                 scenario.ScenarioSafeTriggers.Clear();
-
-                scenario.PlayerStartingProfile = new List<Scenario.PlayerStartingProfileBlock>() {
-                    new Scenario.PlayerStartingProfileBlock() {
-                        Name = "start_assault",
-                        PrimaryWeapon = CacheContext.TagCache.GetTag(@"objects\weapons\rifle\assault_rifle\assault_rifle", "weap"),
-                        PrimaryRoundsLoaded = 32,
-                        PrimaryRoundsTotal = 108,
-                        StartingFragGrenadeCount = 2
-                    }
-                };
 
                 Dictionary<string, string> reachObjectives = new Dictionary<string, string>()
                 {
