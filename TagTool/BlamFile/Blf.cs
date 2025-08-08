@@ -525,6 +525,14 @@ namespace TagTool.BlamFile
                             return;
                         }
                     }
+                    else if (contentMinorVersion == 0x1) 
+                    {
+                        // TODO: Fully validate (Need extra formats and files tho)
+                        version = CacheVersion.HaloOnline106708;
+                        platform = CachePlatform.Original;
+                        reader.SeekTo(startOfFile);
+                        return;
+                    }
                 }
             }
             else if (signature == "mapi")
