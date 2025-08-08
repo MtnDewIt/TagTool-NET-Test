@@ -20,7 +20,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
 
         [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST)]
         [TagStructure(Size = 0x5, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
-        [TagStructure(Size = 0x8, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x8, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
         public class PlayerShieldVitalityTraits : TagStructure
         {
             public DamageResistancePercentage DamageResistance;
@@ -30,7 +30,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             public ShieldMultiplierSettings ShieldMultiplier;
 
             [TagField(Flags = TagFieldFlags.Padding, Length = 0x3, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST)]
-            [TagField(Flags = TagFieldFlags.Padding, Length = 0x3, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(Flags = TagFieldFlags.Padding, Length = 0x3, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
             public byte[] Padding;
 
             public enum DamageResistancePercentage : byte
@@ -285,10 +285,11 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             public ActiveCamoSettings ActiveCamo;
             public WaypointSettings Waypoint;
 
-            [TagField(Version = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
             public PlayerSizeSettings PlayerSize;
 
             [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST)]
+            [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
             public AuraSettings Aura;
 
             public ForcedColorChangeSettings ForcedColorChange;

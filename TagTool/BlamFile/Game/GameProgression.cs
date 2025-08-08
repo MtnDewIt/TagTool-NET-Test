@@ -82,40 +82,47 @@ namespace TagTool.BlamFile.Game
 
     [TagStructure(Size = 0x6C, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Size = 0x24, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x128, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
     public class GameMachineOptions : TagStructure
     {
         public int MachineValidMask;
 
         [TagField(Length = 0x10, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
         [TagField(Length = 0x4, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(Length = 0x11, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
         public MachineIdentifier[] MachineIdentifiers;
 
         public bool LocalMachineExists;
 
-        [TagField(Length = 0x1)]
+        [TagField(Length = 0x1, MaxVersion = CacheVersion.Halo3ODST)]
         public byte[] Padding1;
 
         public MachineIdentifier LocalMachineIdentifier;
+
+        [TagField(Length = 0x3, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
+        public byte[] Padding2;
     }
 
     [TagStructure(Size = 0x128, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Size = 0x260, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x1640, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
     public class GamePlayerOptions : TagStructure
     {
         public bool Valid;
-        public bool LeftGame;
+        public bool PlayerLeftGame;
         public short UserIndex;
         public ControllerIndex ControllerIndex;
         public MachineIdentifier MachineIdentifier;
         public PlayerIdentifier PlayerIdentifier;
 
-        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
+        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Halo3ODST)]
         public byte[] Padding1;
 
         public PlayerConfiguration Configuration;
 
         [TagStructure(Size = 0x110, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
         [TagStructure(Size = 0x248, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0x1620, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
         public class PlayerConfiguration : TagStructure
         {
             public PlayerConfigurationFromClient Client;
@@ -123,10 +130,12 @@ namespace TagTool.BlamFile.Game
         }
     }
 
-    [TagStructure(Size = 0x6)]
+    [TagStructure(Size = 0x6, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x10, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
     public class MachineIdentifier : TagStructure
     {
-        [TagField(Length = 0x6)]
+        [TagField(Length = 0x6, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(Length = 0x10, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
         public byte[] Identifier;
     }
 }
