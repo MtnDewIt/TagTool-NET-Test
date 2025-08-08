@@ -4,7 +4,7 @@ using TagTool.Common;
 
 namespace TagTool.Tags
 {
-    [TagStructure(Size = 0x4, MinVersion = CacheVersion.Halo2Xbox, MaxVersion = CacheVersion.Halo2Vista)]
+    [TagStructure(Size = 0x4, MinVersion = CacheVersion.Halo2Xbox, MaxVersion = CacheVersion.Halo2PC)]
     [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo3Beta)]
     public class TagResourceReference : TagStructure
     {

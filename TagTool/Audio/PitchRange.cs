@@ -64,7 +64,7 @@ namespace TagTool.Audio
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.ReleaseBuild, Platform = CachePlatform.Original)]
         public ushort FirstPermutationIndex;
 
-        [TagField(MaxVersion = CacheVersion.Halo2Vista)]
+        [TagField(MaxVersion = CacheVersion.Halo2PC)]
         public short PermutationCountH2;
 
         [TagField(Platform = CachePlatform.MCC, BuildType = CacheBuildType.ReleaseBuild)]

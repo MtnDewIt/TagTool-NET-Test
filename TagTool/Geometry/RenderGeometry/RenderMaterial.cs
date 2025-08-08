@@ -9,7 +9,7 @@ namespace TagTool.Geometry
     /// <summary>
     /// A material describing how a mesh part should be rendered.
     /// </summary>
-    [TagStructure(Size = 0x20, MaxVersion = CacheVersion.Halo2Vista)]
+    [TagStructure(Size = 0x20, MaxVersion = CacheVersion.Halo2PC)]
     [TagStructure(Size = 0x24, MaxVersion = CacheVersion.HaloOnline604673)]
     [TagStructure(Size = 0x30, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x2C, MinVersion = CacheVersion.HaloReach)]
@@ -18,7 +18,7 @@ namespace TagTool.Geometry
         /// <summary>
         /// The OLD render method tag to use to render the material.
         /// </summary>
-        [TagField(Flags = Label, MaxVersion = CacheVersion.Halo2Vista)]
+        [TagField(Flags = Label, MaxVersion = CacheVersion.Halo2PC)]
         public CachedTag OldRenderMethod;
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace TagTool.Geometry
 
       
 
-        [TagStructure(Size = 0x8, MaxVersion = CacheVersion.Halo2Vista)]
+        [TagStructure(Size = 0x8, MaxVersion = CacheVersion.Halo2PC)]
         [TagStructure(Size = 0xC, MinVersion = CacheVersion.Halo3Retail)]
         public class Property : TagStructure
 		{

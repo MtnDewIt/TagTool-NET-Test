@@ -93,7 +93,7 @@ namespace TagTool.Geometry.BspCollisionGeometry
         public PlatformSignedValue InstanceDefinition;
     }
 
-    [TagStructure(Size = 0x70, MaxVersion = CacheVersion.Halo2Vista)]
+    [TagStructure(Size = 0x70, MaxVersion = CacheVersion.Halo2PC)]
     public class CollisionBspPhysicsDefinitionGen2 : TagStructure
     {
         public CollisionGeometryShapeGen2 GeometryShape;

@@ -2,7 +2,7 @@
 
 namespace TagTool.Tags
 {
-    [TagStructure(Size = 0x8, MaxVersion = Cache.CacheVersion.Halo2Vista)]
+    [TagStructure(Size = 0x8, MaxVersion = Cache.CacheVersion.Halo2PC)]
     [TagStructure(Size = 0xC, MinVersion = Cache.CacheVersion.Halo3Beta)]
     public class TagBlockBitVector : TagStructure
     {

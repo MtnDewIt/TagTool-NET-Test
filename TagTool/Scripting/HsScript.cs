@@ -5,7 +5,7 @@ using TagTool.Common;
 
 namespace TagTool.Scripting
 {
-	[TagStructure(Size = 0x30, MaxVersion = CacheVersion.Halo2Vista)]
+	[TagStructure(Size = 0x30, MaxVersion = CacheVersion.Halo2PC)]
     [TagStructure(Size = 0x34, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x18, MinVersion = CacheVersion.HaloReach)]
     public class HsScript : TagStructure

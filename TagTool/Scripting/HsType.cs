@@ -41,15 +41,15 @@ namespace TagTool.Scripting
         Player,
         [TagEnumMember(MinVersion = CacheVersion.Halo3Beta)]
         ZoneSet,
-        [TagEnumMember(MaxVersion = CacheVersion.Halo2Vista)]
+        [TagEnumMember(MaxVersion = CacheVersion.Halo2PC)]
         StructureBsp,
         [TagEnumMember(MinVersion = CacheVersion.Halo3Beta)]
         DesignerZone,
-        [TagEnumMember(MaxVersion = CacheVersion.Halo2Vista)]
+        [TagEnumMember(MaxVersion = CacheVersion.Halo2PC)]
         Navpoint,
         PointReference,
         Style,
-        [TagEnumMember(MaxVersion = CacheVersion.Halo2Vista)]
+        [TagEnumMember(MaxVersion = CacheVersion.Halo2PC)]
         HudMessage,
         ObjectList,
         [TagEnumMember(MinVersion = CacheVersion.Halo3Retail)]
@@ -104,10 +104,10 @@ namespace TagTool.Scripting
         [TagEnumMember(MinVersion = CacheVersion.Halo3Beta)]
         SubtitleSetting,
         ActorType,
-        [TagEnumMember(MaxVersion = CacheVersion.Halo2Vista)]
+        [TagEnumMember(MaxVersion = CacheVersion.Halo2PC)]
         HudCorner,
         ModelState,
-        [TagEnumMember(MaxVersion = CacheVersion.Halo2Vista)]
+        [TagEnumMember(MaxVersion = CacheVersion.Halo2PC)]
         NetworkEvent,
         [TagEnumMember(MinVersion = CacheVersion.Halo3Beta)]
         Event,

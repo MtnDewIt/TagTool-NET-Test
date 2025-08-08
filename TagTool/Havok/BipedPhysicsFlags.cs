@@ -7,7 +7,7 @@ namespace TagTool.Havok
     [TagStructure(Size = 0x4)]
 	public class BipedPhysicsFlags : TagStructure
 	{
-        [TagField(MaxVersion = CacheVersion.Halo2Vista)]
+        [TagField(MaxVersion = CacheVersion.Halo2PC)]
         public Halo2Bits Halo2;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]

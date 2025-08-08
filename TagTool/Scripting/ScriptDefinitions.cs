@@ -42,7 +42,7 @@ namespace TagTool.Scripting
         {
             switch (version)
             {
-                case CacheVersion.Halo2Vista when platform == CachePlatform.MCC:
+                case CacheVersion.Halo2PC when platform == CachePlatform.MCC:
                     return "halo2_mcc";
 
                 case CacheVersion.Halo3Retail when platform == CachePlatform.MCC:
@@ -54,7 +54,7 @@ namespace TagTool.Scripting
                 case CacheVersion.HaloReach when platform == CachePlatform.MCC:
                     return "halo_reach_mcc";
 
-                case CacheVersion.Halo2Vista:
+                case CacheVersion.Halo2PC:
                     return "halo2_vista";
 
                 case CacheVersion.Halo3Retail:

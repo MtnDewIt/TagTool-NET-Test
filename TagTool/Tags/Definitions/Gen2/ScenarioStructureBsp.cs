@@ -2540,13 +2540,13 @@ namespace TagTool.Tags.Definitions.Gen2
             public List<DecoratorCellCollectionBlock> Cells;
             public List<DecoratorProjectedDecalBlock> Decals;
             
-            [TagStructure(Size = 0x34, MinVersion = CacheVersion.Halo2Vista)]
+            [TagStructure(Size = 0x34, MinVersion = CacheVersion.Halo2PC)]
             [TagStructure(Size = 0x2C, MaxVersion = CacheVersion.Halo2Xbox)]
             public class DecoratorCacheBlockBlock : TagStructure
             {
                 public GlobalGeometryBlockInfoStructBlock GeometryBlockInfo;
                 public List<DecoratorCacheBlockDataBlock> CacheBlockData;
-                [TagField(MinVersion = CacheVersion.Halo2Vista, Length = 0x8, Flags = TagFieldFlags.Padding)]
+                [TagField(MinVersion = CacheVersion.Halo2PC, Length = 0x8, Flags = TagFieldFlags.Padding)]
                 public byte[] Padding;
                 
                 [TagStructure(Size = 0x24)]

@@ -9,7 +9,7 @@ using TagTool.Tags.Resources;
 
 namespace TagTool.Geometry
 {
-    [TagStructure(Size = 0x70, MinVersion = Halo2Xbox, MaxVersion = Halo2Vista)]
+    [TagStructure(Size = 0x70, MinVersion = Halo2Xbox, MaxVersion = Halo2PC)]
     public class Gen2ResourceMesh : TagStructure
     {
         public List<Part> Parts;
@@ -30,7 +30,7 @@ namespace TagTool.Geometry
 
         public List<VertexBuffer> VertexBuffers;
 
-        [TagField(Flags = Padding, Length = 4, MaxVersion = Halo2Vista)]
+        [TagField(Flags = Padding, Length = 4, MaxVersion = Halo2PC)]
         public byte[] Unused1;
 
         public List<RawPoint> RawPoints;
@@ -47,7 +47,7 @@ namespace TagTool.Geometry
 
         public List<NodeMapping> NodeMap;
 
-        [TagField(Length = 4, Flags = TagFieldFlags.Padding, MaxVersion = Halo2Vista)]
+        [TagField(Length = 4, Flags = TagFieldFlags.Padding, MaxVersion = Halo2PC)]
         public byte[] Unused2 = new byte[4];
 
         [TagStructure(Size = 0x14)]
@@ -137,7 +137,7 @@ namespace TagTool.Geometry
 
     }
 
-    [TagStructure(Size = 0x44, MinVersion = Halo2Xbox, MaxVersion = Halo2Vista)]
+    [TagStructure(Size = 0x44, MinVersion = Halo2Xbox, MaxVersion = Halo2PC)]
     public class Gen2BSPResourceMesh : TagStructure
     {
         public List<Part> Parts;
@@ -158,7 +158,7 @@ namespace TagTool.Geometry
 
         public List<VertexBuffer> VertexBuffers;
 
-        [TagField(Flags = Padding, Length = 4, MaxVersion = Halo2Vista)]
+        [TagField(Flags = Padding, Length = 4, MaxVersion = Halo2PC)]
         public byte[] Unused1;
 
         [TagStructure(Size = 0x14)]
@@ -316,17 +316,17 @@ namespace TagTool.Geometry
     /// <summary>
     /// Associates geometry with a specific material.
     /// </summary>
-    [TagStructure(Size = 0x48, MaxVersion = Halo2Vista)]
+    [TagStructure(Size = 0x48, MaxVersion = Halo2PC)]
     [TagStructure(Size = 0x10, MaxVersion = CacheVersion.Halo3ODST)]
     [TagStructure(Size = 0x14, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
     [TagStructure(Size = 0x10, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x18, MinVersion = CacheVersion.HaloReach)]
     public class Part : TagStructure
     {
-        [TagField(MaxVersion = Halo2Vista, Upgrade = nameof(TypeNew))]
+        [TagField(MaxVersion = Halo2PC, Upgrade = nameof(TypeNew))]
         public PartTypeOld TypeOld;
 
-        [TagField(MaxVersion = Halo2Vista, Upgrade = nameof(FlagsNew))]
+        [TagField(MaxVersion = Halo2PC, Upgrade = nameof(FlagsNew))]
         public PartFlagsOld FlagsOld;
 
         /// <summary>
@@ -377,10 +377,10 @@ namespace TagTool.Geometry
         [TagField(MinVersion = HaloReach)]
         public PartFlagsReach FlagsReach;
 
-        [TagField(MaxVersion = Halo2Vista)]
+        [TagField(MaxVersion = Halo2PC)]
         public byte MaxNodesPerVertex;
 
-        [TagField(MaxVersion = Halo2Vista)]
+        [TagField(MaxVersion = Halo2PC)]
         public byte ContributingCompoundNodeCount;
 
         /// <summary>
@@ -392,19 +392,19 @@ namespace TagTool.Geometry
         [TagField(MinVersion = HaloReach)]
         public ushort Unknown1; // Tessellation?
 
-        [TagField(MaxVersion = Halo2Vista)]
+        [TagField(MaxVersion = Halo2PC)]
         public RealPoint3d Position;
 
-        [TagField(Length = 4, MaxVersion = Halo2Vista)]
+        [TagField(Length = 4, MaxVersion = Halo2PC)]
         public byte[] NodeIndex = new byte[4];
 
-        [TagField(Length = 3, MaxVersion = Halo2Vista)]
+        [TagField(Length = 3, MaxVersion = Halo2PC)]
         public float[] NodeWeight = new float[3];
 
-        [TagField(MaxVersion = Halo2Vista)]
+        [TagField(MaxVersion = Halo2PC)]
         public float LodMipmapMagicNumber;
 
-        [TagField(Length = 6, MaxVersion = Halo2Vista)]
+        [TagField(Length = 6, MaxVersion = Halo2PC)]
         public float[] Unused2 = new float[6];
 
         public enum PartTypeOld : short
@@ -508,7 +508,7 @@ namespace TagTool.Geometry
         /// <summary>
         /// The index of the subpart visibility bounds.
         /// </summary>
-        [TagField(MaxVersion = Halo2Vista)]
+        [TagField(MaxVersion = Halo2PC)]
         public short VisibilityBoundsIndex;
 
         /// <summary>

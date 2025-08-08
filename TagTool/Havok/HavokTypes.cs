@@ -148,7 +148,7 @@ namespace TagTool.Havok
         public byte[] CMoppPad;
     }
 
-    [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo2Vista, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x20, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
     public class HkpShape : TagStructure

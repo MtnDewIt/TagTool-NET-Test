@@ -746,7 +746,7 @@ namespace TagTool.Commands.Files
                     else if (fieldType == typeof(DatumHandle))
                     {
                         assemblyPluginFields.AddRange(
-                            cacheVersion > CacheVersion.Halo2Vista && cacheVersion < CacheVersion.HaloOnlineED ?
+                            cacheVersion > CacheVersion.Halo2PC && cacheVersion < CacheVersion.HaloOnlineED ?
                             new[]
                             {
                                 new AssemblyPluginField(AssemblyPluginFieldTypes.uint16, fieldName + " Identifier", ref offset),

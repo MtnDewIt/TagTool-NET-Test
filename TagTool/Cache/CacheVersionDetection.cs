@@ -81,7 +81,7 @@ namespace TagTool.Cache
                 case "11081.07.04.30.0934.main":
                 case "11091.07.05.11.1104.main":
                 case "11122.07.08.24.1808.main":
-                    version = CacheVersion.Halo2Vista;
+                    version = CacheVersion.Halo2PC;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "09699.07.05.01.1534.delta":
@@ -232,7 +232,7 @@ namespace TagTool.Cache
                         return "02.06.28.07902";
                     case CacheVersion.Halo2Xbox:
                         return "02.09.27.09809";
-                    case CacheVersion.Halo2Vista:
+                    case CacheVersion.Halo2PC:
                         return "11081.07.04.30.0934.main";
                     case CacheVersion.Halo3Retail:
                         return "11855.07.08.20.2317.halo3_ship";
@@ -311,7 +311,7 @@ namespace TagTool.Cache
                 case CacheVersion.HaloCustomEdition:
                 case CacheVersion.Halo2Beta:
 				case CacheVersion.Halo2Xbox:
-				case CacheVersion.Halo2Vista:
+				case CacheVersion.Halo2PC:
 				case CacheVersion.HaloOnlineED:
                 case CacheVersion.HaloOnline106708:
 				case CacheVersion.HaloOnline235640:
@@ -535,7 +535,7 @@ namespace TagTool.Cache
                     return CacheGeneration.First;
 
                 case CacheVersion.Halo2Alpha:
-                case CacheVersion.Halo2Vista:
+                case CacheVersion.Halo2PC:
                 case CacheVersion.Halo2Xbox:
                 case CacheVersion.Halo2Beta:
                     return CacheGeneration.Second;
@@ -599,7 +599,7 @@ namespace TagTool.Cache
                 case CacheVersion.Halo2Alpha:
                 case CacheVersion.Halo2Beta:
                 case CacheVersion.Halo2Xbox:
-                case CacheVersion.Halo2Vista:
+                case CacheVersion.Halo2PC:
                     return GameTitle.Halo2;
                 case CacheVersion.Halo3Beta:
                 case CacheVersion.Halo3Retail:
@@ -709,7 +709,7 @@ namespace TagTool.Cache
         Halo2Alpha,
         Halo2Beta,
         Halo2Xbox,
-        Halo2Vista,
+        Halo2PC,
         Halo3Beta,
         Halo3Retail,
         Halo3ODST,

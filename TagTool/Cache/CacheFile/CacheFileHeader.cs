@@ -81,7 +81,7 @@ namespace TagTool.Cache
                 case CacheVersion.Halo2Alpha:
                 case CacheVersion.Halo2Beta:
                 case CacheVersion.Halo2Xbox:
-                case CacheVersion.Halo2Vista:
+                case CacheVersion.Halo2PC:
                     return deserializer.Deserialize<CacheFileHeaderGen2>(dataContext);
                 case CacheVersion.Halo3Beta:
                 case CacheVersion.Halo3Retail:
@@ -164,7 +164,7 @@ namespace TagTool.Cache
 
     [TagStructure(Size = 0xC, MaxVersion = CacheVersion.HaloCustomEdition)]
     [TagStructure(Size = 0xC, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Xbox)]
-    [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo2Vista, MaxVersion = CacheVersion.Halo2Vista)]
+    [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo2PC, MaxVersion = CacheVersion.Halo2PC)]
     [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo3Beta)]
     public class TagMemoryHeader
     {
@@ -174,10 +174,10 @@ namespace TagTool.Cache
         public uint MemoryBufferOffset;
         public int MemoryBufferSize;
 
-        [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Vista)]
+        [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2PC)]
         public int MemoryBufferCapacity;
 
-        [TagField(MinVersion = CacheVersion.Halo2Vista, MaxVersion = CacheVersion.Halo2Vista)]
+        [TagField(MinVersion = CacheVersion.Halo2PC, MaxVersion = CacheVersion.Halo2PC)]
         public uint VirtualAddress;
     }
 }

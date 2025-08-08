@@ -8,7 +8,7 @@ namespace TagTool.Damage
     [TagStructure(Size = 0x2, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     public class DamageReportingType : TagStructure
 	{
-        [TagField(MinVersion = CacheVersion.Halo2Xbox, MaxVersion = CacheVersion.Halo2Vista)]
+        [TagField(MinVersion = CacheVersion.Halo2Xbox, MaxVersion = CacheVersion.Halo2PC)]
         public Halo2RetailValue Halo2Retail;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]

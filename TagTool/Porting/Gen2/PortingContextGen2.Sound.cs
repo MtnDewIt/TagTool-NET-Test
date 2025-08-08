@@ -32,7 +32,7 @@ namespace TagTool.Porting.Gen2
                     SoundGestalt = cache.Deserialize<Gen2SoundCacheFileGestalt>(stream, blamTag);
             }
             
-            if(cache.Version == CacheVersion.Halo2Vista && (cache as GameCacheGen2).VistaSharedTagCache != null && SharedSoundGestalt == null)
+            if(cache.Version == CacheVersion.Halo2PC && (cache as GameCacheGen2).VistaSharedTagCache != null && SharedSoundGestalt == null)
             {
                 CachedTag blamTag = (cache as GameCacheGen2).VistaSharedTagCache.TagCache.FindFirstInGroup("ugh!");
                 if (blamTag != null)
@@ -82,7 +82,7 @@ namespace TagTool.Porting.Gen2
             LoadGen2SoundGestalt(BlamCache, gen2Stream);
             Gen2SoundCacheFileGestalt ugh;
 
-            if (BlamCache.Version == CacheVersion.Halo2Vista && gen2Tag.IsShared)
+            if (BlamCache.Version == CacheVersion.Halo2PC && gen2Tag.IsShared)
                 ugh = SharedSoundGestalt;
             else
                 ugh = SoundGestalt;
