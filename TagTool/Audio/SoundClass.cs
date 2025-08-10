@@ -10,7 +10,7 @@ namespace TagTool.Audio
         [TagField(MinVersion = CacheVersion.HaloXbox, MaxVersion = CacheVersion.HaloCustomEdition)]
         public SoundClassHalo Halo;
 
-        [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Vista)]
+        [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2PC)]
         public SoundClassHalo2 Halo2;
 
         [TagField(MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Halo3Retail)]
@@ -43,8 +43,8 @@ namespace TagTool.Audio
             ObjectImpacts,
             ParticleImpacts,
             WeaponFireLod,
-            Unused1Impact,
-            Unused2Impact,
+            WeaponFireLodFar,
+            LFE,
             UnitFootsteps,
             UnitDialog,
             UnitAnimation,
@@ -66,9 +66,9 @@ namespace TagTool.Audio
             HugeAss,
             ObjectLooping,
             CinematicMusic,
-            UnknownUnused0,
-            UnknownUnused1,
-            UnknownUnused2,
+            Reflection,
+            ReflectionLod,
+            ReflectionLodFar,
             UnknownUnused3,
             UnknownUnused4,
             MissionUnused0,
@@ -420,7 +420,7 @@ namespace TagTool.Audio
                 case CacheVersion.Halo2Alpha:
                 case CacheVersion.Halo2Beta:
                 case CacheVersion.Halo2Xbox:
-                case CacheVersion.Halo2Vista:
+                case CacheVersion.Halo2PC:
                     value = Halo2.ToString();
                     break;
 

@@ -299,7 +299,7 @@ namespace TagTool.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (CacheContext.Version == CacheVersion.Halo2Vista)
+                        if (CacheContext.Version == CacheVersion.Halo2PC)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -365,7 +365,7 @@ namespace TagTool.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (BlamCache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2PC)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -415,7 +415,7 @@ namespace TagTool.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (BlamCache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2PC)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -465,7 +465,7 @@ namespace TagTool.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (BlamCache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2PC)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -524,7 +524,7 @@ namespace TagTool.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (BlamCache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2PC)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -537,7 +537,7 @@ namespace TagTool.Porting.Gen2
                             h2_vertex_constants.Add("bump_map");
                         }
                         
-                        if (BlamCache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2PC)
                         {
                             h2_pixel_constants.Add("env_tint_color"); // env tint color
                             h2_pixel_constants.Add(""); // env glancing tint color
@@ -640,7 +640,7 @@ namespace TagTool.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (BlamCache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2PC)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -666,7 +666,7 @@ namespace TagTool.Porting.Gen2
                         }
                         
                         
-                        if (BlamCache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2PC)
                         {
                             h2_pixel_constants.Add("normal_specular_tint"); // specular_color
                             h2_pixel_constants.Add("glancing_specular_tint"); // specular_glancing_color
@@ -832,7 +832,7 @@ namespace TagTool.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (BlamCache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2PC)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -892,7 +892,7 @@ namespace TagTool.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (BlamCache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2PC)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -974,7 +974,7 @@ namespace TagTool.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (BlamCache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2PC)
                         {
                             h2_vertex_constants.Add("bump_map");
                             h2_vertex_constants.Add("base_map");
@@ -1006,7 +1006,7 @@ namespace TagTool.Porting.Gen2
                     {
                         new_shader_type = "shader";
 
-                        if (BlamCache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2PC)
                         {
                             h2_vertex_constants.Add("detail_map");
                             h2_vertex_constants.Add("detail_map2");
@@ -1130,7 +1130,7 @@ namespace TagTool.Porting.Gen2
                         h2_bitmap_order.Add("specular_mask_texture");
                         h2_bitmap_order.Add("base_map");
                         
-                        if (BlamCache.Version == CacheVersion.Halo2Vista)
+                        if (BlamCache.Version == CacheVersion.Halo2PC)
                         {
                             h2_vertex_constants.Add("+specular_mask_texture");
                             h2_vertex_constants.Add("");

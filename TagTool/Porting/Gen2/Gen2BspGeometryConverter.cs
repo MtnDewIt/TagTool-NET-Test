@@ -204,7 +204,7 @@ namespace TagTool.Porting.Gen2
                     var elementStream = new VertexElementStream(stream);
 
                     (string, VertexDeclarationUsage, VertexDeclarationType, int)[] declaration = null;
-                    if (Gen2Cache.Version == CacheVersion.Halo2Vista)
+                    if (Gen2Cache.Version == CacheVersion.Halo2PC)
                     {
                         if (VistaVertexDictionary.ContainsKey(vertexBuffer.TypeIndex))
                             declaration = VistaVertexDictionary[vertexBuffer.TypeIndex];
@@ -249,7 +249,7 @@ namespace TagTool.Porting.Gen2
                                             if (CompressionFlags.HasFlag(RenderGeometryCompressionFlags.CompressedPosition))
                                             {
                                                 //halo 2 vista compression appears to be between -1 and 1. Normalize to 0 to 1 range.
-                                                if (Gen2Cache.Version == CacheVersion.Halo2Vista)
+                                                if (Gen2Cache.Version == CacheVersion.Halo2PC)
                                                     vertex.Point.Position = new RealPoint3d((vertex.Point.Position.X + 1) / 2, (vertex.Point.Position.Y + 1) / 2, (vertex.Point.Position.Z + 1) / 2);
                                                 vertex.Point.Position = compressor.DecompressPosition(new RealQuaternion(vertex.Point.Position.ToArray())).XYZ;
                                             }

@@ -113,13 +113,13 @@ namespace TagTool.Tags.Definitions
             /// <summary>
             /// The node map offset of the region.
             /// </summary>
-            [TagField(MaxVersion = CacheVersion.Halo2Vista)]
+            [TagField(MaxVersion = CacheVersion.Halo2PC)]
             public short NodeMapOffset;
 
             /// <summary>
             /// The node map size of the region.
             /// </summary>
-            [TagField(MaxVersion = CacheVersion.Halo2Vista)]
+            [TagField(MaxVersion = CacheVersion.Halo2PC)]
             public short NodeMapSize;
 
             /// <summary>
@@ -144,7 +144,7 @@ namespace TagTool.Tags.Definitions
                 /// <summary>
                 /// The level-of-detail section indices of the permutation.
                 /// </summary>
-                [TagField(Length = 6, MaxVersion = CacheVersion.Halo2Vista)]
+                [TagField(Length = 6, MaxVersion = CacheVersion.Halo2PC)]
                 public short[] LodSectionIndices = new short[6];
 
                 /// <summary>
@@ -192,7 +192,7 @@ namespace TagTool.Tags.Definitions
             GeometryPostprocessed = 1 << 0
         }
 
-        [TagStructure(Size = 0x5C, MaxVersion = CacheVersion.Halo2Vista)]
+        [TagStructure(Size = 0x5C, MaxVersion = CacheVersion.Halo2PC)]
         public class Section : TagStructure
 		{
             public RenderGeometryClassification GlobalGeometryClassification;
@@ -238,7 +238,7 @@ namespace TagTool.Tags.Definitions
             public CachedTag Runtime;
         }
 
-        [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo2Vista)]
+        [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo2PC)]
         public class InvalidSectionPairBit : TagStructure
 		{
             public int Bits;
@@ -246,7 +246,7 @@ namespace TagTool.Tags.Definitions
 			public int Unknown_0x08;
 		}
 
-		[TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo2Vista)]
+		[TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo2PC)]
         public class SectionGroup : TagStructure
 		{
             public DetailLevelFlags DetailLevels;
@@ -265,7 +265,7 @@ namespace TagTool.Tags.Definitions
                 Level6 = 1 << 5
             }
 
-            [TagStructure(Size = 0x10, MaxVersion = CacheVersion.Halo2Vista)]
+            [TagStructure(Size = 0x10, MaxVersion = CacheVersion.Halo2PC)]
             public class CompoundNode : TagStructure
 			{
                 [TagField(Length = 4)]
@@ -342,7 +342,7 @@ namespace TagTool.Tags.Definitions
             public byte Node;
         }
 
-        [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo2Vista)]
+        [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo2PC)]
         [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3Beta)]
         public class MarkerGroup : TagStructure
 		{

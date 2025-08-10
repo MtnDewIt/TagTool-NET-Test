@@ -2,6 +2,7 @@
 using System.Linq;
 using TagTool.Cache;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Geometry.BspCollisionGeometry;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
@@ -48,9 +49,11 @@ namespace TagTool.Porting.Gen2
 					};
 					region.Permutations.Add(permutation);
 
+                    //CachedTag modelTag = gen2Permutation.BspPhysics?[0].Model;
 					// Convert Bsp Physics
 					for (int i = 0; i < gen2Permutation.BspPhysics.Count; i++)
 					{
+                        Log.Warning("WRITING BSPPHYSICS");
 						permutation.BspMoppCodes = ConvertH2MOPP(gen2Permutation.BspPhysics[i].MoppCodes);
 						permutation.BspPhysics.Add(ConvertCollisionBspPhysics(gen2Permutation.BspPhysics[i]));
 					}

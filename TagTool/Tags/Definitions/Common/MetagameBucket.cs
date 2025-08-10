@@ -21,7 +21,7 @@ namespace TagTool.Tags.Definitions.Common
             OnlyCountsWithRiders = 1 << 0
         }
 
-        public enum CampaignMetagameBucketType : sbyte
+        public enum CampaignMetagameBucketType : sbyte  // to-do: versioning
         {
             Brute,
             Grunt,
@@ -55,7 +55,7 @@ namespace TagTool.Tags.Definitions.Common
             EngineerRechargeStation
         }
 
-        public enum CampaignMetagameBucketClass : sbyte
+        public enum CampaignMetagameBucketClass : sbyte  // to-do: versioning
         {
             Infantry,
             Leader,

@@ -1,6 +1,7 @@
 ﻿using TagTool.Tags;
 using TagTool.Cache;
 using TagTool.Common;
+using System.Collections.Generic;
 
 namespace TagTool.Audio
 {
@@ -58,17 +59,34 @@ namespace TagTool.Audio
         }
     }
 
-    [TagStructure(Size = 0xC)]
+    [TagStructure(Size = 0xC, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x8, Platform = CachePlatform.MCC)]
     public class Gen2PermutationChunk : TagStructure
     {
+        [TagField(Platform = CachePlatform.Original)]
         public TagResourceReference ResourceReference;
 
         /// <summary>
         /// Encoded size, to get the real size apply a mask of 0x3FFFFF.
         /// </summary>
+        [TagField(Platform = CachePlatform.Original)]
         public int EncodedSize;
 
+        [TagField(Platform = CachePlatform.Original)]
         public int RuntimeIndex;
+
+        [TagField(Platform = CachePlatform.MCC)]
+        public List<PermutationLanguageBlock> Languages;
+
+        [TagStructure(Size = 0x10)]
+        public class PermutationLanguageBlock : TagStructure
+        {
+            public TagResourceReference ResourceReference;
+            public short CompressedSize;
+            public short Flags;
+            public int UncompressedSize;
+            public int RuntimeIndex;
+        }
 
         public int GetSize()
         {

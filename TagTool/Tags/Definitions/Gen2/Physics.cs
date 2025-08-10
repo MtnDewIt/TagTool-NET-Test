@@ -7,7 +7,8 @@ using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Tags.Definitions.Gen2
 {
-    [TagStructure(Name = "physics", Tag = "phys", Size = 0x74)]
+    [TagStructure(Name = "physics", Tag = "phys", Size = 0x74, Platform = CachePlatform.Original)]
+    [TagStructure(Name = "physics", Tag = "phys", Size = 0x80, Platform = CachePlatform.MCC)]
     public class Physics : TagStructure
     {
         /// <summary>
@@ -26,6 +27,8 @@ namespace TagTool.Tags.Definitions.Gen2
         public float GroundNormalK0;
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
         public byte[] Padding;
+        [TagField(Platform = CachePlatform.MCC)]
+        public PlatformUnsignedValue RuntimePointer;
         public float WaterFriction;
         public float WaterDepth;
         public float WaterDensity;
@@ -40,7 +43,9 @@ namespace TagTool.Tags.Definitions.Gen2
         public List<InertialMatrixBlock> InertialMatrixAndInverse;
         public List<PoweredMassPointBlock> PoweredMassPoints;
         public List<MassPointBlock> MassPoints;
-        
+        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding, Platform = CachePlatform.MCC)]
+        public byte[] PaddingMCC;
+
         [TagStructure(Size = 0x24)]
         public class InertialMatrixBlock : TagStructure
         {

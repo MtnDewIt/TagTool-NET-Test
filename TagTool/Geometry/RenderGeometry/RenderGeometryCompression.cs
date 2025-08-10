@@ -8,7 +8,7 @@ namespace TagTool.Geometry
     /// <summary>
     /// Contains information about how geometry is compressed.
     /// </summary>
-    [TagStructure(Size = 0x38, MaxVersion = CacheVersion.Halo2Vista)]
+    [TagStructure(Size = 0x38, MaxVersion = CacheVersion.Halo2PC)]
     [TagStructure(Size = 0x2C, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x34, MinVersion = CacheVersion.HaloReach)]
     public class RenderGeometryCompression : TagStructure
@@ -50,13 +50,13 @@ namespace TagTool.Geometry
         /// <summary>
         /// The minimum U value in the uncompressed geometry.
         /// </summary>
-        [TagField(MaxVersion = CacheVersion.Halo2Vista)]
+        [TagField(MaxVersion = CacheVersion.Halo2PC)]
         public Bounds<float> U2;
 
         /// <summary>
         /// The minimum V value in the uncompressed geometry.
         /// </summary>
-        [TagField(MaxVersion = CacheVersion.Halo2Vista)]
+        [TagField(MaxVersion = CacheVersion.Halo2PC)]
         public Bounds<float> V2;
 
         [TagField(Flags = Padding, Length = 0x8, MinVersion = CacheVersion.HaloReach)]

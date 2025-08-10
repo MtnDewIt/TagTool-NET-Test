@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -137,7 +137,7 @@ namespace TagTool.Pathfinding
     [TagStructure(Size = 0xC)]
     public class Vertex : TagStructure
     {
-        public RealPoint3d Position;
+        public RealPoint3d Point;
     }
 
     [TagStructure(Size = 0x18)]
@@ -231,7 +231,8 @@ namespace TagTool.Pathfinding
     public class InstancedGeometryReference : TagStructure
     {
         public short PathfindingObjectIndex;
-        public short Unknown;
+        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding;
     }
 
     [TagStructure(Size = 0x4)]

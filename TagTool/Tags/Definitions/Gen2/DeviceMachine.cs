@@ -273,7 +273,7 @@ namespace TagTool.Tags.Definitions.Gen2
         [TagStructure(Size = 0x18)]
         public class ObjectAttachmentBlock : TagStructure
         {
-            [TagField(ValidTags = new [] { "ligh","MGS2","tdtl","cont","effe","lsnd","lens" })]
+            [TagField(ValidTags = new [] { "ligh","MGS2","tdtl","cont","effe","lsnd","lens","snd!" })]
             public CachedTag Type;
             public StringId Marker;
             public ChangeColorValue ChangeColor;

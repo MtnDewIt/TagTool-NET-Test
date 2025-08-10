@@ -7,7 +7,7 @@ using TagTool.Havok;
 
 namespace TagTool.Geometry.BspCollisionGeometry
 {
-    [TagStructure(Size = 0x40, MaxVersion = CacheVersion.Halo2Vista)]
+    [TagStructure(Size = 0x40, MaxVersion = CacheVersion.Halo2PC)]
     [TagStructure(Size = 0x60, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x6C, MinVersion = CacheVersion.HaloReach)]
     public class CollisionGeometry : TagStructure
@@ -129,7 +129,7 @@ namespace TagTool.Geometry.BspCollisionGeometry
         public RealPlane3d Value;
     }
 
-    [TagStructure(Size = 0x4, MaxVersion = CacheVersion.Halo2Vista)]
+    [TagStructure(Size = 0x4, MaxVersion = CacheVersion.Halo2PC)]
     [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo3Retail)]
     public class Leaf : TagStructure
     {
@@ -138,13 +138,13 @@ namespace TagTool.Geometry.BspCollisionGeometry
         [TagField(MinVersion = CacheVersion.Halo3Retail)]
         public LeafFlags Flags2;
 
-        [TagField(MaxVersion = CacheVersion.Halo2Vista)]
+        [TagField(MaxVersion = CacheVersion.Halo2PC)]
         public byte Bsp2dReferenceCount_H2;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail)]
         public ushort Bsp2dReferenceCount;
 
-        [TagField(MaxVersion = CacheVersion.Halo2Vista)]
+        [TagField(MaxVersion = CacheVersion.Halo2PC)]
         public short FirstBsp2dReference_H2;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail)]
@@ -166,7 +166,7 @@ namespace TagTool.Geometry.BspCollisionGeometry
         public short RightChild;
     }
 
-    [TagStructure(Size = 0x8, MaxVersion = CacheVersion.Halo2Vista)]
+    [TagStructure(Size = 0x8, MaxVersion = CacheVersion.Halo2PC)]
     [TagStructure(Size = 0xC, MinVersion = CacheVersion.Halo3Retail)]
     public class Surface : TagStructure
     {
@@ -174,7 +174,7 @@ namespace TagTool.Geometry.BspCollisionGeometry
 
         public ushort FirstEdge;
 
-        [TagField(MaxVersion = CacheVersion.Halo2Vista)]
+        [TagField(MaxVersion = CacheVersion.Halo2PC)]
         public SurfaceFlags Flags_H2;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail)]
@@ -182,12 +182,12 @@ namespace TagTool.Geometry.BspCollisionGeometry
         [TagField(MinVersion = CacheVersion.Halo3Retail)]
         public short BreakableSurfaceSet;
 
-        [TagField(MaxVersion = CacheVersion.Halo2Vista)]
+        [TagField(MaxVersion = CacheVersion.Halo2PC)]
         public byte BreakableSurfaceIndex_H2;
         [TagField(MinVersion = CacheVersion.Halo3Retail)]
         public short BreakableSurfaceIndex;
 
-        [TagField(MaxVersion = CacheVersion.Halo2Vista)]
+        [TagField(MaxVersion = CacheVersion.Halo2PC)]
         public short MaterialIndex_H2;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail)]

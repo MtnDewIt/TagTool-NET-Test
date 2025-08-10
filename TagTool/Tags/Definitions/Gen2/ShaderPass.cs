@@ -812,12 +812,13 @@ namespace TagTool.Tags.Definitions.Gen2
                 public List<PixelShaderExternMapBlock> PixelShaderSwitchExternMap;
                 public List<PixelShaderIndexBlock> PixelShaderIndexBlock1;
                 
-                [TagStructure(Size = 0x2C)]
+                [TagStructure(Size = 0x2C, Platform = CachePlatform.Original)]
+                [TagStructure(Size = 0x38, Platform = CachePlatform.MCC)]
                 public class ShaderPostprocessPixelShader : TagStructure
                 {
-                    public int PixelShaderHandleRuntime;
-                    public int PixelShaderHandleRuntime1;
-                    public int PixelShaderHandleRuntime2;
+                    public PlatformUnsignedValue PixelShaderHandleRuntime;
+                    public PlatformUnsignedValue PixelShaderHandleRuntime1;
+                    public PlatformUnsignedValue PixelShaderHandleRuntime2;
                     public List<ShaderPostprocessPixelShaderConstantDefaults> ConstantRegisterDefaults;
                     public byte[] CompiledShader;
                     public byte[] CompiledShader1;

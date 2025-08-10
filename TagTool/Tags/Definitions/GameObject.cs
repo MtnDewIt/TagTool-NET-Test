@@ -276,7 +276,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x18, MaxVersion = CacheVersion.Halo2Vista)]
+        [TagStructure(Size = 0x18, MaxVersion = CacheVersion.Halo2PC)]
         [TagStructure(Size = 0x20, MaxVersion = CacheVersion.Halo3Retail)]
         [TagStructure(Size = 0x24, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x20, MinVersion = CacheVersion.HaloReach)]
@@ -610,7 +610,7 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Size = 0x1)]
     public class GameObjectType8 : TagStructure
     {
-        [TagField(EnumType = typeof(sbyte), MaxVersion = CacheVersion.Halo2Vista, Platform = CachePlatform.Original)]
+        [TagField(EnumType = typeof(sbyte), MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.Original)]
         public GameObjectTypeHalo2 Halo2;
 
         [TagField(EnumType = typeof(sbyte), MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
@@ -627,7 +627,7 @@ namespace TagTool.Tags.Definitions
 
         public Enum GetValue(CacheVersion version)
         {
-            if (version <= CacheVersion.Halo2Vista)
+            if (version <= CacheVersion.Halo2PC)
                 return Halo2;
             else if (version <= CacheVersion.Halo3Retail)
                 return Halo3Retail;
@@ -643,7 +643,7 @@ namespace TagTool.Tags.Definitions
 
         public void SetValue(CacheVersion version, Enum value)
         {
-            if (version <= CacheVersion.Halo2Vista)
+            if (version <= CacheVersion.Halo2PC)
                 Halo2 = value.ConvertLexical<GameObjectTypeHalo2>();
             else if (version <= CacheVersion.Halo3Retail)
                 Halo3Retail = value.ConvertLexical<GameObjectTypeHalo3Retail>();
@@ -661,7 +661,7 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Size = 0x2)]
     public class GameObjectType16 : TagStructure
     {
-        [TagField(EnumType = typeof(short), MaxVersion = CacheVersion.Halo2Vista, Platform = CachePlatform.Original)]
+        [TagField(EnumType = typeof(short), MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.Original)]
         public GameObjectTypeHalo2 Halo2;
 
         [TagField(EnumType = typeof(short), MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
@@ -678,7 +678,7 @@ namespace TagTool.Tags.Definitions
 
         public Enum GetValue(CacheVersion version)
         {
-            if (version <= CacheVersion.Halo2Vista)
+            if (version <= CacheVersion.Halo2PC)
                 return Halo2;
             else if (version <= CacheVersion.Halo3Retail)
                 return Halo3Retail;
@@ -694,7 +694,7 @@ namespace TagTool.Tags.Definitions
 
         public void SetValue(CacheVersion version, Enum value)
         {
-            if (version <= CacheVersion.Halo2Vista)
+            if (version <= CacheVersion.Halo2PC)
                 Halo2 = value.ConvertLexical<GameObjectTypeHalo2>();
             else if (version <= CacheVersion.Halo3Retail)
                 Halo3Retail = value.ConvertLexical<GameObjectTypeHalo3Retail>();
@@ -712,7 +712,7 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Size = 0x4)]
     public class GameObjectType32 : TagStructure
     {
-        [TagField(EnumType = typeof(int), MaxVersion = CacheVersion.Halo2Vista, Platform = CachePlatform.Original)]
+        [TagField(EnumType = typeof(int), MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.Original)]
         public GameObjectTypeHalo2 Halo2;
 
         [TagField(EnumType = typeof(int), MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
@@ -729,7 +729,7 @@ namespace TagTool.Tags.Definitions
 
         public Enum GetValue(CacheVersion version)
         {
-            if (version <= CacheVersion.Halo2Vista)
+            if (version <= CacheVersion.Halo2PC)
                 return Halo2;
             else if (version <= CacheVersion.Halo3Retail)
                 return Halo3Retail;
@@ -745,7 +745,7 @@ namespace TagTool.Tags.Definitions
 
         public void SetValue(CacheVersion version, Enum value)
         {
-            if (version <= CacheVersion.Halo2Vista)
+            if (version <= CacheVersion.Halo2PC)
                 Halo2 = value.ConvertLexical<GameObjectTypeHalo2>();
             else if (version <= CacheVersion.Halo3Retail)
                 Halo3Retail = value.ConvertLexical<GameObjectTypeHalo3Retail>();
@@ -846,7 +846,7 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Size = 0x2)]
     public class ObjectTypeFlags : TagStructure
     {
-        [TagField(MaxVersion = CacheVersion.Halo2Vista)]
+        [TagField(MaxVersion = CacheVersion.Halo2PC)]
         public ObjectTypeFlagsHalo2 Halo2;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]

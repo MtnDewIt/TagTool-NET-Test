@@ -192,7 +192,7 @@ namespace TagTool.Cache.Gen2
 
             if (Version <= CacheVersion.Halo2Xbox)
                 VirtualAddress = Tags[0].Offset;
-            else if (Version == CacheVersion.Halo2Vista)
+            else if (Version == CacheVersion.Halo2PC)
                 VirtualAddress = mapFile.Header.GetTagMemoryHeader().VirtualAddress;
 
         }

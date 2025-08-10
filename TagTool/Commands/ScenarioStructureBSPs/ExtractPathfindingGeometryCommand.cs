@@ -64,7 +64,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
                 foreach (Pathfinding.Vertex vertex in pathfinding.Vertices)
                 {
-                    writer.WriteLine($"v {vertex.Position.X} {vertex.Position.Z} {vertex.Position.Y}");
+                    writer.WriteLine($"v {vertex.Point.X} {vertex.Point.Z} {vertex.Point.Y}");
                 }
 
                 writer.WriteLine("usemtl Blue");

@@ -543,16 +543,6 @@ namespace TagTool.Tags.Definitions.Gen2
                 }
             }
             
-            public enum AnchorValue : short
-            {
-                HealthAndShield,
-                WeaponHud,
-                MotionSensor,
-                Scoreboard,
-                Crosshair,
-                LockOnTarget
-            }
-            
             [Flags]
             public enum FlagsValue : ushort
             {
@@ -1271,16 +1261,6 @@ namespace TagTool.Tags.Definitions.Gen2
                 }
             }
             
-            public enum AnchorValue : short
-            {
-                HealthAndShield,
-                WeaponHud,
-                MotionSensor,
-                Scoreboard,
-                Crosshair,
-                LockOnTarget
-            }
-            
             [Flags]
             public enum FlagsValue : ushort
             {
@@ -1474,7 +1454,21 @@ namespace TagTool.Tags.Definitions.Gen2
                 }
             }
         }
-        
+
+        public enum AnchorValue : short
+        {
+            HealthAndShield,
+            WeaponHud,
+            MotionSensor,
+            Scoreboard,
+            Crosshair,
+            LockOnTarget,
+            TopCenter,      // MCC
+            BottomCenter,   // MCC
+            LeftCenter,     // MCC
+            RightCenter     // MCC
+        }
+
         [TagStructure(Size = 0x8)]
         public class NewHudDashlightDataStructBlock : TagStructure
         {
@@ -2013,16 +2007,6 @@ namespace TagTool.Tags.Definitions.Gen2
                     PlayerIsArmingBomb = 1 << 10,
                     PlayerTalking = 1 << 11
                 }
-            }
-            
-            public enum AnchorValue : short
-            {
-                HealthAndShield,
-                WeaponHud,
-                MotionSensor,
-                Scoreboard,
-                Crosshair,
-                LockOnTarget
             }
             
             [Flags]

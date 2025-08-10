@@ -18,7 +18,10 @@ namespace TagTool.Tags.Definitions.Gen2
         public List<SoundGlobalsBlock> SoundGlobals;
         public List<AiGlobalsBlock> AiGlobals;
         public List<GameGlobalsDamageBlock> DamageTable;
+        [TagField(Platform = CachePlatform.Original)]
         public List<GNullBlock> Unknown;
+        [TagField(Platform = CachePlatform.MCC)]
+        public List<TagReferenceBlock> AnniversaryGlobals;
         public List<SoundBlock> Sounds;
         public List<CameraBlock> Camera;
         public List<PlayerControlBlock> PlayerControl;
@@ -106,9 +109,12 @@ namespace TagTool.Tags.Definitions.Gen2
             public byte[] Padding;
         }
         
-        [TagStructure(Size = 0x24)]
+        [TagStructure(Size = 0x24, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x2C, Platform = CachePlatform.MCC)]
         public class SoundGlobalsBlock : TagStructure
         {
+            [TagField(ValidTags = new[] { "sncl" }, Platform = CachePlatform.MCC)]
+            public CachedTag RemasteredSoundClasses;
             [TagField(ValidTags = new [] { "sncl" })]
             public CachedTag SoundClasses;
             [TagField(ValidTags = new [] { "sfx+" })]
@@ -1096,7 +1102,8 @@ namespace TagTool.Tags.Definitions.Gen2
                     StartTeamNoti,
                     Telefrag,
                     _10SecsToWin,
-                    Team10SecsToWin
+                    Team10SecsToWin,
+                    PreGameOver     // MCC
                 }
                 
                 public enum AudienceValue : short
@@ -2158,9 +2165,9 @@ namespace TagTool.Tags.Definitions.Gen2
                 public sbyte MaxTeamsTerritories;
                 public sbyte MaxTeamsAssault;
                 public sbyte MaxTeamsStub10;
-                public sbyte MaxTeamsStub11;
-                public sbyte MaxTeamsStub12;
-                public sbyte MaxTeamsStub13;
+                public sbyte MaxTeamsMedic;     // MCC
+                public sbyte MaxTeamsVIP;       // MCC
+                public sbyte MaxTeamsInfection; // MCC
                 public sbyte MaxTeamsStub14;
                 public sbyte MaxTeamsStub15;
                 
