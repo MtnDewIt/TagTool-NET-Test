@@ -326,7 +326,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
 					for (int i = 0; i < VertMap.Count; i++) {
 						PathData.Vertices.Add(new Vertex());
-						PathData.Vertices[i].Position = ColBsp.Geometry.Vertices[keys[i]].Point; // I need to know more how dictionaries work lol
+						PathData.Vertices[i].Point = ColBsp.Geometry.Vertices[keys[i]].Point; // I need to know more how dictionaries work lol
 					}
 
 					// ColBsp.Geometry.Vertices[VertMap.Select(i => i.Key).First()].Point;
