@@ -91,8 +91,8 @@ namespace TagTool.Pathfinding
         public short Vertex2;
         public FlagsValue LinkFlags;
         public short HintIndex;
-        public ushort ForwardLink;
-        public ushort ReverseLink;
+        public short ForwardLink;
+        public short ReverseLink;
         public short LeftSector;
         public short RightSector;
 
@@ -136,13 +136,13 @@ namespace TagTool.Pathfinding
     [TagStructure(Size = 0xC)]
     public class Vertex : TagStructure
     {
-        public RealPoint3d Position;
+        public RealPoint3d Point;
     }
 
     [TagStructure(Size = 0x18)]
     public class ObjectReference : TagStructure
     {
-        public ushort Flags;
+        public FlagsValue Flags;
 
         [TagField(Flags = Padding, Length = 2)]
         public byte[] Unused = new byte[2];
@@ -153,6 +153,12 @@ namespace TagTool.Pathfinding
         public short OriginBspIndex;
         public GameObjectType8 ObjectType;
         public Scenario.ScenarioInstance.SourceValue Source;
+
+        [Flags]
+        public enum FlagsValue : ushort
+        {
+            Mobile = 1 << 0
+        }
 
         [TagStructure(Size = 0x18)]
         public class BspReference : TagStructure
@@ -226,7 +232,8 @@ namespace TagTool.Pathfinding
     public class InstancedGeometryReference : TagStructure
     {
         public short PathfindingObjectIndex;
-        public short Unknown;
+        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
+        public byte[] Padding;
     }
 
     [TagStructure(Size = 0x4)]

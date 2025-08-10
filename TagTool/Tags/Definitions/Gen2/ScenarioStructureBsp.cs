@@ -762,13 +762,13 @@ namespace TagTool.Tags.Definitions.Gen2
         {
             public List<SectorBlock> Sectors;
             public List<SectorLinkBlock> Links;
-            public List<RefBlock> Refs;
+            public List<RefBlock> References;
             public List<SectorBsp2dNodesBlock> Bsp2dNodes;
             public List<SurfaceFlagsBlock> SurfaceFlags;
             public List<SectorVertexBlock> Vertices;
-            public List<EnvironmentObjectRefs> ObjectRefs;
+            public List<EnvironmentObjectRefs> ObjectReferences;
             public List<PathfindingHintsBlock> PathfindingHints;
-            public List<InstancedGeometryReferenceBlock> InstancedGeometryRefs;
+            public List<InstancedGeometryReferenceBlock> InstancedGeometryReferences;
             public int StructureChecksum;
             [TagField(Length = 0x20, Flags = TagFieldFlags.Padding)]
             public byte[] Padding;
@@ -777,9 +777,9 @@ namespace TagTool.Tags.Definitions.Gen2
             [TagStructure(Size = 0x8)]
             public class SectorBlock : TagStructure
             {
-                public PathFindingSectorFlagsValue PathFindingSectorFlags;
+                public PathFindingSectorFlagsValue PathfindingSectorFlags;
                 public short HintIndex;
-                public int FirstLinkDoNotSetManually;
+                public int FirstLink;
                 
                 [Flags]
                 public enum PathFindingSectorFlagsValue : ushort
@@ -836,7 +836,7 @@ namespace TagTool.Tags.Definitions.Gen2
             [TagStructure(Size = 0x4)]
             public class RefBlock : TagStructure
             {
-                public int NodeRefOrSectorRef;
+                public int NodeOrSectorIndex;
             }
             
             [TagStructure(Size = 0x14)]
@@ -907,15 +907,9 @@ namespace TagTool.Tags.Definitions.Gen2
             {
                 public HintTypeValue HintType;
                 public short NextHintIndex;
-                public short HintData0;
-                public short HintData1;
-                public short HintData2;
-                public short HintData3;
-                public short HintData4;
-                public short HintData5;
-                public short HintData6;
-                public short HintData7;
-                
+                [TagField(Length = 4)]
+                public int[] Data;
+
                 public enum HintTypeValue : short
                 {
                     IntersectionLink,

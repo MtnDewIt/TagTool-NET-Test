@@ -10,7 +10,7 @@ namespace TagTool.Commands.Common
 {
     public class CommandRunner
     {
-        public CommandContextStack ContextStack { get; }
+        public CommandContextStack ContextStack { get; set; }
         public bool EOF { get; private set; } = false;
         public string CommandLine { get; private set; }
         public string CurrentCommandName { get; private set; }
