@@ -1750,61 +1750,61 @@ namespace TagTool.Porting.Gen2
         void ConvertH2GametypeFlags(ref TagTool.Tags.Definitions.Common.GameEngineSubTypeFlags EngineFlags,
             Gen2Scenario.ScenarioNetgameEquipmentBlock NetgameEquipment)
         {
-            if (NetgameEquipment.GameType1 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType1Value.CaptureTheFlag
-                || NetgameEquipment.GameType2 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType2Value.CaptureTheFlag
-                || NetgameEquipment.GameType3 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType3Value.CaptureTheFlag
-                || NetgameEquipment.GameType4 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType4Value.CaptureTheFlag)
+            if (NetgameEquipment.GameType1 == Gen2Scenario.GameTypeValue.CaptureTheFlag
+                || NetgameEquipment.GameType2 == Gen2Scenario.GameTypeValue.CaptureTheFlag
+                || NetgameEquipment.GameType3 == Gen2Scenario.GameTypeValue.CaptureTheFlag
+                || NetgameEquipment.GameType4 == Gen2Scenario.GameTypeValue.CaptureTheFlag)
             {
                 EngineFlags |= TagTool.Tags.Definitions.Common.GameEngineSubTypeFlags.CaptureTheFlag;
                 EngineFlags |= TagTool.Tags.Definitions.Common.GameEngineSubTypeFlags.Assault;
             }
 
-            if (NetgameEquipment.GameType1 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType1Value.Slayer
-                || NetgameEquipment.GameType2 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType2Value.Slayer
-                || NetgameEquipment.GameType3 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType3Value.Slayer
-                || NetgameEquipment.GameType4 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType4Value.Slayer)
+            if (NetgameEquipment.GameType1 == Gen2Scenario.GameTypeValue.Slayer
+                || NetgameEquipment.GameType2 == Gen2Scenario.GameTypeValue.Slayer
+                || NetgameEquipment.GameType3 == Gen2Scenario.GameTypeValue.Slayer
+                || NetgameEquipment.GameType4 == Gen2Scenario.GameTypeValue.Slayer)
             {
                 EngineFlags |= TagTool.Tags.Definitions.Common.GameEngineSubTypeFlags.Infection;
                 EngineFlags |= TagTool.Tags.Definitions.Common.GameEngineSubTypeFlags.Slayer;
                 EngineFlags |= TagTool.Tags.Definitions.Common.GameEngineSubTypeFlags.Vip;
             }
 
-            if (NetgameEquipment.GameType1 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType1Value.Oddball
-                || NetgameEquipment.GameType2 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType2Value.Oddball
-                || NetgameEquipment.GameType3 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType3Value.Oddball
-                || NetgameEquipment.GameType4 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType4Value.Oddball)
+            if (NetgameEquipment.GameType1 == Gen2Scenario.GameTypeValue.Oddball
+                || NetgameEquipment.GameType2 == Gen2Scenario.GameTypeValue.Oddball
+                || NetgameEquipment.GameType3 == Gen2Scenario.GameTypeValue.Oddball
+                || NetgameEquipment.GameType4 == Gen2Scenario.GameTypeValue.Oddball)
             {
                 EngineFlags |= TagTool.Tags.Definitions.Common.GameEngineSubTypeFlags.Oddball;
             }
 
-            if (NetgameEquipment.GameType1 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType1Value.KingOfTheHill
-                || NetgameEquipment.GameType2 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType2Value.KingOfTheHill
-                || NetgameEquipment.GameType3 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType3Value.KingOfTheHill
-                || NetgameEquipment.GameType4 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType4Value.KingOfTheHill)
+            if (NetgameEquipment.GameType1 == Gen2Scenario.GameTypeValue.KingOfTheHill
+                || NetgameEquipment.GameType2 == Gen2Scenario.GameTypeValue.KingOfTheHill
+                || NetgameEquipment.GameType3 == Gen2Scenario.GameTypeValue.KingOfTheHill
+                || NetgameEquipment.GameType4 == Gen2Scenario.GameTypeValue.KingOfTheHill)
             {
                 EngineFlags |= TagTool.Tags.Definitions.Common.GameEngineSubTypeFlags.KingOfTheHill;
             }
 
-            if (NetgameEquipment.GameType1 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType1Value.Juggernaut
-                || NetgameEquipment.GameType2 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType2Value.Juggernaut
-                || NetgameEquipment.GameType3 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType3Value.Juggernaut
-                || NetgameEquipment.GameType4 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType4Value.Juggernaut)
+            if (NetgameEquipment.GameType1 == Gen2Scenario.GameTypeValue.Juggernaut
+                || NetgameEquipment.GameType2 == Gen2Scenario.GameTypeValue.Juggernaut
+                || NetgameEquipment.GameType3 == Gen2Scenario.GameTypeValue.Juggernaut
+                || NetgameEquipment.GameType4 == Gen2Scenario.GameTypeValue.Juggernaut)
             {
                 EngineFlags |= TagTool.Tags.Definitions.Common.GameEngineSubTypeFlags.Juggernaut;
             }
 
-            if (NetgameEquipment.GameType1 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType1Value.Territories
-                || NetgameEquipment.GameType2 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType2Value.Territories
-                || NetgameEquipment.GameType3 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType3Value.Territories
-                || NetgameEquipment.GameType4 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType4Value.Territories)
+            if (NetgameEquipment.GameType1 == Gen2Scenario.GameTypeValue.Territories
+                || NetgameEquipment.GameType2 == Gen2Scenario.GameTypeValue.Territories
+                || NetgameEquipment.GameType3 == Gen2Scenario.GameTypeValue.Territories
+                || NetgameEquipment.GameType4 == Gen2Scenario.GameTypeValue.Territories)
             {
                 EngineFlags |= TagTool.Tags.Definitions.Common.GameEngineSubTypeFlags.Territories;
             }
 
-            if (NetgameEquipment.GameType1 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType1Value.AllExceptCtf
-                || NetgameEquipment.GameType2 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType2Value.AllExceptCtf
-                || NetgameEquipment.GameType3 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType3Value.AllExceptCtf
-                || NetgameEquipment.GameType4 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType4Value.AllExceptCtf)
+            if (NetgameEquipment.GameType1 == Gen2Scenario.GameTypeValue.AllExceptCtf
+                || NetgameEquipment.GameType2 == Gen2Scenario.GameTypeValue.AllExceptCtf
+                || NetgameEquipment.GameType3 == Gen2Scenario.GameTypeValue.AllExceptCtf
+                || NetgameEquipment.GameType4 == Gen2Scenario.GameTypeValue.AllExceptCtf)
             {
                 EngineFlags |= TagTool.Tags.Definitions.Common.GameEngineSubTypeFlags.Infection;
                 EngineFlags |= TagTool.Tags.Definitions.Common.GameEngineSubTypeFlags.Slayer;
@@ -1815,10 +1815,10 @@ namespace TagTool.Porting.Gen2
                 EngineFlags |= TagTool.Tags.Definitions.Common.GameEngineSubTypeFlags.Territories;
             }
 
-            if (NetgameEquipment.GameType1 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType1Value.AllGameTypes
-                || NetgameEquipment.GameType2 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType2Value.AllGameTypes
-                || NetgameEquipment.GameType3 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType3Value.AllGameTypes
-                || NetgameEquipment.GameType4 == Gen2Scenario.ScenarioNetgameEquipmentBlock.GameType4Value.AllGameTypes)
+            if (NetgameEquipment.GameType1 == Gen2Scenario.GameTypeValue.AllGameTypes
+                || NetgameEquipment.GameType2 == Gen2Scenario.GameTypeValue.AllGameTypes
+                || NetgameEquipment.GameType3 == Gen2Scenario.GameTypeValue.AllGameTypes
+                || NetgameEquipment.GameType4 == Gen2Scenario.GameTypeValue.AllGameTypes)
             {
                 EngineFlags |= TagTool.Tags.Definitions.Common.GameEngineSubTypeFlags.All;
             }

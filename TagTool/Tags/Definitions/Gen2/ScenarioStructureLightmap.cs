@@ -224,12 +224,14 @@ namespace TagTool.Tags.Definitions.Gen2
                     }
                 }
                 
-                [TagStructure(Size = 0x44)]
+                [TagStructure(Size = 0x44, Platform = CachePlatform.Original)]
+                [TagStructure(Size = 0x48, Platform = CachePlatform.MCC)]
                 public class LightmapGeometrySectionCacheDataBlock : TagStructure
                 {
                     public GlobalGeometrySectionStructBlock Geometry;
-                    
-                    [TagStructure(Size = 0x44)]
+
+                    [TagStructure(Size = 0x44, Platform = CachePlatform.Original)]
+                    [TagStructure(Size = 0x48, Platform = CachePlatform.MCC)]
                     public class GlobalGeometrySectionStructBlock : TagStructure
                     {
                         public List<GlobalGeometryPartBlockNew> Parts;
@@ -240,8 +242,10 @@ namespace TagTool.Tags.Definitions.Gen2
                         public byte[] VisibilityMoppCode;
                         public List<GlobalGeometrySectionStripIndexBlock1> MoppReorderTable;
                         public List<GlobalGeometrySectionVertexBufferBlock> VertexBuffers;
-                        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
+                        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding, Platform = CachePlatform.Original)]
                         public byte[] Padding;
+                        [TagField(Platform = CachePlatform.MCC)]
+                        public PlatformUnsignedValue IndexBufferPointer;
                         
                         [TagStructure(Size = 0x48)]
                         public class GlobalGeometryPartBlockNew : TagStructure
@@ -469,13 +473,15 @@ namespace TagTool.Tags.Definitions.Gen2
                         }
                     }
                 }
-                
-                [TagStructure(Size = 0x44)]
+
+                [TagStructure(Size = 0x44, Platform = CachePlatform.Original)]
+                [TagStructure(Size = 0x48, Platform = CachePlatform.MCC)]
                 public class LightmapGeometrySectionCacheDataBlock : TagStructure
                 {
                     public GlobalGeometrySectionStructBlock Geometry;
-                    
-                    [TagStructure(Size = 0x44)]
+
+                    [TagStructure(Size = 0x44, Platform = CachePlatform.Original)]
+                    [TagStructure(Size = 0x48, Platform = CachePlatform.MCC)]
                     public class GlobalGeometrySectionStructBlock : TagStructure
                     {
                         public List<GlobalGeometryPartBlockNew> Parts;
@@ -486,8 +492,10 @@ namespace TagTool.Tags.Definitions.Gen2
                         public byte[] VisibilityMoppCode;
                         public List<GlobalGeometrySectionStripIndexBlock1> MoppReorderTable;
                         public List<GlobalGeometrySectionVertexBufferBlock> VertexBuffers;
-                        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
+                        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding, Platform = CachePlatform.Original)]
                         public byte[] Padding;
+                        [TagField(Platform = CachePlatform.MCC)]
+                        public PlatformUnsignedValue IndexBufferPointer;
                         
                         [TagStructure(Size = 0x48)]
                         public class GlobalGeometryPartBlockNew : TagStructure

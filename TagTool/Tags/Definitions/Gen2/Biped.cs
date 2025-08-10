@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Havok;
+using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.Tags.Definitions.Gen2
 {
@@ -159,8 +160,15 @@ namespace TagTool.Tags.Definitions.Gen2
         public CachedTag MeleeDamage;
         public UnitBoardingMeleeStructBlock YourMomma;
         public MotionSensorBlipSizeValue MotionSensorBlipSize;
-        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
+
+        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, Platform = CachePlatform.Original)]
         public byte[] Padding4;
+
+        [TagField(Platform = CachePlatform.MCC)]
+        public MetagameBucket.CampaignMetagameBucketType MetagameType;
+        [TagField(Platform = CachePlatform.MCC)]
+        public MetagameBucket.CampaignMetagameBucketClass MetagameClassification;
+
         public List<UnitPosturesBlock> Postures;
         public List<UnitHudReferenceBlock> NewHudInterfaces;
         public List<DialogueVariantBlock> DialogueVariants;
@@ -418,7 +426,7 @@ namespace TagTool.Tags.Definitions.Gen2
         [TagStructure(Size = 0x8)]
         public class ObjectWidgetBlock : TagStructure
         {
-            [TagField(ValidTags = new[] { "ant!", "devo", "whip", "BooM", "tdtl" })]
+            [TagField(ValidTags = new[] { "ant!", "clwd", "devo", "whip", "BooM", "tdtl" })]
             public CachedTag Type;
         }
 

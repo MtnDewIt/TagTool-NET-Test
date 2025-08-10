@@ -7,9 +7,13 @@ using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Tags.Definitions.Gen2
 {
-    [TagStructure(Name = "sound_looping", Tag = "lsnd", Size = 0x2C)]
+    [TagStructure(Name = "sound_looping", Tag = "lsnd", Size = 0x2C, Platform = CachePlatform.Original)]
+    [TagStructure(Name = "sound_looping", Tag = "lsnd", Size = 0x34, Platform = CachePlatform.MCC)]
     public class SoundLooping : TagStructure
     {
+        [TagField(Platform = CachePlatform.MCC)]
+        public CachedTag RemasteredLoopingSound;
+
         public FlagsValue Flags;
         public Bounds<float> MartySMusicTime; //  seconds
         public Bounds<float> DistanceBounds;
@@ -48,7 +52,9 @@ namespace TagTool.Tags.Definitions.Gen2
             SynchronizePlayback = 1 << 4,
             SynchronizeTracks = 1 << 5,
             FakeSpatializationWithDistance = 1 << 6,
-            CombineAll3dPlayback = 1 << 7
+            CombineAll3dPlayback = 1 << 7,
+            LegacyOnly = 1 << 8,        // MCC
+            RemasteredOnly = 1 << 9,    // MCC
         }
         
         [TagStructure(Size = 0x58)]

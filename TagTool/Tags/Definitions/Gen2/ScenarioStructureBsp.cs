@@ -522,12 +522,14 @@ namespace TagTool.Tags.Definitions.Gen2
                 }
             }
             
-            [TagStructure(Size = 0x44)]
+            [TagStructure(Size = 0x44, Platform = CachePlatform.Original)]
+            [TagStructure(Size = 0x48, Platform = CachePlatform.MCC)]
             public class StructureBspClusterDataBlockNew : TagStructure
             {
                 public GlobalGeometrySectionStructBlock Section;
-                
-                [TagStructure(Size = 0x44)]
+
+                [TagStructure(Size = 0x44, Platform = CachePlatform.Original)]
+                [TagStructure(Size = 0x48, Platform = CachePlatform.MCC)]
                 public class GlobalGeometrySectionStructBlock : TagStructure
                 {
                     public List<GlobalGeometryPartBlockNew> Parts;
@@ -538,8 +540,7 @@ namespace TagTool.Tags.Definitions.Gen2
                     public byte[] VisibilityMoppCode;
                     public List<GlobalGeometrySectionStripIndexBlock1> MoppReorderTable;
                     public List<GlobalGeometrySectionVertexBufferBlock> VertexBuffers;
-                    [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
-                    public byte[] Padding;
+                    public PlatformUnsignedValue IndexBufferPointer;
                     
                     [TagStructure(Size = 0x48)]
                     public class GlobalGeometryPartBlockNew : TagStructure
@@ -1581,13 +1582,15 @@ namespace TagTool.Tags.Definitions.Gen2
                         }
                     }
                 }
-                
-                [TagStructure(Size = 0x44)]
+
+                [TagStructure(Size = 0x44, Platform = CachePlatform.Original)]
+                [TagStructure(Size = 0x48, Platform = CachePlatform.MCC)]
                 public class StructureBspClusterDataBlockNew : TagStructure
                 {
                     public GlobalGeometrySectionStructBlock Section;
-                    
-                    [TagStructure(Size = 0x44)]
+
+                    [TagStructure(Size = 0x44, Platform = CachePlatform.Original)]
+                    [TagStructure(Size = 0x48, Platform = CachePlatform.MCC)]
                     public class GlobalGeometrySectionStructBlock : TagStructure
                     {
                         public List<GlobalGeometryPartBlockNew> Parts;
@@ -1598,9 +1601,8 @@ namespace TagTool.Tags.Definitions.Gen2
                         public byte[] VisibilityMoppCode;
                         public List<GlobalGeometrySectionStripIndexBlock1> MoppReorderTable;
                         public List<GlobalGeometrySectionVertexBufferBlock> VertexBuffers;
-                        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
-                        public byte[] Padding;
-                        
+                        public PlatformUnsignedValue IndexBufferPointer;
+
                         [TagStructure(Size = 0x48)]
                         public class GlobalGeometryPartBlockNew : TagStructure
                         {
@@ -1816,41 +1818,40 @@ namespace TagTool.Tags.Definitions.Gen2
                 }
             }
             
-            [TagStructure(Size = 0x74)]
+            [TagStructure(Size = 0x74, Platform = CachePlatform.Original)]
+            [TagStructure(Size = 0xA0, Platform = CachePlatform.MCC)]
             public class CollisionBspPhysicsBlock : TagStructure
             {
-                [TagField(Length = 0x4)]
-                public byte[] Unknown;
+                public PlatformUnsignedValue RuntimeCodePointer;
                 public short Size;
                 public short Count;
-                [TagField(Length = 0x4)]
-                public byte[] Unknown1;
-                [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
+                public PlatformUnsignedValue UserData;
+                [TagField(Length = 0x4, Flags = TagFieldFlags.Padding, Platform = CachePlatform.Original)]
+                [TagField(Length = 0x8, Flags = TagFieldFlags.Padding, Platform = CachePlatform.MCC)]
                 public byte[] Padding;
 
                 public RealQuaternion AABB_Center;
                 public RealQuaternion AABB_Half_Extents;
 
-                [TagField(Length = 0x10, Flags = TagFieldFlags.Padding)]
+                [TagField(Flags = TagFieldFlags.Short)]
+                public CachedTag RuntimeModelTag;
+                [TagField(Length = 0xC, Flags = TagFieldFlags.Padding)]
                 public byte[] Padding1;
-                [TagField(Length = 0x4)]
-                public byte[] Unknown3;
+                public PlatformUnsignedValue RuntimeCodePointer1;
                 public short Size1;
                 public short Count1;
-                [TagField(Length = 0x4)]
-                public byte[] Unknown4;
+                public PlatformUnsignedValue UserData1;
                 [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
                 public byte[] Padding2;
-                [TagField(Length = 0x4)]
-                public byte[] Unknown5;
+                public PlatformUnsignedValue RuntimeCodePointer2;
                 public short Size2;
                 public short Count2;
-                [TagField(Length = 0x4)]
-                public byte[] Unknown6;
-                [TagField(Length = 0x8, Flags = TagFieldFlags.Padding)]
+                public PlatformUnsignedValue UserData2;
+                [TagField(Length = 0x8, Flags = TagFieldFlags.Padding, Platform = CachePlatform.Original)]
+                [TagField(Length = 0x10, Flags = TagFieldFlags.Padding, Platform = CachePlatform.MCC)]
                 public byte[] Padding3;
                 public byte[] MoppCodeData;
-                [TagField(Length = 0x8, Flags = TagFieldFlags.Padding)]
+                [TagField(Length = 0x8, Flags = TagFieldFlags.Padding, Platform = CachePlatform.Original)]
                 public byte[] Padding4;
             }
             
@@ -2207,13 +2208,15 @@ namespace TagTool.Tags.Definitions.Gen2
             public float FogNear;
             public float FogFar;
             public float DynamicHeightBias;
-            
-            [TagStructure(Size = 0x44)]
+
+            [TagStructure(Size = 0x44, Platform = CachePlatform.Original)]
+            [TagStructure(Size = 0x48, Platform = CachePlatform.MCC)]
             public class WaterGeometrySectionBlock : TagStructure
             {
                 public GlobalGeometrySectionStructBlock Section;
-                
-                [TagStructure(Size = 0x44)]
+
+                [TagStructure(Size = 0x44, Platform = CachePlatform.Original)]
+                [TagStructure(Size = 0x48, Platform = CachePlatform.MCC)]
                 public class GlobalGeometrySectionStructBlock : TagStructure
                 {
                     public List<GlobalGeometryPartBlockNew> Parts;
@@ -2224,8 +2227,7 @@ namespace TagTool.Tags.Definitions.Gen2
                     public byte[] VisibilityMoppCode;
                     public List<GlobalGeometrySectionStripIndexBlock1> MoppReorderTable;
                     public List<GlobalGeometrySectionVertexBufferBlock> VertexBuffers;
-                    [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
-                    public byte[] Padding;
+                    public PlatformUnsignedValue IndexBufferPointer;
                     
                     [TagStructure(Size = 0x48)]
                     public class GlobalGeometryPartBlockNew : TagStructure

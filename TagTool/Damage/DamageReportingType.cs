@@ -66,7 +66,9 @@ namespace TagTool.Damage
             Tank,
             SentinelBeam,
             SentinelRpg,
-            Teleporter
+            Teleporter,
+            WarthogGunnerGauss,
+            WarthogGunnerRocket
         }
 
         public enum Halo3RetailValue : sbyte

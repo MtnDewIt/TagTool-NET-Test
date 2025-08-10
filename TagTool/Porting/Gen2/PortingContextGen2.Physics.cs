@@ -60,7 +60,7 @@ namespace TagTool.Porting.Gen2
                     ShapeIndex = gen2phantom.ShapeIndex,
                     ShapeBase = ConvertHavokShapeBaseNoRadius(gen2phantom.ShapeBase),
                     PhantomShape = ConvertHavokShapeBaseNoRadius(gen2phantom.PhantomShape),
-                    Unknown4 = new PlatformUnsignedValue(gen2phantom.Unknown4)
+                    Unknown4 = new PlatformUnsignedValue(gen2phantom.Unknown4.Value)
                 };
                 //ConvertHavokShape(newPhantom, gen2phantom);
                 physicsModel.Phantoms.Add(newPhantom);
@@ -158,7 +158,7 @@ namespace TagTool.Porting.Gen2
                     FourVectorsSize = gen2poly.FourVectorsSize,
                     FourVectorsCapacity = (uint)gen2poly.FourVectorsSize | 0x80000000,
                     NumVertices = gen2poly.NumVertices,
-                    AnotherFieldPointerSkip = new PlatformUnsignedValue(gen2poly.Unknown),
+                    AnotherFieldPointerSkip = new PlatformUnsignedValue(),
                     PlaneEquationsSize = gen2poly.PlaneEquationsSize,
                     PlaneEquationsCapacity = (uint)gen2poly.PlaneEquationsSize | 0x80000000,
                     ProxyCollisionGroup = -1, //doesn't exist in H2
@@ -267,7 +267,7 @@ namespace TagTool.Porting.Gen2
                     //FieldPointerSkip = gen2list.ShapeBase.FieldPointerSkip,
                     Size = gen2list.ShapeBase.Size,
                     Count = gen2list.ShapeBase.Count,
-                    Offset = new PlatformUnsignedValue((uint)gen2list.ShapeBase.Offset),
+                    Offset = gen2list.ShapeBase.Offset,
                     ChildShapesSize = childshapescount,
                     ChildShapesCapacity = (uint)childshapescount | 0x80000000,
                     UserData = new PlatformUnsignedValue(10) //seems to be a default value
@@ -379,7 +379,7 @@ namespace TagTool.Porting.Gen2
             newShape.Volume = gen2shape.Volume;
             newShape.Mass = gen2shape.Mass;
             newShape.MassDistributionIndex = gen2shape.MassDistributionIndex;
-            newShape.PhantomIndex = (sbyte)gen2shape.Phantom;
+            newShape.PhantomIndex = gen2shape.Phantom;
 
             newShape.ShapeBase = ConvertHavokShapeBase(gen2shape.ShapeBase);
             return;

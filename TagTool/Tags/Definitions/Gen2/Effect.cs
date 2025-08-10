@@ -110,7 +110,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 public short Location;
                 public FlagsValue Flags;
                 public Tag RuntimeBaseGroupTag;
-                [TagField(ValidTags = new [] { "jpt!","obje","snd!","deca","coln","ligh","MGS2","tdtl","lens" })]
+                [TagField(ValidTags = new [] { "jpt!","obje","snd!","deca","coln","ligh","MGS2","tdtl","lens","char" })]
                 public CachedTag Type;
                 /// <summary>
                 /// initial velocity along the location's forward, for decals the distance at which decal is created (defaults to 0.5)

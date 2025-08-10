@@ -150,6 +150,7 @@ namespace TagTool.Havok
 
     [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x1C, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.MCC)]
     [TagStructure(Size = 0x20, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
     public class HkpShape : TagStructure
     {

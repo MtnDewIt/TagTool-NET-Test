@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using static TagTool.Tags.TagFieldFlags;
+using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.Tags.Definitions.Gen2
 {
@@ -93,11 +94,11 @@ namespace TagTool.Tags.Definitions.Gen2
         public List<StructureBspBackgroundSoundPaletteBlock> BackgroundSoundPalette;
         public List<StructureBspSoundEnvironmentPaletteBlock> SoundEnvironmentPalette;
         public List<StructureBspWeatherPaletteBlock> WeatherPalette;
-        public List<GNullBlock> Unknown1;
-        public List<GNullBlock1> Unknown2;
-        public List<GNullBlock2> Unknown3;
-        public List<GNullBlock3> Unknown4;
-        public List<GNullBlock4> Unknown5;
+        public List<NullBlock> Unknown1;
+        public List<NullBlock> Unknown2;
+        public List<NullBlock> Unknown3;
+        public List<NullBlock> Unknown4;
+        public List<NullBlock> ScavengerHuntObjects;
         public List<ScenarioClusterDataBlock> ScenarioClusterData;
         [TagField(Length = 32)]
         public int[] Unknown6;
@@ -171,7 +172,8 @@ namespace TagTool.Tags.Definitions.Gen2
             QuickLoadingCinematicOnlyScenario = 1 << 4,
             CharactersUsePreviousMissionWeapons = 1 << 5,
             LightmapsSmoothPalettesWithNeighbors = 1 << 6,
-            SnapToWhiteAtStart = 1 << 7
+            SnapToWhiteAtStart = 1 << 7,
+            DoNotApplyBungieMpTagPatches = 1 << 8,  // MCC
         }
         
         [TagStructure(Size = 0x18)]
@@ -531,7 +533,11 @@ namespace TagTool.Tags.Definitions.Gen2
                     KingOfTheHill = 1 << 3,
                     Juggernaut = 1 << 4,
                     Territories = 1 << 5,
-                    Assault = 1 << 6
+                    Assault = 1 << 6,
+                    Medic = 1 << 7,         // MCC
+                    VIP = 1 << 8,           // MCC
+                    Infection = 1 << 9,     // MCC
+                    Headhunter = 1 << 10,   // MCC
                 }
             }
         }
@@ -1754,10 +1760,10 @@ namespace TagTool.Tags.Definitions.Gen2
             public Angle Facing; // Degrees
             public TeamDesignatorValue TeamDesignator;
             public short BspIndex;
-            public GameType1Value GameType1;
-            public GameType2Value GameType2;
-            public GameType3Value GameType3;
-            public GameType4Value GameType4;
+            public GameTypeValue GameType1;
+            public GameTypeValue GameType2;
+            public GameTypeValue GameType3;
+            public GameTypeValue GameType4;
             public SpawnType0Value SpawnType0;
             public SpawnType1Value SpawnType1;
             public SpawnType2Value SpawnType2;
@@ -1779,82 +1785,6 @@ namespace TagTool.Tags.Definitions.Gen2
                 BrownGolf,
                 PinkHotel,
                 Neutral
-            }
-            
-            public enum GameType1Value : short
-            {
-                None,
-                CaptureTheFlag,
-                Slayer,
-                Oddball,
-                KingOfTheHill,
-                Race,
-                Headhunter,
-                Juggernaut,
-                Territories,
-                Stub,
-                Ignored3,
-                Ignored4,
-                AllGameTypes,
-                AllExceptCtf,
-                AllExceptCtfRace
-            }
-            
-            public enum GameType2Value : short
-            {
-                None,
-                CaptureTheFlag,
-                Slayer,
-                Oddball,
-                KingOfTheHill,
-                Race,
-                Headhunter,
-                Juggernaut,
-                Territories,
-                Stub,
-                Ignored3,
-                Ignored4,
-                AllGameTypes,
-                AllExceptCtf,
-                AllExceptCtfRace
-            }
-            
-            public enum GameType3Value : short
-            {
-                None,
-                CaptureTheFlag,
-                Slayer,
-                Oddball,
-                KingOfTheHill,
-                Race,
-                Headhunter,
-                Juggernaut,
-                Territories,
-                Stub,
-                Ignored3,
-                Ignored4,
-                AllGameTypes,
-                AllExceptCtf,
-                AllExceptCtfRace
-            }
-            
-            public enum GameType4Value : short
-            {
-                None,
-                CaptureTheFlag,
-                Slayer,
-                Oddball,
-                KingOfTheHill,
-                Race,
-                Headhunter,
-                Juggernaut,
-                Territories,
-                Stub,
-                Ignored3,
-                Ignored4,
-                AllGameTypes,
-                AllExceptCtf,
-                AllExceptCtfRace
             }
             
             public enum SpawnType0Value : short
@@ -1987,15 +1917,37 @@ namespace TagTool.Tags.Definitions.Gen2
                 NeutralFlagBomb = 1 << 2
             }
         }
-        
+
+        public enum GameTypeValue : short
+        {
+            None,
+            CaptureTheFlag,
+            Slayer,
+            Oddball,
+            KingOfTheHill,
+            Race,
+            Headhunter,
+            Juggernaut,
+            Territories,
+            Stub,
+            Ignored3,
+            Ignored4,
+            AllGameTypes,
+            AllExceptCtf,
+            AllExceptCtfRace,
+            Medic,
+            VIP,
+            Infection,
+        }
+
         [TagStructure(Size = 0x90)]
         public class ScenarioNetgameEquipmentBlock : TagStructure
         {
             public FlagsValue Flags;
-            public GameType1Value GameType1;
-            public GameType2Value GameType2;
-            public GameType3Value GameType3;
-            public GameType4Value GameType4;
+            public GameTypeValue GameType1;
+            public GameTypeValue GameType2;
+            public GameTypeValue GameType3;
+            public GameTypeValue GameType4;
             [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
             public byte[] Padding;
             public short SpawnTimeInSeconds0Default;
@@ -2018,82 +1970,6 @@ namespace TagTool.Tags.Definitions.Gen2
             {
                 Levitate = 1 << 0,
                 DestroyExistingOnNewSpawn = 1 << 1
-            }
-            
-            public enum GameType1Value : short
-            {
-                None,
-                CaptureTheFlag,
-                Slayer,
-                Oddball,
-                KingOfTheHill,
-                Race,
-                Headhunter,
-                Juggernaut,
-                Territories,
-                Stub,
-                Ignored3,
-                Ignored4,
-                AllGameTypes,
-                AllExceptCtf,
-                AllExceptCtfRace
-            }
-            
-            public enum GameType2Value : short
-            {
-                None,
-                CaptureTheFlag,
-                Slayer,
-                Oddball,
-                KingOfTheHill,
-                Race,
-                Headhunter,
-                Juggernaut,
-                Territories,
-                Stub,
-                Ignored3,
-                Ignored4,
-                AllGameTypes,
-                AllExceptCtf,
-                AllExceptCtfRace
-            }
-            
-            public enum GameType3Value : short
-            {
-                None,
-                CaptureTheFlag,
-                Slayer,
-                Oddball,
-                KingOfTheHill,
-                Race,
-                Headhunter,
-                Juggernaut,
-                Territories,
-                Stub,
-                Ignored3,
-                Ignored4,
-                AllGameTypes,
-                AllExceptCtf,
-                AllExceptCtfRace
-            }
-            
-            public enum GameType4Value : short
-            {
-                None,
-                CaptureTheFlag,
-                Slayer,
-                Oddball,
-                KingOfTheHill,
-                Race,
-                Headhunter,
-                Juggernaut,
-                Territories,
-                Stub,
-                Ignored3,
-                Ignored4,
-                AllGameTypes,
-                AllExceptCtf,
-                AllExceptCtfRace
             }
             
             public enum RespawnTimerStartsValue : short
@@ -2127,10 +2003,10 @@ namespace TagTool.Tags.Definitions.Gen2
         public class ScenarioStartingEquipmentBlock : TagStructure
         {
             public FlagsValue Flags;
-            public GameType1Value GameType1;
-            public GameType2Value GameType2;
-            public GameType3Value GameType3;
-            public GameType4Value GameType4;
+            public GameTypeValue GameType1;
+            public GameTypeValue GameType2;
+            public GameTypeValue GameType3;
+            public GameTypeValue GameType4;
             [TagField(Length = 0x30, Flags = TagFieldFlags.Padding)]
             public byte[] Padding;
             [TagField(ValidTags = new [] { "itmc" })]
@@ -2153,82 +2029,6 @@ namespace TagTool.Tags.Definitions.Gen2
             {
                 NoGrenades = 1 << 0,
                 PlasmaGrenades = 1 << 1
-            }
-            
-            public enum GameType1Value : short
-            {
-                None,
-                CaptureTheFlag,
-                Slayer,
-                Oddball,
-                KingOfTheHill,
-                Race,
-                Headhunter,
-                Juggernaut,
-                Territories,
-                Stub,
-                Ignored3,
-                Ignored4,
-                AllGameTypes,
-                AllExceptCtf,
-                AllExceptCtfRace
-            }
-            
-            public enum GameType2Value : short
-            {
-                None,
-                CaptureTheFlag,
-                Slayer,
-                Oddball,
-                KingOfTheHill,
-                Race,
-                Headhunter,
-                Juggernaut,
-                Territories,
-                Stub,
-                Ignored3,
-                Ignored4,
-                AllGameTypes,
-                AllExceptCtf,
-                AllExceptCtfRace
-            }
-            
-            public enum GameType3Value : short
-            {
-                None,
-                CaptureTheFlag,
-                Slayer,
-                Oddball,
-                KingOfTheHill,
-                Race,
-                Headhunter,
-                Juggernaut,
-                Territories,
-                Stub,
-                Ignored3,
-                Ignored4,
-                AllGameTypes,
-                AllExceptCtf,
-                AllExceptCtfRace
-            }
-            
-            public enum GameType4Value : short
-            {
-                None,
-                CaptureTheFlag,
-                Slayer,
-                Oddball,
-                KingOfTheHill,
-                Race,
-                Headhunter,
-                Juggernaut,
-                Territories,
-                Stub,
-                Ignored3,
-                Ignored4,
-                AllGameTypes,
-                AllExceptCtf,
-                AllExceptCtfRace
             }
         }
         
@@ -3938,31 +3738,6 @@ namespace TagTool.Tags.Definitions.Gen2
             public string WindScaleFunction;
         }
         
-        [TagStructure()]
-        public class GNullBlock : TagStructure
-        {
-        }
-        
-        [TagStructure()]
-        public class GNullBlock1 : TagStructure
-        {
-        }
-        
-        [TagStructure()]
-        public class GNullBlock2 : TagStructure
-        {
-        }
-        
-        [TagStructure()]
-        public class GNullBlock3 : TagStructure
-        {
-        }
-        
-        [TagStructure()]
-        public class GNullBlock4 : TagStructure
-        {
-        }
-        
         [TagStructure(Size = 0x34)]
         public class ScenarioClusterDataBlock : TagStructure
         {
@@ -4052,10 +3827,50 @@ namespace TagTool.Tags.Definitions.Gen2
                     HillExclusion,
                     LastRaceFlag,
                     DeadAlly,
-                    ControlledTerritory
+                    ControlledTerritory,
+                    Medic   // MCC
                 }
             }
-            
+
+            [Flags]
+            public enum RelevantTeamValue : uint
+            {
+                RedAlpha = 1 << 0,
+                BlueBravo = 1 << 1,
+                YellowCharlie = 1 << 2,
+                GreenDelta = 1 << 3,
+                PurpleEcho = 1 << 4,
+                OrangeFoxtrot = 1 << 5,
+                BrownGolf = 1 << 6,
+                PinkHotel = 1 << 7,
+                Neutral = 1 << 8
+            }
+
+            [Flags]
+            public enum RelevantGamesValue : uint
+            {
+                Slayer = 1 << 0,
+                Oddball = 1 << 1,
+                KingOfTheHill = 1 << 2,
+                CaptureTheFlag = 1 << 3,
+                Race = 1 << 4,
+                Headhunter = 1 << 5,
+                Juggernaut = 1 << 6,
+                Territories = 1 << 7,
+                Medic = 1 << 8,
+                VIP = 1 << 9,
+                Infection = 1 << 10,
+            }
+
+            [Flags]
+            public enum FlagsValue : uint
+            {
+                DisabledIfFlagHome = 1 << 0,
+                DisabledIfFlagAway = 1 << 1,
+                DisabledIfBombHome = 1 << 2,
+                DisabledIfBombAway = 1 << 3
+            }
+
             [TagStructure(Size = 0x30)]
             public class StaticSpawnZoneBlock : TagStructure
             {
@@ -4078,33 +3893,6 @@ namespace TagTool.Tags.Definitions.Gen2
                     public RelevantTeamValue RelevantTeam;
                     public RelevantGamesValue RelevantGames;
                     public FlagsValue Flags;
-                    
-                    [Flags]
-                    public enum RelevantTeamValue : uint
-                    {
-                        RedAlpha = 1 << 0,
-                        BlueBravo = 1 << 1,
-                        YellowCharlie = 1 << 2,
-                        GreenDelta = 1 << 3,
-                        PurpleEcho = 1 << 4,
-                        OrangeFoxtrot = 1 << 5,
-                        BrownGolf = 1 << 6,
-                        PinkHotel = 1 << 7,
-                        Neutral = 1 << 8
-                    }
-                    
-                    [Flags]
-                    public enum RelevantGamesValue : uint
-                    {
-                        Slayer = 1 << 0,
-                        Oddball = 1 << 1,
-                        KingOfTheHill = 1 << 2,
-                        CaptureTheFlag = 1 << 3,
-                        Race = 1 << 4,
-                        Headhunter = 1 << 5,
-                        Juggernaut = 1 << 6,
-                        Territories = 1 << 7
-                    }
                     
                     [Flags]
                     public enum FlagsValue : uint
@@ -4139,42 +3927,6 @@ namespace TagTool.Tags.Definitions.Gen2
                     public RelevantTeamValue RelevantTeam;
                     public RelevantGamesValue RelevantGames;
                     public FlagsValue Flags;
-                    
-                    [Flags]
-                    public enum RelevantTeamValue : uint
-                    {
-                        RedAlpha = 1 << 0,
-                        BlueBravo = 1 << 1,
-                        YellowCharlie = 1 << 2,
-                        GreenDelta = 1 << 3,
-                        PurpleEcho = 1 << 4,
-                        OrangeFoxtrot = 1 << 5,
-                        BrownGolf = 1 << 6,
-                        PinkHotel = 1 << 7,
-                        Neutral = 1 << 8
-                    }
-                    
-                    [Flags]
-                    public enum RelevantGamesValue : uint
-                    {
-                        Slayer = 1 << 0,
-                        Oddball = 1 << 1,
-                        KingOfTheHill = 1 << 2,
-                        CaptureTheFlag = 1 << 3,
-                        Race = 1 << 4,
-                        Headhunter = 1 << 5,
-                        Juggernaut = 1 << 6,
-                        Territories = 1 << 7
-                    }
-                    
-                    [Flags]
-                    public enum FlagsValue : uint
-                    {
-                        DisabledIfFlagHome = 1 << 0,
-                        DisabledIfFlagAway = 1 << 1,
-                        DisabledIfBombHome = 1 << 2,
-                        DisabledIfBombAway = 1 << 3
-                    }
                 }
             }
         }
@@ -4891,9 +4643,9 @@ namespace TagTool.Tags.Definitions.Gen2
                 public sbyte MaxTeamsTerritories;
                 public sbyte MaxTeamsAssault;
                 public sbyte MaxTeamsStub10;
-                public sbyte MaxTeamsStub11;
-                public sbyte MaxTeamsStub12;
-                public sbyte MaxTeamsStub13;
+                public sbyte MaxTeamsMedic;     // MCC
+                public sbyte MaxTeamsVIP;       // MCC
+                public sbyte MaxTeamsInfection; // MCC
                 public sbyte MaxTeamsStub14;
                 public sbyte MaxTeamsStub15;
                 

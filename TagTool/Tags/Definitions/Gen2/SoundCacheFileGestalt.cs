@@ -8,9 +8,12 @@ using TagTool.Audio;
 
 namespace TagTool.Tags.Definitions.Gen2
 {
-    [TagStructure(Name = "sound_cache_file_gestalt", Tag = "ugh!", Size = 0x58)]
+    [TagStructure(Name = "sound_cache_file_gestalt", Tag = "ugh!", Size = 0x58, Platform = CachePlatform.Original)]
+    [TagStructure(Name = "sound_cache_file_gestalt", Tag = "ugh!", Size = 0x78, Platform = CachePlatform.MCC)]
     public class SoundCacheFileGestalt : TagStructure
     {
+        [TagField(Platform = CachePlatform.MCC)]
+        public List<CodecBlock> Codecs;
         public List<PlaybackParameter> Playbacks;
         public List<Scale> Scales;
         public List<ImportName> ImportNames;
@@ -18,6 +21,13 @@ namespace TagTool.Tags.Definitions.Gen2
         public List<Gen2PitchRange> PitchRanges;
         public List<Gen2Permutation> Permutations;
         public List<CustomPlayback> CustomPlaybacks;
+
+        [TagField(Platform = CachePlatform.MCC)]
+        public List<ReflectionBlock> Reflections;
+        [TagField(Platform = CachePlatform.MCC)]
+        public List<LowPassCutoffParametersBlock> LowPassCutoffParameters;
+        [TagField(Platform = CachePlatform.MCC)]
+        public List<TagReferenceBlock> RemasteredSounds;
 
         /// <summary>
         /// Bit vector
@@ -28,6 +38,30 @@ namespace TagTool.Tags.Definitions.Gen2
         public List<Promotion> Promotions;
 
         public List<ExtraInfo> ExtraInfos;
+
+        [TagStructure(Size = 0x3)]
+        public class CodecBlock : TagStructure
+        {
+            public SampleRate SampleRate;
+            public Gen2Encoding Encoding;
+            public Compression Compression;
+        }
+
+        [TagStructure(Size = 0x10)]
+        public class ReflectionBlock : TagStructure
+        {
+            public StringId ReflectionType;
+            public CachedTag ReflectionSound;
+            public int ReflectionSoundUnknown;
+        }
+
+        [TagStructure(Size = 0x10)]
+        public class LowPassCutoffParametersBlock : TagStructure
+        {
+            public float LowPassMinimumDistance;
+            public float LowPassMaximumDistance;
+            public byte[] Function;
+        }
 
         //
         // Functions for sound conversion 

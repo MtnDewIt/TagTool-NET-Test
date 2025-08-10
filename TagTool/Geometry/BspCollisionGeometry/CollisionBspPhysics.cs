@@ -93,7 +93,8 @@ namespace TagTool.Geometry.BspCollisionGeometry
         public PlatformSignedValue InstanceDefinition;
     }
 
-    [TagStructure(Size = 0x70, MaxVersion = CacheVersion.Halo2PC)]
+    [TagStructure(Size = 0x70, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0xA0, Platform = CachePlatform.MCC)]
     public class CollisionBspPhysicsDefinitionGen2 : TagStructure
     {
         public CollisionGeometryShapeGen2 GeometryShape;
@@ -101,8 +102,13 @@ namespace TagTool.Geometry.BspCollisionGeometry
         public byte[] Padding;
         public Havok.Gen2.CConvexWelderShape WelderShape;
         public Havok.Gen2.CMoppBvTreeShape BvTreeShape;
+
+        [TagField(Length = 4, Flags = TagFieldFlags.Padding, Platform = CachePlatform.MCC)]
+        public byte[] PaddingMCC;
+
         public byte[] MoppCodes;
-        [TagField(Length = 4, Flags = TagFieldFlags.Padding)]
+
+        [TagField(Length = 4, Flags = TagFieldFlags.Padding, Platform = CachePlatform.Original)]
         public byte[] Padding2;
     }
 }

@@ -112,8 +112,22 @@ namespace TagTool.Audio
         public sbyte EncodedGain; // dB
         public sbyte PermutationInfoIndex;
         public short LanguageNeutralTime; // ms
+        [TagField(Platform = CachePlatform.Original)]
         public int SampleSize;
+        [TagField(Platform = CachePlatform.Original)]
         public short FirstChunk;
+        [TagField(Platform = CachePlatform.Original)]
         public short ChunkCount;
+
+        [TagField(Platform = CachePlatform.MCC)]
+        public List<LocalizedChunkInfoBlock> LocalizedChunksInfo;
+
+        [TagStructure(Size = 0x8)]
+        public class LocalizedChunkInfoBlock : TagStructure
+        {
+            public int SampleSize;
+            public short FirstChunk;
+            public short ChunkCount;
+        }
     }
 }
