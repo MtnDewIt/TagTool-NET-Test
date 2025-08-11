@@ -7,7 +7,7 @@ using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "unit", Tag = "unit", Size = 0x130, MaxVersion = CacheVersion.Halo2Vista)]
+    [TagStructure(Name = "unit", Tag = "unit", Size = 0x130, MaxVersion = CacheVersion.Halo2PC)]
     [TagStructure(Name = "unit", Tag = "unit", Size = 0x214, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
     [TagStructure(Name = "unit", Tag = "unit", Size = 0x1C4, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "unit", Tag = "unit", Size = 0x224, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
@@ -438,7 +438,7 @@ namespace TagTool.Tags.Definitions
             UseAimingVectorInsteadOfMarkerForward = 1 << 3
         }
 
-        [TagStructure(Size = 0x1C, MaxVersion = CacheVersion.Halo2Vista, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x1C, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x3C, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x78, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x78, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
@@ -525,7 +525,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x8, MaxVersion = CacheVersion.Halo2Vista)]
+        [TagStructure(Size = 0x8, MaxVersion = CacheVersion.Halo2PC)]
         [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3Retail)]
         public class UnitCameraTrack : TagStructure
         {
@@ -580,7 +580,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x1C, MaxVersion = CacheVersion.Halo2Vista)]
+        [TagStructure(Size = 0x1C, MaxVersion = CacheVersion.Halo2PC)]
         [TagStructure(Size = 0x2C, MinVersion = CacheVersion.Halo3Retail)]
         public class UnitAssassination : TagStructure
         {
@@ -621,16 +621,16 @@ namespace TagTool.Tags.Definitions
             public RealVector3d PillOffset;
         }
 
-        [TagStructure(Size = 0x8, MaxVersion = CacheVersion.Halo2Vista)]
+        [TagStructure(Size = 0x8, MaxVersion = CacheVersion.Halo2PC)]
         [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3Retail)]
         public class HudInterface : TagStructure
 		{
-            [TagField(ValidTags = new[] { "nhdt" }, MaxVersion = CacheVersion.Halo2Vista)]
+            [TagField(ValidTags = new[] { "nhdt" }, MaxVersion = CacheVersion.Halo2PC)]
             [TagField(ValidTags = new[] { "chdt" }, MinVersion = CacheVersion.Halo3Retail)]
             public CachedTag UnitHudInterface;
         }
 
-        [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo2Vista)]
+        [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo2PC)]
         [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo3Retail)]
         public class DialogueVariant : TagStructure
 		{
@@ -657,7 +657,7 @@ namespace TagTool.Tags.Definitions
             public float DriverPowerdownTime; // seconds
         }
 
-        [TagStructure(Size = 0x8, MaxVersion = CacheVersion.Halo2Vista)]
+        [TagStructure(Size = 0x8, MaxVersion = CacheVersion.Halo2PC)]
         [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3Retail)]
         public class UnitWeapon : TagStructure
 		{
@@ -720,7 +720,7 @@ namespace TagTool.Tags.Definitions
             PreventsWeaponStowing = 1 << 30
         }
 
-        [TagStructure(Size = 0xB0, MaxVersion = CacheVersion.Halo2Vista)]
+        [TagStructure(Size = 0xB0, MaxVersion = CacheVersion.Halo2PC)]
         [TagStructure(Size = 0xE4, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0xD4, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x13C, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
@@ -801,7 +801,7 @@ namespace TagTool.Tags.Definitions
                 Driver
             }
 
-            [TagStructure(Size = 0x8, MaxVersion = CacheVersion.Halo2Vista)]
+            [TagStructure(Size = 0x8, MaxVersion = CacheVersion.Halo2PC)]
             [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3Retail)]
             public class UnitHudInterfaceBlock : TagStructure
 			{

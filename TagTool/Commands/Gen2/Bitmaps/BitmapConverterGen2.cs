@@ -42,7 +42,7 @@ namespace TagTool.Commands.Gen2.Bitmaps
             byte[] rawBitmapData = cache.GetCacheRawData((uint)gen2Img.Lod0Pointer, gen2Img.Lod0Size);
 
             //h2v raw bitmap data is gz compressed
-            if (cache.Version == CacheVersion.Halo2Vista)
+            if (cache.Version == CacheVersion.Halo2PC)
             {
                 using (var stream = new MemoryStream(rawBitmapData))
                 using (var resultStream = new MemoryStream())

@@ -556,7 +556,8 @@ namespace TagTool.Tags.Definitions.Gen2
             _12Size,
             _14Size,
             Never,
-            Cinematic
+            Cinematic,
+            Lowest
         }
         
         public enum SpecularTypeValue : short

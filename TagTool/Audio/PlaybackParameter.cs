@@ -5,7 +5,7 @@ using TagTool.Tags;
 
 namespace TagTool.Audio
 {
-    [TagStructure(Size = 0x38, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Vista)]
+    [TagStructure(Size = 0x38, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2PC)]
     [TagStructure(Size = 0x44,  MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x54, MinVersion = CacheVersion.HaloReach)]
     public class PlaybackParameter : TagStructure
@@ -13,13 +13,13 @@ namespace TagTool.Audio
         /// <summary>
         /// the distance below which this sound no longer gets louder
         /// </summary>
-        [TagField(MaxVersion = CacheVersion.Halo2Vista)]
+        [TagField(MaxVersion = CacheVersion.Halo2PC)]
         public float MininumDistance; // world units
 
         /// <summary>
         /// the distance beyond which this sound is no longer audible
         /// </summary>
-        [TagField(MaxVersion = CacheVersion.Halo2Vista)]
+        [TagField(MaxVersion = CacheVersion.Halo2PC)]
         public float MaximumDistance; // world units
 
         [TagField(MinVersion = CacheVersion.Halo3Beta)]

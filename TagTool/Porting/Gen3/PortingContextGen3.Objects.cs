@@ -15,7 +15,7 @@ namespace TagTool.Porting.Gen3
         {
             switch (BlamCache.Version)
             {
-                case CacheVersion.Halo2Vista:
+                case CacheVersion.Halo2PC:
                 case CacheVersion.Halo2Xbox:
                     if (!Enum.TryParse(flags.Halo2.ToString(), out flags.Halo3ODST))
                         throw new FormatException(BlamCache.Version.ToString());

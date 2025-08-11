@@ -65,7 +65,7 @@ namespace TagTool.Porting.Gen3
 
             switch (BlamCache.Version)
             {
-                case CacheVersion.Halo2Vista:
+                case CacheVersion.Halo2PC:
                 case CacheVersion.Halo2Xbox:
                     value = damageReportingType.Halo2Retail.ToString();
                     break;

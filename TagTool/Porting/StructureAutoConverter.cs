@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TagTool.Tags;
-using TagTool.Commands.Common;
 using TagTool.Cache;
+using TagTool.Commands.Common;
+using TagTool.Tags;
+using static TagTool.Tags.Definitions.PhysicsModel;
 
 namespace TagTool.Porting
 {
@@ -135,7 +136,10 @@ namespace TagTool.Porting
                 throw new InvalidOperationException("listData must be enumerable");
 
             Type outputelementType = outputtype.GenericTypeArguments[0];
-            var addMethod = outputtype.GetMethod("Add");
+            var testMethod = outputtype.GetMethods();
+            var addMethod = outputtype.GetMethods().
+                Where(x => x.Name == "Add")
+               .FirstOrDefault();
             foreach (object item in enumerable.OfType<object>())
             {
                 var outputelement = Activator.CreateInstance(outputelementType);
@@ -166,7 +170,8 @@ namespace TagTool.Porting
             var inputinfo = TagStructure.GetTagStructureInfo(inputtype, destCacheInfo.Version, destCacheInfo.Platform);
             foreach (var tagFieldInfo in TagStructure.GetTagFieldEnumerable(inputinfo.Types[0], inputinfo.Version, inputinfo.CachePlatform))
             {
-                if (tagFieldInfo.FieldType.IsGenericType && tagFieldInfo.FieldType.GetGenericTypeDefinition() == typeof(List<>))
+                if (tagFieldInfo.FieldType.IsGenericType && (tagFieldInfo.FieldType.GetGenericTypeDefinition() == typeof(List<>) ||
+                    tagFieldInfo.FieldType.GetGenericTypeDefinition() == typeof(TagBlock<>)))
                 {
                     object newlist = Activator.CreateInstance(tagFieldInfo.FieldType);
                     tagFieldInfo.SetValue(input, newlist);

@@ -389,7 +389,7 @@ namespace TagTool.Porting.Gen2
             GameCacheGen2 gen2Cache = (GameCacheGen2)BlamCache;
             byte[] rawBitmapData = gen2Cache.GetCacheRawData((uint)image.Lod0Pointer, (int)image.Lod0Size);
             //h2v raw bitmap data is gz compressed
-            if (BlamCache.Version == CacheVersion.Halo2Vista)
+            if (BlamCache.Version == CacheVersion.Halo2PC)
             {
                 using (var stream = new MemoryStream(rawBitmapData))
                 using (var resultStream = new MemoryStream())

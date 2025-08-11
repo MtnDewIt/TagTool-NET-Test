@@ -29,7 +29,7 @@ namespace TagTool.Geometry.BspCollisionGeometry
         public byte[] ReachMCCPad;
     }
 
-    [TagStructure(Size = 0x28, MaxVersion = CacheVersion.Halo2Vista)]
+    [TagStructure(Size = 0x28, MaxVersion = CacheVersion.Halo2PC)]
     public class CollisionGeometryShapeGen2 : HkpShape
     {
         public uint CollisionBspAddress; // runtime

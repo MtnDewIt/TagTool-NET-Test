@@ -96,7 +96,7 @@ namespace TagTool.Porting.Gen2
             animationTagResource.GroupMembers.AddressType = CacheAddressType.Definition;
 
             //fixup for h2x, get raw resource data and place it in the animation blocks
-            if (BlamCache.Version < CacheVersion.Halo2Vista)
+            if (BlamCache.Version < CacheVersion.Halo2PC)
                 foreach (var gen2anim in gen2Animation.Resources.AnimationsAbcdcc)
                 {
                     GameCacheGen2 gen2Cache = (GameCacheGen2)BlamCache;
