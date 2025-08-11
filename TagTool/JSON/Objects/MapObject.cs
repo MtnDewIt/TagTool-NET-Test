@@ -26,8 +26,7 @@ namespace TagTool.JSON.Objects
                         case CacheVersion.Halo2Alpha:
                         case CacheVersion.Halo2Beta:
                         case CacheVersion.Halo2Xbox:
-                        case CacheVersion.Halo2Vista:
-                        case CacheVersion.Halo2Retail:
+                        case CacheVersion.Halo2PC:
                             InlineHeader = (CacheFileHeader)Activator.CreateInstance(typeof(CacheFileHeaderGen2));
                             break;
                         case CacheVersion.Halo3Beta:

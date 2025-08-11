@@ -209,7 +209,7 @@ namespace TagTool.BlamFile
                         cacheVersion = CacheVersion.HaloCustomEdition;
                         break;
                     case CacheFileEngineVersion.Halo2:
-                        cacheVersion = CacheVersion.Halo2Retail;
+                        cacheVersion = CacheVersion.Halo2PC;
                         break;
                     case CacheFileEngineVersion.Halo3:
                         cacheVersion = CacheVersion.Halo3Retail;
