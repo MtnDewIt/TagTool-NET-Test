@@ -2845,7 +2845,9 @@ namespace TagTool.Tags.Definitions
                 public StringId MovementSet;
 
                 [TagField(MaxVersion = CacheVersion.Halo3Retail)]
-                public int Unknown; // ???
+                public short ActivityType;
+                [TagField(MaxVersion = CacheVersion.Halo3Retail)]
+                public short ActivityVariant;
 
                 public short PointSetIndex;
                 public SquadPatrolMode PatrolMode;
@@ -3404,9 +3406,9 @@ namespace TagTool.Tags.Definitions
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public List<TriggerVolume> CookieCutters;
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
-            public List<UnknownBlock8> Unknown8;
+            public List<GiantHint> GiantHints;
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
-            public List<UnknownBlock9> Unknown9;
+            public List<FloodHint> FloodHints;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public List<GNullBlock> Unknown10;
@@ -3471,7 +3473,7 @@ namespace TagTool.Tags.Definitions
                 public short ReferenceUnknown3;
                 public short ReferenceFrame3;
 
-                public short Unknown1;
+                public short InvalidPoints;
 
                 [TagField(Flags = Padding, Length = 2)]
                 public byte[] Unused;
@@ -3504,8 +3506,9 @@ namespace TagTool.Tags.Definitions
             {
                 public UserHintShortFlags Flags;
                 public short LineSegmentIndex;
-                public short Unknown1;
-                public short Unknown2;
+                public short ForceHoistHeight;
+                [TagField(Flags = Padding, Length = 2)]
+                public byte[] Unused1 = new byte[2];
             }
 
             [TagStructure(Size = 0x10, Align = 0x8)]
@@ -3536,12 +3539,7 @@ namespace TagTool.Tags.Definitions
                     [TagField(Flags = Padding, Length = 2)]
                     public byte[] Unused1 = new byte[2];
 
-                    public RealPoint3d Position;
-
-                    public short ReferenceFrame;
-                    public short SectorIndex;
-
-                    public RealVector2d Normal;
+                    public UserHintSectorPointBlock Point;
                 }
             }
 
@@ -3557,75 +3555,47 @@ namespace TagTool.Tags.Definitions
                 }
             }
 
-            [TagStructure(MaxVersion = CacheVersion.Halo3Retail, Size = 0xC)]
-            [TagStructure(MinVersion = CacheVersion.Halo3ODST, Size = 0x18)]
-            public class UnknownBlock8 : TagStructure
+            [TagStructure(Size = 0x18)]
+            public class GiantHint : TagStructure
 			{
-                [TagField(MinVersion = CacheVersion.Halo3ODST)]
-                public int Unknown;
-                [TagField(MinVersion = CacheVersion.Halo3ODST)]
-                public int Unknown2;
-                [TagField(MinVersion = CacheVersion.Halo3ODST)]
-                public int Unknown3;
+                public List<GiantSectorHint> GiantSectorHints;
+                public List<GiantRailHint> GiantRailHints;
 
-                public List<UnknownBlock> Unknown4;
+                [TagStructure(Size = 0xC)]
+                public class GiantSectorHint : TagStructure
+                {
+                    public List<UserHintSectorPointBlock> Points;
+                }
 
-                [TagStructure(MaxVersion = CacheVersion.Halo3Retail, Size = 0xC)]
-                [TagStructure(MinVersion = CacheVersion.Halo3ODST, Size = 0x28)]
-                public class UnknownBlock : TagStructure
+                [TagStructure(Size = 0x4)]
+                public class GiantRailHint : TagStructure
 				{
-                    [TagField(MaxVersion = CacheVersion.Halo3Retail)]
-                    public List<UnknownBlock2> Unknown;
-
-                    [TagField(MinVersion = CacheVersion.Halo3ODST)]
-                    public int Unknown2;
-                    [TagField(MinVersion = CacheVersion.Halo3ODST)]
-                    public int Unknown3;
-                    [TagField(MinVersion = CacheVersion.Halo3ODST)]
-                    public int Unknown4;
-                    [TagField(MinVersion = CacheVersion.Halo3ODST)]
-                    public int Unknown5;
-                    [TagField(MinVersion = CacheVersion.Halo3ODST)]
-                    public int Unknown6;
-                    [TagField(MinVersion = CacheVersion.Halo3ODST)]
-                    public int Unknown7;
-                    [TagField(MinVersion = CacheVersion.Halo3ODST)]
-                    public int Unknown8;
-                    [TagField(MinVersion = CacheVersion.Halo3ODST)]
-                    public int Unknown9;
-                    [TagField(MinVersion = CacheVersion.Halo3ODST)]
-                    public int Unknown10;
-                    [TagField(MinVersion = CacheVersion.Halo3ODST)]
-                    public int Unknown11;
-
-                    [TagStructure(Size = 0x18)]
-                    public class UnknownBlock2 : TagStructure
-					{
-                        public float Unknown;
-                        public float Unknown2;
-                        public float Unknown3;
-                        public short Unknown4;
-                        public short Unknown5;
-                        public Angle Unknown6;
-                        public Angle Unknown7;
-                    }
+                    public short GeometryIndex;
+                    [TagField(Flags = TagFieldFlags.Padding, Length = 2)]
+                    public byte[] Pad = new byte[2];
                 }
             }
 
-            [TagStructure(MaxVersion = CacheVersion.Halo3Retail, Size = 0x2)]
-            [TagStructure(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Size = 0x4)]
-            [TagStructure(MinVersion = CacheVersion.HaloOnlineED, Size = 0xC)]
-            public class UnknownBlock9 : TagStructure
+            [TagStructure(Size = 0xC)]
+            public class FloodHint : TagStructure
 			{
-                [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
-                public short UnknownH3;
-                [TagField(MinVersion = CacheVersion.Halo3ODST)]
-                public int Unknown1;
-                [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-                public int Unknown2;
-                [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-                public int Unknown3;
+                public List<FloodSectorHint> FloodSectorHints;
+
+                [TagStructure(Size = 0xC)]
+                public class FloodSectorHint : TagStructure
+                {
+                    public List<UserHintSectorPointBlock> Points;
+                }
             }
+        }
+
+        [TagStructure(Size = 0x18)]
+        public class UserHintSectorPointBlock : TagStructure
+        {
+            public RealPoint3d Point;
+            public short ReferenceFrame;
+            public short BspIndex;
+            public RealEulerAngles2d Normal;
         }
 
         [TagStructure(Size = 0x28)]
