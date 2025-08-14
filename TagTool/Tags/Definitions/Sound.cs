@@ -6,9 +6,7 @@ using TagTool.Cache;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "sound", Tag = "snd!", Size = 0x20, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Halo3ODST)]
-	[TagStructure(Name = "sound", Tag = "snd!", Size = 0xD4, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline235640)]
-	[TagStructure(Name = "sound", Tag = "snd!", Size = 0xD8, MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline449175)]
-    [TagStructure(Name = "sound", Tag = "snd!", Size = 0xD4, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "sound", Tag = "snd!", Size = 0xD4, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "sound", Tag = "snd!", Size = 0x24, MinVersion = CacheVersion.HaloReach, BuildType = CacheBuildType.ReleaseBuild)]
     [TagStructure(Name = "sound", Tag = "snd!", Size = 0xE0, MinVersion = CacheVersion.HaloReach, BuildType = CacheBuildType.TagsBuild)]
     public class Sound : TagStructure
@@ -88,9 +86,6 @@ namespace TagTool.Tags.Definitions
 
         [TagField(MaxVersion = CacheVersion.HaloReach)]
         public TagResourceReference Resource;
-
-        [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline449175)]
-        public uint Unknown12;
 
         public TagResourceReference GetResource(CacheVersion version, CachePlatform platform)
         {

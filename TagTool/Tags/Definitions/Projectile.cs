@@ -8,8 +8,8 @@ using static TagTool.Tags.TagFieldFlags;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "projectile", Tag = "proj", Size = 0x1A8, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "projectile", Tag = "proj", Size = 0x1AC, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline604673)]
-    [TagStructure(Name = "projectile", Tag = "proj", Size = 0x1B4, Version = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "projectile", Tag = "proj", Size = 0x1AC, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline235640)]
+    [TagStructure(Name = "projectile", Tag = "proj", Size = 0x1B4, MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "projectile", Tag = "proj", Size = 0x1F8, MinVersion = CacheVersion.HaloReach)]
     public class Projectile : GameObject
     {
@@ -38,9 +38,9 @@ namespace TagTool.Tags.Definitions
         public float MaximumRange; // detonates after traveling this distance (world units)
         public float BounceMaximumRange; // detonates after this distance, but is reset after a bounce. Combines with maximum range
         
-        [TagField(MinVersion = CacheVersion.HaloOnline498295)]
+        [TagField(MinVersion = CacheVersion.HaloOnline301003)]
         public float MaxLatchTimeToDetonate; // projectile will detonate regardless of weapon latching after this total time (seconds)
-        [TagField(MinVersion = CacheVersion.HaloOnline498295)]
+        [TagField(MinVersion = CacheVersion.HaloOnline301003)]
         public float MaxLatchTimeToArm; // projectile will arm itself regardless of detonation mode if latched for this amount of time. (seconds)
         
         public AiSoundVolume DetonationNoiseForAi;
@@ -307,7 +307,8 @@ namespace TagTool.Tags.Definitions
             public enum ProjectileMaterialResponseFlags : ushort
             {
                 None,
-                CannotBeOverpenetrated = 1 << 0
+                CannotBeOverpenetrated = 1 << 0,
+                Bit1 = 1 << 1, // unknown, referenced in later HO builds 
             }
 
             public enum MaterialResponseValue : short

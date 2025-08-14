@@ -14,7 +14,8 @@ namespace TagTool.Tags.Definitions
 
         [TagStructure(Size = 0xB4, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0xD0, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-        [TagStructure(Size = 0xD8, MaxVersion = CacheVersion.HaloOnline449175)]
+        [TagStructure(Size = 0xD8, MaxVersion = CacheVersion.HaloOnline416097)]
+        [TagStructure(Size = 0x100, MinVersion = CacheVersion.HaloOnline430475, MaxVersion = CacheVersion.HaloOnline449175)]
         [TagStructure(Size = 0xD0, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x5C, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x4C, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
@@ -35,10 +36,16 @@ namespace TagTool.Tags.Definitions
             [TagField(MaxVersion = CacheVersion.HaloOnlineED)]
             public List<CustomizedModelCharacter> CustomizableCharacters;
 
-            [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline235640)]
+            [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline449175)]
             public List<CustomizedModelCharacter_HO> SpartanArmorCustomization;
-            [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline235640)]
+            [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline449175)]
             public List<CustomizedModelCharacter_HO> EliteArmorCustomization;
+
+            [TagField(MinVersion = CacheVersion.HaloOnline430475, MaxVersion = CacheVersion.HaloOnline449175)]
+            public List<CustomizedModelCharacter_HO> FemaleSpartanArmorCustomization;
+            [TagField(MinVersion = CacheVersion.HaloOnline430475, MaxVersion = CacheVersion.HaloOnline449175)]
+            public List<CustomizedModelCharacter_HO> FemaleEliteArmorCustomization;
+
             [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             public List<Consumable> Equipment;
             [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
@@ -61,7 +68,7 @@ namespace TagTool.Tags.Definitions
             [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
             public List<GameVariantEquipmentBlock> GameVariantEquipment;
 
-            [TagField(MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.HaloOnline430475, MaxVersion = CacheVersion.HaloOnline700123)]
             public CachedTag UnknownHO;
 
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
@@ -290,8 +297,8 @@ namespace TagTool.Tags.Definitions
                     public float CameraDistanceOffset;
                 }
 
-                [TagStructure(Size = 0x50, MaxVersion = CacheVersion.HaloOnline449175)]
-                [TagStructure(Size = 0x58, MinVersion = CacheVersion.HaloOnline498295)]
+                [TagStructure(Size = 0x50, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
+                [TagStructure(Size = 0x58, MinVersion = CacheVersion.HaloOnline235640)]
                 public class MoveAnimation : TagStructure
 				{
                     [TagField(Flags = Label, Length = 32)]
@@ -309,9 +316,9 @@ namespace TagTool.Tags.Definitions
                     [TagField(Flags = Label, ValidTags = new[] { "weap" })]
                     public CachedTag CustomSecondaryWeapon;
 
-                    [TagField(MinVersion = CacheVersion.HaloOnline498295)]
+                    [TagField(MinVersion = CacheVersion.HaloOnline235640)]
                     public float Unknown2;
-                    [TagField(MinVersion = CacheVersion.HaloOnline498295)]
+                    [TagField(MinVersion = CacheVersion.HaloOnline235640)]
                     public float Unknown3;
                 }
 
@@ -469,8 +476,8 @@ namespace TagTool.Tags.Definitions
 
             [TagStructure(Size = 0x104, MaxVersion = CacheVersion.Halo3Retail)]
             [TagStructure(Size = 0x108, MaxVersion = CacheVersion.Halo3ODST)]
-            [TagStructure(Size = 0x10C, MaxVersion = CacheVersion.HaloOnline449175)]
-            [TagStructure(Size = 0x20C, MinVersion = CacheVersion.HaloOnline498295)]
+            [TagStructure(Size = 0x10C, MaxVersion = CacheVersion.HaloOnline327043)]
+            [TagStructure(Size = 0x20C, MinVersion = CacheVersion.HaloOnline372731)]
             public class EventBlock : TagStructure
             {
                 public GameEngineEventFlags Flags;
@@ -482,7 +489,7 @@ namespace TagTool.Tags.Definitions
                 [TagField(Flags = Label, MinVersion = CacheVersion.Halo3ODST)]
                 public StringId Event;
 
-                [TagField(Length = 256, MinVersion = CacheVersion.HaloOnline498295)]
+                [TagField(Length = 256, MinVersion = CacheVersion.HaloOnline372731)]
                 public string Unknown1;
 
                 public AudienceValue Audience;

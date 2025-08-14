@@ -303,9 +303,9 @@ namespace TagTool.Commands.Scenarios
                 CameraFxIndex = -1,
                 BackgroundSoundEnvironmentIndex = -1,
                 AcousticsSoundClusterIndex = 0,
-                Unknown3 = -1,
-                Unknown4 = -1,
-                Unknown5 = -1,
+                BackgroundSound = -1,
+                SoundEnvironment = -1,
+                Weather = -1,
                 RuntimeDecalStartIndex = -1,
                 MeshIndex = 0,
             });

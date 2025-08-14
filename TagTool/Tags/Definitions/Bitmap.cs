@@ -111,6 +111,11 @@ namespace TagTool.Tags.Definitions
             InterfaceSprite,
             InterfaceGradient,
 
+            [TagEnumMember(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+            ScaleformSprite,
+            [TagEnumMember(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+            ScaleformGradient,
+
             [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
             MaterialMap,
             [TagEnumMember(MinVersion = CacheVersion.HaloReach)]

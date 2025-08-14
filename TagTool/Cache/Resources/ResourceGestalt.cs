@@ -6,8 +6,8 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.Cache.Resources
 {
-    [TagStructure(Name = "cache_file_resource_gestalt", Tag = "zone", Size = 0x17C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline498295)]
-    [TagStructure(Name = "cache_file_resource_gestalt", Tag = "zone", Size = 0x170, MinVersion = CacheVersion.HaloOnline530605, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "cache_file_resource_gestalt", Tag = "zone", Size = 0x17C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline449175)]
+    [TagStructure(Name = "cache_file_resource_gestalt", Tag = "zone", Size = 0x170, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "cache_file_resource_gestalt", Tag = "zone", Size = 0x228, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "cache_file_resource_gestalt", Tag = "zone", Size = 0x220, Version = CacheVersion.HaloReach11883, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "cache_file_resource_gestalt", Tag = "zone", Size = 0x214, MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
@@ -37,18 +37,19 @@ namespace TagTool.Cache.Resources
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<ResourceData> TagResources;
 
-        [TagField(MinVersion = CacheVersion.HaloOnline530605, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<TagResourceData> TagResourceTable;
 
-        [TagField(MinVersion = CacheVersion.HaloOnline530605, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public uint ResourcesSize;
-        [TagField(MinVersion = CacheVersion.HaloOnline530605, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public uint ResourcesAvailable;
 
         public List<ZoneManifest> DesignerZoneManifests;
         public List<ZoneManifest> GlobalZoneManifests;
 
         [TagField(MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline449175)]
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<ZoneManifest> HsZoneManifests;
 
@@ -158,15 +159,16 @@ namespace TagTool.Cache.Resources
             public StringId Name;
         }
 
-        [TagStructure(Size = 0x6C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline498295)]
-        [TagStructure(Size = 0x70, MinVersion = CacheVersion.HaloOnline530605, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x6C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
+        [TagStructure(Size = 0x70, MinVersion = CacheVersion.HaloOnline235640, MaxVersion = CacheVersion.HaloOnline700123)]
         public class TagResourceData : TagStructure
         {
             public ResourcePage FileLocation;
             public ResourceData RuntimeData;
         }
 
-        [TagStructure(Size = 0x60, MinVersion = CacheVersion.HaloOnline530605, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x5C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline449175)]
+        [TagStructure(Size = 0x60, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x78, MaxVersion = CacheVersion.Halo3ODST)]
         [TagStructure(Size = 0xA0, MinVersion = CacheVersion.HaloReach)]
         public class ZoneManifest : TagStructure
@@ -183,12 +185,14 @@ namespace TagTool.Cache.Resources
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public TagBlockBitVector StreamedResourceBits;
 
-            [TagField(MinVersion = CacheVersion.HaloOnline530605, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
             public uint RequiredPageableSize;
-            [TagField(MinVersion = CacheVersion.HaloOnline530605, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
+
             public uint OptionalMemorySize;
 
             [TagField(MaxVersion = CacheVersion.Halo3ODST)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline449175)]
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public ZoneResourceUsage OverallUsage;
 
@@ -210,15 +214,15 @@ namespace TagTool.Cache.Resources
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public List<ZoneResourceVisitNode> AttachmentHeirarchy;
 
-            [TagField(MinVersion = CacheVersion.HaloOnline530605, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
             public List<ZoneResourceZonesetObjects> ZonesetObjects;
 
             // These could be some of the reach masks - MtnDewIt
-            [TagField(MinVersion = CacheVersion.HaloOnline530605, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             public uint Unknown1;
-            [TagField(MinVersion = CacheVersion.HaloOnline530605, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             public uint Unknown2;
-            [TagField(MinVersion = CacheVersion.HaloOnline530605, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             public uint Unknown3;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -250,7 +254,7 @@ namespace TagTool.Cache.Resources
                 }
             }
 
-            [TagStructure(Size = 0x1C, MinVersion = CacheVersion.HaloOnline530605, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagStructure(Size = 0x1C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             public class ZoneResourceZonesetObjects : TagStructure
             {
                 public CachedTag Object;
@@ -366,7 +370,8 @@ namespace TagTool.Cache.Resources
             }
         }
 
-        [TagStructure(Size = 0xC, MinVersion = CacheVersion.HaloOnline530605, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x10, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline449175)]
+        [TagStructure(Size = 0xC, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x14, MaxVersion = CacheVersion.Halo3ODST)]
         [TagStructure(Size = 0x18, MinVersion = CacheVersion.HaloReach)]
         public class ZoneResourceUsage : TagStructure
@@ -379,6 +384,7 @@ namespace TagTool.Cache.Resources
             public uint OptionalMemorySize;
 
             [TagField(MaxVersion = CacheVersion.Halo3ODST)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline449175)]
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public uint StreamedSize;
 
@@ -401,7 +407,8 @@ namespace TagTool.Cache.Resources
             }
         }
 
-        [TagStructure(Size = 0x90, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x74, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline449175)]
+        [TagStructure(Size = 0x90, MinVersion = CacheVersion.HaloOnline454665, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0xAC, MinVersion = CacheVersion.HaloReach)]
         public class DebugZoneManifest : TagStructure
         {

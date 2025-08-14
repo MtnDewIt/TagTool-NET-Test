@@ -332,8 +332,6 @@ namespace TagTool.Commands.Sounds
 
             Definition.ExtraInfo = new List<ExtraInfo>();
 
-            Definition.Unknown12 = 0;
-
             ImportSoundResource(soundDataAggregate.ToArray());
 
             return true;

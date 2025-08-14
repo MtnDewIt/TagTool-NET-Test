@@ -393,8 +393,6 @@ namespace TagTool.Porting.Gen3
             // Prepare resource
             //
 
-            sound.Unknown12 = 0;
-
             result.Data = soundDataAggregate.ToArray();
             return result;
         }

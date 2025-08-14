@@ -591,23 +591,35 @@ namespace TagTool.Serialization
         /// <returns>The deserialized tag reference.</returns>
         public CachedTag DeserializeTagReference(EndianReader reader, ISerializationContext context, TagFieldAttribute valueInfo)
         {
-            if (valueInfo == null || (valueInfo.Flags & Short) == 0)
-                reader.BaseStream.Position += (!CacheVersionDetection.IsInGen(CacheGeneration.Second, Version) ? 0xC : 0x4); // Skip the class name and zero bytes, it's not important
-            
-            var result = context.GetTagByIndex(reader.ReadInt32());
+            Tag group = Tag.Null;
 
-            if (result != null && valueInfo != null && valueInfo.ValidTags != null)
+            if (valueInfo == null || (valueInfo.Flags & Short) == 0) 
             {
-                if(!valueInfo.ValidTags.Any(x => result.IsInGroup(x)))
-                {
-                    var groups = string.Join(", ", valueInfo.ValidTags);
-                    Log.Warning($"Tag reference with invalid group found during deserialization:"
-                        + $"\n - { result.Name }.{ result.Group.Tag}" 
-                        + $"\n - valid groups: {groups}");
-                }
+                group = reader.ReadTag();
+
+                if (!CacheVersionDetection.IsInGen(CacheGeneration.Second, Version))
+                    reader.BaseStream.Position += 0x8;
             }
 
-            return result;
+            var result = context.GetTagByIndex(reader.ReadInt32());
+
+            if (group != Tag.Null && group.Value != 0)
+            {
+                if (result != null && valueInfo != null && valueInfo.ValidTags != null)
+                {
+                    if(!valueInfo.ValidTags.Any(x => result.IsInGroup(x)))
+                    {
+                        var groups = string.Join(", ", valueInfo.ValidTags);
+                        Log.Warning($"Tag reference with invalid group found during deserialization:"
+                            + $"\n - { result.Name }.{ result.Group.Tag}"
+                            + $"\n - valid groups: {groups}");
+                    }
+                }
+
+                return result;
+            }
+
+            return null;
         }
 
         /// <summary>

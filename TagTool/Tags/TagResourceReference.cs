@@ -26,7 +26,7 @@ namespace TagTool.Tags
         public PageableResource HaloOnlinePageableResource;
 
         [TagField(MinVersion = CacheVersion.Halo3Beta)]
-        public int Unused;
+        public int DefinitionAddress;
 
         // TODO: consider making storing in the existing PageableResource field
         [TagField(Flags = TagFieldFlags.Runtime)]

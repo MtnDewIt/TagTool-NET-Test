@@ -196,19 +196,21 @@ namespace TagTool.Tags.Definitions
             [TagField(Length = 0x3, Flags = Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
             public byte[] Padding0;
 
-            [TagField(MinVersion = CacheVersion.HaloOnline700123, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
-            public StringId SkinName;
-
             [TagField(Length = 16)]
             public sbyte[] ModelRegionIndices = new sbyte[16];
+
+            [TagField(MinVersion = CacheVersion.HaloOnline700123, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
+            public StringId SkinName;
 
             public List<Region> Regions;
             public List<Object> Objects;
 
             public int InstanceGroupIndex;
 
-            [TagField(Length = 0x8, Flags = Padding, Platform = CachePlatform.Original)]
-            [TagField(Length = 0x8, Flags = Padding, Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach)]
+            [TagField(Length = 0x8, Flags = Padding, MaxVersion = CacheVersion.HaloOnline604673, Platform = CachePlatform.Original)]
+            [TagField(Length = 0x4, Flags = Padding, MinVersion = CacheVersion.HaloOnline700123, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
+            [TagField(Length = 0x8, Flags = Padding, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
+            [TagField(Length = 0x8, Flags = Padding, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
             public byte[] Padding1;
 
             [TagStructure(Size = 0x18, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]

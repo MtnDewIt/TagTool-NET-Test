@@ -4,142 +4,197 @@ using System.Collections.Generic;
 
 namespace TagTool.Tags.Definitions
 {
-    // TODO: Update this for cert_ms30_oct19
     [TagStructure(Name = "texture_render_list", Tag = "trdf", Size = 0x48, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline235640)]
-    [TagStructure(Name = "texture_render_list", Tag = "trdf", Size = 0x3C, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline604673)]
-    //[TagStructure(Name = "texture_render_list", Tag = "trdf", Size = 0x60, MinVersion = CacheVersion.HaloOnline700123, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "texture_render_list", Tag = "trdf", Size = 0x3C, MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline604673)]
+    [TagStructure(Name = "texture_render_list", Tag = "trdf", Size = 0x60, MinVersion = CacheVersion.HaloOnline700123, MaxVersion = CacheVersion.HaloOnline700123)]
     public class TextureRenderList : TagStructure
 	{
-        public List<Bitmap> Bitmaps;
-        public List<Light> Lights;
-        public List<Bink> Binks;
-        public List<Mannequin> Mannequins;
-        public List<Weapon> Weapons;
+        public List<TextureRenderBitmap> Bitmaps;
+        public List<TextureRenderLight> Lights;
+        [TagField(MinVersion = CacheVersion.HaloOnline700123)]
+        public List<TextureRenderUnknown1> Unknown1;
+        [TagField(MinVersion = CacheVersion.HaloOnline700123)]
+        public List<TextureRenderUnknown2> Unknown2;
+        [TagField(MinVersion = CacheVersion.HaloOnline700123)]
+        public List<TextureRenderUnknown3> Unknown3;
+        public List<TextureRenderVideo> Videos;
+        public List<TextureRenderMannequin> Mannequins;
+        public List<TextureRenderWeapon> Weapons;
         [TagField(MaxVersion = CacheVersion.HaloOnline235640)]
-        public uint Unknown;
+        public uint Unknown4;
         [TagField(MaxVersion = CacheVersion.HaloOnline235640)]
-        public uint Unknown2;
+        public uint Unknown5;
         [TagField(MaxVersion = CacheVersion.HaloOnline235640)]
-        public uint Unknown3;
+        public uint Unknown6;
 
-        [TagStructure(Size = 0x110)]
-        public class Bitmap : TagStructure
+        [TagStructure(Size = 0x110, MaxVersion = CacheVersion.HaloOnline604673)]
+        [TagStructure(Size = 0x108, MinVersion = CacheVersion.HaloOnline700123)]
+        public class TextureRenderBitmap : TagStructure
 		{
+            [TagField(MaxVersion = CacheVersion.HaloOnline604673)]
             public int Index;
-            [TagField(Length = 256)] public string Filename;
+            [TagField(Length = 256)] 
+            public string Filename;
+            [TagField(MaxVersion = CacheVersion.HaloOnline604673)]
             public int Unknown;
             public int Width;
             public int Height;
         }
 
         [TagStructure(Size = 0x1C, MaxVersion = CacheVersion.HaloOnline604673)]
-        [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloOnline700123)]
-        public class Light : TagStructure
+        [TagStructure(Size = 0x3C, MinVersion = CacheVersion.HaloOnline700123)]
+        public class TextureRenderLight : TagStructure
 		{
-            [TagField(MaxVersion = CacheVersion.HaloOnline604673)]
-            public List<UnknownBlock> Unknown;
+            public List<TextureRenderLightInstance> LightInstances;
 
-            [TagField(MinVersion = CacheVersion.HaloOnline700123)]
-            public uint U1;
-            [TagField(MinVersion = CacheVersion.HaloOnline700123)]
-            public uint U2;
-            [TagField(MinVersion = CacheVersion.HaloOnline700123)]
-            public uint U3;
+            public RealRgbColor Color;
+            public float Intensity;
 
-            public float Unknown2;
-            public float Unknown3;
-            public float Unknown4;
-            public float Unknown5;
+            [TagField(Length = 32, MinVersion = CacheVersion.HaloOnline700123)]
+            public string Name;
 
             [TagStructure(Size = 0x28)]
-            public class UnknownBlock : TagStructure
+            public class TextureRenderLightInstance : TagStructure
 			{
-                public float Unknown;
-                public float Unknown2;
-                public float Unknown3;
-                public Angle Unknown4;
-                public Angle Unknown5;
-                public Angle Unknown6;
+                public RealPoint3d Position;
+                public RealEulerAngles3d Orientation;
                 public CachedTag Light;
             }
         }
 
-        [TagStructure(Size = 0x30)]
-        public class Bink : TagStructure
-		{
-            [TagField(Length = 32)] public string Name;
-            public CachedTag Bink2;
+        [TagStructure(Size = 0x34, MinVersion = CacheVersion.HaloOnline700123)]
+        public class TextureRenderUnknown1 : TagStructure 
+        {
+            public int Unknown1;
+            public RealPoint3d Unknown2;
+            public RealPoint3d Unknown3;
+            public RealPoint3d Unknown4;
+            public RealPoint3d Unknown5;
         }
 
-        [TagStructure(Size = 0x4C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline235640)]
-        [TagStructure(Size = 0x5C, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline604673)]
-        public class Mannequin : TagStructure
-		{
-            public int Unknown;
-            [TagField(MinVersion = CacheVersion.HaloOnline498295)]
+        [TagStructure(Size = 0x24, MinVersion = CacheVersion.HaloOnline700123)]
+        public class TextureRenderUnknown2 : TagStructure
+        {
+            public int Unknown1;
+            public float Unknown2;
+            public RealEulerAngles3d Unknown3;
+            public int Unknown4;
+            public int Unknown5;
+            public int Unknown6;
+            public int Unknown7;
+        }
+
+        [TagStructure(Size = 0x30, MinVersion = CacheVersion.HaloOnline700123)]
+        public class TextureRenderUnknown3 : TagStructure
+        {
+            [TagField(Length = 32)]
+            public string Name;
+            public int Unknown1;
             public int Unknown2;
+            public int Unknown3;
+            public int Unknown4;
+        }
+
+        [TagStructure(Size = 0x30)]
+        public class TextureRenderVideo : TagStructure
+		{
+            [TagField(Length = 32)] 
+            public string Name;
+            public CachedTag BinkVideo;
+        }
+
+        [TagStructure(Size = 0x4C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
+        [TagStructure(Size = 0x5C, MinVersion = CacheVersion.HaloOnline235640, MaxVersion = CacheVersion.HaloOnline604673)]
+        [TagStructure(Size = 0x20, MinVersion = CacheVersion.HaloOnline700123)]
+        public class TextureRenderMannequin : TagStructure
+		{
+            [TagField(MaxVersion = CacheVersion.HaloOnline604673)]
+            public int BitmapBlockIndex;
+            [TagField(MinVersion = CacheVersion.HaloOnline235640, MaxVersion = CacheVersion.HaloOnline604673)]
+            public int Unknown1;
             public CachedTag Biped;
-            [TagField(MinVersion = CacheVersion.HaloOnline498295)]
+            [TagField(MinVersion = CacheVersion.HaloOnline235640, MaxVersion = CacheVersion.HaloOnline604673)]
             public CachedTag Animation;
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline235640)]
-            public float Unknown3;
+            [TagField(MinVersion = CacheVersion.HaloOnline700123, MaxVersion = CacheVersion.HaloOnline700123)]
+            public int Unknown2;
 
-            public float Unknown4;
-            public float Unknown5;
-            public float Unknown6;
-            public float Unknown7;
-            public float Unknown8;
-            public float Unknown9;
-            public float Unknown10;
-            public float Unknown11;
-            public float Unknown12;
-            public float Unknown13;
-            public float Unknown14;
-            public float Unknown15;
-            public float Unknown16;
+            [TagField(MinVersion = CacheVersion.HaloOnline700123, MaxVersion = CacheVersion.HaloOnline700123)]
+            public List<TextureRenderAnimation> Animations;
+
+            [TagField(MaxVersion = CacheVersion.HaloOnline106708)]
+            public MannequinFlags Flags;
+
+            [TagField(Length = 0x3, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline106708)]
+            public byte[] Padding;
+
+            [TagField(MaxVersion = CacheVersion.HaloOnline604673)]
+            public RealVector3d Unknown3;
+            [TagField(MaxVersion = CacheVersion.HaloOnline604673)]
+            public RealVector3d Unknown4;
+            [TagField(MaxVersion = CacheVersion.HaloOnline604673)]
+            public RealVector3d Unknown5;
+            [TagField(MaxVersion = CacheVersion.HaloOnline604673)]
+            public RealVector3d Unknown6;
+            [TagField(MaxVersion = CacheVersion.HaloOnline604673)]
+            public float FieldOfView;
+
+            public enum MannequinFlags : byte 
+            {
+                None = 0,
+                Bit1 = 1 << 0,
+            }
         }
 
         [TagStructure(Size = 0x64, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline235640)]
+        [TagStructure(Size = 0x84, MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline449175)]
         [TagStructure(Size = 0x94, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline604673)]
-        public class Weapon : TagStructure
+        [TagStructure(Size = 0x40, MinVersion = CacheVersion.HaloOnline700123)]
+        public class TextureRenderWeapon : TagStructure
 		{
             [TagField(Length = 32)]
             public string Name;
-            [TagField(Length = 32, MinVersion = CacheVersion.HaloOnline498295)]
-            public string Name2;
-            [TagField(MaxVersion = CacheVersion.HaloOnline235640)]
-            public CachedTag Weapon2;
-            public float Unknown1;
-            public float Unknown2;
-            public float Unknown3;
-            public float Unknown4;
-            public float Unknown5;
-            public float Unknown6;
-            public float Unknown7;
-            public float Unknown8;
-            public float Unknown9;
-            public float Unknown10;
-            public float Unknown11;
-            public float Unknown12;
-            public float Unknown13;
+            [TagField(Length = 32, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline604673)]
+            public string Unknown1;
 
-            [TagField(MinVersion = CacheVersion.HaloOnline498295)]
-            public int Unknown14;
-            [TagField(MinVersion = CacheVersion.HaloOnline498295)]
-            public Angle UnknownAngle1;
-            [TagField(MinVersion = CacheVersion.HaloOnline498295)]
-            public Angle UnknownAngle2;
-            [TagField(MinVersion = CacheVersion.HaloOnline498295)]
-            public Angle UnknownAngle3;
-            [TagField(MinVersion = CacheVersion.HaloOnline498295)]
-            public float Unknown15;
-            [TagField(MinVersion = CacheVersion.HaloOnline498295)]
-            public float Unknown16;
-            [TagField(MinVersion = CacheVersion.HaloOnline498295)]
-            public float Unknown17;
-            [TagField(MinVersion = CacheVersion.HaloOnline498295)]
-            public float Unknown18;
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline449175)]
+            [TagField(MinVersion = CacheVersion.HaloOnline700123)]
+            public CachedTag Weapon;
+
+            [TagField(MinVersion = CacheVersion.HaloOnline700123)]
+            public int Unknown2;
+
+            [TagField(MinVersion = CacheVersion.HaloOnline700123)]
+            public List<TextureRenderAnimation> Animations;
+
+            [TagField(MaxVersion = CacheVersion.HaloOnline604673)]
+            public RealVector3d Unknown3;
+            [TagField(MaxVersion = CacheVersion.HaloOnline604673)]
+            public RealVector3d Unknown4;
+            [TagField(MaxVersion = CacheVersion.HaloOnline604673)]
+            public RealVector3d Unknown5;
+            [TagField(MaxVersion = CacheVersion.HaloOnline604673)]
+            public RealVector3d Unknown6;
+            [TagField(MaxVersion = CacheVersion.HaloOnline604673)]
+            public float FieldOfView;
+
+            [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline604673)]
+            public int Unknown7;
+            [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline604673)]
+            public RealEulerAngles3d Unknown8;
+            [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline604673)]
+            public RealPoint3d Unknown9;
+            [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline604673)]
+            public float Unknown10;
+        }
+
+        [TagStructure(Size = 0x34)]
+        public class TextureRenderAnimation : TagStructure
+        {
+            [TagField(Length = 32)]
+            public string Name;
+            public int Unknown1;
+            public CachedTag Animation;
         }
     }
 }

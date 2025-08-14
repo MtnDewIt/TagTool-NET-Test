@@ -10,7 +10,9 @@ namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "object", Tag = "obje", Size = 0xF8, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
     [TagStructure(Name = "object", Tag = "obje", Size = 0x104, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-    [TagStructure(Name = "object", Tag = "obje", Size = 0x120, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "object", Tag = "obje", Size = 0x120, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline416097)]
+    [TagStructure(Name = "object", Tag = "obje", Size = 0x130, MinVersion = CacheVersion.HaloOnline430475, MaxVersion = CacheVersion.HaloOnline449175)]
+    [TagStructure(Name = "object", Tag = "obje", Size = 0x120, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "object", Tag = "obje", Size = 0x178, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
     [TagStructure(Name = "object", Tag = "obje", Size = 0xF8, Version = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "object", Tag = "obje", Size = 0x108, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
@@ -59,7 +61,8 @@ namespace TagTool.Tags.Definitions
         [TagField(ValidTags = new[] { "hlmt" })]
         public CachedTag Model;
 
-        [TagField(ValidTags = new[] { "bloc" }, MaxVersion = CacheVersion.HaloOnline416097)]
+        [TagField(ValidTags = new[] { "bloc" }, MaxVersion = CacheVersion.HaloOnlineED)]
+        [TagField(ValidTags = new[] { "bloc", "bipd" }, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline449175)]
         [TagField(ValidTags = new[] { "bloc" }, MinVersion = CacheVersion.HaloReach)]
         public CachedTag CrateObject;
 
@@ -118,7 +121,7 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.Halo3Retail)]
         public List<MultiplayerObjectBlock> MultiplayerObject;
 
-        [TagField(MinVersion = CacheVersion.HaloOnline498295)]
+        [TagField(MinVersion = CacheVersion.HaloOnline430475)]
         public CachedTag SimulationInterpolation;
 
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]

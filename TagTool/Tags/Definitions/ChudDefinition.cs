@@ -115,7 +115,7 @@ namespace TagTool.Tags.Definitions
                 [TagField(EnumType = typeof(uint), Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
                 public SkullStateFlags SkullState;
 
-                [TagField(Flags = Padding, Length = 0x4, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+                [TagField(Length = 0x4, Flags = Padding, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
                 public byte[] Padding1;
 
                 [TagField(EnumType = typeof(ushort), MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
@@ -137,7 +137,7 @@ namespace TagTool.Tags.Definitions
                 [TagField(Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
                 public PDAStateFlags PDAStateMCC;
 
-                [TagField(Flags = Padding, Length = 0x2, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(Length = 0x2, Flags = Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
                 public byte[] Padding2;
 
                 //UNIT
@@ -154,19 +154,17 @@ namespace TagTool.Tags.Definitions
                 [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public UnitArmedStateFlags UnitArmedState;
 
-                [TagField(Flags = Padding, Length = 0x2, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline604673)]
+                [TagField(Length = 0x2, Flags = Padding, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline235640)]
                 public byte[] Unknown3;
 
-                [TagField(Version = CacheVersion.HaloOnline700123)]
-                public UnknownStateFlagsMS30 UnknownStateMS30; // This might be in all HO builds, but only MS30 has non zero values
+                [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123)]
+                public UnitUnknownState1Flags UnitUnknownState1;
 
                 [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public UnitMiscStateFlags UnitMiscState;
 
-                //UNIT
-
                 [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-                public UnknownStateFlags UnknownState;
+                public UnitUnknownState2Flags UnitUnknownState2;
 
                 //WEAPON
 
@@ -635,7 +633,7 @@ namespace TagTool.Tags.Definitions
                 }
 
                 [Flags]
-                public enum UnknownStateFlagsMS30 : ushort 
+                public enum UnitUnknownState1Flags : ushort 
                 {
                     None = 0,
                     Bit0 = 1 << 0,
@@ -666,7 +664,7 @@ namespace TagTool.Tags.Definitions
                 }
 
                 [Flags]
-                public enum UnknownStateFlags : ushort
+                public enum UnitUnknownState2Flags : ushort
                 {
                     None = 0,
                     Bit0 = 1 << 0,
