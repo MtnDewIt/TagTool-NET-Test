@@ -287,9 +287,6 @@ namespace TagTool.Porting.Gen3
                             }
                         };
                     }
-
-                    foreach (var block in pathfindingdata.Unknown9)
-                        block.Unknown1 = block.UnknownH3;
                 }
 
                 var zoneAreaSectors = new List<List<List<(short, short)>>>();
