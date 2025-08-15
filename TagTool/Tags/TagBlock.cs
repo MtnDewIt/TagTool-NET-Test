@@ -9,7 +9,7 @@ namespace TagTool.Tags
     {
         public int Count => Elements.Count;
         public List<T> Elements;
-        public CacheAddressType AddressType = CacheAddressType.Definition;
+        public CacheAddressType AddressType = CacheAddressType.Data;
         
         public TagBlock()
         {
