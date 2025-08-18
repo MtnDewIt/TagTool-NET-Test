@@ -2,12 +2,11 @@ using TagTool.Cache;
 using TagTool.Common;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Tags.Definitions.Gen4
 {
-    [TagStructure(Name = "object", Tag = "obje", Size = 0x204)]
+    [TagStructure(Name = "object", Tag = "obje", Size = 0x204, Platform = CachePlatform.Original)]
+    [TagStructure(Name = "object", Tag = "obje", Size = 0x1D4, Platform = CachePlatform.MCC)]
     public class GameObject : TagStructure
     {
         public short RuntimeObjectType;
@@ -31,10 +30,11 @@ namespace TagTool.Tags.Definitions.Gen4
         public float DynamicLightSphereRadius;
         // only used if radius not 0
         public RealPoint3d DynamicLightSphereOffset;
+        [TagField(Platform = CachePlatform.Original)]
         public StringId GenericHudText;
-        [TagField(ValidTags = new [] { "unic" })]
+        [TagField(ValidTags = new [] { "unic" }, Platform = CachePlatform.Original)]
         public CachedTag GenericNameList;
-        [TagField(ValidTags = new [] { "unic" })]
+        [TagField(ValidTags = new [] { "unic" }, Platform = CachePlatform.Original)]
         public CachedTag GenericServiceTagList;
         public List<Sidecarblock> SourceSidecar;
         public StringId DefaultModelVariant;
@@ -67,6 +67,7 @@ namespace TagTool.Tags.Definitions.Gen4
         public List<JetwashDefinitionBlock> Jetwash;
         public List<ObjectWidgetBlock> Widgets;
         public List<ObjectChangeColors> ChangeColors;
+        [TagField(Platform = CachePlatform.Original)]
         public List<GNullBlock> PredictedResources;
         public List<MultiplayerObjectBlock> MultiplayerObject;
         // Set to a specific interpolation definition, or leave blank to inherit the default for the object type (there are
