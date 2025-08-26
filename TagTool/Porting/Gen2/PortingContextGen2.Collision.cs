@@ -53,7 +53,6 @@ namespace TagTool.Porting.Gen2
 					// Convert Bsp Physics
 					for (int i = 0; i < gen2Permutation.BspPhysics.Count; i++)
 					{
-                        Log.Warning("WRITING BSPPHYSICS");
 						permutation.BspMoppCodes = ConvertH2MOPP(gen2Permutation.BspPhysics[i].MoppCodes);
 						permutation.BspPhysics.Add(ConvertCollisionBspPhysics(gen2Permutation.BspPhysics[i]));
 					}

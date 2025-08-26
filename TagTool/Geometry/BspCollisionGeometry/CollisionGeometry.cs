@@ -183,7 +183,7 @@ namespace TagTool.Geometry.BspCollisionGeometry
         public short BreakableSurfaceSet;
 
         [TagField(MaxVersion = CacheVersion.Halo2PC)]
-        public byte BreakableSurfaceIndex_H2;
+        public sbyte BreakableSurfaceIndex_H2;
         [TagField(MinVersion = CacheVersion.Halo3Retail)]
         public short BreakableSurfaceIndex;
 
