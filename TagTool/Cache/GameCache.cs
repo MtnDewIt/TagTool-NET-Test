@@ -89,6 +89,7 @@ namespace TagTool.Cache
 
                 case CacheVersion.HaloOnlineED:
                 case CacheVersion.HaloOnline106708:
+                case CacheVersion.HaloOnline155080:
                 case CacheVersion.HaloOnline235640:
                 case CacheVersion.HaloOnline301003:
                 case CacheVersion.HaloOnline327043:

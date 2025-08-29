@@ -46,7 +46,7 @@ namespace TagTool.Cache
 
         public LastModificationDate CreationDate;
 
-        [TagField(Length = (int)CacheFileSharedFileTypeMS23.Count, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
+        [TagField(Length = (int)CacheFileSharedFileTypeMS23.Count, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline155080)]
         [TagField(Length = (int)CacheFileSharedFileTypeHO.Count, MinVersion = CacheVersion.HaloOnline235640)]
         public SharedModificationDate[] SharedCreationDate;
 
@@ -97,7 +97,7 @@ namespace TagTool.Cache
 
         public int CacheFileResourceGestaltIndex;
 
-        [TagField(Length = 0x594, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708, Flags = TagFieldFlags.Padding)]
+        [TagField(Length = 0x594, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline155080, Flags = TagFieldFlags.Padding)]
         [TagField(Length = 0x584, MinVersion = CacheVersion.HaloOnline235640, Flags = TagFieldFlags.Padding)]
         public byte[] Padding2;
 
