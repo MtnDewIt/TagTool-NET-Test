@@ -26,8 +26,8 @@ namespace System.IO
         public static Half ReadHalf(this BinaryReader reader) =>
             BitConverter.UInt16BitsToHalf(reader.ReadUInt16());
 
-        public static Point2d ReadPoint2d(this BinaryReader reader) =>
-            new Point2d(reader.ReadInt16(), reader.ReadInt16());
+        public static Int16Point2d ReadPoint2d(this BinaryReader reader) =>
+            new Int16Point2d(reader.ReadInt16(), reader.ReadInt16());
 
         public static Rectangle2d ReadRectangle2d(this BinaryReader reader) =>
             new Rectangle2d(reader.ReadInt16(), reader.ReadInt16(), reader.ReadInt16(), reader.ReadInt16());

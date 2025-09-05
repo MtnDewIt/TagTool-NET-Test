@@ -52,7 +52,7 @@ namespace Sytem.IO
             writer.Write(BitConverter.HalfToUInt16Bits(value), format);
         }
 
-        public static void Write(this BinaryWriter writer, Point2d value, EndianFormat format = EndianFormat.LittleEndian)
+        public static void Write(this BinaryWriter writer, Int16Point2d value, EndianFormat format = EndianFormat.LittleEndian)
         {
             writer.Write(value.X, format);
             writer.Write(value.Y, format);

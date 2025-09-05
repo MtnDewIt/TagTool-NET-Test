@@ -179,7 +179,7 @@ namespace TagTool.Tags
 				case TypeCode.Object when type == typeof(CachedTag) && attr.Flags.HasFlag(Short):
                 //case TypeCode.Object when type == typeof(RgbColor):
                 case TypeCode.Object when type == typeof(ArgbColor):
-                case TypeCode.Object when type == typeof(Point2d):
+                case TypeCode.Object when type == typeof(Int16Point2d):
 				case TypeCode.Object when type == typeof(StringId):
 				case TypeCode.Object when type == typeof(Angle):
 				case TypeCode.Object when type == typeof(ComputeShaderReference):

@@ -34,9 +34,9 @@ namespace TagTool.Tags.Definitions.Gen2
             public sbyte QuarterscreenSequenceIndex;
             [TagField(Length = 0x1, Flags = TagFieldFlags.Padding)]
             public byte[] Padding;
-            public Point2d FullscreenOffset;
-            public Point2d HalfscreenOffset;
-            public Point2d QuarterscreenOffset;
+            public Int16Point2d FullscreenOffset;
+            public Int16Point2d HalfscreenOffset;
+            public Int16Point2d QuarterscreenOffset;
             public RealPoint2d FullscreenRegistrationPoint;
             public RealPoint2d HalfscreenRegistrationPoint;
             public RealPoint2d QuarterscreenRegistrationPoint;
@@ -758,9 +758,9 @@ namespace TagTool.Tags.Definitions.Gen2
             public float FullscreenScale;
             public float HalfscreenScale;
             public float QuarterscreenScale;
-            public Point2d FullscreenOffset;
-            public Point2d HalfscreenOffset;
-            public Point2d QuarterscreenOffset;
+            public Int16Point2d FullscreenOffset;
+            public Int16Point2d HalfscreenOffset;
+            public Int16Point2d QuarterscreenOffset;
             public List<HudWidgetEffectBlock> Effect;
             
             [TagStructure(Size = 0x4)]
@@ -1507,9 +1507,9 @@ namespace TagTool.Tags.Definitions.Gen2
             public sbyte QuarterscreenSequenceIndex;
             [TagField(Length = 0x1, Flags = TagFieldFlags.Padding)]
             public byte[] Padding;
-            public Point2d FullscreenOffset;
-            public Point2d HalfscreenOffset;
-            public Point2d QuarterscreenOffset;
+            public Int16Point2d FullscreenOffset;
+            public Int16Point2d HalfscreenOffset;
+            public Int16Point2d QuarterscreenOffset;
             
             [TagStructure(Size = 0x4)]
             public class HudWidgetInputsStructBlock : TagStructure

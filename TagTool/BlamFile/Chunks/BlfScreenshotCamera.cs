@@ -46,7 +46,7 @@ namespace TagTool.BlamFile.Chunks
                 public float FieldOfViewScale;
                 public Rectangle2d WindowPixelBounds;
                 public Rectangle2d WindowTitleSafePixelBounds;
-                public Point2d WindowFinalLocation;
+                public Int16Point2d WindowFinalLocation;
                 public Rectangle2d RenderPixelBounds;
                 public Rectangle2d RenderTitleSafePixelBounds;
                 public Rectangle2d DisplayPixelBounds;

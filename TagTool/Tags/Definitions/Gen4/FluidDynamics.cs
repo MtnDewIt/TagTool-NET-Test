@@ -741,7 +741,7 @@ namespace TagTool.Tags.Definitions.Gen4
         [TagStructure(Size = 0x38)]
         public class FluidDynamicsSquirterBlock : TagStructure
         {
-            public Point2d GridLocation;
+            public Int16Point2d GridLocation;
             [TagField(Length = 0x30, Flags = TagFieldFlags.Padding)]
             public byte[] Padding;
             public float SquirtScale;
@@ -750,7 +750,7 @@ namespace TagTool.Tags.Definitions.Gen4
         [TagStructure(Size = 0x10)]
         public class FluidDynamicsInflowBlock : TagStructure
         {
-            public Point2d GridLocation;
+            public Int16Point2d GridLocation;
             // particles/sec
             public float InflowRate;
             // degrees
@@ -761,13 +761,13 @@ namespace TagTool.Tags.Definitions.Gen4
         [TagStructure(Size = 0x4)]
         public class FluidDynamicsOutflowBlock : TagStructure
         {
-            public Point2d GridLocation;
+            public Int16Point2d GridLocation;
         }
         
         [TagStructure(Size = 0x4)]
         public class FluidDynamicsObstacleBlock : TagStructure
         {
-            public Point2d _2x2GridLocation;
+            public Int16Point2d _2x2GridLocation;
         }
         
         [TagStructure(Size = 0x28)]

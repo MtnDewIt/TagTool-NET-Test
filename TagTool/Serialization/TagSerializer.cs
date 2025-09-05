@@ -259,8 +259,8 @@ namespace TagTool.Serialization
                 SerializeEulerAngles(block, (RealEulerAngles2d)value);
             else if (valueType == typeof(RealEulerAngles3d))
                 SerializeEulerAngles(block, (RealEulerAngles3d)value);
-            else if (valueType == typeof(Point2d))
-                SerializePoint(block, (Point2d)value);
+            else if (valueType == typeof(Int16Point2d))
+                SerializePoint(block, (Int16Point2d)value);
             else if (valueType == typeof(Rectangle2d))
                 SerializeRectangle2d(block, (Rectangle2d)value);
             else if (valueType == typeof(RealRectangle2d))
@@ -754,7 +754,7 @@ namespace TagTool.Serialization
             block.Writer.Write(angles.Roll.Radians);
         }
 
-        private void SerializePoint(IDataBlock block, Point2d point)
+        private void SerializePoint(IDataBlock block, Int16Point2d point)
         {
             block.Writer.Write(point.X);
             block.Writer.Write(point.Y);

@@ -263,8 +263,8 @@ namespace TagTool.Serialization
             else if (valueType == typeof(ArgbColor))
                 return new ArgbColor(reader.ReadUInt32());
 
-            if (valueType == typeof(Point2d))
-                return new Point2d(reader.ReadInt16(), reader.ReadInt16());
+            if (valueType == typeof(Int16Point2d))
+                return new Int16Point2d(reader.ReadInt16(), reader.ReadInt16());
             if (valueType == typeof(Rectangle2d))
                 return new Rectangle2d(reader.ReadInt16(), reader.ReadInt16(), reader.ReadInt16(), reader.ReadInt16());
             if (valueType == typeof(RealRectangle2d))

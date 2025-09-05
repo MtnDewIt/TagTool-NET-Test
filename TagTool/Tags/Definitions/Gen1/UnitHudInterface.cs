@@ -15,7 +15,7 @@ namespace TagTool.Tags.Definitions.Gen1
         public byte[] Padding;
         [TagField(Length = 0x20)]
         public byte[] Padding1;
-        public Point2d AnchorOffset;
+        public Int16Point2d AnchorOffset;
         public float WidthScale;
         public float HeightScale;
         public ScalingFlagsValue ScalingFlags;
@@ -41,7 +41,7 @@ namespace TagTool.Tags.Definitions.Gen1
         public List<GlobalHudMultitextureOverlayDefinition> MultitexOverlay;
         [TagField(Length = 0x4)]
         public byte[] Padding6;
-        public Point2d AnchorOffset1;
+        public Int16Point2d AnchorOffset1;
         public float WidthScale1;
         public float HeightScale1;
         public ScalingFlags1Value ScalingFlags1;
@@ -67,7 +67,7 @@ namespace TagTool.Tags.Definitions.Gen1
         public List<GlobalHudMultitextureOverlayDefinition> MultitexOverlay1;
         [TagField(Length = 0x4)]
         public byte[] Padding11;
-        public Point2d AnchorOffset2;
+        public Int16Point2d AnchorOffset2;
         public float WidthScale2;
         public float HeightScale2;
         public ScalingFlags2Value ScalingFlags2;
@@ -101,7 +101,7 @@ namespace TagTool.Tags.Definitions.Gen1
         public ArgbColor OverchargeEmptyColor;
         [TagField(Length = 0x10)]
         public byte[] Padding15;
-        public Point2d AnchorOffset3;
+        public Int16Point2d AnchorOffset3;
         public float WidthScale3;
         public float HeightScale3;
         public ScalingFlags3Value ScalingFlags3;
@@ -127,7 +127,7 @@ namespace TagTool.Tags.Definitions.Gen1
         public List<GlobalHudMultitextureOverlayDefinition> MultitexOverlay2;
         [TagField(Length = 0x4)]
         public byte[] Padding20;
-        public Point2d AnchorOffset4;
+        public Int16Point2d AnchorOffset4;
         public float WidthScale4;
         public float HeightScale4;
         public ScalingFlags4Value ScalingFlags4;
@@ -160,7 +160,7 @@ namespace TagTool.Tags.Definitions.Gen1
         public float MinColorHealthFractionCutoff;
         [TagField(Length = 0x14)]
         public byte[] Padding24;
-        public Point2d AnchorOffset5;
+        public Int16Point2d AnchorOffset5;
         public float WidthScale5;
         public float HeightScale5;
         public ScalingFlags5Value ScalingFlags5;
@@ -186,7 +186,7 @@ namespace TagTool.Tags.Definitions.Gen1
         public List<GlobalHudMultitextureOverlayDefinition> MultitexOverlay3;
         [TagField(Length = 0x4)]
         public byte[] Padding29;
-        public Point2d AnchorOffset6;
+        public Int16Point2d AnchorOffset6;
         public float WidthScale6;
         public float HeightScale6;
         public ScalingFlags6Value ScalingFlags6;
@@ -217,7 +217,7 @@ namespace TagTool.Tags.Definitions.Gen1
         /// <summary>
         /// The blips use this as a reference point
         /// </summary>
-        public Point2d AnchorOffset7;
+        public Int16Point2d AnchorOffset7;
         public float WidthScale7;
         public float HeightScale7;
         public ScalingFlags7Value ScalingFlags7;
@@ -588,7 +588,7 @@ namespace TagTool.Tags.Definitions.Gen1
         [TagStructure(Size = 0x84)]
         public class UnitHudAuxilaryOverlayBlock : TagStructure
         {
-            public Point2d AnchorOffset;
+            public Int16Point2d AnchorOffset;
             public float WidthScale;
             public float HeightScale;
             public ScalingFlagsValue ScalingFlags;
@@ -890,7 +890,7 @@ namespace TagTool.Tags.Definitions.Gen1
             public byte[] Padding;
             [TagField(Length = 0x10)]
             public byte[] Padding1;
-            public Point2d AnchorOffset;
+            public Int16Point2d AnchorOffset;
             public float WidthScale;
             public float HeightScale;
             public ScalingFlagsValue ScalingFlags;
@@ -916,7 +916,7 @@ namespace TagTool.Tags.Definitions.Gen1
             public List<GlobalHudMultitextureOverlayDefinition> MultitexOverlay;
             [TagField(Length = 0x4)]
             public byte[] Padding6;
-            public Point2d AnchorOffset1;
+            public Int16Point2d AnchorOffset1;
             public float WidthScale1;
             public float HeightScale1;
             public ScalingFlags1Value ScalingFlags1;

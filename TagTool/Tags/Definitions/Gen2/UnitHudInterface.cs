@@ -15,7 +15,7 @@ namespace TagTool.Tags.Definitions.Gen2
         public byte[] Padding;
         [TagField(Length = 0x20, Flags = TagFieldFlags.Padding)]
         public byte[] Padding1;
-        public Point2d AnchorOffset;
+        public Int16Point2d AnchorOffset;
         public float WidthScale;
         public float HeightScale;
         public ScalingFlagsValue ScalingFlags;
@@ -47,7 +47,7 @@ namespace TagTool.Tags.Definitions.Gen2
         public List<GlobalHudMultitextureOverlayDefinition> MultitexOverlay;
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
         public byte[] Padding6;
-        public Point2d AnchorOffset1;
+        public Int16Point2d AnchorOffset1;
         public float WidthScale1;
         public float HeightScale1;
         public ScalingFlagsValue1 ScalingFlags1;
@@ -79,7 +79,7 @@ namespace TagTool.Tags.Definitions.Gen2
         public List<GlobalHudMultitextureOverlayDefinition1> MultitexOverlay1;
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
         public byte[] Padding11;
-        public Point2d AnchorOffset2;
+        public Int16Point2d AnchorOffset2;
         public float WidthScale2;
         public float HeightScale2;
         public ScalingFlagsValue2 ScalingFlags2;
@@ -114,7 +114,7 @@ namespace TagTool.Tags.Definitions.Gen2
         public ArgbColor OverchargeEmptyColor;
         [TagField(Length = 0x10, Flags = TagFieldFlags.Padding)]
         public byte[] Padding15;
-        public Point2d AnchorOffset3;
+        public Int16Point2d AnchorOffset3;
         public float WidthScale3;
         public float HeightScale3;
         public ScalingFlagsValue3 ScalingFlags3;
@@ -146,7 +146,7 @@ namespace TagTool.Tags.Definitions.Gen2
         public List<GlobalHudMultitextureOverlayDefinition2> MultitexOverlay2;
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
         public byte[] Padding20;
-        public Point2d AnchorOffset4;
+        public Int16Point2d AnchorOffset4;
         public float WidthScale4;
         public float HeightScale4;
         public ScalingFlagsValue4 ScalingFlags4;
@@ -180,7 +180,7 @@ namespace TagTool.Tags.Definitions.Gen2
         public float MinColorHealthFractionCutoff;
         [TagField(Length = 0x14, Flags = TagFieldFlags.Padding)]
         public byte[] Padding24;
-        public Point2d AnchorOffset5;
+        public Int16Point2d AnchorOffset5;
         public float WidthScale5;
         public float HeightScale5;
         public ScalingFlagsValue5 ScalingFlags5;
@@ -212,7 +212,7 @@ namespace TagTool.Tags.Definitions.Gen2
         public List<GlobalHudMultitextureOverlayDefinition3> MultitexOverlay3;
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
         public byte[] Padding29;
-        public Point2d AnchorOffset6;
+        public Int16Point2d AnchorOffset6;
         public float WidthScale6;
         public float HeightScale6;
         public ScalingFlagsValue6 ScalingFlags6;
@@ -249,7 +249,7 @@ namespace TagTool.Tags.Definitions.Gen2
         /// <summary>
         /// The blips use this as a reference point
         /// </summary>
-        public Point2d AnchorOffset7;
+        public Int16Point2d AnchorOffset7;
         public float WidthScale7;
         public float HeightScale7;
         public ScalingFlagsValue7 ScalingFlags7;
@@ -1493,7 +1493,7 @@ namespace TagTool.Tags.Definitions.Gen2
         [TagStructure(Size = 0x78)]
         public class UnitHudAuxilaryOverlayBlock : TagStructure
         {
-            public Point2d AnchorOffset;
+            public Int16Point2d AnchorOffset;
             public float WidthScale;
             public float HeightScale;
             public ScalingFlagsValue ScalingFlags;
@@ -1803,7 +1803,7 @@ namespace TagTool.Tags.Definitions.Gen2
             public byte[] Padding;
             [TagField(Length = 0x10, Flags = TagFieldFlags.Padding)]
             public byte[] Padding1;
-            public Point2d AnchorOffset;
+            public Int16Point2d AnchorOffset;
             public float WidthScale;
             public float HeightScale;
             public ScalingFlagsValue ScalingFlags;
@@ -1835,7 +1835,7 @@ namespace TagTool.Tags.Definitions.Gen2
             public List<GlobalHudMultitextureOverlayDefinition> MultitexOverlay;
             [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
             public byte[] Padding6;
-            public Point2d AnchorOffset1;
+            public Int16Point2d AnchorOffset1;
             public float WidthScale1;
             public float HeightScale1;
             public ScalingFlagsValue1 ScalingFlags1;

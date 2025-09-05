@@ -61,7 +61,7 @@ namespace TagTool.Tags.Definitions.Gen1
         /// extra spacing beyond bitmap width for text alignment
         /// </summary>
         public short WidthOffset;
-        public Point2d OffsetFromReferenceCorner;
+        public Int16Point2d OffsetFromReferenceCorner;
         public ArgbColor OverrideIconColor;
         public sbyte FrameRate030;
         public Flags1Value Flags1;
@@ -95,7 +95,7 @@ namespace TagTool.Tags.Definitions.Gen1
             public byte[] Padding1;
             [TagField(Length = 0x1C)]
             public byte[] Padding2;
-            public Point2d AnchorOffset;
+            public Int16Point2d AnchorOffset;
             public float WidthScale;
             public float HeightScale;
             public ScalingFlagsValue ScalingFlags;
@@ -382,7 +382,7 @@ namespace TagTool.Tags.Definitions.Gen1
             public byte[] Padding1;
             [TagField(Length = 0x1C)]
             public byte[] Padding2;
-            public Point2d AnchorOffset;
+            public Int16Point2d AnchorOffset;
             public float WidthScale;
             public float HeightScale;
             public ScalingFlagsValue ScalingFlags;
@@ -462,7 +462,7 @@ namespace TagTool.Tags.Definitions.Gen1
             public byte[] Padding1;
             [TagField(Length = 0x1C)]
             public byte[] Padding2;
-            public Point2d AnchorOffset;
+            public Int16Point2d AnchorOffset;
             public float WidthScale;
             public float HeightScale;
             public ScalingFlagsValue ScalingFlags;
@@ -591,7 +591,7 @@ namespace TagTool.Tags.Definitions.Gen1
             [TagStructure(Size = 0x6C)]
             public class WeaponHudCrosshairItemBlock : TagStructure
             {
-                public Point2d AnchorOffset;
+                public Int16Point2d AnchorOffset;
                 public float WidthScale;
                 public float HeightScale;
                 public ScalingFlagsValue ScalingFlags;
@@ -682,7 +682,7 @@ namespace TagTool.Tags.Definitions.Gen1
             [TagStructure(Size = 0x88)]
             public class WeaponHudOverlayBlock : TagStructure
             {
-                public Point2d AnchorOffset;
+                public Int16Point2d AnchorOffset;
                 public float WidthScale;
                 public float HeightScale;
                 public ScalingFlagsValue ScalingFlags;

@@ -716,7 +716,7 @@ namespace TagTool.Commands.Files
                         else
                             throw new NotImplementedException(boundsValueType.ToString() + " bounds are not supported.");
                     }
-                    else if (fieldType == typeof(Point2d))
+                    else if (fieldType == typeof(Int16Point2d))
                         assemblyPluginFields.AddRange(CommonFieldTypes.Point2(new string[2] { "X", "Y" }, fieldName, ref offset));
                     else if (fieldType == typeof(RealBoundingBox))
                         assemblyPluginFields.AddRange(CommonFieldTypes.RealBoundingBox(fieldName, ref offset));
