@@ -13,22 +13,24 @@ namespace TagTool.BlamFile.Chunks.MapVariants
     {
         public ReachContentItemMetadata Metadata;
         public short VariantVersion;
+        public short ScenarioObjectCount;
+        public short VariantObjectCount;
         public short PlaceableQuotaCount;
         public int MapId = -1;
         public RealRectangle3d WorldBounds;
-        public int MaxBudget;
+        public int MaximumBudget;
         public int SpentBudget;
-        public bool RuntimeShowHelpers;
+        public bool HelpersEnabled;
         public bool BuiltIn;
         public bool BuiltFromXml;
 
         [TagField(Length = 0x1, Flags = TagFieldFlags.Padding)]
         public byte[] Padding1;
 
-        public uint MapVariantChecksum;
+        public uint OriginalMapRSASignatureHash;
         public uint ScenarioPaletteCRC;
 
-        public SingleLanguageStringTable MegaloStringTable;
+        public SingleLanguageStringTable StringTable;
 
         [TagField(Length = 651)]
         public ReachVariantObjectDatum[] Objects;
@@ -45,7 +47,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
 
             mapVariant.Metadata = ReachContentItemMetadata.Decode(stream, true);
             mapVariant.VariantVersion = (short)stream.ReadUnsigned(8);
-            mapVariant.MapVariantChecksum = stream.ReadUnsigned(32);
+            mapVariant.OriginalMapRSASignatureHash = stream.ReadUnsigned(32);
             mapVariant.ScenarioPaletteCRC = stream.ReadUnsigned(32);
             mapVariant.PlaceableQuotaCount = (short)stream.ReadUnsigned(9);
             mapVariant.MapId = (int)stream.ReadUnsigned(32);
@@ -60,9 +62,9 @@ namespace TagTool.BlamFile.Chunks.MapVariants
                 Z0 = stream.ReadFloat(32),
                 Z1 = stream.ReadFloat(32)
             };
-            mapVariant.MaxBudget = (int)stream.ReadUnsigned(32);
+            mapVariant.MaximumBudget = (int)stream.ReadUnsigned(32);
             mapVariant.SpentBudget = (int)stream.ReadUnsigned(32);
-            mapVariant.MegaloStringTable = SingleLanguageStringTable.Decode(stream);
+            mapVariant.StringTable = SingleLanguageStringTable.Decode(stream);
 
             mapVariant.Objects = new ReachVariantObjectDatum[651];
             for (int i = 0; i < 651; i++)
@@ -103,17 +105,15 @@ namespace TagTool.BlamFile.Chunks.MapVariants
     public class ReachVariantObjectDatum : TagStructure
     {
         public ObjectPlacementFlags Flags;
-        public short QuotaIndex = -1;
-        public int Unknown4 = -1;
+        public ushort ReuseTimeout;
+        public int ObjectIndex = -1;
+        public int HelperObjectIndex = -1;
+        public int QuotaIndex = -1;
+        public int VariantIndex = -1;
         public RealPoint3d Position;
         public RealVector3d Forward;
         public RealVector3d Up;
-        public short SpawnRelativeToIndex = -1;
-        public sbyte VariantIndex = -1;
-
-        [TagField(Length = 0x1)]
-        public byte[] Padding;
-
+        public int SpawnRelativeToIndex = -1;
         public ReachVariantMultiplayerObjectProperties Properties;
 
         [Flags]
@@ -121,6 +121,13 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         {
             None = 0,
             OccupiedSlot = 1 << 0,
+            Bit1 = 1 << 1,
+            Bit2 = 1 << 2,
+            Bit3 = 1 << 3,
+            Bit4 = 1 << 4,
+            Bit5 = 1 << 5,
+            Bit6 = 1 << 6,
+            Bit7 = 1 << 7,
         }
 
         public static ReachVariantObjectDatum Decode(BitStream stream, RealRectangle3d worldBounds)

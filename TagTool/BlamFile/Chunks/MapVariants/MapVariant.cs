@@ -22,11 +22,11 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         public GameEngineSubType RuntimeEngineSubType = GameEngineSubType.All;
         public float MaximumBudget;
         public float SpentBudget;
-        public bool RuntimeShowHelpers;
+        public bool HelpersEnabled;
         public bool BuiltIn;
         [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
         public byte[] Padding1;
-        public uint MapVariantChecksum;
+        public uint OriginalMapRSASignatureHash;
 
         [TagField(Length = 640)]
         public VariantObjectDatum[] Objects;
@@ -54,7 +54,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
 
             mapVariant.Metadata = ContentItemMetadata.Decode(stream);
             mapVariant.VariantVersion = (short)stream.ReadUnsigned(8);
-            mapVariant.MapVariantChecksum = stream.ReadUnsigned(32);
+            mapVariant.OriginalMapRSASignatureHash = stream.ReadUnsigned(32);
             mapVariant.ScenarioObjectCount = (short)stream.ReadUnsigned(10);
             mapVariant.VariantObjectCount = (short)stream.ReadUnsigned(10);
             mapVariant.PlaceableQuotaCount = (short)stream.ReadUnsigned(9);
@@ -104,9 +104,9 @@ namespace TagTool.BlamFile.Chunks.MapVariants
     public class VariantObjectDatum : TagStructure
     {
         public VariantObjectPlacementFlags Flags;
-        public short RuntimeRemovalTimer;
-        public int RuntimeObjectIndex = -1;
-        public int RuntimeEditorObjectIndex = -1;
+        public short ReuseTimeout;
+        public int ObjectIndex = -1;
+        public int HelperObjectIndex = -1;
         public int QuotaIndex = -1;
         public RealPoint3d Position;
         public RealVector3d Forward;

@@ -29,7 +29,7 @@ namespace TagTool.BlamFile
         public Blf Convert(Scenario sourceScenario, ReachMapVariant sourceBlf)
         {
             SourceMapVariant = sourceBlf;
-            MegaloStrings = SingleLanguageStringTable.GetStrings(sourceBlf.MegaloStringTable);
+            MegaloStrings = SingleLanguageStringTable.GetStrings(sourceBlf.StringTable);
 
             Console.WriteLine($"Converting Reach map variant`{SourceMapVariant.Metadata.Name}`...");
 
@@ -72,9 +72,9 @@ namespace TagTool.BlamFile
             result.VariantVersion = 12;
             result.MapId = sourceMapVariant.MapId;
             result.WorldBounds = sourceMapVariant.WorldBounds;
-            result.MaximumBudget = sourceMapVariant.MaxBudget;
+            result.MaximumBudget = sourceMapVariant.MaximumBudget;
             result.SpentBudget = sourceMapVariant.SpentBudget;
-            result.MapVariantChecksum = sourceMapVariant.MapVariantChecksum;
+            result.OriginalMapRSASignatureHash = sourceMapVariant.OriginalMapRSASignatureHash;
 
             var objectTypeMap = new ObjectTypeMap(sourceScenario);
             result.ObjectTypeStartIndex = objectTypeMap.CalculateObjetTypeStartIndices();

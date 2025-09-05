@@ -431,7 +431,7 @@ namespace TagTool.BlamFile
             mapVariant.RuntimeEngineSubType = GameEngineSubType.All;
             mapVariant.MaximumBudget = _scenario.SandboxBudget;
             mapVariant.SpentBudget = 0;
-            mapVariant.RuntimeShowHelpers = true;
+            mapVariant.HelpersEnabled = true;
             mapVariant.Objects = Enumerable.Range(0, 640).Select(x => CreateDefaultPlacement()).ToArray();
             mapVariant.ObjectTypeStartIndex = Enumerable.Range(0, 16).Select(x => (short)0).ToArray();
             mapVariant.Quotas = Enumerable.Range(0, 256).Select(x => CreateDefaultPaletteItem()).ToArray();
@@ -448,8 +448,8 @@ namespace TagTool.BlamFile
         {
             return new VariantObjectDatum()
             {
-                RuntimeObjectIndex = -1,
-                RuntimeEditorObjectIndex = -1,
+                ObjectIndex = -1,
+                HelperObjectIndex = -1,
                 QuotaIndex = -1,
                 Properties = new VariantObjectDatum.VariantMultiplayerProperties()
                 {
