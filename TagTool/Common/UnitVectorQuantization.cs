@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace TagTool.Common
 {
@@ -89,7 +88,7 @@ namespace TagTool.Common
                 uint actualPerAxisMaxCount = (uint)mask;
                 uint quantizedValueCount = (uint)(Math.Sqrt(mask) - 1);
 
-                return new EncodingConstants(actualPerAxisMaxCount, quantizedValueCount);
+                return new EncodingConstants(quantizedValueCount, actualPerAxisMaxCount);
             }
         }
     }

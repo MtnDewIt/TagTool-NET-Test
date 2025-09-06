@@ -2,7 +2,6 @@
 using System.IO;
 using TagTool.BlamFile.Chunks.MapVariants;
 using TagTool.Cache;
-using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Common.Logging;
 using TagTool.IO;
@@ -18,8 +17,8 @@ namespace TagTool.BlamFile.Chunks
         [TagField(Length = 0x4, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Padding;
 
-        [TagField(Length = 0x14, MinVersion = CacheVersion.HaloReach)]
-        public byte[] Hash;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public NetworkRequestHash Hash;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public int Size;
@@ -44,7 +43,7 @@ namespace TagTool.BlamFile.Chunks
 
             if (deserializer.Version == CacheVersion.HaloReach)
             {
-                blfChunk.Hash = reader.ReadBytes(0x14);
+                blfChunk.Hash = deserializer.Deserialize<NetworkRequestHash>(dataContext);
                 blfChunk.Size = reader.ReadInt32();
 
                 var variantSize = blfChunk.Length - 0x24;
@@ -63,7 +62,7 @@ namespace TagTool.BlamFile.Chunks
             }
             else if (deserializer.Version == CacheVersion.Halo4 || deserializer.Version == CacheVersion.Halo2AMP)
             {
-                blfChunk.Hash = reader.ReadBytes(0x14);
+                blfChunk.Hash = deserializer.Deserialize<NetworkRequestHash>(dataContext);
                 blfChunk.Size = reader.ReadInt32();
 
                 var variantSize = blfChunk.Length - 0x24;

@@ -22,48 +22,41 @@ namespace TagTool.Common
         // TODO: Redo Base Read Functions
         // TODO: Add Write Functionality
 
-        public static void ReadAxis(BitStream stream, int forwardBits, int upBits, bool withEndPoints, out RealVector3d forward, out RealVector3d up)
+        public void ReadAxisReach(int forwardBits, int upBits, out RealVector3d forward, out RealVector3d up) 
         {
-            var isUp = stream.ReadBool();
+            if (ReadBool())
+            {
+                up = RealMath.GLOBAL_UP;
+            }
+            else 
+            {
+                int quantized = ReadSignedInteger(upBits);
+                RealMath.DequantizeUnitVector3dReach(quantized, out up, 20);
+            }
 
-            if (isUp)
+            float forwardAngle = ReadQuantizedReal(-RealMath.REAL_PI, RealMath.REAL_PI, forwardBits, false, false);
+            AngleToAxesInternal(up, forwardAngle, out forward);
+        }
+
+        public void ReadAxis(out RealVector3d forward, out RealVector3d up)
+        {
+            if (ReadBool())
             {
                 up = RealMath.GLOBAL_UP;
             }
             else
             {
-                int quantizedUp = (int)stream.ReadUnsigned(upBits);
-
-                if (withEndPoints)
-                {
-                    RealMath.DequantizeUnitVector3dWithTable(quantizedUp, upBits, out up);
-                }
-                else 
-                {
-                    RealMath.DequantizeUnitVector3d(quantizedUp, forwardBits, out up);
-                }
+                int quantized = ReadSignedInteger(19);
+                RealMath.DequantizeUnitVector3d(quantized, out up);
             }
 
-            float forwardAngle;
-
-            if (withEndPoints)
-            {
-                forwardAngle = ReadQuantizedRealWithEndPoints(stream, -RealMath.REAL_PI, RealMath.REAL_PI, forwardBits, false, false);
-            }
-            else
-            {
-                forwardAngle = ReadQuantizedReal(stream, -RealMath.REAL_PI, RealMath.REAL_PI, forwardBits, true, false);
-            }
-
-            AngleToAxes(up, forwardAngle, out forward);
+            float forwardAngle = ReadQuantizedReal(-RealMath.REAL_PI, RealMath.REAL_PI, 8, true, true);
+            AngleToAxesInternal(up, forwardAngle, out forward);
         }
 
-        public static void AngleToAxes(RealVector3d up, float angle, out RealVector3d forward)
+        public static void AngleToAxesInternal(RealVector3d up, float angle, out RealVector3d forward)
         {
-            var forwardReference = new RealVector3d();
-            var leftReference = new RealVector3d();
-
-            AxesComputeReference(up, out forwardReference, out leftReference);
+            AxesComputeReferenceInternal(up, out RealVector3d forwardReference, out RealVector3d leftReference);
 
             forward = new RealVector3d
             {
@@ -95,7 +88,7 @@ namespace TagTool.Common
             }
         }
 
-        public static void AxesComputeReference(RealVector3d up, out RealVector3d forwardReference, out RealVector3d leftReference)
+        public static void AxesComputeReferenceInternal(RealVector3d up, out RealVector3d forwardReference, out RealVector3d leftReference)
         {
             if (!RealMath.ValidRealVector(up))
             {
@@ -136,16 +129,10 @@ namespace TagTool.Common
             }
         }
 
-        public static float ReadQuantizedReal(BitStream stream, float minValue, float maxValue, int bitCount, bool exactMidPoint, bool exactEndPoints)
+        public float ReadQuantizedReal(float minValue, float maxValue, int bitCount, bool exactMidPoint, bool exactEndPoints)
         {
-            int value = (int)stream.ReadUnsigned(bitCount);
-            return RealMath.DequantizeReal(value, minValue, maxValue, bitCount, exactMidPoint);
-        }
-
-        public static float ReadQuantizedRealWithEndPoints(BitStream stream, float minValue, float maxValue, int bitCount, bool exactMidPoint, bool exactEndPoints)
-        {
-            var value = (int)stream.ReadUnsigned(bitCount);
-            return RealMath.DequantizeRealWithEndPoints(value, minValue, maxValue, bitCount, exactMidPoint, exactEndPoints);
+            int value = (int)ReadUnsigned(bitCount);
+            return RealMath.DequantizeReal(value, minValue, maxValue, bitCount, exactMidPoint, exactEndPoints);
         }
 
         public byte[] ReadBytes(int count)
@@ -207,6 +194,65 @@ namespace TagTool.Common
         {
             // TODO: Make not ass
             return BitConverter.ToSingle(BitConverter.GetBytes(ReadUnsigned(bits)), 0);
+        }
+
+        public RealRectangle3d ReadRealRectangle3d(int bitCount) 
+        {
+            return new RealRectangle3d 
+            {
+                X0 = ReadFloat(bitCount),
+                X1 = ReadFloat(bitCount),
+                Y0 = ReadFloat(bitCount),
+                Y1 = ReadFloat(bitCount),
+                Z0 = ReadFloat(bitCount),
+                Z1 = ReadFloat(bitCount),
+            };
+        }
+
+        public int ReadIndex(int sizeInBits, int maxValue) 
+        {
+            if (ReadBool())
+            {
+                return -1;
+            }
+            else 
+            {
+                int value = (int)ReadUnsigned(sizeInBits);
+
+                if (value > maxValue) 
+                {
+                    throw new ArgumentException("Number of bits exceeded maximum value");
+                }
+
+                return value;
+            }
+        }
+
+        public int ReadSignedInteger(int sizeInBits) 
+        {
+            uint result = ReadUnsigned(sizeInBits);
+
+            if (sizeInBits < 32 && (result & (1 << (sizeInBits - 1))) != 0)
+            {
+                result |= (uint)~((1 << sizeInBits) - 1);
+            }
+
+            return (int)result;
+        }
+
+        public void ReadPoint3d(out Int32Point3d point, int axisEncodingSizeInBits) 
+        {
+            if (0 >= axisEncodingSizeInBits || axisEncodingSizeInBits > 32) 
+            {
+                throw new ArgumentException("Number of bits must be greater than or equal to zero or less than or equal to 32");
+            }
+
+            point = new Int32Point3d
+            {
+                X = (int)ReadUnsigned(axisEncodingSizeInBits),
+                Y = (int)ReadUnsigned(axisEncodingSizeInBits),
+                Z = (int)ReadUnsigned(axisEncodingSizeInBits),
+            };
         }
 
         public uint ReadUnsigned(int bits)

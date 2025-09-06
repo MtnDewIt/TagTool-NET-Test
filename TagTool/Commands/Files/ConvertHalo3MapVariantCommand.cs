@@ -196,12 +196,12 @@ namespace TagTool.Commands.Files
                                 blf.MapVariantTagNames.Names[i].Name = $"{quotaObject.Name}.{quotaObject.Group.Tag}";
                                 quota.ObjectDefinitionIndex = 0;
                                 quota.MaximumCount = 255;
-                                quota.MaxAllowed = 255;
+                                quota.MaxAllowed = -1;
                             }
                             else 
                             {
                                 quota.ObjectDefinitionIndex = 0;
-                                quota.MaxAllowed = 255;
+                                quota.MaxAllowed = -1;
                                 quota.Cost = -1;
                             }
                         }

@@ -116,9 +116,9 @@ namespace TagTool.BlamFile
                     continue;
                 }        
 
-                if(reachVariantObject.Properties.MegaloLabelIndex != -1)
+                if(reachVariantObject.Properties.LabelIndex != -1)
                 {
-                    var megaloLabel = MegaloStrings[reachVariantObject.Properties.MegaloLabelIndex];
+                    var megaloLabel = MegaloStrings[reachVariantObject.Properties.LabelIndex];
                     if (ExcludedMegaloLabels.Contains(megaloLabel))
                     {
                         Console.WriteLine($"Deleted placement #{i} due to megalo label '{megaloLabel}'");
@@ -151,7 +151,7 @@ namespace TagTool.BlamFile
                 result.Quotas[i].MaximumCount = (byte)quotaBuilder[i].MinimumCount;
                 result.Quotas[i].MaximumCount = (byte)quotaBuilder[i].MaximumCount;
                 result.Quotas[i].PlacedOnMap = (byte)quotaBuilder[i].PlacedOnMap;
-                result.Quotas[i].MaxAllowed = (byte)quotaBuilder[i].MaxAllowed;
+                result.Quotas[i].MaxAllowed = (sbyte)quotaBuilder[i].MaxAllowed;
                 // result.PlaceableQuotaCount++;
             }
 
@@ -319,13 +319,13 @@ namespace TagTool.BlamFile
         {
             var result = new VariantObjectDatum.VariantMultiplayerProperties();
 
-            result.EngineFlags = DetermineEngineFlags(reachProperties.MegaloLabelIndex);
+            result.EngineFlags = DetermineEngineFlags(reachProperties.LabelIndex);
             result.Flags = reachProperties.Flags.ConvertLexical<VariantObjectDatum.VariantMultiplayerProperties.VariantPlacementFlags>();
             result.Team = reachProperties.Team;
             result.SpawnTime = reachProperties.SpawnTime;
-            result.Type = reachProperties.Type.ConvertLexical<MultiplayerObjectType>();
+            result.Type = reachProperties.CachedType.ConvertLexical<MultiplayerObjectType>();
 
-            switch (reachProperties.Type)
+            switch (reachProperties.CachedType)
             {
                 // TODO: Add proper handling for each object type
 

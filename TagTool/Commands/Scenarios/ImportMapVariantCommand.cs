@@ -160,7 +160,7 @@ namespace TagTool.Commands.Scenarios
 
                 if (quota.ObjectDefinitionIndex != -1) 
                 {
-                    quota.MaxAllowed = 255;
+                    quota.MaxAllowed = -1;
                     quota.Cost = 0.0f;
                 }
             }

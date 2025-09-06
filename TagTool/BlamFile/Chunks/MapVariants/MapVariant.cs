@@ -60,15 +60,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             mapVariant.PlaceableQuotaCount = (short)stream.ReadUnsigned(9);
             mapVariant.MapId = (int)stream.ReadUnsigned(32);
             mapVariant.BuiltIn = stream.ReadBool();
-            mapVariant.WorldBounds = new RealRectangle3d
-            {
-                X0 = stream.ReadFloat(32),
-                X1 = stream.ReadFloat(32),
-                Y0 = stream.ReadFloat(32),
-                Y1 = stream.ReadFloat(32),
-                Z0 = stream.ReadFloat(32),
-                Z1 = stream.ReadFloat(32),
-            };
+            mapVariant.WorldBounds = stream.ReadRealRectangle3d(32);
             mapVariant.RuntimeEngineSubType = (GameEngineSubType)stream.ReadUnsigned(4);
             mapVariant.MaximumBudget = stream.ReadFloat(32);
             mapVariant.SpentBudget = stream.ReadFloat(32);
@@ -172,14 +164,12 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             }
 
             objectDatum.Flags = (VariantObjectPlacementFlags)stream.ReadUnsigned(16);
-            objectDatum.QuotaIndex = (int)stream.ReadUnsigned(32);
-
-            var hasParentObject = stream.ReadBool();
+            objectDatum.QuotaIndex = stream.ReadSignedInteger(32);
 
             // TODO: Set default values for ObjectIdentifier
             objectDatum.ParentObject = new ObjectIdentifier();
 
-            if (hasParentObject)
+            if (stream.ReadBool())
             {
                 objectDatum.ParentObject.UniqueId = new DatumHandle(stream.ReadUnsigned(32));
                 objectDatum.ParentObject.OriginBspIndex = (short)stream.ReadUnsigned(16);
@@ -187,17 +177,14 @@ namespace TagTool.BlamFile.Chunks.MapVariants
                 objectDatum.ParentObject.Source = (ObjectIdentifier.SourceValue)stream.ReadUnsigned(8);
             }
 
-            var hasPosition = stream.ReadBool();
-
-            if (hasPosition)
+            if (stream.ReadBool())
             {
-                objectDatum.Position = RealMath.ReadQuantizedPosition(stream, 16, worldBounds);
-
-                BitStream.ReadAxis(stream, 8, 19, false, out objectDatum.Forward, out objectDatum.Up);
+                SimulationEncoding.SimulationReadQuantizedPosition(stream, out objectDatum.Position, 16, worldBounds);
+                stream.ReadAxis(out objectDatum.Forward, out objectDatum.Up);
 
                 objectDatum.Properties = new VariantMultiplayerProperties
                 {
-                    Type = (MultiplayerObjectType)stream.ReadUnsigned(8),
+                    Type = (MultiplayerObjectType)stream.ReadSignedInteger(8),
                     Flags = (VariantPlacementFlags)stream.ReadUnsigned(8),
                     EngineFlags = (GameEngineSubTypeFlags)stream.ReadUnsigned(16),
                     SharedStorage = (byte)stream.ReadUnsigned(8),
@@ -209,25 +196,22 @@ namespace TagTool.BlamFile.Chunks.MapVariants
                     },
                 };
 
-                if (objectDatum.Properties.Boundary.Type != MultiplayerObjectBoundaryShape.None)
+                switch (objectDatum.Properties.Boundary.Type)
                 {
-                    switch (objectDatum.Properties.Boundary.Type)
-                    {
-                        case MultiplayerObjectBoundaryShape.Sphere:
-                            objectDatum.Properties.Boundary.WidthRadius = BitStream.ReadQuantizedReal(stream, 0.0f, 60.0f, 16, false, false);
-                            break;
-                        case MultiplayerObjectBoundaryShape.Cylinder:
-                            objectDatum.Properties.Boundary.WidthRadius = BitStream.ReadQuantizedReal(stream, 0.0f, 60.0f, 16, false, false);
-                            objectDatum.Properties.Boundary.BoxLength = BitStream.ReadQuantizedReal(stream, 0.0f, 60.0f, 16, false, false);
-                            objectDatum.Properties.Boundary.PositiveHeight = BitStream.ReadQuantizedReal(stream, 0.0f, 60.0f, 16, false, false);
-                            break;
-                        case MultiplayerObjectBoundaryShape.Box:
-                            objectDatum.Properties.Boundary.WidthRadius = BitStream.ReadQuantizedReal(stream, 0.0f, 60.0f, 16, false, false);
-                            objectDatum.Properties.Boundary.BoxLength = BitStream.ReadQuantizedReal(stream, 0.0f, 60.0f, 16, false, false);
-                            objectDatum.Properties.Boundary.PositiveHeight = BitStream.ReadQuantizedReal(stream, 0.0f, 60.0f, 16, false, false);
-                            objectDatum.Properties.Boundary.NegativeHeight = BitStream.ReadQuantizedReal(stream, 0.0f, 60.0f, 16, false, false);
-                            break;
-                    }
+                    case MultiplayerObjectBoundaryShape.Sphere:
+                        objectDatum.Properties.Boundary.WidthRadius = stream.ReadQuantizedReal(0.0f, 60.0f, 16, false, true);
+                        break;
+                    case MultiplayerObjectBoundaryShape.Cylinder:
+                        objectDatum.Properties.Boundary.WidthRadius = stream.ReadQuantizedReal(0.0f, 60.0f, 16, false, true);
+                        objectDatum.Properties.Boundary.BoxLength = stream.ReadQuantizedReal(0.0f, 60.0f, 16, false, true);
+                        objectDatum.Properties.Boundary.PositiveHeight = stream.ReadQuantizedReal(0.0f, 60.0f, 16, false, true);
+                        break;
+                    case MultiplayerObjectBoundaryShape.Box:
+                        objectDatum.Properties.Boundary.WidthRadius = stream.ReadQuantizedReal(0.0f, 60.0f, 16, false, true);
+                        objectDatum.Properties.Boundary.BoxLength = stream.ReadQuantizedReal(0.0f, 60.0f, 16, false, true);
+                        objectDatum.Properties.Boundary.PositiveHeight = stream.ReadQuantizedReal(0.0f, 60.0f, 16, false, true);
+                        objectDatum.Properties.Boundary.NegativeHeight = stream.ReadQuantizedReal(0.0f, 60.0f, 16, false, true);
+                        break;
                 }
             }
 
@@ -247,7 +231,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         public byte MinimumCount;
         public byte MaximumCount;
         public byte PlacedOnMap;
-        public byte MaxAllowed = 255;
+        public sbyte MaxAllowed = -1;
         public float Cost = -1.0f;
 
         public static VariantObjectQuota Decode(BitStream stream)
@@ -258,7 +242,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             quotaDatum.MinimumCount = (byte)stream.ReadUnsigned(8);
             quotaDatum.MaximumCount = (byte)stream.ReadUnsigned(8);
             quotaDatum.PlacedOnMap = (byte)stream.ReadUnsigned(8);
-            quotaDatum.MaxAllowed = (byte)stream.ReadUnsigned(8);
+            quotaDatum.MaxAllowed = (sbyte)stream.ReadSignedInteger(8);
             quotaDatum.Cost = stream.ReadFloat(32);
 
             return quotaDatum;

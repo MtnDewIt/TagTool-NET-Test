@@ -134,23 +134,18 @@ namespace TagTool.Commands.JSON
 
                     if (blfData.ContentHeader != null)
                     {
-                        switch (blfData.Version, blfData.CachePlatform) 
+                        fileName = blfData.Version switch
                         {
-                            case (CacheVersion.HaloReach, CachePlatform.Original):
-                            case (CacheVersion.HaloReach, CachePlatform.MCC):
-                                fileName = blfData.ContentHeader.MetadataReach.Name.TrimEnd();
-                                break;
-                            default:
-                                fileName = blfData.ContentHeader.Metadata.Name.TrimEnd();
-                                break;
-                        }
+                            CacheVersion.HaloReach => blfData.ContentHeader.MetadataReach.Name.TrimEnd(),
+                            _ => blfData.ContentHeader.Metadata.Name.TrimEnd(),
+                        };
                     }
 
                     var handler = new BlfObjectHandler(blfData.Version, blfData.CachePlatform);
 
                     var jsonData = handler.Serialize(blfObject);
 
-                    var fileInfo = new FileInfo(Path.Combine(exportPath, $"{fileName}.json"));
+                    var fileInfo = new FileInfo(Path.Combine(exportPath, $"{ParseOutputFileName(fileName)}.json"));
 
                     if (!fileInfo.Directory.Exists)
                     {
@@ -164,6 +159,11 @@ namespace TagTool.Commands.JSON
             {
                 ErrorLog.Add($"Error converting \"{filePath}\" : {e.Message}");
             }
+        }
+
+        public static string ParseOutputFileName(string fileName) 
+        {
+            return Regex.Replace($"{fileName.TrimStart().TrimEnd().TrimEnd('.')}", @"[<>:""/\|?*]", "_");
         }
 
         public void ParseErrorLog()
