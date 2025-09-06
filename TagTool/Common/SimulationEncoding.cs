@@ -53,12 +53,7 @@ namespace TagTool.Common
             {
                 AdjustAxisEncodingBitCountToMatchErrorGoals(axisEncodingSizeInBits, worldBounds, 26, out Int32Point3d perAxisBitCounts);
 
-                Int32Point3d quantizedPoint = new()
-                {
-                    X = (int)stream.ReadUnsigned(perAxisBitCounts.X),
-                    Y = (int)stream.ReadUnsigned(perAxisBitCounts.Y),
-                    Z = (int)stream.ReadUnsigned(perAxisBitCounts.Z),
-                };
+                stream.ReadPoint3dEfficient(out Int32Point3d quantizedPoint, perAxisBitCounts);
 
                 RealMath.DequantizeRealPoint3dPerAxis(quantizedPoint, worldBounds, perAxisBitCounts, out position, exactMidPoints, exactEndPoints);
             }

@@ -187,7 +187,7 @@ namespace TagTool.Common
 
         public bool ReadBool()
         {
-            return ReadUnsigned(1) != 0;
+            return ReadUnsigned(1) == 1;
         }
 
         public float ReadFloat(int bits)
@@ -252,6 +252,23 @@ namespace TagTool.Common
                 X = (int)ReadUnsigned(axisEncodingSizeInBits),
                 Y = (int)ReadUnsigned(axisEncodingSizeInBits),
                 Z = (int)ReadUnsigned(axisEncodingSizeInBits),
+            };
+        }
+
+        public void ReadPoint3dEfficient(out Int32Point3d point, Int32Point3d axisEncodingSizeInBits) 
+        {
+            if ((0 >= axisEncodingSizeInBits.X || axisEncodingSizeInBits.X > 32) ||
+                (0 >= axisEncodingSizeInBits.Y || axisEncodingSizeInBits.Y > 32) ||
+                (0 >= axisEncodingSizeInBits.Z || axisEncodingSizeInBits.Z > 32))
+            {
+                throw new ArgumentException("Number of bits must be greater than or equal to zero or less than or equal to 32");
+            }
+
+            point = new Int32Point3d 
+            {
+                X = (int)ReadUnsigned(axisEncodingSizeInBits.X),
+                Y = (int)ReadUnsigned(axisEncodingSizeInBits.Y),
+                Z = (int)ReadUnsigned(axisEncodingSizeInBits.Z),
             };
         }
 

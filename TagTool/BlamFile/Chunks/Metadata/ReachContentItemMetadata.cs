@@ -106,14 +106,14 @@ namespace TagTool.BlamFile.Chunks.Metadata
 
                 if (metadata.ContentTypeReach == ContentItemTypeReach.Film || metadata.ContentTypeReach == ContentItemTypeReach.FilmClip)
                 {
-                    generic.FilmDuration = (int)stream.ReadUnsigned(32);
+                    generic.FilmDuration = stream.ReadSignedInteger(32);
 
                     if (!packed)
                         stream.ReadBytes(12);
                 }
                 else if (metadata.ContentTypeReach == ContentItemTypeReach.GameVariant)
                 {
-                    generic.EngineIcon = (GameEngineIcon)stream.ReadUnsigned(8);
+                    generic.EngineIcon = (GameEngineIcon)stream.ReadSignedInteger(8);
 
                     if (!packed)
                         stream.ReadBytes(15);
@@ -236,8 +236,8 @@ namespace TagTool.BlamFile.Chunks.Metadata
             metadata.GameActivity = (GameEngineActivity)(stream.ReadUnsigned(packed ? 3 : 8) - (packed ? 1 : 0));
             metadata.GameMode = (GameEngineMode)stream.ReadUnsigned(packed ? 3 : 8);
             metadata.GameEngineType = (GameEngineTypeReach)stream.ReadUnsigned(packed ? 3 : 16);
-            metadata.MapId = (int)stream.ReadUnsigned(32);
-            metadata.EngineCategory = (GameEngineCategory)stream.ReadUnsigned(8);
+            metadata.MapId = stream.ReadSignedInteger(32);
+            metadata.EngineCategory = (GameEngineCategory)stream.ReadSignedInteger(8);
             
             if (!packed)
                 stream.ReadBytes(7);
