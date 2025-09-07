@@ -1,9 +1,9 @@
-using TagTool.Cache;
-using TagTool.Tags;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using TagTool.Scripting;
+using TagTool.BlamFile.Chunks.Megalo;
+using TagTool.Cache;
+using TagTool.Tags;
 
 namespace TagTool.JSON.Handlers
 {
@@ -12,7 +12,7 @@ namespace TagTool.JSON.Handlers
         private CacheVersion Version;
         private CachePlatform Platform;
 
-        private HashSet<Type> ExludedTypes = new HashSet<Type>
+        private readonly HashSet<Type> ExludedTypes = new HashSet<Type>
         {
             typeof(TagResourceReference),
             typeof(List<TagResourceReference>),
@@ -42,10 +42,34 @@ namespace TagTool.JSON.Handlers
 
                 if (!isInvalidField && !ExludedTypes.Contains(fieldType))
                 {
-                    writer.WritePropertyName(fieldName);
-                    serializer.Serialize(writer, fieldValue);
+                    switch (fieldValue) 
+                    {
+                        // TODO: Figure out a better way of handling this
+                        case SingleLanguageStringTable table:
+                            ParseSingleLanguageStringTable(writer, serializer, fieldName, table);
+                            break;
+                        default:
+                            writer.WritePropertyName(fieldName);
+                            serializer.Serialize(writer, fieldValue);
+                            break;
+                    }
                 }
             }
+
+            writer.WriteEndObject();
+        }
+
+        // TODO: Some how feed this into its own handler
+        public static void ParseSingleLanguageStringTable(JsonWriter writer, JsonSerializer serializer, string fieldName, SingleLanguageStringTable table) 
+        {
+            List<string> strings = SingleLanguageStringTable.GetStrings(table);
+
+            writer.WritePropertyName(fieldName);
+            writer.WriteStartObject();
+
+            // TODO: Create a static member to store this (Can only do this if it has its own handler)
+            writer.WritePropertyName("Strings");
+            serializer.Serialize(writer, strings);
 
             writer.WriteEndObject();
         }
