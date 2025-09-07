@@ -143,7 +143,7 @@ namespace TagTool.Common
             return Buffer;
         }
 
-        public string ReadUnicodeString(int length, bool packed = true)
+        public string ReadStringWchar(int length, bool packed = true)
         {
             var buffer = new StringBuilder(length);
             while (length > 0)
@@ -164,7 +164,7 @@ namespace TagTool.Common
             return buffer.ToString();
         }
 
-        public string ReadString(int length, bool packed = true)
+        public string ReadStringUtf8(int length, bool packed = true)
         {
             var buffer = new StringBuilder(length);
             while (length > 0)

@@ -75,7 +75,7 @@ namespace TagTool.BlamFile.Chunks.Metadata
 
                 author.Timestamp = stream.ReadUnsigned64(64);
                 author.AuthorId = stream.ReadUnsigned64(64);
-                author.Author = stream.ReadString(16, packed);
+                author.Author = stream.ReadStringUtf8(16, packed);
                 author.AuthorIsOnline = stream.ReadUnsigned(packed ? 1 : 8) != 0;
 
                 if (!packed)
@@ -245,8 +245,8 @@ namespace TagTool.BlamFile.Chunks.Metadata
             metadata.CreationHistory = ContentItemAuthor.Decode(stream, packed);
             metadata.ModificationHistory = ContentItemAuthor.Decode(stream, packed);
 
-            metadata.Name = stream.ReadUnicodeString(128, packed);
-            metadata.Description = stream.ReadUnicodeString(128, packed);
+            metadata.Name = stream.ReadStringWchar(128, packed);
+            metadata.Description = stream.ReadStringWchar(128, packed);
 
             metadata.Generic = ContentItemGeneric.Decode(stream, metadata, packed);
             metadata.Matchmaking = ContentItemMatchmaking.Decode(stream, metadata, packed);

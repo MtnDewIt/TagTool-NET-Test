@@ -73,9 +73,9 @@ namespace TagTool.BlamFile.Chunks.Metadata
             var metadata = new ContentItemMetadata();
 
             metadata.UniqueId = stream.ReadUnsigned64(64);
-            metadata.Name = stream.ReadUnicodeString(16);
-            metadata.Description = stream.ReadString(128);
-            metadata.Author = stream.ReadString(16);
+            metadata.Name = stream.ReadStringWchar(16);
+            metadata.Description = stream.ReadStringUtf8(128);
+            metadata.Author = stream.ReadStringUtf8(16);
             metadata.ContentType = (ContentItemType)(stream.ReadSignedInteger(5) - 1);
             metadata.AuthorIsOnline = stream.ReadBool();
             metadata.AuthorId = stream.ReadUnsigned64(64);
