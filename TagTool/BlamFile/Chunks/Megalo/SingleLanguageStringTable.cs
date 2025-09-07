@@ -11,22 +11,19 @@ namespace TagTool.BlamFile.Chunks.Megalo
     [TagStructure(Size = 0x1208, MinVersion = CacheVersion.HaloReach)]
     public class SingleLanguageStringTable : TagStructure
     {
-        [TagField(Flags = TagFieldFlags.Hidden)]
         public SingleLanguageStringBuffer StringBuffer;
 
-        [TagField(Flags = TagFieldFlags.Hidden, Length = 256, MinVersion = CacheVersion.HaloReach)]
+        [TagField(Length = 256, MinVersion = CacheVersion.HaloReach)]
         public ushort[] StringIndices;
 
-        [TagField(Flags = TagFieldFlags.Hidden)]
         public int StringCount;
 
         [TagStructure(Size = 0x1004, MinVersion = CacheVersion.HaloReach)]
         public class SingleLanguageStringBuffer : TagStructure 
         {
-            [TagField(Flags = TagFieldFlags.Hidden, Length = 4096, MinVersion = CacheVersion.HaloReach)]
+            [TagField(Length = 4096, MinVersion = CacheVersion.HaloReach)]
             public byte[] Buffer;
 
-            [TagField(Flags = TagFieldFlags.Hidden)]
             public int Size;
         }
 

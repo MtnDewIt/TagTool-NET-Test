@@ -338,7 +338,7 @@ namespace TagTool.BlamFile
                     result.SharedStorage = reachProperties.SharedStorage[0];
                     break;
                 default:
-                    result.SharedStorage = reachProperties.UserData;
+                    result.SharedStorage = reachProperties.SharedStorage[0]; // What is the difference between sharedstorage and userdata ???
                     break;
             }
 
