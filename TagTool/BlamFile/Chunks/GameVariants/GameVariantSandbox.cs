@@ -46,7 +46,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             Seconds_60 = 60,
         }
 
-        public static GameVariantSandbox Decode(BitStream stream)
+        public static GameVariantSandbox Decode(BitStreamReader stream)
         {
             var variant = new GameVariantSandbox();
 
@@ -65,7 +65,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             return variant;
         }
 
-        public static void Encode(BitStream stream, GameVariantSandbox variant)
+        public static void Encode(BitStreamWriter stream, GameVariantSandbox variant)
         {
             // TODO: Implement
             throw new NotImplementedException();

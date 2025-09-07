@@ -38,7 +38,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             BallEffectEnabled = 1 << 1,
         }
 
-        public static GameVariantOddball Decode(BitStream stream)
+        public static GameVariantOddball Decode(BitStreamReader stream)
         {
             var variant = new GameVariantOddball();
 
@@ -63,7 +63,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             return variant;
         }
 
-        public static void Encode(BitStream stream, GameVariantOddball variant)
+        public static void Encode(BitStreamWriter stream, GameVariantOddball variant)
         {
             // TODO: Implement
             throw new NotImplementedException();

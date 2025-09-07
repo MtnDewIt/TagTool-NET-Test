@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using TagTool.BlamFile.Chunks.MapVariants;
 using TagTool.Cache;
 using TagTool.Common;
@@ -27,7 +26,7 @@ namespace TagTool.BlamFile.Chunks
         public MapVariant MapVariant;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
-        public ReachMapVariant MapVariantReach;
+        public ReachMapVariant ReachMapVariant;
 
         public static BlfMapVariant Decode(EndianReader reader, TagDeserializer deserializer, DataSerializationContext dataContext, bool packed) 
         {
@@ -46,49 +45,28 @@ namespace TagTool.BlamFile.Chunks
                 blfChunk.Hash = deserializer.Deserialize<NetworkRequestHash>(dataContext);
                 blfChunk.Size = reader.ReadInt32();
 
-                var variantSize = blfChunk.Length - 0x24;
-
-                var buffer = new byte[variantSize];
-
-                for (int i = 0; i < variantSize; i++)
-                {
-                    buffer[i] = reader.ReadByte();
-                }
+                var buffer = reader.ReadBytes(blfChunk.Length - 0x24);
 
                 var stream = new MemoryStream(buffer);
-                var bitStream = new BitStream(stream);
+                var bitStream = new BitStreamReader(stream);
 
-                blfChunk.MapVariantReach = ReachMapVariant.Decode(bitStream);
+                blfChunk.ReachMapVariant = ReachMapVariant.Decode(bitStream);
             }
             else if (deserializer.Version == CacheVersion.Halo4 || deserializer.Version == CacheVersion.Halo2AMP)
             {
                 blfChunk.Hash = deserializer.Deserialize<NetworkRequestHash>(dataContext);
                 blfChunk.Size = reader.ReadInt32();
 
-                var variantSize = blfChunk.Length - 0x24;
-
-                var buffer = new byte[variantSize];
-
-                for (int i = 0; i < variantSize; i++)
-                {
-                    buffer[i] = reader.ReadByte();
-                }
+                var buffer = reader.ReadBytes(blfChunk.Length - 0x24);
 
                 Log.Warning("Gen 4 Map Variants Not Supported. Skipping...");
             }
             else
             {
-                var variantSize = blfChunk.Length - 0xC;
-
-                var buffer = new byte[variantSize];
-
-                for (int i = 0; i < variantSize; i++)
-                {
-                    buffer[i] = reader.ReadByte();
-                }
+                var buffer = reader.ReadBytes(blfChunk.Length - 0xC);
 
                 var stream = new MemoryStream(buffer);
-                var bitStream = new BitStream(stream);
+                var bitStream = new BitStreamReader(stream);
 
                 blfChunk.MapVariant = MapVariant.Decode(bitStream);
             }
@@ -104,8 +82,50 @@ namespace TagTool.BlamFile.Chunks
                 return;
             }
 
-            // TODO: Implement
-            throw new NotImplementedException();
+            writer.Write(mapVariant.Signature.Value);
+            writer.Write(mapVariant.Length);
+            writer.Write(mapVariant.MajorVersion);
+            writer.Write(mapVariant.MinorVersion);
+
+            if (serializer.Version == CacheVersion.HaloReach)
+            {
+                serializer.Serialize(dataContext, mapVariant.Hash);
+                writer.Write(mapVariant.Size);
+
+                var buffer = new byte[mapVariant.Length - 0x24];
+
+                var bitStream = new MemoryStream(buffer);
+                var bitWriter = new BitStreamWriter(bitStream);
+
+                ReachMapVariant.Encode(bitWriter, mapVariant.ReachMapVariant);
+
+                writer.Write(buffer);
+            }
+            else if (serializer.Version == CacheVersion.Halo4 || serializer.Version == CacheVersion.Halo2AMP)
+            {
+                serializer.Serialize(dataContext, mapVariant.Hash);
+                writer.Write(mapVariant.Size);
+
+                var buffer = new byte[mapVariant.Length - 0x24];
+
+                var bitStream = new MemoryStream(buffer);
+                var bitWriter = new BitStreamWriter(bitStream);
+
+                Log.Warning("Gen 4 Map Variants Not Supported. Skipping...");
+
+                writer.Write(buffer);
+            }
+            else 
+            {
+                var buffer = new byte[mapVariant.Length - 0xC];
+
+                var bitStream = new MemoryStream(buffer);
+                var bitWriter = new BitStreamWriter(bitStream);
+
+                MapVariant.Encode(bitWriter, mapVariant.MapVariant);
+
+                writer.Write(buffer);
+            }
         }
     }
 }

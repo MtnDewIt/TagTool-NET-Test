@@ -63,17 +63,6 @@ namespace TagTool.Commands.Editing
             result = blfData;
 
             return true;
-
-            try
-            {
-                
-            }
-            catch
-            {
-                result = null;
-
-                return false;
-            }
         }
     }
 }

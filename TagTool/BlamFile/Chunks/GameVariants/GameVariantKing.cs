@@ -55,7 +55,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             Sequence,
         }
 
-        public static GameVariantKing Decode(BitStream stream)
+        public static GameVariantKing Decode(BitStreamReader stream)
         {
             var variant = new GameVariantKing();
 
@@ -79,7 +79,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             return variant;
         }
 
-        public static void Encode(BitStream stream, GameVariantKing variant)
+        public static void Encode(BitStreamWriter stream, GameVariantKing variant)
         {
             // TODO: Implement
             throw new NotImplementedException();

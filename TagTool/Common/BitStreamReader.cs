@@ -5,7 +5,7 @@ using TagTool.IO;
 
 namespace TagTool.Common
 {
-    public class BitStream
+    public class BitStreamReader
     {
         const int QWORD_BITS = 64;
 
@@ -13,7 +13,7 @@ namespace TagTool.Common
         private ulong _accumulator;
         private int _accumulatorBitsUsed;
 
-        public BitStream(Stream stream)
+        public BitStreamReader(Stream stream)
         {
             _reader = new EndianReader(stream, EndianFormat.BigEndian);
             _accumulator = DecodeAccumulator();

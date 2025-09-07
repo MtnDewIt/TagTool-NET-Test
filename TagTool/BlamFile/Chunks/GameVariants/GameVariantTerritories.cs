@@ -59,7 +59,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             Minutes_5 = 300,
         }
 
-        public static GameVariantTerritories Decode(BitStream stream)
+        public static GameVariantTerritories Decode(BitStreamReader stream)
         {
             var variant = new GameVariantTerritories();
 
@@ -80,7 +80,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             return variant;
         }
 
-        public static void Encode(BitStream stream, GameVariantTerritories variant)
+        public static void Encode(BitStreamWriter stream, GameVariantTerritories variant)
         {
             // TODO: Implement
             throw new NotImplementedException();

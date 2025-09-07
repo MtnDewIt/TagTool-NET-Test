@@ -69,7 +69,7 @@ namespace TagTool.BlamFile.Chunks.Metadata
             [TagField(Length = 0x3, Flags = TagFieldFlags.Padding)]
             public byte[] Padding;
 
-            public static ContentItemAuthor Decode(BitStream stream, bool packed)
+            public static ContentItemAuthor Decode(BitStreamReader stream, bool packed)
             {
                 var author = new ContentItemAuthor();
 
@@ -84,7 +84,7 @@ namespace TagTool.BlamFile.Chunks.Metadata
                 return author;
             }
 
-            public static void Encode(BitStream stream, ContentItemAuthor author, bool packed) 
+            public static void Encode(BitStreamWriter stream, ContentItemAuthor author, bool packed) 
             {
                 // TODO: Implement
                 throw new NotImplementedException();
@@ -100,7 +100,7 @@ namespace TagTool.BlamFile.Chunks.Metadata
             [TagField(Length = 0xB, Flags = TagFieldFlags.Padding)]
             public byte[] Padding;
 
-            public static ContentItemGeneric Decode(BitStream stream, ReachContentItemMetadata metadata, bool packed)
+            public static ContentItemGeneric Decode(BitStreamReader stream, ReachContentItemMetadata metadata, bool packed)
             {
                 var generic = new ContentItemGeneric();
 
@@ -127,7 +127,7 @@ namespace TagTool.BlamFile.Chunks.Metadata
                 return generic;
             }
 
-            public static void Encode(BitStream stream, ContentItemGeneric generic, bool packed)
+            public static void Encode(BitStreamWriter stream, ContentItemGeneric generic, bool packed)
             {
                 // TODO: Implement
                 throw new NotImplementedException();
@@ -142,7 +142,7 @@ namespace TagTool.BlamFile.Chunks.Metadata
             [TagField(Length = 0xE, Flags = TagFieldFlags.Padding)]
             public byte[] Padding;
 
-            public static ContentItemMatchmaking Decode(BitStream stream, ReachContentItemMetadata metadata, bool packed)
+            public static ContentItemMatchmaking Decode(BitStreamReader stream, ReachContentItemMetadata metadata, bool packed)
             {
                 var matchmaking = new ContentItemMatchmaking();
 
@@ -163,7 +163,7 @@ namespace TagTool.BlamFile.Chunks.Metadata
                 return matchmaking;
             }
 
-            public static void Encode(BitStream stream, ContentItemMatchmaking metagame, bool packed)
+            public static void Encode(BitStreamWriter stream, ContentItemMatchmaking metagame, bool packed)
             {
                 // TODO: Implement
                 throw new NotImplementedException();
@@ -180,7 +180,7 @@ namespace TagTool.BlamFile.Chunks.Metadata
             public GamePrimarySkullFlags16 CampaignPrimarySkulls;
             public GameSecondarySkullFlags16 CampaignSecondarySkulls;
 
-            public static ContentItemMetagame Decode(BitStream stream, ReachContentItemMetadata metadata, bool packed) 
+            public static ContentItemMetagame Decode(BitStreamReader stream, ReachContentItemMetadata metadata, bool packed) 
             {
                 var metagame = new ContentItemMetagame();
 
@@ -212,14 +212,14 @@ namespace TagTool.BlamFile.Chunks.Metadata
                 return metagame;
             }
 
-            public static void Encode(BitStream stream, ContentItemMetagame metagame, bool packed)
+            public static void Encode(BitStreamWriter stream, ContentItemMetagame metagame, bool packed)
             {
                 // TODO: Implement
                 throw new NotImplementedException();
             }
         }
 
-        public static ReachContentItemMetadata Decode(BitStream stream, bool packed) 
+        public static ReachContentItemMetadata Decode(BitStreamReader stream, bool packed) 
         {
             var metadata = new ReachContentItemMetadata();
 
@@ -255,7 +255,7 @@ namespace TagTool.BlamFile.Chunks.Metadata
             return metadata;
         }
 
-        public static void Encode(BitStream stream, ReachContentItemMetadata metadata, bool packed)
+        public static void Encode(BitStreamWriter stream, ReachContentItemMetadata metadata, bool packed)
         {
             // TODO: Implement
             throw new NotImplementedException();

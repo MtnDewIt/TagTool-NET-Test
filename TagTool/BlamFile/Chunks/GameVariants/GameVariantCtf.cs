@@ -82,7 +82,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             Minutes_5 = 300,
         }
 
-        public static GameVariantCtf Decode(BitStream stream)
+        public static GameVariantCtf Decode(BitStreamReader stream)
         {
             var variant = new GameVariantCtf();
 
@@ -106,7 +106,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             return variant;
         }
 
-        public static void Encode(BitStream stream, GameVariantCtf variant)
+        public static void Encode(BitStreamWriter stream, GameVariantCtf variant)
         {
             // TODO: Implement
             throw new NotImplementedException();

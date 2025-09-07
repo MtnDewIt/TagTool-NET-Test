@@ -11,7 +11,6 @@ using TagTool.BlamFile.Chunks.MapVariants;
 using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
 using TagTool.Commands.Common;
-using TagTool.Common;
 using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
@@ -181,7 +180,7 @@ namespace TagTool.Commands.Files
         {
             if (mapVariant.MajorVersion == 31)
             {
-                return ConvertReachMapVariant(mapVariant.MapVariantReach, mapsDirectory);
+                return ConvertReachMapVariant(mapVariant.ReachMapVariant, mapsDirectory);
             }
             else
             {

@@ -48,7 +48,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Halo3Retail)]
         public byte[] Padding3;
 
-        public static MapVariant Decode(BitStream stream) 
+        public static MapVariant Decode(BitStreamReader stream) 
         {
             var mapVariant = new MapVariant();
 
@@ -86,7 +86,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             return mapVariant;
         }
 
-        public static void Encode(BitStream stream, MapVariant mapVariant) 
+        public static void Encode(BitStreamWriter stream, MapVariant mapVariant) 
         {
             // TODO: Implement
         }
@@ -154,7 +154,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             }
         }
 
-        public static VariantObjectDatum Decode(BitStream stream, RealRectangle3d worldBounds)
+        public static VariantObjectDatum Decode(BitStreamReader stream, RealRectangle3d worldBounds)
         {
             var objectDatum = new VariantObjectDatum();
 
@@ -218,7 +218,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             return objectDatum;
         }
 
-        public static void Encode(BitStream stream, VariantObjectDatum objectDatum)
+        public static void Encode(BitStreamWriter stream, VariantObjectDatum objectDatum)
         {
             // TODO: Implement
         }
@@ -234,7 +234,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         public sbyte MaxAllowed = -1;
         public float Cost = -1.0f;
 
-        public static VariantObjectQuota Decode(BitStream stream)
+        public static VariantObjectQuota Decode(BitStreamReader stream)
         {
             var quotaDatum = new VariantObjectQuota();
 
@@ -248,7 +248,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             return quotaDatum;
         }
 
-        public static void Encode(BitStream stream, VariantObjectQuota objectQuota)
+        public static void Encode(BitStreamWriter stream, VariantObjectQuota objectQuota)
         {
             // TODO: Implement
         }

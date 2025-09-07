@@ -3,7 +3,6 @@ using System.IO;
 using TagTool.BlamFile.Chunks.GameVariants;
 using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
-using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Common.Logging;
 using TagTool.IO;
@@ -16,8 +15,8 @@ namespace TagTool.BlamFile.Chunks
     [TagStructure(Size = 0x264)]
     public class BlfGameVariant : BlfChunkHeader
     {
-        [TagField(Length = 0x14, MinVersion = CacheVersion.HaloReach)]
-        public byte[] Hash;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public NetworkRequestHash Hash;
 
         [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public GameEngineType GameVariantType;
@@ -49,36 +48,22 @@ namespace TagTool.BlamFile.Chunks
             if (deserializer.Version == CacheVersion.HaloReach)
             {
                 // TODO: Figure out reach game variant structs
-                gameVariant.Hash = reader.ReadBytes(0x14);
+                gameVariant.Hash = deserializer.Deserialize<NetworkRequestHash>(dataContext);
 
-                var variantSize = gameVariant.Length - 0x20;
-
-                var buffer = new byte[variantSize];
-
-                for (int i = 0; i < variantSize; i++)
-                {
-                    buffer[i] = reader.ReadByte();
-                }
+                var buffer = reader.ReadBytes(gameVariant.Length - 0x20);
 
                 Log.Warning("Reach Game Variants Not Supported. Skipping...");
             }
             else if (deserializer.Version == CacheVersion.Halo4 || deserializer.Version == CacheVersion.Halo2AMP)
             {
                 // TODO: Figure out gen 4 game variant structs
-                gameVariant.Hash = reader.ReadBytes(0x14);
+                gameVariant.Hash = deserializer.Deserialize<NetworkRequestHash>(dataContext);
 
-                var variantSize = gameVariant.Length - 0x20;
-
-                var buffer = new byte[variantSize];
-
-                for (int i = 0; i < variantSize; i++)
-                {
-                    buffer[i] = reader.ReadByte();
-                }
+                var buffer = reader.ReadBytes(gameVariant.Length - 0x20);
 
                 Log.Warning("Gen 4 Game Variants Not Supported. Skipping...");
             }
-            else if (deserializer.Version >= CacheVersion.Halo3Retail && deserializer.Version <= CacheVersion.HaloOnline700123)
+            else if (CacheVersionDetection.IsBetween(deserializer.Version, CacheVersion.Halo3Retail, CacheVersion.HaloOnline700123))
             {
                 if (!packed)
                 {
@@ -91,93 +76,45 @@ namespace TagTool.BlamFile.Chunks
 
                     gameVariant.Metadata = deserializer.Deserialize<ContentItemMetadata>(dataContext);
 
-                    switch (gameVariant.GameVariantType)
+                    gameVariant.Variant = gameVariant.GameVariantType switch
                     {
-                        case GameEngineType.CaptureTheFlag:
-                            gameVariant.Variant = deserializer.Deserialize<GameVariantCtf>(dataContext);
-                            break;
-                        case GameEngineType.Slayer:
-                            gameVariant.Variant = deserializer.Deserialize<GameVariantSlayer>(dataContext);
-                            break;
-                        case GameEngineType.Oddball:
-                            gameVariant.Variant = deserializer.Deserialize<GameVariantOddball>(dataContext);
-                            break;
-                        case GameEngineType.KingOfTheHill:
-                            gameVariant.Variant = deserializer.Deserialize<GameVariantKing>(dataContext);
-                            break;
-                        case GameEngineType.Sandbox:
-                            gameVariant.Variant = deserializer.Deserialize<GameVariantSandbox>(dataContext);
-                            break;
-                        case GameEngineType.Vip:
-                            gameVariant.Variant = deserializer.Deserialize<GameVariantVip>(dataContext);
-                            break;
-                        case GameEngineType.Juggernaut:
-                            gameVariant.Variant = deserializer.Deserialize<GameVariantJuggernaut>(dataContext);
-                            break;
-                        case GameEngineType.Territories:
-                            gameVariant.Variant = deserializer.Deserialize<GameVariantTerritories>(dataContext);
-                            break;
-                        case GameEngineType.Assault:
-                            gameVariant.Variant = deserializer.Deserialize<GameVariantAssault>(dataContext);
-                            break;
-                        case GameEngineType.Infection:
-                            gameVariant.Variant = deserializer.Deserialize<GameVariantInfection>(dataContext);
-                            break;
-                        default:
-                            gameVariant.Variant = deserializer.Deserialize<GameVariantNone>(dataContext);
-                            break;
-                    }
+                        GameEngineType.CaptureTheFlag => deserializer.Deserialize<GameVariantCtf>(dataContext),
+                        GameEngineType.Slayer => deserializer.Deserialize<GameVariantSlayer>(dataContext),
+                        GameEngineType.Oddball => deserializer.Deserialize<GameVariantOddball>(dataContext),
+                        GameEngineType.KingOfTheHill => deserializer.Deserialize<GameVariantKing>(dataContext),
+                        GameEngineType.Sandbox => deserializer.Deserialize<GameVariantSandbox>(dataContext),
+                        GameEngineType.Vip => deserializer.Deserialize<GameVariantVip>(dataContext),
+                        GameEngineType.Juggernaut => deserializer.Deserialize<GameVariantJuggernaut>(dataContext),
+                        GameEngineType.Territories => deserializer.Deserialize<GameVariantTerritories>(dataContext),
+                        GameEngineType.Assault => deserializer.Deserialize<GameVariantAssault>(dataContext),
+                        GameEngineType.Infection => deserializer.Deserialize<GameVariantInfection>(dataContext),
+                        _ => deserializer.Deserialize<GameVariantNone>(dataContext),
+                    };
                 }
                 else
                 {
-                    var variantSize = gameVariant.Length - 0xC;
-
-                    var buffer = new byte[variantSize];
-
-                    for (int i = 0; i < variantSize; i++)
-                    {
-                        buffer[i] = reader.ReadByte();
-                    }
+                    var buffer = reader.ReadBytes(gameVariant.Length - 0xC);
 
                     var stream = new MemoryStream(buffer);
-                    var bitStream = new BitStream(stream);
+                    var bitStream = new BitStreamReader(stream);
 
                     gameVariant.GameVariantType = (GameEngineType)bitStream.ReadUnsigned(4);
                     gameVariant.Metadata = ContentItemMetadata.Decode(bitStream);
 
-                    switch (gameVariant.GameVariantType) 
+                    gameVariant.Variant = gameVariant.GameVariantType switch 
                     {
-                        case GameEngineType.CaptureTheFlag:
-                            gameVariant.Variant = GameVariantCtf.Decode(bitStream);
-                            break;
-                        case GameEngineType.Slayer:
-                            gameVariant.Variant = GameVariantSlayer.Decode(bitStream);
-                            break;
-                        case GameEngineType.Oddball:
-                            gameVariant.Variant = GameVariantOddball.Decode(bitStream);
-                            break;
-                        case GameEngineType.KingOfTheHill:
-                            gameVariant.Variant = GameVariantKing.Decode(bitStream);
-                            break;
-                        case GameEngineType.Sandbox:
-                            gameVariant.Variant = GameVariantSandbox.Decode(bitStream);
-                            break;
-                        case GameEngineType.Vip:
-                            gameVariant.Variant = GameVariantVip.Decode(bitStream);
-                            break;
-                        case GameEngineType.Juggernaut:
-                            gameVariant.Variant = GameVariantJuggernaut.Decode(bitStream);
-                            break;
-                        case GameEngineType.Territories:
-                            gameVariant.Variant = GameVariantTerritories.Decode(bitStream);
-                            break;
-                        case GameEngineType.Assault:
-                            gameVariant.Variant = GameVariantAssault.Decode(bitStream);
-                            break;
-                        case GameEngineType.Infection:
-                            gameVariant.Variant = GameVariantInfection.Decode(bitStream);
-                            break;
-                    }
+                        GameEngineType.CaptureTheFlag => GameVariantCtf.Decode(bitStream),
+                        GameEngineType.Slayer => GameVariantSlayer.Decode(bitStream),
+                        GameEngineType.Oddball => GameVariantOddball.Decode(bitStream),
+                        GameEngineType.KingOfTheHill => GameVariantKing.Decode(bitStream),
+                        GameEngineType.Sandbox => GameVariantSandbox.Decode(bitStream),
+                        GameEngineType.Vip => GameVariantVip.Decode(bitStream),
+                        GameEngineType.Juggernaut => GameVariantJuggernaut.Decode(bitStream),
+                        GameEngineType.Territories => GameVariantTerritories.Decode(bitStream),
+                        GameEngineType.Assault => GameVariantAssault.Decode(bitStream),
+                        GameEngineType.Infection => GameVariantInfection.Decode(bitStream),
+                        _ => deserializer.Deserialize<GameVariantNone>(dataContext),
+                    };
                 }
             }
 
@@ -186,51 +123,68 @@ namespace TagTool.BlamFile.Chunks
 
         public static void Encode(EndianWriter writer, TagSerializer serializer, DataSerializationContext dataContext, BlfGameVariant gameVariant, bool packed) 
         {
-            if (!packed) 
+            if (!packed && CacheVersionDetection.IsBetween(serializer.Version, CacheVersion.Halo3Retail, CacheVersion.HaloOnline700123)) 
             {
-                switch (gameVariant.GameVariantType)
+                gameVariant.Variant = gameVariant.GameVariantType switch
                 {
-                    case GameEngineType.CaptureTheFlag:
-                        gameVariant.Variant = gameVariant.Variant as GameVariantCtf;
-                        break;
-                    case GameEngineType.Slayer:
-                        gameVariant.Variant = gameVariant.Variant as GameVariantSlayer;
-                        break;
-                    case GameEngineType.Oddball:
-                        gameVariant.Variant = gameVariant.Variant as GameVariantOddball;
-                        break;
-                    case GameEngineType.KingOfTheHill:
-                        gameVariant.Variant = gameVariant.Variant as GameVariantKing;
-                        break;
-                    case GameEngineType.Sandbox:
-                        gameVariant.Variant = gameVariant.Variant as GameVariantSandbox;
-                        break;
-                    case GameEngineType.Vip:
-                        gameVariant.Variant = gameVariant.Variant as GameVariantVip;
-                        break;
-                    case GameEngineType.Juggernaut:
-                        gameVariant.Variant = gameVariant.Variant as GameVariantJuggernaut;
-                        break;
-                    case GameEngineType.Territories:
-                        gameVariant.Variant = gameVariant.Variant as GameVariantTerritories;
-                        break;
-                    case GameEngineType.Assault:
-                        gameVariant.Variant = gameVariant.Variant as GameVariantAssault;
-                        break;
-                    case GameEngineType.Infection:
-                        gameVariant.Variant = gameVariant.Variant as GameVariantInfection;
-                        break;
-                    default:
-                        gameVariant.Variant = gameVariant.Variant as GameVariantNone;
-                        break;
-                }
+                    GameEngineType.CaptureTheFlag => gameVariant.Variant as GameVariantCtf,
+                    GameEngineType.Slayer => gameVariant.Variant as GameVariantSlayer,
+                    GameEngineType.Oddball => gameVariant.Variant as GameVariantOddball,
+                    GameEngineType.KingOfTheHill => gameVariant.Variant as GameVariantKing,
+                    GameEngineType.Sandbox => gameVariant.Variant as GameVariantSandbox,
+                    GameEngineType.Vip => gameVariant.Variant as GameVariantVip,
+                    GameEngineType.Juggernaut => gameVariant.Variant as GameVariantJuggernaut,
+                    GameEngineType.Territories => gameVariant.Variant as GameVariantTerritories,
+                    GameEngineType.Assault => gameVariant.Variant as GameVariantAssault,
+                    GameEngineType.Infection => gameVariant.Variant as GameVariantInfection,
+                    _ => gameVariant.Variant as GameVariantNone,
+                };
 
                 serializer.Serialize(dataContext, gameVariant);
+
                 return;
             }
 
-            // TODO: Implement
-            throw new NotImplementedException();
+            writer.Write(gameVariant.Signature.Value);
+            writer.Write(gameVariant.Length);
+            writer.Write(gameVariant.MajorVersion);
+            writer.Write(gameVariant.MinorVersion);
+
+            if (serializer.Version == CacheVersion.HaloReach)
+            {
+                serializer.Serialize(dataContext, gameVariant.Hash);
+
+                var buffer = new byte[gameVariant.Length - 0x20];
+
+                var bitStream = new MemoryStream(buffer);
+                var bitWriter = new BitStreamWriter(bitStream);
+
+                Log.Warning("Reach Game Variants Not Supported. Skipping...");
+
+                writer.Write(buffer);
+            }
+            else if (serializer.Version == CacheVersion.Halo4 || serializer.Version == CacheVersion.Halo2AMP)
+            {
+                serializer.Serialize(dataContext, gameVariant.Hash);
+
+                var buffer = new byte[gameVariant.Length - 0x20];
+
+                var bitStream = new MemoryStream(buffer);
+                var bitWriter = new BitStreamWriter(bitStream);
+
+                Log.Warning("Gen 4 Game Variants Not Supported. Skipping...");
+
+                writer.Write(buffer);
+            }
+            else if (CacheVersionDetection.IsBetween(serializer.Version, CacheVersion.Halo3Retail, CacheVersion.HaloOnline700123)) 
+            {
+                var buffer = new byte[gameVariant.Length - 0xC];
+
+                var bitStream = new MemoryStream(buffer);
+                var bitWriter = new BitStreamWriter(bitStream);
+
+                writer.Write(buffer);
+            }
         }
     }
 }

@@ -83,7 +83,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             Sequence,
         }
 
-        public static GameVariantJuggernaut Decode(BitStream stream)
+        public static GameVariantJuggernaut Decode(BitStreamReader stream)
         {
             var variant = new GameVariantJuggernaut();
 
@@ -112,7 +112,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             return variant;
         }
 
-        public static void Encode(BitStream stream, GameVariantJuggernaut variant)
+        public static void Encode(BitStreamWriter stream, GameVariantJuggernaut variant)
         {
             // TODO: Implement
             throw new NotImplementedException();

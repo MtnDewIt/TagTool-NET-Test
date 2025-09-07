@@ -47,7 +47,7 @@ namespace TagTool.Common
             perAxisBitCounts.Z = Math.Min(requiredBitsZ, maxBitCount);
         }
 
-        public static void SimulationReadPosition(BitStream stream, out RealPoint3d position, int axisEncodingSizeInBits, bool exactMidPoints, bool exactEndPoints, RealRectangle3d worldBounds) 
+        public static void SimulationReadPosition(BitStreamReader stream, out RealPoint3d position, int axisEncodingSizeInBits, bool exactMidPoints, bool exactEndPoints, RealRectangle3d worldBounds) 
         {
             if (stream.ReadBool())
             {
@@ -63,7 +63,7 @@ namespace TagTool.Common
             }
         }
 
-        public static void SimulationReadQuantizedPosition(BitStream stream, out RealPoint3d position, int axisEncodingSizeInBits, RealRectangle3d worldBounds) 
+        public static void SimulationReadQuantizedPosition(BitStreamReader stream, out RealPoint3d position, int axisEncodingSizeInBits, RealRectangle3d worldBounds) 
         {
             stream.ReadPoint3d(out Int32Point3d point, axisEncodingSizeInBits);
             RealMath.DequantizeRealPoint3d(point, worldBounds, axisEncodingSizeInBits, out position);

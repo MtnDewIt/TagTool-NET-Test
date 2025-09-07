@@ -94,7 +94,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 Shield_4X,
             }
 
-            public static PlayerShieldVitalityTraits Decode(BitStream stream)
+            public static PlayerShieldVitalityTraits Decode(BitStreamReader stream)
             {
                 var shieldVitalityTraits = new PlayerShieldVitalityTraits();
 
@@ -107,7 +107,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 return shieldVitalityTraits;
             }
 
-            public static void Encode(BitStream stream, PlayerShieldVitalityTraits shieldVitalityTraits)
+            public static void Encode(BitStreamWriter stream, PlayerShieldVitalityTraits shieldVitalityTraits)
             {
                 // TODO: Implement
                 throw new NotImplementedException();
@@ -191,7 +191,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 Disallowed,
             }
 
-            public static PlayerWeaponTraits Decode(BitStream stream)
+            public static PlayerWeaponTraits Decode(BitStreamReader stream)
             {
                 var weaponTraits = new PlayerWeaponTraits();
 
@@ -206,7 +206,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 return weaponTraits;
             }
 
-            public static void Encode(BitStream stream, PlayerWeaponTraits weaponTraits)
+            public static void Encode(BitStreamWriter stream, PlayerWeaponTraits weaponTraits)
             {
                 // TODO: Implement
                 throw new NotImplementedException();
@@ -261,7 +261,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 Full,
             }
 
-            public static PlayerMovementTraits Decode(BitStream stream)
+            public static PlayerMovementTraits Decode(BitStreamReader stream)
             {
                 var movementTraits = new PlayerMovementTraits();
 
@@ -272,7 +272,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 return movementTraits;
             }
 
-            public static void Encode(BitStream stream, PlayerMovementTraits movementTraits)
+            public static void Encode(BitStreamWriter stream, PlayerMovementTraits movementTraits)
             {
                 // TODO: Implement
                 throw new NotImplementedException();
@@ -362,7 +362,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 Zombie,
             }
 
-            public static PlayerAppearanceTraits Decode(BitStream stream)
+            public static PlayerAppearanceTraits Decode(BitStreamReader stream)
             {
                 var appearanceTraits = new PlayerAppearanceTraits();
 
@@ -374,7 +374,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 return appearanceTraits;
             }
 
-            public static void Encode(BitStream stream, PlayerAppearanceTraits appearanceTraits)
+            public static void Encode(BitStreamWriter stream, PlayerAppearanceTraits appearanceTraits)
             {
                 // TODO: Implement
                 throw new NotImplementedException();
@@ -408,7 +408,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 Meters_150,
             }
 
-            public static PlayerSensorTraits Decode(BitStream stream)
+            public static PlayerSensorTraits Decode(BitStreamReader stream)
             {
                 var sensorTraits = new PlayerSensorTraits();
 
@@ -418,14 +418,14 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 return sensorTraits;
             }
 
-            public static void Encode(BitStream stream, PlayerSensorTraits sensorTraits)
+            public static void Encode(BitStreamWriter stream, PlayerSensorTraits sensorTraits)
             {
                 // TODO: Implement
                 throw new NotImplementedException();
             }
         }
 
-        public static GameVariantPlayerTraits Decode(BitStream stream)
+        public static GameVariantPlayerTraits Decode(BitStreamReader stream)
         {
             var playerTraits = new GameVariantPlayerTraits();
 
@@ -438,7 +438,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             return playerTraits;
         }
 
-        public static void Encode(BitStream stream, GameVariantPlayerTraits playerTraits)
+        public static void Encode(BitStreamWriter stream, GameVariantPlayerTraits playerTraits)
         {
             // TODO: Implement
             throw new NotImplementedException();

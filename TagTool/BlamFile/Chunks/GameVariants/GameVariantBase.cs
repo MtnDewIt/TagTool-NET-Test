@@ -38,7 +38,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 SpectatingEnabled = 1 << 3,
             }
 
-            public static VariantMiscellaneousOptions Decode(BitStream stream)
+            public static VariantMiscellaneousOptions Decode(BitStreamReader stream)
             {
                 var miscellaneousOptions = new VariantMiscellaneousOptions();
 
@@ -50,7 +50,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 return miscellaneousOptions;
             }
 
-            public static void Encode(BitStream stream, VariantMiscellaneousOptions miscellaneousOptions)
+            public static void Encode(BitStreamWriter stream, VariantMiscellaneousOptions miscellaneousOptions)
             {
                 // TODO: Implement
                 throw new NotImplementedException();
@@ -94,7 +94,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 AutoRespawnDisabled = 1 << 4,
             }
 
-            public static VariantRespawnOptions Decode(BitStream stream)
+            public static VariantRespawnOptions Decode(BitStreamReader stream)
             {
                 var respawnOptions = new VariantRespawnOptions();
 
@@ -111,7 +111,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 return respawnOptions;
             }
 
-            public static void Encode(BitStream stream, VariantRespawnOptions respawnOptions)
+            public static void Encode(BitStreamWriter stream, VariantRespawnOptions respawnOptions)
             {
                 // TODO: Implement
                 throw new NotImplementedException();
@@ -144,7 +144,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 TeamChangingBalancingOnlyEnabled,
             }
 
-            public static VariantSocialOptions Decode(BitStream stream)
+            public static VariantSocialOptions Decode(BitStreamReader stream)
             {
                 var socialOptions = new VariantSocialOptions();
 
@@ -155,7 +155,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 return socialOptions;
             }
 
-            public static void Encode(BitStream stream, VariantSocialOptions socialOptions)
+            public static void Encode(BitStreamWriter stream, VariantSocialOptions socialOptions)
             {
                 // TODO: Implement
                 throw new NotImplementedException();
@@ -187,7 +187,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 IndestructibleVehicles = 1 << 1,
             }
 
-            public static VariantMapOverrideOptions Decode(BitStream stream)
+            public static VariantMapOverrideOptions Decode(BitStreamReader stream)
             {
                 var mapOverrideOptions = new VariantMapOverrideOptions();
 
@@ -205,7 +205,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 return mapOverrideOptions;
             }
 
-            public static void Encode(BitStream stream, VariantMapOverrideOptions mapOverrideOptions)
+            public static void Encode(BitStreamWriter stream, VariantMapOverrideOptions mapOverrideOptions)
             {
                 // TODO: Implement
                 throw new NotImplementedException();
@@ -227,7 +227,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             Default,
         }
 
-        public static GameVariantBase Decode(BitStream stream)
+        public static GameVariantBase Decode(BitStreamReader stream)
         {
             var variant = new GameVariantBase();
 
@@ -241,7 +241,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             return variant;
         }
 
-        public static void Encode(BitStream stream, GameVariantBase variant)
+        public static void Encode(BitStreamWriter stream, GameVariantBase variant)
         {
             // TODO: Implement
             throw new NotImplementedException();

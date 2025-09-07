@@ -39,7 +39,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         [TagField(Length = 32)]
         public int[] SimulationEntities;
 
-        public static ReachMapVariant Decode(BitStream stream)
+        public static ReachMapVariant Decode(BitStreamReader stream)
         {
             var mapVariant = new ReachMapVariant();
 
@@ -70,6 +70,11 @@ namespace TagTool.BlamFile.Chunks.MapVariants
 
             return mapVariant;
         }
+
+        public static void Encode(BitStreamWriter stream, ReachMapVariant mapVariant) 
+        {
+            // TODO: Implement
+        }
     }
 
     [TagStructure(Size = 0x3, MinVersion = CacheVersion.HaloReach)]
@@ -79,7 +84,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         public byte MaximumCount;
         public byte PlacedOnMap;
 
-        public static ReachVariantQuota Decode(BitStream stream)
+        public static ReachVariantQuota Decode(BitStreamReader stream)
         {
             var quotaDatum = new ReachVariantQuota();
 
@@ -88,6 +93,11 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             quotaDatum.PlacedOnMap = (byte)stream.ReadUnsigned(8);
 
             return quotaDatum;
+        }
+
+        public static void Encode(BitStreamWriter stream, ReachVariantQuota quota) 
+        {
+            // TODO: Implement
         }
     }
 
@@ -120,7 +130,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             Bit7 = 1 << 7,
         }
 
-        public static ReachVariantObjectDatum Decode(BitStream stream, RealRectangle3d worldBounds)
+        public static ReachVariantObjectDatum Decode(BitStreamReader stream, RealRectangle3d worldBounds)
         {
             var objectDatum = new ReachVariantObjectDatum();
 
@@ -136,6 +146,11 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             }
 
             return objectDatum;
+        }
+
+        public static void Encode(BitStreamWriter stream, ReachVariantObjectDatum variantObject, RealRectangle3d worldBounds)
+        {
+            // TODO: Implement
         }
     }
 
@@ -158,7 +173,21 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         [TagField(Length = 0x1, Flags = TagFieldFlags.Padding)]
         public byte[] Padding;
 
-        public static ReachVariantMultiplayerObjectProperties Decode(BitStream stream)
+        [Flags]
+        public enum VariantPlacementFlags : byte
+        {
+            None = 0,
+            UniqueSpawn  = 1 << 0,
+            NotInitiallyPlaced  = 1 << 1,
+            Symmetric = 1 << 2,
+            Asymmetric = 1 << 3,
+            IsShortcut = 1 << 4,
+            HideUnlessRequired = 1 << 5,
+            PhysicsFixed = 1 << 6,
+            PhysicsPhased = 1 << 7
+        }
+
+        public static ReachVariantMultiplayerObjectProperties Decode(BitStreamReader stream)
         {
             var objectProperties = new ReachVariantMultiplayerObjectProperties();
 
@@ -191,18 +220,9 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             return objectProperties;
         }
 
-        [Flags]
-        public enum VariantPlacementFlags : byte
+        public static void Encode(BitStreamWriter stream, ReachVariantMultiplayerObjectProperties properties)
         {
-            None = 0,
-            UniqueSpawn  = 1 << 0,
-            NotInitiallyPlaced  = 1 << 1,
-            Symmetric = 1 << 2,
-            Asymmetric = 1 << 3,
-            IsShortcut = 1 << 4,
-            HideUnlessRequired = 1 << 5,
-            PhysicsFixed = 1 << 6,
-            PhysicsPhased = 1 << 7
+            // TODO: Implement
         }
     }
 
@@ -215,7 +235,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         public float PositiveHeight;
         public float NegativeHeight;
 
-        public static ReachMultiplayerObjectBoundary Decode(BitStream stream)
+        public static ReachMultiplayerObjectBoundary Decode(BitStreamReader stream)
         {
             var boundary = new ReachMultiplayerObjectBoundary();
 
@@ -240,6 +260,11 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             }
 
             return boundary;
+        }
+
+        public static void Encode(BitStreamWriter stream, ReachMultiplayerObjectBoundary boundary) 
+        {
+            // TODO: Implement
         }
     }
 }

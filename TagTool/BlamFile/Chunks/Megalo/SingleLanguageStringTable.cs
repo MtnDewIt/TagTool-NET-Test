@@ -27,7 +27,7 @@ namespace TagTool.BlamFile.Chunks.Megalo
             public int Size;
         }
 
-        public static SingleLanguageStringTable Decode(BitStream bitstream)
+        public static SingleLanguageStringTable Decode(BitStreamReader bitstream)
         {
             var stringTable = new SingleLanguageStringTable();
 
@@ -63,7 +63,7 @@ namespace TagTool.BlamFile.Chunks.Megalo
             return stringTable;
         }
 
-        public static void Encode(BitStream stream, SingleLanguageStringTable stringTable) 
+        public static void Encode(BitStreamWriter stream, SingleLanguageStringTable stringTable) 
         {
             // TODO: Implement
         }

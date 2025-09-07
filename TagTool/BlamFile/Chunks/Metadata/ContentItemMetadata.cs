@@ -68,7 +68,7 @@ namespace TagTool.BlamFile.Chunks.Metadata
             Screenshot,
         }
 
-        public static ContentItemMetadata Decode(BitStream stream)
+        public static ContentItemMetadata Decode(BitStreamReader stream)
         {
             var metadata = new ContentItemMetadata();
 
@@ -92,7 +92,7 @@ namespace TagTool.BlamFile.Chunks.Metadata
             return metadata;
         }
 
-        public static void Encode(BitStream stream, ContentItemMetadata metadata)
+        public static void Encode(BitStreamWriter stream, ContentItemMetadata metadata)
         {
             // TODO: Implement
         }

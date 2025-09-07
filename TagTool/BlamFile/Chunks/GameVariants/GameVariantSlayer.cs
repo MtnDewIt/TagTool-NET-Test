@@ -35,7 +35,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x60, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Alignment;
 
-        public static GameVariantSlayer Decode(BitStream stream)
+        public static GameVariantSlayer Decode(BitStreamReader stream)
         {
             var variant = new GameVariantSlayer();
 
@@ -65,7 +65,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             return variant;
         }
 
-        public static void Encode(BitStream stream, GameVariantSlayer variant)
+        public static void Encode(BitStreamWriter stream, GameVariantSlayer variant)
         {
             // TODO: Implement
             throw new NotImplementedException();

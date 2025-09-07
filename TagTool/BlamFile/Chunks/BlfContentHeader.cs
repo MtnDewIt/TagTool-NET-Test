@@ -35,7 +35,7 @@ namespace TagTool.BlamFile.Chunks
 
             if (deserializer.Version == CacheVersion.HaloReach || deserializer.Version == CacheVersion.Halo4 || deserializer.Version == CacheVersion.Halo2AMP)
             {
-                var bitStream = new BitStream(reader.BaseStream);
+                var bitStream = new BitStreamReader(reader.BaseStream);
 
                 if (deserializer.CachePlatform == CachePlatform.MCC)
                 {
@@ -66,9 +66,9 @@ namespace TagTool.BlamFile.Chunks
             writer.Write(contentHeader.BuildVersion);
             writer.Write(contentHeader.MapMinorVersion);
 
-            if (serializer.Version == CacheVersion.HaloReach || serializer.Version == CacheVersion.Halo4 || serializer.Version == CacheVersion.Halo2AMP)
+            if (CacheVersionDetection.IsBetween(serializer.Version, CacheVersion.HaloReach, CacheVersion.Halo2AMP))
             {
-                ReachContentItemMetadata.Encode(new BitStream(writer.BaseStream), contentHeader.MetadataReach, false);
+                ReachContentItemMetadata.Encode(new BitStreamWriter(writer.BaseStream), contentHeader.MetadataReach, false);
             }
             else 
             {

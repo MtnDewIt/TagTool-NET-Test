@@ -74,7 +74,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             Count_15,
         }
 
-        public static GameVariantInfection Decode(BitStream stream)
+        public static GameVariantInfection Decode(BitStreamReader stream)
         {
             var variant = new GameVariantInfection();
 
@@ -104,7 +104,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             return variant;
         }
 
-        public static void Encode(BitStream stream, GameVariantInfection variant)
+        public static void Encode(BitStreamWriter stream, GameVariantInfection variant)
         {
             // TODO: Implement
             throw new NotImplementedException();
