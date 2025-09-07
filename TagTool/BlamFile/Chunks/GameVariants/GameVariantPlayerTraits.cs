@@ -196,8 +196,8 @@ namespace TagTool.BlamFile.Chunks.GameVariants
                 var weaponTraits = new PlayerWeaponTraits();
 
                 weaponTraits.DamageModifier = (DamageModifierPercentage)stream.ReadUnsigned(4);
-                weaponTraits.PrimaryWeaponIndex = (byte)stream.ReadUnsigned(8);
-                weaponTraits.SecondaryWeaponIndex = (byte)stream.ReadUnsigned(8);
+                weaponTraits.PrimaryWeaponIndex = (byte)stream.ReadSignedInteger(8);
+                weaponTraits.SecondaryWeaponIndex = (byte)stream.ReadSignedInteger(8);
                 weaponTraits.InitialGrenadeCount = (WeaponGrenadeCount)stream.ReadUnsigned(2);
                 weaponTraits.InfiniteAmmo = (InfiniteAmmoSettings)stream.ReadUnsigned(2);
                 weaponTraits.RechargingGrenades = (RechargingGrenadesSettings)stream.ReadUnsigned(2);

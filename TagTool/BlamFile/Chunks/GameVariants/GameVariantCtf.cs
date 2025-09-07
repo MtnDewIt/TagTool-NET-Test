@@ -98,7 +98,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             variant.Gametype = (CtfGametypeSettings)stream.ReadUnsigned(2);
             variant.Respawn = (CtfRespawnSettings)stream.ReadUnsigned(2);
             variant.ScoreToWin = (short)stream.ReadUnsigned(6);
-            variant.SuddenDeathTime = (CtfSuddenDeathTime)stream.ReadUnsigned(9);
+            variant.SuddenDeathTime = (CtfSuddenDeathTime)stream.ReadSignedInteger(9);
             variant.FlagResetTime = (short)stream.ReadUnsigned(9);
             variant.TouchReturnTimeout = (CtfTouchReturnSettings)stream.ReadUnsigned(6);
             variant.CarrierTraits = GameVariantPlayerTraits.Decode(stream);

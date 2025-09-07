@@ -70,10 +70,10 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             variant.ScoreToWin = (short)stream.ReadUnsigned(10);
             variant.MovingHill = (MovingHillSettings)stream.ReadUnsigned(4);
             variant.MovingHillOrder = (MovingHillOrderSettings)stream.ReadUnsigned(2);
-            variant.InsideHillPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.OutsideHillPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.UncontestedHillBonus = (sbyte)stream.ReadUnsigned(5);
-            variant.KillPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.InsideHillPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.OutsideHillPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.UncontestedHillBonus = (sbyte)stream.ReadSignedInteger(5);
+            variant.KillPoints = (sbyte)stream.ReadSignedInteger(5);
             variant.InsideHillTraits = GameVariantPlayerTraits.Decode(stream);
 
             return variant;

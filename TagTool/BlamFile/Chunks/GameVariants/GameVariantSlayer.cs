@@ -46,20 +46,20 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             variant.MapOverrideOptions = VariantMapOverrideOptions.Decode(stream);
             variant.TeamScoringMethod = (TeamScoring)stream.ReadUnsigned(3);
 
-            variant.ScoreToWin = (short)stream.ReadUnsigned(10);
-            variant.KillPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.AssistPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.DeathPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.SuicidePoints = (sbyte)stream.ReadUnsigned(5);
-            variant.BetrayalPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.LeaderKilledPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.EliminationPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.AssassinationsPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.HeadshotPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.MeleePoints = (sbyte)stream.ReadUnsigned(5);
-            variant.StickyPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.SplatterPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.KillingSpreePoints = (sbyte)stream.ReadUnsigned(5);
+            variant.ScoreToWin = (short)stream.ReadSignedInteger(10);
+            variant.KillPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.AssistPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.DeathPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.SuicidePoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.BetrayalPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.LeaderKilledPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.EliminationPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.AssassinationsPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.HeadshotPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.MeleePoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.StickyPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.SplatterPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.KillingSpreePoints = (sbyte)stream.ReadSignedInteger(5);
             variant.LeaderTraits = GameVariantPlayerTraits.Decode(stream);
 
             return variant;

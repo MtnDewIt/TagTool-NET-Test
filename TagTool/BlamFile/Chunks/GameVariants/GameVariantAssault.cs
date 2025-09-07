@@ -91,7 +91,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             variant.Respawn = (AssaultRespawnSettings)stream.ReadUnsigned(3);
             variant.EnemyBombWaypoint = (AssaultEnemyBombWaypointSettings)stream.ReadUnsigned(3);
             variant.ScoreToWin = (short)stream.ReadUnsigned(6);
-            variant.SuddenDeathTime = (AssaultSuddenDeathTime)stream.ReadUnsigned(9);
+            variant.SuddenDeathTime = (AssaultSuddenDeathTime)stream.ReadSignedInteger(9);
             variant.BombArmingTime = (short)stream.ReadUnsigned(5);
             variant.BombDisarmingTime = (short)stream.ReadUnsigned(5);
             variant.BombFuseTime = (short)stream.ReadUnsigned(5);

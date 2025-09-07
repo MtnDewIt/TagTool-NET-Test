@@ -193,8 +193,8 @@ namespace TagTool.BlamFile.Chunks.GameVariants
 
                 mapOverrideOptions.Flags = (MapOverrideFlags)stream.ReadUnsigned(2);
                 mapOverrideOptions.BasePlayerTraits = GameVariantPlayerTraits.Decode(stream);
-                mapOverrideOptions.WeaponSetIndex = (short)stream.ReadUnsigned(8);
-                mapOverrideOptions.VehicleSetIndex = (short)stream.ReadUnsigned(8);
+                mapOverrideOptions.WeaponSetIndex = (short)stream.ReadSignedInteger(8);
+                mapOverrideOptions.VehicleSetIndex = (short)stream.ReadSignedInteger(8);
                 mapOverrideOptions.RedPowerupTraits = GameVariantPlayerTraits.Decode(stream);
                 mapOverrideOptions.BluePowerupTraits = GameVariantPlayerTraits.Decode(stream);
                 mapOverrideOptions.YellowPowerupTraits = GameVariantPlayerTraits.Decode(stream);

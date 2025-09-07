@@ -100,12 +100,12 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             variant.NextJuggernaut = (JuggernautNextJuggernautSettings)stream.ReadUnsigned(2);
             variant.ZoneMovement = (JuggernautZoneMovementSettings)stream.ReadUnsigned(4);
             variant.ZoneOrder = (JuggernautZoneOrderSettings)stream.ReadUnsigned(1);
-            variant.KillPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.JuggernautKillPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.KillAsJuggernautPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.DestinationArrivalPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.SuicidePoints = (sbyte)stream.ReadUnsigned(5);
-            variant.BetrayalPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.KillPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.JuggernautKillPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.KillAsJuggernautPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.DestinationArrivalPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.SuicidePoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.BetrayalPoints = (sbyte)stream.ReadSignedInteger(5);
             variant.JuggernautDelay = (byte)stream.ReadUnsigned(4);
             variant.JuggernautTraits = GameVariantPlayerTraits.Decode(stream);
 

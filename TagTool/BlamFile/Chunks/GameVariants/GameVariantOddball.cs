@@ -50,11 +50,11 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             variant.TeamScoringMethod = (TeamScoring)stream.ReadUnsigned(3);
 
             variant.VariantFlags = (OddballFlags)stream.ReadUnsigned(2);
-            variant.ScoreToWin = (short)stream.ReadUnsigned(11);
-            variant.CarryingPoints = (short)stream.ReadUnsigned(5);
-            variant.KillPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.BallKillPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.CarrierKillPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.ScoreToWin = (short)stream.ReadSignedInteger(11);
+            variant.CarryingPoints = (short)stream.ReadSignedInteger(5);
+            variant.KillPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.BallKillPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.CarrierKillPoints = (sbyte)stream.ReadSignedInteger(5);
             variant.BallCount = (byte)stream.ReadUnsigned(2);
             variant.BallSpawnDelay = (short)stream.ReadUnsigned(7);
             variant.BallInactiveRespawnDelay = (short)stream.ReadUnsigned(7);

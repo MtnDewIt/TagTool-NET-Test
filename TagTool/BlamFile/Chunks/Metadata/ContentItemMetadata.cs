@@ -76,16 +76,16 @@ namespace TagTool.BlamFile.Chunks.Metadata
             metadata.Name = stream.ReadUnicodeString(16);
             metadata.Description = stream.ReadString(128);
             metadata.Author = stream.ReadString(16);
-            metadata.ContentType = (ContentItemType)(stream.ReadUnsigned(5) - 1);
+            metadata.ContentType = (ContentItemType)(stream.ReadSignedInteger(5) - 1);
             metadata.AuthorIsOnline = stream.ReadBool();
             metadata.AuthorId = stream.ReadUnsigned64(64);
             metadata.ContentSize = stream.ReadUnsigned64(64);
             metadata.Timestamp = stream.ReadUnsigned64(64);
             metadata.FilmDuration = (int)stream.ReadUnsigned(32);
-            metadata.CampaignId = (int)stream.ReadUnsigned(32);
-            metadata.MapId = (int)stream.ReadUnsigned(32);
+            metadata.CampaignId = stream.ReadSignedInteger(32);
+            metadata.MapId = stream.ReadSignedInteger(32);
             metadata.GameEngineType = (GameEngineType)stream.ReadUnsigned(4);
-            metadata.CampaignDifficulty = (int)(stream.ReadUnsigned(3) - 1);
+            metadata.CampaignDifficulty = stream.ReadSignedInteger(3) - 1;
             metadata.HopperId = (short)stream.ReadUnsigned(16);
             metadata.GameId = stream.ReadUnsigned64(64);
 

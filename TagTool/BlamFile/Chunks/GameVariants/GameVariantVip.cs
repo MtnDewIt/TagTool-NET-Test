@@ -89,14 +89,14 @@ namespace TagTool.BlamFile.Chunks.GameVariants
 
             variant.VariantFlags = (VipFlags)stream.ReadUnsigned(3);
             variant.ScoreToWinRound = (short)stream.ReadUnsigned(10);
-            variant.KillPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.TakedownPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.KillAsVipPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.VipDeathPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.DestinationArrivalPoints = (sbyte)stream.ReadUnsigned(5);
-            variant.SuicidePoints = (sbyte)stream.ReadUnsigned(5);
-            variant.VipSuicidePoints = (sbyte)stream.ReadUnsigned(5);
-            variant.BetrayalPoints = (sbyte)stream.ReadUnsigned(5);
+            variant.KillPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.TakedownPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.KillAsVipPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.VipDeathPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.DestinationArrivalPoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.SuicidePoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.VipSuicidePoints = (sbyte)stream.ReadSignedInteger(5);
+            variant.BetrayalPoints = (sbyte)stream.ReadSignedInteger(5);
             variant.VipSelection = (VipSelectionSettings)stream.ReadUnsigned(2);
             variant.ZoneMovement = (VipZoneMovementSettings)stream.ReadUnsigned(4);
             variant.ZoneOrder = (VipZoneOrderSettings)stream.ReadUnsigned(1);

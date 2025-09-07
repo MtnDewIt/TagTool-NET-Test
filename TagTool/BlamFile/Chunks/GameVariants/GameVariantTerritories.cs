@@ -73,7 +73,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             variant.VariantFlags = (TerritoriesFlags)stream.ReadUnsigned(2);
             variant.RespawnOnCapture = (TerritoriesRespawnOnCaptureSettings)stream.ReadUnsigned(2);
             variant.CaptureTime = (TerritoriesCaptureTimeSettings)stream.ReadUnsigned(7);
-            variant.SuddenDeathTime = (TerritoriesSuddenDeathSettings)stream.ReadUnsigned(10);
+            variant.SuddenDeathTime = (TerritoriesSuddenDeathSettings)stream.ReadSignedInteger(10);
             variant.DefenderTraits = GameVariantPlayerTraits.Decode(stream);
             variant.AttackerTraits = GameVariantPlayerTraits.Decode(stream);
 
