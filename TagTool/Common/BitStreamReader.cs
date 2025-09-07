@@ -22,22 +22,6 @@ namespace TagTool.Common
         // TODO: Redo Base Read Functions
         // TODO: Add Write Functionality
 
-        public void ReadAxisReach(int forwardBits, int upBits, out RealVector3d forward, out RealVector3d up) 
-        {
-            if (ReadBool())
-            {
-                up = RealMath.GLOBAL_UP;
-            }
-            else 
-            {
-                int quantized = ReadSignedInteger(upBits);
-                RealMath.DequantizeUnitVector3dReach(quantized, out up, 20);
-            }
-
-            float forwardAngle = ReadQuantizedReal(-RealMath.REAL_PI, RealMath.REAL_PI, forwardBits, false, false);
-            AngleToAxesInternal(up, forwardAngle, out forward);
-        }
-
         public void ReadAxis(out RealVector3d forward, out RealVector3d up)
         {
             if (ReadBool())
@@ -51,6 +35,22 @@ namespace TagTool.Common
             }
 
             float forwardAngle = ReadQuantizedReal(-RealMath.REAL_PI, RealMath.REAL_PI, 8, true, true);
+            AngleToAxesInternal(up, forwardAngle, out forward);
+        }
+
+        public void ReadAxisReach(int forwardBits, int upBits, out RealVector3d forward, out RealVector3d up)
+        {
+            if (ReadBool())
+            {
+                up = RealMath.GLOBAL_UP;
+            }
+            else
+            {
+                int quantized = ReadSignedInteger(upBits);
+                RealMath.DequantizeUnitVector3dReach(quantized, out up, 20);
+            }
+
+            float forwardAngle = ReadQuantizedReal(-RealMath.REAL_PI, RealMath.REAL_PI, forwardBits, false, false);
             AngleToAxesInternal(up, forwardAngle, out forward);
         }
 
