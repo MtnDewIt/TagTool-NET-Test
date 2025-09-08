@@ -72,7 +72,7 @@ namespace TagTool.Shaders.ShaderGenerator
             return stringId;
         }
 
-        private static bool AutoMacroIsParameter(string categoryName, HaloShaderGenerator.Globals.ShaderType shaderType) 
+        public static bool AutoMacroIsParameter(string categoryName, HaloShaderGenerator.Globals.ShaderType shaderType) 
         {
             switch (shaderType) 
             {
