@@ -94,7 +94,22 @@ namespace TagTool.BlamFile.Chunks.Metadata
 
         public static void Encode(BitStreamWriter stream, ContentItemMetadata metadata)
         {
-            // TODO: Implement
+            stream.WriteQWord(metadata.UniqueId, 64);
+            stream.WriteStringWchar(metadata.Name, 32);
+            stream.WriteStringUtf8(metadata.Description, 128);
+            stream.WriteStringUtf8(metadata.Author, 16);
+            stream.WriteSignedInteger((int)metadata.ContentType + 1, 5);
+            stream.WriteBool(metadata.AuthorIsOnline);
+            stream.WriteQWord(metadata.AuthorId, 64);
+            stream.WriteQWord(metadata.ContentSize, 64);
+            stream.WriteQWord(metadata.Timestamp, 64);
+            stream.WriteInteger((uint)metadata.FilmDuration, 32);
+            stream.WriteSignedInteger(metadata.CampaignId, 32);
+            stream.WriteSignedInteger(metadata.MapId, 32);
+            stream.WriteInteger((uint)metadata.GameEngineType, 4);
+            stream.WriteSignedInteger(metadata.CampaignDifficulty + 1, 3);
+            stream.WriteSignedInteger(metadata.HopperId, 16);
+            stream.WriteQWord(metadata.GameId, 64);
         }
     }
 }

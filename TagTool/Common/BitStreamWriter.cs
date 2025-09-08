@@ -71,6 +71,16 @@ namespace TagTool.Common
             WriteBitsInternal(0, 16);
         }
 
+        public void WriteRealReactangle3d(RealRectangle3d value) 
+        {
+            WriteFloat(value.X0, 32);
+            WriteFloat(value.X1, 32);
+            WriteFloat(value.Y0, 32);
+            WriteFloat(value.Y1, 32);
+            WriteFloat(value.Z0, 32);
+            WriteFloat(value.Z1, 32);
+        }
+
         public void WriteBitsInternal(ulong value, int sizeInBits) 
         {
             if (sizeInBits <= 0 || sizeInBits > 64)

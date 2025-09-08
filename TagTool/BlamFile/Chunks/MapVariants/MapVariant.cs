@@ -74,7 +74,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             mapVariant.ObjectTypeStartIndex = new short[14];
             for (int i = 0; i < mapVariant.ObjectTypeStartIndex.Length; i++)
             {
-                mapVariant.ObjectTypeStartIndex[i] = (short)stream.ReadUnsigned(9);
+                mapVariant.ObjectTypeStartIndex[i] = (short)(stream.ReadUnsigned(9) - 1);
             }
 
             mapVariant.Quotas = new VariantObjectQuota[mapVariant.PlaceableQuotaCount];
@@ -88,7 +88,33 @@ namespace TagTool.BlamFile.Chunks.MapVariants
 
         public static void Encode(BitStreamWriter stream, MapVariant mapVariant) 
         {
-            // TODO: Implement
+            ContentItemMetadata.Encode(stream, mapVariant.Metadata);
+            stream.WriteInteger((uint)mapVariant.VariantVersion, 8);
+            stream.WriteInteger(mapVariant.OriginalMapRSASignatureHash, 32);
+            stream.WriteInteger((uint)mapVariant.ScenarioObjectCount, 10);
+            stream.WriteInteger((uint)mapVariant.VariantObjectCount, 10);
+            stream.WriteInteger((uint)mapVariant.PlaceableQuotaCount, 9);
+            stream.WriteInteger((uint)mapVariant.MapId, 32);
+            stream.WriteBool(mapVariant.BuiltIn);
+            stream.WriteRealReactangle3d(mapVariant.WorldBounds);
+            stream.WriteInteger((uint)mapVariant.RuntimeEngineSubType, 4);
+            stream.WriteFloat(mapVariant.MaximumBudget, 32);
+            stream.WriteFloat(mapVariant.SpentBudget, 32);
+
+            for (int i = 0; i < mapVariant.VariantObjectCount; i++) 
+            {
+                VariantObjectDatum.Encode(stream, mapVariant.Objects[i], i, mapVariant.ScenarioObjectCount, mapVariant.WorldBounds);
+            }
+
+            for (int i = 0; i < mapVariant.ObjectTypeStartIndex.Length; i++) 
+            {
+                stream.WriteInteger((uint)(mapVariant.ObjectTypeStartIndex[i] + 1), 9);
+            }
+
+            for (int i = 0; i < mapVariant.PlaceableQuotaCount; i++) 
+            {
+                VariantObjectQuota.Encode(stream, mapVariant.Quotas[i]);
+            }
         }
     }
 
@@ -218,9 +244,68 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             return objectDatum;
         }
 
-        public static void Encode(BitStreamWriter stream, VariantObjectDatum objectDatum)
+        public static void Encode(BitStreamWriter stream, VariantObjectDatum objectDatum, int objectIndex, int scenarioObjectCount, RealRectangle3d worldBounds)
         {
-            // TODO: Implement
+            if (objectDatum.Flags == VariantObjectPlacementFlags.None)
+            {
+                stream.WriteBool(false);
+            }
+            else 
+            {
+                stream.WriteBool(true);
+                stream.WriteInteger((uint)objectDatum.Flags, 16);
+                stream.WriteInteger((uint)objectDatum.QuotaIndex, 32);
+
+                if (objectDatum.Flags.HasFlag(VariantObjectPlacementFlags.SpawnsRelative)) 
+                {
+                    stream.WriteBool(true);
+                    stream.WriteInteger(objectDatum.ParentObject.UniqueId.Value, 32);
+                    stream.WriteInteger((uint)objectDatum.ParentObject.OriginBspIndex, 16);
+                    stream.WriteInteger((uint)objectDatum.ParentObject.Type.Halo3Retail, 8);
+                    stream.WriteInteger((uint)objectDatum.ParentObject.Source, 8);
+                }
+                else
+                {
+                    stream.WriteBool(false);
+                }
+
+                if (!objectDatum.Flags.HasFlag(VariantObjectPlacementFlags.OccupiedSlot) && objectIndex < scenarioObjectCount)
+                {
+                    stream.WriteBool(false);
+                }
+                else 
+                {
+                    stream.WriteBool(true);
+                    //SimulationEncoding.SimulationWriteQuantizedPosition(stream, objectDatum.Position, 16, false, worldBounds);
+                    //stream.WriteAxes(objectDatum.Forward, objectDatum.Up);
+                    stream.WriteInteger((uint)objectDatum.Properties.Type, 8);
+                    stream.WriteInteger((uint)objectDatum.Properties.Flags, 8);
+                    stream.WriteInteger((uint)objectDatum.Properties.EngineFlags, 16);
+                    stream.WriteInteger(objectDatum.Properties.SharedStorage, 8);
+                    stream.WriteInteger(objectDatum.Properties.SpawnTime, 8);
+                    stream.WriteInteger((uint)objectDatum.Properties.Team, 8);
+                    stream.WriteInteger((uint)objectDatum.Properties.Boundary.Type, 8);
+
+                    switch (objectDatum.Properties.Boundary.Type) 
+                    {
+                        case MultiplayerObjectBoundaryShape.Sphere:
+                            //stream.WriteQuantizedReal(objectDatum.Properties.Boundary.WidthRadius, 0.0f, 60.0f, 16, false, false);
+                            //stream.WriteQuantizedReal(objectDatum.Properties.Boundary.NegativeHeight, 0.0f, 60.0f, 16, false, false);
+                            break;
+                        case MultiplayerObjectBoundaryShape.Cylinder:
+                            //stream.WriteQuantizedReal(objectDatum.Properties.Boundary.WidthRadius, 0.0f, 60.0f, 16, false, false);
+                            //stream.WriteQuantizedReal(objectDatum.Properties.Boundary.BoxLength, 0.0f, 60.0f, 16, false, false);
+                            //stream.WriteQuantizedReal(objectDatum.Properties.Boundary.PositiveHeight, 0.0f, 60.0f, 16, false, false);
+                            break;
+                        case MultiplayerObjectBoundaryShape.Box:
+                            //stream.WriteQuantizedReal(objectDatum.Properties.Boundary.WidthRadius, 0.0f, 60.0f, 16, false, false);
+                            //stream.WriteQuantizedReal(objectDatum.Properties.Boundary.BoxLength, 0.0f, 60.0f, 16, false, false);
+                            //stream.WriteQuantizedReal(objectDatum.Properties.Boundary.PositiveHeight, 0.0f, 60.0f, 16, false, false);
+                            //stream.WriteQuantizedReal(objectDatum.Properties.Boundary.NegativeHeight, 0.0f, 60.0f, 16, false, false);
+                            break;
+                    }
+                }
+            }
         }
     }
 
@@ -250,7 +335,12 @@ namespace TagTool.BlamFile.Chunks.MapVariants
 
         public static void Encode(BitStreamWriter stream, VariantObjectQuota objectQuota)
         {
-            // TODO: Implement
+            stream.WriteInteger((uint)objectQuota.ObjectDefinitionIndex, 32);
+            stream.WriteInteger(objectQuota.MinimumCount, 8);
+            stream.WriteInteger(objectQuota.MaximumCount, 8);
+            stream.WriteInteger(objectQuota.PlacedOnMap, 8);
+            stream.WriteInteger((uint)objectQuota.MaxAllowed, 8);
+            stream.WriteFloat(objectQuota.Cost, 32);
         }
     }
 }
