@@ -502,6 +502,9 @@ namespace TagTool.Porting.Gen2
         public void ConvertScenarioPlacements(Gen2Scenario gen2Tag, Gen2Scenario rawgen2tag,
             Scenario newScenario, Stream gen2CacheStream, Stream cacheStream)
         {
+
+            List<uint> UniqueIDList = new List<uint>();
+
             // Object names
             foreach (var objname in gen2Tag.ObjectNames)
             {
@@ -558,6 +561,8 @@ namespace TagTool.Porting.Gen2
                     PowerGroup = machobj.DeviceData.PowerGroup,
                     PositionGroup = machobj.DeviceData.PositionGroup
                 });
+
+                UniqueIDList.Add((uint)machobj.ObjectData.ObjectId.UniqueId);
             }
 
             // Device controls
@@ -594,6 +599,8 @@ namespace TagTool.Porting.Gen2
                     PowerGroup = ctrlobj.DeviceData.PowerGroup,
                     PositionGroup = ctrlobj.DeviceData.PositionGroup
                 });
+
+                UniqueIDList.Add((uint)ctrlobj.ObjectData.ObjectId.UniqueId);
             }
 
             // Crates
@@ -626,6 +633,8 @@ namespace TagTool.Porting.Gen2
                         Source = (ObjectIdentifier.SourceValue)crateobj.ObjectData.ObjectId.Source,
                     },
                 });
+
+                UniqueIDList.Add((uint)crateobj.ObjectData.ObjectId.UniqueId);
             }
 
             // Scenery
@@ -660,9 +669,12 @@ namespace TagTool.Porting.Gen2
                         Source = (ObjectIdentifier.SourceValue)scenobj.ObjectData.ObjectId.Source,
                     },
                     Multiplayer = new Scenario.MultiplayerObjectProperties(),
+                    HavokMoppIndex = scenobj.SceneryData.HavokMoppIndex
                 };
                 newScenario.Scenery.Add(scenery);
                 AutoConverter.TranslateEnum(gen2Tag.Scenery[scenobjindex].SceneryData.ValidMultiplayerGames, out scenery.Multiplayer.EngineFlags, scenery.Multiplayer.EngineFlags.GetType());
+
+                UniqueIDList.Add((uint)scenobj.ObjectData.ObjectId.UniqueId);
             }
 
             // Bipeds
@@ -700,6 +712,8 @@ namespace TagTool.Porting.Gen2
                     Flags = (Scenario.BipedInstance.ScenarioUnitDatumFlags)bipdobj.UnitData.Flags
                 };
                 newScenario.Bipeds.Add(biped);
+
+                UniqueIDList.Add((uint)bipdobj.ObjectData.ObjectId.UniqueId);
             }
 
             // Weapons
@@ -734,6 +748,8 @@ namespace TagTool.Porting.Gen2
                     WeaponFlags = (Scenario.WeaponInstance.ScenarioWeaponDatumFlags)weapobj.WeaponData.Flags,
                 };
                 newScenario.Weapons.Add(weapon);
+
+                UniqueIDList.Add((uint)weapobj.ObjectData.ObjectId.UniqueId);
             }
 
             // Equipment
@@ -767,6 +783,8 @@ namespace TagTool.Porting.Gen2
                     },
                 };
                 newScenario.Equipment.Add(equipment);
+
+                UniqueIDList.Add((uint)eqipobj.ObjectData.ObjectId.UniqueId);
             }
 
             // Player starting locations
@@ -837,7 +855,7 @@ namespace TagTool.Porting.Gen2
             AutoConverter.TranslateList(gen2Tag.SpawnData, newScenario.SpawnData);
 
             // Item Collection -> Weapon/Vehicle Placement
-            byte uniqueid = 0;
+            uint uniqueid = UniqueIDList.Max() + 1;
             CachedTag paletteTag;
             TagTool.Tags.Definitions.Gen2.ItemCollection itemlayout = null;
             TagTool.Tags.Definitions.Gen2.VehicleCollection vehilayout = null;
@@ -990,7 +1008,7 @@ namespace TagTool.Porting.Gen2
                             break;
                     }
                 }
-                uniqueid += 101;
+                uniqueid++;
             }
 
             ConvertNetgameFlags(rawgen2tag, newScenario);
@@ -1317,6 +1335,13 @@ namespace TagTool.Porting.Gen2
                     case 0x53: // HK_MOPP_TERM32
                         int key = data[i + 4] + ((data[i + 3] + ((data[i + 2] + (data[i + 1] << 8)) << 8)) << 8);
                         key = ConvertShapeKey(key);
+                        //keys with this flag reference scenery objects which is unsupported in later games
+                        //swap the opcode to 0 to return and null the key
+                        if ((key & 0x80000000) != 0)
+                        {
+                            key = 0;
+                            data[i] = 0;
+                        }
                         data[i + 1] = (byte)((key & 0x7F000000) >> 24);
                         data[i + 2] = (byte)((key & 0x00FF0000) >> 16);
                         data[i + 3] = (byte)((key & 0x0000FF00) >> 8);
