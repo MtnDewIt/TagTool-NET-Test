@@ -3,7 +3,6 @@ using System.IO;
 using TagTool.Common;
 using TagTool.IO;
 using TagTool.BlamFile;
-using TagTool.Cache.MCC;
 
 namespace TagTool.Cache.Gen4
 {
@@ -35,7 +34,7 @@ namespace TagTool.Cache.Gen4
             }
 
             uint stringIdIndexTableOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, stringIDHeader.IndicesOffset);
-            uint stringIdBufferOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, stringIDHeader.BufferOffset);
+            uint stringIdBufferOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, baseMapFile.CachePlatform == CachePlatform.MCC ? stringIDHeader.BufferOffsetMCC : stringIDHeader.BufferOffset);
             
             //
             // Read offsets

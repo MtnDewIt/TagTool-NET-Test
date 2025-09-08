@@ -4,6 +4,7 @@ using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.IO;
+using static TagTool.BlamFile.Blf;
 
 namespace TagTool.Commands.Files
 {
@@ -30,26 +31,15 @@ namespace TagTool.Commands.Files
                 return new TagToolError(CommandError.ArgInvalid, $"\"{args[0]}\" does not exist at the specified path");
 
             FileInfo output = new FileInfo(args[1]);
+
             if (!output.Directory.Exists)
                 output.Directory.Create();
 
-            CacheVersion version = CacheVersion.Halo3Retail;
-            CachePlatform cachePlatform = CachePlatform.Original;
-
-            // todo: support little endian
-            /*if (args.Count == 3)
-            {
-                if (CacheVersion.TryParse(args[2], out CacheVersion tempVersion))
-                    version = tempVersion;
-            }*/
-
-            Blf blf = new Blf(version, cachePlatform);
+            var blf = new Blf(CacheVersion.HaloOnlineED, CachePlatform.Original);
 
             using (var stream = file.OpenRead())
             using (var reader = new EndianReader(stream))
             {
-                if (version == CacheVersion.Halo3Retail || version == CacheVersion.Halo3ODST)
-                    reader.Format = EndianFormat.BigEndian;
                 if (!blf.Read(reader))
                     return new TagToolError(CommandError.CustomError, "Could not parse BLF");
             }

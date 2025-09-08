@@ -14,7 +14,7 @@ namespace TagTool.BlamFile
 {
     public class CampaignFileGenerator
     {
-        public static void GenerateCampaignFile(GameCache cache, FileInfo mapInfo, FileInfo modInfo) 
+        public static void GenerateCampaignFile(GameCache cache, FileInfo mapInfo, FileInfo modInfo)
         {
             string fileName = $"halo3.campaign";
             Blf campaignBlf = null;
@@ -32,7 +32,7 @@ namespace TagTool.BlamFile
                 campaignBlf = GenerateCampaignBlf(cache);
             }
 
-            if (campaignBlf == null) 
+            if (campaignBlf == null)
             {
                 new TagToolError(CommandError.OperationFailed);
                 return;
@@ -53,7 +53,7 @@ namespace TagTool.BlamFile
             }
         }
 
-        public static void GenerateCampaignFile(GameCache cache, GameCache blamCache) 
+        public static void GenerateCampaignFile(GameCache cache, GameCache blamCache)
         {
             FileInfo mapInfo = blamCache.Directory != null ? new FileInfo(Path.Combine(blamCache.Directory.FullName, "info")) : null;
             FileInfo modInfo = null; // TODO: Get mod info relative to cache path

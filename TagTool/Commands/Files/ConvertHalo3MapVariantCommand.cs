@@ -7,6 +7,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TagTool.BlamFile;
+using TagTool.BlamFile.Chunks;
+using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
@@ -74,19 +76,19 @@ namespace TagTool.Commands.Files
             [740] = "fortress",
         };
 
-        private static readonly Dictionary<ContentItemType, string> ContentTypeToFileExtension = new Dictionary<ContentItemType, string>()
+        private static readonly Dictionary<ContentItemMetadata.ContentItemType, string> ContentTypeToFileExtension = new Dictionary<ContentItemMetadata.ContentItemType, string>()
         {
-            [ContentItemType.None] = ".bin",
-            [ContentItemType.CtfVariant] = ".ctf",
-            [ContentItemType.SlayerVariant] = ".slayer",
-            [ContentItemType.OddballVariant] = ".oddball",
-            [ContentItemType.KingOfTheHillVariant] = ".koth",
-            [ContentItemType.JuggernautVariant] = ".jugg",
-            [ContentItemType.TerritoriesVariant] = ".terries",
-            [ContentItemType.AssaultVariant] = ".assault",
-            [ContentItemType.InfectionVariant] = ".zombiez",
-            [ContentItemType.VipVariant] = ".vip",
-            [ContentItemType.SandboxMap] = ".map",
+            [ContentItemMetadata.ContentItemType.None] = ".bin",
+            [ContentItemMetadata.ContentItemType.CTF] = ".ctf",
+            [ContentItemMetadata.ContentItemType.Slayer] = ".slayer",
+            [ContentItemMetadata.ContentItemType.Oddball] = ".oddball",
+            [ContentItemMetadata.ContentItemType.King] = ".koth",
+            [ContentItemMetadata.ContentItemType.Juggernaut] = ".jugg",
+            [ContentItemMetadata.ContentItemType.Territories] = ".terries",
+            [ContentItemMetadata.ContentItemType.Assault] = ".assault",
+            [ContentItemMetadata.ContentItemType.Infection] = ".zombiez",
+            [ContentItemMetadata.ContentItemType.VIP] = ".vip",
+            [ContentItemMetadata.ContentItemType.Usermap] = ".map",
         };
 
         public ConvertHalo3MapVariantCommand(GameCacheHaloOnlineBase cache)
@@ -157,7 +159,7 @@ namespace TagTool.Commands.Files
 
             string variantName = "";
             ulong uniqueId = 0;
-            ContentItemType contentType = ContentItemType.None;
+            ContentItemMetadata.ContentItemType contentType = ContentItemMetadata.ContentItemType.None;
 
             try
             {
@@ -177,9 +179,9 @@ namespace TagTool.Commands.Files
                             Length = (int)TagStructure.GetStructureSize(typeof(BlfMapVariantTagNames), blf.Version, CachePlatform.Original),
                             MajorVersion = 1,
                             MinorVersion = 0,
-                            Names = Enumerable.Range(0, 256).Select(x => new TagName()).ToArray(),
+                            Names = Enumerable.Range(0, 256).Select(x => new BlfMapVariantTagNames.TagName()).ToArray(),
                         };
-                        blf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
+                        blf.ContentFlags |= Blf.BlfFileContentFlags.MapVariantTagNames;
 
                         // The main issue is the scenario object placements. If objects still aren't appearinf on the map, try decreasing the scenario object count
 
@@ -194,12 +196,12 @@ namespace TagTool.Commands.Files
                                 blf.MapVariantTagNames.Names[i].Name = $"{quotaObject.Name}.{quotaObject.Group.Tag}";
                                 quota.ObjectDefinitionIndex = 0;
                                 quota.MaximumCount = 255;
-                                quota.MaxAllowed = 255;
+                                quota.MaxAllowed = -1;
                             }
                             else 
                             {
                                 quota.ObjectDefinitionIndex = 0;
-                                quota.MaxAllowed = 255;
+                                quota.MaxAllowed = -1;
                                 quota.Cost = -1;
                             }
                         }
@@ -220,7 +222,7 @@ namespace TagTool.Commands.Files
 
                     uniqueId = blf.ContentHeader?.Metadata?.UniqueId ?? 0;
                     variantName = blf.ContentHeader?.Metadata?.Name ?? "";
-                    contentType = blf.ContentHeader?.Metadata?.ContentType ?? ContentItemType.None;
+                    contentType = blf.ContentHeader?.Metadata?.ContentType ?? ContentItemMetadata.ContentItemType.None;
                 }
 
                 var output = GetOutputPath(variantName, contentType, uniqueId);
@@ -254,11 +256,11 @@ namespace TagTool.Commands.Files
             return GameCache.Open(mapFile);
         }
 
-        private string GetOutputPath(string variantName, ContentItemType contentType, ulong uniqueId)
+        private string GetOutputPath(string variantName, ContentItemMetadata.ContentItemType contentType, ulong uniqueId)
         {
             var filteredName = Regex.Replace($"{variantName.TrimStart().TrimEnd().TrimEnd('.')}", @"[<>:""/\|?*]", "_");
 
-            string outputPath = contentType == ContentItemType.SandboxMap ? Path.Combine(OutputPath, $@"map_variants", filteredName, $@"sandbox{ContentTypeToFileExtension[contentType]}") : Path.Combine(OutputPath, $@"game_variants", filteredName, $@"variant{ContentTypeToFileExtension[contentType]}");
+            string outputPath = contentType == ContentItemMetadata.ContentItemType.Usermap ? Path.Combine(OutputPath, $@"map_variants", filteredName, $@"sandbox{ContentTypeToFileExtension[contentType]}") : Path.Combine(OutputPath, $@"game_variants", filteredName, $@"variant{ContentTypeToFileExtension[contentType]}");
 
             if (Path.Exists(outputPath) && UniqueIdTable.Contains(uniqueId))
             {

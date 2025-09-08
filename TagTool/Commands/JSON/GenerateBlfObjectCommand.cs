@@ -39,7 +39,12 @@ namespace TagTool.Commands.JSON
             ".map",
             ".mapinfo",
             ".campaign",
-            ".blf"
+            ".blf",
+            ".bin",
+            ".mvar",
+            ".film",
+            ".clip",
+            ".shot"
         };
 
         public GenerateBlfObjectCommand(GameCache cache, GameCacheHaloOnlineBase cacheContext) : base
@@ -111,57 +116,13 @@ namespace TagTool.Commands.JSON
                 var fileName = Path.GetFileNameWithoutExtension(file.Name);
                 var fileExtension = file.Extension.TrimStart('.');
 
-                Blf blfData = null;
-
                 var exportPath = PathPrefix != null ? Path.Combine(PathPrefix, $@"maps\info") : $@"maps\info";
 
                 using (var stream = file.OpenRead())
                 {
                     var reader = new EndianReader(stream);
 
-                    switch (file.Extension)
-                    {
-                        case ".assault":
-                        case ".ctf":
-                        case ".jugg":
-                        case ".koth":
-                        case ".oddball":
-                        case ".slayer":
-                        case ".terries":
-                        case ".vip":
-                        case ".zombiez":
-                        case ".map":
-                            // I might add support for halo 3 variants at some point, but I'm not all that familiar
-                            // with the formatting for variants outside of ED, so for now we'll only support ED variants.
-                            blfData = new Blf(CacheVersion.HaloOnlineED, Cache.Platform);
-                            break;
-                        case ".bin":
-                        case ".blf":
-                            blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
-                            break;
-                        case ".campaign":
-                            blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
-                            exportPath = PathPrefix != null ? Path.Combine(PathPrefix, $@"data\levels") : $@"data\levels";
-                            break;
-                        case ".mapinfo":
-                            switch (reader.Length)
-                            {
-                                case 0x4E91:
-                                    blfData = new Blf(CacheVersion.Halo3Retail, Cache.Platform);
-                                    break;
-                                case 0x9A01:
-                                    blfData = new Blf(CacheVersion.Halo3ODST, Cache.Platform);
-                                    break;
-                                case 0xCDD9:
-                                    blfData = new Blf(CacheVersion.HaloReach, Cache.Platform);
-                                    break;
-                            }
-                            break;
-                        default:
-                            blfData = new Blf(Cache.Version, Cache.Platform);
-                            break;
-                    }
-
+                    var blfData = new Blf(Cache.Version, Cache.Platform);
                     blfData.Read(reader);
 
                     var blfObject = new BlfObject()
@@ -173,14 +134,18 @@ namespace TagTool.Commands.JSON
 
                     if (blfData.ContentHeader != null)
                     {
-                        fileName = blfData.ContentHeader.Metadata.Name.TrimEnd();
+                        fileName = blfData.Version switch
+                        {
+                            CacheVersion.HaloReach => blfData.ContentHeader.MetadataReach.Name.TrimEnd(),
+                            _ => blfData.ContentHeader.Metadata.Name.TrimEnd(),
+                        };
                     }
 
                     var handler = new BlfObjectHandler(blfData.Version, blfData.CachePlatform);
 
                     var jsonData = handler.Serialize(blfObject);
 
-                    var fileInfo = new FileInfo(Path.Combine(exportPath, $"{fileName}.json"));
+                    var fileInfo = new FileInfo(Path.Combine(exportPath, $"{ParseOutputFileName(fileName)}.json"));
 
                     if (!fileInfo.Directory.Exists)
                     {
@@ -194,6 +159,11 @@ namespace TagTool.Commands.JSON
             {
                 ErrorLog.Add($"Error converting \"{filePath}\" : {e.Message}");
             }
+        }
+
+        public static string ParseOutputFileName(string fileName) 
+        {
+            return Regex.Replace($"{fileName.TrimStart().TrimEnd().TrimEnd('.')}", @"[<>:""/\|?*]", "_");
         }
 
         public void ParseErrorLog()

@@ -14,7 +14,7 @@ namespace TagTool.Tags.Definitions
     public class SurvivalModeGlobals : TagStructure
     {
         [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public uint RespawnTime; // Bad! use game_engine_settings for this
+        public float RespawnTime; // Bad! use game_engine_settings for this
 
         [TagField(ValidTags = new [] { "unic" })] public CachedTag SurvivalModeStrings;
         [TagField(ValidTags = new [] { "scmb", "snd!" })] public CachedTag CountdownSound;
@@ -52,13 +52,18 @@ namespace TagTool.Tags.Definitions
         public uint UnknownHO_1;
 
         [TagStructure(Size = 0x108, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagStructure(Size = 0x10C, MinVersion = CacheVersion.HaloOnlineED)]
+        [TagStructure(Size = 0x10C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline327043)]
+        [TagStructure(Size = 0x20C, MinVersion = CacheVersion.HaloOnline372731, MaxVersion = CacheVersion.HaloOnline700123)]
         public class SurvivalEvent : TagStructure
 		{
             public GameEngineEventFlagsDefinition Flags;
             public TypeValue Type;
             [TagField(Flags = Label)]
             public StringId Event;
+
+            [TagField(Length = 0x100, MinVersion = CacheVersion.HaloOnline372731, MaxVersion = CacheVersion.HaloOnline700123)]
+            public string Unknown1;
+
             public AudienceValue Audience;
             public short DisplayPriority;
             public short SubPriority;
@@ -67,7 +72,7 @@ namespace TagTool.Tags.Definitions
             public StringId DisplayMedal; // This is only valid on Flavor Events and will not award a medal for Engine Events
 
             [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-            public uint UnknownHO;
+            public uint Unknown2;
 
             public float DisplayTime; // seconds
             public RequiredFieldValue RequiredField;
@@ -98,8 +103,7 @@ namespace TagTool.Tags.Definitions
             [TagField(ValidTags = new [] { "snd!" })] public CachedTag ChineseSimplifiedSound;
             [TagField(ValidTags = new [] { "snd!" })] public CachedTag PortugueseSound;
             [TagField(ValidTags = new [] { "snd!" })] public CachedTag PolishSound;
-            
-            public CachedTag ProbablyRussianSound; // cfgt is referenced here?
+            [TagField(ValidTags = new [] { "snd!" })] public CachedTag RussianSound;
 
             [Flags]
             public enum GameEngineEventFlagsDefinition : ushort

@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TagTool.BlamFile.Chunks;
+using TagTool.BlamFile.Chunks.MapVariants;
+using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
@@ -79,9 +82,9 @@ namespace TagTool.BlamFile
                 Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkStartOfFile), _cache.Version, _cache.Platform),
                 MajorVersion = 1,
                 MinorVersion = 2,
-                ByteOrderMarker = -2
+                ByteOrderMark = -2
             };
-            blf.ContentFlags |= BlfFileContentFlags.StartOfFile;
+            blf.ContentFlags |= Blf.BlfFileContentFlags.StartOfFile;
 
             blf.ContentHeader = new BlfContentHeader()
             {
@@ -89,12 +92,12 @@ namespace TagTool.BlamFile
                 Length = (int)TagStructure.GetStructureSize(typeof(BlfContentHeader), _cache.Version, _cache.Platform),
                 MajorVersion = 9,
                 MinorVersion = 3,
-                BuildVersion = 0xa0d4,
-                MapMinorVersion = 0xffff,
+                BuildVersion = -24364,
+                MapMinorVersion = -1,
                 Metadata = metadata
             };
 
-            blf.ContentFlags |= BlfFileContentFlags.ContentHeader;
+            blf.ContentFlags |= Blf.BlfFileContentFlags.ContentHeader;
 
             blf.MapVariant = new BlfMapVariant()
             {
@@ -103,9 +106,8 @@ namespace TagTool.BlamFile
                 MajorVersion = 12,
                 MinorVersion = 1,
                 MapVariant = mapVariant,
-                VariantVersion = 0
             };
-            blf.ContentFlags |= BlfFileContentFlags.MapVariant;
+            blf.ContentFlags |= Blf.BlfFileContentFlags.MapVariant;
 
             blf.MapVariantTagNames = new BlfMapVariantTagNames()
             {
@@ -113,9 +115,9 @@ namespace TagTool.BlamFile
                 Length = (int)TagStructure.GetStructureSize(typeof(BlfMapVariantTagNames), _cache.Version, _cache.Platform),
                 MajorVersion = 1,
                 MinorVersion = 0,
-                Names = Enumerable.Range(0, 256).Select(x => new TagName() { Name = "" }).ToArray()
+                Names = Enumerable.Range(0, 256).Select(x => new BlfMapVariantTagNames.TagName() { Name = "" }).ToArray()
             };
-            blf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
+            blf.ContentFlags |= Blf.BlfFileContentFlags.MapVariantTagNames;
 
             for (int i = 0; i < mapVariant.Quotas.Length; i++)
             {
@@ -123,7 +125,7 @@ namespace TagTool.BlamFile
                     continue;
 
                 var tag = _cache.TagCache.GetTag(mapVariant.Quotas[i].ObjectDefinitionIndex);
-                blf.MapVariantTagNames.Names[i] = new TagName() { Name = $"{tag.Name}.{tag.Group.Tag}" };
+                blf.MapVariantTagNames.Names[i] = new BlfMapVariantTagNames.TagName() { Name = $"{tag.Name}.{tag.Group.Tag}" };
             }
 
             blf.EndOfFile = new BlfChunkEndOfFile()
@@ -133,9 +135,9 @@ namespace TagTool.BlamFile
                 MajorVersion = 1,
                 MinorVersion = 1,
                 AuthenticationDataSize = 0,
-                AuthenticationType = BlfAuthenticationType.None
+                AuthenticationType = BlfChunkEndOfFile.BlfAuthenticationType.None
             };
-            blf.ContentFlags |= BlfFileContentFlags.EndOfFile;
+            blf.ContentFlags |= Blf.BlfFileContentFlags.EndOfFile;
 
             return blf;
         }
@@ -224,7 +226,7 @@ namespace TagTool.BlamFile
             paletteEntry.ObjectDefinitionIndex = tag.Index;
             paletteEntry.PlacedOnMap = 0;
             paletteEntry.MaximumCount = paletteEntry.PlacedOnMap;
-            paletteEntry.MaxAllowed = 255;
+            paletteEntry.MaxAllowed = -1;
             paletteEntry.Cost = 0;
             mapVariant.PlaceableQuotaCount++;
             return firstEmptyIndex;
@@ -239,7 +241,7 @@ namespace TagTool.BlamFile
             var paletteEntry = ObjectTypes[objectType].Palette[instance.PaletteIndex] as ScenarioPaletteEntry;
             var obje = _cache.Deserialize(_cacheStream, paletteEntry.Object) as GameObject;
 
-            mapvPlacement.Flags = VariantObjectPlacementFlags.OccupiedSlot | VariantObjectPlacementFlags.ScenarioObject;
+            mapvPlacement.Flags = VariantObjectDatum.VariantObjectPlacementFlags.OccupiedSlot | VariantObjectDatum.VariantObjectPlacementFlags.ScenarioObject;
             mapvPlacement.QuotaIndex = mapvPaletteIndex;
             mapvPlacement.Position = instance.Position;
             Vectors3dFromEulerAngles(instance.Rotation, out mapvPlacement.Forward, out mapvPlacement.Up);
@@ -258,7 +260,7 @@ namespace TagTool.BlamFile
                 case GameObjectTypeHalo3ODST.Weapon:
                 case GameObjectTypeHalo3ODST.Vehicle:
                     if (obje.MultiplayerObject[0].Type < MultiplayerObjectType.TeleporterTwoWay)
-                        mapvPlacement.Flags |= VariantObjectPlacementFlags.RuntimeCandyMonitored;
+                        mapvPlacement.Flags |= VariantObjectDatum.VariantObjectPlacementFlags.RuntimeCandyMonitored;
                     break;
             }
         }
@@ -290,9 +292,9 @@ namespace TagTool.BlamFile
             };
 
             // Set the attached flags
-            mapvPlacement.Flags |= VariantObjectPlacementFlags.SpawnsRelative;
+            mapvPlacement.Flags |= VariantObjectDatum.VariantObjectPlacementFlags.SpawnsRelative;
             if (ObjectIsFixedOrPhased(objectTag) && ObjectIsEarlyMover(parrentScnrPaletteEntry.Object))
-                mapvPlacement.Flags |= VariantObjectPlacementFlags.SpawnsAttached;
+                mapvPlacement.Flags |= VariantObjectDatum.VariantObjectPlacementFlags.SpawnsAttached;
 
             RealVector3d parentForward, parentUp;
             Vectors3dFromEulerAngles(
@@ -308,7 +310,7 @@ namespace TagTool.BlamFile
             mapvPlacement.Position = new RealPoint3d(invParentToChildPos.I, invParentToChildPos.J, invParentToChildPos.K);
         }
 
-        private static void InitMultiplayerProperties(VariantMultiplayerProperties properties, ScenarioInstance instance, GameObject obje)
+        private static void InitMultiplayerProperties(VariantObjectDatum.VariantMultiplayerProperties properties, ScenarioInstance instance, GameObject obje)
         {
             //
             // Set multiplayer object properties
@@ -324,7 +326,7 @@ namespace TagTool.BlamFile
             var objeMultiplayerProperties = obje.MultiplayerObject[0];
             properties.SpawnTime = (byte)objeMultiplayerProperties.DefaultSpawnTime;
             properties.Type = objeMultiplayerProperties.Type;
-            properties.Boundary = new MultiplayerObjectBoundary()
+            properties.Boundary = new VariantObjectDatum.VariantMultiplayerProperties.MultiplayerObjectBoundary()
             {
                 Type = objeMultiplayerProperties.BoundaryShape,
                 NegativeHeight = objeMultiplayerProperties.BoundaryNegativeHeight,
@@ -342,11 +344,11 @@ namespace TagTool.BlamFile
             //else if (((scrnMultiplayerProperties.SpawnFlags >> 7) & 1) != 0)
             //    properties.MultiplayerFlags |= MultiplayerObjectFlags.PlacedAtStart;
 
-            properties.Flags = VariantPlacementFlags.Symmetric | VariantPlacementFlags.Asymmetric;
+            properties.Flags = VariantObjectDatum.VariantMultiplayerProperties.VariantPlacementFlags.Symmetric | VariantObjectDatum.VariantMultiplayerProperties.VariantPlacementFlags.Asymmetric;
             if (scrnMultiplayerProperties.Symmetry == GameEngineSymmetry.Symmetric)
-                properties.Flags &= ~VariantPlacementFlags.Asymmetric;
+                properties.Flags &= ~VariantObjectDatum.VariantMultiplayerProperties.VariantPlacementFlags.Asymmetric;
             if (scrnMultiplayerProperties.Symmetry == GameEngineSymmetry.Asymmetric)
-                properties.Flags &= ~VariantPlacementFlags.Symmetric;
+                properties.Flags &= ~VariantObjectDatum.VariantMultiplayerProperties.VariantPlacementFlags.Symmetric;
 
             if (scrnMultiplayerProperties.SpawnTime != 0)
                 properties.SpawnTime = (byte)scrnMultiplayerProperties.SpawnTime;
@@ -383,7 +385,7 @@ namespace TagTool.BlamFile
             }
         }
 
-        private static int ComputeSpareClips(VariantMultiplayerProperties properties, WeaponInstance instance, Weapon weap)
+        private static int ComputeSpareClips(VariantObjectDatum.VariantMultiplayerProperties properties, WeaponInstance instance, Weapon weap)
         {
             // not entirely sure whether this is correct. the names don't appear to be correct
             // however, in the limited tests i've done, it produces the correct result.
@@ -429,7 +431,7 @@ namespace TagTool.BlamFile
             mapVariant.RuntimeEngineSubType = GameEngineSubType.All;
             mapVariant.MaximumBudget = _scenario.SandboxBudget;
             mapVariant.SpentBudget = 0;
-            mapVariant.RuntimeShowHelpers = true;
+            mapVariant.HelpersEnabled = true;
             mapVariant.Objects = Enumerable.Range(0, 640).Select(x => CreateDefaultPlacement()).ToArray();
             mapVariant.ObjectTypeStartIndex = Enumerable.Range(0, 16).Select(x => (short)0).ToArray();
             mapVariant.Quotas = Enumerable.Range(0, 256).Select(x => CreateDefaultPaletteItem()).ToArray();
@@ -446,13 +448,13 @@ namespace TagTool.BlamFile
         {
             return new VariantObjectDatum()
             {
-                RuntimeObjectIndex = -1,
-                RuntimeEditorObjectIndex = -1,
+                ObjectIndex = -1,
+                HelperObjectIndex = -1,
                 QuotaIndex = -1,
-                Properties = new VariantMultiplayerProperties()
+                Properties = new VariantObjectDatum.VariantMultiplayerProperties()
                 {
                     EngineFlags = GameEngineSubTypeFlags.All,
-                    Flags = VariantPlacementFlags.Symmetric | VariantPlacementFlags.Asymmetric
+                    Flags = VariantObjectDatum.VariantMultiplayerProperties.VariantPlacementFlags.Symmetric | VariantObjectDatum.VariantMultiplayerProperties.VariantPlacementFlags.Asymmetric
                 },
                 ParentObject = new ObjectIdentifier()
                 {

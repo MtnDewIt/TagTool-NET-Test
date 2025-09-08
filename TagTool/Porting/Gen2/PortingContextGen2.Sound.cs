@@ -131,7 +131,6 @@ namespace TagTool.Porting.Gen2
             //
 
             sound.ImportType = ImportType.SingleLayer;
-            sound.Unknown12 = 0;
             sound.Promotion.LongestPermutationDuration = (uint)gen2Sound.MaximumPlayTime;
 
             //

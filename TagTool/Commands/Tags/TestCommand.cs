@@ -78,7 +78,7 @@ namespace TagTool.Commands
         {
             cache.Version = version;
             cache.TagCacheGenHO.Version = version;
-            cache.TagCacheGenHO.Header.CreationTime = CacheVersionDetection.GetTimestamp(version);
+            cache.TagCacheGenHO.Header.CreationDate = LastModificationDate.CreateFromVersion(version);
             cache.StringTableHaloOnline.Version = version;
             cache.Serializer = new TagSerializer(version, CachePlatform.Original);
             cache.Deserializer = new TagDeserializer(version, CachePlatform.Original);
@@ -143,13 +143,12 @@ namespace TagTool.Commands
             {
                 var writer = new EndianWriter(stream);
                 var reader = new EndianReader(stream);
-                var ctx = new DataSerializationContext(reader, writer);
-            
-                var header = cache.Deserializer.Deserialize<TagCacheHaloOnlineHeader>(ctx);
-                header.CreationTime = CacheVersionDetection.GetTimestamp(targetVersion);
+
+                var header = CacheFileSectionHeader.ReadHeader(reader, cache.Version, cache.Platform);
+                header.CreationDate = LastModificationDate.CreateFromVersion(targetVersion);
             
                 stream.Position = 0;
-                cache.Serializer.Serialize(ctx, header);
+                CacheFileSectionHeader.WriteHeader(writer, cache.Version, cache.Platform, header);
             }
             
             // resource caches
@@ -164,13 +163,12 @@ namespace TagTool.Commands
                 {
                     var writer = new EndianWriter(stream);
                     var reader = new EndianReader(stream);
-                    var ctx = new DataSerializationContext(reader, writer);
-            
-                    var header = cache.Deserializer.Deserialize<ResourceCacheHaloOnlineHeader>(ctx);
-                    header.CreationTime = CacheVersionDetection.GetTimestamp(targetVersion);
-            
+
+                    var header = CacheFileSectionHeader.ReadHeader(reader, cache.Version, cache.Platform);
+                    header.CreationDate = LastModificationDate.CreateFromVersion(targetVersion);
+
                     stream.Position = 0;
-                    cache.Serializer.Serialize(ctx, header);
+                    CacheFileSectionHeader.WriteHeader(writer, cache.Version, cache.Platform, header);
                 }
             }
             
@@ -180,20 +178,16 @@ namespace TagTool.Commands
                 if (file.Extension != ".map")
                     continue;
             
-                MapFile mapFile;
+                MapFile mapFile = new MapFile();
                 using (var stream = file.Open(FileMode.Open, FileAccess.ReadWrite))
                 {
-                    var writer = new EndianWriter(stream);
                     var reader = new EndianReader(stream);
-                    var ctx = new DataSerializationContext(reader, writer);
-            
-                    mapFile = new MapFile();
                     mapFile.Read(reader);
                 }
 
                 var header = mapFile.Header as CacheFileHeaderGenHaloOnline;
                 mapFile.Version = targetVersion;
-                header.CreationDate = new LastModificationDate(CacheVersionDetection.GetTimestamp(mapFile.Version));
+                header.CreationDate = LastModificationDate.CreateFromVersion(mapFile.Version);
                 header.Build = CacheVersionDetection.GetBuildName(mapFile.Version, mapFile.CachePlatform);
                 for (int i = 0; i < header.SharedCreationDate.Length; i++)
                     header.SharedCreationDate[i].LastModificationDate = header.CreationDate;

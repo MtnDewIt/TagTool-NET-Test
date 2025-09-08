@@ -15,7 +15,7 @@ namespace TagTool.Tags.Definitions.Gen2
         public byte[] Padding;
         [TagField(Length = 0x20, Flags = TagFieldFlags.Padding)]
         public byte[] Padding1;
-        public Point2d AnchorOffset;
+        public Int16Point2d AnchorOffset;
         public float WidthScale;
         public float HeightScale;
         public ScalingFlagsValue ScalingFlags;
@@ -47,7 +47,7 @@ namespace TagTool.Tags.Definitions.Gen2
         public List<GlobalHudMultitextureOverlayDefinition> MultitexOverlay;
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
         public byte[] Padding6;
-        public Point2d AnchorOffset1;
+        public Int16Point2d AnchorOffset1;
         public float WidthScale1;
         public float HeightScale1;
         public ScalingFlagsValue1 ScalingFlags1;
@@ -79,7 +79,7 @@ namespace TagTool.Tags.Definitions.Gen2
         public List<GlobalHudMultitextureOverlayDefinition1> MultitexOverlay1;
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
         public byte[] Padding11;
-        public Point2d AnchorOffset2;
+        public Int16Point2d AnchorOffset2;
         public float WidthScale2;
         public float HeightScale2;
         public ScalingFlagsValue2 ScalingFlags2;
@@ -127,7 +127,7 @@ namespace TagTool.Tags.Definitions.Gen2
         /// extra spacing beyond bitmap width for text alignment
         /// </summary>
         public short WidthOffset;
-        public Point2d OffsetFromReferenceCorner;
+        public Int16Point2d OffsetFromReferenceCorner;
         public ArgbColor OverrideIconColor;
         public sbyte FrameRate030;
         public FlagsValue1 Flags1;
@@ -627,7 +627,7 @@ namespace TagTool.Tags.Definitions.Gen2
         [TagStructure(Size = 0x88)]
         public class GrenadeHudOverlayBlock : TagStructure
         {
-            public Point2d AnchorOffset;
+            public Int16Point2d AnchorOffset;
             public float WidthScale;
             public float HeightScale;
             public ScalingFlagsValue ScalingFlags;

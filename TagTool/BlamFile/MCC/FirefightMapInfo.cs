@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TagTool.Tags;
 using System.Linq;
 using TagTool.Tags.Definitions;
+using TagTool.BlamFile.Chunks;
 
 namespace TagTool.BlamFile.MCC
 {
@@ -38,18 +39,18 @@ namespace TagTool.BlamFile.MCC
             scenario.MaximumDesiredPlayers = 6;
             scenario.GameEngineTeamCounts = GameCategory.DefaultTeamCounts;
 
-            scenario.MapFlags = BlfScenarioFlags.Visible | BlfScenarioFlags.GeneratesFilm;
+            scenario.MapFlags = BlfScenario.BlfScenarioFlags.Visible | BlfScenario.BlfScenarioFlags.GeneratesFilm;
 
             switch (scnr.MapType)
             {
                 case ScenarioMapType.MainMenu:
-                    scenario.MapFlags |= BlfScenarioFlags.IsMainmenu;
+                    scenario.MapFlags |= BlfScenario.BlfScenarioFlags.IsMainmenu;
                     break;
                 case ScenarioMapType.Multiplayer:
-                    scenario.MapFlags |= BlfScenarioFlags.IsMultiplayer;
+                    scenario.MapFlags |= BlfScenario.BlfScenarioFlags.IsMultiplayer;
                     break;
                 case ScenarioMapType.SinglePlayer:
-                    scenario.MapFlags |= BlfScenarioFlags.IsCampaign;
+                    scenario.MapFlags |= BlfScenario.BlfScenarioFlags.IsCampaign;
                     break;
             }
 

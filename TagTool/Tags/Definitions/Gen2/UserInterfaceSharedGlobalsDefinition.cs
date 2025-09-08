@@ -678,7 +678,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 [TagStructure(Size = 0x4)]
                 public class PointBlockReferenceBlock : TagStructure
                 {
-                    public Point2d Coordinates;
+                    public Int16Point2d Coordinates;
                 }
             }
             
@@ -808,7 +808,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 public short IntroAnimationDelayMilliseconds;
                 public BitmapBlendMethodValue BitmapBlendMethod;
                 public short InitialSpriteFrame;
-                public Point2d TopLeft;
+                public Int16Point2d TopLeft;
                 public float HorizTextureWrapsSecond;
                 public float VertTextureWrapsSecond;
                 [TagField(ValidTags = new [] { "bitm" })]
@@ -817,7 +817,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
                 public byte[] Padding;
                 public float SpriteAnimationSpeedFps;
-                public Point2d ProgressBottomLeft;
+                public Int16Point2d ProgressBottomLeft;
                 public StringId StringIdentifier;
                 public RealVector2d ProgressScale;
                 

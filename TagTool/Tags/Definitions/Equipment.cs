@@ -139,7 +139,6 @@ namespace TagTool.Tags.Definitions
         public List<ScramblerBlock> Scrambler;
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<WeaponJammerBlock> WeaponJammer;
-
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<AmmoPackBlock> AmmoPack;
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
@@ -304,7 +303,8 @@ namespace TagTool.Tags.Definitions
             {
                 AlongAimingVector,
                 CameraPosZPlane,
-                FootPosZPlane
+                FootPosZPlane,
+                Bit3, // unknown, referenced in later HO builds
             }
         }
 

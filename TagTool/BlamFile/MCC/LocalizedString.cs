@@ -9,7 +9,7 @@ namespace TagTool.BlamFile.MCC
 
         public string ParseLocalizedString(int length, string errorMessage)
         {
-            if (Neutral.Length <= length) 
+            if (Neutral.Length <= length)
             {
                 return Neutral;
             }

@@ -10,24 +10,12 @@ using TagTool.Tags;
 
 namespace TagTool.Cache.HaloOnline
 {
-    [TagStructure(Size = 0x20)]
-    public class ResourceCacheHaloOnlineHeader
-    {
-        public int UnusedTag;
-        public uint ResourceTableOffset;
-        public int ResourceCount;
-        public int Unused;
-        public long CreationTime;
-        public int Unused2;
-        public int Unused3;
-    }
-
     // Class for .dat files containing resources
     public class ResourceCacheHaloOnline
     {
         public CacheVersion Version;
         public CachePlatform CachePlatform;
-        public ResourceCacheHaloOnlineHeader Header;
+        public CacheFileSectionHeader Header;
 
         public List<Resource> Resources;
 
@@ -50,15 +38,11 @@ namespace TagTool.Cache.HaloOnline
                 Read(stream);
         }
 
-        public ResourceCacheHaloOnline(CacheVersion version)
+        public ResourceCacheHaloOnline(CacheVersion version, CachePlatform platform)
         {
             Version = version;
             Resources = new List<Resource>();
-            Header = new ResourceCacheHaloOnlineHeader
-            {
-                ResourceTableOffset = 0x20,
-                CreationTime = 0x01D0631BCC92931B
-            };
+            Header = CacheFileSectionHeader.CreateHeader(version, platform);
         }
 
         private void Read(Stream stream)
@@ -68,18 +52,17 @@ namespace TagTool.Cache.HaloOnline
             stream.Position = 0;
             var addresses = new List<uint>();
             var sizes = new List<uint>();
-            var dataContext = new DataSerializationContext(reader);
-            var deserializer = new TagDeserializer(Version, CachePlatform);
-            Header = deserializer.Deserialize<ResourceCacheHaloOnlineHeader>(dataContext);
 
-            reader.SeekTo(Header.ResourceTableOffset);
+            Header = CacheFileSectionHeader.ReadHeader(reader, Version, CachePlatform);
+
+            reader.SeekTo(Header.FileOffsets);
 
             // read all resource offsets
 
-            if (Header.ResourceCount == 0)
+            if (Header.FileCount == 0)
                 return;
 
-            for (var i = 0; i < Header.ResourceCount; i++)
+            for (var i = 0; i < Header.FileCount; i++)
             {
                 var address = reader.ReadUInt32();
 
@@ -96,7 +79,8 @@ namespace TagTool.Cache.HaloOnline
             for (var i = 0; i < addresses.Count - 1; i++)
                 sizes.Add(addresses[i + 1] - addresses[i]);
 
-            sizes.Add(Header.ResourceTableOffset - addresses.Last());
+            // TODO: Casting Bad. Make Better
+            sizes.Add((uint)Header.FileOffsets - addresses.Last());
 
             foreach (var resource in Resources)
             {
@@ -109,16 +93,11 @@ namespace TagTool.Cache.HaloOnline
 
         private void CreateEmptyResourceCache(Stream stream)
         {
-            Header = new ResourceCacheHaloOnlineHeader
-            {
-                ResourceTableOffset = TagStructure.GetStructureSize(typeof(ResourceCacheHaloOnlineHeader), Version, CachePlatform),
-                CreationTime = CacheVersionDetection.GetTimestamp(Version)
-            };
+            Header = CacheFileSectionHeader.CreateHeader(Version, CachePlatform);
+
             stream.Position = 0;
             var writer = new EndianWriter(stream, EndianFormat.LittleEndian);
-            var dataContext = new DataSerializationContext(writer);
-            var serializer = new TagSerializer(CacheVersion.HaloOnlineED, CachePlatform.Original);
-            serializer.Serialize(dataContext, Header);
+            CacheFileSectionHeader.WriteHeader(writer, Version, CachePlatform, Header);
             stream.Position = 0;
         }
 

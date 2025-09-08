@@ -1,5 +1,4 @@
-﻿using TagTool.Cache.MCC;
-using TagTool.Common;
+﻿using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
@@ -16,61 +15,11 @@ namespace TagTool.Cache
                 return false;
         }
 
-        public static CacheFileHeader Read(CacheFileVersion fileVersion, CacheVersion version, CachePlatform cachePlatform, EndianReader reader)
+        public static CacheFileHeader Read(CacheVersion version, CachePlatform cachePlatform, EndianReader reader)
         {
             var deserializer = new TagDeserializer(version, cachePlatform);
             reader.SeekTo(0);
             var dataContext = new DataSerializationContext(reader);
-
-            if (fileVersion == CacheFileVersion.HaloMCCUniversal)
-            {
-                // TODO: cleanup
-                // adapt the header for gen3 for now
-                var header = deserializer.Deserialize<CacheFileHeaderMCC>(dataContext);
-                header.StringIdsHeader.BufferOffset = header.StringIdsHeader.BufferOffsetMCC;
-
-                if (version >= CacheVersion.Halo4)
-                {
-                    return new CacheFileHeaderGen4()
-                    {
-                        HeaderSignature = header.HeaderSignature,
-                        FileVersion = header.FileVersion,
-                        TagTableHeaderOffset64 = header.TagTableHeaderOffset.Value,
-                        TagMemoryHeader = header.TagMemoryHeader,
-                        SourceFile = header.SourceFile,
-                        Build = header.Build,
-                        CacheType = header.CacheType,
-                        SharedCacheType = header.SharedCacheType,
-                        StringIdsHeader = header.GetStringIDHeader(),
-                        TagNamesHeader = header.TagNamesHeader,
-                        Name = header.Name,
-                        VirtualBaseAddress64 = header.VirtualBaseAddress.Value,
-                        Partitions = header.Partitions,
-                        SectionTable = header.SectionTable,
-                        FooterSignature = header.FooterSignature
-                    };
-                }
-
-                var adapter = new CacheFileHeaderGen3()
-                {
-                    HeaderSignature = header.HeaderSignature,
-                    FileVersion = header.FileVersion,
-                    TagTableHeaderOffset = header.TagTableHeaderOffset,
-                    TagMemoryHeader = header.TagMemoryHeader,
-                    SourceFile = header.SourceFile,
-                    Build = header.Build,
-                    CacheType = header.CacheType,
-                    SharedCacheType = header.SharedCacheType,
-                    StringIdsHeader = header.GetStringIDHeader(),
-                    TagNamesHeader = header.TagNamesHeader,
-                    Name = header.Name,
-                    VirtualBaseAddress = header.VirtualBaseAddress,
-                    Partitions = header.Partitions,
-                    SectionTable = header.SectionTable,
-                    FooterSignature = header.FooterSignature
-                };
-                return adapter;
-            }
 
             switch (version)
             {
@@ -90,6 +39,7 @@ namespace TagTool.Cache
                     return deserializer.Deserialize<CacheFileHeaderGen3>(dataContext);
                 case CacheVersion.HaloOnlineED:
                 case CacheVersion.HaloOnline106708:
+                case CacheVersion.HaloOnline155080:
                 case CacheVersion.HaloOnline235640:
                 case CacheVersion.HaloOnline301003:
                 case CacheVersion.HaloOnline327043:
@@ -107,7 +57,7 @@ namespace TagTool.Cache
                 case CacheVersion.HaloOnline700123:
                     return deserializer.Deserialize<CacheFileHeaderGenHaloOnline>(dataContext);
                 case CacheVersion.Halo4:
-                case CacheVersion.H2AMP:
+                case CacheVersion.Halo2AMP:
                     return deserializer.Deserialize<CacheFileHeaderGen4>(dataContext);
             }
             return null;
@@ -125,15 +75,14 @@ namespace TagTool.Cache
         public abstract StringIDHeader GetStringIDHeader();
         public abstract TagNameHeader GetTagNameHeader();
         public abstract TagMemoryHeader GetTagMemoryHeader();
-
     }
 
-    [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo3Beta)]
+    [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo3Beta, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
-    [TagStructure(Size = 0x18, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+    [TagStructure(Size = 0x18, MinVersion = CacheVersion.Halo2PC, Platform = CachePlatform.MCC)]
     public class StringIDHeader : TagStructure
     {
-        [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo3Beta)]
+        [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo3Beta, Platform = CachePlatform.Original)]
         public uint BufferAlignedOffset;
 
         public int Count;
@@ -164,7 +113,8 @@ namespace TagTool.Cache
 
     [TagStructure(Size = 0xC, MaxVersion = CacheVersion.HaloCustomEdition)]
     [TagStructure(Size = 0xC, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Xbox)]
-    [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo2PC, MaxVersion = CacheVersion.Halo2PC)]
+    [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo2PC, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo2PC, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.MCC)]
     [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo3Beta)]
     public class TagMemoryHeader : TagStructure
     {
@@ -174,10 +124,10 @@ namespace TagTool.Cache
         public uint MemoryBufferOffset;
         public int MemoryBufferSize;
 
-        [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2PC)]
+        [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.Original)]
         public int MemoryBufferCapacity;
 
-        [TagField(MinVersion = CacheVersion.Halo2PC, MaxVersion = CacheVersion.Halo2PC)]
+        [TagField(MinVersion = CacheVersion.Halo2PC, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.Original)]
         public uint VirtualAddress;
     }
 }

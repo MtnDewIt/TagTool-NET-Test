@@ -111,6 +111,11 @@ namespace TagTool.Tags.Definitions
             InterfaceSprite,
             InterfaceGradient,
 
+            [TagEnumMember(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+            ScaleformSprite,
+            [TagEnumMember(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+            ScaleformGradient,
+
             [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
             MaterialMap,
             [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
@@ -300,7 +305,7 @@ namespace TagTool.Tags.Definitions
             public BitmapFlags Flags; // The flags of the bitmap image. DO NOT CHANGE
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public sbyte ExponentBias;
-            public Point2d RegistrationPoint; // The 'center' of the bitmap - i.e. for particles
+            public Int16Point2d RegistrationPoint; // The 'center' of the bitmap - i.e. for particles
             public sbyte MipmapCount; // DO NOT CHANGE (not counting the highest resolution)
             public BitmapImageCurve Curve; // How to convert from pixel value to linear.
             public byte InterleavedInterop;

@@ -78,14 +78,11 @@ namespace TagTool.Cache.HaloOnline
                 Version = CacheVersion.HaloOnlineED;
                 return;
             }
-                
 
-            var dataContext = new DataSerializationContext(reader);
-            var deserializer = new TagDeserializer(CacheVersion.HaloOnlineED, Platform);
+            var header = CacheFileSectionHeader.ReadHeader(reader, CacheVersion.HaloOnlineED, Platform);
+            var timestamp = LastModificationDate.GetTimestamp(header.CreationDate);
 
-            TagCacheHaloOnlineHeader header = deserializer.Deserialize<TagCacheHaloOnlineHeader>(dataContext);
-            if (CacheVersion.Unknown == (Version = CacheVersionDetection.DetectFromTimestamp(header.CreationTime, out var closestVersion)))
-                Version = closestVersion;
+            Version = CacheVersionDetection.DetectFromTimestamp(timestamp);
 
             reader.SeekTo(0);
         }

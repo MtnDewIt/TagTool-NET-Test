@@ -13,8 +13,8 @@ namespace TagTool.Tags.Definitions.Gen2
         public ListFlagsValue ListFlags;
         [TagField(ValidTags = new [] { "bitm" })]
         public CachedTag ArrowsBitmap;
-        public Point2d UpArrowsOffset; // from bot-left of 1st item
-        public Point2d DownArrowsOffset; // from bot-left of 1st item
+        public Int16Point2d UpArrowsOffset; // from bot-left of 1st item
+        public Int16Point2d DownArrowsOffset; // from bot-left of 1st item
         /// <summary>
         /// Animations ordered as follows:
         /// 0) list item focused
@@ -186,7 +186,7 @@ namespace TagTool.Tags.Definitions.Gen2
             public short IntroAnimationDelayMilliseconds;
             public BitmapBlendMethodValue BitmapBlendMethod;
             public short InitialSpriteFrame;
-            public Point2d TopLeft;
+            public Int16Point2d TopLeft;
             public float HorizTextureWrapsSecond;
             public float VertTextureWrapsSecond;
             [TagField(ValidTags = new [] { "bitm" })]
@@ -195,7 +195,7 @@ namespace TagTool.Tags.Definitions.Gen2
             [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
             public byte[] Padding;
             public float SpriteAnimationSpeedFps;
-            public Point2d ProgressBottomLeft;
+            public Int16Point2d ProgressBottomLeft;
             public StringId StringIdentifier;
             public RealVector2d ProgressScale;
             
@@ -382,7 +382,7 @@ namespace TagTool.Tags.Definitions.Gen2
             public byte[] Padding;
             [TagField(ValidTags = new [] { "skin" })]
             public CachedTag Skin;
-            public Point2d BottomLeft;
+            public Int16Point2d BottomLeft;
             public TableOrderValue TableOrder;
             public sbyte MaximumPlayerCount;
             public sbyte RowCount;

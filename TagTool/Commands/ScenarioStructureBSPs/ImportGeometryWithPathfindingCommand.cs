@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TagTool.BlamFile;
+using TagTool.BlamFile.Chunks.MapVariants;
 using TagTool.Cache;
 using TagTool.Commands.CollisionModels;
 using TagTool.Commands.Common;
@@ -733,7 +734,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
                     VariantObjectDatum currentPlacement = blf.MapVariant.MapVariant.Objects[i];
 
                     // If the current placements flags do not equal none (which is the defult value for this field)
-                    if (currentPlacement.Flags != VariantObjectPlacementFlags.None)
+                    if (currentPlacement.Flags != VariantObjectDatum.VariantObjectPlacementFlags.None)
                     {
                         // We set the upperIndex to equal the minimum value of the current index and zero
                         upperIndex = Math.Min(i, upperIndex);

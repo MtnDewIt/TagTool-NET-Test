@@ -802,10 +802,10 @@ namespace TagTool.Tags.Definitions.Gen1
             public CachedTag BaseBitmap;
             [TagField(ValidTags = new [] { "metr" })]
             public CachedTag ShieldMeter;
-            public Point2d ShieldMeterOrigin;
+            public Int16Point2d ShieldMeterOrigin;
             [TagField(ValidTags = new [] { "metr" })]
             public CachedTag BodyMeter;
-            public Point2d BodyMeterOrigin;
+            public Int16Point2d BodyMeterOrigin;
             [TagField(ValidTags = new [] { "effe" })]
             public CachedTag NightVisionOffOnEffect;
             [TagField(ValidTags = new [] { "effe" })]

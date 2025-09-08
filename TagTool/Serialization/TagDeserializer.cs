@@ -263,10 +263,12 @@ namespace TagTool.Serialization
             else if (valueType == typeof(ArgbColor))
                 return new ArgbColor(reader.ReadUInt32());
 
-            if (valueType == typeof(Point2d))
-                return new Point2d(reader.ReadInt16(), reader.ReadInt16());
+            if (valueType == typeof(Int16Point2d))
+                return new Int16Point2d(reader.ReadInt16(), reader.ReadInt16());
             if (valueType == typeof(Rectangle2d))
                 return new Rectangle2d(reader.ReadInt16(), reader.ReadInt16(), reader.ReadInt16(), reader.ReadInt16());
+            if (valueType == typeof(RealRectangle2d))
+                return new RealRectangle2d(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
             if (valueType == typeof(RealRectangle3d))
                 return new RealRectangle3d(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
 
@@ -312,6 +314,12 @@ namespace TagTool.Serialization
                     reader.ReadSingle(compression), reader.ReadSingle(compression), reader.ReadSingle(compression),
                     reader.ReadSingle(compression), reader.ReadSingle(compression), reader.ReadSingle(compression),
                     reader.ReadSingle(compression), reader.ReadSingle(compression), reader.ReadSingle(compression));
+            if (valueType == typeof(RealMatrix4x4))
+                return new RealMatrix4x4(
+                    reader.ReadSingle(compression), reader.ReadSingle(compression), reader.ReadSingle(compression), reader.ReadSingle(compression),
+                    reader.ReadSingle(compression), reader.ReadSingle(compression), reader.ReadSingle(compression), reader.ReadSingle(compression),
+                    reader.ReadSingle(compression), reader.ReadSingle(compression), reader.ReadSingle(compression), reader.ReadSingle(compression),
+                    reader.ReadSingle(compression), reader.ReadSingle(compression), reader.ReadSingle(compression), reader.ReadSingle(compression));
 
             // StringID
             if (valueType == typeof(StringId))
@@ -583,23 +591,35 @@ namespace TagTool.Serialization
         /// <returns>The deserialized tag reference.</returns>
         public CachedTag DeserializeTagReference(EndianReader reader, ISerializationContext context, TagFieldAttribute valueInfo)
         {
-            if (valueInfo == null || (valueInfo.Flags & Short) == 0)
-                reader.BaseStream.Position += (!CacheVersionDetection.IsInGen(CacheGeneration.Second, Version) ? 0xC : 0x4); // Skip the class name and zero bytes, it's not important
-            
-            var result = context.GetTagByIndex(reader.ReadInt32());
+            Tag group = Tag.Null;
 
-            if (result != null && valueInfo != null && valueInfo.ValidTags != null)
+            if (valueInfo == null || (valueInfo.Flags & Short) == 0) 
             {
-                if(!valueInfo.ValidTags.Any(x => result.IsInGroup(x)))
-                {
-                    var groups = string.Join(", ", valueInfo.ValidTags);
-                    Log.Warning($"Tag reference with invalid group found during deserialization:"
-                        + $"\n - { result.Name }.{ result.Group.Tag}" 
-                        + $"\n - valid groups: {groups}");
-                }
+                group = reader.ReadTag();
+
+                if (!CacheVersionDetection.IsInGen(CacheGeneration.Second, Version))
+                    reader.BaseStream.Position += 0x8;
             }
 
-            return result;
+            var result = context.GetTagByIndex(reader.ReadInt32());
+
+            if (group != Tag.Null && group.Value != 0)
+            {
+                if (result != null && valueInfo != null && valueInfo.ValidTags != null)
+                {
+                    if(!valueInfo.ValidTags.Any(x => result.IsInGroup(x)))
+                    {
+                        var groups = string.Join(", ", valueInfo.ValidTags);
+                        Log.Warning($"Tag reference with invalid group found during deserialization:"
+                            + $"\n - { result.Name }.{ result.Group.Tag}"
+                            + $"\n - valid groups: {groups}");
+                    }
+                }
+
+                return result;
+            }
+
+            return null;
         }
 
         /// <summary>

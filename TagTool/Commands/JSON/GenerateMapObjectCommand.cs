@@ -155,9 +155,10 @@ namespace TagTool.Commands.JSON
                         MapVersion = mapData.Version,
                         Header = headerData,
                         MapFileBlf = mapData.MapFileBlf,
+                        Reports = mapData.Reports,
                     };
 
-                    var handler = new MapObjectHandler(Cache, CacheContext);
+                    var handler = new MapObjectHandler(Cache.Version, Cache.Platform);
 
                     var jsonData = handler.Serialize(mapObject);
 
@@ -199,9 +200,10 @@ namespace TagTool.Commands.JSON
                     MapVersion = mapData.Version,
                     Header = headerData,
                     MapFileBlf = mapData.MapFileBlf,
+                    Reports = mapData.Reports,
                 };
 
-                var handler = new MapObjectHandler(Cache, CacheContext);
+                var handler = new MapObjectHandler(Cache.Version, Cache.Platform);
 
                 var jsonData = handler.Serialize(mapObject);
 
