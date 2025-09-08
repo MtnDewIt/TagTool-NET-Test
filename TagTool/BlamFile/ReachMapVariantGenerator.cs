@@ -432,8 +432,8 @@ namespace TagTool.BlamFile
 
             public short[] CalculateObjetTypeStartIndices()
             {
-                var indices = new short[16];
-                for (int i = 0; i < 16; i++)
+                var indices = new short[15];
+                for (int i = 0; i < 15; i++)
                     indices[i] = -1;
 
                 int placementCount = 0;

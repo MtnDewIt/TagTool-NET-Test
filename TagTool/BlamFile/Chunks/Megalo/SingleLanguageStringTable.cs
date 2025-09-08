@@ -82,12 +82,15 @@ namespace TagTool.BlamFile.Chunks.Megalo
         {
             var strings = new List<string>();
 
-            var reader = new EndianReader(new MemoryStream(stringTable.StringBuffer.Buffer));
-
-            for (int i = 0; i < stringTable.StringCount; i++)
+            if (stringTable.StringBuffer != null) 
             {
-                reader.SeekTo(stringTable.StringIndices[i]);
-                strings.Add(reader.ReadNullTerminatedString());
+                var reader = new EndianReader(new MemoryStream(stringTable.StringBuffer.Buffer));
+            
+                for (int i = 0; i < stringTable.StringCount; i++)
+                {
+                    reader.SeekTo(stringTable.StringIndices[i]);
+                    strings.Add(reader.ReadNullTerminatedString());
+                }
             }
 
             return strings;
