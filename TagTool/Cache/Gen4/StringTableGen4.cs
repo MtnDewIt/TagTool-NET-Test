@@ -16,55 +16,26 @@ namespace TagTool.Cache.Gen4
 
             var Gen4Header = (CacheFileHeaderGen4)baseMapFile.Header;
             var stringIDHeader = Gen4Header.GetStringIDHeader();
-
-            switch (Version)
-            {
-                case CacheVersion.Halo3Beta:
-                    Resolver = new StringIdResolverHalo3Beta();
-                    break;
-
-                case CacheVersion.Halo3Retail:
-                    Resolver = new StringIdResolverHalo3();
-                    break;
-
-                case CacheVersion.Halo3ODST:
-                    Resolver = new StringIdResolverHalo3ODST();
-                    break;
-
-                case CacheVersion.HaloReach:
-                    Resolver = new StringIdResolverHaloReach();
-                    StringKey = "ILikeSafeStrings";
-                    break;
-
-                case CacheVersion.Halo4:
-                    Resolver = new StringIdResolverHalo4();
-                    StringKey = "ILikeSafeStrings";
-                    break;
-
-                default:
-                    throw new NotSupportedException(CacheVersionDetection.GetBuildName(Version, baseMapFile.CachePlatform));
-            }
-
             var sectionTable = Gen4Header.SectionTable;
 
             // means no strings
             if (sectionTable != null && sectionTable.Sections[(int)CacheFileSectionType.StringSection].Size == 0)
                 return;
 
-            uint stringIdIndexTableOffset;
-            uint stringIdBufferOffset;
-            if (Version > CacheVersion.Halo3Beta)
+            switch (baseMapFile.CachePlatform)
             {
-                stringIdIndexTableOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, stringIDHeader.IndicesOffset);
-                stringIdBufferOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, stringIDHeader.BufferOffset);
+                case CachePlatform.MCC:
+                    Resolver = new StringIdResolverMCC(reader, stringIDHeader, sectionTable);
+                    break;
+                default:
+                    Resolver = new StringIdResolverHalo4();
+                    StringKey = "ILikeSafeStrings";
+                    break;
             }
-            else
-            {
-                stringIdIndexTableOffset = stringIDHeader.IndicesOffset;
-                stringIdBufferOffset = stringIDHeader.BufferOffset;
-            }
-            
 
+            uint stringIdIndexTableOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, stringIDHeader.IndicesOffset);
+            uint stringIdBufferOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, baseMapFile.CachePlatform == CachePlatform.MCC ? stringIDHeader.BufferOffsetMCC : stringIDHeader.BufferOffset);
+            
             //
             // Read offsets
             //

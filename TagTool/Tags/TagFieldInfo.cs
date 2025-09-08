@@ -179,7 +179,7 @@ namespace TagTool.Tags
 				case TypeCode.Object when type == typeof(CachedTag) && attr.Flags.HasFlag(Short):
                 //case TypeCode.Object when type == typeof(RgbColor):
                 case TypeCode.Object when type == typeof(ArgbColor):
-                case TypeCode.Object when type == typeof(Point2d):
+                case TypeCode.Object when type == typeof(Int16Point2d):
 				case TypeCode.Object when type == typeof(StringId):
 				case TypeCode.Object when type == typeof(Angle):
 				case TypeCode.Object when type == typeof(ComputeShaderReference):
@@ -194,14 +194,14 @@ namespace TagTool.Tags
 				case TypeCode.Double:
 				case TypeCode.Int64:
 				case TypeCode.UInt64:
-				case TypeCode.Object when type == typeof(CachedTag) && targetVersion != CacheVersion.Unknown && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo2Alpha, CacheVersion.Halo2Vista):
-				case TypeCode.Object when attr.Length == 0 && type == typeof(byte[]) && targetVersion != CacheVersion.Unknown && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo2Alpha, CacheVersion.Halo2Vista):
+				case TypeCode.Object when type == typeof(CachedTag) && targetVersion != CacheVersion.Unknown && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo2Alpha, CacheVersion.Halo2PC):
+				case TypeCode.Object when attr.Length == 0 && type == typeof(byte[]) && targetVersion != CacheVersion.Unknown && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo2Alpha, CacheVersion.Halo2PC):
 				case TypeCode.Object when type == typeof(Rectangle2d):
                 case TypeCode.Object when type == typeof(RealEulerAngles2d):
 				case TypeCode.Object when type == typeof(RealPoint2d):
 				case TypeCode.Object when type == typeof(RealVector2d):
-				case TypeCode.Object when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) && targetVersion != CacheVersion.Unknown && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo2Alpha, CacheVersion.Halo2Vista):
-				case TypeCode.Object when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(TagBlock<>) && targetVersion != CacheVersion.Unknown && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo2Alpha, CacheVersion.Halo2Vista):
+				case TypeCode.Object when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) && targetVersion != CacheVersion.Unknown && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo2Alpha, CacheVersion.Halo2PC):
+				case TypeCode.Object when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(TagBlock<>) && targetVersion != CacheVersion.Unknown && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo2Alpha, CacheVersion.Halo2PC):
 				case TypeCode.Object when type == typeof(PlatformUnsignedValue) && CacheVersionDetection.GetPlatformType(cachePlatform) == PlatformType._64Bit:
 				case TypeCode.Object when type == typeof(PlatformSignedValue) && CacheVersionDetection.GetPlatformType(cachePlatform) == PlatformType._64Bit:
 					return 0x08;
@@ -224,6 +224,7 @@ namespace TagTool.Tags
                 case TypeCode.Object when type == typeof(RealArgbColor):
 				case TypeCode.Object when type == typeof(RealRgbaColor):
 				case TypeCode.Object when type == typeof(RealQuaternion):
+				case TypeCode.Object when type == typeof(RealVector4d):
 				case TypeCode.Object when type == typeof(RealPlane3d):
 					return 0x10;
 
@@ -232,11 +233,18 @@ namespace TagTool.Tags
 					return 0x14;
 
                 case TypeCode.Object when type == typeof(RealBoundingBox):
-				case TypeCode.Object when type == typeof(RealRectangle3d):
+
+                case TypeCode.Object when type == typeof(RealRectangle2d):
+                    return 0x10;
+
+                case TypeCode.Object when type == typeof(RealRectangle3d):
 					return 0x18;
 
 				case TypeCode.Object when type == typeof(RealMatrix4x3):
 					return 0x30;
+
+                case TypeCode.Object when type == typeof(RealMatrix4x4):
+                    return 0x40;
 
                 case TypeCode.Object when type == typeof(DatumHandle):
                     return sizeof(uint);

@@ -46,7 +46,7 @@ namespace TagTool.Tags.Definitions
             public CacheAddress         CacheAddress; // 68
             public DatumHandle           DatumIndex; // 72
             public PageableResource     PageableResource; // 180
-            public Point2d              Point2d; // 184
+            public Int16Point2d              Point2d; // 184
             public RealArgbColor        RealArgbColor; // 200
             public RealBoundingBox      RealBoundingBox; // 224
             public RealEulerAngles2d    RealEulerAngles2d; // 232

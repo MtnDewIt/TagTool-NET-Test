@@ -2,6 +2,7 @@ using TagTool.Cache;
 using TagTool.Common;
 using System;
 using System.Collections.Generic;
+using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.Tags.Definitions
 {
@@ -67,7 +68,7 @@ namespace TagTool.Tags.Definitions
         public uint Unknown14;
         public CachedTag ImpactDamage;
         public CachedTag ImpactShieldDamage;
-        public List<Unit.CampaignMetagameBucket> MetagameProperties;
+        public List<MetagameBucket> MetagameProperties;
         public Bounds<float> DestroyAfterDeathTimeBounds;
     }
 

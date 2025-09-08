@@ -1,26 +1,58 @@
 using System;
+using System.Collections.Generic;
 using TagTool.Cache;
 using TagTool.Common;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "device_terminal", Tag = "term", Size = 0x140, MinVersion = CacheVersion.Halo3Retail)]
+    [TagStructure(Name = "device_terminal", Tag = "term", Size = 0x140, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "device_terminal", Tag = "term", Size = 0x48, MinVersion = CacheVersion.HaloReach)]
     public class Terminal : Device
     {
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public int BahBah;
+
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public int TerminalNumber;
+
         public StringId ActionString;
+
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public StringId Name;
+
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public short TerminalIndex;
-        [TagField(Flags = TagFieldFlags.Padding, Length = 0x2)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x2, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Unused2;
+
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public float TerminalExposure;
+
         public CachedTag ActivationSound;
+
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public CachedTag IllustrationBitmap;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public CachedTag TerminalStrings;
+
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public List<TerminalPage> Pages;
+
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag DeactivationSound;
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag TranslateSound1;
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag TranslateSound2;
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag ErrorSound;
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public TerminalScreen EasyScreen;
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public TerminalScreen NormalScreen;
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public TerminalScreen HeroicScreen;
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public TerminalScreen LegendaryScreen;
 
         [TagStructure(Size = 0x38)]
@@ -62,6 +94,14 @@ namespace TagTool.Tags.Definitions
                 Image7,
                 Image8
             }
+        }
+
+        [TagStructure(Size = 0x8)]
+        public class TerminalPage : TagStructure
+        {
+            public short BitmapSequenceIndex;
+            public short BitmapSpriteIndex;
+            public StringId Text;
         }
     }
 }

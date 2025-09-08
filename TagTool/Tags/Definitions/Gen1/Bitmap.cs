@@ -219,7 +219,7 @@ namespace TagTool.Tags.Definitions.Gen1
             /// </summary>
             public FormatValue Format;
             public FlagsValue Flags;
-            public Point2d RegistrationPoint;
+            public Int16Point2d RegistrationPoint;
             public short MipmapCount;
             [TagField(Length = 0x2)]
             public byte[] Padding;

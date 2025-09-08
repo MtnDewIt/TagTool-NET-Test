@@ -1,6 +1,6 @@
-﻿using TagTool.Cache;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using TagTool.Cache;
 using TagTool.JSON.Objects;
 
 namespace TagTool.JSON.Handlers
@@ -39,7 +39,8 @@ namespace TagTool.JSON.Handlers
                 new CacheAddressHandler(),
                 new DatumHandleHandler(),
                 new EnumHandler(),
-                new Point2dHandler(),
+                new Int16Point2dHandler(),
+                new NetworkRequestHashHandler(),
                 new RealArgbColorHandler(),
                 new RealBoundingBoxHandler(),
                 new RealEulerAngles2dHandler(),
@@ -75,6 +76,8 @@ namespace TagTool.JSON.Handlers
         {
             var converters = new List<JsonConverter>
             {
+                // TODO: It can't handle class inheritance within tag structure objects. Breaks game variants :/
+
                 // I really need to merge all these into a single handler which just takes a generic type as an input :/
                 new AngleHandler(),
                 new ArgbColorHandler(),
@@ -93,7 +96,8 @@ namespace TagTool.JSON.Handlers
                 new CacheAddressHandler(),
                 new DatumHandleHandler(),
                 new EnumHandler(),
-                new Point2dHandler(),
+                new Int16Point2dHandler(),
+                new NetworkRequestHashHandler(),
                 new RealArgbColorHandler(),
                 new RealBoundingBoxHandler(),
                 new RealEulerAngles2dHandler(),

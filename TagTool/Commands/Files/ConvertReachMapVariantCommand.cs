@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TagTool.BlamFile;
-using TagTool.BlamFile.Reach;
+using TagTool.BlamFile.Chunks;
+using TagTool.BlamFile.Chunks.MapVariants;
+using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
 using TagTool.Commands.Common;
-using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
 
@@ -57,9 +58,9 @@ namespace TagTool.Commands.Files
             [10070] = "cex_prisoner",
         };
 
-        private static readonly Dictionary<ContentItemType, string> ContentTypeToFileExtension = new Dictionary<ContentItemType, string>()
+        private static readonly Dictionary<ContentItemMetadata.ContentItemType, string> ContentTypeToFileExtension = new Dictionary<ContentItemMetadata.ContentItemType, string>()
         {
-            [ContentItemType.SandboxMap] = ".map",
+            [ContentItemMetadata.ContentItemType.Usermap] = ".map",
         };
 
         public ConvertReachMapVariantCommand(GameCacheHaloOnlineBase cache)
@@ -126,42 +127,33 @@ namespace TagTool.Commands.Files
         private async Task ConvertFileAsync(string filePath, DirectoryInfo mapsDirectory) 
         {
             var input = new FileInfo(filePath);
-            Blf convertedBlf = null;
+            Blf blf = null;
 
             string variantName = "";
             ulong uniqueId = 0;
-            ContentItemType contentType = ContentItemType.None;
+            ContentItemMetadata.ContentItemType contentType = ContentItemMetadata.ContentItemType.None;
 
-            try 
+            try
             {
-                Dictionary<Tag, BlfChunk> blfChunks;
-                using (var inputStream = input.OpenRead())
-                    blfChunks = BlfReader.ReadChunks(inputStream).ToDictionary(c => c.Tag);
+                using (var stream = input.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    var reader = new EndianReader(stream);
 
-                if (blfChunks.ContainsKey("mvar"))
-                {
-                    convertedBlf = ConvertMapVariant(mapsDirectory, blfChunks["mvar"]);
-                }
-                else if (blfChunks.ContainsKey("_cmp"))
-                {
-                    var decompressed = DecompressChunk(blfChunks["_cmp"]);
-                    var chunk = BlfReader.ReadChunks(new MemoryStream(decompressed)).First();
-                    if (chunk.Tag != "mvar")
-                        throw new Exception("Unsupported input file");
+                    blf = new Blf(CacheVersion.HaloReach, CachePlatform.Original);
+                    blf.Read(reader);
 
-                    convertedBlf = ConvertMapVariant(mapsDirectory, chunk);
-                }
-                else
-                {
-                    throw new Exception("Unsupported input file");
+                    if (blf.MapVariant != null)
+                    {
+                        blf = ConvertMapVariant(mapsDirectory, blf.MapVariant);
+
+                        if (blf == null)
+                            throw new Exception("Failed to convert map variant");
+                    }
                 }
 
-                if (convertedBlf == null)
-                    throw new Exception("Failed to convert map variant");
-
-                variantName = convertedBlf?.ContentHeader?.Metadata?.Name ?? "";
-                uniqueId = convertedBlf?.ContentHeader?.Metadata?.UniqueId ?? 0;
-                contentType = convertedBlf?.ContentHeader?.Metadata?.ContentType ?? ContentItemType.None;
+                variantName = blf?.ContentHeader?.Metadata?.Name ?? "";
+                uniqueId = blf?.ContentHeader?.Metadata?.UniqueId ?? 0;
+                contentType = blf?.ContentHeader?.Metadata?.ContentType ?? ContentItemMetadata.ContentItemType.None;
 
                 var output = GetOutputPath(variantName, contentType, uniqueId);
 
@@ -170,7 +162,7 @@ namespace TagTool.Commands.Files
                 using (var stream = new FileInfo(output).Create())
                 {
                     var writer = new EndianWriter(stream);
-                    convertedBlf.Write(writer);
+                    blf.Write(writer);
                 }
 
                 if (uniqueId != 0)
@@ -184,26 +176,22 @@ namespace TagTool.Commands.Files
             }
         }
 
-        private Blf ConvertMapVariant(DirectoryInfo mapsDirectory, BlfChunk chunk)
+        private Blf ConvertMapVariant(DirectoryInfo mapsDirectory, BlfMapVariant mapVariant)
         {
-            var stream = new MemoryStream(chunk.Data);
-
-            if (chunk.MajorVerson == 31)
+            if (mapVariant.MajorVersion == 31)
             {
-                return ConvertReachMapVariant(stream, mapsDirectory);
+                return ConvertReachMapVariant(mapVariant.ReachMapVariant, mapsDirectory);
             }
             else
             {
-                throw new Exception("Unsupported Map Variant version");
+                Log.Error("Unsupported Map Variant version");
+                return null; // Needs to throw something
             }
         }
 
-        private Blf ConvertReachMapVariant(MemoryStream stream, DirectoryInfo mapsDirectory)
+        private Blf ConvertReachMapVariant(ReachMapVariant mapVariant, DirectoryInfo mapsDirectory)
         {
-            var sourceBlf = new ReachBlfMapVariant();
-            sourceBlf.Decode(stream);
-
-            int mapId = sourceBlf.MapVariant.MapId;
+            int mapId = mapVariant.MapId;
             var sourceCache = GetMapCache(mapsDirectory, mapId);
             if (sourceCache == null)
                 return null;
@@ -212,10 +200,11 @@ namespace TagTool.Commands.Files
             var sourceScenario = sourceCache.Deserialize<Scenario>(sourceCacheStream, sourceCache.TagCache.FindFirstInGroup("scnr"));
             if (sourceScenario.MapId != mapId)
             {
-                throw new Exception($"Scenario map id did not match");
+                Log.Error($"Scenario map ids did not match {sourceScenario.MapId} <=> {mapId}");
+                return null; // Needs to throw something
             }
 
-            var converter = new ReachMapVariantConverter();
+            var converter = new ReachMapVariantGenerator();
 
             // hardcode for now
             converter.SubstitutedTags.Add(@"objects\vehicles\human\warthog\warthog.vehi", @"objects\vehicles\warthog\warthog.vehi");
@@ -300,7 +289,7 @@ namespace TagTool.Commands.Files
             converter.ExcludedMegaloLabels.Add("stp_flag");
             converter.ExcludedMegaloLabels.Add("stp_goal");
 
-            return converter.Convert(sourceScenario, sourceBlf);
+            return converter.Convert(sourceScenario, mapVariant);
         }
 
         private GameCache GetMapCache(DirectoryInfo mapsDirectory, int mapId)
@@ -308,11 +297,13 @@ namespace TagTool.Commands.Files
             var mapFile = new FileInfo(Path.Combine(mapsDirectory.FullName, $"{MapIdToFilename[mapId]}.map"));
             if (!mapFile.Exists)
             {
-                throw new Exception($"'{MapIdToFilename[mapId]}.map' could not be found.");
+                Log.Error($"'${MapIdToFilename[mapId]}.map' could not be found.");
+                return null; // Needs to throw something
             }
             return GameCache.Open(mapFile);
         }
 
+        /*
         private static byte[] DecompressChunk(BlfChunk cmpChunk)
         {
             var stream = new MemoryStream(cmpChunk.Data);
@@ -336,8 +327,9 @@ namespace TagTool.Commands.Files
                 return outStream.ToArray();
             }
         }
+        */
 
-        private string GetOutputPath(string variantName, ContentItemType contentType, ulong uniqueId)
+        private string GetOutputPath(string variantName, ContentItemMetadata.ContentItemType contentType, ulong uniqueId)
         {
             var filteredName = Regex.Replace($"{variantName.TrimStart().TrimEnd().TrimEnd('.')}", @"[<>:""/\|?*]", "_");
 

@@ -2,8 +2,6 @@ using TagTool.Cache;
 using TagTool.Common;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Tags.Definitions.Gen4
 {
@@ -139,6 +137,7 @@ namespace TagTool.Tags.Definitions.Gen4
         public WeaponTypes WeaponType;
         public short LowAmmoThreshold;
         public WeaponInterfaceStruct PlayerInterface;
+        [TagField(Platform = CachePlatform.Original)]
         public List<GNullBlock> WeaponPredictedResources;
         public List<Magazines> Magazines1;
         public List<WeaponTriggers> NewTriggers;
@@ -170,7 +169,12 @@ namespace TagTool.Tags.Definitions.Gen4
         // the sound or effect played when the weapon's age reaches fully recovered
         [TagField(ValidTags = new [] { "sndo","effe" })]
         public CachedTag AgeFullyRecovered;
+        [TagField(Platform = CachePlatform.Original)]
         public RealVector3d FirstPersonWeaponOffset;
+        [TagField(Platform = CachePlatform.MCC)]
+        public RealVector3d LoweredFirstPersonWeaponOffset;
+        [TagField(Platform = CachePlatform.MCC)]
+        public RealVector3d CenteredFirstPersonWeaponOffset;
         public RealVector2d FirstPersonScopeSize;
         // range in degrees. 0 is straight, -90 is down, 90 is up
         public Bounds<float> SupportThirdPersonCameraRange; // degrees

@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static TagTool.Tags.Definitions.Gen4.ModelAnimationGraph;
 using static TagTool.Tags.Definitions.Gen4.ModelAnimationGraph.AnimationGraphDefinitionsStruct.AnimationPoolBlockStruct.SharedModelAnimationBlock;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Gen4.ModelAnimationGraphs
 {
@@ -75,7 +76,7 @@ namespace TagTool.Commands.Gen4.ModelAnimationGraphs
                     }
                     else
                     {
-                        new TagToolWarning("Shared animation data from other jmad tags not supported!");
+                        Log.Warning("Shared animation data from other jmad tags not supported!");
                         continue;
                     }
                 }
@@ -86,7 +87,7 @@ namespace TagTool.Commands.Gen4.ModelAnimationGraphs
                 AnimationResourceData animationData1 = BuildAnimationResourceData(animationblock);
                 if (animationData1 == null)
                 {
-                    new TagToolWarning($"Failed to export {str} (invalid resource?)");
+                    Log.Warning($"Failed to export {str} (invalid resource?)");
                     continue;
                 }
 
@@ -198,7 +199,7 @@ namespace TagTool.Commands.Gen4.ModelAnimationGraphs
                 PrimaryRenderModelNodes = GetRenderModelNodes(primarynodes,
                     CalculateNodeListChecksum(Nodes, 0, true));
                 if (PrimaryRenderModelNodes.Count < primarynodes.Count)
-                    new TagToolWarning($"Matching primary model not found! Animation may not appear properly.");
+                    Log.Warning($"Matching primary model not found! Animation may not appear properly.");
             }
             if (Nodes.Any(n => n.ModelFlags.HasFlag(AnimationGraphDefinitionsStruct.AnimationGraphNodeBlock.AnimationNodeModelFlags.SecondaryModel)))
             {
@@ -206,7 +207,7 @@ namespace TagTool.Commands.Gen4.ModelAnimationGraphs
                 SecondaryRenderModelNodes = GetRenderModelNodes(secondarynodes,
                     CalculateNodeListChecksum(Nodes, 0, false));
                 if (SecondaryRenderModelNodes.Count < secondarynodes.Count)
-                    new TagToolWarning($"Matching secondary model not found! Animation may not appear properly.");
+                    Log.Warning($"Matching secondary model not found! Animation may not appear properly.");
             }
 
             foreach (var skellynode in Nodes)
@@ -224,7 +225,7 @@ namespace TagTool.Commands.Gen4.ModelAnimationGraphs
                 if (matchingnode == null)
                 {
                     matchingnode = new RenderModel.RenderModelNodeBlock();
-                    new TagToolWarning($"No matching render model node found for {CacheContext.StringTable.GetString(skellynode.Name)}");
+                    Log.Warning($"No matching render model node found for {CacheContext.StringTable.GetString(skellynode.Name)}");
                 }
                     
                 NodeList.Add(new Node

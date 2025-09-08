@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TagTool.Cache;
+using TagTool.Scripting.CSharp;
 
 namespace TagTool.Commands
 {
@@ -28,6 +28,11 @@ namespace TagTool.Commands
         /// </summary>
         public CommandContext Context =>
             (ContextStack.Count > 0) ? ContextStack.Peek() : null;
+
+        /// <summary>
+        /// CSharp Script Evaluator
+        /// </summary>
+        public readonly ScriptEvaluator ScriptEvaluator = new ScriptEvaluator();
 
         /// <summary>
         /// Gets the current path.

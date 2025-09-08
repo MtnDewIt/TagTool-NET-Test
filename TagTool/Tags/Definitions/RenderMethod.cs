@@ -163,7 +163,8 @@ namespace TagTool.Tags.Definitions
                 None = 0,
                 ForceSinglePass = 1 << 0, // this shader will compile as single pass even if blend mode is opaque
                 EnableAlphaTest = 1 << 1,
-                SfxDistort_ForceAlphaBlend = 1 << 2 // added by saber
+                SfxDistort_ForceAlphaBlend = 1 << 2, // added by saber
+                Bit3 = 1 << 3, // unknown, referenced in later HO builds
             }
 
             [TagStructure(Size = 0x18, Platform = CachePlatform.Original)]

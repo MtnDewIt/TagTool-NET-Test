@@ -52,6 +52,7 @@ namespace TagTool.Audio
     {
         Mono,
         Stereo,
-        Codec
+        Codec,
+        Quad    // MCC
     }
 }

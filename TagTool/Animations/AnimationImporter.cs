@@ -15,6 +15,7 @@ using TagTool.Tags.Definitions;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using static TagTool.Animations.AnimationDefaultNodeHelper;
+using TagTool.Common.Logging;
 
 namespace TagTool.Animations
 {
@@ -67,26 +68,26 @@ namespace TagTool.Animations
                 frameCount = int.Parse(textReader.ReadLine());
                 if (frameCount < 1)
                 {
-                    new TagToolError(CommandError.CustomError, "Imported Animation doesn't have any frames!");
+                    Log.Error("Imported Animation doesn't have any frames!");
                     return false;
                 }
                 else if(frameCount > 2048)
                 {
-                    new TagToolError(CommandError.CustomError, "Imported Animation has too many frames (must be <= 2048)!");
+                    Log.Error("Imported Animation has too many frames (must be <= 2048)!");
                     return false;
                 }
                 framerate = double.Parse(textReader.ReadLine()); //framerate
                 int actorCount = int.Parse(textReader.ReadLine()); //actor count
                 if (actorCount < 1)
                 {
-                    new TagToolError(CommandError.CustomError, "Imported Animation doesn't have any actors!");
+                    Log.Error("Imported Animation doesn't have any actors!");
                     return false;
                 }
                 textReader.ReadLine(); //actor name
                 int nodecount = int.Parse(textReader.ReadLine());
                 if (nodecount < 1)
                 {
-                    new TagToolError(CommandError.CustomError, "Imported Animation doesn't have any nodes!");
+                    Log.Error("Imported Animation doesn't have any nodes!");
                     return false;
                 }
                 if (Version < 16394)
@@ -172,7 +173,7 @@ namespace TagTool.Animations
                     maxtranslation.Y * 100.0f < 39.37f &&
                     maxtranslation.Z * 100.0f < 39.37f)
                 {
-                    new TagToolWarning("Maximum translation values were very small! (< 1 unit). If your animation does not appear correctly, try using the 'scalefix' argument!");
+                    Log.Warning("Maximum translation values were very small! (< 1 unit). If your animation does not appear correctly, try using the 'scalefix' argument!");
                 }
             }
             return true;
@@ -806,22 +807,22 @@ namespace TagTool.Animations
 
             if (AnimationNodes[index].Name != Node)
             {
-                new TagToolError(CommandError.CustomError, $"Node '{AnimationNodes[index].Name}' has a different name than the jmad ({Node})!");
+                Log.Error($"Node '{AnimationNodes[index].Name}' has a different name than the jmad ({Node})!");
                 return false;
             }
             if (jmadNodes[index].NextSiblingNodeIndex != AnimationNodes[index].NextSiblingNode)
             {
-                new TagToolError(CommandError.CustomError, $"Node '{AnimationNodes[index].Name}' has a different next sibling ({newSibling}) than the jmad ({NextSibling})!");
+                Log.Error($"Node '{AnimationNodes[index].Name}' has a different next sibling ({newSibling}) than the jmad ({NextSibling})!");
                 return false;
             }
             if (jmadNodes[index].FirstChildNodeIndex != AnimationNodes[index].FirstChildNode)
             {
-                new TagToolError(CommandError.CustomError, $"Node '{AnimationNodes[index].Name}' has a different first child ({newChild}) than the jmad ({FirstChild})!");
+                Log.Error($"Node '{AnimationNodes[index].Name}' has a different first child ({newChild}) than the jmad ({FirstChild})!");
                 return false;
             }
             if (jmadNodes[index].ParentNodeIndex != AnimationNodes[index].ParentNode)
             {
-                new TagToolError(CommandError.CustomError, $"Node '{AnimationNodes[index].Name}' has a different parent ({newParent}) than the jmad ({Parent})!");
+                Log.Error($"Node '{AnimationNodes[index].Name}' has a different parent ({newParent}) than the jmad ({Parent})!");
                 return false;
             }
 

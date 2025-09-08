@@ -1,8 +1,9 @@
-using TagTool.Cache;
-using TagTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using TagTool.Cache;
+using TagTool.Common;
+using TagTool.Tags.Definitions.Common;
 using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Tags.Definitions.Gen2
@@ -12,7 +13,7 @@ namespace TagTool.Tags.Definitions.Gen2
     {
         [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
         public byte[] Padding;
-        public FlagsValue Flags;
+        public FlagsValue ObjFlags;
         public float BoundingRadius; // world units
         public RealPoint3d BoundingOffset;
         /// <summary>
@@ -99,7 +100,16 @@ namespace TagTool.Tags.Definitions.Gen2
         public List<OldObjectFunctionBlock> OldFunctions;
         public List<ObjectChangeColors> ChangeColors;
         public List<PredictedResourceBlock> PredictedResources;
-        public FlagsValue1 Flags1;
+
+        [TagField(EnumType = typeof(uint), Platform = CachePlatform.Original)]
+        [TagField(EnumType = typeof(ushort), Platform = CachePlatform.MCC)]
+        public CreatureFlags CreaFlags;
+
+        [TagField(Platform = CachePlatform.MCC)]
+        public MetagameBucket.CampaignMetagameBucketType MetagameType;
+        [TagField(Platform = CachePlatform.MCC)]
+        public MetagameBucket.CampaignMetagameBucketClass MetagameClassification;
+
         public DefaultTeamValue DefaultTeam;
         public MotionSensorBlipSizeValue MotionSensorBlipSize;
         public Angle TurningVelocityMaximum; // degrees per second
@@ -360,7 +370,7 @@ namespace TagTool.Tags.Definitions.Gen2
         }
         
         [Flags]
-        public enum FlagsValue1 : uint
+        public enum CreatureFlags : uint
         {
             Unused = 1 << 0,
             InfectionForm = 1 << 1,
@@ -421,8 +431,8 @@ namespace TagTool.Tags.Definitions.Gen2
             public List<SpheresBlock1> SphereShapes;
             public CharacterPhysicsGroundStructBlock GroundPhysics;
             public CharacterPhysicsFlyingStructBlock FlyingPhysics;
-            public CharacterPhysicsDeadStructBlock DeadPhysics;
-            public CharacterPhysicsSentinelStructBlock SentinelPhysics;
+            //public CharacterPhysicsDeadStructBlock DeadPhysics;
+            //public CharacterPhysicsSentinelStructBlock SentinelPhysics;
             
             [Flags]
             public enum FlagsValue : uint

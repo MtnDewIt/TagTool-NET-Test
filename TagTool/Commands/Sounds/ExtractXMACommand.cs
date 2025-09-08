@@ -8,6 +8,7 @@ using System.IO;
 using TagTool.Audio.Converter;
 using TagTool.Audio;
 using TagTool.Commands.Porting;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Sounds
 {
@@ -87,7 +88,7 @@ namespace TagTool.Commands.Sounds
 
             if (xmaData == null)
             {
-                new TagToolError(CommandError.CustomError, "Failed to find sound data!");
+                Log.Error("Failed to find sound data!");
                 return;
             }
 

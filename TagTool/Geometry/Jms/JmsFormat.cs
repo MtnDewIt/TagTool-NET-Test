@@ -5,6 +5,7 @@ using System.Reflection;
 using Assimp;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 
 namespace TagTool.Geometry.Jms
 {
@@ -49,7 +50,7 @@ namespace TagTool.Geometry.Jms
             }
             catch (Exception)
             {
-                new TagToolError(CommandError.CustomError, "Invalid JMS.");
+                Log.Error("Invalid JMS.");
                 return false;
             }
             return true;
@@ -343,7 +344,7 @@ namespace TagTool.Geometry.Jms
                     Version = int.Parse(stream.ReadLine());
                     if (Version != 8213)
                     {
-                        new TagToolError(CommandError.CustomError, "JMS reading only supported for version 8213");
+                        Log.Error("JMS reading only supported for version 8213");
                         return;
                     }
 

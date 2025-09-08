@@ -13,213 +13,97 @@ using TagTool.Shaders;
 using TagTool.Tags.Definitions;
 using static TagTool.Tags.Definitions.RenderMethodDefinition;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 
 namespace TagTool.Shaders.ShaderGenerator
 {
     public class RenderMethodDefinitionGenerator
     {
-        private static readonly string[] AutoMacroShaderTypes = new string[] { "beam", "contrail", "decal", "light_volume", "particle", "water" };
-
-        public static RenderMethodDefinition GenerateRenderMethodDefinition(GameCache cache, Stream cacheStream, IShaderGenerator generator, string shaderType, out GlobalPixelShader glps, out GlobalVertexShader glvs)
+        public static RenderMethodDefinition GenerateRenderMethodDefinition(GameCache cache, Stream cacheStream, IShaderGenerator generator, HaloShaderGenerator.Globals.ShaderType shaderType, bool regenGlobals, bool applyFixes)
         {
-            bool autoMacro = AutoMacroShaderTypes.Contains(shaderType);
-
             var rmdf = new RenderMethodDefinition
             {
                 GlobalOptions = GetOrCreateRmdfGlobalOptions(cache, cacheStream, generator, shaderType),
-                Categories = BuildRmdfCategories(cache, cacheStream, generator, shaderType, autoMacro),
+                Categories = BuildRmdfCategories(cache, cacheStream, generator, shaderType),
                 EntryPoints = BuildEntryPoints(generator),
                 VertexTypes = BuildVertexTypes(generator),
-                Flags = autoMacro ? RenderMethodDefinitionFlags.UseAutomaticMacros : RenderMethodDefinitionFlags.None,
-                Version = 0
+                Flags = GetRenderMethodFlags(generator),
             };
 
-            GenerateSharedShaders(cache, cacheStream, generator, shaderType, out rmdf.GlobalPixelShader, out rmdf.GlobalVertexShader, out glps, out glvs);
+            GenerateSharedShaders(cache, cacheStream, rmdf, shaderType, regenGlobals, applyFixes);
 
             return rmdf;
         }
 
-        public static bool UpdateRenderMethodDefinition(GameCache cache, Stream stream, string shaderType)
-        {
-            var generator = ShaderGenerator.GetGlobalShaderGenerator(shaderType, true);
-            if (generator == null)
-                return false;
-
-            string rmdfName = $"shaders\\{shaderType}";
-            
-            if (!cache.TagCache.TryGetTag<RenderMethodDefinition>(rmdfName, out CachedTag rmdfTag)) // generate
-            {
-                new TagToolError(CommandError.CustomMessage, $"No rmdf tag present for {shaderType}");
-                return false;
-                //rmdfTag = cache.TagCache.AllocateTag<RenderMethodDefinition>(rmdfName);
-                //var rmdf = GenerateRenderMethodDefinition(cache, stream, generator, shaderType, out _, out _);
-                //cache.Serialize(stream, rmdfTag, rmdf);
-                //(cache as GameCacheHaloOnlineBase).SaveTagNames();
-            }
-            else // can update
-            {
-                var rmdf = cache.Deserialize<RenderMethodDefinition>(stream, rmdfTag);
-                bool autoMacro = rmdf.Flags.HasFlag(RenderMethodDefinitionFlags.UseAutomaticMacros);
-
-                // make sure all categories exist
-                int categoriesAdded = 0;
-                for (uint i = (uint)rmdf.Categories.Count; i < generator.GetMethodCount(); i++)
-                {
-                    var categoryBlock = BuildCategory(cache, stream, i, generator, shaderType, autoMacro);
-                    rmdf.Categories.Add(categoryBlock);
-                    categoriesAdded++;
-                }
-                cache.SaveStrings();
-
-                if (categoriesAdded > 0)
-                    AdjustTemplateTagNames(cache as GameCacheHaloOnlineBase, shaderType, categoriesAdded, rmdf.Categories.Count);
-
-                // update
-                for (uint i = 0; i < generator.GetMethodCount(); i++)
-                {
-                    UpdateCategory(rmdf.Categories[(int)i], cache, stream, i, generator, shaderType, autoMacro);
-                }
-                cache.SaveStrings();
-
-                // update glps category dependencies
-                var glps = cache.Deserialize<GlobalPixelShader>(stream, rmdf.GlobalPixelShader);
-
-                for (int i = 0; i < rmdf.EntryPoints.Count; i++)
-                {
-                    foreach (var pass in rmdf.EntryPoints[i].Passes)
-                    {
-                        if (!pass.Flags.HasFlag(EntryPointBlock.PassBlock.PassFlags.HasSharedPixelShader))
-                            continue;
-
-                        for (int j = 0; j < pass.CategoryDependencies.Count; j++)
-                        {
-                            var categoryOptionCount = rmdf.Categories[pass.CategoryDependencies[j].Category].ShaderOptions.Count;
-
-                            foreach (var dep in glps.EntryPoints[(int)rmdf.EntryPoints[i].EntryPoint].CategoryDependency)
-                            {
-                                if (dep.DefinitionCategoryIndex == pass.CategoryDependencies[j].Category)
-                                {
-                                    if (dep.OptionDependency.Count != categoryOptionCount)
-                                    {
-                                        glps = ShaderGenerator.GenerateSharedPixelShader(cache, generator);
-
-                                        if (!cache.TagCache.TryGetTag<GlobalPixelShader>($"shaders\\{shaderType.ToLower()}_shared_pixel_shaders", out var glpsTag))
-                                            glpsTag = cache.TagCache.AllocateTag<GlobalPixelShader>($"shaders\\{shaderType.ToLower()}_shared_pixel_shaders");
-                                        cache.Serialize(stream, glpsTag, glps);
-
-                                        // no need to keep looping
-                                        cache.Serialize(stream, rmdfTag, rmdf);
-                                        return true;
-                                    }
-
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                cache.Serialize(stream, rmdfTag, rmdf);
-            }
-
-            return true;
-        }
-
-        private static CategoryBlock.ShaderOption BuildCategoryOption(GameCache cache, Stream cacheStream, string categoryName, uint categoryIndex, int optionIndex, IShaderGenerator generator, bool autoMacro)
+        private static CategoryBlock.ShaderOption BuildCategoryOption(GameCache cache, Stream cacheStream, string categoryName, uint categoryIndex, int optionIndex, IShaderGenerator generator)
         {
             CategoryBlock.ShaderOption result = new CategoryBlock.ShaderOption();
 
             string optionName = FixupMethodOptionName(generator.GetMethodOptionNames((int)categoryIndex).GetValue(optionIndex).ToString().ToLower());
-            StringId nameId = cache.StringTable.GetStringId(optionName);
-            result.Name = nameId != StringId.Invalid ? nameId : cache.StringTable.AddString(optionName);
+
+            result.Name = cache.StringTable.GetOrAddString(optionName);
 
             var parameters = generator.GetParametersInOption(categoryName, optionIndex, out string rmopName, out _);
 
             if (rmopName != null)
             {
-                if (!cache.TagCache.TryGetTag<RenderMethodOption>(rmopName, out CachedTag rmopTag))
+                RenderMethodOption rmop = BuildRenderMethodOptionFromParameters(cache, parameters);
+
+                if (cache.TagCache.TryGetTag<RenderMethodOption>(rmopName, out CachedTag rmopTag))
                 {
-                    RenderMethodOption rmop = BuildRenderMethodOptionFromParameters(cache, parameters);
+                    cache.Serialize(cacheStream, rmopTag, rmop);
+                }
+                else
+                {
                     rmopTag = cache.TagCache.AllocateTag<RenderMethodOption>(rmopName);
-                    (cache as GameCacheHaloOnlineBase).SaveTagNames();
                     cache.Serialize(cacheStream, rmopTag, rmop);
                 }
 
                 result.Option = rmopTag;
             }
 
-            //generator.GetOptionFunctions(categoryName, optionIndex, out string vertexFunction, out string pixelFunction);
+            generator.GetOptionFunctions(categoryName, optionIndex, out string vertexFunction, out string pixelFunction);
 
-            if (autoMacro)
-            {
-                result.PixelFunction = StringId.Invalid;
-                result.VertexFunction = StringId.Invalid;
-            }
-            else
-            {
-                //result.VertexFunction = vertexFunction != "invalid" ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Invalid;
-                //result.PixelFunction = pixelFunction != "invalid" ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Invalid;
-            }
+            result.VertexFunction = vertexFunction != "invalid" ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Invalid;
+            result.PixelFunction = pixelFunction != "invalid" ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Invalid;
 
             return result;
         }
 
-        private static CategoryBlock BuildCategory(GameCache cache, Stream cacheStream, uint categoryIndex, IShaderGenerator generator, string shaderType, bool autoMacro)
+        private static CategoryBlock BuildCategory(GameCache cache, Stream cacheStream, uint categoryIndex, IShaderGenerator generator, HaloShaderGenerator.Globals.ShaderType shaderType)
         {
             CategoryBlock result = new CategoryBlock();
 
             string categoryName = FixupMethodOptionName(generator.GetMethodNames().GetValue(categoryIndex).ToString().ToLower());
-            StringId nameId = cache.StringTable.GetStringId(categoryName);
-            result.Name = nameId != StringId.Invalid ? nameId : cache.StringTable.AddString(categoryName);
+
+            result.Name = cache.StringTable.GetOrAddString(categoryName);
 
             result.ShaderOptions = new List<CategoryBlock.ShaderOption>();
 
-            if (shaderType == "black")
+            if (shaderType == HaloShaderGenerator.Globals.ShaderType.Black)
                 return result;
 
             for (int i = 0; i < generator.GetMethodOptionCount((int)categoryIndex); i++)
             {
-                var optionBlock = BuildCategoryOption(cache, cacheStream, categoryName, categoryIndex, i, generator, autoMacro);
+                var optionBlock = BuildCategoryOption(cache, cacheStream, categoryName, categoryIndex, i, generator);
                 result.ShaderOptions.Add(optionBlock);
             }
 
-            //generator.GetCategoryFunctions(categoryName, out string vertexFunction, out string pixelFunction);
+            generator.GetCategoryFunctions(categoryName, out string vertexFunction, out string pixelFunction);
 
-            if (autoMacro)
-            {
-                result.PixelFunction = StringId.Invalid;
-                result.VertexFunction = StringId.Invalid;
-            }
-            else
-            {
-                //result.VertexFunction = vertexFunction != "invalid" ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Invalid;
-                //result.PixelFunction = pixelFunction != "invalid" ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Invalid;
-            }
+            result.VertexFunction = vertexFunction != "invalid" ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Invalid;
+            result.PixelFunction = pixelFunction != "invalid" ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Invalid;
 
             return result;
         }
 
-        private static void UpdateCategory(CategoryBlock categoryBlock, GameCache cache, Stream cacheStream, uint categoryIndex, IShaderGenerator generator, string shaderType, bool autoMacro)
-        {
-            if (shaderType == "black")
-                return;
-
-            string categoryName = cache.StringTable.GetString(categoryBlock.Name);
-
-            for (int i = categoryBlock.ShaderOptions.Count; i < generator.GetMethodOptionCount((int)categoryIndex); i++)
-            {
-                var optionBlock = BuildCategoryOption(cache, cacheStream, categoryName, categoryIndex, i, generator, autoMacro);
-                categoryBlock.ShaderOptions.Add(optionBlock);
-            }
-        }
-
-        private static List<CategoryBlock> BuildRmdfCategories(GameCache cache, Stream cacheStream, IShaderGenerator generator, string shaderType, bool autoMacro)
+        private static List<CategoryBlock> BuildRmdfCategories(GameCache cache, Stream cacheStream, IShaderGenerator generator, HaloShaderGenerator.Globals.ShaderType shaderType)
         {
             List<CategoryBlock> result = new List<CategoryBlock>();
 
             for (uint i = 0; i < generator.GetMethodCount(); i++)
             {
-                var categoryBlock = BuildCategory(cache, cacheStream, i, generator, shaderType, autoMacro);
+                var categoryBlock = BuildCategory(cache, cacheStream, i, generator, shaderType);
                 result.Add(categoryBlock);
             }
 
@@ -227,38 +111,16 @@ namespace TagTool.Shaders.ShaderGenerator
             return result;
         }
 
-        private static CachedTag GetOrCreateRmdfGlobalOptions(GameCache cache, Stream cacheStream, IShaderGenerator generator, string shaderType)
+        private static CachedTag GetOrCreateRmdfGlobalOptions(GameCache cache, Stream cacheStream, IShaderGenerator generator, HaloShaderGenerator.Globals.ShaderType shaderType)
         {
-            string globalRmopName = @"shaders\shader_options\global_shader_options";
+            RenderMethodOption rmop = BuildRenderMethodOptionFromParameters(cache, generator.GetGlobalParameters(out string globalRmopName));
 
-            switch (shaderType)
+            if (cache.TagCache.TryGetTag<RenderMethodOption>(globalRmopName, out CachedTag rmopTag))
             {
-                case "beam":
-                    globalRmopName = @"shaders\beam_options\global_beam_options";
-                    break;
-                case "contrail":
-                    globalRmopName = @"shaders\contrail_options\global_contrail_options";
-                    break;
-                case "decal":
-                    globalRmopName = @"shaders\decal_options\global_decal_options";
-                    break;
-                case "light_volume":
-                    globalRmopName = @"shaders\light_volume_options\global_light_volume";
-                    break;
-                case "particle":
-                    globalRmopName = @"shaders\particle_options\global_particle_options";
-                    break;
-                case "screen":
-                    globalRmopName = @"shaders\screen_options\global_screen_options";
-                    break;
-                case "water":
-                    globalRmopName = @"shaders\water_options\water_global";
-                    break;
+                cache.Serialize(cacheStream, rmopTag, rmop);
             }
-
-            if (!cache.TagCache.TryGetTag<RenderMethodOption>(globalRmopName, out CachedTag rmopTag))
+            else
             {
-                RenderMethodOption rmop = BuildRenderMethodOptionFromParameters(cache, generator.GetGlobalParameters());
                 rmopTag = cache.TagCache.AllocateTag<RenderMethodOption>(globalRmopName);
                 cache.Serialize(cacheStream, rmopTag, rmop);
             }
@@ -278,8 +140,7 @@ namespace TagTool.Shaders.ShaderGenerator
 
                 RenderMethodOption.ParameterBlock parameterBlock = new RenderMethodOption.ParameterBlock();
 
-                StringId nameId = cache.StringTable.GetStringId(parameter.ParameterName);
-                parameterBlock.Name = nameId != StringId.Invalid ? nameId : cache.StringTable.AddString(parameter.ParameterName);
+                parameterBlock.Name = cache.StringTable.GetOrAddString(parameter.ParameterName);
 
                 parameterBlock.RenderMethodExtern = (RenderMethodExtern)parameter.RenderMethodExtern;
 
@@ -295,14 +156,40 @@ namespace TagTool.Shaders.ShaderGenerator
                         parameterBlock.Type = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
                         break;
                     case RegisterType.Vector:
-                        if (parameter.Flags.HasFlag(ShaderParameterFlags.IsColor))
+                        if (parameter.Flags.HasFlag(ShaderOptionParameter.ShaderParameterFlags.IsColor) && parameter.CodeType == HLSLType.Float4)
                             parameterBlock.Type = RenderMethodOption.ParameterBlock.OptionDataType.ArgbColor;
+                        else if (parameter.Flags.HasFlag(ShaderOptionParameter.ShaderParameterFlags.IsColor) && parameter.CodeType == HLSLType.Float3)
+                            parameterBlock.Type = RenderMethodOption.ParameterBlock.OptionDataType.Color;
                         else if (parameter.CodeType != HLSLType.Float4)
                             parameterBlock.Type = RenderMethodOption.ParameterBlock.OptionDataType.Real;
-                        else
-                            parameterBlock.Type = RenderMethodOption.ParameterBlock.OptionDataType.Color;
                         break;
                 }
+
+                parameterBlock.DefaultFilterMode = (RenderMethodOption.ParameterBlock.DefaultFilterModeValue)parameter.FilterMode;
+                parameterBlock.DefaultAddressMode = (RenderMethodOption.ParameterBlock.DefaultAddressModeValue)parameter.AddressMode;
+
+                parameterBlock.DefaultBitmapScale = parameter.BitmapScale;
+
+                if (parameter.SamplerBitmap != null)
+                {
+                    if (cache.TagCache.TryGetTag<Bitmap>(parameter.SamplerBitmap, out CachedTag result))
+                    {
+                        parameterBlock.DefaultSamplerBitmap = result;
+                    }
+                    else
+                    {
+                        Log.Warning($"Could not retrieve sampler bitmap \"{parameter.SamplerBitmap}\"");
+                        parameterBlock.DefaultSamplerBitmap = null;
+                    }
+                }
+                else
+                {
+                    parameterBlock.DefaultSamplerBitmap = null;
+                }
+
+                parameterBlock.DefaultFloatArgument = parameter.FloatArgument;
+                parameterBlock.DefaultIntBoolArgument = parameter.IntBoolArgument;
+                parameterBlock.DefaultColor = new ArgbColor(parameter.ColorArgument.Alpha, parameter.ColorArgument.Red, parameter.ColorArgument.Green, parameter.ColorArgument.Blue);
 
                 rmop.Parameters.Add(parameterBlock);
             }
@@ -315,17 +202,25 @@ namespace TagTool.Shaders.ShaderGenerator
         {
             List<EntryPointBlock> result = new List<EntryPointBlock>();
 
-            foreach (ShaderStage entryPoint in Enum.GetValues(typeof(ShaderStage)))
+            for (int i = 0; i < generator.GetEntryPointOrder().Length; i++)
             {
-                if (generator.IsEntryPointSupported(entryPoint))
+                ShaderStage entryPoint = (ShaderStage)generator.GetEntryPointOrder().GetValue(i);
+
+                var passBlock = new EntryPointBlock.PassBlock
                 {
-                    var passBlock = new EntryPointBlock.PassBlock
+                    Flags = generator.IsPixelShaderShared(entryPoint) ? EntryPointBlock.PassBlock.PassFlags.HasSharedPixelShader : EntryPointBlock.PassBlock.PassFlags.None,
+                    CategoryDependencies = new List<EntryPointBlock.PassBlock.CategoryDependency>()
+                };
+
+                if (generator.IsSharedPixelShaderUsingMethods(entryPoint))
+                {
+                    passBlock.CategoryDependencies.Add(new EntryPointBlock.PassBlock.CategoryDependency
                     {
-                        Flags = generator.IsPixelShaderShared(entryPoint) ? EntryPointBlock.PassBlock.PassFlags.HasSharedPixelShader : 0,
-                        CategoryDependencies = new List<EntryPointBlock.PassBlock.CategoryDependency>()
-                    };
-                    result.Add(new EntryPointBlock { EntryPoint = (EntryPoint_32)entryPoint, Passes = new List<EntryPointBlock.PassBlock> { passBlock } });
+                        Category = (ushort)generator.GetSharedPixelShaderCategory(entryPoint)
+                    });
                 }
+
+                result.Add(new EntryPointBlock { EntryPoint = (EntryPoint_32)entryPoint, Passes = new List<EntryPointBlock.PassBlock> { passBlock } });
             }
 
             return result;
@@ -335,31 +230,54 @@ namespace TagTool.Shaders.ShaderGenerator
         {
             List<VertexBlock> result = new List<VertexBlock>();
 
-            foreach (VertexType vertexType in Enum.GetValues(typeof(VertexType)))
-                if (generator.IsVertexFormatSupported(vertexType))
-                    result.Add(new VertexBlock { VertexType = (VertexBlock.VertexTypeValue)vertexType });
+            for (int i = 0; i < generator.GetVertexTypeOrder().Length; i++) 
+            {
+                VertexType vertexType = (VertexType)generator.GetVertexTypeOrder().GetValue(i);
+
+                result.Add(new VertexBlock { VertexType = (VertexBlock.VertexTypeValue)vertexType, Dependencies = new List<VertexBlock.EntryPointDependency>() });
+            }
 
             return result;
         }
 
-        private static void GenerateSharedShaders(GameCache cache, Stream cacheStream, IShaderGenerator generator,string shaderType, 
-            out CachedTag glpsTag, out CachedTag glvsTag, out GlobalPixelShader glps, out GlobalVertexShader glvs)
+        private static void GenerateSharedShaders(GameCache cache, Stream cacheStream, RenderMethodDefinition rmdf, HaloShaderGenerator.Globals.ShaderType shaderType, bool regenGlobals, bool applyFixes)
         {
-            glps = ShaderGenerator.GenerateSharedPixelShader(cache, generator);
-            glvs = ShaderGenerator.GenerateSharedVertexShader(cache, generator);
+            string shaderName = shaderType.ToString().ToLower();
 
-            if (!cache.TagCache.TryGetTag<GlobalPixelShader>($"shaders\\{shaderType.ToLower()}_shared_pixel_shaders", out glpsTag))
-                glpsTag = cache.TagCache.AllocateTag<GlobalPixelShader>($"shaders\\{shaderType.ToLower()}_shared_pixel_shaders");
-            cache.Serialize(cacheStream, glpsTag, glps);
+            switch (shaderType)
+            {
+                case HaloShaderGenerator.Globals.ShaderType.LightVolume:
+                    shaderName = "light_volume";
+                    break;
+                case HaloShaderGenerator.Globals.ShaderType.FurStencil:
+                    shaderName = "fur_stencil";
+                    break;
+            }
 
-            if (!cache.TagCache.TryGetTag<GlobalVertexShader>($"shaders\\{shaderType.ToLower()}_shared_vertex_shaders", out glvsTag))
-                glvsTag = cache.TagCache.AllocateTag<GlobalVertexShader>($"shaders\\{shaderType.ToLower()}_shared_vertex_shaders");
-            cache.Serialize(cacheStream, glvsTag, glvs);
+            GlobalPixelShader glps = ShaderGeneratorNew.GenerateSharedPixelShaders(cache, rmdf, shaderType, applyFixes);
+            GlobalVertexShader glvs = ShaderGeneratorNew.GenerateSharedVertexShaders(cache, rmdf, shaderType, applyFixes);
+
+            if (!cache.TagCache.TryGetTag<GlobalPixelShader>($"shaders\\{shaderName.ToLower()}_shared_pixel_shaders", out rmdf.GlobalPixelShader))
+            {
+                rmdf.GlobalPixelShader = cache.TagCache.AllocateTag<GlobalPixelShader>($"shaders\\{shaderName.ToLower()}_shared_pixel_shaders");
+                cache.Serialize(cacheStream, rmdf.GlobalPixelShader, glps);
+            }
+            else if (regenGlobals) 
+            {
+                cache.Serialize(cacheStream, rmdf.GlobalPixelShader, glps);
+            }
+
+            if (!cache.TagCache.TryGetTag<GlobalVertexShader>($"shaders\\{shaderName.ToLower()}_shared_vertex_shaders", out rmdf.GlobalVertexShader))
+            {
+                rmdf.GlobalVertexShader = cache.TagCache.AllocateTag<GlobalVertexShader>($"shaders\\{shaderName.ToLower()}_shared_vertex_shaders");
+                cache.Serialize(cacheStream, rmdf.GlobalVertexShader, glvs);
+            }
+            else if (regenGlobals) 
+            {
+                cache.Serialize(cacheStream, rmdf.GlobalVertexShader, glvs);
+            }
         }
 
-        /// <summary>
-        /// Contains hardcoded fixups for shader method or option names
-        /// </summary>
         private static string FixupMethodOptionName(string input)
         {
             switch (input)
@@ -368,8 +286,6 @@ namespace TagTool.Shaders.ShaderGenerator
                     return "diffuse_only_(four_material_shaders_disable_detail_bump)";
                 case "diffuse_plus_specular_four_material_shaders_disable_detail_bump":
                     return "diffuse_plus_specular_(four_material_shaders_disable_detail_bump)";
-                case "from_flat_texture_as_cubemap":
-                    return "from_flat_exture_as_cubemap";
                 case "first_person_never_with_rotating_bitmaps":
                     return @"first_person_never_w/rotating_bitmaps";
                 case "_3_channel_self_illum":
@@ -381,27 +297,9 @@ namespace TagTool.Shaders.ShaderGenerator
             return input;
         }
 
-        private static void AdjustTemplateTagNames(GameCacheHaloOnlineBase cache, string shaderType, int categoriesAdded, int totalCategories)
+        private static RenderMethodDefinitionFlags GetRenderMethodFlags(IShaderGenerator generator) 
         {
-            string appendage = string.Concat(Enumerable.Repeat("_0", categoriesAdded));
-
-            foreach (var tag in cache.TagCache.NonNull())
-            {
-                if (tag.Group.Tag != "rmt2" || tag.Name.StartsWith("ms30\\"))
-                    continue;
-
-                var parts = tag.Name.Split('\\');
-
-                int nameCategories = parts[2].Remove(0, 1).Split('_').Length;
-                if (nameCategories >= totalCategories)
-                    continue;
-
-                string templateType = parts[1].Replace("_templates", "");
-                if (templateType == shaderType)
-                    tag.Name += appendage;
-            }
-
-            cache.SaveTagNames();
+            return generator.IsAutoMacro() ? RenderMethodDefinitionFlags.UseAutomaticMacros : RenderMethodDefinitionFlags.None;
         }
     }
 }

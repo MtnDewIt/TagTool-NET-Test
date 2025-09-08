@@ -7,7 +7,7 @@ using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Tags.Definitions.Gen2
 {
-    [TagStructure(Name = "model_animation_graph", Tag = "jmad", Size = 0xAC, MinVersion = CacheVersion.Halo2Vista)]
+    [TagStructure(Name = "model_animation_graph", Tag = "jmad", Size = 0xAC, MinVersion = CacheVersion.Halo2PC)]
     [TagStructure(Name = "model_animation_graph", Tag = "jmad", Size = 0xB4, MaxVersion = CacheVersion.Halo2Xbox)]
     public class ModelAnimationGraph : TagStructure
     {
@@ -146,7 +146,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 }
             }
             
-            [TagStructure(Size = 0x60, MinVersion = CacheVersion.Halo2Vista)]
+            [TagStructure(Size = 0x60, MinVersion = CacheVersion.Halo2PC)]
             [TagStructure(Size = 0x6C, MaxVersion = CacheVersion.Halo2Xbox)]
             public class AnimationPoolBlock : TagStructure
             {
@@ -179,7 +179,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 public short PreviousVariantSibling;
                 public short NextVariantSibling;
 
-                [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo2Vista)]
+                [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo2PC)]
                 public byte[] Padding;
 
                 public byte[] AnimationData;

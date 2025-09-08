@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,13 @@ namespace TagTool.Bitmaps.DDS
             Header.Write(writer);
             writer.WriteBlock(BitmapData);
         }
+
+        public void Write(string filename)
+        {
+            using (var writer = new EndianWriter(File.Create(filename)))
+                Write(writer);
+        }
+
         public bool Read(EndianReader reader)
         {
             Header.Read(reader);
@@ -41,6 +49,18 @@ namespace TagTool.Bitmaps.DDS
             BitmapData = new byte[dataSize];
             reader.ReadBlock(BitmapData, 0, dataSize);
             return true;
+        }
+
+        public bool Read(string filename)
+        {
+            using (var reader = new EndianReader(File.OpenRead(filename)))
+                return Read(reader);
+        }
+
+        public static DDSFile LoadFromFile(string filename)
+        {
+            var dds = new DDSFile();
+            return dds.Read(filename) ? dds : null;
         }
     }
 }

@@ -78,5 +78,6 @@ namespace TagTool.Common
 		RealQuaternion,
 		RealPlane3d,
 		RealMatrix4x3,
+		RealVector4d,
 	}
 }

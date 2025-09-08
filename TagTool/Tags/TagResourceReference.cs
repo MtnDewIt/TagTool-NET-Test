@@ -4,7 +4,7 @@ using TagTool.Common;
 
 namespace TagTool.Tags
 {
-    [TagStructure(Size = 0x4, MinVersion = CacheVersion.Halo2Xbox, MaxVersion = CacheVersion.Halo2Vista)]
+    [TagStructure(Size = 0x4, MinVersion = CacheVersion.Halo2Xbox, MaxVersion = CacheVersion.Halo2PC)]
     [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo3Beta)]
     public class TagResourceReference : TagStructure
     {
@@ -26,7 +26,7 @@ namespace TagTool.Tags
         public PageableResource HaloOnlinePageableResource;
 
         [TagField(MinVersion = CacheVersion.Halo3Beta)]
-        public int Unused;
+        public int DefinitionAddress;
 
         // TODO: consider making storing in the existing PageableResource field
         [TagField(Flags = TagFieldFlags.Runtime)]

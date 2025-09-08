@@ -8,6 +8,7 @@ using TagTool.Tags;
 using TagTool.Tags.Resources;
 using TagTool.BlamFile;
 using TagTool.Cache.Resources;
+using TagTool.Common.Logging;
 
 namespace TagTool.Cache.Gen2
 {
@@ -54,7 +55,7 @@ namespace TagTool.Cache.Gen2
                     sourceCache = Cache.ResourceCacheReferences[cacheName];
                 else
                 {
-                    new TagToolWarning($"Failed to find cache for resource 0x{resourceAddress:X8}");
+                    Log.Warning($"Failed to find cache for resource 0x{resourceAddress:X8}");
                     return null;
                 }
             }

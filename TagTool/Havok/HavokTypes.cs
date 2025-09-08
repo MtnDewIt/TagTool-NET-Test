@@ -45,7 +45,7 @@ namespace TagTool.Havok
         public BlamShapeType Type;
         public short Index;
         [TagField(Platform = CachePlatform.MCC)]
-        public int RuntimeShapePointer;
+        public int RuntimeShapePointerPad;
 
         public HavokShapeReference() { }
 
@@ -78,34 +78,79 @@ namespace TagTool.Havok
     /// <summary>
     /// Mopp code structure used in byte[]'s
     /// </summary>
-    [TagStructure(Size = 0x30)]
+    [TagStructure(Size = 0x30, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x30, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x50, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.HaloReach)]
     public class HkpMoppCode : TagStructure
     {
         public PlatformUnsignedValue VfTableAddress;
         public HkpReferencedObject ReferencedObject;
+
+        [TagField(Platform = CachePlatform.Original)]
+        [TagField(Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach)]
+        public PlatformUnsignedValue UserData;
+
         [TagField(Align = 16)]
         public CodeInfo Info;
         public HkArrayBase ArrayBase;
+
         [TagField(Length = 4, Platform = CachePlatform.Original)]
+        [TagField(Length = 16, Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach)]
         public byte[] Padding1;
     }
 
-    [TagStructure(Size = 0xC, Platform = CachePlatform.Original)]
-    [TagStructure(Size = 0x18, Platform = CachePlatform.MCC)]
+    public enum BvTreeTypeValue : uint
+    {
+        Mopp,
+        TrisampledHeightfield,
+        User,
+    };
+
+    [TagStructure(Size = 0xC, Platform = CachePlatform.Original, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x30, Platform = CachePlatform.Original, MinVersion = CacheVersion.HaloReach)]
+    [TagStructure(Size = 0x18, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x50, Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach)]
     public class HkpMoppBvTreeShape : HkpShape
     {
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public HkpSingleShapeContainer Child;
+
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public BvTreeTypeValue TreeType;
+
         public PlatformUnsignedValue MoppCodeAddress;
+
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public PlatformUnsignedValue MoppDataAddress;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public int MoppDataSize;
+        [TagField(Align = 16, MinVersion = CacheVersion.HaloReach)]
+        public RealVector4d CodeInfoCopy;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public HkpSingleShapeContainer ChildReach;
+        [TagField(Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach, Flags = TagFieldFlags.Padding, Length = 0x8)]
+        public byte[] HkpMoppReachPadMCC;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public int ChildSize;
+        [TagField(MinVersion = CacheVersion.HaloReach, Flags = TagFieldFlags.Padding, Length = 0x4)]
+        public byte[] HkpMoppReachPad;
     }
 
-    [TagStructure(Size = 0x4)]
+    [TagStructure(Size = 0x4, Platform = CachePlatform.Original, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x8, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Size = 0x10, MinVersion = CacheVersion.HaloReach)]
     public class CMoppBvTreeShape : HkpMoppBvTreeShape
     {
         public float Scale;
+
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x4, Platform = CachePlatform.MCC, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0xC, MinVersion = CacheVersion.HaloReach)]
+        public byte[] CMoppPad;
     }
 
-    [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo2Vista, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x1C, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.MCC)]
     [TagStructure(Size = 0x20, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
     public class HkpShape : TagStructure
     {
@@ -114,7 +159,7 @@ namespace TagTool.Havok
         public PlatformUnsignedValue UserDataAddress;
         [TagField(MinVersion = CacheVersion.Halo3Retail)]
         public uint Type;
-        [TagField(Length = 4, Platform = CachePlatform.MCC)]
+        [TagField(Length = 4, Platform = CachePlatform.MCC, Flags = TagFieldFlags.Padding)]
         public byte[] Padding1;
     }
 
@@ -129,18 +174,14 @@ namespace TagTool.Havok
         public HavokShapeReference Shape;
     }
 
-   
     [TagStructure(Size = 0x8, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x10, Platform = CachePlatform.MCC)]
     public class HkpShapeCollection : HkpShape
     {
         public PlatformUnsignedValue VTableAddress;
         public bool DisableWelding;
-        [TagField(MinVersion = CacheVersion.HaloReach)]
         public sbyte CollectionType;
-        [TagField(Length = 3, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline700123)]
-        public byte[] Padding2;
-        [TagField(Length = 2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.HaloReach)]
+        [TagField(Length = 2, Flags = TagFieldFlags.Padding)]
         public byte[] Padding3;
         [TagField(Length = 4, Flags = TagFieldFlags.Padding, Platform = CachePlatform.MCC)]
         public byte[] Padding4;
@@ -171,7 +212,7 @@ namespace TagTool.Havok
     public class CodeInfo : TagStructure
     {
         [TagField(Align = 16)]
-        public RealQuaternion Offset; // actually vector4, refactor quaternion stuff later
+        public RealVector4d Offset; // actually vector4
     }   
 
     [TagStructure(Size = 0x90, Align = 0x10)]
@@ -179,7 +220,7 @@ namespace TagTool.Havok
     {
         public int NumSpheres;
         [TagField(Length = 8, Align = 0x10)]
-        public RealQuaternion[] Spheres;
+        public RealVector4d[] Spheres;
     }
 
     [TagStructure(Size = 0x38, Align = 0x10, Platform = CachePlatform.Original)]
@@ -189,9 +230,9 @@ namespace TagTool.Havok
         [TagField(Align = 0x4, Platform = CachePlatform.Original)]
         [TagField(Align = 0x8, Platform = CachePlatform.MCC)]
         public HkArrayBase ChildInfo;
-        [TagField(Align = 0x10)]
-        public RealQuaternion AabbHalfExtents;
-        public RealQuaternion AAbbCenter;
+
+        public RealVector4d AabbHalfExtents;
+        public RealVector4d AabbCenter;
     }
 
     [TagStructure(Size = 0x14, Platform = CachePlatform.Original)]
@@ -210,8 +251,8 @@ namespace TagTool.Havok
     {
         public HkConvexShape Base;
         [TagField(Align = 16)]
-        public RealQuaternion AabbHalfExtents;
-        public RealQuaternion AabbCenter;
+        public RealVector4d AabbHalfExtents;
+        public RealVector4d AabbCenter;
         public HkArrayBase FourVectors;
         public int NumVertices;
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -223,14 +264,6 @@ namespace TagTool.Havok
 
 namespace TagTool.Havok.Gen2
 {
-    [TagStructure(Size = 0x4)]
-    public class HkShape : TagStructure
-    {
-        public uint VfTableAddress;
-        public HkpReferencedObject ReferencedObject;
-        public uint UserData;
-    }
-
     [TagStructure(Size = 0x4)]
     public class HkConvexWelderShape : HkpShape
     {
@@ -259,7 +292,7 @@ namespace TagTool.Havok.Gen2
     [TagStructure(Size = 0x30)]
     public class HkMoppCode
     {
-        public RealQuaternion Offset;
+        public RealVector4d Offset;
         public int ByteOrdering;
         [TagField(Length = 0xC, Flags = TagFieldFlags.Padding)]
         public byte[] Padding;
@@ -277,7 +310,7 @@ namespace TagTool.Havok.Gen2
     [TagStructure(Size = 0x30)]
     public class MoppCodeHeader : TagStructure
     {
-        public RealQuaternion Offset;
+        public RealVector4d Offset;
         public int Unknown1;
         public int Unknown2;
         public int Unknown3;

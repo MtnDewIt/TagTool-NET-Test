@@ -7,7 +7,8 @@ using static TagTool.Tags.TagFieldFlags;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "cinematic", Tag = "cine", Size = 0xB0 , MaxVersion = CacheVersion.Halo3Retail)]
-    [TagStructure(Name = "cinematic", Tag = "cine", Size = 0xB4, MinVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Name = "cinematic", Tag = "cine", Size = 0xB4, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "cinematic", Tag = "cine", Size = 0xC4, MinVersion = CacheVersion.HaloReach)]
     public class Cinematic : TagStructure
 	{
         // both these fields reference an index in the scenes block, eg bit 0 = scene 0
@@ -26,6 +27,10 @@ namespace TagTool.Tags.Definitions
         public CinematicFlags Flags;
         public float EasingInTime;
         public float EasingOutTime;
+
+        [TagField(MinVersion = CacheVersion.HaloReach, ValidTags = new[] { "citr" })]
+        public CachedTag TransitionSettings;
+
         public RealRgbColor FadeInColor;
         public int FadeInTime;
         public RealRgbColor FadeOutColor;

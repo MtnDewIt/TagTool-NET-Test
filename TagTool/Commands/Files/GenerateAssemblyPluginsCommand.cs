@@ -55,7 +55,7 @@ namespace TagTool.Commands.Files
                         }
                         catch (ArgumentException)
                         {
-                            return new TagToolError(CommandError.CustomMessage, "Invalid path argument");
+                            return new TagToolError(CommandError.ArgInvalid, "Invalid path argument");
                         }
                     }
                     else
@@ -716,7 +716,7 @@ namespace TagTool.Commands.Files
                         else
                             throw new NotImplementedException(boundsValueType.ToString() + " bounds are not supported.");
                     }
-                    else if (fieldType == typeof(Point2d))
+                    else if (fieldType == typeof(Int16Point2d))
                         assemblyPluginFields.AddRange(CommonFieldTypes.Point2(new string[2] { "X", "Y" }, fieldName, ref offset));
                     else if (fieldType == typeof(RealBoundingBox))
                         assemblyPluginFields.AddRange(CommonFieldTypes.RealBoundingBox(fieldName, ref offset));
@@ -746,7 +746,7 @@ namespace TagTool.Commands.Files
                     else if (fieldType == typeof(DatumHandle))
                     {
                         assemblyPluginFields.AddRange(
-                            cacheVersion > CacheVersion.Halo2Vista && cacheVersion < CacheVersion.HaloOnlineED ?
+                            cacheVersion > CacheVersion.Halo2PC && cacheVersion < CacheVersion.HaloOnlineED ?
                             new[]
                             {
                                 new AssemblyPluginField(AssemblyPluginFieldTypes.uint16, fieldName + " Identifier", ref offset),

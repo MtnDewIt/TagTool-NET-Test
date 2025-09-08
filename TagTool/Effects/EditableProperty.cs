@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 using TagTool.Tags;
 
 namespace TagTool.Effects
@@ -49,7 +50,7 @@ namespace TagTool.Effects
                     property.OutputModifier = (ParticlePropertyScalar.OutputModifierValue)defaultState;
                 }
 
-                new TagToolWarning($"Property {propertyName} uses forbidden state(s): {string.Join(", ", forbiddenStatesList.Distinct())}...!");
+                Log.Warning($"Property {propertyName} uses forbidden state(s): {string.Join(", ", forbiddenStatesList.Distinct())}...!");
             }
 
             return (ParticlePropertyScalar.ParticleStatesFlags)usedStates;

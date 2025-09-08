@@ -462,7 +462,7 @@ namespace TagTool.Tags.Definitions.Gen4
             public BitmapFlags Flags;
             public sbyte ExponentBias;
             // the 'center' of the bitmap - i.e. for particles
-            public Point2d RegistrationPoint;
+            public Int16Point2d RegistrationPoint;
             // DO NOT CHANGE (not counting the highest resolution)
             public sbyte MipmapCount;
             // how to convert from pixel value to linear

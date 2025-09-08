@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using TagTool.BlamFile;
+using TagTool.BlamFile.Chunks;
+using TagTool.BlamFile.Chunks.MapVariants;
+using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common;
@@ -10,7 +13,6 @@ using TagTool.Tags.Definitions;
 using TagTool.Tags.Definitions.Common;
 using static TagTool.BlamFile.MapVariantGenerator;
 using static TagTool.Tags.Definitions.Scenario;
-using static TagTool.Tags.Definitions.Scenario.MultiplayerObjectProperties;
 
 namespace TagTool.Commands.Scenarios
 {
@@ -148,9 +150,9 @@ namespace TagTool.Commands.Scenarios
             }
             
             mapFile.MapFileBlf.MapVariant = mapVariantBlf.MapVariant;     
-            mapFile.MapFileBlf.ContentFlags |= BlfFileContentFlags.MapVariant;
+            mapFile.MapFileBlf.ContentFlags |= Blf.BlfFileContentFlags.MapVariant;
             mapFile.MapFileBlf.MapVariantTagNames = mapVariantBlf.MapVariantTagNames;
-            mapFile.MapFileBlf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
+            mapFile.MapFileBlf.ContentFlags |= Blf.BlfFileContentFlags.MapVariantTagNames;
 
             for (int i = 0; i < mapFile.MapFileBlf.MapVariant.MapVariant.Quotas.Length; i++) 
             {
@@ -158,7 +160,7 @@ namespace TagTool.Commands.Scenarios
 
                 if (quota.ObjectDefinitionIndex != -1) 
                 {
-                    quota.MaxAllowed = 255;
+                    quota.MaxAllowed = -1;
                     quota.Cost = 0.0f;
                 }
             }
@@ -231,7 +233,7 @@ namespace TagTool.Commands.Scenarios
                 for (int i = 0; i < _mapVariant.Objects.Length; i++)
                 {
                     var placement = _mapVariant.Objects[i];
-                    if (!placement.Flags.HasFlag(VariantObjectPlacementFlags.OccupiedSlot) || placement.Flags.HasFlag(VariantObjectPlacementFlags.ScenarioObject))
+                    if (!placement.Flags.HasFlag(VariantObjectDatum.VariantObjectPlacementFlags.OccupiedSlot) || placement.Flags.HasFlag(VariantObjectDatum.VariantObjectPlacementFlags.ScenarioObject))
                         continue;
 
                     if (placement.QuotaIndex == -1)
@@ -256,14 +258,14 @@ namespace TagTool.Commands.Scenarios
                         var placementIndex = _mapVariant.ObjectTypeStartIndex[(int)pair.Key] + i;
                         var placement = _mapVariant.Objects[placementIndex];
 
-                        if (!placement.Flags.HasFlag(VariantObjectPlacementFlags.OccupiedSlot) || !placement.Flags.HasFlag(VariantObjectPlacementFlags.ScenarioObject))
+                        if (!placement.Flags.HasFlag(VariantObjectDatum.VariantObjectPlacementFlags.OccupiedSlot) || !placement.Flags.HasFlag(VariantObjectDatum.VariantObjectPlacementFlags.ScenarioObject))
                             continue;
 
-                        if (placement.Flags.HasFlag(VariantObjectPlacementFlags.ScenarioObjectRemoved))
+                        if (placement.Flags.HasFlag(VariantObjectDatum.VariantObjectPlacementFlags.ScenarioObjectRemoved))
                         {
                             DeletePlacement(pair.Key, i);
                         }
-                        else if (placement.Flags.HasFlag(VariantObjectPlacementFlags.Edited))
+                        else if (placement.Flags.HasFlag(VariantObjectDatum.VariantObjectPlacementFlags.Edited))
                         {
                             UpdateScenarioInstanceFromPlacement(instances[i] as ScenarioInstance, _mapVariant.Objects[placementIndex]);
                         }
@@ -331,11 +333,11 @@ namespace TagTool.Commands.Scenarios
                 //if (placement.Properties.MultiplayerFlags.HasFlag(MultiplayerObjectFlags.Unknown))
                 //    multiplayer.SpawnFlags |= (1 << 6);
 
-                if (properties.Flags.HasFlag(VariantPlacementFlags.Symmetric | VariantPlacementFlags.Asymmetric))
+                if (properties.Flags.HasFlag(VariantObjectDatum.VariantMultiplayerProperties.VariantPlacementFlags.Symmetric | VariantObjectDatum.VariantMultiplayerProperties.VariantPlacementFlags.Asymmetric))
                     multiplayer.Symmetry = GameEngineSymmetry.Ignore;
-                else if (properties.Flags.HasFlag(VariantPlacementFlags.Symmetric))
+                else if (properties.Flags.HasFlag(VariantObjectDatum.VariantMultiplayerProperties.VariantPlacementFlags.Symmetric))
                     multiplayer.Symmetry = GameEngineSymmetry.Symmetric;
-                else if (properties.Flags.HasFlag(VariantPlacementFlags.Asymmetric))
+                else if (properties.Flags.HasFlag(VariantObjectDatum.VariantMultiplayerProperties.VariantPlacementFlags.Asymmetric))
                     multiplayer.Symmetry = GameEngineSymmetry.Asymmetric;
 
                 switch (placement.Properties.Type)

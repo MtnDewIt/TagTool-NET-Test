@@ -15,6 +15,7 @@ namespace TagTool.Lighting
         public Action<float> ProgressUpdated;
         public int ProgressUpdateIntervalMS = 1000;
         public int MaxDegreeOfParallelism = -1;
+  
 
         public ConversionResult Convert(GameCache sourceCache, Stream sourceStream, ScenarioLightmapBspData Lbsp)
         {
@@ -23,8 +24,10 @@ namespace TagTool.Lighting
 
             var directionBitmap = sourceCache.Deserialize<Bitmap>(sourceStream, Lbsp.LightmapSHCoefficientsBitmap);
             var intensityBitmap = sourceCache.Deserialize<Bitmap>(sourceStream, Lbsp.LightmapDominantLightDirectionBitmap);
-            var convertedDirectionBitmap = BitmapConverter.ConvertGen3Bitmap(sourceCache, directionBitmap, 0, Lbsp.LightmapSHCoefficientsBitmap.Name, true);
-            var convertedIntensityBitmap = BitmapConverter.ConvertGen3Bitmap(sourceCache, intensityBitmap, 0, Lbsp.LightmapDominantLightDirectionBitmap.Name, true);
+
+            var bitmapConverter = new BitmapConverterGen3(sourceCache);
+            var convertedDirectionBitmap = bitmapConverter.ConvertBitmap(directionBitmap, 0, Lbsp.LightmapSHCoefficientsBitmap.Name, true);
+            var convertedIntensityBitmap = bitmapConverter.ConvertBitmap(intensityBitmap, 0, Lbsp.LightmapDominantLightDirectionBitmap.Name, true);
 
             if (convertedDirectionBitmap == null || convertedIntensityBitmap == null)
                 return null;

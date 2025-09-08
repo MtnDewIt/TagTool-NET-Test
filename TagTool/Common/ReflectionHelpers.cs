@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -38,5 +39,40 @@ namespace TagTool.Common
 				return result;
 			}
 		}
-	}
+
+        public static T GetFirstInstanceOfType<T>(object obj, HashSet<object> visited = null) where T : class
+        {
+            if (obj == null)
+                return null;
+
+            if (obj is T match)
+                return match;
+
+            visited ??= new HashSet<object>();
+
+            if (visited.Contains(obj))
+                return null;
+
+            var type = obj.GetType();
+            var fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+            foreach (var field in fields)
+            {
+                var value = field.GetValue(obj);
+
+                if (value is T found)
+                    return found;
+
+                if (value != null && value is not string && !(value.GetType().IsValueType))
+                {
+                    var result = GetFirstInstanceOfType<T>(value, visited);
+
+                    if (result != null)
+                        return result;
+                }
+            }
+
+            return null;
+        }
+    }
 }

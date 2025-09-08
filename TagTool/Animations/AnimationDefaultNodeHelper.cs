@@ -8,6 +8,7 @@ using TagTool.Commands.Common;
 using TagTool.Cache;
 using System.Numerics;
 using TagTool.Common;
+using TagTool.Common.Logging;
 
 namespace TagTool.Animations
 {
@@ -24,7 +25,7 @@ namespace TagTool.Animations
                 PrimaryRenderModelNodes = GetRenderModelNodes(CacheContext, primarynodes,
                     CalculateNodeListChecksum(CacheContext, Animation.SkeletonNodes, 0, true));
                 if (PrimaryRenderModelNodes.Count < primarynodes.Count)
-                    new TagToolWarning($"Matching primary model not found! Animation may not appear properly.");
+                    Log.Warning($"Matching primary model not found! Animation may not appear properly.");
             }
             if (Animation.SkeletonNodes.Any(n => n.ModelFlags.HasFlag(ModelAnimationGraph.SkeletonNode.SkeletonModelFlags.SecondaryModel)))
             {
@@ -32,7 +33,7 @@ namespace TagTool.Animations
                 SecondaryRenderModelNodes = GetRenderModelNodes(CacheContext, secondarynodes,
                     CalculateNodeListChecksum(CacheContext, Animation.SkeletonNodes, 0, false));
                 if (SecondaryRenderModelNodes.Count < secondarynodes.Count)
-                    new TagToolWarning($"Matching secondary model not found! Animation may not appear properly.");
+                    Log.Warning($"Matching secondary model not found! Animation may not appear properly.");
             }
 
             foreach (var skellynode in Animation.SkeletonNodes)
@@ -50,7 +51,7 @@ namespace TagTool.Animations
                 if (matchingnode == null)
                 {
                     matchingnode = new RenderModel.Node();
-                    new TagToolWarning($"No matching render model node found for {CacheContext.StringTable.GetString(skellynode.Name)}");
+                    Log.Warning($"No matching render model node found for {CacheContext.StringTable.GetString(skellynode.Name)}");
                 }
 
                 NodeList.Add(new Node

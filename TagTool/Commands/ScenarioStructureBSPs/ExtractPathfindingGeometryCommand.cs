@@ -5,6 +5,7 @@ using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
 using TagTool.Pathfinding;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.ScenarioStructureBSPs
 {
@@ -34,7 +35,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
             if (Cache.Version >= CacheVersion.Halo3ODST && Definition.PathfindingResource == null)
             {
-                new TagToolError(CommandError.OperationFailed, "Pathfinding geometry does not have a resource associated with it.");
+                Log.Error("Pathfinding geometry does not have a resource associated with it.");
                 return true;
             }
 
@@ -63,7 +64,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
                 foreach (Pathfinding.Vertex vertex in pathfinding.Vertices)
                 {
-                    writer.WriteLine($"v {vertex.Position.X} {vertex.Position.Z} {vertex.Position.Y}");
+                    writer.WriteLine($"v {vertex.Point.X} {vertex.Point.Z} {vertex.Point.Y}");
                 }
 
                 writer.WriteLine("usemtl Blue");

@@ -11,18 +11,19 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Name = "beam_system", Tag = "beam", Size = 0x18, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "beam_system", Tag = "beam", Size = 0xC, MinVersion = CacheVersion.HaloReach)]
     public class BeamSystem : TagStructure
-	{
+    {
         public List<BeamDefinitionBlock> Beams;
 
         [TagField(Flags = Padding, Length = 12, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Unused1; // can prob yeet this
 
+        [TagStructure(Size = 0x208, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x208, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-        [TagStructure(Size = 0x1F4, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-        [TagStructure(Size = 0x208, MaxVersion = CacheVersion.HaloOnline700123)]
-        [TagStructure(Size = 0x238, MinVersion = CacheVersion.HaloReach)]
+        [TagStructure(Size = 0x1F4, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+        [TagStructure(Size = 0x238, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x224, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
         public class BeamDefinitionBlock : TagStructure
-		{
+        {
             [TagField(Flags = Label)]
             public StringId Name;
 

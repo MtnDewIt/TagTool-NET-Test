@@ -6,6 +6,7 @@ using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 
 namespace TagTool.Cache.Monolithic
 {
@@ -197,7 +198,7 @@ namespace TagTool.Cache.Monolithic
             }
             else
             {
-                new TagToolWarning($"Unsupported pageable resource chunk signature '{chunk.Header.Signature}'");
+                Log.Warning($"Unsupported pageable resource chunk signature '{chunk.Header.Signature}'");
             }
         }
 

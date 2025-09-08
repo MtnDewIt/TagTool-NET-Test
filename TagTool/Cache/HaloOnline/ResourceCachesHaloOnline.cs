@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Serialization;
 using TagTool.Tags;
 
@@ -63,7 +64,7 @@ namespace TagTool.Cache.HaloOnline
                 {
                     if (ex is IOException && ex.Message.EndsWith("used by another process."))
                     {
-                        new TagToolWarning($"Another process using {ResourceCacheNames[location]}: opening read-only stream");
+                        Log.Warning($"Another process using {ResourceCacheNames[location]}: opening read-only stream");
                         stream = file.OpenRead();
                     }
                     else

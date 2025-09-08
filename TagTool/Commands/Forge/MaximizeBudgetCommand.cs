@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TagTool.BlamFile;
+using TagTool.BlamFile.Chunks;
+using TagTool.BlamFile.Chunks.MapVariants;
+using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Definitions.Common;
@@ -86,7 +90,7 @@ namespace TagTool.Commands.Forge
             }
             catch (Exception ex) 
             {
-                new TagToolWarning($@"Failed to maximize budget for {mapFile.Header.GetScenarioPath()}.scenario : {ex.Message}");
+                Log.Warning($@"Failed to maximize budget for {mapFile.Header.GetScenarioPath()}.scenario : {ex.Message}");
                 return;
             }
 
@@ -109,7 +113,7 @@ namespace TagTool.Commands.Forge
                     Name = mapFile.MapFileBlf.Scenario.Names[0].Name,
                     Description = mapFile.MapFileBlf.Scenario.Descriptions[0].Name,
                     Author = "Bungie",
-                    ContentType = ContentItemType.SandboxMap,
+                    ContentType = ContentItemMetadata.ContentItemType.Usermap,
                     ContentSize = typeof(BlfMapVariant).GetSize(),
                     Timestamp = (ulong)DateTime.Now.ToFileTime(),
                     CampaignId = -1,
@@ -141,9 +145,9 @@ namespace TagTool.Commands.Forge
                 RebuildTagNameChunk(blf);
                 // Assign the new blf chunks to the map file
                 mapFile.MapFileBlf.MapVariant = blf.MapVariant;
-                mapFile.MapFileBlf.ContentFlags |= BlfFileContentFlags.MapVariant;
+                mapFile.MapFileBlf.ContentFlags |= Blf.BlfFileContentFlags.MapVariant;
                 mapFile.MapFileBlf.MapVariantTagNames = blf.MapVariantTagNames;
-                mapFile.MapFileBlf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
+                mapFile.MapFileBlf.ContentFlags |= Blf.BlfFileContentFlags.MapVariantTagNames;
                 // Finally serialize the scenario
                 Cache.Serialize(cacheStream, scenarioTag, scenario);
 
@@ -162,7 +166,7 @@ namespace TagTool.Commands.Forge
                     continue;
 
                 var tag = Cache.TagCache.GetTag(mapVariant.Quotas[i].ObjectDefinitionIndex);
-                blf.MapVariantTagNames.Names[i] = new TagName() { Name = $"{tag.Name}.{tag.Group.Tag}" };
+                blf.MapVariantTagNames.Names[i] = new BlfMapVariantTagNames.TagName() { Name = $"{tag.Name}.{tag.Group.Tag}" };
             }
         }
 
@@ -189,7 +193,7 @@ namespace TagTool.Commands.Forge
                 }
 
                 placement.QuotaIndex = newPaletteIndex;
-                placement.Flags = (placement.Flags & ~VariantObjectPlacementFlags.ScenarioObject) | VariantObjectPlacementFlags.Edited;
+                placement.Flags = (placement.Flags & ~VariantObjectDatum.VariantObjectPlacementFlags.ScenarioObject) | VariantObjectDatum.VariantObjectPlacementFlags.Edited;
                 paletteEntry.PlacedOnMap++;
                 paletteEntry.MaximumCount++;
                 mapVariant.Objects[mapVariant.VariantObjectCount++] = placement;
@@ -203,7 +207,7 @@ namespace TagTool.Commands.Forge
             for (int i = 0; i < mapVariant.Objects.Length; i++)
             {
                 var placement = mapVariant.Objects[i];
-                if (!placement.Flags.HasFlag(VariantObjectPlacementFlags.OccupiedSlot))
+                if (!placement.Flags.HasFlag(VariantObjectDatum.VariantObjectPlacementFlags.OccupiedSlot))
                     continue;
                 var paletteEntry = mapVariant.Quotas[placement.QuotaIndex];
 

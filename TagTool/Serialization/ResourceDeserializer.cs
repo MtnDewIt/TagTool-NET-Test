@@ -82,7 +82,7 @@ namespace TagTool.Serialization
             if (count == 0)
             {
                 // Null tag block
-                reader.BaseStream.Position = startOffset + (Version > CacheVersion.Halo2Vista ? 0xC : 0x8);
+                reader.BaseStream.Position = startOffset + (Version > CacheVersion.Halo2PC ? 0xC : 0x8);
                 return result;
             }
 
@@ -102,7 +102,7 @@ namespace TagTool.Serialization
 			ReflectionHelpers.GetAddRangeBoxedDelegate(valueType)(result, valuesToAdd);
 			ArrayPool<object>.Shared.Return(pooledValuesToAdd);
 
-			reader.BaseStream.Position = startOffset + (Version > CacheVersion.Halo2Vista ? 0xC : 0x8);
+			reader.BaseStream.Position = startOffset + (Version > CacheVersion.Halo2PC ? 0xC : 0x8);
 
             return result;
         }
@@ -117,13 +117,13 @@ namespace TagTool.Serialization
             // Read size and pointer
             var startOffset = reader.BaseStream.Position;
             var size = reader.ReadInt32();
-            if (Version > CacheVersion.Halo2Vista)
+            if (Version > CacheVersion.Halo2PC)
                 reader.BaseStream.Position = startOffset + 0xC;
             var pointer = reader.ReadUInt32();
             if (pointer == 0)
             {
                 // Null data reference
-                reader.BaseStream.Position = startOffset + (Version > CacheVersion.Halo2Vista ? 0x14 : 0x8);
+                reader.BaseStream.Position = startOffset + (Version > CacheVersion.Halo2PC ? 0x14 : 0x8);
                 return new TagData();
             }
 
@@ -135,7 +135,7 @@ namespace TagTool.Serialization
             // Read the data
             var result = new byte[size];
             nextReader.Read(result, 0, size);
-            reader.BaseStream.Position = startOffset + (Version > CacheVersion.Halo2Vista ? 0x14 : 0x8);
+            reader.BaseStream.Position = startOffset + (Version > CacheVersion.Halo2PC ? 0x14 : 0x8);
 
             // instantiate tagdata and return it
             var tagData = new TagData

@@ -10,6 +10,7 @@ using TagTool.Tags.Definitions;
 using static TagTool.Commands.Shaders.GenerateShaderCommand;
 using TagTool.Shaders.ShaderGenerator;
 using TagTool.Cache.HaloOnline;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Shaders
 {
@@ -98,7 +99,7 @@ namespace TagTool.Commands.Shaders
                     if (!Cache.TagCache.TryGetTag($"rasterizer\\shaders\\{explicitShader}.pixl", out info.PixelTag) ||
                         !Cache.TagCache.TryGetTag($"rasterizer\\shaders\\{explicitShader}.vtsh", out info.VertexTag))
                     {
-                        new TagToolError(CommandError.CustomMessage, $"Explicit shader {explicitShader} could not be found (skipping)");
+                        Log.Error($"Explicit shader {explicitShader} could not be found (skipping)");
                     }
                     else
                     {
@@ -187,14 +188,18 @@ namespace TagTool.Commands.Shaders
                     options.Add(0);
                 var aOptions = options.ToArray();
 
+                var rmt2 = Cache.Deserialize<RenderMethodTemplate>(stream, tag);
+
                 STemplateRecompileInfo info = new STemplateRecompileInfo
                 {
                     Name = $"shaders\\{shaderType}_templates\\_{string.Join("_", aOptions)}",
                     ShaderType = shaderType,
                     Options = aOptions,
                     Tag = tag,
-                    Dependants = GetDependantsAsync(Cache, stream, shaderType, aOptions),
-                    AllRmopParameters = ShaderGeneratorNew.GatherParameters(Cache, stream, rmdf, options)
+                    Dependants = GetDependantsAsync(Cache, stream, tag.Name),
+                    AllRmopParameters = ShaderGeneratorNew.GatherParameters(Cache, stream, rmdf, options),
+                    PixelShaderName = rmt2.PixelShader != null ? rmt2.PixelShader.Name : tag.Name,
+                    VertexShaderName = rmt2.VertexShader != null ? rmt2.VertexShader.Name : tag.Name, 
                 };
 
                 recompileInfo.Add(info);
@@ -232,18 +237,22 @@ namespace TagTool.Commands.Shaders
             // serialize
             foreach (var task in tasks)
             {
-                if (!Cache.TagCache.TryGetTag(task.Result.Name + ".pixl", out task.Result.Template.PixelShader))
+                if (!Cache.TagCache.TryGetTag(task.Result.PixelShaderName + ".pixl", out task.Result.Template.PixelShader))
                     task.Result.Template.PixelShader = Cache.TagCache.AllocateTag<PixelShader>(task.Result.Name);
-                if (!Cache.TagCache.TryGetTag(task.Result.Name + ".vtsh", out task.Result.Template.VertexShader))
+                if (!Cache.TagCache.TryGetTag(task.Result.VertexShaderName + ".vtsh", out task.Result.Template.VertexShader))
                     task.Result.Template.VertexShader = Cache.TagCache.AllocateTag<VertexShader>(task.Result.Name);
 
                 Cache.Serialize(stream, task.Result.Template.PixelShader, task.Result.PixelShader);
                 Cache.Serialize(stream, task.Result.Template.VertexShader, task.Result.VertexShader);
                 Cache.Serialize(stream, task.Result.Tag, task.Result.Template);
 
+                task.Result.Template.PixelShader.Name = task.Result.Name;
+                task.Result.Template.VertexShader.Name = task.Result.Name;
+                task.Result.Tag.Name = task.Result.Name;
+
                 (Cache as GameCacheHaloOnlineBase).SaveTagNames();
 
-                ReserializeDependantsAsync(Cache, stream, task.Result.Template, task.Result.Dependants);
+                ReserializeDependantsAsync(Cache, stream, task.Result.Template, task.Result.Dependants, task.Result.AllRmopParameters, task.Result.Options);
             }
 
             Console.Write($"\rSuccessfully recompiled {tasks.Count} {shaderType} templates. Serializing... Done");
@@ -256,7 +265,7 @@ namespace TagTool.Commands.Shaders
                 var pixl = Cache.Deserialize<PixelShader>(stream, rmt2.PixelShader);
 
                 if (rmt2.PixelShader.Name == null || rmt2.PixelShader.Name == "")
-                    new TagToolWarning($"pixel_shader {rmt2.PixelShader.Index:X16} has no name");
+                    Log.Warning($"pixel_shader {rmt2.PixelShader.Index:X16} has no name");
 
                 for (int i = 0; i < pixl.EntryPointShaders.Count; i++)
                 {
@@ -264,13 +273,13 @@ namespace TagTool.Commands.Shaders
                         (glps.EntryPoints[i].DefaultCompiledShaderIndex == -1 && glps.EntryPoints[i].CategoryDependency.Count == 0);
 
                     if (pixl.EntryPointShaders[i].Count > 0 && !entryNeeded)
-                        new TagToolWarning($"{rmt2.PixelShader.Name} has unneeded entry point shader {(TagTool.Shaders.EntryPoint)i}");
+                        Log.Warning($"{rmt2.PixelShader.Name} has unneeded entry point shader {(TagTool.Shaders.EntryPoint)i}");
 
                     if (pixl.EntryPointShaders[i].Count == 0 && entryNeeded)
-                        new TagToolWarning($"{rmt2.PixelShader.Name} missing entry point shader {(TagTool.Shaders.EntryPoint)i}");
+                        Log.Warning($"{rmt2.PixelShader.Name} missing entry point shader {(TagTool.Shaders.EntryPoint)i}");
 
                     if (pixl.EntryPointShaders[i].Count > 0 && pixl.EntryPointShaders[i].Offset >= pixl.Shaders.Count)
-                        new TagToolWarning($"{rmt2.PixelShader.Name} has invalid compiled shader indices {i}");
+                        Log.Warning($"{rmt2.PixelShader.Name} has invalid compiled shader indices {i}");
                 }
             }
 

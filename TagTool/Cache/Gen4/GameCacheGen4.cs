@@ -4,6 +4,7 @@ using System.IO;
 using TagTool.BlamFile;
 using TagTool.Cache.Gen4;
 using TagTool.Cache.Resources;
+using TagTool.Commands.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
@@ -38,19 +39,17 @@ namespace TagTool.Cache
         /// </summary>
         public readonly int PageAlign = 0x800;
 
+        public ulong Expand = 0x0;
+
         public uint TagAddressToOffset(uint address)
         {
             var headerGen4 = (CacheFileHeaderGen4)BaseMapFile.Header;
 
-            var baseAddress = Platform == CachePlatform.MCC ?
-                headerGen4.VirtualBaseAddress64 :
-                (ulong)headerGen4.VirtualBaseAddress32;
-
             var unpackedAddress = Platform == CachePlatform.MCC ?
-                (((ulong)address << 2) + 0x50000000) :
+                (((ulong)address << 2) + Expand) :
                 (ulong)address;
 
-            return (uint)(unpackedAddress - (baseAddress - (ulong)headerGen4.SectionTable.GetSectionOffset(CacheFileSectionType.TagSection)));
+            return (uint)(unpackedAddress - (headerGen4.VirtualBaseAddress.Value - (ulong)headerGen4.SectionTable.GetSectionOffset(CacheFileSectionType.TagSection)));
         }
 
         public Dictionary<string, GameCacheGen4> SharedCacheFiles { get; } = new Dictionary<string, GameCacheGen4>();
@@ -69,18 +68,22 @@ namespace TagTool.Cache
 
             DisplayName = mapFile.Header.GetName() + ".map";
 
+            if (Platform == CachePlatform.MCC)
+                Expand = (ulong)(Version <= CacheVersion.Halo4 ? 0x4FFF0000 : 0x7AC00000);
+
             Directory = file.Directory;
 
-            using(var cacheStream = OpenCacheRead())
-            using(var reader = new EndianReader(cacheStream, Endianness))
+            using (var cacheStream = OpenCacheRead())
+            using (var reader = new EndianReader(cacheStream, Endianness))
             {
                 StringTableGen4 = new StringTableGen4(reader, BaseMapFile);
-                TagCacheGen4 = new TagCacheGen4(reader, BaseMapFile, StringTableGen4);
+                TagCacheGen4 = new TagCacheGen4(reader, BaseMapFile, StringTableGen4, Expand);
                 ResourceCacheGen4 = new ResourceCacheGen4(this);
 
-                if(TagCacheGen4.Instances.Count > 0)
+                if (TagCacheGen4.Instances.Count > 0)
                 {
-                    if (Version == CacheVersion.Halo3Beta || headerGen4.SectionTable.Sections[(int)CacheFileSectionType.LocalizationSection].Size == 0)
+
+                    if (headerGen4.SectionTable.Sections[(int)CacheFileSectionType.LocalizationSection].Size == 0)
                         LocaleTables = new List<LocaleTable>();
                     else
                     {
@@ -91,17 +94,14 @@ namespace TagTool.Cache
             }
 
             // unused but kept for future uses
-            switch (Version)
+            if (Platform == CachePlatform.Original) 
             {
-                case CacheVersion.Halo3Beta:
-                case CacheVersion.Halo3Retail:
-                case CacheVersion.Halo3ODST:
-                    NetworkKey = "";
-                    break;
-                case CacheVersion.HaloReach:
-                case CacheVersion.Halo4:
-                    NetworkKey = "SneakerNetReigns";
-                    break;
+                switch (Version)
+                {
+                    case CacheVersion.Halo4:
+                        NetworkKey = "SneakerNetReigns";
+                        break;
+                }
             }
         }
 

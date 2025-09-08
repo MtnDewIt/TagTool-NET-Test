@@ -8,6 +8,7 @@ using TagTool.Tags;
 using System.IO;
 using TagTool.BlamFile;
 using TagTool.Tags.Definitions.Gen4;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Tags
 {
@@ -153,7 +154,7 @@ namespace TagTool.Commands.Tags
             
             foreach (var instance in tag.Dependencies)
                 if (instance < 0 || instance >= Cache.TagCache.Count)
-                    new TagToolWarning($"Dependency is a nonexistent tag: 0x{instance:X4}");
+                    Log.Warning($"Dependency is a nonexistent tag: 0x{instance:X4}");
                     
             return true;
         }

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TagTool.Cache;
-
-namespace TagTool.Common
+﻿namespace TagTool.Common
 {
     public enum GameTitle
     {
@@ -16,7 +9,8 @@ namespace TagTool.Common
         Halo3ODST,
         HaloOnline,
         HaloReach,
-        Halo4
+        Halo4,
+        Halo2AMP
     }
 }
 

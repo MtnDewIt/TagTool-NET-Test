@@ -1,5 +1,6 @@
 ﻿using System;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 using TagTool.Tags;
 
 namespace TagTool.Cache.Monolithic
@@ -96,7 +97,7 @@ namespace TagTool.Cache.Monolithic
                         ReadInteropDefinitions(chunkReader);
                         break;
                     default:
-                        new TagToolWarning($"Unknown chunk signature \"{chunk.Header.Signature}\" found!");
+                        Log.Warning($"Unknown chunk signature \"{chunk.Header.Signature}\" found!");
                         break;
                 }
             }

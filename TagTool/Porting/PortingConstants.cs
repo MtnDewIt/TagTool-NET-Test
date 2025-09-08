@@ -1,0 +1,95 @@
+﻿using System.Collections.Generic;
+using TagTool.Common;
+
+namespace TagTool.Porting
+{
+    public static class PortingConstants
+    {
+        public static readonly IReadOnlyList<Tag> RenderMethodGroups = new[]
+        {
+            new Tag("rmbk"),
+            new Tag("rmcs"),
+            new Tag("rmd "),
+            new Tag("rmfl"),
+            new Tag("rmhg"),
+            new Tag("rmsh"),
+            new Tag("rmss"),
+            new Tag("rmtr"),
+            new Tag("rmw "),
+            new Tag("rmrd"),
+            new Tag("rmct"),
+            new Tag("rmgl"),
+        };
+
+        public static readonly IReadOnlyList<Tag> EffectGroups = new[]
+        {
+            new Tag("beam"),
+            new Tag("cntl"),
+            new Tag("decs"),
+            new Tag("ltvl"),
+            new Tag("prt3"),
+        };
+
+        public static readonly IReadOnlyList<Tag> ResourceTagGroups = new[]
+        {
+            new Tag("bitm"),
+            new Tag("Lbsp"),
+            new Tag("mode"),
+            new Tag("pmdf"),
+            new Tag("sbsp"),
+            new Tag("snd!"),
+        };
+
+        public static readonly IReadOnlyList<Tag> DoNotReplaceGroups = new[]
+        {
+            new Tag("glps"),
+            new Tag("glvs"),
+            new Tag("pixl"),
+            new Tag("rmdf"),
+            new Tag("rmt2"),
+            new Tag("vtsh"),
+        };
+
+        public static readonly IReadOnlyList<Tag> UnreadyGroups = new[]
+        {
+            new Tag("glps"),
+            new Tag("glvs"),
+            new Tag("rmcs"),
+            new Tag("rmcs"),
+            new Tag("rmct"),
+            new Tag("rmdf"),
+            new Tag("rmhg"),
+            new Tag("rmt2"),
+            new Tag("rmw "),
+            new Tag("shit"),
+            new Tag("sncl"),
+        };
+
+        public static readonly IReadOnlyDictionary<Tag, string> DefaultTagNames = new Dictionary<Tag, string>
+        {
+            { new Tag("beam"), @"objects\weapons\support_high\spartan_laser\fx\firing_3p" },
+            { new Tag("bitm"), @"shaders\default_bitmaps\bitmaps\gray_50_percent_linear" },
+            { new Tag("cntl"), @"objects\weapons\pistol\needler\fx\projectile" },
+            { new Tag("decs"), @"fx\decals\impact_plasma\impact_plasma_medium\hard" },
+            { new Tag("glps"), @"shaders\shader_shared_pixel_shaders" },
+            { new Tag("glvs"), @"shaders\shader_shared_vertex_shaders" },
+            { new Tag("ltvl"), @"objects\weapons\pistol\plasma_pistol\fx\charged\projectile" },
+            { new Tag("prt3"), @"fx\particles\energy\sparks\impact_spark_orange" },
+            { new Tag("rmbk"), @"shaders\invalid" },
+            { new Tag("rmcs"), @"shaders\invalid" },
+            { new Tag("rmct"), @"shaders\invalid" },
+            { new Tag("rmd "), @"objects\gear\human\military\shaders\human_military_decals" },
+            { new Tag("rmdf"), @"shaders\shader" },
+            { new Tag("rmfl"), @"levels\multi\riverworld\shaders\riverworld_tree_leafa" },
+            { new Tag("rmhg"), @"objects\ui\shaders\editor_gizmo" },
+            { new Tag("rmrd"), @"shaders\invalid" },
+            { new Tag("rmsh"), @"sound\sound_classes" },
+            { new Tag("rmss"), @"shaders\invalid" },
+            { new Tag("rmtr"), @"levels\multi\riverworld\shaders\riverworld_ground" },
+            { new Tag("rmw "), @"levels\multi\riverworld\shaders\riverworld_water_rough" },
+            { new Tag("shit"), @"globals\global_shield_impact_settings" },
+            { new Tag("sncl"), @"sound\sound_classes" },
+            { new Tag("snd!"), @"sound\default_silent" },
+        };
+    }
+}

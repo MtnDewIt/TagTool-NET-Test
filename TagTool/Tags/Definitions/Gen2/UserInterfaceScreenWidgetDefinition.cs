@@ -514,7 +514,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 /// <summary>
                 /// from top-left
                 /// </summary>
-                public Point2d BitmapOffset;
+                public Int16Point2d BitmapOffset;
                 public StringId StringId;
                 public short RenderDepthBias;
                 public short MouseRegionTopOffset;
@@ -629,7 +629,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 public FlagsValue Flags;
                 public SkinIndexValue SkinIndex;
                 public short NumVisibleItems;
-                public Point2d BottomLeft;
+                public Int16Point2d BottomLeft;
                 public AnimationIndexValue AnimationIndex;
                 public short IntroAnimationDelayMilliseconds;
                 /// <summary>
@@ -796,7 +796,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
                 public byte[] Padding;
                 public RealArgbColor TextColor;
-                public Point2d TopLeft;
+                public Int16Point2d TopLeft;
                 public List<TableViewListRowReferenceBlock> TableRows;
                 
                 [Flags]
@@ -912,7 +912,7 @@ namespace TagTool.Tags.Definitions.Gen2
                         public short CellWidth;
                         [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
                         public byte[] Padding;
-                        public Point2d BitmapTopLeft; // if there is a bitmap
+                        public Int16Point2d BitmapTopLeft; // if there is a bitmap
                         [TagField(ValidTags = new [] { "bitm" })]
                         public CachedTag BitmapTag;
                         public StringId StringId;
@@ -1053,7 +1053,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 public short IntroAnimationDelayMilliseconds;
                 public BitmapBlendMethodValue BitmapBlendMethod;
                 public short InitialSpriteFrame;
-                public Point2d TopLeft;
+                public Int16Point2d TopLeft;
                 public float HorizTextureWrapsSecond;
                 public float VertTextureWrapsSecond;
                 [TagField(ValidTags = new [] { "bitm" })]
@@ -1062,7 +1062,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
                 public byte[] Padding;
                 public float SpriteAnimationSpeedFps;
-                public Point2d ProgressBottomLeft;
+                public Int16Point2d ProgressBottomLeft;
                 public StringId StringIdentifier;
                 public RealVector2d ProgressScale;
                 
@@ -1414,7 +1414,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 public byte[] Padding;
                 [TagField(ValidTags = new [] { "skin" })]
                 public CachedTag Skin;
-                public Point2d BottomLeft;
+                public Int16Point2d BottomLeft;
                 public TableOrderValue TableOrder;
                 public sbyte MaximumPlayerCount;
                 public sbyte RowCount;

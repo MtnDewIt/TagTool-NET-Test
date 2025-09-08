@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using TagTool.BlamFile;
+using TagTool.BlamFile.Chunks;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.IO;
@@ -44,7 +45,7 @@ namespace TagTool.Commands.Files
             }
 
             if (jpgImage == null || jpgImage.Length == 0)
-                return new TagToolError(CommandError.CustomMessage, "Invalid image");
+                return new TagToolError(CommandError.CustomError, "Invalid image");
 
             CacheVersion version = CacheVersion.HaloOnlineED;
             CachePlatform cachePlatform = CachePlatform.Original;
@@ -57,10 +58,10 @@ namespace TagTool.Commands.Files
                     Length = 0x30,
                     MajorVersion = 1,
                     MinorVersion = 2,
-                    ByteOrderMarker = -2,
-                    InternalName = "",
+                    ByteOrderMark = -2,
+                    FileType = "",
                 },
-                ContentFlags = BlfFileContentFlags.StartOfFile | BlfFileContentFlags.MapImage | BlfFileContentFlags.EndOfFile,
+                ContentFlags = Blf.BlfFileContentFlags.StartOfFile | Blf.BlfFileContentFlags.MapImage | Blf.BlfFileContentFlags.EndOfFile,
                 Buffer = jpgImage,
                 EndOfFile = new BlfChunkEndOfFile
                 {
@@ -69,7 +70,7 @@ namespace TagTool.Commands.Files
                     MajorVersion = 1,
                     MinorVersion = 1,
                     AuthenticationDataSize = 0,
-                    AuthenticationType = BlfAuthenticationType.None,
+                    AuthenticationType = BlfChunkEndOfFile.BlfAuthenticationType.None,
                 }
             };
 

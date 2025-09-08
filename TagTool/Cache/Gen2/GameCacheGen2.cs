@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using TagTool.BlamFile;
 using TagTool.Cache.Gen2;
 using TagTool.Cache.Resources;
+using TagTool.Extensions;
 using TagTool.IO;
 using TagTool.Serialization;
-using TagTool.Tags;
 
 namespace TagTool.Cache
 {
@@ -217,7 +218,78 @@ namespace TagTool.Cache
         #endregion
 
 
-        public override Stream OpenCacheRead() => new Gen2CacheStream(CacheFile.OpenRead(), VistaSharedTagCache?.OpenCacheRead());
+        public override Stream OpenCacheRead() 
+        {
+            CacheFileHeaderGen2 gen2Header = BaseMapFile.Header as CacheFileHeaderGen2;
+
+            Stream inputStream = null;
+
+            if (gen2Header.Flags.HasFlag(CacheFileFlags.Compressed))
+            {
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    using (Stream stream = CacheFile.OpenRead())
+                    {
+                        using (EndianReader reader = new EndianReader(stream, Endianness))
+                        {
+                            byte[] header = reader.ReadBytes(gen2Header.CompressedDataOffset);
+
+                            memoryStream.Write(header, 0, gen2Header.CompressedDataOffset);
+
+                            List<CompressedFileChunk> chunks = new List<CompressedFileChunk>();
+
+                            reader.SeekTo(gen2Header.CompressedChunkTableOffset);
+
+                            for (int i = 0; i < gen2Header.CompressedChunkCount; i++)
+                            {
+                                int chunkSize = reader.ReadInt32();
+                                int chunkOffset = reader.ReadInt32();
+
+                                if (chunkSize == 0)
+                                    break;
+
+                                chunks.Add(new CompressedFileChunk(chunkSize, chunkOffset));
+                            }
+
+                            for (int i = 0; i < chunks.Count; i++)
+                            {
+                                if (chunks[i].Size < 0)
+                                {
+                                    int invertedSize = -chunks[i].Size;
+                                    byte[] buffer = new byte[invertedSize];
+
+                                    reader.SeekTo(chunks[i].Offset);
+
+                                    int bufferSize = reader.Read(buffer, 0, invertedSize);
+
+                                    memoryStream.Write(buffer, 0, bufferSize);
+                                }
+                                else
+                                {
+                                    reader.SeekTo(chunks[i].Offset + 2);
+
+                                    int decompressedSize = gen2Header.CompressedDataChunkSize;
+                                    byte[] decompressedBuffer = new byte[decompressedSize];
+
+                                    using (DeflateStream deflateStream = new DeflateStream(stream, CompressionMode.Decompress, true))
+                                        decompressedSize = deflateStream.ReadAll(decompressedBuffer, 0, decompressedBuffer.Length);
+
+                                    memoryStream.Write(decompressedBuffer, 0, decompressedSize);
+                                }
+                            }
+                        }
+                    }
+
+                    inputStream = new MemoryStream(memoryStream.ToArray());
+                }
+            }
+            else
+            {
+                inputStream = CacheFile.OpenRead();
+            }
+
+            return new Gen2CacheStream(inputStream, VistaSharedTagCache?.OpenCacheRead());
+        }
 
         public override Stream OpenCacheReadWrite()
         {
@@ -271,6 +343,18 @@ namespace TagTool.Cache
                 base.Dispose(disposing);
                 if (disposing && SharedStream != null)
                     SharedStream.Dispose();
+            }
+        }
+
+        internal class CompressedFileChunk 
+        {
+            public int Size { get; set; }
+            public int Offset { get; set; }
+
+            public CompressedFileChunk(int size, int offset)
+            {
+                Size = size;
+                Offset = offset;
             }
         }
     }

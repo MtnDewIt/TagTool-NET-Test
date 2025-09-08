@@ -8,10 +8,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using TagTool.Tags;
-using static System.Runtime.InteropServices.CharSet;
 using static TagTool.Tags.TagFieldFlags;
 using TagTool.Commands.Common;
 using TagTool.Geometry.BspCollisionGeometry;
+using System.Runtime.InteropServices;
+using TagTool.Common.Logging;
 
 namespace TagTool.Serialization
 {
@@ -258,10 +259,12 @@ namespace TagTool.Serialization
                 SerializeEulerAngles(block, (RealEulerAngles2d)value);
             else if (valueType == typeof(RealEulerAngles3d))
                 SerializeEulerAngles(block, (RealEulerAngles3d)value);
-            else if (valueType == typeof(Point2d))
-                SerializePoint(block, (Point2d)value);
+            else if (valueType == typeof(Int16Point2d))
+                SerializePoint(block, (Int16Point2d)value);
             else if (valueType == typeof(Rectangle2d))
                 SerializeRectangle2d(block, (Rectangle2d)value);
+            else if (valueType == typeof(RealRectangle2d))
+                SerializeRealRectangle2d(block, (RealRectangle2d)value);
             else if (valueType == typeof(RealRectangle3d))
                 SerializeRealRectangle3d(block, (RealRectangle3d)value);
             else if (valueType == typeof(RealPoint2d))
@@ -272,6 +275,8 @@ namespace TagTool.Serialization
                 SerializeVector(block, (RealVector2d)value);
             else if (valueType == typeof(RealVector3d))
                 SerializeVector(block, (RealVector3d)value);
+            else if (valueType == typeof(RealVector4d))
+                SerializeVector(block, (RealVector4d)value);
             else if (valueType == typeof(RealQuaternion))
                 SerializeVector(block, (RealQuaternion)value);
             else if (valueType == typeof(RealPlane2d))
@@ -279,7 +284,9 @@ namespace TagTool.Serialization
             else if (valueType == typeof(RealPlane3d))
                 SerializePlane(block, (RealPlane3d)value);
             else if (valueType == typeof(RealMatrix4x3))
-                SerializeMatrix(block, (RealMatrix4x3)value);
+                SerializeMatrix4x3(block, (RealMatrix4x3)value);
+            else if (valueType == typeof(RealMatrix4x4))
+                SerializeMatrix4x4(block, (RealMatrix4x4)value);
             else if (valueType == typeof(StringId))
                 block.Writer.Write(((StringId)value).Value);
             else if (valueType == typeof(Angle))
@@ -348,7 +355,7 @@ namespace TagTool.Serialization
             }
             catch (ArgumentOutOfRangeException)
             {
-                new TagToolWarning($"Enum value out of range {enumInfo.Type.FullName} = {value}");
+                Log.Warning($"Enum value out of range {enumInfo.Type.FullName} = {value}");
                 return value;
             }
         }
@@ -364,7 +371,7 @@ namespace TagTool.Serialization
             if (valueInfo == null || valueInfo.Length == 0)
                 throw new ArgumentException("Cannot serialize a string with no length set");
 
-            var charSize = valueInfo.CharSet == Unicode ? 2 : 1;
+            var charSize = valueInfo.CharSet == CharSet.Unicode ? 2 : 1;
             var byteCount = valueInfo.Length * charSize;
             var clampedLength = 0;
 
@@ -374,11 +381,11 @@ namespace TagTool.Serialization
 
                 switch (valueInfo.CharSet)
                 {
-                    case Ansi:
+                    case CharSet.Ansi:
                         bytes = Encoding.ASCII.GetBytes(str);
                         break;
 
-                    case Unicode:
+                    case CharSet.Unicode:
                         if (Format == EndianFormat.LittleEndian)
                             bytes = Encoding.Unicode.GetBytes(str);
                         else
@@ -429,7 +436,7 @@ namespace TagTool.Serialization
                 if (invalid)
                 {
                     var groups = string.Join(", ", valueInfo.ValidTags);
-                    new TagToolWarning($"Tag reference with invalid group found during serialization:"
+                    Log.Warning($"Tag reference with invalid group found during serialization:"
                         + $"\n - {referencedTag.Name}.{referencedTag.Group.Tag}"
                         + $"\n - valid groups: {groups}");
                 }
@@ -747,13 +754,21 @@ namespace TagTool.Serialization
             block.Writer.Write(angles.Roll.Radians);
         }
 
-        private void SerializePoint(IDataBlock block, Point2d point)
+        private void SerializePoint(IDataBlock block, Int16Point2d point)
         {
             block.Writer.Write(point.X);
             block.Writer.Write(point.Y);
         }
 
         private void SerializeRectangle2d(IDataBlock block, Rectangle2d rect)
+        {
+            block.Writer.Write(rect.Top);
+            block.Writer.Write(rect.Left);
+            block.Writer.Write(rect.Bottom);
+            block.Writer.Write(rect.Right);
+        }
+
+        private void SerializeRealRectangle2d(IDataBlock block, RealRectangle2d rect)
         {
             block.Writer.Write(rect.Top);
             block.Writer.Write(rect.Left);
@@ -797,6 +812,14 @@ namespace TagTool.Serialization
             block.Writer.Write(vec.K);
         }
 
+        private void SerializeVector(IDataBlock block, RealVector4d vec)
+        {
+            block.Writer.Write(vec.I);
+            block.Writer.Write(vec.J);
+            block.Writer.Write(vec.K);
+            block.Writer.Write(vec.W);
+        }
+
         private void SerializeVector(IDataBlock block, RealQuaternion vec)
         {
             block.Writer.Write(vec.I);
@@ -820,7 +843,7 @@ namespace TagTool.Serialization
             block.Writer.Write(plane.D);
         }
 
-        private void SerializeMatrix(IDataBlock block, RealMatrix4x3 mat)
+        private void SerializeMatrix4x3(IDataBlock block, RealMatrix4x3 mat)
         {
             block.Writer.Write(mat.m11);
             block.Writer.Write(mat.m12);
@@ -834,6 +857,26 @@ namespace TagTool.Serialization
             block.Writer.Write(mat.m41);
             block.Writer.Write(mat.m42);
             block.Writer.Write(mat.m43);
+        }
+
+        private void SerializeMatrix4x4(IDataBlock block, RealMatrix4x4 mat) 
+        {
+            block.Writer.Write(mat.m11);
+            block.Writer.Write(mat.m12);
+            block.Writer.Write(mat.m13);
+            block.Writer.Write(mat.m14);
+            block.Writer.Write(mat.m21);
+            block.Writer.Write(mat.m22);
+            block.Writer.Write(mat.m23);
+            block.Writer.Write(mat.m24);
+            block.Writer.Write(mat.m31);
+            block.Writer.Write(mat.m32);
+            block.Writer.Write(mat.m33);
+            block.Writer.Write(mat.m34);
+            block.Writer.Write(mat.m41);
+            block.Writer.Write(mat.m42);
+            block.Writer.Write(mat.m43);
+            block.Writer.Write(mat.m44);
         }
 
         private void SerializeRange(ISerializationContext context, MemoryStream tagStream, IDataBlock block, object val)
@@ -855,7 +898,7 @@ namespace TagTool.Serialization
             else
             {
                 if (val > ushort.MaxValue)
-                    new TagToolWarning("Downgrade from uint to ushort for index buffer index. Unexpected behavior.");
+                    Log.Warning("Downgrade from uint to ushort for index buffer index. Unexpected behavior.");
 
                 block.Writer.Write((ushort)val.Value);
             }
@@ -871,7 +914,7 @@ namespace TagTool.Serialization
             else
             {
                 if (val.ClusterIndex > ushort.MaxValue || val.TriangleIndex > ushort.MaxValue)
-                    new TagToolWarning("Downgrade from int to short for plane reference. Unexpected behavior.");
+                    Log.Warning("Downgrade from int to short for plane reference. Unexpected behavior.");
 
                 block.Writer.Write((ushort)val.TriangleIndex);
                 block.Writer.Write((ushort)val.ClusterIndex);

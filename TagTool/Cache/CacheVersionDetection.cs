@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TagTool.Common;
 using TagTool.Tags;
 
@@ -11,35 +12,24 @@ namespace TagTool.Cache
         /// Detects the engine that a tags.dat was built for based on its timestamp.
         /// </summary>
         /// <param name="timestamp">The timestamp.</param>
-        /// <param name="closestGuess">On return, the closest guess for the engine's version.</param>
-        /// <returns>The engine version if the timestamp matched directly, otherwise <see cref="CacheVersion.Unknown"/>.</returns>
-        public static CacheVersion DetectFromTimestamp(long timestamp, out CacheVersion closestGuess)
+        public static CacheVersion DetectFromTimestamp(string timestamp)
         {
-            if (HaloOnlineTimestampMapping.ContainsKey(timestamp))
-            {
-                closestGuess = HaloOnlineTimestampMapping[timestamp];
-                return closestGuess;
-            }
-
-            // (INACCURATE)
-            // Match the closest timestamp
-            var index = Array.BinarySearch(VersionTimestamps, timestamp);
-            index = Math.Max(0, Math.Min(~index - 1, VersionTimestamps.Length - 1));
-            closestGuess = (CacheVersion)index;
-            return CacheVersion.Unknown;
+            if (HaloOnlineTimestampMapping.TryGetValue(timestamp, out CacheVersion version))
+                return version;
+            else
+                return CacheVersion.Unknown;
         }
 
         /// <summary>
         /// Gets the timestamp for a version.
         /// </summary>
         /// <param name="version">The version.</param>
-        /// <returns>The timestamp, or -1 for <see cref="CacheVersion.Unknown"/>.</returns>
-        public static long GetTimestamp(CacheVersion version)
+        public static string GetTimestamp(CacheVersion version)
         {
-            if (version == CacheVersion.Unknown)
-                return -1;
-
-            return VersionTimestamps[(int)version];
+            if (HaloOnlineTimestampMapping.ContainsValue(version))
+                return HaloOnlineTimestampMapping.First(x => x.Value == version).Key;
+            else 
+                return null;
         }
 
         /// <summary>
@@ -81,7 +71,7 @@ namespace TagTool.Cache
                 case "11081.07.04.30.0934.main":
                 case "11091.07.05.11.1104.main":
                 case "11122.07.08.24.1808.main":
-                    version = CacheVersion.Halo2Vista;
+                    version = CacheVersion.Halo2PC;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "09699.07.05.01.1534.delta":
@@ -105,11 +95,15 @@ namespace TagTool.Cache
                     version = CacheVersion.HaloOnline106708;
                     cachePlatform = CachePlatform.Original;
                     break;
-                case "1.235640 cert_ms23":
+                case "1.155080 cert_ms23":
+                    version = CacheVersion.HaloOnline155080;
+                    cachePlatform = CachePlatform.Original;
+                    break;
+                case "1.235640 cert_ms25":
                     version = CacheVersion.HaloOnline235640;
                     cachePlatform = CachePlatform.Original;
                     break;
-                case "0.0.1.301003 cert_MS26_new":
+                case "Jun 12 2015 13:02:50":
                     version = CacheVersion.HaloOnline301003;
                     cachePlatform = CachePlatform.Original;
                     break;
@@ -181,6 +175,27 @@ namespace TagTool.Cache
                     cachePlatform = CachePlatform.Original;
                     break;
 
+                case "01.03.43.0000":
+                    version = CacheVersion.HaloCustomEdition;
+                    cachePlatform = CachePlatform.MCC;
+                    break;
+
+                // TODO: Handle this bullshit (FUCK U 343)
+                case "":
+                    version = CacheVersion.Halo2PC;
+                    cachePlatform = CachePlatform.MCC;
+                    break;
+
+                case "Dec 21 2023 22:31:37":
+                    version = CacheVersion.Halo3Retail;
+                    cachePlatform = CachePlatform.MCC;
+                    break;
+
+                case "May 16 2023 11:44:41":
+                    version = CacheVersion.Halo3ODST;
+                    cachePlatform = CachePlatform.MCC;
+                    break;
+
                 case "May 29 2019 00:44:52":
                 case "Jun 24 2019 00:36:03":
                 case "Jul 30 2019 14:17:16":
@@ -189,10 +204,16 @@ namespace TagTool.Cache
                     cachePlatform = CachePlatform.MCC;
                     break;
 
-                case "Sep 29 2021 09:17:56":
-                    version = CacheVersion.Halo3Retail;
+                case "Apr  1 2023 17:35:22":
+                    version = CacheVersion.Halo4;
                     cachePlatform = CachePlatform.MCC;
                     break;
+
+                case "Jun 13 2023 20:21:18":
+                    version = CacheVersion.Halo2AMP;
+                    cachePlatform = CachePlatform.MCC;
+                    break;
+
                 default:
                     version = CacheVersion.Unknown;
                     cachePlatform = CachePlatform.All;
@@ -212,8 +233,21 @@ namespace TagTool.Cache
             {
                 switch (version)
                 {
+                    case CacheVersion.HaloCustomEdition:
+                        return "01.03.43.0000";
+                    case CacheVersion.Halo2PC:
+                        // TODO: Handle this bullshit (FUCK U 343)
+                        return "";
                     case CacheVersion.Halo3Retail:
-                        return "Sep 29 2021 09:17:56";
+                        return "Dec 21 2023 22:31:37";
+                    case CacheVersion.Halo3ODST:
+                        return "May 16 2023 11:44:41";
+                    case CacheVersion.HaloReach:
+                        return "Jun 21 2023 15:35:31";
+                    case CacheVersion.Halo4:
+                        return "Apr  1 2023 17:35:22";
+                    case CacheVersion.Halo2AMP:
+                        return "Jun 13 2023 20:21:18";
                     default:
                         return version.ToString();
                 }
@@ -232,7 +266,7 @@ namespace TagTool.Cache
                         return "02.06.28.07902";
                     case CacheVersion.Halo2Xbox:
                         return "02.09.27.09809";
-                    case CacheVersion.Halo2Vista:
+                    case CacheVersion.Halo2PC:
                         return "11081.07.04.30.0934.main";
                     case CacheVersion.Halo3Retail:
                         return "11855.07.08.20.2317.halo3_ship";
@@ -242,10 +276,12 @@ namespace TagTool.Cache
                         return "eldewrito";
                     case CacheVersion.HaloOnline106708:
                         return "1.106708 cert_ms23";
+                    case CacheVersion.HaloOnline155080:
+                        return "1.155080 cert_ms23";
                     case CacheVersion.HaloOnline235640:
-                        return "1.235640 cert_ms23";
+                        return "1.235640 cert_ms25";
                     case CacheVersion.HaloOnline301003:
-                        return "0.0.1.301003 cert_MS26_new";
+                        return "Jun 12 2015 13:02:50";
                     case CacheVersion.HaloOnline327043:
                         return "0.4.1.327043 cert_MS26_new";
                     case CacheVersion.HaloOnline372731:
@@ -269,7 +305,7 @@ namespace TagTool.Cache
                     case CacheVersion.HaloOnline571627:
                         return "11.1.571627 Live";
                     case CacheVersion.HaloOnline604673:
-                        return "11.1.604673 cert_ms29 Live";
+                        return "11.1.601838 Live";
                     case CacheVersion.HaloOnline700123:
                         return "12.1.700123 cert_ms30_oct19";
                     case CacheVersion.HaloReach:
@@ -311,10 +347,11 @@ namespace TagTool.Cache
                 case CacheVersion.HaloCustomEdition:
                 case CacheVersion.Halo2Beta:
 				case CacheVersion.Halo2Xbox:
-				case CacheVersion.Halo2Vista:
+				case CacheVersion.Halo2PC:
 				case CacheVersion.HaloOnlineED:
                 case CacheVersion.HaloOnline106708:
-				case CacheVersion.HaloOnline235640:
+                case CacheVersion.HaloOnline155080:
+                case CacheVersion.HaloOnline235640:
 				case CacheVersion.HaloOnline301003:
 				case CacheVersion.HaloOnline327043:
 				case CacheVersion.HaloOnline372731:
@@ -359,6 +396,23 @@ namespace TagTool.Cache
             return true;
         }
 
+        public static bool AttributeInCacheVersion(TagEnumMemberAttribute attr, CacheVersion compare)
+        {
+            if (attr.Version != CacheVersion.Unknown)
+                if (attr.Version != compare)
+                    return false;
+
+            if (attr.Gen != CacheGeneration.Unknown)
+                if (!IsInGen(attr.Gen, compare))
+                    return false;
+
+            if (attr.MinVersion != CacheVersion.Unknown || attr.MaxVersion != CacheVersion.Unknown)
+                if (!IsBetween(compare, attr.MinVersion, attr.MaxVersion))
+                    return false;
+
+            return true;
+        }
+
         public static bool AttributeInCacheVersion(TagStructureAttribute attr, CacheVersion compare)
         {
             if (attr.Version != CacheVersion.Unknown)
@@ -377,6 +431,11 @@ namespace TagTool.Cache
         }
 
         public static bool AttributeInPlatform(TagFieldAttribute attr, CachePlatform compare)
+        {
+            return ComparePlatform(attr.Platform, compare);
+        }
+
+        public static bool AttributeInPlatform(TagEnumMemberAttribute attr, CachePlatform compare)
         {
             return ComparePlatform(attr.Platform, compare);
         }
@@ -471,6 +530,18 @@ namespace TagTool.Cache
             return true;
         }
 
+        public static bool TestAttribute(TagEnumMemberAttribute a, CacheVersion version, CachePlatform platform)
+        {
+            if (!IsInGen(a.Gen, version))
+                return false;
+            if (!AttributeInPlatform(a, platform))
+                return false;
+            if (!AttributeInCacheVersion(a, version))
+                return false;
+
+            return true;
+        }
+
         public static bool TestAttribute(TagStructureAttribute a, CacheVersion version, CachePlatform platform)
         {
             if (!InCacheBuildType(a.BuildType, version))
@@ -501,7 +572,7 @@ namespace TagTool.Cache
                     return CacheGeneration.First;
 
                 case CacheVersion.Halo2Alpha:
-                case CacheVersion.Halo2Vista:
+                case CacheVersion.Halo2PC:
                 case CacheVersion.Halo2Xbox:
                 case CacheVersion.Halo2Beta:
                     return CacheGeneration.Second;
@@ -515,6 +586,7 @@ namespace TagTool.Cache
 
                 case CacheVersion.HaloOnlineED:
                 case CacheVersion.HaloOnline106708:
+                case CacheVersion.HaloOnline155080:
                 case CacheVersion.HaloOnline235640:
                 case CacheVersion.HaloOnline301003:
                 case CacheVersion.HaloOnline327043:
@@ -533,6 +605,7 @@ namespace TagTool.Cache
                     return CacheGeneration.HaloOnline;
 
                 case CacheVersion.Halo4:
+                case CacheVersion.Halo2AMP:
                     return CacheGeneration.Fourth;
 
                 default:
@@ -549,7 +622,7 @@ namespace TagTool.Cache
                 case CachePlatform.Original:
                     return PlatformType._32Bit;
                 default:
-                    throw new Exception($"Unknown cache platform { cachePlatform}");
+                    throw new Exception($"Unknown cache platform {cachePlatform}");
             }
         }
 
@@ -564,7 +637,7 @@ namespace TagTool.Cache
                 case CacheVersion.Halo2Alpha:
                 case CacheVersion.Halo2Beta:
                 case CacheVersion.Halo2Xbox:
-                case CacheVersion.Halo2Vista:
+                case CacheVersion.Halo2PC:
                     return GameTitle.Halo2;
                 case CacheVersion.Halo3Beta:
                 case CacheVersion.Halo3Retail:
@@ -573,6 +646,7 @@ namespace TagTool.Cache
                     return GameTitle.Halo3ODST;
                 case CacheVersion.HaloOnlineED:
                 case CacheVersion.HaloOnline106708:
+                case CacheVersion.HaloOnline155080:
                 case CacheVersion.HaloOnline235640:
                 case CacheVersion.HaloOnline301003:
                 case CacheVersion.HaloOnline327043:
@@ -594,6 +668,8 @@ namespace TagTool.Cache
                     return GameTitle.HaloReach;
                 case CacheVersion.Halo4:
                     return GameTitle.Halo4;
+                case CacheVersion.Halo2AMP:
+                    return GameTitle.Halo2AMP;
                 default:
                     return GameTitle.Unknown;
             }
@@ -603,63 +679,26 @@ namespace TagTool.Cache
         /// tags.dat timestamps for each halo online game version.
         /// Timestamps in here map directly to a <see cref="CacheVersion"/> value.
         /// </summary>
-        private static readonly Dictionary<long, CacheVersion> HaloOnlineTimestampMapping = new Dictionary<long, CacheVersion>
+        private static readonly Dictionary<string, CacheVersion> HaloOnlineTimestampMapping = new Dictionary<string, CacheVersion>
         {
-            [132699675831101597] = CacheVersion.HaloOnlineED,
-            [130713360239499012] = CacheVersion.HaloOnline106708,
-            [130772932862346058] = CacheVersion.HaloOnline235640,
-            [130785901486445524] = CacheVersion.HaloOnline301003,
-            [130800445160458507] = CacheVersion.HaloOnline327043,
-            [130814318396118255] = CacheVersion.HaloOnline372731,
-            [130829123589114103] = CacheVersion.HaloOnline416097,
-            [130834294034159845] = CacheVersion.HaloOnline430475,
-            [130844512316254660] = CacheVersion.HaloOnline454665,
-            [130851642645809862] = CacheVersion.HaloOnline449175,
-            [130858473716879375] = CacheVersion.HaloOnline498295,
-            [130868891945946004] = CacheVersion.HaloOnline530605,
-            [130869644198634503] = CacheVersion.HaloOnline532911,
-            [130879952719550501] = CacheVersion.HaloOnline554482,
-            [130881889330693956] = CacheVersion.HaloOnline571627,
-            [130893802351772672] = CacheVersion.HaloOnline604673,
-            [130930071628935939] = CacheVersion.HaloOnline700123
-        };
-
-        /// <summary>
-        /// tags.dat timestamps for each game version.
-        /// Timestamps in here should correspond directly to <see cref="CacheVersion"/> enum values (excluding <see cref="CacheVersion.Unknown"/>).
-        /// </summary>
-        private static readonly long[] VersionTimestamps =
-        {
-            -1, // Halo Xbox
-            -1, // Halo PC
-            -1, // Halo Custom Edition
-            -1, // Halo2Alpha,
-            -1, // Halo2Beta
-            -1, // Halo2Xbox
-            -1, // Halo2Vista
-            -1, // Halo3Beta
-            -1, // Halo3Retail
-            -1, // Halo3ODST
-            132699675831101597, // HaloOnlineED
-            130713360239499012, // HaloOnline106708
-            130772932862346058, // HaloOnline235640
-            130785901486445524, // HaloOnline301003
-            130800445160458507, // V0_4_1_327043_cert_MS26_new
-            130814318396118255, // V8_1_372731_Live
-            130829123589114103, // V0_0_416097_Live
-            130834294034159845, // HaloOnline430475
-            130844512316254660, // V10_1_454665_Live
-            130851642645809862, // HaloOnline449175
-            130858473716879375, // HaloOnline498295
-            130868891945946004, // V11_1_530605_Live
-            130869644198634503, // V11_1_532911_Live
-            130879952719550501, // V11_1_554482_Live
-            130881889330693956, // HaloOnline571627
-            130893802351772672, // HaloOnline604673
-            130930071628935939, // HaloOnline700123
-            -1, // HaloReach
-            -1, // HaloReach11883
-            -1  // Halo 4
+            ["2021-07-05 14:06:23.1101597"] = CacheVersion.HaloOnlineED,
+            ["2015-03-20 14:40:23.9499012"] = CacheVersion.HaloOnline106708,
+            ["2015-04-10 11:37:39.234805"] = CacheVersion.HaloOnline155080,
+            ["2015-05-28 13:28:06.2346058"] = CacheVersion.HaloOnline235640,
+            ["2015-06-12 13:42:28.6445524"] = CacheVersion.HaloOnline301003,
+            ["2015-06-29 09:41:56.0458507"] = CacheVersion.HaloOnline327043,
+            ["2015-07-15 11:03:59.6118255"] = CacheVersion.HaloOnline372731,
+            ["2015-08-01 14:19:18.9114103"] = CacheVersion.HaloOnline416097,
+            ["2015-08-07 13:56:43.4159845"] = CacheVersion.HaloOnline430475,
+            ["2015-08-19 09:47:11.625466"] = CacheVersion.HaloOnline454665,
+            ["2015-08-27 15:51:04.5809862"] = CacheVersion.HaloOnline449175,
+            ["2015-09-04 13:36:11.6879375"] = CacheVersion.HaloOnline498295,
+            ["2015-09-16 14:59:54.5946004"] = CacheVersion.HaloOnline530605,
+            ["2015-09-17 11:53:39.8634503"] = CacheVersion.HaloOnline532911,
+            ["2015-09-29 10:14:31.9550501"] = CacheVersion.HaloOnline554482,
+            ["2015-10-01 16:02:13.0693956"] = CacheVersion.HaloOnline571627,
+            ["2015-10-15 10:57:15.1772672"] = CacheVersion.HaloOnline604673,
+            ["2015-11-26 10:26:02.8935939"] = CacheVersion.HaloOnline700123
         };
     }
 
@@ -672,12 +711,13 @@ namespace TagTool.Cache
         Halo2Alpha,
         Halo2Beta,
         Halo2Xbox,
-        Halo2Vista,
+        Halo2PC,
         Halo3Beta,
         Halo3Retail,
         Halo3ODST,
         HaloOnlineED,
         HaloOnline106708,
+        HaloOnline155080,
         HaloOnline235640,
         HaloOnline301003,
         HaloOnline327043,
@@ -695,7 +735,8 @@ namespace TagTool.Cache
         HaloOnline700123,
         HaloReach,
         HaloReach11883,
-        Halo4
+        Halo4,
+        Halo2AMP
     }
 
     public enum CacheGeneration : int

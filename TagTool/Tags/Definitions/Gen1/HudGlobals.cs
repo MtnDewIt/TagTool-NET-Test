@@ -15,7 +15,7 @@ namespace TagTool.Tags.Definitions.Gen1
         public byte[] Padding;
         [TagField(Length = 0x20)]
         public byte[] Padding1;
-        public Point2d AnchorOffset;
+        public Int16Point2d AnchorOffset;
         public float WidthScale;
         public float HeightScale;
         public ScalingFlagsValue ScalingFlags;
@@ -163,7 +163,7 @@ namespace TagTool.Tags.Definitions.Gen1
             /// extra spacing beyond bitmap width for text alignment
             /// </summary>
             public short WidthOffset;
-            public Point2d OffsetFromReferenceCorner;
+            public Int16Point2d OffsetFromReferenceCorner;
             public ArgbColor OverrideIconColor;
             public sbyte FrameRate030;
             public FlagsValue Flags;

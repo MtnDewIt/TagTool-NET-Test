@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TagTool.Cache;
+using TagTool.Commands;
 using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Tags;
 using CollisionModelGen4 = TagTool.Tags.Definitions.Gen4.CollisionModel;
 using PhysicsModelGen4 = TagTool.Tags.Definitions.Gen4.PhysicsModel;
@@ -56,7 +58,7 @@ namespace TagTool.Commands.Porting.Gen4
             if (Gen4Cache.TagCache.TagDefinitions.GetTagDefinitionType(gen4Tag.Group.Tag) == null ||
                 Cache.TagCache.TagDefinitions.GetTagDefinitionType(gen4Tag.Group.Tag) == null)
             {
-                new TagToolError(CommandError.CustomError, $"Failed to convert tag '{gen4Tag}' Group not supported. Returning null");
+                Log.Error($"Failed to convert tag '{gen4Tag}' Group not supported. Returning null");
                 return null;
             }
             return ConvertTagInternal(cacheStream, gen4CacheStream, resourceStreams, gen4Tag);
@@ -114,7 +116,7 @@ namespace TagTool.Commands.Porting.Gen4
                 case PlatformUnsignedValue _:
                     return data;
                 default:
-                    new TagToolWarning($"Unhandled type in `ConvertData`: {data.GetType().Name} (probably harmless).");
+                    Log.Warning($"Unhandled type in `ConvertData`: {data.GetType().Name} (probably harmless).");
                     break;
             }
 
@@ -131,7 +133,7 @@ namespace TagTool.Commands.Porting.Gen4
                 return data;
 
             var type = data[0].GetType();
-            if ((type.IsValueType && type != typeof(StringId)) ||
+            if (type.IsValueType && type != typeof(StringId) ||
                 type == typeof(string))
                 return data;
 
@@ -155,7 +157,7 @@ namespace TagTool.Commands.Porting.Gen4
                     continue;
 
                 // skip the field if no conversion is needed
-                if ((tagFieldInfo.FieldType.IsValueType && tagFieldInfo.FieldType != typeof(StringId)) ||
+                if (tagFieldInfo.FieldType.IsValueType && tagFieldInfo.FieldType != typeof(StringId) ||
                 tagFieldInfo.FieldType == typeof(string))
                     continue;
 
@@ -192,9 +194,9 @@ namespace TagTool.Commands.Porting.Gen4
         {
             List<CachedTag> result = new List<CachedTag>();
 
-            if (tagSpecifier.Length == 0 || (!char.IsLetter(tagSpecifier[0]) && !tagSpecifier.Contains('*')) || !tagSpecifier.Contains('.'))
+            if (tagSpecifier.Length == 0 || !char.IsLetter(tagSpecifier[0]) && !tagSpecifier.Contains('*') || !tagSpecifier.Contains('.'))
             {
-                new TagToolError(CommandError.CustomError, $"Invalid tag name: {tagSpecifier}");
+                Log.Error($"Invalid tag name: {tagSpecifier}");
                 return new List<CachedTag>();
             }
 
@@ -202,7 +204,7 @@ namespace TagTool.Commands.Porting.Gen4
 
             if (!Cache.TagCache.TryParseGroupTag(tagIdentifiers[1], out var groupTag))
             {
-                new TagToolError(CommandError.CustomError, $"Invalid tag name: {tagSpecifier}");
+                Log.Error($"Invalid tag name: {tagSpecifier}");
                 return new List<CachedTag>();
             }
 
@@ -216,7 +218,7 @@ namespace TagTool.Commands.Porting.Gen4
 
             if (result.Count == 0)
             {
-                new TagToolError(CommandError.CustomError, $"Invalid tag name: {tagSpecifier}");
+                Log.Error($"Invalid tag name: {tagSpecifier}");
                 return new List<CachedTag>();
             }
 

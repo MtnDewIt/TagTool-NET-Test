@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using TagTool.Commands.Common;
+using TagTool.Common.Logging;
 using static TagTool.Audio.FMOD;
 
 namespace TagTool.Audio
@@ -58,7 +59,7 @@ namespace TagTool.Audio
             FMOD_RESULT result = MasterSound.GetSubSound(index, out FMODSound subsound);
             if (result != FMOD_RESULT.OK) 
             {
-                new TagToolWarning($"Failed to get subsound from sound bank {BankFile.Name} at index {index}");
+                Log.Warning($"Failed to get subsound from sound bank {BankFile.Name} at index {index}");
                 return Array.Empty<byte>();
             }
 

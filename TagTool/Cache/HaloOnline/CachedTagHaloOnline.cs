@@ -13,7 +13,7 @@ namespace TagTool.Cache.HaloOnline
 
         public CachedTagHaloOnline(int index, string name = null) : base(index, name) { }
 
-        public CachedTagHaloOnline(int index, TagGroupGen3 group, string name = null) : base(index, group, name) { }
+        public CachedTagHaloOnline(int index, TagGroup group, string name = null) : base(index, group, name) { }
 
         public override uint DefinitionOffset => Offset;
 

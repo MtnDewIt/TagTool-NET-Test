@@ -2,7 +2,6 @@ using TagTool.Cache;
 using TagTool.Common;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Tags.Definitions.Gen2
@@ -163,14 +162,15 @@ namespace TagTool.Tags.Definitions.Gen2
             UniformSpriteSequences = 1 << 2,
             FilthySpriteBugFix = 1 << 3,
             UseSharpBumpFilter = 1 << 4,
-            Unused = 1 << 5,
+            WDP_Compression = 1 << 5,
             UseClampedMirroredBumpFilter = 1 << 6,
             InvertDetailFade = 1 << 7,
             SwapXYVectorComponents = 1 << 8,
             ConvertFromSigned = 1 << 9,
             ConvertToSigned = 1 << 10,
             ImportMipmapChains = 1 << 11,
-            IntentionallyTrueColor = 1 << 12
+            IntentionallyTrueColor = 1 << 12,
+            OriginalXboxMipmapSelection = 1 << 13,
         }
         
         public enum UnknownValue : short
@@ -228,7 +228,8 @@ namespace TagTool.Tags.Definitions.Gen2
             }
         }
         
-        [TagStructure(Size = 0x74)]
+        [TagStructure(Size = 0x74, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0xA8, Platform = CachePlatform.MCC)]
         public class BitmapDataBlock : TagStructure
         {
             public Tag Signature;
@@ -248,10 +249,23 @@ namespace TagTool.Tags.Definitions.Gen2
             /// </summary>
             public FormatValue Format;
             public FlagsValue Flags;
-            public Point2d RegistrationPoint;
+            public Int16Point2d RegistrationPoint;
             public short MipmapCount;
             public short LowDetailMipmapCount;
             public int PixelsOffset;
+
+            [TagField(Flags = Short, Platform = CachePlatform.MCC)]
+            public CachedTag DatumMCC;
+
+            [TagField(Platform = CachePlatform.MCC)]
+            public List<NativeMipmapInfoBlock> NativeMipmapInfo;
+
+            [TagField(Platform = CachePlatform.MCC)]
+            public int NativeSize;
+            [TagField(Platform = CachePlatform.MCC)]
+            public int TileMode;
+            [TagField(Platform = CachePlatform.MCC)]
+            public PlatformUnsignedValue RuntimePointer;
 
             public int Lod0Pointer;
             public int Lod1Pointer;
@@ -263,30 +277,58 @@ namespace TagTool.Tags.Definitions.Gen2
             public int Lod0Size;
             public int Lod1Size;
             public int Lod2Size;
+            [TagField(Platform = CachePlatform.Original)]
             public int Lod3Size;
+            [TagField(Platform = CachePlatform.Original)]
             public int Lod4Size;
+            [TagField(Platform = CachePlatform.Original)]
             public int Lod5Size;
 
-            [TagField(Flags = Short)]
+            [TagField(Platform = CachePlatform.MCC)]
+            public PlatformUnsignedValue RuntimePointer1;
+            [TagField(Platform = CachePlatform.MCC)]
+            public PlatformUnsignedValue RuntimePointer2;
+            [TagField(Platform = CachePlatform.MCC)]
+            public PlatformUnsignedValue RuntimePointer3;
+            [TagField(Platform = CachePlatform.MCC)]
+            public PlatformUnsignedValue RuntimePointer4;
+            [TagField(Platform = CachePlatform.MCC)]
+            public PlatformUnsignedValue RuntimePointer5;
+            [TagField(Platform = CachePlatform.MCC, Flags = TagFieldFlags.Padding, Length = 0x18)]
+            public byte[] PaddingMCC1;
+            [TagField(Platform = CachePlatform.MCC)]
+            public PlatformUnsignedValue RuntimePointer6;
+
+
+            [TagField(Flags = Short, Platform = CachePlatform.Original)]
             public CachedTag Datum;
 
-            [TagField(Length = 0x4)]
-            public byte[] Unknown5;
-            [TagField(Length = 0x4)]
-            public byte[] Unknown6;
-            [TagField(Length = 0x4)]
-            public byte[] Unknown7;
-            [TagField(Length = 0x14)]
-            public byte[] Unknown8;
-            [TagField(Length = 0x4)]
-            public byte[] Unknown9;
+            [TagField(Length = 0x10, Flags = TagFieldFlags.Padding, Platform = CachePlatform.Original)]
+            public byte[] Padding;
+
+            [TagField(Platform = CachePlatform.Original)]
+            public int LowDetailOffset;
+            [TagField(Platform = CachePlatform.Original)]
+            public int LowDetailSize;
+            [TagField(Platform = CachePlatform.Original)]
+            public FormatValue LowDetailFormat;
+            [TagField(Platform = CachePlatform.Original)]
+            public short LowDetailWidth;
+            [TagField(Platform = CachePlatform.Original)]
+            public short LowDetailHeight;
+            [TagField(Platform = CachePlatform.Original)]
+            public short LowDetailDepth;
+
+            [TagField(Length = 0x4, Platform = CachePlatform.Original)]
+            public byte[] Padding1;
             
             [Flags]
             public enum MoreFlagsValue : byte
             {
                 DeleteFromCacheFile = 1 << 0,
                 BitmapCreateAttempted = 1 << 1,
-                Unknown = 1 << 2
+                BitmapRecreateAllowed = 1 << 2,
+                BitmapSamplingAllowed = 1 << 3,
             }
             
             public enum TypeValue : short
@@ -344,6 +386,14 @@ namespace TagTool.Tags.Definitions.Gen2
             _41, // 2:0
             _42, // 2:2
             _43 // 4:4
+        }
+
+        [TagStructure(Size = 0xC)]
+        public class NativeMipmapInfoBlock : TagStructure
+        {
+            public int Offset;
+            public int PitchRow;
+            public int PitchSlice;
         }
     }
 }

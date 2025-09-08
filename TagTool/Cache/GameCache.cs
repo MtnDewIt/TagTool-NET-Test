@@ -9,6 +9,7 @@ using TagTool.Cache.Monolithic;
 using TagTool.Cache.Resources;
 using TagTool.Common;
 using TagTool.IO;
+using TagTool.Scripting;
 using TagTool.Serialization;
 using TagTool.Tags;
 
@@ -23,6 +24,12 @@ namespace TagTool.Cache
         public TagSerializer Serializer;
         public TagDeserializer Deserializer;
         public DirectoryInfo Directory;
+
+        // TODO: cleanup. the reason I'm doing this is because GameCache doesn't have a constructor
+        // where the version and platform is available, and I don't want to have to call 
+        // ScriptDefinitionsFactory.Create in every GameCache implementation
+        private IScriptDefinitions _scriptDefinitions;
+        public IScriptDefinitions ScriptDefinitions => _scriptDefinitions ?? (_scriptDefinitions = ScriptDefinitionsFactory.Create(Version, Platform));
 
         public List<LocaleTable> LocaleTables;
         public abstract StringTable StringTable { get; }
@@ -69,9 +76,9 @@ namespace TagTool.Cache
                     return new GameCacheGen1(map, file);
 
                 case CacheVersion.Halo2Alpha:
-                case CacheVersion.Halo2Vista:
-                case CacheVersion.Halo2Xbox:
                 case CacheVersion.Halo2Beta:
+                case CacheVersion.Halo2Xbox:
+                case CacheVersion.Halo2PC:
                     return new GameCacheGen2(map, file);
 
                 case CacheVersion.Halo3Beta:
@@ -82,6 +89,7 @@ namespace TagTool.Cache
 
                 case CacheVersion.HaloOnlineED:
                 case CacheVersion.HaloOnline106708:
+                case CacheVersion.HaloOnline155080:
                 case CacheVersion.HaloOnline235640:
                 case CacheVersion.HaloOnline301003:
                 case CacheVersion.HaloOnline327043:
@@ -109,6 +117,7 @@ namespace TagTool.Cache
                     }
 
                 case CacheVersion.Halo4:
+                case CacheVersion.Halo2AMP:
                     return new GameCacheGen4(map, file);
             }
 

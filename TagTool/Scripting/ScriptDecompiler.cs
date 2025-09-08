@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TagTool.Cache;
-using TagTool.Commands.Common;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
 
@@ -29,6 +29,12 @@ namespace TagTool.Scripting
 
         public void DecompileScripts(TextWriter scriptWriter)
         {
+            if (Cache.Version >= CacheVersion.HaloReach)
+            {
+                foreach (var script in Definition.Scripts)
+                    script.ScriptName = Cache.StringTable.GetString(script.ScriptNameReach);
+            }
+
             ParseScripts();
 
             using (var indentWriter = new IndentedTextWriter(scriptWriter, "	"))
@@ -198,7 +204,7 @@ namespace TagTool.Scripting
             indentWriter.Indent++;
 
             //if statements have first member on the same line
-            if (expr.Opcode == 2)
+            if (expr.Opcode == GetOpcode("if"))
                 indentWriter.Write(' ');
             else
                 indentWriter.WriteLine();
@@ -228,10 +234,20 @@ namespace TagTool.Scripting
         {
             string result = "unk_op";
 
-            if (ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].ContainsKey(Opcode))
-                result = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)][Opcode].Name;
+            if (Cache.ScriptDefinitions.Scripts.ContainsKey(Opcode))
+                result = Cache.ScriptDefinitions.Scripts[Opcode].Name;
 
             return result;
+        }
+
+        private ushort GetOpcode(string name)
+        {
+            foreach (var pair in Cache.ScriptDefinitions.Scripts)
+            {
+                if (pair.Value.Name == name)
+                    return (ushort)pair.Key;
+            }
+            return ushort.MaxValue;
         }
 
         private GenericExpression ParseValueExpression(int exprIndex)
@@ -340,7 +356,7 @@ namespace TagTool.Scripting
             {
                 case HsSyntaxNodeFlags.Group:
                     result.Type = GenericExpression.ExpressionType.Group;
-                    if (expr.Opcode <= 6 && expr.Opcode != 4)
+                    if (expr.Opcode <= GetOpcode("or") && expr.Opcode != GetOpcode("set"))
                         result.Type = GenericExpression.ExpressionType.MultilineGroup;
                     result.Name = OpcodeLookup(expr.Opcode);
                     break;
@@ -391,29 +407,14 @@ namespace TagTool.Scripting
                         Opcode = expr.Opcode
                     };
                 default:
-                    new TagToolError(CommandError.CustomError, $"<UNIMPLEMENTED EXPR: {expr.Flags.ToString()} {GetHsTypeAsString(Cache.Version, expr.ValueType)}>");
+                    Log.Error($"<UNIMPLEMENTED EXPR: {expr.Flags.ToString()} {GetHsTypeAsString(Cache.Version, expr.ValueType)}>");
                     return new GenericExpression();
             }
         }
 
         private string GetHsTypeAsString(CacheVersion version, HsType type)
         {
-            switch (version)
-            {
-                case CacheVersion.Halo3Retail:
-                    return type.Halo3Retail.ToString();
-
-                case CacheVersion.Halo3ODST:
-                    return type.Halo3ODST.ToString();
-
-                case CacheVersion.HaloOnlineED:
-                case CacheVersion.HaloOnline106708:
-                    return type.HaloOnline.ToString();
-
-                default:
-                    new TagToolWarning($"No HsType found for cache \"{version}\". Defaulting to HaloOnline");
-                    return type.HaloOnline.ToString();
-            }
+            return type.ToString();
         }
 
         private int GetGroupStartExpressionIndex(int exprIndex)

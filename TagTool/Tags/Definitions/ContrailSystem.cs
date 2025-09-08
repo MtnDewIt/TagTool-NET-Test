@@ -14,7 +14,8 @@ namespace TagTool.Tags.Definitions
 
         [TagStructure(Size = 0x258, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x26C, MaxVersion = CacheVersion.HaloOnline700123)]
-        [TagStructure(Size = 0x294, MinVersion = CacheVersion.HaloReach)]
+        [TagStructure(Size = 0x294, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x280, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
         public class ContrailDefinitionBlock : TagStructure
 		{
             [TagField(Flags = Label)]
@@ -31,8 +32,8 @@ namespace TagTool.Tags.Definitions
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public short SortBias; // use values between -10 and 10 to move closer and farther from camera (positive is closer)
-            [TagField(MinVersion = CacheVersion.HaloReach, Length = 0x2, Flags = Padding)]
-            public byte[] ReachPadding0;
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public ContrailEmissionFlags EmissionFlags;
 
             public ContrailPropertyScalar EmissionRate; // profiles per second
             public ContrailPropertyScalar ProfileLifespan; // seconds
@@ -80,6 +81,12 @@ namespace TagTool.Tags.Definitions
                 AlignedRibbon,
                 Cross,
                 Ngon
+            }
+
+            public enum ContrailEmissionFlags : short
+            {
+                None = 0,
+                TickrateAdaptiveProfileDuration = 1 << 0,
             }
 
             [TagStructure(Size = 0x20)]

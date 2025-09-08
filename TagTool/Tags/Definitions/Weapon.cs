@@ -8,19 +8,24 @@ using static TagTool.Tags.TagFieldFlags;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "weapon", Tag = "weap", Size = 0x354, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
-    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x350, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "weapon", Tag = "weap", Size = 0x358, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x354, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "weapon", Tag = "weap", Size = 0x394, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED, Platform = CachePlatform.Original)]
-    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x384, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline449175, Platform = CachePlatform.Original)]
-    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x390, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
+    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x384, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline235640, Platform = CachePlatform.Original)]
+    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x390, MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline604673, Platform = CachePlatform.Original)]
+    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x394, MinVersion = CacheVersion.HaloOnline700123, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
     [TagStructure(Name = "weapon", Tag = "weap", Size = 0x2CC, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
-    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x2D8, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
+    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x350, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x354, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x294, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     public class Weapon : Item
     {
         public WeaponFlags WeaponFlags;
         public SecondaryWeaponFlags SecondaryWeaponFlags;
+
+        [TagField(Platform = CachePlatform.Original)]
+        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
         public StringId UnusedLabel;
+
         public SecondaryTriggerModeValue SecondaryTriggerMode;
         public short MaximumAlternateShotsLoaded;
         public float TurnOnTime;
@@ -73,7 +78,7 @@ namespace TagTool.Tags.Definitions
         [TagField(ValidTags = new[] { "snd!", "effe" })]
         public CachedTag Detonation;
         [TagField(ValidTags = new[] { "jpt!", "drdf" })]
-        public new CachedTag DetonationDamageEffect;
+        public CachedTag DetonationDamageEffect;
 
         [TagField(ValidTags = new[] { "jpt!" }, MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag PlayerMeleeDamage;
@@ -102,9 +107,9 @@ namespace TagTool.Tags.Definitions
         public Bounds<float> MagnificationRange;
 
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public WeaponMagnificationFlags MagnificationFlags;
+        public WeaponMagnificationFlags ZoomProtection;
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public float WeaponSwitchReadySpeed; // 0 default
+        public float WeaponSwitchAnimationSpeedModifier; // 0 default
 
         public AimAssistStruct WeaponAimAssist;
 
@@ -113,22 +118,12 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public List<Unit.TargetTrackingBlock> TargetTracking;
 
-        // ballistics ?
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public uint Unknown16;
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public uint Unknown17;
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public uint Unknown18;
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public uint Unknown19;
-
         // At the min range (or closer), the minimum ballistic arcing is used, at the max (or farther away), the maximum
         // arcing is used
-        [TagField(MinVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public Bounds<float> BallisticArcingFiringBounds; // world units
         // Controls speed and degree of arc. 0 = low, fast, 1 = high, slow
-        [TagField(MinVersion = CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public Bounds<float> BallisticArcingFractionBounds; // [0-1]
 
         public MovementPenaltyModes MovementPenalized;
@@ -170,14 +165,10 @@ namespace TagTool.Tags.Definitions
         [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public float ActiveCamoRegrowthRate;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public uint Unknown22; // HandleNode ?
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public float Unknown23;
-
-        [TagField(MaxVersion = CacheVersion.Halo3ODST)]
-        [TagField(MinVersion = CacheVersion.HaloReach)]
         public StringId HandleNode;
+
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public float WeaponSprintExitSpeedup;
 
         // -------- weapon labels
         public StringId WeaponClass;
@@ -197,7 +188,7 @@ namespace TagTool.Tags.Definitions
 
         // -------- interface
         [TagField(Flags = Padding, Length = 16, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagField(Flags = Padding, Length = 16, MinVersion = CacheVersion.HaloReach)]
+        [TagField(Flags = Padding, Length = 16, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
         public byte[] SharedInterface;
 
         public List<FirstPersonBlock> FirstPerson;
@@ -240,7 +231,7 @@ namespace TagTool.Tags.Definitions
         public RealVector3d FirstPersonWeaponOffset;
         [TagField(MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
         public RealVector3d CenteredFirstPersonWeaponOffsetMCC;
-        [TagField(MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<FirstPersonOffsetBlock> NewFirstPersonWeaponOffsets;
         public RealVector2d FirstPersonScopeSize;
         public Bounds<float> SupportThirdPersonCameraRange;  // (degrees) 0 = straight, -90 = down, 90 = up
@@ -327,11 +318,8 @@ namespace TagTool.Tags.Definitions
         [Flags]
         public enum WeaponMagnificationFlags : uint
         {
-            None = 0,
-            Bit0 = 1 << 0,
-            Bit1 = 1 << 1,
-            Bit2 = 1 << 2,
-            Bit3 = 1 << 3
+            Disabled,
+            Enabled
         }
 
         [TagStructure(Size = 0x20)]
@@ -343,7 +331,9 @@ namespace TagTool.Tags.Definitions
             public CachedTag FirstPersonAnimations;
         }
 
-        [TagStructure(Size = 0x80)]
+        [TagStructure(Size = 0x80, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x80, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0x60, Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach)]
         public class Magazine : TagStructure
         {
             public MagazineFlags Flags;
@@ -352,19 +342,33 @@ namespace TagTool.Tags.Definitions
             public short RoundsTotalMaximum;
             public short RoundsLoadedMaximum;
             public short RoundsInventoryMaximum;
-            [TagField(Length = 2, Flags = TagFieldFlags.Padding)]
+
+            [TagField(Length = 2, Flags = Padding, Platform = CachePlatform.Original)]
+            [TagField(Length = 2, Flags = Padding, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
             public byte[] Padding1;
+
             // the length of time it takes to load a single magazine into the weapon
-            public float ReloadTime;  // seconds
+            [TagField(Platform = CachePlatform.Original)]
+            [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
+            public float ReloadDialogueTime;  // seconds
+
             public short RoundsReloaded;
-            [TagField(Length = 2, Flags = TagFieldFlags.Padding)]
+
+            [TagField(Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach)]
+            public float ReloadDialogueTimeReachMCC;
+
+            [TagField(Length = 2, Flags = Padding, Platform = CachePlatform.Original)]
+            [TagField(Length = 2, Flags = Padding, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
             public byte[] Padding2;
+
             // the length of time it takes to chamber the next round
+            [TagField(Platform = CachePlatform.Original)]
+            [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
             public float ChamberTime; // seconds
-            [TagField(Length = 8, Flags = TagFieldFlags.Padding)]
+
+            [TagField(Length = 24, Flags = Padding, Platform = CachePlatform.Original)]
+            [TagField(Length = 24, Flags = Padding, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
             public byte[] Padding3;
-            [TagField(Length = 16, Flags = TagFieldFlags.Padding)]
-            public byte[] Padding4;
 
             [TagField(ValidTags = new[] { "snd!", "effe" })]
             public CachedTag ReloadingEffect;
@@ -974,7 +978,7 @@ namespace TagTool.Tags.Definitions
             CannotFireAtMaximumAge = 1 << 11,
             SecondaryTriggerOverridesGrenades = 1 << 12,
             SupportWeapon = 1 << 13,
-            HideFPWeaponWhenInIronSights = 1 << 14,
+            HideFPWeaponWhenInIronSights = 1 << 14, // EnablesIntegratedNightVision?
             AIsUseWeaponMeleeDamage = 1 << 15,
             PreventsBinoculars = 1 << 16,
             LoopFPFiringAnimation = 1 << 17,
@@ -991,7 +995,7 @@ namespace TagTool.Tags.Definitions
             CannotBeUsedByPlayer = 1 << 28,
             HoldFpFiringAnimation = 1 << 29,
             StrictDeviationAngle = 1 << 30,
-            Bit31 = 1u << 31
+            NotifiesTargetUnits = 1u << 31
         }
         
         [Flags]

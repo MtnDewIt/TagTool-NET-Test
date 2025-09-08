@@ -60,10 +60,10 @@ namespace TagTool.Commands.Modding
 
             if (tagCacheIndex != ModCache.GetCurrentTagCacheIndex())
             {
-                if (!ModCache.SetActiveTagCache(tagCacheIndex))
-                {
-                    return new TagToolError(CommandError.CustomMessage, "Failed to apply mod package to base cache, no changes applied");
-                }
+                if (!ModCache.BaseModPackage.IsValidTagCacheIndex(tagCacheIndex))
+                    return new TagToolError(CommandError.ArgInvalid, $"Invalid tag cache index {tagCacheIndex}");
+
+                ModCache.SetActiveTagCache(tagCacheIndex);
             }
 
             TagMapping = new Dictionary<int, int>();
@@ -429,30 +429,30 @@ namespace TagTool.Commands.Modding
         {
             if (expr.Flags == HsSyntaxNodeFlags.Expression)
             {
-                switch (expr.ValueType.HaloOnline)
+                switch (expr.ValueType)
                 {
-                    case HsType.HaloOnlineValue.Sound:
-                    case HsType.HaloOnlineValue.Effect:
-                    case HsType.HaloOnlineValue.Damage:
-                    case HsType.HaloOnlineValue.LoopingSound:
-                    case HsType.HaloOnlineValue.AnimationGraph:
-                    case HsType.HaloOnlineValue.DamageEffect:
-                    case HsType.HaloOnlineValue.ObjectDefinition:
-                    case HsType.HaloOnlineValue.Bitmap:
-                    case HsType.HaloOnlineValue.Shader:
-                    case HsType.HaloOnlineValue.RenderModel:
-                    case HsType.HaloOnlineValue.StructureDefinition:
-                    case HsType.HaloOnlineValue.LightmapDefinition:
-                    case HsType.HaloOnlineValue.CinematicDefinition:
-                    case HsType.HaloOnlineValue.CinematicSceneDefinition:
-                    case HsType.HaloOnlineValue.BinkDefinition:
-                    case HsType.HaloOnlineValue.AnyTag:
-                    case HsType.HaloOnlineValue.AnyTagNotResolving:
+                    case HsType.Sound:
+                    case HsType.Effect:
+                    case HsType.Damage:
+                    case HsType.LoopingSound:
+                    case HsType.AnimationGraph:
+                    case HsType.DamageEffect:
+                    case HsType.ObjectDefinition:
+                    case HsType.Bitmap:
+                    case HsType.Shader:
+                    case HsType.RenderModel:
+                    case HsType.StructureDefinition:
+                    case HsType.LightmapDefinition:
+                    case HsType.CinematicDefinition:
+                    case HsType.CinematicSceneDefinition:
+                    case HsType.BinkDefinition:
+                    case HsType.AnyTag:
+                    case HsType.AnyTagNotResolving:
                         ConvertScriptTagReferenceExpressionData(modPack, expr);
                         return;
 
-                    case HsType.HaloOnlineValue.AiLine when BitConverter.ToInt32(expr.Data, 0) != -1:
-                    case HsType.HaloOnlineValue.StringId:
+                    case HsType.AiLine when BitConverter.ToInt32(expr.Data, 0) != -1:
+                    case HsType.StringId:
                         ConvertScriptStringIdExpressionData(modPack, expr);
                         return;
                     default:

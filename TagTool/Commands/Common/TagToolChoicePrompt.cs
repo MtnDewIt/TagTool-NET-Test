@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Common
 {
@@ -187,7 +188,7 @@ namespace TagTool.Commands.Common
             {
                 if (!ChoiceListOG.GetType().IsDefined(typeof(FlagsAttribute), false))
                 {
-                    new TagToolWarning("Enum is not of flags type, so multiple values cannot be set.");
+                    Log.Warning("Enum is not of flags type, so multiple values cannot be set.");
                     returnEnum = null;
                 }
                 var list = String.Join(",", new Multiple(ChoiceListOG).Prompt().Where(x => x.Value == true).Select(x => x.Key).ToArray());

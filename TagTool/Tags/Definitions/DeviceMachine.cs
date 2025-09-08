@@ -8,24 +8,33 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Name = "device_machine", Tag = "mach", Size = 0x18, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
     [TagStructure(Name = "device_machine", Tag = "mach", Size = 0x14, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "device_machine", Tag = "mach", Size = 0x24, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-    [TagStructure(Name = "device_machine", Tag = "mach", Size = 0x18, MinVersion = CacheVersion.HaloReach)]
+    [TagStructure(Name = "device_machine", Tag = "mach", Size = 0x20, MinVersion = CacheVersion.HaloReach)]
     public class DeviceMachine : Device
     {
         public TypeValue Type;
         public MachineFlags Flags;
         public float DoorOpenTime;
         public Bounds<float> OcclusionBounds;
+
         [TagField(Platform = CachePlatform.Original)]
+        [TagField(Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach)]
         public CollisionResponseValue CollisionResponse;
+
         public short ElevatorNode;
         public PathfindingPolicyValue PathfindingPolicy;
 
-        [TagField(Length = 2, Flags = TagFieldFlags.Padding, Platform = CachePlatform.Original)]
+        [TagField(Length = 2, Flags = Padding, Platform = CachePlatform.Original)]
+        [TagField(Length = 2, Flags = Padding, Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach)]
         public byte[] Padding4;
 
         [TagField(Flags = Padding, Length = 12, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Padding5;
- 
+
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public StringId ShieldName;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public StringId ShieldFunction;
+
         public enum TypeValue : short
         {
             Door,

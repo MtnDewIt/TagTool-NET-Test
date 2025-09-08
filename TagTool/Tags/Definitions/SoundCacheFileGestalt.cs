@@ -9,6 +9,7 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Name = "sound_cache_file_gestalt", Tag = "ugh!", Size = 0xD4, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "sound_cache_file_gestalt", Tag = "ugh!", Size = 0xC4, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
     [TagStructure(Name = "sound_cache_file_gestalt", Tag = "ugh!", Size = 0xDC, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
+    [TagStructure(Name = "sound_cache_file_gestalt", Tag = "ugh!", Size = 0xE0, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     public class SoundCacheFileGestalt : TagStructure
 	{
         [TagField(Platform = CachePlatform.MCC)]
@@ -27,7 +28,7 @@ namespace TagTool.Tags.Definitions
         public List<PitchRange> PitchRanges;
         public List<Permutation> Permutations;
 
-        [TagField(MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
+        [TagField(MinVersion = CacheVersion.HaloReach)]
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         public List<LanguagePermutation> LanguagePermutations;
 
