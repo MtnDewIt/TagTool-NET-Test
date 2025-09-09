@@ -652,7 +652,7 @@ namespace TagTool.Porting.Gen2
                     EditorFolder = -1,
                     ObjectType = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.Scenery },
                     Multiplayer = new Scenario.MultiplayerObjectProperties(),
-                    HavokMoppIndex = scenobj.SceneryData.HavokMoppIndex
+                    HavokMoppIndex = -1
                 };
                 newScenario.Scenery.Add(scenery);
                 AutoConverter.TranslateEnum(gen2Tag.Scenery[scenobjindex].SceneryData.ValidMultiplayerGames, out scenery.Multiplayer.EngineFlags, scenery.Multiplayer.EngineFlags.GetType());

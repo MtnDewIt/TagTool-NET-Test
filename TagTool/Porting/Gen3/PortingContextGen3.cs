@@ -344,6 +344,7 @@ namespace TagTool.Porting.Gen3
                     return versionedFlags;
 
                 case GameObject.MultiplayerObjectBlock multiplayer:
+                    multiplayer = ConvertStructure(cacheStream, blamCacheStream, multiplayer, definition, blamTagName);
                     return ConvertMultiplayerObject(cacheStream, blamCacheStream, definition, blamTagName, multiplayer);
 
                 case BipedPhysicsFlags bipedPhysicsFlags:
