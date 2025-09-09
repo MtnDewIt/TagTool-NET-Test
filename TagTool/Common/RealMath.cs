@@ -127,6 +127,80 @@ namespace TagTool.Common
             return dequantized;
         }
 
+        [Obsolete("Remove when issues with reach floating point dequantization are resolved")]
+        public static float DequantizeRealWithConstants(int quantized, float minValue, float maxValue, int sizeInBits, bool exactMidPoint, bool exactEndPoints)
+        {
+            if (sizeInBits <= 0)
+            {
+                throw new ArgumentException("Number of bits must be greater than zero");
+            }
+
+            if (maxValue <= minValue)
+            {
+                throw new ArgumentException("Maximum Value must be greater than Minimum Value");
+            }
+
+            if (exactMidPoint && sizeInBits <= 1)
+            {
+                throw new ArgumentException("Number of bits must be greater than 1 when exact mid point is enabled");
+            }
+
+            // Instead of deriving the step count from the bit count, we'll instead pull it from the encoding constants
+            int stepCount = (int)UnitVectorQuantization.GetUnitVectorEncodingConstants(sizeInBits).QuantizedValueCount - 1;
+
+            if (exactMidPoint)
+            {
+                stepCount -= stepCount % 2;
+            }
+
+            if (stepCount <= 0)
+            {
+                throw new InvalidOperationException("Number of steps was less than or equal to zero");
+            }
+
+            float dequantized;
+
+            if (exactEndPoints)
+            {
+                if (quantized != 0)
+                {
+                    if (quantized < stepCount)
+                    {
+                        dequantized = (((float)(stepCount - quantized) * minValue) + ((float)quantized * maxValue)) / (float)stepCount;
+                    }
+                    else
+                    {
+                        dequantized = maxValue;
+                    }
+                }
+                else
+                {
+                    dequantized = minValue;
+                }
+            }
+            else
+            {
+                float step = (maxValue - minValue) / stepCount;
+
+                if (step <= 0.0f)
+                {
+                    throw new ArgumentException("Step must be greater than zero");
+                }
+
+                dequantized = ((quantized * step) + minValue) + (step / 2.0f);
+            }
+
+            if (exactMidPoint && 2 * quantized == stepCount)
+            {
+                if (dequantized != (minValue + maxValue) / 2.0f)
+                {
+                    throw new InvalidOperationException("Dequantized value must be equal to the exact mid point of Minimum Value and Maximum Value");
+                }
+            }
+
+            return dequantized;
+        }
+
         public static float Magnitude3d(RealVector3d vector)
         {
             return (float)Math.Sqrt(RealVector3d.Magnitude(vector));
@@ -169,6 +243,32 @@ namespace TagTool.Common
 
             float x = DequantizeReal((int)quantizedX, -1.0f, 1.0f, bitCount, true, false);
             float y = DequantizeReal((int)quantizedY, -1.0f, 1.0f, bitCount, true, false);
+
+            vector = face switch
+            {
+                0 => new RealVector3d(1.0f, x, y),
+                1 => new RealVector3d(x, 1.0f, y),
+                2 => new RealVector3d(x, y, 1.0f),
+                3 => new RealVector3d(-1.0f, x, y),
+                4 => new RealVector3d(x, -1.0f, y),
+                5 => new RealVector3d(x, y, -1.0f),
+                _ => throw new InvalidOperationException($"Invalid face value {face} when reading unit vector"),
+            };
+
+            Normalize3d(vector, out vector);
+        }
+
+        [Obsolete("Remove when issues with reach floating point dequantization are resolved")]
+        public static void DequantizeUnitVector3dWithTable(int value, out RealVector3d vector, int bitCount) 
+        {
+            UnitVectorQuantization.EncodingConstants encodingConstants = UnitVectorQuantization.GetUnitVectorEncodingConstants(bitCount);
+
+            int face = Math.Max(0, (int)((float)value / encodingConstants.ActualPerAxisMaxCount));
+            float quantizedX = (float)(value % (int)encodingConstants.ActualPerAxisMaxCount) / encodingConstants.QuantizedValueCount;
+            float quantizedY = (float)(value % (int)encodingConstants.ActualPerAxisMaxCount) % encodingConstants.QuantizedValueCount;
+
+            float x = DequantizeRealWithConstants((int)quantizedX, -1.0f, 1.0f, bitCount, false, false);
+            float y = DequantizeRealWithConstants((int)quantizedY, -1.0f, 1.0f, bitCount, false, false);
 
             vector = face switch
             {
