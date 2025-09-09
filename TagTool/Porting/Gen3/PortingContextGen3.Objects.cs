@@ -130,11 +130,6 @@ namespace TagTool.Porting.Gen3
             if (multiplayer.DefaultAbandonTime == 0) multiplayer.DefaultAbandonTime = 30;
             multiplayer.BoundaryShape = multiplayer.ReachBoundaryShape;
             multiplayer.SpawnTimerType = multiplayer.SpawnTimerTypeReach.ConvertLexical<MultiplayerObjectSpawnTimerType>();
-            foreach (var boundary in multiplayer.BoundaryShaders)
-            {
-                boundary.StandardShader = ConvertTag(cacheStream, blamCacheStream, boundary.StandardShader);
-                boundary.OpaqueShader = ConvertTag(cacheStream, blamCacheStream, boundary.OpaqueShader);
-            }
 
             return multiplayer;
         }

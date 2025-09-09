@@ -172,13 +172,8 @@ namespace TagTool.Porting.Gen3
 
             switch (expr.ValueType)
             {
-                case HsType.FunctionName:
-                    expr.StringAddress = 0;
-                    break;
-
                 case HsType.Void:
-                    // change to begin. Note that the args will still get evaluated
-                    expr.Opcode = 0;
+                    expr.Opcode = 0x698; // use a stub function instead
                     break;
 
                 // Change the expression to a primitive with a reasonable default value
@@ -481,6 +476,9 @@ namespace TagTool.Porting.Gen3
 
         private void ConvertScriptTagReferenceExpressionData(Stream cacheStream, Stream blamCacheStream, HsSyntaxNode expr)
         {
+            if (!FlagIsSet(PortingFlags.Recursive))
+                return;
+
             uint tagIndex;
             if (CacheVersionDetection.IsLittleEndian(BlamCache.Version, BlamCache.Platform))
                 tagIndex = BitConverter.ToUInt32(expr.Data, 0);
@@ -650,8 +648,10 @@ namespace TagTool.Porting.Gen3
 
         private void UpdateMpWakeScript(Stream cacheStream, Scenario scnr, HsSyntaxNode expr)
         {
-            int exprIndex = scnr.ScriptExpressions.IndexOf(expr) + 1;
-            HsSyntaxNode stringExpr = scnr.ScriptExpressions[exprIndex]; // <string> parameter
+            if (expr.Flags != HsSyntaxNodeFlags.Group)
+                return;
+
+            HsSyntaxNode stringExpr = scnr.ScriptExpressions[scnr.ScriptExpressions.IndexOf(expr) + 2]; // <string> parameter
 
             string scriptName = GetScriptString(scnr, (int)stringExpr.StringAddress);
 
