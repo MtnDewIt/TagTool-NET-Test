@@ -47,12 +47,12 @@ namespace TagTool.Porting.Gen3
             return base.GetFallbackTag(blamTag);
         }
 
-        protected override CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition = null)
+        protected override CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition, string blamParentTagName)
         {
             if (blamTag.IsInGroup("rmt2"))
-                return FindClosestRmt2(cacheStream, blamCacheStream, blamTag);
+                return FindClosestRmt2(cacheStream, blamCacheStream, blamTag, blamParentTagName);
 
-            return base.ConvertTagInternal(cacheStream, blamCacheStream, blamTag, blamDefinition);
+            return base.ConvertTagInternal(cacheStream, blamCacheStream, blamTag, blamDefinition, blamParentTagName);
         }
 
         protected override object ConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition, out bool isDeferred)

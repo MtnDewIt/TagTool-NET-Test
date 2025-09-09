@@ -85,9 +85,10 @@ namespace TagTool.Porting
         /// <param name="cacheStream">Destination cache stream</param>
         /// <param name="blamCacheStream">Source cache stream</param>
         /// <param name="blamTag">Tag to be converted</param>
+        /// <param name="blamParentTagName">Parent tag name. Currently used to alter the template for particular render methods.</param>
         /// <param name="blamDefinition">Optional pre-deserialized tag definition. Useful for making changes to a tag prior to porting</param>
         /// <returns>The resulting the tag from the destination cache</returns>
-        public CachedTag ConvertTag(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition = null)
+        public CachedTag ConvertTag(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, string blamParentTagName = null, object blamDefinition = null)
         {
             ProcessDeferredActions();
 
@@ -100,7 +101,7 @@ namespace TagTool.Porting
             CachedTag result = null;
             if (TagIsValid(blamTag, cacheStream, blamCacheStream, out result))
             {
-                result = ConvertTagInternal(cacheStream, blamCacheStream, blamTag, blamDefinition);
+                result = ConvertTagInternal(cacheStream, blamCacheStream, blamTag, blamDefinition, blamParentTagName);
 
                 if (result == null)
                     Log.Warning($"null tag allocated for reference \"{blamTag}\"");
@@ -120,7 +121,7 @@ namespace TagTool.Porting
             return CacheContext.TagCache.TagDefinitions.TagDefinitionExists(blamTag.Group.Tag);
         }
 
-        protected virtual CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition)
+        protected virtual CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition, string blamParentTagName)
         {
             if (blamTag == null)
                 return null;
@@ -382,7 +383,7 @@ namespace TagTool.Porting
                             return null;
                         }
 
-                        return ConvertTag(cacheStream, blamCacheStream, (CachedTag)data);
+                        return ConvertTag(cacheStream, blamCacheStream, (CachedTag)data, blamTagName);
                     }
 
                 case Array _:
